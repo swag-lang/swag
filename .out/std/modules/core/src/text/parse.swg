@@ -1,9 +1,9 @@
 #global public
-#global namespace strconv
+#global namespace parse
 using globalization
 
 // Parse an identifier name
-func parseIdentifier(str: const [..] u8)->string throw
+func getIdentifier(str: string)->string throw
 {
     countof := @countof(str)
     if !countof throw "empty"
@@ -18,7 +18,7 @@ func parseIdentifier(str: const [..] u8)->string throw
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
+func getX64(str: string) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
@@ -51,7 +51,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer in binary to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
+func getB64(str: string) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
@@ -78,7 +78,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer in decimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
+func getU64(str: string) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
@@ -106,7 +106,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
+func getS64(str: string) -> {value: s64, eat: u32} throw
 {
     var result: retval
 
@@ -158,7 +158,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-func parseF64(str: const [..] u8) -> {value: f64, eat: u32} throw
+func getF64(str: string) -> {value: f64, eat: u32} throw
 {
-    return try atod(str)
+    return try strconv.atod(str)
 }

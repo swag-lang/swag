@@ -3,20 +3,20 @@ using core, core.strconv
 
 #test
 {
-    @assert(assume parseU64("255").value == 255)
-    @assert(assume parseU64("123456").value == 123456)
+    @assert(assume parse.getU64("255").value == 255)
+    @assert(assume parse.getU64("123456").value == 123456)
 
-    @assert(assume parseS64("255").value == 255)
-    @assert(assume parseS64("-255").value == -255)
-    @assert(assume parseS64("+255").value == 255)
+    @assert(assume parse.getS64("255").value == 255)
+    @assert(assume parse.getS64("-255").value == -255)
+    @assert(assume parse.getS64("+255").value == 255)
 
-    @assert(assume parseX64("ff").value == 255)
-    @assert(assume parseX64("0A").value == 10)
+    @assert(assume parse.getX64("ff").value == 255)
+    @assert(assume parse.getX64("0A").value == 10)
 
-    @assert(assume parseB64("11").value == 3)
-    @assert(assume parseB64("0000101").value == 5)
+    @assert(assume parse.getB64("11").value == 3)
+    @assert(assume parse.getB64("0000101").value == 5)
 
-    @assert(math.isEqualEpsilon(assume parseF64("1.0").value, 1.0))
-    @assert(math.isEqualEpsilon(assume parseF64("1.1").value, 1.1))
-    @assert(math.isEqualEpsilon(assume parseF64("-128.456").value, -128.456, 0.001))
+    @assert(math.isEqualEpsilon(assume parse.getF64("1.0").value, 1.0))
+    @assert(math.isEqualEpsilon(assume parse.getF64("1.1").value, 1.1))
+    @assert(math.isEqualEpsilon(assume parse.getF64("-128.456").value, -128.456, 0.001))
 }

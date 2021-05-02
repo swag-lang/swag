@@ -64,7 +64,7 @@ impl ConvertFormatFloat
         // Precision
         if cpt < countof
         {
-            (userWidth, eatCount) := assume parseU64(@mkslice(buffer + cpt, cast(uint) (countof - cpt)))
+            (userWidth, eatCount) := assume parse.getU64(@mkstring(buffer + cpt, cast(uint) (countof - cpt)))
             debug.assert(userWidth <= 255, "precision overflow")
             if eatCount precision = cast(s8) userWidth
         }
@@ -131,7 +131,7 @@ impl ConvertFormatInt
         // Next comes the padding width
         if cpt >= countof
             return
-        (userWidth, eatCount) := assume parseU64(@mkslice(buffer + cpt, cast(uint) countof - cpt))
+        (userWidth, eatCount) := assume parse.getU64(@mkstring(buffer + cpt, cast(uint) countof - cpt))
         debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }

@@ -5,6 +5,6 @@ using core
 #test
 {
     x := ".5"
-    y := try strconv.parseF64(x)
+    y := try parse.getF64(x)
     @assert(y.value == 0.5)
 }
