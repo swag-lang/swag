@@ -11,7 +11,7 @@ func moveStart(str: string, count: uint)->string
 }
 
 // Remove spaces from the start of the string, and return what's remain
-func eatSpaces(str: string)->string
+func trimLeft(str: string)->string
 {
     countof := @countof(str)
     if !countof return str
@@ -262,12 +262,12 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     countof := @countof(str)
     if countof < 4 throw "invalid"
 
-    if str[0]|32 == "t"'u8 and str[1]|32 == "r"'u8 and str[2]|32 == "u"'u8 and str[3]|32 == "e"'u8
+    if str[0] == "t"'u8 and str[1] == "r"'u8 and str[2] == "u"'u8 and str[3] == "e"'u8
     {
         result.value = true
         result.eat = 4
     }
-    else if str[0]|32 == "f"'u8 and str[1]|32 == "a"'u8 and str[2]|32 == "l"'u8 and str[3]|32 == "s"'u8 and str[4]|32 == "e"'u8
+    else if str[0] == "f"'u8 and str[1] == "a"'u8 and str[2] == "l"'u8 and str[3] == "s"'u8 and str[4] == "e"'u8
     {
         result.eat = 5
     }
@@ -276,5 +276,42 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
         throw "invalid"
     }
 
+    return result
+}
+
+// Convert an utf8 buffer to a string
+// String in the buffer must be quoted
+func getString(str: string) -> {value: String, eat: u32} throw
+{
+    var result: retval
+
+    countof := @countof(str)
+    if countof < 2 throw "invalid"
+    if str[0] != "\""'u8 throw "invalid"
+
+    cpt := 1
+    while cpt < countof and str[cpt] != "\""'u8
+    {
+        // Escape character
+        if str[cpt] == "\\"'u8
+        {
+            cpt += 1
+            if cpt == countof throw "invalid"
+            switch str[cpt]
+            {
+            case "t"'u8:    result.value += "\t"'u8
+            case "n"'u8:    result.value += "\n"'u8
+            default:        result.value += str[cpt]
+            }
+        }
+        else
+            result.value += str[cpt]
+
+        cpt += 1
+    }
+
+    if cpt == countof throw "missing closing string character"
+    cpt += 1
+    result.eat = cpt
     return result
 }

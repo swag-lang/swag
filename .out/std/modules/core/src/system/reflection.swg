@@ -34,17 +34,17 @@ using swag
     }
 
     // Get information about a specific field in a given struct
-    // Returns null if the method does not exist
+    // Returns null if the field does not exist
     func getField(type: typeinfo, name: string)->const* TypeInfoParam
     {
-        if type.kind != TypeInfoKind.Struct
-            return null
-        typeStruct := cast(const* TypeInfoStruct) type
-
-        visit it: typeStruct.fields
+        if type.kind == TypeInfoKind.Struct
         {
-            if it.name == name
-                return it
+            typeStruct := cast(const* TypeInfoStruct) type
+            visit it: typeStruct.fields
+            {
+                if it.name == name
+                    return it
+            }
         }
 
         return null
@@ -106,6 +106,23 @@ using swag
         }
 
         return false
+    }
+
+    // Get information about a specific value in a given enum
+    // Returns null if the value does not exist
+    func getEnumValue(type: typeinfo, name: string)->const* TypeInfoParam
+    {
+        if type.kind == TypeInfoKind.Enum
+        {
+            typeEnum := cast(const* TypeInfoEnum) type
+            visit it: typeEnum.values
+            {
+                if it.name == name
+                    return it
+            }
+        }
+
+        return null
     }
 
     // Returns the enum value name corresponding to the value pointed by 'valueAddr'

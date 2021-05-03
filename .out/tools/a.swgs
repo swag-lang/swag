@@ -24,11 +24,34 @@ struct TweakFile
 
 impl TweakFile
 {
-    private func setValue(addr: *void, field: const *swag.TypeInfoParam, one: string)->string throw
+    private func setValue(addr: *void, field: const *swag.TypeInfoParam, buf: string)->string throw
     {
         patch := cast(*u8) addr + field.offset
-
+        one := parse.trimLeft(buf)
         eat := 0'u32
+
+        // Enum
+        if reflection.isEnum(field.pointedType)
+        {
+            enumType := cast(const *TypeInfoEnum) field.pointedType
+
+            id := try parse.getIdentifier(one)
+            eat += cast(u32) @countof(id)
+            v := reflection.getEnumValue(field.pointedType, id)
+            if !v throw format.toString("unknown enum value '%'", id)
+            switch enumType.sizeof
+            {
+            case 1:     :cast(*u8) patch |= :cast(const *u8) v.value
+            case 2:     :cast(*u16) patch |= :cast(const *u16) v.value
+            case 4:     :cast(*u32) patch |= :cast(const *u32) v.value
+            case 8:     :cast(*u64) patch |= :cast(const *u64) v.value
+            default:    throw format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+            }
+
+            return parse.moveStart(one, cast(uint) eat)
+        }
+
+        // Basic types
         switch field.pointedType
         {
         case s8:
@@ -86,6 +109,11 @@ impl TweakFile
             (val, eat) = try parse.getBool(one)
             :cast(*bool) patch = val
 
+        case String:
+            var val: String
+            (val, eat) = try parse.getString(one)
+            :cast(*String) patch = val
+
         default:
             throw format.toString("unsupported type '%'", field.pointedType.flatName)
         }
@@ -109,6 +137,7 @@ impl TweakFile
         visit *line, idx: lines
         {
             one := line.toString()
+            one = parse.trimLeft(one)
             if @countof(one) == 0 continue
             if one[0] == "#"'u8 continue // comment
 
@@ -137,7 +166,7 @@ impl TweakFile
             // Value
             if !currentFolder
                 throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
-            one = parse.eatSpaces(one)
+            one = parse.trimLeft(one)
             id := catch parse.getIdentifier(one)
             if @err
                 throw format.toString("%:%: invalid value name", fileName, idx + 1)
@@ -146,7 +175,6 @@ impl TweakFile
             field := reflection.getField(currentFolder.type, id)
             if !field throw format.toString("%:%: value '%' not found in folder '%'", fileName, idx + 1, id, currentFolder.type.flatName)
             one = parse.moveStart(one, @countof(id))
-            one = parse.eatSpaces(one)
 
             // Get value and poke it
             one = catch setValue(currentFolder.data, field, one)
@@ -156,7 +184,7 @@ impl TweakFile
             // Be sure there's nothing left
             if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
                 throw format.toString("%:%: syntax error in value", fileName, idx + 1)
-            one = parse.eatSpaces(one)
+            one = parse.trimLeft(one)
             if @countof(one) and one[0] != "#"'u8
                 throw format.toString("%:%: invalid characters after value", fileName, idx + 1)
         }
@@ -171,10 +199,14 @@ struct Test1
     coucoub:   bool
 }
 
+enum Enum { Red; Green; Blue; }
+
 struct Test2
 {
     coucou1: f32
     coucou2: f64
+    coucou3: String
+    coucou4: Enum = ?
 }
 
 #main
