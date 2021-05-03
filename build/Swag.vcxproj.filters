@@ -467,6 +467,9 @@
     <ClCompile Include="..\src\Workspace_script_.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\RaceCondition.cpp">
+      <Filter>Main\Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -769,6 +772,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ErrorIds.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RaceCondition.h">
+      <Filter>Main\Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

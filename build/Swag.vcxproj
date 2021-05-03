@@ -210,6 +210,7 @@
     <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\ModuleCfgManager.h" />
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h" />
+    <ClInclude Include="..\src\RaceCondition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -383,6 +384,7 @@
     <ClCompile Include="..\src\ByteCodeRun_dbg_.cpp" />
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp" />
+    <ClCompile Include="..\src\RaceCondition.cpp" />
     <ClCompile Include="..\src\Workspace_clean_.cpp" />
     <ClCompile Include="..\src\Workspace_new_.cpp" />
     <ClCompile Include="..\src\Workspace_script_.cpp" />
