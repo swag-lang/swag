@@ -17,7 +17,7 @@ using swag
     }
 
     // Returns true if this is a struct of the given name
-    func isStructName(type: typeinfo, name: string)->bool
+    func isStructOfName(type: typeinfo, name: string)->bool
     {
         if type.kind != TypeInfoKind.Struct
             return false
