@@ -233,6 +233,7 @@ struct Test2
     coucou3: String
     coucou4: Enum = ?
     coucou5: rune
+    coucou6: Array'rune
 }
 
 #main
