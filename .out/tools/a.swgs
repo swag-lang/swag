@@ -28,30 +28,47 @@ impl TweakFile
     {
         patch := cast(*u8) addr + field.offset
         one := parse.trimLeft(buf)
-        eat := 0'u32
 
         // Enum
         if reflection.isEnum(field.pointedType)
         {
             enumType := cast(const *TypeInfoEnum) field.pointedType
+            enumFlags := reflection.hasAttribute(enumType, "swag.enumflags")
 
-            id := try parse.getIdentifier(one)
-            eat += cast(u32) @countof(id)
-            v := reflection.getEnumValue(field.pointedType, id)
-            if !v throw format.toString("unknown enum value '%'", id)
-            switch enumType.sizeof
+            while true
             {
-            case 1:     :cast(*u8) patch |= :cast(const *u8) v.value
-            case 2:     :cast(*u16) patch |= :cast(const *u16) v.value
-            case 4:     :cast(*u32) patch |= :cast(const *u32) v.value
-            case 8:     :cast(*u64) patch |= :cast(const *u64) v.value
-            default:    throw format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+                one = parse.trimLeft(one)
+                id := try parse.getIdentifier(one)
+                v := reflection.getEnumValue(field.pointedType, id)
+                if !v throw format.toString("unknown enum value '%'", id)
+                switch enumType.sizeof
+                {
+                case 1:     :cast(*u8) patch |= :cast(const *u8) v.value
+                case 2:     :cast(*u16) patch |= :cast(const *u16) v.value
+                case 4:     :cast(*u32) patch |= :cast(const *u32) v.value
+                case 8:     :cast(*u64) patch |= :cast(const *u64) v.value
+                default:    throw format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+                }
+
+                one = parse.moveStart(one, @countof(id))
+                if !enumFlags break
+
+                one = parse.trimLeft(one)
+                if !@countof(one) break
+                if one[0] == "#"'u8 break
+
+                if one[0] != "|"'u8
+                    throw "invalid enum flags format"
+                one = parse.moveStart(one, 1)
             }
 
-            return parse.moveStart(one, cast(uint) eat)
+            eat := cast(u32) cast(int) (@dataof(one) - @dataof(buf))
+            one = parse.moveStart(buf, cast(uint) eat)
+            return one
         }
 
         // Basic types
+        eat := 0'u32
         switch field.pointedType
         {
         case s8:
@@ -197,9 +214,12 @@ struct Test1
     coucous32: s32
     coucouu64: u64
     coucoub:   bool
+    coucoue:   EnumFlags = ?
 }
 
-enum Enum { Red; Green; Blue; }
+enum Enum       { Red; Green; Blue; }
+#[swag.enumflags]
+enum EnumFlags  { A; B; C; }
 
 struct Test2
 {

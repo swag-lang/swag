@@ -6,8 +6,8 @@ using globalization
 func moveStart(str: string, count: uint)->string
 {
     countof := @countof(str)
-    if count >= countof return ""
-    return @mkstring(@dataof(str) + count, countof - count)
+    cpt := math.min(count, countof)
+    return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
 // Remove spaces from the start of the string, and return what's remain
@@ -28,7 +28,7 @@ func getIdentifier(str: string)->string throw
     countof := @countof(str)
     if !countof throw "invalid"
 
-    if str[0] != "_"'u8 and !latin1.isLetter(str[1]) throw "invalid"
+    if str[0] != "_"'u8 and !latin1.isLetter(str[0]) throw "invalid"
 
     cpt := 1'uint
     while cpt < countof and (str[cpt] == "_"'u8 or latin1.isLetterOrDigit(str[cpt]))
