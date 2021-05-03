@@ -126,6 +126,11 @@ impl TweakFile
             (val, eat) = try parse.getBool(one)
             :cast(*bool) patch = val
 
+        case rune:
+            var val: rune = ?
+            (val, eat) = try parse.getRune(one)
+            :cast(*rune) patch = val
+
         case String:
             var val: String
             (val, eat) = try parse.getString(one)
@@ -159,7 +164,7 @@ impl TweakFile
             if one[0] == "#"'u8 continue // comment
 
             // Folder
-            if one[0] == ":"'u8
+            if one[0] == "/"'u8
             {
                 one = parse.moveStart(one, 1)
                 folderName := catch parse.getIdentifier(one)
@@ -227,6 +232,7 @@ struct Test2
     coucou2: f64
     coucou3: String
     coucou4: Enum = ?
+    coucou5: rune
 }
 
 #main

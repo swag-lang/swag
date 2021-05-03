@@ -279,6 +279,14 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     return result
 }
 
+// Convert an utf8 buffer to a simple rune
+func getRune(str: string) -> {value: rune, eat: u32} throw
+{
+    countof := @countof(str)
+    if !countof throw "invalid"
+    return utf8.decodeRune(str)
+}
+
 // Convert an utf8 buffer to a string
 // String in the buffer must be quoted
 func getString(str: string) -> {value: String, eat: u32} throw
