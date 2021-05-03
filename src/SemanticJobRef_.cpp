@@ -106,6 +106,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
             if (typeResolved->isNative(NativeTypeKind::String))
                 ptrType->setConst();
+            else if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
+                ptrType->setConst();
         }
 
         node->typeInfo = ptrType;

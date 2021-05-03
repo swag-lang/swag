@@ -22,7 +22,7 @@ struct TweakFile
     folders: Array'Folder
 }
 
-private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
+private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: const *TypeInfoParam)->*void
 {
     arr := cast(*Array'u8) addr
     return null
@@ -30,7 +30,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 
 impl TweakFile
 {
-    private func setValue(addr: *void, field: const *swag.TypeInfoParam, buf: string)->string throw
+    private func setValue(addr: *void, field: const *TypeInfoParam, buf: string)->string throw
     {
         patch := cast(*u8) addr + field.offset
         one := parse.trimLeft(buf)
@@ -38,10 +38,10 @@ impl TweakFile
         // Array
         if reflection.isStructOfName(field.pointedType, "Array")
         {
-            /*structType := cast(const *TypeInfoStruct) field.pointedType
+            structType := cast(const *TypeInfoStruct) field.pointedType
             valueType := &structType.generics[0]
             addrVal := roomInArray(addr, structType, valueType)
-            one = setValue(addrVal, valueType, one)*/
+            one = try setValue(addrVal, valueType, one)
             return one
         }
 
