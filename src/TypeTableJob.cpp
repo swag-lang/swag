@@ -91,6 +91,9 @@ bool TypeTableJob::computeStruct()
             segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
+    // Simple structure name, without generics
+    SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, OFFSETOF(concreteType->structName), cflags));
+
     // First and main pass, by locking only the type segment
     {
         unique_lock lk1(segment->mutex);

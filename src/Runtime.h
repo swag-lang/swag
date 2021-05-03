@@ -297,6 +297,7 @@ struct ConcreteTypeInfoStruct
     void*                 opReloc;
     void*                 opPostCopy;
     void*                 opPostMove;
+    SwagSlice             structName;
     ConcreteRelativeSlice generics;
     ConcreteRelativeSlice fields;
     ConcreteRelativeSlice methods;

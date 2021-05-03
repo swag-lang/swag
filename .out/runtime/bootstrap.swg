@@ -388,6 +388,7 @@ namespace swag
         opReloc:        func(*void, *void)
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
+        structName:	    string
         generics:		const [..]~8 TypeInfoParam
         fields:		    const [..]~8 TypeInfoParam
         methods:	    const [..]~8 TypeInfoParam
