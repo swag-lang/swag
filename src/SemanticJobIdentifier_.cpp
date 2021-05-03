@@ -3558,7 +3558,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     SWAG_CHECK(checkCanCatch(context));
 
     node->typeInfo = lastChild->typeInfo;
-    node->flags    = identifierRef->flags;
+    node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 
@@ -3576,7 +3576,7 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
     node->typeInfo                     = lastChild->typeInfo;
-    node->flags                        = identifierRef->flags;
+    node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 
@@ -3595,7 +3595,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
     node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
     node->typeInfo                     = lastChild->typeInfo;
-    node->flags                        = identifierRef->flags;
+    node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
 
     return true;
