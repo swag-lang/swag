@@ -29,6 +29,12 @@ impl TweakFile
         patch := cast(*u8) addr + field.offset
         one := parse.trimLeft(buf)
 
+        // Array
+        if reflection.isStructName(field.pointedType, "Array")
+        {
+            return ""
+        }
+
         // Enum
         if reflection.isEnum(field.pointedType)
         {

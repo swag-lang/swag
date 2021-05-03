@@ -16,6 +16,15 @@ using swag
         func isSlice(t: typeinfo)       => t.kind == TypeInfoKind.Slice
     }
 
+    // Returns true if this is a struct of the given name
+    func isStructName(type: typeinfo, name: string)->bool
+    {
+        if type.kind != TypeInfoKind.Struct
+            return false
+        typeStruct := cast(const* TypeInfoStruct) type
+        return typeStruct.structName == name
+    }
+
     // Get information about a specific method in a given struct
     // Returns null if the method does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeInfoParam
