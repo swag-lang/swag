@@ -121,12 +121,24 @@ bool SemanticJob::getRelativeSize(SemanticContext* context, AstNode* identifier,
         if (!(identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
         {
             SWAG_VERIFY(identifier->flags & AST_VALUE_COMPUTED, context->report({typeNode, Msg0014}));
-            SWAG_VERIFY(identifier->computedValue.reg.u64 <= 8, context->report({typeNode, Msg0015}));
-            value = identifier->computedValue.reg.u8;
+
+            switch (identifier->computedValue.reg.u64)
+            {
+            case 0:
+            case 8:
+            case 16:
+            case 32:
+            case 64:
+                break;
+            default:
+                return context->report({identifier, format(Msg0015, identifier->computedValue.reg.u64)});
+            }
+
+            value = identifier->computedValue.reg.u8 >> 3;
         }
     }
 
-    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, Msg0015}));
+    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, format(Msg0015, value * 8)}));
     return true;
 }
 
