@@ -75,6 +75,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
+    SWAG_RACE_CONDITION_WRITE(raceC);
+
     SWAG_ASSERT(size);
     DataSegmentHeader* last = nullptr;
     if (buckets.size())

@@ -3,6 +3,7 @@
 #include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
+#include "RaceCondition.h"
 struct SourceFile;
 struct Module;
 
@@ -106,4 +107,5 @@ struct DataSegment
     void restoreAllValues();
 
     bool compilerOnly = false;
+    SWAG_RACE_CONDITION_INSTANCE(raceC);
 };
