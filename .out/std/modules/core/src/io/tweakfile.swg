@@ -76,6 +76,24 @@ impl TweakFile
             return one
         }
 
+        // Static array
+        if reflection.isArray(field)
+        {
+            arrayType := cast(const *TypeInfoArray) field
+            addrVal := cast(*u8) addr
+            cpt := 0
+            while @countof(one) and one[0] != "#"'u8
+            {
+                if cpt == arrayType.totalCount throw "too many values"
+                one = try setValue(addrVal, arrayType.finalType, one)
+                one = parse.trimLeft(one)
+                addrVal += arrayType.finalType.sizeof
+                cpt += 1
+            }
+
+            return one
+        }
+
         // Enum
         if reflection.isEnum(field)
         {

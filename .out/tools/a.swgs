@@ -29,6 +29,7 @@ struct Test2
     coucou5: rune
     coucou6: Array'rune
     coucou7: Array'String
+    coucou8: [4] f32
 }
 
 #main

@@ -2,7 +2,7 @@
 #global namespace parse
 using globalization
 
-// Remove spaces from the start of the string, and return what's remain
+// Add an offset to the start of the string
 func moveStart(str: string, count: uint)->string
 {
     countof := @countof(str)
@@ -20,6 +20,18 @@ func trimLeft(str: string)->string
     while cpt < countof and latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
+}
+
+// Returns the first substring of 'str', stopping at the first blank character
+func getUntilSpace(str: string)->string throw
+{
+    countof := @countof(str)
+    if !countof throw "invalid"
+
+    cpt := 0'uint
+    while cpt < countof and !latin1.isSpace(str[cpt])
+        cpt += 1
+    return @mkstring(@dataof(str), cpt)
 }
 
 // Parse an identifier name in the sens of swag (ascii)
@@ -260,22 +272,15 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if countof < 4 throw "invalid"
-
-    if str[0] == "t"'u8 and str[1] == "r"'u8 and str[2] == "u"'u8 and str[3] == "e"'u8
+    sub := try getUntilSpace(str)
+    switch sub
     {
-        result.value = true
-        result.eat = 4
-    }
-    else if str[0] == "f"'u8 and str[1] == "a"'u8 and str[2] == "l"'u8 and str[3] == "s"'u8 and str[4] == "e"'u8
-    {
-        result.eat = 5
-    }
-    else
-    {
-        throw "invalid"
+    case "1", "true", "TRUE", "True":       result.value = true
+    case "0", "false", "FALSE", "False":    result.value = false
+    default:                                throw "invalid"
     }
 
+    result.eat = cast(u32) @countof(sub)
     return result
 }
 
@@ -295,7 +300,7 @@ func getString(str: string) -> {value: String, eat: u32} throw
 
     countof := @countof(str)
     if countof < 2 throw "invalid"
-    if str[0] != "\""'u8 throw "invalid"
+    if str[0] != "\""'u8 throw "missing start delimiter"
 
     cpt := 1
     while cpt < countof and str[cpt] != "\""'u8
@@ -318,7 +323,7 @@ func getString(str: string) -> {value: String, eat: u32} throw
         cpt += 1
     }
 
-    if cpt == countof throw "missing closing string character"
+    if cpt == countof throw "missing end delimiter"
     cpt += 1
     result.eat = cpt
     return result
