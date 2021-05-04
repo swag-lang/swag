@@ -1,6 +1,6 @@
 var G = 666
 
-func toto()->*~8 s32
+func toto()->*~64 s32
 {
     x := &G
     return x

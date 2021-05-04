@@ -186,8 +186,19 @@ bool SyntaxJob::doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t
     if (token.id == TokenId::LiteralNumber)
     {
         SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, error(token, Msg0336));
-        SWAG_VERIFY(token.literalValue.u64 <= 8, error(token, Msg0337));
-        *value = token.literalValue.u8;
+        switch (token.literalValue.u64)
+        {
+        case 0:
+        case 8:
+        case 16:
+        case 32:
+        case 64:
+            *value = token.literalValue.u8 >> 3;
+            break;
+        default:
+            return error(token, Msg0337);
+        }
+
         SWAG_CHECK(eatToken());
     }
     else

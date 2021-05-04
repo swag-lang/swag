@@ -5,7 +5,7 @@ using swag
 struct Node
 {
     value = 666
-    next: *~4 s32
+    next: *~32 s32
 }
 
 func toto()->Node

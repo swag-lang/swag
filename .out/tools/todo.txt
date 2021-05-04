@@ -2,6 +2,9 @@
 LANGUAGE
 ****************************************
 -------------------------------------
+default values après variadic 
+func toto(x: ..., param = "toto")
+-------------------------------------
 #premain ?
 -------------------------------------
 var lazy evaluation ?
@@ -22,6 +25,8 @@ x(10) => x.opCall(10)
     {
     case 0..10:
     }
+-------------------------------------
+pointeurs relatifs, mettre le numéro en bits ? *~8 => *~64
 -------------------------------------
 
 
@@ -53,8 +58,6 @@ cast interface vers struct (avec safety)
 -------------------------------------
 x64/llvm debug, mettre les constants, les enums
 void CodeViewDebug::emitStaticConstMemberList()
--------------------------------------
-pointeurs relatifs, mettre le numéro en bits ? *~8 => *~64
 -------------------------------------
 
 

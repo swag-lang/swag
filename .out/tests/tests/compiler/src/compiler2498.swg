@@ -3,7 +3,7 @@
 //#[swag.printbc]
 struct Node
 {
-    next: *~4 Node
+    next: *~32 Node
 
     value = 666
 }

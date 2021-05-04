@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-    var x: [..]~4 s32
+    var x: [..]~32 s32
     v := @[10, 20]
     x = v
     @assert(@countof(x) == 2)

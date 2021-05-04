@@ -7,6 +7,6 @@ func toto(x: s32, y: bool)->s32 => x
 #test
 {
 	ptr := cast(const *TypeInfoFunc) @typeof(toto)
-	@assert(@typeof(ptr.returnType) == @typeof(const *~8 TypeInfo))
+	@assert(@typeof(ptr.returnType) == @typeof(const *~64 TypeInfo))
     @assert(ptr.returnType == s32)
 }

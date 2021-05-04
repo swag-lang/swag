@@ -2,7 +2,7 @@
 
 struct AA
 {
-    x: [..]~4 s32
+    x: [..]~32 s32
 }
 
 //#[swag.printbc]

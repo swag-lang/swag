@@ -610,7 +610,7 @@
 #define Msg0348 "private definition should appear at file or namespace scope"
 #define Msg0300 "reference should be initialized"
 #define Msg0560 "relative pointer arithmetic out of range ('%d')"
-#define Msg0015 "relative size value should be 0, 1, 2, 4 or 8"
+#define Msg0015 "relative size value should be 0, 8, 16, 32 or 64"
 #define Msg0337 "relative type invalid size"
 #define Msg0335 "relative type should be followed by a number or an identifier"
 #define Msg0336 "relative type should be followed by an untyped integer"

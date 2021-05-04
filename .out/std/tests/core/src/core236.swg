@@ -3,7 +3,7 @@ using core
 
 struct AA
 {
-    ptr: *~8 s32
+    ptr: *~64 s32
 }
 
 var G = 666

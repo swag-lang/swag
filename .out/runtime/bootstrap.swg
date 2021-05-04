@@ -349,33 +349,33 @@ namespace swag
     struct TypeInfoAttribute
     {
         name:		string
-        params:		const [..]~8 TypeInfoAttributeParameter
+        params:		const [..]~64 TypeInfoAttributeParameter
     }
 
     struct TypeInfoPointer
     {
         using base: 	TypeInfo
-        pointedType:	const *~8 TypeInfo
+        pointedType:	const *~64 TypeInfo
     }
 
     struct TypeInfoReference
     {
         using base: 	TypeInfo
-        pointedType:	const *~8 TypeInfo
+        pointedType:	const *~64 TypeInfo
     }
 
     struct TypeInfoAlias
     {
         using base: 	TypeInfo
-        rawType:		const *~8 TypeInfo
+        rawType:		const *~64 TypeInfo
     }
 
     struct TypeInfoParam
     {
         name:		    string
-        pointedType:	const *~8 TypeInfo
+        pointedType:	const *~64 TypeInfo
         value:			const *void
-        attributes:	    const [..]~8 TypeInfoAttribute
+        attributes:	    const [..]~64 TypeInfoAttribute
         offset:			u32
         padding:		u32
     }
@@ -389,35 +389,35 @@ namespace swag
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
         structName:	    string
-        generics:		const [..]~8 TypeInfoParam
-        fields:		    const [..]~8 TypeInfoParam
-        methods:	    const [..]~8 TypeInfoParam
-        interfaces:     const [..]~8 TypeInfoParam
-        attributes:	    const [..]~8 TypeInfoAttribute
+        generics:		const [..]~64 TypeInfoParam
+        fields:		    const [..]~64 TypeInfoParam
+        methods:	    const [..]~64 TypeInfoParam
+        interfaces:     const [..]~64 TypeInfoParam
+        attributes:	    const [..]~64 TypeInfoAttribute
     }
 
     struct TypeInfoFunc
     {
         using base: 	TypeInfo
-        generics:		const [..]~8 TypeInfoParam
-        parameters:		const [..]~8 TypeInfoParam
-        returnType:		const *~8 TypeInfo
-        attributes:	    const [..]~8 TypeInfoAttribute
+        generics:		const [..]~64 TypeInfoParam
+        parameters:		const [..]~64 TypeInfoParam
+        returnType:		const *~64 TypeInfo
+        attributes:	    const [..]~64 TypeInfoAttribute
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:		    const [..]~8 TypeInfoParam
-        rawType:	    const *~8 TypeInfo
-        attributes:	    const [..]~8 TypeInfoAttribute
+        values:		    const [..]~64 TypeInfoParam
+        rawType:	    const *~64 TypeInfo
+        attributes:	    const [..]~64 TypeInfoAttribute
     }
 
     struct TypeInfoArray
     {
         using base: 	TypeInfo
-        pointedType:	const *~8 TypeInfo
-        finalType:		const *~8 TypeInfo
+        pointedType:	const *~64 TypeInfo
+        finalType:		const *~64 TypeInfo
         count:			uint
         totalCount:		uint
     }
@@ -425,19 +425,19 @@ namespace swag
     struct TypeInfoSlice
     {
         using base: 	TypeInfo
-        pointedType:	const *~8 TypeInfo
+        pointedType:	const *~64 TypeInfo
     }
 
     struct TypeInfoVariadic
     {
         using base:	TypeInfo
-        rawType:	const *~8 TypeInfo
+        rawType:	const *~64 TypeInfo
     }
 
     struct TypeInfoGeneric
     {
         using base: TypeInfo
-        rawType:	const *~8 TypeInfo
+        rawType:	const *~64 TypeInfo
     }
 
     // #########################################################

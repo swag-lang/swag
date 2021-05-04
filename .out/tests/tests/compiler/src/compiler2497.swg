@@ -3,7 +3,7 @@
 //#[swag.printbc]
 struct Node
 {
-    next: *~4 Node
+    next: *~32 Node
     value = 666
 }
 
@@ -18,7 +18,7 @@ struct MNode
 #test
 {
     var a: *s32
-    var x: *~4 s32 = a
+    var x: *~32 s32 = a
 
     //var a, b: MNode
     //a.node[1].next = &b.node

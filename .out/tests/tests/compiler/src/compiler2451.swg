@@ -1,7 +1,7 @@
 struct A
 {
     x: s32 = 666
-    v: *~4 A
+    v: *~32 A
 }
 
 #assert @sizeof(A) == 8

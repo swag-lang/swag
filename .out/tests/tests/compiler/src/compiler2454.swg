@@ -2,7 +2,7 @@
 #test
 {
     var arr: [4] s32 = @[10, 20, 30, 40]
-    var ptr: *~4 s32 = &arr[0]
+    var ptr: *~32 s32 = &arr[0]
 
     @assert(@sizeof(ptr) == 4)
     @assert(ptr[0] == 10)
