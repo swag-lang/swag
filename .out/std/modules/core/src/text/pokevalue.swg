@@ -52,9 +52,9 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 // - 'core.String'  literal strings are not supported as 'buf' is supposed to be transient
 // - enum           with or without 'swag.enumflags' attribute
 //
-// 'buf' can contain multiple space separated values if 'type' is:
-// - a static array of types above
-// - a dynamic 'core.Array' of types above
+// 'buf' can contain multiple values separated with blanks if 'type' is:
+// - a static array of the types above
+// - a dynamic 'core.Array' of the types above
 public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 {
     patch := cast(*u8) addr
