@@ -15,25 +15,30 @@ struct TweakFile
 
 private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
 {
-    // We will treat the array as a buffer of bytes
+    // We will treat the array as a buffer of bytes, just to be able to access the fields
     arr := cast(*Array'u8) addr
     sizeValue := valueType.sizeof
 
-    var typeValStruct: const *TypeInfoStruct
-    if reflection.isStruct(valueType) typeValStruct = autocast valueType
+    var valueTypeStruct: const *TypeInfoStruct
+    if reflection.isStruct(valueType) valueTypeStruct = autocast valueType
 
+    // If we need to reallocate the buffer, we will also have to deal with
+    // structures specials functions
     if arr.count >= arr.capacity
     {
         newCapacity := math.max(arr.count + 1, arr.capacity * 2)
         newBuffer := memory.alloc(newCapacity * sizeValue, arr.allocator)
-        memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
+        memory.clear(newBuffer, newCapacity * sizeValue)
+        arr.capacity = newCapacity
 
+        // Move old values to the new buffer
+        memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
         if reflection.hasPostMove(valueType)
         {
             buf := newBuffer
             loop arr.count
             {
-                typeValStruct.opPostMove(buf)
+                valueTypeStruct.opPostMove(buf)
                 buf += sizeValue
             }
         }
@@ -44,8 +49,8 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 
     arr.count += 1
     result := arr.buffer + ((arr.count - 1) * valueType.sizeof)
-    if typeValStruct
-        typeValStruct.opInit(result)
+    if valueTypeStruct valueTypeStruct.opInit(result)
+
     return result
 }
 
