@@ -19,6 +19,7 @@ struct Test1
 enum Enum       { Red; Green; Blue; }
 #[swag.enumflags]
 enum EnumFlags  { A; B; C; }
+enum Enum2: string  { StrRed = "StrRed"; StrGreen = "StrGreen"; StrBlue = "StrBlue"; }
 
 struct Test2
 {
@@ -30,6 +31,7 @@ struct Test2
     coucou6: Array'rune
     coucou7: Array'String
     coucou8: [4] f32
+    coucou9: Enum2 = ?
 }
 
 #main

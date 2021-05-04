@@ -1,6 +1,6 @@
 #global public
 #global namespace parse
-using globalization
+using globalization, swag
 
 // Add an offset to the start of the string
 func moveStart(str: string, count: uint)->string
