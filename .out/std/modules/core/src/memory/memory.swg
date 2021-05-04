@@ -45,5 +45,5 @@ func align(value: uint, alignement: u32)->uint
 // Align a pointer to the given amount
 func align(value: const *void, alignement: u32)->const *void
 {
-    return autocast align(cast(uint) value, alignement)
+    return acast align(cast(uint) value, alignement)
 }

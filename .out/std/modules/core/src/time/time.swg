@@ -33,7 +33,7 @@ func nowMilliseconds()->u32
 {
     ticks := nowPrecise() * 1000
     ticks /= preciseFrequency()
-    return autocast ticks
+    return acast ticks
 }
 
 // Returns the current time expressed in microseconds
@@ -41,7 +41,7 @@ func nowMicroseconds()->u32
 {
     ticks := nowPrecise() * 1000000
     ticks /= preciseFrequency()
-    return autocast ticks
+    return acast ticks
 }
 
 alias Ticks = u64
@@ -66,10 +66,10 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisecond: u16}
 {
     var result: retval = ?
-    result.hour = autocast ((ticks / TicksPerHour) % 24)
-    result.minute = autocast ((ticks / TicksPerMinute) % 60)
-    result.second = autocast ((ticks / TicksPerSecond) % 60)
-    result.millisecond = autocast ((ticks / TicksPerMilliSecond) % 1000)
+    result.hour = acast ((ticks / TicksPerHour) % 24)
+    result.minute = acast ((ticks / TicksPerMinute) % 60)
+    result.second = acast ((ticks / TicksPerSecond) % 60)
+    result.millisecond = acast ((ticks / TicksPerMilliSecond) % 1000)
     return result
 }
 
@@ -123,9 +123,9 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     while n >= days[m] m += 1
 
     var result: retval = ?
-    result.year  = autocast (y400*400 + y100*100 + y4*4 + y1 + 1)
-    result.month = autocast (m)
-    result.day   = autocast (n - days[m-1] + 1)
+    result.year  = acast (y400*400 + y100*100 + y4*4 + y1 + 1)
+    result.month = acast (m)
+    result.day   = acast (n - days[m-1] + 1)
     return result
 }
 
@@ -140,6 +140,6 @@ func daysInMonth(year, month: u16)->u16
 {
     debug.assert(1 <= month and month <= 12)
     if isLeapYear(year)
-        return autocast (DaysToMonth366[month] - DaysToMonth366[month - 1])
-    return autocast (DaysToMonth365[month] - DaysToMonth365[month - 1])
+        return acast (DaysToMonth366[month] - DaysToMonth366[month - 1])
+    return acast (DaysToMonth365[month] - DaysToMonth365[month - 1])
 }

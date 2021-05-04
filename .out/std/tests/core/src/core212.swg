@@ -13,7 +13,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 #test
 {
     var wc: WNDCLASSA
-    wc.lpfnWndProc = autocast @mkcallback(&winProc)
+    wc.lpfnWndProc = acast @mkcallback(&winProc)
     wc.hInstance = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)

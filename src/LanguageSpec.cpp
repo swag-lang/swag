@@ -72,7 +72,7 @@ void LanguageSpec::setup()
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("cast", TokenId::KwdCast);
     keywords.add("bitcast", TokenId::KwdBitCast);
-    keywords.add("autocast", TokenId::KwdAutoCast);
+    keywords.add("acast", TokenId::KwdAutoCast);
     keywords.add("if", TokenId::KwdIf);
     keywords.add("else", TokenId::KwdElse);
     keywords.add("while", TokenId::KwdWhile);

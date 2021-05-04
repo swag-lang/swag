@@ -36,7 +36,7 @@ namespace std
             req.size = cast(uint) newSize
             req.address = buffer
             allocator.alloc(&req)
-            buffer = autocast req.address
+            buffer = acast req.address
         }
     }
 }

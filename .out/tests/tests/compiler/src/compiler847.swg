@@ -5,6 +5,6 @@
 {
 	var a: f32
 	var b: s32 = 1
-	a = autocast b
+	a = acast b
 	@assert(a == 1)
 }

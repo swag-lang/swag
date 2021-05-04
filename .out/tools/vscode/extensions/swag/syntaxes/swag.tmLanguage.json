@@ -73,7 +73,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|deref|cast|autocast|bitcast|move|nodrop|retval|as|try|catch|assume|throw|discard)\\b"
+          "match": "\\b(using|deref|cast|acast|bitcast|move|nodrop|retval|as|try|catch|assume|throw|discard)\\b"
         }
       ]
     },

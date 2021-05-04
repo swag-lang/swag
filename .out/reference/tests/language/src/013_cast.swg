@@ -8,10 +8,10 @@
         @assert(y == 1)
     }
 
-    // use 'autocast' to automatically cast to the left expression
+    // use 'acast' to automatically cast to the left expression
     {
         var x: f32 = 1.0
-        var y: s32 = autocast x
+        var y: s32 = acast x
         @assert(@typeof(y) == s32)
         @assert(y == 1)
     }

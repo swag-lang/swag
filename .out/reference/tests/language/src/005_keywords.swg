@@ -137,7 +137,7 @@
 alias
 assume
 attr
-autocast
+acast
 bitcast
 cast
 catch

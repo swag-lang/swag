@@ -92,21 +92,21 @@ impl Point
     // Perform a math.round operation on all the coordinates
     func round(using self)
     {
-        x = autocast round(x)
-        y = autocast round(y)
+        x = acast round(x)
+        y = acast round(y)
     }
 
     // Perform a math.trunc operation on all the coordinates
     func trunc(using self)
     {
-        x = autocast trunc(x)
-        y = autocast trunc(y)
+        x = acast trunc(x)
+        y = acast trunc(y)
     }
 
     // Perform a math.ceil operation on all the coordinates
     func ceil(using self)
     {
-        x = autocast ceil(x)
-        y = autocast ceil(y)
+        x = acast ceil(x)
+        y = acast ceil(y)
     }
 }

@@ -74,7 +74,7 @@ public
 
     func toLower(c: rune)->rune
     {
-        if isLatin1(c) return autocast latin1.toLower(cast(u8) c)
+        if isLatin1(c) return acast latin1.toLower(cast(u8) c)
 
         res := caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune
@@ -85,7 +85,7 @@ public
 
     func toUpper(c: rune)->rune
     {
-        if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
+        if isLatin1(c) return acast latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune
@@ -97,7 +97,7 @@ public
 
     func toTitle(c: rune)->rune
     {
-        if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
+        if isLatin1(c) return acast latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune

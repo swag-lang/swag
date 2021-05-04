@@ -321,8 +321,8 @@ public func tcf_entry(param: *void)
 public func tcf_createThread(lambda: func(*void), userParam: uint)
 {
     var paramBC: [2] *void
-    paramBC[0] = autocast lambda
-    paramBC[1] = autocast userParam
+    paramBC[0] = acast lambda
+    paramBC[1] = acast userParam
 
     id := 0'u32
     h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)

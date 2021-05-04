@@ -114,28 +114,28 @@ impl Rect
     // Perform a math.round operation on all the coordinates
     func round(using self)
     {
-        x = autocast round(x)
-        y = autocast round(y)
-        width = autocast round(width)
-        height = autocast round(height)
+        x = acast round(x)
+        y = acast round(y)
+        width = acast round(width)
+        height = acast round(height)
     }
 
     // Perform a math.trunc operation on all the coordinates
     func trunc(using self)
     {
-        x = autocast trunc(x)
-        y = autocast trunc(y)
-        width = autocast trunc(width)
-        height = autocast trunc(height)
+        x = acast trunc(x)
+        y = acast trunc(y)
+        width = acast trunc(width)
+        height = acast trunc(height)
     }
 
     // Perform a math.ceil operation on all the coordinates
     func ceil(using self)
     {
-        x = autocast ceil(x)
-        y = autocast ceil(y)
-        width = autocast ceil(width)
-        height = autocast ceil(height)
+        x = acast ceil(x)
+        y = acast ceil(y)
+        width = acast ceil(width)
+        height = acast ceil(height)
     }
 
     // Determines if the specfied point is contained within the rectangular region

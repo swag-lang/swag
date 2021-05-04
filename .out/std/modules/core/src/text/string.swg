@@ -123,7 +123,7 @@ impl String
     func opPostMove(using self)
     {
         if buffer and capacity <= SmallSize
-            buffer = autocast &padding[0]
+            buffer = acast &padding[0]
     }
 
     func opPostCopy(using self)
@@ -132,7 +132,7 @@ impl String
             return
 
         if capacity <= SmallSize
-            buffer = autocast &padding[0]
+            buffer = acast &padding[0]
         else
         {
             oldBuffer := buffer
@@ -145,7 +145,7 @@ impl String
 
     func opDrop(using self)
     {
-        if buffer != autocast &padding[0]
+        if buffer != acast &padding[0]
             memory.free(buffer, capacity, allocator)
     }
 
@@ -255,7 +255,7 @@ impl String
     {
         if buffer
             return
-        buffer = autocast &padding[0]
+        buffer = acast &padding[0]
     }
 
     // Replace all occurences of 'what' with 'by'
@@ -375,19 +375,19 @@ impl String
         if newCapacity <= SmallSize
         {
             // Free dynamic memory if this is not a small string
-            if buffer != autocast &padding[0]
+            if buffer != acast &padding[0]
                 memory.free(buffer, capacity, allocator)
 
             // This is a small string again
             capacity = SmallSize
-            buffer = autocast &padding[0]
+            buffer = acast &padding[0]
         }
 
         // We were in small size mode, and we are no more
-        else if buffer == autocast &padding[0]
+        else if buffer == acast &padding[0]
         {
             oldBuffer := buffer
-            buffer = autocast memory.alloc(newCapacity, allocator)
+            buffer = acast memory.alloc(newCapacity, allocator)
             memory.copy(buffer, oldBuffer, math.min(newCapacity, length + 1))
             capacity = newCapacity
         }
@@ -395,7 +395,7 @@ impl String
         // We were in dynamic mode, so just realloc memory
         else
         {
-            buffer = autocast memory.realloc(buffer, newCapacity, capacity, allocator)
+            buffer = acast memory.realloc(buffer, newCapacity, capacity, allocator)
             capacity = newCapacity
         }
     }

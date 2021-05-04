@@ -10,7 +10,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     sizeValue := valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if reflection.isStruct(valueType) valueTypeStruct = autocast valueType
+    if reflection.isStruct(valueType) valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
     // structures specials functions

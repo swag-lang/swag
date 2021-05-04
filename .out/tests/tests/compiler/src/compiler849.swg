@@ -17,7 +17,7 @@ impl Utf8
 			@memcpy(newPtr, buffer, size)
 		size = newSize
 		@free(buffer)
-		buffer = autocast newPtr
+		buffer = acast newPtr
 	}
 
 	func opAffect(using self, from: string)

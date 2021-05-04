@@ -8,7 +8,7 @@ func(T, N: u32) new()->*T
 
 	@init(cast(*T) req.address, N)
 
-	return autocast req.address
+	return acast req.address
 }
 
 func(T, N: u32) delete(addr: *T)

@@ -106,8 +106,8 @@ func main()
             nScore += 1
             while screen[nFoodY * nScreenWidth + nFoodX] != " "'u8
             {
-                nFoodX = autocast (rand.nextU32() % nScreenWidth)
-                nFoodY = autocast ((rand.nextU32() % (nScreenHeight-3))+3)
+                nFoodX = acast (rand.nextU32() % nScreenWidth)
+                nFoodY = acast ((rand.nextU32() % (nScreenHeight-3))+3)
             }
 
             for i := 0; i < 5; i += 1
