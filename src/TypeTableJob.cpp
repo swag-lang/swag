@@ -66,7 +66,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opPostCopy = nullptr;
-    if (realType->opPostCopy)
+    if (realType->opPostCopy || realType->opUserPostCopyFct)
     {
         concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
         if (!realType->opPostCopy)
@@ -79,7 +79,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opPostMove = nullptr;
-    if (realType->opPostMove)
+    if (realType->opPostMove || realType->opUserPostMoveFct)
     {
         concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
         if (!realType->opPostMove)

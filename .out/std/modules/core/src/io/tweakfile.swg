@@ -30,7 +30,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 
         if reflection.hasPostMove(valueType)
         {
-            buf := arr.buffer
+            buf := newBuffer
             loop arr.count
             {
                 typeValStruct.opPostMove(buf)
@@ -43,7 +43,10 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     }
 
     arr.count += 1
-    return arr.buffer + ((arr.count - 1) * valueType.sizeof)
+    result := arr.buffer + ((arr.count - 1) * valueType.sizeof)
+    if typeValStruct
+        typeValStruct.opInit(result)
+    return result
 }
 
 impl TweakFile
