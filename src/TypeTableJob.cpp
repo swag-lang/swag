@@ -27,7 +27,7 @@ bool TypeTableJob::computeStruct()
 
     // Special functions lambdas
     concreteType->opInit = nullptr;
-    if (realType->opInit || realType->opUserInitFct)
+    if (realType->opInit || (realType->opUserInitFct && realType->opUserInitFct->isForeign()))
     {
         concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
         if (!realType->opInit)
@@ -40,7 +40,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opReloc = nullptr;
-    if (realType->opReloc || realType->opUserRelocFct)
+    if (realType->opReloc || (realType->opUserRelocFct && realType->opUserRelocFct->isForeign()))
     {
         concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, realType->opUserRelocFct, realType->opReloc);
         if (!realType->opReloc)
@@ -53,7 +53,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opDrop = nullptr;
-    if (realType->opDrop || realType->opUserDropFct)
+    if (realType->opDrop || (realType->opUserDropFct && realType->opUserDropFct->isForeign()))
     {
         concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
         if (!realType->opDrop)
@@ -66,7 +66,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opPostCopy = nullptr;
-    if (realType->opPostCopy || realType->opUserPostCopyFct)
+    if (realType->opPostCopy || (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign()))
     {
         concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
         if (!realType->opPostCopy)
@@ -79,7 +79,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opPostMove = nullptr;
-    if (realType->opPostMove || realType->opUserPostMoveFct)
+    if (realType->opPostMove || (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign()))
     {
         concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
         if (!realType->opPostMove)

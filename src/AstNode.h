@@ -479,6 +479,11 @@ struct AstFuncDecl : public AstNode
     Utf8     getDisplayName();
     Utf8     getNameForUserCompiler();
 
+    bool isForeign()
+    {
+        return attributeFlags & ATTRIBUTE_FOREIGN;
+    }
+
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;
     VectorNative<AstNode*> subDecls;

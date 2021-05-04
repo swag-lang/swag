@@ -86,7 +86,7 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruc
 
 void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc)
 {
-    if (funcNode && funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (funcNode && funcNode->isForeign())
     {
         auto funcPtr = ffiGetFuncAddress(context, funcNode);
         if (!funcPtr)
