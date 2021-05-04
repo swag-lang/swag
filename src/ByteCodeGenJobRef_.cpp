@@ -111,7 +111,14 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 
     SWAG_ASSERT(node->array->resultRegisterRC.size() != 2);
     node->array->resultRegisterRC += reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+
+    if (node->array->typeInfo->isRelative())
+    {
+        emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC[1], node->array->resultRegisterRC[0])->c.u64 = sizeof(uint64_t);
+        SWAG_CHECK(emitUnwrapRelativePointer(context, node->array->resultRegisterRC[0], node->array->typeInfo->relative));
+    }
+    else
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
 
     emitSafetyNullPointer(context, node->array->resultRegisterRC, Msg0859);
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
@@ -123,6 +130,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
         ensureCanBeChangedRC(context, node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
     }
+
     ensureCanBeChangedRC(context, node->array->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -160,7 +168,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         transformResultToLinear2(context, node);
-        if (typeInfo->flags & TYPEINFO_RELATIVE)
+        if (typeInfo->isRelative())
         {
             auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, node->resultRegisterRC[0]);
@@ -575,8 +583,11 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 {
-    auto node              = context->node;
-    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    auto node  = context->node;
+    auto front = node->childs.front();
+    if (front->typeInfo->isRelative())
+        front = front;
+    node->resultRegisterRC = front->resultRegisterRC;
     return true;
 }
 
