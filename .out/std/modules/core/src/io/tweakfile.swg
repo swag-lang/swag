@@ -22,7 +22,7 @@ impl TweakFile
         folders.add(@{@typeof(T), folder})
     }
 
-    // Parse a file
+    // Read and parse a file
     func parse(using self, fileName: string) throw
     {
         buf := try file.readAllBytes(fileName)

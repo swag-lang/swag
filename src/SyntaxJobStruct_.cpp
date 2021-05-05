@@ -43,6 +43,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, Msg0439}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
+        implNode->identifierFor->allocateExtension();
+        implNode->identifierFor->extension->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
         implNode->semanticFct = SemanticJob::resolveImplFor;
         implNode->allocateExtension();
         implNode->extension->semanticAfterFct = SemanticJob::resolveImplForType;

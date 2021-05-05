@@ -24,6 +24,24 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
+bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
+{
+    auto id   = context->node;
+    auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
+
+    if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+        return true;
+
+    if (id->resolvedSymbolName->kind != SymbolKind::Struct)
+        return context->report({id->childs.back(), format(Msg0290, id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
+
+    auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+    if (node->structScope != structDecl->scope)
+        return context->report({id, Msg0302});
+
+    return true;
+}
+
 bool SemanticJob::resolveImplForType(SemanticContext* context)
 {
     auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -47,7 +65,7 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
 
     auto itable = (void**) sourceFile->module->constantSegment.address(typeParamItf->offset);
 
-    // Move back to concrete type, and iniialize it
+    // Move back to concrete type, and initialize it
     itable--;
     *itable = sourceFile->module->typeSegment.address(back->concreteTypeInfoStorage);
     SWAG_ASSERT(typeParamItf->offset);

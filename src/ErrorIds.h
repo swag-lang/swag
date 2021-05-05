@@ -37,6 +37,7 @@
 #define Msg0317 "[compiler internal] Ast::output, unknown node"
 #define Msg0432 "[compiler internal] unknown bytecode instruction '%s'"
 #define Msg0503 "[compiler internal] semantic failed (%s)"
+#define Msg0302 "[compiler internal] 'impl for' struct mismatch"
 
 #define Msg0215 "[safety] '<<' shift operand value on type '%s' is greater than '%d'"
 #define Msg0216 "[safety] '>>' shift operand value on type '%s' is greater than '%d'"
@@ -712,6 +713,7 @@
 #define Msg0734 "variadic argument should be the last one"
 #define Msg0289 "version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character"
 #define Msg0056 "x64 backend unsupported os '%s'"
+#define Msg0290 "expected a struct, but symbol '%s' is %s"
 
 #define Msg0434 "bytecode execution, "
 #define Msg0901 ", found identifier '%s' "
