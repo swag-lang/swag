@@ -38,13 +38,13 @@ impl hash.IHash32 for String
 impl String
 {
     #[inline]
-    func opCount(using self)->uint
+    func opCount(using const self)->uint
     {
         return length
     }
 
     #[inline]
-    func opData(using self)->const *u8
+    func opData(using const self)->const *u8
     {
         return buffer
     }
@@ -82,7 +82,7 @@ impl String
         buffer[length] = 0
     }
 
-    func opEquals(using self, other: string)->bool
+    func opEquals(using const self, other: string)->bool
     {
         if buffer == @dataof(other) // true if null
             return true
@@ -91,7 +91,7 @@ impl String
         return memory.compare(buffer, @dataof(other), length) == 0
     }
 
-    func opCmp(using self, other: Self)->s32
+    func opCmp(using const self, other: Self)->s32
     {
         return utf8.compare(toString(), other.toString(), utf8.ComparisonType.Latin1)
     }
@@ -245,7 +245,7 @@ impl String
     }
 
     // Returns true if the String is null or empty
-    func isNullOrEmpty(using self)->bool
+    func isNullOrEmpty(using const self)->bool
     {
         return buffer == null or length == 0
     }
