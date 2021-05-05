@@ -338,3 +338,449 @@ func isValidRune(c: rune)->bool
 
 	return false
 }
+
+
+// Returns the number of bytes to encode the first rune of the
+// utf8 buffer.
+// If it's an invalid encoding, returns 1.
+func countBytesAt(buffer: const [..] u8)->u32
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof
+        return 1
+
+    p0 := cast(rune) :dataof
+
+    // Ascii
+    if (p0 & 0x80) == 0
+        return 1
+
+    // Invalid first byte
+    x := First[cast(u8) p0]
+    if x == XX
+        return 1
+
+    // Be sure input buffer is large enough to hold the requested
+    // encoded size
+    sz := x & 7
+	if countof < sz
+        return 1
+
+	accept := AcceptRanges[x >>,safe 4]
+
+	b1 := dataof[1]
+	if !(accept.lo <= b1 and b1 <= accept.hi)
+        return 1
+	if sz <= 2
+        return 2
+
+	b2 := dataof[2]
+    if !(LoCB <= b2 and b2 <= HiCB)
+        return 1
+	if sz <= 3
+        return 3
+
+	b3 := dataof[3]
+	if !(LoCB <= b3 and b3 <= HiCB)
+        return 1
+	return 4
+}
+
+// Returns the byte index of the given rune index
+func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
+{
+    var result: retval
+
+    countof := @countof(buffer)
+    if !countof
+        return result
+
+    if !charIndex
+    {
+        result.success = true
+        return result
+    }
+
+    dataof := @dataof(buffer)
+
+    resultChar := 0'uint
+    resultByte := 0'uint
+    while countof and resultChar != charIndex
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof, "invalid utf8 character")
+        resultByte += val
+        resultChar += 1
+        dataof += val
+        countof -= val
+    }
+
+    result.index = resultByte
+    result.success = resultByte < @countof(buffer)
+    return result
+}
+
+// Returns the number of runes in an utf8 buffer
+func countRunes(buffer: const [..] u8)->uint
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+
+    cpt := 0'uint
+    while countof
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof)
+        cpt += 1
+        dataof += val
+        countof -= val
+    }
+
+    return cpt
+}
+
+// Find the first occurence of rune 'what', and returns the byte index of it
+// Returns swag.UInt.Max if not found
+func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
+{
+    return indexOf(src, @[what], startByteIndex)
+}
+
+// Find one of the runes in 'what', and returns the byte index of it
+// Returns swag.UInt.Max if not found
+func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)->uint
+{
+    length := @countof(src)
+    if !length
+        return swag.UInt.Max
+    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+    countof := @countof(what)
+    if !countof
+        return swag.UInt.Max
+
+    idx := startByteIndex
+    scan := @dataof(src) + startByteIndex
+    remain := length - startByteIndex
+    while countof <= remain
+    {
+        res := utf8.decodeRune(@mkslice(scan, remain))
+        if !res.eat
+            break
+        if slice.contains(what, res.c)
+            return idx
+        scan, idx += res.eat
+        remain -= res.eat
+    }
+
+    return swag.UInt.Max
+}
+
+// Find the given string, and returns the byte index of it
+// Returns swag.UInt.Max if not found
+func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint
+{
+    length := @countof(src)
+    if !length
+        return swag.UInt.Max
+    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+    countof := @countof(what)
+    if !countof or countof > (length - startByteIndex)
+        return swag.UInt.Max
+
+    idx := startByteIndex
+    scan := @dataof(src) + startByteIndex
+    remain := length - startByteIndex
+    while countof <= remain
+    {
+        res := compare(@mkslice(scan, countof), what, comparisonType)
+        if res == 0
+            return idx
+        scan, idx += 1
+        remain -= 1
+    }
+
+    return swag.UInt.Max
+}
+
+// Find the last rune occurence of 'what', and returns the byte index of it
+// Returns swag.UInt.Max if not found
+func lastIndexOf(src: const [..] u8, what: rune)->uint
+{
+    return lastIndexOf(src, @[what])
+}
+
+// Returns the last index (in bytes) of a rune
+// Returns swag.UInt.Max if not found
+func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
+{
+    length := @countof(src)
+    if !length
+        return swag.UInt.Max
+    dataof := @dataof(src)
+
+    byteIdx := length
+    while true
+    {
+        sl := @mkslice(dataof, byteIdx)
+        (c, eat) := decodeLastRune(sl)
+        if eat == 0
+            return swag.UInt.Max
+
+        byteIdx -= eat
+        if slice.contains(what, c)
+            return byteIdx
+    }
+
+    return swag.UInt.Max
+}
+
+// Returns the last index (in bytes) of a string
+// Returns swag.UInt.Max if not found
+func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->uint
+{
+    length := @countof(src)
+    if !length
+        return swag.UInt.Max
+    lengthStr := @countof(what)
+    if lengthStr > length
+        return swag.UInt.Max
+
+    idx := length - lengthStr
+    dataof := @dataof(src) + idx
+    while true
+    {
+        res := compare(@mkslice(dataof, lengthStr), what, comparisonType)
+        if res == 0
+            return idx
+        if !idx
+            return swag.UInt.Max
+        idx, dataof -= 1
+    }
+
+    return swag.UInt.Max
+}
+
+// Return true if the string starts with 'str'
+func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+{
+    length := @countof(src)
+    countof := @countof(str)
+    if countof > length
+        return false
+    buffer := @dataof(src)
+    return compare(@mkslice(buffer, countof), str, comparisonType) == 0
+}
+
+// Return true if the string ends with 'str'
+func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+{
+    length := @countof(src)
+    countof := @countof(str)
+    if countof > length
+        return false
+    buffer := @dataof(src)
+    return compare(@mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+}
+
+// Returns the first rune of the slice
+func firstRune(src: const [..] u8)->rune
+{
+    countof := @countof(src)
+    if !countof
+        return 0
+    dataof := @dataof(src)
+    if latin1.isAscii(dataof[0])
+        return cast(rune) dataof[0]
+    (c, ?) := utf8.decodeRune(src)
+    return c
+}
+
+// Returns the last rune of the slice
+func lastRune(src: const [..] u8)->rune
+{
+    countof := @countof(src)
+    if !countof
+        return 0
+    dataof := @dataof(src)
+    if latin1.isAscii(dataof[countof - 1])
+        return cast(rune) dataof[countof - 1]
+    (c, ?) := utf8.decodeLastRune(src)
+    return c
+}
+
+public enum ComparisonType
+{
+    Latin1
+    Latin1NoCase
+    Unicode
+    UnicodeNoCase
+}
+
+// Compare two utf8 buffers with the given algorithm
+func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
+{
+    using ComparisonType
+
+    #[swag.complete]
+    switch comparisonType
+    {
+    case Latin1:
+        return latin1.compare(src, dst) // bytes compare
+
+    case Latin1NoCase:
+        return latin1.compare(src, dst, ignoreCase: true)
+
+    case Unicode:
+        return latin1.compare(src, dst) // bytes compare
+
+    case UnicodeNoCase:
+        length := @countof(src)
+        otherLength := @countof(dst)
+        data := @dataof(src)
+        otherData := @dataof(dst)
+
+        var result: s32
+        var c1, c2: rune
+        var eat1, eat2: u32
+        while true
+        {
+            (c1, eat1) = decodeRune(@mkslice(data, length))
+            (c2, eat2) = decodeRune(@mkslice(otherData, otherLength))
+            if eat1 == 0 or eat2 == 0
+                break
+
+            if c1 != c2
+            {
+                c1 = unicode.toLower(c1)
+                c2 = unicode.toLower(c2)
+                result = cast(s32) c1 - cast(s32) c2
+                if result != 0
+                    return math.sign(result)
+            }
+
+            length -= eat1
+            otherLength -= eat2
+            data += eat1
+            otherData += eat2
+        }
+
+        if !eat1 and eat2
+            return -1
+        if eat1 and !eat2
+            return 1
+        return 0
+    }
+
+    return 0
+}
+
+// Macro to visit the unicode characters of the utf8 sequence
+// @alias0 will contain the character
+// @alias1 will contain the character index
+// @alias2 will contain the byte index of that character within the utf8 sequence
+#[swag.macro]
+func visitRunes(buffer: const [..] u8, stmt: code)
+{
+    count := @countof(buffer)
+    if !count
+        return
+
+    byteIdx := 0'uint
+    charIdx := 0'uint
+    scan := @dataof(buffer)
+    while count
+    {
+        sl := @mkslice(scan, count)
+        (c, eat) := decodeRune(sl)
+        if eat == 0
+            break
+        #macro
+        {
+            @alias0 := `c
+            @alias1 := `charIdx
+            @alias2 := `byteIdx
+            #mixin `stmt
+        }
+
+        charIdx += 1
+        byteIdx += eat
+        scan += eat
+        count -= eat
+    }
+}
+
+// Returns true if the utf8 sequence is valid
+func isValid(buffer: const [..] u8)->bool
+{
+    p := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof
+        return true
+
+    // Quick zap ascii characters
+    while countof >= 8
+    {
+        first64 := :cast(const *u64) p
+        if first64 & 0x80808080_80808080
+            break
+        p += 8
+        countof -= 8
+    }
+
+    while countof
+    {
+        p0 := cast(rune) :p
+
+        // Ascii
+        if (p0 & 0x80) == 0
+        {
+            p += 1
+            countof -= 1
+            continue
+        }
+
+        // Invalid first byte
+        x := First[cast(u8) p0]
+        if x == XX
+            return false
+
+        // Be sure input buffer is large enough to hold the requested
+        // encoded size
+        sz := x & 7
+        if countof < sz
+            return false
+
+        accept := AcceptRanges[x >>,safe 4]
+
+        b1 := p[1]
+        if !(accept.lo <= b1 and b1 <= accept.hi)
+            return false
+        if sz <= 2
+        {
+            p += 2
+            countof -= 2
+            continue
+        }
+
+        b2 := p[2]
+        if !(LoCB <= b2 and b2 <= HiCB)
+            return false
+        if sz <= 3
+        {
+            p += 3
+            countof -= 3
+            continue
+        }
+
+        b3 := p[3]
+        if !(LoCB <= b3 and b3 <= HiCB)
+            return false
+        p += 4
+        countof -= 4
+    }
+
+    return true
+}
