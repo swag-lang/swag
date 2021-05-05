@@ -31,14 +31,14 @@ impl TweakFile
         visit *line, idx: lines
         {
             one := line.toString()
-            one = parse.trimLeft(one)
+            one = tokenize.eatSpaces(one)
             if @countof(one) == 0 continue
             if one[0] == "#"'u8 continue // comment
 
             // Folder
             if one[0] == "/"'u8
             {
-                one = parse.moveStart(one, 1)
+                one = tokenize.eatCount(one, 1)
                 folderName := catch parse.getIdentifier(one)
                 if @err
                     throw format.toString("%:%: invalid folder name", fileName, idx + 1)
@@ -60,7 +60,7 @@ impl TweakFile
             // Value
             if !currentFolder
                 throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
-            one = parse.trimLeft(one)
+            one = tokenize.eatSpaces(one)
             id := catch parse.getIdentifier(one)
             if @err
                 throw format.toString("%:%: invalid value name", fileName, idx + 1)
@@ -68,7 +68,7 @@ impl TweakFile
             // Search value into folder
             field := reflection.getField(currentFolder.type, id)
             if !field throw format.toString("%:%: value '%' not found in folder '%'", fileName, idx + 1, id, currentFolder.type.flatName)
-            one = parse.moveStart(one, @countof(id))
+            one = tokenize.eatCount(one, @countof(id))
 
             // Get value and poke it
             one = catch parse.pokeValue(currentFolder.data + field.offset, field.pointedType, one)
@@ -78,7 +78,7 @@ impl TweakFile
             // Be sure there's nothing left
             if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
                 throw format.toString("%:%: syntax error in value", fileName, idx + 1)
-            one = parse.trimLeft(one)
+            one = tokenize.eatSpaces(one)
             if @countof(one) and one[0] != "#"'u8
                 throw format.toString("%:%: invalid characters after value", fileName, idx + 1)
         }

@@ -2,26 +2,6 @@
 #global namespace parse
 using globalization, swag
 
-// Add an offset to the start of the string
-func moveStart(str: string, count: uint)->string
-{
-    countof := @countof(str)
-    cpt := math.min(count, countof)
-    return @mkstring(@dataof(str) + cpt, countof - cpt)
-}
-
-// Remove spaces from the start of the string, and return what's remain
-func trimLeft(str: string)->string
-{
-    countof := @countof(str)
-    if !countof return str
-
-    cpt := 0'uint
-    while cpt < countof and latin1.isSpace(str[cpt])
-        cpt += 1
-    return @mkstring(@dataof(str) + cpt, countof - cpt)
-}
-
 // Returns the first substring of 'str', stopping at the first blank character
 func getUntilSpace(str: string)->string throw
 {
@@ -144,7 +124,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
         c := str[1]|32
         if c == "x"'u8
         {
-            one := moveStart(str, 2)
+            one := tokenize.eatCount(str, 2)
             (result.value, result.eat) = try getX64(one)
             result.eat += 2
             return result
@@ -152,7 +132,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
         if c == "b"'u8
         {
-            one := moveStart(str, 2)
+            one := tokenize.eatCount(str, 2)
             (result.value, result.eat) = try getB64(one)
             result.eat += 2
             return result

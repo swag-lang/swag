@@ -1,10 +1,30 @@
 #global public
 #global namespace tokenize
 
+// Eat 'count' bytes, and returns the remaining string
+func eatCount(str: string, count: uint)->string
+{
+    countof := @countof(str)
+    cpt := math.min(count, countof)
+    return @mkstring(@dataof(str) + cpt, countof - cpt)
+}
+
+// Eat all spaces, and returns the remaining string (trim left)
+func eatSpaces(str: string)->string
+{
+    countof := @countof(str)
+    if !countof return str
+
+    cpt := 0'uint
+    while cpt < countof and latin1.isSpace(str[cpt])
+        cpt += 1
+    return @mkstring(@dataof(str) + cpt, countof - cpt)
+}
+
 // Split string into sub strings, given a rune separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
-func split(src: const [..] u8, separator: rune) -> Array'string
+func split(src: string, separator: rune) -> Array'string
 {
     return split(src, @[separator])
 }
@@ -12,7 +32,7 @@ func split(src: const [..] u8, separator: rune) -> Array'string
 // Split string into sub strings, given an array of rune separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
-func split(src: const [..] u8, separators: const [..] rune) -> Array'string
+func split(src: string, separators: const [..] rune) -> Array'string
 {
     dataof := @dataof(src)
     countof := @countof(src)
@@ -64,12 +84,12 @@ func split(src: const [..] u8, separators: const [..] rune) -> Array'string
 }
 
 // Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
-func eatTo(src: const [..] u8, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->const [..] u8
+func eatTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->string
 {
     dataof := @dataof(src)
     length := @countof(src)
     if !length
-        return @mkslice(dataof, 0)
+        return @mkstring(dataof, 0)
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     length -= startByteIndex
@@ -81,12 +101,12 @@ func eatTo(src: const [..] u8, delimiter: u8, startByteIndex = 0'uint, includeDe
         {
             if includeDelimiter
                 scan += 1
-            return @mkslice(dataof, cast(uint) (scan - dataof))
+            return @mkstring(dataof, cast(uint) (scan - dataof))
         }
 
         scan += 1
         length -= 1
     }
 
-    return @mkslice(dataof, 0)
+    return @mkstring(dataof, 0)
 }
