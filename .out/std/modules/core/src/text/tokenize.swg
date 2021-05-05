@@ -21,6 +21,35 @@ func eatSpaces(str: string)->string
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
+// Split the string into an array of lines
+// Note that this returns an array of native strings, not copies.
+// All strings will be invalid if 'src' is destroyed
+func splitLines(src: string) -> Array'string
+{
+    var result: retval
+    countof := @countof(src)
+    if !countof return result
+
+    dataof := @dataof(src)
+    cpt := 0
+    end := dataof
+    while cpt < countof
+    {
+        while cpt < countof and :end != "\n"'u8
+        {
+            end += 1
+            cpt += 1
+        }
+
+        onestr := @mkstring(dataof, cast(uint) (end - dataof))
+        result.add(onestr)
+        end, cpt += 1
+        dataof = end
+    }
+
+    return result
+}
+
 // Split string into sub strings, given a rune separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
