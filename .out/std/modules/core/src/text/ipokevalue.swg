@@ -1,5 +1,13 @@
 #global public
 
+namespace parse
+{
+    public interface IPokeValue
+    {
+        poke: func(self, string)->string throw;
+    }
+}
+
 namespace drawing
 {
     impl parse.IPokeValue for Color

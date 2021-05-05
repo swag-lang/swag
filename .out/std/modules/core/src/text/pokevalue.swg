@@ -1,11 +1,6 @@
 #global namespace parse
 using swag
 
-public interface IPokeValue
-{
-    poke: func(self, string)->string throw;
-}
-
 // Used to add an element in a 'core.Array' without knowing the type of the element at compile time
 // but knowing it at runtime (valueType)
 private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
