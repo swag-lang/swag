@@ -114,7 +114,7 @@ impl Array
 
     // Vist every elements of the array
     #[macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    func(ptr: bool) opVisit(using const self, stmt: code)
     {
         if !count return
 

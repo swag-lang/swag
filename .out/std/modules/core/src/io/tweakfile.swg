@@ -27,14 +27,14 @@ impl TweakFile
     {
         buf := try file.readAllBytes(fileName)
         lines := tokenize.splitLines(cast(string) buf.toSlice())
-        try self.parse(&lines)
+        try self.parse(lines)
     }
 
     // Parse a list of lines
-    func parse(using self, lines: *Array'string) throw
+    func parse(using self, lines: Array'string) throw
     {
         var currentFolder: *Folder
-        visit one, idx: :lines
+        visit one, idx: lines
         {
             one = tokenize.eatSpaces(one)
             if @countof(one) == 0 continue
