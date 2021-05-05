@@ -1,11 +1,6 @@
 #global namespace hash
 using swag
 
-public interface IHash32
-{
-    compute: func(const self)->u32
-}
-
 // Hash the given value and returns the corresponding u32
 #[constexpr]
 public func(T) hash32(value: T)->u32

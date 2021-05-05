@@ -27,14 +27,6 @@ impl strconv.IConvert for String
     }
 }
 
-impl hash.IHash32 for String
-{
-    func compute(using const self)->u32
-    {
-        return hash.Crc32.compute(@mkslice(buffer, length))
-    }
-}
-
 impl String
 {
     #[inline]
