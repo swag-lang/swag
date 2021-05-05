@@ -65,6 +65,7 @@ struct Utf8
     void        operator=(Utf8&& from);
     void        operator=(uint32_t c);
     void        operator+=(uint32_t c);
+    void        operator+=(char c);
 
     void               toUni16(VectorNative<uint16_t>& uni, int maxChars = -1);
     void               toUni32(VectorNative<uint32_t>& uni, int maxChars = -1);

@@ -327,6 +327,11 @@ void Utf8::operator=(uint32_t c)
     append(c);
 }
 
+void Utf8::operator+=(char c)
+{
+    append(c);
+}
+
 void Utf8::operator+=(uint32_t c)
 {
     if (c <= 0x7F)

@@ -51,14 +51,26 @@ struct Test2
             coucou3     "toto la fripouille是"
             coucou4     Blue
             coucou5     是
-            coucou6     是 是 a b c d
+            coucou6     是 是 a b
             coucou7     "this" "is" "an" "array" "of" "strings"
             coucou8     1 2 3 4
             coucou9     StrGreen
     "@
 
     arr := tokenize.splitLines(BUF)
-    //assume tw.parse(arr)
-    console.println(t1)
-    console.println(t2)
+    assume tw.parse(arr)
+    @assert(t1.coucous32 == -666)
+    @assert(t1.coucouu64 == 0xFF)
+    @assert(t1.coucoub == true)
+    @assert(t1.coucoue == .A|.B)
+
+    @assert(t2.coucou6.count == 4)
+    @assert(t2.coucou7.count == 6)
+    @assert(:t2.coucou7[0] == "this")
+    @assert(:t2.coucou7[5] == "strings")
+    @assert(t2.coucou8[0] == 1)
+    @assert(t2.coucou8[1] == 2)
+    @assert(t2.coucou8[2] == 3)
+    @assert(t2.coucou8[3] == 4)
+    @assert(t2.coucou9 == .StrGreen)
 }
