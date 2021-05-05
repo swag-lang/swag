@@ -13,9 +13,10 @@ struct Test
 
     const BUF = @"
     /Test
-        color  0 0 0 255
+        color  127 0 0 255
     "@
 
     arr := tokenize.splitLines(BUF)
-    //assume tw.parse(arr)
+    assume tw.parse(arr)
+    console.println(t1)
 }

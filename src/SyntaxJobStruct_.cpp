@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
+#include "Module.h"
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
@@ -42,10 +43,15 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, Msg0438}));
         SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, Msg0439}));
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
+
+        auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, implNode);
+        identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
+        implNode->identifierFor    = identifierRef;
+        SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_FCT_PARAMS));
+
         implNode->identifierFor->allocateExtension();
         implNode->identifierFor->extension->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
-        implNode->semanticFct = SemanticJob::resolveImplFor;
+        implNode->semanticFct                                = SemanticJob::resolveImplFor;
         implNode->allocateExtension();
         implNode->extension->semanticAfterFct = SemanticJob::resolveImplForType;
         identifierStruct                      = implNode->identifierFor;

@@ -3,16 +3,8 @@ using swag
 
 public interface IPokeValue
 {
-    poke: func(self, string)->string;
+    poke: func(self, string)->string throw;
 }
-
-/*impl IPokeValue for drawing.Color
-{
-    func poke(using self, buf: string)->string
-    {
-        return buf
-    }
-}*/
 
 // Used to add an element in a 'core.Array' without knowing the type of the element at compile time
 // but knowing it at runtime (valueType)
@@ -148,6 +140,13 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         eat := cast(u32) cast(int) (@dataof(one) - @dataof(buf))
         one = tokenize.eatCount(buf, cast(uint) eat)
         return one
+    }
+
+    // Decode interface
+    if reflection.hasInterface(type, IPokeValue)
+    {
+        itf := @mkinterface(addr, type, IPokeValue)
+        return try itf.poke(one)
     }
 
     // Basic types

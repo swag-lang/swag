@@ -1,5 +1,5 @@
-#global skip
-//#global testerror
+//#global skip
+#global testerror
 namespace drawing
 {
     struct Color
