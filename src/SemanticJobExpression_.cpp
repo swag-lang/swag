@@ -50,7 +50,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
 
         if (c != '\\')
         {
-            result += c;
+            result.append(c);
             continue;
         }
 

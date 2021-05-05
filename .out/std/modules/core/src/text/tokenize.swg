@@ -35,7 +35,7 @@ func splitLines(src: string) -> Array'string
     end := dataof
     while cpt < countof
     {
-        while cpt < countof and :end != "\n"'u8
+        while cpt < countof and :end != "\r"'u8 and :end != "\n"'u8
         {
             end += 1
             cpt += 1
@@ -43,6 +43,8 @@ func splitLines(src: string) -> Array'string
 
         onestr := @mkstring(dataof, cast(uint) (end - dataof))
         result.add(onestr)
+        if cpt < countof - 1 and :end == "\r"'u8 and end[1] == "\n"'u8
+            end, cpt += 1
         end, cpt += 1
         dataof = end
     }
