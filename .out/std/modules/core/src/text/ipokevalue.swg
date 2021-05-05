@@ -15,22 +15,32 @@ namespace drawing
         func poke(using self, buf: string)->string throw
         {
             var eat: uint
-
             one := tokenize.eatSpaces(buf)
-            (a, eat) = try parse.getU8(one)
-            one = tokenize.eatCount(one, eat)
+            if @countof(one) == 0 throw "invalid"
 
-            one = tokenize.eatSpaces(one)
-            (r, eat) = try parse.getU8(one)
-            one = tokenize.eatCount(one, eat)
+            if latin1.isDigit(buf[0])
+            {
+                (a, eat) = try parse.getU8(one)
+                one = tokenize.eatCount(one, eat)
 
-            one = tokenize.eatSpaces(one)
-            (g, eat) = try parse.getU8(one)
-            one = tokenize.eatCount(one, eat)
+                one = tokenize.eatSpaces(one)
+                (r, eat) = try parse.getU8(one)
+                one = tokenize.eatCount(one, eat)
 
-            one = tokenize.eatSpaces(one)
-            (b, eat) = try parse.getU8(one)
-            one = tokenize.eatCount(one, eat)
+                one = tokenize.eatSpaces(one)
+                (g, eat) = try parse.getU8(one)
+                one = tokenize.eatCount(one, eat)
+
+                one = tokenize.eatSpaces(one)
+                (b, eat) = try parse.getU8(one)
+                one = tokenize.eatCount(one, eat)
+            }
+            else
+            {
+                id := try parse.getIdentifier(one)
+                one = tokenize.eatCount(one, @countof(id))
+                self.argb = cast(u32) Argb.fromName(id)
+            }
 
             return one
         }

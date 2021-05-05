@@ -2,7 +2,8 @@ using core, drawing
 
 struct Test
 {
-    color: Color
+    color:  Color
+    color1: Color
 }
 
 #test
@@ -14,9 +15,16 @@ struct Test
     const BUF = @"
     /Test
         color  127 0 0 255
+        color1 Red
     "@
 
     arr := tokenize.splitLines(BUF)
     assume tw.parse(arr)
-    console.println(t1)
+    @assert(t1.color.a == 127)
+    @assert(t1.color.r == 0)
+    @assert(t1.color.g == 0)
+    @assert(t1.color.b == 255)
+    @assert(t1.color1.r == 255)
+
+    //console.println(t1)
 }
