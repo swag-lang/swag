@@ -83,8 +83,20 @@ func split(src: string, separators: const [..] rune) -> Array'string
     return result
 }
 
+// Returns the first substring of 'str', stopping at the first blank character
+func getToSpace(str: string)->string throw
+{
+    countof := @countof(str)
+    if !countof throw "invalid"
+
+    cpt := 0'uint
+    while cpt < countof and !latin1.isSpace(str[cpt])
+        cpt += 1
+    return @mkstring(@dataof(str), cpt)
+}
+
 // Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
-func eatTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->string
+func getTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->string
 {
     dataof := @dataof(src)
     length := @countof(src)

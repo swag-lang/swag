@@ -2,32 +2,6 @@
 #global namespace parse
 using globalization, swag
 
-// Returns the first substring of 'str', stopping at the first blank character
-func getUntilSpace(str: string)->string throw
-{
-    countof := @countof(str)
-    if !countof throw "invalid"
-
-    cpt := 0'uint
-    while cpt < countof and !latin1.isSpace(str[cpt])
-        cpt += 1
-    return @mkstring(@dataof(str), cpt)
-}
-
-// Parse an identifier name in the sens of swag (ascii)
-func getIdentifier(str: string)->string throw
-{
-    countof := @countof(str)
-    if !countof throw "invalid"
-
-    if str[0] != "_"'u8 and !latin1.isLetter(str[0]) throw "invalid"
-
-    cpt := 1'uint
-    while cpt < countof and (str[cpt] == "_"'u8 or latin1.isLetterOrDigit(str[cpt]))
-        cpt += 1
-    return @mkstring(@dataof(str), cpt)
-}
-
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
 func getX64(str: string) -> {value: u64, eat: u32} throw
@@ -252,7 +226,7 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    sub := try getUntilSpace(str)
+    sub := try tokenize.getToSpace(str)
     switch sub
     {
     case "1", "true", "TRUE", "True":       result.value = true
@@ -270,6 +244,20 @@ func getRune(str: string) -> {value: rune, eat: u32} throw
     countof := @countof(str)
     if !countof throw "invalid"
     return utf8.decodeRune(str)
+}
+
+// Parse an identifier name in the sens of swag (ascii)
+func getIdentifier(str: string)->string throw
+{
+    countof := @countof(str)
+    if !countof throw "invalid"
+
+    if str[0] != "_"'u8 and !latin1.isLetter(str[0]) throw "invalid"
+
+    cpt := 1'uint
+    while cpt < countof and (str[cpt] == "_"'u8 or latin1.isLetterOrDigit(str[cpt]))
+        cpt += 1
+    return @mkstring(@dataof(str), cpt)
 }
 
 // Convert an utf8 buffer to a string
