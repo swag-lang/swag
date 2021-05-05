@@ -19,14 +19,6 @@ struct String
     padding:    [SmallSize] u8
 }
 
-impl strconv.IConvert for String
-{
-    func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
-    {
-        buf.addBytes(@mkslice(buffer, length))
-    }
-}
-
 impl String
 {
     #[inline]

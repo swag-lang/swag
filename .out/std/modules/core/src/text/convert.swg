@@ -137,12 +137,6 @@ impl ConvertFormatInt
     }
 }
 
-// Interface to implement a custom conversion function
-interface IConvert
-{
-    convert: func(self, *ConcatBuffer, const *ConvertFormat, string)
-}
-
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
