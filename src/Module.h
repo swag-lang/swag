@@ -208,6 +208,16 @@ struct Module
     VectorNative<AstNode*> globalVarsConstant;
     void                   addGlobalVar(AstNode* node, GlobalVarKind varKind);
 
+    struct forSolve
+    {
+        uint32_t      count;
+        DependentJobs dependentJobs;
+    };
+    map<Utf8, forSolve> implForToSolve;
+    void                addImplForToSolve(const Utf8& structName, uint32_t count = 1);
+    bool                waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
+    void                decImplForToSolve(TypeInfoStruct* typeStruct);
+
     atomic<int> optimNeedRestart;
     int         optimPass = 0;
 };

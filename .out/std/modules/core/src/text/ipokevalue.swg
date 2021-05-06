@@ -8,41 +8,38 @@ namespace parse
     }
 }
 
-namespace drawing
+impl parse.IPokeValue for drawing.Color
 {
-    impl parse.IPokeValue for Color
+    func poke(using self, buf: string)->string throw
     {
-        func poke(using self, buf: string)->string throw
+        var eat: uint
+        one := tokenize.eatSpaces(buf)
+        if @countof(one) == 0 throw "invalid"
+
+        if latin1.isDigit(buf[0])
         {
-            var eat: uint
-            one := tokenize.eatSpaces(buf)
-            if @countof(one) == 0 throw "invalid"
+            (a, eat) = try parse.getU8(one)
+            one = tokenize.eatCount(one, eat)
 
-            if latin1.isDigit(buf[0])
-            {
-                (a, eat) = try parse.getU8(one)
-                one = tokenize.eatCount(one, eat)
+            one = tokenize.eatSpaces(one)
+            (r, eat) = try parse.getU8(one)
+            one = tokenize.eatCount(one, eat)
 
-                one = tokenize.eatSpaces(one)
-                (r, eat) = try parse.getU8(one)
-                one = tokenize.eatCount(one, eat)
+            one = tokenize.eatSpaces(one)
+            (g, eat) = try parse.getU8(one)
+            one = tokenize.eatCount(one, eat)
 
-                one = tokenize.eatSpaces(one)
-                (g, eat) = try parse.getU8(one)
-                one = tokenize.eatCount(one, eat)
-
-                one = tokenize.eatSpaces(one)
-                (b, eat) = try parse.getU8(one)
-                one = tokenize.eatCount(one, eat)
-            }
-            else
-            {
-                id := try parse.getIdentifier(one)
-                one = tokenize.eatCount(one, @countof(id))
-                self.argb = cast(u32) Argb.fromName(id)
-            }
-
-            return one
+            one = tokenize.eatSpaces(one)
+            (b, eat) = try parse.getU8(one)
+            one = tokenize.eatCount(one, eat)
         }
+        else
+        {
+            id := try parse.getIdentifier(one)
+            one = tokenize.eatCount(one, @countof(id))
+            self.argb = cast(u32) Argb.fromName(id)
+        }
+
+        return one
     }
 }

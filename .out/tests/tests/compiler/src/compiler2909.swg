@@ -1,10 +1,15 @@
+#test
+{
+    @assert(@countof(@typeof(drawing.Color).interfaces) == 1)
+}
+
 //#global skip
-#global testerror
+//#global testerror
 namespace drawing
 {
     struct Color
     {
-
+        f: f64
     }
 }
 
@@ -19,6 +24,7 @@ namespace parse
     {
         func xoxo(using self)
         {
+            #assert @sizeof(Color) == 8
         }
     }
 }

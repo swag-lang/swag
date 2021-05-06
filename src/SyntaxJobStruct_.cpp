@@ -67,7 +67,13 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     // Get existing scope or create a new one
     auto& structName     = identifierStruct->childs.back()->token.text;
     implNode->token.text = structName;
-    auto newScope        = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
+
+    // Register the impl for block name, because we are not use that the newScope will be the correct one
+    // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
+    if (implInterface)
+        module->addImplForToSolve(structName);
+
+    auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
         Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};

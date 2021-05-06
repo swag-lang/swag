@@ -22,8 +22,8 @@ var g: Array'OneFunc
 {
     itf := @compiler()
     msg := itf.getMessage()
-    if(msg.type.kind != TypeInfoKind.Func) return
-    if(!reflection.hasAttribute(msg.type, "__core214.extension")) return
+    if msg.type.kind != TypeInfoKind.Func return
+    if !reflection.hasAttribute(msg.type, "__core214.extension") return
 
     g.add(@{msg.type, msg.name})
 }

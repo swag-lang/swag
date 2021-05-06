@@ -493,6 +493,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
             oldModule->addErrorModule(newModule);
+            module = newModule;
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0374}));
@@ -524,6 +525,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
             oldModule->addErrorModule(newModule);
+            module = newModule;
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0375}));

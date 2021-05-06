@@ -30,6 +30,13 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
 
     auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     scoped_lock lk(typeInfoStruct->mutex);
+
+    if (module->waitImplForToSolve(this, typeInfoStruct))
+    {
+        setPending(nullptr, "WAIT_INTERFACES_FOR", nullptr, typeInfoStruct);
+        return;
+    }
+
     if (typeInfoStruct->cptRemainingInterfaces == 0)
         return;
     SWAG_ASSERT(typeInfoStruct->declNode);

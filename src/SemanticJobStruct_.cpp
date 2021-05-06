@@ -29,15 +29,44 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     auto id   = context->node;
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
-    if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
-        return true;
-
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
         return context->report({id->childs.back(), format(Msg0290, id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
 
     auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
-    if (node->structScope != structDecl->scope)
-        return context->report({id, Msg0302});
+
+    if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    {
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+            node->sourceFile->module->decImplForToSolve(typeStruct);
+        }
+
+        return true;
+    }
+
+    if (structDecl->scope != node->structScope)
+    {
+        auto        typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        unique_lock lk1(typeStruct->mutex);
+        typeStruct->cptRemainingInterfaces++;
+        node->sourceFile->module->decImplForToSolve(typeStruct);
+
+        unique_lock lk2(node->structScope->parentScope->mutex);
+        unique_lock lk3(node->structScope->mutex);
+
+        node->structScope->parentScope->removeChildNoLock(node->structScope);
+        for (auto s : node->structScope->childScopes)
+        {
+            s->parentScope->removeChildNoLock(s);
+            structDecl->scope->addChildNoLock(s);
+        }
+    }
+    else
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        node->sourceFile->module->decImplForToSolve(typeStruct);
+    }
 
     return true;
 }
@@ -274,9 +303,7 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
     SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
-    {
         typeInfoStruct->scope->dependentJobs.setRunning();
-    }
 }
 
 void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)

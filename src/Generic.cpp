@@ -5,6 +5,8 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool Generic::updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
@@ -369,6 +371,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         SWAG_ASSERT(itf->declNode);
         auto newItf       = itf->declNode->clone(cloneContext);
         typeItf->declNode = newItf;
+        newItf->flags |= AST_FROM_GENERIC;
 
         auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
         structJob->addDependentJob(implJob);

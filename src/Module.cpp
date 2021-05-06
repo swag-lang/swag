@@ -967,3 +967,46 @@ ByteCode* Module::getRuntimeFct(const char* fctName)
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second;
 }
+
+void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
+{
+    unique_lock lk(mutexFile);
+
+    auto it = implForToSolve.find(structName);
+    if (it == implForToSolve.end())
+    {
+        implForToSolve[structName] = {};
+        it                         = implForToSolve.find(structName);
+    }
+
+    it->second.count += count;
+}
+
+bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
+{
+    unique_lock lk(mutexFile);
+
+    if (typeStruct->declNode && typeStruct->declNode->flags & AST_FROM_GENERIC)
+        return false;
+    auto it = implForToSolve.find(typeStruct->structName);
+    if (it == implForToSolve.end())
+        return false;
+    if (it->second.count == 0)
+        return false;
+
+    it->second.dependentJobs.add(job);
+    return true;
+}
+
+void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
+{
+    unique_lock lk(mutexFile);
+
+    auto it = implForToSolve.find(typeStruct->structName);
+    SWAG_ASSERT(it != implForToSolve.end());
+    SWAG_ASSERT(it->second.count != 0);
+    it->second.count--;
+
+    if (it->second.count == 0)
+        it->second.dependentJobs.setRunning();
+}
