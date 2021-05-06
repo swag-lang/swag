@@ -43,12 +43,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, Msg0438}));
         SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, Msg0439}));
         SWAG_CHECK(eatToken());
-
-        auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, implNode);
-        identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
-        implNode->identifierFor    = identifierRef;
-        SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_FCT_PARAMS));
-
+        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension();
         implNode->identifierFor->extension->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
         implNode->semanticFct                                = SemanticJob::resolveImplFor;
