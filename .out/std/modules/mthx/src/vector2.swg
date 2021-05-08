@@ -1,11 +1,12 @@
+#global public
 using core.math
 
-public struct Vector2
+struct Vector2
 {
     x, y: Float
 }
 
-public impl Vector2
+impl Vector2
 {
     const Zero:     Vector2{0, 0}
     const One:      Vector2{1, 1}
@@ -15,10 +16,10 @@ public impl Vector2
     const UnitNY:   Vector2{0, -1}
 
     #[swag.complete]
-    func opAffect(self, value: Float)
+    func opAffect(using self, value: Float)
     {
-        self.x = value
-        self.y = value
+        x = value
+        y = value
     }
 
     func opEquals(using self, other: Self)->bool
@@ -120,7 +121,7 @@ public impl Vector2
     }
 
     // Returns this vector normalized
-    func normalized(using self)->Vector2
+    func toNormalize(using self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         debug.assert(!math.isZeroEpsilon(norm))
@@ -145,7 +146,7 @@ public impl Vector2
     }
 
     // Returns this vector normalized even if its length is almost null
-    func normalizedSafe(using self)->Vector2
+    func toNormalizeSafe(using self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         if math.isZeroEpsilon(norm)

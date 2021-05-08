@@ -20,31 +20,32 @@ impl Rect
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
+    // right coordinate (x + width)
     #[swag.inline]
+    func right(using const self)->f32
     {
-        // right coordinate (x + width)
-        func right(using const self)->f32
-        {
-            return x + width
-        }
+        return x + width
+    }
 
-        // right coordinate (x + width)
-        func setRight(using self, value: f32)
-        {
-            width = value - x
-        }
+    // right coordinate (x + width)
+    #[swag.inline]
+    func setRight(using self, value: f32)
+    {
+        width = value - x
+    }
 
-        // bottom coordinate (y + height)
-        func bottom(using const self)->f32
-        {
-            return y + height
-        }
+    // bottom coordinate (y + height)
+    #[swag.inline]
+    func bottom(using const self)->f32
+    {
+        return y + height
+    }
 
-        // bottom coordinate (y + height)
-        func setBottom(using self, value: f32)
-        {
-            height = value - y
-        }
+    // bottom coordinate (y + height)
+    #[swag.inline]
+    func setBottom(using self, value: f32)
+    {
+        height = value - y
     }
 
     // Set rectangle to (0, 0, 0, 0)
