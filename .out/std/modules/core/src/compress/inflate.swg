@@ -75,17 +75,17 @@ const DEFLATE_MAX_DISTANCE = 32768'uint
 
 struct HuffmanDecoder
 {
-    stream:         CompressStream
-    window_size:    uint
-    last_b:         Array'u8
+    stream:     CompressStream
+    windowSize: uint
+    lastB:      Array'u8
 }
 
 impl HuffmanDecoder
 {
-    func init(using self, buf: const [..] u8, winsize: uint)
+    func init(using self, buf: const [..] u8, winSize: uint)
     {
         stream.init(buf)
-        window_size = math.min(winsize, DEFLATE_MAX_DISTANCE)
+        windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
     }
 
     func inflate(using self, dest: *ConcatBuffer) throw
@@ -94,18 +94,33 @@ impl HuffmanDecoder
         var z_offset:       HuffmanTable
         var codelength_ht:  HuffmanTable
 
-        debug.assert(window_size > 0)
-        last_b.resize(window_size)
+        debug.assert(windowSize > 0)
+        lastB.resize(windowSize)
 
         //while true
         {
-            final := stream.read_bits_lsb(1)
-            type  := stream.read_bits_lsb(2)
+            final := stream.readBits(1)
+            type  := stream.readBits(2)
+            console.printf("final: % type: %\n", final, type)
 
             switch type
             {
-            case 0: break
-            case 3: break
+            // Uncompressed block
+            case 0:
+                stream.discardToNextByte()
+                uncompressedLen := cast(u16) stream.readBits(16)
+                lengthCheck     := cast(u16) stream.readBits(16)
+                console.printf("uncompressedLen: % lengthCheck: %\n", uncompressedLen, lengthCheck)
+                if ~uncompressedLen != lengthCheck throw "invalid buffer, length mismatch"
+                dest.addBytes(@mkslice(stream.curPtr(), uncompressedLen))
+                stream.curByte += uncompressedLen
+                break
+
+            case 3:
+                break
+
+            default:
+                break
             }
         }
     }

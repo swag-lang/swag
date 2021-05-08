@@ -63,7 +63,7 @@ impl ConcatBuffer
         return cast(uint) (currentSP - lastBucket.datas)
     }
 
-    // Be sure that their is enough room to store at least 'numBytes' bytes
+    // Be sure that there is enough room to store at least 'numBytes' bytes
     func grow(using self, numBytes: uint)
     {
         debug.assert(numBytes <= bucketSize)
