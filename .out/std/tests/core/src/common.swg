@@ -3,6 +3,18 @@ using core, memory
 var g_dbg: DebugAllocator
 var g_cxt: swag.Context
 
+protected func dataPath()->String
+{
+    dataPath := path.getDirectoryName(#location.fileName)
+    dataPath = path.getDirectoryName(dataPath)
+    return path.combine(dataPath, "datas")
+}
+
+protected func filePath(name: string)->String
+{
+    return path.combine(dataPath(), name)
+}
+
 #init
 {
     try jobs.setNumWorkers(4)

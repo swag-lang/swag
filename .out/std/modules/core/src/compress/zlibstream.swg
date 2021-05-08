@@ -1,0 +1,54 @@
+#global public
+#global namespace compress
+
+#[swag.opaque]
+struct ZLibStream
+{
+    decoder: HuffmanDecoder
+}
+
+impl ZLibStream
+{
+    func create(buffer: const [..] u8)->ZLibStream throw
+    {
+        var result: retval
+        try result.init(buffer)
+        return result
+    }
+
+    func init(using self, buffer: const [..] u8) throw
+    {
+        bs := ByteStream.create(buffer)
+        if bs.length() < 6 throw "invalid format"
+
+        // Compression method (8 is "deflate")
+        cmf := bs.readU8()
+        if cmf & 0xF != 8 throw "invalid compression method"
+
+        // Window size
+        cinfo := (cmf >>,safe 4) & 0xF
+        if cinfo > 7 throw "unsupported window size"
+        winSize := 1'uint << (cinfo + 8)
+
+        // Check
+        flg := bs.readU8()
+        fcheck := flg & 0x1f
+		fcheck_computed := ((cast(u32) cmf << 8) | flg) & 0x1f
+		if fcheck != fcheck_computed throw "checksum failed"
+
+        // Dict
+        fdict := (flg >>,safe 5) & 1
+        if fdict throw "unsupported dictionnary"
+
+        // Compression level
+        flevel := (flg >>,safe 6) & 3
+
+        decoder.init(bs.toSlice(), winSize)
+    }
+
+    // Decompress stream
+    func decompress(using self, dest: *ConcatBuffer) throw
+    {
+        try decoder.inflate(dest)
+    }
+}

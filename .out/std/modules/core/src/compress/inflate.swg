@@ -120,7 +120,7 @@ impl CompressStream
     func peek_bits_lsb(using self, width: u8) -> u32
     {
 	    if num_bits < width refill_lsb()
-    	return code_buffer & ~(0xffffffff << width)
+    	return code_buffer & ~(0xffffffff <<,safe width)
     }
 
     func read_bits_lsb(using self, width: u8)->u32
@@ -148,12 +148,13 @@ struct HuffmanDecoder
 
 impl HuffmanDecoder
 {
-    func init(using self, buf: const [..] u8)
+    func init(using self, buf: const [..] u8, winsize: uint)
     {
         stream.init(buf)
+        window_size = winsize
     }
 
-    func inflate(using self)
+    func inflate(using self, dest: *ConcatBuffer) throw
     {
         var z_repeat:       HuffmanTable
         var z_offset:       HuffmanTable
@@ -163,7 +164,7 @@ impl HuffmanDecoder
             window_size = DEFLATE_MAX_DISTANCE
 
         last_b.resize(window_size)
-        while true
+        //while true
         {
             final := stream.read_bits_lsb(1)
             type  := stream.read_bits_lsb(2)
