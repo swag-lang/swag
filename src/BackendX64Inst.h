@@ -1185,7 +1185,7 @@ namespace BackendX64Inst
                 pp.concat.addU8(modRM(REGREG, 4, RCX));
             else
                 pp.concat.addU8(modRM(REGREG, 1, RCX));
-            if (ip->b.u16 <= 0xFF)
+            if (ip->b.u16 <= 0x7F)
                 pp.concat.addU8(ip->b.u8);
             else
                 pp.concat.addU16(ip->b.u16);
