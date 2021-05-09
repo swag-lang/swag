@@ -2,6 +2,13 @@ using core
 
 #test
 {
+    x := 0b00000000_00110101'u16
+    x = math.reverse(x)
+    @assert(x == 0b10101100_00000000)
+}
+
+#test
+{
     {
         x := 0b00000001'u8
         x = math.reverse(x)

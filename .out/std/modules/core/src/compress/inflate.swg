@@ -2,7 +2,16 @@
 #global namespace compress
 
 const ZFAST_BITS = 9
+const ZFAST_MASK = (1 << ZFAST_BITS) - 1
 const HUFFMAN_MAX_BITS = 16
+const HUFFMAN_FAST_BITS = 9
+
+const Z_LENGTH_DEZIGZAG: [] u8 = @[
+	16, 17, 18, 0,
+    8, 7, 9, 6, 10,
+    5, 11, 4, 12, 3,
+    13, 2, 14, 1, 15,
+]
 
 struct HuffmanTable
 {
@@ -12,6 +21,13 @@ struct HuffmanTable
 	firstsymbol: [16] u16
 	size:        [288] u8
 	value:       [288] u16
+}
+
+func reverse16(n: u16, bits: u8)->u16
+{
+    r := math.reverse(n)
+    r >>= 16 - bits
+    return r
 }
 
 impl HuffmanTable
@@ -57,12 +73,11 @@ impl HuffmanTable
             value[c] = cast(u16) ci
             if v <= ZFAST_BITS
             {
-                j := math.reverse(next_code[v])
-                j >>= 16 - v
+                j := reverse16(next_code[v], v)
                 while j < (1 << ZFAST_BITS)
                 {
                     fast[j] = fastv
-                    j += (1 << v)
+                    j += (1'u16 << v)
                 }
             }
 
@@ -87,6 +102,39 @@ impl HuffmanDecoder
     {
         stream.init(buf)
         windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
+    }
+
+    func decode(using self, ht: *HuffmanTable)->u16 throw
+    {
+        if stream.numBits < 16
+        {
+            if stream.numBits == -100 throw "malformed"
+            stream.refill()
+            if stream.eof throw "malformed"
+        }
+
+        b := ht.fast[stream.codeBuffer & ZFAST_MASK]
+        if b
+        {
+            s := cast(u8) (b >> ZFAST_BITS)
+            stream.consumeBits(s)
+            return b & 511
+        }
+
+        cde := cast(u16) stream.peekBits(16)
+	    k   := reverse16(cde, 16)
+
+        s := HUFFMAN_FAST_BITS + 1
+        while true
+        {
+            if k < ht.maxcode[s] break
+    		s += 1
+        }
+
+        if s >= 16 throw "bad huffman code"
+        b1 := (k >> (16 - s)) - ht.firstcode[s] + ht.firstsymbol[s]
+
+        return 0
     }
 
     func inflate(using self)->Array'u8 throw
@@ -123,10 +171,29 @@ impl HuffmanDecoder
                 break
 
             case 3:
+                throw "invalid block type"
                 break
 
             default:
-                break
+				var lenCodes:        [286+32+137] u8
+				var codeLengthSizes: [19] u8
+				hlit  := stream.readBits(5) + 257
+				hdist := stream.readBits(5) + 1
+				hclen := stream.readBits(4) + 4
+                loop i: hclen
+                {
+					s := cast(u8) stream.readBits(3)
+					codeLengthSizes[Z_LENGTH_DEZIGZAG[i]] = s
+				}
+
+                try codelength_ht.init(codeLengthSizes)
+				ntot  := hlit + hdist
+                loop n: ntot
+                {
+                    c := try decode(&codelength_ht)
+                }
+
+                return result
             }
 
             if final == 1 break

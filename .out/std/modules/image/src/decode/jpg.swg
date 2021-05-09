@@ -1335,7 +1335,7 @@ impl Decoder
         if getBits2(1)
         {
             p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
-            p[0] |= (1 << successiveLow)
+            p[0] |= (1's16 << successiveLow)
         }
     }
 
