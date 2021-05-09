@@ -8,7 +8,7 @@
 void printExamples()
 {
     g_Log.message("\n");
-    g_Log.message("examples\n");
+    g_Log.message("Examples\n");
     g_Log.message("--------\n");
 }
 
@@ -49,6 +49,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("Command 'build' compiles the specified workspace, or the current folder if it's a valid workspace.\n");
         g_Log.message("It will compile all the modules located in '/modules' and '/examples', and their dependencies.\n");
         g_Log.message("If you want to compile only one module, add '--module:moduleName'.\n");
+        g_Log.message("Build results are located in the '/output' folder.\n");
 
         printExamples();
         g_Log.message("swag build --workspace:c:/myWorkspace\n");
@@ -81,7 +82,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("But unlike 'build' and 'run', it will also compile and run the modules located in the '/tests' folder.\n");
 
         printExamples();
-        g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
+        g_Log.message("swag test -w:c:/myWorkspace\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
@@ -107,7 +108,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("Command 'new' creates a new workspace with a simple executable module.\n");
 
         printExamples();
-        g_Log.message("swag new -w:newWorkspace\n");
+        g_Log.message("swag new -w:c:/newWorkspace\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
@@ -165,7 +166,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("        watch        spy workspace and check it at each file change (never ends)\n");
     g_Log.message("        get          synchronize dependencies\n");
     g_Log.message("        list         list all modules and their dependencies\n");
-    g_Log.message("        <file>.swgs  build and run script file <file>.swgs\n");
+    g_Log.message("        <file>.swgs  build and run the script file <file>.swgs\n");
 
     g_Log.message("\n");
     g_Log.message("To get the list of all arguments for a given command, type 'swag <command> --help'\n");

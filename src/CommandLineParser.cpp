@@ -33,8 +33,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
 
-    addArg("bu", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
-    addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
+    addArg("bu", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, "will only compile files that match the filter");
+    addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only test files that match the filter");
 
     addArg("bu li ge", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
     addArg("bu", "--dbgcatch", nullptr, CommandLineType::Bool, &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
@@ -113,11 +113,11 @@ void CommandLineParser::logArguments(const string& cmd)
 
     static const int SPACE = 4;
 
-    columns[0] = SPACE + strlen("argument");
-    columns[1] = SPACE + strlen("short");
-    columns[2] = SPACE + strlen("value");
-    columns[3] = SPACE + strlen("default");
-    columns[4] = SPACE + strlen("help");
+    columns[0] = SPACE + strlen("Argument");
+    columns[1] = SPACE + strlen("Short");
+    columns[2] = SPACE + strlen("Value");
+    columns[3] = SPACE + strlen("Default");
+    columns[4] = SPACE + strlen("Help");
 
     for (auto arg : longNameArgs)
     {
@@ -138,31 +138,31 @@ void CommandLineParser::logArguments(const string& cmd)
 
     size_t total = 0;
 
-    line0 = "argument";
+    line0 = "Argument";
     line1 = "--------";
     total += columns[0];
     while (line0.length() < total)
         line0 += " ", line1 += " ";
 
-    line0 += "short";
+    line0 += "Short";
     line1 += "-----";
     total += columns[1];
     while (line0.length() < total)
         line0 += " ", line1 += " ";
 
-    line0 += "value";
+    line0 += "Value";
     line1 += "-----";
     total += columns[2];
     while (line0.length() < total)
         line0 += " ", line1 += " ";
 
-    line0 += "default";
+    line0 += "Default";
     line1 += "-------";
     total += columns[3];
     while (line0.length() < total)
         line0 += " ", line1 += " ";
 
-    line0 += "help";
+    line0 += "Help";
     line1 += "----";
 
     line0 += "\n";
