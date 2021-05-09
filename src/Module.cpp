@@ -747,7 +747,7 @@ void Module::printUserMessage(const BuildParameters& bp)
     if (!backend->mustCompile)
     {
         g_Stats.skippedModules += 1;
-        if (g_CommandLine.verbose)
+        if (g_CommandLine.verbosePass)
         {
             if (bp.compileType == BackendCompileType::Test)
                 g_Log.messageHeaderCentered("Skipping build test", name.c_str(), LogColor::Gray);
