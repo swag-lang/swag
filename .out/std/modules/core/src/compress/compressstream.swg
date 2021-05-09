@@ -70,4 +70,12 @@ impl CompressStream
     {
         consumeBits(cast(u8) numBits & 7)
     }
+
+    func revert(using self)
+    {
+        debug.assert(!(numBits & 7))
+        curByte -= numBits / 8
+        numBits = 0
+        codeBuffer = 0
+    }
 }

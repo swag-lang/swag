@@ -12,7 +12,7 @@ private
 
 struct Adler32
 {
-    adler: u32
+    adler: u32 = 1
 }
 
 impl Adler32

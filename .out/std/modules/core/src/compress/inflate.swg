@@ -78,6 +78,7 @@ struct HuffmanDecoder
     stream:     CompressStream
     windowSize: uint
     lastB:      Array'u8
+    adler:      hash.Adler32
 }
 
 impl HuffmanDecoder
@@ -97,7 +98,7 @@ impl HuffmanDecoder
         debug.assert(windowSize > 0)
         lastB.resize(windowSize)
 
-        //while true
+        while true
         {
             final := stream.readBits(1)
             type  := stream.readBits(2)
@@ -112,7 +113,11 @@ impl HuffmanDecoder
                 lengthCheck     := cast(u16) stream.readBits(16)
                 console.printf("uncompressedLen: % lengthCheck: %\n", uncompressedLen, lengthCheck)
                 if ~uncompressedLen != lengthCheck throw "invalid buffer, length mismatch"
-                dest.addBytes(@mkslice(stream.curPtr(), uncompressedLen))
+
+                stream.revert()
+                newSlice := @mkslice(stream.curPtr(), uncompressedLen)
+                adler.update(newSlice)
+                dest.addBytes(newSlice, false)
                 stream.curByte += uncompressedLen
                 break
 
@@ -122,6 +127,8 @@ impl HuffmanDecoder
             default:
                 break
             }
+
+            if final == 1 break
         }
     }
 }

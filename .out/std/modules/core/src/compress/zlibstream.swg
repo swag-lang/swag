@@ -50,5 +50,13 @@ impl ZLibStream
     func decompress(using self, dest: *ConcatBuffer) throw
     {
         try decoder.inflate(dest)
+
+        decoder.stream.discardToNextByte()
+        adler32 := decoder.stream.readBits(8) << 24 |
+                   decoder.stream.readBits(8) << 16 |
+                   decoder.stream.readBits(8) << 8  |
+                   decoder.stream.readBits(8)
+
+        console.printf("adler computed: % adler stream: %\n", decoder.adler.adler, adler32)
     }
 }
