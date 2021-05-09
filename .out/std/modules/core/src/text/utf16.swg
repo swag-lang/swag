@@ -118,3 +118,23 @@ func fromUnicode(src: const [..] rune)->Array'u16
     result.count = fromUnicode(@mkslice(result.buffer, result.capacity), src)
     return result
 }
+
+// Convert string to an utf16 array, zero terminated
+func toZeroTerminated(src: string)->Array'u16
+{
+    var result: retval
+    result.reserve(2 * @countof(src) + 1)
+    result.count = utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
+    result[result.count - 1] = 0
+    return result
+}
+
+// Compute the string length of a zero terminated utf16 buffer
+func lengthZeroTerminated(buf: const *u16)->uint
+{
+    ptr := buf
+    count := 0'uint
+    while :ptr
+        ptr, count += 1
+    return count
+}

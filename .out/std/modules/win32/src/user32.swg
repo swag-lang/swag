@@ -393,8 +393,6 @@ struct PAINTSTRUCT
     func GetCursorPos(lpPoint: *POINT);
     func SetCursorPos(x, y: s32);
     func ShowCursor(show: BOOL);
-    func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
-    func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
 
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
@@ -411,6 +409,8 @@ struct PAINTSTRUCT
 #[foreign("user32"), discardable]
 {
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
+    func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
+    func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
 
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
