@@ -50,10 +50,11 @@ struct ModuleDependency
     Utf8                resolvedLocation;
     Utf8                version;
     int                 verNum, revNum, buildNum;
-    AstNode*            node       = nullptr;
-    Module*             module     = nullptr;
-    bool                importDone = false;
-    DependencyFetchKind fetchKind  = DependencyFetchKind::Invalid;
+    AstNode*            node               = nullptr;
+    Module*             module             = nullptr;
+    bool                importDone         = false;
+    bool                isLocalToWorkspace = false;
+    DependencyFetchKind fetchKind          = DependencyFetchKind::Invalid;
 };
 
 enum class ModuleKind
@@ -125,6 +126,7 @@ struct Module
     bool                      bssCannotChange         = false;
     bool                      isSwag                  = false;
     bool                      firstGenerated          = true;
+    bool                      isLocalToWorkspace      = true;
 
     bool              executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool              executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);

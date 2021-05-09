@@ -55,7 +55,10 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     cfgModule->addFile(file);
 
     if (kind != ModuleKind::Dependency)
-        cfgModule->remoteLocationDep = moduleFolder;
+    {
+        cfgModule->isLocalToWorkspace = true;
+        cfgModule->remoteLocationDep  = moduleFolder;
+    }
 
     // Register it
     if (getCfgModule(moduleName))
@@ -251,7 +254,10 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // If location dependency is not defined, then we take the remote location of the module
     // with that dependency
     if (dep->location.empty())
-        dep->location = srcModule->remoteLocationDep;
+    {
+        dep->isLocalToWorkspace = srcModule->isLocalToWorkspace;
+        dep->location           = srcModule->remoteLocationDep;
+    }
 
     // Module not here : add it.
     if (!dep->module)
@@ -437,6 +443,10 @@ bool ModuleCfgManager::execute()
         // We have modules to parse again
         for (auto cfgModule : pendingCfgModules)
         {
+            // Nothing to fetch if this is an internal workspace module
+            if (cfgModule->isLocalToWorkspace)
+                continue;
+
             // Get the remote config file in cache (if it exists), that depends on the dependency
             Utf8 cfgFilePath, cfgFileName;
             SWAG_CHECK(fetchModuleCfg(cfgModule->fetchDep, cfgFilePath, cfgFileName));
