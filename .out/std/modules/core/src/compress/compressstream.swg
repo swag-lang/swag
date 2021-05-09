@@ -21,7 +21,7 @@ impl CompressStream
 
     func refill(using self, width = 24'u8)
     {
-        while numBits < width
+        while numBits <= width
         {
             if codeBuffer == 0 and numBits == -1
                 numBits = 0
@@ -53,9 +53,22 @@ impl CompressStream
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
+    func peekBitsNoRefill(using self, width: u8) -> u32
+    {
+	    debug.assert(numBits >= width)
+    	return codeBuffer & ~(0xffffffff <<,safe width)
+    }
+
     func readBits(using self, width: u8)->u32
     {
         k := peekBits(width)
+        consumeBits(width)
+        return k
+    }
+
+    func readBitsNoRefill(using self, width: u8)->u32
+    {
+        k := peekBitsNoRefill(width)
         consumeBits(width)
         return k
     }

@@ -32,7 +32,6 @@ func reverse16(n: u16, bits: u8)->u16
 
 impl HuffmanTable
 {
-    #[swag.safety("of", false)]
     func init(using self, code_lengths: const [..] u8) throw
     {
         var sizes:     [HUFFMAN_MAX_BITS + 1] u16
@@ -57,8 +56,8 @@ impl HuffmanTable
             cde += sizes[i]
             if sizes[i] != 0 and (cde - 1) >= (1 << i)
                 throw "huffman bad code lengths"
-            maxcode[i] = cde << (16 - i)
-            cde <<= 1
+            maxcode[i] = cde <<,safe (16 - i)
+            cde <<=,safe 1
             k += sizes[i]
         }
 
@@ -68,7 +67,7 @@ impl HuffmanTable
             if !v continue
 
             c := next_code[v] - firstcode[v] + firstsymbol[v]
-            fastv := (v << 9) | cast(u8) ci
+            fastv := (cast(u16) v << 9) | cast(u16) ci
             size[c] = v
             value[c] = cast(u16) ci
             if v <= ZFAST_BITS
@@ -116,7 +115,7 @@ impl HuffmanDecoder
         b := ht.fast[stream.codeBuffer & ZFAST_MASK]
         if b
         {
-            s := cast(u8) (b >> ZFAST_BITS)
+            s := cast(u8) (b >>,safe ZFAST_BITS)
             stream.consumeBits(s)
             return b & 511
         }
@@ -133,8 +132,16 @@ impl HuffmanDecoder
 
         if s >= 16 throw "bad huffman code"
         b1 := (k >> (16 - s)) - ht.firstcode[s] + ht.firstsymbol[s]
+        if b1 >= @countof(ht.size) throw "bad huffman code"
+        if ht.size[b1] != s throw "bad huffman code"
 
-        return 0
+        stream.consumeBits(cast(u8) s)
+        return ht.value[b1]
+    }
+
+    func parseBlock(using self, z_repeat, z_offset: *HuffmanTable) throw
+    {
+        value := try decode(z_repeat)
     }
 
     func inflate(using self)->Array'u8 throw
@@ -168,32 +175,73 @@ impl HuffmanDecoder
                 adler.update(newSlice)
                 result.add(newSlice)
                 stream.curByte += uncompressedLen
-                break
+
+            case 1:
+                debug.assert(false) // todo
+                try parseBlock(&z_repeat, &z_offset)
 
             case 3:
                 throw "invalid block type"
-                break
 
             default:
-				var lenCodes:        [286+32+137] u8
-				var codeLengthSizes: [19] u8
-				hlit  := stream.readBits(5) + 257
-				hdist := stream.readBits(5) + 1
-				hclen := stream.readBits(4) + 4
+                var lenCodes:        [286+32+137] u8
+                var codeLengthSizes: [19] u8
+                stream.refill(14)
+                hlit  := stream.readBitsNoRefill(5) + 257
+                hdist := stream.readBitsNoRefill(5) + 1
+                hclen := stream.readBitsNoRefill(4) + 4
                 loop i: hclen
                 {
-					s := cast(u8) stream.readBits(3)
-					codeLengthSizes[Z_LENGTH_DEZIGZAG[i]] = s
-				}
-
-                try codelength_ht.init(codeLengthSizes)
-				ntot  := hlit + hdist
-                loop n: ntot
-                {
-                    c := try decode(&codelength_ht)
+                    s := cast(u8) stream.readBits(3)
+                    codeLengthSizes[Z_LENGTH_DEZIGZAG[i]] = s
                 }
 
-                return result
+                try codelength_ht.init(codeLengthSizes)
+                ntot := hlit + hdist
+                n := 0
+                while n < ntot
+                {
+                    c := try decode(&codelength_ht)
+                    if c < 0 or c >= 19 throw "bad code lengths"
+
+                    if c < 16
+                    {
+                        lenCodes[n] = cast(u8) c
+                        n += 1
+                    }
+                    else
+                    {
+                        fill := 0'u8
+                        stream.refill(7)
+                        switch c
+                        {
+                        case 16:
+                            c = cast(u16) (stream.readBitsNoRefill(2) + 3)
+                            if n == 0 throw "bad code lengths"
+                            fill = lenCodes[n - 1]
+                        case 17:
+                            c = cast(u16) (stream.readBitsNoRefill(3) + 3)
+                        case 18:
+                            c = cast(u16) (stream.readBitsNoRefill(7) + 11)
+                        default:
+                            throw "bad code lengths"
+                            break
+                        }
+
+                        if ntot - n < c throw "bad code lengths"
+                        nc := n + c
+                        while n < nc
+                        {
+                            lenCodes[n] = fill
+                            n += 1
+                        }
+                    }
+                }
+
+                if n != ntot throw "bad code lengths"
+                try z_repeat.init(lenCodes[0..hlit-1])
+                try z_offset.init(lenCodes[hlit..ntot-1])
+                try parseBlock(&z_repeat, &z_offset)
             }
 
             if final == 1 break
