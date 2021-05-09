@@ -512,7 +512,9 @@ bool ModuleCfgManager::execute()
                 msg += format("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
             else
                 msg += format("%d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-            if (module->mustFetchDep)
+            if (module->fetchDep && module->fetchDep->fetchKind == DependencyFetchKind::Swag)
+                msg += " [swag]";
+            else if (module->mustFetchDep)
                 msg += format(" => version %d.%d.%d is available", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             g_Log.messageHeaderDot(module->name, msg);
         }

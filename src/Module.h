@@ -126,7 +126,7 @@ struct Module
     bool                      bssCannotChange         = false;
     bool                      isSwag                  = false;
     bool                      firstGenerated          = true;
-    bool                      isLocalToWorkspace      = true;
+    bool                      isLocalToWorkspace      = false;
 
     bool              executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool              executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
