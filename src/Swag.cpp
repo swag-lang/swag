@@ -14,7 +14,7 @@ void printExamples()
 
 void printVersion()
 {
-    g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.message(format("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 }
 
 void help(CommandLineParser& cmdParser, const string& cmd)
@@ -46,7 +46,9 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "build")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'build' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("Command 'build' compiles the specified workspace, or the current folder if it's a valid workspace.\n");
+        g_Log.message("It will compile all the modules located in '/modules' and '/examples', and their dependencies.\n");
+        g_Log.message("If you want to compile only one module, add '--module:moduleName'.\n");
 
         printExamples();
         g_Log.message("swag build --workspace:c:/myWorkspace\n");
@@ -60,8 +62,9 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "run")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'run' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("Command 'run' behaves like 'build' and compiles the specified workspace, or the current folder if it's a valid workspace.\n");
         g_Log.message("It will then run all compiled executables.\n");
+        g_Log.message("If you want to compile and run only one module, add '--module:moduleName'.\n");
 
         printExamples();
         g_Log.message("swag run -w:c:/myWorkspace -m:myModuleToRun\n");
@@ -74,8 +77,8 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "test")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'run' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
-        g_Log.message("It will also compile and run the modules located in the '/tests' folder.\n");
+        g_Log.message("Command 'test' behaves like 'build' and compiles the specified workspace, or the current folder if it's a valid workspace.\n");
+        g_Log.message("But unlike 'build' and 'run', it will also compile and run the modules located in the '/tests' folder.\n");
 
         printExamples();
         g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
@@ -87,10 +90,11 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "clean")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'clean' erases the cache of temporary files.\n");
+        g_Log.message("Command 'clean' erases the cache of temporary files for the given workspace and configuration.\n");
 
         printExamples();
         g_Log.message("swag clean --workspace:c:/myWorkspace\n");
+        g_Log.message("swag clean --workspace:c:/myWorkspace --cfg:fast-debug\n");
         g_Log.message("swag clean --workspace:c:/myWorkspace --script\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);

@@ -68,31 +68,100 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
 }
 
+static void getArgValue(CommandLineArgument* oneArg, string& value, string& defaultValue)
+{
+    switch (oneArg->type)
+    {
+    case CommandLineType::Bool:
+        value = "true|false";
+        if (*(bool*) oneArg->buffer)
+            defaultValue += "true";
+        else
+            defaultValue += "false";
+        break;
+    case CommandLineType::Int:
+        value        = "<integer>";
+        defaultValue = to_string(*(int*) oneArg->buffer);
+        break;
+    case CommandLineType::String:
+        value        = "<string>";
+        defaultValue = *(string*) oneArg->buffer;
+        break;
+    case CommandLineType::StringSet:
+        value = "<string>";
+        break;
+    case CommandLineType::EnumInt:
+    {
+        value = oneArg->param;
+        vector<Utf8> tokens;
+        tokenize(oneArg->param, '|', tokens);
+        defaultValue = tokens[*(int*) oneArg->buffer];
+        break;
+    }
+    case CommandLineType::EnumString:
+        value        = oneArg->param;
+        defaultValue = *(string*) oneArg->buffer;
+        break;
+    }
+}
+
 void CommandLineParser::logArguments(const string& cmd)
 {
     string line0, line1;
 
-    static const int COL_SHORT_NAME = 20;
-    static const int COL_VALUE      = COL_SHORT_NAME + 7;
-    static const int COL_DEFAULT    = COL_VALUE + 25;
-    static const int COL_HELP       = COL_DEFAULT + 12;
+    size_t columns[10] = {4};
+
+    static const int SPACE = 4;
+
+    columns[0] = SPACE + strlen("argument");
+    columns[1] = SPACE + strlen("short");
+    columns[2] = SPACE + strlen("value");
+    columns[3] = SPACE + strlen("default");
+    columns[4] = SPACE + strlen("help");
+
+    for (auto arg : longNameArgs)
+    {
+        auto oneArg = arg.second;
+        if (!isArgValidFor(cmd, oneArg))
+            continue;
+
+        columns[0] = max(columns[0], arg.first.length() + SPACE);
+        columns[1] = max(columns[1], oneArg->shortName.length() + SPACE);
+
+        string value, defaultVal;
+        getArgValue(oneArg, value, defaultVal);
+        columns[2] = max(columns[2], value.length() + SPACE);
+        columns[3] = max(columns[3], defaultVal.length() + SPACE);
+
+        columns[4] = max(columns[4], strlen(oneArg->help) + SPACE);
+    }
+
+    size_t total = 0;
 
     line0 = "argument";
     line1 = "--------";
-    while (line0.length() < COL_SHORT_NAME)
+    total += columns[0];
+    while (line0.length() < total)
         line0 += " ", line1 += " ";
+
     line0 += "short";
     line1 += "-----";
-    while (line0.length() < COL_VALUE)
+    total += columns[1];
+    while (line0.length() < total)
         line0 += " ", line1 += " ";
+
     line0 += "value";
     line1 += "-----";
-    while (line0.length() < COL_DEFAULT)
+    total += columns[2];
+    while (line0.length() < total)
         line0 += " ", line1 += " ";
+
     line0 += "default";
     line1 += "-------";
-    while (line0.length() < COL_HELP)
+    total += columns[3];
+    while (line0.length() < total)
         line0 += " ", line1 += " ";
+
     line0 += "help";
     line1 += "----";
 
@@ -105,66 +174,34 @@ void CommandLineParser::logArguments(const string& cmd)
     for (auto arg : longNameArgs)
     {
         auto oneArg = arg.second;
-
         if (!isArgValidFor(cmd, oneArg))
             continue;
 
+        total = 0;
         line0 = arg.first;
-        while (line0.length() < COL_SHORT_NAME)
+
+        total += columns[0];
+        while (line0.length() < total)
             line0 += " ";
         line0 += oneArg->shortName;
-        while (line0.length() < COL_VALUE)
-            line0 += " ";
 
-        switch (oneArg->type)
-        {
-        case CommandLineType::Bool:
-            line0 += "true|false";
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            if (*(bool*) oneArg->buffer)
-                line0 += "true";
-            else
-                line0 += "false";
-            break;
-        case CommandLineType::Int:
-            line0 += "<integer>";
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            line0 += to_string(*(int*) oneArg->buffer);
-            break;
-        case CommandLineType::String:
-            line0 += "<string>";
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            line0 += *(string*) oneArg->buffer;
-            break;
-        case CommandLineType::StringSet:
-            line0 += "<string>";
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            break;
-        case CommandLineType::EnumInt:
-        {
-            line0 += oneArg->param;
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            vector<Utf8> tokens;
-            tokenize(oneArg->param, '|', tokens);
-            line0 += tokens[*(int*) oneArg->buffer];
-            break;
-        }
-        case CommandLineType::EnumString:
-            line0 += oneArg->param;
-            while (line0.length() < COL_DEFAULT)
-                line0 += " ";
-            line0 += *(string*) oneArg->buffer;
-            break;
-        }
+        string value, defaultVal;
+        getArgValue(oneArg, value, defaultVal);
+
+        total += columns[1];
+        while (line0.length() < total)
+            line0 += " ";
+        line0 += value;
+
+        total += columns[2];
+        while (line0.length() < total)
+            line0 += " ";
+        line0 += defaultVal;
 
         if (oneArg->help)
         {
-            while (line0.length() < COL_HELP)
+            total += columns[3];
+            while (line0.length() < total)
                 line0 += " ";
             line0 += oneArg->help;
         }
