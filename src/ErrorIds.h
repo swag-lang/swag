@@ -15,8 +15,10 @@
 #define Msg0539 "fatal error: type '%s' for tag '%s' is not a valid tag type"
 #define Msg0817 "fatal error: workspace folder '%s' already exists"
 #define Msg0541 "fatal error: workspace folder '%s' does not exist"
-#define Msg0165 "fatal error: cannot find 'SWAG_FOLDER' in the environment; You must run 'swag env' first at the swag.exe location to register its path"
+#define Msg0165 "fatal error: cannot find 'SWAG_FOLDER' in the environment; you must run 'swag env' first at the swag.exe location to register its path"
 #define Msg0166 "fatal error: script file '%s' does not exist"
+#define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
+#define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
 
 #define Msg0722 "command line error: argument '%s' should be followed by '%s'"
 #define Msg0724 "command line error: argument '%s' should be followed by 'true' or 'false' ('%s')"

@@ -38,6 +38,12 @@ struct CommandLineArgument
             {
                 cmds.insert("build");
                 cmds.insert("run");
+                cmds.insert("script");
+            }
+
+            if (p == "all" || p == "sc")
+            {
+                cmds.insert("script");
             }
 
             if (p == "all" || p == "bu" || p == "te")

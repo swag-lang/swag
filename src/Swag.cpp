@@ -88,6 +88,21 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     }
 
     ////////////////////////////////////////////////////////
+    if (cmd == "script")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'script' compiles and run the given script file.\n");
+        g_Log.message("All dependencies will be compiled in the cache folder.\n");
+        g_Log.message("Type 'swag clean --script' to clean the cache used by script execution.\n");
+
+        printExamples();
+        g_Log.message("swag script -f:myScript.swgs\n");
+        g_Log.message("swag script -file:c:/myScript.swgs\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
     if (cmd == "clean")
     {
         g_Log.message("\n");
@@ -96,7 +111,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         printExamples();
         g_Log.message("swag clean --workspace:c:/myWorkspace\n");
         g_Log.message("swag clean --workspace:c:/myWorkspace --cfg:fast-debug\n");
-        g_Log.message("swag clean --workspace:c:/myWorkspace --script\n");
+        g_Log.message("swag clean --script\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
@@ -166,7 +181,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("        watch        spy workspace and check it at each file change (never ends)\n");
     g_Log.message("        get          synchronize dependencies\n");
     g_Log.message("        list         list all modules and their dependencies\n");
-    g_Log.message("        <file>.swgs  build and run the script file <file>.swgs\n");
+    g_Log.message("        script       build and run a script file\n");
 
     g_Log.message("\n");
     g_Log.message("To get the list of all arguments for a given command, type 'swag <command> --help'\n");
@@ -200,21 +215,11 @@ int main(int argc, const char* argv[])
         command != "list" &&
         command != "get" &&
         command != "version" &&
+        command != "script" &&
         command != "env")
     {
-        // Script mode if command is a file with '.swgs' extension
-        fs::path name = command;
-        if (name.extension() == ".swgs")
-        {
-            fs::path pathF           = fs::absolute(command).string();
-            g_CommandLine.scriptName = normalizePath(pathF.string());
-            command                  = "run";
-        }
-        else
-        {
-            g_Log.error(format(Msg0000, argv[1]));
-            exit(-1);
-        }
+        g_Log.error(format(Msg0000, argv[1]));
+        exit(-1);
     }
 
     // Log help for a given command
@@ -253,7 +258,7 @@ int main(int argc, const char* argv[])
         g_Log.verbose(cmdParser.buildString(true));
 
     // Deal with the main command
-    if (!g_CommandLine.scriptName.empty())
+    if (command == "script")
     {
         g_Workspace.scriptCommand();
     }

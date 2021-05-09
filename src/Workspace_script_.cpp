@@ -6,6 +6,21 @@
 
 void Workspace::scriptCommand()
 {
+    if (g_CommandLine.scriptName.empty())
+    {
+        g_Log.error(format(Msg0318, g_CommandLine.scriptName.c_str()));
+        exit(-1);
+    }
+
+    // Script filename
+    fs::path pathF = fs::absolute(g_CommandLine.scriptName).string();
+    if (pathF.extension() != ".swgs")
+    {
+        g_Log.error(format(Msg0319, pathF.extension().string().c_str()));
+        exit(-1);
+    }
+
+    g_CommandLine.scriptName = normalizePath(pathF.string());
     if (!fs::exists(g_CommandLine.scriptName))
     {
         g_Log.error(format(Msg0166, g_CommandLine.scriptName.c_str()));
