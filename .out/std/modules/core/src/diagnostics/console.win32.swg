@@ -97,3 +97,27 @@ public func printf(message: string, params: ...)
         catch WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
 }
+
+// Wait for using input, and returns the corresponding string
+public func prompt()->String
+{
+    const BufSize = 1024'u32
+
+    var result: retval
+	var buffer: [BufSize] u8
+	var dwRead: DWORD
+
+	h := GetStdHandle(STD_INPUT_HANDLE)
+	while true
+	{
+		if !ReadFile(h, &buffer[0], BufSize, &dwRead, null)
+            break
+        result.append(@mkstring(&buffer[0], dwRead))
+		if dwRead < BufSize
+			break
+		if buffer[BufSize - 1] == "\n"'u8
+			break
+	}
+
+    return result
+}
