@@ -123,7 +123,7 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.allocator = @getcontext().tempAllocator
     tmpArr.reserve(100)
 
-    winPath := path.toWin16(fullname)
+    winPath := utf16.toZeroTerminated(fullname)
     res := cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
@@ -137,27 +137,4 @@ func getAbsolute(fullname: string)->String throw
     result = utf8.fromUtf16(tmpArr.toSlice())
     normalize(&result)
     return result
-}
-
-// Convert path to an utf16 temporary array, zero terminated
-// For windows functions in the 'W' form
-protected func toWin16(src: string)->Array'u16
-{
-    var result: retval
-
-    result.allocator = @getcontext().tempAllocator
-    result.reserve(2 * @countof(src) + 1)
-    result.count = utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
-    result[result.count - 1] = 0
-
-    return result
-}
-
-protected func lenWin16(buf: const *u16)->uint
-{
-    ptr := buf
-    count := 0'uint
-    while :ptr
-        ptr, count += 1
-    return count
 }

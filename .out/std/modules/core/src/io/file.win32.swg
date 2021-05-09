@@ -7,7 +7,7 @@ using win32
 func exists(fullname: string)->bool
 {
     if fullname == null return false
-    winPath := path.toWin16(fullname)
+    winPath := utf16.toZeroTerminated(fullname)
     attributes := catch GetFileAttributesW(@dataof(winPath))
     if @err return false
     if attributes == 0xFFFFFFFF return false
@@ -55,7 +55,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if share & FileShare.Delete
         wShare |= FILE_SHARE_DELETE
 
-    winPath := path.toWin16(fullname)
+    winPath := utf16.toZeroTerminated(fullname)
     hFile := try CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname

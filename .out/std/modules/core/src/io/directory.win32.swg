@@ -7,7 +7,7 @@ using win32
 func exists(dirname: string)->bool
 {
     if dirname == null return false
-    winPath := path.toWin16(dirname)
+    winPath := utf16.toZeroTerminated(dirname)
     attributes := catch GetFileAttributesW(@dataof(winPath))
     if @err return false
     if attributes == 0xFFFFFFFF return false
@@ -37,14 +37,14 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
         toScan := stackPath.popBack()
         searchPath := path.combine(toScan.toString(), options.matchPattern)
 
-        winPath := path.toWin16(searchPath)
+        winPath := utf16.toZeroTerminated(searchPath)
         h := try FindFirstFileW(@dataof(winPath), &findfile)
         if h == INVALID_HANDLE_VALUE
             continue
 
         while true
         {
-            filename := utf8.fromUtf16(@mkslice(dataof, path.lenWin16(dataof)))
+            filename := utf8.fromUtf16(@mkslice(dataof, utf16.lengthZeroTerminated(dataof)))
 
             // Filter by file/folder
             mustAdd := false
@@ -115,6 +115,6 @@ func getCurrent()->String throw
 // Set the current directory
 func setCurrent(dirname: string) throw
 {
-    winPath := path.toWin16(dirname)
+    winPath := utf16.toZeroTerminated(dirname)
     try SetCurrentDirectoryW(@dataof(winPath))
 }
