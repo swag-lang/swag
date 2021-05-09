@@ -654,7 +654,7 @@ namespace OS
             exit(-1);
         }
 
-        g_Log.message(format("'SWAG_FOLDER' is '%s'\n", folder.c_str()));
+        g_Log.message(format("'SWAG_FOLDER' has been changed to '%s'\n", folder.c_str()));
 
         // PATH
         HKEY hKey;

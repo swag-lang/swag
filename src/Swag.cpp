@@ -5,38 +5,167 @@
 #include "Os.h"
 #include "ErrorIds.h"
 
-void help(CommandLineParser& cmdParser)
+void printExamples()
 {
-    g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-
-    g_Log.message("usage: swag <command> [arguments]\n");
-
-    g_Log.message("\n");
-    g_Log.message("command\n");
-    g_Log.message("-------\n");
-    g_Log.message("version      print swag version\n");
-    g_Log.message("env          creates an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
-    g_Log.message("build        build the specified workspace\n");
-    g_Log.message("run          build and run the specified workspace\n");
-    g_Log.message("test         build and test the specified workspace\n");
-    g_Log.message("clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
-    g_Log.message("new          creates a new workspace\n");
-    g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
-    g_Log.message("get          synchronize dependencies\n");
-    g_Log.message("list         list all modules and their dependencies\n");
-    g_Log.message("<file>.swgs  build and run script file <file>.swgs\n");
-
-    g_Log.message("\n");
-    cmdParser.logArguments();
-
     g_Log.message("\n");
     g_Log.message("examples\n");
     g_Log.message("--------\n");
-    g_Log.message("swag build --workspace:c:/myWorkspace --rebuild\n");
-    g_Log.message("swag run -w:c:/myWorkspace -m:myModuleToRun\n");
-    g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
-    g_Log.message("swag new -w:newWorkspace\n");
-    g_Log.message("swag myScript.swgs\n");
+}
+
+void printVersion()
+{
+    g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+}
+
+void help(CommandLineParser& cmdParser, const string& cmd)
+{
+    ////////////////////////////////////////////////////////
+    if (cmd == "version")
+    {
+        printVersion();
+        return;
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "env")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'env' must be used to set the environnment variable 'SWAG_FOLDER'.\n");
+        g_Log.message("It is mandatory to set that variable before using the swag compiler.\n");
+
+        string folder;
+        OS::getSwagFolder(folder);
+
+        if (folder.empty())
+            g_Log.message("Current folder is NOT DEFINED");
+        else
+            g_Log.message(format("Current folder is '%s'", folder.c_str()));
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "build")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'build' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+
+        printExamples();
+        g_Log.message("swag build --workspace:c:/myWorkspace\n");
+        g_Log.message("swag build -w:c:/myWorkspace --rebuild\n");
+        g_Log.message("swag build -w:c:/myWorkspace -m:myModule\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "run")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'run' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("It will then run all compiled executables.\n");
+
+        printExamples();
+        g_Log.message("swag run -w:c:/myWorkspace -m:myModuleToRun\n");
+        g_Log.message("swag myScript.swgs\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "test")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'run' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("It will also compile and run the modules located in the '/tests' folder.\n");
+
+        printExamples();
+        g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "clean")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'clean' will erase the cache of temporary files.\n");
+
+        printExamples();
+        g_Log.message("swag clean --workspace:c:/myWorkspace\n");
+        g_Log.message("swag clean --workspace:c:/myWorkspace --script\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "new")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'new' will create a new workspace with a simple executable module.\n");
+
+        printExamples();
+        g_Log.message("swag new -w:newWorkspace\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "get")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'get' will synchronize all the workspace dependencies.\n");
+
+        printExamples();
+        g_Log.message("swag get --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "list")
+    {
+        g_Log.message("\n");
+        g_Log.message("Command 'list' will list all the workspace dependencies.\n");
+
+        printExamples();
+        g_Log.message("swag list --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "watch")
+    {
+        printExamples();
+        g_Log.message("swag watch --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("\n");
+        cmdParser.logArguments(cmd);
+    }
+}
+
+void help(CommandLineParser& cmdParser)
+{
+    printVersion();
+
+    g_Log.message("Usage:\n");
+    g_Log.message("        swag <command> [arguments]\n");
+
+    g_Log.message("\n");
+    g_Log.message("Commands:\n");
+    g_Log.message("        version      print swag version\n");
+    g_Log.message("        env          creates an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
+    g_Log.message("        build        build the specified workspace\n");
+    g_Log.message("        run          build and run the specified workspace\n");
+    g_Log.message("        test         build and test the specified workspace\n");
+    g_Log.message("        clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
+    g_Log.message("        new          creates a new workspace\n");
+    g_Log.message("        watch        spy workspace and check it at each file change (never ends)\n");
+    g_Log.message("        get          synchronize dependencies\n");
+    g_Log.message("        list         list all modules and their dependencies\n");
+    g_Log.message("        <file>.swgs  build and run script file <file>.swgs\n");
+
+    g_Log.message("\n");
+    g_Log.message("To get the list of all arguments for a given command, type 'swag <command> --help'\n");
+    g_Log.message("For example: swag build --help\n");
 }
 
 int main(int argc, const char* argv[])
@@ -48,7 +177,7 @@ int main(int argc, const char* argv[])
     CommandLineParser cmdParser;
     cmdParser.setup(&g_CommandLine);
 
-    // Log all arguments
+    // Log default help
     if (argc <= 1)
     {
         help(cmdParser);
@@ -81,6 +210,13 @@ int main(int argc, const char* argv[])
             g_Log.error(format(Msg0000, argv[1]));
             exit(-1);
         }
+    }
+
+    // Log help for a given command
+    if (argc == 3 && string(argv[2]) == "--help")
+    {
+        help(cmdParser, command);
+        exit(0);
     }
 
     // Verify that the swag folder has been registered

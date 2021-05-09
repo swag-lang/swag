@@ -68,15 +68,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
 }
 
-void CommandLineParser::logArguments()
+void CommandLineParser::logArguments(const string& cmd)
 {
     string line0, line1;
 
     static const int COL_SHORT_NAME = 20;
     static const int COL_VALUE      = COL_SHORT_NAME + 7;
     static const int COL_DEFAULT    = COL_VALUE + 25;
-    static const int COL_CMD        = COL_DEFAULT + 12;
-    static const int COL_HELP       = COL_CMD + 28;
+    static const int COL_HELP       = COL_DEFAULT + 12;
 
     line0 = "argument";
     line1 = "--------";
@@ -92,10 +91,6 @@ void CommandLineParser::logArguments()
         line0 += " ", line1 += " ";
     line0 += "default";
     line1 += "-------";
-    while (line0.length() < COL_CMD)
-        line0 += " ", line1 += " ";
-    line0 += "command";
-    line1 += "-------";
     while (line0.length() < COL_HELP)
         line0 += " ", line1 += " ";
     line0 += "help";
@@ -110,6 +105,9 @@ void CommandLineParser::logArguments()
     for (auto arg : longNameArgs)
     {
         auto oneArg = arg.second;
+
+        if (!isArgValidFor(cmd, oneArg))
+            continue;
 
         line0 = arg.first;
         while (line0.length() < COL_SHORT_NAME)
@@ -164,15 +162,6 @@ void CommandLineParser::logArguments()
             break;
         }
 
-        while (line0.length() < COL_CMD)
-            line0 += " ";
-        for (int i = 0; i < oneArg->cmds.size(); i++)
-        {
-            line0 += oneArg->cmds[i][0];
-            line0 += oneArg->cmds[i][1];
-            line0 += " ";
-        }
-
         if (oneArg->help)
         {
             while (line0.length() < COL_HELP)
@@ -202,13 +191,7 @@ void CommandLineParser::addArg(const char* commands, const char* longName, const
 
 bool CommandLineParser::isArgValidFor(const string& swagCmd, CommandLineArgument* arg)
 {
-    for (int i = 0; i < arg->cmds.size(); i++)
-    {
-        if (arg->cmds[i] == swagCmd)
-            return true;
-    }
-
-    return false;
+    return arg->cmds.find(swagCmd) != arg->cmds.end();
 }
 
 bool CommandLineParser::process(const string& swagCmd, int argc, const char* argv[])
