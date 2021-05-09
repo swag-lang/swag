@@ -89,8 +89,9 @@ impl HuffmanDecoder
         windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
     }
 
-    func inflate(using self, dest: *ConcatBuffer) throw
+    func inflate(using self)->Array'u8 throw
     {
+        var result:         retval
         var z_repeat:       HuffmanTable
         var z_offset:       HuffmanTable
         var codelength_ht:  HuffmanTable
@@ -117,7 +118,7 @@ impl HuffmanDecoder
                 stream.revert()
                 newSlice := @mkslice(stream.curPtr(), uncompressedLen)
                 adler.update(newSlice)
-                dest.addBytes(newSlice, false)
+                result.add(newSlice)
                 stream.curByte += uncompressedLen
                 break
 
@@ -130,5 +131,7 @@ impl HuffmanDecoder
 
             if final == 1 break
         }
+
+        return result
     }
 }

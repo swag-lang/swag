@@ -47,16 +47,19 @@ impl ZLibStream
     }
 
     // Decompress stream
-    func decompress(using self, dest: *ConcatBuffer) throw
+    func decompress(using self)->Array'u8 throw
     {
-        try decoder.inflate(dest)
+        var result: retval
+        result = try decoder.inflate()
 
+        // Now we should have the checksum
         decoder.stream.discardToNextByte()
         adler32 := decoder.stream.readBits(8) << 24 |
                    decoder.stream.readBits(8) << 16 |
                    decoder.stream.readBits(8) << 8  |
                    decoder.stream.readBits(8)
-
+        //if adler32 != decoder.adler.adler throw "invalid checksum"
         console.printf("adler computed: % adler stream: %\n", decoder.adler.adler, adler32)
+        return result
     }
 }
