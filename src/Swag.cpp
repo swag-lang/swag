@@ -46,7 +46,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "build")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'build' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("Command 'build' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
 
         printExamples();
         g_Log.message("swag build --workspace:c:/myWorkspace\n");
@@ -60,7 +60,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "run")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'run' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("Command 'run' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
         g_Log.message("It will then run all compiled executables.\n");
 
         printExamples();
@@ -74,7 +74,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "test")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'run' will compile the specified workspace, or the current folder if it is a valid workspace.\n");
+        g_Log.message("Command 'run' compiles the specified workspace, or the current folder if it is a valid workspace.\n");
         g_Log.message("It will also compile and run the modules located in the '/tests' folder.\n");
 
         printExamples();
@@ -87,7 +87,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "clean")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'clean' will erase the cache of temporary files.\n");
+        g_Log.message("Command 'clean' erases the cache of temporary files.\n");
 
         printExamples();
         g_Log.message("swag clean --workspace:c:/myWorkspace\n");
@@ -100,7 +100,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "new")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'new' will create a new workspace with a simple executable module.\n");
+        g_Log.message("Command 'new' creates a new workspace with a simple executable module.\n");
 
         printExamples();
         g_Log.message("swag new -w:newWorkspace\n");
@@ -109,25 +109,25 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     }
 
     ////////////////////////////////////////////////////////
-    if (cmd == "get")
+    if (cmd == "list")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'get' will synchronize all the workspace dependencies.\n");
+        g_Log.message("Command 'list' logs all the workspace modules and their dependencies.\n");
 
         printExamples();
-        g_Log.message("swag get --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("swag list --workspace:c:/myWorkspace\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
 
     ////////////////////////////////////////////////////////
-    if (cmd == "list")
+    if (cmd == "get")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'list' will list all the workspace dependencies.\n");
+        g_Log.message("Command 'get' synchronize all the workspace dependencies.\n");
 
         printExamples();
-        g_Log.message("swag list --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("swag get --workspace:c:/myWorkspace --rebuild\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
