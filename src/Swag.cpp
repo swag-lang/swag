@@ -203,7 +203,7 @@ int main(int argc, const char* argv[])
     if (argc <= 1)
     {
         help(cmdParser);
-        exit(0);
+        OS::exit(0);
     }
 
     // Command
@@ -221,14 +221,14 @@ int main(int argc, const char* argv[])
         command != "env")
     {
         g_Log.error(format(Msg0000, argv[1]));
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Log help for a given command
     if (argc == 3 && string(argv[2]) == "--help")
     {
         help(cmdParser, command);
-        exit(0);
+        OS::exit(0);
     }
 
     // Verify that the swag folder has been registered
@@ -238,7 +238,7 @@ int main(int argc, const char* argv[])
         if (command != "env")
         {
             g_Log.message(Msg0165);
-            exit(-1);
+            OS::exit(-1);
         }
     }
     else
@@ -251,9 +251,9 @@ int main(int argc, const char* argv[])
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))
-        exit(-1);
+        OS::exit(-1);
     if (!g_CommandLine.check())
-        exit(-1);
+        OS::exit(-1);
 
     // Output command line in verbose mode
     if (g_CommandLine.verboseCmdLine)
@@ -320,5 +320,6 @@ int main(int argc, const char* argv[])
     // To avoid freeing some stuff, and have a fast exit
     g_Global.exiting = true;
 
-    return g_Workspace.numErrors > 0 ? -1 : 0;
+    OS::exit(g_Workspace.numErrors > 0 ? -1 : 0);
+    return 0;
 }

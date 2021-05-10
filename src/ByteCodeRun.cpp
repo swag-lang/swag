@@ -3448,7 +3448,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     {
         // Debug
         if (context->debugOn && !debugger(context))
-            exit(0);
+            OS::exit(0);
 
         // Get instruction
         auto ip = context->ip++;

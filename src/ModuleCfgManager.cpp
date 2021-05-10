@@ -65,7 +65,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     {
         auto errorStr = format("more than one module with name '%s' is present in the workspace (path is '%s')", moduleName.c_str(), moduleFolder.c_str());
         g_Log.error(errorStr);
-        exit(-1);
+        OS::exit(-1);
     }
 
     allModules[moduleName] = cfgModule;

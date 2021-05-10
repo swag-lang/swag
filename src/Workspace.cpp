@@ -28,7 +28,7 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
         errorStr = "fatal error: " + errorStr;
         errorStr += format(" (path is '%s')", path.string().c_str());
         g_Log.error(errorStr);
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Module name is equivalent to the folder name, except for the tests folder where
@@ -254,7 +254,7 @@ void Workspace::setupUserTags()
                 if (!it)
                 {
                     g_Log.error(format(Msg0538, tokens1[1].c_str(), tokens1[0].c_str()));
-                    exit(-1);
+                    OS::exit(-1);
                 }
 
                 switch (*it)
@@ -281,7 +281,7 @@ void Workspace::setupUserTags()
                     break;
                 default:
                     g_Log.error(format(Msg0539, tokens1[1].c_str(), tokens1[0].c_str()));
-                    exit(-1);
+                    OS::exit(-1);
                 }
 
                 oneTag.type = TypeManager::literalTypeToType(*it);
@@ -317,7 +317,7 @@ void Workspace::setup()
     if (workspacePath.empty())
     {
         g_Log.error(Msg0540);
-        exit(-1);
+        OS::exit(-1);
     }
 
     bool invalid = false;
@@ -335,7 +335,7 @@ void Workspace::setup()
     if (invalid)
     {
         g_Log.message(Note012);
-        exit(-1);
+        OS::exit(-1);
     }
 
     g_ThreadMgr.init();
@@ -418,7 +418,7 @@ void Workspace::setupTarget()
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
         g_Log.error(format(Msg0545, targetPath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Cache directory
@@ -426,21 +426,21 @@ void Workspace::setupTarget()
     if (!fs::exists(cachePath))
     {
         g_Log.error(format(Msg0546, cachePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format(Msg0547, cachePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     cachePath.append(workspacePath.filename().string() + "-" + g_Workspace.getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format(Msg0547, cachePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     if (g_CommandLine.verbosePath)

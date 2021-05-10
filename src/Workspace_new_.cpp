@@ -10,7 +10,7 @@ void newScriptFile()
     if (!file.is_open())
     {
         g_Log.errorOS(format(Msg0347, g_CommandLine.scriptName.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     const char* content = R"(
@@ -45,13 +45,13 @@ void Workspace::newModule(string moduleName)
     if (fs::exists(modulePath))
     {
         g_Log.errorOS(format(Msg0397, moduleName.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     if (!fs::create_directories(modulePath, errorCode))
     {
         g_Log.errorOS(format(Msg0818, modulePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Create a configuration file
@@ -61,7 +61,7 @@ void Workspace::newModule(string moduleName)
     if (!fileCfg.is_open())
     {
         g_Log.errorOS(format(Msg0824, cfgFileName.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     const char* oneCfg = R"(
@@ -90,7 +90,7 @@ void Workspace::newModule(string moduleName)
     if (!fs::create_directories(modulePath, errorCode))
     {
         g_Log.errorOS(format(Msg0818, modulePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     modulePath.append("main.swg");
@@ -98,7 +98,7 @@ void Workspace::newModule(string moduleName)
     if (!file.is_open())
     {
         g_Log.errorOS(format(Msg0824, modulePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     const char* oneMain = R"(
@@ -117,7 +117,7 @@ void Workspace::newCommand()
     if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
     {
         newScriptFile();
-        exit(0);
+        OS::exit(0);
     }
 
     setupPaths();
@@ -125,7 +125,7 @@ void Workspace::newCommand()
     if (workspacePath.empty())
     {
         g_Log.error(Msg0540);
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Create workspace
@@ -136,38 +136,38 @@ void Workspace::newCommand()
         if (fs::exists(workspacePath))
         {
             g_Log.error(format(Msg0817, workspacePath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         // Create workspace folders
         if (!fs::create_directories(workspacePath, errorCode))
         {
             g_Log.errorOS(format(Msg0818, workspacePath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         if (!fs::create_directories(examplesPath, errorCode))
         {
             g_Log.errorOS(format(Msg0818, examplesPath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         if (!fs::create_directories(testsPath, errorCode))
         {
             g_Log.errorOS(format(Msg0818, testsPath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         if (!fs::create_directories(modulesPath, errorCode))
         {
             g_Log.errorOS(format(Msg0818, modulesPath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         if (!fs::create_directories(dependenciesPath, errorCode))
         {
             g_Log.errorOS(format(Msg0818, dependenciesPath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         g_Log.message(format("=> workspace '%s' has been created", workspacePath.string().c_str()));
@@ -180,7 +180,7 @@ void Workspace::newCommand()
         if (!fs::exists(workspacePath))
         {
             g_Log.error(format(Msg0541, workspacePath.string().c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         moduleName = g_CommandLine.moduleName;
@@ -191,5 +191,5 @@ void Workspace::newCommand()
 
     g_Log.message(format("=> module '%s' has been created", moduleName.c_str()));
     g_Log.message(format("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
-    exit(0);
+    OS::exit(0);
 }

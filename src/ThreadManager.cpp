@@ -223,7 +223,7 @@ void ThreadManager::executeOneJob(Job* job)
     }
     __except (exceptionHandler(job, GetExceptionInformation()))
     {
-        exit(-1);
+        OS::exit(-1);
     }
 }
 

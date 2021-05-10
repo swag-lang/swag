@@ -16,7 +16,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
         if (fs::remove_all(folder, err) == -1)
         {
             g_Log.errorOS(format(Msg0344, folder.c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
     });
 
@@ -24,7 +24,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
     if (fs::remove_all(path, err) == -1)
     {
         g_Log.errorOS(format(Msg0345, path.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 }
 

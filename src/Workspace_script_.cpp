@@ -9,7 +9,7 @@ void Workspace::scriptCommand()
     if (g_CommandLine.scriptName.empty())
     {
         g_Log.error(format(Msg0318, g_CommandLine.scriptName.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     // Script filename
@@ -18,7 +18,7 @@ void Workspace::scriptCommand()
     if (!fs::exists(g_CommandLine.scriptName))
     {
         g_Log.error(format(Msg0166, g_CommandLine.scriptName.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     g_CommandLine.run           = true;
@@ -31,7 +31,7 @@ void Workspace::scriptCommand()
     if (!fs::exists(g_Workspace.cachePath))
     {
         g_Log.error(format(Msg0546, g_Workspace.cachePath.string().c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     auto cacheWorkspace = g_Workspace.cachePath.string();
@@ -40,7 +40,7 @@ void Workspace::scriptCommand()
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
         g_Log.error(format(Msg0547, cacheWorkspace.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     cacheWorkspace.append("/");
@@ -48,7 +48,7 @@ void Workspace::scriptCommand()
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
         g_Log.error(format(Msg0547, cacheWorkspace.c_str()));
-        exit(-1);
+        OS::exit(-1);
     }
 
     // This is it. Build and run !

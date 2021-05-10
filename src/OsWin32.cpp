@@ -609,6 +609,11 @@ namespace OS
         ::MessageBoxA(NULL, expr, title, MB_OK | MB_ICONERROR);
     }
 
+    void exit(int code)
+    {
+        ::ExitProcess(code);
+    }
+
     void assertBox(const char* expr, const char* file, int line)
     {
         string msg;
@@ -620,7 +625,7 @@ namespace OS
         switch (result)
         {
         case IDCANCEL:
-            exit(-1);
+            OS::exit(-1);
             break;
         case IDTRYAGAIN:
             DebugBreak();
@@ -651,7 +656,7 @@ namespace OS
         if (lRes != ERROR_SUCCESS)
         {
             g_Log.error(format(Msg0048, folder.c_str()));
-            exit(-1);
+            OS::exit(-1);
         }
 
         g_Log.message(format("'SWAG_FOLDER' has been changed to '%s'\n", folder.c_str()));
@@ -662,7 +667,7 @@ namespace OS
         if (lRes != ERROR_SUCCESS)
         {
             g_Log.error(Msg0049);
-            exit(-1);
+            OS::exit(-1);
         }
 
         char  szBuffer[512];
@@ -672,7 +677,7 @@ namespace OS
         {
             RegCloseKey(hKey);
             g_Log.error(Msg0049);
-            exit(-1);
+            OS::exit(-1);
         }
 
         if (!strstr(szBuffer, folder.c_str()))
@@ -684,7 +689,7 @@ namespace OS
             {
                 RegCloseKey(hKey);
                 g_Log.error(format(Msg0051, folder.c_str()));
-                exit(-1);
+                OS::exit(-1);
             }
 
             g_Log.message("'PATH' environment variable has been changed\n\n");
@@ -728,7 +733,7 @@ namespace OS
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
                 g_Log.error(Msg0052);
-                exit(-1);
+                OS::exit(-1);
             }
 
             g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
@@ -744,7 +749,7 @@ namespace OS
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
                 g_Log.error(Msg0052);
-                exit(-1);
+                OS::exit(-1);
             }
 
             g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
@@ -760,7 +765,7 @@ namespace OS
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
                 g_Log.error(Msg0052);
-                exit(-1);
+                OS::exit(-1);
             }
 
             g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
@@ -781,7 +786,7 @@ namespace OS
             if (FindNextChangeNotification(allHandles[numModule]) == FALSE)
             {
                 g_Log.error(Msg0055);
-                exit(-1);
+                OS::exit(-1);
             }
         }
 

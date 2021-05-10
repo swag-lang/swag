@@ -37,6 +37,7 @@ namespace OS
     extern uint64_t timerNow();
     extern double   timerToSeconds(uint64_t timer);
     extern int32_t  memcmp(const void* dst, const void* src, size_t size);
+    extern void     exit(int code);
 
     extern bool atomicTestNull(void** ptr);
     extern void atomicSetIfNotNull(void** ptr, void* what);
