@@ -49,7 +49,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("Command 'build' compiles the specified workspace, or the current folder if it's a valid workspace.\n");
         g_Log.message("It will compile all the modules located in '/modules' and '/examples', and their dependencies.\n");
         g_Log.message("If you want to compile only one module, add '--module:moduleName'.\n");
-        g_Log.message("Build results are located in the '/output' folder.\n");
+        g_Log.message("Build results are located in the workspace '/output' folder.\n");
 
         printExamples();
         g_Log.message("swag build --workspace:c:/myWorkspace\n");
@@ -149,7 +149,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("Command 'get' synchronize all the workspace dependencies.\n");
 
         printExamples();
-        g_Log.message("swag get --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("swag get --workspace:c:/myWorkspace\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
@@ -158,7 +158,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "watch")
     {
         printExamples();
-        g_Log.message("swag watch --workspace:c:/myWorkspace --rebuild\n");
+        g_Log.message("swag watch --workspace:c:/myWorkspace\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
