@@ -9,7 +9,7 @@ void newScriptFile()
     ofstream file(g_CommandLine.scriptName);
     if (!file.is_open())
     {
-        g_Log.error(format(Msg0347, g_CommandLine.scriptName.c_str(), OS::getLastErrorAsString().c_str()));
+        g_Log.errorOS(format(Msg0347, g_CommandLine.scriptName.c_str()));
         exit(-1);
     }
 
@@ -41,9 +41,16 @@ void Workspace::newModule(string moduleName)
     // Create one module folder
     auto modulePath = modulesPath;
     modulePath.append(moduleName);
+
+    if (fs::exists(modulePath))
+    {
+        g_Log.errorOS(format(Msg0397, moduleName.c_str()));
+        exit(-1);
+    }
+
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format(Msg0818, modulePath.string().c_str()));
+        g_Log.errorOS(format(Msg0818, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -53,7 +60,7 @@ void Workspace::newModule(string moduleName)
     ofstream fileCfg(cfgFileName);
     if (!fileCfg.is_open())
     {
-        g_Log.error(format(Msg0824, cfgFileName.string().c_str()));
+        g_Log.errorOS(format(Msg0824, cfgFileName.string().c_str()));
         exit(-1);
     }
 
@@ -82,7 +89,7 @@ void Workspace::newModule(string moduleName)
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format(Msg0818, modulePath.string().c_str()));
+        g_Log.errorOS(format(Msg0818, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -90,7 +97,7 @@ void Workspace::newModule(string moduleName)
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        g_Log.error(format(Msg0824, modulePath.string().c_str()));
+        g_Log.errorOS(format(Msg0824, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -135,31 +142,31 @@ void Workspace::newCommand()
         // Create workspace folders
         if (!fs::create_directories(workspacePath, errorCode))
         {
-            g_Log.error(format(Msg0818, workspacePath.string().c_str()));
+            g_Log.errorOS(format(Msg0818, workspacePath.string().c_str()));
             exit(-1);
         }
 
         if (!fs::create_directories(examplesPath, errorCode))
         {
-            g_Log.error(format(Msg0818, examplesPath.string().c_str()));
+            g_Log.errorOS(format(Msg0818, examplesPath.string().c_str()));
             exit(-1);
         }
 
         if (!fs::create_directories(testsPath, errorCode))
         {
-            g_Log.error(format(Msg0818, testsPath.string().c_str()));
+            g_Log.errorOS(format(Msg0818, testsPath.string().c_str()));
             exit(-1);
         }
 
         if (!fs::create_directories(modulesPath, errorCode))
         {
-            g_Log.error(format(Msg0818, modulesPath.string().c_str()));
+            g_Log.errorOS(format(Msg0818, modulesPath.string().c_str()));
             exit(-1);
         }
 
         if (!fs::create_directories(dependenciesPath, errorCode))
         {
-            g_Log.error(format(Msg0818, dependenciesPath.string().c_str()));
+            g_Log.errorOS(format(Msg0818, dependenciesPath.string().c_str()));
             exit(-1);
         }
 

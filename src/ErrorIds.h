@@ -19,7 +19,8 @@
 #define Msg0166 "fatal error: script file '%s' does not exist"
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
-#define Msg0347 "fatal error: cannot create script file '%s' (%s)"
+#define Msg0347 "fatal error: cannot create script file '%s'"
+#define Msg0397 "fatal error: module '%s' already exists in the '/modules' folder"
 
 #define Msg0722 "command line error: argument '%s' should be followed by '%s'"
 #define Msg0724 "command line error: argument '%s' should be followed by 'true' or 'false' ('%s')"

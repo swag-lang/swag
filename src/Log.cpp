@@ -80,6 +80,24 @@ void Log::error(const Utf8& message)
     unlock();
 }
 
+void Log::errorOS(const Utf8& message)
+{
+    auto str = OS::getLastErrorAsString();
+    lock();
+    setColor(LogColor::Red);
+    SWAG_ASSERT(message.back() != '\n');
+    print(message);
+    if (!str.empty())
+    {
+        print(" : ");
+        print(str);
+    }
+
+    eol();
+    setDefaultColor();
+    unlock();
+}
+
 void Log::message(const Utf8& message)
 {
     if (g_CommandLine.silent)
