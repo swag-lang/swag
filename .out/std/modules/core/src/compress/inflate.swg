@@ -219,6 +219,7 @@ impl HuffmanDecoder
                     {
                         b := ptr[offset]
                         addByte(dest, b)
+                        offset += 1
                     }
                 }
             }

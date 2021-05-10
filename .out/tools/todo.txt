@@ -29,6 +29,10 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
+script, #main or #run. Et si #main resoud pas, erreur bizarre
+-------------------------------------
+@print(x: ...) ?
+-------------------------------------
 maj new pour un module, pas un workspace
 -------------------------------------
 dbg x64, self doit etre comme this (possible ?)

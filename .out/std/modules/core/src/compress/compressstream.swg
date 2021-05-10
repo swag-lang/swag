@@ -34,7 +34,7 @@ impl CompressStream
 
             if curByte >= @countof(stream)
             {
-                numBits = -42
+                if numBits < width numBits = -42
                 eof = true
                 return
             }
