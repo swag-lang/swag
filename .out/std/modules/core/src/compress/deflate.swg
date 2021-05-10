@@ -5,6 +5,7 @@ const ZFAST_BITS = 9
 const ZFAST_MASK = (1 << ZFAST_BITS) - 1
 const HUFFMAN_MAX_BITS = 16
 const HUFFMAN_FAST_BITS = 9
+const DEFLATE_MAX_DISTANCE = 32768'uint
 
 const Z_LENGTH_BASE: [31] u16 = @[
 	3, 4, 5, 6, 7, 8, 9, 10,
@@ -55,6 +56,13 @@ const Z_FIXED_DIST: [32]u8 = @[
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 ]
 
+func reverse16(n: u16, bits: u8)->u16
+{
+    r := math.reverse(n)
+    r >>= 16 - bits
+    return r
+}
+
 struct HuffmanTable
 {
 	fast:        [1 << ZFAST_BITS] u16
@@ -63,13 +71,6 @@ struct HuffmanTable
 	firstsymbol: [16] u16
 	size:        [288] u8
 	value:       [288] u16
-}
-
-func reverse16(n: u16, bits: u8)->u16
-{
-    r := math.reverse(n)
-    r >>= 16 - bits
-    return r
 }
 
 impl HuffmanTable
@@ -127,23 +128,16 @@ impl HuffmanTable
     }
 }
 
-const DEFLATE_MAX_DISTANCE = 32768'uint
-
-struct HuffmanDecoder
+#[swag.opaque]
+public struct DeflateDecoder
 {
     stream:     CompressStream
     windowSize: uint
     adler:      hash.Adler32
 }
 
-impl HuffmanDecoder
+impl DeflateDecoder
 {
-    func init(using self, buf: const [..] u8, winSize: uint)
-    {
-        stream.init(buf)
-        windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
-    }
-
     func decode(using self, ht: *HuffmanTable)->u16 throw
     {
         if stream.numBits < 16
@@ -231,7 +225,15 @@ impl HuffmanDecoder
         }
     }
 
-    func inflate(using self)->Array'u8 throw
+    // Initialize the stream
+    public func init(using self, buf: const [..] u8, winSize: uint)
+    {
+        stream.init(buf)
+        windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
+    }
+
+    // Decompress the associated stream
+    public func decompress(using self)->Array'u8 throw
     {
         var result:         retval
         var z_repeat:       HuffmanTable

@@ -4,7 +4,7 @@
 #[swag.opaque]
 struct ZLibStream
 {
-    decoder: HuffmanDecoder
+    decoder: DeflateDecoder
 }
 
 impl ZLibStream
@@ -50,7 +50,7 @@ impl ZLibStream
     func decompress(using self)->Array'u8 throw
     {
         var result: retval
-        result = try decoder.inflate()
+        result = try decoder.decompress()
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
