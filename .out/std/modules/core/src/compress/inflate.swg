@@ -197,30 +197,20 @@ impl HuffmanDecoder
                 distance += cast(u16) stream.readBits(Z_DIST_EXTRA[value])
 
             if dest.count < distance throw "bad distance"
-            offset := dest.count - distance
-
-            ptr := dest.buffer + dest.count
-            ptr -= math.min(dest.count, windowSize)
+            if length <= 0 continue
 
             if distance == 1
             {
-                if length > 0
-                {
-                    b := ptr[offset]
-                    loop length
-                        addByte(dest, b)
-                }
+                b := dest.buffer[dest.count - 1]
+                loop length
+                    addByte(dest, b)
             }
             else
             {
-                if length > 0
+                loop length
                 {
-                    loop length
-                    {
-                        b := ptr[offset]
-                        addByte(dest, b)
-                        offset += 1
-                    }
+                    b := dest.buffer[dest.count - distance]
+                    addByte(dest, b)
                 }
             }
         }
