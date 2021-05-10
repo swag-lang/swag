@@ -19,7 +19,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
     addArg("bu ne wa cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
-    addArg("bu", "--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to work with (all modules if not specified)");
+    addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
+    addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "script file name");
 
     addArg("bu", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("bu", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
@@ -66,7 +67,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("cl", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
     addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
-    addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "set the script file to execute");
 }
 
 static void getArgValue(CommandLineArgument* oneArg, string& value, string& defaultValue)

@@ -120,10 +120,12 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     if (cmd == "new")
     {
         g_Log.message("\n");
-        g_Log.message("Command 'new' creates a new workspace with a simple executable module.\n");
+        g_Log.message("Command 'new' creates a new workspace, a new module in an existing workspace or a new script file.\n");
 
         printExamples();
         g_Log.message("swag new -w:c:/newWorkspace\n");
+        g_Log.message("swag new -w:c:/workspace -m:newModule\n");
+        g_Log.message("swag new -f:newScriptFile\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }

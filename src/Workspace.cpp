@@ -115,7 +115,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     }
 
     // Is this the module we want to build ?
-    if (g_CommandLine.moduleFilter == moduleName)
+    if (g_CommandLine.moduleName == moduleName)
     {
         filteredModule = module;
         if (g_CommandLine.run)
@@ -724,11 +724,11 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     VectorNative<Module*>  toBuild;
     VectorNative<Module*>* modulesToBuild = &modules;
-    if (!g_CommandLine.moduleFilter.empty())
+    if (!g_CommandLine.moduleName.empty())
     {
         if (!filteredModule)
         {
-            g_Log.error(format(Msg0556, g_CommandLine.moduleFilter.c_str()));
+            g_Log.error(format(Msg0556, g_CommandLine.moduleName.c_str()));
             return false;
         }
 

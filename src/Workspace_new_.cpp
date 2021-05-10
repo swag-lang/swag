@@ -34,64 +34,13 @@ void newScriptFile()
     g_Log.message(format("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
 }
 
-void Workspace::newCommand()
+void Workspace::newModule(string moduleName)
 {
-    // Create a script file
-    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
-    {
-        newScriptFile();
-        exit(0);
-    }
-
-    setupPaths();
-
-    if (workspacePath.empty())
-    {
-        g_Log.error(Msg0540);
-        exit(-1);
-    }
-
-    if (fs::exists(workspacePath))
-    {
-        g_Log.error(format(Msg0817, workspacePath.string().c_str()));
-        exit(-1);
-    }
-
-    // Create workspace folders
     error_code errorCode;
-    if (!fs::create_directories(workspacePath, errorCode))
-    {
-        g_Log.error(format(Msg0818, workspacePath.string().c_str()));
-        exit(-1);
-    }
-
-    if (!fs::create_directories(examplesPath, errorCode))
-    {
-        g_Log.error(format(Msg0818, examplesPath.string().c_str()));
-        exit(-1);
-    }
-
-    if (!fs::create_directories(testsPath, errorCode))
-    {
-        g_Log.error(format(Msg0818, testsPath.string().c_str()));
-        exit(-1);
-    }
-
-    if (!fs::create_directories(modulesPath, errorCode))
-    {
-        g_Log.error(format(Msg0818, modulesPath.string().c_str()));
-        exit(-1);
-    }
-
-    if (!fs::create_directories(dependenciesPath, errorCode))
-    {
-        g_Log.error(format(Msg0818, dependenciesPath.string().c_str()));
-        exit(-1);
-    }
 
     // Create one module folder
     auto modulePath = modulesPath;
-    modulePath.append(workspacePath.filename());
+    modulePath.append(moduleName);
     if (!fs::create_directories(modulePath, errorCode))
     {
         g_Log.error(format(Msg0818, modulePath.string().c_str()));
@@ -108,10 +57,11 @@ void Workspace::newCommand()
         exit(-1);
     }
 
-    const char* oneCfg = R"(// Swag generated module
+    const char* oneCfg = R"(
+// Swag module configuration file
 #dependencies
 {
-    // Add external dependencies
+    // Here you can add your external dependencies
     // #import "core" location="swag@std"
 
     // Setup the build configuration
@@ -150,10 +100,89 @@ void Workspace::newCommand()
 	@print("Hello world!\n")
 }
 )";
-    file << oneMain;
 
-    g_Log.message(format("=> workspace '%s' has been created", workspacePath.string().c_str()));
-    g_Log.message(format("=> a simple executable module '%s' has also been created", workspacePath.filename().string().c_str()));
-    g_Log.message(format("=> type 'swag run -w:%s' to build and run that module", workspacePath.string().c_str()));
+    file << oneMain;
+}
+
+void Workspace::newCommand()
+{
+    // Create a script file
+    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
+    {
+        newScriptFile();
+        exit(0);
+    }
+
+    setupPaths();
+
+    if (workspacePath.empty())
+    {
+        g_Log.error(Msg0540);
+        exit(-1);
+    }
+
+    // Create workspace
+    error_code errorCode;
+    string     moduleName;
+    if (g_CommandLine.moduleName.empty())
+    {
+        if (fs::exists(workspacePath))
+        {
+            g_Log.error(format(Msg0817, workspacePath.string().c_str()));
+            exit(-1);
+        }
+
+        // Create workspace folders
+        if (!fs::create_directories(workspacePath, errorCode))
+        {
+            g_Log.error(format(Msg0818, workspacePath.string().c_str()));
+            exit(-1);
+        }
+
+        if (!fs::create_directories(examplesPath, errorCode))
+        {
+            g_Log.error(format(Msg0818, examplesPath.string().c_str()));
+            exit(-1);
+        }
+
+        if (!fs::create_directories(testsPath, errorCode))
+        {
+            g_Log.error(format(Msg0818, testsPath.string().c_str()));
+            exit(-1);
+        }
+
+        if (!fs::create_directories(modulesPath, errorCode))
+        {
+            g_Log.error(format(Msg0818, modulesPath.string().c_str()));
+            exit(-1);
+        }
+
+        if (!fs::create_directories(dependenciesPath, errorCode))
+        {
+            g_Log.error(format(Msg0818, dependenciesPath.string().c_str()));
+            exit(-1);
+        }
+
+        g_Log.message(format("=> workspace '%s' has been created", workspacePath.string().c_str()));
+        moduleName = workspacePath.filename().string();
+    }
+
+    // Use an existing workspace to create a new module
+    else
+    {
+        if (!fs::exists(workspacePath))
+        {
+            g_Log.error(format(Msg0541, workspacePath.string().c_str()));
+            exit(-1);
+        }
+
+        moduleName = g_CommandLine.moduleName;
+    }
+
+    // Create module
+    newModule(moduleName);
+
+    g_Log.message(format("=> module '%s' has been created", moduleName.c_str()));
+    g_Log.message(format("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
     exit(0);
 }

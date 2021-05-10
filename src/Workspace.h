@@ -64,6 +64,7 @@ struct Workspace
 
     void cleanPublic(const fs::path& basePath);
     void cleanCommand();
+    void newModule(string moduleName);
     void newCommand();
     bool watchCommand();
     void scriptCommand();

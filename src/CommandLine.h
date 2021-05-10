@@ -17,7 +17,7 @@ struct CommandLine
     string scriptName;
     string workspacePath;
     string cachePath;
-    string moduleFilter;
+    string moduleName;
     string fileFilter;
     string testFilter;
 
