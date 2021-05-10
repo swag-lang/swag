@@ -1,4 +1,4 @@
-#test
+/*#test
 {
     const SRC = "this is something to compress this is something to compress"
     var DST: [100] u8
@@ -17,4 +17,4 @@
     //var tt: [..] u8 = [&DST1, destLen1]
     //@print(tt)
     c := zlib.compressBound(100)
-}
+}*/

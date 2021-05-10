@@ -221,7 +221,11 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     vector<Utf8> tokens;
     tokenize(dep->location.c_str(), '@', tokens);
     if (tokens.size() != 2)
+    {
+        if (dep->isLocalToWorkspace)
+            return dep->node->sourceFile->report({dep->node, Msg0514});
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Msg0514});
+    }
 
     // Check mode
     if (tokens[0] != "swag" && tokens[0] != "disk")
