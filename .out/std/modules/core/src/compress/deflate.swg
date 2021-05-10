@@ -1,13 +1,13 @@
 // https://github.com/odin-lang/Odin/blob/master/core/compress/zlib/zlib.odin
 #global namespace compress
 
-const ZFAST_BITS = 9
-const ZFAST_MASK = (1 << ZFAST_BITS) - 1
-const HUFFMAN_MAX_BITS = 16
-const HUFFMAN_FAST_BITS = 9
-const DEFLATE_MAX_DISTANCE = 32768'uint
+const FastBits           = 9
+const FastMask           = (1 << FastBits) - 1
+const HuffmanMaxBits     = 16
+const HuffmanFastBits    = 9
+const DeflateMaxDistance = 32768'uint
 
-const Z_LENGTH_BASE: [31] u16 = @[
+const LengthBase: [31] u16 = @[
 	3, 4, 5, 6, 7, 8, 9, 10,
     11, 13, 15, 17, 19, 23, 27,
     31, 35, 43, 51, 59, 67, 83,
@@ -15,7 +15,7 @@ const Z_LENGTH_BASE: [31] u16 = @[
     0, 0
 ]
 
-const Z_LENGTH_EXTRA: [31] u8 = @[
+const LengthExtra: [31] u8 = @[
 	0,0,0,0,0,0,0,0,
     1,1,1,1,
     2,2,2,2,
@@ -24,23 +24,23 @@ const Z_LENGTH_EXTRA: [31] u8 = @[
     5,5,5,5,0,0,0,
 ]
 
-const Z_LENGTH_DEZIGZAG: [] u8 = @[
+const LengthDezigzag: [] u8 = @[
 	16, 17, 18, 0,
     8, 7, 9, 6, 10,
     5, 11, 4, 12, 3,
     13, 2, 14, 1, 15,
 ]
 
-const Z_DIST_BASE: [32] u16 = @[
+const DistBase: [32] u16 = @[
 	1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,
 	257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,0,0,
 ]
 
-const Z_DIST_EXTRA: [32] u8 = @[
+const DistExtra: [32] u8 = @[
 	0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,0,0,
 ]
 
-const Z_FIXED_LENGTH: [288]u8 = @[
+const FixedLength: [288]u8 = @[
 	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
 	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
 	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
@@ -52,7 +52,7 @@ const Z_FIXED_LENGTH: [288]u8 = @[
 	7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7, 7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,
 ]
 
-const Z_FIXED_DIST: [32]u8 = @[
+const FixedDist: [32]u8 = @[
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 ]
 
@@ -65,22 +65,22 @@ func reverse16(n: u16, bits: u8)->u16
 
 struct HuffmanTable
 {
-	fast:        [1 << ZFAST_BITS] u16
-	firstcode:   [16] u16
-	maxcode:     [17] int
-	firstsymbol: [16] u16
+	fast:        [1 << FastBits] u16
+	firstCode:   [16] u16
+	maxCode:     [17] int
+	firstSymbol: [16] u16
 	size:        [288] u8
 	value:       [288] u16
 }
 
 impl HuffmanTable
 {
-    func init(using self, code_lengths: const [..] u8) throw
+    func init(using self, codeLengths: const [..] u8) throw
     {
-        var sizes:     [HUFFMAN_MAX_BITS + 1] u16
-        var next_code: [HUFFMAN_MAX_BITS] u16
+        var sizes:    [HuffmanMaxBits + 1] u16
+        var nextCode: [HuffmanMaxBits] u16
 
-        visit v: code_lengths
+        visit v: codeLengths
             sizes[v] += 1
         sizes[0] = 0
 
@@ -93,37 +93,37 @@ impl HuffmanTable
 	    k, cde := 0'u16
         loop i: 1..15
         {
-            next_code[i]   = cde
-            firstcode[i]   = cde
-            firstsymbol[i] = k
+            nextCode[i]    = cde
+            firstCode[i]   = cde
+            firstSymbol[i] = k
             cde += sizes[i]
             if sizes[i] != 0 and (cde - 1) >= (1 << i)
                 throw "huffman bad code lengths"
-            maxcode[i] = cast(int) cde << (16 - i)
+            maxCode[i] = cast(int) cde << (16 - i)
             cde <<=,safe 1
             k += sizes[i]
         }
 
-        maxcode[16] = 0x10000; // Sentinel
-        visit v, ci: code_lengths
+        maxCode[16] = 0x10000;
+        visit v, ci: codeLengths
         {
             if !v continue
 
-            c := next_code[v] - firstcode[v] + firstsymbol[v]
+            c := nextCode[v] - firstCode[v] + firstSymbol[v]
             fastv := (cast(u16) v << 9) | cast(u16) ci
             size[c] = v
             value[c] = cast(u16) ci
-            if v <= ZFAST_BITS
+            if v <= FastBits
             {
-                j := reverse16(next_code[v], v)
-                while j < (1 << ZFAST_BITS)
+                j := reverse16(nextCode[v], v)
+                while j < (1 << FastBits)
                 {
                     fast[j] = fastv
                     j += (1'u16 << v)
                 }
             }
 
-            next_code[v] += 1
+            nextCode[v] += 1
         }
     }
 }
@@ -147,10 +147,10 @@ impl DeflateDecoder
             if stream.eof throw "malformed"
         }
 
-        b := ht.fast[stream.codeBuffer & ZFAST_MASK]
+        b := ht.fast[stream.codeBuffer & FastMask]
         if b
         {
-            s := cast(u8) (b >>,safe ZFAST_BITS)
+            s := cast(u8) (b >>,safe FastBits)
             stream.consumeBits(s)
             return b & 511
         }
@@ -158,15 +158,15 @@ impl DeflateDecoder
         cde := cast(u16) stream.peekBits(16)
 	    k   := reverse16(cde, 16)
 
-        s := HUFFMAN_FAST_BITS + 1
+        s := HuffmanFastBits + 1
         while true
         {
-            if k < ht.maxcode[s] break
+            if k < ht.maxCode[s] break
     		s += 1
         }
 
         if s >= 16 throw "bad huffman code"
-        b1 := (k >>,safe (16 - s)) - ht.firstcode[s] + ht.firstsymbol[s]
+        b1 := (k >>,safe (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
         if b1 >= @countof(ht.size) throw "bad huffman code"
         if ht.size[b1] != s throw "bad huffman code"
 
@@ -181,11 +181,11 @@ impl DeflateDecoder
         adler.update(newSlice)
     }
 
-    func parseBlock(using self, z_repeat, z_offset: *HuffmanTable, dest: *Array'u8) throw
+    func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
         while true
         {
-            value := try decode(z_repeat)
+            value := try decode(repeatHt)
             if value < 256
             {
                 addByte(dest, cast(u8) value)
@@ -196,14 +196,14 @@ impl DeflateDecoder
                 return
 
             value -= 257
-            length := Z_LENGTH_BASE[value]
-            if Z_LENGTH_EXTRA[value] > 0
-                length += cast(u16) stream.readBits(Z_LENGTH_EXTRA[value])
+            length := LengthBase[value]
+            if LengthExtra[value] > 0
+                length += cast(u16) stream.readBits(LengthExtra[value])
 
-            value = try decode(z_offset)
-            distance := Z_DIST_BASE[value]
-            if Z_DIST_EXTRA[value] > 0
-                distance += cast(u16) stream.readBits(Z_DIST_EXTRA[value])
+            value = try decode(repeatZ)
+            distance := DistBase[value]
+            if DistExtra[value] > 0
+                distance += cast(u16) stream.readBits(DistExtra[value])
 
             if dest.count < distance throw "bad distance"
             if length <= 0 continue
@@ -229,16 +229,16 @@ impl DeflateDecoder
     public func init(using self, buf: const [..] u8, winSize: uint)
     {
         stream.init(buf)
-        windowSize = math.min(winSize, DEFLATE_MAX_DISTANCE)
+        windowSize = math.min(winSize, DeflateMaxDistance)
     }
 
     // Decompress the associated stream
     public func decompress(using self)->Array'u8 throw
     {
-        var result:         retval
-        var z_repeat:       HuffmanTable
-        var z_offset:       HuffmanTable
-        var codelength_ht:  HuffmanTable
+        var result:        retval
+        var repeatHt:      HuffmanTable
+        var repeatZ:       HuffmanTable
+        var codeLengthHt:  HuffmanTable
 
         debug.assert(windowSize > 0)
 
@@ -263,9 +263,9 @@ impl DeflateDecoder
                 stream.curByte += uncompressedLen
 
             case 1:
-                try z_repeat.init(Z_FIXED_LENGTH)
-                try z_offset.init(Z_FIXED_DIST)
-                try parseBlock(&z_repeat, &z_offset, &result)
+                try repeatHt.init(FixedLength)
+                try repeatZ.init(FixedDist)
+                try parseBlock(&repeatHt, &repeatZ, &result)
 
             case 3:
                 throw "invalid block type"
@@ -280,15 +280,15 @@ impl DeflateDecoder
                 loop i: hclen
                 {
                     s := cast(u8) stream.readBits(3)
-                    codeLengthSizes[Z_LENGTH_DEZIGZAG[i]] = s
+                    codeLengthSizes[LengthDezigzag[i]] = s
                 }
 
-                try codelength_ht.init(codeLengthSizes)
+                try codeLengthHt.init(codeLengthSizes)
                 ntot := hlit + hdist
                 n := 0
                 while n < ntot
                 {
-                    c := try decode(&codelength_ht)
+                    c := try decode(&codeLengthHt)
                     if c < 0 or c >= 19 throw "bad code lengths"
 
                     if c < 16
@@ -326,9 +326,9 @@ impl DeflateDecoder
                 }
 
                 if n != ntot throw "bad code lengths"
-                try z_repeat.init(lenCodes[0..hlit-1])
-                try z_offset.init(lenCodes[hlit..ntot-1])
-                try parseBlock(&z_repeat, &z_offset, &result)
+                try repeatHt.init(lenCodes[0..hlit-1])
+                try repeatZ.init(lenCodes[hlit..ntot-1])
+                try parseBlock(&repeatHt, &repeatZ, &result)
             }
 
             if final == 1 break
