@@ -2288,34 +2288,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IntrinsicPrintF64:
-    {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__printF64");
-        g_Log.lock();
-        context->push(registersRC[ip->a.u32].f64);
-        localCall(context, bc, 1);
-        g_Log.unlock();
-        break;
-    }
-    case ByteCodeOp::IntrinsicPrintS64:
-    {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__printS64");
-        g_Log.lock();
-        context->push(registersRC[ip->a.u32].s64);
-        localCall(context, bc, 1);
-        g_Log.unlock();
-        break;
-    }
-    case ByteCodeOp::IntrinsicPrintString:
-    {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__printString");
-        g_Log.lock();
-        context->push(registersRC[ip->b.u32].u64);
-        context->push(registersRC[ip->a.u32].pointer);
-        localCall(context, bc, 2);
-        g_Log.unlock();
-        break;
-    }
     case ByteCodeOp::IntrinsicInterfaceOf:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("@interfaceof");

@@ -210,41 +210,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
     switch (node->token.id)
     {
-    case TokenId::IntrinsicPrint:
-    {
-        auto child0   = callParams->childs[0];
-        auto typeInfo = TypeManager::concreteReferenceType(child0->typeInfo);
-        if (typeInfo->kind == TypeInfoKind::Native)
-        {
-            switch (typeInfo->nativeType)
-            {
-            case NativeTypeKind::S64:
-            case NativeTypeKind::Int:
-                emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
-                break;
-            case NativeTypeKind::F64:
-                emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
-                break;
-            case NativeTypeKind::String:
-                emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
-                break;
-            default:
-                return internalError(context, "emitIntrinsic, @print invalid type");
-            }
-        }
-        else if (typeInfo->kind == TypeInfoKind::Slice)
-        {
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
-        }
-        else if (typeInfo->kind == TypeInfoKind::Pointer)
-        {
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], callParams->childs[1]->resultRegisterRC);
-        }
-
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
-        freeRegisterRC(context, child0);
-        break;
-    }
     case TokenId::IntrinsicErrorMsg:
     {
         auto child0 = callParams->childs.front();

@@ -1111,7 +1111,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         identifier->kind = AstNodeKind::FuncCall;
 
-        if (identifier->token.text[0] == '@')
+        // @print behaves like a normal function, so we want an emitCall in that case
+        if (identifier->token.text[0] == '@' && identifier->token.text != "@print")
         {
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;

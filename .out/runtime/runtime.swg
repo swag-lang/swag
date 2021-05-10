@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////
 #[swag.discardable]
+#[swag.safety("", false)]
 func __itoa(result: *u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -36,6 +37,7 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
+#[swag.safety("", false)]
 func __ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -88,9 +90,30 @@ func __printF64(value: f64)
     __printString(str)
 }
 
-func @print(value: s64) = __printS64(value)
-func @print(value: f64) = __printF64(value)
-func @print(message: string) = __printString(message)
+func @print(params: ...)
+{
+    visit v: params
+    {
+        ko := @kindof(v)
+        switch ko
+        {
+        case s8:        __printS64(cast(s64) cast(s8) v)
+        case s16:       __printS64(cast(s64) cast(s16) v)
+        case s32:       __printS64(cast(s64) cast(s32) v)
+        case s64, int:  __printS64(cast(s64) v)
+        case u8:        __printS64(cast(s64) cast(u8) v)
+        case u16:       __printS64(cast(s64) cast(u16) v)
+        case u32:       __printS64(cast(s64) cast(u32) v)
+        case rune:      __printS64(cast(s64) cast(rune) v)
+        case u64, uint: __printS64(cast(s64) cast(u64) v)
+        case f32:       __printF64(cast(f64) cast(f32) v)
+        case f64:       __printF64(cast(f64) v)
+        case string:    __printString(cast(string) v)
+        case bool:      __printString(cast(bool) v ? "true" : "false")
+        default:        __printString("?")
+        }
+    }
+}
 
 ////////////////////////////////////////////////////////////
 func @strcmp(str1: string, str2: string)->bool

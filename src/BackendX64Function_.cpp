@@ -2641,23 +2641,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
-        case ByteCodeOp::IntrinsicPrintString:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc->callName());
-            break;
-        case ByteCodeOp::IntrinsicPrintS64:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc->callName());
-            break;
-        case ByteCodeOp::IntrinsicPrintF64:
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            BackendX64Inst::emit_StoreF64_Indirect(pp, 0, XMM0, RSP);
-            emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc->callName());
-            break;
         case ByteCodeOp::IntrinsicErrorMsg:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

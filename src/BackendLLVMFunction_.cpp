@@ -3297,19 +3297,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicPrintS64:
-        case ByteCodeOp::IntrinsicPrintF64:
-        {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            localCall(buildParameters, allocR, allocT, bcF->callName().c_str(), {ip->a.u32}, {});
-            break;
-        }
-        case ByteCodeOp::IntrinsicPrintString:
-        {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            localCall(buildParameters, allocR, allocT, bcF->callName().c_str(), {ip->a.u32, ip->b.u32}, {});
-            break;
-        }
         case ByteCodeOp::IntrinsicErrorMsg:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;

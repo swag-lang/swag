@@ -26,10 +26,6 @@ BYTECODE_OP(InternalPanic, OPFLAG_READ_VAL64_D, "@panic")
 BYTECODE_OP(InternalInitStackTrace, 0, "")
 BYTECODE_OP(InternalStackTrace, OPFLAG_READ_A, "")
 
-BYTECODE_OP(IntrinsicPrintS64, OPFLAG_READ_A, "@print(_ra_)")
-BYTECODE_OP(IntrinsicPrintF64, OPFLAG_READ_A, "@print(_ra_)")
-BYTECODE_OP(IntrinsicPrintString, OPFLAG_READ_A | OPFLAG_READ_B, "@print(_ra_, _rb_)")
-
 BYTECODE_OP(IntrinsicAlloc, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @alloc(_rb_)")
 BYTECODE_OP(IntrinsicRealloc, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_READ_C, "_ra_ = @realloc(_rb_, _rc_)")
 BYTECODE_OP(IntrinsicFree, OPFLAG_READ_A, "@free(_ra_)")
