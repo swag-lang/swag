@@ -455,7 +455,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
 
         struct stat stat_buf;
         int         rc = stat(filename, &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, format(Msg0502, back->computedValue.text.c_str(), OS::getLastErrorAsString().c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, format(Msg0223, back->computedValue.text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto newJob                    = g_Pool_loadFileJob.alloc();

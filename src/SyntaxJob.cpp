@@ -202,7 +202,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
                 fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
             if (!modl->handleGeneratedFile)
             {
-                fromNode->sourceFile->report({fromNode, fromNode->token, format(Msg0524, publicPath.c_str(), OS::getLastErrorAsString().c_str())});
+                g_Log.errorOS(format(Msg0524, publicPath.c_str()));
                 return false;
             }
         }

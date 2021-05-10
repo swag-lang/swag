@@ -155,7 +155,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format(Msg0046, cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.errorOS(format(Msg0046, cmdline.c_str()));
                 return false;
             }
         }
@@ -371,7 +371,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format(Msg0046, cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.errorOS(format(Msg0046, cmdline.c_str()));
                 return;
             }
         }

@@ -14,7 +14,7 @@ bool OutputFile::openWrite()
     winHandle = ::CreateFileA(path.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, NULL);
     if (winHandle == INVALID_HANDLE_VALUE)
     {
-        g_Log.error(format(Msg0524, path.c_str(), OS::getLastErrorAsString().c_str()));
+        g_Log.errorOS(format(Msg0524, path.c_str()));
         return false;
     }
 
@@ -66,7 +66,7 @@ bool OutputFile::save(void* buffer, uint32_t count, uint8_t pendingAffinity)
         auto err = GetLastError();
         if (err != ERROR_IO_PENDING)
         {
-            g_Log.error(format(Msg0525, path.c_str(), OS::getLastErrorAsString().c_str()));
+            g_Log.errorOS(format(Msg0525, path.c_str()));
             return false;
         }
 

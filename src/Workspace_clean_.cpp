@@ -15,7 +15,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
         std::error_code err;
         if (fs::remove_all(folder, err) == -1)
         {
-            g_Log.error(format(Msg0344, folder.c_str(), OS::getLastErrorAsString().c_str()));
+            g_Log.errorOS(format(Msg0344, folder.c_str()));
             exit(-1);
         }
     });
@@ -23,7 +23,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
     {
-        g_Log.error(format(Msg0345, path.string().c_str(), OS::getLastErrorAsString().c_str()));
+        g_Log.errorOS(format(Msg0345, path.string().c_str()));
         exit(-1);
     }
 }
@@ -106,10 +106,10 @@ void Workspace::cleanCommand()
         {
             OS::visitFolders(targetPath.string().c_str(), [this](const char* folder) {
                 auto path = targetPath.string() + folder;
-                path = normalizePath(path);
+                path      = normalizePath(path);
                 g_Log.messageHeaderCentered("Cleaning", path);
                 cleanFolderContent(path);
-                });
+            });
         }
 
         // Clean all cache folders for the given workspace
@@ -125,11 +125,11 @@ void Workspace::cleanCommand()
                 if (strstr(folder, wkPath.c_str()) == folder)
                 {
                     auto path = cachePath.string() + folder;
-                    path = normalizePath(path);
+                    path      = normalizePath(path);
                     g_Log.messageHeaderCentered("Cleaning", path);
                     cleanFolderContent(path);
                 }
-                });
+            });
         }
 
         // Clean all public folders of the workspace modules

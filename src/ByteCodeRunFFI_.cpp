@@ -43,7 +43,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         {
             if (g_CommandLine.devMode)
                 SWAG_ASSERT(false);
-            context->report({format(Msg0257, moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str())});
+            context->report({format(Msg0257, moduleName.text.c_str(), funcName.c_str())});
             return nullptr;
         }
     }

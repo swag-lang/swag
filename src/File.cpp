@@ -12,7 +12,7 @@ void File::openFile(FILE** fileHandle, const char* path, const char* mode)
     fopen_s(fileHandle, path, mode);
     if (*fileHandle == nullptr)
     {
-        g_Log.error(format(Msg0502, path, OS::getLastErrorAsString().c_str()));
+        g_Log.errorOS(format(Msg0502, path));
         return;
     }
 
