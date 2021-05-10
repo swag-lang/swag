@@ -117,7 +117,6 @@ struct HuffmanDecoder
 {
     stream:     CompressStream
     windowSize: uint
-    lastB:      Array'u8
     adler:      hash.Adler32
 }
 
@@ -224,7 +223,6 @@ impl HuffmanDecoder
         var codelength_ht:  HuffmanTable
 
         debug.assert(windowSize > 0)
-        lastB.resize(windowSize)
 
         while true
         {
