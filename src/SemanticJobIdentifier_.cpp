@@ -851,7 +851,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             //
             auto checkParent = identifier->parent;
             auto child       = (AstNode*) identifier;
-            while (checkParent->kind == AstNodeKind::ArrayPointerIndex)
+            while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
+                   checkParent->kind == AstNodeKind::ArrayPointerSlicing)
             {
                 child       = checkParent;
                 checkParent = checkParent->parent;
