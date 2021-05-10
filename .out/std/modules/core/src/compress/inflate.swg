@@ -39,6 +39,22 @@ const Z_DIST_EXTRA: [32] u8 = @[
 	0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,0,0,
 ]
 
+const Z_FIXED_LENGTH: [288]u8 = @[
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+	7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7, 7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,
+]
+
+const Z_FIXED_DIST: [32]u8 = @[
+	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+]
+
 struct HuffmanTable
 {
 	fast:        [1 << ZFAST_BITS] u16
@@ -228,7 +244,6 @@ impl HuffmanDecoder
         {
             final := stream.readBits(1)
             type  := stream.readBits(2)
-            console.printf("final: % type: %\n", final, type)
 
             switch type
             {
@@ -237,7 +252,6 @@ impl HuffmanDecoder
                 stream.discardToNextByte()
                 uncompressedLen := cast(u16) stream.readBits(16)
                 lengthCheck     := cast(u16) stream.readBits(16)
-                console.printf("uncompressedLen: % lengthCheck: %\n", uncompressedLen, lengthCheck)
                 if ~uncompressedLen != lengthCheck throw "invalid buffer, length mismatch"
 
                 stream.revert()
@@ -247,7 +261,8 @@ impl HuffmanDecoder
                 stream.curByte += uncompressedLen
 
             case 1:
-                debug.assert(false) // todo
+                try z_repeat.init(Z_FIXED_LENGTH)
+                try z_offset.init(Z_FIXED_DIST)
                 try parseBlock(&z_repeat, &z_offset, &result)
 
             case 3:
