@@ -307,13 +307,6 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::WaitForDependenciesEffective)
     {
-        // In script mode, be sure to have something to execute
-        if (!module->byteCodeMainFunc && g_CommandLine.scriptCommand && module->kind == ModuleKind::Script)
-        {
-            module->files.front()->report({Msg0223});
-            return JobResult::ReleaseJob;
-        }
-
         // If we will not run some stuff, then no need to wait for dependencies, because we do not
         // have to load the dlls
         if (module->hasBytecodeToRun())
@@ -530,7 +523,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (module->kind == ModuleKind::Config)
+        if (module->kind == ModuleKind::Config || module->kind == ModuleKind::Script)
             pass = ModuleBuildPass::Done;
         else
         {

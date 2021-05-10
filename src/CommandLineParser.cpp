@@ -66,7 +66,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("cl", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
     addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
-    addArg("sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "set the script file to execute");
+    addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "set the script file to execute");
 }
 
 static void getArgValue(CommandLineArgument* oneArg, string& value, string& defaultValue)

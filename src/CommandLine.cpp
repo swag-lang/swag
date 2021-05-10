@@ -63,5 +63,20 @@ bool CommandLine::check()
         cachePath = fs::canonical(cachePath).string();
     }
 
+    // Add/check script file extension
+    if (!g_CommandLine.scriptName.empty())
+    {
+        fs::path p(g_CommandLine.scriptName);
+        if (p.extension().string().empty())
+        {
+            g_CommandLine.scriptName += ".swgs";
+        }
+        else if (p.extension().string() != ".swgs")
+        {
+            g_Log.error(format(Msg0319, p.extension().string().c_str()));
+            return false;
+        }
+    }
+
     return true;
 }

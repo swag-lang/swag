@@ -13,13 +13,7 @@ void Workspace::scriptCommand()
     }
 
     // Script filename
-    fs::path pathF = fs::absolute(g_CommandLine.scriptName).string();
-    if (pathF.extension() != ".swgs")
-    {
-        g_Log.error(format(Msg0319, pathF.extension().string().c_str()));
-        exit(-1);
-    }
-
+    fs::path pathF           = fs::absolute(g_CommandLine.scriptName).string();
     g_CommandLine.scriptName = normalizePath(pathF.string());
     if (!fs::exists(g_CommandLine.scriptName))
     {

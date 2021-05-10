@@ -2,9 +2,47 @@
 #include "Workspace.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
+#include "Os.h"
+
+void newScriptFile()
+{
+    ofstream file(g_CommandLine.scriptName);
+    if (!file.is_open())
+    {
+        g_Log.error(format(Msg0347, g_CommandLine.scriptName.c_str(), OS::getLastErrorAsString().c_str()));
+        exit(-1);
+    }
+
+    const char* content = R"(
+// Swag script file
+#dependencies
+{
+    // Here you can add your external dependencies
+    // #import "core" location="swag@std"
+}
+
+#run
+{
+    @print("Hello world !\n")
+}
+
+)";
+
+    file << content;
+
+    g_Log.message(format("=> script file '%s' has been created", g_CommandLine.scriptName.c_str()));
+    g_Log.message(format("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
+}
 
 void Workspace::newCommand()
 {
+    // Create a script file
+    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
+    {
+        newScriptFile();
+        exit(0);
+    }
+
     setupPaths();
 
     if (workspacePath.empty())

@@ -19,6 +19,7 @@
 #define Msg0166 "fatal error: script file '%s' does not exist"
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
+#define Msg0347 "fatal error: cannot create script file '%s' (%s)"
 
 #define Msg0722 "command line error: argument '%s' should be followed by '%s'"
 #define Msg0724 "command line error: argument '%s' should be followed by 'true' or 'false' ('%s')"
@@ -343,7 +344,7 @@
 #define Msg0627 "cannot visit a type variadic by pointer"
 #define Msg0525 "cannot write to file '%s': %s"
 #define Msg0269 "missing '#main' function (executable entry point)"
-#define Msg0223 "missing '#main' function (script entry point)"
+//#define Msg0223 "missing '#main' function (script entry point)"
 #define Msg0001 "compare operation not allowed on type '%s'"
 #define Msg0007 "comparison operations are invalid on tuple types"
 #define Msg0238 "compiler assertion failed"
