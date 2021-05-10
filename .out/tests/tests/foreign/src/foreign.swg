@@ -7,7 +7,6 @@ public func tcf_tuple()->{s32, s32}
 
 public func tcf_toto()
 {
-
 }
 
 public func tcf_toto1(x: s64)

@@ -81,7 +81,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         if (!fs::exists(outFileFame))
             return false;
         auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
-        if(timeOut < moreRecentSourceFile)
+        if(!invert && (timeOut < moreRecentSourceFile))
+            return false;
+        if (invert && (timeOut > moreRecentSourceFile))
             return false;
     }
 
