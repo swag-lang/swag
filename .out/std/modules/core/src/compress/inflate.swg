@@ -6,11 +6,37 @@ const ZFAST_MASK = (1 << ZFAST_BITS) - 1
 const HUFFMAN_MAX_BITS = 16
 const HUFFMAN_FAST_BITS = 9
 
+const Z_LENGTH_BASE: [31] u16 = @[
+	3, 4, 5, 6, 7, 8, 9, 10,
+    11, 13, 15, 17, 19, 23, 27,
+    31, 35, 43, 51, 59, 67, 83,
+    99, 115, 131, 163, 195, 227, 258,
+    0, 0
+]
+
+const Z_LENGTH_EXTRA: [31] u8 = @[
+	0,0,0,0,0,0,0,0,
+    1,1,1,1,
+    2,2,2,2,
+    3,3,3,3,
+    4,4,4,4,
+    5,5,5,5,0,0,0,
+]
+
 const Z_LENGTH_DEZIGZAG: [] u8 = @[
 	16, 17, 18, 0,
     8, 7, 9, 6, 10,
     5, 11, 4, 12, 3,
     13, 2, 14, 1, 15,
+]
+
+const Z_DIST_BASE: [32] u16 = @[
+	1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,
+	257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,0,0,
+]
+
+const Z_DIST_EXTRA: [32] u8 = @[
+	0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,0,0,
 ]
 
 struct HuffmanTable
@@ -56,7 +82,7 @@ impl HuffmanTable
             cde += sizes[i]
             if sizes[i] != 0 and (cde - 1) >= (1 << i)
                 throw "huffman bad code lengths"
-            maxcode[i] = cde <<,safe (16 - i)
+            maxcode[i] = cast(int) cde << (16 - i)
             cde <<=,safe 1
             k += sizes[i]
         }
@@ -131,7 +157,7 @@ impl HuffmanDecoder
         }
 
         if s >= 16 throw "bad huffman code"
-        b1 := (k >> (16 - s)) - ht.firstcode[s] + ht.firstsymbol[s]
+        b1 := (k >>,safe (16 - s)) - ht.firstcode[s] + ht.firstsymbol[s]
         if b1 >= @countof(ht.size) throw "bad huffman code"
         if ht.size[b1] != s throw "bad huffman code"
 
@@ -139,9 +165,64 @@ impl HuffmanDecoder
         return ht.value[b1]
     }
 
-    func parseBlock(using self, z_repeat, z_offset: *HuffmanTable) throw
+    func addByte(using self, dest: *Array'u8, value: u8)
     {
-        value := try decode(z_repeat)
+        dest.add(value)
+        newSlice := @mkslice(dest.buffer + dest.count - 1, 1)
+        adler.update(newSlice)
+    }
+
+    func parseBlock(using self, z_repeat, z_offset: *HuffmanTable, dest: *Array'u8) throw
+    {
+        while true
+        {
+            value := try decode(z_repeat)
+            if value < 256
+            {
+                addByte(dest, cast(u8) value)
+                continue
+            }
+
+            if value == 256
+                return
+
+            value -= 257
+            length := Z_LENGTH_BASE[value]
+            if Z_LENGTH_EXTRA[value] > 0
+                length += cast(u16) stream.readBits(Z_LENGTH_EXTRA[value])
+
+            value = try decode(z_offset)
+            distance := Z_DIST_BASE[value]
+            if Z_DIST_EXTRA[value] > 0
+                distance += cast(u16) stream.readBits(Z_DIST_EXTRA[value])
+
+            if dest.count < distance throw "bad distance"
+            offset := dest.count - distance
+
+            ptr := dest.buffer + dest.count
+            ptr -= math.min(dest.count, windowSize)
+
+            if distance == 1
+            {
+                if length > 0
+                {
+                    b := ptr[offset]
+                    loop length
+                        addByte(dest, b)
+                }
+            }
+            else
+            {
+                if length > 0
+                {
+                    loop length
+                    {
+                        b := ptr[offset]
+                        addByte(dest, b)
+                    }
+                }
+            }
+        }
     }
 
     func inflate(using self)->Array'u8 throw
@@ -178,7 +259,7 @@ impl HuffmanDecoder
 
             case 1:
                 debug.assert(false) // todo
-                try parseBlock(&z_repeat, &z_offset)
+                try parseBlock(&z_repeat, &z_offset, &result)
 
             case 3:
                 throw "invalid block type"
@@ -241,7 +322,7 @@ impl HuffmanDecoder
                 if n != ntot throw "bad code lengths"
                 try z_repeat.init(lenCodes[0..hlit-1])
                 try z_offset.init(lenCodes[hlit..ntot-1])
-                try parseBlock(&z_repeat, &z_offset)
+                try parseBlock(&z_repeat, &z_offset, &result)
             }
 
             if final == 1 break
