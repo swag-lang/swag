@@ -28,6 +28,38 @@ impl enum PixelFormat
         return 0
     }
 
+    // Returns the number of image channels
+    #[constexpr]
+    func channels(self)->u8
+    {
+        #[complete]
+        switch self
+        {
+            case BGR8:  return 3
+            case BGRA8: return 4
+            case RGB8:  return 3
+            case RGBA8: return 4
+        }
+
+        return 0
+    }
+
+    // Returns the bit depth of each channel
+    #[constexpr]
+    func bitDepth(self)->u8
+    {
+        #[complete]
+        switch self
+        {
+            case BGR8:  return 8
+            case BGRA8: return 8
+            case RGB8:  return 8
+            case RGBA8: return 8
+        }
+
+        return 0
+    }
+
     // Returns true if the given pixel format has an alpha channel
     #[constexpr]
     func hasAlpha(self)->bool
