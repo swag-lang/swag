@@ -80,6 +80,7 @@ impl HuffmanTable
         var sizes:    [HuffmanMaxBits + 1] u16
         var nextCode: [HuffmanMaxBits] u16
 
+        @init(self)
         visit v: codeLengths
             sizes[v] += 1
         sizes[0] = 0
@@ -181,8 +182,11 @@ impl DeflateDecoder
         adler.update(newSlice)
     }
 
+    var ppp = 0
+
     func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
+        ppp += 1
         while true
         {
             value := try decode(repeatHt)
@@ -263,6 +267,7 @@ impl DeflateDecoder
                 result.add(newSlice)
                 stream.curByte += uncompressedLen
 
+            // Fixed length block
             case 1:
                 try repeatHt.init(FixedLength)
                 try repeatZ.init(FixedDist)
@@ -271,6 +276,7 @@ impl DeflateDecoder
             case 3:
                 throw "invalid block type"
 
+            // Dynamic length block
             default:
                 var lenCodes:        [286+32+137] u8
                 var codeLengthSizes: [19] u8

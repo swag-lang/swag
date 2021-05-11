@@ -42,7 +42,14 @@ enum InterlaceMethod : u8
 	Adam7 = 1
 }
 
-alias ColorType = u8
+#[enumflags]
+enum ColorType: u8
+{
+    Paletted = 0
+    Color    = 1
+    Alpha    = 2
+}
+
 struct Header
 {
 	width:              u32
@@ -106,7 +113,7 @@ impl Decoder
             throw "invalid interlace method"
 
         using header
-        switch color_type
+        switch cast(u8) color_type
         {
         case 0:
             if bit_depth != 1 and bit_depth != 2 and bit_depth != 4 and bit_depth != 8 and bit_depth != 16
@@ -127,21 +134,32 @@ impl Decoder
 
     func doIt(using self, buffer: const [..] u8)->Image throw
     {
-        var result: retval
         stream.init(buffer)
 
         var signature: u64 = ?
         stream.peekBytes(@sizeof(signature), cast(*u8) &signature)
         if signature != 0x0a1a0a0d474e5089 throw "not a png"
 
-        firstChunk := true
+        var result: retval
 
-        seenIEnd := false
+        var iDataBuf:   Array'u8
+        var ch:         ChunkHeader = ?
+
+        firstChunk := true
+        seenIEnd   := false
+        seenIDat   := false
+        chIsHere   := false
+
         while !seenIEnd
         {
-            var ch: ChunkHeader = ?
-            stream.peek32Be(cast(*u8) &ch.length)
-            stream.peek32(cast(*u8) &ch.type)
+            // Peek a chunk header only if it's not already done
+            if !chIsHere
+            {
+                stream.peek32Be(cast(*u8) &ch.length)
+                stream.peek32(cast(*u8) &ch.type)
+            }
+
+            chIsHere = false
             if stream.eof throw "invalid chunk"
 
             switch ch.type
@@ -149,11 +167,29 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
-                result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
+                if header.color_type & .Alpha
+                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
+                else
+                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
 
             case IEND:
                 chunk := try readChunk(ch)
                 seenIEnd = true
+
+            case IDAT:
+                if seenIDat throw "invalid IDAT chunk"
+                while ch.type == IDAT
+                {
+                    chunk := try readChunk(ch)
+                    iDataBuf.add(chunk.datas)
+                    stream.peek32Be(cast(*u8) &ch.length)
+                    stream.peek32(cast(*u8) &ch.type)
+                    if stream.eof throw "invalid chunk"
+                }
+
+                chIsHere = true
+                seenIDat = true
+                break
 
             default:
                 chunk := try readChunk(ch)
@@ -161,6 +197,11 @@ impl Decoder
 
             firstChunk = false
         }
+
+        if !seenIDat throw "missing IDAT chunk"
+
+        var dec: compress.ZLibDecoder
+        buf := try dec.decompress(iDataBuf.toSlice())
 
         return result
     }
