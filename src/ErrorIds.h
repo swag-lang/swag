@@ -808,3 +808,6 @@
 #define Hnt0016 "this function is marked with the 'swag.mixin' attribute"
 #define Hnt0017 "this function is marked with the 'swag.inline' attribute"
 #define Hnt0018 "this is a constant"
+#define Hnt0019 "this should be 'impl enum %s'"
+#define Hnt0020 "this should be 'impl %s'"
+#define Hnt0021 "this should be 'impl typeset %s'"

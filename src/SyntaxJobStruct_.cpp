@@ -76,8 +76,16 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
-        Diagnostic note{newScope->owner, newScope->owner->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
+        Utf8 hint;
+        if (newScope->kind == ScopeKind::Enum)
+            hint = format(Hnt0019, implNode->token.text.c_str());
+        else if (newScope->kind == ScopeKind::Struct)
+            hint = format(Hnt0020, implNode->token.text.c_str());
+        else if (newScope->kind == ScopeKind::TypeSet)
+            hint = format(Hnt0021, implNode->token.text.c_str());
+        PushErrHint errh(hint);
+        Diagnostic  diag{implNode, format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic  note{newScope->owner, newScope->owner->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
