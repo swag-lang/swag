@@ -132,6 +132,10 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     if (assignNode)
     {
+        SWAG_CHECK(evaluateConstExpression(context, assignNode));
+        if (context->result != ContextResult::Done)
+            return true;
+
         if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));

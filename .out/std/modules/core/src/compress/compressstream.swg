@@ -52,7 +52,7 @@ public impl CompressStream
         loop i: width
         {
             dest[i] = cast(u8) peekBits(8)
-            consumeBits(width)
+            consumeBits(8)
         }
     }
 
