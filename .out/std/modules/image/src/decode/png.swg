@@ -30,6 +30,15 @@ enum ChunkType: u32
 	CbGI = @byteswap("C"'u32 << 24 | "b"'u32 << 16 | "H"'u32 << 8 | "I"'u32)
 }
 
+enum RowFilter: u8
+{
+   None    = 0
+   Sub     = 1
+   Up      = 2
+   Average = 3
+   Paeth   = 4
+}
+
 struct ChunkHeader
 {
     length: u32
@@ -45,9 +54,9 @@ enum InterlaceMethod : u8
 #[enumflags]
 enum ColorType: u8
 {
-    Paletted = 0
-    Color    = 1
-    Alpha    = 2
+    Paletted = 1
+    Color    = 2
+    Alpha    = 4
 }
 
 struct Header
@@ -64,8 +73,12 @@ struct Header
 #[opaque]
 public struct Decoder
 {
-    stream: compress.CompressStream
-    header: Header
+    stream:         compress.CompressStream
+    header:         Header
+    inChannels:     s32
+    outChannels:    s32
+    dcmpBuf:        Array'u8
+    dstPixels:      *u8
 }
 
 struct Chunk
@@ -132,8 +145,57 @@ impl Decoder
         }
     }
 
-    func defilter(using self, buf: Array'u8)
+    func defilter_8(using self) throw
     {
+        row_stride := inChannels * header.width
+        src := dcmpBuf.buffer
+        dest := dstPixels
+
+        loop idx: header.height
+        {
+            nk := row_stride - inChannels
+            filter := cast(RowFilter) src[0]
+            @print(cast(u8) filter)
+            src += 1
+            switch filter
+            {
+            case None:
+                break
+            case Sub:
+                loop i: inChannels
+                    dest[i] = src[i]
+                loop k: nk
+                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + dest[k])
+                break
+            case Up:
+                break
+            case Average:
+                break
+            case Paeth:
+                break
+            }
+
+            src += row_stride
+            //up = dest
+            dest += row_stride
+        }
+    }
+
+    func defilter(using self) throw
+    {
+        if header.interlace_method != .Adam7
+        {
+            if header.bit_depth < 8
+            {
+                throw "unsupoprted"
+                //throw defilter_less_than_8(buf)
+                //img.depth = 8;
+            }
+            else if header.bit_depth == 8
+                try defilter_8()
+            else
+                throw "unsupoprted" //defilter_16(buf)
+        }
     }
 
     func doIt(using self, buffer: const [..] u8)->Image throw
@@ -171,10 +233,27 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
+
+                if header.bit_depth > 8 throw "unsupported 16 bpp"
+                if header.color_type & .Paletted throw "unsupported paletted image"
+
+                if header.color_type & .Color
+                {
+                    inChannels = 3
+                    outChannels = 3
+                }
+
                 if header.color_type & .Alpha
+                {
+                    inChannels += 1
+                    outChannels += 1
+                }
+
+                if outChannels == 4
                     result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
                 else
                     result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
+                dstPixels = result.pixels
 
             case IEND:
                 chunk := try readChunk(ch)
@@ -205,9 +284,9 @@ impl Decoder
         if !seenIDat throw "missing IDAT chunk"
 
         var dec: compress.ZLibDecoder
-        buf := try dec.decompress(iDataBuf.toSlice())
+        dcmpBuf = try dec.decompress(iDataBuf.toSlice())
 
-        defilter(buf)
+        try defilter()
         return result
     }
 }

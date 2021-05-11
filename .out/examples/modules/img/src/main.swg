@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
-var imageIdx: u32 = 6
+var imageIdx: u32 = 11
 var effectIdx: u32 = 0
 var myImage: image.Image
 const W = 1024
@@ -64,6 +64,7 @@ func loadImg()
     case 8:     imgName = "h1v1.jpg"
     case 9:     imgName = "gray.jpg"
     case 10:    imgName = "progh1v1.jpg"
+    case 11:    imgName = "rgb.png"
     default: imageIdx = 0
     }
 
