@@ -9,28 +9,24 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        pix := pixels
-        if pf == .BGR8 or pf == .BGRA8
+        #[swag.mixin]
+        func(PF: PixelFormat) fillFirstLine()
         {
+            pix := pixels
             loop x: width
             {
-                pix[0] = color.b
-                pix[1] = color.g
-                pix[2] = color.r
-                if pf == .BGRA8 pix[3] = color.a
+                setPixelRGBA8'PF(pix, color.r, color.g, color.b, color.a)
                 pix += bpp8
             }
         }
-        else if pf == .RGB8 or pf == .RGBA8
+
+        switch pf
         {
-            loop x: width
-            {
-                pix[0] = color.r
-                pix[1] = color.g
-                pix[2] = color.b
-                if pf == .BGRA8 pix[3] = color.a
-                pix += bpp8
-            }
+        case BGR8:  fillFirstLine'BGR8()
+        case BGRA8: fillFirstLine'BGRA8()
+        case RGB8:  fillFirstLine'RGB8()
+        case RGBA8: fillFirstLine'RGBA8()
+        default:    debug.assert(false)
         }
 
         visitPixels(stride: width)

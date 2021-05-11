@@ -176,4 +176,13 @@ impl Image
             #assert "invalid pixelCopy BPP"
         }
     }
+
+    // Set pixel values depending on pixel format
+    func(PF: PixelFormat) setPixelRGBA8(pixDst: *u8, r, g, b, a: u8)
+    {
+        #if PF == .BGR8  { pixDst[0] = b; pixDst[1] = g; pixDst[2] = r; }
+        #if PF == .BGRA8 { pixDst[0] = b; pixDst[1] = g; pixDst[2] = r; pixDst[3] = a; }
+        #if PF == .RGB8  { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; }
+        #if PF == .RGBA8 { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; pixDst[3] = a; }
+    }
 }
