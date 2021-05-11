@@ -147,13 +147,13 @@ impl Decoder
 
     func defilter_8(using self) throw
     {
-        row_stride := inChannels * header.width
+        row_stride := cast(uint) inChannels * header.width
         src := dcmpBuf.buffer
-        dest := dstPixels
+        dest := dstPixels + row_stride * (header.height - 1)
 
         var tmpRow: Array'u8
-        tmpRow.resize(cast(uint) row_stride)
-        memory.clear(tmpRow.buffer, cast(uint) row_stride)
+        tmpRow.resize(row_stride)
+        memory.clear(tmpRow.buffer, row_stride)
         up := tmpRow.buffer
 
         loop header.height
@@ -165,7 +165,7 @@ impl Decoder
             switch filter
             {
             case None:
-                memory.copy(dest, src, cast(uint) row_stride)
+                memory.copy(dest, src, row_stride)
 
             case Sub:
                 loop i: inChannels
@@ -196,7 +196,7 @@ impl Decoder
 
             src += row_stride
             up = dest
-            dest += row_stride
+            dest -= row_stride
         }
     }
 
@@ -302,6 +302,7 @@ impl Decoder
 
         if !seenIDat throw "missing IDAT chunk"
 
+        // deflate content
         var dec: compress.ZLibDecoder
         dcmpBuf = try dec.decompress(iDataBuf.toSlice())
 
