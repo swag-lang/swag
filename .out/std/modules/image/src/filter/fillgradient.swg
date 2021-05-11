@@ -48,8 +48,8 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        f := @{color0, color1, color2, color3}
-        if pf == .BGR8 or pf == .BGRA8
+        #[swag.mixin]
+        func(PF: PixelFormat) doIt()
         {
             visitPixels(&f)
             {
@@ -59,25 +59,18 @@ impl Image
                 colH1 := Color.getBlend(params.color0, params.color1, factor0)
                 colH0 := Color.getBlend(params.color2, params.color3, factor0)
                 col := Color.getBlend(colH0, colH1, factor1)
-                pix[0] = col.b
-                pix[1] = col.g
-                pix[2] = col.r
+                setPixelRGBA8'PF(pix, col.r, col.g, col.b, 0)
             }
         }
-        else if pf == .RGB8 or pf == .RGBA8
+
+        f := @{color0, color1, color2, color3}
+        switch pf
         {
-            visitPixels(&f)
-            {
-                params := cast(*@typeof(f)) userData
-                factor0 := x / cast(f32) image.width
-                factor1 := y / cast(f32) image.height
-                colH1 := Color.getBlend(params.color0, params.color1, factor0)
-                colH0 := Color.getBlend(params.color2, params.color3, factor0)
-                col := Color.getBlend(colH0, colH1, factor1)
-                pix[0] = col.r
-                pix[1] = col.g
-                pix[2] = col.b
-            }
+        case BGR8:  doIt'BGR8()
+        case BGRA8: doIt'BGRA8()
+        case RGB8:  doIt'RGB8()
+        case RGBA8: doIt'RGBA8()
+        default:    debug.assert(false)
         }
     }
 }
