@@ -5,7 +5,9 @@ impl Image
     // Fill with a gradient from 'color0' to 'color1'
     public func fillGradient2(using self, color0, color1: Color)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf != .BGR8 and pf != .BGRA8
+            return
 
         pix := pixels
         loop x: width
@@ -27,7 +29,9 @@ impl Image
     // Fill with a gradient with a different color at each corner
     public func fillGradient4(using self, color0, color1, color2, color3: Color)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf != .BGR8 and pf != .BGRA8
+            return
 
         f := @{color0, color1, color2, color3}
         visitPixels(&f)
@@ -38,7 +42,9 @@ impl Image
             colH1 := Color.getBlend(params.color0, params.color1, factor0)
             colH0 := Color.getBlend(params.color2, params.color3, factor0)
             col := Color.getBlend(colH0, colH1, factor1)
-            pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+            pix[0] = col.b
+            pix[1] = col.g
+            pix[2] = col.r
         }
     }
 }

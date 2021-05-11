@@ -5,7 +5,9 @@ impl Image
     // Invert colors
     public func invert(using self)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
 
         var convArr: [256] u8 = ?
         loop i: 256 convArr[i] = cast(u8) (255 - i)

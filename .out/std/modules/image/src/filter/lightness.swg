@@ -5,7 +5,9 @@ impl Image
     // Change the lightness. 'factor' is [-1, 1]
     public func lightness(using self, factor: f32 = 0.5)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
 
         level := cast(s32) (math.clamp(factor, -1, 1) * 255)
         var convArr: [256] u8 = ?

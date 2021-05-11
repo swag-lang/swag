@@ -12,9 +12,9 @@ impl Image
         switch dstImage.pf
         {
         case RGB8:
-            break
+            return
         case RGBA8:
-            break
+            return
 
         case BGR8:
             if pf == BGRA8

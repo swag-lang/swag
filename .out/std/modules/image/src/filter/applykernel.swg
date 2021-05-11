@@ -35,10 +35,11 @@ impl Image
     }
 
     #[swag.safety("", false)]
-    //#[swag.printbc]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
 
         f := @{kernel, dstImage}
         visitPixels(&f)

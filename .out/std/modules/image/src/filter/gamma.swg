@@ -5,7 +5,9 @@ impl Image
     // Change the gamma.
     public func gamma(using self, level: f32 = 2.2)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
 
         g := 1.0 / math.clamp(level, math.ConstF32.Epsilon, 5)
 

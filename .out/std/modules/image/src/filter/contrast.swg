@@ -5,11 +5,14 @@ impl Image
     // Change the contrast. 'factor' is [-1, 1]
     public func contrast(using self, factor: f32 = 0.5)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
 
         level := math.clamp(factor, -1, 1) + 1.0
         var convArr: [256] u8 = ?
-        loop i: 256 convArr[i] = cast(u8) math.clamp(((i - 128) * level) + 128, 0, 255)
+        loop i: 256
+            convArr[i] = cast(u8) math.clamp(((i - 128) * level) + 128, 0, 255)
 
         f := &convArr[0]
         visitPixels(f)
