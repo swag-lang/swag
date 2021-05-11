@@ -9,30 +9,30 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        pix := pixels
-        if pf == .BGR8 or pf == .BGRA8
+        #[swag.mixin]
+        func(PF: PixelFormat) doIt()
         {
+            pix := pixels
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                pix[0] = cast(u8) math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
-                pix[1] = cast(u8) math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
-                pix[2] = cast(u8) math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
-                if pf == .BGRA8 pix[3] = cast(u8) math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
+                b := cast(u8) math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
+                g := cast(u8) math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
+                r := cast(u8) math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
+                a := 0'u8
+                if PF.bpp() == 32 a = cast(u8) math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
+                setPixelRGBA8'PF(pix, r, g, b, a)
                 pix += bpp8
             }
         }
-        else if pf == .RGB8 or pf == .RGBA8
+
+        switch pf
         {
-            loop x: width
-            {
-                factor0 := x / cast(f32) width
-                pix[0] = cast(u8) math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
-                pix[1] = cast(u8) math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
-                pix[2] = cast(u8) math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
-                if pf == .RGBA8 pix[3] = cast(u8) math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
-                pix += bpp8
-            }
+        case BGR8:  doIt'BGR8()
+        case BGRA8: doIt'BGRA8()
+        case RGB8:  doIt'RGB8()
+        case RGBA8: doIt'RGBA8()
+        default:    debug.assert(false)
         }
 
         visitPixels(stride: width)
