@@ -2274,6 +2274,9 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         });
     }
 
+    idRef->inheritAndFlag1(AST_CONST_EXPR);
+    fctCallParam->inheritAndFlag1(AST_CONST_EXPR);
+
     identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
     return true;
 }

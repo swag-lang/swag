@@ -1,20 +1,18 @@
-enum A
-{
-    B
-}
+#[swag.constexpr]
+func toto(x: s32) => x
 
-impl enum A
-{
-    #[swag.constexpr]
-    func toto(self) => 6
-}
+var G = 0
 
-func(T: A) titi()
+func(NNN: s32) titi()
 {
-    x := T.toto()
+    #if NNN.toto() == 6
+    {
+        G = NNN
+    }
 }
 
 #test
 {
-    titi'A.B()
+    titi'6()
+    @assert(G == 6)
 }
