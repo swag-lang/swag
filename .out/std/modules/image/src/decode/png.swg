@@ -58,7 +58,7 @@ struct Header
 public struct Decoder
 {
     stream: compress.CompressStream
-    header: const *Header
+    header: Header
 }
 
 struct Chunk
@@ -92,8 +92,37 @@ impl Decoder
     func readHeader(using self, ch: ChunkHeader) throw
     {
         chunk := try readChunk(ch)
-        header = acast @dataof(chunk.datas)
-        console.print(@byteswap(header.width), " ", @byteswap(header.height), "\n")
+        header = :cast(const *Header) @dataof(chunk.datas)
+        header.width = math.bigEndianToNative(header.width)
+        header.height = math.bigEndianToNative(header.height)
+
+        if header.width == 0 or header.height == 0
+            throw "invalid dimensions"
+        if header.compression_method != 0
+            throw "invalid compression"
+        if header.filter_method != 0
+            throw "invalid filter"
+        if header.interlace_method != .None and header.interlace_method != .Adam7
+            throw "invalid interlace method"
+
+        using header
+        switch color_type
+        {
+        case 0:
+            if bit_depth != 1 and bit_depth != 2 and bit_depth != 4 and bit_depth != 8 and bit_depth != 16
+                throw "invalid color depth"
+
+        case 2, 4, 6:
+            if bit_depth != 8 and bit_depth != 16
+                throw "invalid color depth"
+
+        case 3:
+            if bit_depth != 1 and bit_depth != 2 and bit_depth != 4 and bit_depth != 8
+                throw "invalid color depth"
+
+        default:
+            throw "invalid color type"
+        }
     }
 
     func doIt(using self, buffer: const [..] u8)->Image throw
@@ -121,6 +150,7 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
+                result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
                 break
             }
 
