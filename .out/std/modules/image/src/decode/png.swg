@@ -130,20 +130,19 @@ impl Decoder
         var result: retval
         stream.init(buffer)
 
-        seenIEnd := false
-
         var signature: u64 = ?
         stream.peekBytes(@sizeof(signature), cast(*u8) &signature)
         if signature != 0x0a1a0a0d474e5089 throw "not a png"
 
         firstChunk := true
 
-        //while !seenIEnd
+        seenIEnd := false
+        while !seenIEnd
         {
             var ch: ChunkHeader = ?
             stream.peek32Be(cast(*u8) &ch.length)
             stream.peek32(cast(*u8) &ch.type)
-            if stream.eof throw "invalid format"
+            if stream.eof throw "invalid chunk"
 
             switch ch.type
             {
@@ -151,7 +150,13 @@ impl Decoder
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
                 result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
-                break
+
+            case IEND:
+                chunk := try readChunk(ch)
+                seenIEnd = true
+
+            default:
+                chunk := try readChunk(ch)
             }
 
             firstChunk = false
