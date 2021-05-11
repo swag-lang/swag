@@ -229,6 +229,7 @@ impl DeflateDecoder
     public func init(using self, buf: const [..] u8, winSize: uint)
     {
         stream.init(buf)
+        adler.init()
         windowSize = math.min(winSize, DeflateMaxDistance)
     }
 

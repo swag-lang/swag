@@ -2,21 +2,20 @@ using core
 
 #test
 {
+    var dec: compress.ZLibDecoder
+
     {
         f   := try file.readAllBytes(filePath("0.zlib"))
-        zip := try compress.ZLibDecoder.create(f.toSlice())
-        res := try zip.decompress()
+        res := try dec.decompress(f.toSlice())
     }
 
     {
         f   := try file.readAllBytes(filePath("9.zlib"))
-        zip := try compress.ZLibDecoder.create(f.toSlice())
-        res := try zip.decompress()
+        res := try dec.decompress(f.toSlice())
     }
 
     {
         f   := try file.readAllBytes(filePath("fixed9.zlib"))
-        zip := try compress.ZLibDecoder.create(f.toSlice())
-        res := try zip.decompress()
+        res := try dec.decompress(f.toSlice())
     }
 }

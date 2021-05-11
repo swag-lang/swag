@@ -9,14 +9,7 @@ struct ZLibDecoder
 
 impl ZLibDecoder
 {
-    func create(buffer: const [..] u8)->ZLibDecoder throw
-    {
-        var result: retval
-        try result.init(buffer)
-        return result
-    }
-
-    func init(using self, buffer: const [..] u8) throw
+    private func init(using self, buffer: const [..] u8) throw
     {
         bs := ByteStream.create(buffer)
         if bs.length() < 6 throw "invalid format"
@@ -47,8 +40,10 @@ impl ZLibDecoder
     }
 
     // Decompress stream
-    func decompress(using self)->Array'u8 throw
+    func decompress(using self, buffer: const [..] u8)->Array'u8 throw
     {
+        try init(buffer)
+
         var result: retval
         result = try decoder.decompress()
 
