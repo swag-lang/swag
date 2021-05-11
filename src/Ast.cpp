@@ -127,6 +127,7 @@ namespace Ast
             return result;
         }
 
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         switch (typeInfo->nativeType)
         {
