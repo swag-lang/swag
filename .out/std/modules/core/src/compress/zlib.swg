@@ -2,14 +2,14 @@
 #global namespace compress
 
 #[swag.opaque]
-struct ZLibStream
+struct ZLibDecoder
 {
     decoder: DeflateDecoder
 }
 
-impl ZLibStream
+impl ZLibDecoder
 {
-    func create(buffer: const [..] u8)->ZLibStream throw
+    func create(buffer: const [..] u8)->ZLibDecoder throw
     {
         var result: retval
         try result.init(buffer)
