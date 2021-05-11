@@ -75,16 +75,16 @@ impl Decoder
         var result: retval
 
         result.header = ch
-        result.datas = @mkslice(stream.curPtr(), @byteswap(ch.length))
-        stream.curByte += @countof(result.datas)
+        result.datas = @mkslice(stream.curPtr(), ch.length)
+        stream.curByte += ch.length
 
         var crc: hash.Crc32
         crc.update(@mkslice(cast(*u8) &ch.type, 4))
         crc.update(result.datas)
 
         var vcrc: u32
-        stream.peekBytes(4, cast(*u8) &vcrc)
-        if @byteswap(vcrc) != crc.crc throw "invalid checksum"
+        stream.peek32Be(cast(*u8) &vcrc)
+        if vcrc != crc.crc throw "invalid checksum"
 
         return result
     }
@@ -112,7 +112,8 @@ impl Decoder
         //while !seenIEnd
         {
             var ch: ChunkHeader = ?
-            stream.peekBytes(@sizeof(ch), cast(*u8) &ch)
+            stream.peek32Be(cast(*u8) &ch.length)
+            stream.peek32(cast(*u8) &ch.type)
             if stream.eof throw "invalid format"
 
             switch ch.type

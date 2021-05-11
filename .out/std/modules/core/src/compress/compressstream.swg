@@ -46,16 +46,6 @@ public impl CompressStream
         }
     }
 
-    func peekBytes(using self, width: u8, dest: *u8)
-    {
-        // To optim
-        loop i: width
-        {
-            dest[i] = cast(u8) peekBits(8)
-            consumeBits(8)
-        }
-    }
-
     func peekBits(using self, width: u8)->u32
     {
 	    if numBits < width refill()
@@ -99,5 +89,44 @@ public impl CompressStream
         curByte -= numBits / 8
         numBits = 0
         codeBuffer = 0
+    }
+
+    func peekBytes(using self, width: u8, dest: *u8)
+    {
+        // To optim
+        loop i: width
+        {
+            dest[i] = cast(u8) peekBits(8)
+            consumeBits(8)
+        }
+    }
+
+    func peek32(using self, dest: *u8)
+    {
+        dest[0] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[1] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[2] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[3] = cast(u8) peekBits(8)
+        consumeBits(8)
+    }
+
+    func peek32Be(using self, dest: *u8)
+    {
+        #if BIG_ENDIAN
+            peek32(dest)
+        #else
+        {
+            dest[3] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[2] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[1] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[0] = cast(u8) peekBits(8)
+            consumeBits(8)
+        }
     }
 }
