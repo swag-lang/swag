@@ -80,8 +80,12 @@ func @errormsg(message: string, loc: swag.CompilerSourceLocation)
 
     lenMsg := @countof(message)
     if lenMsg > 512 lenMsg = 512
-    @memcpy(ptr, @dataof(message), lenMsg)
-    ptr += lenMsg
+    if lenMsg
+    {
+        @memcpy(ptr, @dataof(message), lenMsg)
+        ptr += lenMsg
+    }
+
     ptr[0] = "\n"'u8
     ptr[1] = 0
     ptr += 1
