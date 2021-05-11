@@ -130,8 +130,13 @@ func loadImg()
 
     console.printf("%: img: % (% x % %) time: %ms / %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds(), te.elapsedMilliseconds())
 
-    fmt := GL_BGR
-    if myImage.bpp == 32 fmt = GL_BGRA
+    var fmt: GLenum = 0
+    #[swag.complete]
+    switch myImage.pf
+    {
+    case BGR8:  fmt = GL_BGR
+    case BGRA8: fmt = GL_BGRA
+    }
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)

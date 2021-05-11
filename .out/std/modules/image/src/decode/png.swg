@@ -206,14 +206,14 @@ impl Decoder
         {
             if header.bit_depth < 8
             {
-                throw "unsupoprted"
+                throw "unsupported"
                 //throw defilter_less_than_8(buf)
                 //img.depth = 8;
             }
             else if header.bit_depth == 8
                 try defilter_8()
             else
-                throw "unsupoprted" //defilter_16(buf)
+                throw "unsupported" //defilter_16(buf)
         }
     }
 
