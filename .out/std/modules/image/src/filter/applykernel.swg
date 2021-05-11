@@ -38,7 +38,7 @@ impl Image
     //#[swag.printbc]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         f := @{kernel, dstImage}
         visitPixels(&f)

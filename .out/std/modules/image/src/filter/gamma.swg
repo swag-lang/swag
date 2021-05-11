@@ -5,7 +5,7 @@ impl Image
     // Change the gamma.
     public func gamma(using self, level: f32 = 2.2)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         g := 1.0 / math.clamp(level, math.ConstF32.Epsilon, 5)
 

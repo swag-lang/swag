@@ -5,7 +5,7 @@ impl Image
     // Change the contrast. 'factor' is [-1, 1]
     public func contrast(using self, factor: f32 = 0.5)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         level := math.clamp(factor, -1, 1) + 1.0
         var convArr: [256] u8 = ?

@@ -6,7 +6,7 @@ impl Image
     #[swag.safety("", false)]
     public func colorize(using self, hue, saturation: f32, strength = 1.0)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         h  := math.clamp(hue, 0.0, 1.0)
         s  := math.clamp(saturation, 0.0, 1.0)

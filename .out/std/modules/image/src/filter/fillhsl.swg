@@ -14,7 +14,7 @@ impl Image
 
     public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
         hsl := color.toHsl()
 
         #[swag.complete]

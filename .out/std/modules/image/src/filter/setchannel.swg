@@ -25,7 +25,7 @@ impl Image
     // Change specified color channels
     public func setChannel(using self, mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         // Remove alpha change if it does not exists
         rmode := mode

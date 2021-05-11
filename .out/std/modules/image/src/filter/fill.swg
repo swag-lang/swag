@@ -5,7 +5,7 @@ impl Image
     // Fill image with 'color'
     public func fill(using self, color: Color)
     {
-        debug.assert(pf == .BGR8 or pf == .BGRA8)
+        if pf != .BGR8 and pf != .BGRA8 return // unsupported
 
         pix := pixels
         loop x: width
