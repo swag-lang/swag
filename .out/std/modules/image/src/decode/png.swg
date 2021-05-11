@@ -151,32 +151,51 @@ impl Decoder
         src := dcmpBuf.buffer
         dest := dstPixels
 
-        loop idx: header.height
+        var tmpRow: Array'u8
+        tmpRow.resize(cast(uint) row_stride)
+        memory.clear(tmpRow.buffer, cast(uint) row_stride)
+        up := tmpRow.buffer
+
+        loop header.height
         {
             nk := row_stride - inChannels
             filter := cast(RowFilter) src[0]
-            @print(cast(u8) filter)
             src += 1
+
             switch filter
             {
             case None:
-                break
+                memory.copy(dest, src, cast(uint) row_stride)
+
             case Sub:
                 loop i: inChannels
                     dest[i] = src[i]
                 loop k: nk
                     dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + dest[k])
-                break
+
             case Up:
+                loop k: row_stride
+                    dest[k] = bitcast(u8) (src[k] + up[k])
                 break
+
             case Average:
-                break
+                loop i: inChannels
+                {
+                    avg := up[i] >>,safe 1
+                    dest[i] = bitcast(u8) (src[i] + avg)
+                }
+                loop k: nk
+                {
+                    avg := cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (dest[k])) >>,safe 1)
+                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + avg)
+                }
+
             case Paeth:
                 break
             }
 
             src += row_stride
-            //up = dest
+            up = dest
             dest += row_stride
         }
     }
