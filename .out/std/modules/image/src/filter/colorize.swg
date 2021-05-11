@@ -7,7 +7,7 @@ impl Image
     public func colorize(using self, hue, saturation: f32, strength = 1.0)
     {
         // unsupported pixel format
-        if pf != .BGR8 and pf != .BGRA8
+        if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
         h  := math.clamp(hue, 0.0, 1.0)
@@ -16,12 +16,26 @@ impl Image
 
         // Precompute bgr depending on luminance
         var convArr: [256, 3] f32 = ?
-        loop i: 256
+
+        if pf == .BGR8 or pf == .BGRA8
         {
-            c := Color.fromHsl(h, s, i / 255.0)
-            convArr[i, 0] = cast(f32) c.b
-            convArr[i, 1] = cast(f32) c.g
-            convArr[i, 2] = cast(f32) c.r
+            loop i: 256
+            {
+                c := Color.fromHsl(h, s, i / 255.0)
+                convArr[i, 0] = cast(f32) c.b
+                convArr[i, 1] = cast(f32) c.g
+                convArr[i, 2] = cast(f32) c.r
+            }
+        }
+        else if pf == .RGB8 or pf == .RGBA8
+        {
+            loop i: 256
+            {
+                c := Color.fromHsl(h, s, i / 255.0)
+                convArr[i, 0] = cast(f32) c.r
+                convArr[i, 1] = cast(f32) c.g
+                convArr[i, 2] = cast(f32) c.b
+            }
         }
 
         f := @{&convArr[0, 0], st}
