@@ -1547,8 +1547,11 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
                     notes.push_back(note);
                 }
 
-                auto note = new Diagnostic{prev->resolvedSymbolOverload->node, Note000, DiagnosticLevel::Note};
-                notes.push_back(note);
+                if (prev->resolvedSymbolOverload)
+                {
+                    auto note = new Diagnostic{prev->resolvedSymbolOverload->node, Note000, DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
             }
         }
     }
