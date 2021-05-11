@@ -136,6 +136,8 @@ func loadImg()
     {
     case BGR8:  fmt = GL_BGR
     case BGRA8: fmt = GL_BGRA
+    case RGB8:  fmt = GL_RGB
+    case RGBA8: fmt = GL_RGBA
     }
 
     glGenTextures(1, &textureID)

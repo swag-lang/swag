@@ -11,6 +11,11 @@ impl Image
         #[swag.complete]
         switch dstImage.pf
         {
+        case RGB8:
+            break
+        case RGBA8:
+            break
+
         case BGR8:
             if pf == BGRA8
             {

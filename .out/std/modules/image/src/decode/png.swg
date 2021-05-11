@@ -269,9 +269,9 @@ impl Decoder
                 }
 
                 if outChannels == 4
-                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
+                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
                 else
-                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
+                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGB8)
                 dstPixels = result.pixels
 
             case IEND:
