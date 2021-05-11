@@ -14,6 +14,8 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         auto destIp = ip + ip->b.s32 + 1;
         while (destIp->op == ByteCodeOp::Jump)
         {
+            if (destIp->b.s32 + 1 == 0) // infinite jump
+                break;
             ip->b.s32 += destIp->b.s32 + 1;
             destIp += destIp->b.s32 + 1;
             context->passHasDoneSomething = true;

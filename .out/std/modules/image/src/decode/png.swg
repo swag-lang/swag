@@ -132,6 +132,10 @@ impl Decoder
         }
     }
 
+    func defilter(using self, buf: Array'u8)
+    {
+    }
+
     func doIt(using self, buffer: const [..] u8)->Image throw
     {
         stream.init(buffer)
@@ -203,6 +207,7 @@ impl Decoder
         var dec: compress.ZLibDecoder
         buf := try dec.decompress(iDataBuf.toSlice())
 
+        defilter(buf)
         return result
     }
 }
