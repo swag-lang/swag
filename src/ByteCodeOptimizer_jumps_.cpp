@@ -56,6 +56,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (destIp->op == ByteCodeOp::JumpIfFalse &&
                 destIp->a.u32 == ip->a.u32 &&
                 !(ip->flags & BCI_IMM_A) &&
+                (destIp->b.s32 + 1) && // in case it's an empty loop
                 !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
@@ -100,6 +101,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (destIp->op == ByteCodeOp::JumpIfTrue &&
                 destIp->a.u32 == ip->a.u32 &&
                 !(ip->flags & BCI_IMM_A) &&
+                (destIp->b.s32 + 1) && // in case it's an empty loop
                 !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;

@@ -1,6 +1,6 @@
 #global namespace compress
 
-struct CompressStream
+public struct CompressStream
 {
     stream:         const [..] u8
     curByte:        uint
@@ -9,7 +9,7 @@ struct CompressStream
     eof:            bool
 }
 
-impl CompressStream
+public impl CompressStream
 {
     func init(using self, buf: const [..] u8)
     {
@@ -46,13 +46,23 @@ impl CompressStream
         }
     }
 
-    func peekBits(using self, width: u8) -> u32
+    func peekBytes(using self, width: u8, dest: *u8)
+    {
+        // To optim
+        loop i: width
+        {
+            dest[i] = cast(u8) peekBits(8)
+            consumeBits(width)
+        }
+    }
+
+    func peekBits(using self, width: u8)->u32
     {
 	    if numBits < width refill()
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
-    func peekBitsNoRefill(using self, width: u8) -> u32
+    func peekBitsNoRefill(using self, width: u8)->u32
     {
 	    debug.assert(numBits >= width)
     	return codeBuffer & ~(0xffffffff <<,safe width)

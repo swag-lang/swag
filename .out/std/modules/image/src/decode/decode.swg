@@ -50,10 +50,10 @@ public func load(fileName: string)->Image throw
 
     // Create a decoder instance
     ptrDecoder := memory.new(found.type)
-    defer 
-    { 
-        if found.type.opDrop 
-            found.type.opDrop(ptrDecoder); 
+    defer
+    {
+        if found.type.opDrop
+            found.type.opDrop(ptrDecoder);
         memory.free(ptrDecoder, found.type.sizeof)
     }
 
@@ -68,4 +68,5 @@ public func load(fileName: string)->Image throw
     addDecoder'(bmp.Decoder)()
     addDecoder'(tga.Decoder)()
     addDecoder'(jpg.Decoder)()
+    addDecoder'(png.Decoder)()
 }
