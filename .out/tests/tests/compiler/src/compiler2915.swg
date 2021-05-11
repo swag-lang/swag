@@ -1,16 +1,17 @@
-var ppp = 0
-func decode()->s32 throw
+struct AA
 {
-    return 0
+
 }
 
-func toto() throw
+impl AA
 {
-    ppp += 1
-    while true
+    var ppp = 0
+    func toto(using self)
     {
-        value := try decode()
-        if value < 0 continue
-        if value == 0 break
+        ppp += 1
+        while true
+        {
+            value := 0
+        }
     }
 }

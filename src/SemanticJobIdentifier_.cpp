@@ -2433,6 +2433,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
 bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result)
 {
+    // Not for a global symbol
+    if (overload->flags & OVERLOAD_VAR_GLOBAL)
+        return true;
+
     auto     job                = context->job;
     auto     symbol             = overload->symbol;
     auto&    scopeHierarchyVars = job->cacheScopeHierarchyVars;

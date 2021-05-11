@@ -182,11 +182,8 @@ impl DeflateDecoder
         adler.update(newSlice)
     }
 
-    var ppp = 0
-
     func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
-        ppp += 1
         while true
         {
             value := try decode(repeatHt)
