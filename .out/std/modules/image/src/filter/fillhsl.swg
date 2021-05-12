@@ -14,8 +14,12 @@ impl Image
 
     public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White)
     {
-        if pf != .BGR8 and pf != .BGRA8 return // unsupported
+        // unsupported pixel format
+        if pf.channels() < 3 or pf.bitDepth() != 8
+            return
+
         hsl := color.toHsl()
+        swapRB := pf == .RGB8 or pf == .RGBA8
 
         #[swag.complete]
         switch fillType
@@ -26,7 +30,9 @@ impl Image
             {
                 factor0 := x / cast(f32) width
                 col := Color.fromHsl(factor0, hsl.s, 0.5)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if swapRB swap(pix, pix + 2)
                 pix += bpp8
             }
 
@@ -41,7 +47,8 @@ impl Image
             {
                 factor0 := x / cast(f32) width
                 col := Color.fromHsl(hsl.h, factor0, 0.5)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 pix += bpp8
             }
 
@@ -56,7 +63,8 @@ impl Image
             {
                 factor0 := x / cast(f32) width
                 col := Color.fromHsl(hsl.h, hsl.s, factor0)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 pix += bpp8
             }
 
@@ -66,33 +74,38 @@ impl Image
             }
 
         case HueSaturation:
-            visitPixels(&hsl)
+            visitPixels(&swapRB)
             {
-                params := :cast(*@typeof(hsl)) userData
+                swapRB := :cast(*bool) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
                 col := Color.fromHsl(factor0, factor1, 0.5)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
             }
 
         case HueLightness:
-            visitPixels(&hsl)
+            pms := @{hsl, swapRB}
+            visitPixels(&pms)
             {
-                params := :cast(*@typeof(hsl)) userData
+                params := :cast(*@typeof(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor0, params.s, factor1)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                col := Color.fromHsl(factor0, params.hsl.s, factor1)
+                if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
             }
 
         case SaturationLightness:
-            visitPixels(&hsl)
+            pms := @{hsl, swapRB}
+            visitPixels(&pms)
             {
-                params := :cast(*@typeof(hsl)) userData
+                params := :cast(*@typeof(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.h, factor0, factor1)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                col := Color.fromHsl(params.hsl.h, factor0, factor1)
+                if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
             }
         }
     }

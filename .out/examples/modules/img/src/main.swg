@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32 = 11
-var effectIdx: u32 = 45
+var effectIdx: u32 = 8
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -86,7 +86,7 @@ func loadImg()
     case 5:  myImage.mirror()
     case 6:  myImage.grayScale(0.5)
     case 7:  myImage.grayScale()
-    case 8:  myImage.fillHsl(FillHslType.HueSaturation, Argb.Green)
+    case 8:  myImage.fillHsl(FillHslType.SaturationLightness, Argb.Green)
     case 9:  myImage.fillGradient2(Argb.Green, Argb.Red)
     case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
     case 11: myImage.fill(Argb.Cyan)
