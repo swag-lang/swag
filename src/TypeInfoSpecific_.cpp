@@ -180,8 +180,8 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    to = TypeManager::concreteType(to);
 
+    to = TypeManager::concreteType(to);
     if (isSameFlags & ISSAME_CAST)
     {
         if (to->kind == TypeInfoKind::Generic)
@@ -437,6 +437,12 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+    if (isSameFlags & ISSAME_CAST)
+    {
+        if (to->kind == TypeInfoKind::Generic)
+            return true;
+    }
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
     auto other = static_cast<TypeInfoEnum*>(to);

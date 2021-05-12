@@ -105,6 +105,7 @@ impl Image
     func applyWorkingBuffer(using self)
     {
         debug.assert(workingBuffer != null)
+        swap(&pf, &workingBuffer.pf)
         swap(&pixels, &workingBuffer.pixels)
         swap(&width, &workingBuffer.width)
         swap(&height, &workingBuffer.height)

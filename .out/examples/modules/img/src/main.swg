@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32 = 11
-var effectIdx: u32 = 9
+var effectIdx: u32 = 45
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -123,6 +123,10 @@ func loadImg()
     case 42: myImage.turn(TurnAngle.T90)
     case 43: myImage.turn(TurnAngle.T180)
     case 44: myImage.turn(TurnAngle.T270)
+    case 45: myImage.setPixelFormat(PixelFormat.RGB8)
+    case 46: myImage.setPixelFormat(PixelFormat.RGBA8)
+    case 47: myImage.setPixelFormat(PixelFormat.BGR8)
+    case 48: myImage.setPixelFormat(PixelFormat.BGRA8)
     default: effectIdx = 0
     }
 
@@ -131,6 +135,7 @@ func loadImg()
     console.printf("%: img: % (% x % %) time: %ms / %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds(), te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
+
     #[swag.complete]
     switch myImage.pf
     {
@@ -258,7 +263,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        jobs.setNumWorkers()
+        //jobs.setNumWorkers()
         loadImg()
 
         display()
