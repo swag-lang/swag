@@ -63,11 +63,11 @@ struct Header
 {
 	width:              u32
 	height:             u32
-	bit_depth:          u8
-	color_type:         ColorType = ?
-	compression_method: u8
-	filter_method:      u8
-	interlace_method:   InterlaceMethod = ?
+	bitDepth:           u8
+	colorType:          ColorType = ?
+	compressionMethod:  u8
+	filterMethod:       u8
+	interlaceMethod:    InterlaceMethod = ?
 }
 
 #[opaque]
@@ -122,40 +122,40 @@ impl Decoder
 
         if header.width == 0 or header.height == 0
             throw "invalid dimensions"
-        if header.compression_method != 0
+        if header.compressionMethod != 0
             throw "invalid compression"
-        if header.filter_method != 0
+        if header.filterMethod != 0
             throw "invalid filter"
-        if header.interlace_method != .None and header.interlace_method != .Adam7
+        if header.interlaceMethod != .None and header.interlaceMethod != .Adam7
             throw "invalid interlace method"
 
         using header
-        switch cast(u8) color_type
+        switch cast(u8) colorType
         {
         case 0:
-            if bit_depth != 1 and bit_depth != 2 and bit_depth != 4 and bit_depth != 8 and bit_depth != 16
+            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8 and bitDepth != 16
                 throw "invalid color depth"
 
         case 2, 4, 6:
-            if bit_depth != 8 and bit_depth != 16
+            if bitDepth != 8 and bitDepth != 16
                 throw "invalid color depth"
 
         case 3:
-            if bit_depth != 1 and bit_depth != 2 and bit_depth != 4 and bit_depth != 8
+            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8
                 throw "invalid color depth"
 
         default:
             throw "invalid color type"
         }
 
-        if header.bit_depth > 8
+        if header.bitDepth > 8
             throw "unsupported 16 bpp"
 
-        if header.color_type & .Paletted
+        if header.colorType & .Paletted
         {
             throw "unsupported paletted image"
         }
-        else if header.color_type & .Color
+        else if header.colorType & .Color
         {
             inChannels = 3
             outChannels = 3
@@ -166,7 +166,7 @@ impl Decoder
             outChannels = 3
         }
 
-        if header.color_type & .Alpha
+        if header.colorType & .Alpha
         {
             inChannels += 1
             outChannels += 1
@@ -191,25 +191,25 @@ impl Decoder
 
     func defilter8(using self) throw
     {
-        row_stride := cast(uint) inChannels * header.width
+        rowStride := cast(uint) inChannels * header.width
         src := dcmpBuf.buffer
-        dest := dstPixels + row_stride * (header.height - 1)
+        dest := dstPixels + rowStride * (header.height - 1)
 
         var tmpRow: Array'u8
-        tmpRow.resize(row_stride)
-        memory.clear(tmpRow.buffer, row_stride)
+        tmpRow.resize(rowStride)
+        memory.clear(tmpRow.buffer, rowStride)
         up := tmpRow.buffer
 
         loop header.height
         {
-            nk := row_stride - inChannels
+            nk := rowStride - inChannels
             filter := cast(RowFilter) src[0]
             src += 1
 
             switch filter
             {
             case None:
-                memory.copy(dest, src, row_stride)
+                memory.copy(dest, src, rowStride)
 
             case Sub:
                 loop i: inChannels
@@ -218,7 +218,7 @@ impl Decoder
                     dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + dest[k])
 
             case Up:
-                loop k: row_stride
+                loop k: rowStride
                     dest[k] = bitcast(u8) (src[k] + up[k])
                 break
 
@@ -248,23 +248,23 @@ impl Decoder
                 break
             }
 
-            src += row_stride
+            src += rowStride
             up = dest
-            dest -= row_stride
+            dest -= rowStride
         }
     }
 
     func defilter(using self) throw
     {
-        if header.interlace_method != .Adam7
+        if header.interlaceMethod != .Adam7
         {
-            if header.bit_depth < 8
+            if header.bitDepth < 8
             {
                 throw "unsupported"
                 //throw defilter_less_than_8(buf)
                 //img.depth = 8;
             }
-            else if header.bit_depth == 8
+            else if header.bitDepth == 8
                 try defilter8()
             else
                 throw "unsupported" //defilter_16(buf)
@@ -311,7 +311,7 @@ impl Decoder
 
             case TRNS:
                 seenTRSN = true
-                outChannels += 1
+                outChannels += 1 // transparency mask, add an alpha channel
                 chunkTRNS = try readChunk(ch)
 
             case BKGD:
@@ -319,8 +319,8 @@ impl Decoder
                 chunk := try readChunk(ch)
 
             case IEND:
-                chunk := try readChunk(ch)
                 seenIEND = true
+                chunk := try readChunk(ch)
 
             case IDAT:
                 if seenIDAT throw "invalid IDAT chunk"

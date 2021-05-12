@@ -71,6 +71,8 @@ func loadImg()
     case 13:    imgName = "grayscale.png"
     case 14:    imgName = "basn4a08.png"  // grayscale 8 alpha
     case 15:    imgName = "tbrn2c08.png"  // bkgnd transparent
+    case 16:    imgName = "basn0g01.png"  // grayscale 1 bit
+
     default: imageIdx = 0
     }
 
