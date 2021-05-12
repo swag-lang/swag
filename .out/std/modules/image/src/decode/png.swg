@@ -310,13 +310,11 @@ impl Decoder
                 dstPixels = memory.alloc(dstPixelsSize)
 
             case TRNS:
-                @print("TRNS\n")
                 seenTRSN = true
                 outChannels += 1
                 chunkTRNS = try readChunk(ch)
 
             case BKGD:
-                @print("BKGD\n")
                 seenBKGD = true
                 chunk := try readChunk(ch)
 
