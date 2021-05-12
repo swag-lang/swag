@@ -2513,6 +2513,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         if (identifierRef->resolvedSymbolName)
         {
             if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
+                identifierRef->resolvedSymbolName->kind == SymbolKind::TypeSet ||
                 identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
@@ -2537,6 +2538,14 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     {
                         bool cmp = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, identifierRef->previousResolvedNode->typeInfo, nullptr, identifierRef->previousResolvedNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
                         if (cmp)
+                            *ufcsFirstParam = identifierRef->previousResolvedNode;
+                    }
+
+                    // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
+                    // right number of arguments (not sure all of thoses tests are bullet proof)
+                    else
+                    {
+                        if (overload->typeInfo->kind != TypeInfoKind::Lambda)
                             *ufcsFirstParam = identifierRef->previousResolvedNode;
                     }
                 }
