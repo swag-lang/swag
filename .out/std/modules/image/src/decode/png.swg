@@ -80,6 +80,9 @@ public struct Decoder
     dcmpBuf:        Array'u8
     dstPixels:      *u8
     dstPixelsSize:  uint
+    chunkTRNS:      Chunk
+    seenTRSN:       bool
+    seenBKGD:       bool
 }
 
 struct Chunk
@@ -186,7 +189,7 @@ impl Decoder
         return upLeft
     }
 
-    func defilter_8(using self) throw
+    func defilter8(using self) throw
     {
         row_stride := cast(uint) inChannels * header.width
         src := dcmpBuf.buffer
@@ -262,7 +265,7 @@ impl Decoder
                 //img.depth = 8;
             }
             else if header.bit_depth == 8
-                try defilter_8()
+                try defilter8()
             else
                 throw "unsupported" //defilter_16(buf)
         }
@@ -280,13 +283,10 @@ impl Decoder
 
         var iDataBuf:   Array'u8
         var ch:         ChunkHeader = ?
-        var chunkTRNS:  Chunk
 
         firstChunk := true
         seenIEND   := false
         seenIDAT   := false
-        seenTRSN   := false
-        seenBKGD   := false
         chIsHere   := false
 
         while !seenIEND
@@ -369,6 +369,12 @@ impl Decoder
             return result
         }
 
+        try convert(&result)
+        return result
+    }
+
+    func convert(using self, result: *Image) throw
+    {
         result.pixels = cast(*u8) memory.alloc(result.size)
         defer memory.free(dstPixels, dstPixelsSize)
 
@@ -423,8 +429,6 @@ impl Decoder
                     pix[3] = 255
             }
         }
-
-        return result
     }
 }
 
