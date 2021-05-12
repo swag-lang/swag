@@ -79,6 +79,7 @@ public struct Decoder
     outChannels:    s32
     dcmpBuf:        Array'u8
     dstPixels:      *u8
+    dstPixelsSize:  uint
 }
 
 struct Chunk
@@ -279,13 +280,16 @@ impl Decoder
 
         var iDataBuf:   Array'u8
         var ch:         ChunkHeader = ?
+        var chunkTRNS:  Chunk
 
         firstChunk := true
-        seenIEnd   := false
-        seenIDat   := false
+        seenIEND   := false
+        seenIDAT   := false
+        seenTRSN   := false
+        seenBKGD   := false
         chIsHere   := false
 
-        while !seenIEnd
+        while !seenIEND
         {
             // Peek a chunk header only if it's not already done
             if !chIsHere
@@ -302,18 +306,26 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
-                if outChannels == 4
-                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
-                else
-                    result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGB8)
-                dstPixels = result.pixels
+                dstPixelsSize = header.width * header.height * inChannels
+                dstPixels = memory.alloc(dstPixelsSize)
+
+            case TRNS:
+                @print("TRNS\n")
+                seenTRSN = true
+                outChannels += 1
+                chunkTRNS = try readChunk(ch)
+
+            case BKGD:
+                @print("BKGD\n")
+                seenBKGD = true
+                chunk := try readChunk(ch)
 
             case IEND:
                 chunk := try readChunk(ch)
-                seenIEnd = true
+                seenIEND = true
 
             case IDAT:
-                if seenIDat throw "invalid IDAT chunk"
+                if seenIDAT throw "invalid IDAT chunk"
                 while ch.type == IDAT
                 {
                     chunk := try readChunk(ch)
@@ -324,7 +336,7 @@ impl Decoder
                 }
 
                 chIsHere = true
-                seenIDat = true
+                seenIDAT = true
                 break
 
             default:
@@ -334,7 +346,7 @@ impl Decoder
             firstChunk = false
         }
 
-        if !seenIDat throw "missing IDAT chunk"
+        if !seenIDAT throw "missing IDAT chunk"
 
         // deflate content
         var dec: compress.ZLibDecoder
@@ -343,25 +355,74 @@ impl Decoder
         // defilter content
         try defilter()
 
+        // Initialize image depending on number of wanted channels
+        if outChannels == 4
+            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
+        else
+            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGB8)
+        result.allocator = @getcontext().allocator
+
+        // If source == wanted channels, then we are done, dstPixels already contains everything
         if inChannels == outChannels
-            return result
-        if inChannels != 1
-            throw "invalid channels"
-
-        decodePixels := cast(*u8) memory.alloc(result.size)
-        swap(&result.pixels, &decodePixels)
-        defer memory.free(decodePixels, result.size)
-
-        result.visitPixels(&decodePixels)
         {
-            src := :cast(**u8) userData
-            src += x + y * image.width
-            pix[0] = src[0]
-            pix[1] = src[0]
-            pix[2] = src[0]
-            if image.bpp == 32 pix[3] = 255
+            result.pixels = dstPixels
+            return result
         }
 
+        result.pixels = cast(*u8) memory.alloc(result.size)
+        defer memory.free(dstPixels, dstPixelsSize)
+
+        // Grayscale
+        if inChannels == 1
+        {
+            result.visitPixels(&dstPixels)
+            {
+                src := :cast(**u8) userData
+                src += x + y * image.width
+                pix[0] = src[0]
+                pix[1] = src[0]
+                pix[2] = src[0]
+                if image.bpp == 32 pix[3] = 255
+            }
+        }
+
+        // Grayscale with alpha channel
+        else if inChannels == 2
+        {
+            result.visitPixels(&dstPixels)
+            {
+                src := :cast(**u8) userData
+                src += (x * 2) + (y * image.width * 2)
+                pix[0] = src[0]
+                pix[1] = src[0]
+                pix[2] = src[0]
+                if image.bpp == 32 pix[3] = src[1]
+            }
+        }
+
+        // Color without alpha to alpha: use a transparency mask
+        else if inChannels == 3
+        {
+            if !seenTRSN throw "invalid conversion"
+            key := cast(const *u8) @dataof(chunkTRNS.datas)
+            key0 := key[1]
+            key1 := key[3]
+            key2 := key[5]
+            pm := @{dstPixels, key0, key1, key2}
+            result.visitPixels(&pm)
+            {
+                params := cast(*@typeof(pm)) userData
+                src := params.dstPixels
+                src += (x * 3) + (y * image.width * 3)
+                pix[0] = src[0]
+                pix[1] = src[1]
+                pix[2] = src[2]
+                if src[0] == params.key0 and src[1] == params.key1 and src[2] == params.key2
+                    pix[3] = 0
+                else
+                    pix[3] = 255
+            }
+        }
 
         return result
     }

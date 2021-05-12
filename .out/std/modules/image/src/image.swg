@@ -20,20 +20,25 @@ func create(width, height: s32, pf: PixelFormat)->Image
     debug.assert(width > 0 and height > 0, "invalid dimensions")
 
     var result: retval
-    result.width = width
-    result.height = height
-    result.pf = pf
+    result.init(width, height, pf)
     result.allocator = @getcontext().allocator
-    result.bpp = pf.bpp()
-    result.bpp8 = cast(u8) (result.bpp >> 3)
-    result.width8 = width * result.bpp8
-    result.size = cast(uint) (width * height * result.bpp8)
     result.pixels = memory.alloc(result.size, result.allocator)
     return result
 }
 
 impl Image
 {
+    func init(using self, width, height: s32, pf: PixelFormat)
+    {
+        self.width = #scopefct.width
+        self.height = #scopefct.height
+        self.pf = #scopefct.pf
+        bpp = self.pf.bpp()
+        bpp8 = cast(u8) (bpp >> 3)
+        width8 = self.width * bpp8
+        size = cast(uint) (self.width * self.height * bpp8)
+    }
+
     #[inline]
     private func free(using self)
     {

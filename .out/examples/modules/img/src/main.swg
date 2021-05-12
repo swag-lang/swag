@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
-var imageIdx: u32 = 13
+var imageIdx: u32 = 15
 var effectIdx: u32 = 0
 var myImage: image.Image
 const W = 1024
@@ -25,13 +25,15 @@ func imagePath(name: string)->String
 
 func display()
 {
-    glClearColor(0, 0, 0, 0)
+    glClearColor(1, 0, 1, 1)
     glClear(GL_COLOR_BUFFER_BIT)
     glEnable(GL_TEXTURE_2D)
 
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glBegin(GL_QUADS)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+    glBegin(GL_QUADS)
     w := 2 * myImage.width / cast(f32) W
     h := 2 * myImage.height / cast(f32) H
     glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0);  // Bottom Left Of The Texture and Quad
@@ -67,6 +69,8 @@ func loadImg()
     case 11:    imgName = "rgb.png"
     case 12:    imgName = "rgba.png"
     case 13:    imgName = "grayscale.png"
+    case 14:    imgName = "basn4a08.png"  // grayscale 8 alpha
+    case 15:    imgName = "tbrn2c08.png"  // bkgnd transparent
     default: imageIdx = 0
     }
 
@@ -75,6 +79,8 @@ func loadImg()
     data := imagePath(imgName)
     myImage = assume image.load(data)
     ti.stop()
+
+    myImage.resize(512, 512)
 
     var te: time.Stopwatch
     te.start()
@@ -137,20 +143,21 @@ func loadImg()
     console.printf("%: img: % (% x % %) time: %ms / %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds(), te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
+    internal := GL_RGB
 
     #[swag.complete]
     switch myImage.pf
     {
     case BGR8:  fmt = GL_BGR
-    case BGRA8: fmt = GL_BGRA
+    case BGRA8: fmt = GL_BGRA; internal = GL_RGBA
     case RGB8:  fmt = GL_RGB
-    case RGBA8: fmt = GL_RGBA
+    case RGBA8: fmt = GL_RGBA; internal = GL_RGBA
     }
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) myImage.width, cast(s32) myImage.height, 0, fmt, GL_UNSIGNED_BYTE, myImage.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) myImage.width, cast(s32) myImage.height, 0, fmt, GL_UNSIGNED_BYTE, myImage.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
