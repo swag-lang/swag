@@ -247,7 +247,15 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // General cast error
         if (!done)
-            context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        {
+            if (castFlags & CASTFLAG_CONST_ERR)
+            {
+                PushErrHint errh(Hnt0022);
+                context->report({fromNode, format(Msg0418, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            }
+            else
+                context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        }
     }
 
     return false;
@@ -3041,11 +3049,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 (!toType->isNative(NativeTypeKind::UInt) || fromType->kind != TypeInfoKind::Pointer))
             {
                 if (!(castFlags & CASTFLAG_UNCONST))
-                    return castError(context, toType, fromType, fromNode, castFlags);
+                    return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
 
                 // We can affect a const to an unconst if type is by copy, and we are in an affectation
                 if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
-                    return castError(context, toType, fromType, fromNode, castFlags);
+                    return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
             }
         }
     }

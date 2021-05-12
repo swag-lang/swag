@@ -25,6 +25,7 @@ static const uint32_t CASTFLAG_COERCE        = 0x00001000;
 static const uint32_t CASTFLAG_TRY_COERCE    = 0x00002000;
 static const uint32_t CASTFLAG_AUTO_OPCAST   = 0x00004000;
 static const uint32_t CASTFLAG_STRICT        = 0x00008000;
+static const uint32_t CASTFLAG_CONST_ERR     = 0x10008000;
 
 static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM       = 0x00000001;

@@ -1,17 +1,6 @@
-struct AA
+#test
 {
-
-}
-
-impl AA
-{
-    func toto(using self)
-    {
-
-    }
-
-    func titi(using self)
-    {
-        toto(4)
-    }
+    var x: *u8
+    var y: const *u8
+    x = y
 }

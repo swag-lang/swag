@@ -267,6 +267,7 @@
 #define Msg0105 "cannot call empty function '%s'"
 #define Msg0200 "cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'"
 #define Msg0177 "cannot cast from '%s' to '%s'"
+#define Msg0418 "cannot cast from immutable type '%s' to mutable '%s'"
 #define Msg0175 "cannot cast implicitly from '%s' to '%s'"
 #define Msg0203 "cannot cast, not enough initializers ('%d' expected, '%d' provided)"
 #define Msg0204 "cannot cast, too many initializers ('%d' expected, '%d' provided)"
@@ -812,3 +813,4 @@
 #define Hnt0019 "this should be 'impl enum %s'"
 #define Hnt0020 "this should be 'impl %s'"
 #define Hnt0021 "this should be 'impl typeset %s'"
+#define Hnt0022 "this type is immutable ('const')"
