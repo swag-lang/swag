@@ -143,6 +143,46 @@ impl Decoder
         default:
             throw "invalid color type"
         }
+
+        if header.bit_depth > 8
+            throw "unsupported 16 bpp"
+
+        if header.color_type & .Paletted
+        {
+            throw "unsupported paletted image"
+        }
+        else if header.color_type & .Color
+        {
+            inChannels = 3
+            outChannels = 3
+        }
+        else
+        {
+            inChannels = 1
+            outChannels = 3
+        }
+
+        if header.color_type & .Alpha
+        {
+            inChannels += 1
+            outChannels += 1
+        }
+    }
+
+    func filterPaeth(left, up, upLeft: u8)->u8
+    {
+        aa := cast(s16) left
+        bb := cast(s16) up
+        cc := cast(s16) upLeft
+        p  := aa + bb - cc
+        pa := math.abs(p - aa)
+        pb := math.abs(p - bb)
+        pc := math.abs(p - cc)
+        if pa <= pb and pa <= pc
+            return left
+        if pb <= pc
+            return up
+        return upLeft
     }
 
     func defilter_8(using self) throw
@@ -191,6 +231,16 @@ impl Decoder
                 }
 
             case Paeth:
+                loop i: inChannels
+                {
+                    paeth := filterPaeth(0, up[i], 0)
+                    dest[i] = bitcast(u8) (src[i] + paeth)
+                }
+                loop k: nk
+                {
+                    paeth := filterPaeth(dest[k], up[inChannels + k], up[k])
+                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + paeth)
+                }
                 break
             }
 
@@ -252,22 +302,6 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
-
-                if header.bit_depth > 8 throw "unsupported 16 bpp"
-                if header.color_type & .Paletted throw "unsupported paletted image"
-
-                if header.color_type & .Color
-                {
-                    inChannels = 3
-                    outChannels = 3
-                }
-
-                if header.color_type & .Alpha
-                {
-                    inChannels += 1
-                    outChannels += 1
-                }
-
                 if outChannels == 4
                     result = image.create(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
                 else
@@ -306,7 +340,29 @@ impl Decoder
         var dec: compress.ZLibDecoder
         dcmpBuf = try dec.decompress(iDataBuf.toSlice())
 
+        // defilter content
         try defilter()
+
+        if inChannels == outChannels
+            return result
+        if inChannels != 1
+            throw "invalid channels"
+
+        decodePixels := cast(*u8) memory.alloc(result.size)
+        swap(&result.pixels, &decodePixels)
+        defer memory.free(decodePixels, result.size)
+
+        result.visitPixels(&decodePixels)
+        {
+            src := :cast(**u8) userData
+            src += x + y * image.width
+            pix[0] = src[0]
+            pix[1] = src[0]
+            pix[2] = src[0]
+            if image.bpp == 32 pix[3] = 255
+        }
+
+
         return result
     }
 }
