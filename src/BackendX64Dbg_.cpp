@@ -129,6 +129,31 @@ enum SimpleTypeMode : DbgTypeIndex
     NearPointer128 = 7  // 128 bit near pointer
 };
 
+Utf8 BackendX64::dbgGetScopedName(AstNode* node)
+{
+    auto nn = node->getScopedName();
+    Utf8 result;
+
+    auto pz      = nn.c_str();
+    bool lastDot = false;
+    for (int i = 0; i < nn.length(); i++, pz++)
+    {
+        if (*pz == '.')
+        {
+            if (lastDot)
+                continue;
+            lastDot = true;
+            result += "::";
+            continue;
+        }
+
+        result += *pz;
+        lastDot = false;
+    }
+
+    return result;
+}
+
 void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!coffFct->node || coffFct->node->isSpecialFunctionGenerated())
@@ -840,8 +865,7 @@ void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node
             break;
         }
 
-        auto nn = node->getScopedName();
-        nn.replace(".", "::");
+        auto nn = dbgGetScopedName(node);
         dbgEmitTruncatedString(concat, nn);
         dbgEndRecord(pp, concat);
     }
@@ -881,8 +905,7 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        auto nn = p->getScopedName();
-        nn.replace(".", "::");
+        auto nn = dbgGetScopedName(p);
         dbgEmitTruncatedString(concat, nn);
         dbgEndRecord(pp, concat);
     }
@@ -947,8 +970,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(tr.index);                      // @FunctionType; TODO
             dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
-            auto nn = f.node->getScopedName();
-            nn.replace(".", "::");
+            auto nn = dbgGetScopedName(f.node);
             dbgEmitTruncatedString(concat, nn);
             dbgEndRecord(pp, concat);
 

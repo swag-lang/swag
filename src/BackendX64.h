@@ -338,6 +338,7 @@ struct BackendX64 : public Backend
     DbgTypeIndex dbgGetOrCreatePointerPointerToType(X64PerThread& pp, TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
+    Utf8         dbgGetScopedName(AstNode* node);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void         dbgEmitCompilerFlagsDebugS(Concat& concat);
     void         dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node);
