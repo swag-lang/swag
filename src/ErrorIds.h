@@ -738,6 +738,7 @@
 #define Note010 "'%s' is %s"
 #define Note011 "%s is marked with 'swag.noreturn', so the return is used inside %s"
 #define Note012 "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder"
+#define Note013 "symbol has been found thanks to a 'using'"
 
 #define Note002 "occurred %s %s'%s'"
 #define Note003 "occurred %s"

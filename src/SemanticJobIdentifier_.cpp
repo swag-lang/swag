@@ -1502,13 +1502,20 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
     }
 }
 
-void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
+void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
     if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
         return;
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+
+    // Symbol has been found with a using : display it
+    if (overloads.size() == 1 && overloads[0]->dependentVar)
+    {
+        auto note = new Diagnostic{overloads[0]->dependentVar, Note013, DiagnosticLevel::Note};
+        notes.push_back(note);
+    }
 
     // Additional error if the first parameter does not match, or if nothing matches
     bool badUfcs = overloads.empty();
@@ -1523,7 +1530,7 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
 
     if (badUfcs && !identifier->identifierRef->startScope)
     {
-        // There's something before (identifier is not the only one in the identifierref).
+        // There's something before (identifier is not the only one in the identifierRef).
         if (identifier->childParentIdx)
         {
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
@@ -1531,19 +1538,12 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
             {
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev,
-                                               format(Note001,
-                                                      prev->token.text.c_str(),
-                                                      SymTable::getArticleKindName(prev->resolvedSymbolName->kind),
-                                                      prev->typeInfo->getDisplayName().c_str()),
-                                               DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, format(Note001, prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind), prev->typeInfo->getDisplayName().c_str()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{prev,
-                                               format(Note010, prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)),
-                                               DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, format(Note010, prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
@@ -1557,7 +1557,7 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
     }
 }
 
-void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag)
+void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;
@@ -1700,14 +1700,14 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
-        symbolNotFoundRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
-        symbolNotFoundNotes(context, overloads, node, const_cast<Diagnostic*>(errs0[0]), errs1);
+        symbolErrorRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
+        symbolErrorNotes(context, overloads, node, const_cast<Diagnostic*>(errs0[0]), errs1);
         return context->report(*errs0[0], errs1);
     }
 
     // Multiple overloads
     Diagnostic diag{node, node->token, format(Msg0113, overloads.size())};
-    symbolNotFoundRemarks(context, overloads, node, &diag);
+    symbolErrorRemarks(context, overloads, node, &diag);
 
     vector<const Diagnostic*> notes;
     int                       overIdx = 1;
@@ -1732,7 +1732,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         notes.push_back(errs0[0]);
     }
 
-    symbolNotFoundNotes(context, overloads, node, &diag, notes);
+    symbolErrorNotes(context, overloads, node, &diag, notes);
     return context->report(diag, notes);
 }
 
@@ -2424,8 +2424,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
             VectorNative<OneTryMatch*> v;
             vector<const Diagnostic*>  notes;
-            symbolNotFoundRemarks(context, v, node, diag);
-            symbolNotFoundNotes(context, v, node, diag, notes);
+            symbolErrorRemarks(context, v, node, diag);
+            symbolErrorNotes(context, v, node, diag, notes);
             symbolNotFoundHint(context, node, scopeHierarchy, notes);
 
             return context->report(*diag, notes);
@@ -3190,11 +3190,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             AstNode* dependentVar = nullptr;
             SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
 
-            // Get the ufcs first parameter, and last parameter, if we can
+            // Get the ufcs first parameter if we can
             AstNode* ufcsFirstParam = nullptr;
             SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
 
-            // If the last parameter of a function is of type code, and the call last parameter is not,
+            // If the last parameter of a function is of type 'code', and the last call parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
             SWAG_CHECK(appendLastCodeStatement(context, node, symbolOverload));
 

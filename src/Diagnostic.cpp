@@ -115,6 +115,7 @@ void Diagnostic::report(bool verboseMode) const
         if (showMultipleCodeLines &&
             errorLevel != DiagnosticLevel::CallStack &&
             errorLevel != DiagnosticLevel::CallStackInlined &&
+            errorLevel != DiagnosticLevel::Note &&
             errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = -2; i <= 0; i++)
