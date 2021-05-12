@@ -409,7 +409,7 @@ impl Decoder
         // Color without alpha to alpha: use a transparency mask
         else if inChannels == 3
         {
-            if !seenTRSN throw "invalid conversion"
+            if !seenTRSN throw "missing TRSN chunk"
             key := cast(const *u8) @dataof(chunkTRNS.datas)
             key0 := key[1]
             key1 := key[3]
