@@ -1,3 +1,4 @@
+// https://github.com/odin-lang/Odin/blob/master/core/image/png/png.odin
 #global namespace png
 using swag, core
 
@@ -260,14 +261,18 @@ impl Decoder
         {
             if header.bitDepth < 8
             {
-                throw "unsupported"
+                throw "unsupported bit depth"
                 //throw defilter_less_than_8(buf)
                 //img.depth = 8;
             }
             else if header.bitDepth == 8
                 try defilter8()
             else
-                throw "unsupported" //defilter_16(buf)
+                throw "unsupported 16 bits depth" //defilter_16(buf)
+        }
+        else
+        {
+            throw "interlace not supported"
         }
     }
 
