@@ -103,6 +103,7 @@ impl Image
             dpix[0] = cast(u8) math.clamp(bs, 0, 255)
             dpix[1] = cast(u8) math.clamp(gs, 0, 255)
             dpix[2] = cast(u8) math.clamp(rs, 0, 255)
+            if image.bpp == 32 dpix[3] = pix[3]
         }
     }
 

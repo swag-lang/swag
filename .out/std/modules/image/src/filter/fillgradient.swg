@@ -19,7 +19,7 @@ impl Image
                 b := cast(u8) math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
                 g := cast(u8) math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
                 r := cast(u8) math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
-                a := 0'u8
+                a := 255'u8
                 if PF.bpp() == 32 a = cast(u8) math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 setPixelRGBA8'PF(pix, r, g, b, a)
                 pix += bpp8
@@ -59,7 +59,7 @@ impl Image
                 colH1 := Color.getBlend(params.color0, params.color1, factor0)
                 colH0 := Color.getBlend(params.color2, params.color3, factor0)
                 col := Color.getBlend(colH0, colH1, factor1)
-                setPixelRGBA8'PF(pix, col.r, col.g, col.b, 0)
+                setPixelRGBA8'PF(pix, col.r, col.g, col.b, 255)
             }
         }
 
