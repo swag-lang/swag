@@ -833,9 +833,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 return context->report({identifier, identifier->token, format(Msg0091, overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
         }
 
-        if (identifier->token.text == "uint64pow10")
-            identifier = identifier;
-
         // Transform the variable to a constant node
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
