@@ -130,49 +130,23 @@ impl Decoder
         if header.width == 0 or header.height == 0
             throw "invalid dimensions"
         if header.compressionMethod != 0
-            throw "invalid compression"
+            throw "invalid compression method"
         if header.filterMethod != 0
-            throw "invalid filter"
+            throw "invalid filter method"
         if header.interlaceMethod != .None and header.interlaceMethod != .Adam7
             throw "invalid interlace method"
 
         using header
-        switch cast(u8) colorType
-        {
-        case 0:
-            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8 and bitDepth != 16
-                throw "invalid color depth"
+        if colorType & .Paletted throw "unsupported paletted image"
+        if colorType > 7 throw "invalid color type"
+        if bitDepth > 8 throw "unsupported bit depth"
+        if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8 throw "invalid bit depth"
 
-        case 2, 4, 6:
-            if bitDepth != 8 and bitDepth != 16
-                throw "invalid color depth"
-
-        case 3:
-            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8
-                throw "invalid color depth"
-
-        default:
-            throw "invalid color type"
-        }
-
-        if header.bitDepth > 8
-            throw "unsupported 16 bpp"
-
-        if header.colorType & .Paletted
-        {
-            throw "unsupported paletted image"
-        }
-        else if header.colorType & .Color
-        {
+        outChannels = 3
+        if header.colorType & .Color
             inChannels = 3
-            outChannels = 3
-        }
         else
-        {
             inChannels = 1
-            outChannels = 3
-        }
-
         if header.colorType & .Alpha
         {
             inChannels += 1
@@ -379,7 +353,7 @@ impl Decoder
         }
     }
 
-    func defilter(using self, width, height: u32, input, output: *u8) throw
+    func defilter(using self, width, height: u32, input, output: *u8)
     {
         if header.bitDepth < 8
         {
@@ -393,8 +367,6 @@ impl Decoder
             defilter8(width, height, input, output)
             return
         }
-
-        throw "unsupported 16 bits depth"
     }
 
     func defilter(using self) throw
@@ -402,7 +374,7 @@ impl Decoder
         if header.interlaceMethod != .Adam7
         {
             orderDefilter = false
-            try defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
+            defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
             return
         }
 
@@ -419,7 +391,7 @@ impl Decoder
             tmpArr.resize(x * y * inChannels)
             memory.clear(tmpArr.buffer, tmpArr.count)
 
-            try defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
+            defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
 
             t := tmpArr.buffer
             loop j: y
