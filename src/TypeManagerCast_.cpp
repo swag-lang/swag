@@ -2962,7 +2962,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 if (exprList && !(exprList->doneFlags & AST_DONE_EXPRLIST_CST))
                 {
                     exprList->doneFlags |= AST_DONE_EXPRLIST_CST;
-                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue.reg.offset, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
+
+                    // Test sizeof because @{} is legit to initialize a struct (for default values in function arguments)
+                    if (fromNode->typeInfo->sizeOf)
+                        SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue.reg.offset, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
                 }
             }
         }
