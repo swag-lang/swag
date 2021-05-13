@@ -31,6 +31,11 @@ enum ChunkType: u32
 	CbGI = @byteswap("C"'u32 << 24 | "b"'u32 << 16 | "H"'u32 << 8 | "I"'u32)
 }
 
+const ADAM7_X_ORIG:     []int = @[0,4,0,2,0,1,0]
+const ADAM7_Y_ORIG:     []int = @[0,0,4,0,2,0,1]
+const ADAM7_X_SPACING:  []int = @[8,8,4,4,2,2,1]
+const ADAM7_Y_SPACING:  []int = @[8,8,8,4,4,2,2]
+
 enum RowFilter: u8
 {
    None    = 0
@@ -384,7 +389,12 @@ impl Decoder
             return
         }
 
-        throw "interlace not supported"
+        loop p: 7
+        {
+			x := (header.width  - ADAM7_X_ORIG[p] + ADAM7_X_SPACING[p] - 1) / ADAM7_X_SPACING[p];
+			y := (header.height - ADAM7_Y_ORIG[p] + ADAM7_Y_SPACING[p] - 1) / ADAM7_Y_SPACING[p];
+            if x <= 0 or y <= 0 continue
+        }
     }
 
     func doIt(using self, buffer: const [..] u8)->Image throw
