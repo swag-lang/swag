@@ -76,7 +76,10 @@ func loadImg()
     case 18:    imgName = "basn0g04.png"  // grayscale 4 bit
     case 19:    imgName = "tbbn0g04.png"  // grayscale 4 bit + transparency
     case 20:    imgName = "basi2c08.png"  // color interlaced
-    case 21:    imgName = "basi0g01.png"  // color interlaced
+    case 21:    imgName = "basi0g01.png"  // grayscale interlaced 1 bit
+    case 22:    imgName = "basi0g02.png"  // grayscale interlaced 2 bits
+    case 23:    imgName = "basi0g04.png"  // grayscale interlaced 4 bits
+    case 24:    imgName = "basi0g08.png"  // grayscale interlaced 8 bits
     default: imageIdx = 0
     }
 
