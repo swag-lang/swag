@@ -369,19 +369,10 @@ impl Decoder
         }
     }
 
-    func defilter(using self) throw
+    func adam7(using self)
     {
-        if header.interlaceMethod != .Adam7
-        {
-            orderDefilter = false
-            defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
-            return
-        }
-
         var tmpArr: Array'u8
-
         input := dcmpBuf.buffer
-        orderDefilter = true
         loop p: 7
         {
 			x := (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
@@ -413,6 +404,20 @@ impl Decoder
         }
     }
 
+    func defilter(using self)
+    {
+        if header.interlaceMethod != .Adam7
+        {
+            orderDefilter = false
+            defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
+        }
+        else
+        {
+            orderDefilter = true
+            adam7()
+        }
+    }
+
     func doIt(using self, buffer: const [..] u8)->Image throw
     {
         stream.init(buffer)
@@ -421,8 +426,7 @@ impl Decoder
         stream.peekBytes(@sizeof(signature), cast(*u8) &signature)
         if signature != 0x0a1a0a0d474e5089 throw "not a png"
 
-        var result: retval
-
+        var result:     retval
         var iDataBuf:   Array'u8
         var ch:         ChunkHeader = ?
 
@@ -477,7 +481,6 @@ impl Decoder
 
                 chIsHere = true
                 seenIDAT = true
-                break
 
             default:
                 chunk := try readChunk(ch)
@@ -493,7 +496,7 @@ impl Decoder
         dcmpBuf = try dec.decompress(iDataBuf.toSlice())
 
         // defilter content
-        try defilter()
+        defilter()
 
         // Initialize image depending on number of wanted channels
         if outChannels == 4
