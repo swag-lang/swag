@@ -11,11 +11,16 @@ private
     var g_Decoder: Array'Decoder
 }
 
+public struct DecodeOptions
+{
+    decodePixels = true
+}
+
 // Interface to decode a buffer
 public interface IDecoder
 {
     canDecode:  func(self, string)->bool
-    decode:     func(self, const [..] u8)->Image throw
+    decode:     func(self, const [..] u8, const *DecodeOptions)->Image throw
 }
 
 // Register an image decoder
@@ -30,7 +35,7 @@ public func(T) addDecoder()
 }
 
 // Load an image from file
-public func load(fileName: string)->Image throw
+public func load(fileName: string, options: const *DecodeOptions = null)->Image throw
 {
     // Find the decoder that can treat 'fileName'
     var found: *Decoder
@@ -59,7 +64,7 @@ public func load(fileName: string)->Image throw
 
     // Decode
     itf := @mkinterface(ptrDecoder, found.type, IDecoder)
-    return try itf.decode(bytes.toSlice())
+    return try itf.decode(bytes.toSlice(), options)
 }
 
 // Initialize predefined decoders
