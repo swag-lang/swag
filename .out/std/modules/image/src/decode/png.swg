@@ -310,11 +310,8 @@ impl Decoder
         destOffset := rowStrideOut - rowStrideIn
 
         src := input
-        var dest: *u8 = ?
-        if orderDefilter
-            dest = output
-        else
-            dest = output + rowStrideOut * (height - 1)
+        dest := output
+        if !orderDefilter dest += rowStrideOut * (height - 1)
 
         var tmpRow: Array'u8
         tmpRow.resize(rowStrideOut)
