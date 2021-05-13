@@ -279,15 +279,15 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 4) * 15)
-                    dest[1] = bitcast(u8) ((c & 15) * 15)
+                    dest[0] = bitcast(u8) ((c >>,safe 4) * 17)
+                    dest[1] = bitcast(u8) ((c & 15) * 17)
                     dest += 2
                     src += 1
                     k -= 2
                 }
                 if k > 0
                 {
-                    dest[0] = bitcast(u8) ((src[0] >>,safe 4) * 15)
+                    dest[0] = bitcast(u8) ((src[0] >>,safe 4) * 17)
                 }
             }
         }
@@ -483,17 +483,17 @@ impl Decoder
             return result
         }
 
-        try convert(&result)
+        convert(&result)
         return result
     }
 
-    func convert(using self, result: *Image) throw
+    func convert(using self, result: *Image)
     {
         result.pixels = cast(*u8) memory.alloc(result.size)
         defer memory.free(dstPixels, dstPixelsSize)
 
-        // Grayscale
-        if inChannels == 1
+        // Grayscale without alpha channel, no transparency
+        if inChannels == 1 and !seenTRSN
         {
             result.visitPixels(&dstPixels)
             {
@@ -503,6 +503,25 @@ impl Decoder
                 pix[1] = src[0]
                 pix[2] = src[0]
                 if image.bpp == 32 pix[3] = 255
+            }
+        }
+
+        // Grayscale without alpha channel, but transparency
+        else if inChannels == 1 and seenTRSN
+        {
+            key := chunkTRNS.datas[1]
+            scale := header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
+            key *= scale
+            pm := @{dstPixels, key}
+            result.visitPixels(&pm)
+            {
+                params := cast(*@typeof(pm)) userData
+                src := params.dstPixels
+                src += x + y * image.width
+                pix[0] = src[0]
+                pix[1] = src[0]
+                pix[2] = src[0]
+                pix[3] = src[0] == params.key ? 0 : 255
             }
         }
 
@@ -520,10 +539,9 @@ impl Decoder
             }
         }
 
-        // Color without alpha to alpha: use a transparency mask
-        else if inChannels == 3
+        // Color without alpha but transparency
+        else if inChannels == 3 and seenTRSN
         {
-            if !seenTRSN throw "missing TRSN chunk"
             key := cast(const *u8) @dataof(chunkTRNS.datas)
             key0 := key[1]
             key1 := key[3]

@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
-var imageIdx: u32 = 15
+var imageIdx: u32 = 11
 var effectIdx: u32 = 0
 var myImage: image.Image
 const W = 1024
@@ -74,6 +74,7 @@ func loadImg()
     case 16:    imgName = "basn0g01.png"  // grayscale 1 bit
     case 17:    imgName = "basn0g02.png"  // grayscale 2 bit
     case 18:    imgName = "basn0g04.png"  // grayscale 4 bit
+    case 19:    imgName = "tbbn0g04.png"  // grayscale 4 bit + transparency
 
     default: imageIdx = 0
     }
