@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
-var imageIdx: u32 = 20
+var imageIdx: u32 = 11
 var effectIdx: u32 = 0
 var myImage: image.Image
 const W = 1024

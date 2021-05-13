@@ -31,10 +31,10 @@ enum ChunkType: u32
 	CbGI = @byteswap("C"'u32 << 24 | "b"'u32 << 16 | "H"'u32 << 8 | "I"'u32)
 }
 
-const ADAM7_X_ORIG:     []int = @[0,4,0,2,0,1,0]
-const ADAM7_Y_ORIG:     []int = @[0,0,4,0,2,0,1]
-const ADAM7_X_SPACING:  []int = @[8,8,4,4,2,2,1]
-const ADAM7_Y_SPACING:  []int = @[8,8,8,4,4,2,2]
+const Adam7OrigX:     []int = @[0,4,0,2,0,1,0]
+const Adam7OrigY:     []int = @[0,0,4,0,2,0,1]
+const Adam7SpacingX:  []int = @[8,8,4,4,2,2,1]
+const Adam7SpacingY:  []int = @[8,8,8,4,4,2,2]
 
 enum RowFilter: u8
 {
@@ -196,18 +196,18 @@ impl Decoder
     }
 
     // Expand 1, 2, 4 bits to 8 bits
-    func expand8(using self)
+    func expand8(using self, width, height: u32, output: *u8)
     {
-        rowStrideIn := ((inChannels * header.width * header.bitDepth) + 7) / 8
-        rowStrideOut := inChannels * header.width
+        rowStrideIn := ((inChannels * width * header.bitDepth) + 7) / 8
+        rowStrideOut := inChannels * width
 
-        orgDest := dstPixels
+        orgDest := output
         srcOffset := rowStrideOut - rowStrideIn
 
         // 1 bit => 8 bits
         if header.bitDepth == 1
         {
-            loop header.height
+            loop height
             {
                 dest := orgDest
                 orgDest += rowStrideOut
@@ -245,7 +245,7 @@ impl Decoder
         // 2 bits => 8 bits
         else if header.bitDepth == 2
         {
-            loop header.height
+            loop height
             {
                 dest := orgDest
                 orgDest += rowStrideOut
@@ -275,7 +275,7 @@ impl Decoder
         // 4 bits => 8 bits
         else if header.bitDepth == 4
         {
-            loop header.height
+            loop height
             {
                 dest := orgDest
                 orgDest += rowStrideOut
@@ -298,25 +298,25 @@ impl Decoder
         }
     }
 
-    func defilter8(using self)
+    func defilter8(using self, width, height: u32, input, output: *u8)
     {
         var rowStrideIn: uint
         if header.bitDepth < 8
-            rowStrideIn = cast(uint) ((inChannels * header.width * header.bitDepth) + 7) / 8
+            rowStrideIn = cast(uint) ((inChannels * width * header.bitDepth) + 7) / 8
         else
-            rowStrideIn = cast(uint) inChannels * header.width
-        rowStrideOut := cast(uint) inChannels * header.width
+            rowStrideIn = cast(uint) inChannels * width
+        rowStrideOut := cast(uint) inChannels * width
         destOffset := rowStrideOut - rowStrideIn
 
-        src := dcmpBuf.buffer
-        dest := dstPixels + rowStrideOut * (header.height - 1)
+        src := input
+        dest := output + rowStrideOut * (height - 1)
 
         var tmpRow: Array'u8
         tmpRow.resize(rowStrideOut)
         memory.clear(tmpRow.buffer, rowStrideOut)
         up := tmpRow.buffer
 
-        loop header.height
+        loop height
         {
             nk := rowStrideIn - inChannels
             filter := cast(RowFilter) src[0]
@@ -371,29 +371,63 @@ impl Decoder
         }
     }
 
+    func defilter(using self, width, height: u32, input, output: *u8) throw
+    {
+        if header.bitDepth < 8
+        {
+            defilter8(width, height, input, output)
+            expand8(width, height, output)
+            return
+        }
+
+        if header.bitDepth == 8
+        {
+            defilter8(width, height, input, output)
+            return
+        }
+
+        throw "unsupported 16 bits depth"
+    }
+
     func defilter(using self) throw
     {
         if header.interlaceMethod != .Adam7
         {
-            if header.bitDepth < 8
-            {
-                defilter8()
-                expand8()
-            }
-            else if header.bitDepth == 8
-            {
-                defilter8()
-            }
-            else
-                throw "unsupported 16 bits depth"
+            try defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
             return
         }
 
+        input := dcmpBuf.buffer
         loop p: 7
         {
-			x := (header.width  - ADAM7_X_ORIG[p] + ADAM7_X_SPACING[p] - 1) / ADAM7_X_SPACING[p];
-			y := (header.height - ADAM7_Y_ORIG[p] + ADAM7_Y_SPACING[p] - 1) / ADAM7_Y_SPACING[p];
+			x := (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p];
+			y := (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p];
             if x <= 0 or y <= 0 continue
+
+            var tmpArr: Array'u8
+            tmpArr.resize(x * y * inChannels)
+            try defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
+
+            t := tmpArr.buffer
+            loop j: y
+            {
+                loop i: x
+                {
+                    out_y := j * Adam7SpacingY[p] + Adam7OrigY[p]
+                    out_x := i * Adam7SpacingX[p] + Adam7OrigX[p]
+
+                    const bytes_per_channel = 1
+                    out_off := out_y * header.width * inChannels * bytes_per_channel
+                    out_off += out_x * inChannels * bytes_per_channel
+
+                    loop z: inChannels * bytes_per_channel
+                        dstPixels[out_off + z] = t[z]
+                    t += inChannels * bytes_per_channel
+                }
+            }
+
+            stride := x * y * inChannels
+            input += stride
         }
     }
 
