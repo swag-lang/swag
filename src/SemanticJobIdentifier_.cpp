@@ -455,8 +455,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 if (funcParam->type)
                     varNode->type = funcParam->type->clone(cloneContext);
-                varNode->assignment = funcParam->assignment->clone(cloneContext);
-                varNode->assignment->inheritOwners(identifier);
+
+                // Need to test sizeof because assignement can be @{}. In that case, we just reference
+                // the temporary variable
+                if (funcParam->assignment->typeInfo->sizeOf)
+                {
+                    varNode->assignment = funcParam->assignment->clone(cloneContext);
+                    varNode->assignment->inheritOwners(identifier);
+                }
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->index = i;
