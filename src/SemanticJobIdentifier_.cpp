@@ -1006,6 +1006,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
         {
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
+            if (context->result != ContextResult::Done)
+                return true;
         }
 
         // Be sure the call is valid
