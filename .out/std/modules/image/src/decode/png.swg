@@ -89,6 +89,7 @@ public struct Decoder
     chunkTRNS:      Chunk
     seenTRSN:       bool
     seenBKGD:       bool
+    orderDefilter:  bool
 }
 
 struct Chunk
@@ -309,7 +310,11 @@ impl Decoder
         destOffset := rowStrideOut - rowStrideIn
 
         src := input
-        dest := output + rowStrideOut * (height - 1)
+        var dest: *u8 = ?
+        if orderDefilter
+            dest = output
+        else
+            dest = output + rowStrideOut * (height - 1)
 
         var tmpRow: Array'u8
         tmpRow.resize(rowStrideOut)
@@ -367,7 +372,10 @@ impl Decoder
 
             src += rowStrideIn
             up = destOff
-            dest -= rowStrideOut
+            if orderDefilter
+                dest += rowStrideOut
+            else
+                dest -= rowStrideOut
         }
     }
 
@@ -393,19 +401,24 @@ impl Decoder
     {
         if header.interlaceMethod != .Adam7
         {
+            orderDefilter = false
             try defilter(header.width, header.height, dcmpBuf.buffer, dstPixels)
             return
         }
 
+        var tmpArr: Array'u8
+
         input := dcmpBuf.buffer
+        orderDefilter = true
         loop p: 7
         {
-			x := (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p];
-			y := (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p];
+			x := (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
+			y := (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
             if x <= 0 or y <= 0 continue
 
-            var tmpArr: Array'u8
             tmpArr.resize(x * y * inChannels)
+            memory.clear(tmpArr.buffer, tmpArr.count)
+
             try defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
 
             t := tmpArr.buffer
@@ -413,20 +426,18 @@ impl Decoder
             {
                 loop i: x
                 {
-                    out_y := j * Adam7SpacingY[p] + Adam7OrigY[p]
-                    out_x := i * Adam7SpacingX[p] + Adam7OrigX[p]
-
-                    const bytes_per_channel = 1
-                    out_off := out_y * header.width * inChannels * bytes_per_channel
-                    out_off += out_x * inChannels * bytes_per_channel
-
-                    loop z: inChannels * bytes_per_channel
+                    out_y   := (j * Adam7SpacingY[p]) + Adam7OrigY[p]
+                    out_y = header.height - out_y - 1
+                    out_x   := (i * Adam7SpacingX[p]) + Adam7OrigX[p]
+                    out_off := out_y * header.width * inChannels
+                    out_off += out_x * inChannels
+                    loop z: inChannels
                         dstPixels[out_off + z] = t[z]
-                    t += inChannels * bytes_per_channel
+                    t += inChannels
                 }
             }
 
-            stride := x * y * inChannels
+            stride := ((x * inChannels) + 1) * y
             input += stride
         }
     }
