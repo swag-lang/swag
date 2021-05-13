@@ -7,6 +7,7 @@ impl AA
 {
     func toto(using self, v: AA = @{true})
     {
+        @assert(v.yy)
     }
 }
 
