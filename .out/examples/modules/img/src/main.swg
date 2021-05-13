@@ -78,17 +78,18 @@ func loadImg()
     default: imageIdx = 0
     }
 
+    // Load image
     var ti: time.Stopwatch
     ti.start()
     data := imagePath(imgName)
     myImage = assume image.load(data)
     ti.stop()
-
+    console.printf("%: img: % (% x % %) load: %ms ", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds())
     myImage.resize(512, 512)
 
+    // Apply a filter
     var te: time.Stopwatch
     te.start()
-
     switch effectIdx
     {
     case 1:  myImage.halfSize()
@@ -143,8 +144,7 @@ func loadImg()
     }
 
     te.stop()
-
-    console.printf("%: img: % (% x % %) time: %ms / %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds(), te.elapsedMilliseconds())
+    console.printf("filter: % %ms\n", effectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
     internal := GL_RGB
@@ -276,7 +276,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        //jobs.setNumWorkers()
+        jobs.setNumWorkers()
         loadImg()
 
         display()
