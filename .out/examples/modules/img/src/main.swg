@@ -1,3 +1,5 @@
+// http://www.schaik.com/pngsuite/
+
 #global if #os == "windows"
 using core, win32, ogl, gdi32, drawing
 

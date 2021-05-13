@@ -14,7 +14,7 @@ struct Image
     bpp8:               u8  // Bytes per pixel
 }
 
-// Creates a new image surface
+// Creates a new image
 func create(width, height: s32, pf: PixelFormat)->Image
 {
     debug.assert(width > 0 and height > 0, "invalid dimensions")
@@ -28,17 +28,6 @@ func create(width, height: s32, pf: PixelFormat)->Image
 
 impl Image
 {
-    func init(using self, width, height: s32, pf: PixelFormat)
-    {
-        self.width = #scopefct.width
-        self.height = #scopefct.height
-        self.pf = #scopefct.pf
-        bpp = self.pf.bpp()
-        bpp8 = cast(u8) (bpp >> 3)
-        width8 = self.width * bpp8
-        size = cast(uint) (self.width * self.height * bpp8)
-    }
-
     #[inline]
     private func free(using self)
     {
@@ -77,6 +66,22 @@ impl Image
 
             scan += bpp8
         }
+    }
+
+    // Initialize image informations
+    // 'pixels' is set to null, and must be initialized after a call to that function
+    // This gives the opportunity to set the pixels with an external buffer
+    func init(using self, width, height: s32, pf: PixelFormat)
+    {
+        self.pixels = null
+        self.width = #scopefct.width
+        self.height = #scopefct.height
+        self.pf = #scopefct.pf
+
+        bpp    = self.pf.bpp()
+        bpp8   = cast(u8) (bpp >> 3)
+        width8 = self.width * bpp8
+        size   = cast(uint) (self.width * self.height * bpp8)
     }
 
     // Allocate a computing buffer with current image size
