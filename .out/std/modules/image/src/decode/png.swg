@@ -211,7 +211,7 @@ impl Decoder
                 while k >= 8
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) (((c >>,safe 7) & 1) * 255)
+                    dest[0] = bitcast(u8) ((c >>,safe 7) * 255)
                     dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
                     dest[2] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
                     dest[3] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
@@ -222,6 +222,17 @@ impl Decoder
                     dest += 8
                     src += 1
                     k -= 8
+                }
+                if k > 0
+                {
+                    c := src[0]
+                    dest[0] = bitcast(u8) ((c >>,safe 7) * 255)
+                    if k > 1 dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
+                    if k > 2 dest[1] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
+                    if k > 3 dest[1] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
+                    if k > 4 dest[1] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
+                    if k > 5 dest[1] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
+                    if k > 6 dest[1] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
                 }
             }
         }
@@ -238,13 +249,20 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) (((c >>,safe 6) & 3) * 95)
-                    dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 95)
-                    dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 95)
-                    dest[3] = bitcast(u8) ((c & 3) * 95)
+                    dest[0] = bitcast(u8) ((c >>,safe 6) * 85)
+                    dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 85)
+                    dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 85)
+                    dest[3] = bitcast(u8) ((c & 3) * 85)
                     dest += 4
                     src += 1
                     k -= 4
+                }
+                if k > 0
+                {
+                    c := src[0]
+                    dest[0] = bitcast(u8) ((c >>,safe 6) * 85)
+                    if k > 1 dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 85)
+                    if k > 2 dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 85)
                 }
             }
         }
