@@ -190,68 +190,161 @@ impl Decoder
         return upLeft
     }
 
-    func defilter8(using self) throw
+    // Expand 1, 2, 4 bits to 8 bits
+    func expand8(using self)
     {
-        rowStride := cast(uint) inChannels * header.width
+        rowStrideIn := ((inChannels * header.width * header.bitDepth) + 7) / 8
+        rowStrideOut := inChannels * header.width
+
+        orgDest := dstPixels
+        srcOffset := rowStrideOut - rowStrideIn
+
+        // 1 bit => 8 bits
+        if header.bitDepth == 1
+        {
+            loop header.height
+            {
+                dest := orgDest
+                orgDest += rowStrideOut
+                src := dest + srcOffset
+                k := rowStrideOut
+                while k >= 8
+                {
+                    c := src[0]
+                    dest[0] = bitcast(u8) (((c >>,safe 7) & 1) * 255)
+                    dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
+                    dest[2] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
+                    dest[3] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
+                    dest[4] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
+                    dest[5] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
+                    dest[6] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
+                    dest[7] = bitcast(u8) ((c & 1) * 255)
+                    dest += 8
+                    src += 1
+                    k -= 8
+                }
+            }
+        }
+
+        // 2 bits => 8 bits
+        else if header.bitDepth == 2
+        {
+            loop header.height
+            {
+                dest := orgDest
+                orgDest += rowStrideOut
+                src := dest + srcOffset
+                k := rowStrideOut
+                while k >= 2
+                {
+                    c := src[0]
+                    dest[0] = bitcast(u8) (((c >>,safe 6) & 3) * 95)
+                    dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 95)
+                    dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 95)
+                    dest[3] = bitcast(u8) ((c & 3) * 95)
+                    dest += 4
+                    src += 1
+                    k -= 4
+                }
+            }
+        }
+
+        // 4 bits => 8 bits
+        else if header.bitDepth == 4
+        {
+            loop header.height
+            {
+                dest := orgDest
+                orgDest += rowStrideOut
+                src := dest + srcOffset
+                k := rowStrideOut
+                while k >= 2
+                {
+                    c := src[0]
+                    dest[0] = bitcast(u8) ((c >>,safe 4) * 15)
+                    dest[1] = bitcast(u8) ((c & 15) * 15)
+                    dest += 2
+                    src += 1
+                    k -= 2
+                }
+                if k > 0
+                {
+                    dest[0] = bitcast(u8) ((src[0] >>,safe 4) * 15)
+                }
+            }
+        }
+    }
+
+    func defilter8(using self)
+    {
+        var rowStrideIn: uint
+        if header.bitDepth < 8
+            rowStrideIn = cast(uint) ((inChannels * header.width * header.bitDepth) + 7) / 8
+        else
+            rowStrideIn = cast(uint) inChannels * header.width
+        rowStrideOut := cast(uint) inChannels * header.width
+        destOffset := rowStrideOut - rowStrideIn
+
         src := dcmpBuf.buffer
-        dest := dstPixels + rowStride * (header.height - 1)
+        dest := dstPixels + rowStrideOut * (header.height - 1)
 
         var tmpRow: Array'u8
-        tmpRow.resize(rowStride)
-        memory.clear(tmpRow.buffer, rowStride)
+        tmpRow.resize(rowStrideOut)
+        memory.clear(tmpRow.buffer, rowStrideOut)
         up := tmpRow.buffer
 
         loop header.height
         {
-            nk := rowStride - inChannels
+            nk := rowStrideIn - inChannels
             filter := cast(RowFilter) src[0]
             src += 1
 
+            destOff := dest + destOffset
             switch filter
             {
             case None:
-                memory.copy(dest, src, rowStride)
+                memory.copy(destOff, src, rowStrideIn)
 
             case Sub:
                 loop i: inChannels
-                    dest[i] = src[i]
+                    destOff[i] = src[i]
                 loop k: nk
-                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + dest[k])
+                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + destOff[k])
 
             case Up:
-                loop k: rowStride
-                    dest[k] = bitcast(u8) (src[k] + up[k])
+                loop k: rowStrideIn
+                    destOff[k] = bitcast(u8) (src[k] + up[k])
                 break
 
             case Average:
                 loop i: inChannels
                 {
                     avg := up[i] >>,safe 1
-                    dest[i] = bitcast(u8) (src[i] + avg)
+                    destOff[i] = bitcast(u8) (src[i] + avg)
                 }
                 loop k: nk
                 {
-                    avg := cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (dest[k])) >>,safe 1)
-                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + avg)
+                    avg := cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >>,safe 1)
+                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + avg)
                 }
 
             case Paeth:
                 loop i: inChannels
                 {
                     paeth := filterPaeth(0, up[i], 0)
-                    dest[i] = bitcast(u8) (src[i] + paeth)
+                    destOff[i] = bitcast(u8) (src[i] + paeth)
                 }
                 loop k: nk
                 {
-                    paeth := filterPaeth(dest[k], up[inChannels + k], up[k])
-                    dest[inChannels + k] = bitcast(u8) (src[inChannels + k] + paeth)
+                    paeth := filterPaeth(destOff[k], up[inChannels + k], up[k])
+                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + paeth)
                 }
                 break
             }
 
-            src += rowStride
-            up = dest
-            dest -= rowStride
+            src += rowStrideIn
+            up = destOff
+            dest -= rowStrideOut
         }
     }
 
@@ -261,19 +354,19 @@ impl Decoder
         {
             if header.bitDepth < 8
             {
-                throw "unsupported bit depth"
-                //throw defilter_less_than_8(buf)
-                //img.depth = 8;
+                defilter8()
+                expand8()
             }
             else if header.bitDepth == 8
-                try defilter8()
+            {
+                defilter8()
+            }
             else
-                throw "unsupported 16 bits depth" //defilter_16(buf)
+                throw "unsupported 16 bits depth"
+            return
         }
-        else
-        {
-            throw "interlace not supported"
-        }
+
+        throw "interlace not supported"
     }
 
     func doIt(using self, buffer: const [..] u8)->Image throw
