@@ -199,7 +199,7 @@ impl Decoder
     // Expand 1, 2, 4 bits to 8 bits
     func expand8(using self, width, height: u32, output: *u8)
     {
-        rowStrideIn := ((inChannels * width * header.bitDepth) + 7) / 8
+        rowStrideIn  := getStrideIn(width);
         rowStrideOut := inChannels * width
 
         orgDest := output
@@ -234,11 +234,11 @@ impl Decoder
                     c := src[0]
                     dest[0] = bitcast(u8) ((c >>,safe 7) * 255)
                     if k > 1 dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
-                    if k > 2 dest[1] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
-                    if k > 3 dest[1] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
-                    if k > 4 dest[1] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
-                    if k > 5 dest[1] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
-                    if k > 6 dest[1] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
+                    if k > 2 dest[2] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
+                    if k > 3 dest[3] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
+                    if k > 4 dest[4] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
+                    if k > 5 dest[5] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
+                    if k > 6 dest[6] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
                 }
             }
         }
@@ -299,13 +299,16 @@ impl Decoder
         }
     }
 
+    func getStrideIn(using self, width: u32)->uint
+    {
+        if header.bitDepth < 8
+            return cast(uint) ((inChannels * width * header.bitDepth) + 7) / 8
+        return cast(uint) inChannels * width
+    }
+
     func defilter8(using self, width, height: u32, input, output: *u8)
     {
-        var rowStrideIn: uint
-        if header.bitDepth < 8
-            rowStrideIn = cast(uint) ((inChannels * width * header.bitDepth) + 7) / 8
-        else
-            rowStrideIn = cast(uint) inChannels * width
+        rowStrideIn := getStrideIn(width)
         rowStrideOut := cast(uint) inChannels * width
         destOffset := rowStrideOut - rowStrideIn
 
@@ -423,8 +426,7 @@ impl Decoder
             {
                 loop i: x
                 {
-                    out_y   := (j * Adam7SpacingY[p]) + Adam7OrigY[p]
-                    out_y = header.height - out_y - 1
+                    out_y   := header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
                     out_x   := (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     out_off := out_y * header.width * inChannels
                     out_off += out_x * inChannels
@@ -434,7 +436,7 @@ impl Decoder
                 }
             }
 
-            stride := ((x * inChannels) + 1) * y
+            stride := (getStrideIn(cast(u32) x) + 1) * y
             input += stride
         }
     }
