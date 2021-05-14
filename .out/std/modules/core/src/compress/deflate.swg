@@ -56,6 +56,7 @@ const FixedDist: [32]u8 = @[
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 ]
 
+#[swag.inline]
 func reverse16(n: u16, bits: u8)->u16
 {
     r := math.reverse(n)
@@ -160,11 +161,7 @@ impl DeflateDecoder
 	    k   := reverse16(cde, 16)
 
         s := HuffmanFastBits + 1
-        while true
-        {
-            if k < ht.maxCode[s] break
-    		s += 1
-        }
+        while k >= ht.maxCode[s] s += 1
 
         if s >= 16 throw "bad huffman code"
         b1 := (k >>,safe (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
