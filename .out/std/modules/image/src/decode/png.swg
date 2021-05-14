@@ -297,9 +297,9 @@ impl Decoder
         memory.clear(tmpRow.buffer, rowStrideOut)
         up := tmpRow.buffer
 
+        nk := rowStrideIn - inChannels
         loop height
         {
-            nk := rowStrideIn - inChannels
             filter := cast(RowFilter) src[0]
             src += 1
 

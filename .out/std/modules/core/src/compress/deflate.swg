@@ -206,19 +206,23 @@ impl DeflateDecoder
             if length <= 0 continue
 
             dest.grow(dest.count + length)
+
             if distance == 1
             {
+                // Repeat the last byte 'length' times
                 b := dest.buffer[dest.count - 1]
-                loop length
-                    dest.add(b)
+                memory.set(dest.buffer + dest.count, b, cast(uint) length)
+                dest.count += length
             }
             else if distance >= length
             {
+                // Copy an already decoded sequence of bytes
                 var sl: const [..] u8 = @mkslice(dest.buffer + dest.count - distance, length)
                 dest.add(sl)
             }
             else
             {
+                // Copy an already decoded sequence of bytes, and repeat the last one
                 loop length
                 {
                     b := dest.buffer[dest.count - distance]
