@@ -196,12 +196,12 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto expr = node->childs.back();
 
-    if (!(node->flags & AST_DONE_CAST1))
+    if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
         if (context->result == ContextResult::Pending)
             return true;
-        node->flags |= AST_DONE_CAST1;
+        node->doneFlags |= AST_DONE_CAST1;
     }
 
     if (!(node->doneFlags & AST_DONE_TRY_1))

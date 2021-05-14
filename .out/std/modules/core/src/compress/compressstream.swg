@@ -46,6 +46,7 @@ public impl CompressStream
         }
     }
 
+    #[swag.inline]
     func peekBits(using self, width: u8)->u32
     {
 	    if numBits < width refill()
@@ -58,6 +59,7 @@ public impl CompressStream
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
+    #[swag.inline]
     func readBits(using self, width: u8)->u32
     {
         k := peekBits(width)
@@ -72,6 +74,7 @@ public impl CompressStream
         return k
     }
 
+    #[swag.inline]
     func consumeBits(using self, width: u8)
     {
 	    codeBuffer >>=,safe width
