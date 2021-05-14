@@ -2512,6 +2512,11 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
 
+    // The ufcs parameter has already been set in we are evaluatin an identifier for the second time
+    // (when we inline a function call)
+    if(node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
+        canDoUfcs = false;
+
     if (canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
