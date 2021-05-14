@@ -208,11 +208,17 @@ impl DeflateDecoder
             if dest.count < distance throw "bad distance"
             if length <= 0 continue
 
+            dest.grow(dest.count + length)
             if distance == 1
             {
                 b := dest.buffer[dest.count - 1]
                 loop length
                     dest.add(b)
+            }
+            else if distance >= length
+            {
+                var sl: const [..] u8 = @mkslice(dest.buffer + dest.count - distance, length)
+                dest.add(sl)
             }
             else
             {

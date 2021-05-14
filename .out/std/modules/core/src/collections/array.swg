@@ -319,14 +319,15 @@ impl Array
     func add(using self, values: const [..] T)
         #selectif reflection.canCopy(@typeof(T))
     {
-        // Do not add myself !
-        debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
-
         sliceCount := @countof(values)
         if !sliceCount
             return
-        grow(count + sliceCount)
 
+        // Do not add myself if there's not enough room (because we will reallocate)
+        if count + sliceCount > capacity
+            debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
+
+        grow(count + sliceCount)
         oldCount := count
         count += sliceCount
 
