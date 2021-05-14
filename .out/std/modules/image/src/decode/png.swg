@@ -291,6 +291,7 @@ impl Decoder
         dest := output
         if !orderDefilter dest += rowStrideOut * (height - 1)
 
+        // A temporary line "before" the first one, if filter needs one
         var tmpRow: Array'u8
         tmpRow.resize(rowStrideOut)
         memory.clear(tmpRow.buffer, rowStrideOut)
@@ -317,7 +318,6 @@ impl Decoder
             case Up:
                 loop k: rowStrideIn
                     destOff[k] = bitcast(u8) (src[k] + up[k])
-                break
 
             case Average:
                 loop i: inChannels
@@ -342,7 +342,6 @@ impl Decoder
                     paeth := filterPaeth(destOff[k], up[inChannels + k], up[k])
                     destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + paeth)
                 }
-                break
             }
 
             src += rowStrideIn
