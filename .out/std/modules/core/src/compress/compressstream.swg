@@ -5,7 +5,7 @@ public struct CompressStream
     stream:         const [..] u8
     curByte:        uint
     codeBuffer:     u32
-    numBits:        s8
+    numBits:        u8
     eof:            bool
 }
 
@@ -23,12 +23,12 @@ public impl CompressStream
     {
         while numBits <= width
         {
-            if codeBuffer == 0 and numBits == -1
+            if codeBuffer == 0 and numBits == bitcast(u8) -1
                 numBits = 0
 
             if codeBuffer >= 1'u32 << numBits
             {
-                numBits = -100
+                numBits = bitcast(u8) -100
                 return
             }
 
@@ -81,6 +81,7 @@ public impl CompressStream
 	    numBits -= width
     }
 
+    #[swag.inline]
     func discardToNextByte(using self)
     {
         consumeBits(cast(u8) numBits & 7)

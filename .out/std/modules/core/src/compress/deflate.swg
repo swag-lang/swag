@@ -143,7 +143,7 @@ impl DeflateDecoder
     {
         if stream.numBits < 16
         {
-            if stream.numBits == -100 throw "malformed"
+            if stream.numBits == bitcast(u8) -100 throw "malformed"
             stream.refill()
             if stream.eof throw "malformed"
         }
@@ -175,6 +175,7 @@ impl DeflateDecoder
         return ht.value[b1]
     }
 
+    #[swag.inline]
     func addByte(using self, dest: *Array'u8, value: u8)
     {
         dest.add(value)
