@@ -1958,6 +1958,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     SWAG_CHECK(filterMatches(context, matches));
     if (context->result != ContextResult::Done)
         return true;
+    SWAG_CHECK(filterGenericMatches(context, genericMatches));
+    if (context->result != ContextResult::Done)
+        return true;
 
     // All choices were removed because of #selectif
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
@@ -2514,7 +2517,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
     // The ufcs parameter has already been set in we are evaluatin an identifier for the second time
     // (when we inline a function call)
-    if(node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
+    if (node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
         canDoUfcs = false;
 
     if (canDoUfcs)
@@ -2729,6 +2732,31 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
         symMatchContext.genericParameters.push_back(oneParam);
         symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
+    }
+
+    return true;
+}
+
+bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches)
+{
+    if (matches.size() <= 1)
+        return true;
+
+    // Take the most "specialized" one, i.e. the one with the more 'genericReplaceTypes'
+    int bestS = -1;
+    for (int i = 0; i < matches.size(); i++)
+    {
+        bestS = max(bestS, (int) matches[i]->genericReplaceTypes.size());
+    }
+
+    for (int i = 0; i < matches.size(); i++)
+    {
+        if (matches[i]->genericReplaceTypes.size() < bestS)
+        {
+            matches[i] = matches.back();
+            matches.pop_back();
+            i--;
+        }
     }
 
     return true;
