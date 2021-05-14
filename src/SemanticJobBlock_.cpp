@@ -223,18 +223,22 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     if (node->typeInfo->kind == TypeInfoKind::TypeSet)
     {
         // :AutoScope
-        auto typeEnum = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
         for (auto switchCase : switchNode->cases)
         {
             switchCase->allocateExtension();
-            switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
+            switchCase->extension->alternativeScopes.push_back(typeStruct->scope);
         }
+    }
 
-        // Remember original type
+    // Automatic convert to 'kindOf'
+    // This has no sens to do a switch on a 'typeset' or an 'any'. So instead of raising an error, 
+    // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
+    if (node->typeInfo->isNative(NativeTypeKind::Any) || node->typeInfo->kind == TypeInfoKind::TypeSet)
+    {
         switchNode->beforeAutoCastType = node->typeInfo;
-
-        node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOf;
-        auto& typeTable   = node->sourceFile->module->typeTable;
+        node->byteCodeFct              = ByteCodeGenJob::emitImplicitKindOf;
+        auto& typeTable                = node->sourceFile->module->typeTable;
         SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
         if (context->result != ContextResult::Done)
@@ -327,9 +331,11 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         auto back = node->cases.back();
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Msg0616}));
 
-        // For typeset, we need to test originalSwitchType, because the type of the switch is now to @kindof(originalType)
-        if (node->typeInfo->kind != TypeInfoKind::Enum && (!node->beforeAutoCastType || node->beforeAutoCastType->kind != TypeInfoKind::TypeSet))
+        // For typeset, we need to test 'beforeAutoCastType', because the type of the switch is now to @kindof(originalType)
+        if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
             return context->report({node, node->token, format(Msg0617, node->typeInfo->getDisplayName().c_str())});
+        if (node->beforeAutoCastType && node->beforeAutoCastType->kind != TypeInfoKind::TypeSet)
+            return context->report({node, node->token, format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {

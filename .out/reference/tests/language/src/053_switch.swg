@@ -119,4 +119,29 @@
             @assert(false)
         }
     }
+
+    // When used on a 'typeset' or 'any' variable, switch is done on the
+    // underlying variable type
+    {
+        var x: any = "value"
+        switch x
+        {
+        case string: break
+        default:     @assert(false)
+        }
+
+        // Same for a typeset
+        typeset TypeSet
+        {
+            Bool{bool}
+            S32{s32}
+        }
+
+        var y: TypeSet = Bool{true}
+        switch y
+        {
+        case Bool: break
+        case S32:  @assert(false)
+        }
+    }
 }
