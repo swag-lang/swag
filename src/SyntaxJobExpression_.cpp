@@ -830,8 +830,6 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     initNode->forTuple    = true;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    //if (token.id == TokenId::SymRightCurly)
-    //    return error(token, format(Msg0270));
     if (result)
         *result = initNode;
 

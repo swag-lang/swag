@@ -1,0 +1,5 @@
+//#[swag.printbc]
+#test
+{
+    x := @{}
+}

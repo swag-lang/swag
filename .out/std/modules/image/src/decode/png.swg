@@ -601,7 +601,7 @@ public impl IDecoder for Decoder
         return ext == ".png"
     }
 
-    func decode(using self, buffer: const [..] u8, options: const *DecodeOptions)->Image throw
+    func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         return try doIt(buffer)
     }

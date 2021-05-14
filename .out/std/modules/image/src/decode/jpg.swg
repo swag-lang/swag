@@ -2037,7 +2037,7 @@ public impl IDecoder for Decoder
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    func decode(using self, buffer: const [..] u8, options: const *DecodeOptions)->Image throw
+    func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         try
         {

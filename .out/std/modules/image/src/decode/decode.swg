@@ -20,7 +20,7 @@ public struct DecodeOptions
 public interface IDecoder
 {
     canDecode:  func(self, string)->bool
-    decode:     func(self, const [..] u8, const *DecodeOptions)->Image throw
+    decode:     func(self, const [..] u8, DecodeOptions)->Image throw
 }
 
 // Register an image decoder
@@ -35,7 +35,7 @@ public func(T) addDecoder()
 }
 
 // Load an image from file
-public func load(fileName: string, options: const *DecodeOptions = null)->Image throw
+public func load(fileName: string, options: DecodeOptions = @{})->Image throw
 {
     // Find the decoder that can treat 'fileName'
     var found: *Decoder
