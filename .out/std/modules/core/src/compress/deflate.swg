@@ -175,27 +175,25 @@ impl DeflateDecoder
         return ht.value[b1]
     }
 
-    #[swag.inline]
-    func addByte(using self, dest: *Array'u8, value: u8)
-    {
-        dest.add(value)
-        newSlice := @mkslice(dest.buffer + dest.count - 1, 1)
-        adler.update(newSlice)
-    }
-
     func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
+        startBufCount := dest.count
         while true
         {
             value := try decode(repeatHt)
             if value < 256
             {
-                addByte(dest, cast(u8) value)
+                dest.add(cast(u8) value)
                 continue
             }
 
+            // End of block. Update checksum
             if value == 256
+            {
+                newSlice := @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
+                adler.update(newSlice)
                 return
+            }
 
             value -= 257
             length := LengthBase[value]
@@ -214,14 +212,14 @@ impl DeflateDecoder
             {
                 b := dest.buffer[dest.count - 1]
                 loop length
-                    addByte(dest, b)
+                    dest.add(b)
             }
             else
             {
                 loop length
                 {
                     b := dest.buffer[dest.count - distance]
-                    addByte(dest, b)
+                    dest.add(b)
                 }
             }
         }
