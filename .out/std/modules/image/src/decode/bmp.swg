@@ -101,12 +101,13 @@ public impl IDecoder for Decoder
 
         // Create image
         var result: retval
+
         switch bh.biBitCount
         {
         case 32:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.BGRA8)
+            result.init(bh.biWidth, bh.biHeight, PixelFormat.BGRA8)
         case 24:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.BGR8)
+            result.init(bh.biWidth, bh.biHeight, PixelFormat.BGR8)
         default:
             throw "unsupported bit count"
         }
@@ -114,6 +115,10 @@ public impl IDecoder for Decoder
         // Palette
         if bh.biCompression != FILL_BI_RGB and bh.biCompression != FILL_BI_BITFIELDS
             throw "unsupported compression"
+
+        if !options.decodePixels
+            return result
+        result.allocPixels()
 
         // Decode
         if bfOffBits

@@ -79,6 +79,7 @@ struct Header
 #[opaque]
 public struct Decoder
 {
+    decOptions:     const *DecodeOptions
     stream:         compress.CompressStream
     header:         Header
     inChannels:     s32
@@ -452,8 +453,11 @@ impl Decoder
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
                 try readHeader(ch)
-                dstPixelsSize = header.width * header.height * inChannels
-                dstPixels = memory.alloc(dstPixelsSize)
+                if decOptions.decodePixels
+                {
+                    dstPixelsSize = header.width * header.height * inChannels
+                    dstPixels = memory.alloc(dstPixelsSize)
+                }
 
             case TRNS:
                 seenTRSN = true
@@ -491,6 +495,16 @@ impl Decoder
 
         if !seenIDAT throw "missing IDAT chunk"
 
+        // Initialize image depending on number of wanted channels
+        if outChannels == 4
+            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
+        else
+            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGB8)
+
+        // We are done if user does not want pixels
+        if !decOptions.decodePixels
+            return result
+
         // deflate content
         var dec: compress.ZLibDecoder
         dcmpBuf = try dec.decompress(iDataBuf.toSlice())
@@ -498,14 +512,8 @@ impl Decoder
         // defilter content
         defilter()
 
-        // Initialize image depending on number of wanted channels
-        if outChannels == 4
-            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGBA8)
-        else
-            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.RGB8)
-        result.allocator = @getcontext().allocator
-
         // If source == wanted channels, then we are done, dstPixels already contains everything
+        result.allocator = @getcontext().allocator
         if inChannels == outChannels
         {
             result.pixels = dstPixels
@@ -603,6 +611,7 @@ public impl IDecoder for Decoder
 
     func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
+        decOptions = options
         return try doIt(buffer)
     }
 }

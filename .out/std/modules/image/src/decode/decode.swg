@@ -13,6 +13,8 @@ private
 
 public struct DecodeOptions
 {
+    // Decode image informations (width, height...) but do no read pixels
+    // Used to fast retreive informations about the image
     decodePixels = true
 }
 

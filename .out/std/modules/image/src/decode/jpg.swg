@@ -2044,7 +2044,13 @@ public impl IDecoder for Decoder
             init(buffer)
             start()
 
-            var result: retval = create(imageSizeX, imageSizeY, PixelFormat.BGR8)
+            // Creates image
+            var result: retval
+            result.init(imageSizeX, imageSizeY, PixelFormat.BGR8)
+            if !options.decodePixels
+                return result
+            result.allocPixels()
+
             doit(result.pixels)
         }
 

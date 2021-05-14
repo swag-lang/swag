@@ -21,8 +21,7 @@ func create(width, height: s32, pf: PixelFormat)->Image
 
     var result: retval
     result.init(width, height, pf)
-    result.allocator = @getcontext().allocator
-    result.pixels = memory.alloc(result.size, result.allocator)
+    result.allocPixels()
     return result
 }
 
@@ -82,6 +81,15 @@ impl Image
         bpp8   = cast(u8) (bpp >> 3)
         width8 = self.width * bpp8
         size   = cast(uint) (self.width * self.height * bpp8)
+    }
+
+    // Allocate pixels
+    func allocPixels(using self)
+    {
+        debug.assert(pixels == null)
+        debug.assert(size != 0)
+        allocator = @getcontext().allocator
+        pixels = memory.alloc(size, allocator)
     }
 
     // Allocate a computing buffer with current image size
