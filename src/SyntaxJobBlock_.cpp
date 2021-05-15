@@ -316,9 +316,16 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         // Range
         if (token.id == TokenId::SymDotDot)
         {
+            auto rangeNode         = Ast::newNode<AstRange>(this, AstNodeKind::Range, sourceFile, node, 2);
+            rangeNode->semanticFct = SemanticJob::resolveRange;
+            Ast::removeFromParent(node->expression);
+            Ast::addChildBack(rangeNode, node->expression);
+            rangeNode->expressionLow = node->expression;
+            node->expression         = rangeNode;
+
             SWAG_CHECK(eatToken());
             PushErrHint errh(Msg0363);
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression1));
+            SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
         }
 
         // Creates a variable if we have a named index

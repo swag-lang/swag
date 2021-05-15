@@ -437,12 +437,10 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
     if (node->expression)
     {
-        SWAG_CHECK(checkIsConcrete(context, node->expression));
-        SWAG_CHECK(checkIsConcrete(context, node->expression1));
-
         // No range
-        if (!node->expression1)
+        if (node->expression->kind != AstNodeKind::Range)
         {
+            SWAG_CHECK(checkIsConcrete(context, node->expression));
             SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression->typeInfo));
             if (context->result != ContextResult::Done)
                 return true;
@@ -459,19 +457,18 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
                     return true;
                 }
             }
-
-            node->expression->allocateExtension();
-            node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
         }
 
         // Range
         else
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression1->typeInfo, nullptr, node->expression1, CASTFLAG_TRY_COERCE));
-            node->expression1->allocateExtension();
-            node->expression1->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+            auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
         }
+
+        node->expression->allocateExtension();
+        node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;

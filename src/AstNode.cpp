@@ -968,7 +968,6 @@ AstNode* AstLoop::clone(CloneContext& context)
 
     newNode->specificName = findChildRef(specificName, newNode);
     newNode->expression   = findChildRef(expression, newNode);
-    newNode->expression1  = findChildRef(expression1, newNode);
     newNode->block        = findChildRef(block, newNode);
     return newNode;
 }
@@ -1442,5 +1441,14 @@ AstNode* AstFuncCallParams::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstFuncCallParams>();
     newNode->copyFrom(context, this);
     newNode->aliasNames = aliasNames;
+    return newNode;
+}
+
+AstNode* AstRange::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstRange>();
+    newNode->copyFrom(context, this);
+    newNode->expressionLow = findChildRef(expressionLow, newNode);
+    newNode->expressionUp  = findChildRef(expressionUp, newNode);
     return newNode;
 }

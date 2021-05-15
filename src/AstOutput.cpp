@@ -1213,6 +1213,12 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[0]));
             break;
 
+        case AstNodeKind::Range:
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            CONCAT_FIXED_STR(concat, "..");
+            SWAG_CHECK(output(context, concat, node->childs[1]));
+            break;
+
         default:
             return node->sourceFile->report({node, node->token, Msg0317});
         }

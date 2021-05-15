@@ -704,3 +704,12 @@ bool SemanticJob::resolveDefer(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveRange(SemanticContext* context)
+{
+    auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
+    SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
+    SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
+    node->typeInfo = node->expressionLow->typeInfo;
+    return true;
+}

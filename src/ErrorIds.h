@@ -795,7 +795,7 @@
 #define Msg0358 "this implies another 'visit' variable name"
 #define Msg0361 "this should be the 'loop' variable name or the expression to evaluate"
 #define Msg0362 "this should be the 'loop' expression to evaluate"
-#define Msg0363 "this should be the 'loop' range right expression"
+#define Msg0363 "this should be the range right expression"
 #define Msg0263 "this should be the expression to dereference"
 #define Msg0261 "this is a pointer dereference ':'"
 #define Msg0174 "this type is '%s' (could be casted with 'cast(%s)')"

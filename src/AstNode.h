@@ -67,6 +67,7 @@ enum class AstNodeKind : uint8_t
     While,
     For,
     Loop,
+    Range,
     Visit,
     Switch,
     SwitchCase,
@@ -646,7 +647,6 @@ struct AstLoop : public AstBreakable
 
     AstNode* specificName;
     AstNode* expression;
-    AstNode* expression1;
     AstNode* block;
 };
 
@@ -957,4 +957,11 @@ struct AstOp : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
     uint32_t opFlags;
+};
+
+struct AstRange : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+    AstNode* expressionLow;
+    AstNode* expressionUp;
 };
