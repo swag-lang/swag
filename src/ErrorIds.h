@@ -540,6 +540,7 @@
 #define Msg0609 "invalid switch type '%s'"
 #define Msg0610 "switch body is empty"
 #define Msg0611 "switch value '%s' already defined"
+#define Msg0612 "switch enum value '%s' already defined"
 #define Msg0613 "switch value '%d' already defined"
 #define Msg0614 "switch value '%f' already defined"
 #define Msg0615 "expression cannot be evaluated at compile time, and switch is 'swag.complete'"

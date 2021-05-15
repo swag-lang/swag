@@ -310,6 +310,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
                             return context->report({expr, format(Msg0611, expr->token.text.c_str())});
+                        if (expr->typeInfo->kind == TypeInfoKind::Enum)
+                            return context->report({expr, format(Msg0612, expr->token.text.c_str())});
                         if (typeExpr->flags & TYPEINFO_INTEGER)
                             return context->report({expr, format(Msg0613, expr->computedValue.reg.u64)});
                         return context->report({expr, format(Msg0614, expr->computedValue.reg.f64)});
