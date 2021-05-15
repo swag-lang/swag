@@ -293,7 +293,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         {
             if (expr->flags & AST_VALUE_COMPUTED)
             {
-                if (typeSwitch->isNative(NativeTypeKind::String))
+                auto typeExpr = TypeManager::concreteType(expr->typeInfo);
+                if (typeExpr->isNative(NativeTypeKind::String))
                 {
                     if (valText.find(expr->computedValue.text) != valText.end())
                         return context->report({expr, format(Msg0611, expr->computedValue.text.c_str())});
@@ -309,7 +310,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
                             return context->report({expr, format(Msg0611, expr->token.text.c_str())});
-                        if (typeSwitch->flags & TYPEINFO_INTEGER)
+                        if (typeExpr->flags & TYPEINFO_INTEGER)
                             return context->report({expr, format(Msg0613, expr->computedValue.reg.u64)});
                         return context->report({expr, format(Msg0614, expr->computedValue.reg.f64)});
                     }
