@@ -716,7 +716,7 @@ bool SemanticJob::resolveRange(SemanticContext* context)
     if (!typeInfo->isNativeInteger())
         return context->report({node->expressionLow, format(Msg0002, node->expressionLow->typeInfo->getDisplayName().c_str())});
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 
     node->typeInfo = node->expressionLow->typeInfo;
     node->inheritAndFlag1(AST_CONST_EXPR);
