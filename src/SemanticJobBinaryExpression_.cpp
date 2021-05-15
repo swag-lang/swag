@@ -905,7 +905,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         return true;
     }
 
-    if (!leftTypeInfo->isNativeIntegerOrChar())
+    if (!leftTypeInfo->isNativeIntegerOrRune())
         return context->report({left, format(Msg0170, leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
         return context->report({right, format(Msg0173, rightTypeInfo->getDisplayName().c_str())});
@@ -1042,7 +1042,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         return true;
     }
 
-    if (!leftTypeInfo->isNativeIntegerOrChar())
+    if (!leftTypeInfo->isNativeIntegerOrRune())
         return context->report({left, format(Msg0172, leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
         return context->report({right, format(Msg0173, rightTypeInfo->getDisplayName().c_str())});

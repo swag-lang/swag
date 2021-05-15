@@ -713,7 +713,7 @@ bool SemanticJob::resolveRange(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
 
     auto typeInfo = TypeManager::concreteReferenceType(node->expressionLow->typeInfo);
-    if (!typeInfo->isNativeInteger())
+    if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
         return context->report({node->expressionLow, format(Msg0002, node->expressionLow->typeInfo->getDisplayName().c_str())});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));

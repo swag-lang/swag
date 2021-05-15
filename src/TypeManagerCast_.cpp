@@ -1765,8 +1765,8 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (toType->sizeOf >= fromType->sizeOf)
         {
-            auto leftIsInt    = toType->isNativeIntegerOrChar();
-            auto rightIsInt   = fromType->isNativeIntegerOrChar();
+            auto leftIsInt    = toType->isNativeIntegerOrRune();
+            auto rightIsInt   = fromType->isNativeIntegerOrRune();
             auto leftIsFloat  = toType->isNativeFloat();
             auto rightIsFloat = fromType->isNativeFloat();
             if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))

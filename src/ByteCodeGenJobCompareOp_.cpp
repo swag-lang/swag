@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     bool excludeUp  = rangeNode->excludeUp;
 
     auto typeInfo = TypeManager::concreteReferenceType(low->typeInfo);
-    if (!typeInfo->isNativeInteger() && !typeInfo->isNativeFloat())
+    if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
         return internalError(context, "emitInRange, type not supported");
 
     // Invert test if lower bound is greater than upper bound
@@ -32,6 +32,8 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
         else if (typeInfo->isNative(NativeTypeKind::F32) && low->computedValue.reg.f32 > up->computedValue.reg.f32)
             swap = true;
         else if (typeInfo->isNative(NativeTypeKind::F64) && low->computedValue.reg.f64 > up->computedValue.reg.f64)
+            swap = true;
+        else if (typeInfo->isNative(NativeTypeKind::Rune) && low->computedValue.reg.u32 > up->computedValue.reg.u32)
             swap = true;
 
         if (swap)
