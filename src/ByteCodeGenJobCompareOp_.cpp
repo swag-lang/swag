@@ -43,6 +43,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
 
     if (!orderIsDefined)
     {
+        return internalError(context, "emitInRange, order undefined");
     }
 
     if (excludeLow)
