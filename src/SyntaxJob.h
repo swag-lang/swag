@@ -179,6 +179,7 @@ struct SyntaxJob : public Job
     bool        doInit(AstNode* parent, AstNode** result = nullptr);
     bool        doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
     bool        doReloc(AstNode* parent, AstNode** result = nullptr);
+    bool        doRange(AstNode* parent, AstNode* expression, AstNode** result);
 
     SyntaxContext       context;
     Tokenizer           tokenizer;

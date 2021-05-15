@@ -1593,3 +1593,18 @@ bool SyntaxJob::doReloc(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
+
+bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
+{
+    auto rangeNode         = Ast::newNode<AstRange>(this, AstNodeKind::Range, sourceFile, parent, 2);
+    rangeNode->semanticFct = SemanticJob::resolveRange;
+    Ast::removeFromParent(expression);
+    Ast::addChildBack(rangeNode, expression);
+    rangeNode->expressionLow = expression;
+    *result                  = rangeNode;
+
+    SWAG_CHECK(eatToken());
+    PushErrHint errh(Msg0363);
+    SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
+    return true;
+}

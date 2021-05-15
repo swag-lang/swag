@@ -711,5 +711,6 @@ bool SemanticJob::resolveRange(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
     node->typeInfo = node->expressionLow->typeInfo;
+    node->inheritAndFlag1(AST_CONST_EXPR);
     return true;
 }
