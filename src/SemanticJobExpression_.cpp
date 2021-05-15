@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& result, const char* errMsg)
 {
@@ -710,6 +711,11 @@ bool SemanticJob::resolveRange(SemanticContext* context)
     auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
+
+    if (!node->expressionLow->typeInfo->isNativeInteger())
+        return context->report({node->expressionLow, format(Msg0002, node->expressionLow->typeInfo->getDisplayName().c_str())});
+    SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp));
+
     node->typeInfo = node->expressionLow->typeInfo;
     node->inheritAndFlag1(AST_CONST_EXPR);
     return true;

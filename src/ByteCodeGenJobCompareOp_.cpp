@@ -1,8 +1,6 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "Ast.h"
 
@@ -11,9 +9,26 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     auto rangeNode = CastAst<AstRange>(right, AstNodeKind::Range);
     auto ra        = reserveRegisterRC(context);
     auto rb        = reserveRegisterRC(context);
+    auto low       = rangeNode->expressionLow;
+    auto up        = rangeNode->expressionUp;
 
-    SWAG_CHECK(emitCompareOpGreaterEq(context, left, rangeNode->expressionLow, r0, rangeNode->expressionLow->resultRegisterRC, ra));
-    SWAG_CHECK(emitCompareOpLowerEq(context, left, rangeNode->expressionUp, r0, rangeNode->expressionUp->resultRegisterRC, rb));
+    if (!low->typeInfo->isNativeInteger())
+        return internalError(context, "emitInRange, type not supported");
+
+    // Invert test if lower bound is greater than upper bound
+    if (low->flags & AST_VALUE_COMPUTED && up->flags & AST_VALUE_COMPUTED)
+    {
+        bool swap = false;
+        if (low->typeInfo->isNativeIntegerSigned() && low->computedValue.reg.s64 > up->computedValue.reg.s64)
+            swap = true;
+        else if (low->typeInfo->isNativeInteger() && low->computedValue.reg.u64 > up->computedValue.reg.u64)
+            swap = true;
+        if (swap)
+            std::swap(low, up);
+    }
+
+    SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
+    SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
     emitInstruction(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
 
     freeRegisterRC(context, ra);
