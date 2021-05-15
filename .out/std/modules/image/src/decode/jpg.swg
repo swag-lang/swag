@@ -1532,9 +1532,9 @@ impl Decoder
                 blockMcutY[compList[0]] += 1
             else
             {
-                loop component_num: compsInScan
+                loop n: compsInScan
                 {
-                    componentId := compList[component_num]
+                    componentId := compList[n]
                     blockMcutY[componentId] += compSampV[componentId]
                 }
             }

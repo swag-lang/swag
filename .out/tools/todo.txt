@@ -23,7 +23,20 @@ switch a
 case 0..10:
 }
 -------------------------------------
-switch 'any' automatic kindof (comme typeset ?)
+loop { } au lieu de while true
+-------------------------------------
+loop increment ? loop reverse ?
+-------------------------------------
+is ? 
+if a is < 2 and > 3
+if a is s32
+if a is "toto"
+if a is in 2..6
+-------------------------------------
+le retour de deref (j'aime pas la syntax avec :) ?
+deref est tjs en bleu sous vscode
+-------------------------------------
+not au lieu de ! ?
 -------------------------------------
 
 

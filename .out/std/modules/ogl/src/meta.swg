@@ -10,14 +10,15 @@ struct OneFunc
 }
 
 #[compiler]
-private var g: Array'OneFunc
+private var g_Functions: Array'OneFunc
 
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
-    if(!reflection.hasAttribute(msg.type, "ogl.extension")) return
-    g.add(@{msg.type, msg.name})
+    if !reflection.hasAttribute(msg.type, "ogl.extension") return
+
+    g_Functions.add(@{msg.type, msg.name})
 }
 
 #compiler(CompilerMsgMask.PassAfterSemantic)
@@ -27,7 +28,7 @@ private var g: Array'OneFunc
 
     builderInit.appendString("public func glInitExtensions()\n{\n");
 
-    visit e: g
+    visit e: g_Functions
     {
         typeFunc := cast(const *TypeInfoFunc) e.type
 
