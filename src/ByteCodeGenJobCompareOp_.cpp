@@ -6,29 +6,51 @@
 
 bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
-    auto rangeNode = CastAst<AstRange>(right, AstNodeKind::Range);
-    auto ra        = reserveRegisterRC(context);
-    auto rb        = reserveRegisterRC(context);
-    auto low       = rangeNode->expressionLow;
-    auto up        = rangeNode->expressionUp;
+    auto rangeNode  = CastAst<AstRange>(right, AstNodeKind::Range);
+    auto ra         = reserveRegisterRC(context);
+    auto rb         = reserveRegisterRC(context);
+    auto low        = rangeNode->expressionLow;
+    auto up         = rangeNode->expressionUp;
+    bool excludeLow = rangeNode->excludeLow;
+    bool excludeUp  = rangeNode->excludeUp;
 
-    if (!low->typeInfo->isNativeInteger())
+    auto typeInfo = TypeManager::concreteReferenceType(low->typeInfo);
+    if (!typeInfo->isNativeInteger())
         return internalError(context, "emitInRange, type not supported");
 
     // Invert test if lower bound is greater than upper bound
+    bool orderIsDefined = false;
     if (low->flags & AST_VALUE_COMPUTED && up->flags & AST_VALUE_COMPUTED)
     {
+        orderIsDefined = true;
+
         bool swap = false;
-        if (low->typeInfo->isNativeIntegerSigned() && low->computedValue.reg.s64 > up->computedValue.reg.s64)
+        if (typeInfo->isNativeIntegerSigned() && low->computedValue.reg.s64 > up->computedValue.reg.s64)
             swap = true;
-        else if (low->typeInfo->isNativeInteger() && low->computedValue.reg.u64 > up->computedValue.reg.u64)
+        else if (typeInfo->isNativeInteger() && low->computedValue.reg.u64 > up->computedValue.reg.u64)
             swap = true;
+
         if (swap)
+        {
             std::swap(low, up);
+            std::swap(excludeLow, excludeUp);
+        }
     }
 
-    SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
-    SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
+    if (!orderIsDefined)
+    {
+    }
+
+    if (excludeLow)
+        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRC, ra));
+    else
+        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
+
+    if (excludeUp)
+        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRC, rb));
+    else
+        SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
+
     emitInstruction(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
 
     freeRegisterRC(context, ra);
@@ -281,10 +303,9 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -323,6 +344,15 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
         return internalError(context, "emitCompareOpLower, type not native");
     }
 
+    return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    auto node  = context->node;
+    auto left  = node->childs.front();
+    auto right = node->childs.back();
+    SWAG_CHECK(emitCompareOpLower(context, left, right, r0, r1, r2));
     return true;
 }
 
@@ -379,10 +409,9 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -421,6 +450,15 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
         return internalError(context, "emitCompareOpGreater, type not native");
     }
 
+    return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    auto node  = context->node;
+    auto left  = node->childs.front();
+    auto right = node->childs.back();
+    SWAG_CHECK(emitCompareOpGreater(context, left, right, r0, r1, r2));
     return true;
 }
 
