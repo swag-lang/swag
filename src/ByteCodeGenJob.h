@@ -276,6 +276,7 @@ struct ByteCodeGenJob : public Job
     static bool emitGetErr(ByteCodeGenContext* context);
     static bool emitIndex(ByteCodeGenContext* context);
     static bool emitLoop(ByteCodeGenContext* context);
+    static bool emitLoopBeforeBlock(ByteCodeGenContext* context);
     static bool emitLoopAfterExpr(ByteCodeGenContext* context);
     static bool emitLabelBeforeBlock(ByteCodeGenContext* context);
     static bool emitLoopAfterBlock(ByteCodeGenContext* context);

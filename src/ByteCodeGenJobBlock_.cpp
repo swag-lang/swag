@@ -271,9 +271,12 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
         switch (node->kind)
         {
         case AstNodeKind::Loop:
+        {
             freeRegisterRC(context, ((AstLoop*) node)->expression);
             freeRegisterRC(context, ((AstLoop*) node)->expression1);
             break;
+        }
+
         case AstNodeKind::While:
             freeRegisterRC(context, ((AstWhile*) node)->boolExpression);
             break;
@@ -288,6 +291,23 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
         freeRegisterRC(context, node->registerIndex);
     if (node->needIndex1())
         freeRegisterRC(context, node->registerIndex1);
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitLoopBeforeBlock(ByteCodeGenContext* context)
+{
+    auto node               = context->node;
+    auto loopNode           = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
+    loopNode->registerIndex = reserveRegisterRC(context);
+    loopNode->breakableFlags |= BREAKABLE_NEED_INDEX;
+
+    emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
+
+    loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
+    emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
 
     return true;
 }

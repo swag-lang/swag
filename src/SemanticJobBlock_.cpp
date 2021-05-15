@@ -232,7 +232,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     }
 
     // Automatic convert to 'kindOf'
-    // This has no sens to do a switch on a 'typeset' or an 'any'. So instead of raising an error, 
+    // This has no sens to do a switch on a 'typeset' or an 'any'. So instead of raising an error,
     // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
     if (node->typeInfo->isNative(NativeTypeKind::Any) || node->typeInfo->kind == TypeInfoKind::TypeSet)
     {
@@ -434,40 +434,44 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 {
     auto module = context->sourceFile->module;
     auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
-    SWAG_CHECK(checkIsConcrete(context, node->expression));
-    SWAG_CHECK(checkIsConcrete(context, node->expression1));
 
-    // No range
-    if (!node->expression1)
+    if (node->expression)
     {
-        SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression->typeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
-        node->typeInfo = node->expression->typeInfo;
+        SWAG_CHECK(checkIsConcrete(context, node->expression));
+        SWAG_CHECK(checkIsConcrete(context, node->expression1));
 
-        // Do not evaluate loop if it's constant and 0
-        if (module->mustOptimizeBC(node) && (node->expression->flags & AST_VALUE_COMPUTED))
+        // No range
+        if (!node->expression1)
         {
-            if (!node->expression->computedValue.reg.u64)
-            {
-                node->expression->flags |= AST_NO_BYTECODE;
-                node->block->flags |= AST_NO_BYTECODE;
+            SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression->typeInfo));
+            if (context->result != ContextResult::Done)
                 return true;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
+            node->typeInfo = node->expression->typeInfo;
+
+            // Do not evaluate loop if it's constant and 0
+            if (module->mustOptimizeBC(node) && (node->expression->flags & AST_VALUE_COMPUTED))
+            {
+                if (!node->expression->computedValue.reg.u64)
+                {
+                    node->expression->flags |= AST_NO_BYTECODE;
+                    node->block->flags |= AST_NO_BYTECODE;
+                    return true;
+                }
             }
+
+            node->expression->allocateExtension();
+            node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
         }
 
-        node->expression->allocateExtension();
-        node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
-    }
-
-    // Range
-    else
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression1->typeInfo, nullptr, node->expression1, CASTFLAG_TRY_COERCE));
-        node->expression1->allocateExtension();
-        node->expression1->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+        // Range
+        else
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, node->expression1->typeInfo, nullptr, node->expression1, CASTFLAG_TRY_COERCE));
+            node->expression1->allocateExtension();
+            node->expression1->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+        }
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
@@ -477,6 +481,9 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+    if (!node->expression)
+        node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitLoopBeforeBlock;
+
     return true;
 }
 
@@ -681,7 +688,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     if (ownerBreakable->kind == AstNodeKind::Loop)
     {
         auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
-        if (loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
+        if (loopNode->expression && loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
             node->typeInfo = loopNode->expression->typeInfo;
     }
 
