@@ -540,7 +540,7 @@ namespace win32priv
 
     func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)
     {
-        while true
+        loop
         {
             res := win32priv.DeleteTimerQueueTimer(timerQueue, timer, completionEvent)
             if res or GetLastError() == ERROR_IO_PENDING return

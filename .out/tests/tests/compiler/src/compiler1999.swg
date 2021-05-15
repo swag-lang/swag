@@ -7,7 +7,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     end := @countof(values) - 1
     buffer := @dataof(values)
 
-    while true
+    loop
     {
         // Pick a pivot and move it out of the way
         pivot := (begin + end) / 2
@@ -18,7 +18,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
         low := begin
         high := end
-        while true
+        loop
         {
             while low < high and cb(buffer[low], med) <= 0
                 low += 1

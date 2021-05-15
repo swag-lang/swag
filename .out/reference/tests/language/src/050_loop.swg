@@ -107,4 +107,13 @@
     loop 1..-1
     {
     }
+
+    // A loop without an expression but with a block is infinite
+    // This is equivalent to while true {}
+    // @index is still valid in that case (but cannot be renamed)
+    loop
+    {
+        if @index == 4
+            break
+    }
 }

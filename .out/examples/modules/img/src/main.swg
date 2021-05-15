@@ -247,7 +247,7 @@ func messageLoop()
     var msg:  MSG
     var keyb: keyboard.Keyboard
 
-    while true
+    loop
     {
         @getcontext().tempAllocator.freeAll()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0

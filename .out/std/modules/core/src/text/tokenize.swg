@@ -75,10 +75,10 @@ func split(src: string, separators: const [..] rune) -> Array'string
 
     startbyteIdx := 0'uint
     count := countof
-    while true
+    loop
     {
         // Remove separator at the start
-        while true
+        loop
         {
             sl := @mkslice(ptr, count)
             (c, eat) = utf8.decodeRune(sl)
@@ -93,7 +93,7 @@ func split(src: string, separators: const [..] rune) -> Array'string
 
         // Add all real characters until we found a separator
         endbyteIdx := startbyteIdx
-        while true
+        loop
         {
             sl := @mkslice(ptr, count)
             (c, eat) = utf8.decodeRune(sl)

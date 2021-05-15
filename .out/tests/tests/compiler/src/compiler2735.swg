@@ -8,7 +8,7 @@ func titi() throw
 func toto() throw
 {
     defer G = 1
-    while true
+    loop
     {
         try titi()
     }

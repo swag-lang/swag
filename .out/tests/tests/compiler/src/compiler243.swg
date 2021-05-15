@@ -9,16 +9,16 @@ func main ()
 	while a < 10
 	{
 		a += 1;
-		while true
+		loop
 		{
 			break;
-		}		
+		}
 	}
-	
+
 	@assert(a == 10);
 }
 
-#run 
+#run
 {
 	main()
 }

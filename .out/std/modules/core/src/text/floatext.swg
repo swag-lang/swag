@@ -214,7 +214,7 @@ impl FloatExt
         // between expMin and expMax.
         approxExp10 := ((expMin+expMax)/2 - exp) * 28 / 93 // log(10)/log(2) is close to 93/28.
         i := (approxExp10 - firstPowerOfTen) / stepPowerOfTen
-        label Loop while true
+        label Loop loop
         {
             exp1 := exp + powersOfTen[i].exp + 64
             switch
@@ -538,7 +538,7 @@ impl FloatExt
         // overflow. The choice of minExp implies that fraction is less than 2^60.
         var digit: s64
         multiplier := 1'u64
-        while true
+        loop
         {
             fraction *= 10
             multiplier *= 10

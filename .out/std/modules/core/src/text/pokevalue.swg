@@ -99,7 +99,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         enumType := cast(const *TypeInfoEnum) type
         enumFlags := reflection.hasAttribute(enumType, "swag.enumflags")
 
-        while true
+        loop
         {
             one = tokenize.eatSpaces(one)
             id := try getIdentifier(one)

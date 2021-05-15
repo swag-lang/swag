@@ -108,7 +108,7 @@ public func prompt()->String
 	var dwRead: DWORD
 
 	h := GetStdHandle(STD_INPUT_HANDLE)
-	while true
+	loop
 	{
 		if !ReadFile(h, &buffer[0], BufSize, &dwRead, null)
             break

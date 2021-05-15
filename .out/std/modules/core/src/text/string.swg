@@ -184,7 +184,7 @@ impl String
         scan := buffer
 
         label up
-        while true
+        loop
         {
             sl := @mkslice(scan, count)
             var (c, eat) = utf8.decodeRune(sl)
@@ -391,7 +391,7 @@ impl String
             return
 
         ptr := buffer
-        while true
+        loop
         {
             sl := @mkslice(ptr, length)
             (c, eat) := utf8.decodeRune(sl)
@@ -411,7 +411,7 @@ impl String
         if !length
             return
 
-        while true
+        loop
         {
             sl := @mkslice(buffer, length)
             (c, eat) := utf8.decodeLastRune(sl)

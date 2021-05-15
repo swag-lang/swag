@@ -113,7 +113,7 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg: MSG
-    while true
+    loop
     {
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {

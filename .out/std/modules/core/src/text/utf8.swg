@@ -96,7 +96,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     }
 
     eat := 1'u32
-    while true
+    loop
     {
         c = :ptr
         if c >>,safe 6 != 2
@@ -522,7 +522,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
     dataof := @dataof(src)
 
     byteIdx := length
-    while true
+    loop
     {
         sl := @mkslice(dataof, byteIdx)
         (c, eat) := decodeLastRune(sl)
@@ -550,7 +550,7 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
 
     idx := length - lengthStr
     dataof := @dataof(src) + idx
-    while true
+    loop
     {
         res := compare(@mkslice(dataof, lengthStr), what, comparisonType)
         if res == 0
@@ -645,7 +645,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var result: s32
         var c1, c2: rune
         var eat1, eat2: u32
-        while true
+        loop
         {
             (c1, eat1) = decodeRune(@mkslice(data, length))
             (c2, eat2) = decodeRune(@mkslice(otherData, otherLength))

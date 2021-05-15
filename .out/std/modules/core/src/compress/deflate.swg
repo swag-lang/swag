@@ -175,7 +175,7 @@ impl DeflateDecoder
     func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
         startBufCount := dest.count
-        while true
+        loop
         {
             value := try decode(repeatHt)
             if value < 256
@@ -250,7 +250,7 @@ impl DeflateDecoder
 
         debug.assert(windowSize > 0)
 
-        while true
+        loop
         {
             final := stream.readBits(1)
             type  := stream.readBits(2)

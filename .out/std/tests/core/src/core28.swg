@@ -5,7 +5,7 @@ func Visit(str: const [..] u8, user: code)
 {
     ptr := @dataof(str)
     count := @countof(str)
-	while true
+	loop
 	{
         slice := @mkslice(ptr, cast(uint) count)
 		(c, eat) := core.utf8.decodeRune(slice)

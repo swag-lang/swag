@@ -9,7 +9,7 @@ impl AA
     func toto(using self)
     {
         ppp += 1
-        while true
+        loop
         {
             value := 0
         }

@@ -8,7 +8,7 @@ using core
 	ptr := @dataof(str)
     count := @countof(str)
 	cpt := 0
-	while true
+	loop
 	{
         sl := @mkslice(ptr, cast(uint) count)
 		(c, eat) := core.utf8.decodeRune(sl)

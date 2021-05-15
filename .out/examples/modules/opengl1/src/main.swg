@@ -89,7 +89,7 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg: MSG
-    while true
+    loop
     {
         frame.update()
 

@@ -8,7 +8,7 @@ using core.mouse
     k.clear()
     @assert(!k.isButtonPressed(Button.Middle))
 
-    //while true
+    //loop
     while false
     {
         k.update()

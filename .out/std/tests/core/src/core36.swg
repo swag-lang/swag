@@ -10,7 +10,7 @@ using core.keyboard
     @assert(!k.isKeyJustReleased(Key.Space))
 
     while false
-    //while true
+    //loop
     {
         k.update()
         if k.isKeyJustPressed(Key.Space)

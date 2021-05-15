@@ -42,7 +42,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
         if h == INVALID_HANDLE_VALUE
             continue
 
-        while true
+        loop
         {
             filename := utf8.fromUtf16(@mkslice(dataof, utf16.lengthZeroTerminated(dataof)))
 

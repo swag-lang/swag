@@ -52,7 +52,7 @@ func swapParams(what: string)->String
     if what == "void, " return result
 
     var idxNext: uint
-    while true
+    loop
     {
         idxNext = what.indexOf(",", idxNext)
         if idxNext == swag.UInt.Max break

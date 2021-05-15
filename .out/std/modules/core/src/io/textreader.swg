@@ -93,7 +93,7 @@ public impl TextReader
     {
         var result: retval
 
-        while true
+        loop
         {
             if byteSeek == buffer.count
                 readBuffer()

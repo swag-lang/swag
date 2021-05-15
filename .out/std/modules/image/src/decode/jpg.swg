@@ -258,7 +258,7 @@ impl Decoder
         {
             pdest := buf
             pdest += (imageSizeY - 1) * imageSizeX * 3
-            while true
+            loop
             {
                 if try decode(&scanLineOfs, &scanLineLen)
                     break
@@ -283,7 +283,7 @@ impl Decoder
         {
             pdest := buf
             pdest += (imageSizeY - 1) * imageSizeX * 3
-            while true
+            loop
             {
                 if try decode(&scanLineOfs, &scanLineLen)
                     break
@@ -410,7 +410,7 @@ impl Decoder
         if symbol < 0
         {
             getBits2(8)
-            while true
+            loop
             {
                 symbol = ph.tree[~symbol + (1 - getBits2(1))]
                 if symbol >= 0
@@ -1422,7 +1422,7 @@ impl Decoder
                     }
                 }
 
-                while true
+                loop
                 {
                     thisCoef := p + Zag[k]
                     if :thisCoef != 0
@@ -1551,7 +1551,7 @@ impl Decoder
             acCoeffs[i] = coeffBufOpen(maxMcusPerRow * compSampH[i], maxMcusPerCol * compSampV[i], 8, 8)
         }
 
-        while true
+        loop
         {
             res := try initScan()
             if !res break
@@ -1747,7 +1747,7 @@ impl Decoder
     #[discardable]
     func processMarkers(using self)->Marker throw
     {
-        while true
+        loop
         {
             c := nextMarker()
             switch c
@@ -1959,7 +1959,7 @@ impl Decoder
         if (lastRune == 0xFF) and (thisChar == Marker.M_SOI)
             return
         bytesLeft := 512
-        while true
+        loop
         {
             bytesLeft -= 1
             if bytesLeft == 0 throw "not a jpeg"
@@ -2007,7 +2007,7 @@ impl Decoder
         inBufOfs = inBuf
         if eofReached return
 
-        while true
+        loop
         {
             size := InBufSize - inBufLeft
             if size + streamSeek > streamLen

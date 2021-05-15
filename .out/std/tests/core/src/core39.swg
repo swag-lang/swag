@@ -8,7 +8,7 @@ using core.gamepad
     k.clear()
     @assert(!k.isButtonPressed(Button.X))
 
-    //while true
+    //loop
     while false
     {
         assume k.update()

@@ -46,7 +46,7 @@ var g_totalJobs:            u32
 
 func workerEntry(th: Thread)
 {
-    while true
+    loop
     {
         while peekExecJob() {}
         g_eventPendingJobs.wait()

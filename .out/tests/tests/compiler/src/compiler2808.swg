@@ -17,7 +17,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
     end := count - 1
     buffer := @dataof(values)
 
-    while true
+    loop
     {
         // If range is too small, simple sort
         if end - begin <= 10
@@ -31,7 +31,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 
         low := begin
         high := end
-        while true
+        loop
         {
             while low < high and cb(buffer[low], buffer[end]) <= 0
                 low += 1

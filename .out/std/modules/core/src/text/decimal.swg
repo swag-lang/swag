@@ -480,7 +480,7 @@ impl Decimal
 
         // Zero is always a special case.
         overflow := false
-        while true
+        loop
         {
             if nd == 0
             {

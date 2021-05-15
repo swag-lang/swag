@@ -7,7 +7,7 @@ func __itoa(result: *u8, value: s64)->*u8
 
     ptr := result
     orgValue := value
-    while true
+    loop
     {
         tmpValue := orgValue
         orgValue /= 10
