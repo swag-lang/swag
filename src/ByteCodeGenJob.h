@@ -24,6 +24,7 @@ struct AstFuncCallParam;
 struct AstArrayPointerSlicing;
 struct TypeInfoPointer;
 enum class ByteCodeOp : uint16_t;
+enum class TokenId : uint16_t;
 
 static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
 static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;
@@ -196,7 +197,8 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
-    static bool emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1);
+    static bool emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op);
+    static bool emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, TokenId op);
     static bool emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2);
     static bool emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitLogicalAndAfterLeft(ByteCodeGenContext* context);

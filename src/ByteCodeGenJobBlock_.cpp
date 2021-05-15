@@ -610,7 +610,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 }
                 else if (caseNode->hasSpecialFuncCall())
                 {
-                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC));
+                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, TokenId::SymEqualEqual));
                     if (context->result != ContextResult::Done)
                         return true;
                     r0 = node->resultRegisterRC;

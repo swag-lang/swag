@@ -69,9 +69,10 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1)
+bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, TokenId op)
 {
     SWAG_ASSERT(left->hasSpecialFuncCall());
+
     auto node = context->node;
     auto job  = context->job;
     if (!job->allParamsTmp)
@@ -84,6 +85,71 @@ bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNo
     SWAG_CHECK(emitUserOp(context, job->allParamsTmp, left, false));
     if (context->result != ContextResult::Done)
         return true;
+    SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op)
+{
+    auto node = context->node;
+    auto r2   = node->resultRegisterRC;
+    if (node->semFlags & AST_SEM_INVERSE_PARAMS)
+    {
+        switch (node->token.id)
+        {
+        case TokenId::SymLowerEqualGreater:
+            emitInstruction(context, ByteCodeOp::NegS32, r2);
+            break;
+        case TokenId::SymGreater:
+            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+            break;
+        case TokenId::SymGreaterEqual:
+            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+            break;
+        case TokenId::SymLower:
+            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+            break;
+        case TokenId::SymLowerEqual:
+            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+            break;
+        case TokenId::SymExclamEqual:
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            freeRegisterRC(context, r2);
+            node->resultRegisterRC = rt;
+            break;
+        }
+        }
+    }
+    else
+    {
+        switch (node->token.id)
+        {
+        case TokenId::SymLower:
+            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+            break;
+        case TokenId::SymGreater:
+            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+            break;
+        case TokenId::SymLowerEqual:
+            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+            break;
+        case TokenId::SymGreaterEqual:
+            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+            break;
+        case TokenId::SymExclamEqual:
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            freeRegisterRC(context, r2);
+            node->resultRegisterRC = rt;
+            break;
+        }
+        }
+    }
+
     return true;
 }
 
@@ -566,63 +632,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)
             return true;
-
-        auto r2 = node->resultRegisterRC;
-        if (node->semFlags & AST_SEM_INVERSE_PARAMS)
-        {
-            switch (node->token.id)
-            {
-            case TokenId::SymLowerEqualGreater:
-                emitInstruction(context, ByteCodeOp::NegS32, r2);
-                break;
-            case TokenId::SymGreater:
-                emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
-                break;
-            case TokenId::SymGreaterEqual:
-                emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
-                break;
-            case TokenId::SymLower:
-                emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
-                break;
-            case TokenId::SymLowerEqual:
-                emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
-                break;
-            case TokenId::SymExclamEqual:
-            {
-                auto rt = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
-                freeRegisterRC(context, r2);
-                node->resultRegisterRC = rt;
-                break;
-            }
-            }
-        }
-        else
-        {
-            switch (node->token.id)
-            {
-            case TokenId::SymLower:
-                emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
-                break;
-            case TokenId::SymGreater:
-                emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
-                break;
-            case TokenId::SymLowerEqual:
-                emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
-                break;
-            case TokenId::SymGreaterEqual:
-                emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
-                break;
-            case TokenId::SymExclamEqual:
-            {
-                auto rt = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
-                freeRegisterRC(context, r2);
-                node->resultRegisterRC = rt;
-                break;
-            }
-            }
-        }
+        SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->token.id));
     }
     else
     {
