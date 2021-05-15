@@ -40,8 +40,6 @@ TODO
 -------------------------------------
 range dynamic order
 -------------------------------------
-range rune
--------------------------------------
 range & struct opSpecial
 -------------------------------------
 script, si #main resoud pas, erreur bizarre

@@ -600,20 +600,32 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         // Normal switch, with an expression
         if (caseNode->ownerSwitch->expression)
         {
-            RegisterList r0 = reserveRegisterRC(context);
             for (auto expr : caseNode->expressions)
             {
+                RegisterList r0;
                 if (expr->kind == AstNodeKind::Range)
+                {
+                    r0 = reserveRegisterRC(context);
                     SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                }
+                else if (caseNode->hasSpecialFuncCall())
+                {
+                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC));
+                    if (context->result != ContextResult::Done)
+                        return true;
+                    r0 = node->resultRegisterRC;
+                }
                 else
+                {
+                    r0 = reserveRegisterRC(context);
                     SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                }
 
                 allJumps.push_back(context->bc->numInstructions);
                 auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, r0);
                 inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                freeRegisterRC(context, r0);
             }
-
-            freeRegisterRC(context, r0);
         }
 
         // A switch without an expression

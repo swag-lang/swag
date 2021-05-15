@@ -69,6 +69,24 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     return true;
 }
 
+bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1)
+{
+    SWAG_ASSERT(left->hasSpecialFuncCall());
+    auto node = context->node;
+    auto job  = context->job;
+    if (!job->allParamsTmp)
+        job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+    job->allParamsTmp->childs.clear();
+    job->allParamsTmp->childs.push_back(left);
+    job->allParamsTmp->childs.push_back(right);
+    left->resultRegisterRC  = r0;
+    right->resultRegisterRC = r1;
+    SWAG_CHECK(emitUserOp(context, job->allParamsTmp, left, false));
+    if (context->result != ContextResult::Done)
+        return true;
+    return true;
+}
+
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);

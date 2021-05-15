@@ -424,10 +424,26 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
             if (context->result != ContextResult::Done)
                 return true;
+
+            // switch with an expression : compare case with the switch expression
             if (node->ownerSwitch->expression)
-                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+            {
+                auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                if (typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    SWAG_CHECK(resolveUserOpCommutative(context, "opEquals", nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
+                    if (context->result != ContextResult::Done)
+                        return true;
+                }
+                else
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+            }
+
+            // switch without an expression : a case is a boolean expressions
             else
+            {
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
+            }
         }
     }
 
