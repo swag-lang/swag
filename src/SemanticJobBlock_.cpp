@@ -406,13 +406,29 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
-        SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
-        if (context->result != ContextResult::Done)
-            return true;
-        if (node->ownerSwitch->expression)
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+        if (oneExpression->kind == AstNodeKind::Range)
+        {
+            auto rangeNode = CastAst<AstRange>(oneExpression, AstNodeKind::Range);
+            if (node->ownerSwitch->expression)
+            {
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_COMPARE));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_COMPARE));
+            }
+            else
+            {
+                return context->report({rangeNode, Msg0337});
+            }
+        }
         else
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
+        {
+            SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
+            if (context->result != ContextResult::Done)
+                return true;
+            if (node->ownerSwitch->expression)
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+            else
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
+        }
     }
 
     if (node->ownerSwitch->expression)

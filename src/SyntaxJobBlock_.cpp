@@ -97,6 +97,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             {
                 AstNode* expression;
                 SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
+                if (token.id == TokenId::SymDotDot)
+                    SWAG_CHECK(doRange(caseNode, expression, &expression));
                 caseNode->expressions.push_back(expression);
                 if (token.id != TokenId::SymComma)
                     break;

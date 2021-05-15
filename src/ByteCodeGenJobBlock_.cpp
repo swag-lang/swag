@@ -603,7 +603,11 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             RegisterList r0 = reserveRegisterRC(context);
             for (auto expr : caseNode->expressions)
             {
-                SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                if (expr->kind == AstNodeKind::Range)
+                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                else
+                    SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+
                 allJumps.push_back(context->bc->numInstructions);
                 auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, r0);
                 inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
