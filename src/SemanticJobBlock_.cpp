@@ -409,19 +409,35 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
+        // Range
         if (oneExpression->kind == AstNodeKind::Range)
         {
             auto rangeNode = CastAst<AstRange>(oneExpression, AstNodeKind::Range);
             if (node->ownerSwitch->expression)
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_COMPARE));
-                SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_COMPARE));
+                auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                if (typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
+                    if (context->result != ContextResult::Done)
+                        return true;
+                    SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
+                    if (context->result != ContextResult::Done)
+                        return true;
+                }
+                else
+                {
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_COMPARE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_COMPARE));
+                }
             }
             else
             {
                 return context->report({rangeNode, Msg0337});
             }
         }
+
+        // Single expression
         else
         {
             SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));

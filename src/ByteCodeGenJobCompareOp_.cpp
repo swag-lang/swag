@@ -4,11 +4,9 @@
 #include "ByteCode.h"
 #include "Ast.h"
 
-bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
     auto rangeNode  = CastAst<AstRange>(right, AstNodeKind::Range);
-    auto ra         = reserveRegisterRC(context);
-    auto rb         = reserveRegisterRC(context);
     auto low        = rangeNode->expressionLow;
     auto up         = rangeNode->expressionUp;
     bool excludeLow = rangeNode->excludeLow;
@@ -48,15 +46,45 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
         return internalError(context, "emitInRange, order undefined");
     }
 
-    if (excludeLow)
-        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRC, ra));
-    else
-        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
+    RegisterList ra, rb;
 
-    if (excludeUp)
-        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRC, rb));
+    // Lower bound
+    if (left->hasSpecialFuncCall())
+    {
+        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, low, r0, low->resultRegisterRC, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
+        if (context->result != ContextResult::Done)
+            return true;
+        ra = context->node->resultRegisterRC;
+    }
+    else if (excludeLow)
+    {
+        ra = reserveRegisterRC(context);
+        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRC, ra));
+    }
     else
+    {
+        ra = reserveRegisterRC(context);
+        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
+    }
+
+    // Upper bound
+    if (left->hasSpecialFuncCall())
+    {
+        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, up, r0, up->resultRegisterRC, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
+        if (context->result != ContextResult::Done)
+            return true;
+        rb = context->node->resultRegisterRC;
+    }
+    else if (excludeUp)
+    {
+        rb = reserveRegisterRC(context);
+        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRC, rb));
+    }
+    else
+    {
+        rb = reserveRegisterRC(context);
         SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
+    }
 
     emitInstruction(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
 
@@ -64,8 +92,6 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     freeRegisterRC(context, rb);
     freeRegisterRC(context, rangeNode->expressionLow);
     freeRegisterRC(context, rangeNode->expressionUp);
-    freeRegisterRC(context, r0);
-    freeRegisterRC(context, r1);
     return true;
 }
 
@@ -96,7 +122,7 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
     auto r2   = node->resultRegisterRC;
     if (node->semFlags & AST_SEM_INVERSE_PARAMS)
     {
-        switch (node->token.id)
+        switch (op)
         {
         case TokenId::SymLowerEqualGreater:
             emitInstruction(context, ByteCodeOp::NegS32, r2);
@@ -125,7 +151,7 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
     }
     else
     {
-        switch (node->token.id)
+        switch (op)
         {
         case TokenId::SymLower:
             emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);

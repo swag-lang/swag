@@ -606,7 +606,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 if (expr->kind == AstNodeKind::Range)
                 {
                     r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, r0));
                 }
                 else if (caseNode->hasSpecialFuncCall())
                 {
