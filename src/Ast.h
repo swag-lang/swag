@@ -11,8 +11,6 @@ enum class ScopeKind;
 
 namespace Ast
 {
-    extern thread_local AstNode* lastGeneratedNode;
-
     template<typename T>
     T* newNode()
     {
@@ -69,7 +67,6 @@ namespace Ast
             parent->unlock();
         }
 
-        lastGeneratedNode = node;
         return node;
     }
 

@@ -27,6 +27,6 @@ impl A
     @assert(G == 1)
     x = y
     @assert(G == 2)
-    x = nodrop y
+    x =,nodrop y
     @assert(G == 2)
 }

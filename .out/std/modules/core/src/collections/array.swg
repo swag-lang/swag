@@ -38,7 +38,7 @@ impl Array
         #if reflection.hasPostCopy(@typeof(T))
         {
             loop count
-                buffer[@index] = nodrop oldBuffer[@index]
+                buffer[@index] =,nodrop oldBuffer[@index]
         }
         #else
         {
@@ -102,7 +102,7 @@ impl Array
         #if reflection.hasPostCopy(@typeof(T))
         {
             loop i: countof
-                buffer[i] = nodrop dataof[i]
+                buffer[i] =,nodrop dataof[i]
         }
         #else
         {
@@ -252,7 +252,7 @@ impl Array
         #selectif reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
-        buffer[count] = nodrop value
+        buffer[count] =,nodrop value
         count += 1
     }
 
@@ -276,7 +276,7 @@ impl Array
     func emplace(using self, value: *T)
     {
         grow(count + 1)
-        buffer[count] = nodrop move :value
+        buffer[count] =,nodrop,move :value
         count += 1
     }
 
@@ -293,9 +293,9 @@ impl Array
         count += 1
 
         for idx := count - 1; idx > index; idx -= 1
-            buffer[idx] = nodrop move nodrop buffer[idx - 1]
+            buffer[idx] =,nodrop,moveraw buffer[idx - 1]
 
-        buffer[index] = nodrop value
+        buffer[index] =,nodrop value
     }
 
     // Move a value at the given index. If 'index' is equal to 'count', then
@@ -310,9 +310,9 @@ impl Array
         count += 1
 
         for idx := count - 1; idx > index; idx -= 1
-            buffer[idx] = nodrop move nodrop buffer[idx - 1]
+            buffer[idx] =,nodrop,moveraw buffer[idx - 1]
 
-        buffer[index] = nodrop move :value
+        buffer[index] =,nodrop,move :value
     }
 
     // Append a slice to the end of this instance
@@ -336,7 +336,7 @@ impl Array
             destPtr := buffer + oldCount
             loop sliceCount
             {
-                :destPtr = nodrop values[@index]
+                :destPtr =,nodrop values[@index]
                 destPtr += 1
             }
         }
@@ -359,7 +359,7 @@ impl Array
             return
         }
 
-        buffer[index] = move nodrop buffer[count]
+        buffer[index] =,moveraw buffer[count]
     }
 
     // Remove an element at 'index' by shifting all others.
@@ -376,7 +376,7 @@ impl Array
         idx := index
         loop count - index
         {
-            buffer[idx] = nodrop move nodrop buffer[idx + 1]
+            buffer[idx] =,nodrop,moveraw buffer[idx + 1]
             idx += 1
         }
     }
@@ -414,7 +414,7 @@ impl Array
     {
         debug.assert(count > 0)
         var result: retval = ?
-        result = nodrop move nodrop buffer[count - 1]
+        result =,nodrop,moveraw buffer[count - 1]
         count -= 1
         return result
     }

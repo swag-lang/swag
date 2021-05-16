@@ -9,7 +9,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
     loop
     {
-        // Pick a pivot and move it out of the way
+        // Pick a pivot and,move it out of the way
         pivot := (begin + end) / 2
 
         med := buffer[pivot]

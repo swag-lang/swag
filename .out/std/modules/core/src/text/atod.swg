@@ -33,7 +33,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 	// Exact integers are <= 10^15.
 	// Exact powers of ten are <= 10^22.
 	case exp > 0 and exp <= 15+22:
-		// If exponent is big but number of digits is not'f64, can move a few zeros
+		// If exponent is big but number of digits is not'f64, can,move a few zeros
         // into the integer part.
 		if exp > 22
         {

@@ -8,5 +8,5 @@ struct A
 
 func toto(val: A)
 {
-    var y: A = move val
+    var y: A =,move val
 }

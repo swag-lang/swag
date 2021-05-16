@@ -8,8 +8,6 @@
 
 namespace Ast
 {
-    thread_local AstNode* lastGeneratedNode = nullptr;
-
     Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);

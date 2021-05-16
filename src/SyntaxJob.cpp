@@ -21,23 +21,6 @@ bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 
 bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
 {
-    if (Ast::lastGeneratedNode)
-    {
-        switch (token.id)
-        {
-        case TokenId::KwdNoDrop:
-            if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return error(token, Msg0320);
-            if (Ast::lastGeneratedNode->token.id == TokenId::KwdNoDrop)
-                return error(token, Msg0321);
-            break;
-        case TokenId::KwdMove:
-            if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return error(token, Msg0322);
-            break;
-        }
-    }
-
     switch (token.id)
     {
     case TokenId::KwdElse:
@@ -289,7 +272,6 @@ JobResult SyntaxJob::execute()
     context.job        = this;
     context.sourceFile = sourceFile;
     g_Stats.numFiles++;
-    Ast::lastGeneratedNode = nullptr;
 
     tokenizer.setFile(sourceFile);
 

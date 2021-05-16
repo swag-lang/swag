@@ -105,7 +105,7 @@ func getRootLength(fullname: string)->u32
     else if pathLength >= volumeSeparatorLength and fullname[volumeSeparatorLength - 1] == VolumeSeparatorChar
     {
         // Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:)
-        // If the colon is followed by a directory separator, move past it
+        // If the colon is followed by a directory separator,,move past it
         i = volumeSeparatorLength;
         if pathLength >= volumeSeparatorLength + 1 and isDirectorySeparator(fullname[volumeSeparatorLength])
             i += 1;

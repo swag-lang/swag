@@ -534,7 +534,7 @@ impl Decimal
             exp -= 1
 
             // Minimum representable exponent is flt.bias+1.
-            // If the exponent is smaller, move it up and
+            // If the exponent is smaller,,move it up and
             // adjust d accordingly.
             if exp < swag.F64.Bias + 1
             {

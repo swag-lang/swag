@@ -596,6 +596,57 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
+        if (token.text == "nodrop")
+        {
+            switch (opId)
+            {
+            case TokenId::SymEqual:
+            case TokenId::SymColonEqual:
+                break;
+            default:
+                return error(token, format(Msg0266, forNode.text.c_str()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, format(Msg0265, token.text.c_str())));
+            mdfFlags |= MODIFIER_NOLEFTDROP;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (token.text == "move")
+        {
+            switch (opId)
+            {
+            case TokenId::SymEqual:
+            case TokenId::SymColonEqual:
+                break;
+            default:
+                return error(token, format(Msg0266, forNode.text.c_str()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, format(Msg0265, token.text.c_str())));
+            mdfFlags |= MODIFIER_MOVE;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (token.text == "moveraw")
+        {
+            switch (opId)
+            {
+            case TokenId::SymEqual:
+            case TokenId::SymColonEqual:
+                break;
+            default:
+                return error(token, format(Msg0266, forNode.text.c_str()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, format(Msg0265, token.text.c_str())));
+            mdfFlags |= MODIFIER_MOVE | MODIFIER_NORIGHTDROP;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
         return error(token, format(Msg0264, token.text.c_str()));
     }
 
@@ -716,10 +767,13 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
+    uint32_t mdfFlags;
+    SWAG_CHECK(doModifiers(forToken, mdfFlags));
+
     // nodrop left
-    if (token.id == TokenId::KwdNoDrop)
+    if (mdfFlags & MODIFIER_NOLEFTDROP)
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         if (result)
@@ -728,11 +782,10 @@ bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
         exprNode->flags |= AST_NO_LEFT_DROP;
         parent = exprNode;
         result = nullptr;
-        SWAG_CHECK(eatToken());
     }
 
     // move
-    if (token.id == TokenId::KwdMove)
+    if (mdfFlags & MODIFIER_MOVE)
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::Move, sourceFile, parent);
         if (result)
@@ -741,10 +794,9 @@ bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
         exprNode->flags |= AST_FORCE_MOVE;
         parent = exprNode;
         result = nullptr;
-        SWAG_CHECK(eatToken());
 
         // nodrop right
-        if (token.id == TokenId::KwdNoDrop)
+        if (mdfFlags & MODIFIER_NORIGHTDROP)
         {
             exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
             if (result)
@@ -753,7 +805,6 @@ bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
             exprNode->flags |= AST_NO_RIGHT_DROP;
             parent = exprNode;
             result = nullptr;
-            SWAG_CHECK(eatToken());
         }
     }
 
@@ -928,7 +979,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
     // var x = ? : not initialized
     if (token.id == TokenId::SymQuestion)
@@ -943,7 +994,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    return doMoveExpression(parent, result);
+    return doMoveExpression(forToken, parent, result);
 }
 
 void SyntaxJob::forceTakeAddress(AstNode* node)
@@ -1320,9 +1371,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Variable declaration and initialization by ':='
     if (token.id == TokenId::SymColonEqual)
     {
+        auto     saveToken = token;
         AstNode* assign;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doInitializationExpression(nullptr, &assign));
+        SWAG_CHECK(doInitializationExpression(saveToken, nullptr, &assign));
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
     }
 
@@ -1345,8 +1397,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         // Modifiers
-        uint32_t mdfFlags;
-        SWAG_CHECK(doModifiers(savedtoken, mdfFlags));
+        uint32_t mdfFlags = 0;
+        if (savedtoken.id != TokenId::SymEqual)
+            SWAG_CHECK(doModifiers(savedtoken, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
             opFlags |= OPFLAG_SAFE;
@@ -1389,7 +1442,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 {
                     firstDone = true;
                     if (affectNode->token.id == TokenId::SymEqual)
-                        SWAG_CHECK(doMoveExpression(affectNode, &affectExpression));
+                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode, &affectExpression));
                     else
                         SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
                 }
@@ -1498,7 +1551,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             forceTakeAddress(leftNode);
 
             if (affectNode->token.id == TokenId::SymEqual)
-                SWAG_CHECK(doMoveExpression(affectNode));
+                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode));
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE));
             if (result)

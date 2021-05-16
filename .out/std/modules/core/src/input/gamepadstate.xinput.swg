@@ -72,7 +72,7 @@ impl State
         position[LeftTrigger].y = bLeftTrigger / 255.0'f32
         position[RightTrigger].y = bRightTrigger / 255.0'f32
 
-        // Simulate pressed with move
+        // Simulate pressed with,move
         #[swag.inline]
         func getToler(using self, btn: Button)->f32
         {

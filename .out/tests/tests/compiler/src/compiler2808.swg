@@ -1,9 +1,9 @@
 // Swap two values
 func swap(x, y: *s32)
 {
-    tmp := move nodrop :x
-    :x = nodrop move nodrop :y
-    :y = nodrop move nodrop tmp
+    tmp :=,moveraw :x
+    :x =,nodrop,moveraw :y
+    :y =,nodrop,moveraw tmp
 }
 
 // Quick sort algorithm
@@ -25,7 +25,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
             return
         }
 
-        // Pick a pivot and move it out of the way
+        // Pick a pivot and,move it out of the way
         pivot := (begin + end) / 2
         swap(&buffer[pivot], &buffer[end])
 

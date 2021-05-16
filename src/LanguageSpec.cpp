@@ -80,8 +80,6 @@ void LanguageSpec::setup()
     keywords.add("continue", TokenId::KwdContinue);
     keywords.add("loop", TokenId::KwdLoop);
     keywords.add("visit", TokenId::KwdVisit);
-    keywords.add("move", TokenId::KwdMove);
-    keywords.add("nodrop", TokenId::KwdNoDrop);
     keywords.add("switch", TokenId::KwdSwitch);
     keywords.add("case", TokenId::KwdCase);
     keywords.add("fallthrough", TokenId::KwdFallThrough);

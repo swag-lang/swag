@@ -5,16 +5,16 @@ func(T) sort(values: [..] T, cb: func(T, T)->s32)
 
     for i := 1'u32; i < count; i += 1
     {
-        tmp := move buffer[i]
+        tmp :=,move buffer[i]
         j := i
         while cb(buffer[j - 1], tmp) > 0
         {
-            buffer[j] = move buffer[j - 1]
+            buffer[j] =,move buffer[j - 1]
             j -= 1
             if j == 0 break
         }
 
-        buffer[j] = move tmp
+        buffer[j] =,move tmp
     }
 }
 

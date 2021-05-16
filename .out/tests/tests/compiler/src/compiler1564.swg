@@ -6,5 +6,5 @@
 {
     x := 0
     y := 0
-    x = raw raw move raw move y
+    x = raw raw,move raw,move y
 }

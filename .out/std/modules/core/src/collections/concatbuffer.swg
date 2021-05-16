@@ -209,7 +209,7 @@ impl ConcatBuffer
     }
 
     // Convert buffer to a String by moving the content if possible
-    // After the call, the buffer will be empty if the move can be done
+    // After the call, the buffer will be empty if the,move can be done
     // (otherwise, the result will contain a copy)
     func moveToString(using self)->String
     {

@@ -14,7 +14,7 @@ impl B
 {
     func emplace(using self, x: T)
     {
-        y := move x
+        y :=,move x
     }
 }
 

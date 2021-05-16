@@ -37,8 +37,9 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
         if (token.id == TokenId::SymEqual)
         {
+            auto saveToken = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doInitializationExpression(nullptr, &assign));
+            SWAG_CHECK(doInitializationExpression(saveToken, nullptr, &assign));
         }
 
         // Be sure we will be able to have a type

@@ -26,7 +26,6 @@ if a is "toto"
 if a is in 2..6
 -------------------------------------
 le retour de deref (j'aime pas la syntax avec :) ?
-deref est tjs en bleu sous vscode
 -------------------------------------
 not au lieu de ! ?
 -------------------------------------

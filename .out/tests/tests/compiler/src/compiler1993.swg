@@ -31,7 +31,7 @@ impl A
     {
         var x: A
         var y: A
-        x = nodrop move nodrop y
+        x =,nodrop,moveraw y
     }
 
     @assert(GMove == 1)

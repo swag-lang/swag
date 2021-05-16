@@ -61,7 +61,7 @@ impl Mouse
         return currentState.position
     }
 
-    // Returns the mouse move, between the current position and the previous one
+    // Returns the mouse,move, between the current position and the previous one
     func getMove(using self)->Point
     {
         return currentState.position - previousState.position

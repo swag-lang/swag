@@ -38,8 +38,11 @@ enum class SyntaxStructType
     Tuple
 };
 
-static const uint32_t MODIFIER_SAFE  = 0x00000001;
-static const uint32_t MODIFIER_SMALL = 0x00000002;
+static const uint32_t MODIFIER_SAFE        = 0x00000001;
+static const uint32_t MODIFIER_SMALL       = 0x00000002;
+static const uint32_t MODIFIER_NOLEFTDROP  = 0x00000004;
+static const uint32_t MODIFIER_MOVE        = 0x00000008;
+static const uint32_t MODIFIER_NORIGHTDROP = 0x00000010;
 
 static const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 static const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
@@ -130,14 +133,14 @@ struct SyntaxJob : public Job
     bool        doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool        doExpressionListTuple(AstNode* parent, AstNode** result = nullptr);
     bool        doExpressionListArray(AstNode* parent, AstNode** result = nullptr);
-    bool        doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
+    bool        doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result = nullptr);
     bool        doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool        doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool        doGetErr(AstNode* parent, AstNode** result = nullptr);
     bool        doIndex(AstNode* parent, AstNode** result = nullptr);
     bool        doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool        doOperatorPrecedence(AstNode** result);
-    bool        doModifiers(Token& forNode, uint32_t &mdfFlags);
+    bool        doModifiers(Token& forNode, uint32_t& mdfFlags);
     bool        doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
@@ -145,7 +148,7 @@ struct SyntaxJob : public Job
     bool        doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
-    bool        doMoveExpression(AstNode* parent, AstNode** result = nullptr);
+    bool        doMoveExpression(Token& forToken, AstNode* parent, AstNode** result = nullptr);
     bool        doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool        doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool        doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);

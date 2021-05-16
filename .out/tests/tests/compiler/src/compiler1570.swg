@@ -14,7 +14,7 @@ impl Point
 func toto(val: *Point)
 {
     @assert(val.x == 666)
-    var y: Point = move :val
+    var y: Point =,move :val
     @assert(y.x == 666)
     //@assert(val.x == 1)
 }
