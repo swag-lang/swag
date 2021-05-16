@@ -38,6 +38,9 @@ enum class SyntaxStructType
     Tuple
 };
 
+static const uint32_t MODIFIER_SAFE  = 0x00000001;
+static const uint32_t MODIFIER_SMALL = 0x00000002;
+
 static const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 static const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 static const uint32_t IDENTIFIER_TYPE_DECL       = 0x00000004;
@@ -134,7 +137,7 @@ struct SyntaxJob : public Job
     bool        doIndex(AstNode* parent, AstNode** result = nullptr);
     bool        doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool        doOperatorPrecedence(AstNode** result);
-    bool        doModifier(Token& mdfToken);
+    bool        doModifiers(Token& forNode, uint32_t &mdfFlags);
     bool        doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool        doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);

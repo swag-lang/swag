@@ -544,23 +544,59 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doModifier(Token& mdfToken)
+bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
 {
-    if (token.id == TokenId::SymComma)
+    auto opId = forNode.id;
+
+    mdfFlags = 0;
+    while (token.id == TokenId::SymComma)
     {
-        SWAG_CHECK(tokenizer.getToken(mdfToken));
-        if (mdfToken.text == "safe")
+        SWAG_CHECK(eatToken());
+        if (token.text == "safe")
         {
+            switch (opId)
+            {
+            case TokenId::SymPlus:
+            case TokenId::SymMinus:
+            case TokenId::SymAsterisk:
+            case TokenId::SymLowerLower:
+            case TokenId::SymGreaterGreater:
+            case TokenId::SymPlusEqual:
+            case TokenId::SymMinusEqual:
+            case TokenId::SymAsteriskEqual:
+            case TokenId::SymLowerLowerEqual:
+            case TokenId::SymGreaterGreaterEqual:
+                break;
+            default:
+                return error(token, format(Msg0266, forNode.text.c_str()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, format(Msg0265, token.text.c_str())));
+            mdfFlags |= MODIFIER_SAFE;
             SWAG_CHECK(eatToken());
+            continue;
         }
-        else if (mdfToken.text == "small")
+
+        if (token.text == "small")
         {
+            switch (opId)
+            {
+            case TokenId::SymLowerLower:
+            case TokenId::SymGreaterGreater:
+            case TokenId::SymLowerLowerEqual:
+            case TokenId::SymGreaterGreaterEqual:
+                break;
+            default:
+                return error(token, format(Msg0266, forNode.text.c_str()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, format(Msg0265, token.text.c_str())));
+            mdfFlags |= MODIFIER_SMALL;
             SWAG_CHECK(eatToken());
+            continue;
         }
-        else
-        {
-            return error(mdfToken, format(Msg0264, mdfToken.text.c_str()));
-        }
+
+        return error(token, format(Msg0264, token.text.c_str()));
     }
 
     return true;
@@ -594,30 +630,16 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         SWAG_CHECK(tokenizer.getToken(token));
 
         // Modifiers
-        Token mdfToken;
-        SWAG_CHECK(doModifier(mdfToken));
-        if (mdfToken.text == "safe")
+        uint32_t mdfFlags;
+        SWAG_CHECK(doModifiers(binaryNode->token, mdfFlags));
+        if (mdfFlags & MODIFIER_SAFE)
         {
-            if (binaryNode->token.id != TokenId::SymPlus &&
-                binaryNode->token.id != TokenId::SymMinus &&
-                binaryNode->token.id != TokenId::SymAsterisk &&
-                binaryNode->token.id != TokenId::SymLowerLower &&
-                binaryNode->token.id != TokenId::SymGreaterGreater)
-            {
-                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
-            }
-
             binaryNode->opFlags |= OPFLAG_SAFE;
             binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
         }
-        else if (mdfToken.text == "small")
-        {
-            if (binaryNode->token.id != TokenId::SymLowerLower &&
-                binaryNode->token.id != TokenId::SymGreaterGreater)
-            {
-                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
-            }
 
+        if (mdfFlags & MODIFIER_SMALL)
+        {
             binaryNode->opFlags |= OPFLAG_SMALL;
         }
 
@@ -1323,30 +1345,15 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         // Modifiers
-        Token mdfToken;
-        SWAG_CHECK(doModifier(mdfToken));
-        if (mdfToken.text == "safe")
+        uint32_t mdfFlags;
+        SWAG_CHECK(doModifiers(savedtoken, mdfFlags));
+        if (mdfFlags & MODIFIER_SAFE)
         {
-            if (savedtoken.id != TokenId::SymPlusEqual &&
-                savedtoken.id != TokenId::SymMinusEqual &&
-                savedtoken.id != TokenId::SymAsteriskEqual &&
-                savedtoken.id != TokenId::SymLowerLowerEqual &&
-                savedtoken.id != TokenId::SymGreaterGreaterEqual)
-            {
-                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), savedtoken.text.c_str()));
-            }
-
             opFlags |= OPFLAG_SAFE;
             opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
         }
-        else if (mdfToken.text == "small")
+        if (mdfFlags & MODIFIER_SMALL)
         {
-            if (savedtoken.id != TokenId::SymLowerLowerEqual &&
-                savedtoken.id != TokenId::SymGreaterGreaterEqual)
-            {
-                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), savedtoken.text.c_str()));
-            }
-
             opFlags |= OPFLAG_SMALL;
         }
 
