@@ -40,8 +40,6 @@ TODO
 -------------------------------------
 range dynamic order
 -------------------------------------
-range & struct opSpecial
--------------------------------------
 script, si #main resoud pas, erreur bizarre
 -------------------------------------
 dbg x64, self doit etre comme this (possible ?)
