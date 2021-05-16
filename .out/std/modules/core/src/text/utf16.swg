@@ -134,7 +134,7 @@ func lengthZeroTerminated(buf: const *u16)->uint
 {
     ptr := buf
     count := 0'uint
-    while :ptr
+    while dref ptr
         ptr, count += 1
     return count
 }

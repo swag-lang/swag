@@ -161,7 +161,7 @@ impl String
                 #if `ptr
                     var @alias0 = `scan
                 #else
-                    var @alias0 = :`scan
+                    var @alias0 = dref `scan
                 var @alias1 = @index
                 #mixin `stmt
             }
@@ -498,7 +498,7 @@ impl String
     // Returns a new String in upper case
     func toUpper(using self, set = CharacterSet.Latin1)->String
     {
-        var result: retval = :self
+        var result: retval = dref self
         result.makeUpper(set)
         return result
     }
@@ -514,7 +514,7 @@ impl String
     // Returns a new String in lower case
     func toLower(using self, set = CharacterSet.Latin1)->String
     {
-        var result: retval = :self
+        var result: retval = dref self
         result.makeLower(set)
         return result
     }

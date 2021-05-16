@@ -1,6 +1,6 @@
 func(T) inc(x: *T)
 {
-    :x += 1
+    dref x += 1
 }
 
 //#[swag.printbc]

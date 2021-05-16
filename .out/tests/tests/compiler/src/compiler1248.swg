@@ -29,7 +29,7 @@ func toto()
     GG = false
 
     savedCxt := @getcontext()
-    var cxt: Context = :savedCxt
+    var cxt: Context = dref savedCxt
     var myAlloc: MyAlloc
     cxt.allocator = myAlloc
     defer @setcontext(savedCxt)

@@ -20,7 +20,7 @@ protected func filePath(name: string)->String
     try jobs.setNumWorkers(4)
 
     g_dbg.init()
-    g_cxt = :@getcontext()
+    g_cxt = dref @getcontext()
     g_cxt.allocator = g_dbg
     @setcontext(g_cxt)
 }

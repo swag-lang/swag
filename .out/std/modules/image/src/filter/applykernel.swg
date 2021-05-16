@@ -65,7 +65,7 @@ impl Image
                 {
                     loop kfull
                     {
-                        ks0 := :ks
+                        ks0 := dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0
@@ -87,7 +87,7 @@ impl Image
                     {
                         nx := math.clamp(x + dx, 0, w - 1)
                         p := px + (nx * b8) + (ny * w8)
-                        ks0 := :ks
+                        ks0 := dref ks
                         bs += cast(s32) p[0] * ks0
                         gs += cast(s32) p[1] * ks0
                         rs += cast(s32) p[2] * ks0

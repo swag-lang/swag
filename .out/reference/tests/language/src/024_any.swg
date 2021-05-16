@@ -15,7 +15,7 @@
     {
         var a: any = 6
         ptr := cast(const *s32) @dataof(a)
-        @assert(:ptr == 6)
+        @assert(dref ptr == 6)
     }
 
     // '@typeof' will give you 'any', but '@kindof' will give you the real type

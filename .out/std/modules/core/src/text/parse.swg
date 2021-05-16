@@ -15,12 +15,12 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isHexDigit(:buffer) throw "invalid"
-    while cpt < countof and latin1.isHexDigit(:buffer)
+    if !latin1.isHexDigit(dref buffer) throw "invalid"
+    while cpt < countof and latin1.isHexDigit(dref buffer)
     {
         if value & 0xF0000000_00000000 throw "overflow"
         value <<= 4
-        c := :buffer
+        c := dref buffer
         if latin1.isDigit(c)
             value += cast(u64) (c - "0"'u8)
         else if c <= "F"'u8
@@ -48,12 +48,12 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isBinDigit(:buffer) throw "invalid"
-    while cpt < countof and latin1.isBinDigit(:buffer)
+    if !latin1.isBinDigit(dref buffer) throw "invalid"
+    while cpt < countof and latin1.isBinDigit(dref buffer)
     {
         if value & 0x80000000_00000000 throw "overflow"
         value <<= 1
-        value += cast(u64) (:buffer - "0"'u8)
+        value += cast(u64) (dref buffer - "0"'u8)
         buffer, cpt += 1
     }
 
@@ -117,11 +117,11 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isDigit(:buffer) throw "invalid"
-    while cpt < countof and latin1.isDigit(:buffer)
+    if !latin1.isDigit(dref buffer) throw "invalid"
+    while cpt < countof and latin1.isDigit(dref buffer)
     {
         value *= 10
-        add := cast(u64) (:buffer - "0"'u8)
+        add := cast(u64) (dref buffer - "0"'u8)
         if value +,safe add < value throw "overflow"
         value += add
         buffer, cpt += 1
@@ -168,7 +168,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    c := :str
+    c := dref str
     maxValue := cast(u64) swag.S64.Max
     if c == g_CultureInfo.numberFormat.negativeSign
     {
@@ -182,11 +182,11 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     }
 
     // Parse the rest
-    if !latin1.isDigit(:buffer) throw "invalid"
-    while cpt < countof and latin1.isDigit(:buffer)
+    if !latin1.isDigit(dref buffer) throw "invalid"
+    while cpt < countof and latin1.isDigit(dref buffer)
     {
         value *= 10
-        value += cast(u64) (:buffer - "0"'u8)
+        value += cast(u64) (dref buffer - "0"'u8)
         if value > maxValue throw "overflow"
         buffer, cpt += 1
     }

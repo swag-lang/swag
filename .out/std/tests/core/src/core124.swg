@@ -9,10 +9,10 @@ using core
     arr.addAny("2")
     arr.addAny("3")
     slice.insertionSort(@mkslice(arr.buffer, cast(uint) arr.count), @(x, y) => y <=> x)
-    @assert(:arr[0] == "3")
-    @assert(:arr[1] == "2")
-    @assert(:arr[2] == "1")
-    @assert(:arr[3] == "0")
+    @assert(dref arr[0] == "3")
+    @assert(dref arr[1] == "2")
+    @assert(dref arr[2] == "1")
+    @assert(dref arr[3] == "0")
     //visit *it: arr
     //    console.write("%", :it)
 }

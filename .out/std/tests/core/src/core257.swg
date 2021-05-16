@@ -66,8 +66,8 @@ struct Test2
 
     @assert(t2.coucou6.count == 4)
     @assert(t2.coucou7.count == 6)
-    @assert(:t2.coucou7[0] == "this")
-    @assert(:t2.coucou7[5] == "strings")
+    @assert(dref t2.coucou7[0] == "this")
+    @assert(dref t2.coucou7[5] == "strings")
     @assert(t2.coucou8[0] == 1)
     @assert(t2.coucou8[1] == 2)
     @assert(t2.coucou8[2] == 3)

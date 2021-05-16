@@ -11,7 +11,7 @@ func __itoa(result: *u8, value: s64)->*u8
     {
         tmpValue := orgValue
         orgValue /= 10
-        :ptr = conv[35 + (tmpValue - (orgValue * 10))]
+        dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
         if !orgValue
             break
@@ -19,19 +19,19 @@ func __itoa(result: *u8, value: s64)->*u8
 
     if value < 0
     {
-        :ptr = "-"'u8
+        dref ptr = "-"'u8
         ptr += 1
     }
 
     retVal := ptr
-    :ptr = 0; ptr -= 1
+    dref ptr = 0; ptr -= 1
 
     ptr1 := result
     while ptr1 < ptr
     {
-        tmpChar := :ptr
-        :ptr    = :ptr1; ptr -= 1
-        :ptr1   = tmpChar; ptr1 += 1
+        tmpChar := dref ptr
+        dref ptr  = dref ptr1; ptr -= 1
+        dref ptr1 = tmpChar; ptr1 += 1
     }
 
     return retVal
@@ -48,17 +48,17 @@ func __ftoa(result: *u8, value: f64)
     {
         if value < 0
         {
-            :n = "-"'u8
+            dref n = "-"'u8
             n += 1
         }
 
-        :n = "0"'u8
+        dref n = "0"'u8
         n += 1
     }
     else
         n = __itoa(result, ipart);
 
-    :n = "."'u8; n += 1
+    dref n = "."'u8; n += 1
 
     afterPoint := 5
     if fpart < 0
@@ -197,30 +197,30 @@ private func convertArgcArgv()
     cmdLine := __getCommandLine()
 
     g_Argc = 0
-    while :cmdLine
+    while dref cmdLine
     {
-        while :cmdLine == " "'u8 cmdLine += 1
-        if :cmdLine == 0 break
+        while dref cmdLine == " "'u8 cmdLine += 1
+        if dref cmdLine == 0 break
 
-        if :cmdLine == "\""'u8
+        if dref cmdLine == "\""'u8
         {
             cmdLine += 1
             start := cmdLine
-            while :cmdLine and :cmdLine != "\""'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
-            if :cmdLine cmdLine += 1
+            if dref cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
-            while :cmdLine and :cmdLine != " "'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1
         if g_Argc == MAX_ARGUMENTS
             return
-        while :cmdLine and :cmdLine == " "'u8 cmdLine += 1
+        while dref cmdLine and dref cmdLine == " "'u8 cmdLine += 1
     }
 }
 

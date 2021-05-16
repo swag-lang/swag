@@ -10,5 +10,5 @@ func toto()->*~64 s32
 #test
 {
     x := toto()
-    @assert(:x == 666)
+    @assert(dref x == 666)
 }

@@ -379,7 +379,7 @@ namespace Ast
             auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
             if (arrayNode->isDeref)
             {
-                concat.addChar(':');
+                CONCAT_FIXED_STR(concat, "dref ");
                 SWAG_CHECK(output(context, concat, arrayNode->array));
             }
             else

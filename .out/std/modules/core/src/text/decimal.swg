@@ -363,7 +363,7 @@ impl Decimal
         plusSign := g_CultureInfo.numberFormat.positiveSign
         dotSign := g_CultureInfo.numberFormat.decimalSeparator
 
-        c := :buffer
+        c := dref buffer
         if c == negSign
         {
             buffer, cpt += 1
@@ -385,7 +385,7 @@ impl Decimal
 
         while cpt < countof
         {
-            c = :buffer
+            c = dref buffer
             if c == dotSign
             {
                 if sawdot break
@@ -429,7 +429,7 @@ impl Decimal
             dp = nd
 
         // Exponent
-        c = :buffer
+        c = dref buffer
         if cpt < countof and (c|32) == "e"'u8
         {
             cpt, buffer += 1
@@ -437,17 +437,17 @@ impl Decimal
                 throw "invalid float format"
 
             esign := 1
-            c = :buffer
+            c = dref buffer
             if c == negSign
             {
                 buffer, cpt += 1
                 esign = -1
-                c = :buffer
+                c = dref buffer
             }
             else if c == plusSign
             {
                 buffer, cpt += 1
-                c = :buffer
+                c = dref buffer
             }
 
             if cpt >= countof or c < "0"'u8 or c > "9"'u8
@@ -456,7 +456,7 @@ impl Decimal
             e := 0
             while cpt < countof
             {
-                c = :buffer
+                c = dref buffer
                 if c < "0"'u8 or c > "9"'u8
                     break
                 if e < 10000

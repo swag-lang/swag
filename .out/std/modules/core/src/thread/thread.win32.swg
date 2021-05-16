@@ -24,7 +24,7 @@ private func threadEntry(param: *void)
     th.context.tempAllocator.used = 0
     @setcontext(th.context)
 
-    th.userLambda(:th)
+    th.userLambda(dref th)
 }
 
 // Wait multiple threads
@@ -62,7 +62,7 @@ impl Thread
         debug.assert(!isValid(), "thread already created")
         debug.assert(lambda != null, "lambda parameter is null")
 
-        context = :@getcontext()
+        context = dref @getcontext()
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda

@@ -124,7 +124,7 @@ impl Decoder
     func readHeader(using self, ch: ChunkHeader) throw
     {
         chunk := try readChunk(ch)
-        header = :cast(const *Header) @dataof(chunk.datas)
+        header = dref cast(const *Header) @dataof(chunk.datas)
         header.width = math.bigEndianToNative(header.width)
         header.height = math.bigEndianToNative(header.height)
 
@@ -533,7 +533,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := :cast(**u8) userData
+                src := dref cast(**u8) userData
                 src += x + y * image.width
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -566,7 +566,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := :cast(**u8) userData
+                src := dref cast(**u8) userData
                 src += (x * 2) + (y * image.width * 2)
                 pix[0] = src[0]
                 pix[1] = src[0]

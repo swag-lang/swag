@@ -72,7 +72,7 @@
         result := 0
         visit *it: array
         {
-            result += :it
+            result += dref it
         }
 
         @assert(result == 1+2+3+4)

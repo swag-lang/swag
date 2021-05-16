@@ -2,9 +2,9 @@
 #[swag.inline]
 func swap(x, y: *s32)
 {
-    tmp := :x
-    :x = :y
-    :y = tmp
+    tmp := dref x
+    dref x = dref y
+    dref y = tmp
 }
 
 //#[swag.printbc]

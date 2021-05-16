@@ -1,9 +1,9 @@
 // Swap two values
 func swap(x, y: *s32)
 {
-    tmp :=,moveraw :x
-    :x =,nodrop,moveraw :y
-    :y =,nodrop,moveraw tmp
+    tmp :=,moveraw dref x
+    dref x =,nodrop,moveraw dref y
+    dref y =,nodrop,moveraw tmp
 }
 
 // Quick sort algorithm

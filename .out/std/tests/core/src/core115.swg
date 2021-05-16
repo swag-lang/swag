@@ -11,8 +11,8 @@ using core
     arr2.addAny("3")
     arr1.add(arr2.toSlice())
     @assert(arr1.count == 4)
-    @assert(:arr1[2] == "2")
-    @assert(:arr1[3] == "3")
+    @assert(dref arr1[2] == "2")
+    @assert(dref arr1[3] == "3")
 
     var arr3: Array'u8
     arr3.add(cast(const [..] u8) "tous")

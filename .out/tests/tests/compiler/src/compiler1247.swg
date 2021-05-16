@@ -14,7 +14,7 @@ using swag
     //toto()
 
     var cxt: Context
-    cxt = :@getcontext()
+    cxt = dref @getcontext()
 
     var req: AllocatorRequest
     req.size = 10

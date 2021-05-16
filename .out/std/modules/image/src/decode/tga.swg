@@ -44,12 +44,12 @@ impl Decoder
         while l > 0
         {
             if src >= lastSrc { invalid = true; break; }
-            num := :src
+            num := dref src
             src += 1
             if num & 0x80
             {
                 num -= 127
-                val := :cast(const *u32) src
+                val := dref cast(const *u32) src
                 src += bpp8
                 if dest + bpp8 * num > lastDest { invalid = true; break; }
 
@@ -66,7 +66,7 @@ impl Decoder
                     case 8:
                         dest[0] = bitcast(u8) val
                     default:
-                        :cast(*u32) dest = val
+                        dref cast(*u32) dest = val
                     }
 
                     dest += bpp8

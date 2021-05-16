@@ -1,9 +1,9 @@
 //#[swag.printbc]
 func(T) swap(x, y: *T)
 {
-    tmp :=,moveraw :x
-    :x =,nodrop,moveraw :y
-    :y =,nodrop,moveraw tmp
+    tmp :=,moveraw dref x
+    dref x =,nodrop,moveraw dref y
+    dref y =,nodrop,moveraw tmp
 }
 
 #test

@@ -1,7 +1,7 @@
 func getChar(buffer: const *u8)->{const *u8, rune}
 {
 	ptr := buffer
-	c := cast(rune) :ptr
+	c := cast(rune) dref ptr
 	if c == 0
 		return @{ptr, acast 0}
 
@@ -15,7 +15,7 @@ func getChar(buffer: const *u8)->{const *u8, rune}
 	if ((c & 0xE0) == 0xC0)
 	{
 		wc = (c & 0x1F) << 6;
-		c = cast(rune) :ptr
+		c = cast(rune) dref ptr
 		ptr += 1
 		wc |= (c & 0x3F);
 		return @{ptr, wc}

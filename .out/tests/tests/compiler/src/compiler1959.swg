@@ -6,7 +6,7 @@
     }
 
     x := 2.0
-    y := :cast(*u32) &x
+    y := dref cast(*u32) &x
     @assert(y == 1073741824)
-    @assert(:cast(*f32) &y == 2.0)
+    @assert(dref cast(*f32) &y == 2.0)
 }

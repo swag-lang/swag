@@ -109,7 +109,7 @@ impl Image
 
         freeWorkingBuffer()
         workingBuffer = memory.new'Image(allocator)
-        :workingBuffer = image.create(newWidth, newHeight, newPf)
+        dref workingBuffer = image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
@@ -183,12 +183,12 @@ impl Image
     {
         #if BPP == 24
         {
-            :cast(*u16) pixDst = :cast(*u16) pixSrc
+            dref cast(*u16) pixDst = dref cast(*u16) pixSrc
             pixDst[2] = pixSrc[2]
         }
         #elif BPP == 32
         {
-            :cast(*u32) pixDst = :cast(*u32) pixSrc
+            dref cast(*u32) pixDst = dref cast(*u32) pixSrc
         }
         #else
         {

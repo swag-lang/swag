@@ -11,6 +11,6 @@ using core
     ptr1 := cast(*String) ptr
     t.opInit(ptr1)
     ptr1.append("toto")
-    @assert(:ptr1 == "toto")
+    @assert(dref ptr1 == "toto")
     t.opDrop(ptr1)
 }

@@ -176,7 +176,7 @@ impl Image
 
         if newPf == pf
         {
-            var result: retval = :self
+            var result: retval = dref self
             return result
         }
 

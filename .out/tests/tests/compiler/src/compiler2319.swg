@@ -15,7 +15,7 @@ func pushContext(cxt: swag.Context, stmt: code)
 
 #test
 {
-    cxt := :@getcontext()
+    cxt := dref @getcontext()
     pushContext(cxt)
     {
         @assert(@getcontext().errorMsgLen == 666)

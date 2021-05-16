@@ -160,7 +160,7 @@ impl Rect
     // Intersect this rectangle with another one
     func intersect(using self, with: Rect)
     {
-        :self = intersect(:self, with)
+        dref self = intersect(dref self, with)
     }
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.
@@ -185,7 +185,7 @@ impl Rect
     // Creates a rectangle that represents the union
     func setUnion(using self, with: Rect)
     {
-        :self = getUnion(:self, with)
+        dref self = getUnion(dref self, with)
     }
 
     // Creates a rectangle that represents the union between 'a' and 'b'.

@@ -97,6 +97,7 @@ void LanguageSpec::setup()
     keywords.add("and", TokenId::KwdAnd);
     keywords.add("or", TokenId::KwdOr);
     keywords.add("orelse", TokenId::KwdOrElse);
+    keywords.add("dref", TokenId::KwdDeRef);
 
     keywords.add("uint", TokenId::NativeType);
     keywords.add("int", TokenId::NativeType);

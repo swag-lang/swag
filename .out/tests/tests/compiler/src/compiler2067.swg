@@ -6,28 +6,28 @@ func init(x: string)
     cmdLine := cast(const *u8) @dataof(x)
 
     g_Argc = 0
-    while :cmdLine
+    while dref cmdLine
     {
-        while :cmdLine == " "'u8 cmdLine += 1
-        if :cmdLine == 0 break
+        while dref cmdLine == " "'u8 cmdLine += 1
+        if dref cmdLine == 0 break
 
-        if :cmdLine == "\""'u8
+        if dref cmdLine == "\""'u8
         {
             cmdLine += 1
             start := cmdLine
-            while :cmdLine and :cmdLine != "\""'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
-            if :cmdLine cmdLine += 1
+            if dref cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
-            while :cmdLine and :cmdLine != " "'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1
-        while :cmdLine and :cmdLine == " "'u8 cmdLine += 1
+        while dref cmdLine and dref cmdLine == " "'u8 cmdLine += 1
     }
 }
 

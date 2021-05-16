@@ -145,7 +145,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // This is a type
     if reflection.isType(type)
     {
-        ptrType := :cast(*typeinfo) @dataof(value)
+        ptrType := dref cast(*typeinfo) @dataof(value)
         buf.addBytes(ptrType.name)
         return
     }
@@ -158,7 +158,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         fmt.width = 16
         fmt.padding = "0"'u8
         fmt.setFormat(strFormat)
-        fmt.value = :cast(const *u64) @dataof(value)
+        fmt.value = dref cast(const *u64) @dataof(value)
         convertInt(buf, fmt)
         return
     }
@@ -294,8 +294,8 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
     var value: f64
     switch kindof
     {
-        case f32: value = cast(f64) :cast(*f32) dataof
-        case f64: value = :cast(*f64) dataof
+        case f32: value = cast(f64) dref cast(*f32) dataof
+        case f64: value = dref cast(*f64) dataof
     }
 
     dtoa(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
@@ -319,29 +319,29 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     switch kindof
     {
         case s8:
-            signedValue = cast(s64) :cast(*s8) dataof
+            signedValue = cast(s64) dref cast(*s8) dataof
             value = cast(u64) math.abs(signedValue)
         case s16:
-            signedValue = cast(s64) :cast(*s16) dataof
+            signedValue = cast(s64) dref cast(*s16) dataof
             value = cast(u64) math.abs(signedValue)
         case s32:
-            signedValue = cast(s64) :cast(*s32) dataof
+            signedValue = cast(s64) dref cast(*s32) dataof
             value = cast(u64) math.abs(signedValue)
         case s64, int:
-            signedValue = :cast(*s64) dataof
+            signedValue = dref cast(*s64) dataof
             // Cannot take the absolute value of swag.S64.Min
             if signedValue == swag.S64.Min
                 overflowS64 = true
             else
                 value = cast(u64) math.abs(signedValue)
         case u8:
-            value = cast(u64) :cast(*u8) dataof
+            value = cast(u64) dref cast(*u8) dataof
         case u16:
-            value = cast(u64) :cast(*u16) dataof
+            value = cast(u64) dref cast(*u16) dataof
         case u32:
-            value = cast(u64) :cast(*u32) dataof
+            value = cast(u64) dref cast(*u32) dataof
         case u64, uint:
-            value = :cast(*u64) dataof
+            value = dref cast(*u64) dataof
     }
 
     const tbl = "0123456789ABCDEF"

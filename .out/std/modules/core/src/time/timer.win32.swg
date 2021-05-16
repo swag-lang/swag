@@ -7,7 +7,7 @@ using win32
 private func timerEntry(param: *void)
 {
     t := cast(*Timer) param
-    t.userLambda(:t)
+    t.userLambda(dref t)
 }
 
 impl Timer

@@ -107,15 +107,15 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             if !v throw format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
-                :cast(*string) patch = :cast(const *string) v.value
+                dref cast(*string) patch = dref cast(const *string) v.value
             else
             {
                 switch enumType.sizeof
                 {
-                case 1:     :cast(*u8) patch |= :cast(const *u8) v.value
-                case 2:     :cast(*u16) patch |= :cast(const *u16) v.value
-                case 4:     :cast(*u32) patch |= :cast(const *u32) v.value
-                case 8:     :cast(*u64) patch |= :cast(const *u64) v.value
+                case 1:     dref cast(*u8) patch |= dref cast(const *u8) v.value
+                case 2:     dref cast(*u16) patch |= dref cast(const *u16) v.value
+                case 4:     dref cast(*u32) patch |= dref cast(const *u32) v.value
+                case 8:     dref cast(*u64) patch |= dref cast(const *u64) v.value
                 default:    throw format.toString("unsupported enum type '%'", enumType.rawType.flatName)
                 }
             }
@@ -151,67 +151,67 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     case s8:
         var val: s8 = ?
         (val, eat) = try getS8(one)
-        :cast(*s8) patch = val
+        dref cast(*s8) patch = val
 
     case s16:
         var val: s16 = ?
         (val, eat) = try getS16(one)
-        :cast(*s16) patch = val
+        dref cast(*s16) patch = val
 
     case s32:
         var val: s32 = ?
         (val, eat) = try getS32(one)
-        :cast(*s32) patch = val
+        dref cast(*s32) patch = val
 
     case s64, int:
         var val: s64 = ?
         (val, eat) = try getS64(one)
-        :cast(*s64) patch = val
+        dref cast(*s64) patch = val
 
     case u8:
         var val: u8 = ?
         (val, eat) = try getU8(one)
-        :cast(*u8) patch = val
+        dref cast(*u8) patch = val
 
     case u16:
         var val: u16 = ?
         (val, eat) = try getU16(one)
-        :cast(*u16) patch = val
+        dref cast(*u16) patch = val
 
     case u32:
         var val: u32 = ?
         (val, eat) = try getU32(one)
-        :cast(*u32) patch = val
+        dref cast(*u32) patch = val
 
     case u64, uint:
         var val: u64 = ?
         (val, eat) = try getU64(one)
-        :cast(*u64) patch = val
+        dref cast(*u64) patch = val
 
     case f32:
         var val: f32 = ?
         (val, eat) = try getF32(one)
-        :cast(*f32) patch = val
+        dref cast(*f32) patch = val
 
     case f64:
         var val: f64 = ?
         (val, eat) = try getF64(one)
-        :cast(*f64) patch = val
+        dref cast(*f64) patch = val
 
     case bool:
         var val: bool = ?
         (val, eat) = try getBool(one)
-        :cast(*bool) patch = val
+        dref cast(*bool) patch = val
 
     case rune:
         var val: rune = ?
         (val, eat) = try getRune(one)
-        :cast(*rune) patch = val
+        dref cast(*rune) patch = val
 
     case String:
         var val: String
         (val, eat) = try getString(one)
-        :cast(*String) patch = val
+        dref cast(*String) patch = val
 
     default:
         throw format.toString("unsupported type '%'", type.flatName)

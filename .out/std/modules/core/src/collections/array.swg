@@ -276,7 +276,7 @@ impl Array
     func emplace(using self, value: *T)
     {
         grow(count + 1)
-        buffer[count] =,nodrop,move :value
+        buffer[count] =,nodrop,move dref value
         count += 1
     }
 
@@ -312,7 +312,7 @@ impl Array
         for idx := count - 1; idx > index; idx -= 1
             buffer[idx] =,nodrop,moveraw buffer[idx - 1]
 
-        buffer[index] =,nodrop,move :value
+        buffer[index] =,nodrop,move dref value
     }
 
     // Append a slice to the end of this instance
@@ -336,7 +336,7 @@ impl Array
             destPtr := buffer + oldCount
             loop sliceCount
             {
-                :destPtr =,nodrop values[@index]
+                dref destPtr =,nodrop values[@index]
                 destPtr += 1
             }
         }

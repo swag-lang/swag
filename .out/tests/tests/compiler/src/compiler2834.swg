@@ -23,7 +23,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     plusSign := "+"'u8 // g_CultureInfo.numberFormat.positiveSign
     dotSign := "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
 
-    c := :buffer
+    c := dref buffer
     if c == negSign
     {
         buffer, cpt += 1
@@ -44,7 +44,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 
     while cpt < countof
     {
-        c = :buffer
+        c = dref buffer
 		if c == dotSign
         {
 			if sawdot break
@@ -83,7 +83,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		dp = nd
 
 	// Exponent
-    c = :buffer
+    c = dref buffer
 	if cpt < countof and (c|32) == "e"'u8
     {
 		cpt, buffer += 1
@@ -91,17 +91,17 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 			throw "invalid"
 
 		esign := 1
-		c = :buffer
+		c = dref buffer
         if c == negSign
         {
             buffer, cpt += 1
             esign = -1
-	        c = :buffer
+	        c = dref buffer
         }
         else if c == plusSign
         {
             buffer, cpt += 1
-		    c = :buffer
+		    c = dref buffer
         }
 
 		if cpt >= countof or c < "0"'u8 or c > "9"'u8
@@ -110,7 +110,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		e := 0
         while cpt < countof
         {
-            c = :buffer
+            c = dref buffer
             if c < "0"'u8 or c > "9"'u8
                 break
 			if e < 10000

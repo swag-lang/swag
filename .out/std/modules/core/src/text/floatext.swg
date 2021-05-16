@@ -138,8 +138,8 @@ impl FloatExt
             // An exact integer
             mant >>= cast(u32) (-exp)
             exp = 0
-            result.lower = :self
-            result.upper = :self
+            result.lower = dref self
+            result.upper = dref self
             return result
         }
 
@@ -434,7 +434,7 @@ impl FloatExt
             return true
         }
 
-        if exp == 0 and :lower == :self and :lower == :upper
+        if exp == 0 and dref lower == dref self and dref lower == dref upper
         {
             // an exact integer.
             var buf: [24] u8

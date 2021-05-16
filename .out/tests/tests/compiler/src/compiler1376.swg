@@ -27,7 +27,7 @@ func toto()
 func changeContext(user: code)
 {
     savedCxt := @getcontext()
-    var newCxt: Context = :savedCxt
+    var newCxt: Context = dref savedCxt
     @setcontext(newCxt)
 
     #macro

@@ -383,7 +383,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
     }
 
     // Dereference pointer
-    else if (token.id == TokenId::SymColon)
+    else if (token.id == TokenId::KwdDeRef)
     {
         SWAG_CHECK(doDeRef(parent, &exprNode));
     }
@@ -1124,7 +1124,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
         SWAG_CHECK(doCatch(nullptr, result));
         return true;
 
-    case TokenId::SymColon:
+    case TokenId::KwdDeRef:
         SWAG_CHECK(doDeRef(nullptr, result));
         return true;
 

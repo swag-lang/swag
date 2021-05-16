@@ -11,7 +11,7 @@ using core
     var arr1: Array'String
     arr1 = arr
 
-    loop 10 @assert(:arr[cast(u32) @index] == :arr1[cast(u32) @index])
+    loop 10 @assert(dref arr[cast(u32) @index] == dref arr1[cast(u32) @index])
     @assert(arr.buffer != arr1.buffer)
     @assert(arr.count == arr1.count)
 }

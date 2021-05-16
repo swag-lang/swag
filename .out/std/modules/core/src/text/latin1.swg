@@ -42,9 +42,9 @@ func makeUpper(buffer: [..] u8)
     p := @dataof(buffer)
     loop @countof(buffer)
     {
-        c := :p
+        c := dref p
         if isLowerUtf8(c)
-            :p -= 0x20
+            dref p -= 0x20
         p += 1
     }
 }
@@ -55,9 +55,9 @@ func makeLower(buffer: [..] u8)
     p := @dataof(buffer)
     loop @countof(buffer)
     {
-        c := :p
+        c := dref p
         if isUpperUtf8(c)
-            :p += 0x20
+            dref p += 0x20
         p += 1
     }
 }

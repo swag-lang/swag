@@ -152,7 +152,7 @@ public impl enum Argb
         visit it: t.values
         {
             if it.name == name
-                return :cast(const *Argb) it.value
+                return dref cast(const *Argb) it.value
         }
 
         return Argb.Black

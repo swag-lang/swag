@@ -22,7 +22,7 @@ func pushAllocator(allocator: swag.IAllocator, stmt: code)
     prev := @getcontext()
     defer @setcontext(prev)
 
-    cxt := :prev
+    cxt := dref prev
     cxt.allocator = allocator
     @setcontext(cxt)
 

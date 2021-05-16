@@ -403,11 +403,11 @@ func aaa(ptr: *s64)
             x := @[1's64, 2, 3]
             ptr := &x[2]
             ptr = ptr - 1
-            @print(:ptr)
+            @print(dref ptr)
             ptr -= 1
-            @print(:ptr)
+            @print(dref ptr)
             ptr += 2
-            @print(:ptr)
+            @print(dref ptr)
         }
         {
             ptr := &tt3

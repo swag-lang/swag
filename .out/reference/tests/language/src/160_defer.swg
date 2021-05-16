@@ -41,7 +41,7 @@
     // code just after the creation one
     {
         func createResource() => true
-        func releaseResource(resource: *bool) = :resource = false
+        func releaseResource(resource: *bool) = dref resource = false
         func isResourceCreated(b: bool) => b
 
         resource := false

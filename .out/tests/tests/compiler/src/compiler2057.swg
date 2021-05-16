@@ -9,7 +9,7 @@ func itoa(result: *u8, value: s64)->*u8
     {
         tmpValue := orgValue
         orgValue /= 10
-        :ptr = conv[35 + (tmpValue - (orgValue * 10))]
+        dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
         if !orgValue
             break
@@ -18,7 +18,7 @@ func itoa(result: *u8, value: s64)->*u8
     // Negative value
     if value < 0
     {
-        :ptr = "-"'u8
+        dref ptr = "-"'u8
         ptr += 1
     }
 
@@ -26,15 +26,15 @@ func itoa(result: *u8, value: s64)->*u8
     retVal := ptr
 
     // Zero terminated
-    :ptr = 0; ptr -= 1
+    dref ptr = 0; ptr -= 1
 
     // Invert result
     ptr1 := result
     while ptr1 < ptr
     {
-        tmpChar := :ptr
-        :ptr    = :ptr1; ptr -= 1
-        :ptr1   = tmpChar; ptr1 += 1
+        tmpChar := dref ptr
+        dref ptr  = dref ptr1; ptr -= 1
+        dref ptr1 = tmpChar; ptr1 += 1
     }
 
     return retVal
@@ -50,17 +50,17 @@ func ftoa(result: *u8, value: f64)
     {
         if value < 0
         {
-            :n = "-"'u8
+            dref n = "-"'u8
             n += 1
         }
 
-        :n = "0"'u8
+        dref n = "0"'u8
         n += 1
     }
     else
         n = itoa(result, ipart);
 
-    :n = "."'u8; n += 1
+    dref n = "."'u8; n += 1
 
     afterPoint := 5
     if fpart < 0

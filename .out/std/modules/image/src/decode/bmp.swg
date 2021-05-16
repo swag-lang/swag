@@ -77,7 +77,7 @@ public impl IDecoder for Decoder
 
         // CoreHeader
         var bh: Header
-        size := :cast(const *u32) dataof
+        size := dref cast(const *u32) dataof
         if size == @sizeof(CoreHeader)
         {
             if dataof + @sizeof(CoreHeader) > last

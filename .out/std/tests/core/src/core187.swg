@@ -6,8 +6,8 @@ using core.memory
 {
     {
         ptr := new'String()
-        :ptr = "toto"
-        @assert(:ptr == "toto")
+        dref ptr = "toto"
+        @assert(dref ptr == "toto")
         delete(ptr)
     }
 

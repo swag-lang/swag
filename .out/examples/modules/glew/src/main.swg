@@ -14,7 +14,7 @@ func findFirstLine(what: string)
         idx := line.indexOf(what)
         if idx == swag.UInt.Max continue
         #if LOG console.print("line: %\n", line)
-        toProcess.add(:line)
+        toProcess.add(dref line)
         idxFirst = @index + 1
         break
     }
@@ -26,7 +26,7 @@ func findFirstLine(what: string)
         while !lines[idxFirst].isEmpty()
         {
             //console.print("line: %\n", lines[idxFirst])
-            toProcess.add(:lines[idxFirst])
+            toProcess.add(dref lines[idxFirst])
             idxFirst += 1
         }
     }

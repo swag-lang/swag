@@ -133,7 +133,7 @@ public impl IAllocator for DebugAllocator
             memory.set(userAddr, FreeByte, userSize)
 
             // Really free the memory
-            copyReq := :request
+            copyReq := dref request
             copyReq.address = ptrHeader.allocAddr
             copyReq.size = ptrHeader.allocSize
             allocator.alloc(&copyReq)
@@ -151,7 +151,7 @@ public impl IAllocator for DebugAllocator
         case Alloc:
             // In case of a reallocation, get the previous allocated user size
             // This will be used to fill with garbage the difference
-            copyReq := :request
+            copyReq := dref request
             prevSize := 0'uint
             prevHeader := cast(*Header) request.address
             if request.mode == AllocatorMode.Realloc and request.address

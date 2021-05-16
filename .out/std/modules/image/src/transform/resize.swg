@@ -31,7 +31,7 @@ public impl Image
 
         if newWidth == width and newHeight == height
         {
-            var result: retval = :self
+            var result: retval = dref self
             return result
         }
 
@@ -231,7 +231,7 @@ private
                 ptr := srcRow + left * bpp8
                 loop (right - left) + 1
                 {
-                    f := :pw
+                    f := dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
@@ -282,7 +282,7 @@ private
                 ptr := srcCol + left * w8Src
                 loop (right - left) + 1
                 {
-                    f := :pw
+                    f := dref pw
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]

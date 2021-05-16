@@ -6,5 +6,5 @@
     offset := 1
     addr, cpt += 1
     @assert(cpt == 1)
-    @assert(:addr == 2)
+    @assert(dref addr == 2)
 }

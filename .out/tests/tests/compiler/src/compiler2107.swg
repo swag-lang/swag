@@ -5,7 +5,7 @@ typeset AA
 
 func log(v: *AA)
 {
-    @assert(@kindof(:v) == AA.B)
+    @assert(@kindof(dref v) == AA.B)
 }
 
 #test

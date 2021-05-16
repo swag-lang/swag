@@ -149,11 +149,11 @@ using swag
         var val1s: string
         switch typeEnum.rawType.sizeof
         {
-        case 1:  val1 = cast(u64) :cast(const *u8) valueAddr
-        case 2:  val1 = cast(u64) :cast(const *u16) valueAddr
-        case 4:  val1 = cast(u64) :cast(const *u32) valueAddr
-        case 8:  val1 = cast(u64) :cast(const *u64) valueAddr
-        case 16: val1s = :cast(const *string) valueAddr
+        case 1:  val1 = cast(u64) dref cast(const *u8) valueAddr
+        case 2:  val1 = cast(u64) dref cast(const *u16) valueAddr
+        case 4:  val1 = cast(u64) dref cast(const *u32) valueAddr
+        case 8:  val1 = cast(u64) dref cast(const *u64) valueAddr
+        case 16: val1s = dref cast(const *string) valueAddr
         default: return result
         }
 
@@ -166,11 +166,11 @@ using swag
             var val2s: string
             switch typeEnum.rawType.sizeof
             {
-            case 1:  val2 = cast(u64) :cast(const *u8) it.value
-            case 2:  val2 = cast(u64) :cast(const *u16) it.value
-            case 4:  val2 = cast(u64) :cast(const *u32) it.value
-            case 8:  val2 = cast(u64) :cast(const *u64) it.value
-            case 16: val2s = :cast(const *string) it.value
+            case 1:  val2 = cast(u64) dref cast(const *u8) it.value
+            case 2:  val2 = cast(u64) dref cast(const *u16) it.value
+            case 4:  val2 = cast(u64) dref cast(const *u32) it.value
+            case 8:  val2 = cast(u64) dref cast(const *u64) it.value
+            case 16: val2s = dref cast(const *string) it.value
             }
 
             // For a normal enum, stop if this is a match

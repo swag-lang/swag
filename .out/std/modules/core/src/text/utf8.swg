@@ -87,7 +87,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     ptr := dataof + (countof - 1)
 
     // Ascii
-    c := cast(rune) :ptr
+    c := cast(rune) dref ptr
     if c & 0x80 == 0
     {
         result.c = c
@@ -98,7 +98,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     eat := 1'u32
     loop
     {
-        c = :ptr
+        c = dref ptr
         if c >>,safe 6 != 2
             break
         if ptr == dataof
@@ -142,7 +142,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     }
 
     dataof := @dataof(buffer)
-    p0 := cast(rune) :dataof
+    p0 := cast(rune) dref dataof
 
     // Ascii
     if (p0 & 0x80) == 0
@@ -350,7 +350,7 @@ func countBytesAt(buffer: const [..] u8)->u32
     if !countof
         return 1
 
-    p0 := cast(rune) :dataof
+    p0 := cast(rune) dref dataof
 
     // Ascii
     if (p0 & 0x80) == 0
@@ -723,7 +723,7 @@ func isValid(buffer: const [..] u8)->bool
     // Quick zap ascii characters
     while countof >= 8
     {
-        first64 := :cast(const *u64) p
+        first64 := dref cast(const *u64) p
         if first64 & 0x80808080_80808080
             break
         p += 8
@@ -732,7 +732,7 @@ func isValid(buffer: const [..] u8)->bool
 
     while countof
     {
-        p0 := cast(rune) :p
+        p0 := cast(rune) dref p
 
         // Ascii
         if (p0 & 0x80) == 0

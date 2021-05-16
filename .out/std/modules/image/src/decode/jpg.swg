@@ -267,9 +267,9 @@ impl Decoder
                 psrc := cast(*u8) scanLineOfs
                 loop imageSizeX
                 {
-                    pdest1[0] = :psrc
-                    pdest1[1] = :psrc
-                    pdest1[2] = :psrc
+                    pdest1[0] = dref psrc
+                    pdest1[1] = dref psrc
+                    pdest1[2] = dref psrc
                     pdest1 += 3
                     psrc += 1
                 }
@@ -755,34 +755,34 @@ impl Decoder
             if (mcuLinesLeft & 1) == 0
             {
                 convertH2V2()
-                :scanLineOfs = scanLine0.buffer
+                dref scanLineOfs = scanLine0.buffer
             }
             else
-                :scanLineOfs = scanLine1.buffer
+                dref scanLineOfs = scanLine1.buffer
 
         case YH2V1:
             convertH2V1()
-            :scanLineOfs = scanLine0.buffer
+            dref scanLineOfs = scanLine0.buffer
 
         case YH1V2:
             if (mcuLinesLeft & 1) == 0
             {
                 convertH1V2()
-                :scanLineOfs = scanLine0.buffer
+                dref scanLineOfs = scanLine0.buffer
             }
             else
-                :scanLineOfs = scanLine1.buffer
+                dref scanLineOfs = scanLine1.buffer
 
         case YH1V1:
             convertH1V1()
-            :scanLineOfs = scanLine0.buffer
+            dref scanLineOfs = scanLine0.buffer
 
         case GrayScale:
             convertGrayscale()
-            :scanLineOfs = scanLine0.buffer
+            dref scanLineOfs = scanLine0.buffer
         }
 
-        :scanLineLen = realDestBytesPerScanLine
+        dref scanLineLen = realDestBytesPerScanLine
         mcuLinesLeft -= 1
         totalLinesLeft -= 1
 
@@ -1101,7 +1101,7 @@ impl Decoder
     func stuffChar(using self, q: u8)
     {
         inBufOfs -= 1
-        :inBufOfs = q
+        dref inBufOfs = q
         inBufLeft += 1
     }
 
@@ -1425,16 +1425,16 @@ impl Decoder
                 loop
                 {
                     thisCoef := p + Zag[k]
-                    if :thisCoef != 0
+                    if dref thisCoef != 0
                     {
                         if getBits2(1)
                         {
-                            if (:thisCoef & cast(s16) p1) == 0
+                            if (dref thisCoef & cast(s16) p1) == 0
                             {
-                                if :thisCoef >= 0
-                                    :thisCoef += cast(s16) p1
+                                if dref thisCoef >= 0
+                                    dref thisCoef += cast(s16) p1
                                 else
-                                    :thisCoef += cast(s16) m1
+                                    dref thisCoef += cast(s16) m1
                             }
                         }
                     }
@@ -1465,16 +1465,16 @@ impl Decoder
             while k <= spectralEnd
             {
                 thisCoef := p + Zag[k]
-                if :thisCoef != 0
+                if dref thisCoef != 0
                 {
                     if getBits2(1)
                     {
-                        if (:thisCoef & cast(s16) p1) == 0
+                        if (dref thisCoef & cast(s16) p1) == 0
                         {
-                            if :thisCoef >= 0
-                                :thisCoef += cast(s16) p1
+                            if dref thisCoef >= 0
+                                dref thisCoef += cast(s16) p1
                             else
-                                :thisCoef += cast(s16) m1
+                                dref thisCoef += cast(s16) m1
                         }
                     }
                 }
@@ -1687,7 +1687,7 @@ impl Decoder
             prepareInBuffer()
             if !inBufLeft
             {
-                :paddingFlag = true
+                dref paddingFlag = true
                 t := temFlag
                 temFlag ^= 1
                 if t return 0xD9
@@ -1695,8 +1695,8 @@ impl Decoder
             }
         }
 
-        :paddingFlag = false
-        c := :inBufOfs
+        dref paddingFlag = false
+        c := dref inBufOfs
         inBufOfs += 1
         inBufLeft -= 1
         return c
@@ -1996,7 +1996,7 @@ impl Decoder
         ps := cast(*u16) p
         loop n
         {
-            :ps = c
+            dref ps = c
             ps += 1
         }
     }
