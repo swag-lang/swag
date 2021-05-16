@@ -87,6 +87,12 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 ADDC3(c);
                 treatChar(c, offset);
             }
+            else if (c == '<')
+            {
+                token.id = TokenId::SymDotDotLess;
+                ADDC3(c);
+                treatChar(c, offset);
+            }
         }
         return true;
 

@@ -97,7 +97,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             {
                 AstNode* expression;
                 SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
-                if (token.id == TokenId::SymDotDot)
+                if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
                 caseNode->expressions.push_back(expression);
                 if (token.id != TokenId::SymComma)
@@ -316,7 +316,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         }
 
         // Range
-        if (token.id == TokenId::SymDotDot)
+        if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
         {
             SWAG_CHECK(doRange(node, node->expression, &node->expression));
         }

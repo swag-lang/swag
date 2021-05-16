@@ -1603,6 +1603,9 @@ bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
     rangeNode->expressionLow = expression;
     *result                  = rangeNode;
 
+    if (token.id == TokenId::SymDotDotLess)
+        rangeNode->excludeUp = true;
+
     SWAG_CHECK(eatToken());
     PushErrHint errh(Msg0363);
     SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
