@@ -1,36 +1,31 @@
+// George Marsaglia's MWC (multiply with carry) generator.
 #global namespace random
+#global public
 
-public struct Mwc
+struct Mwc
 {
-    x: 		u32 = 1234567
-    carry: 	u32 = 1234567
+    w: u32 = 521288629
+    z: u32 = 362436069
 }
 
 impl Mwc
 {
-    const mult: u32 = 2083801278
-    const mhi = (mult & 0xFFFF0000) >> 16
-    const mlo = mult & 0xFFFF
-
-    public func seedU32(using self, value: u32)
+    func seedU32(using self, value: u32)
     {
-        x = value
-        carry = 1234567
+        w = value orelse 521288629
     }
 
-    public func nextU32(using self)->u32
+    func seedU32(using self, value1, value2: u32)
     {
-        xhi := x >>,safe 16
-        xlo := x & 0xFFFF
+        w = value1 orelse 521288629
+        z = value2 orelse 362436069
+    }
 
-        chi := carry >>,safe 16
-        clo := carry & 0xFFFF
-
-        x = (xlo * mlo) + clo
-        axc := (xlo * mhi) + (xhi * mlo) + chi + (x >>,safe 16)
-        carry = (xhi * mhi) + (axc >>,safe 16)
-
-        x = (x & 0xFFFF) + (axc <<,safe 16)
-        return x
+    #[swag.safety("of", false)]
+    func nextU32(using self)->u32
+    {
+        z = 36969 * (z & 65535) + (z >> 16)
+        w = 18000 * (w & 65535) + (w >> 16)
+        return (z << 16) + w
     }
 }

@@ -4,5 +4,5 @@ using core.random
 #test
 {
 	var rng: Mwc
-	@assert(rng.nextU32() == 1372587705)
+	@assert(rng.nextU32() != 0)
 }
