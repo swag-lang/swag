@@ -407,16 +407,11 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         }
 
         // Align all segments to 16 bytes
-        while (pp.stringSegment.totalCount % 16)
-            pp.stringSegment.reserve(1);
-        while (pp.globalSegment.totalCount % 16)
-            pp.globalSegment.reserve(1);
-        while (module->constantSegment.totalCount % 16)
-            module->constantSegment.reserve(1);
-        while (module->mutableSegment.totalCount % 16)
-            module->mutableSegment.reserve(1);
-        while (module->typeSegment.totalCount % 16)
-            module->typeSegment.reserve(1);
+        pp.stringSegment.align(16);
+        pp.globalSegment.align(16);
+        module->constantSegment.align(16);
+        module->mutableSegment.align(16);
+        module->typeSegment.align(16);
 
         // Segments
         uint32_t ssOffset = concat.totalCount();

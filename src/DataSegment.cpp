@@ -57,7 +57,7 @@ uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)
     return reserveNoLock(typeInfo->sizeOf, TypeManager::alignOf(typeInfo));
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
+void DataSegment::align(uint32_t alignOf)
 {
     // Align
     if (buckets.size() && alignOf > 1)
@@ -69,7 +69,11 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
             reserveNoLock(diff);
         }
     }
+}
 
+uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
+{
+    align(alignOf);
     return reserveNoLock(size);
 }
 

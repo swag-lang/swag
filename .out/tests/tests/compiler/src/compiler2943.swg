@@ -4,5 +4,5 @@ func toto()->u64 => swag.U64.Max
 {
     x := toto()
     y := x / cast(f64) swag.U64.Max
-    @print(y)
+    @assert(y > 0.99 and y < 1.01)
 }
