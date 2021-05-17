@@ -6,7 +6,7 @@ using core
     var rand: random.Rng
     var arr: Array's32
 
-    rand.seed(0)
+    rand.seedU32(0)
     loop 10
         arr.add(rand.nextS32(0, 100))
 

@@ -5,5 +5,5 @@ using core.random
 #test
 {
 	var rng: Rng
-	rng.seed(0)
+	rng.seedU32(0)
 }

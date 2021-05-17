@@ -12,13 +12,13 @@ impl Mwc
     const mhi = (mult & 0xFFFF0000) >> 16
     const mlo = mult & 0xFFFF
 
-    public func seed(using self, value: u32)
+    public func seedU32(using self, value: u32)
     {
         x = value
         carry = 1234567
     }
 
-    public func next(using self)->u32
+    public func nextU32(using self)->u32
     {
         xhi := x >>,safe 16
         xlo := x & 0xFFFF
