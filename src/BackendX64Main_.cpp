@@ -239,7 +239,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     emitCall(pp, "memcpy");
 
     // Thread local storage
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTlsThreadLocalId, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTls_threadLocalId, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
     emitCall(pp, "__tlsAlloc");
 

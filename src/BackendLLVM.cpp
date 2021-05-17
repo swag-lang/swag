@@ -103,14 +103,14 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.mainContext         = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
         pp.defaultAllocTable   = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
         pp.processInfos        = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
-        pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_thread_local_id");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_thread_local_id");
     }
     else
     {
         pp.mainContext         = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
         pp.defaultAllocTable   = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
         pp.processInfos        = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
-        pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_thread_local_id");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_thread_local_id");
     }
 
     // LIBC functions

@@ -231,7 +231,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     // Init thread local storage id
     {
         auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
-        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {UINT32_MAX}, {pp.symTlsThreadLocalId});
+        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
 
     // Initialize data segments

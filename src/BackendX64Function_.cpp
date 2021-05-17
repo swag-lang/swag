@@ -970,10 +970,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::CastU64F64:
+        {
+            // Code from llvm/clang
+            // movq      xmm1, rdi
+            // punpckldq xmm1, xmmword ptr[rip + .LCPI0_0] # xmm1 = xmm1[0], mem[0], xmm1[1], mem[1]
+            // subpd     xmm1, xmmword ptr[rip + .LCPI0_1]
+            // movapd    xmm0, xmm1
+            // unpckhpd  xmm0, xmm1                        # xmm0 = xmm0[1], xmm1[1]
+            // addsd     xmm0, xmm1
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2sd xmm0, rax
+            concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
+
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symCst_U64F64, 0);
+            concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
+            concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
+            concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
+            concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
+            concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
+
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
+        }
+
         case ByteCodeOp::CastF32F64:
             BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             concat.addString4("\xf3\x0f\x5a\xc0"); // cvtss2sd xmm0, xmm0
@@ -2601,7 +2619,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
             BackendX64Inst::emit_Load64_Immediate(pp, module->tlsSegment.totalCount, RAX, true);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symTlsThreadLocalId, 0);
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symTls_threadLocalId, 0);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);

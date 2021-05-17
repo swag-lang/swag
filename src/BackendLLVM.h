@@ -28,7 +28,7 @@ struct LLVMPerThread
     llvm::GlobalVariable* mainContext         = nullptr;
     llvm::GlobalVariable* defaultAllocTable   = nullptr;
     llvm::GlobalVariable* processInfos        = nullptr;
-    llvm::GlobalVariable* symTlsThreadLocalId = nullptr;
+    llvm::GlobalVariable* symTls_threadLocalId = nullptr;
 
     llvm::Type*         interfaceTy    = nullptr;
     llvm::Type*         contextTy      = nullptr;

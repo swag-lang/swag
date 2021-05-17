@@ -3329,7 +3329,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto v0  = builder.getInt64(module->tlsSegment.totalCount);
             auto r1  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
-            auto vid = builder.CreateLoad(pp.symTlsThreadLocalId);
+            auto vid = builder.CreateLoad(pp.symTls_threadLocalId);
             localCall(buildParameters, allocR, allocT, "__tlsGetPtr", {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
             break;
         }
