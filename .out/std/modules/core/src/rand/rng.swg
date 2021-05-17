@@ -44,18 +44,46 @@ impl Rng
         return (cast(u64) rng.nextU32() << 32) | rng.nextU32()
     }
 
+    // Range is [0..1[, so 1.0 will never be returned
     #[swag.inline]
     func nextF32(using self)->f32
     {
-        return rng.nextU32() / cast(f32) swag.U32.Max
+        v := rng.nextU32()
+        while v == swag.U32.Max v = rng.nextU32()
+        return v / cast(f32) swag.U32.Max
     }
 
+    // Range is [0..1[, so 1.0 will never be returned
     #[swag.inline]
     func nextF64(using self)->f64
     {
-        return nextU64() / cast(f64) swag.U64.Max
+        v := nextU64()
+        while v == swag.U64.Max v = nextU64()
+        return v / cast(f64) swag.U64.Max
     }
 
+    // Returns an unsigned random value in a given range
+    // 'max' is excluded
+    func nextU32(using self, min, max: u32)->u32
+    {
+        debug.assert(max > min, "'max' must be greater than 'min'")
+        range := cast(u32) (max - min)
+        value := rng.nextU32() % range
+        return min + value
+    }
+
+    // Returns an unsigned random value in a given range
+    // 'max' is excluded
+    func nextU64(using self, min, max: u64)->u64
+    {
+        debug.assert(max > min, "'max' must be greater than 'min'")
+        range := cast(u64) (max - min)
+        value := nextU64() % range
+        return min + value
+    }
+
+    // Returns a signed random value in a given range
+    // 'max' is excluded
     func nextS32(using self, min, max: s32)->s32
     {
         debug.assert(max > min, "'max' must be greater than 'min'")
@@ -64,6 +92,8 @@ impl Rng
         return min + value
     }
 
+    // Returns a signed random value in a given range
+    // 'max' is excluded
     func nextS64(using self, min, max: s64)->s64
     {
         debug.assert(max > min, "'max' must be greater than 'min'")
