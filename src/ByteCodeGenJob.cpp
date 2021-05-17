@@ -173,7 +173,7 @@ void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterL
 
 bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 {
-    auto node  = context->node;
+    auto node = context->node;
     if (node->childs.empty())
         return true;
     auto child = node->childs.back();
@@ -483,12 +483,14 @@ JobResult ByteCodeGenJob::execute()
             switch (node->bytecodeState)
             {
             case AstNodeResolveState::Enter:
-                node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-
                 if (node->extension && node->extension->byteCodeBeforeFct && !node->extension->byteCodeBeforeFct(&context))
                     return JobResult::ReleaseJob;
-                SWAG_ASSERT(context.result == ContextResult::Done);
+                if (context.result == ContextResult::Pending)
+                    return JobResult::KeepJobAlive;
+                if (context.result == ContextResult::NewChilds)
+                    continue;
 
+                node->bytecodeState = AstNodeResolveState::ProcessingChilds;
                 if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                 {
                     if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
