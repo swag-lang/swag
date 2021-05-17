@@ -37,6 +37,38 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
+#[swag.discardable]
+#[swag.safety("", false)]
+func __utoa(result: *u8, value: u64)->*u8
+{
+    const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+
+    ptr := result
+    orgValue := value
+    loop
+    {
+        tmpValue := orgValue
+        orgValue /= 10
+        dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
+        ptr += 1
+        if !orgValue
+            break
+    }
+
+    retVal := ptr
+    dref ptr = 0; ptr -= 1
+
+    ptr1 := result
+    while ptr1 < ptr
+    {
+        tmpChar := dref ptr
+        dref ptr  = dref ptr1; ptr -= 1
+        dref ptr1 = tmpChar; ptr1 += 1
+    }
+
+    return retVal
+}
+
 #[swag.safety("", false)]
 func __ftoa(result: *u8, value: f64)
 {
@@ -74,6 +106,14 @@ func __ftoa(result: *u8, value: f64)
     __itoa(n, ipart)
 }
 
+func __printU64(value: u64)
+{
+    var buf: [100] u8
+    __utoa(&buf[0], value)
+    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
+    __printString(str)
+}
+
 func __printS64(value: s64)
 {
     var buf: [100] u8
@@ -101,11 +141,11 @@ func @print(params: ...)
         case s16:       __printS64(cast(s64) cast(s16) v)
         case s32:       __printS64(cast(s64) cast(s32) v)
         case s64, int:  __printS64(cast(s64) v)
-        case u8:        __printS64(cast(s64) cast(u8) v)
-        case u16:       __printS64(cast(s64) cast(u16) v)
-        case u32:       __printS64(cast(s64) cast(u32) v)
-        case rune:      __printS64(cast(s64) cast(rune) v)
-        case u64, uint: __printS64(cast(s64) cast(u64) v)
+        case u8:        __printU64(cast(u64) cast(u8) v)
+        case u16:       __printU64(cast(u64) cast(u16) v)
+        case u32:       __printU64(cast(u64) cast(u32) v)
+        case rune:      __printU64(cast(u64) cast(rune) v)
+        case u64, uint: __printU64(cast(u64) cast(u64) v)
         case f32:       __printF64(cast(f64) cast(f32) v)
         case f64:       __printF64(cast(f64) v)
         case string:    __printString(cast(string) v)
