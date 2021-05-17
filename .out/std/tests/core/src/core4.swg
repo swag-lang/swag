@@ -1,7 +1,7 @@
 
 using core
 
-struct(T = random.Mwc) Random
+struct(T = random.MWC) Random
 {
 	rng: T
 }

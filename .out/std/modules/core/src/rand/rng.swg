@@ -1,7 +1,7 @@
 #global namespace random
 #global public
 
-struct(T = Mwc) Rng
+struct(T = MWC) Rng
 {
     rng: T
 }

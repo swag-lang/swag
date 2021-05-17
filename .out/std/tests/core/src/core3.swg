@@ -3,6 +3,6 @@ using core.random
 //#[swag.printbc]
 #test
 {
-	var rng: Mwc
+	var rng: MWC
 	@assert(rng.nextU32() != 0)
 }
