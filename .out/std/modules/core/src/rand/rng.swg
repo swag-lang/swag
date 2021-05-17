@@ -101,4 +101,24 @@ impl Rng
         value := cast(s64) (nextU64() % range)
         return min + value
     }
+
+    // Returns a float value in a given range
+    // 'max' is excluded
+    func nextF32(using self, min, max: f32)->f32
+    {
+        debug.assert(max > min, "'max' must be greater than 'min'")
+        range := max - min
+        value := nextF32()
+        return min + (value * range)
+    }
+
+    // Returns a float value in a given range
+    // 'max' is excluded
+    func nextF64(using self, min, max: f64)->f64
+    {
+        debug.assert(max > min, "'max' must be greater than 'min'")
+        range := max - min
+        value := nextF64()
+        return min + (value * range)
+    }
 }

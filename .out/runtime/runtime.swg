@@ -84,21 +84,37 @@ func __ftoa(result: *u8, value: f64)
             n += 1
         }
 
-        dref n = "0"'u8
+        n[0] = "0"'u8
         n += 1
     }
     else
         n = __itoa(result, ipart);
 
-    dref n = "."'u8; n += 1
+    n[0] = "."'u8
+    n += 1
 
-    afterPoint := 5
+    const AfterFracN = 5
+    afterPoint := AfterFracN
     if fpart < 0
         fpart = -fpart
+
+    leadingZeros := 0
     while afterPoint
     {
         fpart *= 10
+        if fpart < 1
+            leadingZeros += 1
         afterPoint -= 1
+    }
+
+    // Zeros before the value part
+    if leadingZeros == AfterFracN
+        leadingZeros = 0
+    while leadingZeros
+    {
+        n[0] = "0"'u8
+        n += 1
+        leadingZeros -= 1
     }
 
     ipart = cast(s64) fpart

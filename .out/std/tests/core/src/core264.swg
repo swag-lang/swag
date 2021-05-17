@@ -4,10 +4,12 @@ using core.random
 #test
 {
 	var rng: Rng
-    loop 500
+    loop 100
     {
-        v := rng.nextU64(0, 256)
-        @print(v," ")
-        if v == 255 break
+        v := rng.nextF64(1.0, 1.1)
+        @assert(v > 0.99)
+        @assert(v < 1.11)
+        //console.print(v," ")
+        //@print(v,"\n")
     }
 }
