@@ -29,7 +29,7 @@ impl Rng
     #[swag.inline]
     func nextS64(using self)->s64
     {
-        return bitcast(s64) rng.nextU64(self)
+        return bitcast(s64) nextU64()
     }
 
     #[swag.inline]
@@ -53,7 +53,7 @@ impl Rng
     #[swag.inline]
     func nextF64(using self)->f64
     {
-        return nextU64(self) / cast(f64) swag.U64.Max
+        return nextU64() / cast(f64) swag.U64.Max
     }
 
     func nextS32(using self, min, max: s32)->s32

@@ -916,7 +916,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CastU32F32:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            concat.addString5("\xF3\x48\x0F\x2A\xC0"); // cvtsi2ss xmm0, rax => rax and not eax to avoid a signed conversion
             BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::CastU64F32:
