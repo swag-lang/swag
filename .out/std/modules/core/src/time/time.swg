@@ -33,7 +33,7 @@ func nowMilliseconds()->u32
 {
     ticks := nowPrecise() * 1000
     ticks /= preciseFrequency()
-    return acast ticks
+    return bitcast(u32) ticks
 }
 
 // Returns the current time expressed in microseconds
@@ -41,7 +41,7 @@ func nowMicroseconds()->u32
 {
     ticks := nowPrecise() * 1000000
     ticks /= preciseFrequency()
-    return acast ticks
+    return bitcast(u32) ticks
 }
 
 alias Ticks = u64

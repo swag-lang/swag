@@ -8,6 +8,12 @@ struct(T = Mwc) Rng
 
 impl Rng
 {
+    // Seed the rng with the current time
+    func seedNow(using self)
+    {
+        rng.seedU32(time.nowMilliseconds(), time.nowMicroseconds())
+    }
+
     #[swag.inline]
     func seedU32(using self, value: u32)
     {
