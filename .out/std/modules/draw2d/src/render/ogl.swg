@@ -58,11 +58,13 @@ impl Ogl
             switch cmd.id
             {
             case Clear:
-                glClearColor(cmd.params.clear.color.x, cmd.params.clear.color.y, cmd.params.clear.color.z, 0)
-                glClear(cmd.params.clear.flags)
+                params := &cmd.params.clear
+                glClearColor(params.color.x, params.color.y, params.color.z, 0)
+                glClear(params.flags)
 
             case DrawTriangles:
-                glDrawArrays(GL_TRIANGLES, cast(GLint) cmd.params.drawTriangles.start, cast(GLsizei) cmd.params.drawTriangles.count)
+                params := &cmd.params.drawTriangles
+                glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
             }
         }
 
