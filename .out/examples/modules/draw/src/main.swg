@@ -1,18 +1,18 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using core, win32, ogl, gdi32, drawing
+using core, win32, ogl, gdi32, draw2d
 
 var hDC: HDC
 const W = 1024
 const H = 1024
+var dev: DrawingDevice
+var cdc: DrawingContext
+var renderer: render.Ogl
 
 func display()
 {
-    glClearColor(1, 0, 1, 1)
-    glClear(GL_COLOR_BUFFER_BIT)
-    glFlush()
-    assume SwapBuffers(hDC)
+    renderer.flush(&cdc)
 }
 
 #[swag.callback]
@@ -110,8 +110,7 @@ func messageLoop()
         hWnd := createWindow()
 
         hDC = GetDC(hWnd)
-        hRC := wglCreateContext(hDC)
-        wglMakeCurrent(hDC, hRC)
+        renderer.init(&dev, hDC)
 
         jobs.setNumWorkers()
 
@@ -121,8 +120,7 @@ func messageLoop()
 
         messageLoop()
 
-        wglMakeCurrent(null, null)
-        wglDeleteContext(hRC)
+        renderer.drop()
         ReleaseDC(hWnd, hDC)
     }
 }
