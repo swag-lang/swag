@@ -81,7 +81,7 @@ impl Ogl
         out vec3 color;
         void main()
         {
-            color = vcolor;//vec3(1,0,0);
+            color = vcolor;
         }
     "@
 

@@ -21,10 +21,15 @@ impl DrawingContext
 {
     func draw(using self)
     {
-        var v: VertexLayout
         vertexBuffer.clear()
-        v.pos.x = -1; v.pos.y = -1; v.pos.z = 0; v.color.x = 0; v.color.y = 0; v.color.z = 1; vertexBuffer.add(v)
-        v.pos.x = 1; v.pos.y = -1; v.pos.z = 0;  v.color.x = 0; v.color.y = 1; v.color.z = 0; vertexBuffer.add(v)
-        v.pos.x = 0; v.pos.y = 1; v.pos.z = 0;   v.color.x = 1; v.color.y = 0; v.color.z = 0; vertexBuffer.add(v)
+        ptr := vertexBuffer.emplaceAddress(3)
+
+        ptr.pos.x = -1; ptr.pos.y = -1; ptr.pos.z = 0; ptr.color.x = 0; ptr.color.y = 0; ptr.color.z = 1
+        ptr += 1
+
+        ptr.pos.x = 1; ptr.pos.y = -1; ptr.pos.z = 0;  ptr.color.x = 0; ptr.color.y = 1; ptr.color.z = 0
+        ptr += 1
+
+        ptr.pos.x = 0; ptr.pos.y = 1; ptr.pos.z = 0;   ptr.color.x = 1; ptr.color.y = 0; ptr.color.z = 0
     }
 }

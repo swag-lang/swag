@@ -272,6 +272,15 @@ impl Array
         }
     }
 
+    // Reserve room at the end of the array for 'num' elements, but does not
+    // initialize them. Returns the address of the first element
+    func emplaceAddress(using self, num: u32)->*T
+    {
+        grow(count + num)
+        count += num
+        return buffer + count - num
+    }
+
     // Move one element at the end of the array
     func emplace(using self, value: *T)
     {
