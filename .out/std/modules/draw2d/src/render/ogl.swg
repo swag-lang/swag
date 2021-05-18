@@ -22,8 +22,8 @@ impl Ogl
         hDC = hdc
         hRC = try wglCreateContext(hdc)
         try wglMakeCurrent(hDC, hRC)
-        glInitExtensions()
 
+        glInitExtensions()
         createShaders()
 
         glGenBuffers(1, &vertexbuffer)

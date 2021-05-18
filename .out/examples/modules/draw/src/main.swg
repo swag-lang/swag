@@ -15,6 +15,7 @@ func display()
     cdc.begin()
     cdc.clear(@{0,0,1})
     cdc.drawSolidTriangle(@{-1,-1,0},@{1,-1,0},@{0,1,0},@{0,0,1},@{0,1,0},@{1,0,0})
+    cdc.drawSolidTriangle(@{-0.5,-0.5,0},@{0.5,-0.5,0},@{0,0.5,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 
     renderer.draw(&cdc)
