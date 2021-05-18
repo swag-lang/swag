@@ -16,7 +16,7 @@ enum CommandId
 struct Command
 {
     id: CommandId = ?
-    //union params
+    params: union
     {
         clear:          struct{color: mthx.Vector3; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
@@ -58,8 +58,8 @@ impl DrawingContext
     func clear(using self, color: Vector3, flags: u32 = ogl.GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
-        cmd.clear.color = color
-        cmd.clear.flags = flags
+        cmd.params.clear.color = color
+        cmd.params.clear.flags = flags
     }
 
     func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Vector3)
@@ -67,8 +67,8 @@ impl DrawingContext
         debug.assert(drawingBegin)
 
         cmd := newCommand(CommandId.DrawTriangles)
-        cmd.drawTriangles.start = cast(u32) vertexBuffer.count
-        cmd.drawTriangles.count = 3
+        cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
+        cmd.params.drawTriangles.count = 3
 
         ptr := vertexBuffer.emplaceAddress(3)
         ptr.pos = p1; ptr.color = c1
