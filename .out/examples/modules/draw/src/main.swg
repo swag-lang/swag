@@ -13,6 +13,7 @@ var renderer: render.Ogl
 func display()
 {
     cdc.begin()
+    cdc.clear(@{0,0,1})
     cdc.drawSolidTriangle(@{-1,-1,0},@{1,-1,0},@{0,1,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 

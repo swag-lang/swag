@@ -9,6 +9,7 @@ struct VertexLayout
 
 enum CommandId
 {
+    Clear
     DrawTriangles
 }
 
@@ -17,7 +18,8 @@ struct Command
     id: CommandId = ?
     //union params
     {
-        drawTriangles = @{start: 0'u32, count: 0'u32}
+        clear:          struct{color: mthx.Vector3; flags: u32;}
+        drawTriangles:  struct{start: u32; count: u32;}
     }
 }
 
@@ -51,6 +53,13 @@ impl DrawingContext
         ptr := commandBuffer.emplaceAddress(1)
         ptr.id = cmd
         return ptr
+    }
+
+    func clear(using self, color: Vector3, flags: u32 = ogl.GL_COLOR_BUFFER_BIT)
+    {
+        cmd := newCommand(CommandId.Clear)
+        cmd.clear.color = color
+        cmd.clear.flags = flags
     }
 
     func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Vector3)

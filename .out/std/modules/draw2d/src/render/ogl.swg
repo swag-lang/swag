@@ -48,8 +48,6 @@ impl Ogl
             glBufferData(GL_ARRAY_BUFFER, vertexBufferCount * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
         }
 
-        glClearColor(0, 0, 0, 0)
-        glClear(GL_COLOR_BUFFER_BIT)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glUseProgram(programID)
         glEnableVertexAttribArray(0)
@@ -59,6 +57,10 @@ impl Ogl
         {
             switch cmd.id
             {
+            case Clear:
+                glClearColor(cmd.clear.color.x, cmd.clear.color.y, cmd.clear.color.z, 0)
+                glClear(cmd.clear.flags)
+
             case DrawTriangles:
                 glDrawArrays(GL_TRIANGLES, cast(GLint) cmd.drawTriangles.start, cast(GLsizei) cmd.drawTriangles.count)
             }
