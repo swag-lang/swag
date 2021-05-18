@@ -39,16 +39,20 @@ impl Ogl
         glClear(GL_COLOR_BUFFER_BIT)
 
         const vb: [] GLfloat = @[
-            -1.0, -1.0, 0.0,
-            1.0, -1.0, 0.0,
-            0.0,  1.0, 0.0,
+            -1.0, -1.0, 0.0,    0, 0, 1,
+            1.0, -1.0, 0.0,     0, 1, 0,
+            0.0,  1.0, 0.0,     1, 0, 0,
         ]
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, @sizeof(vb), @dataof(vb), GL_DYNAMIC_DRAW);
 
-        glUseProgram(programID);
+        glUseProgram(programID)
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * @sizeof(f32), null)
         glEnableVertexAttribArray(0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, null)
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * @sizeof(f32), cast(const *void) (3'uint * @sizeof(f32)))
+        glEnableVertexAttribArray(1)
+
         glDrawArrays(GL_TRIANGLES, 0, 3) // Starting from vertex 0; 3 vertices total -> 1 triangle
         glDisableVertexAttribArray(0)
 
@@ -61,12 +65,13 @@ impl Ogl
     const g_vertex_shader = @"
         #version 330 core
         layout(location = 0) in vec3 vertexPosition_modelspace;
+        layout(location = 1) in vec3 vertexColor_modelspace;
         out vec3 vcolor;
         void main()
         {
             gl_Position.xyz = vertexPosition_modelspace;
             gl_Position.w = 1.0;
-            vcolor = vec3(1,0,1);
+            vcolor = vertexColor_modelspace;
         }
     "@
 
