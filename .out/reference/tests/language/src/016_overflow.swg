@@ -28,7 +28,7 @@
         // Note that you can remove safety checks with a special swag attribute
         // Can be defined for a file, a function, or just a piece of code.
         // "of" stands for "OverFlow".
-        #[swag.safety("of", false)]
+        #[swag.safety("overflow", false)]
         {
             x := 255'u8
             x += 255    // 254

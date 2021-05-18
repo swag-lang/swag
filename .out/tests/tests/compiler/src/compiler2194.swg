@@ -21,13 +21,13 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-#[swag.optim("bc", true)]
+#[swag.optim("bytecode", true)]
 func toto()
 {
     v := cstr("toto")
 }
 
-#[swag.optim("bc", true)]
+#[swag.optim("bytecode", true)]
 #test
 {
     toto()

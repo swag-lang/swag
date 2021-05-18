@@ -1,6 +1,6 @@
 using swag
 
-#[safety("of", true)]
+#[safety("overflow", true)]
 //#[printbc]
 #test
 {

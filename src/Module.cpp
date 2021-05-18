@@ -787,13 +787,13 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
 
 bool Module::mustEmitSafetyOF(AstNode* node)
 {
-    return mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF);
+    return mustEmitSafety(node, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF);
 }
 
 bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 {
     // Special operator version without overflow checking
-    if (whatOff == ATTRIBUTE_SAFETY_OF_OFF && node->attributeFlags & ATTRIBUTE_SAFETY_OFF_OPERATOR)
+    if (whatOff == ATTRIBUTE_SAFETY_OVERFLOW_OFF && node->attributeFlags & ATTRIBUTE_SAFETY_OFF_OPERATOR)
         return false;
 
     return ((buildCfg.safetyGuards & whatOn) || (node->attributeFlags & whatOn)) && !(node->attributeFlags & whatOff);
@@ -806,9 +806,9 @@ bool Module::mustOptimizeBC(AstNode* node)
 
     while (node)
     {
-        if (node->attributeFlags & ATTRIBUTE_OPTIM_BC_OFF)
+        if (node->attributeFlags & ATTRIBUTE_OPTIM_BYTECODE_OFF)
             return false;
-        if (node->attributeFlags & ATTRIBUTE_OPTIM_BC_ON)
+        if (node->attributeFlags & ATTRIBUTE_OPTIM_BYTECODE_ON)
             return true;
         node = node->ownerFct;
     }
@@ -820,7 +820,7 @@ bool Module::mustOptimizeBK(AstNode* node)
 {
     if (!node)
         return buildCfg.byteCodeOptimize;
-    return (buildCfg.byteCodeOptimize || (node->attributeFlags & ATTRIBUTE_OPTIM_BK_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BK_OFF);
+    return (buildCfg.byteCodeOptimize || (node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_OFF);
 }
 
 bool Module::hasBytecodeToRun()

@@ -156,7 +156,7 @@ func @print(params: ...)
 
         if ko.flags & TypeInfoFlags.TypeInfoPtr
         {
-            #[safety("an", false)]
+            #[safety("castany", false)]
             ptr := cast(const *TypeInfo) v
             __printString(ptr.flatName)
             return

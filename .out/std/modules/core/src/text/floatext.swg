@@ -1,7 +1,7 @@
 //https://github.com/golang/go/blob/master/src/strconv/extfloat.go
 
 #global namespace strconv
-#global #[swag.safety("of", false)]
+#global #[swag.safety("overflow", false)]
 
 // An extFloat represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the

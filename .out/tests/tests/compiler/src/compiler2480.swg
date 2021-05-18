@@ -4,7 +4,7 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
     G += 1
 }
 
-#[swag.safety("of", true)]
+#[swag.safety("overflow", true)]
 #test
 {
     {

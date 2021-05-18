@@ -264,26 +264,26 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                 if (attrWhat.text.empty())
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                 }
 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == "np") // null pointer
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                    else if (w == "bc") // bound check
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                    else if (w == "of") // overflow
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                    else if (w == "mt") // math (div 0)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                    else if (w == "an") // cast any
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                    if (w == "nullptr")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
+                    else if (w == "boundcheck")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
+                    else if (w == "overflow")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                    else if (w == "math")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
+                    else if (w == "castany")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                     else
                         return context->report({child, format(Msg0593, w.c_str())});
                 }
@@ -301,17 +301,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                 if (attrWhat.text.empty())
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                 }
 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == "bc")
-                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
-                    else if (w == "bk")
-                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                    if (w == "bytecode")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+                    else if (w == "backend")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     else
                         return context->report({child, format(Msg0594, w.c_str())});
                 }

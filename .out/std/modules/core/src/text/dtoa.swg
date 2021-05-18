@@ -2,7 +2,7 @@
 
 #global namespace strconv
 #global private
-#global #[swag.safety("of", false)]
+#global #[swag.safety("overflow", false)]
 using globalization
 
 func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, mant: u64, exp: s64)

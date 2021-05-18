@@ -2,6 +2,6 @@
 
 #test
 {
-    #[swag.safety("of", true)]
+    #[swag.safety("overflow", true)]
     var x: s64 = swag.S64.Max + 1
 }

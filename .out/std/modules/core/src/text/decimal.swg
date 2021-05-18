@@ -1,7 +1,7 @@
 // https://github.com/golang/go/blob/master/src/strconv/decimal.go
 
 #global namespace strconv
-#global #[swag.safety("of", false)]
+#global #[swag.safety("overflow", false)]
 using globalization
 
 struct Decimal

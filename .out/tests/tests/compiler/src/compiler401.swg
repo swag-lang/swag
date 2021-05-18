@@ -58,7 +58,7 @@ var Table: [256] u64 =
 func Hash(buffer: const [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 {
 	crc := previous
-    #[swag.safety("of", false)]
+    #[swag.safety("overflow", false)]
 	loop(buffer)
 	{
 		var i = (crc >> 56) ^ buffer[@index]

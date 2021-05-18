@@ -1,7 +1,7 @@
 #global testerror
 #global testerror
 
-#[swag.safety("of", true)]
+#[swag.safety("overflow", true)]
 #test
 {
     var x: u32 = swag.U32.Max
@@ -9,7 +9,7 @@
     x = x * y
 }
 
-#[swag.safety("of", true)]
+#[swag.safety("overflow", true)]
 #test
 {
     var x: u64 = swag.U64.Max

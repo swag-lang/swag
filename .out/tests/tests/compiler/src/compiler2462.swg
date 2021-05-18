@@ -1,6 +1,6 @@
 #global testerror
 
-#[swag.safety("of", true)]
+#[swag.safety("overflow", true)]
 #test
 {
     var x: s32 = swag.S32.Max

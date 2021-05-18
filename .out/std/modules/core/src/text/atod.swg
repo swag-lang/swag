@@ -2,7 +2,7 @@
 
 #global namespace strconv
 #global private
-#global #[swag.safety("of", false)]
+#global #[swag.safety("overflow", false)]
 using globalization
 
 func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
