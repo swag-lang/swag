@@ -3,6 +3,7 @@
 #global if #os == "windows"
 using core, win32, ogl, gdi32, drawing
 
+var testMode: bool
 var hDC: HDC
 var imageIdx: u32 = 11
 var effectIdx: u32 = 0
@@ -57,7 +58,7 @@ func loadImg()
     imgName := "rgba.bmp"
     switch imageIdx
     {
-    case 0: break
+    case 0:     break
     case 1:     imgName = "rgb.bmp"
     case 2:     imgName = "rgb.tga"
     case 3:     imgName = "rgba.tga"
@@ -84,7 +85,7 @@ func loadImg()
     case 24:    imgName = "basi0g08.png"  // grayscale interlaced 8 bits
     case 25:    imgName = "basi4a08.png"  // grayscale interlaced alpha
     case 26:    imgName = "basi6a08.png"  // color interlaced alpha
-    default: imageIdx = 0
+    default:    imageIdx = 0
     }
 
     // Load image
@@ -271,12 +272,28 @@ func messageLoop()
         }
 
         display()
+
+        if testMode
+        {
+            effectIdx += 1
+            loadImg()
+            if effectIdx == 0
+            {
+                imageIdx += 1
+                loadImg()
+                if imageIdx == 0
+                    break
+            }
+        }
     }
 }
 
 //#[swag.printbc]
 #main
 {
+    if slice.contains(@args(), "test")
+        testMode = true
+
     try
     {
         hWnd := createWindow()

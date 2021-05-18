@@ -57,7 +57,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu cl", "--vendor", nullptr, CommandLineType::EnumInt, &cmdLine->vendor, "pc", "set the target vendoor");
 
     addArg("bu", "--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
-    addArg("bu", "--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
+    addArg("bu", "--args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("bu", "--max-recurse", nullptr, CommandLineType::Int, &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
     addArg("bu", "--stack-size", nullptr, CommandLineType::Int, &cmdLine->stackSize, nullptr, "set the stack size for bytecode and backend");
