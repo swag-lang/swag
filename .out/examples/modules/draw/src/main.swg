@@ -1,7 +1,7 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using core, win32, ogl, gdi32, draw2d
+using core, win32, ogl, gdi32, draw2d, mthx
 
 var hDC: HDC
 const W = 1024
@@ -13,7 +13,7 @@ var renderer: render.Ogl
 func display()
 {
     cdc.begin()
-    cdc.draw()
+    cdc.drawSolidTriangle(@{-1,-1,0},@{1,-1,0},@{0,1,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 
     renderer.draw(&cdc)

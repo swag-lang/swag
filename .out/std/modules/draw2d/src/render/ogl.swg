@@ -50,12 +50,20 @@ impl Ogl
 
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT)
-
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glUseProgram(programID)
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
-        glDrawArrays(GL_TRIANGLES, 0, cast(GLsizei) dc.vertexBuffer.count)
+
+        visit *cmd: dc.commandBuffer
+        {
+            switch cmd.id
+            {
+            case DrawTriangles:
+                glDrawArrays(GL_TRIANGLES, cast(GLint) cmd.drawTriangles.start, cast(GLsizei) cmd.drawTriangles.count)
+            }
+        }
+
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
     }

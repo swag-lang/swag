@@ -7,15 +7,23 @@ struct VertexLayout
     color:  Vector3
 }
 
-typeset Command
+enum CommandId
 {
-    Clear{}
-    DrawTriangles{start: u32, count: u32}
+    DrawTriangles
+}
+
+struct Command
+{
+    id: CommandId = ?
+    //union params
+    {
+        drawTriangles = @{start: 0'u32, count: 0'u32}
+    }
 }
 
 struct DrawingContext
 {
-    commandBuffer:  Array'u32
+    commandBuffer:  Array'Command
     vertexBuffer:   Array'VertexLayout
     drawingBegin:   bool
 }
@@ -38,18 +46,26 @@ impl DrawingContext
         drawingBegin = false
     }
 
-    func draw(using self)
+    func newCommand(using self, cmd: CommandId)->*Command
+    {
+        ptr := commandBuffer.emplaceAddress(1)
+        ptr.id = cmd
+        return ptr
+    }
+
+    func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Vector3)
     {
         debug.assert(drawingBegin)
 
+        cmd := newCommand(CommandId.DrawTriangles)
+        cmd.drawTriangles.start = cast(u32) vertexBuffer.count
+        cmd.drawTriangles.count = 3
+
         ptr := vertexBuffer.emplaceAddress(3)
-
-        ptr.pos.x = -1; ptr.pos.y = -1; ptr.pos.z = 0; ptr.color.x = 0; ptr.color.y = 0; ptr.color.z = 1
+        ptr.pos = p1; ptr.color = c1
         ptr += 1
-
-        ptr.pos.x = 1; ptr.pos.y = -1; ptr.pos.z = 0;  ptr.color.x = 0; ptr.color.y = 1; ptr.color.z = 0
+        ptr.pos = p2; ptr.color = c2
         ptr += 1
-
-        ptr.pos.x = 0; ptr.pos.y = 1; ptr.pos.z = 0;   ptr.color.x = 1; ptr.color.y = 0; ptr.color.z = 0
+        ptr.pos = p3; ptr.color = c3
     }
 }
