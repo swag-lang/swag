@@ -1,6 +1,8 @@
+using swag
+
 ////////////////////////////////////////////////////////////
-#[swag.discardable]
-#[swag.safety("", false)]
+#[discardable]
+#[safety("", false)]
 func __itoa(result: *u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -37,8 +39,8 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
-#[swag.discardable]
-#[swag.safety("", false)]
+#[discardable]
+#[safety("", false)]
 func __utoa(result: *u8, value: u64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -69,7 +71,7 @@ func __utoa(result: *u8, value: u64)->*u8
     return retVal
 }
 
-#[swag.safety("", false)]
+#[safety("", false)]
 func __ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -151,6 +153,15 @@ func @print(params: ...)
     visit v: params
     {
         ko := @kindof(v)
+
+        if ko.flags & TypeInfoFlags.TypeInfoPtr
+        {
+            #[safety("an", false)]
+            ptr := cast(const *TypeInfo) v
+            __printString(ptr.flatName)
+            return
+        }
+
         switch ko
         {
         case s8:        __printS64(cast(s64) cast(s8) v)
@@ -190,13 +201,13 @@ func @strcmp(str1: string, str2: string)->bool
 ////////////////////////////////////////////////////////////
 private func concreteAlias(type1: typeinfo)->typeinfo
 {
-    if type1.kind != swag.TypeInfoKind.Alias or type1.flags & swag.TypeInfoFlags.Strict
+    if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
         return type1
-    typeAlias := cast(const *swag.TypeInfoAlias) type1
+    typeAlias := cast(const *TypeInfoAlias) type1
     return concreteAlias(typeAlias.rawType)
 }
 
-func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
+func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
     if cast(const*u8) typeA == cast(const*u8) typeB
         return true
@@ -209,17 +220,17 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
     type2 := concreteAlias(typeB)
 
     // Fine to convert from concrete to ref, or the other way
-    if cmpFlags & swag.TypeCmpFlags.CastAny
+    if cmpFlags & TypeCmpFlags.CastAny
     {
-        if type1.kind == swag.TypeInfoKind.Reference and type2.kind != swag.TypeInfoKind.Reference
+        if type1.kind == TypeInfoKind.Reference and type2.kind != TypeInfoKind.Reference
         {
-            ref := cast(const *swag.TypeInfoReference) type1
+            ref := cast(const *TypeInfoReference) type1
             return @typecmp(ref.pointedType, type2, cmpFlags)
         }
 
-        if type1.kind != swag.TypeInfoKind.Reference and type2.kind == swag.TypeInfoKind.Reference
+        if type1.kind != TypeInfoKind.Reference and type2.kind == TypeInfoKind.Reference
         {
-            ref := cast(const *swag.TypeInfoReference) type2
+            ref := cast(const *TypeInfoReference) type2
             return @typecmp(type1, ref.pointedType, cmpFlags)
         }
     }
@@ -230,8 +241,8 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
 }
 
 ////////////////////////////////////////////////////////////
-#[swag.safety("", false)]
-func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
+#[safety("", false)]
+func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
@@ -300,7 +311,7 @@ func @seterr(value: string)
             cxt.errorMsgLen = 0
         else
         {
-            if len > swag.MaxLenErrorMsg - cxt.errorMsgStart len = cast(uint) (swag.MaxLenErrorMsg - cxt.errorMsgStart)
+            if len > MaxLenErrorMsg - cxt.errorMsgStart len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
             @assert(len > 0)
             @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
             cxt.errorMsgLen = cast(u32) len
@@ -321,7 +332,7 @@ func __pusherr()
 {
     cxt := @getcontext()
     @assert(cxt.errorMsgLen != 0)
-    @assert(swag.MaxLenErrorMsg - cxt.errorMsgStart >= 8)
+    @assert(MaxLenErrorMsg - cxt.errorMsgStart >= 8)
     ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
     ptr[0] = cxt.errorMsgLen
     ptr[1] = cxt.traceIndex
@@ -348,10 +359,10 @@ func __initStackTrace()
     cxt.traceIndex = 0
 }
 
-func __stackTrace(loc: swag.CompilerSourceLocation)
+func __stackTrace(loc: CompilerSourceLocation)
 {
     cxt := @getcontext()
-    if cxt.traceIndex >= swag.MaxTrace
+    if cxt.traceIndex >= MaxTrace
         return
     cxt.trace[cxt.traceIndex] = loc
     cxt.traceIndex = cxt.traceIndex + 1
@@ -359,7 +370,7 @@ func __stackTrace(loc: swag.CompilerSourceLocation)
 
 
 ////////////////////////////////////////////////////////////
-func @panic(message: string, loc: swag.CompilerSourceLocation)
+func @panic(message: string, loc: CompilerSourceLocation)
 {
     cxt := @getcontext()
 
@@ -376,11 +387,11 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
 
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information
-    if contextFlags & swag.ContextFlags.ByteCode
+    if contextFlags & ContextFlags.ByteCode
         return
 
     // During tests just raise an error without a dialog box
-    if contextFlags & swag.ContextFlags.Test
+    if contextFlags & ContextFlags.Test
         return
 
     // Stack trace if available
@@ -439,7 +450,7 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
 ////////////////////////////////////////////////////////////
 func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
-    var loc: swag.CompilerSourceLocation
+    var loc: CompilerSourceLocation
     loc.fileName = cast(string) @mkslice(file, @cstrlen(file))
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col

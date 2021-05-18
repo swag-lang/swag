@@ -274,15 +274,15 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == "np")
+                    if (w == "np") // null pointer
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                    else if (w == "bc")
+                    else if (w == "bc") // bound check
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                    else if (w == "of")
+                    else if (w == "of") // overflow
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                    else if (w == "mt")
+                    else if (w == "mt") // math (div 0)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                    else if (w == "an")
+                    else if (w == "an") // cast any
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
                     else
                         return context->report({child, format(Msg0593, w.c_str())});

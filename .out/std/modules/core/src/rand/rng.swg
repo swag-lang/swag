@@ -11,7 +11,7 @@ impl Rng
     // Seed the rng with the current time
     func seedNow(using self)
     {
-        rng.seedU32(time.nowMilliseconds(), time.nowMicroseconds())
+        rng.seedU32(time.nowMicroseconds())
     }
 
     #[swag.inline]
