@@ -55,7 +55,7 @@ impl Ogl
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
 
-        visit *cmd: dc.commandBuffer
+        visit cmd: dc.commandBuffer
         {
             switch cmd.id
             {
