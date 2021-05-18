@@ -16,7 +16,8 @@ func display()
     cdc.draw()
     cdc.end()
 
-    renderer.flush(&cdc)
+    renderer.draw(&cdc)
+    renderer.flush()
 }
 
 #[swag.callback]

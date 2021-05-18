@@ -38,8 +38,9 @@ impl Ogl
         catch wglDeleteContext(hRC)
     }
 
-    public func flush(using self, dc: *DrawingContext)
+    public func draw(using self, dc: *DrawingContext)
     {
+        // Rebind vertex buffer if vertex count has increased
         if vertexBufferCount < dc.vertexBuffer.count
         {
             vertexBufferCount = dc.vertexBuffer.count
@@ -57,7 +58,10 @@ impl Ogl
         glDrawArrays(GL_TRIANGLES, 0, cast(GLsizei) dc.vertexBuffer.count)
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
+    }
 
+    public func flush(using self)
+    {
         glFlush()
         assume gdi32.SwapBuffers(hDC)
     }
