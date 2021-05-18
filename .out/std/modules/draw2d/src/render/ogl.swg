@@ -1,5 +1,5 @@
 #global namespace render
-using core, win32, ogl, gdi32
+using core, win32, ogl, gdi32, mthx
 
 #[swag.opaque]
 public struct Ogl
@@ -10,6 +10,12 @@ public struct Ogl
 
     vertexbuffer: GLuint
     programID:    GLuint
+}
+
+struct VertexLayout
+{
+    pos:    Vector3
+    color:  Vector3
 }
 
 impl Ogl
@@ -38,19 +44,20 @@ impl Ogl
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT)
 
-        const vb: [] GLfloat = @[
-            -1.0, -1.0, 0.0,    0, 0, 1,
-            1.0, -1.0, 0.0,     0, 1, 0,
-            0.0,  1.0, 0.0,     1, 0, 0,
-        ]
+        var arr:    Array'VertexLayout
+        var v:      VertexLayout
+        v.pos.x = -1; v.pos.y = -1; v.pos.z = 0; v.color.x = 0; v.color.y = 0; v.color.z = 1; arr.add(v)
+        v.pos.x = 1; v.pos.y = -1; v.pos.z = 0;  v.color.x = 0; v.color.y = 1; v.color.z = 0; arr.add(v)
+        v.pos.x = 0; v.pos.y = 1; v.pos.z = 0;   v.color.x = 1; v.color.y = 0; v.color.z = 0; arr.add(v)
+
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-        glBufferData(GL_ARRAY_BUFFER, @sizeof(vb), @dataof(vb), GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, arr.count * @sizeof(VertexLayout), arr.buffer, GL_DYNAMIC_DRAW);
 
         glUseProgram(programID)
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * @sizeof(f32), null)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
         glEnableVertexAttribArray(0)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * @sizeof(f32), cast(const *void) (3'uint * @sizeof(f32)))
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
         glEnableVertexAttribArray(1)
 
         glDrawArrays(GL_TRIANGLES, 0, 3) // Starting from vertex 0; 3 vertices total -> 1 triangle
@@ -64,14 +71,14 @@ impl Ogl
 
     const g_vertex_shader = @"
         #version 330 core
-        layout(location = 0) in vec3 vertexPosition_modelspace;
-        layout(location = 1) in vec3 vertexColor_modelspace;
+        layout(location = 0) in vec3 vertexPosition;
+        layout(location = 1) in vec3 vertexColor;
         out vec3 vcolor;
         void main()
         {
-            gl_Position.xyz = vertexPosition_modelspace;
+            gl_Position.xyz = vertexPosition;
             gl_Position.w = 1.0;
-            vcolor = vertexColor_modelspace;
+            vcolor = vertexColor;
         }
     "@
 
