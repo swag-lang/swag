@@ -112,8 +112,6 @@ func messageLoop()
         hDC = GetDC(hWnd)
         renderer.init(&dev, hDC)
 
-        jobs.setNumWorkers()
-
         display()
         ShowWindow(hWnd, SW_SHOW)
         UpdateWindow(hWnd)
