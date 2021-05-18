@@ -12,6 +12,7 @@ var renderer: render.Ogl
 
 func display()
 {
+    cdc.draw()
     renderer.flush(&cdc)
 }
 

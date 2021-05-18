@@ -8,14 +8,9 @@ public struct Ogl
     hDC: HDC
     hRC: HGLRC
 
-    vertexbuffer: GLuint
-    programID:    GLuint
-}
-
-struct VertexLayout
-{
-    pos:    Vector3
-    color:  Vector3
+    vertexbuffer:       GLuint
+    vertexBufferCount:  uint
+    programID:          GLuint
 }
 
 impl Ogl
@@ -30,7 +25,11 @@ impl Ogl
         glInitExtensions()
 
         createShaders()
+
         glGenBuffers(1, &vertexbuffer)
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
     }
 
     public func drop(using self)
@@ -41,29 +40,23 @@ impl Ogl
 
     public func flush(using self, dc: *DrawingContext)
     {
+        if vertexBufferCount < dc.vertexBuffer.count
+        {
+            vertexBufferCount = dc.vertexBuffer.count
+            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
+            glBufferData(GL_ARRAY_BUFFER, vertexBufferCount * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
+        }
+
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT)
 
-        var arr:    Array'VertexLayout
-        var v:      VertexLayout
-        v.pos.x = -1; v.pos.y = -1; v.pos.z = 0; v.color.x = 0; v.color.y = 0; v.color.z = 1; arr.add(v)
-        v.pos.x = 1; v.pos.y = -1; v.pos.z = 0;  v.color.x = 0; v.color.y = 1; v.color.z = 0; arr.add(v)
-        v.pos.x = 0; v.pos.y = 1; v.pos.z = 0;   v.color.x = 1; v.color.y = 0; v.color.z = 0; arr.add(v)
-
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-        glBufferData(GL_ARRAY_BUFFER, arr.count * @sizeof(VertexLayout), arr.buffer, GL_DYNAMIC_DRAW);
-
         glUseProgram(programID)
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
         glEnableVertexAttribArray(0)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
         glEnableVertexAttribArray(1)
-
-        glDrawArrays(GL_TRIANGLES, 0, 3) // Starting from vertex 0; 3 vertices total -> 1 triangle
+        glDrawArrays(GL_TRIANGLES, 0, cast(GLsizei) dc.vertexBuffer.count)
         glDisableVertexAttribArray(0)
-
-
+        glDisableVertexAttribArray(1)
 
         glFlush()
         assume gdi32.SwapBuffers(hDC)
