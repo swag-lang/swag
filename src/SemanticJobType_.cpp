@@ -415,7 +415,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
         if (node->ownerScope->isGlobalOrImpl())
         {
             auto overload = back->resolvedSymbolOverload;
-            if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+            if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
                 Diagnostic diag(back, back->token, format(Msg0025, back->token.text.c_str()));
                 Diagnostic note(overload->node, overload->node->token, format(Msg0018, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
