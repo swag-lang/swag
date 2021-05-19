@@ -23,7 +23,7 @@ impl RenderOgl
         glGenBuffers(1, &vertexbuffer)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
     }
 
     public func resize(using self, width, height: s32)
@@ -76,7 +76,7 @@ impl RenderOgl
             {
             case Clear:
                 params := &cmd.params.clear
-                glClearColor(params.color.x, params.color.y, params.color.z, 0)
+                glClearColor(params.color.r, params.color.g, params.color.b, 0)
                 glClear(params.flags)
 
             case DrawTriangles:
@@ -92,9 +92,9 @@ impl RenderOgl
     const g_vertex_shader = @"
         #version 330 core
         layout(location = 0) in vec2 vertexPosition;
-        layout(location = 1) in vec3 vertexColor;
+        layout(location = 1) in vec4 vertexColor;
         uniform mat4 mvp;
-        out vec3 vcolor;
+        out vec4 vcolor;
         void main()
         {
             gl_Position = mvp * vec4(vertexPosition, 0, 1);
@@ -104,11 +104,11 @@ impl RenderOgl
 
     const g_pixel_shader = @"
         #version 330 core
-        in vec3 vcolor;
+        in vec4 vcolor;
         out vec3 color;
         void main()
         {
-            color = vcolor;
+            color.xyz = vcolor.xyz;
         }
     "@
 
