@@ -1,10 +1,10 @@
 #global public
-using core, mthx, ogl
+using core, mthx, ogl, core.drawing
 
 struct VertexLayout
 {
     pos:    Vector2
-    color:  Color4
+    color:  Color
 }
 
 enum CommandId
@@ -18,7 +18,7 @@ struct Command
     id: CommandId = ?
     params: union
     {
-        clear:          struct{color: Color4; flags: u32;}
+        clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
     }
 }
@@ -57,14 +57,14 @@ impl DrawingContext
         drawingBegin = false
     }
 
-    func clear(using self, color: Color4, flags: u32 = GL_COLOR_BUFFER_BIT)
+    func clear(using self, color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
         cmd.params.clear.color = color
         cmd.params.clear.flags = flags
     }
 
-    func drawSolidRect(using self, left, top, width, height: f32, color: Color4)
+    func drawSolidRect(using self, left, top, width, height: f32, color: Color)
     {
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
@@ -102,7 +102,7 @@ impl DrawingContext
         ptr.color = color
     }
 
-    func drawSolidTriangle(using self, p1, p2, p3: Vector2, c1, c2, c3: Color4)
+    func drawSolidTriangle(using self, p1, p2, p3: Vector2, c1, c2, c3: Color)
     {
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count

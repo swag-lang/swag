@@ -23,7 +23,7 @@ impl RenderOgl
         glGenBuffers(1, &vertexbuffer)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
     }
 
     public func resize(using self, width, height: s32)
@@ -78,7 +78,8 @@ impl RenderOgl
             {
             case Clear:
                 params := &cmd.params.clear
-                glClearColor(params.color.r, params.color.g, params.color.b, 0)
+                (r, g, b) := params.color.toRgbf()
+                glClearColor(r, g, b, 0)
                 glClear(params.flags)
 
             case DrawTriangles:
