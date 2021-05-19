@@ -2,7 +2,6 @@ using core, ogl, mthx
 
 public struct RenderOgl
 {
-    dd:                 *DrawingDevice
     vertexbuffer:       GLuint
     programID:          GLuint
     orthoMatrix:        Matrix4x4
@@ -11,9 +10,8 @@ public struct RenderOgl
 
 impl RenderOgl
 {
-    func init(using self, device: *DrawingDevice, w, h: s32)
+    func init(using self, w, h: s32)
     {
-        dd = device
         width = w
         height = h
 

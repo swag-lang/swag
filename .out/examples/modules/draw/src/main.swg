@@ -7,7 +7,6 @@ using core.drawing
 var hDC: HDC
 const W = 1024
 const H = 1024
-var dev: DrawingDevice
 var cdc: DrawingContext
 var renderer: RenderOglWin32
 
@@ -122,7 +121,7 @@ func messageLoop()
         hWnd := createWindow()
 
         hDC = GetDC(hWnd)
-        renderer.init(&dev, hDC, W, H)
+        renderer.init(hDC, W, H)
 
         display()
         ShowWindow(hWnd, SW_SHOW)
