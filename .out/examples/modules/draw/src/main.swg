@@ -13,9 +13,9 @@ var renderer: render.Ogl
 func display()
 {
     cdc.begin()
-    cdc.clear(@{0,0,1})
-    cdc.drawSolidTriangle(@{-1,-1,0},@{1,-1,0},@{0,1,0},@{0,0,1},@{0,1,0},@{1,0,0})
-    cdc.drawSolidTriangle(@{-0.5,-0.5,0},@{0.5,-0.5,0},@{0,0.5,0},@{0,0,1},@{0,1,0},@{1,0,0})
+    cdc.clear(@{0,0,0})
+    cdc.drawSolidTriangle(@{100,100,0},@{1000,100,0},@{1000,1000,0},@{0,0,1},@{0,1,0},@{1,0,0})
+    cdc.drawSolidTriangle(@{10,10,0},@{100,10,0},@{100,100,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 
     renderer.draw(&cdc)

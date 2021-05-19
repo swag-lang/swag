@@ -4,7 +4,7 @@ using core, mthx, ogl
 struct VertexLayout
 {
     pos:    Vector3
-    color:  Vector3
+    color:  Color3
 }
 
 enum CommandId
@@ -18,7 +18,7 @@ struct Command
     id: CommandId = ?
     params: union
     {
-        clear:          struct{color: Vector3; flags: u32;}
+        clear:          struct{color: Color3; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
     }
 }
@@ -64,7 +64,7 @@ impl DrawingContext
         cmd.params.clear.flags = flags
     }
 
-    func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Vector3)
+    func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Color3)
     {
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count

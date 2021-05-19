@@ -38,6 +38,29 @@ impl Ogl
         catch wglDeleteContext(hRC)
     }
 
+    func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
+    {
+        m[0,0] = 2 / (r - l);
+        m[0,1] = 0;
+        m[0,2] = 0;
+        m[0,3] = 0;
+
+        m[1,0] = 0;
+        m[1,1] = 2 / (t - b);
+        m[1,2] = 0;
+        m[1,3] = 0;
+
+        m[2,0] = 0;
+        m[2,1] = 0;
+        m[2,2] = -2 / (f - n);
+        m[2,3] = 0;
+
+        m[3,0] = -(r + l) / (r - l);
+        m[3,1] = -(t + b) / (t - b);
+        m[3,2] = -(f + n) / (f - n);
+        m[3,3] = 1;
+    }
+
     public func draw(using self, dc: *DrawingContext)
     {
         // Rebind vertex buffer if vertex count has increased
@@ -50,6 +73,12 @@ impl Ogl
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glUseProgram(programID)
+
+        var matrixID: GLint = glGetUniformLocation(programID, @dataof("mvp"))
+        var mvp: [4, 4] f32
+        ortho(1024, 0, 0, 1024, 0, 1000, mvp)
+        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0])
+
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
 
@@ -82,11 +111,11 @@ impl Ogl
         #version 330 core
         layout(location = 0) in vec3 vertexPosition;
         layout(location = 1) in vec3 vertexColor;
+        uniform mat4 mvp;
         out vec3 vcolor;
         void main()
         {
-            gl_Position.xyz = vertexPosition;
-            gl_Position.w = 1.0;
+            gl_Position = mvp * vec4(vertexPosition, 1);
             vcolor = vertexColor;
         }
     "@
