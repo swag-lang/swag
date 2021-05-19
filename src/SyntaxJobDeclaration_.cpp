@@ -316,6 +316,7 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     auto newParent = subDecl->parent;
     Ast::removeFromParent(subDecl);
 
+    // :SubDeclParent
     while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
         newParent = newParent->parent;
 

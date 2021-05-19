@@ -39,7 +39,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     else if (Tokenizer::isLiteral(token.id))
         return error(token, format(Msg0285, token.text.c_str()));
 
-    auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+    auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
     if (token.id == TokenId::CompilerScopeFct)
         identifier->semanticFct = SemanticJob::resolveCompilerScopeFct;
@@ -92,6 +92,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         }
     }
 
+    Ast::removeFromParent(identifier);
     AstNode* expr = identifier;
 
     // Array index

@@ -214,7 +214,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
             else
             {
                 AstNode* typeExpression;
-                SWAG_CHECK(doTypeExpression(nullptr, &typeExpression));
+                SWAG_CHECK(doTypeExpression(paramNode, &typeExpression));
+                Ast::removeFromParent(typeExpression);
 
                 // type...
                 if (token.id == TokenId::SymDotDotDot)

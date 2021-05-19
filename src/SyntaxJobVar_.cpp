@@ -30,7 +30,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(nullptr, &type, true));
+            SWAG_CHECK(doTypeExpression(parent, &type, true));
+            Ast::removeFromParent(type);
         }
 
         AstNode* assign = nullptr;
@@ -39,7 +40,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         {
             auto saveToken = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doInitializationExpression(saveToken, nullptr, &assign));
+            SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
+            Ast::removeFromParent(assign);
         }
 
         // Be sure we will be able to have a type

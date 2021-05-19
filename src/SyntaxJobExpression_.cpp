@@ -380,6 +380,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
 
         Ast::addChildBack(exprNode, identifierRef);
         identifierRef->flags |= AST_TAKE_ADDRESS;
+        if (parent)
+            Ast::addChildBack(parent, exprNode);
     }
 
     // Dereference pointer
@@ -389,11 +391,9 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
     }
     else
     {
-        SWAG_CHECK(doSinglePrimaryExpression(nullptr, exprFlags, &exprNode));
+        SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
     }
 
-    if (parent)
-        Ast::addChildBack(parent, exprNode);
     if (result)
         *result = exprNode;
     return true;
@@ -656,7 +656,9 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
 bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doUnaryExpression(nullptr, exprFlags, &leftNode));
+    SWAG_ASSERT(parent);
+    SWAG_CHECK(doUnaryExpression(*parent, exprFlags, &leftNode));
+    Ast::removeFromParent(leftNode);
 
     bool isBinary = false;
     if ((token.id == TokenId::SymPlus) ||
@@ -671,7 +673,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         (token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
-        auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, parent ? *parent : nullptr, 2);
+        auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, *parent, 2);
 
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
             binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
@@ -731,7 +733,8 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
 bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doFactorExpression(nullptr, exprFlags, &leftNode));
+    SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
+    Ast::removeFromParent(leftNode);
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
     SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Msg0267));
     Ast::addChildBack(parent, leftNode);
@@ -743,7 +746,8 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
 bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doCompareExpression(nullptr, exprFlags, &leftNode));
+    SWAG_CHECK(doCompareExpression(parent, exprFlags, &leftNode));
+    Ast::removeFromParent(leftNode);
 
     bool isBinary = false;
     if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
@@ -851,7 +855,8 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     }
 
     default:
-        SWAG_CHECK(doBoolExpression(nullptr, exprFlags, &boolExpression));
+        SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
+        Ast::removeFromParent(boolExpression);
         break;
     }
 
@@ -1374,7 +1379,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         auto     saveToken = token;
         AstNode* assign;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doInitializationExpression(saveToken, nullptr, &assign));
+        SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
+        Ast::removeFromParent(assign);
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
     }
 

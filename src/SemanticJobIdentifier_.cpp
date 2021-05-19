@@ -3379,12 +3379,15 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     if (!startNode)
         return;
 
+    if (startNode->extension && startNode->extension->alternativeNode)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->alternativeNode, flags);
+    else if (startNode->parent)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
+
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
-    if (startNode->extension && startNode->extension->alternativeNode)
+    if (startNode->extension && startNode->extension->alternativeNode && startNode->parent->kind == AstNodeKind::CompilerMixin)
     {
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->alternativeNode, flags);
-
         // We authorize mixin code to access the parameters of the swag.mixin function, except if there's a #macro block
         // in the way.
         while (startNode->kind != AstNodeKind::Inline &&
@@ -3401,10 +3404,6 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
             SWAG_ASSERT(inlineNode->parametersScope);
             scopes.insert(inlineNode->parametersScope);
         }
-    }
-    else if (startNode->parent)
-    {
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
     }
 }
 

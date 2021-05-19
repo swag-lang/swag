@@ -102,7 +102,8 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
-    auto structNode            = Ast::newStructDecl(sourceFile, nullptr, this);
+    auto structNode = Ast::newStructDecl(sourceFile, parent, this);
+    structNode->attributeFlags |= ATTRIBUTE_PRIVATE;
     structNode->originalParent = parent;
     structNode->allocateExtension();
     structNode->extension->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
@@ -122,14 +123,22 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     name += format("%d", token.startLocation);
     structNode->token.text = move(name);
 
+    // :SubDeclParent
+    auto newParent = parent;
+    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+        newParent = newParent->parent;
+
     // Add struct type and scope
     Scope* rootScope;
     if (sourceFile->fromTests)
         rootScope = sourceFile->scopePrivate;
     else
-        rootScope = sourceFile->astRoot->ownerScope;
+        rootScope = newParent->ownerScope;
     structNode->allocateExtension();
     structNode->extension->alternativeScopes.push_back(currentScope);
+    SWAG_ASSERT(parent);
+    structNode->extension->alternativeNode = parent;
+
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
 
@@ -167,8 +176,9 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->ownerScope = newScope->parentScope;
     rootScope->symTable.registerSymbolName(&context, structNode, SymbolKind::Struct);
 
-    Ast::addChildBack(sourceFile->astRoot, structNode);
-    structNode->inheritOwners(sourceFile->astRoot);
+    Ast::removeFromParent(structNode);
+    Ast::addChildBack(newParent, structNode);
+    structNode->inheritOwners(newParent);
 
     Ast::visit(structNode->content, [&](AstNode* n) {
         n->inheritOwners(structNode);

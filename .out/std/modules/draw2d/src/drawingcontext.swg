@@ -18,7 +18,7 @@ struct Command
     id: CommandId = ?
     params: union
     {
-        clear:          struct{color: mthx.Vector3; flags: u32;}
+        clear:          struct{color: Vector3; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
     }
 }
