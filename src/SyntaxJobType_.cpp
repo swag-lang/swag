@@ -166,6 +166,10 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     if (result)
         *result = identifier;
 
+    Ast::removeFromParent(structNode);
+    Ast::addChildBack(newParent, structNode);
+    structNode->inheritOwners(newParent);
+
     auto typeInfo        = allocType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
@@ -173,12 +177,8 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     typeInfo->scope      = newScope;
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
     structNode->typeInfo   = typeInfo;
-    structNode->ownerScope = newScope->parentScope;
+    structNode->ownerScope = rootScope;
     rootScope->symTable.registerSymbolName(&context, structNode, SymbolKind::Struct);
-
-    Ast::removeFromParent(structNode);
-    Ast::addChildBack(newParent, structNode);
-    structNode->inheritOwners(newParent);
 
     Ast::visit(structNode->content, [&](AstNode* n) {
         n->inheritOwners(structNode);

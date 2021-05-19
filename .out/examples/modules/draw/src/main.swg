@@ -8,7 +8,7 @@ const W = 1024
 const H = 1024
 var dev: DrawingDevice
 var cdc: DrawingContext
-var renderer: RenderOgl
+var renderer: RenderOglWin32
 
 func display()
 {
@@ -35,7 +35,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         return 0
 
     case WM_SIZE:
-	    //glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
+        renderer.resize(LOWORD(lParam), HIWORD(lParam))
 	    assume PostMessageA(hWnd, WM_PAINT, 0, 0)
 	    return 0
 
@@ -118,6 +118,7 @@ func messageLoop()
 
         hDC = GetDC(hWnd)
         renderer.init(&dev, hDC)
+        renderer.resize(W, H)
 
         display()
         ShowWindow(hWnd, SW_SHOW)

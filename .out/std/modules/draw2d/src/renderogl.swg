@@ -1,17 +1,18 @@
 using core, ogl, mthx
 
-public struct BaseRenderOgl
+public struct RenderOgl
 {
     dd:                 *DrawingDevice
     vertexbuffer:       GLuint
     vertexBufferCount:  uint
     programID:          GLuint
     orthoMatrix:        Matrix4x4
+    width, height:      s32
 }
 
-impl BaseRenderOgl
+impl RenderOgl
 {
-    public func init(using self, device: *DrawingDevice)
+    func init(using self, device: *DrawingDevice)
     {
         dd = device
 
@@ -22,6 +23,12 @@ impl BaseRenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
+    }
+
+    public func resize(using self, width, height: s32)
+    {
+        self.width = #scopefct.width
+        self.height = #scopefct.height
     }
 
     func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
@@ -61,8 +68,9 @@ impl BaseRenderOgl
         glUseProgram(programID)
 
         var matrixID: GLint = glGetUniformLocation(programID, @dataof("mvp"))
-        ortho(1024, 0, 0, 1024, 0, 1000, orthoMatrix.m)
+        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
         glUniformMatrix4fv(matrixID, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+	    glViewport(0, 0, width, height)
 
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)

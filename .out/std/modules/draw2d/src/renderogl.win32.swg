@@ -1,17 +1,17 @@
 #global if #os == "windows"
 using core, win32, ogl, gdi32
 
-public struct RenderOgl
+public struct RenderOglWin32
 {
-    using base: BaseRenderOgl
+    using base: RenderOgl
 
     hDC: HDC
     hRC: HGLRC
 }
 
-impl RenderOgl
+public impl RenderOglWin32
 {
-    public func init(using self, device: *DrawingDevice, hdc: HDC) throw
+    func init(using self, device: *DrawingDevice, hdc: HDC) throw
     {
         debug.assert(hDC == null)
         hDC = hdc
@@ -20,15 +20,15 @@ impl RenderOgl
         base.init(device)
     }
 
-    public func drop(using self)
+    func drop(using self)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(hRC)
     }
 
-    public func flush(using self)
+    func flush(using self)
     {
         glFlush()
-        assume gdi32.SwapBuffers(hDC)
+        assume SwapBuffers(hDC)
     }
 }
