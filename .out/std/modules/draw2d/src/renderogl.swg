@@ -90,7 +90,7 @@ impl RenderOgl
         glDisableVertexAttribArray(1)
     }
 
-    const g_vertex_shader = @"
+    const VertexShader = @"
         #version 330 core
         layout(location = 0) in vec2 vertexPosition;
         layout(location = 1) in vec4 vertexColor;
@@ -103,7 +103,7 @@ impl RenderOgl
         }
     "@
 
-    const g_pixel_shader = @"
+    const PixelShader = @"
         #version 330 core
         in vec4 vcolor;
         out vec4 color;
@@ -118,12 +118,12 @@ impl RenderOgl
         var result: GLint
 
         vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
-        vertexSourcePointer := @dataof(g_vertex_shader)
+        vertexSourcePointer := @dataof(VertexShader)
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, null)
         glCompileShader(vertexShaderID)
 
         fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
-        pixelSourcePointer := @dataof(g_pixel_shader)
+        pixelSourcePointer := @dataof(PixelShader)
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, null)
         glCompileShader(fragmentShaderID)
 

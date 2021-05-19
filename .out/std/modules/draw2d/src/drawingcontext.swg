@@ -33,7 +33,7 @@ struct DrawingContext
 impl DrawingContext
 {
     #[swag.inline]
-    protected func newCommand(using self, cmd: CommandId)->*Command
+    func newCommand(using self, cmd: CommandId)->*Command
     {
         debug.assert(drawingBegin)
         ptr := commandBuffer.emplaceAddress(1)
