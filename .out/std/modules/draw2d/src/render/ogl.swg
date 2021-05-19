@@ -1,28 +1,19 @@
-#global namespace render
-using core, win32, ogl, gdi32, mthx
+using core, ogl, mthx
 
-#[swag.opaque]
-public struct Ogl
+public struct BaseRenderOgl
 {
-    dd:  *DrawingDevice
-    hDC: HDC
-    hRC: HGLRC
-
+    dd:                 *DrawingDevice
     vertexbuffer:       GLuint
     vertexBufferCount:  uint
     programID:          GLuint
     orthoMatrix:        Matrix4x4
 }
 
-impl Ogl
+impl BaseRenderOgl
 {
-    public func init(using self, device: *DrawingDevice, hdc: HDC) throw
+    public func init(using self, device: *DrawingDevice)
     {
-        debug.assert(hDC == null)
         dd = device
-        hDC = hdc
-        hRC = try wglCreateContext(hdc)
-        try wglMakeCurrent(hDC, hRC)
 
         glInitExtensions()
         createShaders()
@@ -31,12 +22,6 @@ impl Ogl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
-    }
-
-    public func drop(using self)
-    {
-        catch wglMakeCurrent(null, null)
-        catch wglDeleteContext(hRC)
     }
 
     func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
@@ -99,12 +84,6 @@ impl Ogl
 
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
-    }
-
-    public func flush(using self)
-    {
-        glFlush()
-        assume gdi32.SwapBuffers(hDC)
     }
 
     const g_vertex_shader = @"

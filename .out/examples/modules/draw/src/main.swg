@@ -8,7 +8,7 @@ const W = 1024
 const H = 1024
 var dev: DrawingDevice
 var cdc: DrawingContext
-var renderer: render.Ogl
+var renderer: RenderOgl
 
 func display()
 {
@@ -18,7 +18,7 @@ func display()
     cdc.drawSolidTriangle(@{10,10,0},@{100,10,0},@{100,100,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 
-    renderer.draw(&cdc)
+    BaseRenderOgl.draw(&renderer, &cdc)
     renderer.flush()
 }
 
