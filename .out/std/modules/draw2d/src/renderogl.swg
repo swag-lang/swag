@@ -67,6 +67,8 @@ impl RenderOgl
         glUniformMatrix4fv(matrixID, 1, GL_FALSE, &orthoMatrix.m[0, 0])
 	    glViewport(0, 0, width, height)
 
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
 
@@ -105,10 +107,10 @@ impl RenderOgl
     const g_pixel_shader = @"
         #version 330 core
         in vec4 vcolor;
-        out vec3 color;
+        out vec4 color;
         void main()
         {
-            color.xyz = vcolor.xyz;
+            color = vcolor;
         }
     "@
 

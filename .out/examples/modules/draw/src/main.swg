@@ -15,11 +15,12 @@ func display()
 {
     cdc.begin()
     cdc.clear(@{0,0,0})
-    cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, @{0.1,0,0,0})
-    cdc.drawSolidTriangle(@{ff+10,10},@{ff+100,10},@{ff+100,100},@{0,0,1,0},@{0,1,0,0},@{1,0,0,0})
+    cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, @{1,1,1,1})
+    cdc.drawSolidRect(0,0,50,50, @{0,0,0,1})
+    cdc.drawSolidTriangle(@{ff+10,10},@{ff+100,10},@{ff+100,100},@{0,0,1,0.5},@{0,1,0,0.5},@{1,0,0,0.5})
     cdc.end()
 
-    ff += 0.1
+    //ff += 0.1
 
     renderer.draw(&cdc)
     renderer.flush()
