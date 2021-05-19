@@ -3280,7 +3280,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // Do not change AST if this is code inside a generic function
         if (!node->ownerFct || !(node->ownerFct->flags & AST_IS_GENERIC))
         {
-            if (match->dependentVar)
+            if (match->dependentVar && !identifierRef->previousResolvedNode)
             {
                 identifierRef->resolvedSymbolOverload = match->dependentVar->resolvedSymbolOverload;
                 identifierRef->resolvedSymbolName     = match->dependentVar->resolvedSymbolOverload->symbol;

@@ -2223,6 +2223,16 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
+    if (fromType->kind == TypeInfoKind::Struct && toTypePointer->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto toStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool ok = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok)
+            return true;
+    }
+
     // Lambda to *void
     if (fromType->kind == TypeInfoKind::Lambda)
     {

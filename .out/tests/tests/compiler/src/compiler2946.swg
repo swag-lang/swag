@@ -18,5 +18,5 @@ impl BaseRenderOgl
 #test
 {
     var render: RenderOgl
-    BaseRenderOgl.toto(&render)
+    render.toto()
 }

@@ -18,7 +18,7 @@ func display()
     cdc.drawSolidTriangle(@{10,10,0},@{100,10,0},@{100,100,0},@{0,0,1},@{0,1,0},@{1,0,0})
     cdc.end()
 
-    BaseRenderOgl.draw(&renderer, &cdc)
+    renderer.draw(&cdc)
     renderer.flush()
 }
 
