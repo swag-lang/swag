@@ -12,9 +12,11 @@ public struct RenderOgl
 
 impl RenderOgl
 {
-    func init(using self, device: *DrawingDevice)
+    func init(using self, device: *DrawingDevice, w, h: s32)
     {
         dd = device
+        width = w
+        height = h
 
         glInitExtensions()
         createShaders()

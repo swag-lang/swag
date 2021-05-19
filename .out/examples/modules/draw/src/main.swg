@@ -117,8 +117,7 @@ func messageLoop()
         hWnd := createWindow()
 
         hDC = GetDC(hWnd)
-        renderer.init(&dev, hDC)
-        renderer.resize(W, H)
+        renderer.init(&dev, hDC, W, H)
 
         display()
         ShowWindow(hWnd, SW_SHOW)

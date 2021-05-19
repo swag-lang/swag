@@ -11,13 +11,13 @@ public struct RenderOglWin32
 
 public impl RenderOglWin32
 {
-    func init(using self, device: *DrawingDevice, hdc: HDC) throw
+    func init(using self, device: *DrawingDevice, hdc: HDC, w, h: s32) throw
     {
         debug.assert(hDC == null)
         hDC = hdc
         hRC = try wglCreateContext(hdc)
         try wglMakeCurrent(hDC, hRC)
-        base.init(device)
+        base.init(device, w, h)
     }
 
     func drop(using self)
