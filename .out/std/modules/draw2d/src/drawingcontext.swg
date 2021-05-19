@@ -3,7 +3,7 @@ using core, mthx, ogl
 
 struct VertexLayout
 {
-    pos:    Vector3
+    pos:    Vector2
     color:  Color3
 }
 
@@ -57,14 +57,14 @@ impl DrawingContext
         drawingBegin = false
     }
 
-    func clear(using self, color: Vector3, flags: u32 = GL_COLOR_BUFFER_BIT)
+    func clear(using self, color: Color3, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
         cmd.params.clear.color = color
         cmd.params.clear.flags = flags
     }
 
-    func drawSolidTriangle(using self, p1, p2, p3: Vector3, c1, c2, c3: Color3)
+    func drawSolidTriangle(using self, p1, p2, p3: Vector2, c1, c2, c3: Color3)
     {
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count

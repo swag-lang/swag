@@ -4,7 +4,6 @@ public struct RenderOgl
 {
     dd:                 *DrawingDevice
     vertexbuffer:       GLuint
-    vertexBufferCount:  uint
     programID:          GLuint
     orthoMatrix:        Matrix4x4
     width, height:      s32
@@ -23,8 +22,8 @@ impl RenderOgl
 
         glGenBuffers(1, &vertexbuffer)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector3))
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
     }
 
     public func resize(using self, width, height: s32)
@@ -58,15 +57,9 @@ impl RenderOgl
 
     public func draw(using self, dc: *DrawingContext)
     {
-        // Rebind vertex buffer if vertex count has increased
-        if vertexBufferCount < dc.vertexBuffer.count
-        {
-            vertexBufferCount = dc.vertexBuffer.count
-            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-            glBufferData(GL_ARRAY_BUFFER, vertexBufferCount * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
-        }
-
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
+        glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
+
         glUseProgram(programID)
 
         var matrixID: GLint = glGetUniformLocation(programID, @dataof("mvp"))
@@ -98,13 +91,13 @@ impl RenderOgl
 
     const g_vertex_shader = @"
         #version 330 core
-        layout(location = 0) in vec3 vertexPosition;
+        layout(location = 0) in vec2 vertexPosition;
         layout(location = 1) in vec3 vertexColor;
         uniform mat4 mvp;
         out vec3 vcolor;
         void main()
         {
-            gl_Position = mvp * vec4(vertexPosition, 1);
+            gl_Position = mvp * vec4(vertexPosition, 0, 1);
             vcolor = vertexColor;
         }
     "@
