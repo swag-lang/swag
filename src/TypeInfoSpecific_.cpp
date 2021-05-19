@@ -90,8 +90,14 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
     if (!TypeInfo::isSame(to, isSameFlags))
+    {
+        auto me = TypeManager::concreteType(this, CONCRETE_ALIAS);
+        if (me != this)
+            return me->isSame(to, isSameFlags);
         return false;
+    }
 
     if (to->kind == TypeInfoKind::Alias)
     {
@@ -235,8 +241,10 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
     auto other = static_cast<TypeInfoArray*>(to);
     if (count != other->count)
         return false;
+
     if (!pointedType->isSame(other->pointedType, isSameFlags))
         return false;
+
     SWAG_ASSERT(!sizeOf || !other->sizeOf || sizeOf == other->sizeOf);
     return true;
 }

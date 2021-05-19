@@ -1,5 +1,4 @@
 #global public
-using core.math
 
 struct Vector3
 {

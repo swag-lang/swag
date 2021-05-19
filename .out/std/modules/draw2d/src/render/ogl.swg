@@ -11,6 +11,7 @@ public struct Ogl
     vertexbuffer:       GLuint
     vertexBufferCount:  uint
     programID:          GLuint
+    orthoMatrix:        Matrix4x4
 }
 
 impl Ogl
@@ -75,9 +76,8 @@ impl Ogl
         glUseProgram(programID)
 
         var matrixID: GLint = glGetUniformLocation(programID, @dataof("mvp"))
-        var mvp: [4, 4] f32
-        ortho(1024, 0, 0, 1024, 0, 1000, mvp)
-        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0])
+        ortho(1024, 0, 0, 1024, 0, 1000, orthoMatrix.m)
+        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &orthoMatrix.m[0, 0])
 
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
