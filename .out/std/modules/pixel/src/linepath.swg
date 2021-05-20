@@ -29,12 +29,16 @@ struct LinePath
 
 impl LinePath
 {
+    // Reset the path
     func clear(using self)
     {
         elements.clear()
         isOpened, isClosed, isComplex = false
+        startPoint = Vector2.Zero
+        endPoint = Vector2.Zero
     }
 
+    // Move the current cursor position
     func moveTo(using self, pt: Vector2)
     {
         // First point
@@ -59,6 +63,7 @@ impl LinePath
         endPoint = pt
     }
 
+    // Add a line from the previous point to 'pt'
     func lineTo(using self, pt: Vector2)
     {
         // Too close from the last point. Just dismiss
