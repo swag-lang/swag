@@ -1,5 +1,5 @@
 #global public
-using core, mthx, drawing
+using core, mthx, Drawing
 
 impl DrawingContext
 {

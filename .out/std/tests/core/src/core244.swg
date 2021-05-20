@@ -1,5 +1,5 @@
 
-using core.drawing
+using core.Drawing
 
 //#[Swag.printbc]
 #test

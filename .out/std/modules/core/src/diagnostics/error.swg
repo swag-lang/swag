@@ -1,6 +1,6 @@
 #global public
 
-namespace error
+namespace Console
 {
     // Fatal error
     // Exit the process with code -1

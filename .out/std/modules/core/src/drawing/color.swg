@@ -1,4 +1,4 @@
-#global namespace drawing
+#global namespace Drawing
 #global public
 using Swag
 

@@ -1,7 +1,7 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using core, win32, ogl, gdi32, drawing
+using core, win32, ogl, gdi32, Drawing
 
 var testMode: bool
 var hDC: HDC

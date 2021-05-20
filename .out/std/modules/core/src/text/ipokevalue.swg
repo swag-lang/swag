@@ -8,7 +8,7 @@ namespace parse
     }
 }
 
-impl parse.IPokeValue for drawing.Color
+impl parse.IPokeValue for Drawing.Color
 {
     func poke(using self, buf: string)->string throw
     {

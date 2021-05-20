@@ -1,4 +1,4 @@
-using core, drawing
+using core, Drawing
 
 impl Image
 {

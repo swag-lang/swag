@@ -19,7 +19,7 @@ func findFirstLine(what: string)
         break
     }
 
-    if toProcess.isEmpty() error.fatal("error: cannot find '%'\n", what)
+    if toProcess.isEmpty() Console.fatal("error: cannot find '%'\n", what)
 
     #if !SINGLE
     {
@@ -42,7 +42,7 @@ func findLine(what: string)->*String
         return line
     }
 
-    error.fatal("error: cannot find '%'\n", what)
+    Console.fatal("error: cannot find '%'\n", what)
     return lines[0]
 }
 
@@ -110,7 +110,7 @@ func swapParams(what: string)->String
 {
     ///////////////////
     if @countof(@args()) <= 1
-        error.fatal("error: invalid number of arguments\n")
+        Console.fatal("error: invalid number of arguments\n")
 
     var fctExtension: String = @args()[1] //"glCompileShader "
     fctExtension += " "
@@ -120,7 +120,7 @@ func swapParams(what: string)->String
     curPath := path.getDirectoryName(#location.fileName)
     glewPath := path.combine(curPath, "glew.h")
     lines = catch file.readAllLines(glewPath)
-    if @err error.fatal("error: cannot read '%' (%)\n", glewPath, @err)
+    if @err Console.fatal("error: cannot read '%' (%)\n", glewPath, @err)
 
     findFirstLine(fctExtension)
     visit line1: toProcess

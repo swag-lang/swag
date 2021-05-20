@@ -1,11 +1,11 @@
 #test
 {
-    @assert(@countof(@typeof(drawing.Color).interfaces) == 1)
+    @assert(@countof(@typeof(Drawing.Color).interfaces) == 1)
 }
 
 //#global skip
 //#global testerror
-namespace drawing
+namespace Drawing
 {
     struct Color
     {
@@ -20,7 +20,7 @@ namespace parse
         xoxo: func(self)
     }
 
-    impl IParse for drawing.Color
+    impl IParse for Drawing.Color
     {
         func xoxo(using self)
         {

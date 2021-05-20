@@ -14,7 +14,7 @@ namespace parse
         xoxo: func(self)
     }
 
-    impl IParse for drawing.Color
+    impl IParse for Drawing.Color
     {
         func xoxo(using self)
         {
