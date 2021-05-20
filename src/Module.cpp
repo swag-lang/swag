@@ -593,8 +593,6 @@ bool Module::removeDependency(AstNode* importNode)
 
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
-    Utf8& nameSpaceName = importNode->token.text;
-
     scoped_lock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
     {
@@ -621,7 +619,6 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
     dep->node             = importNode;
     dep->name             = importNode->token.text;
-    dep->forceNamespace   = nameSpaceName;
     dep->location         = tokenLocation.text;
     dep->version          = tokenVersion.text.empty() ? "?.?.?" : tokenVersion.text;
     dep->tokenLocation    = tokenLocation;

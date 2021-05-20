@@ -49,9 +49,8 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
                 file->name = filename;
                 file->path = publicPath + "/";
                 file->path += filename;
-                file->path           = normalizePath(file->path);
-                file->imported       = depModule;
-                file->forceNamespace = dep->forceNamespace;
+                file->path     = normalizePath(file->path);
+                file->imported = depModule;
                 files.push_back(file);
             }
         });

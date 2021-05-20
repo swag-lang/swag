@@ -286,7 +286,8 @@ JobResult SyntaxJob::execute()
 
     Utf8 npName = sourceFile->module->name;
     if (sourceFile->imported)
-        npName = sourceFile->forceNamespace;
+        npName = sourceFile->imported->name;
+
     if (!npName.empty())
     {
         auto namespaceNode         = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);

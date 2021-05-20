@@ -45,7 +45,6 @@ struct SourceFile : public File
     AstAttrUse*    astAttrUse    = nullptr;
     Utf8           externalContent;
     Utf8           scopeName;
-    Utf8           forceNamespace;
     bool           isExternal            = false;
     SourceFile*    fileForSourceLocation = nullptr;
 

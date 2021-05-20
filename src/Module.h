@@ -44,7 +44,6 @@ struct ModuleDependency
     Token               tokenLocation;
     Token               tokenVersion;
     Utf8                name;
-    Utf8                forceNamespace;
     Utf8                location;
     Utf8                locationParam;
     Utf8                resolvedLocation;
