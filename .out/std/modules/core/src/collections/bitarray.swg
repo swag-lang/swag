@@ -78,7 +78,7 @@ public impl BitArray
         if count != other.count
             return false
 
-        loop math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,safe 5, 1)
         {
             if buffer[@index] != other.buffer[@index]
                 return false
@@ -97,10 +97,10 @@ public impl BitArray
         countBits := 0'uint
 
         label up
-        loop idx: math.max(count >>,safe 5, 1)
+        loop idx: Math.max(count >>,safe 5, 1)
         {
             var shift: u32 = 1
-            loop math.min(remainingBits, 32)
+            loop Math.min(remainingBits, 32)
             {
                 label down
                 #macro
@@ -191,7 +191,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,safe 5, 1)
             buffer[@index] &= other.buffer[@index]
     }
 
@@ -201,7 +201,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,safe 5, 1)
             buffer[@index] |= other.buffer[@index]
     }
 
@@ -211,7 +211,7 @@ public impl BitArray
     {
         Debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,safe 5, 1)
             buffer[@index] ^= other.buffer[@index]
     }
 
@@ -219,7 +219,7 @@ public impl BitArray
     func not(using self)
     {
         if !count return
-        loop math.max(count >>,safe 5, 1)
+        loop Math.max(count >>,safe 5, 1)
             buffer[@index] = ~buffer[@index]
     }
 }

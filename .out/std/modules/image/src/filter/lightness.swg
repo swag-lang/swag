@@ -9,9 +9,9 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        level := cast(s32) (math.clamp(factor, -1, 1) * 255)
+        level := cast(s32) (Math.clamp(factor, -1, 1) * 255)
         var convArr: [256] u8 = ?
-        loop i: 256 convArr[i] = cast(u8) math.clamp(i + level, 0, 255)
+        loop i: 256 convArr[i] = cast(u8) Math.clamp(i + level, 0, 255)
 
         f := &convArr[0]
         visitPixels(f)

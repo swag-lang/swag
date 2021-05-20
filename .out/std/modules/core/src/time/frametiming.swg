@@ -34,7 +34,7 @@ impl FrameTiming
         // Delta time
         diff := newTick - prevTick
         dt = cast(f32) (cast(f64) diff / preciseFrequency())
-        dt = math.clamp(dt, dtMin, dtMax)
+        dt = Math.clamp(dt, dtMin, dtMax)
 
         // Setup for next frame
         prevTick = newTick

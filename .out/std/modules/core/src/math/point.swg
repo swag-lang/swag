@@ -1,5 +1,5 @@
 #global public
-#global namespace math
+#global namespace Math
 
 // A simple Point with 2 coordinates X and Y
 struct Point
@@ -89,21 +89,21 @@ impl Point
         self.y += y
     }
 
-    // Perform a math.round operation on all the coordinates
+    // Perform a Math.round operation on all the coordinates
     func round(using self)
     {
         x = acast round(x)
         y = acast round(y)
     }
 
-    // Perform a math.trunc operation on all the coordinates
+    // Perform a Math.trunc operation on all the coordinates
     func trunc(using self)
     {
         x = acast trunc(x)
         y = acast trunc(y)
     }
 
-    // Perform a math.ceil operation on all the coordinates
+    // Perform a Math.ceil operation on all the coordinates
     func ceil(using self)
     {
         x = acast ceil(x)

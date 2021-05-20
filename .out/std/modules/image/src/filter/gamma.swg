@@ -9,11 +9,11 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        g := 1.0 / math.clamp(level, math.ConstF32.Epsilon, 5)
+        g := 1.0 / Math.clamp(level, Math.ConstF32.Epsilon, 5)
 
         var convArr: [256] u8 = ?
         loop i: 256
-            convArr[i] = cast(u8) (math.pow(i / 255.0, g) * 255)
+            convArr[i] = cast(u8) (Math.pow(i / 255.0, g) * 255)
 
         f := &convArr[0]
         visitPixels(f)

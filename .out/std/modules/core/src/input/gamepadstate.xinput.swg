@@ -7,20 +7,20 @@ private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 #run
 {
     using GamePadButton
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_A)] = A
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_B)] = B
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_X)] = X
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
-    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)] = A
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)] = B
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)] = X
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
+    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
 }
 
 // Returns true if the corresponding 'padIndex' is connected
@@ -34,8 +34,8 @@ func isConnected(padIndex: u32)->bool
 func setVibration(padIndex: u32, left, right: f32) throw
 {
     var vibration: XINPUT_VIBRATION = ?
-    vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * math.saturate(left))
-    vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * math.saturate(right))
+    vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(left))
+    vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(right))
     res := XInputSetState(padIndex, &vibration)
     switch res
     {

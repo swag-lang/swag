@@ -1,5 +1,5 @@
 #global public
-#global namespace math
+#global namespace Math
 using Swag
 
 private const Rev8Arr: [256] u8 = @[

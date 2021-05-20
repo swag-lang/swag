@@ -88,7 +88,7 @@ private
         switch rmode
         {
         case Bilinear:
-            res := math.abs(resf)
+            res := Math.abs(resf)
             return res < 1 ? 1 - res : 0
         case Bicubic:
             if resf < -2.0 return 0
@@ -98,8 +98,8 @@ private
             if resf < 2.0  return ((2.0 - resf) * (2.0 - resf) * (2.0 - resf) / 6.0)
             return 0
         case Gaussian:
-            if math.abs(resf) > 3.0 return 0
-            return math.exp(-resf * resf * 0.5) / 0.79788456080287
+            if Math.abs(resf) > 3.0 return 0
+            return Math.exp(-resf * resf * 0.5) / 0.79788456080287
         case Hermite:
             if resf < -1.0 return 0
             if resf < 0.0  return (-2.0 * resf - 3.0) * resf * resf + 1.0
@@ -144,7 +144,7 @@ private
             cscale = 1.0
         }
 
-        windowSize := 2 * (cast(int) math.ceil(width) + 1)
+        windowSize := 2 * (cast(int) Math.ceil(width) + 1)
 
         var res: retval
         res = allocContributions(lineSize, windowSize)
@@ -153,8 +153,8 @@ private
         {
             center := u / scale
 
-            left  := math.max(cast(int) math.floor(center - width), 0)
-            right := math.min(cast(int) math.ceil(center + width), srcSize - 1)
+            left  := Math.max(cast(int) Math.floor(center - width), 0)
+            right := Math.min(cast(int) Math.ceil(center + width), srcSize - 1)
 
             // Cut edge points to fit in filter window in case of spill-off
             if right - left + 1 > windowSize

@@ -167,7 +167,7 @@ impl FloatExt
     // but not normalized.
     func multiply(using self, g: FloatExt)
     {
-        (hi, lo) := math.mul64(mant, g.mant)
+        (hi, lo) := Math.mul64(mant, g.mant)
         // Round up.
         mant = hi + (lo >> 63)
         exp = exp + g.exp + 64
@@ -196,7 +196,7 @@ impl FloatExt
         10000000000000000000,
     ]
 
-    // Frexp10 is an analogue of math.Frexp for decimal powers. It scales
+    // Frexp10 is an analogue of Math.Frexp for decimal powers. It scales
     // f by an approximate power of ten 10^-exp, and returns exp10, so
     // that f*10^exp10 has the same value as the old f, up to an ulp,
     // as well as the index of 10^-exp in the powersOfTen table.

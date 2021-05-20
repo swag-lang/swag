@@ -125,8 +125,8 @@ impl Decoder
     {
         chunk := try readChunk(ch)
         header = dref cast(const *Header) @dataof(chunk.datas)
-        header.width = math.bigEndianToNative(header.width)
-        header.height = math.bigEndianToNative(header.height)
+        header.width = Math.bigEndianToNative(header.width)
+        header.height = Math.bigEndianToNative(header.height)
 
         if header.width == 0 or header.height == 0
             throw "invalid dimensions"
@@ -161,9 +161,9 @@ impl Decoder
         bb := cast(s16) up
         cc := cast(s16) upLeft
         p  := aa + bb - cc
-        pa := math.abs(p - aa)
-        pb := math.abs(p - bb)
-        pc := math.abs(p - cc)
+        pa := Math.abs(p - aa)
+        pb := Math.abs(p - bb)
+        pc := Math.abs(p - cc)
         if pa <= pb and pa <= pc
             return left
         if pb <= pc

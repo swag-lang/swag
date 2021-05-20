@@ -1,6 +1,6 @@
 #global public
 #global namespace Input
-using math
+using Math
 
 enum GamePadError: string
 {

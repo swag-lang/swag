@@ -82,10 +82,10 @@ impl Image
             {
                 for dy := -kernelSize; dy <= kernelSize; dy += 1
                 {
-                    ny := math.clamp(y + dy, 0, h - 1)
+                    ny := Math.clamp(y + dy, 0, h - 1)
                     for dx := -kernelSize; dx <= kernelSize; dx += 1
                     {
-                        nx := math.clamp(x + dx, 0, w - 1)
+                        nx := Math.clamp(x + dx, 0, w - 1)
                         p := px + (nx * b8) + (ny * w8)
                         ks0 := dref ks
                         bs += cast(s32) p[0] * ks0
@@ -100,9 +100,9 @@ impl Image
             if ksum > 1 bs, gs, rs /= ksum
 
             dpix := params.dstImage.pixels + (x * b8) + (y * w8)
-            dpix[0] = cast(u8) math.clamp(bs, 0, 255)
-            dpix[1] = cast(u8) math.clamp(gs, 0, 255)
-            dpix[2] = cast(u8) math.clamp(rs, 0, 255)
+            dpix[0] = cast(u8) Math.clamp(bs, 0, 255)
+            dpix[1] = cast(u8) Math.clamp(gs, 0, 255)
+            dpix[2] = cast(u8) Math.clamp(rs, 0, 255)
             if image.bpp == 32 dpix[3] = pix[3]
         }
     }

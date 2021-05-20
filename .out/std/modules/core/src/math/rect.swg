@@ -1,5 +1,5 @@
 #global public
-#global namespace math
+#global namespace Math
 
 // A simple rectangle with 4 coordinates
 struct Rect
@@ -112,7 +112,7 @@ impl Rect
         return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
-    // Perform a math.round operation on all the coordinates
+    // Perform a Math.round operation on all the coordinates
     func round(using self)
     {
         x = acast round(x)
@@ -121,7 +121,7 @@ impl Rect
         height = acast round(height)
     }
 
-    // Perform a math.trunc operation on all the coordinates
+    // Perform a Math.trunc operation on all the coordinates
     func trunc(using self)
     {
         x = acast trunc(x)
@@ -130,7 +130,7 @@ impl Rect
         height = acast trunc(height)
     }
 
-    // Perform a math.ceil operation on all the coordinates
+    // Perform a Math.ceil operation on all the coordinates
     func ceil(using self)
     {
         x = acast ceil(x)

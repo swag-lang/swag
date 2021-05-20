@@ -214,7 +214,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 
     // Force synchrone execution if range is too small
     wh := @countof(range) / offset
-    numWorkers := math.min(getNumWorkers(), cast(u32) wh)
+    numWorkers := Math.min(getNumWorkers(), cast(u32) wh)
     if isSynchrone() or numWorkers <= 1
     {
         visitSlice(range, offset, userData)
@@ -282,7 +282,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Force synchrone execution if range is too small
-    numWorkers := math.min(getNumWorkers(), count)
+    numWorkers := Math.min(getNumWorkers(), count)
     if isSynchrone() or numWorkers <= 1
     {
         visitFor(0, count - 1, userData)

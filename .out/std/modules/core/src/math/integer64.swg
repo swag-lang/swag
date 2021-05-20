@@ -1,7 +1,7 @@
 // https://github.com/golang/go/blob/master/src/math/bits/bits.go
 
 #global public
-#global namespace math
+#global namespace Math
 using Swag
 
 #[Swag.safety("overflow", false)]

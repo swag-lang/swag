@@ -467,7 +467,7 @@ impl Decoder
                             if (k + r) > 63 throw "decode error"
                             if k < prevNumSet
                             {
-                                n := math.min(r, prevNumSet - k)
+                                n := Math.min(r, prevNumSet - k)
                                 kt := k
                                 while n
                                 {
@@ -496,7 +496,7 @@ impl Decoder
 
                             if k < prevNumSet
                             {
-                                n := math.min(16'u32, cast(u32) (prevNumSet - k))
+                                n := Math.min(16'u32, cast(u32) (prevNumSet - k))
                                 kt := k
                                 while n
                                 {
@@ -618,7 +618,7 @@ impl Decoder
             {
                 dcval := descale(cast(s32) dataPtr[0], Pass1Bits + 3)
                 dcval +=,safe 128
-                dcval = math.clamp(dcval, 0's16, 255's16)
+                dcval = Math.clamp(dcval, 0's16, 255's16)
 
                 pdstPtr[8 * 0] = cast(u8) dcval
                 pdstPtr[8 * 1] = cast(u8) dcval

@@ -1,5 +1,5 @@
 #global public
-#global namespace math
+#global namespace Math
 using Swag
 
 #[constexpr]

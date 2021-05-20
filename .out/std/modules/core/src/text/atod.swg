@@ -789,13 +789,13 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 
 	// Multiplication.
     v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
-	(xHi, xLo) := math.mul64(man, v)
+	(xHi, xLo) := Math.mul64(man, v)
 
 	// Wider Approximation.
 	if xHi & 0x1FF == 0x1FF and xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
-		(yHi, yLo) := math.mul64(man, v)
+		(yHi, yLo) := Math.mul64(man, v)
 
 		mergedHi := xHi
         mergedLo := xLo + yHi

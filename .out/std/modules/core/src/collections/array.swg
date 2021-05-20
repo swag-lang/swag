@@ -195,7 +195,7 @@ impl Array
     {
         if newCount <= capacity
             return
-        newCapacity := math.max(capacity * 2, newCount)
+        newCapacity := Math.max(capacity * 2, newCount)
         reserve(newCapacity)
     }
 

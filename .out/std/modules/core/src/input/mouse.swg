@@ -1,6 +1,6 @@
 #global public
 #global namespace Input
-using math
+using Math
 
 // Allows reading position and button click information from mouse
 struct Mouse

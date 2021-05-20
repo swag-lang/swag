@@ -10,9 +10,9 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        h  := math.clamp(hue, 0.0, 1.0)
-        s  := math.clamp(saturation, 0.0, 1.0)
-        st := math.clamp(strength, 0.0, 1.0)
+        h  := Math.clamp(hue, 0.0, 1.0)
+        s  := Math.clamp(saturation, 0.0, 1.0)
+        st := Math.clamp(strength, 0.0, 1.0)
 
         // Precompute bgr depending on luminance
         var convArr: [256, 3] f32 = ?
@@ -43,14 +43,14 @@ impl Image
         {
             params := cast(*@typeof(f)) userData
 
-            min := math.min(pix[0], pix[1], pix[2])
-            max := math.max(pix[0], pix[1], pix[2])
+            min := Math.min(pix[0], pix[1], pix[2])
+            max := Math.max(pix[0], pix[1], pix[2])
             lum := cast(u8) ((max + min) / 2)
 
             precalc := params.item0 + (lum * 3)
-            pix[0] = cast(u8) math.lerp(cast(f32) pix[0], precalc[0], params.st)
-            pix[1] = cast(u8) math.lerp(cast(f32) pix[1], precalc[1], params.st)
-            pix[2] = cast(u8) math.lerp(cast(f32) pix[2], precalc[2], params.st)
+            pix[0] = cast(u8) Math.lerp(cast(f32) pix[0], precalc[0], params.st)
+            pix[1] = cast(u8) Math.lerp(cast(f32) pix[1], precalc[1], params.st)
+            pix[2] = cast(u8) Math.lerp(cast(f32) pix[2], precalc[2], params.st)
         }
     }
 }

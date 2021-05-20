@@ -344,14 +344,14 @@ impl String
     {
         if wantedCapacity <= capacity
             return
-        newCapacity := math.max(capacity * 2, wantedCapacity)
+        newCapacity := Math.max(capacity * 2, wantedCapacity)
         reserve(newCapacity)
     }
 
     // Reserve room for at least 'newCapacity' bytes
     func reserve(using self, newCapacity: uint)
     {
-        length = math.min(length, newCapacity)
+        length = Math.min(length, newCapacity)
         if allocator == null
             allocator = @getcontext().allocator
 
@@ -372,7 +372,7 @@ impl String
         {
             oldBuffer := buffer
             buffer = acast Memory.alloc(newCapacity, allocator)
-            Memory.copy(buffer, oldBuffer, math.min(newCapacity, length + 1))
+            Memory.copy(buffer, oldBuffer, Math.min(newCapacity, length + 1))
             capacity = newCapacity
         }
 

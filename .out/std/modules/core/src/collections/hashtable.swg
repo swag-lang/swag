@@ -107,7 +107,7 @@ impl HashTable
     // Reserve 'newCapacity' elements in the table.
     func reserve(using self, newCapacity: uint)
     {
-        reqCapacity := math.max(newCapacity, 32)
+        reqCapacity := Math.max(newCapacity, 32)
         if(reqCapacity <= capacity)
             return
 

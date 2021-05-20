@@ -59,7 +59,7 @@ const FixedDist: [32]u8 = @[
 #[Swag.inline]
 func reverse16(n: u16, bits: u8)->u16
 {
-    r := math.reverse(n)
+    r := Math.reverse(n)
     r >>= 16 - bits
     return r
 }
@@ -237,7 +237,7 @@ impl DeflateDecoder
     {
         stream.init(buf)
         adler.init()
-        windowSize = math.min(winSize, DeflateMaxDistance)
+        windowSize = Math.min(winSize, DeflateMaxDistance)
     }
 
     // Decompress the associated stream

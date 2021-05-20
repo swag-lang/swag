@@ -1,5 +1,5 @@
 #global public
-using core.math
+using core.Math
 
 struct Vector2
 {
@@ -120,7 +120,7 @@ impl Vector2
     func normalize(using self)
     {
         norm := sqrt((x * x) + (y * y))
-        Debug.assert(!math.isZeroEpsilon(norm))
+        Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         x *= norm
         y *= norm
@@ -130,7 +130,7 @@ impl Vector2
     func toNormalize(using self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
-        Debug.assert(!math.isZeroEpsilon(norm))
+        Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
         return Vector2{x * norm, y * norm}
     }
@@ -139,7 +139,7 @@ impl Vector2
     func normalizeSafe(using self)
     {
         norm := sqrt((x * x) + (y * y))
-        if math.isZeroEpsilon(norm)
+        if Math.isZeroEpsilon(norm)
         {
             x = 0
             y = 0
@@ -155,7 +155,7 @@ impl Vector2
     func toNormalizeSafe(using self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
-        if math.isZeroEpsilon(norm)
+        if Math.isZeroEpsilon(norm)
             return Zero
         norm = 1 / norm
         return Vector2{x * norm, y * norm}

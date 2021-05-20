@@ -3,7 +3,7 @@ using core
 
 #test
 {
-    var v: math.NumericArray'(f32, 4)
+    var v: Math.NumericArray'(f32, 4)
     v.setAll(1)
     v.add(10)
     @assert(v[0] == 11)

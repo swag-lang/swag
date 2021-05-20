@@ -5,7 +5,7 @@
 func eatCount(str: string, count: uint)->string
 {
     countof := @countof(str)
-    cpt := math.min(count, countof)
+    cpt := Math.min(count, countof)
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 

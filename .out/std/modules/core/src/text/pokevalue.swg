@@ -16,7 +16,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     // structures specials functions
     if arr.count >= arr.capacity
     {
-        newCapacity := math.max(arr.count + 1, arr.capacity * 2)
+        newCapacity := Math.max(arr.count + 1, arr.capacity * 2)
         newBuffer := Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity

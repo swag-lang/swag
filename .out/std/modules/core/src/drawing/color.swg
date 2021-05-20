@@ -48,10 +48,10 @@ impl Color
     #[inline]
     func setArgbf(self, a, r, g, b: f32)
     {
-        self.a = acast (math.clamp(a, 0, 1) * 255)
-        self.r = acast (math.clamp(r, 0, 1) * 255)
-        self.g = acast (math.clamp(g, 0, 1) * 255)
-        self.b = acast (math.clamp(b, 0, 1) * 255)
+        self.a = acast (Math.clamp(a, 0, 1) * 255)
+        self.r = acast (Math.clamp(r, 0, 1) * 255)
+        self.g = acast (Math.clamp(g, 0, 1) * 255)
+        self.b = acast (Math.clamp(b, 0, 1) * 255)
     }
 
     // Just set r, g and b components.
@@ -71,9 +71,9 @@ impl Color
     func setRgbf(self, r, g, b: f32)
     {
         self.a = 255
-        self.r = acast (math.clamp(r, 0, 1) * 255)
-        self.g = acast (math.clamp(g, 0, 1) * 255)
-        self.b = acast (math.clamp(b, 0, 1) * 255)
+        self.r = acast (Math.clamp(r, 0, 1) * 255)
+        self.g = acast (Math.clamp(g, 0, 1) * 255)
+        self.b = acast (Math.clamp(b, 0, 1) * 255)
     }
 
     // Retreive all components as floating point values between 0 and 1
@@ -182,9 +182,9 @@ impl Color
             return cast(u8) (v * 255)
         }
 
-        _h := math.clamp(h, 0.0, 1.0)
-        _l := math.clamp(l, 0.0, 1.0)
-        _s := math.clamp(s, 0.0, 1.0)
+        _h := Math.clamp(h, 0.0, 1.0)
+        _l := Math.clamp(l, 0.0, 1.0)
+        _s := Math.clamp(s, 0.0, 1.0)
 
         if _s == 0
         {
@@ -208,8 +208,8 @@ impl Color
         var result: retval = ?
 
         (rf, gf, bf) := toRgbf()
-        max := math.max(rf, gf, bf)
-        min := math.min(rf, gf, bf)
+        max := Math.max(rf, gf, bf)
+        min := Math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
         delta := max - min
         if delta == 0
@@ -248,9 +248,9 @@ impl Color
     {
         var result: retval = ?
         result.a = col0.a
-        result.r = cast(u8) math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
-        result.g = cast(u8) math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
-        result.b = cast(u8) math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
+        result.r = cast(u8) Math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
+        result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
+        result.b = cast(u8) Math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
         return result
     }
 
@@ -258,10 +258,10 @@ impl Color
     func getBlend(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
-        result.a = cast(u8) math.lerp(cast(f32) col0.a, cast(f32) col1.a, factor)
-        result.r = cast(u8) math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
-        result.g = cast(u8) math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
-        result.b = cast(u8) math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
+        result.a = cast(u8) Math.lerp(cast(f32) col0.a, cast(f32) col1.a, factor)
+        result.r = cast(u8) Math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
+        result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
+        result.b = cast(u8) Math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
         return result
     }
 }

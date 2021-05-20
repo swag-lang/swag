@@ -228,7 +228,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
 		return 0, n, syntaxError(fnParseFloat, s)
 	}
 	b, ovf := d.floatBits(&f64info)
-	f = math.f64frombits(b)
+	f = Math.f64frombits(b)
 	if ovf {
 		err = rangeError(fnParseFloat, s)
 	}

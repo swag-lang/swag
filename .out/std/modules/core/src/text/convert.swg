@@ -320,20 +320,20 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     {
         case s8:
             signedValue = cast(s64) dref cast(*s8) dataof
-            value = cast(u64) math.abs(signedValue)
+            value = cast(u64) Math.abs(signedValue)
         case s16:
             signedValue = cast(s64) dref cast(*s16) dataof
-            value = cast(u64) math.abs(signedValue)
+            value = cast(u64) Math.abs(signedValue)
         case s32:
             signedValue = cast(s64) dref cast(*s32) dataof
-            value = cast(u64) math.abs(signedValue)
+            value = cast(u64) Math.abs(signedValue)
         case s64, int:
             signedValue = dref cast(*s64) dataof
             // Cannot take the absolute value of Swag.S64.Min
             if signedValue == Swag.S64.Min
                 overflowS64 = true
             else
-                value = cast(u64) math.abs(signedValue)
+                value = cast(u64) Math.abs(signedValue)
         case u8:
             value = cast(u64) dref cast(*u8) dataof
         case u16:

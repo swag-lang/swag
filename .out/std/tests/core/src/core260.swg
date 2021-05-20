@@ -3,7 +3,7 @@ using core
 #test
 {
     x := 0b00000000_00110101'u16
-    x = math.reverse(x)
+    x = Math.reverse(x)
     @assert(x == 0b10101100_00000000)
 }
 
@@ -11,37 +11,37 @@ using core
 {
     {
         x := 0b00000001'u8
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b10000000)
     }
 
     {
         x := 0b00110101'u8
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b10101100)
     }
 
     {
         x := 0b00110101_00000000'u16
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b00000000_10101100)
     }
 
     {
         x := 0b1'u32
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b10000000_00000000_00000000_00000000)
     }
 
     {
         x := 0b10000000_10000000_00000000_00000000'u32
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b00000000_00000000_00000001_00000001)
     }
 
     {
         x := 0b11000000_10000000_00000000_00000000_00000000_00000000_00000000_00000000'u64
-        x = math.reverse(x)
+        x = Math.reverse(x)
         @assert(x == 0b00000000_00000000_00000000_00000000_00000000_00000000_00000001_00000011)
     }
 }

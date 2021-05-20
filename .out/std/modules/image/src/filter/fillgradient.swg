@@ -16,11 +16,11 @@ impl Image
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                b := cast(u8) math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
-                g := cast(u8) math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
-                r := cast(u8) math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
+                b := cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
+                g := cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
+                r := cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
                 a := 255'u8
-                if PF.bpp() == 32 a = cast(u8) math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
+                if PF.bpp() == 32 a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 setPixelRGBA8'PF(pix, r, g, b, a)
                 pix += bpp8
             }

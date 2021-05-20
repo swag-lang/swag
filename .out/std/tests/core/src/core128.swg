@@ -16,7 +16,7 @@ using core, core.strconv
     @assert(assume parse.getB64("11").value == 3)
     @assert(assume parse.getB64("0000101").value == 5)
 
-    @assert(math.isEqualEpsilon(assume parse.getF64("1.0").value, 1.0))
-    @assert(math.isEqualEpsilon(assume parse.getF64("1.1").value, 1.1))
-    @assert(math.isEqualEpsilon(assume parse.getF64("-128.456").value, -128.456, 0.001))
+    @assert(Math.isEqualEpsilon(assume parse.getF64("1.0").value, 1.0))
+    @assert(Math.isEqualEpsilon(assume parse.getF64("1.1").value, 1.1))
+    @assert(Math.isEqualEpsilon(assume parse.getF64("-128.456").value, -128.456, 0.001))
 }

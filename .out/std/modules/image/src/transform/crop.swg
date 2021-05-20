@@ -17,10 +17,10 @@ impl Image
     // Divide image size by 2 with a bilinear 2x2 filter
     public func crop(using self, x, y, w, h: s32)
     {
-        cx := math.clamp(x, 0, width - 1)
-        cy := math.clamp(y, 0, height - 1)
-        cw := math.min(w, width - cx)
-        ch := math.min(h, height - cy)
+        cx := Math.clamp(x, 0, width - 1)
+        cy := Math.clamp(y, 0, height - 1)
+        cw := Math.min(w, width - cx)
+        ch := Math.min(h, height - cy)
         Debug.assert(cw > 0 and ch > 0)
 
         allocWorkingBuffer(cw, ch, pf)
@@ -31,10 +31,10 @@ impl Image
     // Divide image size by 2 with a bilinear 2x2 filter
     public func toCrop(using self, x, y, w, h: s32)->Image
     {
-        cx := math.clamp(x, 0, width - 1)
-        cy := math.clamp(y, 0, height - 1)
-        cw := math.min(w, width - cx)
-        ch := math.min(h, height - cy)
+        cx := Math.clamp(x, 0, width - 1)
+        cy := Math.clamp(y, 0, height - 1)
+        cw := Math.min(w, width - cx)
+        ch := Math.min(h, height - cy)
         Debug.assert(cw > 0 and ch > 0)
 
         var result: retval = create(cw, ch, pf)

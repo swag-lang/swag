@@ -67,7 +67,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 {
     length := @countof(src)
     otherLength := @countof(dst)
-    minLen := math.min(length, otherLength)
+    minLen := Math.min(length, otherLength)
 
     var result: s32
     if ignoreCase
@@ -82,7 +82,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
             c1 += isUpperUtf8(c1) ? 0x20 : 0
             c2 += isUpperUtf8(c2) ? 0x20 : 0
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0 return math.sign(result)
+            if result != 0 return Math.sign(result)
         }
     }
     else
@@ -90,6 +90,6 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         result = Memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
-    if result != 0 return math.sign(result)
+    if result != 0 return Math.sign(result)
     return length <=> otherLength
 }

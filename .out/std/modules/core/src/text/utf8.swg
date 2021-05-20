@@ -658,7 +658,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
                 c2 = unicode.toLower(c2)
                 result = cast(s32) c1 - cast(s32) c2
                 if result != 0
-                    return math.sign(result)
+                    return Math.sign(result)
             }
 
             length -= eat1

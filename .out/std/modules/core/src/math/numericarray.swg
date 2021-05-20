@@ -1,5 +1,5 @@
 #global export
-#global namespace math
+#global namespace Math
 using Swag
 
 struct(T, N: u32) NumericArray

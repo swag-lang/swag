@@ -1,6 +1,6 @@
 #global public
 #global namespace Input
-using math
+using Math
 
 // Represents specific information about the state of the controller,
 // including the current state of buttons and sticks

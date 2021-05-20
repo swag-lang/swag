@@ -27,7 +27,7 @@ func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, man
 		case "e"'u8, "E"'u8:
 			prec = digs.nd - 1
 		case "f"'u8:
-			prec = math.max(digs.nd-digs.dp, 0)
+			prec = Math.max(digs.nd-digs.dp, 0)
 		case "g"'u8, "G"'u8:
 			prec = digs.nd
 		}
@@ -83,7 +83,7 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
 
 		if prec > digs.dp
             prec = digs.nd
-		return fmtF(dst, neg, forceSign, digs, math.max(prec - digs.dp, 0))
+		return fmtF(dst, neg, forceSign, digs, Math.max(prec - digs.dp, 0))
 	}
 }
 
@@ -106,7 +106,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
     {
 		dst.addByte(g_CultureInfo.numberFormat.decimalSeparator)
 		i := 1's64
-		m := math.min(d.nd, prec + 1)
+		m := Math.min(d.nd, prec + 1)
 		if i < m
         {
 			dst.addBytes(@mkslice(&d.d[i], m - i))
@@ -164,7 +164,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 	// integer, padded with zeros as needed.
 	if d.dp > 0
     {
-		m := math.min(d.nd, d.dp)
+		m := Math.min(d.nd, d.dp)
 		dst.addBytes(@mkslice(&d.d[0], m))
 		while m < d.dp
         {
@@ -397,9 +397,9 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSig
             switch fmt
             {
             case "e"'u8, "E"'u8:
-                prec = math.max(digs.nd-1, 0)
+                prec = Math.max(digs.nd-1, 0)
             case "f"'u8:
-                prec = math.max(digs.nd-digs.dp, 0)
+                prec = Math.max(digs.nd-digs.dp, 0)
             case "g"'u8, "G"'u8:
                 prec = digs.nd
             }
