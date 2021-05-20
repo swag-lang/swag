@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Time
-using win32
+using Win32
 
 #[Swag.callback]
 private func timerEntry(param: *void)

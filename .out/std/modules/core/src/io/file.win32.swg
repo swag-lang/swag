@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace File
-using win32
+using Win32
 
 // Returns true if the given file exists
 func exists(fullname: string)->bool

@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Input
-using win32, Math
+using Win32, Math
 
 // Returns the current mouse position
 func getMousePos()->Point

@@ -1,7 +1,7 @@
 #global export
 #global foreignlib "gdi32"
 #global if #os == "windows"
-using Swag, win32
+using Swag, Win32
 
 struct PIXELFORMATDESCRIPTOR
 {

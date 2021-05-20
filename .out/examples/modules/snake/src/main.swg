@@ -36,7 +36,7 @@ https://youtu.be/e8lYLYlrGLg
 Last Updated: 24/06/2017
 */
 #global if #os == "windows"
-using win32, Core.Input
+using Win32, Core.Input
 
 var nScreenWidth  = 120'u32
 var nScreenHeight = 30'u32

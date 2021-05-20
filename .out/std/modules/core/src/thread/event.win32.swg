@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Sync
-using win32
+using Win32
 
 #[Swag.nocopy]
 struct Event

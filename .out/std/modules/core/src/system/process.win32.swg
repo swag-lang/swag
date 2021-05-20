@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Env
-using win32, StrConv
+using Win32, StrConv
 
 // Exit the current process
 func exit(exitCode: u32) => ExitProcess(exitCode)

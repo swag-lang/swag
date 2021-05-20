@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Env
-using win32
+using Win32
 
 const EndLine = "\r\n"
 

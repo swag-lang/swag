@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Input
-using xinput, win32
+using xinput, Win32
 
 private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 #run
@@ -41,7 +41,7 @@ func setVibration(padIndex: u32, left, right: f32) throw
     {
     case ERROR_SUCCESS:                 return
     case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
-    default:                            try win32.setError(res)
+    default:                            try Win32.setError(res)
     }
 }
 
@@ -56,7 +56,7 @@ impl GamePadState
         {
         case ERROR_SUCCESS:                 break
         case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
-        default:                            try win32.setError(res)
+        default:                            try Win32.setError(res)
         }
 
         // GamePadButton pressed state

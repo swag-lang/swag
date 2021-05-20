@@ -1,7 +1,7 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using Core, win32, ogl, gdi32, draw2d, mthx
+using Core, Win32, ogl, gdi32, draw2d, mthx
 using Core.Drawing
 
 var hDC: HDC

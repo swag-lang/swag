@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Directory
-using win32
+using Win32
 
 // Returns true if the given directory exists
 func exists(dirname: string)->bool

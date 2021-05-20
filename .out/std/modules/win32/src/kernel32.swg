@@ -433,7 +433,7 @@ namespace win32priv
     {
         h := win32priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
         if h == null
-            try win32.setError(GetLastError())
+            try Win32.setError(GetLastError())
         return h
     }
 

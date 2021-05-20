@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace File
-using win32
+using Win32
 
 impl enum FileAttributes
 {

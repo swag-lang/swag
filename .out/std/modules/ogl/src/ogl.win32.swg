@@ -1,7 +1,7 @@
 #global export
 #global foreignlib "opengl32"
 #global if #os == "windows"
-using Swag, win32
+using Swag, Win32
 
 alias HGLRC = const *void
 alias getExtensionAddress = wglGetProcAddress

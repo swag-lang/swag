@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Threading
-using win32
+using Win32
 
 // Sleep the current thread for a given amount of milliseconds
 func sleep(ms: u32)

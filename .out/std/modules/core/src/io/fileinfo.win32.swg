@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace File
-using win32
+using Win32
 
 // Returns various file informations
 func getInfo(fullname: string)->FileInfo throw

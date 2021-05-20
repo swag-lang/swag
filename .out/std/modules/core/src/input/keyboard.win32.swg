@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Input
-using Swag, win32
+using Swag, Win32
 
 private
 {

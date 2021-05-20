@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Time
-using win32
+using Win32
 
 private var g_perfCounterFreq: u64
 

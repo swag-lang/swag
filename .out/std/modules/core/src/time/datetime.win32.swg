@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global namespace Time
-using win32
+using Win32
 
 impl DateTime
 {

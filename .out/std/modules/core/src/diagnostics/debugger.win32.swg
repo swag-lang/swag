@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Debugger
-using win32
+using Win32
 
 // Returns true if a debugger is attached to the current process
 func isAttached()       => cast(bool) IsDebuggerPresent()

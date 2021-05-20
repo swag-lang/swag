@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Path
-using win32
+using Win32
 
 // Returns true if the given path name is valid
 func isValidPathName(fullname: string)->bool
