@@ -4,6 +4,6 @@ using core
 //#[Swag.printbc]
 #test
 {
-	x := env.getCommandLineArgs()
+	x := Env.getCommandLineArgs()
 	@assert(@countof(x) >= 1)
 }

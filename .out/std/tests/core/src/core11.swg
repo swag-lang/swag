@@ -4,6 +4,6 @@ using core
 //#[Swag.printbc]
 #test
 {
-	x := env.getProcessorCount()
+	x := Env.getProcessorCount()
 	@assert(x > 0)
 }
