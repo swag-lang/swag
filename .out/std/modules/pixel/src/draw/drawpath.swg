@@ -1,15 +1,29 @@
 #global public
-using Core, Core.Math
+using Core, Core.Math, Core.Drawing
 
 impl Painter
 {
+    private func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)
+    {
+        cmd := newCommand(CommandId.DrawTriangles)
+        cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
+        cmd.params.drawTriangles.count = 3
+
+        ptr := vertexBuffer.emplaceAddress(3)
+        ptr.pos = p1; ptr.color = color
+        ptr += 1
+        ptr.pos = p2; ptr.color = color
+        ptr += 1
+        ptr.pos = p3; ptr.color = color
+    }
+
     private func drawCapTriangle(using self, p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
         v2 := Vector2{p.x + n.x, p.y + n.y}
-        drawSolidTriangle(v0, v1, v2, pen.color)
+        pushTriangle(v0, v1, v2, pen.color)
     }
 
     private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)
@@ -67,8 +81,8 @@ impl Painter
             v1 := vNew - vN1
             v3 := vPrev + vN1
             v2 := vNew + vN1
-            drawSolidTriangle(v0, v1, v3, pen.color)
-            drawSolidTriangle(v1, v3, v2, pen.color)
+            pushTriangle(v0, v1, v3, pen.color)
+            pushTriangle(v1, v3, v2, pen.color)
 
             vPrevN1 = vN1
             vPrev = vNew
