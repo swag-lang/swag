@@ -1,3 +1,4 @@
+#global namespace Math
 #global public
 
 struct Vector3

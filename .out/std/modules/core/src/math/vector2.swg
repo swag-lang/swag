@@ -1,5 +1,5 @@
+#global namespace Math
 #global public
-using Core.Math
 
 struct Vector2
 {
