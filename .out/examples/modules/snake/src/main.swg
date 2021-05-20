@@ -59,7 +59,7 @@ func main()
     nFoodX := 30
     nFoodY := 15
     nScore := 0
-    var rand: random.Rng
+    var rand: Random.Rng
     var keyb: Input.Keyboard
 
     var snakeArr: Array'SnakeSegment = @[ @{60,15}, @{61,15}, @{62,15}, @{63,15}, @{64,15}, @{65,15}, @{66,15}, @{67,15}, @{68,15}, @{69,15} ]

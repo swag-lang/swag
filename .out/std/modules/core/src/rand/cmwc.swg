@@ -1,5 +1,5 @@
 // George Marsaglia's CMWC (complementary multiply with carry) generator.
-#global namespace random
+#global namespace Random
 #global public
 
 struct CMWC4096

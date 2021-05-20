@@ -1,5 +1,5 @@
 
-using core.random
+using core.Random
 
 //#[Swag.printbc]
 #test

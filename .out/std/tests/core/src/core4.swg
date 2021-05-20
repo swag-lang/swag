@@ -1,12 +1,11 @@
-
 using core
 
-struct(T = random.MWC) Random
+struct(T = Random.MWC) Rdom
 {
 	rng: T
 }
 
-impl Random
+impl Rdom
 {
 	func nextF32(using self)->f32 => rng.nextU32() / cast(f32) Swag.U32.Max
 }
@@ -14,6 +13,6 @@ impl Random
 //#[Swag.printbc]
 #test
 {
-	var rng: Random
+	var rng: Rdom
 	@assert(rng.nextF32() != 0)
 }

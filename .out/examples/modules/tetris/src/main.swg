@@ -141,7 +141,7 @@ func main()
     nScore := 0'u32
 
     var vLines: Array's32
-    var rand: random.Rng
+    var rand: Random.Rng
     var builder: strconv.StringBuilder
     var keyb: Input.Keyboard
 

@@ -3,7 +3,7 @@ using core
 
 #test
 {
-    var rand: random.Rng
+    var rand: Random.Rng
     var arr: Array's32
 
     rand.seedU32(0)

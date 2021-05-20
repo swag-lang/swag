@@ -1,4 +1,4 @@
-#global namespace random
+#global namespace Random
 #global public
 
 struct(T = MWC) Rng
