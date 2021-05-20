@@ -7,7 +7,7 @@ namespace drawing
     }
 }
 
-namespace parse
+namespace Parse
 {
     interface IParse
     {

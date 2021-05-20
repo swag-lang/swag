@@ -1,4 +1,4 @@
-#global namespace parse
+#global namespace Parse
 using Swag
 
 // Used to add an element in a 'core.Array' without knowing the type of the element at compile time

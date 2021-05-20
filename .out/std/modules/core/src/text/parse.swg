@@ -1,5 +1,5 @@
 #global public
-#global namespace parse
+#global namespace Parse
 using Globalization, Swag
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value

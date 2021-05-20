@@ -1,6 +1,6 @@
 #global public
 
-namespace parse
+namespace Parse
 {
     public interface IPokeValue
     {
@@ -8,7 +8,7 @@ namespace parse
     }
 }
 
-impl parse.IPokeValue for Drawing.Color
+impl Parse.IPokeValue for Drawing.Color
 {
     func poke(using self, buf: string)->string throw
     {
@@ -18,24 +18,24 @@ impl parse.IPokeValue for Drawing.Color
 
         if latin1.isDigit(buf[0])
         {
-            (a, eat) = try parse.getU8(one)
+            (a, eat) = try Parse.getU8(one)
             one = tokenize.eatCount(one, eat)
 
             one = tokenize.eatSpaces(one)
-            (r, eat) = try parse.getU8(one)
+            (r, eat) = try Parse.getU8(one)
             one = tokenize.eatCount(one, eat)
 
             one = tokenize.eatSpaces(one)
-            (g, eat) = try parse.getU8(one)
+            (g, eat) = try Parse.getU8(one)
             one = tokenize.eatCount(one, eat)
 
             one = tokenize.eatSpaces(one)
-            (b, eat) = try parse.getU8(one)
+            (b, eat) = try Parse.getU8(one)
             one = tokenize.eatCount(one, eat)
         }
         else
         {
-            id := try parse.getIdentifier(one)
+            id := try Parse.getIdentifier(one)
             one = tokenize.eatCount(one, @countof(id))
             self.argb = cast(u32) Argb.fromName(id)
         }
