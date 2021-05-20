@@ -68,6 +68,12 @@ impl Vector2
     // Returns the dot product between two vectors
     func dot(using self, other: Self) => (x * other.x) + (y * other.y)
 
+    // Returns the perpendicular vector. 'axis' will give the sign
+    func cross(using self, axis: Float)->Vector2
+    {
+        return @{y * axis, -x * axis}
+    }
+
     // Set the vector to zero
     func clear(using self)
     {
