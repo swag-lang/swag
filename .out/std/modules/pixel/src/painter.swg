@@ -23,15 +23,15 @@ struct Command
     }
 }
 
-struct DrawingContext
+struct Painter
 {
     commandBuffer:  Array'Command
     vertexBuffer:   Array'VertexLayout
     drawingBegin:   bool
-    drawingPath:    PaintPath
+    drawingPath:    LinePath
 }
 
-impl DrawingContext
+impl Painter
 {
     #[Swag.inline]
     func newCommand(using self, cmd: CommandId)->*Command

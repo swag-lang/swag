@@ -1,7 +1,7 @@
 #global public
 using Core, Drawing, Core.Math
 
-impl DrawingContext
+impl Painter
 {
     func drawSolidLine(using self, start, end: Vector2, size = 1.0, color: Color = Argb.Black)
     {

@@ -1,7 +1,7 @@
 #global public
 using Core.Drawing
 
-impl DrawingContext
+impl Painter
 {
     func drawSolidRect(using self, left, top, width, height: f32, color: Color)
     {

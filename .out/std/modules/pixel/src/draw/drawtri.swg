@@ -1,7 +1,7 @@
 #global public
 using Core.Drawing, Core.Math
 
-impl DrawingContext
+impl Painter
 {
     func drawSolidTriangle(using self, p1, p2, p3: Vector2, color: Color)
     {

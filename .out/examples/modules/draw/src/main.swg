@@ -7,7 +7,7 @@ using Core.Drawing, Core.Math
 var hDC: HDC
 const W = 1024
 const H = 1024
-var cdc: DrawingContext
+var cdc: Painter
 var renderer: RenderOglWin32
 
 var ff: f32 = 0

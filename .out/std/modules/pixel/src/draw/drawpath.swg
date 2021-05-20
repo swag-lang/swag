@@ -1,9 +1,9 @@
 #global public
 using Core, Core.Math
 
-impl DrawingContext
+impl Painter
 {
-    func drawPath(using self, pth: PaintPath, pen: Pen)
+    func drawPath(using self, pth: LinePath, pen: Pen)
     {
         if pen.size == 0
             return

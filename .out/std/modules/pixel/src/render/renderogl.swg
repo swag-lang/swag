@@ -53,7 +53,7 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    public func draw(using self, dc: *DrawingContext)
+    public func draw(using self, dc: *Painter)
     {
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);

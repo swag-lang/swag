@@ -17,7 +17,7 @@ struct Element
     p1, p2:     Vector2
 }
 
-struct PaintPath
+struct LinePath
 {
     elements:       Array'Element
     startPoint:     Vector2
@@ -27,7 +27,7 @@ struct PaintPath
     isComplex:      bool
 }
 
-impl PaintPath
+impl LinePath
 {
     func clear(using self)
     {
