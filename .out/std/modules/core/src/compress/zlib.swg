@@ -1,5 +1,5 @@
 #global public
-#global namespace compress
+#global namespace Compress
 
 #[Swag.opaque]
 struct ZLibDecoder

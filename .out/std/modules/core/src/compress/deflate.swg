@@ -1,5 +1,5 @@
 // https://github.com/odin-lang/Odin/blob/master/core/compress/zlib/zlib.odin
-#global namespace compress
+#global namespace Compress
 
 const FastBits           = 9
 const FastMask           = (1 << FastBits) - 1

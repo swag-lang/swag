@@ -80,7 +80,7 @@ struct Header
 public struct Decoder
 {
     decOptions:     const *DecodeOptions
-    stream:         compress.CompressStream
+    stream:         Compress.CompressStream
     header:         Header
     inChannels:     s32
     outChannels:    s32
@@ -505,7 +505,7 @@ impl Decoder
             return result
 
         // deflate content
-        var dec: compress.ZLibDecoder
+        var dec: Compress.ZLibDecoder
         dcmpBuf = try dec.decompress(iDataBuf.toSlice())
 
         // defilter content

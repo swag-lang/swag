@@ -1,4 +1,4 @@
-#global namespace compress
+#global namespace Compress
 
 public struct CompressStream
 {
