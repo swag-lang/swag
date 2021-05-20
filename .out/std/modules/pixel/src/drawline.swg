@@ -11,7 +11,7 @@ impl DrawingContext
 
         var pen: Pen
         pen.size = size
-        //pen.color = Argb.Black
+        pen.color = color
         drawPath(drawingPath, pen)
     }
 }
