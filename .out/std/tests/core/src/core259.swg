@@ -13,4 +13,4 @@ impl IGen for core.String
     }
 }
 
-#assert reflection.hasInterface(@typeof(core.String), IGen)
+#assert Reflection.hasInterface(@typeof(core.String), IGen)

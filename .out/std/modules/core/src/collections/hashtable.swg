@@ -51,8 +51,8 @@ impl HashTable
                 }
                 #else
                 {
-                    var @alias0 = reflection.isStruct(K) ? cast(const *K) &`table[@index].key : `table[@index].key
-                    var @alias1 = reflection.isStruct(V) ? cast(const *V) &`table[@index].value : `table[@index].value
+                    var @alias0 = Reflection.isStruct(K) ? cast(const *K) &`table[@index].key : `table[@index].key
+                    var @alias1 = Reflection.isStruct(V) ? cast(const *V) &`table[@index].value : `table[@index].value
                 }
 
                 #mixin `stmt { break = break up; continue = break down; }
@@ -79,7 +79,7 @@ impl HashTable
             return
 
         // Need to drop every structs
-        #if reflection.hasDrop(@typeof(K)) or reflection.hasDrop(@typeof(V))
+        #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
         {
             loop i: capacity
             {
@@ -139,8 +139,8 @@ impl HashTable
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
     func add(using self, key: K, value: V)
-        #selectif reflection.canCopy(@typeof(K)) and
-                  reflection.canCopy(@typeof(V))
+        #selectif Reflection.canCopy(@typeof(K)) and
+                  Reflection.canCopy(@typeof(V))
     {
         grow()
 
@@ -233,7 +233,7 @@ impl HashTable
             loop capacity
             {
                 hashval := table[@index].hash
-                #if reflection.hasDrop(@typeof(K)) or reflection.hasDrop(@typeof(V))
+                #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
                 {
                     if hashval >= HASH_FIRST
                     {

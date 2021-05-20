@@ -28,7 +28,7 @@ public interface IDecoder
 // Register an image decoder
 public func(T) addDecoder()
 {
-    #assert reflection.hasInterface(@typeof(T), IDecoder)
+    #assert Reflection.hasInterface(@typeof(T), IDecoder)
 
     var decoder: Decoder = ?
     decoder.type = @typeof(T)

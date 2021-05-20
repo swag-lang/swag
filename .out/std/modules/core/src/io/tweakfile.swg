@@ -18,7 +18,7 @@ impl TweakFile
     // Register a new structure to be parsed
     func(T) registerFolder(using self, folder: *T)
     {
-        #assert(reflection.isStruct(T), "type should be a struct")
+        #assert(Reflection.isStruct(T), "type should be a struct")
         folders.add(@{@typeof(T), folder})
     }
 
@@ -71,7 +71,7 @@ impl TweakFile
                 throw format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
-            field := reflection.getField(currentFolder.type, id)
+            field := Reflection.getField(currentFolder.type, id)
             if !field throw format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
             one = tokenize.eatCount(one, @countof(id))
 

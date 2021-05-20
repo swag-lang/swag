@@ -1,5 +1,5 @@
 #global public
-#global namespace reflection
+#global namespace Reflection
 using Swag
 
 #[constexpr]

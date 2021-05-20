@@ -143,7 +143,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     type := cast(const *TypeInfo) @kindof(value)
 
     // This is a type
-    if reflection.isType(type)
+    if Reflection.isType(type)
     {
         ptrType := dref cast(*typeinfo) @dataof(value)
         buf.addBytes(ptrType.name)
@@ -151,7 +151,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A pointer, whatever type
-    if reflection.isPointer(type)
+    if Reflection.isPointer(type)
     {
         var fmt: ConvertFormatInt
         fmt.base = 16
@@ -164,9 +164,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // An enum value
-    if reflection.isEnum(type)
+    if Reflection.isEnum(type)
     {
-        enumName := reflection.getEnumName(type, @dataof(value))
+        enumName := Reflection.getEnumName(type, @dataof(value))
         if !enumName.isEmpty()
             buf.addBytes(@mkslice(enumName.buffer, cast(uint) enumName.length))
         else
@@ -175,7 +175,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A struct
-    if reflection.isStruct(type)
+    if Reflection.isStruct(type)
     {
         if type == ConvertFormatInt
             convertInt(buf, cast(ConvertFormatInt) value)
@@ -187,7 +187,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A slice
-    if reflection.isSlice(type)
+    if Reflection.isSlice(type)
     {
         ptrSlice := cast(const *TypeInfoSlice) type
         buf.addBytes("[")
@@ -207,7 +207,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A static array
-    if reflection.isArray(type)
+    if Reflection.isArray(type)
     {
         ptrArr := cast(const *TypeInfoArray) type
         buf.addBytes("[")
@@ -225,13 +225,13 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         return
     }
 
-    if reflection.isInteger(type)
+    if Reflection.isInteger(type)
     {
         convertInt(buf, value, strFormat)
         return
     }
 
-    if reflection.isFloat(type)
+    if Reflection.isFloat(type)
     {
         convertFloat(buf, value, strFormat)
         return

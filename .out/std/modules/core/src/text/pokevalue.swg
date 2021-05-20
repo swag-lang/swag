@@ -10,7 +10,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     sizeValue := valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if reflection.isStruct(valueType) valueTypeStruct = acast valueType
+    if Reflection.isStruct(valueType) valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
     // structures specials functions
@@ -23,7 +23,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 
         // Move old values to the new buffer
         Memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
-        if reflection.hasPostMove(valueType)
+        if Reflection.hasPostMove(valueType)
         {
             buf := newBuffer
             loop arr.count
@@ -61,7 +61,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     one := tokenize.eatSpaces(buf)
 
     // Array
-    if reflection.isStructOfName(type, "Array")
+    if Reflection.isStructOfName(type, "Array")
     {
         structType := cast(const *TypeInfoStruct) type
         valueType := structType.generics[0].pointedType
@@ -76,7 +76,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     }
 
     // Static array
-    if reflection.isArray(type)
+    if Reflection.isArray(type)
     {
         arrayType := cast(const *TypeInfoArray) type
         addrVal := cast(*u8) addr
@@ -94,16 +94,16 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     }
 
     // Enum
-    if reflection.isEnum(type)
+    if Reflection.isEnum(type)
     {
         enumType := cast(const *TypeInfoEnum) type
-        enumFlags := reflection.hasAttribute(enumType, "Swag.enumflags")
+        enumFlags := Reflection.hasAttribute(enumType, "Swag.enumflags")
 
         loop
         {
             one = tokenize.eatSpaces(one)
             id := try getIdentifier(one)
-            v := reflection.getEnumValue(type, id)
+            v := Reflection.getEnumValue(type, id)
             if !v throw format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
@@ -138,7 +138,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     }
 
     // Decode interface
-    if reflection.hasInterface(type, IPokeValue)
+    if Reflection.hasInterface(type, IPokeValue)
     {
         itf := @mkinterface(addr, type, IPokeValue)
         return try itf.poke(one)

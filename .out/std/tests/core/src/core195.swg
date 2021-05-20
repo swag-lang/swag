@@ -2,7 +2,7 @@
 
 #test
 {
-    //#assert reflection.hasDrop(std.file.FileInfo)
+    //#assert Reflection.hasDrop(std.file.FileInfo)
 
     dbg := DebugAllocator.create()
 

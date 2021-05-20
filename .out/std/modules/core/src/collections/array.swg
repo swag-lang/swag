@@ -35,7 +35,7 @@ impl Array
         buffer = null
         realloc(count)
 
-        #if reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(@typeof(T))
         {
             loop count
                 buffer[@index] =,nodrop oldBuffer[@index]
@@ -63,21 +63,21 @@ impl Array
     }
 
     func opIndex(using self, index: uint)->*T
-        #selectif reflection.isStruct(T)
+        #selectif Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
         return buffer + index
     }
 
     func opIndex(using self, index: uint)->T
-        #selectif !reflection.isStruct(T)
+        #selectif !Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
         return buffer[index]
     }
 
     func opIndexAffect(using self, index: uint, value: T)
-        #selectif reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index < count, "index out of range")
         buffer[index] = value
@@ -91,7 +91,7 @@ impl Array
 
     // Initializes an Array that contains values copied from the specified array
     func opAffect(using self, arr: const [..] T)
-        #selectif reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(@typeof(T))
     {
         clear()
         countof := @countof(arr)
@@ -99,7 +99,7 @@ impl Array
         dataof := @dataof(arr)
 
         grow(countof)
-        #if reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(@typeof(T))
         {
             loop i: countof
                 buffer[i] =,nodrop dataof[i]
@@ -130,7 +130,7 @@ impl Array
                 #if `ptr
                     var @alias0 = `scan
                 #else
-                    var @alias0 = reflection.isStruct(T) ? cast(const *T) `scan : `scan[0]
+                    var @alias0 = Reflection.isStruct(T) ? cast(const *T) `scan : `scan[0]
                 var @alias1 = @index
                 #mixin `stmt
             }
@@ -143,7 +143,7 @@ impl Array
             return
 
         // Need to drop every structs
-        #if reflection.hasDrop(@typeof(T))
+        #if Reflection.hasDrop(@typeof(T))
         {
             loop count
                 @drop(buffer + @index)
@@ -164,11 +164,11 @@ impl Array
         if buffer and newBuffer != buffer
         {
             @reloc(newBuffer, buffer, count)
-            #if reflection.hasPostMove(@typeof(T))
+            #if Reflection.hasPostMove(@typeof(T))
             {
                 @postmove(newBuffer, count)
             }
-            #elif reflection.canCopy(@typeof(T))
+            #elif Reflection.canCopy(@typeof(T))
             {
                 @postcopy(newBuffer, count)
                 @drop(buffer, count)
@@ -238,7 +238,7 @@ impl Array
     // Set the number of elements to 0
     func clear(using self)
     {
-        #if reflection.hasDrop(@typeof(T))
+        #if Reflection.hasDrop(@typeof(T))
         {
             loop count
                 @drop(buffer + @index)
@@ -249,7 +249,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     func add(using self, value: T)
-        #selectif reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
         buffer[count] =,nodrop value
@@ -259,7 +259,7 @@ impl Array
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
     func(G) addAny(using self, value: G)
-        #selectif reflection.canCopy(@typeof(G))
+        #selectif Reflection.canCopy(@typeof(G))
     {
         #if @typeof(G) != @typeof(T)
         {
@@ -293,7 +293,7 @@ impl Array
     // the value is added at the end of the array.
     // Order is preserved.
     func insertAt(using self, index: uint, value: T)
-        #selectif reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -326,7 +326,7 @@ impl Array
 
     // Append a slice to the end of this instance
     func add(using self, values: const [..] T)
-        #selectif reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(@typeof(T))
     {
         sliceCount := @countof(values)
         if !sliceCount
@@ -340,7 +340,7 @@ impl Array
         oldCount := count
         count += sliceCount
 
-        #if reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(@typeof(T))
         {
             destPtr := buffer + oldCount
             loop sliceCount
