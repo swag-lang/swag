@@ -765,9 +765,12 @@
 #define Msg0903 ", found token '%s' "
 #define Msg0904 "; did you miss 'var' or 'const' to declare a global variable ?"
 #define Msg0905 "unexpected end of line found in string literal"
+#define Msg0906 "initialization value cannot be evaluated at compile time"
+#define Msg0908 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
 
 #define Hnt0000 "this divisor expression is zero"
 #define Hnt0001 "this '@sqrt' is called with a negative value"
+#define Hnt0002 "this value can only be converted to type '%s' with a dynamic call to 'opAffect'"
 #define Hnt0011 "this type is '%s'"
 #define Hnt0012 "this return (%s) should have type '%s'"
 #define Hnt0013 "this should be on another line, or separated with ';'"

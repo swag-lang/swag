@@ -667,8 +667,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 if (!hasUserOp(context, "opAffect", node->type))
                 {
-                    Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
+                    Utf8 msg = format(Msg0908, leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
                     return context->report({node, msg});
+                }
+
+                if (symbolFlags & OVERLOAD_VAR_STRUCT)
+                {
+                    PushErrHint errh(format(Hnt0002, leftConcreteType->getDisplayName().c_str()));
+                    return context->report({node->assignment, Msg0906});
+                }
+
+                if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+                {
+                    PushErrHint errh(format(Hnt0002, leftConcreteType->getDisplayName().c_str()));
+                    return context->report({node->assignment, Msg0906});
                 }
 
                 SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment, false));
