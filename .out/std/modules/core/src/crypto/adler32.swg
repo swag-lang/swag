@@ -2,7 +2,7 @@
 // https://github.com/madler/zlib/blob/master/adler32.c
 
 #global public
-#global namespace hash
+#global namespace Hash
 
 private
 {

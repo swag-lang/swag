@@ -135,7 +135,7 @@ public struct DeflateDecoder
 {
     stream:     CompressStream
     windowSize: uint
-    adler:      hash.Adler32
+    adler:      Hash.Adler32
 }
 
 impl DeflateDecoder

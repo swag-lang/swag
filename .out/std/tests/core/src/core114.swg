@@ -6,7 +6,7 @@ struct Pt
     x, y: s32
 }
 
-impl hash.IHash32 for Pt
+impl Hash.IHash32 for Pt
 {
     func compute(const self)->u32 => 555
 }
@@ -20,5 +20,5 @@ impl hash.IHash32 for Pt
     @assert(arr.count == 3)
 
     var pt: Pt
-    @assert(hash.hash32(pt) == 555)
+    @assert(Hash.hash32(pt) == 555)
 }

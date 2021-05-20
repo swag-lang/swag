@@ -67,7 +67,7 @@ impl HashTable
     #[inline]
     func hashKey(key: K)->u32
     {
-        hashVal := hash.hash32(key)
+        hashVal := Hash.hash32(key)
         if hashVal < HASH_FIRST
             hashVal += HASH_FIRST
         return hashVal

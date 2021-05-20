@@ -1,5 +1,4 @@
-
-using core.hash
+using core.Hash
 
 #test
 {

@@ -1,4 +1,4 @@
-#global namespace hash
+#global namespace Hash
 using Swag
 
 // Hash the given value and returns the corresponding u32
@@ -17,11 +17,11 @@ public func(T) hash32(value: T)->u32
     }
     #elif @typeof(T) == string
     {
-        return hash.Crc32.compute(value)
+        return Hash.Crc32.compute(value)
     }
     #elif reflection.isStruct(T)
     {
-        #assert(reflection.hasInterface(T, IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'hash.IHash32' interface")
+        #assert(reflection.hasInterface(T, IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'Hash.IHash32' interface")
         #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
     }
     #else

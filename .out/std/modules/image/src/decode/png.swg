@@ -110,7 +110,7 @@ impl Decoder
         result.datas = @mkslice(stream.curPtr(), ch.length)
         stream.curByte += ch.length
 
-        var crc: hash.Crc32
+        var crc: Hash.Crc32
         crc.update(@mkslice(cast(*u8) &ch.type, 4))
         crc.update(result.datas)
 

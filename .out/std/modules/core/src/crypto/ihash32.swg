@@ -1,6 +1,6 @@
 #global public
 
-namespace hash
+namespace Hash
 {
     interface IHash32
     {
@@ -8,10 +8,10 @@ namespace hash
     }
 }
 
-impl hash.IHash32 for String
+impl Hash.IHash32 for String
 {
     func compute(using const self)->u32
     {
-        return hash.Crc32.compute(@mkslice(buffer, length))
+        return Hash.Crc32.compute(@mkslice(buffer, length))
     }
 }
