@@ -1,5 +1,5 @@
 #global public
-#global namespace time
+#global namespace Time
 
 // Represents an interval of time, stored as a 64 bits integer
 struct TimeSpan

@@ -1,5 +1,4 @@
-
-using core.time
+using core.Time
 
 var G = 0
 

@@ -26,7 +26,7 @@ impl Keyboard
         currentState.update()
 
         // Repetition
-        now := time.nowMilliseconds()
+        now := Time.nowMilliseconds()
         loop i: @countof(Key)
         {
             if !self.isKeyPressed(cast(Key) i)

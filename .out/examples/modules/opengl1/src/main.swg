@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32
 
 var hDC:    HDC
-var frame:  time.FrameTiming
+var frame:  Time.FrameTiming
 
 func display()
 {

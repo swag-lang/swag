@@ -89,7 +89,7 @@ func loadImg()
     }
 
     // Load image
-    var ti: time.Stopwatch
+    var ti: Time.Stopwatch
     ti.start()
     data := imagePath(imgName)
     myImage = assume image.load(data)
@@ -98,7 +98,7 @@ func loadImg()
     myImage.resize(512, 512)
 
     // Apply a filter
-    var te: time.Stopwatch
+    var te: Time.Stopwatch
     te.start()
     switch effectIdx
     {

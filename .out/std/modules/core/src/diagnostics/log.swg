@@ -24,7 +24,7 @@ struct Log
 {
     lock:       sync.Mutex
     buf:        strconv.StringBuilder
-    dt:         time.DateTime
+    dt:         Time.DateTime
     writers:    Array'ILogWriter
     prefix:     string
     flags:      LogFlags = Default
@@ -125,7 +125,7 @@ impl Log
     func print(using self, text: string, loc = #callerlocation)
     {
         // Get this first, to have the time of the call, before the lock
-        if flags & (.Date|.Time) dt = time.DateTime.now()
+        if flags & (.Date|.Time) dt = Time.DateTime.now()
 
         sync.scopedLock(&lock)
 

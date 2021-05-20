@@ -1,6 +1,6 @@
 #global public
 #global namespace file
-using time
+using Time
 
 struct FileInfo
 {

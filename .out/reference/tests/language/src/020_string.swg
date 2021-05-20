@@ -36,7 +36,7 @@
         #assert(a == "this is a string")
     }
 
-    // You can concatenate some values if the values are known at compile time. Use the '~' character for that
+    // You can concatenate some values if the values are known at compile Time. Use the '~' character for that
     {
         var a = "the devil number is " ~666
         @assert(a == "the devil number is 666")

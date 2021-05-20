@@ -1,5 +1,5 @@
 #global public
-#global namespace time
+#global namespace Time
 
 enum DayOfWeek
 {
