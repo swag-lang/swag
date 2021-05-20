@@ -1,4 +1,4 @@
-//using swag
+//using Swag
 
 struct(TTX) A
 {
@@ -21,11 +21,11 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0
-    
+
     {
         var x: A's32
         //x.fct()

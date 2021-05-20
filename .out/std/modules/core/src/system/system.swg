@@ -2,8 +2,8 @@
 #global namespace system
 
 // Push a new execution context for the given block of code
-#[swag.macro]
-func pushContext(cxt: swag.Context, stmt: code)
+#[Swag.macro]
+func pushContext(cxt: Swag.Context, stmt: code)
 {
     prev := @getcontext()
     defer @setcontext(prev)
@@ -16,8 +16,8 @@ func pushContext(cxt: swag.Context, stmt: code)
 }
 
 // Push a new allocator for the given block of code
-#[swag.macro]
-func pushAllocator(allocator: swag.IAllocator, stmt: code)
+#[Swag.macro]
+func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 {
     prev := @getcontext()
     defer @setcontext(prev)

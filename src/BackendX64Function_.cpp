@@ -2874,7 +2874,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
                 TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
                 ComputedValue     foreignValue;
-                typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+                typeFuncNode->attributes.getValue("Swag.foreign", "function", foreignValue);
                 SWAG_ASSERT(!foreignValue.text.empty());
                 name = foreignValue.text;
             }
@@ -3887,7 +3887,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     // Get function name
     ComputedValue foreignValue;
     Utf8          funcName;
-    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+    if (typeFuncBC->attributes.getValue("Swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         funcName = foreignValue.text;
     else
         funcName = nodeFunc->token.text;

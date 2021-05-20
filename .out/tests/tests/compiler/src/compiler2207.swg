@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: [4] string = @["AAA", "123", "CCC", "DDD"]

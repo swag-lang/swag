@@ -3,7 +3,7 @@ struct BB
     x, y: f32
 }
 
-#[swag.opaque]
+#[Swag.opaque]
 public struct AA2870
 {
     x: [4] BB

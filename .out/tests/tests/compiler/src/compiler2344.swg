@@ -1,4 +1,4 @@
-/*#[swag.constexpr, swag.macro]
+/*#[Swag.constexpr, Swag.macro]
 func toto(T: s32)->s32
 {
     #ast
@@ -16,10 +16,10 @@ func toto(T: s32)->s32
 const str = toto(10)
 #assert str == 111111111*/
 
-#[swag.inline]
+#[Swag.inline]
 func toto(t: typeinfo) => t.name
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     s := @typeof(bool)

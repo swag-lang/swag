@@ -1,4 +1,4 @@
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 using core
 
 struct Test

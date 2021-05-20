@@ -7,12 +7,12 @@ enum EN : s32
 	Green
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var val : EN = ?
-	
-	using EN	
+
+	using EN
 	val = EN.Red
 	@assert(val == 666)
 	val = Green

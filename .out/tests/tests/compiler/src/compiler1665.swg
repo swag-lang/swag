@@ -7,7 +7,7 @@ struct TT
     x, y, z:  s64 = 456
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func C(x: ...)
 {
     ptr1 := cast(const & TT) x[0]

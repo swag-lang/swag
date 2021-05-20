@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 var g: s64 = 5;
 var h = 5555;

@@ -8,7 +8,7 @@ struct Point
 
 const nullPoint: Point{10, 50}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	nullPoint.x = 10

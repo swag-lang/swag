@@ -16,7 +16,7 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	G = 0

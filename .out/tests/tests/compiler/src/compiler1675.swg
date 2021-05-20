@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     s := 1

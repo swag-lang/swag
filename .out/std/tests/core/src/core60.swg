@@ -1,7 +1,7 @@
 
 using core
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: Array's32

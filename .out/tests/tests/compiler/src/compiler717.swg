@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var ptr: *s32 = null

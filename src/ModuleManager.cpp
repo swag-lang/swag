@@ -109,7 +109,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
 
     ComputedValue moduleName;
-    typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
+    typeFunc->attributes.getValue("Swag.foreign", "module", moduleName);
     SWAG_ASSERT(!moduleName.text.empty());
 
     // Apply patch now, because module is already loaded

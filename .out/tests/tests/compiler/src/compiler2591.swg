@@ -1,6 +1,6 @@
 #global testerror
 
-using swag
+using Swag
 
 func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {

@@ -13,13 +13,13 @@ impl AA
     }
 }
 
-#[swag.inline]
+#[Swag.inline]
 func toto()->AA
 {
     return AA{};
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

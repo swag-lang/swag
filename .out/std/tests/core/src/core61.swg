@@ -1,7 +1,7 @@
 
 using core.console
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     ptr := &print

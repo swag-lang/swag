@@ -1,6 +1,4 @@
-
-
-#global testerror;
-namespace swag
+#global testerror
+namespace Swag
 {
 }

@@ -1,7 +1,7 @@
 //https://github.com/golang/go/blob/master/src/strconv/extfloat.go
 
 #global namespace strconv
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 
 // An extFloat represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the
@@ -131,7 +131,7 @@ impl FloatExt
         var result: retval
 
         mant = mantp
-        exp = expp - swag.F64.MantBits
+        exp = expp - Swag.F64.MantBits
         neg = negp
         if exp <= 0 and mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
         {
@@ -143,10 +143,10 @@ impl FloatExt
             return result
         }
 
-        expBiased := exp - swag.F64.Bias
+        expBiased := exp - Swag.F64.Bias
 
         result.upper = FloatExt{2*mant + 1, exp - 1, neg}
-        if mant != 1'u64 << swag.F64.MantBits or expBiased == 1
+        if mant != 1'u64 << Swag.F64.MantBits or expBiased == 1
             result.lower = FloatExt{2*mant - 1, exp - 1, neg}
         else
             result.lower = FloatExt{4*mant - 1, exp - 2, neg}

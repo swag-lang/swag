@@ -1,10 +1,10 @@
-#[swag.inline]
+#[Swag.inline]
 func toto(x: s64, y: s64 = 666)
 {
 	@assert(x + y == 667)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto(1)

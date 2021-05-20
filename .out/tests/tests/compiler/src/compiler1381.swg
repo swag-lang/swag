@@ -9,7 +9,7 @@ struct CompilerTarget
     // Backend common
     backendDebugInformations: bool  = false
     backendOptimizeLevel: u32       = 0
-    
+
     // Backend specific
     backendC: CompilerParamsBackendC
 }
@@ -23,7 +23,7 @@ struct CompilerParamsBackendC
 
 #test
 {
-    ptr := cast(const *swag.TypeInfoStruct) @typeof(CompilerTarget)
+    ptr := cast(const *Swag.TypeInfoStruct) @typeof(CompilerTarget)
     @assert(ptr.fields[0].offset == 0) // bytecodeBoundCheck
     @assert(ptr.fields[1].offset == 1) // bytecodeAnyCastCheck
     @assert(ptr.fields[2].offset == 4) // byteCodeMaxRecurse

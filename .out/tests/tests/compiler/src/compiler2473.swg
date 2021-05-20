@@ -3,31 +3,31 @@
 #global testerror
 #global testerror
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
-    var x: u8 = swag.U8.Max
+    var x: u8 = Swag.U8.Max
     x *= 2
 }
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
-    var x: u16 = swag.U16.Max
+    var x: u16 = Swag.U16.Max
     x *= 2
 }
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
-    var x: u32 = swag.U32.Max
+    var x: u32 = Swag.U32.Max
     x *= 2
 }
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
-    #[swag.safety("overflow", true)]
-    var x: u64 = swag.U64.Max
+    #[Swag.safety("overflow", true)]
+    var x: u64 = Swag.U64.Max
     x *= 2
 }

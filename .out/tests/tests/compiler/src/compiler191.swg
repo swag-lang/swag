@@ -4,5 +4,5 @@
 #global testerror;
 #run
 {
-	swag.@print;
+	Swag.@print;
 }

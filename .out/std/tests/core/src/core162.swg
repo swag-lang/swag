@@ -1,6 +1,6 @@
 ﻿using core.file
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var reader: TextReader

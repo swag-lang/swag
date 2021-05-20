@@ -1,5 +1,5 @@
 #global public
-using swag
+using Swag
 
 private const SmallSize = 16'uint
 #assert @sizeof(String) == 56
@@ -252,7 +252,7 @@ impl String
         growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
 
         idx := utf8.indexOf(toString(), what, 0, comparisonType)
-        while idx != swag.UInt.Max
+        while idx != Swag.UInt.Max
         {
             grow(length + growSize)
             memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
@@ -444,14 +444,14 @@ impl String
     }
 
     // Returns a string type
-    #[swag.inline]
+    #[Swag.inline]
     func toString(using const self)->string
     {
         return @mkstring(buffer, length)
     }
 
     // Returns a slice type
-    #[swag.inline]
+    #[Swag.inline]
     func toSlice(using self)->[..] u8
     {
         return @mkslice(buffer, length)

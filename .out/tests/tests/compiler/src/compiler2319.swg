@@ -1,5 +1,5 @@
-#[swag.macro]
-func pushContext(cxt: swag.Context, stmt: code)
+#[Swag.macro]
+func pushContext(cxt: Swag.Context, stmt: code)
 {
     prev := @getcontext()
     defer @setcontext(prev)

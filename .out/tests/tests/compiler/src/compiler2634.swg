@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[compiler]
 var G = 0

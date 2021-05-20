@@ -13,26 +13,26 @@ func tt1(x: s64)
     @print(x)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func tt2(x: f64, y: s64)
 {
     @print(x)
     @print(y)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func tt3(x: s64)->s64
 {
     return x + 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func tt4()->string
 {
     return "string"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func tt5()->[..] s64
 {
     return @[10, 20, 30, 40]
@@ -50,7 +50,7 @@ struct B
     y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func variadic(x: ...)
 {
     @print(cast(s64) @countof(x))
@@ -69,7 +69,7 @@ func variadic2(z: s32, x: ...)
     @print(cast(s64) z)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func retS()->B
 {
     var x: B = @{666,777}
@@ -98,7 +98,7 @@ func aaa(ptr: *s64)
     ptr[0] = 555
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     if false

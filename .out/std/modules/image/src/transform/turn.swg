@@ -9,10 +9,10 @@ impl Image
         T270
     }
 
-    #[swag.safety("", false)]
+    #[Swag.safety("", false)]
     private func doTurn(using self, dstImage: *Image, angle: TurnAngle)
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func(BPP: u8) doIt()
         {
             f := self

@@ -1,5 +1,5 @@
 #global public
-using swag
+using Swag
 
 const GL_SMOOTH_POINT_SIZE_RANGE = 0x0B12
 const GL_SMOOTH_POINT_SIZE_GRANULARITY = 0x0B13

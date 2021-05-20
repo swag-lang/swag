@@ -1,18 +1,18 @@
 ;
 ;
-using swag;
+using Swag;
 
-#run 
+#run
 {
 	@assert(1 == 1);
 }
 
-#run 
+#run
 {
 	@assert(2 > 1);
 }
 
-#run 
+#run
 {
 	@assert(!false);
 }

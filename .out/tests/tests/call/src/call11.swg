@@ -1,16 +1,16 @@
 using tests_foreign
 
-using swag
+using Swag
 var G: u64
 
-#[swag.callback]
+#[Swag.callback]
 func entry(param: *void)
 {
     ptr := cast(*u64) param
     G = ptr[1]
 }
 
-//#[swag.printbc, swag.optim(false)]
+//#[Swag.printbc, Swag.optim(false)]
 #test
 {
     tcf_createThread(&entry, 666)

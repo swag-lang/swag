@@ -6,7 +6,7 @@ struct point
 
 impl point
 {
-	//#[swag.printbc]
+	//#[Swag.printbc]
 	func set(self, _x: s32, _y: s32)
 	{
 		self.x = _x
@@ -14,7 +14,7 @@ impl point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: point

@@ -1,4 +1,4 @@
-#[swag.strict]
+#[Swag.strict]
 alias T = s32
 
 func toto(x: T)

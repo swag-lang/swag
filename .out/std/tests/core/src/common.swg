@@ -1,7 +1,7 @@
 using core, memory
 
 var g_dbg: DebugAllocator
-var g_cxt: swag.Context
+var g_cxt: Swag.Context
 
 protected func dataPath()->String
 {

@@ -1,6 +1,6 @@
 
 
-#[swag.macro]
+#[Swag.macro]
 func Visit(str: const [..] u8, user: code)
 {
     ptr := @dataof(str)
@@ -22,7 +22,7 @@ func Visit(str: const [..] u8, user: code)
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

@@ -7,12 +7,12 @@ func(T) valueof(x: any)->T
 	return ptr[0]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(xx: string, a: ...)
 {
 	@assert(valueof'string(a[0]) == "toto")
 	@assert(valueof's32(a[1]) == 10)
-	
+
 	/*
 	i := 0'u32
 	idx := 0
@@ -28,16 +28,16 @@ func toto(xx: string, a: ...)
 				@print(cast(s32) a[idx])
 				idx += 1
 			case cast(u8) 's':
-				@print(cast(string) a[idx])	
-				idx += 1				
+				@print(cast(string) a[idx])
+				idx += 1
 			}
 		}
-	
+
 		i += 1
 	}*/
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto("%s%d", "toto", 10)

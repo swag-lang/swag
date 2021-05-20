@@ -14,13 +14,13 @@ func sum(nums: ...)
 	@assert(valueof's32(nums[2]) == 30)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func average(nums: ...)
 {
     sum(nums)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	average(10, 20, 30)

@@ -3,9 +3,8 @@ struct A
     x: s64 = 10
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: A)
 {
     return
 }
-

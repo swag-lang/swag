@@ -6,7 +6,7 @@
 
 private
 {
-    #[swag.foreign("kernel32")]
+    #[Swag.foreign("kernel32")]
     {
         func RtlCopyMemory(destination: *void, source: const *void, length: uint);
         func RtlMoveMemory(destination: *void, source: const *void, length: uint);
@@ -15,7 +15,7 @@ private
 }
 
 ////////////////////////////////////////////////////////////
-#[swag.callback]
+#[Swag.callback]
 {
     func memcpy(dst: *void, src: const *void, size: uint)
     {

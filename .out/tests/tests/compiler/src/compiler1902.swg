@@ -13,4 +13,4 @@ struct(T, loc: Loc) TOTO
     var x: TOTO'(s32, #location){}
 }
 
-alias Loc = swag.CompilerSourceLocation
+alias Loc = Swag.CompilerSourceLocation

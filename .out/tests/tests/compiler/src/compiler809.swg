@@ -8,7 +8,7 @@ struct Point
 
 var pt: Point
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	using pt

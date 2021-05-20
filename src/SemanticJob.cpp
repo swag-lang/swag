@@ -258,7 +258,7 @@ JobResult SemanticJob::execute()
             {
                 // Can have been changed after the state change
                 // Example: FuncDeclType can change the AST_NO_SEMANTIC flag of the function itself in case
-                // of swag.compileif
+                // of Swag.compileif
                 if (!canDoSem)
                 {
                     nodes.pop_back();

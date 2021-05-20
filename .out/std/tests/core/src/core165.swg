@@ -1,7 +1,7 @@
 ﻿
 using core.file
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

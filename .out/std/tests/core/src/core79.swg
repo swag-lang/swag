@@ -1,6 +1,6 @@
 /*#import "icu"
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(icu.u_isUWhiteSpace("A"'rune) == 0)

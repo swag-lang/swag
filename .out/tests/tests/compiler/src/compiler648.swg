@@ -8,7 +8,7 @@ func(T) toto()
 	gx = x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 //#global testerror
 #test
 {

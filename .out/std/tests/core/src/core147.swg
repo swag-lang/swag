@@ -1,7 +1,7 @@
 
 using core, utf8, tokenize
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: String = "指toto指指指titi指tata"

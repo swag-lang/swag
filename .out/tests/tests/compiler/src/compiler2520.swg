@@ -1,5 +1,5 @@
-//#global #[swag.printbc]
-//#global #[swag.safety("", false)]
+//#global #[Swag.printbc]
+//#global #[Swag.safety("", false)]
 
 var t: [] struct {
     in:  const [..] rune

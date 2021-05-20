@@ -11,11 +11,11 @@ func T(color: COLOR)->s32
 	case COLOR.BLUE: 	res = 3;
 	default: 			res = 4;
 	}
-	
+
 	return res;
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var res : s32 = T(COLOR.RED);

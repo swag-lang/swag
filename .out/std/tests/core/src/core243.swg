@@ -1,7 +1,7 @@
 
 using core.drawing
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := Argb.Red

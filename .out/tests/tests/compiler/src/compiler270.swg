@@ -1,7 +1,7 @@
 
 #global testerror;
 
-#[swag.publ ic]
+#[Swag.publ ic]
 func other: ()
 {
 }

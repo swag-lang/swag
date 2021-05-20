@@ -3,7 +3,7 @@ struct Point
     x, y, z: f64
 }
 
-#[swag.tls]
+#[Swag.tls]
 var pt: Point = @{1, 2, 3}
 
 #test

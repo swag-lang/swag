@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[inline]
 func assert(expr: u32)

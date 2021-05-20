@@ -6,7 +6,7 @@ struct S
 
 impl S
 {
-    #[swag.macro, swag.noreturn]
+    #[Swag.macro, Swag.noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         for v := down; v <= up; v += 1

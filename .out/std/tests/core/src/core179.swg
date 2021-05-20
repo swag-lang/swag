@@ -15,7 +15,7 @@ func entry2(th: thread.Thread)
     //@print("end entry2\n")
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     catch th1.init(&entry1)

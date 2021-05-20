@@ -31,7 +31,7 @@ impl AA
     }*/
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->[1] AA
 {
     var ptrptr: *u8 = @alloc(10)
@@ -41,7 +41,7 @@ func titi()->[1] AA
     return @[{ptrptr}]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := titi()

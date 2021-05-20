@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	j := 0

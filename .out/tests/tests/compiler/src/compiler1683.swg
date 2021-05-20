@@ -8,11 +8,11 @@ struct TT
     value2: s64 = 456
 }
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 func C(x: any)
 {
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     ptr := cast(s32) x
 }
 

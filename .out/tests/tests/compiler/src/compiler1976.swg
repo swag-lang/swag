@@ -1,6 +1,6 @@
 //
 //#global testerror
-using swag
+using Swag
 
 struct(T) AA1976
 {

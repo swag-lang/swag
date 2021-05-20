@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct Entity
 {
@@ -27,7 +27,7 @@ func set1(monster: Monster)
     set(monster)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var e: Entity

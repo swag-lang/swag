@@ -3946,7 +3946,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
                 ComputedValue foreignValue;
-                typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+                typeFuncNode->attributes.getValue("Swag.foreign", "function", foreignValue);
                 SWAG_ASSERT(!foreignValue.text.empty());
 
                 llvm::FunctionType* T;
@@ -5038,7 +5038,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     // Get function name
     ComputedValue foreignValue;
     Utf8          funcName;
-    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+    if (typeFuncBC->attributes.getValue("Swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         funcName = foreignValue.text;
     else
         funcName = nodeFunc->token.text;

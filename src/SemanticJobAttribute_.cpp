@@ -179,7 +179,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeInfo->attributes.hasAttribute("swag.attributeMulti"))
+            if (!typeInfo->attributes.hasAttribute("Swag.attributeMulti"))
             {
                 if (result && result->isHere.contains(typeInfo))
                 {
@@ -193,13 +193,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                if (curAttr->attributes.getValue("swag.attributeUsage", "usage", value))
+                if (curAttr->attributes.getValue("Swag.attributeUsage", "usage", value))
                 {
                     auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage = value.reg.u32;
                 }
 
-                if (curAttr->attributes.hasAttribute("swag.attributeMulti"))
+                if (curAttr->attributes.hasAttribute("Swag.attributeMulti"))
                 {
                     auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage |= AttributeUsage::Multi;
@@ -255,12 +255,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("swag.safety", "what", attrWhat);
+                curAttr->attributes.getValue("Swag.safety", "what", attrWhat);
                 attrWhat.text.trim();
                 tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.safety", "value", attrValue);
+                curAttr->attributes.getValue("Swag.safety", "value", attrValue);
 
                 if (attrWhat.text.empty())
                 {
@@ -292,12 +292,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("swag.optim", "what", attrWhat);
+                curAttr->attributes.getValue("Swag.optim", "what", attrWhat);
                 attrWhat.text.trim();
                 tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.optim", "value", attrValue);
+                curAttr->attributes.getValue("Swag.optim", "value", attrValue);
 
                 if (attrWhat.text.empty())
                 {
@@ -319,19 +319,19 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == "selectif")
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.selectif", "value", attrValue);
+                curAttr->attributes.getValue("Swag.selectif", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
             else if (child->token.text == "pack")
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.pack", "value", attrValue);
+                curAttr->attributes.getValue("Swag.pack", "value", attrValue);
                 SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format(Msg0595, attrValue.reg.u8)}));
             }
             else if (child->token.text == "align")
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.align", "value", attrValue);
+                curAttr->attributes.getValue("Swag.align", "value", attrValue);
                 SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format(Msg0596, attrValue.reg.u8)}));
             }
 

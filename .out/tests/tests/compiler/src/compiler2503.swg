@@ -1,8 +1,8 @@
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    //#[swag.relative(1)]
+    //#[Swag.relative(1)]
     var x: bool
 }

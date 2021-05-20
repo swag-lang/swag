@@ -3,14 +3,14 @@
 
 var G = 0
 
-#[swag.macro]
+#[Swag.macro]
 func cstr(x: string)->string
 {
     defer G = 1
     return "toto"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := cstr("toto")

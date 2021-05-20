@@ -1,6 +1,6 @@
 var G: u64
 
-#[swag.callback]
+#[Swag.callback]
 func entry(param: u64)
 {
     G = param

@@ -1,37 +1,37 @@
 #global namespace hash
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 
-#[swag.inline]
+#[Swag.inline]
 private func f1(x, y, z: u32)->u32
 {
     return (x & y) | (~x & z)
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func f2(x, y, z: u32)->u32
 {
     return (x & z) | (y & ~z)
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func f3(x, y, z: u32)->u32
 {
     return x ^ (y ^ z)
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func f4(x, y, z: u32)->u32
 {
     return y ^ (x | ~z)
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func f5(x, n: u32)->u32
 {
     return (x << n) | (x >> (32 - n))
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func ff1(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f1(b, c, d) + x + ac
@@ -39,7 +39,7 @@ private func ff1(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func ff2(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f2(b, c, d) + x + ac
@@ -47,7 +47,7 @@ private func ff2(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func ff3(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f3(b, c, d) + x + ac
@@ -55,7 +55,7 @@ private func ff3(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[swag.inline]
+#[Swag.inline]
 private func ff4(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f4(b, c, d) + x + ac
@@ -221,7 +221,7 @@ public impl Md5
     func update(using self, data: const [..] u8)
     {
         // Only deal with 32 bits size
-        debug.assert(@countof(data) <= swag.U32.Max)
+        debug.assert(@countof(data) <= Swag.U32.Max)
 
         input := @dataof(data)
         inputLen := cast(u32) @countof(data)

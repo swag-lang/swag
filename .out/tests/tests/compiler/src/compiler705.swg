@@ -11,7 +11,7 @@ struct Array
 	pt1: Point
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Array

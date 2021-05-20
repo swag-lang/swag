@@ -19,7 +19,7 @@ struct(T = Mwc) Random
 
 impl Random
 {
-	using swag
+	using Swag
 	func nextU32(using self)->u32 => rng.next()
 	//func nextF32(using self)->f32 => rng.next() / cast(f32) u32_max
 }

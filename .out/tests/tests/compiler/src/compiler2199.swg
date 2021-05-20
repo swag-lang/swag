@@ -1,10 +1,10 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         x += cast(u32) y
         @assert(x == 9)
     }

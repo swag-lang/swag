@@ -1,6 +1,6 @@
 #global public
 
-#[swag.enumflags]
+#[Swag.enumflags]
 enum LogFlags
 {
     Prefix
@@ -32,7 +32,7 @@ struct Log
 
 impl Log
 {
-    private func buildHeader(using self, loc: swag.CompilerSourceLocation)
+    private func buildHeader(using self, loc: Swag.CompilerSourceLocation)
     {
         if flags & .Prefix and @countof(prefix)
         {

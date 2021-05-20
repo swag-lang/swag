@@ -568,7 +568,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     ComputedValue value;
     if (node->structFlags & STRUCTFLAG_UNION)
         node->packing = 0;
-    else if (typeInfo->attributes.getValue("swag.pack", "value", value))
+    else if (typeInfo->attributes.getValue("Swag.pack", "value", value))
         node->packing = value.reg.u8;
 
     // Check 'opaque' attribute
@@ -737,10 +737,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         auto realStorageOffset = storageOffset;
 
-        // Attribute 'swag.offset' can be used to force the storage offset of the member
+        // Attribute 'Swag.offset' can be used to force the storage offset of the member
         ComputedValue forceOffset;
         bool          relocated = false;
-        if (typeParam && typeParam->attributes.getValue("swag.offset", "name", forceOffset))
+        if (typeParam && typeParam->attributes.getValue("Swag.offset", "name", forceOffset))
         {
             for (auto p : typeInfo->fields)
             {
@@ -754,7 +754,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!relocated)
             {
-                auto attr = typeParam->attributes.getAttribute("swag.offset");
+                auto attr = typeParam->attributes.getAttribute("Swag.offset");
                 SWAG_ASSERT(attr);
                 return context->report({attr->node, format(Msg0673, forceOffset.text.c_str())});
             }
@@ -822,7 +822,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // User specific alignment
     ComputedValue userAlignOf;
-    auto          hasUserAlignOf = typeInfo->attributes.getValue("swag.align", "value", userAlignOf);
+    auto          hasUserAlignOf = typeInfo->attributes.getValue("Swag.align", "value", userAlignOf);
     if (hasUserAlignOf)
         typeInfo->alignOf = userAlignOf.reg.u8;
     else if (node->packing)
@@ -957,9 +957,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute("swag.offset"))
+        if (typeParam->attributes.hasAttribute("Swag.offset"))
         {
-            auto attr = typeParam->attributes.getAttribute("swag.offset");
+            auto attr = typeParam->attributes.getAttribute("Swag.offset");
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0682});
         }
@@ -1083,9 +1083,9 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0686, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute("swag.offset"))
+        if (typeParam->attributes.hasAttribute("Swag.offset"))
         {
-            auto attr = typeParam->attributes.getAttribute("swag.offset");
+            auto attr = typeParam->attributes.getAttribute("Swag.offset");
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0687});
         }

@@ -4,14 +4,14 @@ struct U
 	x: s32
 }
 
-#[swag.pack(0)]
+#[Swag.pack(0)]
 struct U1
 {
 	y: bool
 	x: s32
 }
 
-#[swag.pack(1)]
+#[Swag.pack(1)]
 struct U2
 {
 	y: bool

@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.inline]
+#[Swag.inline]
 func toto() => 0
 
 func titi()->s32

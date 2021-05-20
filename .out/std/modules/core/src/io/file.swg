@@ -8,7 +8,7 @@ enum SeekOrigin
     End
 }
 
-#[swag.enumflags]
+#[Swag.enumflags]
 enum FileAccess
 {
     Read
@@ -26,7 +26,7 @@ enum FileMode
     Truncate
 }
 
-#[swag.enumflags]
+#[Swag.enumflags]
 enum FileShare
 {
     None
@@ -86,7 +86,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
 }
 
 // Write a file with the content of a slice of bytes
-#[swag.discardable]
+#[Swag.discardable]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 {
     var result: retval

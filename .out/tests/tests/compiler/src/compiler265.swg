@@ -5,7 +5,7 @@ func test2 (v: s32)->s32
 	return v * test1(v - 1);
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func test1 (v: s32)->s32
 {
 	if(v == 1)

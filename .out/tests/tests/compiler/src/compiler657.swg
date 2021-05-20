@@ -13,7 +13,7 @@ struct Toto
 	var x: OT
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 }

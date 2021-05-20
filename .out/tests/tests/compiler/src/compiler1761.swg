@@ -1,6 +1,6 @@
 #test
 {
-    #[swag.mixin]
+    #[Swag.mixin]
     func myMixin(value: s32, increment: s32)
     {
         a += increment

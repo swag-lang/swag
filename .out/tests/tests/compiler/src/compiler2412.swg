@@ -1,6 +1,6 @@
 var G = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto(v: T) #selectif @typeof(T) == f32
 {
     #assert @typeof(T) == f32

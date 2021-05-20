@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var c = @[1,2,3,4];

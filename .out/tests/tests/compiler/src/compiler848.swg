@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	a := acast 1

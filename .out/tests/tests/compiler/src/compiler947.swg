@@ -1,8 +1,8 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: string, y: ...)
-{	
+{
 	@assert(x == "1.0")
 
 	ptr := cast(*string) @dataof(y[0])
@@ -12,7 +12,7 @@ func toto(x: string, y: ...)
 
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto("1.0", "10", 20)

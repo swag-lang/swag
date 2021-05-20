@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[macro]
 func toto(stmt: code)
@@ -11,7 +11,7 @@ func toto(stmt: code)
     #mixin `stmt
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

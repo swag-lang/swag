@@ -12,7 +12,7 @@ func chooseStepFunction(backward: bool) -> func(s32)->s32 {
 	return &stepForward
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var currentValue = 3

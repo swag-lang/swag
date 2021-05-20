@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := 666
@@ -8,9 +8,9 @@
         {
             a := 1
         }
-        
+
         toto()
     }
-    
+
     @assert(a == 666)
 }

@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	F(&T)
@@ -17,5 +17,5 @@ func T()
 
 func F(b: func())
 {
-	b()	
+	b()
 }

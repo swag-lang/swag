@@ -16,7 +16,7 @@ impl B
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var res: [1] B

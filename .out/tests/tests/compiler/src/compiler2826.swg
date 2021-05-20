@@ -6,7 +6,7 @@ struct Toto
 
 impl Toto
 {
-    //#[swag.implicit]
+    //#[Swag.implicit]
 	func opCast(using self)->s32
 	{
 		return 666

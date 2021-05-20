@@ -1,6 +1,6 @@
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var cpt: uint = 0;

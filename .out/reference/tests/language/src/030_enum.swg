@@ -11,7 +11,7 @@
 
     // By default, an enum is of type 's32'
     {
-        using swag
+        using Swag
         enum Values { A; B; }
         type := @typeof(Values)
         @assert(type.rawType == @typeof(s32))
@@ -133,10 +133,10 @@
         @assert(Value.C == 2)
     }
 
-    // Enum can be a set of flags with the #[swag.enumflags] attribute
+    // Enum can be a set of flags with the #[Swag.enumflags] attribute
     // Type should be u8, u16, u32 or u64
     {
-        #[swag.enumflags]
+        #[Swag.enumflags]
         enum MyFlags: u8
         {
             A
@@ -226,7 +226,7 @@
     }
 
     {
-        #[swag.enumflags]
+        #[Swag.enumflags]
         enum Values { A; B; }
         x := Values.A | Values.B
         @assert((x & .A) and (x & .B))

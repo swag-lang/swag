@@ -3,7 +3,7 @@
 
 var g = "toto";
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var c = @countof(g);

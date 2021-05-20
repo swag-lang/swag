@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[attributeUsage(AttributeUsage.StructVariable)]
 attr NC1(x: s32);
@@ -11,7 +11,7 @@ struct Point
 	x: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	t := cast(const *TypeInfoStruct) @typeof(Point)

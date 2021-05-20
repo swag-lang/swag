@@ -4,7 +4,7 @@ struct Point
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
 	t := @typeof(T)
@@ -14,7 +14,7 @@ func(T) toto()
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt = 0

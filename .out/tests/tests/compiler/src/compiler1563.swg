@@ -1,9 +1,9 @@
 var G = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    defer 
+    defer
     {
         loop 10
             G += 1

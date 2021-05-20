@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     #inline

@@ -1,11 +1,11 @@
 
 #global testerror;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var a: string = null;
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
 	if(a[0] == 1)
 	{
 	}

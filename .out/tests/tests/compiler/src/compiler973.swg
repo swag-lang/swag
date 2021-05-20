@@ -7,7 +7,7 @@ struct Point
 var pt: 	Point = @{1, 2}
 var pt1: 	Point = @{1, 20}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(pt.x == 1)

@@ -1,18 +1,18 @@
 #global testerror
 
-#[swag.inline]
+#[Swag.inline]
 func titi()
 {
     toto()
 }
 
-#[swag.inline]
+#[Swag.inline]
 func toto()
 {
     titi()
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

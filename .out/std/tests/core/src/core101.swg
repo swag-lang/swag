@@ -2,7 +2,7 @@
 //#global testerror
 //
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //@errormsg(#location, "this is an error")

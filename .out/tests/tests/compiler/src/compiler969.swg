@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x = @{1,2,3}

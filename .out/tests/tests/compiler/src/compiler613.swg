@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 
 func(T) Print(x: T)
 {

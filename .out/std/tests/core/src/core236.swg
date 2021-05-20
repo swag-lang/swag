@@ -8,7 +8,7 @@ struct AA
 
 var G = 666
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: AA

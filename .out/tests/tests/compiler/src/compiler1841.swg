@@ -18,7 +18,7 @@ impl IPrintable for Point
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: Point

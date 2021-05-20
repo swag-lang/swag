@@ -4,10 +4,10 @@ struct Point2
     x, y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) norm(vec: T) -> @typeof(T.R)
 {
-    #assert(@typeof(T).kind == swag.TypeInfoKind.Struct)
+    #assert(@typeof(T).kind == Swag.TypeInfoKind.Struct)
     return vec.x
 }
 

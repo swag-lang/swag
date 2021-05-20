@@ -16,7 +16,7 @@ enum Color
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(cast(s64) Color.AA == 3)

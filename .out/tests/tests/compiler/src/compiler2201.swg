@@ -1,4 +1,4 @@
-//#[swag.printbc, swag.nooptim]
+//#[Swag.printbc, Swag.nooptim]
 #test
 {
     @assert(10 * 4 - 2 == 38)

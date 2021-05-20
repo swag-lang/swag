@@ -1,4 +1,4 @@
-namespace swag
+namespace Swag
 {
     // #[flags] is forced by the compiler
     enum AttributeUsage : u32
@@ -224,7 +224,7 @@ namespace swag
         maxUsed:    uint
     }
 
-    #[swag.enumflags]
+    #[Swag.enumflags]
     enum ContextFlags: u64
     {
         None     = 0x00000000_00000000
@@ -309,7 +309,7 @@ namespace swag
         Any
     }
 
-    #[swag.enumflags]
+    #[Swag.enumflags]
     enum TypeInfoFlags: u16
     {
         None        = 0x0000
@@ -553,10 +553,10 @@ namespace swag
 
 func @assert(value: bool);
 func @bcdbg();
-func @getcontext()->*swag.Context;
-func @setcontext(context: const *swag.Context);
+func @getcontext()->*Swag.Context;
+func @setcontext(context: const *Swag.Context);
 func @isbytecode()->bool;
-func @compiler()->swag.ICompiler;
+func @compiler()->Swag.ICompiler;
 
 func @alloc(size: uint)->*void;
 func @realloc(ptr: *void, size: uint)->*void;
@@ -568,7 +568,7 @@ func @memcmp(dst, src: const *void, size: uint)->s32;
 func @cstrlen(value: const *u8)->uint;
 
 // Atomic operations
-#[swag.discardable]
+#[Swag.discardable]
 {
     func @atomadd(addr: *s8, value: s8)->s8;
     func @atomadd(addr: *s16, value: s16)->s16;
@@ -626,7 +626,7 @@ func @cstrlen(value: const *u8)->uint;
 }
 
 // Constant intrinsics
-#[swag.constexpr]
+#[Swag.constexpr]
 {
     func @sqrt(value: f32)->f32;
     func @sqrt(value: f64)->f64;

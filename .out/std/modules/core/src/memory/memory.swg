@@ -1,6 +1,6 @@
 #global public
 #global namespace memory
-using swag
+using Swag
 
 // Copy one block of memory to a given address
 func copy(dest: *void, src: const *void, size: uint)

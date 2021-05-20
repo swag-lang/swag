@@ -14,7 +14,7 @@ struct point
 	y = "20"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: [10] point
@@ -24,7 +24,7 @@ struct point
 	ptr1 := &pt[9]
 	@assert(ptr1.x == "10")
 	@assert(ptr1.y == "20")
-	
+
 	@assert(ptr1.pt.x == 10)
 	@assert(ptr1.pt.y == 20)
 }

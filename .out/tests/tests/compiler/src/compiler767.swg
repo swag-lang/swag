@@ -17,12 +17,12 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	var pt1: Point
 	var pt2: Point
-	
+
 	test = 0
 	pt2 = pt1
 	@assert(test == 1)

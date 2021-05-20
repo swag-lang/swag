@@ -3,7 +3,7 @@
 
 var c: s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(op: string) toto()
 {
 	if(op == "toto")
@@ -12,7 +12,7 @@ func(op: string) toto()
 		c = 2
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto'("toto")()

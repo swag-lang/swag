@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
 /*    x := 255'u8

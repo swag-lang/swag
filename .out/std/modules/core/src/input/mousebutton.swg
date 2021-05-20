@@ -1,7 +1,7 @@
 #global public
 #global namespace mouse
 
-#[swag.enumindex]
+#[Swag.enumindex]
 enum Button
 {
     Left

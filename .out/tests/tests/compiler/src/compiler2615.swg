@@ -7,7 +7,7 @@ struct(T) AA
 
 impl AA
 {
-    //#[swag.compileif(@typeof(T) == f32)]
+    //#[Swag.compileif(@typeof(T) == f32)]
     func toto() #selectif @typeof(T) == f32
     {
     }

@@ -1,4 +1,4 @@
-//#[swag.compiler]
+//#[Swag.compiler]
 func(T) checker()
 {
     //@print(v)
@@ -6,7 +6,7 @@ func(T) checker()
     @assert(ptr == s32)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
     //#print "toto"
@@ -16,7 +16,7 @@ func(T) toto()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()
 {
     toto's32()

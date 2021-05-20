@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	a := 10

@@ -3,10 +3,10 @@ struct A
     xx: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 impl A
 {
-    #[swag.macro]
+    #[Swag.macro]
     func mac(using self)
     {
         xx = 666

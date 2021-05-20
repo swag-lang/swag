@@ -1,7 +1,7 @@
 
 #global testerror
 
-using swag
+using Swag
 
 struct AA
 {
@@ -16,7 +16,7 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 }

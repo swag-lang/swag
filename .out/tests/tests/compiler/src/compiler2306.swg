@@ -1,7 +1,7 @@
 //
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func arithmeticMean(x: string, numbers: string...)->string
 {
     @assert(x == "666")
@@ -10,7 +10,7 @@ func arithmeticMean(x: string, numbers: string...)->string
     return "0"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	r := arithmeticMean("666", "10", "20")

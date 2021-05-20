@@ -12,14 +12,14 @@ impl Array
 	func validateCount(self, newCount: u32)
 	{
 	}
-	
+
 	func add(using self, value: T)
 	{
 		validateCount(self, self.count + 1)
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: Array's32

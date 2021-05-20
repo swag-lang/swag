@@ -1,5 +1,5 @@
 #global namespace memory
-using swag, sync
+using Swag, sync
 
 public struct DebugAllocator
 {

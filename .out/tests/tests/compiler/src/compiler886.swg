@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	func chooseStepFunction(backward: bool) -> func(s32)->s32
@@ -12,12 +12,12 @@
 
 	currentValue := 3
 	moveNearerToZero := chooseStepFunction(backward: currentValue > 0)
-	
+
 	cpt := 0
 	while currentValue != 0 {
 		cpt += currentValue
 		currentValue = moveNearerToZero(currentValue)
-	}	
-	
+	}
+
 	@assert(cpt == 6)
 }

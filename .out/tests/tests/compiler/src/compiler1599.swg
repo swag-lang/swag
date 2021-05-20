@@ -1,4 +1,4 @@
-#[swag.compiler]
+#[Swag.compiler]
 func toto()->bool
 {
     return true

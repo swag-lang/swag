@@ -1,13 +1,13 @@
 
 using core
 
-//#[swag.printbc, swag.optim("", false)]
+//#[Swag.printbc, Swag.optim("", false)]
 func toto()->[2] String
 {
     return @[String.from("a"),String.from("b")]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := toto()

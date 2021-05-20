@@ -2,8 +2,8 @@ func toto(x: s32)
 {
 }
 
-//#[swag.safety("", false)]
-//#[swag.printbc]
+//#[Swag.safety("", false)]
+//#[Swag.printbc]
 #test
 {
     ptr := @typeof(toto)

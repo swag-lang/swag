@@ -5,7 +5,7 @@ struct BABA
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: Array'BABA

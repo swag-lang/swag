@@ -1,5 +1,5 @@
 ﻿
-using core, swag
+using core, Swag
 
 struct My
 {

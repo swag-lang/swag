@@ -1,4 +1,4 @@
-using swag, core
+using Swag, core
 
 private
 {

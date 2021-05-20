@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     let array: [2, 2] s32 = [[1, 2], [3, 4]]

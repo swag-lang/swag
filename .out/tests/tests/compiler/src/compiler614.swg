@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #global testerror
 func(T) Print(x: T)
 {

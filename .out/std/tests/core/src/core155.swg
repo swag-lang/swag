@@ -1,7 +1,7 @@
 
 using core, utf8
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //res := "A假CD"
@@ -13,10 +13,10 @@ using core, utf8
     @assert(result == 4)
 
     result = indexOf(res.toString(), "C")
-    @assert(result == swag.UInt.Max)
+    @assert(result == Swag.UInt.Max)
 
     result = indexOf(res.toString(), "CCCCCCCCC")
-    @assert(result == swag.UInt.Max)
+    @assert(result == Swag.UInt.Max)
 
     result = indexOf(res.toString(), "XXABAB")
     @assert(result == 0)

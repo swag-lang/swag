@@ -25,7 +25,7 @@ impl A
 
 alias TOTO = [3] A
 
-#[swag.inline]
+#[Swag.inline]
 func toto1()->TOTO
 {
     var resultXX: TOTO
@@ -35,8 +35,8 @@ func toto1()->TOTO
     return resultXX
 }
 
-//#[swag.printbc]
-//#[swag.optim("", true)]
+//#[Swag.printbc]
+//#[Swag.optim("", true)]
 #test
 {
     res := toto1()

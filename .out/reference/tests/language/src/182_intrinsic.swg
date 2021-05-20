@@ -7,10 +7,10 @@
 
 func @assert(value: bool);
 func @dbgbreak();
-func @getcontext()->*swag.Context;
-func @setcontext(context: const *swag.Context);
+func @getcontext()->*Swag.Context;
+func @setcontext(context: const *Swag.Context);
 func @isbytecode()->bool;
-func @compiler()->swag.ICompiler;
+func @compiler()->Swag.ICompiler;
 
 func @args()->const [..] string;
 func @seterr(err: string);

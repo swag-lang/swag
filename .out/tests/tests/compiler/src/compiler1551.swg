@@ -7,7 +7,7 @@ func toto(x: string)
         G += 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0

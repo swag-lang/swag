@@ -1,7 +1,7 @@
 
 using core
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := math.cos(1.0'f32)

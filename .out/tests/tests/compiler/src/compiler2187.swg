@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->{x: s32, y: s32}
 {
     var res: retval
@@ -6,7 +6,7 @@ func toto()->{x: s32, y: s32}
     return res
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := toto()

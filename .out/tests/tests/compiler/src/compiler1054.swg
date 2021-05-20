@@ -9,7 +9,7 @@ struct Point
 	x: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var ptr : *Point

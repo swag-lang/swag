@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 public func toto2407()
 {
     #run

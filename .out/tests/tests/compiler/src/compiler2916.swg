@@ -1,4 +1,4 @@
-#[swag.constexpr]
+#[Swag.constexpr]
 func toto(x: s32) => x
 
 var G = 0

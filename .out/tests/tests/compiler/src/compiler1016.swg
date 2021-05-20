@@ -1,9 +1,9 @@
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	ptr := @typeof(const *TypeInfo)
     //@print(ptr.name)
-	@assert(ptr.name == "const *swag.TypeInfo")
+	@assert(ptr.name == "const *Swag.TypeInfo")
 }

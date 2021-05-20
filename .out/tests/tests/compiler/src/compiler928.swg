@@ -2,7 +2,7 @@
 
 var G : s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func average(x: any)
 {
 	tt := @kindof(x)
@@ -20,7 +20,7 @@ func average(x: any)
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	G = 0

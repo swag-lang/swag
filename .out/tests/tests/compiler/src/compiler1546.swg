@@ -1,7 +1,7 @@
 
 #global testerror
 
-using swag
+using Swag
 
 struct X
 {
@@ -9,5 +9,5 @@ struct X
 
 #test
 {
-    swag.@assert()
+    Swag.@assert()
 }

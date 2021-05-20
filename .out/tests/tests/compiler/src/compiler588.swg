@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(op: string) toto()
 {
 	/*#if op == "op"
@@ -10,7 +10,7 @@ func(op: string) toto()
 		@print("op1")*/
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto'("op")()

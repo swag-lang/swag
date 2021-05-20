@@ -9,16 +9,16 @@
 
     {
         x := -0x8000's16
-        @assert(x == swag.S16.Min)
+        @assert(x == Swag.S16.Min)
     }
 
     {
         x := -0x80000000's32
-        @assert(x == swag.S32.Min)
+        @assert(x == Swag.S32.Min)
     }
 
     {
         x := -0x80000000_00000000's64
-        @assert(x == swag.S64.Min)
+        @assert(x == Swag.S64.Min)
     }
 }

@@ -31,7 +31,7 @@ impl Utf8
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var str: Utf8 = null

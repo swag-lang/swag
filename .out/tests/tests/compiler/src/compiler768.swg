@@ -14,24 +14,24 @@ struct Point1
 	pt1: Point
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	var pt1: Point1
 	var pt2: Point1
-	
+
 	test = 0
 	pt2 = pt1
 	@assert(test == 2)
 	@assert(pt2.pt.x == 2)
 	@assert(pt2.pt.y == 4)
 	@assert(pt2.pt1.x == 2)
-	@assert(pt2.pt1.y == 4)	
+	@assert(pt2.pt1.y == 4)
 }
 
 impl Point
 {
-	//#[swag.waitsem(100)]
+	//#[Swag.waitsem(100)]
 	func opPostCopy(self)
 	{
 		//@print("postcopy!\n")

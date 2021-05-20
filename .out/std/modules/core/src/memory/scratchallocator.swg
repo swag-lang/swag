@@ -1,6 +1,6 @@
 #global public
 #global namespace memory
-using swag, sync
+using Swag, sync
 
 struct ScratchAllocator
 {

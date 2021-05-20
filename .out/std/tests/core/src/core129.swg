@@ -15,7 +15,7 @@ using core
     //console.write("%\n", str)
     @assert(str == "RGBS.Blue")
 
-    #[swag.enumflags]
+    #[Swag.enumflags]
     enum Flags
     {
         Red = 1

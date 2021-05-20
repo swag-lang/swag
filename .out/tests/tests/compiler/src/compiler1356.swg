@@ -19,7 +19,7 @@ var G = 0
 
 impl TOTO for TITI
 {
-    //#[swag.printbc]
+    //#[Swag.printbc]
     func print(using self, tt: bool)
     {
         @assert(val == 666)
@@ -29,7 +29,7 @@ impl TOTO for TITI
 
 impl TOTO for TATA
 {
-    //#[swag.printbc]
+    //#[Swag.printbc]
     func print(using self, tt: bool)
     {
         @assert(val == "TATA")
@@ -37,19 +37,19 @@ impl TOTO for TATA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0
-    
+
     var XX: TOTO
     var YY: TITI
     XX = YY
     XX.print(true)
-    
+
     var ZZ: TATA
     XX = ZZ
     XX.print(true)
-    
+
     @assert(G == 2)
 }

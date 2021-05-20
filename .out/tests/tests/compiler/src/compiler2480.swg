@@ -1,10 +1,10 @@
 var G = 0
-func panic(msg: string, loc: swag.CompilerSourceLocation)
+func panic(msg: string, loc: Swag.CompilerSourceLocation)
 {
     G += 1
 }
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
     {

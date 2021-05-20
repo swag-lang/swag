@@ -1,10 +1,10 @@
 
-using swag
+using Swag
 
 func toto()->s32 => 666
 func toto1()->s32 => 667
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	ptr := &toto

@@ -73,7 +73,7 @@ impl State
         position[RightTrigger].y = bRightTrigger / 255.0'f32
 
         // Simulate pressed with,move
-        #[swag.inline]
+        #[Swag.inline]
         func getToler(using self, btn: Button)->f32
         {
             const SmallToler = 0.7'f32

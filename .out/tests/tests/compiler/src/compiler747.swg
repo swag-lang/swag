@@ -8,7 +8,7 @@ func(T) toto(val: T, x: func(T))
 	x(val)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto(666's32, &lambda)

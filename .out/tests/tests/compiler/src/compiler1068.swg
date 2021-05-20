@@ -5,7 +5,7 @@ func toString() -> [..] u8
 	return @[0, 1, 2, 3]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x = toString()

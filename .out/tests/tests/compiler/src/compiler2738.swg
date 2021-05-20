@@ -1,7 +1,7 @@
 var G = 0
 var G1 = 0
 
-#[swag.discardable]
+#[Swag.discardable]
 func tata()->s32 throw
 {
     G += 1
@@ -9,7 +9,7 @@ func tata()->s32 throw
     return 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto() throw
 {
     try

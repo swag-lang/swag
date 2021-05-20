@@ -1,7 +1,7 @@
 //
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: ...)
 {
     @assert(@typeof(x[0]).name == "any")

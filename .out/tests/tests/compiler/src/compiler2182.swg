@@ -3,14 +3,14 @@ struct ST
     x: u32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->ST
 {
     var res: retval
     return res
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := toto()

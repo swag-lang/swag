@@ -37,9 +37,9 @@ namespace Ast
                 if (j)
                     CONCAT_FIXED_STR(concat, ", ");
 
-                // No need to write "swag.", less to write, less to read, as export files have
-                // a 'using swag' on top.
-                if (!strncmp(one.name.c_str(), "swag.", 5))
+                // No need to write "Swag.", less to write, less to read, as export files have
+                // a 'using Swag' on top.
+                if (!strncmp(one.name.c_str(), "Swag.", 5))
                     concat.addString(one.name.c_str() + 5);
                 else
                     concat.addString(one.name);

@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[attributeUsage(AttributeUsage.Function | AttributeUsage.Struct | AttributeUsage.Enum)]
 attr NC();

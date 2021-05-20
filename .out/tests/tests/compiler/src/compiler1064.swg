@@ -1,5 +1,5 @@
-//#[swag.constexpr]
-//#[swag.printbc]
+//#[Swag.constexpr]
+//#[Swag.printbc]
 func fibonacci(num: s32) -> s32
 {
     if num < 2

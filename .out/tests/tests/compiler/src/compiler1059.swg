@@ -11,7 +11,7 @@ impl Array
 {
 	func validateCount(using self, newCount: u32)
 	{
-		using swag
+		using Swag
 
 		if(newCount < size)
 			return;
@@ -45,7 +45,7 @@ impl Array
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: Array's32

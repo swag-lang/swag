@@ -1,9 +1,9 @@
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    #[swag.relative(1)]
+    #[Swag.relative(1)]
     var x: *s32
     x = cast(*s32) &x
 }

@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[constexpr]
 {
@@ -14,7 +14,7 @@ using swag
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     #assert isInteger(s32)

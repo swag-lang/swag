@@ -12,7 +12,7 @@ func titi()->A
 
 var G: A
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = titi()

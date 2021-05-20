@@ -3,7 +3,7 @@
 
 var g = false;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	g = false;

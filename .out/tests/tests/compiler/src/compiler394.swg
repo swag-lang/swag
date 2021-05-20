@@ -5,7 +5,7 @@
 var c = 666;
 var d = {c};
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	//@print(d[0]);

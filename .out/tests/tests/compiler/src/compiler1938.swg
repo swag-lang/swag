@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 struct(K, V) A
 {
     x: K = 666

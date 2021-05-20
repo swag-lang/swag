@@ -16,7 +16,7 @@ impl A for X
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var v: X

@@ -6,7 +6,7 @@ struct(T) Point
 	x: T = 6
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Point's32

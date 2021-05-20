@@ -12,12 +12,12 @@ enum ThreadPriority
     Highest
 }
 
-#[swag.nocopy]
+#[Swag.nocopy]
 struct Thread
 {
     userLambda: func(Thread)
 
-    context:    swag.Context
+    context:    Swag.Context
     userParam:  *void
 
     priority =  ThreadPriority.Normal

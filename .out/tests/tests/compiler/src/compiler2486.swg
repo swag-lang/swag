@@ -1,7 +1,7 @@
-using swag
+using Swag
 
 var G = 0
-func panic(msg: string, loc: swag.CompilerSourceLocation)
+func panic(msg: string, loc: Swag.CompilerSourceLocation)
 {
     G += 1
 }

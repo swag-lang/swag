@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto(stmt: code)
 {
     label up
@@ -15,13 +15,13 @@ func toto(stmt: code)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{   
+{
     cpt := 0
     toto()
     {
     }
-    
+
     @assert(cpt == 1)
 }

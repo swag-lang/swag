@@ -1,7 +1,7 @@
 //
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //@assert(2 - 1 - 1 == 0)

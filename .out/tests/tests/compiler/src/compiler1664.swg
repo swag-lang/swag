@@ -3,7 +3,7 @@ struct TT
     value:  s64 = 456
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     var addr:  [2, 2] *TT

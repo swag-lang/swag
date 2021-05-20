@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func Visit(user: code)
 {
     var c: rune
@@ -13,7 +13,7 @@ func Visit(user: code)
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

@@ -1,4 +1,4 @@
-using swag;
+using Swag;
 
 #test
 {
@@ -7,6 +7,6 @@ using swag;
 	{
 		i -= 1;
 	}
-	
+
 	@assert(i == 0);
 }

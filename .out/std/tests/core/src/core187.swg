@@ -1,7 +1,7 @@
 ﻿
 using core.memory
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

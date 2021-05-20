@@ -1,8 +1,8 @@
-//#[swag.constexpr]
+//#[Swag.constexpr]
 func toto() => 0
 func titi() => 555
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := toto() orelse titi()

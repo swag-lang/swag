@@ -27,7 +27,7 @@ func display()
     renderer.flush()
 }
 
-#[swag.callback]
+#[Swag.callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
@@ -114,7 +114,7 @@ func messageLoop()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #main
 {
     try

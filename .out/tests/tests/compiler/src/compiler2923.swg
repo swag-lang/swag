@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 func consumeBits(width: u8)
 {
     var codeBuffer: u32 = 1
@@ -9,8 +9,8 @@ func consumeBits(width: u8)
 var G: u8 = 2
 var G1: u32 = 0xFFFFFFFF
 
-//#[swag.printbc]
-#[swag.safety("", false)]
+//#[Swag.printbc]
+#[Swag.safety("", false)]
 func toto()
 {
     consumeBits(G & 1)

@@ -1,11 +1,11 @@
-#[swag.macro]
+#[Swag.macro]
 public func toto2220()
 {
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     a := 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 }

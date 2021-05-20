@@ -1,10 +1,10 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x : *s32 = null
-	if x 
+	if x
 		@assert(false)
 	else
 		@assert(true)

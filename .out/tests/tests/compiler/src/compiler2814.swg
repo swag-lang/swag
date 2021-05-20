@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func declare(name: alias, value: s32)
 {
     const name: s32 = value

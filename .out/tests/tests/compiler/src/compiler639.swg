@@ -6,12 +6,12 @@ struct(T) Point
 	x: T = 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(v: Point)
-{	
+{
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Point'(s32)

@@ -105,7 +105,7 @@ impl Adler32
     }
 
     // Returns the adler32 hash value for the given buffer
-    #[swag.constexpr]
+    #[Swag.constexpr]
     func compute(buffer: const [..] u8)->u32
     {
         var v: Adler32

@@ -15,15 +15,15 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	cpt = 0
-	
+
 	var pt1: Point
 	pt1	= Point(1, 2)
 	@assert(cpt == 1)
-	
+
 	var pt2: Point
 	pt1 = pt2
 }

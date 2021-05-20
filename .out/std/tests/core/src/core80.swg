@@ -6,7 +6,7 @@ struct BB11
      g: core.Array'(*u8)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //g.addBack(0)

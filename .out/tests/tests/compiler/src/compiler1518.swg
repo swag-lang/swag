@@ -6,10 +6,10 @@ struct A
 
 impl A
 {
-    #[swag.inline]
+    #[Swag.inline]
     func(T) titi(x, y: T) => 1'u32
 
-    #[swag.macro]
+    #[Swag.macro]
     func(ptr: bool) toto(using self, stmt: code)
     {
         #assert ptr == true
@@ -29,7 +29,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: A

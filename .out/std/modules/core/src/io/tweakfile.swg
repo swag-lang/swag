@@ -1,6 +1,6 @@
 #global namespace file
 #global public
-using swag
+using Swag
 
 struct Folder
 {

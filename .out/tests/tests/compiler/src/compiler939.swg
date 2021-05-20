@@ -2,7 +2,7 @@
 
 var x: [] any = @[6]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	t := x[0]

@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var a: func()->s32 = &F;

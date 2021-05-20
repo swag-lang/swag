@@ -1,12 +1,12 @@
 
-using swag
+using Swag
 
 func toto(x: ...)
-{	
+{
 	@assert(cast(string) x[0] == "toto")
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto("toto")

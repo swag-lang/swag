@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()
 {
 	struct A
@@ -6,6 +6,6 @@ func toto()
 		x: s32 = 2
 		y: s32 = 3
 	}
-	
+
 	var b: A
 }

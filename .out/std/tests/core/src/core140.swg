@@ -1,8 +1,8 @@
 
 using core.strconv
 
-//#[swag.printbc]
-//#[swag.nooptim]
+//#[Swag.printbc]
+//#[Swag.nooptim]
 #test
 {
     var str: StringBuilder

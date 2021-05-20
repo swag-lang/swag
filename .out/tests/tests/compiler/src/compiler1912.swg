@@ -1,7 +1,7 @@
-#[swag.constexpr]
+#[Swag.constexpr]
 func toto() => "tag"
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //@print(#tagval(f64, "tag1"))

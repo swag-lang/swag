@@ -1,8 +1,8 @@
-using swag
+using Swag
 
 func toto()->s32 => 666
 
-//#[swag.printbc]
+//#[Swag.printbc]
 //#global testerror
 #test
 {

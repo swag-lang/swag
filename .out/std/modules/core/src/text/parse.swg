@@ -1,6 +1,6 @@
 #global public
 #global namespace parse
-using globalization, swag
+using globalization, Swag
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
@@ -67,21 +67,21 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
 func getU8(str: string) -> {value: u8, eat: u32} throw
 {
     (res, eat) := try getU64(str)
-    if res > swag.U8.Max throw "out of range"
+    if res > Swag.U8.Max throw "out of range"
     return @{cast(u8) res, eat}
 }
 
 func getU16(str: string) -> {value: u16, eat: u32} throw
 {
     (res, eat) := try getU64(str)
-    if res > swag.U16.Max throw "out of range"
+    if res > Swag.U16.Max throw "out of range"
     return @{cast(u16) res, eat}
 }
 
 func getU32(str: string) -> {value: u32, eat: u32} throw
 {
     (res, eat) := try getU64(str)
-    if res > swag.U32.Max throw "out of range"
+    if res > Swag.U32.Max throw "out of range"
     return @{cast(u32) res, eat}
 }
 
@@ -137,21 +137,21 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 func getS8(str: string) -> {value: s8, eat: u32} throw
 {
     (res, eat) := try getS64(str)
-    if res < swag.S8.Min or res > swag.S8.Max throw "out of range"
+    if res < Swag.S8.Min or res > Swag.S8.Max throw "out of range"
     return @{cast(s8) res, eat}
 }
 
 func getS16(str: string) -> {value: s16, eat: u32} throw
 {
     (res, eat) := try getS64(str)
-    if res < swag.S16.Min or res > swag.S16.Max throw "out of range"
+    if res < Swag.S16.Min or res > Swag.S16.Max throw "out of range"
     return @{cast(s16) res, eat}
 }
 
 func getS32(str: string) -> {value: s32, eat: u32} throw
 {
     (res, eat) := try getS64(str)
-    if res < swag.S32.Min or res > swag.S32.Max throw "out of range"
+    if res < Swag.S32.Min or res > Swag.S32.Max throw "out of range"
     return @{cast(s32) res, eat}
 }
 
@@ -169,7 +169,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     // Does the number starts with the negative/positive sign ?
     signed := false
     c := dref str
-    maxValue := cast(u64) swag.S64.Max
+    maxValue := cast(u64) Swag.S64.Max
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         buffer, cpt += 1
@@ -194,7 +194,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     if signed
     {
         if value == maxValue
-            result.value = swag.S64.Min
+            result.value = Swag.S64.Min
         else
             result.value = -cast(s64) value
     }
@@ -210,7 +210,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
 func getF32(str: string) -> {value: f32, eat: u32} throw
 {
     (res, eat) := try getF64(str)
-    if res < swag.F32.Min or res > swag.F64.Max throw "out of range"
+    if res < Swag.F32.Min or res > Swag.F64.Max throw "out of range"
     return @{cast(f32) res, eat}
 }
 

@@ -3,7 +3,7 @@ struct AA
     x, y = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     t := @typeof(AA)

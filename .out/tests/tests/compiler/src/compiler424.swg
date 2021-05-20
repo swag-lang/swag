@@ -1,7 +1,7 @@
 
 #global testpass syntax
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	switch(5)

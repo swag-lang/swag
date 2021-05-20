@@ -1,6 +1,6 @@
 #global testerror
 
-#[swag.enumflags]
+#[Swag.enumflags]
 enum TITI
 {
 	F1

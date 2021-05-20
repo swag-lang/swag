@@ -7,7 +7,7 @@ struct point
 	x: s32 = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: point

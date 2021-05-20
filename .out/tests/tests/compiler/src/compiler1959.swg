@@ -1,7 +1,7 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    if @typeof(s32).flags & swag.TypeInfoFlags.Integer
+    if @typeof(s32).flags & Swag.TypeInfoFlags.Integer
     {
     }
 

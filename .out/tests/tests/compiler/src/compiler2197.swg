@@ -14,7 +14,7 @@ impl CStr
     }
 }
 
-//#[swag.macro]
+//#[Swag.macro]
 func cstr(x: string)->CStr
 {
     var tmp: retval = ?
@@ -27,7 +27,7 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := cstr("toto")

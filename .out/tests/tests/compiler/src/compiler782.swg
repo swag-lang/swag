@@ -2,7 +2,7 @@
 
 #test
 {
-	using swag
+	using Swag
 
 	t := @typeof(*u32)
 	@assert(t.kind == TypeInfoKind.Pointer)

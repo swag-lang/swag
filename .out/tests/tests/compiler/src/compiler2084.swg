@@ -4,7 +4,7 @@ struct AA
     y: {a: u32, b: u32} = @{555, 666}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var tt: AA

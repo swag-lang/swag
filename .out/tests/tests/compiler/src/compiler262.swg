@@ -1,4 +1,4 @@
-using swag;
+using Swag;
 
 func fact (v: s32)->s32
 {

@@ -4,7 +4,7 @@ struct S
 
 impl S
 {
-    #[swag.macro, swag.noreturn]
+    #[Swag.macro, Swag.noreturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         loop 10
@@ -20,13 +20,13 @@ impl S
 #test
 {
     var x: S
-    
+
     cpt := 0
     visit(Bytes) x
     {
         cpt += 1
         //@print("aa\n")
     }
-    
+
     @assert(cpt == 10)
 }

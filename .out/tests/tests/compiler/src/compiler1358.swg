@@ -13,13 +13,13 @@ struct TITI
 
 impl TOTO for TITI
 {
-    //#[swag.printbc]
+    //#[Swag.printbc]
     func print(using self)
     {
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var XX: TOTO

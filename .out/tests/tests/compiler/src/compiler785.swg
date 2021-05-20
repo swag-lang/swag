@@ -1,14 +1,14 @@
 
 
-//#[swag.waitsem(100)]
+//#[Swag.waitsem(100)]
 func toto(x: s32)
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-	using swag
+	using Swag
 
 	t := @typeof(toto)
 

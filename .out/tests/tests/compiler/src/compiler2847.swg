@@ -1,7 +1,7 @@
-//#[swag.safety("", true)]
-//#[swag.printbc]
-#[swag.optim("", false)]
-#[swag.safety("overflow", false)]
+//#[Swag.safety("", true)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
+#[Swag.safety("overflow", false)]
 #test
 {
     mant := 0x12345678_12345678

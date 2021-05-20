@@ -12,7 +12,7 @@ var G = 0
 
 impl IPrintable for TITI
 {
-    //#[swag.printbc]
+    //#[Swag.printbc]
     func print(using self)
     {
         @assert(val == 666)
@@ -21,7 +21,7 @@ impl IPrintable for TITI
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func printWhatever()
 {
     itf.print()
@@ -29,9 +29,9 @@ func printWhatever()
 
 var itf: IPrintable
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{   
+{
     G = 0
     var titi: TITI
     itf = titi

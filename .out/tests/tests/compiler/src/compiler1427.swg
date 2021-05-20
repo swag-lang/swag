@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct A
 {
@@ -14,7 +14,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: A

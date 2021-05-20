@@ -1,5 +1,5 @@
 #global namespace hash
-using swag
+using Swag
 
 // Hash the given value and returns the corresponding u32
 #[constexpr]
@@ -7,7 +7,7 @@ public func(T) hash32(value: T)->u32
 {
     #if reflection.isInteger(T)
     {
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         return cast(u32) value
     }
     #elif reflection.isFloat(T)

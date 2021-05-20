@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[inline]
 func toto()->[2] s32 throw

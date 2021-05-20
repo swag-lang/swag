@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := 1's64
@@ -13,7 +13,7 @@
     @assert(d1 == false)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := 1'f32
@@ -28,7 +28,7 @@
     @assert(d1 == false)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := 1'f64

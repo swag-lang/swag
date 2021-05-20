@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[swag.printbc, swag.optim("bc", false)]
+//#[Swag.printbc, Swag.optim("bc", false)]
 #test
 {
     var x: [..] s32

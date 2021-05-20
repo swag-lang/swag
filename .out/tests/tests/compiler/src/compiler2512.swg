@@ -7,7 +7,7 @@ func titi()
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     t := @typeof(titi)

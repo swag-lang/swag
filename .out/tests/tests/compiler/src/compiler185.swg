@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[constexpr]
 func main () -> u32 { return 1; }

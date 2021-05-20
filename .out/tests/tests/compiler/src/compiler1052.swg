@@ -5,7 +5,7 @@ func(T, N: u32) delete(addr: *T)
 	//@print(T[0])
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := 666

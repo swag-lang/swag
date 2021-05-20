@@ -12,7 +12,7 @@ enum Color
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := Color.Alpha

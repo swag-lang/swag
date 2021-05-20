@@ -3,7 +3,7 @@
 
 func toto()->s32 => 666
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
 	ptr := toto

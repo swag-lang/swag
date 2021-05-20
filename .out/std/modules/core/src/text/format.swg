@@ -1,6 +1,6 @@
 #global public
 #global namespace format
-using swag
+using Swag
 
 // Check if this is a valid 'fmt' 'values' pair, coherent with 'format' specification
 func checkFormat(fct: string, fmt: string, values: ...)
@@ -16,7 +16,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
 
 // Count the number of valid '%' placeholders in the string format
 // Note that %% will not be counted, as this represents the '%' character
-#[swag.constexpr]
+#[Swag.constexpr]
 func countPercent(fmt: string)->u32
 {
     cptPercent := 0'u32

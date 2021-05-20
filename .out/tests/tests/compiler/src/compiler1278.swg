@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     loop 10
@@ -6,8 +6,8 @@ func toto(x: code)
         #mixin x
     }
 }
-    
-//#[swag.printbc]
+
+//#[Swag.printbc]
 #test
 {
     b := 0

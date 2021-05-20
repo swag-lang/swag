@@ -5,7 +5,7 @@ func test1(a: const [3] s32)
 	@assert(a[2] == 2);
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	c := 666;

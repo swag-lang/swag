@@ -1,11 +1,11 @@
 
 #global testerror
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 #test
 {
     x := "64"
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     y := &x[3]
 }

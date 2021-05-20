@@ -1,5 +1,5 @@
 // Functions can have the same names as long as parameters are different
-#[swag.constexpr]
+#[Swag.constexpr]
 {
     func sum(x, y: s32) => x + y
     func sum(x, y, z: s32) => x + y + z

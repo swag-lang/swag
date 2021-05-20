@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto()
 {
     #inline
@@ -7,7 +7,7 @@ func toto()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

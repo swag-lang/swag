@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.mixin, swag.noreturn]
+#[Swag.mixin, Swag.noreturn]
 func mac()->s32
 {
 }

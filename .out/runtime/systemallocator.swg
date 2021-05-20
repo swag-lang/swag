@@ -1,4 +1,4 @@
-#global namespace swag
+#global namespace Swag
 
 struct SystemAllocator
 {

@@ -1,9 +1,9 @@
 
-using swag
+using Swag
 
 func toto(x: s32, y: bool)->s32 => x
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	ptr := cast(const *TypeInfoFunc) @typeof(toto)

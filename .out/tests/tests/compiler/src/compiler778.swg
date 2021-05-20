@@ -2,7 +2,7 @@
 {
     namespace Windows
     {
-        #[swag.foreign("kernel32")]
+        #[Swag.foreign("kernel32")]
         {
             func GetStdHandle(handle: u32)->*void;
             func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *u32)->s32;
@@ -22,7 +22,7 @@
         const BACKGROUND_INTENSITY: u16 = 0x0080 // background color is intensified.
     }
 
-    //#[swag.printbc]
+    //#[Swag.printbc]
     #test
     {
         //using Windows

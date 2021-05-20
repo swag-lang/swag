@@ -3,7 +3,7 @@ struct(T) AA
     v: {T, T}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: AA's64

@@ -5,14 +5,14 @@ struct Argb
 
 impl Argb
 {
-    #[swag.inline]
+    #[Swag.inline]
     func extract(self) -> {s64,s64}
     {
         return @{666,555}
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var color: Argb

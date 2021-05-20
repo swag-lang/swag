@@ -6,7 +6,7 @@ func(T) valueof(x: any)->T
 	return ptr[0]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x: any = 666

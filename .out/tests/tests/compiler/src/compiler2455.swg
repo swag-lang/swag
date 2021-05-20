@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: [4] s32 = @[10, 20, 30, 40]

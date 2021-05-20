@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct Point
 {
@@ -6,7 +6,7 @@ struct Point
 	y: s32 = 20
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x : any

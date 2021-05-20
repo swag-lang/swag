@@ -1,12 +1,12 @@
 var X: u32 = ?
 
-#[swag.compiler]
+#[Swag.compiler]
 func set()
 {
     X = 6
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     #run set()

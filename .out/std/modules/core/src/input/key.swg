@@ -4,7 +4,7 @@
 public alias VirtualKey = u32
 
 // Defines the keys on a keyboard
-#[swag.enumindex]
+#[Swag.enumindex]
 public enum Key
 {
     // No key

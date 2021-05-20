@@ -1,6 +1,6 @@
 #global testerror;
 ;
-using swag;
+using Swag;
 
 //#[printbc]
 func main ()

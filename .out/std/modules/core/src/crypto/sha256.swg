@@ -1,7 +1,7 @@
 #global namespace hash
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 
-#[swag.inline]
+#[Swag.inline]
 {
     func rotLeft(a, b: u32)  => ((a << b) | (a >> (32 - b)))
     func rotRight(a, b: u32) => ((a >> b) | (a << (32 - b)))
@@ -147,7 +147,7 @@ public impl Sha256
     // Update the hash value with 'buffer' content
     func update(using self, buffer: const [..] u8)
     {
-        debug.assert(@countof(buffer) <= swag.U32.Max)
+        debug.assert(@countof(buffer) <= Swag.U32.Max)
         buf := @dataof(buffer)
         len := cast(u32) @countof(buffer)
 

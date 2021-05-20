@@ -1,6 +1,6 @@
 enum RGB {R;G;B;}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: RGB = RGB.R

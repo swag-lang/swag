@@ -5,11 +5,11 @@ struct A
 
 impl A
 {
-    #[swag.inline]
+    #[Swag.inline]
     func opEquals(self, _v: u32) => self.v == _v
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: A

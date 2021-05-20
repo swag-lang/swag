@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) sum(x, y: T) -> T => x + y
 
 #test

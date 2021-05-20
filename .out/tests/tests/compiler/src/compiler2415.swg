@@ -1,6 +1,6 @@
 var G = 0
 
-#[swag.mixin]
+#[Swag.mixin]
 func(T) toto(v: T)
 {
     #run

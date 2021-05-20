@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 public func macro2365(stmt: code)
 {
     label up

@@ -1,6 +1,3 @@
-
-
-
 #global testerror
 impl swag
 {

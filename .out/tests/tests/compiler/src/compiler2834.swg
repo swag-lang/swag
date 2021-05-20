@@ -1,4 +1,4 @@
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 // https://github.com/golang/go/blob/master/src/strconv/atof.go
 
 struct FloatInfo

@@ -1,4 +1,4 @@
-using swag
+using Swag
 #[attributeUsage(AttributeUsage.StructVariable)]
 attr NC1(x: s32);
 #[attributeUsage(AttributeUsage.StructVariable)]

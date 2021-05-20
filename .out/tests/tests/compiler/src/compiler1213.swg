@@ -6,7 +6,7 @@ struct Vector2
 const XAxis: Vector2{444, 555}
 const YAxis: Vector2{10, 666}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt1: Vector2 = XAxis

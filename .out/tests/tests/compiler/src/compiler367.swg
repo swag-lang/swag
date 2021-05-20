@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: [] s32 = @[1,2];

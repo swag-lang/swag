@@ -1,4 +1,4 @@
-#[swag.mixin, swag.noreturn]
+#[Swag.mixin, Swag.noreturn]
 func mac(stmt: code)
 {
     #mixin stmt

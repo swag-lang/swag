@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto(x: code)
 {
     #macro

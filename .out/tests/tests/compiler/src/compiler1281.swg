@@ -1,11 +1,11 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     AAA := #mixin x
     @assert(AAA)
 }
-    
-//#[swag.printbc]
+
+//#[Swag.printbc]
 #test
 {
     a := 1

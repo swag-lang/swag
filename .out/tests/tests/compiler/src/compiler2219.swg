@@ -6,7 +6,7 @@ func(T) toto(x: T...)->T
     return res
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     res := toto(10's32, 20, 30)

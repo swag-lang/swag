@@ -10,7 +10,7 @@ struct BB
     z: u32 = 555
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var v: BB

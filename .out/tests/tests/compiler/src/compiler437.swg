@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt := 0
@@ -10,6 +10,6 @@
 		if i >= 5 continue
 		cpt += 1
 	}
-	
+
 	@assert(cpt == 5)
 }

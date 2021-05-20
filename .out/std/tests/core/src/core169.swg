@@ -1,7 +1,7 @@
 ﻿
 using core.time
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->String
 {
     var res: retval

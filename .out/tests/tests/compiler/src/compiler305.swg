@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert("toto" == "toto");

@@ -2,7 +2,7 @@
 
 var x: any = 666.0'f64
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	t := @kindof(x)

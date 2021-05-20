@@ -9,7 +9,7 @@ struct Point
 
 #test
 {
-	using swag
+	using Swag
 
 	t := @typeof(Point)
 	@assert(t.name == "__compiler784.Point")

@@ -1,6 +1,6 @@
 #global testerrors
 
-#[swag.macro]
+#[Swag.macro]
 func(ptr: bool) opVisitToto(x: string, stmt: code)
 {
     loop x #mixin stmt

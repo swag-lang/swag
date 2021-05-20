@@ -1,11 +1,11 @@
-#[swag.mixin]
+#[Swag.mixin]
 func mix(v, val: alias)
 {
     v += val
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     z := 4

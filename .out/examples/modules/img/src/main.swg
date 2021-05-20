@@ -50,7 +50,7 @@ func display()
 }
 
 var textureID: GLuint
-//#[swag.printbc]
+//#[Swag.printbc]
 func loadImg()
 {
     using image.Image, Color
@@ -159,7 +159,7 @@ func loadImg()
     var fmt: GLenum = 0
     internal := GL_RGB
 
-    #[swag.complete]
+    #[Swag.complete]
     switch myImage.pf
     {
     case BGR8:  fmt = GL_BGR
@@ -176,7 +176,7 @@ func loadImg()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
 
-#[swag.callback]
+#[Swag.callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
@@ -288,7 +288,7 @@ func messageLoop()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #main
 {
     if slice.contains(@args(), "test")

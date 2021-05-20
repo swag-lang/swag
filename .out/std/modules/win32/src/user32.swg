@@ -1,6 +1,6 @@
 #global export
 #global foreignlib "user32"
-using swag
+using Swag
 
 alias HWND = 		const *void
 alias HMENU = 		const *void

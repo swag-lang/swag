@@ -3,13 +3,13 @@
 
 var b: s32
 
-#[swag.inline]
+#[Swag.inline]
 func toto()
 {
 	b := 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto()

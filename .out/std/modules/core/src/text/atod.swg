@@ -2,7 +2,7 @@
 
 #global namespace strconv
 #global private
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 using globalization
 
 func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
@@ -15,7 +15,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>,safe swag.F64.MantBits != 0
+	if mantissa >>,safe Swag.F64.MantBits != 0
      	return result
 
     exp := exponent
@@ -850,16 +850,16 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
     switch
     {
     case !latin1.compare(s, "nan", ignoreCase: true):
-        result.value = swag.F64.Nan
+        result.value = Swag.F64.Nan
         result.eat = 3
     case !latin1.compare(s, "inf", ignoreCase: true):
-        result.value = swag.F64.Inf
+        result.value = Swag.F64.Inf
         result.eat = 3
     case !latin1.compare(s, "+inf", ignoreCase: true):
-        result.value = swag.F64.Inf
+        result.value = Swag.F64.Inf
         result.eat = 4
     case !latin1.compare(s, "-inf", ignoreCase: true):
-        result.value = swag.F64.NegInf
+        result.value = Swag.F64.NegInf
         result.eat = 4
     }
 

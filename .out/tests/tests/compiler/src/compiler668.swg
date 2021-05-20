@@ -2,7 +2,7 @@
 
 alias toto = bool
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	a := !toto

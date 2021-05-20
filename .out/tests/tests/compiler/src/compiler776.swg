@@ -15,7 +15,7 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt1: Point(10, 20)

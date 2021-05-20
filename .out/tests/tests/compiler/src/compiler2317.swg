@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.strict]
+#[Swag.strict]
 alias T = toto
 
 func toto(x: s32)

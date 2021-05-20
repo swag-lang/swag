@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[swag.macro]
+#[Swag.macro]
 func toto(stmt: code)
 {
     if true
@@ -27,7 +27,7 @@ func toto(stmt: code)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0

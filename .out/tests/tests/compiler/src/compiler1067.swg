@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toString() -> [..] u8
 {
 	return @[0, 1, 2, 3]

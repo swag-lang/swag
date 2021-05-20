@@ -208,15 +208,15 @@ private
         return res
     }
 
-    //#[swag.printbc]
-    #[swag.safety("", false)]
+    //#[Swag.printbc]
+    #[Swag.safety("", false)]
     func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstRow := imgDst.pixels + row * bpp8 * imgDst.width
         srcRow := imgSrc.pixels + row * bpp8 * imgSrc.width
 
-        #[swag.mixin]
+        #[Swag.mixin]
         func(BPP: u8) doIt()
         {
             crow0 := contrib.row.buffer
@@ -256,8 +256,8 @@ private
         }
     }
 
-    #[swag.safety("", false)]
-    //#[swag.printbc]
+    #[Swag.safety("", false)]
+    //#[Swag.printbc]
     func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
@@ -266,7 +266,7 @@ private
         w8Dst  := imgDst.width * bpp8
         w8Src  := imgSrc.width * bpp8
 
-        #[swag.mixin]
+        #[Swag.mixin]
         func(BPP: u8) doIt()
         {
             var v: u8
@@ -348,7 +348,7 @@ private
         yscale := srcImage.height / cast(f32) dstImage.height
         f := @{xscale, yscale, srcImage}
 
-        #[swag.mixin]
+        #[Swag.mixin]
         func(BPP: u8) doIt()
         {
             dstImage.visitPixels(&f)

@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct X
 {
@@ -11,7 +11,7 @@ func toto(type: const* TypeInfo)
 
 #test
 {
-    using swag
+    using Swag
     x := @typeof(X)
     x.toto()
 }

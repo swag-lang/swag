@@ -1,6 +1,6 @@
 #global public
 #global namespace path
-using swag
+using Swag
 
 const DirectorySeparatorChar    = "/"'u8
 const AltDirectorySeparatorChar = "\\"'u8

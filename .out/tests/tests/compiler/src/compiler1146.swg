@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.compiler]
+#[Swag.compiler]
 func toto()
 {
 	//@print(x)

@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 //#[printbc]
 func main ()
@@ -22,8 +22,7 @@ func main1 ()
 	main();
 }
 
-#run 
+#run
 {
 	main1()
 }
-

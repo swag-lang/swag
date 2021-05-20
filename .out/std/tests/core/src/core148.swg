@@ -1,7 +1,7 @@
 
 using core, utf8, tokenize
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."

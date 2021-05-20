@@ -1,6 +1,6 @@
 #global public
 #global namespace memory
-using swag
+using Swag
 
 // Free the specified memory block
 func free(buffer: *void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
@@ -82,9 +82,9 @@ func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint
 {
     userHint := hint orelse type.name
     ptr := alloc(type.sizeof, allocator, alignement, userHint, loc)
-    if type.kind == swag.TypeInfoKind.Struct
+    if type.kind == Swag.TypeInfoKind.Struct
     {
-        typeStruct := cast(const *swag.TypeInfoStruct) type
+        typeStruct := cast(const *Swag.TypeInfoStruct) type
         typeStruct.opInit(ptr)
     }
     else

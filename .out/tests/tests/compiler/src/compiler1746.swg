@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := @[ [ [1, 2], [1, 2] ], [ [1, 2], [1, 2] ] ]

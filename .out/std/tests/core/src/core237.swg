@@ -3,12 +3,12 @@
 
 using core
 
-#[swag.nocopy]
+#[Swag.nocopy]
 struct AA
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: Array'AA

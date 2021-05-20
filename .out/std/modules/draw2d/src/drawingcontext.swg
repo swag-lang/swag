@@ -33,7 +33,7 @@ struct DrawingContext
 
 impl DrawingContext
 {
-    #[swag.inline]
+    #[Swag.inline]
     func newCommand(using self, cmd: CommandId)->*Command
     {
         debug.assert(drawingBegin)

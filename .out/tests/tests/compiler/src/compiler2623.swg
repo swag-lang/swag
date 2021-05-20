@@ -1,6 +1,6 @@
 #global testerror
 
-#[swag.nocopy]
+#[Swag.nocopy]
 struct AA
 {
 }
@@ -11,7 +11,7 @@ struct(T) BB
 
 impl BB
 {
-    //#[swag.compileif(@typeof(T) != AA)]
+    //#[Swag.compileif(@typeof(T) != AA)]
     func opIndexAffect(using self, index: uint, value: T)
         #selectif @typeof(T) != AA
     {

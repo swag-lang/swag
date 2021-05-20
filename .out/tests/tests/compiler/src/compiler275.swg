@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[attributeUsage(AttributeUsage.Function)]
 attr toto(v: string);

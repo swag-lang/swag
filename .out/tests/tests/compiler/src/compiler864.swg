@@ -1,7 +1,7 @@
 
 #global testpass syntax
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	//var a: (x: s32)->s32 = { return x; }

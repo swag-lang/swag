@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 attr NC(x: string, y: s32);
 

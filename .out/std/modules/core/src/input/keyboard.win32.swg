@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace keyboard
-using swag, win32
+using Swag, win32
 
 private
 {

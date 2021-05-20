@@ -3,7 +3,7 @@
 
 alias toto = s32
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var a: toto = 0

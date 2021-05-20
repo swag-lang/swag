@@ -11,7 +11,7 @@ impl Arr
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: Arr's32

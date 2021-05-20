@@ -1,16 +1,16 @@
-#[swag.inline]
+#[Swag.inline]
 func toto1()->s32
 {
 	return 1
 }
 
-#[swag.inline]
+#[Swag.inline]
 func toto()->s32
 {
 	return toto1() + 2
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(toto() == 3)

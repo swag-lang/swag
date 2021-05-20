@@ -13,7 +13,7 @@ func minMax(array: const [..] s32) -> {min: s32, max: s32}
     return @{currentMin, currentMax}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var bounds = minMax(array: @[8, -6, 2, 109, 3, 71])

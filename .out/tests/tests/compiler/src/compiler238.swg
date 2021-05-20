@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 //#[printbc]
 func main ()
@@ -14,7 +14,7 @@ func main ()
 	@assert(a == 676);
 }
 
-#run 
+#run
 {
 	main()
 }

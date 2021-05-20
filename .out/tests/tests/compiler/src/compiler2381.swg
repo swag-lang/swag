@@ -1,7 +1,7 @@
-#[swag.constexpr]
-func isStruct(t: typeinfo) => t.kind == swag.TypeInfoKind.Struct
+#[Swag.constexpr]
+func isStruct(t: typeinfo) => t.kind == Swag.TypeInfoKind.Struct
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
     var x: T

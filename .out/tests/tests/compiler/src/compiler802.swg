@@ -10,7 +10,7 @@ func toto(using pt: Point, using pt1: Point)
 	x = 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 }

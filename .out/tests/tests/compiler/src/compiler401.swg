@@ -54,11 +54,11 @@ var Table: [256] u64 =
 	0x9afce626ce85b507'u64
 ]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func Hash(buffer: const [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 {
 	crc := previous
-    #[swag.safety("overflow", false)]
+    #[Swag.safety("overflow", false)]
 	loop(buffer)
 	{
 		var i = (crc >> 56) ^ buffer[@index]
@@ -68,7 +68,7 @@ func Hash(buffer: const [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 	return crc ^ 0xFFFFFFFFFFFFFFFF'u64
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(Hash("toto") == 9075899076715882869);

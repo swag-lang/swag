@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 /*#init
 {
     G1 += 1

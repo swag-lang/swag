@@ -12,7 +12,7 @@ struct TITI
     print1: f32
 }
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
     var x: TOTO

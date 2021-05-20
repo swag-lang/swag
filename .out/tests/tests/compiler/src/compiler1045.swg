@@ -2,7 +2,7 @@
 
 func new() => @{1, 2}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	a := new()

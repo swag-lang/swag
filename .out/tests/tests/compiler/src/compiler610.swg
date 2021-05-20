@@ -15,12 +15,12 @@ impl Point
 			pt.y = -self.y
 			return pt
 		}
-		
+
 		return pt
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var a : Point

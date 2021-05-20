@@ -1,8 +1,8 @@
 #global testerror;
 
-#[swag.attributeUsage(swag.AttributeUsage.GlobalVariable)]
+#[Swag.attributeUsage(Swag.AttributeUsage.GlobalVariable)]
 attr toto();
-#[swag.attributeUsage(swag.AttributeUsage.Function)]
+#[Swag.attributeUsage(Swag.AttributeUsage.Function)]
 attr toto1();
 
 #[toto]

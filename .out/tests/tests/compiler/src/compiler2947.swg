@@ -23,7 +23,7 @@ struct AA
 /*
 //var xx: Color = Rgb.R
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
     var e: AA

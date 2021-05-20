@@ -19,7 +19,7 @@ const DEBUG = 1
 
 // 'isThisDebug' is marked with 'constexpr', so it can be automatically evaluated
 // at compile time
-#[swag.constexpr]
+#[Swag.constexpr]
 func isThisDebug() => true
 
 #if isThisDebug() == false
@@ -27,7 +27,7 @@ func isThisDebug() => true
     #assert(false, "this should not be called !")
 }
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func factorial(x: s32)->s32
 {
     if x == 1 return 1

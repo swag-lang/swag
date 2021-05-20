@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[attributeUsage(AttributeUsage.Function)]
 public attr myAttr()
@@ -16,7 +16,7 @@ func titi()
 var toTreat: [4] string
 var toTreatCpt: u32
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()

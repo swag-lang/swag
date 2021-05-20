@@ -1,7 +1,7 @@
 #global public
 #global namespace file
 
-#[swag.enumflags]
+#[Swag.enumflags]
 enum FileAttributes
 {
     None = 0

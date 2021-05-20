@@ -8,7 +8,7 @@ impl AA
     func titi(using self) => true
 }
 
-#[swag.inline]
+#[Swag.inline]
 func xx(b: bool)
 {
 }

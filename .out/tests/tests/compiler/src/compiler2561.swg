@@ -5,7 +5,7 @@ func toto()->*~64 s32
     return &G
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := toto()

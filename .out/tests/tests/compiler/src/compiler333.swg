@@ -3,7 +3,7 @@
 
 var a: [2] s32 = @[50, 60];
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(a[0] == 50);

@@ -1,6 +1,6 @@
 #global public
 #global namespace reflection
-using swag
+using Swag
 
 #[constexpr]
 {
@@ -135,14 +135,14 @@ using swag
     }
 
     // Returns the enum value name corresponding to the value pointed by 'valueAddr'
-    // Can have multiple names if the enum is tagged with #[swag.enumflags]
+    // Can have multiple names if the enum is tagged with #[Swag.enumflags]
     func getEnumName(type: typeinfo, valueAddr: const* void)->String
     {
         var result: String
         if type.kind != TypeInfoKind.Enum
             return result
         typeEnum := cast(const *TypeInfoEnum) type
-        isFlags := hasAttribute(type, "swag.enumflags")
+        isFlags := hasAttribute(type, "Swag.enumflags")
 
         // Get the user value, as an 'u64' or a string
         var val1: u64

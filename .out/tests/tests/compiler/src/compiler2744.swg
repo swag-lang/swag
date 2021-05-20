@@ -1,8 +1,8 @@
 #global testerror
 
-//#[swag.printbc]
-#[swag.safety("", true)]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.safety("", true)]
+#[Swag.optim("", false)]
 #test
 {
     x := -1's64

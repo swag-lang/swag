@@ -1,13 +1,13 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     G += 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #init
 {
     @assert(G == 1)

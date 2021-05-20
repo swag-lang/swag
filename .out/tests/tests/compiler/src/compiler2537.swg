@@ -3,14 +3,14 @@ struct AA
     x = 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->AA throw
 {
     throw "toto"
     return @{1}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->AA throw
 {
     return try toto()

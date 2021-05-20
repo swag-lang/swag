@@ -56,7 +56,7 @@ const FixedDist: [32]u8 = @[
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 ]
 
-#[swag.inline]
+#[Swag.inline]
 func reverse16(n: u16, bits: u8)->u16
 {
     r := math.reverse(n)
@@ -130,7 +130,7 @@ impl HuffmanTable
     }
 }
 
-#[swag.opaque]
+#[Swag.opaque]
 public struct DeflateDecoder
 {
     stream:     CompressStream

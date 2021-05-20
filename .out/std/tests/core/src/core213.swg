@@ -1,7 +1,7 @@
 
 using core
 
-#[swag.mixin]
+#[Swag.mixin]
 func mk(name: string, type: typeinfo)
 {
     #ast

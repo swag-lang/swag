@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct TOTO
 {
@@ -16,7 +16,7 @@ impl Itf for TOTO
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     ptr := cast(const *TypeInfoStruct) @typeof(TOTO)

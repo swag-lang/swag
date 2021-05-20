@@ -1,7 +1,7 @@
 
 using core.math
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     y := -1'f32

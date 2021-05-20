@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func mkVar(name: string, value: s32)
 {
     #ast name ~ " := " ~ value

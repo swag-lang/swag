@@ -1,10 +1,10 @@
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: s32 = 666
     var arr: [200] s8
-    #[swag.relative(1), swag.safety("", true)]
+    #[Swag.relative(1), Swag.safety("", true)]
     var y: *s32 = &x
 }

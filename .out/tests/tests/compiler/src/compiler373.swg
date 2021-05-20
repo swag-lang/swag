@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var slice: const [..] u8 = "titititi";

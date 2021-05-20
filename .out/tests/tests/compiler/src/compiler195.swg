@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 #[constexpr]
 func main ()->u16

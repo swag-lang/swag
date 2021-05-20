@@ -583,7 +583,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     if (!forExport)
     {
         ComputedValue value;
-        if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
+        if (typeFunc->attributes.getValue("Swag.foreign", "function", value) && !value.text.empty())
             fullnameForeign = value.text;
         else
             fullnameForeign = token.text;

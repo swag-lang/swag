@@ -3,7 +3,7 @@ func set(ptr: *u8)
     ptr[0] = 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cxt := @getcontext()

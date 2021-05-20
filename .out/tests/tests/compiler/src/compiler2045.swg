@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[swag.inline]
+    #[Swag.inline]
     func titi(using self)->{a: f32, b: f32}
     {
         _a := cast(f32) x / 10
@@ -14,7 +14,7 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: AA

@@ -1,3 +1,3 @@
 #global protected
-#global #[swag.safety("", false)]
-#global #[swag.optim("", true)]
+#global #[Swag.safety("", false)]
+#global #[Swag.optim("", true)]

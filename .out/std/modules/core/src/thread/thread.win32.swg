@@ -15,7 +15,7 @@ func yield()
     SwitchToThread()
 }
 
-#[swag.callback]
+#[Swag.callback]
 private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
@@ -89,7 +89,7 @@ impl Thread
         self.priority = newPrio
 
         wprio := 0
-        #[swag.complete]
+        #[Swag.complete]
         switch newPrio
         {
             case Lowest:        wprio = THREAD_PRIORITY_LOWEST

@@ -1,4 +1,4 @@
-#[swag.enumflags]
+#[Swag.enumflags]
 enum RGB: u32 { R; G; B; }
 
 #test

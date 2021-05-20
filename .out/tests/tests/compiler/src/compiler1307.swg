@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.macro]
+#[Swag.macro]
 func toto(t: s32, x: code)
 {
     xx := t
@@ -14,7 +14,7 @@ func toto(t: s32, x: code)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto(100)

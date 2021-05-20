@@ -9,7 +9,7 @@ func toto(x: Pt)
     @assert(x.y == 20)
 }
 
-//#[swag.printbc, swag.nooptim]
+//#[Swag.printbc, Swag.nooptim]
 #test
 {
     toto(@{10, 20})

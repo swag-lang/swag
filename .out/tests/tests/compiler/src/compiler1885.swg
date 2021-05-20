@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct(T) AA
 {
@@ -26,7 +26,7 @@ struct(T) AA
     enPlus: bool
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     struct BB

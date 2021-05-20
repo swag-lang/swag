@@ -5,7 +5,7 @@ func toto(x = @{1's64, b: 2's64})
     @assert(x.b == 2)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

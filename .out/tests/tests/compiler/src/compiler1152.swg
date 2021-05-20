@@ -1,10 +1,10 @@
-#[swag.inline]
+#[Swag.inline]
 func toto(x: bool)
 {
 	@assert(x)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto(true)

@@ -1,7 +1,7 @@
 
 using core.drawing
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var y: Color = 0xFFFF0000

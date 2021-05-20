@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[swag.inline]
+#[Swag.inline]
 func swap(x, y: *A)
 {
     tmp :=,moveraw dref x
@@ -21,7 +21,7 @@ func swap(x, y: *A)
     dref y =,nodrop,moveraw tmp
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

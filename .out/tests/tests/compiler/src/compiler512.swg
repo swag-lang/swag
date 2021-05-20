@@ -4,7 +4,7 @@ func(T) valueof(x: any)->T
 	return ptr[0]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(xx: string, a: ...)
 {
 	i := 0'u32
@@ -30,7 +30,7 @@ func toto(xx: string, a: ...)
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto("%s%d", "toto", 10)

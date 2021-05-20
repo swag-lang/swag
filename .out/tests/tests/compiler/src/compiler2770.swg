@@ -1,11 +1,11 @@
-#[swag.inline]
+#[Swag.inline]
 func toto()
 {
     x := "true"
     //@print("toto")
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     zz := 666

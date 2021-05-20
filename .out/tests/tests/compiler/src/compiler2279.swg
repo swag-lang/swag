@@ -1,5 +1,5 @@
 #global skip
-using swag
+using Swag
 
 struct AA
 {
@@ -10,7 +10,7 @@ func toto(v: const &IAllocator)
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var v: AA

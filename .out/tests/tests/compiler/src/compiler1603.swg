@@ -1,6 +1,6 @@
 struct A
 {
-    #ast 
+    #ast
     {
         return "x: s32; y: s32 = 666"
     }
@@ -8,7 +8,7 @@ struct A
     z: s32 = 555
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var a: A

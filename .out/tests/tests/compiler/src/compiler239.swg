@@ -1,4 +1,4 @@
-using swag;
+using Swag;
 
 func main1 ()->s32 { return 77; }
 

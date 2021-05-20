@@ -4,6 +4,6 @@
 struct TOTO
 {
     x: s32
-    #[swag.offset("x1")]
+    #[Swag.offset("x1")]
     y: s32
 }

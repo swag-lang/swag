@@ -1,4 +1,4 @@
-#[swag.constexpr]
+#[Swag.constexpr]
 func toto()->[4] s32
 {
     var result: retval

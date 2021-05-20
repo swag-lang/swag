@@ -1,8 +1,8 @@
 
 using core
 
-//#[swag.printbc]
-//#[swag.nooptim]
+//#[Swag.printbc]
+//#[Swag.nooptim]
 #test
 {
     var x: String = "élémenT"

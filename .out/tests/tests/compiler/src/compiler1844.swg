@@ -1,10 +1,10 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var ptr: *u8
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     ptr[0] = 0
 }

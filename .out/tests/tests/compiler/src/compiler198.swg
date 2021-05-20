@@ -1,8 +1,8 @@
 ;
 ;
-using swag;
+using Swag;
 
-#[constexpr] 
+#[constexpr]
 {
 	func main_u8  ()->u8  { return 45; }
 	func main_u16 ()->u16 { return 45; }
@@ -35,4 +35,3 @@ using swag;
 #assert cast(u64) (1.5'f32 ) == 1;
 #assert cast(u64) (main_f64()) == 1;
 #assert cast(u64) (1.5'f64 ) == 1;
-

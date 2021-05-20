@@ -1,11 +1,11 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x : string
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     ptr := &x[1]
     @assert(:ptr == "A"'u8)
 }

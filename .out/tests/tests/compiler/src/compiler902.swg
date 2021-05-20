@@ -1,17 +1,17 @@
 
 #global testerror
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 func arithmeticMean(numbers: s32...)
 {
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     {
 	    cpt := numbers[1]
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	arithmeticMean(10)

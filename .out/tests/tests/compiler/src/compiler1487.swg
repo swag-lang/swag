@@ -1,6 +1,6 @@
 var G = 0
 
-#[swag.macro]
+#[Swag.macro]
 func(op: bool) toto()
 {
     #if op
@@ -9,7 +9,7 @@ func(op: bool) toto()
         G += 2
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0

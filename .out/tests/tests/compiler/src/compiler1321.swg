@@ -1,14 +1,14 @@
 
 #global testerror
 
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     #mixin x
     #mixin x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

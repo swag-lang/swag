@@ -1,7 +1,7 @@
 
 using core.math
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var rect: Rect{0, 0, 10, 10}

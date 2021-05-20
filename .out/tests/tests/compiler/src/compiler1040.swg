@@ -13,7 +13,7 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt : [3] Point

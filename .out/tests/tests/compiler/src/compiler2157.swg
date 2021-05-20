@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.pack(10)]
+#[Swag.pack(10)]
 struct A
 {
 

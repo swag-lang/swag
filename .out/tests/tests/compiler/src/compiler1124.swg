@@ -1,4 +1,4 @@
-//#[swag.public]
+//#[Swag.public]
 struct RNG
 {
 	xx: s32
@@ -12,7 +12,7 @@ impl RNG
 	}
 }
 
-//#[swag.public]
+//#[Swag.public]
 struct(T) toto
 {
 	rng: RNG
@@ -20,7 +20,7 @@ struct(T) toto
 
 impl toto
 {
-	//#[swag.public]
+	//#[Swag.public]
 	func toto1(using self, x: s32) => rng.call(x);
 }
 

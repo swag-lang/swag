@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     var arr: [12] u8

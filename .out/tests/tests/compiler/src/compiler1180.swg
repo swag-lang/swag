@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.inline]
+#[Swag.inline]
 #test
 {
 }

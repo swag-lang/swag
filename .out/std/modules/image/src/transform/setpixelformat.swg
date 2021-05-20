@@ -6,7 +6,7 @@ impl Image
     {
         f := dstImage
 
-        #[swag.complete]
+        #[Swag.complete]
         switch pf
         {
         case RGB8:
@@ -36,7 +36,7 @@ impl Image
     {
         f := dstImage
 
-        #[swag.complete]
+        #[Swag.complete]
         switch pf
         {
         case RGBA8:
@@ -78,7 +78,7 @@ impl Image
     {
         f := dstImage
 
-        #[swag.complete]
+        #[Swag.complete]
         switch pf
         {
         case BGR8:
@@ -108,7 +108,7 @@ impl Image
     {
         f := dstImage
 
-        #[swag.complete]
+        #[Swag.complete]
         switch pf
         {
         case BGRA8:
@@ -148,7 +148,7 @@ impl Image
 
     private func doChangePf(using self, dstImage: *Image)
     {
-        #[swag.complete]
+        #[Swag.complete]
         switch dstImage.pf
         {
         case RGB8:  toRGB8(dstImage)

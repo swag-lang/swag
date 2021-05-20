@@ -13,23 +13,23 @@ impl Point
 	func opPostCopy(self)
 	{
 	}
-	
+
 	func opPostMove(self)
 	{
 		cpt += 1
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->Point
 {
 	var pt: Point
 	return pt
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	cpt = 0
 	toto();
 	@assert(cpt == 1)

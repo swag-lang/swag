@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 func toto1()->[2] s32
 {
     result := @[1, 2]

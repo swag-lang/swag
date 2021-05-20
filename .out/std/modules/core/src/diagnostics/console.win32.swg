@@ -4,7 +4,7 @@ using win32
 
 var g_colorToWin: [@countof(Color)] u16 = ?
 
-#[swag.compiler]
+#[Swag.compiler]
 func colorToWin()
 {
     using Color

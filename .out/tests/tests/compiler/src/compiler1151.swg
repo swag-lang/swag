@@ -1,10 +1,10 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()
 {
-	#[swag.public]
+	#[Swag.public]
 	func A()
 	{
 	}

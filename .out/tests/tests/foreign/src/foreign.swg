@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 public func tcf_tuple()->{s32, s32}
 {
@@ -32,7 +32,7 @@ public func tcf_toto3(a, b, c, d, e, f: s8)
     @assert(f == 6)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 public func tcf_toto4()->string
 {
     return "toto"
@@ -84,7 +84,7 @@ public impl tcf_Point
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 public func tcf_toto10()->tcf_Point
 {
     return @{10, 20}
@@ -265,7 +265,7 @@ public func tcf_join32(titi: string, values: s32...)
 
 private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 public func tcf_toto20(a: u16)
 {
 //    @assert(a == 2020)
@@ -304,13 +304,13 @@ public func tcf_alloc(size: u32)
     all(vv.x)
 }
 
-#[swag.foreign("kernel32")]
+#[Swag.foreign("kernel32")]
 {
     func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-#[swag.callback]
+#[Swag.callback]
 public func tcf_entry(param: *void)
 {
     ptr := cast(*u64) param
@@ -349,7 +349,7 @@ public func tcf_manualcall(x: s64)->s64
     return x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s16, s32, string, s64))
 {
     @assert(v == 33)

@@ -3,7 +3,7 @@ struct AA
     x, y, z: f64 = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func inc(x: AA)->AA
 {
     y := x

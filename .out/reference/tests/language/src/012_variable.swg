@@ -103,11 +103,11 @@
         @assert(@typeof(a) == @typeof(b))
     }
 
-    // A local variable declared with the #[swag.global] attribute will be global
+    // A local variable declared with the #[Swag.global] attribute will be global
     {
         func toto()->s32
         {
-            #[swag.global] var x = 1
+            #[Swag.global] var x = 1
             x += 1
             return x
         }

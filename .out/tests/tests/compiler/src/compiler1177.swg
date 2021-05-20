@@ -1,4 +1,4 @@
-using swag
+using Swag
 enum TOTO : s64
 {
     A = 666

@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 var b0: bool = true;
 var b1: u8 = 1;
@@ -18,8 +18,7 @@ func main ()
 	@assert(b4 == 4);
 }
 
-#run 
+#run
 {
 	main()
 }
-

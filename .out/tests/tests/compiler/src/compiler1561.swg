@@ -2,7 +2,7 @@ struct(T) A
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: A's32

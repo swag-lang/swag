@@ -1,8 +1,8 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: f32, y: ...)
-{	
+{
 	@assert(x == 1.0)
-	
+
 	result := 0
 	loop @countof(y)
 	{
@@ -10,11 +10,11 @@ func toto(x: f32, y: ...)
 		ptr := cast(*s32) @dataof(p)
 		result += ptr[0]
 	}
-	
+
 	@assert(result == 60)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto(1.0, 10, 20, 30)

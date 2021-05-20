@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func scopeLock()
 {
     a := 4
@@ -7,7 +7,7 @@ func scopeLock()
 
 var G = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

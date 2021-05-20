@@ -23,7 +23,7 @@ const validTests: [] ValidTest = @[
 	{"\xed\xbf\xbf", false},         // U+DFFF low surrogate (sic)
 ]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(validTests[1].in == "a")

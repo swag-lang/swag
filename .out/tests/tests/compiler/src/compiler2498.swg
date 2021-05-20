@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct Node
 {
     next: *~32 Node
@@ -8,14 +8,14 @@ struct Node
     value = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct MNode
 {
     value1 = 555
     node: [2] Node
 }
 
-//#[swag.printbc, swag.optim("bc",false)]
+//#[Swag.printbc, Swag.optim("bc",false)]
 #test
 {
     var a, b: MNode

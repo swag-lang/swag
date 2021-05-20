@@ -1,6 +1,6 @@
 
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func toto()->s32
 {
 	return 666
@@ -8,8 +8,8 @@ func toto()->s32
 
 const titi = toto()
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	@assert(titi == 666)
 }

@@ -12,7 +12,7 @@ func findFirstLine(what: string)
     visit line: lines
     {
         idx := line.indexOf(what)
-        if idx == swag.UInt.Max continue
+        if idx == Swag.UInt.Max continue
         #if LOG console.print("line: %\n", line)
         toProcess.add(dref line)
         idxFirst = @index + 1
@@ -37,7 +37,7 @@ func findLine(what: string)->*String
     visit *line: lines
     {
         idx := line.indexOf(what)
-        if idx == swag.UInt.Max continue
+        if idx == Swag.UInt.Max continue
         #if LOG console.print("line: %\n", line)
         return line
     }
@@ -55,7 +55,7 @@ func swapParams(what: string)->String
     loop
     {
         idxNext = what.indexOf(",", idxNext)
-        if idxNext == swag.UInt.Max break
+        if idxNext == Swag.UInt.Max break
         if !result.isEmpty() result += ", "
 
         // Isolate parameter name

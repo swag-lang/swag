@@ -1,5 +1,5 @@
 #global namespace parse
-using swag
+using Swag
 
 // Used to add an element in a 'core.Array' without knowing the type of the element at compile time
 // but knowing it at runtime (valueType)
@@ -50,7 +50,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 // Accepted types are :
 // - s8,s16,s32,s64,int,u8,u16,u32,u64,uint,char,bool,f32,f64
 // - 'core.String'  literal strings are not supported as 'buf' is supposed to be transient
-// - enum           with or without 'swag.enumflags' attribute
+// - enum           with or without 'Swag.enumflags' attribute
 //
 // 'buf' can contain multiple values separated with blanks if 'type' is:
 // - a static array of the types above
@@ -97,7 +97,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     if reflection.isEnum(type)
     {
         enumType := cast(const *TypeInfoEnum) type
-        enumFlags := reflection.hasAttribute(enumType, "swag.enumflags")
+        enumFlags := reflection.hasAttribute(enumType, "Swag.enumflags")
 
         loop
         {

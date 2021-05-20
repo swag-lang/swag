@@ -1,7 +1,7 @@
-#[swag.inline]
+#[Swag.inline]
 func min(x, y: s32) => x < y ? x : y
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := min(5, min(4, 2))

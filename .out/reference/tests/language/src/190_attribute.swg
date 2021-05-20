@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 // Attributes are tags associated with functions, structures etc...
 // They are declared like functions, with 'attr' before instead of 'func'

@@ -6,7 +6,7 @@ func F()->s32
 	return 666;
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var a, b, c = F();

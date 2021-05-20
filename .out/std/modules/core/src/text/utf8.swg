@@ -441,24 +441,24 @@ func countRunes(buffer: const [..] u8)->uint
 }
 
 // Find the first occurence of rune 'what', and returns the byte index of it
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
 {
     return indexOf(src, @[what], startByteIndex)
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)->uint
 {
     length := @countof(src)
     if !length
-        return swag.UInt.Max
+        return Swag.UInt.Max
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
     if !countof
-        return swag.UInt.Max
+        return Swag.UInt.Max
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -474,21 +474,21 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
         remain -= res.eat
     }
 
-    return swag.UInt.Max
+    return Swag.UInt.Max
 }
 
 // Find the given string, and returns the byte index of it
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint
 {
     length := @countof(src)
     if !length
-        return swag.UInt.Max
+        return Swag.UInt.Max
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
     if !countof or countof > (length - startByteIndex)
-        return swag.UInt.Max
+        return Swag.UInt.Max
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -502,23 +502,23 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
         remain -= 1
     }
 
-    return swag.UInt.Max
+    return Swag.UInt.Max
 }
 
 // Find the last rune occurence of 'what', and returns the byte index of it
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: rune)->uint
 {
     return lastIndexOf(src, @[what])
 }
 
 // Returns the last index (in bytes) of a rune
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
 {
     length := @countof(src)
     if !length
-        return swag.UInt.Max
+        return Swag.UInt.Max
     dataof := @dataof(src)
 
     byteIdx := length
@@ -527,26 +527,26 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
         sl := @mkslice(dataof, byteIdx)
         (c, eat) := decodeLastRune(sl)
         if eat == 0
-            return swag.UInt.Max
+            return Swag.UInt.Max
 
         byteIdx -= eat
         if slice.contains(what, c)
             return byteIdx
     }
 
-    return swag.UInt.Max
+    return Swag.UInt.Max
 }
 
 // Returns the last index (in bytes) of a string
-// Returns swag.UInt.Max if not found
+// Returns Swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->uint
 {
     length := @countof(src)
     if !length
-        return swag.UInt.Max
+        return Swag.UInt.Max
     lengthStr := @countof(what)
     if lengthStr > length
-        return swag.UInt.Max
+        return Swag.UInt.Max
 
     idx := length - lengthStr
     dataof := @dataof(src) + idx
@@ -556,11 +556,11 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
         if res == 0
             return idx
         if !idx
-            return swag.UInt.Max
+            return Swag.UInt.Max
         idx, dataof -= 1
     }
 
-    return swag.UInt.Max
+    return Swag.UInt.Max
 }
 
 // Return true if the string starts with 'str'
@@ -624,7 +624,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 {
     using ComparisonType
 
-    #[swag.complete]
+    #[Swag.complete]
     switch comparisonType
     {
     case Latin1:
@@ -681,7 +681,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 // @alias0 will contain the character
 // @alias1 will contain the character index
 // @alias2 will contain the byte index of that character within the utf8 sequence
-#[swag.macro]
+#[Swag.macro]
 func visitRunes(buffer: const [..] u8, stmt: code)
 {
     count := @countof(buffer)

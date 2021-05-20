@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 func toto(ptr: func() throw) throw
 {
@@ -9,7 +9,7 @@ func toto1() throw
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 }

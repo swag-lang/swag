@@ -1,5 +1,5 @@
-// A function marked with 'swag.constexpr' can be executed by the compiler if it can
-#[swag.constexpr]
+// A function marked with 'Swag.constexpr' can be executed by the compiler if it can
+#[Swag.constexpr]
 func sum(x, y: f32) => x + y
 
 // Here 'G' will be baked to 3 by the compiler

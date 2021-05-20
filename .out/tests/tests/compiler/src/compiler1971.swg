@@ -22,7 +22,7 @@ impl Array
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: Array's32

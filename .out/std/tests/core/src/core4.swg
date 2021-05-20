@@ -8,10 +8,10 @@ struct(T = random.MWC) Random
 
 impl Random
 {
-	func nextF32(using self)->f32 => rng.nextU32() / cast(f32) swag.U32.Max
+	func nextF32(using self)->f32 => rng.nextU32() / cast(f32) Swag.U32.Max
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var rng: Random

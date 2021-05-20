@@ -3,6 +3,6 @@
 
 interface toto
 {
-    #[swag.offset("print1")]
+    #[Swag.offset("print1")]
     print: func()
 }

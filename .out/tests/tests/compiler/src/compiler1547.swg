@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[constexpr]
 func hasMember(type: const* TypeInfo, name: string)->bool
@@ -21,7 +21,7 @@ impl X
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     #if hasMember(@typeof(X), "toto")
@@ -33,7 +33,7 @@ impl X
     #if hasMember(@typeof(X), "titi")
     {
         x = true
-    }    
+    }
 
     @assert(x == true)
 }

@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var res = T()
@@ -7,7 +7,7 @@
 	@assert(res.item2 == 3)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func T()-> {s64,s64,s64}
 {
 	return @{1's64,2's64,3's64}

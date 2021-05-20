@@ -8,13 +8,13 @@ func sum(nums: f64...)
 	@assert(nums[2] == 30)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func average(nums: f64...)
 {
     sum(nums)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	average(10, 20, 30)

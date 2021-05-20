@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     error := false
@@ -8,7 +8,7 @@
         {
             break outer
         }
-        
+
         error = true
     }
 

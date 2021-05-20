@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[attributeUsage(AttributeUsage.GlobalVariable)]
 attr toto(b: bool);

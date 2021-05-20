@@ -3,7 +3,7 @@ struct titi
 	buf: [5] u8;
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 impl titi
 {
     func toto(xx: titi, x: s64)
@@ -12,7 +12,7 @@ impl titi
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     arr := @[10, 20, 320]

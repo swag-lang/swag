@@ -2,7 +2,7 @@
 
 var cpt: s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()
 {
 	defer cpt -= 1
@@ -20,5 +20,5 @@ func toto()
 	cpt = 0
 	toto()
     //@print(cast(s64) cpt)
-	@assert(cpt == 1)	
+	@assert(cpt == 1)
 }

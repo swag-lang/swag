@@ -2,8 +2,8 @@ func toto()
 {
 }
 
-//#[swag.printbc]
-//#[swag.optim("", false)]
+//#[Swag.printbc]
+//#[Swag.optim("", false)]
 #test
 {
     a := 0

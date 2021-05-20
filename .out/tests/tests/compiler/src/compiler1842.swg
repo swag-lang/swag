@@ -8,7 +8,7 @@ interface IPrintable
     print: func(self)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: Point

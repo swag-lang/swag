@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func arithmeticMean(x: string, numbers: f32...)
 {
 	@assert(x == "toto")
@@ -8,7 +8,7 @@ func arithmeticMean(x: string, numbers: f32...)
 	@assert(numbers[1] == 20.0)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	arithmeticMean("toto", 10, 20)

@@ -1,8 +1,8 @@
 #test
 {
-    // A mixin is declared like a function, with the attribute 'swag.mixin'
+    // A mixin is declared like a function, with the attribute 'Swag.mixin'
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func myMixin()
         {
         }
@@ -10,7 +10,7 @@
 
     // A mixin function is inserted in the scope of the caller
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func myMixin()
         {
             a += 1
@@ -24,7 +24,7 @@
 
     // This behaves like a function, so you can add parameters
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func myMixin(increment: s32 = 1)
         {
             a += increment
@@ -38,7 +38,7 @@
 
     // A mixin accepts parameters of type 'code'
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func doItTwice(what: code)
         {
             #mixin what
@@ -53,7 +53,7 @@
     // When the last parameter of a mixin is of type 'code', caller
     // can declare that code in a statement just after the call
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func doItTwice(value: s32, what: code)
         {
             #mixin what
@@ -76,7 +76,7 @@
 
     // You can use special type 'alias' to create a named alias for an identifier
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func inc10(variable: alias)
         {
             variable += 10
@@ -90,7 +90,7 @@
 
     // You can also use special type 'alias' and '#code' to create a named alias for a variable declaration
     {
-        #[swag.mixin]
+        #[Swag.mixin]
         func setVar(variable: alias, value: s32)
         {
             variable := value
@@ -104,7 +104,7 @@
 }
 
 // A mixin function can be called in the global scope
-#[swag.mixin]
+#[Swag.mixin]
 func declare(name: alias, value: s32)
 {
     const name: s32 = value

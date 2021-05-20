@@ -1,10 +1,10 @@
-#[swag.inline]
+#[Swag.inline]
 func toto(x: s32)->s32
 {
     return x + x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     r := toto(1)

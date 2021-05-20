@@ -1,4 +1,4 @@
-using swag;
+using Swag;
 
 //#[printbc]
 func test2 ()-> string
@@ -11,7 +11,7 @@ func test2 ()-> string
 {
 	var res = test2();
 	//@op(res, count) == 5;
-		
+
 	//@print(res);
 	//@print(test2.count);
 }

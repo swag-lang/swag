@@ -1,4 +1,4 @@
-#global namespace swag
+#global namespace Swag
 
 impl TempAllocator
 {

@@ -1,6 +1,6 @@
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	context := @getcontext()

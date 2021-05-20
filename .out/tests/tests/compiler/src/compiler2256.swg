@@ -11,14 +11,14 @@ impl B
     }
 }
 
-#[swag.inline]
+#[Swag.inline]
 func toto()->[1] B
 {
     var result: [1] B
     return result
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := toto()

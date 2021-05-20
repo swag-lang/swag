@@ -1,5 +1,5 @@
 #global testerror
-using swag
+using Swag
 
 [toto]
 {

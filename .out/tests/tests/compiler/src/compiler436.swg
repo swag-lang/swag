@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt := 0
@@ -11,6 +11,6 @@
 		break
 		//@assert(false)
 	}
-	
+
 	@assert(cpt == 1)
 }

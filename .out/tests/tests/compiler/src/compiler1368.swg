@@ -4,9 +4,9 @@ interface IIncrementable
     done: func(self)->bool
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{   
+{
     var x: IIncrementable
     @assert(x == null)
 }

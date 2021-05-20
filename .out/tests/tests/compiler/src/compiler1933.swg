@@ -1,4 +1,4 @@
 #test
 {
-    @assert(@getcontext().flags & swag.ContextFlags.Test ? true : false)
+    @assert(@getcontext().flags & Swag.ContextFlags.Test ? true : false)
 }

@@ -13,7 +13,7 @@ func entry(th: thread.Thread)
     mutex.unlock()
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var th: [N] thread.Thread

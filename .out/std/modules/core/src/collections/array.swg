@@ -1,5 +1,5 @@
 #global export
-using swag
+using Swag
 
 struct(T) Array
 {

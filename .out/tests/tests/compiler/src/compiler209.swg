@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 func main (a: f64, b: f64)
 {
@@ -8,7 +8,7 @@ func main (a: f64, b: f64)
 	@assert(b == 555);
 }
 
-#run 
+#run
 {
 	main(666'f64, 555'f64);
 }

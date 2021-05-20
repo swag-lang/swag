@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[swag.inline]
+    #[Swag.inline]
     func from(x: s64)->AA
     {
         return @{x}
@@ -18,7 +18,7 @@ func toto(v1, v2: AA)
     @assert(v2.x == 2)
 }
 
-//#[swag.printbc]//, swag.optim("", false)]
+//#[Swag.printbc]//, Swag.optim("", false)]
 #test
 {
     toto(AA.from(1), AA.from(2))

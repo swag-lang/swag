@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.mixin]
+#[Swag.mixin]
 func toto()
 {
     #macro
@@ -10,7 +10,7 @@ func toto()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

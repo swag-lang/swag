@@ -33,8 +33,8 @@ func toto()-> {x: AA}
     return result
 }
 
-//#[swag.printbc]
-#[swag.optim("bytecode", true)]
+//#[Swag.printbc]
+#[Swag.optim("bytecode", true)]
 #test
 {
     {

@@ -2,7 +2,7 @@
 
 var G: s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	G = 0
@@ -13,6 +13,6 @@ var G: s32 = 0
 		defer G = 1
 		i = 1
 	}
-	
+
 	@assert(G == 1)
 }

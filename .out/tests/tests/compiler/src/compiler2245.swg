@@ -1,6 +1,6 @@
 #global if #os == "windows"
 
-#[swag.foreign("kernel32")]
+#[Swag.foreign("kernel32")]
 {
     func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
@@ -11,7 +11,7 @@ const INFINITE = 0xFFFFFFFF
 
 var G: u64
 
-#[swag.callback]
+#[Swag.callback]
 func entry(param: *void)
 {
     ptr := cast(*u64) param

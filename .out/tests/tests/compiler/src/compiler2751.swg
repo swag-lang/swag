@@ -1,9 +1,9 @@
 #global testerror
 
-#[swag.safety("", true)]
-#[swag.optim("", false)]
+#[Swag.safety("", true)]
+#[Swag.optim("", false)]
 #test
 {
-    x := swag.MaxF64
+    x := Swag.MaxF64
     y := cast(s64) x
 }

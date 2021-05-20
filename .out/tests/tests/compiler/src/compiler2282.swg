@@ -1,7 +1,7 @@
 
 #global testerror
 
-using swag
+using Swag
 
 struct Entity
 {
@@ -19,7 +19,7 @@ struct Monster
     using entity1: *Entity1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var e: Entity

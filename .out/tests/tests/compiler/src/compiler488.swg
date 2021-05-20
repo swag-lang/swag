@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #global testerror
 #test
 {
@@ -11,7 +11,7 @@
 	@assert(res.item2 == 3)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func T(a: s32)-> {s32,s32,s32}
 {
 	return [1,2,3]

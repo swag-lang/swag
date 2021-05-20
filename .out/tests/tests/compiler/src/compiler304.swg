@@ -9,7 +9,7 @@ func compare: (str1: string, str2: string)-> bool
 	var count2 = @countof(str2);
 	if(count1 != count2)
 		return false;
-			
+
 	@print(cast(s32) count1);
 	var src = @dataof(str1);
 	var dst = @dataof(str2);
@@ -20,11 +20,11 @@ func compare: (str1: string, str2: string)-> bool
 		src += 1;
 		dst += 1;
 	}
-		
+
 	return true;
 }*/
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(g == true);

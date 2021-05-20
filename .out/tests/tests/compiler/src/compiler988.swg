@@ -1,6 +1,6 @@
 alias pair = {string, any}
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: [..] pair

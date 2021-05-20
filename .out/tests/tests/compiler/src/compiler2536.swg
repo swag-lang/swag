@@ -8,14 +8,14 @@ struct AA
     x, y = 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->[3] AA throw
 {
     try toto()
     return @[{10, 20}, {10, 20}, {10, 20}]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := catch titi()

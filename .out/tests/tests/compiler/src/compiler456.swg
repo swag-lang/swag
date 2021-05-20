@@ -1,7 +1,7 @@
 
 
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func T()->s32 { return 666; }
 
 func F(x: s32 = T())
@@ -9,7 +9,7 @@ func F(x: s32 = T())
 	@assert(x == 666)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	F();

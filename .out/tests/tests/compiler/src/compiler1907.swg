@@ -1,14 +1,14 @@
 struct ConvertFormatInt
 {
     unsignedValue:  u64
-//    #[swag.offset("unsignedValue")]
+//    #[Swag.offset("unsignedValue")]
     signedValue:    s64
     bits:           u32 = 32
     base:           u32 = 10
     signed:         bool
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var format: ConvertFormatInt{

@@ -1,5 +1,5 @@
 ﻿
-using core.memory, swag
+using core.memory, Swag
 
 #test
 {

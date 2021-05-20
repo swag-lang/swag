@@ -4,7 +4,7 @@ struct point
 	y: s32 = 500
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: [2] point

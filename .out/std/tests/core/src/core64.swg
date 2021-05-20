@@ -17,7 +17,7 @@ impl X
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     {

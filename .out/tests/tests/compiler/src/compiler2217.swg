@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto()->s32
 {
     x := 666

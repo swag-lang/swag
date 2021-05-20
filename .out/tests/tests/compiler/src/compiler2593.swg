@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 var G = 0
 
@@ -14,7 +14,7 @@ func toto(stmt: code)
     #mixin stmt
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

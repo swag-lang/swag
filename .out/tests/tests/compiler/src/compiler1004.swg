@@ -1,8 +1,8 @@
 #global testerror
 
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	let x: any = 6

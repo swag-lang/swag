@@ -30,15 +30,15 @@ func toto()->A
     return res
 }
 
-//#[swag.printbc]
-#[swag.inline]
+//#[Swag.printbc]
+#[Swag.inline]
 func titi()->A
 {
     return toto()
 }
 
-//#[swag.printbc]
-#[swag.optim("", true)]
+//#[Swag.printbc]
+#[Swag.optim("", true)]
 #test
 {
     {

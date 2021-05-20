@@ -1,6 +1,6 @@
 using image
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     img := try image.load(imagePath("rgb.png"))

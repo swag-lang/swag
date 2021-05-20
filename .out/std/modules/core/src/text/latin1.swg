@@ -1,6 +1,6 @@
 #global public
 #global namespace latin1
-using swag
+using Swag
 
 #[inline, constexpr]
 {
@@ -72,7 +72,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
-        #[swag.safety("boundcheck", false)]
+        #[Swag.safety("boundcheck", false)]
         loop i: minLen
         {
             c1 := src[i]

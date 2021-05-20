@@ -8,7 +8,7 @@ struct(T) Arr
     x: T
 }
 
-#[swag.macro]
+#[Swag.macro]
 func(T) toto(v: [..] T, stmt: code)
 {
     func titi(val: *void)

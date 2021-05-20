@@ -1,6 +1,6 @@
 func(T) new()->*T
 {
-	var req : swag.AllocatorRequest
+	var req : Swag.AllocatorRequest
 	req.size = @sizeof(T)
 
 	context := @getcontext()
@@ -14,7 +14,7 @@ struct Point
 {
 	x, y: string = "coucou"
 }
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	ptr := new'Point()

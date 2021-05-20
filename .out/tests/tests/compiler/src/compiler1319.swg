@@ -1,11 +1,11 @@
-#[swag.macro]
+#[Swag.macro]
 func toto(x: code)
 {
     #mixin x
     #mixin x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     cpt := 0

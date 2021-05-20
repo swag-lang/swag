@@ -24,7 +24,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto() -> A
 {
     var x: A
@@ -32,7 +32,7 @@ func toto() -> A
     return x
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := toto()

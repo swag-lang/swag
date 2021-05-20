@@ -3,7 +3,7 @@ struct A
     x = 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var res: [1] A

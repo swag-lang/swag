@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[swag.implicit, swag.complete]
+    #[Swag.implicit, Swag.complete]
     func opAffect(using self, p: s64)
     {
         x = p
@@ -17,7 +17,7 @@ public func toto2682(v: AA)
     @assert(v.x == 2)
 }
 
-#[swag.inline]
+#[Swag.inline]
 public func toto12682()
 {
     toto2682(2's64)

@@ -5,7 +5,7 @@ struct AA
     x: [..]~32 s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := @[10, 20]

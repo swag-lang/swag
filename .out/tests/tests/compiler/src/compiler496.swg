@@ -7,7 +7,7 @@ enum EN : s32
 	Green;
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	using EN

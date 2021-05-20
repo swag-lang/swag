@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct Entity
 {
@@ -10,7 +10,7 @@ struct Monster
     using entity: *Entity
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var e: Entity

@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 var GG = false
 
@@ -23,7 +23,7 @@ func toto()
     cxt.allocator.alloc(&req)
 }
 
-#[swag.macro]
+#[Swag.macro]
 func changeContext(user: code)
 {
     savedCxt := @getcontext()

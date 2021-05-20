@@ -1,10 +1,10 @@
-#[swag.inline]
+#[Swag.inline]
 func titi()->{a: f32, b: string}
 {
     return @{666, "yes"}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(titi().a == 666)

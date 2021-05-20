@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[swag.macro]
+    #[Swag.macro]
     func toto(using self)
     {
         #macro
@@ -15,7 +15,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: A

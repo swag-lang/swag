@@ -1,6 +1,6 @@
 #if #os == "windows"
 {
-    #[swag.foreign("user32")]
+    #[Swag.foreign("user32")]
     {
         func MessageBoxA(hwnd: *void, t: string, t1: string, flags: u32);
     }

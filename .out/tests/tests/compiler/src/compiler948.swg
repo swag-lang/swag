@@ -1,7 +1,7 @@
 
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var t: func()->s32

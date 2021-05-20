@@ -1,11 +1,11 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	a := 0
 	switch a
-	{	
+	{
 	case 0:
 		//defer @print("0")
 		defer a += 1
@@ -15,6 +15,6 @@
 		defer a += 2
 		a = 0
 	}
-	
+
 	@assert(a == 1)
 }

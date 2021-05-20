@@ -1,5 +1,5 @@
 const C = plus1()
-#[swag.constexpr]
+#[Swag.constexpr]
 {
     func plus1() => plus2()
     func plus2() => plus3()

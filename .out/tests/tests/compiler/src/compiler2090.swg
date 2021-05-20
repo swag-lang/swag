@@ -10,10 +10,10 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    var x: AA's64   
+    var x: AA's64
     v := x.toto()
     @assert(v.item0 == 5)
 }

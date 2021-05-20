@@ -60,7 +60,7 @@ var testDigit: []rune = @[
 	0x1D7CE,
 ]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     loop c: 256'u32 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(rune) c))

@@ -22,7 +22,7 @@ impl MWC
         z = value2 orelse 362436069
     }
 
-    #[swag.safety("overflow", false)]
+    #[Swag.safety("overflow", false)]
     func nextU32(using self)->u32
     {
         z = 36969 * (z & 0xffff) + (z >> 16)

@@ -1,9 +1,9 @@
 
 #global testerror
 
-//#[swag.printbc]
-#[swag.optim("", false)]
-#[swag.safety("", true)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
+#[Swag.safety("", true)]
 #test
 {
     x := "toto"

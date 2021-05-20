@@ -12,7 +12,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     DROP = 0
@@ -25,7 +25,7 @@ impl A
             break outer
         @assert(false)
     }
-    
+
     @assert(cpt == 1)
     @assert(DROP == 1)
 }

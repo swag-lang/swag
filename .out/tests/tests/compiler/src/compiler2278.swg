@@ -1,13 +1,13 @@
-func toto()->swag.IAllocator
+func toto()->Swag.IAllocator
 {
     return @getcontext().allocator
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := toto()
 
-    var req: swag.AllocatorRequest
+    var req: Swag.AllocatorRequest
     a.alloc(&req)
 }

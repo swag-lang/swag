@@ -3,7 +3,7 @@ func toto() -> {a: f32, b: bool}
 	return @{666, true}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var (x, y) = toto()

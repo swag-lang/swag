@@ -3,7 +3,7 @@
 
 var slice: const [..] s32;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     slice = @[1, 2, 3];

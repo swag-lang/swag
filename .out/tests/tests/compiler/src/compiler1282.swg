@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     if #mixin x
@@ -6,8 +6,8 @@ func toto(x: code)
     else
         @assert(false)
 }
-    
-//#[swag.printbc]
+
+//#[Swag.printbc]
 #test
 {
     a := 1

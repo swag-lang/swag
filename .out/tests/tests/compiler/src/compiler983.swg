@@ -13,7 +13,7 @@ struct Pair
 	y: f32 //Point
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	//var pair: Pair("toto", {10,20})

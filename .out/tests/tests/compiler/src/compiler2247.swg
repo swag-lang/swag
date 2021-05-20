@@ -9,7 +9,7 @@ func titi(p: *A)
     p.y = 555
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->A
 {
     var result: retval

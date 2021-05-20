@@ -1,11 +1,11 @@
 
 #global testerror
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 #test
 {
     a := "toto"
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     c := a[0..4]
 }

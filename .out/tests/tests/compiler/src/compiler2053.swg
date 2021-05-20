@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: any)
 {
     v := dref cast(**s32) @dataof(x)
@@ -8,7 +8,7 @@ func toto(x: any)
     @assert(v[3] == 4)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: [] s32 = @[1,2,3,4]

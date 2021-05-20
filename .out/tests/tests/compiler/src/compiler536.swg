@@ -12,7 +12,7 @@ struct point
 	y: s32 = 20
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: point

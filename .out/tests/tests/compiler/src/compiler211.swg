@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 func main (a: s32) -> s32
 {

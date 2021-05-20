@@ -1,14 +1,14 @@
-#[swag.inline]
+#[Swag.inline]
 func(T) toto() #selectif true
 {
 }
 
-#[swag.inline]
+#[Swag.inline]
 func(T) toto() #selectif false
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto's32()

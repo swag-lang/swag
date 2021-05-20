@@ -1,5 +1,5 @@
 
 #global testerror;
 
-#[swag.foreign]
+#[Swag.foreign]
 func main (){}

@@ -1,10 +1,10 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: [..] s32
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     x[0] = 0
 }

@@ -2,14 +2,14 @@
 
 #global namespace unicode
 
-#[swag.inline, swag.constexpr]
+#[Swag.inline, Swag.constexpr]
 public
 {
     func isLatin1(c: rune)  => c <= 0xFF
     func isAscii(c: rune)   => c <= 0x7F
 }
 
-#[swag.constexpr]
+#[Swag.constexpr]
 public
 {
     func isDigit(c: rune)->bool
@@ -174,7 +174,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
-        #[swag.safety("boundcheck", false)]
+        #[Swag.safety("boundcheck", false)]
         loop i: minLen
         {
             c1 := toLower(src[i])
@@ -193,7 +193,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false)->s32
 }
 
 ////////// TABLES ////////
-const UpperLower = swag.S32.Max
+const UpperLower = Swag.S32.Max
 
 struct Range
 {
@@ -207,7 +207,7 @@ struct CaseRange
     delta:  [3] s32
 }
 
-#[swag.enumindex]
+#[Swag.enumindex]
 enum WantedCase
 {
 	UpperCase
@@ -262,7 +262,7 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -
 		if cr.lo <= r and r <= cr.hi
         {
 			delta := cr.delta[wCase]
-			if delta == swag.S32.Max
+			if delta == Swag.S32.Max
             {
 				// In an Upper-Lower sequence, which always starts with
 				// an UpperCase letter, the real deltas always look like:

@@ -1,4 +1,4 @@
-#[swag.enumflags]
+#[Swag.enumflags]
 enum TOTO : u32
 {
 	F1 = 0x00000001

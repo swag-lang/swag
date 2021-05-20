@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
  #test
 {
     var value: any = 1

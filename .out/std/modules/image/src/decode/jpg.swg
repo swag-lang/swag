@@ -1,5 +1,5 @@
 #global namespace jpg
-using swag, core
+using Swag, core
 
 const InBufSize         = 4096
 const MaxHeight         = 8192

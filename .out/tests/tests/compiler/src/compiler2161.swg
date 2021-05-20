@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 func assert(v: bool)
 {
 }

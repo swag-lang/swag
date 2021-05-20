@@ -6,7 +6,7 @@ struct BABA
     val: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var arr: Array'BABA

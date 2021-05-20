@@ -3,7 +3,7 @@
 #global testwarning
 #global testwarning
 
-#[swag.deprecated("use this instead")]
+#[Swag.deprecated("use this instead")]
 enum AA
 {
 
@@ -11,11 +11,11 @@ enum AA
 
 enum BB
 {
-    #[swag.deprecated("use this instead")]
+    #[Swag.deprecated("use this instead")]
     A
 }
 
-#[swag.deprecated("use this instead")]
+#[Swag.deprecated("use this instead")]
 struct CC
 {
 
@@ -23,7 +23,7 @@ struct CC
 
 var cc: CC
 
-#[swag.deprecated("use this instead")]
+#[Swag.deprecated("use this instead")]
 func titi()
 {
     a := 0
@@ -31,7 +31,7 @@ func titi()
     a += 1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: AA = ?

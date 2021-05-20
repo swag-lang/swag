@@ -1,7 +1,7 @@
 // https://github.com/golang/go/blob/master/src/strconv/decimal.go
 
 #global namespace strconv
-#global #[swag.safety("overflow", false)]
+#global #[Swag.safety("overflow", false)]
 using globalization
 
 struct Decimal
@@ -485,7 +485,7 @@ impl Decimal
             if nd == 0
             {
                 mant = 0
-                exp = swag.F64.Bias
+                exp = Swag.F64.Bias
                 break
             }
 
@@ -502,7 +502,7 @@ impl Decimal
             {
                 // zero
                 mant = 0
-                exp = swag.F64.Bias
+                exp = Swag.F64.Bias
                 break
             }
 
@@ -536,29 +536,29 @@ impl Decimal
             // Minimum representable exponent is flt.bias+1.
             // If the exponent is smaller,,move it up and
             // adjust d accordingly.
-            if exp < swag.F64.Bias + 1
+            if exp < Swag.F64.Bias + 1
             {
-                n := swag.F64.Bias + 1 - exp
+                n := Swag.F64.Bias + 1 - exp
                 shift(-cast(s32) n)
                 exp += n
             }
 
-            if exp - swag.F64.Bias >= (1'u64 << swag.F64.ExpBits) - 1
+            if exp - Swag.F64.Bias >= (1'u64 << Swag.F64.ExpBits) - 1
             {
                 overflow = true
                 break
             }
 
-            // Extract 1 + swag.F64.MantBits bits.
-            shift(cast(s32) (1 + swag.F64.MantBits))
+            // Extract 1 + Swag.F64.MantBits bits.
+            shift(cast(s32) (1 + Swag.F64.MantBits))
             mant = roundedInteger()
 
             // Rounding might have added a bit; shift down.
-            if mant == 2'u64 << swag.F64.MantBits
+            if mant == 2'u64 << Swag.F64.MantBits
             {
                 mant >>= 1
                 exp += 1
-                if exp - swag.F64.Bias >= (1 << swag.F64.ExpBits) - 1
+                if exp - Swag.F64.Bias >= (1 << Swag.F64.ExpBits) - 1
                 {
                     overflow = true
                     break
@@ -566,21 +566,21 @@ impl Decimal
             }
 
             // Denormalized?
-            if mant & (1'u64 << swag.F64.MantBits) == 0
-                exp = swag.F64.Bias
+            if mant & (1'u64 << Swag.F64.MantBits) == 0
+                exp = Swag.F64.Bias
             break
         }
 
         if overflow
         {
             mant = 0
-            exp = cast(s64) ((1'u64 << swag.F64.MantBits) - 1 + swag.F64.Bias)
+            exp = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + Swag.F64.Bias)
         }
 
         // Assemble bits.
         var result: retval
-        bits := mant & ((1'u64 << swag.F64.MantBits) - 1)
-        bits |= cast(u64) ((exp - swag.F64.Bias) & ((1's64 << swag.F64.MantBits) - 1)) << swag.F64.MantBits
+        bits := mant & ((1'u64 << Swag.F64.MantBits) - 1)
+        bits |= cast(u64) ((exp - Swag.F64.Bias) & ((1's64 << Swag.F64.MantBits) - 1)) << Swag.F64.MantBits
         if neg bits |= (1'u64 << 63)
         result.b = bits
         result.overflow = overflow

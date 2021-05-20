@@ -1,4 +1,4 @@
-#[swag.enumflags]
+#[Swag.enumflags]
 enum Days
 {
     None = 0b_0000_0000 // 0
@@ -11,5 +11,5 @@ var g1 = @typeof(Days).kind
 #test
 {
 	@assert(g == "__compiler1099.Days")
-	@assert(g1 == swag.TypeInfoKind.Enum)
+	@assert(g1 == Swag.TypeInfoKind.Enum)
 }

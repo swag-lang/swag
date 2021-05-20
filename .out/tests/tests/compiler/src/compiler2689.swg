@@ -7,7 +7,7 @@ struct AA
 
 impl AA
 {
-    #[swag.noreturn]
+    #[Swag.noreturn]
     func opAffect(using self, p: s64)
     {
         x = p

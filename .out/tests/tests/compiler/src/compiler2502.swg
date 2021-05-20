@@ -1,12 +1,12 @@
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct(N: u8) Node
 {
     next: *~N s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x1: Node'8

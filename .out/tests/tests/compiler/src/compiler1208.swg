@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 //public
 {
     func toto()
@@ -7,7 +7,7 @@
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

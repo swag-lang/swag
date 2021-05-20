@@ -1,5 +1,5 @@
 #global testerror
 ;
-using swag;
+using Swag;
 
 func main (a: s32 = 6, b: bool) { }

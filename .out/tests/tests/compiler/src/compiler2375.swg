@@ -25,7 +25,7 @@ impl BB
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var v: BB'AA

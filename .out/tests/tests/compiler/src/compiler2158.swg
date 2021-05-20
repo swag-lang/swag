@@ -1,4 +1,4 @@
-#[swag.pack(0)]
+#[Swag.pack(0)]
 struct Union
 {
     x: string

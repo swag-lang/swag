@@ -1,13 +1,13 @@
 ;
 ;
-using swag;
+using Swag;
 
 func main ()
 {
 	@assert(true);
 }
 
-#run 
+#run
 {
 	main()
 }

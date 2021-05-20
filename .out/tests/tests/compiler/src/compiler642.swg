@@ -5,18 +5,18 @@ struct(T) Point
 
 impl Point
 {
-	//#[swag.printbc]
+	//#[Swag.printbc]
 	func toto(self)->T
 	{
 		return self.x
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Point's32
 	@assert(Point.toto(pt) == 65)
 	var pt1: Point'f32
-	@assert(Point.toto(pt1) == 65.0)	
+	@assert(Point.toto(pt1) == 65.0)
 }

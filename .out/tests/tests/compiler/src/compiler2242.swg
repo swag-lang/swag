@@ -7,7 +7,7 @@ func mix(v, val: alias)
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     z := 4

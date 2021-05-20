@@ -7,7 +7,7 @@ func G()
     GG = true
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     GG = false

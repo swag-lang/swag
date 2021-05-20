@@ -1,7 +1,7 @@
-#[swag.tls]
+#[Swag.tls]
 var G: s32 = 5
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(G == 5)

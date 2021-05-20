@@ -16,7 +16,7 @@ impl iter
 			self.value += 1
 			return self.arr.values[self.value - 1]
 		}
-		
+
 		return 0
 	}
 }
@@ -36,8 +36,8 @@ impl Array
 		return ret
 	}
 }
-	
-//#[swag.printbc]
+
+//#[Swag.printbc]
 #test
 {
 	var arr: Array

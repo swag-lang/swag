@@ -12,7 +12,7 @@ struct Array
 	pt: Point's32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var arr: Array

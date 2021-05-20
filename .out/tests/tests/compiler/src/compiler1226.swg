@@ -16,7 +16,7 @@ impl Vector2
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	pt1 := normalize()

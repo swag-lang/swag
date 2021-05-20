@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	res := 0;
@@ -11,6 +11,6 @@
 	case 5: 	res = 5;
 	default: 	res += 1;
 	}
-	
+
 	@assert(res == 1);
 }

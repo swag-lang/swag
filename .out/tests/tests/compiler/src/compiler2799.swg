@@ -7,7 +7,7 @@ func(T) test()
     @assert(x == 2)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     test'u8()

@@ -6,7 +6,7 @@ struct Point
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
 	t := @typeof(T)
@@ -15,11 +15,11 @@ func(T) toto()
 	if(t == @typeof(f32))
 		cpt |= 2
 	//if(t == @typeof(Point))
-	//	cpt |= 4		
+	//	cpt |= 4
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt = 0

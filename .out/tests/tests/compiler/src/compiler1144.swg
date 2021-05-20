@@ -1,13 +1,13 @@
 
 #global testerror
 
-#[swag.inline]
+#[Swag.inline]
 func toto()
 {
 	//@print(x)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := &toto

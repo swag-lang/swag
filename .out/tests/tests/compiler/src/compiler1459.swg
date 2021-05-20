@@ -4,7 +4,7 @@ struct S
 
 impl S
 {
-    #[swag.macro, swag.noreturn]
+    #[Swag.macro, Swag.noreturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         label up
@@ -24,7 +24,7 @@ impl S
 #test
 {
     var x: S
-    
+
     cpt := 0
     visit(Bytes) x
     {
@@ -32,6 +32,6 @@ impl S
         cpt += 1
         break
     }
-    
+
     @assert(cpt == 1)
 }

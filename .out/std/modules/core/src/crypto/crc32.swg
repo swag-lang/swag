@@ -534,7 +534,7 @@ impl Crc32
                 four  := current[3]
                 current += 4
 
-                #[swag.safety("overflow", false)]
+                #[Swag.safety("overflow", false)]
                 cur = lookupTable[0, four & 0xFF] ^ lookupTable[1, (four >> 8) & 0xFF] ^
                         lookupTable[2, (four >> 16) & 0xFF] ^ lookupTable[3, (four >> 24) & 0xFF] ^
                         lookupTable[4, three & 0xFF] ^ lookupTable[5, (three >> 8) & 0xFF] ^
@@ -552,7 +552,7 @@ impl Crc32
                 four  := current[3]
                 current += 4
 
-                #[swag.safety("overflow", false)]
+                #[Swag.safety("overflow", false)]
                 cur = lookupTable[0, (four >> 24) & 0xFF] ^ lookupTable[1, (four >> 16) & 0xFF] ^
                         lookupTable[2, (four >> 8) & 0xFF] ^ lookupTable[3, four & 0xFF] ^
                         lookupTable[4, (three >> 24) & 0xFF] ^ lookupTable[5, (three >> 16) & 0xFF] ^
@@ -579,7 +579,7 @@ impl Crc32
     }
 
     // Returns the crc32 hash value for the given buffer
-    #[swag.constexpr]
+    #[Swag.constexpr]
     func compute(buffer: const [..] u8)->u32
     {
         var v: Crc32

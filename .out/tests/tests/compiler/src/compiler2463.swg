@@ -1,8 +1,8 @@
 #global testerror
 
-#[swag.safety("overflow", true)]
+#[Swag.safety("overflow", true)]
 #test
 {
-    var x: s64 = swag.S64.Max
+    var x: s64 = Swag.S64.Max
     x += 1
 }

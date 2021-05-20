@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.public]
+#[Swag.public]
 struct Random
 {
 }

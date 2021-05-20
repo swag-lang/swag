@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func main ()
 {
 	var a: bool;

@@ -2,14 +2,14 @@
 
 var G: s32 = 666
 
-//#[swag.inline]
-//#[swag.printbc]
+//#[Swag.inline]
+//#[Swag.printbc]
 func toto(a:s32 = G)
 {
     @assert(a == 666)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

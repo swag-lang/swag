@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 public func scopedLock(syncObj: s64)
 {
     @assert(syncObj == 5)
@@ -8,7 +8,7 @@ public func scopedLock(syncObj: s64)
 var G1 = 5's64
 var G2 = 0's64
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     scopedLock(G1)

@@ -1,4 +1,4 @@
-using swag
+using Swag
 namespace A {
 namespace B {
 

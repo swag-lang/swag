@@ -1,4 +1,4 @@
-//#[swag.printbc, swag.optim("", false)]
+//#[Swag.printbc, Swag.optim("", false)]
 #test
 {
     a := 0xFFFFFFFF_FFFFFFFF'u64

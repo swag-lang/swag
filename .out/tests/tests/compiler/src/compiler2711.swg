@@ -5,12 +5,12 @@ struct AA
 
 impl AA
 {
-    #[swag.inline]
+    #[Swag.inline]
     func opCast(using self)->s64 => 666
 }
 
-//#[swag.printbc]
-//#[swag.optim("", false)]
+//#[Swag.printbc]
+//#[Swag.optim("", false)]
 func toto()->s64
 {
     var x: AA

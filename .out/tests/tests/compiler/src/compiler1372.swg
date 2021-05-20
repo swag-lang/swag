@@ -1,4 +1,4 @@
-using swag
+using Swag
 namespace std
 {
     private const SmallSize = 28'u32

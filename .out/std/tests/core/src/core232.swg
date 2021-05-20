@@ -1,7 +1,7 @@
 
 using core, directory
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var options: EnumerationOptions

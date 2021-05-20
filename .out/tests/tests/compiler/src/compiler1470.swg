@@ -1,11 +1,11 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto()
 {
     loop 5
         xx := 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     yy := 5

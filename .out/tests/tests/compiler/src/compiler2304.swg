@@ -16,7 +16,7 @@ impl AA
     }
 }
 
-#assert @typeof(BB).flags & swag.TypeInfoFlags.HasDrop
+#assert @typeof(BB).flags & Swag.TypeInfoFlags.HasDrop
 
 #test
 {

@@ -1,6 +1,6 @@
 var g: bool = false
 
-#[swag.inline]
+#[Swag.inline]
 func toto()->s32
 {
 	if(g)
@@ -9,7 +9,7 @@ func toto()->s32
 		return 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	g = true

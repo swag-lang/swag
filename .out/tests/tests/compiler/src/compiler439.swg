@@ -1,13 +1,13 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt := 0
 	switch(5)
 	{
-	case 5: 
+	case 5:
 		cpt = 1;
 		break;
 		//@assert(false);
@@ -15,6 +15,6 @@
 	case 6:
 		cpt = 2;
 	}
-	
+
 	@assert(cpt == 1)
 }

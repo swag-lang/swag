@@ -12,7 +12,7 @@ func toto()->s32
 	return 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := &toto

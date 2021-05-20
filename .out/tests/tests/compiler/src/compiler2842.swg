@@ -14,8 +14,8 @@ namespace NN
     }
 }
 
-//#[swag.printbc]
-//#[swag.optim("", false)]
+//#[Swag.printbc]
+//#[Swag.optim("", false)]
 #test
 {
     NN.titi()

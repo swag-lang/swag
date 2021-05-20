@@ -1,7 +1,7 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto()
 {
-    x := 666   
+    x := 666
 }
 
 #test

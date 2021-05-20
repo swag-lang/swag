@@ -1,7 +1,7 @@
 
 using core.math
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := abs(-1.0'f64)

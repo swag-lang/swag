@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 struct Entity
 {
@@ -22,7 +22,7 @@ func set(phys: Phys)
     @assert(speed[0] == 666)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var e: Entity

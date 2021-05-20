@@ -14,52 +14,52 @@ impl Rng
         rng.seedU32(time.nowMicroseconds())
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func seedU32(using self, value: u32)
     {
         return rng.seedU32(value)
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func nextS32(using self)->s32
     {
         return bitcast(s32) rng.nextU32()
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func nextS64(using self)->s64
     {
         return bitcast(s64) nextU64()
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func nextU32(using self)->u32
     {
         return rng.nextU32()
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func nextU64(using self)->u64
     {
         return (cast(u64) rng.nextU32() << 32) | rng.nextU32()
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[swag.inline]
+    #[Swag.inline]
     func nextF32(using self)->f32
     {
         v := rng.nextU32()
-        while v == swag.U32.Max v = rng.nextU32()
-        return v / cast(f32) swag.U32.Max
+        while v == Swag.U32.Max v = rng.nextU32()
+        return v / cast(f32) Swag.U32.Max
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[swag.inline]
+    #[Swag.inline]
     func nextF64(using self)->f64
     {
         v := nextU64()
-        while v == swag.U64.Max v = nextU64()
-        return v / cast(f64) swag.U64.Max
+        while v == Swag.U64.Max v = nextU64()
+        return v / cast(f64) Swag.U64.Max
     }
 
     // Returns an unsigned random value in a given range

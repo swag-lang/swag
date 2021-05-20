@@ -3,7 +3,7 @@ struct Pt
     x, y, z: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: Pt)
 {
     @assert(x.x == 10)
@@ -11,7 +11,7 @@ func toto(x: Pt)
     @assert(x.z == 30)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := 10's32

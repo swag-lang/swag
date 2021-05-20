@@ -14,7 +14,7 @@ impl AA
     }
 }
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
     var x: AA

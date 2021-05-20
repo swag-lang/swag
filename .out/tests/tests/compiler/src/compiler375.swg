@@ -1,13 +1,13 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func a (ptr: const [..] s32, cpt: s32)
 {
 	@assert(@countof(ptr) == cast(u32) (cpt));
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var slice: const [..] s32;

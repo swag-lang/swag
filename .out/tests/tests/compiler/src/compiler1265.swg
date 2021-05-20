@@ -5,20 +5,20 @@ struct Toto
 
 impl Toto
 {
-    #[swag.implicit]
+    #[Swag.implicit]
 	func opCast(using self)->s32
 	{
         return x + y
 	}
 
-    #[swag.implicit]
+    #[Swag.implicit]
 	func opCast(using self)->string
 	{
         return "x + y"
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var x: Toto

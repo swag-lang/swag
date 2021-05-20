@@ -1,12 +1,12 @@
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(x: string) toto()
 {
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto!string()

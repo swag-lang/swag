@@ -1,5 +1,5 @@
 
-using swag
+using Swag
 
 struct Point
 {
@@ -7,15 +7,15 @@ struct Point
 	y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-	var x : any 
+	var x : any
 	var tt: s32 = 666//Point(10, 20)
-	
+
 	x = tt
 	//@assert(x is Point)
-	
+
 	ptr := cast(*s32) @dataof(x)
 	@assert(ptr[0] == 666)
 	//@assert(ptr.x == 10)

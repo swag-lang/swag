@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 var v = 50;
 
@@ -12,7 +12,7 @@ func main ()
 	@assert(v == 666);
 }
 
-#run 
+#run
 {
 	main()
 }

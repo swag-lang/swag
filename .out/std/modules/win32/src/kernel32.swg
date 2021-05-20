@@ -1,6 +1,6 @@
 #global export
 #global foreignlib "kernel32"
-using swag
+using Swag
 
 alias HANDLE = 			const *void
 alias HLOCAL = 			HANDLE

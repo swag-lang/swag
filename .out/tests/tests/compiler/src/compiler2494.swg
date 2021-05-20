@@ -2,14 +2,14 @@
 
 struct Node
 {
-    //#[swag.relative(4)]
+    //#[Swag.relative(4)]
     next: *Node
 
     value = 666
 }
 
-//#[swag.printbc]
-#[swag.safety("", true)]
+//#[Swag.printbc]
+#[Swag.safety("", true)]
 #test
 {
     var a, b: Node

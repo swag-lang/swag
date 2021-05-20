@@ -8,7 +8,7 @@ func print(f: f32)
 
 }
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func tt() => 3.14
 
 #test

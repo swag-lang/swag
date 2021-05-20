@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 var cpt = 0's64
 
@@ -7,7 +7,7 @@ func testInline(type: const* TypeInfoFunc)
 {
     visit i: type.attributes
     {
-        if(i.name == "swag.inline")
+        if(i.name == "Swag.inline")
         {
             cpt += 1
             //@print(type.name)
@@ -16,7 +16,7 @@ func testInline(type: const* TypeInfoFunc)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()

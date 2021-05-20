@@ -13,7 +13,7 @@ func concrete1()->*f32
 	return &gf
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto(x: func()->*T)->T
 {
 	ptr := x()
@@ -21,14 +21,14 @@ func(T) toto(x: func()->*T)->T
 }
 
 #test
-{	
+{
 	lambda := &concrete
 	result := toto(lambda)
 	@assert(result == 666)
 	//@print(result)
-	
+
 	lambda1 := &concrete1
 	result1 := toto(lambda1)
 	@assert(result1 == 666)
-	//@print(result1)	
+	//@print(result1)
 }

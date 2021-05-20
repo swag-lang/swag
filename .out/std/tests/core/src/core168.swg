@@ -1,7 +1,7 @@
 ﻿
 using core.time
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     dt := DateTime.now()

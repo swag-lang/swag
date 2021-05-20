@@ -1,9 +1,9 @@
 
 #global testerror
 
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	ptr := @typeof(*TypeInfo)

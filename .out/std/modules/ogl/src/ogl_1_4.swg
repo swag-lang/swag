@@ -1,5 +1,5 @@
 #global public
-using swag
+using Swag
 
 #[extension]
 {

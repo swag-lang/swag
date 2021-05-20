@@ -9,7 +9,7 @@ struct S
 
 impl S
 {
-    #[swag.macro]
+    #[Swag.macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         for v := down; v <= up; v += 1

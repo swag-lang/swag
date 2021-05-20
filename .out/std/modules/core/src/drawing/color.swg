@@ -1,6 +1,6 @@
 #global namespace drawing
 #global public
-using swag
+using Swag
 
 struct Color
 {

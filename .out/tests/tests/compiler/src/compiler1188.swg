@@ -1,4 +1,4 @@
-#[swag.attributeUsage(swag.AttributeUsage.StructVariable)]
+#[Swag.attributeUsage(Swag.AttributeUsage.StructVariable)]
 attr T();
 
 struct TOTO
@@ -10,7 +10,7 @@ struct TOTO
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: TOTO

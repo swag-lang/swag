@@ -519,37 +519,37 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     case AstNodeKind::FuncDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     case AstNodeKind::StructDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     case AstNodeKind::TypeSet:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
-        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     case AstNodeKind::EnumValue:
     {
         auto enumVal = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        enumVal->attributes.getValue("swag.deprecated", "msg", v);
+        enumVal->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
     }
@@ -3388,7 +3388,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     // making the inline)
     if (startNode->extension && startNode->extension->alternativeNode && startNode->parent->kind == AstNodeKind::CompilerMixin)
     {
-        // We authorize mixin code to access the parameters of the swag.mixin function, except if there's a #macro block
+        // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block
         // in the way.
         while (startNode->kind != AstNodeKind::Inline &&
                startNode->kind != AstNodeKind::CompilerInline &&
@@ -3565,7 +3565,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
 {
     auto node = context->node;
 
-    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'swag.noreturn'
+    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
     if (node->ownerInline)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))

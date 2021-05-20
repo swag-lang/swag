@@ -1,6 +1,6 @@
 /*
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #global testerror
 #test
 {

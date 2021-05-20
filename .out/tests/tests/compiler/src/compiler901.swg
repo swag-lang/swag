@@ -1,10 +1,10 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func arithmeticMean(numbers: const [..] string)
 {
 	@assert(numbers[0] == "10")
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	arithmeticMean(@["10"])

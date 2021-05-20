@@ -1,6 +1,6 @@
 using core.random
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var rng: Rng

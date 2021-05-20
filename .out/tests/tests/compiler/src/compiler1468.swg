@@ -1,9 +1,9 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto()
 {
     //for v := 0; v <= 5; v += 1
     loop 5
-    {      
+    {
         xx := 666
         //@assert(v != 666)
     }

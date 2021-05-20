@@ -1,6 +1,6 @@
 const xxx: string = null
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     //var xxx: string = null

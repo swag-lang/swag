@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 #[safety("overflow", true)]
 //#[printbc]
@@ -8,6 +8,6 @@ using swag
         var x: s8 = 1
         x >>=,safe 1
         #assert 1 >>,safe 1 == 0
-        #assert swag.U32.Max <<,safe 1 == 0xFFFFFFFE
+        #assert Swag.U32.Max <<,safe 1 == 0xFFFFFFFE
     }
 }

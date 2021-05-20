@@ -1,6 +1,6 @@
 var G = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(y: *u8, x: string)
 {
     concatLength := @countof(x)

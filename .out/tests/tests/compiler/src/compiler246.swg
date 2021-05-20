@@ -1,10 +1,10 @@
 ;
 ;
-using swag;
+using Swag;
 
 //#[printbc]
 func main (a: s32 = 6)
-{ 
+{
 	@assert(a == 6);
 }
 
@@ -14,7 +14,7 @@ func main1 ()
 	main();
 }
 
-#run 
+#run
 {
 	main1()
 }

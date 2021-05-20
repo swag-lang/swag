@@ -1,11 +1,11 @@
-#[swag.macro]
+#[Swag.macro]
 func toto()
 {
     b := 0
     @assert(b == 0)
 }
-    
-//#[swag.printbc]
+
+//#[Swag.printbc]
 #test
 {
     b := 666

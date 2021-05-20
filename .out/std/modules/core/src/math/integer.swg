@@ -1,6 +1,6 @@
 #global public
 #global namespace math
-using swag
+using Swag
 
 #[constexpr]
 func roundUpToPowerOf2(x: u32)->u32

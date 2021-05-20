@@ -6,7 +6,7 @@ struct(T) Point
 
 //alias Point2f = Point'f32
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt : Point'f32{1.0, 2.0}

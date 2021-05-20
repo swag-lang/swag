@@ -2,7 +2,7 @@
 #global testerror
 
 public
-#[swag.inline]
+#[Swag.inline]
 {
     func toto()
     {
@@ -15,7 +15,7 @@ public
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

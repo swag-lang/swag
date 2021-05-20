@@ -6,7 +6,7 @@ struct ST
     str: String
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var result: Array'ST

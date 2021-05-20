@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var cpt = 0;
@@ -10,7 +10,7 @@
 	{
 		cpt += 1;
 	}
-	
+
 	@assert(cpt == 10);
 	@assert(b == 10);
 }

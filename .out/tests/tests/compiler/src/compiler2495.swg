@@ -1,13 +1,13 @@
 //#global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct Node
 {
     next: *~32 Node
     value = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var a, b: Node

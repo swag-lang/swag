@@ -1,7 +1,7 @@
 ﻿
 using core.time
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     @assert(daysInMonth(2020, 1) == 31)

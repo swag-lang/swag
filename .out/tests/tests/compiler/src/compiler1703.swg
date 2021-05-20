@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.AttributeUsage.Function]
+#[Swag.AttributeUsage.Function]
 func function()
 {
 }

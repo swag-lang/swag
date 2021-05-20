@@ -5,7 +5,7 @@ func toto(x: s8)
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto(128)

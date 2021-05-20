@@ -6,14 +6,14 @@ struct TOTO
 
 var G: bool
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func print(s: *TOTO, tt: bool)
 {
     @assert(s.CPT == 666)
     G = true
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = false

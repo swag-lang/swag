@@ -1,4 +1,4 @@
-#[swag.enumflags]
+#[Swag.enumflags]
 enum Days
 {
     None = 0b_0000_0000 // 0

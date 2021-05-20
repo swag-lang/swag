@@ -7,7 +7,7 @@ struct Point2
     x, y: s32
 }
 /*
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) norm(vec: T)-> @typeof(T.R)
 {
 

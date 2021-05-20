@@ -2,6 +2,6 @@
 
 #test
 {
-    #[swag.safety("overflow", true)]
-    var x: u64 = swag.U64.Max * 2
+    #[Swag.safety("overflow", true)]
+    var x: u64 = Swag.U64.Max * 2
 }

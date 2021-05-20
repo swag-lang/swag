@@ -1,6 +1,6 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: any)
 {
 	type := @kindof(x)
@@ -11,7 +11,7 @@ func toto(x: any)
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var ptr : [] u8 = @[125, 2, 4]

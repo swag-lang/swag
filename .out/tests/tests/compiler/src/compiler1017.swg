@@ -1,5 +1,5 @@
 
-using swag
+using Swag
 
 func toto1(s = #callerfunction)
 {
@@ -17,7 +17,7 @@ func toto()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto()

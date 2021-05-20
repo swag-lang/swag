@@ -2,7 +2,7 @@ using core
 
 impl Image
 {
-    #[swag.enumflags]
+    #[Swag.enumflags]
     public enum ChannelMode
     {
         Red
@@ -42,7 +42,7 @@ impl Image
             mode := params.rmode
 
             var color: u8 = ?
-            #[swag.complete]
+            #[Swag.complete]
             switch params.value
             {
             case Color:     color = params.color

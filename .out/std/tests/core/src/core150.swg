@@ -1,7 +1,7 @@
 
 using core, utf8
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: String = "ABCDE昨"

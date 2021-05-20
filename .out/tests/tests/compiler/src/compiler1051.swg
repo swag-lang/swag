@@ -2,7 +2,7 @@
 
 func(T, N: u32) new()->*T
 {
-	var req : swag.AllocatorRequest
+	var req : Swag.AllocatorRequest
 	req.size = @sizeof(T) * N
 	@getcontext().allocator.alloc(&req)
 
@@ -15,10 +15,10 @@ func(T, N: u32) delete(addr: *T)
 {
 	@drop(addr, N)
 
-	var req : swag.AllocatorRequest
+	var req : Swag.AllocatorRequest
 	req.size = @sizeof(T) * N
 	req.address = addr
-	req.mode = swag.AllocatorMode.Free
+	req.mode = Swag.AllocatorMode.Free
 	@getcontext().allocator.alloc(&req)
 }
 
@@ -37,7 +37,7 @@ impl Point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	G = 0

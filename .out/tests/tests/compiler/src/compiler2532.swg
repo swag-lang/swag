@@ -1,17 +1,17 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto() throw
 {
     throw "toto"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->s64 throw
 {
     try toto()
     return 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := catch titi()

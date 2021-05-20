@@ -4,8 +4,8 @@ struct A
     y: s32
 }
 
-//#[swag.printbc, swag.optim(false)]
-#[swag.inline]
+//#[Swag.printbc, Swag.optim(false)]
+#[Swag.inline]
 func toto1()->A
 {
     var z: retval{y: 555, x: 444}

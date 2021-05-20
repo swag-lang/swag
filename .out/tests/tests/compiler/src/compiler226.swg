@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 //#[printbc]
 func main ()
@@ -12,7 +12,7 @@ func main ()
 	}
 	{
 		var b : s64;
-	}	
+	}
 }
 
 //#[printbc]
@@ -21,8 +21,7 @@ func main1 ()
 	main();
 }
 
-#run 
+#run
 {
 	main1()
 }
-

@@ -6,7 +6,7 @@ func arithmeticMean(numbers: const [..] f64) -> f64 {
     return total / @countof(numbers)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var result = arithmeticMean(@[1.0, 2.0, 3.0, 4, 5])

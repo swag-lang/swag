@@ -11,7 +11,7 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->AA
 {
     var result: retval

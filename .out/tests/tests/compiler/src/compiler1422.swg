@@ -5,20 +5,20 @@
 
 impl A
 {
-    #[swag.property]
+    #[Swag.property]
     func right(using self)->s64
     {
         return x + w
     }
 
-    #[swag.property]
+    #[Swag.property]
     func right(using self, t: s64)
     {
         w = t - x
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: A

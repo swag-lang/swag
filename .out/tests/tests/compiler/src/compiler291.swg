@@ -1,4 +1,4 @@
-using swag;
+using Swag;
 
 //#[printbc]
 func test2 (v: string, v1: string)

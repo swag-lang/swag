@@ -1,11 +1,11 @@
-#[swag.compiler]
+#[Swag.compiler]
 func set(x: string)
 {
     @assert(x == "inside function set")
     //@print(x)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     #run

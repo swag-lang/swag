@@ -1,6 +1,6 @@
 var G = 666
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: [2] *~64 s32

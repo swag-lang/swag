@@ -5,14 +5,14 @@ struct A
 
 impl A
 {
-    #[swag.inline]
+    #[Swag.inline]
     func toto(s: *Self, v: u32)
     {
         s.x = v
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: A

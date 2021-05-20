@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     const array: [] any = @[true, 2, 3.0, "4"]

@@ -11,14 +11,14 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->[1] AA
 {
     var ptrptr: *u8
     return @[{ptrptr}]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := titi()

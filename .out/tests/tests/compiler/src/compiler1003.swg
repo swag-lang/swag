@@ -1,12 +1,12 @@
-using swag
+using Swag
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: ...)
 {
 	@assert(@kindof(x[0]) == string)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto("6")

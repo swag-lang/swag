@@ -1,6 +1,6 @@
 #global testerror
 
-#[swag.inline]
+#[Swag.inline]
 func toto()->s32 throw
 {
     return 0

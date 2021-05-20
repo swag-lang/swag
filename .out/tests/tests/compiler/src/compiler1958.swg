@@ -40,7 +40,7 @@ struct BB
     pitf: *I
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: I
@@ -64,6 +64,6 @@ struct BB
     b.pitf.toto()
     b.pitf.toto1()
 
-    var xx: swag.IAllocator
+    var xx: Swag.IAllocator
     xx = @getcontext().allocator
 }

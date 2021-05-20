@@ -1,8 +1,8 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var index: u32 = 65
-    #[swag.safety("overflow", false)]
+    #[Swag.safety("overflow", false)]
     val := index >> 3
     bit := index - (val << 3)
     var shift: u8 = cast(u8) (1 << bit)

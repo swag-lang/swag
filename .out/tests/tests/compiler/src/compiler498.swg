@@ -8,7 +8,7 @@ func T(a: const [..] s32)
 	@assert(a[1] == 1)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	T(@[0, 1])

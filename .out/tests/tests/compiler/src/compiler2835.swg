@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := 0'u8
@@ -19,7 +19,7 @@ func toto(x: u8)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto1(x: u8)
 {
     @assert(x & 0xFF == x)

@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     while(false);

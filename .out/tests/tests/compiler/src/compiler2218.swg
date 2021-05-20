@@ -1,4 +1,4 @@
-#[swag.pack(8)]
+#[Swag.pack(8)]
 public struct A2218
 {
 

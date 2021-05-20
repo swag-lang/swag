@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 public func toto2643()
 {
     struct AA

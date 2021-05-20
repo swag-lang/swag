@@ -1,4 +1,4 @@
-#[swag.inline]
+#[Swag.inline]
 func toFloat() -> {a: f32, r: f32, g: f32}//, b: f32}
 {
     var result: retval = ?
@@ -8,7 +8,7 @@ func toFloat() -> {a: f32, r: f32, g: f32}//, b: f32}
     return result
 }
 
-//#[swag.printbc, swag.nooptim]
+//#[Swag.printbc, Swag.nooptim]
 #test
 {
     v := toFloat()

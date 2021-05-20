@@ -24,7 +24,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto() -> {A, bool}
 {
     var x: A
@@ -32,7 +32,7 @@ func toto() -> {A, bool}
     return @{x, false}
 }
 
-//#[swag.printbc, swag.nooptim]
+//#[Swag.printbc, Swag.nooptim]
 #test
 {
     v := toto()

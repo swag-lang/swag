@@ -9,7 +9,7 @@ struct(T) Point
 
 alias Point2f = Point'f32
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt : Point2f(1.0, 1)

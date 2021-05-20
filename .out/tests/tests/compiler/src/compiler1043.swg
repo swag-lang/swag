@@ -7,7 +7,7 @@ struct Point
 	x, y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	/*pt := new()

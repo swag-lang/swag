@@ -6,7 +6,7 @@ func toto(x: const [..] s32 = @[1, 2, 3])
     @assert(@countof(x) == 3)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto(@[10, 20, 30])

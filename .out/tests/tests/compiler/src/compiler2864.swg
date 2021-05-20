@@ -1,6 +1,6 @@
 #global testerror
-//#[swag.printbc]
-//#[swag.optim("", false)]
+//#[Swag.printbc]
+//#[Swag.optim("", false)]
 #test
 {
     /*x := 0xFFFFFFFF'u32

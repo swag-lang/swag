@@ -1,5 +1,5 @@
 #global public
-using swag, core
+using Swag, core
 
 struct Image
 {
@@ -50,7 +50,7 @@ impl Image
         }
     }
 
-    #[swag.macro]
+    #[Swag.macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         scan := pixels
@@ -140,7 +140,7 @@ impl Image
     // - image: the processed image
     // - index: the pixel index
     // - x, y: the pixel coordinates
-    #[swag.macro]
+    #[Swag.macro]
     func visitPixels(using self, userData: *void = null, stride: s32 = 1, stmt: code)
     {
         debug.assert(stride > 0)
@@ -178,7 +178,7 @@ impl Image
     }
 
     // Copy one pixel, depending on bpp
-    #[swag.inline]
+    #[Swag.inline]
     func(BPP: u8) copyPixel(pixDst, pixSrc: *u8)
     {
         #if BPP == 24

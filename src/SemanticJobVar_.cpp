@@ -10,7 +10,7 @@
 uint32_t SemanticJob::alignOf(AstVarDecl* node)
 {
     ComputedValue value;
-    if (node->attributes.getValue("swag.align", "value", value))
+    if (node->attributes.getValue("Swag.align", "value", value))
         return value.reg.u8;
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }

@@ -15,7 +15,7 @@ namespace AA
     }
 }
 
-#[swag.macro]
+#[Swag.macro]
 func titi()
 {
     func tata()

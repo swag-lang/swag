@@ -21,7 +21,7 @@ impl Image
         hsl := color.toHsl()
         swapRB := pf == .RGB8 or pf == .RGBA8
 
-        #[swag.complete]
+        #[Swag.complete]
         switch fillType
         {
         case Hue:

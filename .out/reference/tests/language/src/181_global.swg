@@ -10,14 +10,14 @@
 #global protected
 #global private
 
-// All symbols in the file will go the namespace "toto"
-#global namespace "toto"
+// All symbols in the file will go the namespace 'Toto'
+#global namespace Toto
 
 // A #if for the whole file
 #global if DEBUG == true
 
 // Some attributes can be assigned to the full file
-#global #[swag.safety("", true)]
+#global #[Swag.safety("", true)]
 
 // The file will be exported for external usage
 // It's like putting everything in public, except that the file will

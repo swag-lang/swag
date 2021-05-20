@@ -1,6 +1,6 @@
 ;
 ;
-using swag;
+using Swag;
 
 enum T : s16
 {

@@ -1,5 +1,5 @@
 #global public
-using swag
+using Swag
 
 /* ----------------------------- GL_ARB_shadow ----------------------------- */
 

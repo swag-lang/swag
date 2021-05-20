@@ -17,7 +17,7 @@ impl TOTO for TITI
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 /*    var x: TOTO

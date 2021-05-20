@@ -3,14 +3,14 @@ func toto() throw
     throw "toto"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func titi()->[2] s32 throw
 {
     try toto()
     return @[10, 20]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := catch titi()

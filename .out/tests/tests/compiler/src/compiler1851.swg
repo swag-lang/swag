@@ -7,11 +7,11 @@ struct A
     x: string
 }
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 #test
 {
     var x : A
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     ptr := x.x[1]
 }

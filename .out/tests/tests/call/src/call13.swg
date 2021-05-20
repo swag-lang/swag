@@ -1,14 +1,14 @@
 using tests_foreign
 
-using swag
+using Swag
 
-#[swag.foreign("kernel32")]
+#[Swag.foreign("kernel32")]
 {
     func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-//#[swag.printbc, swag.optim(false)]
+//#[Swag.printbc, Swag.optim(false)]
 #test
 {
     var paramBC: [2] *void

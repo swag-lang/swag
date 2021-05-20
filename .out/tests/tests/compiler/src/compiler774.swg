@@ -6,7 +6,7 @@ impl Point
 		@assert(false)
 	}
 
-	//#[swag.semsleep(100)]
+	//#[Swag.semsleep(100)]
 	func opPostMove(self)
 	{
 		cpt += 1
@@ -21,13 +21,13 @@ struct Point
 
 var cpt: s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->Point
 {
 	return Point(1, 2) // one,move
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	cpt = 0

@@ -1,12 +1,12 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(op: string) toto()
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto'("op")()

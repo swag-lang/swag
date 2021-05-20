@@ -7,7 +7,7 @@ struct MyError
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->Error
 {
     return err
@@ -20,7 +20,7 @@ impl Error for MyError
 
 var err: MyError
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := toto()

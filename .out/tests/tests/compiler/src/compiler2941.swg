@@ -17,7 +17,7 @@ struct BB
 
 impl BB
 {
-    #[swag.inline]
+    #[Swag.inline]
     func toto(using self)->s32
     {
         return v.titi()

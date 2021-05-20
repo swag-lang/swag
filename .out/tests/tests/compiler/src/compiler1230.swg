@@ -5,7 +5,7 @@ func toto1()
 {
 }
 
-#[swag.inline]
+#[Swag.inline]
 func toto()
 {
 	toto1()

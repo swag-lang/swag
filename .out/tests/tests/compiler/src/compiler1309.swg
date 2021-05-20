@@ -1,8 +1,8 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     error := false
-    label outer 
+    label outer
     {
         loop x: 10
         {
@@ -10,10 +10,10 @@
             {
                 break outer
             }
-            
+
             error = true
         }
     }
-    
+
     @assert(!error)
 }

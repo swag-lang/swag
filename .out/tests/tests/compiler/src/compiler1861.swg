@@ -12,10 +12,10 @@ func toto(ptr: const *u8)
 }
 
 /*#foreignlib "user32"
-#[swag.foreign("user32")]
+#[Swag.foreign("user32")]
 func MessageBoxA(hwnd: *void, t: const *u8, t1: const *u8, flags: u32);
 
-#[swag.printbc]
+#[Swag.printbc]
 #test
 {
     v1 := "la foule"

@@ -1,11 +1,11 @@
-using swag;
+using Swag;
 
 //#[printbc]
-func fact (v: s32)->s32 
-{ 
+func fact (v: s32)->s32
+{
 	if(v == 1)
 		return 1;
-	var res = fact(v - 1) * v; 
+	var res = fact(v - 1) * v;
 	return res;
 }
 

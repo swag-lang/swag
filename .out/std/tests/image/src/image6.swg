@@ -1,6 +1,6 @@
 using core, image
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     pathName := dataPath()

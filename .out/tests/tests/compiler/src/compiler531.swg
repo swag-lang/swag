@@ -5,7 +5,7 @@ struct point
 
 impl point
 {
-	//#[swag.printbc]
+	//#[Swag.printbc]
 	func set(self, _x: s32)
 	{
 		@assert(self.x == 100)
@@ -13,7 +13,7 @@ impl point
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: point

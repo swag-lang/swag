@@ -1,12 +1,12 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func T(a: ...)
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	T(10, 100)

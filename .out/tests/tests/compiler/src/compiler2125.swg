@@ -8,7 +8,7 @@ struct(T) Arr
     z: ST1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: Arr'f64

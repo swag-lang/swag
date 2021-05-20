@@ -1,7 +1,7 @@
 
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var res = T()
@@ -10,7 +10,7 @@
 	@assert(res.item2 == false)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func T()-> {bool,s32,bool}
 {
 	return @{true,2,false}

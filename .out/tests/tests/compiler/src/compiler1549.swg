@@ -1,4 +1,4 @@
-using swag
+using Swag
 
 var G = 0
 
@@ -15,7 +15,7 @@ impl Y
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     G = 0

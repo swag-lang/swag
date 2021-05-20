@@ -8,7 +8,7 @@ func test(arr: const [..] s32)
 	@assert(@countof(arr) == 2);
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	test(@[1, 2]);

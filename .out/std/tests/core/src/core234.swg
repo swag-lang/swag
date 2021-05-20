@@ -1,7 +1,7 @@
 
 using core
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto() throw
 {
     throw format.toString("toto%", 10)

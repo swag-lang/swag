@@ -9,7 +9,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        #[swag.mixin]
+        #[Swag.mixin]
         func(PF: PixelFormat) doIt()
         {
             pix := pixels
@@ -48,7 +48,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        #[swag.mixin]
+        #[Swag.mixin]
         func(PF: PixelFormat) doIt()
         {
             visitPixels(&f)

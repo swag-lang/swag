@@ -1,6 +1,6 @@
 using image
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var options: DecodeOptions

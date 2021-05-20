@@ -1,4 +1,4 @@
-#[swag.attributeUsage(swag.AttributeUsage.StructVariable)]
+#[Swag.attributeUsage(Swag.AttributeUsage.StructVariable)]
 attr toto();
 
 struct A

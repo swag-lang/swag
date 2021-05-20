@@ -4,14 +4,14 @@ struct Point
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
 
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto'(Point)()

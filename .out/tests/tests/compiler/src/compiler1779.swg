@@ -1,8 +1,8 @@
 
 #global testerror
 
-//#[swag.printbc]
-#[swag.safety("", true)]
+//#[Swag.printbc]
+#[Swag.safety("", true)]
 #test
 {
     x := 10

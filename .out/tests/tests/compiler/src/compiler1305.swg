@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto(t: s32)
 {
     xx := t
@@ -6,7 +6,7 @@ func toto(t: s32)
     @assert(xx == 100)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto(100)

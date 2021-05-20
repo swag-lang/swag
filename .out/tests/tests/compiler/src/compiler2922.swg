@@ -5,7 +5,7 @@ impl AA
     {
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func toto(using self, x: s32)
     {
         titi()

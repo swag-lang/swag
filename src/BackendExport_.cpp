@@ -882,7 +882,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
         emitDependencies();
 
-        CONCAT_FIXED_STR(bufferSwg, "using swag");
+        CONCAT_FIXED_STR(bufferSwg, "using Swag");
         bufferSwg.addEol();
         bufferSwg.addEol();
 

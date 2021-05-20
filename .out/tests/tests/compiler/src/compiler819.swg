@@ -4,7 +4,7 @@ func toto(x: {s32, s32})
 	@assert(x.item1 == 20)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var aa = @{10,20}

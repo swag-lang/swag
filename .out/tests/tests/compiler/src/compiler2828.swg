@@ -5,8 +5,8 @@ func level0()
 }
 
 
-//#[swag.printbc]
-#[swag.optim("", false)]
+//#[Swag.printbc]
+#[Swag.optim("", false)]
 func test(level: int)
 {
     //@bcdbg()

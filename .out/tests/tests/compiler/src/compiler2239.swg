@@ -11,14 +11,14 @@ impl Pt
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(v: s64)->Pt
 {
     var result: retval = v
     return result
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     res := toto(6)

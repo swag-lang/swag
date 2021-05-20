@@ -13,7 +13,7 @@ impl A
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     DROP = 0
@@ -27,16 +27,16 @@ impl A
             var y: A
             defer cpt += 1
             loop 10
-            {       
+            {
                 var z: A
                 defer cpt += 1
                 break outer
             }
         }
-        
+
         @assert(false)
     }
-    
+
     @assert(DROP == 3)
     @assert(cpt == 3)
 }

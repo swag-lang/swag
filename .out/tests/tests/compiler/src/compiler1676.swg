@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 #run
 {
     s := 1
@@ -8,7 +8,7 @@
         case 1:
             fallthrough
         case 2:
-            fallthrough            
+            fallthrough
         case 3:
             res = true
     }

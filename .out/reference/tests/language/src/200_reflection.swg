@@ -19,20 +19,20 @@
         @assert(ptr4 == s64)
     }
 
-    // The return result is a const pointer to a swag.TypeInfo kind of structure
+    // The return result is a const pointer to a Swag.TypeInfo kind of structure
     {
         ptr := bool
-        @assert(@typeof(ptr) == @typeof(const *swag.TypeInfoNative))
+        @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))
 
         ptr1 := [2] s32
-        @assert(@typeof(ptr1) == @typeof(const *swag.TypeInfoArray))
+        @assert(@typeof(ptr1) == @typeof(const *Swag.TypeInfoArray))
         @assert(ptr1.name == "[2] s32")
     }
 
     // The TypeInfo structure contains a different enum value for each type
     {
         ptr := f64
-        @assert(@typeof(ptr.kind).name == "swag.TypeInfoKind")
+        @assert(@typeof(ptr.kind).name == "Swag.TypeInfoKind")
         @assert(ptr.sizeof == @sizeof(f64))
     }
 }

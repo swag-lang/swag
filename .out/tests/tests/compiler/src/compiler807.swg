@@ -6,7 +6,7 @@ struct Point
 	y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(using pt: *u32)
 {
 	x = 10

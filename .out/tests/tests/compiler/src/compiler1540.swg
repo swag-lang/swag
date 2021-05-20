@@ -16,10 +16,10 @@ impl X
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-    using swag
+    using Swag
     ptr := cast(const *TypeInfoStruct) @typeof(X)
     @assert(@countof(ptr.methods) == 2)
 

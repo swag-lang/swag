@@ -1,7 +1,7 @@
 #global public
 #global namespace console
 
-#[swag.enumindex]
+#[Swag.enumindex]
 enum Color
 {
     Black

@@ -5,12 +5,12 @@ struct AA
 
 impl AA
 {
-    #[swag.inline]
+    #[Swag.inline]
     func opCount(using self)->uint => l
 }
 
-//#[swag.printbc]
-//#[swag.optimizebc(0)]
+//#[Swag.printbc]
+//#[Swag.optimizebc(0)]
 #test
 {
     var x: AA

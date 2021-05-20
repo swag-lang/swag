@@ -1,13 +1,13 @@
-//#[swag.printbc, swag.nooptim]
+//#[Swag.printbc, Swag.nooptim]
 #test
 {
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         z := x + y
         @assert(z == 9)
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         z1 := 10'u32 + -1's8
         @assert(z1 == 9)
     }
@@ -15,10 +15,10 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         z := x - y
         @assert(z == 11)
-        #[swag.safety("overflow", false)]
+        #[Swag.safety("overflow", false)]
         z1 := 10'u32 - -1's8
         @assert(z1 == 11)
     }

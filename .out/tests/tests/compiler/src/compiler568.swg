@@ -5,7 +5,7 @@ struct point1
 	z: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct point
 {
 	x: s32
@@ -14,7 +14,7 @@ struct point
 	ptx: point1
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt : point

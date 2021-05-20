@@ -16,7 +16,7 @@ impl Array
 	}
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	x := 0

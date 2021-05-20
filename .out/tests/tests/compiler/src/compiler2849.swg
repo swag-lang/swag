@@ -1,6 +1,6 @@
 #global testerror
 
-#[swag.safety("", true)]
+#[Swag.safety("", true)]
 #test
 {
     x := 1's8

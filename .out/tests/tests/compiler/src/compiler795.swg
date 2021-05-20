@@ -1,12 +1,12 @@
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) toto()
 {
 }
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	toto!"s32"()

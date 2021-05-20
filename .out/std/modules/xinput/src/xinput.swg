@@ -1,7 +1,7 @@
 #global export
 #global foreignlib "xinput"
 
-using swag, win32
+using Swag, win32
 
 const XINPUT_GAMEPAD_DPAD_UP          = 0x0001'u16
 const XINPUT_GAMEPAD_DPAD_DOWN        = 0x0002'u16

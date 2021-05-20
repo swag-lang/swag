@@ -1,4 +1,4 @@
-//using swag
+//using Swag
 
 struct(T) X
 {
@@ -17,7 +17,7 @@ impl Y
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var y: Y

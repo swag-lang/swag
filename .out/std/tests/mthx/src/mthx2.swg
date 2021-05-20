@@ -1,6 +1,6 @@
 using mthx
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Vector2{1, 1}

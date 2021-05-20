@@ -1,7 +1,7 @@
-using swag
+using Swag
 
 var G = 0
-func panic(msg: string, loc: swag.CompilerSourceLocation)
+func panic(msg: string, loc: Swag.CompilerSourceLocation)
 {
     G += 1
 }
@@ -49,18 +49,18 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         }
 
         {
-            x := swag.S16.Max
+            x := Swag.S16.Max
             x0 := cast(u8) x
         }
 
         {
-            x := swag.S32.Max
+            x := Swag.S32.Max
             x0 := cast(u8) x
             x1 := cast(u16) x
         }
 
         {
-            x := swag.S64.Max
+            x := Swag.S64.Max
             x0 := cast(u8) x
             x1 := cast(u16) x
             x2 := cast(u32) x

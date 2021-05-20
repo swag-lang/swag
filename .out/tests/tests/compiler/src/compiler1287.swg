@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto(x: code)
 {
     cpt := 0
@@ -9,7 +9,7 @@ func toto(x: code)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     total := 0

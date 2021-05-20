@@ -5,7 +5,7 @@ func toto()->const &string
     return G
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := toto()

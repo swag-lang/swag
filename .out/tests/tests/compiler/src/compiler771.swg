@@ -6,9 +6,9 @@ struct Point
 	y: s32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{	
+{
 	var pt1: Point
 	pt1 = 1
 	@assert(pt1.x == 1)

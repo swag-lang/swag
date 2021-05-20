@@ -1,5 +1,5 @@
-//#[swag.printbc]
-#[swag.inline]
+//#[Swag.printbc]
+#[Swag.inline]
 public func toto2927()
 {
     cpt := 0

@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto()
 {
     @assert(`x == 666)

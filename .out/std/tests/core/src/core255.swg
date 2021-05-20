@@ -1,6 +1,6 @@
 using core
 
-#[swag.tls]
+#[Swag.tls]
 var G = 0's64
 
 const N = 3
@@ -12,7 +12,7 @@ func entry(th: thread.Thread)
     @assert(G == ITER)
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var th: [N] thread.Thread

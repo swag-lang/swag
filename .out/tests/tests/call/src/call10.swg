@@ -1,8 +1,8 @@
 using tests_foreign
 
-using swag
+using Swag
 
-//#[swag.printbc, swag.optim(false)]
+//#[Swag.printbc, Swag.optim(false)]
 #test
 {
     tcf_join8("titi", 1, 2, 3, 4)

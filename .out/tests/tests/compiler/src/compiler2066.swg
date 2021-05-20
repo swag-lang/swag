@@ -1,14 +1,14 @@
 var G = 0
 
-//#[swag.printbc]
-//#[swag.optimizebc(0)]
+//#[Swag.printbc]
+//#[Swag.optimizebc(0)]
 func toto()->s32
 {
     G = 1
     return 0
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     y := 0's32

@@ -1,4 +1,4 @@
-#[swag.enumindex]
+#[Swag.enumindex]
 enum A { X; Y; Z; }
 
 #test

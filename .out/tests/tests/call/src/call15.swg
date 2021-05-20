@@ -1,15 +1,15 @@
 #global if #os == "windows"
 using tests_foreign
 
-using swag
+using Swag
 
-#[swag.foreign("kernel32")]
+#[Swag.foreign("kernel32")]
 {
     func GetModuleHandleA(lpModuleName: const *u8)->const *void;
     func GetProcAddress(hModule: const *void, lpProcName: const *u8)->const *void;
 }
 
-//#[swag.printbc, swag.optim(false)]
+//#[Swag.printbc, Swag.optim(false)]
 #test
 {
     h := GetModuleHandleA(@dataof("tests_foreign"))

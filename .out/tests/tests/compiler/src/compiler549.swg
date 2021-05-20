@@ -7,7 +7,7 @@ struct point
 	y = "20"
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: [10] point

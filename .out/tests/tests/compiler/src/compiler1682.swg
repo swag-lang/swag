@@ -9,7 +9,7 @@ struct TT
 
 alias myStruct = TT
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func C(x: any)
 {
     //@print(cast(s64) x.value)

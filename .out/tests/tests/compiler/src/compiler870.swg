@@ -2,7 +2,7 @@
 
 var G: s32 = 0
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	func myFunc(val: s32, x: func(s32))

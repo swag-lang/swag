@@ -1,7 +1,7 @@
 #global namespace jobs
-using thread, swag
+using thread, Swag
 
-#[swag.enumflags]
+#[Swag.enumflags]
 public enum JobState
 {
     Zero        = 0x00000000
@@ -16,7 +16,7 @@ public struct Job
 
     // Internal state
     state:          JobState = Zero
-    pendingIndex:   u32 = swag.U32.Max
+    pendingIndex:   u32 = Swag.U32.Max
 }
 
 public struct(T) SliceJob
@@ -35,7 +35,7 @@ public struct ForJob
     userData:   *void
 }
 
-var g_Allocator:            swag.IAllocator
+var g_Allocator:            Swag.IAllocator
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
@@ -91,7 +91,7 @@ func removeJobNoLock(job: *Job)
     g_pendingJobs.removeAt(cast(uint) job.pendingIndex)
     if job.pendingIndex < g_pendingJobs.count
         g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
-    job.pendingIndex = swag.U32.Max
+    job.pendingIndex = Swag.U32.Max
     job.clearState(JobState.InPending)
 }
 
@@ -183,7 +183,7 @@ public func waitJob(job: *Job)
 // Exposed variables:
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
-#[swag.macro]
+#[Swag.macro]
 public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
     if(!@countof(range)) return
@@ -254,7 +254,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 // Exposed variables:
 // - index: current loop index
 // - data:  userData as passed to the macro
-#[swag.macro]
+#[Swag.macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
 {
     if !count return

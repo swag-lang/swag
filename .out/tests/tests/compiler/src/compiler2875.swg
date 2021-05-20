@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto(stmt: code)
 {
     var @alias0: s64 = 555

@@ -1,4 +1,4 @@
-#[swag.constexpr, swag.macro]
+#[Swag.constexpr, Swag.macro]
 func toto(T: s32)->s32
 {
     #ast

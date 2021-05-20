@@ -1,6 +1,6 @@
 #global public
 #global namespace strconv
-using swag, globalization
+using Swag, globalization
 
 struct ConvertFormat
 {
@@ -329,8 +329,8 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
             value = cast(u64) math.abs(signedValue)
         case s64, int:
             signedValue = dref cast(*s64) dataof
-            // Cannot take the absolute value of swag.S64.Min
-            if signedValue == swag.S64.Min
+            // Cannot take the absolute value of Swag.S64.Min
+            if signedValue == Swag.S64.Min
                 overflowS64 = true
             else
                 value = cast(u64) math.abs(signedValue)
@@ -348,7 +348,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     var tmp: [64] u8
     cpt := 63'u32
 
-    // Special case for the lower digit of swag.S64.Min
+    // Special case for the lower digit of Swag.S64.Min
     // We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808
     // So use '8' instead of '7'
     if overflowS64

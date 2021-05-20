@@ -5,14 +5,14 @@ struct A
 
 impl A
 {
-    #[swag.complete, swag.inline]
+    #[Swag.complete, Swag.inline]
     func opAffect(self, v: u32)
     {
         self.x = v
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var pt: A

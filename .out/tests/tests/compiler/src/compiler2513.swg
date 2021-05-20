@@ -7,7 +7,7 @@ func toto(x: string)-> [100] u8
     return result
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := toto("toto")

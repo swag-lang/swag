@@ -5,7 +5,7 @@ struct CStr
 
 impl CStr
 {
-    //#[swag.printbc]
+    //#[Swag.printbc]
     func opDrop(self)
     {
     }
@@ -15,7 +15,7 @@ impl CStr
     }
 }
 
-#[swag.inline]
+#[Swag.inline]
 func cstr(x: string)->CStr
 {
     var tmp: CStr
@@ -23,8 +23,8 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-//#[swag.printbc]
-//#[swag.nooptim]
+//#[Swag.printbc]
+//#[Swag.nooptim]
 #test
 {
     v := cstr("toto")

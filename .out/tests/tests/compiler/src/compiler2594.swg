@@ -1,6 +1,6 @@
 #global testerror
 
-using swag
+using Swag
 
 var G = 0
 
@@ -19,7 +19,7 @@ func toto(stmt: code)
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto()

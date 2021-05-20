@@ -1,10 +1,10 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var ptr: func()
-    #[swag.safety("", true)]
+    #[Swag.safety("", true)]
     ptr()
 }

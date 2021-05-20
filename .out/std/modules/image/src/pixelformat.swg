@@ -1,5 +1,5 @@
 #global public
-using swag
+using Swag
 
 // Desribe the layout format of one image pixel
 enum PixelFormat: u8

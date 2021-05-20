@@ -92,7 +92,7 @@ impl Struct
 
     // Called by a 'visit' block
     // Can have multiple versions, by adding a name after 'opVisit'
-    #[swag.macro]
+    #[Swag.macro]
     {
         func(ptr: bool) opVisit(using self, stmt: code) {}
         func(ptr: bool) opVisitWhatever(using self, stmt: code) {}

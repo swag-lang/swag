@@ -4,7 +4,7 @@ struct Point
 	y: f32
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var toto: Point = @{1.0, 2.0}

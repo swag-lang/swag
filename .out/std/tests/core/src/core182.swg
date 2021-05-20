@@ -1,7 +1,7 @@
 ﻿
 using core
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     ptr0 := memory.alloc(10, null, 1)

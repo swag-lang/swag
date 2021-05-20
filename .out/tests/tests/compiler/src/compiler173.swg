@@ -1,7 +1,7 @@
 ;
 ;
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func main () -> s32
 {
 	return 666;
@@ -14,5 +14,3 @@ func main () -> s32
 #assert main() <= 666;
 #assert main() >= 665;
 #assert main() <= 667;
-
-

@@ -1,7 +1,7 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto(x: s32) => x
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	val := toto(1)

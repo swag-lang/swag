@@ -1,7 +1,7 @@
 ;
 ;
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func main ()->s32
 {
 	return 5;

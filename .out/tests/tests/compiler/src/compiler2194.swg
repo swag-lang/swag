@@ -14,20 +14,20 @@ impl CStr
     }
 }
 
-#[swag.inline]
+#[Swag.inline]
 func cstr(x: string)->CStr
 {
     var tmp: CStr
     return tmp
 }
 
-#[swag.optim("bytecode", true)]
+#[Swag.optim("bytecode", true)]
 func toto()
 {
     v := cstr("toto")
 }
 
-#[swag.optim("bytecode", true)]
+#[Swag.optim("bytecode", true)]
 #test
 {
     toto()

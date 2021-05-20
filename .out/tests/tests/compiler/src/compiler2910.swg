@@ -1,6 +1,6 @@
 const ZFAST_BITS = 9
 
-#[swag.optim("", false)]
+#[Swag.optim("", false)]
 #test
 {
     j := 7'u32

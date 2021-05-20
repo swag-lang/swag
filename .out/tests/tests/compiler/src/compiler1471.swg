@@ -1,4 +1,4 @@
-#[swag.mixin]
+#[Swag.mixin]
 func toto()
 {
     vv := 0
@@ -9,7 +9,7 @@ func toto()
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     yy := 5

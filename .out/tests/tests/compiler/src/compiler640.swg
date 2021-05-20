@@ -10,11 +10,11 @@ func(op: string) toto()
 {
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Point's32
 	@assert(pt.x == 1)
-	
+
 	toto'"toto"();
 }

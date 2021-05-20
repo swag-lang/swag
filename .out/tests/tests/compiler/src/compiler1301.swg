@@ -1,4 +1,4 @@
-#[swag.macro]
+#[Swag.macro]
 func toto(x: code)
 {
     loop 10
@@ -18,6 +18,6 @@ func toto(x: code)
         cpt += 1
         break
     }
-    
+
     @assert(cpt == 1)
 }

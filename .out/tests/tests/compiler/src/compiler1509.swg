@@ -1,10 +1,10 @@
-/*#[swag.compiler, swag.inline]
+/*#[Swag.compiler, Swag.inline]
 func set()
 {
     @assert(@isbytecode())
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := 0

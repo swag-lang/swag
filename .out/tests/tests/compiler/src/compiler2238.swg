@@ -8,10 +8,10 @@ func toto(x: Pt)
     @assert(x.x == 555)
 }
 
-#[swag.constexpr]
+#[Swag.constexpr]
 func offset() => 555
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     toto(Pt{offset()})

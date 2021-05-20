@@ -8,7 +8,7 @@ struct MyError
     x, y, z = 3.14
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func toto()->Error
 {
     err.x = 666
@@ -22,7 +22,7 @@ impl Error for MyError
 
 var err: MyError
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     v := toto()

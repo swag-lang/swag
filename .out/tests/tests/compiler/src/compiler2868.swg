@@ -1,10 +1,10 @@
 #global testerror
 
-//#[swag.optim("", false)]
-#[swag.safety("", true)]
+//#[Swag.optim("", false)]
+#[Swag.safety("", true)]
 #test
 {
-    y := swag.S32.Min
+    y := Swag.S32.Min
     x := -y
     x += 1
 }

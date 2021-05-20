@@ -7,10 +7,10 @@ enum TOTO
 	B = 300
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
-	using swag
+	using Swag
 
 	t := @typeof(TOTO)
 	ptr := cast(const *TypeInfoEnum) t

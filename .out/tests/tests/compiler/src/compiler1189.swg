@@ -1,7 +1,7 @@
 struct TOTO
 {
     b, g, r, a: u8
-    #[swag.offset("b")]
+    #[Swag.offset("b")]
     argb: u32
 }
 

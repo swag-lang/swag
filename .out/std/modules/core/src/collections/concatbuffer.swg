@@ -11,7 +11,7 @@ struct ConcatBufferBucket
 // the buffer needs to increase its size. This is the main difference with Array
 struct ConcatBuffer
 {
-    allocator:      swag.IAllocator
+    allocator:      Swag.IAllocator
 
     firstBucket:    *ConcatBufferBucket
     lastBucket:     *ConcatBufferBucket
@@ -104,7 +104,7 @@ impl ConcatBuffer
 
     // Associate an allocator with the buffer.
     // The allocator can only be changed if the buffer has no pending buckets.
-    func setAllocator(using self, alloc: swag.IAllocator)
+    func setAllocator(using self, alloc: Swag.IAllocator)
     {
         debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc;

@@ -410,7 +410,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Msg0750}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgMask", context->report({parameters, Msg0750}));
+        SWAG_VERIFY(paramType->scopedName == "Swag.CompilerMsgMask", context->report({parameters, Msg0750}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
@@ -621,10 +621,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     {
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
-        // The function wants to return something, but has the 'swag.noreturn' attribute
+        // The function wants to return something, but has the 'Swag.noreturn' attribute
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
             return context->report({funcNode->returnType, Msg0766});
-        // The function returns nothing but has the 'swag.discardable' attribute
+        // The function returns nothing but has the 'Swag.discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, funcNode->token, Msg0767});
     }
@@ -895,7 +895,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     auto node = CastAst<AstReturn>(context->node, AstNodeKind::Return);
 
-    // For a return inside an inline block, take the original function, except if it is flagged with 'swag.noreturn'
+    // For a return inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
     auto funcNode = node->ownerFct;
     if (node->ownerInline)
     {

@@ -2,7 +2,7 @@
 using core
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     res := catch directory.getCurrent()

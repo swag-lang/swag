@@ -8,7 +8,7 @@ struct A
 
 impl A
 {
-    #[swag.property]
+    #[Swag.property]
     func right(s: s32)
     {
     }

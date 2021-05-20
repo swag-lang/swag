@@ -1,6 +1,6 @@
 using core
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     res := "A假CD"

@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     a := @[1, 2, 3, 4]

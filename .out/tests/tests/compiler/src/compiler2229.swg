@@ -1,10 +1,10 @@
-#[swag.inline]
+#[Swag.inline]
 func toto1()->[2] s32
 {
     return @[1, 2]
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     res := toto1()

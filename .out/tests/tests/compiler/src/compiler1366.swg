@@ -16,28 +16,28 @@ impl IIncrementable for TITI
     {
         val += 1
     }
-    
+
     func decr(using self)
     {
         val -= 1
-    }    
-    
+    }
+
     func done(using const self)->bool
     {
         return val == 0
-    } 
+    }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func Loop(x: *IIncrementable)
 {
     while !x.done()
         x.decr()
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
-{   
+{
     var str: TITI
     Loop(&str)
     @assert(str.val == 0)

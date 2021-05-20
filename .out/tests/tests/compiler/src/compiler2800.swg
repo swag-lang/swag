@@ -1,4 +1,4 @@
-//#[swag.printbc]
+//#[Swag.printbc]
 struct AA
 {
     x, y: s64
@@ -8,7 +8,7 @@ struct AA
     xx: [3] s64
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: AA

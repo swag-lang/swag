@@ -1,9 +1,9 @@
 
 
-//#[swag.printbc]
+//#[Swag.printbc]
 func(T) sum(x, y: T)->T => x + y
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	@assert(sum'u32(1, 3) == 4)

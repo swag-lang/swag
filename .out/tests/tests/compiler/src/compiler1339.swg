@@ -21,7 +21,7 @@ const COMPILE = false
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var x: TOTO

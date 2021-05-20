@@ -61,7 +61,7 @@ var notletterTest: []rune = @[
 	0x10ffff,
 ]
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     visit c: spaceTest      @assert(unicode.isSpace(c))

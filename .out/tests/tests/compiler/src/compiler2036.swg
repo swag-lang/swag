@@ -5,7 +5,7 @@ struct Argb2036
 
 impl Argb2036
 {
-    //#[swag.inline]
+    //#[Swag.inline]
     func extract(self) -> {f32,f32,f32,f32}
     {
         _a := self.a / 255.0'f32

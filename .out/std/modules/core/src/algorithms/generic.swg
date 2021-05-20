@@ -1,7 +1,7 @@
 #global export
 
 // Swap two values
-#[swag.inline]
+#[Swag.inline]
 func(T) swap(x, y: *T)
 {
     tmp :=,moveraw dref x

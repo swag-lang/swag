@@ -5,13 +5,13 @@ struct P
 
 impl P
 {
-    #[swag.inline]
+    #[Swag.inline]
     func opAffect(using self, v: u8)
     {
         a = v
     }
 
-    #[swag.inline]
+    #[Swag.inline]
     func toFloat(using self) -> {a: f32}
     {
         var result: retval = ?
@@ -20,8 +20,8 @@ impl P
     }
 }
 
-//#[swag.printbc]
-//#[swag.nooptim]
+//#[Swag.printbc]
+//#[Swag.nooptim]
 #test
 {
     var x: P = 255'u8

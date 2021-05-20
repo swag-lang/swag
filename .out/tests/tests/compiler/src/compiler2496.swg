@@ -6,14 +6,14 @@ struct Node
     value = 666
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 struct MNode
 {
     value1 = 555
     node: Node
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     var a, b: MNode

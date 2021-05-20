@@ -13,7 +13,7 @@ struct Pair
 	y: Point
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
 	var pt: Point{10, 20}

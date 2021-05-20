@@ -3,7 +3,7 @@
 
 const x = "64"
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     y := &x[0]

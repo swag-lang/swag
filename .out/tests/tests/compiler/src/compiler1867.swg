@@ -7,7 +7,7 @@ struct(T) Toto
     }
 }
 
-//#[swag.printbc]
+//#[Swag.printbc]
 #test
 {
     struct MyStruct
