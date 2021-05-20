@@ -1,4 +1,4 @@
-﻿using core.file
+﻿using core.File
 
 //#[Swag.printbc]
 #test
@@ -23,7 +23,7 @@
         defer reader.close()
 
         res := reader.readLine()
-        @assert(res == @"using core.file"@)
+        @assert(res == @"using core.File"@)
 
         while !res.isNull()
         {

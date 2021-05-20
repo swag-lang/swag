@@ -8,7 +8,7 @@ using core
     @assert(path.getFileName("/") == null)
 
     loc := #location
-    @assert(file.exists(loc.fileName))
+    @assert(File.exists(loc.fileName))
     @assert(path.getExtension(loc.fileName) == ".swg")
     @assert(path.hasExtension(loc.fileName))
 
@@ -19,7 +19,7 @@ using core
     var ext: String = path.getExtension(loc.fileName)
     @assert(utf8.compare(ext.toString(), ".SWG", utf8.ComparisonType.Latin1NoCase) == 0)
 
-    res := catch file.readAllText(loc.fileName)
+    res := catch File.readAllText(loc.fileName)
     @assert(res.length > 0)
     //Console.print("%", res.item0)
 }

@@ -4,7 +4,7 @@
 struct EnumerationOptions
 {
     matchPattern =           "*"
-    skipAttributes =         file.FileAttributes.None
+    skipAttributes =         File.FileAttributes.None
     recurse =                false
     wantFiles =              true
     wantDirectories =        true
@@ -12,7 +12,7 @@ struct EnumerationOptions
 }
 
 // Get all the files of the given directory
-func enumerateFiles(dirname: string, matchPattern = "*", recurse = false)->Array'(file.FileInfo) throw
+func enumerateFiles(dirname: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchPattern = matchPattern
@@ -22,7 +22,7 @@ func enumerateFiles(dirname: string, matchPattern = "*", recurse = false)->Array
 }
 
 // Get all the directories in the given directory
-func enumerateDirectories(dirname: string, matchPattern = "*", recurse = false)->Array'(file.FileInfo) throw
+func enumerateDirectories(dirname: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchPattern = matchPattern

@@ -1,5 +1,5 @@
 #global public
-#global namespace file
+#global namespace File
 
 enum SeekOrigin
 {

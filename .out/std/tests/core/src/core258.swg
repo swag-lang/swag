@@ -8,7 +8,7 @@ struct Test
 
 #test
 {
-    var tw: file.TweakFile
+    var tw: File.TweakFile
     var t1: Test
     tw.registerFolder(&t1)
 

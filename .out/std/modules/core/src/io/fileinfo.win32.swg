@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace file
+#global namespace File
 using win32
 
 // Returns various file informations

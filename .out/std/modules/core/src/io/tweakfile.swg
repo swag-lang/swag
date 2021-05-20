@@ -1,4 +1,4 @@
-#global namespace file
+#global namespace File
 #global public
 using Swag
 
@@ -25,7 +25,7 @@ impl TweakFile
     // Read and parse a file
     func parse(using self, fileName: string) throw
     {
-        buf := try file.readAllBytes(fileName)
+        buf := try File.readAllBytes(fileName)
         lines := tokenize.splitLines(cast(string) buf.toSlice())
         try self.parse(lines)
     }

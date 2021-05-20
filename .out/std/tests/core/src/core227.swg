@@ -5,10 +5,10 @@ using core
 #test
 {
 	filen := #location.fileName
-    attrs := catch file.getAttributes(filen)
+    attrs := catch File.getAttributes(filen)
     @assert(@err == null)
-    @assert(cast(bool) (attrs & file.FileAttributes.Archive))
+    @assert(cast(bool) (attrs & File.FileAttributes.Archive))
 
-    infos := catch file.getInfo(filen)
+    infos := catch File.getInfo(filen)
     @assert(@err == null)
 }

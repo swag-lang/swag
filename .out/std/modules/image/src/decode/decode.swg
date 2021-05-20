@@ -53,7 +53,7 @@ public func load(fileName: string, options: DecodeOptions = @{})->Image throw
     if !found throw "no matching image decoder"
 
     // Read file content
-    bytes := try file.readAllBytes(fileName)
+    bytes := try File.readAllBytes(fileName)
 
     // Create a decoder instance
     ptrDecoder := Memory.new(found.type)

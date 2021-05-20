@@ -29,7 +29,7 @@ struct Test2
 
 #test
 {
-    var tw: file.TweakFile
+    var tw: File.TweakFile
     var t1: Test1
     var t2: Test2
     tw.registerFolder(&t1)

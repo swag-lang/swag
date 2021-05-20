@@ -16,9 +16,9 @@ func exists(dirname: string)->bool
 }
 
 // Enumerate a directory
-func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileInfo) throw
+func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileInfo) throw
 {
-    using file
+    using File
 
     var result: retval
     if dirname == null return result
