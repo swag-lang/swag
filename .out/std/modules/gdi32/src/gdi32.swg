@@ -1,5 +1,5 @@
 #global export
-#global foreignlib "gdi32"
+#global foreignlib "Gdi32"
 #global if #os == "windows"
 using Swag, Win32
 
@@ -59,13 +59,13 @@ const PFD_DEPTH_DONTCARE          = 0x20000000
 const PFD_DOUBLEBUFFER_DONTCARE   = 0x40000000
 const PFD_STEREO_DONTCARE         = 0x80000000
 
-#[foreign("gdi32")]
+#[foreign("Gdi32")]
 {
 }
 
 namespace gdi32priv
 {
-    #[foreign("gdi32")]
+    #[foreign("Gdi32")]
     {
         func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
         func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
