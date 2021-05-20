@@ -30,8 +30,8 @@ impl Image
     #[inline]
     private func free(using self)
     {
-        memory.free(pixels, size, allocator)
-        memory.delete'Image(workingBuffer, allocator)
+        Memory.free(pixels, size, allocator)
+        Memory.delete'Image(workingBuffer, allocator)
     }
 
     func opDrop(using self)
@@ -44,8 +44,8 @@ impl Image
         workingBuffer = null
         if pixels
         {
-            newPixels := memory.alloc(size, allocator)
-            memory.copy(newPixels, pixels, size)
+            newPixels := Memory.alloc(size, allocator)
+            Memory.copy(newPixels, pixels, size)
             pixels = newPixels
         }
     }
@@ -89,7 +89,7 @@ impl Image
         debug.assert(pixels == null)
         debug.assert(size != 0)
         allocator = @getcontext().allocator
-        pixels = memory.alloc(size, allocator)
+        pixels = Memory.alloc(size, allocator)
     }
 
     // Allocate a computing buffer with current image size
@@ -108,14 +108,14 @@ impl Image
             return
 
         freeWorkingBuffer()
-        workingBuffer = memory.new'Image(allocator)
+        workingBuffer = Memory.new'Image(allocator)
         dref workingBuffer = image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
     func freeWorkingBuffer(using self)
     {
-        memory.delete(workingBuffer, allocator)
+        Memory.delete(workingBuffer, allocator)
         workingBuffer = null
     }
 
@@ -174,7 +174,7 @@ impl Image
     // Clear the content of the image
     func clear(using self)
     {
-        memory.clear(pixels, size)
+        Memory.clear(pixels, size)
     }
 
     // Copy one pixel, depending on bpp

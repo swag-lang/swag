@@ -127,7 +127,7 @@ public impl Sha256
         data[56] = bitcast(u8) (bitlen >> 56)
         transform(data)
 
-        memory.copy(result, &state[0], @sizeof(state))
+        Memory.copy(result, &state[0], @sizeof(state))
     }
 
     // Initialize the hashing sequence

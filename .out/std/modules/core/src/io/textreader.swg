@@ -61,7 +61,7 @@ impl TextReader
         {
         case Ascii, Utf8:
             buffer.count = decode.count - firstRawByte
-            memory.copy(buffer.buffer, decode.buffer + firstRawByte, cast(uint) buffer.count)
+            Memory.copy(buffer.buffer, decode.buffer + firstRawByte, cast(uint) buffer.count)
         }
     }
 }
@@ -138,7 +138,7 @@ public impl TextReader
         {
             remain := buffer.count - byteSeek
             result.grow(result.length + remain)
-            memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, remain)
+            Memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, remain)
             result.length += remain
         }
 
@@ -147,7 +147,7 @@ public impl TextReader
         while buffer.count
         {
             result.grow(result.length + buffer.count)
-            memory.copy(result.buffer + result.length, buffer.buffer, buffer.count)
+            Memory.copy(result.buffer + result.length, buffer.buffer, buffer.count)
             result.length += buffer.count
             readBuffer()
         }

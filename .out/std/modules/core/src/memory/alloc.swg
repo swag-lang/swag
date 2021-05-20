@@ -1,5 +1,5 @@
 #global public
-#global namespace memory
+#global namespace Memory
 using Swag
 
 // Free the specified memory block

@@ -42,7 +42,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, oldBuffer, @sizeof(T) * count)
+            Memory.copy(buffer, oldBuffer, @sizeof(T) * count)
         }
     }
 
@@ -106,7 +106,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, dataof, @sizeof(T) * countof)
+            Memory.copy(buffer, dataof, @sizeof(T) * countof)
         }
 
         count += countof
@@ -149,7 +149,7 @@ impl Array
                 @drop(buffer + @index)
         }
 
-        memory.free(buffer, capacity * @sizeof(T), allocator)
+        Memory.free(buffer, capacity * @sizeof(T), allocator)
     }
 
     func realloc(using self, newCapacity: uint)
@@ -157,7 +157,7 @@ impl Array
         if allocator == null
             allocator = @getcontext().allocator
 
-        newBuffer := cast(*T) memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
+        newBuffer := cast(*T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
         // in place
@@ -351,7 +351,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
+            Memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
         }
     }
 

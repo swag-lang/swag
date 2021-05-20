@@ -78,7 +78,7 @@ impl Decoder
                 val := cast(uint) (bpp8 * (num + 1))
                 if dest + val > lastDest { invalid = true; break; }
                 if src + val > lastSrc { invalid = true; break; }
-                memory.copy(dest, src, val)
+                Memory.copy(dest, src, val)
                 l -= val
                 dest += val
                 src += val
@@ -128,7 +128,7 @@ public impl IDecoder for Decoder
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
             if dataof + result.size > last throw "invalid source buffer"
-            memory.copy(result.pixels, dataof, result.size)
+            Memory.copy(result.pixels, dataof, result.size)
         case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
             try uncompress(header.bpp, result.pixels, dataof, last, result.size)
         default:

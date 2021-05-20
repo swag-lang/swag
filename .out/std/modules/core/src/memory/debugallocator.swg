@@ -1,4 +1,4 @@
-#global namespace memory
+#global namespace Memory
 using Swag, sync
 
 public struct DebugAllocator
@@ -130,7 +130,7 @@ public impl IAllocator for DebugAllocator
             self.size -= userSize
 
             // Fill the user memory area with garbage
-            memory.set(userAddr, FreeByte, userSize)
+            Memory.set(userAddr, FreeByte, userSize)
 
             // Really free the memory
             copyReq := dref request
@@ -176,7 +176,7 @@ public impl IAllocator for DebugAllocator
             // Adapt size to be able to store additional informations
             // Take care of alignement request, because we need to be sure
             // that the returned memory block is well aligned
-            toAddAlign := memory.align(@sizeof(Header), request.alignement)
+            toAddAlign := Memory.align(@sizeof(Header), request.alignement)
 
             // Make the real allocation
             copyReq.size += toAddAlign + @sizeof(Footer)
@@ -202,9 +202,9 @@ public impl IAllocator for DebugAllocator
 
             // Fill with garbage
             if request.mode == AllocatorMode.Alloc or !request.address
-                memory.set(userAddr, AllocByte, request.size)
+                Memory.set(userAddr, AllocByte, request.size)
             else if prevSize < request.size
-                memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
+                Memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
             // Stats
             if !prevSize self.count += 1

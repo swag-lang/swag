@@ -28,7 +28,7 @@ impl DateTime
 {
     func opEquals(self, other: Self)->bool
     {
-        return memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
+        return Memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
     }
 
     // Returns true if this is a valid datatime

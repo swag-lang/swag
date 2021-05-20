@@ -56,12 +56,12 @@ public func load(fileName: string, options: DecodeOptions = @{})->Image throw
     bytes := try file.readAllBytes(fileName)
 
     // Create a decoder instance
-    ptrDecoder := memory.new(found.type)
+    ptrDecoder := Memory.new(found.type)
     defer
     {
         if found.type.opDrop
             found.type.opDrop(ptrDecoder);
-        memory.free(ptrDecoder, found.type.sizeof)
+        Memory.free(ptrDecoder, found.type.sizeof)
     }
 
     // Decode

@@ -62,7 +62,7 @@ impl String
         newCapacity := @countof(value) + 1
         length = newCapacity - 1
         grow(newCapacity)
-        memory.copy(buffer, @dataof(value), length)
+        Memory.copy(buffer, @dataof(value), length)
         buffer[length] = 0
     }
 
@@ -72,7 +72,7 @@ impl String
             return true
         if length != @countof(other)
             return false
-        return memory.compare(buffer, @dataof(other), length) == 0
+        return Memory.compare(buffer, @dataof(other), length) == 0
     }
 
     func opCmp(using const self, other: Self)->s32
@@ -123,14 +123,14 @@ impl String
             buffer = null
             capacity = 0
             reserve(length + 1)
-            memory.copy(buffer, oldBuffer, length + 1)
+            Memory.copy(buffer, oldBuffer, length + 1)
         }
     }
 
     func opDrop(using self)
     {
         if buffer != acast &padding[0]
-            memory.free(buffer, capacity, allocator)
+            Memory.free(buffer, capacity, allocator)
     }
 
     func opIndex(using self, index: uint)->u8
@@ -255,8 +255,8 @@ impl String
         while idx != Swag.UInt.Max
         {
             grow(length + growSize)
-            memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
-            memory.copy(buffer + idx, @dataof(by), byLength)
+            Memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
+            Memory.copy(buffer + idx, @dataof(by), byLength)
             length -= whatLength
             length += byLength
             idx += byLength
@@ -274,8 +274,8 @@ impl String
             return
 
         grow(length + countof + 1)
-        memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex + 1)
-        memory.copy(buffer + byteIndex, @dataof(value), countof)
+        Memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex + 1)
+        Memory.copy(buffer + byteIndex, @dataof(value), countof)
         length += countof + 1
     }
 
@@ -310,7 +310,7 @@ impl String
 
         newLength := length + concatLength + 1
         grow(newLength)
-        memory.copy(buffer + length, @dataof(value), concatLength)
+        Memory.copy(buffer + length, @dataof(value), concatLength)
         length = newLength - 1
         buffer[length] = 0
     }
@@ -360,7 +360,7 @@ impl String
         {
             // Free dynamic memory if this is not a small string
             if buffer != acast &padding[0]
-                memory.free(buffer, capacity, allocator)
+                Memory.free(buffer, capacity, allocator)
 
             // This is a small string again
             capacity = SmallSize
@@ -371,15 +371,15 @@ impl String
         else if buffer == acast &padding[0]
         {
             oldBuffer := buffer
-            buffer = acast memory.alloc(newCapacity, allocator)
-            memory.copy(buffer, oldBuffer, math.min(newCapacity, length + 1))
+            buffer = acast Memory.alloc(newCapacity, allocator)
+            Memory.copy(buffer, oldBuffer, math.min(newCapacity, length + 1))
             capacity = newCapacity
         }
 
         // We were in dynamic mode, so just realloc memory
         else
         {
-            buffer = acast memory.realloc(buffer, newCapacity, capacity, allocator)
+            buffer = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
             capacity = newCapacity
         }
     }
@@ -401,7 +401,7 @@ impl String
             ptr += eat
         }
 
-        memory.copy(buffer, ptr, length)
+        Memory.copy(buffer, ptr, length)
         buffer[length] = 0
     }
 

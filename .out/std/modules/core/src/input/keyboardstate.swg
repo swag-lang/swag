@@ -21,6 +21,6 @@ public impl State
     // Reset keyboard state
     func clear(using self)
     {
-        memory.clear(&pressed, cast(uint) @sizeof(pressed))
+        Memory.clear(&pressed, cast(uint) @sizeof(pressed))
     }
 }

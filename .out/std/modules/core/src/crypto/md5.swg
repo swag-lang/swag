@@ -235,7 +235,7 @@ public impl Md5
         partLen := 64 - index
         if inputLen >= partLen
         {
-            memory.copy(&buffer[index], input, cast(uint) partLen)
+            Memory.copy(&buffer[index], input, cast(uint) partLen)
             transform(state, &buffer[0])
             i = partLen
             while i + 63 < inputLen
@@ -247,7 +247,7 @@ public impl Md5
             index = 0
         }
 
-        memory.copy(&buffer[index], input + i, cast(uint) inputLen - i)
+        Memory.copy(&buffer[index], input + i, cast(uint) inputLen - i)
     }
 
     // Returns the md5 value for the given buffer

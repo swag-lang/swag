@@ -1,5 +1,5 @@
 #global public
-#global namespace memory
+#global namespace Memory
 using Swag, sync
 
 struct ScratchAllocator
@@ -38,7 +38,7 @@ impl ScratchAllocator
         fallback = allocator orelse @getcontext().allocator
         debug.assert(blockSize > 0)
         capacity = blockSize
-        block = memory.alloc(blockSize, fallback)
+        block = Memory.alloc(blockSize, fallback)
 
         // Dynamic array allocator
         leaks.allocator = fallback
@@ -48,7 +48,7 @@ impl ScratchAllocator
     func release(using self)
     {
         freeAll()
-        memory.free(block, capacity, fallback)
+        Memory.free(block, capacity, fallback)
         block = null
     }
 
@@ -94,7 +94,7 @@ impl IAllocator for ScratchAllocator
         case Realloc:
             oldAddress := request.address
 
-            usedAlign := memory.align(used, request.alignement)
+            usedAlign := Memory.align(used, request.alignement)
             if usedAlign + request.size <= capacity
             {
                 request.address = block + usedAlign
@@ -111,7 +111,7 @@ impl IAllocator for ScratchAllocator
 
             // Copy previous block in case of a reallocation
             if oldAddress
-                memory.copy(request.address, oldAddress, request.oldSize)
+                Memory.copy(request.address, oldAddress, request.oldSize)
         }
     }
 }

@@ -10,7 +10,7 @@ impl Image
             params := cast(*@typeof(f)) userData
             srcPix := params.self.pixels + (y + params.y) * params.self.width8
             srcPix += cast(uint) (params.x * image.bpp8)
-            memory.copy(pix, srcPix, cast(uint) image.width8)
+            Memory.copy(pix, srcPix, cast(uint) image.width8)
         }
     }
 

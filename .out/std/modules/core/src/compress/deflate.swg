@@ -211,7 +211,7 @@ impl DeflateDecoder
             {
                 // Repeat the last byte 'length' times
                 b := dest.buffer[dest.count - 1]
-                memory.set(dest.buffer + dest.count, b, cast(uint) length)
+                Memory.set(dest.buffer + dest.count, b, cast(uint) length)
                 dest.count += length
             }
             else if distance >= length

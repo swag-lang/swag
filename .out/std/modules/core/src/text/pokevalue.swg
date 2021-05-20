@@ -17,12 +17,12 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     if arr.count >= arr.capacity
     {
         newCapacity := math.max(arr.count + 1, arr.capacity * 2)
-        newBuffer := memory.alloc(newCapacity * sizeValue, arr.allocator)
-        memory.clear(newBuffer, newCapacity * sizeValue)
+        newBuffer := Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 
         // Move old values to the new buffer
-        memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
+        Memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
         if reflection.hasPostMove(valueType)
         {
             buf := newBuffer
@@ -33,7 +33,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
             }
         }
 
-        memory.free(arr.buffer, arr.count * sizeValue)
+        Memory.free(arr.buffer, arr.count * sizeValue)
         arr.buffer = newBuffer
     }
 

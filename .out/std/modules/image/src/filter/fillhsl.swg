@@ -38,7 +38,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
         case Saturation:
@@ -54,7 +54,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
         case Lightness:
@@ -70,7 +70,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
         case HueSaturation:

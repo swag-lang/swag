@@ -31,8 +31,8 @@ impl ConcatBuffer
         while ptr
         {
             nextPtr := ptr.next
-            memory.free(ptr.datas, bucketSize, allocator)
-            memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
+            Memory.free(ptr.datas, bucketSize, allocator)
+            Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
             ptr = nextPtr
         }
     }
@@ -90,7 +90,7 @@ impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        newBucket := cast(*ConcatBufferBucket) memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
+        newBucket := cast(*ConcatBufferBucket) Memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
         @init(newBucket)
         if lastBucket
             lastBucket.next = newBucket
@@ -98,7 +98,7 @@ impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = memory.alloc(bucketSize, allocator)
+        lastBucket.datas = Memory.alloc(bucketSize, allocator)
         currentSP = lastBucket.datas
     }
 
@@ -168,7 +168,7 @@ impl ConcatBuffer
             remain := bucketSize - curCount
             while num > remain
             {
-                memory.copy(currentSP, slicePtr, remain)
+                Memory.copy(currentSP, slicePtr, remain)
                 num -= remain
                 slicePtr += remain
                 currentSP += remain
@@ -185,7 +185,7 @@ impl ConcatBuffer
 
         // We should have enough size in the last bucket to store the
         // rest of the slice
-        memory.copy(currentSP, slicePtr, num)
+        Memory.copy(currentSP, slicePtr, num)
         currentSP += num
     }
 
@@ -230,7 +230,7 @@ impl ConcatBuffer
             result.length    = cast(uint) (currentSP - lastBucket.datas)
 
             // And clear me
-            memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
+            Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
             firstBucket, lastBucket = null
             currentSP = null
             totalCount = 0

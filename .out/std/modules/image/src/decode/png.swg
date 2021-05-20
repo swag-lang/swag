@@ -294,7 +294,7 @@ impl Decoder
         // A temporary line "before" the first one, if filter needs one
         var tmpRow: Array'u8
         tmpRow.resize(rowStrideOut)
-        memory.clear(tmpRow.buffer, rowStrideOut)
+        Memory.clear(tmpRow.buffer, rowStrideOut)
         up := tmpRow.buffer
 
         nk := rowStrideIn - inChannels
@@ -307,7 +307,7 @@ impl Decoder
             switch filter
             {
             case None:
-                memory.copy(destOff, src, rowStrideIn)
+                Memory.copy(destOff, src, rowStrideIn)
 
             case Sub:
                 loop i: inChannels
@@ -380,7 +380,7 @@ impl Decoder
             if x <= 0 or y <= 0 continue
 
             tmpArr.resize(x * y * inChannels)
-            memory.clear(tmpArr.buffer, tmpArr.count)
+            Memory.clear(tmpArr.buffer, tmpArr.count)
 
             defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
 
@@ -455,7 +455,7 @@ impl Decoder
                 if decOptions.decodePixels
                 {
                     dstPixelsSize = header.width * header.height * inChannels
-                    dstPixels = memory.alloc(dstPixelsSize)
+                    dstPixels = Memory.alloc(dstPixelsSize)
                 }
 
             case TRNS:
@@ -525,8 +525,8 @@ impl Decoder
 
     func convert(using self, result: *Image)
     {
-        result.pixels = cast(*u8) memory.alloc(result.size)
-        defer memory.free(dstPixels, dstPixelsSize)
+        result.pixels = cast(*u8) Memory.alloc(result.size)
+        defer Memory.free(dstPixels, dstPixelsSize)
 
         // Grayscale without alpha channel, no transparency
         if inChannels == 1 and !seenTRSN

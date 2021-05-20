@@ -91,7 +91,7 @@ impl HashTable
             }
         }
 
-        memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
+        Memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
     }
 
     func grow(using self)
@@ -118,10 +118,10 @@ impl HashTable
 
         if allocator == null
             allocator = @getcontext().allocator
-        table = acast memory.alloc(newCapacityBytes, allocator)
+        table = acast Memory.alloc(newCapacityBytes, allocator)
 
         // Be sure hash entry is 0
-        memory.clear(table, newCapacityBytes)
+        Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
         loop i: capacity

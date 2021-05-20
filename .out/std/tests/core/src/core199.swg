@@ -1,5 +1,5 @@
 ﻿
-using core.memory, Swag
+using core.Memory, Swag
 
 #test
 {
@@ -9,7 +9,7 @@ using core.memory, Swag
 
     system.pushAllocator(cast(IAllocator) mem)
     {
-        ptr := memory.alloc(100)
+        ptr := Memory.alloc(100)
     }
 
     @assert(mem.used == 100)

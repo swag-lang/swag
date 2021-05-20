@@ -287,7 +287,7 @@ impl Decoder
             {
                 if try decode(&scanLineOfs, &scanLineLen)
                     break
-                memory.copy(pdest, scanLineOfs, cast(uint) imageSizeX * 3)
+                Memory.copy(pdest, scanLineOfs, cast(uint) imageSizeX * 3)
                 pdest -= imageSizeX * 3
             }
         }
@@ -319,7 +319,7 @@ impl Decoder
                 pDC := coeffBufGetp(dcCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
 
                 p[0] = pDC[0]
-                memory.copy(&p[1], &pAC[1], 63'uint * @sizeof(s16))
+                Memory.copy(&p[1], &pAC[1], 63'uint * @sizeof(s16))
 
                 i := 63
                 while i > 0
@@ -393,7 +393,7 @@ impl Decoder
         if i == 0 throw "bad restart marker"
         if c != (nextRestartNum + cast(u32) Marker.M_RST0) throw "bad restart marker"
 
-        memory.clear(&lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
+        Memory.clear(&lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
 
         eobRun         = 0
         restartsLeft   = restartInterval
@@ -712,7 +712,7 @@ impl Decoder
 
         loop i: maxBlocksPerRow..1
         {
-            memory.copy(tempBlock, psrcPtr, 64'uint * @sizeof(s16))
+            Memory.copy(tempBlock, psrcPtr, 64'uint * @sizeof(s16))
             idct(tempBlock, pdstPtr)
             psrcPtr += 64
             pdstPtr += 64
@@ -1034,10 +1034,10 @@ impl Decoder
         realDestBytesPerScanLine = (imageSizeX * destBytesPerPixel)
 
         scanLine0.resize(cast(uint) destBytesPerScanLine + 8)
-        memory.clear(scanLine0.buffer, cast(uint) destBytesPerScanLine)
+        Memory.clear(scanLine0.buffer, cast(uint) destBytesPerScanLine)
 
         scanLine1.resize(cast(uint) destBytesPerScanLine + 8)
-        memory.clear(scanLine1.buffer, cast(uint) destBytesPerScanLine)
+        Memory.clear(scanLine1.buffer, cast(uint) destBytesPerScanLine)
 
         maxBlocksPerRow = maxMcusPerRow * maxBlocksPerMcu
         if maxBlocksPerRow > MaxBlocksPerRow
@@ -1085,7 +1085,7 @@ impl Decoder
         try checkHuffTables()
         try checkQuantTables()
 
-        memory.clear(lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
+        Memory.clear(lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
 
         eobRun = 0
         if restartInterval
@@ -1162,9 +1162,9 @@ impl Decoder
             si += 1
         }
 
-        memory.clear(hs.lookUp, @sizeof(hs.lookUp))
-        memory.clear(hs.tree, @sizeof(hs.tree))
-        memory.clear(hs.codeSize, @sizeof(hs.codeSize))
+        Memory.clear(hs.lookUp, @sizeof(hs.lookUp))
+        Memory.clear(hs.tree, @sizeof(hs.tree))
+        Memory.clear(hs.codeSize, @sizeof(hs.codeSize))
 
         nextFreeEntry := -1
         p = 0
@@ -1493,7 +1493,7 @@ impl Decoder
 
         loop mcusPerCol
         {
-            memory.clear(blockMcutX, @sizeof(blockMcutX))
+            Memory.clear(blockMcutX, @sizeof(blockMcutX))
             loop mcusPerRow
             {
                 blockMcuOfsX := 0
@@ -1826,8 +1826,8 @@ impl Decoder
 
             huffNum[index].resize(17)
             huffVal[index].resize(256)
-            memory.copy(huffNum[index].buffer, huffNumt, 17)
-            memory.copy(huffVal[index].buffer, huffValt, 256)
+            Memory.copy(huffNum[index].buffer, huffNumt, 17)
+            Memory.copy(huffVal[index].buffer, huffValt, 256)
         }
     }
 
@@ -2017,7 +2017,7 @@ impl Decoder
             }
 
             bytesRead := size
-            memory.copy(&inBuf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
+            Memory.copy(&inBuf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
             streamSeek += size
             inBufLeft += bytesRead
             if inBufLeft >= InBufSize or eofReached

@@ -29,7 +29,7 @@ impl State
     // Reset the state to its default value
     func clear(using self)
     {
-        memory.clear(&pressed, cast(uint) @sizeof(pressed))
+        Memory.clear(&pressed, cast(uint) @sizeof(pressed))
         position = getPos()
     }
 }

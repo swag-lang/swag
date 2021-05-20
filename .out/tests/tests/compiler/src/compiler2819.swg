@@ -1,4 +1,4 @@
-#global namespace hash
+#global namespace Hash
 #global #[Swag.safety("", false)]
 
 #[Swag.inline]

@@ -95,7 +95,7 @@ public impl IDecoder for Decoder
         {
             if dataof + @sizeof(Header) > last
                 throw "invalid source buffer"
-            memory.copy(&bh, dataof, @sizeof(Header))
+            Memory.copy(&bh, dataof, @sizeof(Header))
             dataof += @sizeof(Header)
         }
 
@@ -143,18 +143,18 @@ public impl IDecoder for Decoder
                 srcW := dstW + c
                 loop result.height
                 {
-                    memory.copy(dst, src, dstW)
+                    Memory.copy(dst, src, dstW)
                     dst += dstW
                     src += srcW
                 }
             }
             else
             {
-                memory.copy(result.pixels, dataof, byteSize)
+                Memory.copy(result.pixels, dataof, byteSize)
             }
 
         case 32:
-            memory.copy(result.pixels, dataof, byteSize)
+            Memory.copy(result.pixels, dataof, byteSize)
         }
 
         return result

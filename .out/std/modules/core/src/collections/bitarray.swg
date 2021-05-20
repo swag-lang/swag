@@ -16,14 +16,14 @@ impl BitArray
     {
         if !buffer
             return
-        memory.free(buffer, capacity, allocator)
+        Memory.free(buffer, capacity, allocator)
     }
 
     func realloc(using self, newCapacity: uint)
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = acast memory.realloc(buffer, newCapacity, capacity, allocator)
+        buffer = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
     }
 }
 
@@ -46,7 +46,7 @@ public impl BitArray
             otherBuffer := buffer
             buffer = null
             reserve(count)
-            memory.copy(buffer, otherBuffer, capacity)
+            Memory.copy(buffer, otherBuffer, capacity)
         }
     }
 
@@ -140,13 +140,13 @@ public impl BitArray
     func reserve(using self, maxBits: uint, initialValue: bool)
     {
         reserve(maxBits)
-        memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
+        Memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
     }
 
     // Sets all bits to the specified value
     func setAll(using self, value: bool)
     {
-        memory.set(buffer, value ? 0xFF : 0x00, capacity)
+        Memory.set(buffer, value ? 0xFF : 0x00, capacity)
     }
 
     // Sets the bit at a specific position to the specified value

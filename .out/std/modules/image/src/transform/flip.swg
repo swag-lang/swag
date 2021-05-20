@@ -9,7 +9,7 @@ impl Image
         {
             dstImage := cast(*Image) userData
             w8 := image.width * image.bpp8
-            memory.copy(dstImage.pixels + (image.height - y - 1) * w8, pix, cast(uint) w8)
+            Memory.copy(dstImage.pixels + (image.height - y - 1) * w8, pix, cast(uint) w8)
         }
     }
 
