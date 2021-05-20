@@ -61,7 +61,7 @@ func runJob(job: *Job)
     // Done
     sync.scopedLock(&g_mutexPendingJobs)
     setState(job, JobState.Done)
-    debug.assert(g_totalJobs != 0)
+    Debug.assert(g_totalJobs != 0)
     g_totalJobs -= 1
     if g_totalJobs == 0
         g_eventDone.signal()
@@ -81,7 +81,7 @@ func getJobToExec()->*Job
     if g_pendingJobs.isEmpty()
         return null
     job := g_pendingJobs.popBack()
-    debug.assert(job.testState(JobState.InPending))
+    Debug.assert(job.testState(JobState.InPending))
     job.clearState(JobState.InPending)
     return job
 }
@@ -108,7 +108,7 @@ public func getNumWorkers() => g_numWorkers
 // Set the number of worker threads. Must be done once
 public func setNumWorkers(numWorkers: u32 = 0) throw
 {
-    debug.assert(g_numWorkers == 0)
+    Debug.assert(g_numWorkers == 0)
 
     g_Allocator = @getcontext().allocator
     g_workers.allocator = g_Allocator
@@ -187,7 +187,7 @@ public func waitJob(job: *Job)
 public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
     if(!@countof(range)) return
-    debug.assert(offset != 0)
+    Debug.assert(offset != 0)
 
     func jobEntry(jobData: *void)
     {

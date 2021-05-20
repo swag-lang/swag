@@ -16,7 +16,7 @@ impl Image
     // Flip image vertically
     public func flip(using self)
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         allocWorkingBuffer()
         doFlip(workingBuffer)
         applyWorkingBuffer()
@@ -25,7 +25,7 @@ impl Image
     // Flip image vertically
     public func toFlip(using self)->Image
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)
         doFlip(&result)
         return result

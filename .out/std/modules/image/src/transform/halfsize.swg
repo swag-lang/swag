@@ -24,7 +24,7 @@ impl Image
     // Divide image size by 2 with a bilinear 2x2 filter
     public func halfSize(using self)
     {
-        debug.assert(width > 1 and height > 1)
+        Debug.assert(width > 1 and height > 1)
         allocWorkingBuffer(width / 2, height / 2, pf)
         doHalfSize(workingBuffer)
         applyWorkingBuffer()
@@ -33,7 +33,7 @@ impl Image
     // Divide image size by 2 with a bilinear 2x2 filter
     public func toHalfSize(using self)->Image
     {
-        debug.assert(width > 1 and height > 1)
+        Debug.assert(width > 1 and height > 1)
         var result: retval = create(width / 2, height / 2, pf)
         doHalfSize(&result)
         return result

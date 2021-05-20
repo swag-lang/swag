@@ -110,7 +110,7 @@ impl Image
     // Apply a kernel to the image
     public func applyKernel(using self, kernel: const [..] s32)
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         allocWorkingBuffer()
         doKernel(workingBuffer, kernel)
         applyWorkingBuffer()
@@ -119,7 +119,7 @@ impl Image
     // Apply a kernel to the image
     public func toApplyKernel(using self, kernel: const [..] s32)->Image
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)
         doKernel(&result, kernel)
         return result

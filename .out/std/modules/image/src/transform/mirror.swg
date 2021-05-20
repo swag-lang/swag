@@ -22,14 +22,14 @@ impl Image
         {
         case 24: doIt'24()
         case 32: doIt'32()
-        default: debug.assert(false)
+        default: Debug.assert(false)
         }
     }
 
     // Flip image horizontally
     public func mirror(using self)
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         allocWorkingBuffer()
         doMirror(workingBuffer)
         applyWorkingBuffer()
@@ -38,7 +38,7 @@ impl Image
     // Flip image horizontally
     public func toMirror(using self)->Image
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)
         doMirror(&result)
         return result

@@ -248,7 +248,7 @@ impl DeflateDecoder
         var repeatZ:       HuffmanTable
         var codeLengthHt:  HuffmanTable
 
-        debug.assert(windowSize > 0)
+        Debug.assert(windowSize > 0)
 
         loop
         {

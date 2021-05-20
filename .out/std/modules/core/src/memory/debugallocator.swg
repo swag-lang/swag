@@ -82,13 +82,13 @@ public impl DebugAllocator
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
         ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
 
-        debug.assert(ptrHeader.magic == MagicAlloc)
-        debug.assert(ptrFooter.magic == MagicAlloc)
-        debug.assert(ptrHeader.allocId != 0)
-        debug.assert(ptrHeader.userSize != 0)
-        debug.assert(ptrHeader.prev or first == ptrHeader)
-        debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
-        debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+        Debug.assert(ptrHeader.magic == MagicAlloc)
+        Debug.assert(ptrFooter.magic == MagicAlloc)
+        Debug.assert(ptrHeader.allocId != 0)
+        Debug.assert(ptrHeader.userSize != 0)
+        Debug.assert(ptrHeader.prev or first == ptrHeader)
+        Debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
+        Debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
     }
 }
 
@@ -96,7 +96,7 @@ public impl IAllocator for DebugAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        debug.assert(allocator != null, "not created")
+        Debug.assert(allocator != null, "not created")
 
         mutex.lock()
         defer mutex.unlock()
@@ -112,7 +112,7 @@ public impl IAllocator for DebugAllocator
             ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
             // Be sure size is correct
-            debug.assert(ptrHeader.userSize == request.size)
+            Debug.assert(ptrHeader.userSize == request.size)
 
             // Unlink from allocated list
             if !ptrHeader.prev
@@ -123,9 +123,9 @@ public impl IAllocator for DebugAllocator
                 ptrHeader.next.prev = ptrHeader.prev
 
             // Stats
-            debug.assert(self.count > 0)
+            Debug.assert(self.count > 0)
             self.count -= 1
-            debug.assert(self.size >= ptrHeader.userSize)
+            Debug.assert(self.size >= ptrHeader.userSize)
             userSize := ptrHeader.userSize
             self.size -= userSize
 

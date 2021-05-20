@@ -120,7 +120,7 @@ public func fromUtf8(dest: [..] rune, src: const [..] u8)->u32
     (c, eat) := utf8.decodeRune(src)
     while eat != 0
     {
-        debug.assert(count != @countof(dest), "destination buffer is too small")
+        Debug.assert(count != @countof(dest), "destination buffer is too small")
 
         dref destPtr = c
         destPtr, count += 1

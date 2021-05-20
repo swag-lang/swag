@@ -66,7 +66,7 @@ impl ConcatBuffer
     // Be sure that there is enough room to store at least 'numBytes' bytes
     func grow(using self, numBytes: uint)
     {
-        debug.assert(numBytes <= bucketSize)
+        Debug.assert(numBytes <= bucketSize)
 
         if firstBucket
         {
@@ -106,7 +106,7 @@ impl ConcatBuffer
     // The allocator can only be changed if the buffer has no pending buckets.
     func setAllocator(using self, alloc: Swag.IAllocator)
     {
-        debug.assert(firstBucket == null, "buffer is not empty")
+        Debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc;
     }
 
@@ -114,7 +114,7 @@ impl ConcatBuffer
     // The buffer will be erased before the change, even if the new size is the same as the current one.
     func setBucketSize(using self, size: uint)
     {
-        debug.assert(size >= 4)
+        Debug.assert(size >= 4)
         free()
         bucketSize = size
     }

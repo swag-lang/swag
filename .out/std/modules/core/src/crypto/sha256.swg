@@ -147,7 +147,7 @@ public impl Sha256
     // Update the hash value with 'buffer' content
     func update(using self, buffer: const [..] u8)
     {
-        debug.assert(@countof(buffer) <= Swag.U32.Max)
+        Debug.assert(@countof(buffer) <= Swag.U32.Max)
         buf := @dataof(buffer)
         len := cast(u32) @countof(buffer)
 

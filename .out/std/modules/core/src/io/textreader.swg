@@ -71,10 +71,10 @@ public impl TextReader
     // Open the reader
     func open(using self, fullname: string, encoding = TextEncoding.Utf8) throw
     {
-        debug.assert(!stream.isOpen())
+        Debug.assert(!stream.isOpen())
 
         stream = try openRead(fullname)
-        debug.assert(stream.isOpen())
+        Debug.assert(stream.isOpen())
 
         byteSeek = 0
         checkPreamble = true

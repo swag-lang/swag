@@ -58,34 +58,34 @@ impl Array
 
     func opSlice(using self, lower, upper: uint)->[..] T
     {
-        debug.assert(lower <= upper and lower < count and upper < count)
+        Debug.assert(lower <= upper and lower < count and upper < count)
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
     func opIndex(using self, index: uint)->*T
         #selectif reflection.isStruct(T)
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         return buffer + index
     }
 
     func opIndex(using self, index: uint)->T
         #selectif !reflection.isStruct(T)
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         return buffer[index]
     }
 
     func opIndexAffect(using self, index: uint, value: T)
         #selectif reflection.canCopy(@typeof(T))
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         buffer[index] = value
     }
 
     func(op: string) opIndexAssign(using self, index: uint, value: T)
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         #ast "buffer[index] " ~op~ " value"
     }
 
@@ -295,7 +295,7 @@ impl Array
     func insertAt(using self, index: uint, value: T)
         #selectif reflection.canCopy(@typeof(T))
     {
-        debug.assert(index <= count, "index out of range")
+        Debug.assert(index <= count, "index out of range")
         if index == count
             return add(value)
         grow(count + 1)
@@ -312,7 +312,7 @@ impl Array
     // Order is preserved.
     func emplaceAt(using self, index: uint, value: *T)
     {
-        debug.assert(index <= count, "index out of range")
+        Debug.assert(index <= count, "index out of range")
         if index == count
             return emplace(value)
         grow(count + 1)
@@ -334,7 +334,7 @@ impl Array
 
         // Do not add myself if there's not enough room (because we will reallocate)
         if count + sliceCount > capacity
-            debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
+            Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
 
         grow(count + sliceCount)
         oldCount := count
@@ -359,7 +359,7 @@ impl Array
     // Order is not preserved
     func removeAt(using self, index: uint)
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         count -= 1
 
         if index == count
@@ -375,7 +375,7 @@ impl Array
     // Order is preserved
     func removeAtOrdered(using self, index: uint)
     {
-        debug.assert(index < count, "index out of range")
+        Debug.assert(index < count, "index out of range")
         count -= 1
         @drop(buffer + index)
 
@@ -393,7 +393,7 @@ impl Array
     // Remove last element
     func removeBack(using self)
     {
-        debug.assert(count > 0)
+        Debug.assert(count > 0)
         @drop(&buffer[count - 1])
         count -= 1
     }
@@ -421,7 +421,7 @@ impl Array
     // Returns the last element, and remove it from the array
     func popBack(using self)->T
     {
-        debug.assert(count > 0)
+        Debug.assert(count > 0)
         var result: retval = ?
         result =,nodrop,moveraw buffer[count - 1]
         count -= 1

@@ -17,7 +17,7 @@ struct Image
 // Creates a new image
 func create(width, height: s32, pf: PixelFormat)->Image
 {
-    debug.assert(width > 0 and height > 0, "invalid dimensions")
+    Debug.assert(width > 0 and height > 0, "invalid dimensions")
 
     var result: retval
     result.init(width, height, pf)
@@ -86,8 +86,8 @@ impl Image
     // Allocate pixels
     func allocPixels(using self)
     {
-        debug.assert(pixels == null)
-        debug.assert(size != 0)
+        Debug.assert(pixels == null)
+        Debug.assert(size != 0)
         allocator = @getcontext().allocator
         pixels = Memory.alloc(size, allocator)
     }
@@ -122,7 +122,7 @@ impl Image
     // Replace the current image content with the working buffer
     func applyWorkingBuffer(using self)
     {
-        debug.assert(workingBuffer != null)
+        Debug.assert(workingBuffer != null)
         swap(&pf, &workingBuffer.pf)
         swap(&pixels, &workingBuffer.pixels)
         swap(&width, &workingBuffer.width)
@@ -143,7 +143,7 @@ impl Image
     #[Swag.macro]
     func visitPixels(using self, userData: *void = null, stride: s32 = 1, stmt: code)
     {
-        debug.assert(stride > 0)
+        Debug.assert(stride > 0)
 
         p := @{self, userData}
         jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)

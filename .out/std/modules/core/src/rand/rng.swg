@@ -66,7 +66,7 @@ impl Rng
     // 'max' is excluded
     func nextU32(using self, min, max: u32)->u32
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u32) (max - min)
         value := rng.nextU32() % range
         return min + value
@@ -76,7 +76,7 @@ impl Rng
     // 'max' is excluded
     func nextU64(using self, min, max: u64)->u64
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u64) (max - min)
         value := nextU64() % range
         return min + value
@@ -86,7 +86,7 @@ impl Rng
     // 'max' is excluded
     func nextS32(using self, min, max: s32)->s32
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u32) (max - min)
         value := cast(s32) (rng.nextU32() % range)
         return min + value
@@ -96,7 +96,7 @@ impl Rng
     // 'max' is excluded
     func nextS64(using self, min, max: s64)->s64
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u64) (max - min)
         value := cast(s64) (nextU64() % range)
         return min + value
@@ -106,7 +106,7 @@ impl Rng
     // 'max' is excluded
     func nextF32(using self, min, max: f32)->f32
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := max - min
         value := nextF32()
         return min + (value * range)
@@ -116,7 +116,7 @@ impl Rng
     // 'max' is excluded
     func nextF64(using self, min, max: f64)->f64
     {
-        debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "'max' must be greater than 'min'")
         range := max - min
         value := nextF64()
         return min + (value * range)

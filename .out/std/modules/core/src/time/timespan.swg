@@ -53,14 +53,14 @@ impl TimeSpan
     // Add or remove the given amount of years to the TimeSpan
     func addYears(using self, years: s32)
     {
-        debug.assert(-10000 <= years and years <= 10000, "overflow")
+        Debug.assert(-10000 <= years and years <= 10000, "overflow")
         addMonths(years * 12)
     }
 
     // Add or remove the given amount of months to the TimeSpan
     func addMonths(using self, months: s32)
     {
-        debug.assert(-120000 <= months and months <= 120000, "overflow")
+        Debug.assert(-120000 <= months and months <= 120000, "overflow")
         (y, m, d) := ticksToDate(ticks)
         i := cast(s32) (m - 1) + months
         if i >= 0
@@ -74,7 +74,7 @@ impl TimeSpan
             y += cast(u16) ((i - 11) / 12)
         }
 
-        debug.assert(1 <= y and y <= 9999, "overflow")
+        Debug.assert(1 <= y and y <= 9999, "overflow")
         days := daysInMonth(y, m)
         if (d > days) d = days
         ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
@@ -134,18 +134,18 @@ impl TimeSpan
     private func add(using self, value: u32, scale: u64)
     {
         millis := value * scale
-        debug.assert(millis <= MaxMillis, "overflow")
+        Debug.assert(millis <= MaxMillis, "overflow")
         millis *= TicksPerMilliSecond
-        debug.assert(millis <= (MaxTicks - ticks), "overflow")
+        Debug.assert(millis <= (MaxTicks - ticks), "overflow")
         ticks += millis
     }
 
     private func remove(using self, value: u32, scale: u64)
     {
         millis := value * scale
-        debug.assert(millis <= MaxMillis, "overflow")
+        Debug.assert(millis <= MaxMillis, "overflow")
         millis *= TicksPerMilliSecond
-        debug.assert(millis <= ticks, "ticks overflow")
+        Debug.assert(millis <= ticks, "ticks overflow")
         ticks -= millis
     }
 }

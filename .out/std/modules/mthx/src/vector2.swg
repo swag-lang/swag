@@ -120,7 +120,7 @@ impl Vector2
     func normalize(using self)
     {
         norm := sqrt((x * x) + (y * y))
-        debug.assert(!math.isZeroEpsilon(norm))
+        Debug.assert(!math.isZeroEpsilon(norm))
         norm = 1 / norm
         x *= norm
         y *= norm
@@ -130,7 +130,7 @@ impl Vector2
     func toNormalize(using self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
-        debug.assert(!math.isZeroEpsilon(norm))
+        Debug.assert(!math.isZeroEpsilon(norm))
         norm = 1 / norm
         return Vector2{x * norm, y * norm}
     }

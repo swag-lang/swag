@@ -57,14 +57,14 @@ impl Image
         {
         case 24: doIt'24()
         case 32: doIt'32()
-        default: debug.assert(false)
+        default: Debug.assert(false)
         }
     }
 
     // Turn image by a given predefined angle
     public func turn(using self, angle: TurnAngle)
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
         if angle == .T180
             allocWorkingBuffer()
         else
@@ -76,7 +76,7 @@ impl Image
     // Turn image by a given predefined angle
     public func toTurn(using self, angle: TurnAngle)->Image
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
 
         var result: retval
         if angle == .T180

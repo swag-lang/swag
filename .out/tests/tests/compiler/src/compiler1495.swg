@@ -1,10 +1,10 @@
 namespace std.os
 {
-    using std.diagnostics.debug
+    using std.diagnostics.Debug
     const A = 0
 }
 
-namespace std.diagnostics.debug.os
+namespace std.diagnostics.Debug.os
 {
     const A = 1
 }

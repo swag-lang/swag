@@ -75,7 +75,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
     var result: retval
 
     stream := try openRead(fullname)
-    debug.assert(stream.isOpen())
+    Debug.assert(stream.isOpen())
     defer stream.close()
 
     len := try getSize(stream)
@@ -92,7 +92,7 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
     var result: retval
 
     stream := try openWrite(fullname)
-    debug.assert(stream.isOpen())
+    Debug.assert(stream.isOpen())
     defer stream.close()
 
     return try write(stream, @dataof(buffer), @countof(buffer))

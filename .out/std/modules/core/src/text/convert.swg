@@ -65,7 +65,7 @@ impl ConvertFormatFloat
         if cpt < countof
         {
             (userWidth, eatCount) := assume parse.getU64(@mkstring(buffer + cpt, cast(uint) (countof - cpt)))
-            debug.assert(userWidth <= 255, "precision overflow")
+            Debug.assert(userWidth <= 255, "precision overflow")
             if eatCount precision = cast(s8) userWidth
         }
     }
@@ -132,7 +132,7 @@ impl ConvertFormatInt
         if cpt >= countof
             return
         (userWidth, eatCount) := assume parse.getU64(@mkstring(buffer + cpt, cast(uint) countof - cpt))
-        debug.assert(userWidth <= 255, "padding width overflow")
+        Debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }
 }
@@ -254,7 +254,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     kindof := @kindof(value)
-    debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
+    Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
     ptr := @dataof(value)
 
     // A structure with an implementation of IConvert
@@ -286,7 +286,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
     kindof := @kindof(fmt.value)
-    debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
+    Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
     dataof := @dataof(fmt.value)
     bits := kindof.sizeof * 8
@@ -305,8 +305,8 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
     kindof := @kindof(fmt.value)
-    debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
-    debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
+    Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
+    Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
     dataof := @dataof(fmt.value)
     bits := kindof.sizeof * 8
@@ -404,7 +404,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
+    Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
     var fmt: ConvertFormatFloat
     fmt.value = value
@@ -415,7 +415,7 @@ func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
+    Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 
     var fmt: ConvertFormatInt
     fmt.value = value

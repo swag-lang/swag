@@ -38,7 +38,7 @@ func wait(threads: *Thread...)
         toTreat := math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
         loop i: toTreat
         {
-            debug.assert(threads[i].isValid())
+            Debug.assert(threads[i].isValid())
             handles[i] = threads[i].handle
         }
 
@@ -59,8 +59,8 @@ impl Thread
     // Initialize a thread in pause state
     func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) throw
     {
-        debug.assert(!isValid(), "thread already created")
-        debug.assert(lambda != null, "lambda parameter is null")
+        Debug.assert(!isValid(), "thread already created")
+        Debug.assert(lambda != null, "lambda parameter is null")
 
         context = dref @getcontext()
 
@@ -74,14 +74,14 @@ impl Thread
     // Resume the given thread, if it was paused
     func start(using self) throw
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         try ResumeThread(handle)
     }
 
     // Set the thread priority
     func setPriority(using self, priority: ThreadPriority) throw
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
 
         newPrio := #scopefct.priority
         if self.priority == newPrio
@@ -106,7 +106,7 @@ impl Thread
     // After that call, isValid() will return false
     func wait(using self)
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         assume WaitForSingleObject(handle, INFINITE)
         CloseHandle(handle)
         handle = null
@@ -115,7 +115,7 @@ impl Thread
     // Returns true if the thread has finished
     func isDone(using self)->bool
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         res := assume WaitForSingleObject(handle, 0)
         return res != WAIT_TIMEOUT
     }

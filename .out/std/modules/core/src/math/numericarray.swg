@@ -28,14 +28,14 @@ impl NumericArray
     #[safety("boundcheck", false), complete]
     func opAffect(using self, what: const [..] T)
     {
-        debug.assert(@countof(what) == N)
+        Debug.assert(@countof(what) == N)
         loop N buf[@index] = what[@index]
     }
 
     #[safety("boundcheck", false)]
     func from(values: T...)->Self
     {
-        debug.assert(@countof(values) == N)
+        Debug.assert(@countof(values) == N)
         var result: retval
         loop N result.buf[@index] = values[@index]
         return result
@@ -52,7 +52,7 @@ impl NumericArray
     #[safety("boundcheck", false)]
     func set(using self, values: T...)
     {
-        debug.assert(@countof(values) == N)
+        Debug.assert(@countof(values) == N)
         loop N buf[@index] = values[@index]
     }
 

@@ -18,7 +18,7 @@ func isDirectorySeparator(c: u8)->bool
 func getFileName(fullname: string)->string
 {
     if fullname == null return null
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
     cpt := countof
@@ -41,7 +41,7 @@ func getFileName(fullname: string)->string
 func getRootName(fullname: string)->string
 {
     if fullname == null return null
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
     rootLength := getRootLength(fullname)
     return acast @mkslice(@dataof(fullname), cast(uint) rootLength)
 }
@@ -52,7 +52,7 @@ func getRootName(fullname: string)->string
 func isRooted(fullname: string)->bool
 {
     if fullname == null return false
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
     countof := @countof(fullname)
     if countof >= 1 and isDirectorySeparator(fullname[0])
         return true
@@ -66,7 +66,7 @@ func isRooted(fullname: string)->bool
 func getDirectoryName(fullname: string)->string
 {
     if fullname == null return null
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
     cpt := countof
@@ -86,7 +86,7 @@ func getDirectoryName(fullname: string)->string
 func getFileNameWithoutExtension(fullname: string)->string
 {
     if(fullname == null) return null
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
     cpt := countof
@@ -113,7 +113,7 @@ func getFileNameWithoutExtension(fullname: string)->string
 func getExtension(fullname: string)->string
 {
     if(fullname == null) return null
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
 
     cpt := @countof(fullname)
     while cpt
@@ -141,7 +141,7 @@ func getExtensionLowerCase(fullname: string)->String
 func hasExtension(fullname: string)->bool
 {
     if(fullname == null) return false
-    debug.assert(isValidPathName(fullname))
+    Debug.assert(isValidPathName(fullname))
 
     cpt := @countof(fullname)
     while cpt

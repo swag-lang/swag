@@ -225,7 +225,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 // 'dest' must be at least 4 bytes long
 func encodeRune(dest: [..] u8, src: rune)->u32
 {
-    debug.assert(@countof(dest) >= 4, "destination buffer is too small")
+    Debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
     switch
     {
@@ -270,7 +270,7 @@ func fromUnicode(dest: [..] u8, src: const [..] rune)->uint
     total := 0'uint
     visit ch: src
     {
-        debug.assert(remain >= 4, "destination buffer is too small")
+        Debug.assert(remain >= 4, "destination buffer is too small")
         sl := @mkslice(dataof + total, remain)
         cpt := encodeRune(sl, ch)
         total += cpt
@@ -304,7 +304,7 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
     {
         (c, eat) := utf16.decodeRune(@mkslice(srcPtr, srcLength))
 
-        debug.assert(destLength >= 4, "destination buffer is too small")
+        Debug.assert(destLength >= 4, "destination buffer is too small")
         eatDest := encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
@@ -409,7 +409,7 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
     while countof and resultChar != charIndex
     {
         val := countBytesAt(@mkslice(dataof, countof))
-        debug.assert(val <= countof, "invalid utf8 character")
+        Debug.assert(val <= countof, "invalid utf8 character")
         resultByte += val
         resultChar += 1
         dataof += val
@@ -431,7 +431,7 @@ func countRunes(buffer: const [..] u8)->uint
     while countof
     {
         val := countBytesAt(@mkslice(dataof, countof))
-        debug.assert(val <= countof)
+        Debug.assert(val <= countof)
         cpt += 1
         dataof += val
         countof -= val
@@ -454,7 +454,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     length := @countof(src)
     if !length
         return Swag.UInt.Max
-    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+    Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
     if !countof
@@ -484,7 +484,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     length := @countof(src)
     if !length
         return Swag.UInt.Max
-    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+    Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
     if !countof or countof > (length - startByteIndex)

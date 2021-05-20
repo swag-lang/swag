@@ -18,7 +18,7 @@ impl ScratchAllocator
 {
     func opDrop(using self)
     {
-        debug.assert(block == null, "missing call to release()")
+        Debug.assert(block == null, "missing call to release()")
     }
 
     // Creates a new allocator
@@ -36,7 +36,7 @@ impl ScratchAllocator
     {
         // Allocate the big block to store all allocations
         fallback = allocator orelse @getcontext().allocator
-        debug.assert(blockSize > 0)
+        Debug.assert(blockSize > 0)
         capacity = blockSize
         block = Memory.alloc(blockSize, fallback)
 
@@ -73,8 +73,8 @@ impl IAllocator for ScratchAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        debug.assert(fallback != null, "not created")
-        debug.assert(block != null, "not created")
+        Debug.assert(fallback != null, "not created")
+        Debug.assert(block != null, "not created")
 
         mutex.lock()
         defer mutex.unlock()

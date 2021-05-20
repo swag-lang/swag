@@ -36,7 +36,7 @@ impl DrawingContext
     #[Swag.inline]
     func newCommand(using self, cmd: CommandId)->*Command
     {
-        debug.assert(drawingBegin)
+        Debug.assert(drawingBegin)
         ptr := commandBuffer.emplaceAddress(1)
         ptr.id = cmd
         return ptr
@@ -45,7 +45,7 @@ impl DrawingContext
     // Call this before drawing
     func begin(using self)
     {
-        debug.assert(drawingBegin == false)
+        Debug.assert(drawingBegin == false)
         drawingBegin = true
         commandBuffer.clear()
         vertexBuffer.clear()
@@ -54,7 +54,7 @@ impl DrawingContext
     // Call this after drawing
     func end(using self)
     {
-        debug.assert(drawingBegin)
+        Debug.assert(drawingBegin)
         drawingBegin = false
     }
 

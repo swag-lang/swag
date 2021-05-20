@@ -17,7 +17,7 @@ impl FileStream
 {
     func opDrop(using self)
     {
-        debug.assert(!isOpen(), "missing call to close()")
+        Debug.assert(!isOpen(), "missing call to close()")
     }
 
     // Returns true if the stream is valid

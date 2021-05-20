@@ -29,7 +29,7 @@ impl Thread
 {
     func opDrop(using self)
     {
-        debug.assert(!isValid(), "thread is not terminated")
+        Debug.assert(!isValid(), "thread is not terminated")
     }
 
     // Returns true if the thread is valid

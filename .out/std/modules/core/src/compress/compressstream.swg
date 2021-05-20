@@ -55,7 +55,7 @@ public impl CompressStream
 
     func peekBitsNoRefill(using self, width: u8)->u32
     {
-	    debug.assert(numBits >= width)
+	    Debug.assert(numBits >= width)
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
@@ -89,7 +89,7 @@ public impl CompressStream
 
     func revert(using self)
     {
-        debug.assert(!(numBits & 7))
+        Debug.assert(!(numBits & 7))
         curByte -= numBits / 8
         numBits = 0
         codeBuffer = 0

@@ -17,7 +17,7 @@ public impl Image
     // Resize image
     func resize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)
     {
-        debug.assert(newWidth > 0 and newHeight > 0)
+        Debug.assert(newWidth > 0 and newHeight > 0)
         if newWidth == width and newHeight == height return
         allocWorkingBuffer(newWidth, newHeight, pf)
         doResize(self, workingBuffer, method)
@@ -27,7 +27,7 @@ public impl Image
     // Resize image
     func toResize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)->Image
     {
-        debug.assert(newWidth > 0 and newHeight > 0)
+        Debug.assert(newWidth > 0 and newHeight > 0)
 
         if newWidth == width and newHeight == height
         {
@@ -252,7 +252,7 @@ private
         {
         case 24: doIt'24()
         case 32: doIt'32()
-        default: debug.assert(false)
+        default: Debug.assert(false)
         }
     }
 
@@ -303,7 +303,7 @@ private
         {
         case 24: doIt'24()
         case 32: doIt'32()
-        default: debug.assert(false)
+        default: Debug.assert(false)
         }
     }
 
@@ -365,7 +365,7 @@ private
         {
         case 24: doIt'24()
         case 32: doIt'32()
-        default: debug.assert(false)
+        default: Debug.assert(false)
         }
     }
 

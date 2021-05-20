@@ -80,11 +80,11 @@ func openWrite(fullname: string)->FileStream throw
 // Read from the given file stream, and returns the number of bytes
 func read(stream: FileStream, buffer: *void, length: uint)->uint
 {
-    debug.assert(stream.isOpen())
-    debug.assert(stream.canRead)
+    Debug.assert(stream.isOpen())
+    Debug.assert(stream.canRead)
 
     var dwRead: DWORD = 0
-    debug.assert(length <= Swag.U32.Max)
+    Debug.assert(length <= Swag.U32.Max)
     rlen := ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
     return cast(uint) dwRead
 }
@@ -92,8 +92,8 @@ func read(stream: FileStream, buffer: *void, length: uint)->uint
 // Write to the given file stream, and returns the number of written bytes
 func write(stream: FileStream, buffer: const *void, length: uint)->uint throw
 {
-    debug.assert(stream.isOpen())
-    debug.assert(stream.canWrite)
+    Debug.assert(stream.isOpen())
+    Debug.assert(stream.canWrite)
 
     var dwWrite: DWORD = 0
     try WriteFile(stream.handle, buffer, cast(u32) length, &dwWrite, null)
@@ -113,8 +113,8 @@ func close(stream: *FileStream)
 // Returns the given file stream length on disk
 func getSize(stream: FileStream)->u64 throw
 {
-    debug.assert(stream.isOpen())
-    debug.assert(stream.canSeek)
+    Debug.assert(stream.isOpen())
+    Debug.assert(stream.canSeek)
 
     hFile := cast(HANDLE) stream.handle
     high  := 0'u32
@@ -125,8 +125,8 @@ func getSize(stream: FileStream)->u64 throw
 // Returns the current seek position of the given file stream
 func getPosition(stream: FileStream)->u64 throw
 {
-    debug.assert(stream.isOpen())
-    debug.assert(stream.canSeek)
+    Debug.assert(stream.isOpen())
+    Debug.assert(stream.canSeek)
 
     hFile := cast(HANDLE) stream.handle
     high  := 0
@@ -137,8 +137,8 @@ func getPosition(stream: FileStream)->u64 throw
 // Set the current seek position of the given file stream
 func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
 {
-    debug.assert(stream.isOpen())
-    debug.assert(stream.canSeek)
+    Debug.assert(stream.isOpen())
+    Debug.assert(stream.canSeek)
 
     hFile := cast(HANDLE) stream.handle
     low   := cast(LONG) (seek & 0xFFFFFFFF)

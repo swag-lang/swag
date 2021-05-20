@@ -47,7 +47,7 @@ impl String
 
     func opSlice(using const self, lower, upper: uint)->string
     {
-        debug.assert(lower <= upper and lower < length and upper < length)
+        Debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
@@ -268,7 +268,7 @@ impl String
     // Insert a substring at the given position
     func insert(using self, byteIndex: uint, value: string)
     {
-        debug.assert(byteIndex < length, "invalid index")
+        Debug.assert(byteIndex < length, "invalid index")
         countof := @countof(value)
         if !countof
             return
@@ -291,7 +291,7 @@ impl String
     // Append a rune to the String
     func append(using self, value: rune)
     {
-        debug.assert(utf8.isValidRune(value))
+        Debug.assert(utf8.isValidRune(value))
         var tmp: [4] u8
         eat := utf8.encodeRune(tmp, value)
         grow(length + eat + 1)

@@ -152,7 +152,7 @@ public impl BitArray
     // Sets the bit at a specific position to the specified value
     func set(using self, index: uint, value: bool)
     {
-        debug.assert(index < count)
+        Debug.assert(index < count)
         val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
@@ -165,7 +165,7 @@ public impl BitArray
     // Gets the value of the bit at a specific position
     func get(using self, index: uint)->bool
     {
-        debug.assert(index < count)
+        Debug.assert(index < count)
         val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
@@ -175,7 +175,7 @@ public impl BitArray
     // Inverts the value of the bit at a specific position
     func invert(using self, index: uint)
     {
-        debug.assert(index < count)
+        Debug.assert(index < count)
         val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
@@ -189,7 +189,7 @@ public impl BitArray
     // The current BitArray will be modified to store the result of the bitwise AND operation.
     func and(using self, other: Self)
     {
-        debug.assert(count == other.count)
+        Debug.assert(count == other.count)
         if !count return
         loop math.max(count >>,safe 5, 1)
             buffer[@index] &= other.buffer[@index]
@@ -199,7 +199,7 @@ public impl BitArray
     // The current BitArray will be modified to store the result of the bitwise OR operation.
     func or(using self, other: Self)
     {
-        debug.assert(count == other.count)
+        Debug.assert(count == other.count)
         if !count return
         loop math.max(count >>,safe 5, 1)
             buffer[@index] |= other.buffer[@index]
@@ -209,7 +209,7 @@ public impl BitArray
     // The current BitArray will be modified to store the result of the bitwise XOR operation.
     func xor(using self, other: Self)
     {
-        debug.assert(count == other.count)
+        Debug.assert(count == other.count)
         if !count return
         loop math.max(count >>,safe 5, 1)
             buffer[@index] ^= other.buffer[@index]

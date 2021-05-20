@@ -161,7 +161,7 @@ impl Image
     // Change image pixel format
     public func setPixelFormat(using self, newPf: PixelFormat)
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
 
         if newPf == pf return
         allocWorkingBuffer(width, height, newPf)
@@ -172,7 +172,7 @@ impl Image
     // Change image pixel format
     public func toSetPixelFormat(using self, newPf: PixelFormat)->Image
     {
-        debug.assert(pixels != null)
+        Debug.assert(pixels != null)
 
         if newPf == pf
         {

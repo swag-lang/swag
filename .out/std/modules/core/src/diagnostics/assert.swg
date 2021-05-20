@@ -1,5 +1,5 @@
 #global public
-#global namespace debug
+#global namespace Debug
 
 #[Swag.inline]
 func assert(expr: bool, message: string = null, loc = #callerlocation)

@@ -133,7 +133,7 @@ func getTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter
     length := @countof(src)
     if !length
         return @mkstring(dataof, 0)
-    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+    Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     length -= startByteIndex
     dataof += startByteIndex

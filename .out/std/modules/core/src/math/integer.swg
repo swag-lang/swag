@@ -23,7 +23,7 @@ func roundDownToPowerOf2(x: u32)->u32
 #[constexpr, inline]
 func isPowerOf2(x: u32)->bool
 {
-    debug.assert(x != 0)
+    Debug.assert(x != 0)
     return x & (x - 1) == 0
 }
 

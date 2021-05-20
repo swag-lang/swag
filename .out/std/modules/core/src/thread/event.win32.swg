@@ -13,7 +13,7 @@ impl Event
 {
     func opDrop(using self)
     {
-        debug.assert(handle == null, "missing call to release()")
+        Debug.assert(handle == null, "missing call to release()")
     }
 
     // Returns true if the event is valid
@@ -33,7 +33,7 @@ impl Event
     // Initialize event
     func init(using self, manual, initState = false)
     {
-        debug.assert(handle == null)
+        Debug.assert(handle == null)
         handle = assume CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
     }
 
@@ -48,21 +48,21 @@ impl Event
     // Signal the event
     func signal(using self)
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         assume SetEvent(handle)
     }
 
     // Reset the event state
     func reset(using self)
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         assume ResetEvent(handle)
     }
 
     // Wait for the event to be signaled
     func wait(using self)
     {
-        debug.assert(isValid())
+        Debug.assert(isValid())
         assume WaitForSingleObject(handle, INFINITE)
     }
 }

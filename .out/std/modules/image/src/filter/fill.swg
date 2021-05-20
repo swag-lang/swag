@@ -26,7 +26,7 @@ impl Image
         case BGRA8: fillFirstLine'BGRA8()
         case RGB8:  fillFirstLine'RGB8()
         case RGBA8: fillFirstLine'RGBA8()
-        default:    debug.assert(false)
+        default:    Debug.assert(false)
         }
 
         visitPixels(stride: width)

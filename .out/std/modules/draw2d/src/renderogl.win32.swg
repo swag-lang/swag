@@ -13,7 +13,7 @@ public impl RenderOglWin32
 {
     func init(using self, hdc: HDC, w, h: s32) throw
     {
-        debug.assert(hDC == null)
+        Debug.assert(hDC == null)
         hDC = hdc
         hRC = try wglCreateContext(hdc)
         try wglMakeCurrent(hDC, hRC)

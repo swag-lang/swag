@@ -4,6 +4,6 @@ using core
 //#[Swag.printbc]
 #test
 {
-    //diagnostics.debug.assert(false, "This is an assertion")
-    //diagnostics.debug.assert(false)
+    //diagnostics.Debug.assert(false, "This is an assertion")
+    //diagnostics.Debug.assert(false)
 }

@@ -104,7 +104,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
             }
 
             // Deal with the parameter
-            debug.assert(paramIdx < numParams, "not enough 'format' parameters")
+            Debug.assert(paramIdx < numParams, "not enough 'format' parameters")
             strconv.convertAny(buf, values[paramIdx], cast(string) strFormat)
             paramIdx += 1
         }

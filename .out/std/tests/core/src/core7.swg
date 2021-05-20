@@ -3,5 +3,5 @@
 //#[Swag.printbc]
 #test
 {
-	core.debug.assert(true)
+	core.Debug.assert(true)
 }

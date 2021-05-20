@@ -114,7 +114,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 // Allocate and initialize an array of the given type
 func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
-    debug.assert(num > 0)
+    Debug.assert(num > 0)
 
     userHint := hint orelse @typeof(T).name
     ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
@@ -127,7 +127,7 @@ func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = 
 {
     if !ptr
         return
-    debug.assert(num > 0)
+    Debug.assert(num > 0)
 
     userHint := hint orelse @typeof(T).name
     @drop(ptr, num)
