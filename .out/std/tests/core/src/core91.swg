@@ -3,6 +3,6 @@ using core
 
 #test
 {
-    ci := core.globalization.getCultureInfo()
+    ci := core.Globalization.getCultureInfo()
     @assert(ci.numberFormat.decimalSeparator == "."'u8)
 }

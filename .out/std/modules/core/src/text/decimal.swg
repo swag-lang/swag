@@ -2,7 +2,7 @@
 
 #global namespace strconv
 #global #[Swag.safety("overflow", false)]
-using globalization
+using Globalization
 
 struct Decimal
 {

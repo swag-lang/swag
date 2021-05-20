@@ -1,5 +1,5 @@
 #global public
-#global namespace gamepad
+#global namespace GamePad
 using math
 
 enum Error: string
@@ -8,7 +8,7 @@ enum Error: string
 }
 
 // Represents a gamepad
-struct GamePad
+struct Pad
 {
     previousState:  State
     currentState:   State
@@ -20,7 +20,7 @@ struct GamePad
     connected: bool
 }
 
-impl GamePad
+impl Pad
 {
     // Update the GamePad current state
     func update(using self) throw

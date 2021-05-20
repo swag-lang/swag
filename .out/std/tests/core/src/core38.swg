@@ -1,9 +1,8 @@
-
-using core.gamepad
+using core.GamePad
 
 #test
 {
-    var k: GamePad
+    var k: Pad
 
     k.clear()
     @assert(!k.isButtonPressed(Button.X))

@@ -1,4 +1,4 @@
-#global namespace gamepad
+#global namespace GamePad
 
 // Enumerates gamepad buttons
 #[Swag.enumindex]
