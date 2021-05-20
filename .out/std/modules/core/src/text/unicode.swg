@@ -1,6 +1,6 @@
 // https://golang.org/src/unicode/letter.go
 
-#global namespace unicode
+#global namespace Unicode
 
 #[Swag.inline, Swag.constexpr]
 public

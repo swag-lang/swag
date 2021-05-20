@@ -395,7 +395,7 @@ impl String
         {
             sl := @mkslice(ptr, length)
             (c, eat) := Utf8.decodeRune(sl)
-            if !unicode.isSpace(c)
+            if !Unicode.isSpace(c)
                 break
             length -= eat
             ptr += eat
@@ -415,7 +415,7 @@ impl String
         {
             sl := @mkslice(buffer, length)
             (c, eat) := Utf8.decodeLastRune(sl)
-            if !unicode.isSpace(c)
+            if !Unicode.isSpace(c)
                 break
             length -= eat
         }
@@ -433,7 +433,7 @@ impl String
     // Convert string to a 32 bits character array
     func toCharArray(using const self)->Array'rune
     {
-        return unicode.fromUtf8(@mkslice(buffer, length))
+        return Unicode.fromUtf8(@mkslice(buffer, length))
     }
 
     // Convert a literal string to a String
@@ -469,8 +469,8 @@ impl String
             core.Latin1.makeUpper(sl)
 
         case Unicode:
-            uni32 := unicode.fromUtf8(toString())
-            unicode.makeUpper(uni32.toSlice())
+            uni32 := core.Unicode.fromUtf8(toString())
+            core.Unicode.makeUpper(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
@@ -488,8 +488,8 @@ impl String
             core.Latin1.makeLower(sl)
 
         case Unicode:
-            uni32 := unicode.fromUtf8(toString())
-            unicode.makeLower(uni32.toSlice())
+            uni32 := core.Unicode.fromUtf8(toString())
+            core.Unicode.makeLower(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }

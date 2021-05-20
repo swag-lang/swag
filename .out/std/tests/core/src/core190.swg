@@ -43,6 +43,6 @@ var notupperTest: []rune = @[
 //#[Swag.printbc]
 #test
 {
-    visit c: upperTest @assert(unicode.isUpper(c))
-    visit c: notupperTest @assert(!unicode.isUpper(c))
+    visit c: upperTest @assert(Unicode.isUpper(c))
+    visit c: notupperTest @assert(!Unicode.isUpper(c))
 }

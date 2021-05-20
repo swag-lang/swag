@@ -654,8 +654,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 
             if c1 != c2
             {
-                c1 = unicode.toLower(c1)
-                c2 = unicode.toLower(c2)
+                c1 = core.Unicode.toLower(c1)
+                c2 = core.Unicode.toLower(c2)
                 result = cast(s32) c1 - cast(s32) c2
                 if result != 0
                     return Math.sign(result)

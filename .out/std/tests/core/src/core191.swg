@@ -129,11 +129,11 @@ var caseTest: [] CaseT = @[
         switch c.cas
         {
             case LowerCase:
-                @assert(unicode.toLower(c.in) == c.out)
+                @assert(Unicode.toLower(c.in) == c.out)
             case UpperCase:
-                @assert(unicode.toUpper(c.in) == c.out)
+                @assert(Unicode.toUpper(c.in) == c.out)
             case TitleCase:
-                @assert(unicode.toTitle(c.in) == c.out)
+                @assert(Unicode.toTitle(c.in) == c.out)
         }
     }
 }
