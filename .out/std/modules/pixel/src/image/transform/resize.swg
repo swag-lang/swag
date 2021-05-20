@@ -337,7 +337,7 @@ private
 
     func doResizeFilter(srcImage, dstImage: *Image, method: Image.ResizeMethod)
     {
-        tmp := image.create(dstImage.width, srcImage.height, srcImage.pf)
+        tmp := Image.create(dstImage.width, srcImage.height, srcImage.pf)
         scaleRow(&tmp, srcImage, method)
         scaleCol(dstImage, &tmp, method)
     }

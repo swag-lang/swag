@@ -1,4 +1,4 @@
-using image, Core
+using Core, Pixel.Image
 
 #test
 {

@@ -1,4 +1,4 @@
-using Core, image
+using Core, Pixel
 
 //#[Swag.printbc]
 #test
@@ -7,6 +7,6 @@ using Core, image
     files := try Directory.enumerateFiles(pathName)
     visit f: files
     {
-        img := try image.load(f.fullname)
+        img := try Image.load(f.fullname)
     }
 }

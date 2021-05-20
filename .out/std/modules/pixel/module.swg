@@ -1,7 +1,6 @@
 #dependencies
 {
     #import "core"
-    #import "image"
     #import "ogl"
 
     #run
@@ -11,7 +10,7 @@
         cfg.moduleVersion = 0
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0
-        cfg.moduleNamespace = "Paint"
+        cfg.moduleNamespace = "Pixel"
         cfg.backendKind = .DynamicLib
     }
 }

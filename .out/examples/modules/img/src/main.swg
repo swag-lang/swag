@@ -2,12 +2,13 @@
 
 #global if #os == "windows"
 using Core, Win32, Ogl, Gdi32, Drawing
+using Pixel
 
 var testMode: bool
 var hDC: HDC
 var imageIdx: u32 = 11
 var effectIdx: u32 = 0
-var myImage: image.Image
+var myImage: Pixel.Image
 const W = 1024
 const H = 1024
 
@@ -53,7 +54,7 @@ var textureID: GLuint
 //#[Swag.printbc]
 func loadImg()
 {
-    using image.Image, Color
+    using Pixel, Color
 
     imgName := "rgba.bmp"
     switch imageIdx
@@ -92,7 +93,7 @@ func loadImg()
     var ti: Time.Stopwatch
     ti.start()
     data := imagePath(imgName)
-    myImage = assume image.load(data)
+    myImage = assume Image.load(data)
     ti.stop()
     Console.printf("%: img: % (% x % %) load: %ms ", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds())
     myImage.resize(512, 512)
@@ -109,7 +110,7 @@ func loadImg()
     case 5:  myImage.mirror()
     case 6:  myImage.grayScale(0.5)
     case 7:  myImage.grayScale()
-    case 8:  myImage.fillHsl(FillHslType.SaturationLightness, Argb.Green)
+    case 8:  myImage.fillHsl(Image.FillHslType.SaturationLightness, Argb.Green)
     case 9:  myImage.fillGradient2(Argb.Green, Argb.Red)
     case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
     case 11: myImage.fill(Argb.Cyan)
@@ -136,16 +137,16 @@ func loadImg()
     case 32: myImage.crop(229, 105, 206, 166)
     case 33: myImage.setPixelFormat(PixelFormat.BGR8)
     case 34: myImage.setPixelFormat(PixelFormat.BGRA8)
-    case 35: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MinRGB)
-    case 36: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MaxRGB)
-    case 37: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MeanRGB)
+    case 35: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MinRGB)
+    case 36: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MaxRGB)
+    case 37: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MeanRGB)
     case 38: myImage.gamma(0.5)
     case 39: myImage.gamma(1.0)
     case 40: myImage.gamma(2.2)
     case 41: myImage.colorize(0.5, 0.2, strength: 0.5)
-    case 42: myImage.turn(TurnAngle.T90)
-    case 43: myImage.turn(TurnAngle.T180)
-    case 44: myImage.turn(TurnAngle.T270)
+    case 42: myImage.turn(Image.TurnAngle.T90)
+    case 43: myImage.turn(Image.TurnAngle.T180)
+    case 44: myImage.turn(Image.TurnAngle.T270)
     case 45: myImage.setPixelFormat(PixelFormat.RGB8)
     case 46: myImage.setPixelFormat(PixelFormat.RGBA8)
     case 47: myImage.setPixelFormat(PixelFormat.BGR8)

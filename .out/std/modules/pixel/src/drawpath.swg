@@ -3,7 +3,7 @@ using Core, Core.Math
 
 impl DrawingContext
 {
-    func drawPath(using self, pth: Path, pen: Pen)
+    func drawPath(using self, pth: PaintPath, pen: Pen)
     {
         if pen.size == 0
             return

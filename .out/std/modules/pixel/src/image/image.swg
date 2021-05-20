@@ -14,19 +14,19 @@ struct Image
     bpp8:               u8  // Bytes per pixel
 }
 
-// Creates a new image
-func create(width, height: s32, pf: PixelFormat)->Image
-{
-    Debug.assert(width > 0 and height > 0, "invalid dimensions")
-
-    var result: retval
-    result.init(width, height, pf)
-    result.allocPixels()
-    return result
-}
-
 impl Image
 {
+    // Creates a new image
+    func create(width, height: s32, pf: PixelFormat)->Image
+    {
+        Debug.assert(width > 0 and height > 0, "invalid dimensions")
+
+        var result: retval
+        result.init(width, height, pf)
+        result.allocPixels()
+        return result
+    }
+
     #[inline]
     private func free(using self)
     {
@@ -109,7 +109,7 @@ impl Image
 
         freeWorkingBuffer()
         workingBuffer = Memory.new'Image(allocator)
-        dref workingBuffer = image.create(newWidth, newHeight, newPf)
+        dref workingBuffer = Image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated

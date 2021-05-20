@@ -28,7 +28,7 @@ struct DrawingContext
     commandBuffer:  Array'Command
     vertexBuffer:   Array'VertexLayout
     drawingBegin:   bool
-    drawingPath:    Path
+    drawingPath:    PaintPath
 }
 
 impl DrawingContext

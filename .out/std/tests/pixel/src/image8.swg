@@ -1,11 +1,11 @@
-using image
+using Pixel.Image
 
 //#[Swag.printbc]
 #test
 {
     var options: DecodeOptions
     options.decodePixels = false
-    img := try image.load(imagePath("rgb.png"), options)
+    img := try Image.load(imagePath("rgb.png"), options)
     @assert(img.width == 660)
     @assert(img.height == 441)
     @assert(img.pixels == null)

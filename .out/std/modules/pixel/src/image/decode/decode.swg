@@ -37,36 +37,39 @@ public func(T) addDecoder()
 }
 
 // Load an image from file
-public func load(fileName: string, options: DecodeOptions = @{})->Image throw
+impl Image
 {
-    // Find the decoder that can treat 'fileName'
-    var found: *Decoder
-    visit *decoder: g_Decoder
+    public func load(fileName: string, options: DecodeOptions = @{})->Image throw
     {
-        if decoder.itf.canDecode(fileName)
+        // Find the decoder that can treat 'fileName'
+        var found: *Decoder
+        visit *decoder: g_Decoder
         {
-            found = decoder
-            break
+            if decoder.itf.canDecode(fileName)
+            {
+                found = decoder
+                break
+            }
         }
+
+        if !found throw "no matching image decoder"
+
+        // Read file content
+        bytes := try File.readAllBytes(fileName)
+
+        // Create a decoder instance
+        ptrDecoder := Memory.new(found.type)
+        defer
+        {
+            if found.type.opDrop
+                found.type.opDrop(ptrDecoder);
+            Memory.free(ptrDecoder, found.type.sizeof)
+        }
+
+        // Decode
+        itf := @mkinterface(ptrDecoder, found.type, IDecoder)
+        return try itf.decode(bytes.toSlice(), options)
     }
-
-    if !found throw "no matching image decoder"
-
-    // Read file content
-    bytes := try File.readAllBytes(fileName)
-
-    // Create a decoder instance
-    ptrDecoder := Memory.new(found.type)
-    defer
-    {
-        if found.type.opDrop
-            found.type.opDrop(ptrDecoder);
-        Memory.free(ptrDecoder, found.type.sizeof)
-    }
-
-    // Decode
-    itf := @mkinterface(ptrDecoder, found.type, IDecoder)
-    return try itf.decode(bytes.toSlice(), options)
 }
 
 // Initialize predefined decoders
