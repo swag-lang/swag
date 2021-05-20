@@ -72,7 +72,7 @@ func swapParams(what: string)->String
             #if LOG Console.print("arr: %\n", arr)
         }
 
-        while latin1.isLetter(what[idxName - 1]) idxName -= 1
+        while Latin1.isLetter(what[idxName - 1]) idxName -= 1
         name := what[idxName..idxEnd-1]
         #if LOG Console.print("name: %\n", name)
 
@@ -89,8 +89,8 @@ func swapParams(what: string)->String
         if(type.lastRune() == "*"'rune)
         {
             idxType = type.length - 2
-            while latin1.isSpace(type[idxType]) idxType -= 1
-            while latin1.isLetter(type[idxType]) idxType -= 1
+            while Latin1.isSpace(type[idxType]) idxType -= 1
+            while Latin1.isLetter(type[idxType]) idxType -= 1
             type.insert(idxType + 1, "*")
             type.length -= 2
             type.trim()

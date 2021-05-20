@@ -81,7 +81,7 @@ impl TweakFile
                 throw Format.toString("line %: %", idx + 1, @err)
 
             // Be sure there's nothing left
-            if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
+            if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != "#"'u8
                 throw Format.toString("line %: syntax error in value", idx + 1)
             one = tokenize.eatSpaces(one)
             if @countof(one) and one[0] != "#"'u8

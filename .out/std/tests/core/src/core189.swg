@@ -63,6 +63,6 @@ var testDigit: []rune = @[
 //#[Swag.printbc]
 #test
 {
-    loop c: 256'u32 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(rune) c))
+    loop c: 256'u32 @assert(Latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(rune) c))
     visit c: testDigit @assert(unicode.isDigit(c))
 }

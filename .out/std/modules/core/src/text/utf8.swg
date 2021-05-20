@@ -592,7 +592,7 @@ func firstRune(src: const [..] u8)->rune
     if !countof
         return 0
     dataof := @dataof(src)
-    if latin1.isAscii(dataof[0])
+    if Latin1.isAscii(dataof[0])
         return cast(rune) dataof[0]
     (c, ?) := utf8.decodeRune(src)
     return c
@@ -605,7 +605,7 @@ func lastRune(src: const [..] u8)->rune
     if !countof
         return 0
     dataof := @dataof(src)
-    if latin1.isAscii(dataof[countof - 1])
+    if Latin1.isAscii(dataof[countof - 1])
         return cast(rune) dataof[countof - 1]
     (c, ?) := utf8.decodeLastRune(src)
     return c
@@ -628,13 +628,13 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
     switch comparisonType
     {
     case Latin1:
-        return latin1.compare(src, dst) // bytes compare
+        return core.Latin1.compare(src, dst) // bytes compare
 
     case Latin1NoCase:
-        return latin1.compare(src, dst, ignoreCase: true)
+        return core.Latin1.compare(src, dst, ignoreCase: true)
 
     case Unicode:
-        return latin1.compare(src, dst) // bytes compare
+        return core.Latin1.compare(src, dst) // bytes compare
 
     case UnicodeNoCase:
         length := @countof(src)

@@ -466,7 +466,7 @@ impl String
         switch set
         {
         case Latin1:
-            latin1.makeUpper(sl)
+            core.Latin1.makeUpper(sl)
 
         case Unicode:
             uni32 := unicode.fromUtf8(toString())
@@ -485,7 +485,7 @@ impl String
         switch set
         {
         case Latin1:
-            latin1.makeLower(sl)
+            core.Latin1.makeLower(sl)
 
         case Unicode:
             uni32 := unicode.fromUtf8(toString())

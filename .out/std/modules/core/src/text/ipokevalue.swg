@@ -16,7 +16,7 @@ impl Parse.IPokeValue for Drawing.Color
         one := tokenize.eatSpaces(buf)
         if @countof(one) == 0 throw "invalid"
 
-        if latin1.isDigit(buf[0])
+        if Latin1.isDigit(buf[0])
         {
             (a, eat) = try Parse.getU8(one)
             one = tokenize.eatCount(one, eat)

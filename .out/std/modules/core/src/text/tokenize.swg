@@ -16,7 +16,7 @@ func eatSpaces(str: string)->string
     if !countof return str
 
     cpt := 0'uint
-    while cpt < countof and latin1.isSpace(str[cpt])
+    while cpt < countof and Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
@@ -121,7 +121,7 @@ func getToSpace(str: string)->string throw
     if !countof throw "invalid"
 
     cpt := 0'uint
-    while cpt < countof and !latin1.isSpace(str[cpt])
+    while cpt < countof and !Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }

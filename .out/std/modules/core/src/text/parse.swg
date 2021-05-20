@@ -15,13 +15,13 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isHexDigit(dref buffer) throw "invalid"
-    while cpt < countof and latin1.isHexDigit(dref buffer)
+    if !Latin1.isHexDigit(dref buffer) throw "invalid"
+    while cpt < countof and Latin1.isHexDigit(dref buffer)
     {
         if value & 0xF0000000_00000000 throw "overflow"
         value <<= 4
         c := dref buffer
-        if latin1.isDigit(c)
+        if Latin1.isDigit(c)
             value += cast(u64) (c - "0"'u8)
         else if c <= "F"'u8
             value += cast(u64) 10 + (c - "A"'u8)
@@ -48,8 +48,8 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isBinDigit(dref buffer) throw "invalid"
-    while cpt < countof and latin1.isBinDigit(dref buffer)
+    if !Latin1.isBinDigit(dref buffer) throw "invalid"
+    while cpt < countof and Latin1.isBinDigit(dref buffer)
     {
         if value & 0x80000000_00000000 throw "overflow"
         value <<= 1
@@ -117,8 +117,8 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
-    if !latin1.isDigit(dref buffer) throw "invalid"
-    while cpt < countof and latin1.isDigit(dref buffer)
+    if !Latin1.isDigit(dref buffer) throw "invalid"
+    while cpt < countof and Latin1.isDigit(dref buffer)
     {
         value *= 10
         add := cast(u64) (dref buffer - "0"'u8)
@@ -182,8 +182,8 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     }
 
     // Parse the rest
-    if !latin1.isDigit(dref buffer) throw "invalid"
-    while cpt < countof and latin1.isDigit(dref buffer)
+    if !Latin1.isDigit(dref buffer) throw "invalid"
+    while cpt < countof and Latin1.isDigit(dref buffer)
     {
         value *= 10
         value += cast(u64) (dref buffer - "0"'u8)
@@ -252,10 +252,10 @@ func getIdentifier(str: string)->string throw
     countof := @countof(str)
     if !countof throw "invalid"
 
-    if str[0] != "_"'u8 and !latin1.isLetter(str[0]) throw "invalid"
+    if str[0] != "_"'u8 and !Latin1.isLetter(str[0]) throw "invalid"
 
     cpt := 1'uint
-    while cpt < countof and (str[cpt] == "_"'u8 or latin1.isLetterOrDigit(str[cpt]))
+    while cpt < countof and (str[cpt] == "_"'u8 or Latin1.isLetterOrDigit(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }

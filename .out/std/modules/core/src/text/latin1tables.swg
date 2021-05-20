@@ -1,6 +1,6 @@
 //https://golang.org/src/unicode/tables.go
 #global public
-#global namespace latin1
+#global namespace Latin1
 
 #[Swag.enumflags]
 enum CharAttribute

@@ -14,43 +14,43 @@ public
 {
     func isDigit(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isDigit(cast(u8) c)
+        if isLatin1(c) return Latin1.isDigit(cast(u8) c)
         return isInTable(TableDigit, c)
     }
 
     func isNumber(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isNumber(cast(u8) c)
+        if isLatin1(c) return Latin1.isNumber(cast(u8) c)
         return isInTable(TableNumber, c)
     }
 
     func isControl(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isControl(cast(u8) c)
+        if isLatin1(c) return Latin1.isControl(cast(u8) c)
         return false
     }
 
     func isSpace(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isSpace(cast(u8) c)
+        if isLatin1(c) return Latin1.isSpace(cast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 
     func isLetter(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isLetter(cast(u8) c)
+        if isLatin1(c) return Latin1.isLetter(cast(u8) c)
         return isInTable(TableLetter, c)
     }
 
     func isSymbol(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isSymbol(bitcast(u8) c)
+        if isLatin1(c) return Latin1.isSymbol(bitcast(u8) c)
         return isInTable(TableSymbol, c)
     }
 
     func isLetterOrDigit(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
+        if isLatin1(c) return Latin1.isLetterOrDigit(cast(u8) c)
         return isDigit(c) or isLetter(c)
     }
 
@@ -62,19 +62,19 @@ public
 
     func isLower(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isLower(cast(u8) c)
+        if isLatin1(c) return Latin1.isLower(cast(u8) c)
         return isInTable(TableLower, c)
     }
 
     func isUpper(c: rune)->bool
     {
-        if isLatin1(c) return latin1.isUpper(cast(u8) c)
+        if isLatin1(c) return Latin1.isUpper(cast(u8) c)
         return isInTable(TableUpper, c)
     }
 
     func toLower(c: rune)->rune
     {
-        if isLatin1(c) return acast latin1.toLower(cast(u8) c)
+        if isLatin1(c) return acast Latin1.toLower(cast(u8) c)
 
         res := caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune
@@ -85,7 +85,7 @@ public
 
     func toUpper(c: rune)->rune
     {
-        if isLatin1(c) return acast latin1.toUpper(cast(u8) c)
+        if isLatin1(c) return acast Latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune
@@ -97,7 +97,7 @@ public
 
     func toTitle(c: rune)->rune
     {
-        if isLatin1(c) return acast latin1.toUpper(cast(u8) c)
+        if isLatin1(c) return acast Latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
         if res.foundMapping return res.mappedRune
