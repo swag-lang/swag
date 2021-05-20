@@ -6,7 +6,7 @@ using image, core
     bytes := catch File.readAllBytes(data)
     @assert(!@err)
 
-    var dec: bmp.Decoder
+    var dec: Bmp.Decoder
     img := catch dec.IDecoder.decode(bytes.toSlice(), @{})
     @assert(!@err)
 }

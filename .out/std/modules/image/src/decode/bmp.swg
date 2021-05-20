@@ -1,4 +1,4 @@
-#global namespace bmp
+#global namespace Bmp
 using core
 
 const FILL_RLE_COMMAND     = 0

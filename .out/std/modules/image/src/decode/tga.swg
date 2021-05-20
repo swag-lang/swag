@@ -1,4 +1,4 @@
-#global namespace tga
+#global namespace Tga
 using core
 
 const TYPE_MAP      = 1

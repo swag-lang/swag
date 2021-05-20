@@ -72,8 +72,8 @@ public func load(fileName: string, options: DecodeOptions = @{})->Image throw
 // Initialize predefined decoders
 #init
 {
-    addDecoder'(bmp.Decoder)()
-    addDecoder'(tga.Decoder)()
-    addDecoder'(jpg.Decoder)()
-    addDecoder'(png.Decoder)()
+    addDecoder'(Bmp.Decoder)()
+    addDecoder'(Tga.Decoder)()
+    addDecoder'(Jpg.Decoder)()
+    addDecoder'(Png.Decoder)()
 }

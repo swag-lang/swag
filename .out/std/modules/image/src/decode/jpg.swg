@@ -1,4 +1,4 @@
-#global namespace jpg
+#global namespace Jpg
 using Swag, core
 
 const InBufSize         = 4096
