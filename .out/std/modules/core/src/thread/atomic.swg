@@ -1,5 +1,5 @@
 #global public
-#global namespace atomic
+#global namespace Atomic
 
 #[Swag.inline, Swag.discardable]
 {

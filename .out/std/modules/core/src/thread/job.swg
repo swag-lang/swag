@@ -95,9 +95,9 @@ func removeJobNoLock(job: *Job)
     job.clearState(JobState.InPending)
 }
 
-func clearState(job: *Job, state: JobState) = atomic.and(cast(*u32) &job.state, cast(u32) ~state)
-func setState(job: *Job, state: JobState)   = atomic.or(cast(*u32) &job.state, cast(u32) state)
-func testState(job: *Job, state: JobState)  => atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
+func clearState(job: *Job, state: JobState) = Atomic.and(cast(*u32) &job.state, cast(u32) ~state)
+func setState(job: *Job, state: JobState)   = Atomic.or(cast(*u32) &job.state, cast(u32) state)
+func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
 public func isSynchrone() => g_numWorkers == 0

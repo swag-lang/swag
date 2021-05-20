@@ -10,7 +10,7 @@ func entry(th: Thread)
 {
     loop ITER
     {
-        atomic.add(&G, 1)
+        Atomic.add(&G, 1)
     }
 }
 
