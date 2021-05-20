@@ -1,5 +1,5 @@
 #global export
-#global namespace slice
+#global namespace Slice
 
 // Insertion sort algorithm (slow)
 func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)

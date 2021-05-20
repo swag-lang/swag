@@ -468,7 +468,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
         res := utf8.decodeRune(@mkslice(scan, remain))
         if !res.eat
             break
-        if slice.contains(what, res.c)
+        if Slice.contains(what, res.c)
             return idx
         scan, idx += res.eat
         remain -= res.eat
@@ -530,7 +530,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
             return Swag.UInt.Max
 
         byteIdx -= eat
-        if slice.contains(what, c)
+        if Slice.contains(what, c)
             return byteIdx
     }
 

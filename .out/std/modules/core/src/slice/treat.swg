@@ -1,5 +1,5 @@
 #global export
-#global namespace slice
+#global namespace Slice
 
 // Transform the content of a slice with a given lambda
 #[Swag.inline]

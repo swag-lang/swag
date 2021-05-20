@@ -1,5 +1,5 @@
 #global export
-#global namespace slice
+#global namespace Slice
 
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order

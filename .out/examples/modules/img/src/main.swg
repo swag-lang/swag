@@ -291,7 +291,7 @@ func messageLoop()
 //#[Swag.printbc]
 #main
 {
-    if slice.contains(@args(), "test")
+    if Slice.contains(@args(), "test")
         testMode = true
 
     try
