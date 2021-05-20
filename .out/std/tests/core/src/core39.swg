@@ -1,24 +1,24 @@
 
-using core.GamePad
+using core.Input
 
 #test
 {
-    var k: Pad
+    var k: GamePad
 
     k.clear()
-    @assert(!k.isButtonPressed(Button.X))
+    @assert(!k.isButtonPressed(GamePadButton.X))
 
     //loop
     while false
     {
         assume k.update()
-        if k.isButtonJustPressed(Button.RightThumbstickDown)
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickDown)
             @print("down\n")
-        if k.isButtonJustPressed(Button.RightThumbstickUp)
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickUp)
             @print("up\n")
-		if k.isButtonJustPressed(Button.RightThumbstickLeft)
+		if k.isButtonJustPressed(GamePadButton.RightThumbstickLeft)
             @print("left\n")
-		if k.isButtonJustPressed(Button.RightThumbstickRight)
+		if k.isButtonJustPressed(GamePadButton.RightThumbstickRight)
             @print("right\n")
     }
 }

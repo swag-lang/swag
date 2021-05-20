@@ -1,13 +1,13 @@
-#global namespace keyboard
+#global namespace Input
 
 // Represents one keyboard state
-public struct State
+public struct KeyboardState
 {
     // Whether each key is pressed or not
     pressed: [@countof(Key)] bool
 }
 
-public impl State
+public impl KeyboardState
 {
     // Compute current keyboard state
     func update(using self)

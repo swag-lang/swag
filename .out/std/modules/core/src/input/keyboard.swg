@@ -1,11 +1,11 @@
 #global public
-#global namespace keyboard
+#global namespace Input
 
 // Allows getting keystrokes from keyboard
 struct Keyboard
 {
-    previousState:  State
-    currentState:   State
+    previousState:  KeyboardState
+    currentState:   KeyboardState
     pressedRepeat:  [@countof(Key)] bool
     pressedTime:    [@countof(Key)] u32
 

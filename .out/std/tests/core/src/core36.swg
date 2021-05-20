@@ -1,5 +1,4 @@
-
-using core.keyboard
+using core.Input
 
 #test
 {

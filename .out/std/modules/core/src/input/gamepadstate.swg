@@ -1,16 +1,16 @@
 #global public
-#global namespace GamePad
+#global namespace Input
 using math
 
 // Represents specific information about the state of the controller,
 // including the current state of buttons and sticks
-struct State
+struct GamePadState
 {
-    pressed:    [@countof(Button)] bool
-    position:   [@countof(Button)] Point
+    pressed:    [@countof(GamePadButton)] bool
+    position:   [@countof(GamePadButton)] Point
 }
 
-impl State
+impl GamePadState
 {
     // Reset state to its default value
     func clear(using self)

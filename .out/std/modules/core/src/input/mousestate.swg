@@ -40,11 +40,11 @@ func isButtonPressed(button: Button)->bool
     using Button
     switch button
     {
-    case Left:		return keyboard.isKeyPressed(keyboard.Key.LButton)
-    case Middle:	return keyboard.isKeyPressed(keyboard.Key.MButton)
-    case Right:		return keyboard.isKeyPressed(keyboard.Key.RButton)
-    case XButton1:	return keyboard.isKeyPressed(keyboard.Key.XButton1)
-    case XButton2:	return keyboard.isKeyPressed(keyboard.Key.XButton2)
+    case Left:		return Input.isKeyPressed(Input.Key.LButton)
+    case Middle:	return Input.isKeyPressed(Input.Key.MButton)
+    case Right:		return Input.isKeyPressed(Input.Key.RButton)
+    case XButton1:	return Input.isKeyPressed(Input.Key.XButton1)
+    case XButton2:	return Input.isKeyPressed(Input.Key.XButton2)
     }
 
     return false

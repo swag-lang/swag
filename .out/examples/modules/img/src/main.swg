@@ -246,7 +246,7 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg:  MSG
-    var keyb: keyboard.Keyboard
+    var keyb: Input.Keyboard
 
     loop
     {
@@ -260,12 +260,12 @@ func messageLoop()
         }
 
         keyb.update()
-        if(keyb.isKeyJustPressed(keyboard.Key.F1))
+        if(keyb.isKeyJustPressed(Input.Key.F1))
         {
             imageIdx += 1
             loadImg()
         }
-        if(keyb.isKeyJustPressed(keyboard.Key.F2))
+        if(keyb.isKeyJustPressed(Input.Key.F2))
         {
             effectIdx += 1
             loadImg()

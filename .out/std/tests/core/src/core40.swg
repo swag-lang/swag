@@ -1,18 +1,18 @@
 
-using core.GamePad
+using core.Input
 
 #test
 {
-    var k: Pad
+    var k: GamePad
 
     k.clear()
-    @assert(!k.isButtonPressed(Button.X))
+    @assert(!k.isButtonPressed(GamePadButton.X))
 
     //loop
     while false
     {
         assume k.update()
-        if k.isButtonJustPressed(Button.LeftTrigger)
+        if k.isButtonJustPressed(GamePadButton.LeftTrigger)
             @print("down\n")
     }
 }

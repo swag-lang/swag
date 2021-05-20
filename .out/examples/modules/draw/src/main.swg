@@ -97,7 +97,7 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg:  MSG
-    var keyb: keyboard.Keyboard
+    var keyb: Input.Keyboard
 
     loop
     {

@@ -1,4 +1,4 @@
-#global namespace keyboard
+#global namespace Input
 
 // Represents a virtual system key
 public alias VirtualKey = u32

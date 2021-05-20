@@ -1,17 +1,17 @@
 #global public
-#global namespace GamePad
+#global namespace Input
 using math
 
-enum Error: string
+enum GamePadError: string
 {
     DeviceNotConnected = "not connected"
 }
 
 // Represents a gamepad
-struct Pad
+struct GamePad
 {
-    previousState:  State
-    currentState:   State
+    previousState:  GamePadState
+    currentState:   GamePadState
 
     // The pad index associated with that GamePad instance
     padIndex: u32
@@ -20,7 +20,7 @@ struct Pad
     connected: bool
 }
 
-impl Pad
+impl GamePad
 {
     // Update the GamePad current state
     func update(using self) throw
@@ -47,31 +47,31 @@ impl Pad
     }
 
     // Determines whether specified input device button is pressed
-    func isButtonPressed(using self, button: Button)->bool
+    func isButtonPressed(using self, button: GamePadButton)->bool
     {
         return currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been pressed
-    func isButtonJustPressed(using self, button: Button)->bool
+    func isButtonJustPressed(using self, button: GamePadButton)->bool
     {
         return currentState.pressed[button] and !previousState.pressed[button]
     }
 
     // Determines whether specified input device button is released (not pressed)
-    func isButtonReleased(using self, button: Button)->bool
+    func isButtonReleased(using self, button: GamePadButton)->bool
     {
         return !currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been released
-    func isButtonJustReleased(using self, button: Button)->bool
+    func isButtonJustReleased(using self, button: GamePadButton)->bool
     {
         return !currentState.pressed[button] and previousState.pressed[button]
     }
 
     // Get the analog position of the given button
-    func getPosition(using self, button: Button)->Point
+    func getPosition(using self, button: GamePadButton)->Point
     {
         return currentState.position[button]
     }

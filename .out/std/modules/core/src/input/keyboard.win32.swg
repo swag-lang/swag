@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace keyboard
+#global namespace Input
 using Swag, win32
 
 private
@@ -9,7 +9,7 @@ private
     var g_mapVKeyToKey: [256] u8 = ?
 
     #[compiler]
-    func setupArray(key: keyboard.Key, vkey: u8)
+    func setupArray(key: Input.Key, vkey: u8)
     {
         g_mapKeyToVKey[key] = vkey
         g_mapVKeyToKey[vkey] = cast(u8) key

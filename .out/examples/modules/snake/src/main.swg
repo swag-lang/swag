@@ -36,7 +36,7 @@ https://youtu.be/e8lYLYlrGLg
 Last Updated: 24/06/2017
 */
 #global if #os == "windows"
-using win32, core.keyboard
+using win32, core.Input
 
 var nScreenWidth  = 120'u32
 var nScreenHeight = 30'u32
@@ -60,7 +60,7 @@ func main()
     nFoodY := 15
     nScore := 0
     var rand: random.Rng
-    var keyb: keyboard.Keyboard
+    var keyb: Input.Keyboard
 
     var snakeArr: Array'SnakeSegment = @[ @{60,15}, @{61,15}, @{62,15}, @{63,15}, @{64,15}, @{65,15}, @{66,15}, @{67,15}, @{68,15}, @{69,15} ]
 
@@ -70,7 +70,7 @@ func main()
         thread.sleep((nSnakeDirection % 2 == 1) ? 120 : 200)
 
         // Input ========================
-        using keyboard.Key
+        using Input.Key
         keyb.update()
         if keyb.isKeyPressed(Escape)
             break

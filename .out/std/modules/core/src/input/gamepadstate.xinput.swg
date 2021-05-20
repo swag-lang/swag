@@ -1,12 +1,12 @@
 #global if WINDOWS
 #global public
-#global namespace GamePad
+#global namespace Input
 using xinput, win32
 
-private var g_mapButtons: [@countof(Button)] Button = ?
+private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 #run
 {
-    using Button
+    using GamePadButton
     g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_A)] = A
     g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_B)] = B
     g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_X)] = X
@@ -40,12 +40,12 @@ func setVibration(padIndex: u32, left, right: f32) throw
     switch res
     {
     case ERROR_SUCCESS:                 return
-    case ERROR_DEVICE_NOT_CONNECTED:    throw Error.DeviceNotConnected
+    case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
     default:                            try win32.setError(res)
     }
 }
 
-impl State
+impl GamePadState
 {
     // Compute the current state of the given pad index
     func update(using self, padIndex: u32) throw
@@ -55,16 +55,16 @@ impl State
         switch res
         {
         case ERROR_SUCCESS:                 break
-        case ERROR_DEVICE_NOT_CONNECTED:    throw Error.DeviceNotConnected
+        case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
         default:                            try win32.setError(res)
         }
 
-        // Button pressed state
+        // GamePadButton pressed state
         loop i: 16'u16
             pressed[g_mapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
 
         // Move
-        using Button, state.Gamepad
+        using GamePadButton, state.Gamepad
         position[LeftStick].x = sThumbLX / 32767.0'f32
         position[LeftStick].y = sThumbLY / 32767.0'f32
         position[RightStick].x = sThumbRX / 32767.0'f32
@@ -74,7 +74,7 @@ impl State
 
         // Simulate pressed with,move
         #[Swag.inline]
-        func getToler(using self, btn: Button)->f32
+        func getToler(using self, btn: GamePadButton)->f32
         {
             const SmallToler = 0.7'f32
             const BigToler = 0.9'f32

@@ -143,7 +143,7 @@ func main()
     var vLines: Array's32
     var rand: random.Rng
     var builder: strconv.StringBuilder
-    var keyb: keyboard.Keyboard
+    var keyb: Input.Keyboard
 
     while !bGameOver
     {
@@ -153,7 +153,7 @@ func main()
 		bForceDown = (nSpeedCount == nSpeed)
 
         // Input ========================
-        using keyboard.Key
+        using Input.Key
         keyb.update()
         if keyb.isKeyPressed(Escape)
             break
