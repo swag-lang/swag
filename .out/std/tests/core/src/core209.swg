@@ -4,16 +4,16 @@ using core
 var G = 0's64
 const N = 100
 
-func entry(th: thread.Thread)
+func entry(th: Threading.Thread)
 {
     var x: String = "this is a very long string this is a very long string"
 }
 
 #test
 {
-    var th: [N] thread.Thread
+    var th: [N] Threading.Thread
 
     visit *t: th catch t.init(&entry)
     visit *t: th catch t.start()
-    loop i: N thread.wait(&th[i])
+    loop i: N Threading.wait(&th[i])
 }

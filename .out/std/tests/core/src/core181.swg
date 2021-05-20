@@ -1,6 +1,6 @@
 ﻿
-using core.thread
-alias createThread = thread.Thread.init
+using core.Threading
+alias createThread = Threading.Thread.init
 
 var G = 0's64
 const N = 5

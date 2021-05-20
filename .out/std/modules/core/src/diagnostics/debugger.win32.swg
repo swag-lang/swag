@@ -25,5 +25,5 @@ func attach() throw
     proc := try Env.startProcess("vsjitdebugger.exe", arguments.toString())
     CloseHandle(proc)
 
-    while !IsDebuggerPresent() thread.sleep(100)
+    while !IsDebuggerPresent() Threading.sleep(100)
 }

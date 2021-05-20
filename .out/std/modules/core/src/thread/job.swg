@@ -1,5 +1,5 @@
 #global namespace Jobs
-using thread, Swag
+using Threading, Swag
 
 #[Swag.enumflags]
 public enum JobState

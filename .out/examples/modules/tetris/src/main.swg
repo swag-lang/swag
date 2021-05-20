@@ -148,7 +148,7 @@ func main()
     while !bGameOver
     {
 		// Timing =======================
-        thread.sleep(50)
+        Threading.sleep(50)
         nSpeedCount += 1
 		bForceDown = (nSpeedCount == nSpeed)
 
@@ -257,7 +257,7 @@ func main()
 		{
 			// Display Frame (cheekily to draw lines)
 			wlen := WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
-			thread.sleep(400)
+			Threading.sleep(400)
 
 			visit v: vLines
             {

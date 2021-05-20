@@ -1,5 +1,5 @@
 #global public
-#global namespace thread
+#global namespace Threading
 
 alias ThreadHandle = const *void
 

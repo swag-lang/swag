@@ -6,7 +6,7 @@ const N = 3
 const ITER = 10000
 var mutex: Sync.Mutex
 
-func entry(th: thread.Thread)
+func entry(th: Threading.Thread)
 {
     mutex.lock()
     loop ITER G += 1
@@ -16,9 +16,9 @@ func entry(th: thread.Thread)
 //#[Swag.printbc]
 #test
 {
-    var th: [N] thread.Thread
+    var th: [N] Threading.Thread
     visit *t: th catch t.init(&entry)
     visit *t: th catch t.start()
-    thread.wait(&th[0], &th[1], &th[2])
+    Threading.wait(&th[0], &th[1], &th[2])
     @assert(G == N * ITER)
 }

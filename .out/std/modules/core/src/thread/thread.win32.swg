@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace thread
+#global namespace Threading
 using win32
 
 // Sleep the current thread for a given amount of milliseconds

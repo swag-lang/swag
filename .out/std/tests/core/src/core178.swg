@@ -1,14 +1,14 @@
 ﻿
 using core
 
-func entry(th: thread.Thread)
+func entry(th: Threading.Thread)
 {
 }
 
 //#[Swag.printbc]
 #test
 {
-    var th: thread.Thread
+    var th: Threading.Thread
     catch th.init(&entry)
     catch th.start()
     th.wait()

@@ -8,7 +8,7 @@ using core.Time
     tt := ts.totalSeconds()
     //@print(tt)
 
-    //thread.sleep(1000)
+    //Threading.sleep(1000)
 
     ts1 := TimeSpan.now()
     tt1 := ts1.totalSeconds() - tt
