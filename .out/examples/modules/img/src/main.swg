@@ -19,7 +19,7 @@ func dataPath()->String
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
-    return Path.combine(dataPath, "std/tests/image/datas")
+    return Path.combine(dataPath, "std/tests/pixel/datas")
 }
 
 func imagePath(name: string)->String
