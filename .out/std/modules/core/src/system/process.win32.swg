@@ -1,13 +1,13 @@
 #global if WINDOWS
 #global public
-#global namespace process
+#global namespace Env
 using win32, strconv
 
 // Exit the current process
 func exit(exitCode: u32) => ExitProcess(exitCode)
 
 // Starts a new process with arguments
-func start(info: StartInfo)->Process throw
+func startProcess(info: StartInfo)->Process throw
 {
     Debug.assert(info.fileName != null, "missing process filename")
 

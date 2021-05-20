@@ -22,7 +22,7 @@ func attach() throw
     builder.zeroTerminated()
     arguments := builder.moveToString()
 
-    proc := try process.start("vsjitdebugger.exe", arguments.toString())
+    proc := try Env.startProcess("vsjitdebugger.exe", arguments.toString())
     CloseHandle(proc)
 
     while !IsDebuggerPresent() thread.sleep(100)

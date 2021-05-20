@@ -1,5 +1,5 @@
 #global public
-#global namespace process
+#global namespace Env
 
 alias ProcessHandle = const *void
 
@@ -15,10 +15,10 @@ struct Process
 }
 
 // Starts a new process with arguments
-func start(fileName: string, arguments: string = null)->Process throw
+func startProcess(fileName: string, arguments: string = null)->Process throw
 {
     var info: StartInfo
     info.fileName = fileName
     info.arguments = arguments
-    return try start(info)
+    return try startProcess(info)
 }
