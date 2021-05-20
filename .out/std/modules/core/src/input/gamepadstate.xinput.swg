@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace Input
-using xinput, Win32
+using XInput, Win32
 
 private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 #run
