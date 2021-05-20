@@ -314,7 +314,7 @@ private
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
         f := @{imgDst, imgSrc, contrib: &contrib}
-        jobs.parallelFor(cast(u32) imgDst.width, &f)
+        Jobs.parallelFor(cast(u32) imgDst.width, &f)
         {
             params := cast(*@typeof(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
@@ -328,7 +328,7 @@ private
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
         f := @{imgDst, imgSrc, contrib: &contrib}
-        jobs.parallelFor(cast(u32) imgDst.height, &f)
+        Jobs.parallelFor(cast(u32) imgDst.height, &f)
         {
             params := cast(*@typeof(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)

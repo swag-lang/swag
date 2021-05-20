@@ -7,7 +7,7 @@ using core
 	var x: Array'u32
     x.resize(1)
 
-    jobs.parallelVisit(x.toSlice())
+    Jobs.parallelVisit(x.toSlice())
     {
         buffer[0] = 666
     }

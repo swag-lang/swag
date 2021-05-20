@@ -146,7 +146,7 @@ impl Image
         Debug.assert(stride > 0)
 
         p := @{self, userData}
-        jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
+        Jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
         {
             p := cast(*@typeof(p)) data
             #macro

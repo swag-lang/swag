@@ -17,7 +17,7 @@ protected func filePath(name: string)->String
 
 #init
 {
-    try jobs.setNumWorkers(4)
+    try Jobs.setNumWorkers(4)
 
     g_dbg.init()
     g_cxt = dref @getcontext()

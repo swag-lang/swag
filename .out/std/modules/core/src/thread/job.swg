@@ -1,4 +1,4 @@
-#global namespace jobs
+#global namespace Jobs
 using thread, Swag
 
 #[Swag.enumflags]

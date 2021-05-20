@@ -302,7 +302,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        jobs.setNumWorkers()
+        Jobs.setNumWorkers()
         loadImg()
 
         display()
