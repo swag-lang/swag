@@ -46,7 +46,7 @@ impl TweakFile
                 one = tokenize.eatCount(one, 1)
                 folderName := catch Parse.getIdentifier(one)
                 if @err
-                    throw format.toString("line %: invalid folder name", idx + 1)
+                    throw Format.toString("line %: invalid folder name", idx + 1)
 
                 visit *folder: folders
                 {
@@ -58,34 +58,34 @@ impl TweakFile
                 }
 
                 if !currentFolder
-                    throw format.toString("line %: unknown folder '%'", idx + 1, folderName)
+                    throw Format.toString("line %: unknown folder '%'", idx + 1, folderName)
                 continue
             }
 
             // Value
             if !currentFolder
-                throw format.toString("line %: value is not associated with a folder", idx + 1)
+                throw Format.toString("line %: value is not associated with a folder", idx + 1)
             one = tokenize.eatSpaces(one)
             id := catch Parse.getIdentifier(one)
             if @err
-                throw format.toString("line %: invalid value name", idx + 1)
+                throw Format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
             field := Reflection.getField(currentFolder.type, id)
-            if !field throw format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
+            if !field throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
             one = tokenize.eatCount(one, @countof(id))
 
             // Get value and poke it
             one = catch Parse.pokeValue(currentFolder.data + field.offset, field.pointedType, one)
             if @err
-                throw format.toString("line %: %", idx + 1, @err)
+                throw Format.toString("line %: %", idx + 1, @err)
 
             // Be sure there's nothing left
             if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
-                throw format.toString("line %: syntax error in value", idx + 1)
+                throw Format.toString("line %: syntax error in value", idx + 1)
             one = tokenize.eatSpaces(one)
             if @countof(one) and one[0] != "#"'u8
-                throw format.toString("line %: invalid characters after value", idx + 1)
+                throw Format.toString("line %: invalid characters after value", idx + 1)
         }
     }
 }

@@ -5,15 +5,15 @@ using core
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "%", false)
+    Format.append(&buf, "%", false)
     @assert(buf.toString() == "false")
 
     buf.clear()
-    format.append(&buf, "%", true)
+    Format.append(&buf, "%", true)
     @assert(buf.toString() == "true")
 
     buf.clear()
-    format.append(&buf, "%", "1"'rune)
+    Format.append(&buf, "%", "1"'rune)
     @assert(buf.toString() == "1")
 
     //format(&buf, "%", &buf)

@@ -1,10 +1,9 @@
-
-using core, core.format
+using core, core.Format
 
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "titi%%")
+    Format.append(&buf, "titi%%")
     str := buf.toString()
     //@print(cast(string) str)
     @assert(str == "titi%")
@@ -13,7 +12,7 @@ using core, core.format
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "titi %", 666)
+    Format.append(&buf, "titi %", 666)
     str := buf.toString()
     //@print(cast(string) str)
     @assert(str == "titi 666")

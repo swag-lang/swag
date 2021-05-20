@@ -3,7 +3,7 @@ using core
 
 func toto(v: String)
 {
-    res := format.toString("std119: %", v)
+    res := Format.toString("std119: %", v)
     @assert(res == "std119: yes this is a string")
     //Console.write("%", res)
 }

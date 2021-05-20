@@ -4,7 +4,7 @@ using core
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "value: %{5}", -3.1415)
+    Format.append(&buf, "value: %{5}", -3.1415)
     str := buf.toString()
     //@print(cast(string) str)
     @assert(str == "value: -3.14150")

@@ -104,7 +104,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = tokenize.eatSpaces(one)
             id := try getIdentifier(one)
             v := Reflection.getEnumValue(type, id)
-            if !v throw format.toString("unknown enum value '%'", id)
+            if !v throw Format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
                 dref cast(*string) patch = dref cast(const *string) v.value
@@ -116,7 +116,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
                 case 2:     dref cast(*u16) patch |= dref cast(const *u16) v.value
                 case 4:     dref cast(*u32) patch |= dref cast(const *u32) v.value
                 case 8:     dref cast(*u64) patch |= dref cast(const *u64) v.value
-                default:    throw format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+                default:    throw Format.toString("unsupported enum type '%'", enumType.rawType.flatName)
                 }
             }
 
@@ -214,7 +214,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         dref cast(*String) patch = val
 
     default:
-        throw format.toString("unsupported type '%'", type.flatName)
+        throw Format.toString("unsupported type '%'", type.flatName)
     }
 
     return tokenize.eatCount(one, cast(uint) eat)

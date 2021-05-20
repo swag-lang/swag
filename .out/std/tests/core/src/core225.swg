@@ -4,5 +4,5 @@ using core
 
 #test
 {
-    str := format.toString("%", 1, 2)
+    str := Format.toString("%", 1, 2)
 }

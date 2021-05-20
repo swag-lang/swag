@@ -4,7 +4,7 @@ using core
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "toto")
+    Format.append(&buf, "toto")
 
-    str := format.toString("%", 1)
+    str := Format.toString("%", 1)
 }

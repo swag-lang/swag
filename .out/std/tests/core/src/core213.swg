@@ -6,7 +6,7 @@ func mk(name: string, type: typeinfo)
 {
     #ast
     {
-        var str: String = format.toString("var %: % = 444", name, type.name)
+        var str: String = Format.toString("var %: % = 444", name, type.name)
         return str.toString()
     }
 }

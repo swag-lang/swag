@@ -82,13 +82,13 @@ const tests: [] Test = @[
         switch c.base
         {
         case 2:
-            value := format.toString("%{B}", c.in)
+            value := Format.toString("%{B}", c.in)
             @assert(value == c.out)
         case 10:
-            value := format.toString("%", c.in)
+            value := Format.toString("%", c.in)
             @assert(value == c.out)
         case 16:
-            value := format.toString("%{X}", c.in)
+            value := Format.toString("%{X}", c.in)
             @assert(value == c.out)
         }
     }

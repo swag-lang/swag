@@ -4,7 +4,7 @@ using core
 #test
 {
     var buf: ConcatBuffer
-    format.append(&buf, "toto")
+    Format.append(&buf, "toto")
     str := buf.toString()
     @assert(str == "toto")
     //@print(cast(string) str)

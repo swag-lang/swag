@@ -78,7 +78,7 @@ public func printf(message: string, params: ...)
     #checkif
     {
         if !@isconstexpr(message) or !@isconstexpr(params) return true
-        format.checkFormat(#function, message, params)
+        Format.checkFormat(#function, message, params)
         return true
     }
 {
@@ -87,7 +87,7 @@ public func printf(message: string, params: ...)
 
     if @countof(params)
     {
-        str := format.toString(message, params)
+        str := Format.toString(message, params)
         len := cast(u32) @countof(str)
         catch WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
     }

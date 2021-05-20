@@ -21,10 +21,10 @@ impl IConvert for TOTO
     var buf: ConcatBuffer
 
     var x: TOTO
-    format.append(&buf, "%{ABC}toto", x)
+    Format.append(&buf, "%{ABC}toto", x)
     @assert(cast(string) buf.toString() == "toto")
 
     buf.clear()
-    format.append(&buf, "{ABC}toto")
+    Format.append(&buf, "{ABC}toto")
     @assert(cast(string) buf.toString() == "{ABC}toto")
 }

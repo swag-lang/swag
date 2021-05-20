@@ -53,7 +53,7 @@ impl StringBuilder
     // Append a formatted string
     func appendFormat(using self, fmt: string, values: ...)
     {
-        format.append(&buffer, fmt, values);
+        Format.append(&buffer, fmt, values);
     }
 
     // Force a ending 0

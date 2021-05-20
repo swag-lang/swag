@@ -9,7 +9,7 @@ using core
     visit *p, cpt: x
     {
         v := @index
-        str := format.toString("%", @index)
+        str := Format.toString("%", @index)
         @assert(str == "0" or str == "1")
     }
 }
