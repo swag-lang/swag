@@ -1,8 +1,8 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using Core, Win32, Ogl, Gdi32, Paint, mthx
-using Core.Drawing
+using Core, Win32, Ogl, Gdi32, Paint
+using Core.Drawing, Core.Math
 
 var hDC: HDC
 const W = 1024

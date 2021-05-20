@@ -1,7 +1,6 @@
 #dependencies
 {
     #import "core"
-    #import "mthx"
 
     #run
     {

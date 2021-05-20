@@ -1,4 +1,4 @@
-using Core, Ogl, mthx
+using Core, Ogl, Core.Math
 
 public struct RenderOgl
 {

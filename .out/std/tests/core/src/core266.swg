@@ -1,4 +1,4 @@
-using mthx
+using Core.Math
 
 //#[Swag.printbc]
 #test

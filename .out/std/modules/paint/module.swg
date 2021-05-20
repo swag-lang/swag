@@ -3,7 +3,6 @@
     #import "core"
     #import "image"
     #import "ogl"
-    #import "mthx"
 
     #run
     {

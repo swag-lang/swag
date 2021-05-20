@@ -2,5 +2,5 @@
 
 struct Vector3
 {
-    x, y, z: Float
+    x, y, z: f32
 }

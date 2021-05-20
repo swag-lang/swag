@@ -3,7 +3,7 @@ using Core.Math
 
 struct Vector2
 {
-    x, y: Float
+    x, y: f32
 }
 
 impl Vector2
@@ -16,7 +16,7 @@ impl Vector2
     const UnitNY:   Vector2{0, -1}
 
     #[Swag.complete]
-    func opAffect(using self, value: Float)
+    func opAffect(using self, value: f32)
     {
         x = value
         y = value
@@ -35,7 +35,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opAssign(using self, value: Float)
+    func(op: string) opAssign(using self, value: f32)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -51,7 +51,7 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, value: Float)->Self
+    func(op: string) opBinary(using self, value: f32)->Self
     {
         #if   op == "+" return Vector2{x + value, y + value}
         #elif op == "-" return Vector2{x - value, y - value}
@@ -69,7 +69,7 @@ impl Vector2
     func dot(using self, other: Self) => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector. 'axis' will give the sign
-    func cross(using self, axis: Float)->Vector2
+    func cross(using self, axis: f32)->Vector2
     {
         return @{y * axis, -x * axis}
     }
@@ -95,13 +95,13 @@ impl Vector2
     }
 
     // Returns true if this Vector2 is null with an epsilon
-    func isZeroEpsilon(using self, eps = cast(Float) ConstF64.Epsilon)->bool
+    func isZeroEpsilon(using self, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns the distance between two vectors
-    func distance(using self, to: Self)->Float
+    func distance(using self, to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -109,7 +109,7 @@ impl Vector2
     }
 
     // Returns the square distance between two vectors
-    func distanceSquared(using self, to: Self)->Float
+    func distanceSquared(using self, to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
