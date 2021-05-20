@@ -3,18 +3,20 @@ using Core, Core.Math, Core.Drawing
 
 impl Painter
 {
-    private func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)
+    private func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
     {
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
         cmd.params.drawTriangles.count = 3
 
         ptr := vertexBuffer.emplaceAddress(3)
+        var result: retval = ptr
         ptr.pos = p1; ptr.color = color
         ptr += 1
         ptr.pos = p2; ptr.color = color
         ptr += 1
         ptr.pos = p3; ptr.color = color
+        return result
     }
 
     private func drawCapTriangle(using self, p, d: Vector2, sens: f32, pen: Pen)
@@ -23,7 +25,7 @@ impl Painter
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
         v2 := Vector2{p.x + n.x, p.y + n.y}
-        pushTriangle(v0, v1, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v2, pen.color)
     }
 
     private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)
@@ -41,8 +43,8 @@ impl Painter
             return
         size2 := pen.size * 0.5
 
-        var vPrevN1:    Vector2
-        var vN1:        Vector2
+        var vPrevN1, vN1: Vector2
+        var prim1, prim2: *VertexLayout
 
         vPrev, vPrevNc       := path.startPoint
         beginLine, firstLine := true
@@ -82,8 +84,8 @@ impl Painter
             v1 := vNew - vN1
             v3 := vPrev + vN1
             v2 := vNew + vN1
-            pushTriangle(v0, v1, v3, pen.color)
-            pushTriangle(v1, v3, v2, pen.color)
+            prim1 = pushTriangle(v0, v1, v3, pen.color)
+            prim2 = pushTriangle(v1, v3, v2, pen.color)
 
             vPrevN1 = vN1
             vPrev = vNew
