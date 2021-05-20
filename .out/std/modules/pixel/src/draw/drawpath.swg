@@ -34,19 +34,20 @@ impl Painter
         }
     }
 
-    func drawPath(using self, pth: LinePath, pen: Pen)
+    // Draw the line path with the given 'pen'
+    func drawPath(using self, path: LinePath, pen: Pen)
     {
-        if pen.size == 0
+        if pen.size == 0 or path.elements.count == 0
             return
         size2 := pen.size * 0.5
 
         var vPrevN1:    Vector2
         var vN1:        Vector2
 
-        vPrev, vPrevNc       := pth.startPoint
+        vPrev, vPrevNc       := path.startPoint
         beginLine, firstLine := true
 
-        visit elem: pth.elements
+        visit elem: path.elements
         {
             if elem.type == .MoveTo
             {
@@ -65,7 +66,7 @@ impl Painter
 
             // Begin line cap
             flatBegin := false
-            if !pth.isClosed and firstLine
+            if !path.isClosed and firstLine
             {
                 if (pen.beginCapStyle == CapStyle.None)
                     flatBegin = true
@@ -92,13 +93,13 @@ impl Painter
 
         // End line cap
         flatBegin := false
-        if !pth.isClosed and !firstLine and !beginLine
+        if !path.isClosed and !firstLine and !beginLine
         {
             if pen.endCapStyle == CapStyle.None
                 flatBegin = true
             else
             {
-                vPrev = pth.endPoint
+                vPrev = path.endPoint
                 drawCap(pen.endCapStyle, vPrev, vN1, -1.0, pen)
                 flatBegin = false
             }
