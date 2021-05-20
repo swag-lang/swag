@@ -58,6 +58,7 @@ impl Painter
         drawingBegin = false
     }
 
+    // Clear the rendering surface
     func clear(using self, color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
