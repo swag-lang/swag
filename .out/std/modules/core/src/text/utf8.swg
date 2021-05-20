@@ -1,7 +1,7 @@
-// https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
+// https://github.com/golang/go/blob/master/src/unicode/utf8/Utf8.go
 
 #global public
-#global namespace utf8
+#global namespace Utf8
 
 const RuneError     = 0xFFFD'rune
 const MaxRunes      = 0x10FFFF'rune
@@ -465,7 +465,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := utf8.decodeRune(@mkslice(scan, remain))
+        res := Utf8.decodeRune(@mkslice(scan, remain))
         if !res.eat
             break
         if Slice.contains(what, res.c)
@@ -594,7 +594,7 @@ func firstRune(src: const [..] u8)->rune
     dataof := @dataof(src)
     if Latin1.isAscii(dataof[0])
         return cast(rune) dataof[0]
-    (c, ?) := utf8.decodeRune(src)
+    (c, ?) := Utf8.decodeRune(src)
     return c
 }
 
@@ -607,7 +607,7 @@ func lastRune(src: const [..] u8)->rune
     dataof := @dataof(src)
     if Latin1.isAscii(dataof[countof - 1])
         return cast(rune) dataof[countof - 1]
-    (c, ?) := utf8.decodeLastRune(src)
+    (c, ?) := Utf8.decodeLastRune(src)
     return c
 }
 

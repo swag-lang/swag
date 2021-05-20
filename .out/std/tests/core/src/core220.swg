@@ -10,6 +10,6 @@ using core
     @assert(v == "this is a string")
     v.replace("this", "it")
     @assert(v == "it is a string")
-    v.replace("IT IS", "IT IS", utf8.ComparisonType.Latin1NoCase)
+    v.replace("IT IS", "IT IS", Utf8.ComparisonType.Latin1NoCase)
     @assert(v == "IT IS a string")
 }

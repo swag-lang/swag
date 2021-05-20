@@ -1,5 +1,5 @@
 
-using core, utf8
+using core, Utf8
 
 //#[Swag.printbc]
 #test
@@ -8,8 +8,8 @@ using core, utf8
     @assert(str.indexOf("A"'rune) == 0)
     @assert(str.indexOf("⻨"'rune) == 1)
     @assert(str.indexOf("C"'rune) == 4)
-    @assert(utf8.indexOf(str, "D"'rune) == Swag.UInt.Max)
+    @assert(Utf8.indexOf(str, "D"'rune) == Swag.UInt.Max)
 
-    idx := utf8.indexOf(str, "A"'rune)
+    idx := Utf8.indexOf(str, "A"'rune)
     @assert(idx == 0)
 }

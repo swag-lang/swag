@@ -81,7 +81,7 @@ func split(src: string, separators: const [..] rune) -> Array'string
         loop
         {
             sl := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeRune(sl)
+            (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or !Slice.contains(separators, c)
                 break
             startbyteIdx += eat
@@ -96,7 +96,7 @@ func split(src: string, separators: const [..] rune) -> Array'string
         loop
         {
             sl := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeRune(sl)
+            (c, eat) = Utf8.decodeRune(sl)
             if eat == 0 or Slice.contains(separators, c)
                 break
             endbyteIdx += eat

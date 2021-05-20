@@ -243,7 +243,7 @@ func getRune(str: string) -> {value: rune, eat: u32} throw
 {
     countof := @countof(str)
     if !countof throw "invalid"
-    return utf8.decodeRune(str)
+    return Utf8.decodeRune(str)
 }
 
 // Parse an identifier name in the sens of swag (ascii)

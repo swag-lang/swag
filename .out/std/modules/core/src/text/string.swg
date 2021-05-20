@@ -77,7 +77,7 @@ impl String
 
     func opCmp(using const self, other: Self)->s32
     {
-        return utf8.compare(toString(), other.toString(), utf8.ComparisonType.Latin1)
+        return Utf8.compare(toString(), other.toString(), Utf8.ComparisonType.Latin1)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -187,7 +187,7 @@ impl String
         loop
         {
             sl := @mkslice(scan, count)
-            var (c, eat) = utf8.decodeRune(sl)
+            var (c, eat) = Utf8.decodeRune(sl)
             if eat == 0
                 break
 
@@ -243,7 +243,7 @@ impl String
     }
 
     // Replace all occurences of 'what' with 'by'
-    func replace(using self, what, by: string, comparisonType = utf8.ComparisonType.Latin1)
+    func replace(using self, what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         whatLength := @countof(what)
         if !whatLength or whatLength > length
@@ -251,7 +251,7 @@ impl String
         byLength := @countof(by)
         growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
 
-        idx := utf8.indexOf(toString(), what, 0, comparisonType)
+        idx := Utf8.indexOf(toString(), what, 0, comparisonType)
         while idx != Swag.UInt.Max
         {
             grow(length + growSize)
@@ -261,7 +261,7 @@ impl String
             length += byLength
             idx += byLength
             if idx == length break
-            idx = utf8.indexOf(toString(), what, idx, comparisonType)
+            idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
     }
 
@@ -291,9 +291,9 @@ impl String
     // Append a rune to the String
     func append(using self, value: rune)
     {
-        Debug.assert(utf8.isValidRune(value))
+        Debug.assert(Utf8.isValidRune(value))
         var tmp: [4] u8
-        eat := utf8.encodeRune(tmp, value)
+        eat := Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]
@@ -394,7 +394,7 @@ impl String
         loop
         {
             sl := @mkslice(ptr, length)
-            (c, eat) := utf8.decodeRune(sl)
+            (c, eat) := Utf8.decodeRune(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat
@@ -414,7 +414,7 @@ impl String
         loop
         {
             sl := @mkslice(buffer, length)
-            (c, eat) := utf8.decodeLastRune(sl)
+            (c, eat) := Utf8.decodeLastRune(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat
@@ -472,7 +472,7 @@ impl String
             uni32 := unicode.fromUtf8(toString())
             unicode.makeUpper(uni32.toSlice())
             reserve(uni32.count * 4)
-            length = utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
+            length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
@@ -491,7 +491,7 @@ impl String
             uni32 := unicode.fromUtf8(toString())
             unicode.makeLower(uni32.toSlice())
             reserve(uni32.count * 4)
-            length = utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
+            length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 

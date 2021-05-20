@@ -5,7 +5,7 @@ using core
 {
     res := "A假CD"
     cpt := 0'u32
-    utf8.visitRunes(|c, idx| res)
+    Utf8.visitRunes(|c, idx| res)
     {
         switch(idx)
         {

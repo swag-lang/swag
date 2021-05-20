@@ -1,5 +1,5 @@
 
-using core, utf8
+using core, Utf8
 
 //#[Swag.printbc]
 #test

@@ -8,7 +8,7 @@ func Visit(str: const [..] u8, user: code)
 	loop
 	{
         slice := @mkslice(ptr, cast(uint) count)
-		(c, eat) := core.utf8.decodeRune(slice)
+		(c, eat) := core.Utf8.decodeRune(slice)
 		if !eat
 			break
 		#macro

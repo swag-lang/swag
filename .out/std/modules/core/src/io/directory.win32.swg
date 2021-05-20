@@ -44,7 +44,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
 
         loop
         {
-            filename := utf8.fromUtf16(@mkslice(dataof, utf16.lengthZeroTerminated(dataof)))
+            filename := Utf8.fromUtf16(@mkslice(dataof, utf16.lengthZeroTerminated(dataof)))
 
             // Filter by file/folder
             mustAdd := false
@@ -107,7 +107,7 @@ func getCurrent()->String throw
     arr16.reserve(cast(uint) length + 1)
     arr16.count = try GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
-    result = utf8.fromUtf16(arr16.toSlice())
+    result = Utf8.fromUtf16(arr16.toSlice())
     Path.normalize(&result)
     return result
 }

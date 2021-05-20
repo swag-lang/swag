@@ -17,7 +17,7 @@ using core
     @assert(Path.getFileNameWithoutExtension(loc.fileName) == "core160")
 
     var ext: String = Path.getExtension(loc.fileName)
-    @assert(utf8.compare(ext.toString(), ".SWG", utf8.ComparisonType.Latin1NoCase) == 0)
+    @assert(Utf8.compare(ext.toString(), ".SWG", Utf8.ComparisonType.Latin1NoCase) == 0)
 
     res := catch File.readAllText(loc.fileName)
     @assert(res.length > 0)

@@ -1,5 +1,5 @@
 ﻿
-using core.utf8
+using core.Utf8
 
 const invalidSequenceTests: [] string = @[
 	"\xed\xa0\x80\x80", // surrogate min

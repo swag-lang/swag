@@ -433,6 +433,6 @@ func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string)
 func convertRune(buf: *ConcatBuffer, value: rune, strFormat: string)
 {
     var arr: [4] u8
-    var count = utf8.encodeRune(arr, value)
+    var count = Utf8.encodeRune(arr, value)
     buf.addBytes(@mkslice(&arr[0], cast(uint) count))
 }
