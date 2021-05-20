@@ -1,10 +1,10 @@
 #global if WINDOWS
 #global public
-#global namespace mouse
+#global namespace Input
 using win32, math
 
 // Returns the current mouse position
-func getPos()->Point
+func getMousePos()->Point
 {
     var pt: POINT = ?
     GetCursorPos(&pt)
@@ -12,13 +12,13 @@ func getPos()->Point
 }
 
 // Set the current mouse position
-func setPos(x, y: s32)
+func setMousePos(x, y: s32)
 {
     SetCursorPos(x, y)
 }
 
 // Shoud or hide the mouse cursor
-func showCursor(show: bool)
+func showMouseCursor(show: bool)
 {
     ShowCursor(cast(BOOL) show)
 }

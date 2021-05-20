@@ -1,12 +1,11 @@
-
-using core.mouse
+using core.Input
 
 #test
 {
     var k: Mouse
 
     k.clear()
-    @assert(!k.isButtonPressed(Button.Middle))
+    @assert(!k.isButtonPressed(MouseButton.Middle))
 
     //loop
     while false

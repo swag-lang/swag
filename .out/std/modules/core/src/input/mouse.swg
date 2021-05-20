@@ -1,12 +1,12 @@
 #global public
-#global namespace mouse
+#global namespace Input
 using math
 
 // Allows reading position and button click information from mouse
 struct Mouse
 {
-    previousState:	State
-    currentState:	State
+    previousState:	MouseState
+    currentState:	MouseState
 }
 
 impl Mouse
@@ -26,25 +26,25 @@ impl Mouse
     }
 
     // Determines whether the specified mouse button is pressed
-    func isButtonPressed(using self, button: Button)->bool
+    func isButtonPressed(using self, button: MouseButton)->bool
     {
         return currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been pressed
-    func isButtonJustPressed(using self, button: Button)->bool
+    func isButtonJustPressed(using self, button: MouseButton)->bool
     {
         return currentState.pressed[button] and !previousState.pressed[button]
     }
 
     // Determines whether the specified mouse button is released
-    func isButtonReleased(using self, button: Button)->bool
+    func isButtonReleased(using self, button: MouseButton)->bool
     {
         return !currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been released
-    func isButtonJustReleased(using self, button: Button)->bool
+    func isButtonJustReleased(using self, button: MouseButton)->bool
     {
         return !currentState.pressed[button] and previousState.pressed[button]
     }

@@ -1,43 +1,43 @@
 #global public
-#global namespace mouse
+#global namespace Input
 using math
 
 // Represents one mouse state
-struct State
+struct MouseState
 {
     // Whether each button is pressed or not
-    pressed:    [@countof(Button)] bool
+    pressed:    [@countof(MouseButton)] bool
     // Mouse position, in screen coordinates
     position:   Point
 }
 
 // Represents a mouse state with cursor position and button press information
-impl State
+impl MouseState
 {
     // Compute the actual state of the mouse
     func update(using self)
     {
-        using Button
-        pressed[Left] = isButtonPressed(Left)
-        pressed[Middle] = isButtonPressed(Middle)
-        pressed[Right] = isButtonPressed(Right)
-        pressed[XButton1] = isButtonPressed(XButton1)
-        pressed[XButton2] = isButtonPressed(XButton2)
-        position = getPos()
+        using MouseButton
+        pressed[Left] = isMouseButtonPressed(Left)
+        pressed[Middle] = isMouseButtonPressed(Middle)
+        pressed[Right] = isMouseButtonPressed(Right)
+        pressed[XButton1] = isMouseButtonPressed(XButton1)
+        pressed[XButton2] = isMouseButtonPressed(XButton2)
+        position = getMousePos()
     }
 
     // Reset the state to its default value
     func clear(using self)
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
-        position = getPos()
+        position = getMousePos()
     }
 }
 
 // Determins if one given mouse button is pressed or not
-func isButtonPressed(button: Button)->bool
+func isMouseButtonPressed(button: MouseButton)->bool
 {
-    using Button
+    using MouseButton
     switch button
     {
     case Left:		return Input.isKeyPressed(Input.Key.LButton)

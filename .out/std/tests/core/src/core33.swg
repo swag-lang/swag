@@ -2,10 +2,10 @@
 
 #test
 {
-	using core.mouse, core.Input
+	using core.Input
 	while !isKeyPressed(Key.Space)
     {
-        pt := getPos()
+        pt := getMousePos()
         //@print(cast(s64) pt.item0)
         //@print("\n")
         break
