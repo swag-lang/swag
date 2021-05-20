@@ -98,7 +98,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
         c := str[1]|32
         if c == "x"'u8
         {
-            one := tokenize.eatCount(str, 2)
+            one := Tokenize.eatCount(str, 2)
             (result.value, result.eat) = try getX64(one)
             result.eat += 2
             return result
@@ -106,7 +106,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
         if c == "b"'u8
         {
-            one := tokenize.eatCount(str, 2)
+            one := Tokenize.eatCount(str, 2)
             (result.value, result.eat) = try getB64(one)
             result.eat += 2
             return result
@@ -226,7 +226,7 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    sub := try tokenize.getToSpace(str)
+    sub := try Tokenize.getToSpace(str)
     switch sub
     {
     case "1", "true", "TRUE", "True":       result.value = true

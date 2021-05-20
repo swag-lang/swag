@@ -1,4 +1,4 @@
-using core, Utf8, tokenize
+using core, Utf8, Tokenize
 
 var lines:      Array'String
 var toProcess:  Array'String

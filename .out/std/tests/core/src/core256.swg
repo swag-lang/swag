@@ -3,7 +3,7 @@ using core
 #test
 {
     const STR = "A\nBB\nCCC\n"
-    arr := tokenize.splitLines(STR)
+    arr := Tokenize.splitLines(STR)
     //Console.print(arr)
     @assert(arr.count == 3)
     @assert(arr[0] == "A")

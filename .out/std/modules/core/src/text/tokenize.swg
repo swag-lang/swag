@@ -1,5 +1,5 @@
 #global public
-#global namespace tokenize
+#global namespace Tokenize
 
 // Eat 'count' bytes, and returns the remaining string
 func eatCount(str: string, count: uint)->string

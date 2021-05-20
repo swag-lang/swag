@@ -57,7 +57,7 @@ struct Test2
             coucou9     StrGreen
     "@
 
-    arr := tokenize.splitLines(BUF)
+    arr := Tokenize.splitLines(BUF)
     assume tw.parse(arr)
     @assert(t1.coucous32 == -666)
     @assert(t1.coucouu64 == 0xFF)

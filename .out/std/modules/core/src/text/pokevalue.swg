@@ -58,7 +58,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 {
     patch := cast(*u8) addr
-    one := tokenize.eatSpaces(buf)
+    one := Tokenize.eatSpaces(buf)
 
     // Array
     if Reflection.isStructOfName(type, "Array")
@@ -69,7 +69,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         {
             addrVal := roomInArray(addr, structType, valueType)
             one = try pokeValue(addrVal, valueType, one)
-            one = tokenize.eatSpaces(one)
+            one = Tokenize.eatSpaces(one)
         }
 
         return one
@@ -85,7 +85,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         {
             if cpt == arrayType.totalCount throw "too many values"
             one = try pokeValue(addrVal, arrayType.finalType, one)
-            one = tokenize.eatSpaces(one)
+            one = Tokenize.eatSpaces(one)
             addrVal += arrayType.finalType.sizeof
             cpt += 1
         }
@@ -101,7 +101,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 
         loop
         {
-            one = tokenize.eatSpaces(one)
+            one = Tokenize.eatSpaces(one)
             id := try getIdentifier(one)
             v := Reflection.getEnumValue(type, id)
             if !v throw Format.toString("unknown enum value '%'", id)
@@ -120,20 +120,20 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
                 }
             }
 
-            one = tokenize.eatCount(one, @countof(id))
+            one = Tokenize.eatCount(one, @countof(id))
             if !enumFlags break
 
-            one = tokenize.eatSpaces(one)
+            one = Tokenize.eatSpaces(one)
             if !@countof(one) break
             if one[0] == "#"'u8 break
 
             if one[0] != "|"'u8
                 throw "invalid enum flags format"
-            one = tokenize.eatCount(one, 1)
+            one = Tokenize.eatCount(one, 1)
         }
 
         eat := cast(u32) cast(int) (@dataof(one) - @dataof(buf))
-        one = tokenize.eatCount(buf, cast(uint) eat)
+        one = Tokenize.eatCount(buf, cast(uint) eat)
         return one
     }
 
@@ -217,5 +217,5 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         throw Format.toString("unsupported type '%'", type.flatName)
     }
 
-    return tokenize.eatCount(one, cast(uint) eat)
+    return Tokenize.eatCount(one, cast(uint) eat)
 }
