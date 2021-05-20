@@ -1,5 +1,5 @@
 #global public
-using Core, mthx, ogl, Core.Drawing
+using Core, mthx, Ogl, Core.Drawing
 
 struct VertexLayout
 {

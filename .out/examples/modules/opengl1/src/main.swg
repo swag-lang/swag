@@ -1,5 +1,5 @@
 #global if #os == "windows"
-using Core, Win32, ogl, Gdi32
+using Core, Win32, Ogl, Gdi32
 
 var hDC:    HDC
 var frame:  Time.FrameTiming
