@@ -2964,6 +2964,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
+        // Priority to not a namespace (??)
+        if (matches[i]->symbolOverload->symbol->kind == SymbolKind::Namespace)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
+                {
+                    matches[i]->remove = true;
+                    break;
+                }
+            }
+        }
+
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
         if (!matches[i]->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
