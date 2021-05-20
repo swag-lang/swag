@@ -7,7 +7,7 @@ using core
         var x: Array's32 = @[1,2,3,4]
 
         var buf: ConcatBuffer
-        strconv.convertAny(&buf, x, null)
+        StrConv.convertAny(&buf, x, null)
 
         str := buf.toString()
         //Console.print("%\n", str)

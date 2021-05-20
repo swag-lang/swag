@@ -1,6 +1,6 @@
 // https://github.com/golang/go/blob/master/src/strconv/ftoa.go
 
-#global namespace strconv
+#global namespace StrConv
 #global private
 #global #[Swag.safety("overflow", false)]
 using Globalization

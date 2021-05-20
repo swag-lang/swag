@@ -142,7 +142,7 @@ func main()
 
     var vLines: Array's32
     var rand: Random.Rng
-    var builder: strconv.StringBuilder
+    var builder: StrConv.StringBuilder
     var keyb: Input.Keyboard
 
     while !bGameOver

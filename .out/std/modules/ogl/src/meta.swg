@@ -1,4 +1,4 @@
-using core, Swag, strconv
+using core, Swag, StrConv
 
 #[attributeUsage(AttributeUsage.Function)]
 attr extension()

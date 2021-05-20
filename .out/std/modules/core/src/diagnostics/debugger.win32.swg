@@ -16,7 +16,7 @@ func log(msg: string)   => OutputDebugStringA(cast(const *u8) msg)
 // If it works, it will open a dialog box to pickup a visual studio instance
 func attach() throw
 {
-    var builder: strconv.StringBuilder
+    var builder: StrConv.StringBuilder
     builder.appendString("-p ")
     builder.appendAny(GetCurrentProcessId())
     builder.zeroTerminated()

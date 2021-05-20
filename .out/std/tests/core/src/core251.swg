@@ -1,4 +1,4 @@
-using core, core.strconv
+using core, core.StrConv
 
 #test
 {

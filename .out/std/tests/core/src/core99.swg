@@ -3,7 +3,7 @@ using core
 
 #test
 {
-    using core, core.strconv
+    using core, core.StrConv
     var buf: ConcatBuffer
 
     convertInt(&buf, 666's32, "X08")

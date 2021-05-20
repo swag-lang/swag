@@ -45,7 +45,7 @@ func print(params: ...)
 {
     var buf: ConcatBuffer
     visit v: params
-        strconv.convertAny(&buf, v, null)
+        StrConv.convertAny(&buf, v, null)
     printf(buf.toString())
 }
 

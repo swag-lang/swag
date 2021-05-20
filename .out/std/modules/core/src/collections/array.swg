@@ -429,9 +429,9 @@ impl Array
     }
 }
 
-impl strconv.IConvert for Array
+impl StrConv.IConvert for Array
 {
-    func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
+    func convert(using self, buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
 
@@ -442,7 +442,7 @@ impl strconv.IConvert for Array
             if !first buf.addBytes(",")
             first = false
             v := @mkany(bufArr, T)
-            strconv.convertAny(buf, v, strFormat)
+            StrConv.convertAny(buf, v, strFormat)
             bufArr += 1
         }
 

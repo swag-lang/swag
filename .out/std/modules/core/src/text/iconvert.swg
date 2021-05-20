@@ -1,6 +1,6 @@
 #global public
 
-namespace strconv
+namespace StrConv
 {
     interface IConvert
     {
@@ -8,9 +8,9 @@ namespace strconv
     }
 }
 
-impl strconv.IConvert for String
+impl StrConv.IConvert for String
 {
-    func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
+    func convert(using self, buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(@mkslice(buffer, length))
     }

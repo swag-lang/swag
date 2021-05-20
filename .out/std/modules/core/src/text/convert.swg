@@ -1,5 +1,5 @@
 #global public
-#global namespace strconv
+#global namespace StrConv
 using Swag, Globalization
 
 struct ConvertFormat

@@ -23,7 +23,7 @@ interface ILogWriter
 struct Log
 {
     lock:       sync.Mutex
-    buf:        strconv.StringBuilder
+    buf:        StrConv.StringBuilder
     dt:         Time.DateTime
     writers:    Array'ILogWriter
     prefix:     string

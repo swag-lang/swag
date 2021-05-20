@@ -1,6 +1,6 @@
 // https://github.com/golang/go/blob/master/src/strconv/decimal.go
 
-#global namespace strconv
+#global namespace StrConv
 #global #[Swag.safety("overflow", false)]
 using Globalization
 
