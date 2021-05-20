@@ -4,7 +4,7 @@ using core
 var G = 0's64
 const N = 2
 const ITER = 10000
-var mutex: sync.Mutex
+var mutex: Sync.Mutex
 
 func entry(th: thread.Thread)
 {

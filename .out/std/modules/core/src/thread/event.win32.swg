@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace sync
+#global namespace Sync
 using win32
 
 #[Swag.nocopy]

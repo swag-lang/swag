@@ -22,7 +22,7 @@ interface ILogWriter
 
 struct Log
 {
-    lock:       sync.Mutex
+    lock:       Sync.Mutex
     buf:        StrConv.StringBuilder
     dt:         Time.DateTime
     writers:    Array'ILogWriter
@@ -82,42 +82,42 @@ impl Log
     // Set the logger prefix
     func setPrefix(using self, prefix: string)
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         self.prefix = #scopefct.prefix
     }
 
     // Set the logger prefix
     func getPrefix(using self)->string
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         return prefix
     }
 
     // Set the logger flags
     func setFlags(using self, flags: LogFlags)
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         self.flags = #scopefct.flags
     }
 
     // Set the logger prefix
     func getFlags(using self)->LogFlags
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         return flags
     }
 
     // Register a new writer interface
     func addWriter(using self, writer: ILogWriter)
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         writers.add(writer)
     }
 
     // Remove all writers
     func clearWriters(using self)
     {
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
         writers.clear()
     }
 
@@ -127,7 +127,7 @@ impl Log
         // Get this first, to have the time of the call, before the lock
         if flags & (.Date|.Time) dt = Time.DateTime.now()
 
-        sync.scopedLock(&lock)
+        Sync.scopedLock(&lock)
 
         // Build log string
         buf.clear()

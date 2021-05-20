@@ -22,7 +22,7 @@ enum Color
 }
 
 protected var g_silentMode:   s32
-protected var g_lock:         sync.Mutex
+protected var g_lock:         Sync.Mutex
 
 // Use to access console with multiple threads.
 // No console function is thread safe, so it is the user responsability

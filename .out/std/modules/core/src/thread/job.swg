@@ -39,9 +39,9 @@ var g_Allocator:            Swag.IAllocator
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
-var g_mutexPendingJobs:     sync.Mutex
-var g_eventPendingJobs:     sync.Event
-var g_eventDone:            sync.Event
+var g_mutexPendingJobs:     Sync.Mutex
+var g_eventPendingJobs:     Sync.Event
+var g_eventDone:            Sync.Event
 var g_totalJobs:            u32
 
 func workerEntry(th: Thread)
@@ -59,7 +59,7 @@ func runJob(job: *Job)
     job.lambda(job.data)
 
     // Done
-    sync.scopedLock(&g_mutexPendingJobs)
+    Sync.scopedLock(&g_mutexPendingJobs)
     setState(job, JobState.Done)
     Debug.assert(g_totalJobs != 0)
     g_totalJobs -= 1
@@ -77,7 +77,7 @@ func peekExecJob()->bool
 
 func getJobToExec()->*Job
 {
-    sync.scopedLock(&g_mutexPendingJobs)
+    Sync.scopedLock(&g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
         return null
     job := g_pendingJobs.popBack()
@@ -128,7 +128,7 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 // Schedule a job to execute
 public func scheduleJob(job: *Job)
 {
-    sync.scopedLock(&g_mutexPendingJobs)
+    Sync.scopedLock(&g_mutexPendingJobs)
     job.setState(JobState.InPending)
     g_totalJobs += 1
     g_eventDone.reset()
