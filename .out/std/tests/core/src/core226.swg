@@ -8,7 +8,7 @@ using core
     //Console.print("%\n", p)
 
     {
-        full := catch path.getAbsolute(p)
+        full := catch Path.getAbsolute(p)
         @assert(!@err)
         //Console.print("%\n", full)
     }
@@ -17,10 +17,10 @@ using core
         cur := catch Directory.getCurrent()
         @assert(!@err)
 
-        full := catch path.getAbsolute("..")
+        full := catch Path.getAbsolute("..")
         @assert(!@err)
 
-        //Console.print("%\n%\n", path.getDirectoryName(cur), @countof(full))
-        @assert(path.getDirectoryName(cur) == full)
+        //Console.print("%\n%\n", Path.getDirectoryName(cur), @countof(full))
+        @assert(Path.getDirectoryName(cur) == full)
     }
 }

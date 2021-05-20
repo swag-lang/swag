@@ -604,7 +604,7 @@ public impl IDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
     {
-        return path.getExtensionLowerCase(fileName) == ".png"
+        return Path.getExtensionLowerCase(fileName) == ".png"
     }
 
     func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw

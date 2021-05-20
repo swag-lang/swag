@@ -52,7 +52,7 @@ impl Log
 
         if flags & .ShortFileName
         {
-            buf.appendString(path.getFileName(loc.fileName))
+            buf.appendString(Path.getFileName(loc.fileName))
             buf.appendString(flags & (.Line|.FullLoc) ? ":" : " ")
         }
         else if flags & .LongFileName

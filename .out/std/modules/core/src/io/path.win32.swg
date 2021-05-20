@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace path
+#global namespace Path
 using win32
 
 // Returns true if the given path name is valid

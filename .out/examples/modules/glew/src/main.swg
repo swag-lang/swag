@@ -117,8 +117,8 @@ func swapParams(what: string)->String
     Console.print("arg: '%'\n", fctExtension)
 
     ///////////////////
-    curPath := path.getDirectoryName(#location.fileName)
-    glewPath := path.combine(curPath, "glew.h")
+    curPath := Path.getDirectoryName(#location.fileName)
+    glewPath := Path.combine(curPath, "glew.h")
     lines = catch File.readAllLines(glewPath)
     if @err Console.fatal("error: cannot read '%' (%)\n", glewPath, @err)
 

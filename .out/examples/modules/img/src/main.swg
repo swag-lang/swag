@@ -13,17 +13,17 @@ const H = 1024
 
 func dataPath()->String
 {
-    dataPath := path.getDirectoryName(#location.fileName)
-    dataPath = path.getDirectoryName(dataPath)
-    dataPath = path.getDirectoryName(dataPath)
-    dataPath = path.getDirectoryName(dataPath)
-    dataPath = path.getDirectoryName(dataPath)
-    return path.combine(dataPath, "std/tests/image/datas")
+    dataPath := Path.getDirectoryName(#location.fileName)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    return Path.combine(dataPath, "std/tests/image/datas")
 }
 
 func imagePath(name: string)->String
 {
-    return path.combine(dataPath(), name)
+    return Path.combine(dataPath(), name)
 }
 
 func display()

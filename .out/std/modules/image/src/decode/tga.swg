@@ -94,7 +94,7 @@ public impl IDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
     {
-        return path.getExtensionLowerCase(fileName) == ".tga"
+        return Path.getExtensionLowerCase(fileName) == ".tga"
     }
 
     func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw

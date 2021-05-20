@@ -8,7 +8,7 @@ using core, Directory
     options.recurse = true
 
     loc := #location.fileName
-    pth := path.getDirectoryName(loc)
+    pth := Path.getDirectoryName(loc)
 
     res := assume enumerate(pth, options)
     count := 0

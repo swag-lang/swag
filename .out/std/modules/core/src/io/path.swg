@@ -1,5 +1,5 @@
 #global public
-#global namespace path
+#global namespace Path
 using Swag
 
 const DirectorySeparatorChar    = "/"'u8

@@ -2033,7 +2033,7 @@ public impl IDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
     {
-        ext := path.getExtensionLowerCase(fileName)
+        ext := Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 

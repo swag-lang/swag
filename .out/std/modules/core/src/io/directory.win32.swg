@@ -35,7 +35,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
     while !stackPath.isEmpty()
     {
         toScan := stackPath.popBack()
-        searchPath := path.combine(toScan.toString(), options.matchPattern)
+        searchPath := Path.combine(toScan.toString(), options.matchPattern)
 
         winPath := utf16.toZeroTerminated(searchPath)
         h := try FindFirstFileW(@dataof(winPath), &findfile)
@@ -55,7 +55,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
                     mustAdd = options.wantDirectories
                     if options.recurse
                     {
-                        newPath := path.combine(toScan.toString(), filename.toString())
+                        newPath := Path.combine(toScan.toString(), filename.toString())
                         stackPath.emplace(&newPath)
                     }
                 }
@@ -71,7 +71,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
                 fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
                 if !(fi.attributes & options.skipAttributes)
                 {
-                    fi.fullname = path.combine(toScan, filename.toString())
+                    fi.fullname = Path.combine(toScan, filename.toString())
 
                     fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
                     catch FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
@@ -108,7 +108,7 @@ func getCurrent()->String throw
     arr16.count = try GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
     result = utf8.fromUtf16(arr16.toSlice())
-    path.normalize(&result)
+    Path.normalize(&result)
     return result
 }
 
