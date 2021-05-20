@@ -94,7 +94,7 @@ func loadImg()
     data := imagePath(imgName)
     myImage = assume image.load(data)
     ti.stop()
-    console.printf("%: img: % (% x % %) load: %ms ", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds())
+    Console.printf("%: img: % (% x % %) load: %ms ", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds())
     myImage.resize(512, 512)
 
     // Apply a filter
@@ -154,7 +154,7 @@ func loadImg()
     }
 
     te.stop()
-    console.printf("filter: % %ms\n", effectIdx, te.elapsedMilliseconds())
+    Console.printf("filter: % %ms\n", effectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
     internal := GL_RGB

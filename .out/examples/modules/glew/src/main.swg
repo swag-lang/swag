@@ -13,7 +13,7 @@ func findFirstLine(what: string)
     {
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue
-        #if LOG console.print("line: %\n", line)
+        #if LOG Console.print("line: %\n", line)
         toProcess.add(dref line)
         idxFirst = @index + 1
         break
@@ -25,7 +25,7 @@ func findFirstLine(what: string)
     {
         while !lines[idxFirst].isEmpty()
         {
-            //console.print("line: %\n", lines[idxFirst])
+            //Console.print("line: %\n", lines[idxFirst])
             toProcess.add(dref lines[idxFirst])
             idxFirst += 1
         }
@@ -38,7 +38,7 @@ func findLine(what: string)->*String
     {
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue
-        #if LOG console.print("line: %\n", line)
+        #if LOG Console.print("line: %\n", line)
         return line
     }
 
@@ -69,12 +69,12 @@ func swapParams(what: string)->String
             arr = what[idxName..idxNext - 1]
             idxEnd = idxName
             idxName -= 1
-            #if LOG console.print("arr: %\n", arr)
+            #if LOG Console.print("arr: %\n", arr)
         }
 
         while latin1.isLetter(what[idxName - 1]) idxName -= 1
         name := what[idxName..idxEnd-1]
-        #if LOG console.print("name: %\n", name)
+        #if LOG Console.print("name: %\n", name)
 
         // Isolate parameter type
         idxType := idxName - 1
@@ -83,7 +83,7 @@ func swapParams(what: string)->String
         type := String.from(what[idxType..idxName - 1])
         type.trim()
         type.insert(0, arr)
-        #if LOG console.print("type: '%'\n", type)
+        #if LOG Console.print("type: '%'\n", type)
 
         // Pointer
         if(type.lastRune() == "*"'rune)
@@ -114,7 +114,7 @@ func swapParams(what: string)->String
 
     var fctExtension: String = @args()[1] //"glCompileShader "
     fctExtension += " "
-    console.print("arg: '%'\n", fctExtension)
+    Console.print("arg: '%'\n", fctExtension)
 
     ///////////////////
     curPath := path.getDirectoryName(#location.fileName)
@@ -131,14 +131,14 @@ func swapParams(what: string)->String
         ///////////////////
         idx := line1.indexOf("(") + 1
         glewStr := String.from(cast(string) line1.getTo(")"'u8, idx, includeDelimiter: false))
-        #if LOG console.print("glewStr: %\n", glewStr)
+        #if LOG Console.print("glewStr: %\n", glewStr)
         glewStr += ";"'u8
 
         ///////////////////
         line2 := findLine(glewStr)
         idx = line2.indexOf(" ") + 1
         proc := cast(string) line2.getTo(" "'u8, idx, includeDelimiter: false)
-        #if LOG console.print("proc: %\n", proc)
+        #if LOG Console.print("proc: %\n", proc)
 
         line3 := findLine(proc)
         ///////////////////
@@ -146,7 +146,7 @@ func swapParams(what: string)->String
         idx += 1
         retType := String.from(cast(string) line3.getTo(" "'u8, idx, includeDelimiter: false))
         if retType == "void" retType.clear()
-        #if LOG console.print("retType: %\n", retType)
+        #if LOG Console.print("retType: %\n", retType)
 
         idx = line3.lastIndexOf("(")
         idx += 1
@@ -156,9 +156,9 @@ func swapParams(what: string)->String
         ///////////////////
         strProto := swapParams(proto)
         if !retType.isEmpty()
-            console.print("func %(%)->%;\n", funcName, strProto, retType)
+            Console.print("func %(%)->%;\n", funcName, strProto, retType)
         else
-            console.print("func %(%);\n", funcName, strProto)
+            Console.print("func %(%);\n", funcName, strProto)
 
         ///////////////////
     }

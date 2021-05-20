@@ -6,7 +6,7 @@ using core
     var x: String = "toto"
     x += "_titiあ"
     @assert(x == "toto_titiあ")
-    console.silent(true)
-    console.print(cast(string) x)
-    console.silent(false)
+    Console.silent(true)
+    Console.print(cast(string) x)
+    Console.silent(false)
 }

@@ -19,5 +19,5 @@ using core
     //format(&buf, "%", &buf)
 
     //str := buf.toString()
-    //console.write(cast(string) str)
+    //Console.write(cast(string) str)
 }

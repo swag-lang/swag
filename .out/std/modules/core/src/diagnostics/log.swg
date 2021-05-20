@@ -137,9 +137,9 @@ impl Log
         // Output default result if no writers
         if writers.isEmpty()
         {
-            console.lock()
-            console.println(buf.toString())
-            console.unlock()
+            Console.lock()
+            Console.println(buf.toString())
+            Console.unlock()
             return
         }
 

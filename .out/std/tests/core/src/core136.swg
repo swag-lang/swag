@@ -14,5 +14,5 @@ using core
     @assert(arr.buffer != arr1.buffer)
     @assert(arr.count == arr1.count)
 
-    //loop 10 console.write("% ", arr[0])
+    //loop 10 Console.write("% ", arr[0])
 }

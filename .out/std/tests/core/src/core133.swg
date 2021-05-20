@@ -14,5 +14,5 @@ using core
         @assert(result.index == @index)
     }
 
-    //console.write("result is %\n", res)
+    //Console.write("result is %\n", res)
 }

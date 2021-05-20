@@ -27,7 +27,7 @@
 
         while !res.isNull()
         {
-            //console.print("LINE: %\n", res)
+            //Console.print("LINE: %\n", res)
             //break
             res = reader.readLine()
         }

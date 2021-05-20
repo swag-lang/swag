@@ -26,5 +26,5 @@ struct Test
     @assert(t1.color.b == 255)
     @assert(t1.color1.r == 255)
 
-    //console.println(t1)
+    //Console.println(t1)
 }

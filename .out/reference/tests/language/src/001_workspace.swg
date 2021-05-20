@@ -3,7 +3,7 @@
 The compile unit of swag is a 'workspace' which contains a variable number of 'modules'.
 A module will compile to a static library (not done!), a dynamic library or an executable.
 
-To create a fresh new workspace, type 'swag new -w:<workspacename>' in a console. This will also create a simple module.
+To create a fresh new workspace, type 'swag new -w:<workspacename>' in a Console. This will also create a simple module.
 
 A workspace contains a predefined number of sub folders :
 modules/        contains all the modules (sub folders) of that workspace

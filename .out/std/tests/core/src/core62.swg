@@ -1,5 +1,5 @@
 
-using core.console
+using core.Console
 
 //#[Swag.printbc]
 #test

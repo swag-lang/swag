@@ -12,6 +12,6 @@ using core.strconv
     builder.appendString(str)
 
     s := builder.toString();
-    //console.write("%\n", s)
+    //Console.write("%\n", s)
     @assert(s == "toto444假mystring")
 }

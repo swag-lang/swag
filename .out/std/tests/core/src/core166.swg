@@ -6,8 +6,8 @@ using core
 {
     loc := #location
     info := catch file.getInfo(loc.fileName)
-    /*console.print("size: %\n", info.size)
-    console.print("attr: %\n", info.attributes)
-    console.print("crt:  %\n", info.creationTime)
-    console.print("lwt:  %\n", info.lastWriteTime)*/
+    /*Console.print("size: %\n", info.size)
+    Console.print("attr: %\n", info.attributes)
+    Console.print("crt:  %\n", info.creationTime)
+    Console.print("lwt:  %\n", info.lastWriteTime)*/
 }

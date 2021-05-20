@@ -13,13 +13,13 @@ impl ILogWriter for W
         @assert(text == "titi toto")
         G += 1
 
-        console.lock()
-        console.silent(true)
-        //console.setTextColor(console.Color.Magenta)
-        console.println(text)
-        //console.resetColor()
-        console.silent(false)
-        console.unlock()
+        Console.lock()
+        Console.silent(true)
+        //Console.setTextColor(Console.Color.Magenta)
+        Console.println(text)
+        //Console.resetColor()
+        Console.silent(false)
+        Console.unlock()
     }
 }
 

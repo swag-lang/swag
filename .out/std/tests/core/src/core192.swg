@@ -9,13 +9,13 @@ using core
         @assert(res[0] == "A"'rune)
         @assert(res[1] == "B"'rune)
         @assert(res[2] == "C"'rune)
-        //console.print("%", res)
+        //Console.print("%", res)
     }
 
     {
         res := unicode.fromUtf8("éxàmple")
         unicode.makeUpper(res.toSlice())
-        //console.print("%", res)
+        //Console.print("%", res)
         @assert(res[0] == "É"'rune)
         @assert(res[2] == "À"'rune)
     }

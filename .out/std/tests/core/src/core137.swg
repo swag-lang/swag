@@ -6,5 +6,5 @@ using core
 {
     var arr: Array's32
     arr.add(10)
-    //console.write("% ", arr[0])
+    //Console.write("% ", arr[0])
 }

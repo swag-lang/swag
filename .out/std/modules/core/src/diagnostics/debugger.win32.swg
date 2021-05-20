@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace debugger
+#global namespace Debugger
 using win32
 
 // Returns true if a debugger is attached to the current process

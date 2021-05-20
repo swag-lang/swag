@@ -7,7 +7,7 @@ using core
     var arr: Array'String
     loop 10 arr.addAny("toto")
 
-    //console.write("result is %\n", res)
+    //Console.write("result is %\n", res)
     var arr1: Array'String
     arr1 = arr
 

@@ -4,7 +4,7 @@ using core
 #test
 {
     var x: String = "coucou\n"
-    console.silent(true)
-    console.print(cast(string) x)
-    console.silent(false)
+    Console.silent(true)
+    Console.print(cast(string) x)
+    Console.silent(false)
 }

@@ -5,7 +5,7 @@ func toto(v: String)
 {
     res := format.toString("std119: %", v)
     @assert(res == "std119: yes this is a string")
-    //console.write("%", res)
+    //Console.write("%", res)
 }
 
 #test

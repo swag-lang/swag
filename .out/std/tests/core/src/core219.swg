@@ -8,6 +8,6 @@ using core
     arr.addAny("toto")
     visit v: arr
     {
-        //console.print("%\n", @typeof(v))
+        //Console.print("%\n", @typeof(v))
     }
 }

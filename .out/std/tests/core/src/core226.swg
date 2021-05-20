@@ -5,12 +5,12 @@ using core
 #test
 {
     p := #location.fileName
-    //console.print("%\n", p)
+    //Console.print("%\n", p)
 
     {
         full := catch path.getAbsolute(p)
         @assert(!@err)
-        //console.print("%\n", full)
+        //Console.print("%\n", full)
     }
 
     {
@@ -20,7 +20,7 @@ using core
         full := catch path.getAbsolute("..")
         @assert(!@err)
 
-        //console.print("%\n%\n", path.getDirectoryName(cur), @countof(full))
+        //Console.print("%\n%\n", path.getDirectoryName(cur), @countof(full))
         @assert(path.getDirectoryName(cur) == full)
     }
 }

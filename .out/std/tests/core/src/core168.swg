@@ -7,8 +7,8 @@ using core.time
     dt := DateTime.now()
     ts := TimeSpan.from(dt)
     dt1 := ts.toDateTime()
-    /*console.print("ticks: %\n", ts)
-    console.print("dt: %\n", dt)
-    console.print("dt1: %\n", dt1)*/
+    /*Console.print("ticks: %\n", ts)
+    Console.print("dt: %\n", dt)
+    Console.print("dt1: %\n", dt1)*/
     @assert(dt1 == dt)
 }

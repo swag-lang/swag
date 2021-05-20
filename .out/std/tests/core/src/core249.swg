@@ -14,5 +14,5 @@ using core
     result1 := Slice.findLinear(arr.toSlice(), 15)
     @assert(!result1.success)
 
-    //console.write("result is %\n", res)
+    //Console.write("result is %\n", res)
 }

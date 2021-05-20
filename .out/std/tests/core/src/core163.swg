@@ -12,6 +12,6 @@ using core.file
 
     /*visit l: res.lines
     {
-        console.print("LINE: %\n", l)
+        Console.print("LINE: %\n", l)
     }*/
 }

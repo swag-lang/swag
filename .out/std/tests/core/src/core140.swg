@@ -9,5 +9,5 @@ using core.strconv
     str.appendAny(3.14, "+f2")
     str.appendString(" ")
     str.appendAny(-666, "+010")
-    //console.print("%", str.toString())
+    //Console.print("%", str.toString())
 }

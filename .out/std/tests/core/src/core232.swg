@@ -15,7 +15,7 @@ using core, directory
     visit p: res
     {
         count += 1
-        //console.print("%\n", p.fullname)
+        //Console.print("%\n", p.fullname)
     }
 
     @assert(count > 100)

@@ -8,5 +8,5 @@ using core
     res := catch directory.enumerateDirectories(@"F:\swag\std\output"@, recurse: true)
     //@assert(res.count == 1)
     //visit *c: res
-    //    console.print("FF: % %\n", c.fullname, c.size)
+    //    Console.print("FF: % %\n", c.fullname, c.size)
 }

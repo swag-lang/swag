@@ -1,5 +1,5 @@
 #global public
-#global namespace console
+#global namespace Console
 
 #[Swag.enumindex]
 enum Color

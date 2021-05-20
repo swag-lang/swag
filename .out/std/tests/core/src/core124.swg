@@ -14,5 +14,5 @@ using core
     @assert(dref arr[2] == "1")
     @assert(dref arr[3] == "0")
     //visit *it: arr
-    //    console.write("%", :it)
+    //    Console.write("%", :it)
 }

@@ -1,5 +1,5 @@
 #global if WINDOWS
-#global namespace console
+#global namespace Console
 using win32
 
 var g_colorToWin: [@countof(Color)] u16 = ?

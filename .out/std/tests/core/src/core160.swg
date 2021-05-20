@@ -13,7 +13,7 @@ using core
     @assert(path.hasExtension(loc.fileName))
 
     @assert(path.getFileName(loc.fileName) == "core160.swg")
-    //console.print("%\n", path.getFileNameWithoutExtension(loc.fileName))
+    //Console.print("%\n", path.getFileNameWithoutExtension(loc.fileName))
     @assert(path.getFileNameWithoutExtension(loc.fileName) == "core160")
 
     var ext: String = path.getExtension(loc.fileName)
@@ -21,5 +21,5 @@ using core
 
     res := catch file.readAllText(loc.fileName)
     @assert(res.length > 0)
-    //console.print("%", res.item0)
+    //Console.print("%", res.item0)
 }

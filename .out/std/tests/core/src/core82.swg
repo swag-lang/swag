@@ -25,5 +25,5 @@ using core, core.strconv
     convertInt(&buf, fmt)
     str := buf.toString()
     @assert(str == "FFFFFFFF")
-    //console.write(cast(string) str)
+    //Console.write(cast(string) str)
 }

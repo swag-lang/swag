@@ -4,9 +4,9 @@ using core
 //#[Swag.printbc]
 #test
 {
-	using console
-	//console.setTextColor(Color.Red)
-	//console.setBackColor(Color.Black)
-	//console.write("toto la fripouille")
-	//console.resetColor()
+	using Console
+	//Console.setTextColor(Color.Red)
+	//Console.setBackColor(Color.Black)
+	//Console.write("toto la fripouille")
+	//Console.resetColor()
 }

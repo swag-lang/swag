@@ -6,5 +6,5 @@ using core
 #test
 {
     res := catch directory.getCurrent()
-    //console.print("%\n", res)
+    //Console.print("%\n", res)
 }

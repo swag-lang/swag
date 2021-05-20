@@ -64,10 +64,10 @@ public impl DebugAllocator
     func printAllocated(using self)
     {
         scan := cast(*Header) first
-        console.printf("% block(s), % byte(s)\n", count, size)
+        Console.printf("% block(s), % byte(s)\n", count, size)
         while scan
         {
-            console.printf("id: % size: % hint: % loc: %:%\n", scan.allocId, scan.userSize, scan.hint, scan.locFilename, scan.locLine)
+            Console.printf("id: % size: % hint: % loc: %:%\n", scan.allocId, scan.userSize, scan.hint, scan.locFilename, scan.locLine)
             scan = scan.next
         }
     }

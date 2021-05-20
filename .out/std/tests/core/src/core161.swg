@@ -6,5 +6,5 @@ using core
 {
     loc := #location
     res := catch file.readAllBytes(loc.fileName)
-    //console.print("%", res.item0)
+    //Console.print("%", res.item0)
 }

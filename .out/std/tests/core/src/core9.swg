@@ -3,7 +3,7 @@
 //#[Swag.printbc]
 #test
 {
-	b := core.debugger.isAttached()
-	//debugger.break()
-	core.debugger.log("toto")
+	b := core.Debugger.isAttached()
+	//Debugger.break()
+	core.Debugger.log("toto")
 }

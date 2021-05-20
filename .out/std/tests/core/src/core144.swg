@@ -10,14 +10,14 @@ using core
         strconv.convertAny(&buf, x, null)
 
         str := buf.toString()
-        //console.print("%\n", str)
+        //Console.print("%\n", str)
         @assert(str == "[1,2,3,4]")
     }
 
     {
         var x: Array'string = @["a","b","c","d"]
         str := format.toString("%", x)
-        //console.print("%\n", str)
+        //Console.print("%\n", str)
         @assert(str == "[a,b,c,d]")
     }
 
@@ -26,7 +26,7 @@ using core
         x.addAny("toto")
         x.addAny("titi")
         str := format.toString("arr=%", x)
-        //console.print("%\n", str)
+        //Console.print("%\n", str)
         @assert(str == "arr=[toto,titi]")
     }
 }

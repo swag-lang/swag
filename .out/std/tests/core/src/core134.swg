@@ -7,7 +7,7 @@ using core
     var arr: Array'u32
     loop 10 arr.add(cast(u32) @index)
 
-    //console.write("result is %\n", res)
+    //Console.write("result is %\n", res)
     var arr1: Array'u32
     arr1 = arr
 

@@ -41,7 +41,7 @@ var g: Array'OneFunc
         builderVars.appendFormat("func %(){}\n", t.name)
 
         builderFct.appendFormat("gen_% = 555\n", t.name)
-        //builderFct.appendFormat(@"console.print("gen %%", gen_%);"@, t.name);
+        //builderFct.appendFormat(@"Console.print("gen %%", gen_%);"@, t.name);
         builderFct.appendEOL()
     }
 
@@ -50,11 +50,11 @@ var g: Array'OneFunc
     itf := @compiler()
 
     strVars := builderVars.moveToString()
-    //console.print("%\n", strVars)
+    //Console.print("%\n", strVars)
     itf.compileString(strVars.toString())
 
     strFunc := builderFct.moveToString()
-    //console.print("%\n", strFunc)
+    //Console.print("%\n", strFunc)
     itf.compileString(strFunc.toString())
 }
 
