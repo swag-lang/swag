@@ -1,4 +1,4 @@
-using core.Random
+using Core.Random
 
 #test
 {

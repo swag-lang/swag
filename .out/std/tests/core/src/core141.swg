@@ -1,5 +1,5 @@
 
-using core.StrConv
+using Core.StrConv
 
 //#[Swag.printbc]
 //#[Swag.nooptim]

@@ -1,5 +1,5 @@
 #global public
-using core.Math
+using Core.Math
 
 struct Vector2
 {

@@ -1,5 +1,5 @@
 ﻿
-using core
+using Core
 
 var th1, th2: Threading.Thread
 

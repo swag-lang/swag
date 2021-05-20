@@ -1,9 +1,9 @@
 
-using core
+using Core
 
 struct BB11
 {
-     g: core.Array'(*u8)
+     g: Core.Array'(*u8)
 }
 
 //#[Swag.printbc]

@@ -1,4 +1,4 @@
-using core.Console
+using Core.Console
 
 //#[Swag.printbc]
 #test

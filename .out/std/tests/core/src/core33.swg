@@ -2,7 +2,7 @@
 
 #test
 {
-	using core.Input
+	using Core.Input
 	while !isKeyPressed(Key.Space)
     {
         pt := getMousePos()

@@ -466,11 +466,11 @@ impl String
         switch set
         {
         case Latin1:
-            core.Latin1.makeUpper(sl)
+            Core.Latin1.makeUpper(sl)
 
         case Unicode:
-            uni32 := core.Unicode.fromUtf8(toString())
-            core.Unicode.makeUpper(uni32.toSlice())
+            uni32 := Core.Unicode.fromUtf8(toString())
+            Core.Unicode.makeUpper(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
@@ -485,11 +485,11 @@ impl String
         switch set
         {
         case Latin1:
-            core.Latin1.makeLower(sl)
+            Core.Latin1.makeLower(sl)
 
         case Unicode:
-            uni32 := core.Unicode.fromUtf8(toString())
-            core.Unicode.makeLower(uni32.toSlice())
+            uni32 := Core.Unicode.fromUtf8(toString())
+            Core.Unicode.makeLower(uni32.toSlice())
             reserve(uni32.count * 4)
             length = Utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }

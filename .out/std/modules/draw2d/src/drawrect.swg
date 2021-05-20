@@ -1,5 +1,5 @@
 #global public
-using core.Drawing
+using Core.Drawing
 
 impl DrawingContext
 {

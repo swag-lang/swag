@@ -1,6 +1,6 @@
 #global if #os == "windows"
 
-using win32, core
+using win32, Core
 
 #[Swag.callback]
 func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT

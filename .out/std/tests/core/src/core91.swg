@@ -1,8 +1,8 @@
 
-using core
+using Core
 
 #test
 {
-    ci := core.Globalization.getCultureInfo()
+    ci := Core.Globalization.getCultureInfo()
     @assert(ci.numberFormat.decimalSeparator == "."'u8)
 }

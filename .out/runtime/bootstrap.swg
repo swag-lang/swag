@@ -469,9 +469,10 @@ namespace Swag
     struct BuildCfg
     {
         // Module infos
-        moduleVersion:  u32 = 0
-        moduleRevision: u32 = 0
-        moduleBuildNum: u32 = 0
+        moduleVersion:      u32 = 0
+        moduleRevision:     u32 = 0
+        moduleBuildNum:     u32 = 0
+        moduleNamespace:    string
 
         // Debug
         const SafetyNP  = 0x0000100000000000

@@ -1,6 +1,6 @@
 
 
-using core, core.StrConv
+using Core, Core.StrConv
 
 struct TOTO
 {

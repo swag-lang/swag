@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 //#[Swag.printbc]
 func toto() throw

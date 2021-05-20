@@ -1,4 +1,4 @@
-using core, core.StrConv
+using Core, Core.StrConv
 
 #test
 {

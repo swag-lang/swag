@@ -1,6 +1,6 @@
 ﻿// https://github.com/golang/go/blob/master/src/hash/crc32/crc32_test.go
 
-using core.Hash
+using Core.Hash
 
 struct ValidTest
 {

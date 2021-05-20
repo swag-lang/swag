@@ -1,9 +1,9 @@
 
-using core
+using Core
 
 #test
 {
-    using core, core.StrConv
+    using Core, Core.StrConv
     var buf: ConcatBuffer
 
     convertInt(&buf, 666's32, "X08")

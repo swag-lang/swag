@@ -1,5 +1,5 @@
 ﻿
-using core
+using Core
 
 var testDigit: []rune = @[
 	0x0030,

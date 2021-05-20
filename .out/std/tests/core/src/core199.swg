@@ -1,5 +1,5 @@
 ﻿
-using core.Memory, Swag
+using Core.Memory, Swag
 
 #test
 {

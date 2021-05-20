@@ -1,5 +1,5 @@
 #global namespace Bmp
-using core
+using Core
 
 const FILL_RLE_COMMAND     = 0
 const FILL_RLE_ENDOFLINE   = 0

@@ -1,5 +1,5 @@
 
-using core.Time
+using Core.Time
 
 #test
 {

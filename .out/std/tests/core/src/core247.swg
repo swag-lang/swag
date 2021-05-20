@@ -1,4 +1,4 @@
-using core, Hash
+using Core, Hash
 
 #test
 {

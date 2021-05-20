@@ -1,4 +1,4 @@
-using core
+using Core
 
 struct(T = Random.MWC) Rdom
 {

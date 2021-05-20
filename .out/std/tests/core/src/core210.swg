@@ -1,8 +1,8 @@
-﻿#global if core.ASSERT
+﻿#global if Core.ASSERT
 #global testerror
 
 
-using core.sync
+using Core.sync
 
 #test
 {

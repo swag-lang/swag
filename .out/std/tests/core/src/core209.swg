@@ -1,5 +1,5 @@
 ﻿
-using core
+using Core
 
 var G = 0's64
 const N = 100

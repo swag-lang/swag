@@ -1,4 +1,4 @@
-using core
+using Core
 
 public impl Image
 {

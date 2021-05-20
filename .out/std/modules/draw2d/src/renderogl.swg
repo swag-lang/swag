@@ -1,4 +1,4 @@
-using core, ogl, mthx
+using Core, ogl, mthx
 
 public struct RenderOgl
 {

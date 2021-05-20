@@ -1,4 +1,4 @@
-using core.Reflection
+using Core.Reflection
 
 struct X
 {

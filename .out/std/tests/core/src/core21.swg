@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 //#[Swag.printbc]
 func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(uint) v.length)

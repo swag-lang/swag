@@ -1,5 +1,5 @@
 #global if #os == "windows"
-using core, win32, ogl, gdi32
+using Core, win32, ogl, gdi32
 
 public struct RenderOglWin32
 {

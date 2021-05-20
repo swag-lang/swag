@@ -1,4 +1,4 @@
-using core
+using Core
 
 #[Swag.tls]
 var G = 0's64

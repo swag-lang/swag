@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 //#[Swag.printbc]
 func fromCapa(capa: uint)->BitArray

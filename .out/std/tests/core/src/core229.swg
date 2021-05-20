@@ -1,5 +1,5 @@
 ﻿
-using core.utf16
+using Core.utf16
 
 var t: [] struct {
     in:  [..] rune

@@ -1,5 +1,5 @@
 ﻿
-using core.File
+using Core.File
 
 //#[Swag.printbc]
 #test

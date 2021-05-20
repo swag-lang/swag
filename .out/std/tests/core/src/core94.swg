@@ -2,7 +2,7 @@
 
 #test
 {
-    core.Console.silent(true)
-    core.Console.print("toto %\n", 666)
-    core.Console.silent(false)
+    Core.Console.silent(true)
+    Core.Console.print("toto %\n", 666)
+    Core.Console.silent(false)
 }

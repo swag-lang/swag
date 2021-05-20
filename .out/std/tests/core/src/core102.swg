@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 func cc(sl: const [..] u8, val: s32)
 {
@@ -12,7 +12,7 @@ func cc(sl: const [..] u8, val: s32)
 //#[Swag.printbc]
 #test
 {
-    core.Debug.assert(true, "")
+    Core.Debug.assert(true, "")
     cc("toto", 666)
 //    var x: String = "toto"
 //    var y: Array'u16 = x.toUnicode16()

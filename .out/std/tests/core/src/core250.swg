@@ -1,5 +1,5 @@
 #global #[Swag.safety("overflow", false)]
-using core
+using Core
 
 struct Test
 {

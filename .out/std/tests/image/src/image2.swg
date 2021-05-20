@@ -1,4 +1,4 @@
-using image, core
+using image, Core
 
 #test
 {

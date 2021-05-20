@@ -1,9 +1,9 @@
 
-using core
+using Core
 /*
 public namespace core
 {
-    impl core.String
+    impl Core.String
     {
         func splitmmmmmm() -> Array'String
         {

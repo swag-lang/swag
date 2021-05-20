@@ -1,4 +1,4 @@
-﻿using core.Memory
+﻿using Core.Memory
 
 #test
 {

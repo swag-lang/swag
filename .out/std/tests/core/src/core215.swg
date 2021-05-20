@@ -1,6 +1,6 @@
 #global testerror
 
-using core
+using Core
 
 #test
 {

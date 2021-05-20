@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 //#[Swag.printbc, Swag.optim("", false)]
 func toto()->[2] String

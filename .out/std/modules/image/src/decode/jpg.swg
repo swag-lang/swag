@@ -1,5 +1,5 @@
 #global namespace Jpg
-using Swag, core
+using Swag, Core
 
 const InBufSize         = 4096
 const MaxHeight         = 8192

@@ -2,6 +2,6 @@
 
 #test
 {
-    using core.Time
+    using Core.Time
     ticks := nowPrecise() / preciseFrequency()
 }

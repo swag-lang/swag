@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 #[Swag.mixin]
 func mk(name: string, type: typeinfo)

@@ -13,6 +13,7 @@
         cfg.moduleVersion = 0
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0
+        cfg.moduleNamespace = "Core"
         cfg.backendKind = .DynamicLib
     }
 }

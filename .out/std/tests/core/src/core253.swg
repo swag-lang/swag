@@ -1,4 +1,4 @@
-using core, StrConv
+using Core, StrConv
 
 struct atofTest
 {

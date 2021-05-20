@@ -1,5 +1,5 @@
 ﻿
-using core.Math
+using Core.Math
 
 //#[Swag.printbc]
 #test

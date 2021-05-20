@@ -280,13 +280,23 @@ JobResult SyntaxJob::execute()
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
-    // Creates a top namespace with the module name
+    // Creates a top namespace with the module namespace name
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
 
-    Utf8 npName = sourceFile->module->name;
+    Utf8 npName;
     if (sourceFile->imported)
-        npName = sourceFile->imported->name;
+    {
+        npName.append((const char*) sourceFile->imported->buildCfg.moduleNamespace.buffer, (int) sourceFile->imported->buildCfg.moduleNamespace.count);
+        if (npName.empty())
+            npName = sourceFile->imported->name;
+    }
+    else
+    {
+        npName.append((const char*) sourceFile->module->buildCfg.moduleNamespace.buffer, (int) sourceFile->module->buildCfg.moduleNamespace.count);
+        if (npName.empty())
+            npName = sourceFile->module->name;
+    }
 
     if (!npName.empty())
     {

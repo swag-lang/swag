@@ -1,5 +1,5 @@
 ﻿
-using core.Threading
+using Core.Threading
 alias createThread = Threading.Thread.init
 
 var G = 0's64

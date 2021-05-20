@@ -1,5 +1,5 @@
 
-using core.Drawing
+using Core.Drawing
 
 #test
 {

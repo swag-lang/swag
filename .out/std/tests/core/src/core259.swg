@@ -1,11 +1,11 @@
-using core
+using Core
 
 interface IGen
 {
     fn: func(self)
 }
 
-impl IGen for core.String
+impl IGen for Core.String
 {
     func fn(self)
     {
@@ -13,4 +13,4 @@ impl IGen for core.String
     }
 }
 
-#assert Reflection.hasInterface(@typeof(core.String), IGen)
+#assert Reflection.hasInterface(@typeof(Core.String), IGen)

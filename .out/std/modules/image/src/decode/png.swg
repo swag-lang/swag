@@ -1,6 +1,6 @@
 // https://github.com/odin-lang/Odin/blob/master/core/image/png/png.odin
 #global namespace Png
-using Swag, core
+using Swag, Core
 
 enum ChunkType: u32
 {

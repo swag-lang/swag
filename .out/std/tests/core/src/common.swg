@@ -1,4 +1,4 @@
-using core, Memory
+using Core, Memory
 
 var g_dbg: DebugAllocator
 var g_cxt: Swag.Context

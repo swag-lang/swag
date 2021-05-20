@@ -1,5 +1,5 @@
 
-using core
+using Core
 
 func toto(v: String)
 {

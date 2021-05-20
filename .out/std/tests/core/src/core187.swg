@@ -1,5 +1,5 @@
 ﻿
-using core.Memory
+using Core.Memory
 
 //#[Swag.printbc]
 #test

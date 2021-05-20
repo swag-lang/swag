@@ -1,5 +1,5 @@
 
-using core, Directory
+using Core, Directory
 
 //#[Swag.printbc]
 #test

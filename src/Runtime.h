@@ -119,9 +119,10 @@ enum class BuildCfgBackendKind
 struct BuildCfg
 {
     // Module informations
-    uint32_t moduleVersion  = 0;
-    uint32_t moduleRevision = 0;
-    uint32_t moduleBuildNum = 0;
+    uint32_t  moduleVersion  = 0;
+    uint32_t  moduleRevision = 0;
+    uint32_t  moduleBuildNum = 0;
+    SwagSlice moduleNamespace;
 
     // Debug
     static const auto SAFETY_NP    = ATTRIBUTE_SAFETY_NULLPTR_ON;

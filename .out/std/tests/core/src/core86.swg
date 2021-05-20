@@ -1,4 +1,4 @@
-using core, core.Format
+using Core, Core.Format
 
 #test
 {

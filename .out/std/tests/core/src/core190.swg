@@ -1,5 +1,5 @@
 ﻿
-using core
+using Core
 
 var upperTest: []rune = @[
 	0x41,

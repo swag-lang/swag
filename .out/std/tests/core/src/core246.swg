@@ -1,4 +1,4 @@
-using core.Drawing
+using Core.Drawing
 
 //#[Swag.printbc]
 #test

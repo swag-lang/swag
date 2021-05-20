@@ -1,5 +1,5 @@
 #global if #os == "windows"
-using core, win32, ogl, gdi32, Time
+using Core, win32, ogl, gdi32, Time
 
 var hDC:            HDC
 var vertexbuffer:   GLuint

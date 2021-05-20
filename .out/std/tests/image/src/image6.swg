@@ -1,4 +1,4 @@
-using core, image
+using Core, image
 
 //#[Swag.printbc]
 #test

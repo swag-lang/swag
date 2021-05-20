@@ -1,5 +1,5 @@
 
-using core.Input
+using Core.Input
 
 #test
 {

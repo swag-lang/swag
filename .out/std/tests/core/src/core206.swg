@@ -1,5 +1,5 @@
 ﻿
-using core.Hash
+using Core.Hash
 
 struct ValidTest
 {

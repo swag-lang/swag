@@ -2,7 +2,7 @@
 #global testerror
 
 
-using core
+using Core
 
 //#[Swag.printbc]
 #test

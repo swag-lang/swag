@@ -1,5 +1,5 @@
 #global namespace Tga
-using core
+using Core
 
 const TYPE_MAP      = 1
 const TYPE_RGB      = 2

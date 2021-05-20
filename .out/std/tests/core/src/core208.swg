@@ -1,5 +1,5 @@
 ﻿
-using core
+using Core
 
 #[Swag.constexpr]
 func toto(rep: u32)->String

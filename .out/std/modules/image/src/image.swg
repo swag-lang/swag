@@ -1,5 +1,5 @@
 #global public
-using Swag, core
+using Swag, Core
 
 struct Image
 {

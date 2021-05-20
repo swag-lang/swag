@@ -2,13 +2,13 @@
 
 #test
 {
-    tx := core.Time.nowMilliseconds()
+    tx := Core.Time.nowMilliseconds()
     /*
     cpt := 0
     while cpt < 5
     {
-        t0 := core.Time.nowMilliseconds()
-        while(core.Time.nowMilliseconds() - t0 < 1000);
+        t0 := Core.Time.nowMilliseconds()
+        while(Core.Time.nowMilliseconds() - t0 < 1000);
         @print("tick\n");
         cpt += 1
     }*/

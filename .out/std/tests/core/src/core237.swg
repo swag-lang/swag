@@ -1,7 +1,7 @@
 #global testerror
 
 
-using core
+using Core
 
 #[Swag.nocopy]
 struct AA

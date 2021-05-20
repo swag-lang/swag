@@ -50,7 +50,7 @@
 	Last Updated: 30/03/2017
 */
 #global if #os == "windows"
-using core, win32
+using Core, win32
 
 var nScreenWidth = 120'u32			// Console Screen Size X (columns)
 var nScreenHeight = 30'u32			// Console Screen Size Y (rows)
