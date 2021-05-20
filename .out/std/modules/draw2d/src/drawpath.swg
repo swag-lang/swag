@@ -29,13 +29,12 @@ impl DrawingContext
             n2 := n1
             n1 *= size2
 
-            var v: [4] Vector2 = ?
-            v[0] = vPrev - n1
-            v[1] = vNew - n1
-            v[3] = vPrev + n1
-            v[2] = vNew + n1
-            drawSolidTriangle(v[0], v[1], v[3], pen.color)
-            drawSolidTriangle(v[1], v[3], v[2], pen.color)
+            v0 := vPrev - n1
+            v1 := vNew - n1
+            v3 := vPrev + n1
+            v2 := vNew + n1
+            drawSolidTriangle(v0, v1, v3, pen.color)
+            drawSolidTriangle(v1, v3, v2, pen.color)
 
             vPrevN1 = n1
             vPrev = vNew
