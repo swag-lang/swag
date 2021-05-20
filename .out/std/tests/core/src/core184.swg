@@ -10,7 +10,7 @@ using core
     }
 
     {
-        catch directory.setCurrent("fkdfjfkjfkdj")
+        catch Directory.setCurrent("fkdfjfkjfkdj")
         @assert(@err != null)
     }
 }

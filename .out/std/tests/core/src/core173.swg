@@ -5,7 +5,7 @@ using core
 {
     loc := #location
     dir := path.getDirectoryName(loc.fileName)
-    res := catch directory.enumerateDirectories(@"F:\swag\std\output"@, recurse: true)
+    res := catch Directory.enumerateDirectories(@"F:\swag\std\output"@, recurse: true)
     //@assert(res.count == 1)
     //visit *c: res
     //    Console.print("FF: % %\n", c.fullname, c.size)

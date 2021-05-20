@@ -1,5 +1,5 @@
 #global public
-#global namespace directory
+#global namespace Directory
 
 struct EnumerationOptions
 {

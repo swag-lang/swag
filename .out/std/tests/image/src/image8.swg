@@ -11,7 +11,7 @@ using image
     @assert(img.pixels == null)
 
     /*pathName := dataPath()
-    files := try directory.enumerateFiles(pathName)
+    files := try Directory.enumerateFiles(pathName)
     visit f: files
     {
         img := try image.load(f.fullname)

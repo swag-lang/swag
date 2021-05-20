@@ -14,7 +14,7 @@ using core
     }
 
     {
-        cur := catch directory.getCurrent()
+        cur := catch Directory.getCurrent()
         @assert(!@err)
 
         full := catch path.getAbsolute("..")
