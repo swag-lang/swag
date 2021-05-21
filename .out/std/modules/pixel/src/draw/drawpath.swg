@@ -22,6 +22,27 @@ impl Painter
         return result
     }
 
+    private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
+    {
+        n  := Vector2{d.y * sens, -d.x * sens}
+        v0 := Vector2{p.x + d.x, p.y + d.y}
+        v1 := Vector2{p.x - d.x, p.y - d.y}
+        v2 := Vector2{v1.x + n.x, v1.y + n.y}
+        v3 := Vector2{v0.x + n.x, v0.y + n.y}
+
+        prim1 := pushTriangle(v0, v1, v3, pen.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.color)
+
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, 0, v0, v3)
+            addEdgeAA(prim1, 1, v1, v2)
+            addEdgeAA(prim2, 0, v3, v2)
+            addEdgeAA(prim2, 1, v1, v2)
+            addEdgeAA(prim2, 2, v0, v3)
+        }
+    }
+
     private func drawCapTriangle(using self, p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
@@ -79,6 +100,7 @@ impl Painter
         case None:      break
         case Triangle:  drawCapTriangle(p, d, sens, pen)
         case Round:     drawCapRound(p, d, sens, pen)
+        case Square:    drawCapSquare(p, d, sens, pen)
         }
     }
 

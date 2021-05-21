@@ -6,6 +6,7 @@ enum CapStyle
     None
     Triangle
     Round
+    Square
 }
 
 struct Pen
@@ -14,5 +15,5 @@ struct Pen
     color: Color
 
     beginCapStyle:  CapStyle = Round
-    endCapStyle:    CapStyle = Triangle
+    endCapStyle:    CapStyle = Square
 }
