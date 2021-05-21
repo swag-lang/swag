@@ -7,47 +7,8 @@ impl Painter
     {
         right := left + width
         bottom := top + height
-
-        cmd := newCommand(CommandId.DrawTriangles)
-        cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
-        cmd.params.drawTriangles.count = 6
-
-        ptr := vertexBuffer.emplaceAddress(6)
-
-        ptr.pos.x = left
-        ptr.pos.y = top
-        ptr.color = color.argb
-        ptr.aanum = 0
-        ptr += 1
-
-        ptr.pos.x = right
-        ptr.pos.y = top
-        ptr.color = color.argb
-        ptr.aanum = 0
-        ptr += 1
-
-        ptr.pos.x = right
-        ptr.pos.y = bottom
-        ptr.color = color.argb
-        ptr.aanum = 0
-        ptr += 1
-
-        ptr.pos.x = left
-        ptr.pos.y = top
-        ptr.color = color.argb
-        ptr.aanum = 0
-        ptr += 1
-
-        ptr.pos.x = right
-        ptr.pos.y = bottom
-        ptr.color = color.argb
-        ptr.aanum = 0
-        ptr += 1
-
-        ptr.pos.x = left
-        ptr.pos.y = bottom
-        ptr.color = color.argb
-        ptr.aanum = 0
+        prim1 := pushTriangle(@{left, top}, @{right, top}, @{right, bottom}, color)
+        prim2 := pushTriangle(@{left, top}, @{right, bottom}, @{left, bottom}, color)
     }
 
     func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)

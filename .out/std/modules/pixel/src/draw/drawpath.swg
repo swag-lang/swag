@@ -3,24 +3,6 @@ using Core, Core.Math, Core.Drawing
 
 impl Painter
 {
-    private func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
-    {
-        cmd := newCommand(CommandId.DrawTriangles)
-        cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
-        cmd.params.drawTriangles.count = 3
-
-        ptr := vertexBuffer.emplaceAddress(3)
-        var result: retval = ptr
-
-        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
-        ptr += 1
-        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0
-        ptr += 1
-        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0
-
-        return result
-    }
-
     private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
