@@ -26,7 +26,7 @@ const VertexShaderAA = @"
     {
         gl_Position = mvp * vec4(vertexPosition, 0, 1);
         vpixelPos = vertexPosition.xy;
-        vcolor = vertexColor;
+        vcolor = vertexColor.zyxw; // source is rgba, and we need bgra
         vaa0 = aa0;
         vaa1 = aa1;
         vaa2 = aa2;

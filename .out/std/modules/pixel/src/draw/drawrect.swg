@@ -5,24 +5,28 @@ impl Painter
 {
     func drawSolidRect(using self, left, top, width, height: f32, color: Color)
     {
+        right := left + width
+        bottom := top + height
+
         cmd := newCommand(CommandId.DrawTriangles)
         cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
         cmd.params.drawTriangles.count = 6
 
         ptr := vertexBuffer.emplaceAddress(6)
+        Memory.clear(ptr, 6'uint * @sizeof(VertexLayout))
 
         ptr.pos.x = left
         ptr.pos.y = top
         ptr.color = color
         ptr += 1
 
-        ptr.pos.x = left + width
+        ptr.pos.x = right
         ptr.pos.y = top
         ptr.color = color
         ptr += 1
 
-        ptr.pos.x = left + width
-        ptr.pos.y = top + height
+        ptr.pos.x = right
+        ptr.pos.y = bottom
         ptr.color = color
         ptr += 1
 
@@ -31,13 +35,13 @@ impl Painter
         ptr.color = color
         ptr += 1
 
-        ptr.pos.x = left + width
-        ptr.pos.y = top + height
+        ptr.pos.x = right
+        ptr.pos.y = bottom
         ptr.color = color
         ptr += 1
 
         ptr.pos.x = left
-        ptr.pos.y = top + height
+        ptr.pos.y = bottom
         ptr.color = color
     }
 
