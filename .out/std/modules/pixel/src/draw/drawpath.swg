@@ -75,7 +75,14 @@ impl Painter
         fstep  := Math.ConstF32.Pi * radius
 
         step := 0
-        step = cast(s32) fstep
+        switch paintQuality
+        {
+        case Draft:     step = cast(s32) (fstep / 6)
+        case Normal:    step = cast(s32) (fstep / 4)
+        case Good:      step = cast(s32) (fstep / 2)
+        case High:      step = cast(s32) fstep
+        }
+
         if step < 3 step = 3
         radius *= sens
 

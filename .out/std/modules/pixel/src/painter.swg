@@ -37,6 +37,14 @@ enum PaintParams
     Default = Normal
 }
 
+enum PaintQuality
+{
+    Draft
+    Normal
+    Good
+    High
+}
+
 struct Painter
 {
     commandBuffer:  Array'Command
@@ -44,6 +52,7 @@ struct Painter
     drawingBegin:   bool
     drawingPath:    LinePath
     paintParams:    PaintParams = Default
+    paintQuality:   PaintQuality = Good
 }
 
 impl Painter

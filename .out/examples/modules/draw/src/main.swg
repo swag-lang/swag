@@ -11,6 +11,7 @@ var cdc: Painter
 var renderer: RenderOglWin32
 
 var g_modeAA: bool
+var g_paintQuality: PaintQuality = Normal
 
 var ff: f32 = 0
 func display()
@@ -18,10 +19,11 @@ func display()
     cdc.begin()
     cdc.clear(Argb.White)
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
     //cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     //cdc.drawSolidRect(0,0,50,50, Argb.Black)
     //cdc.drawSolidTriangle(@{ff+10,10},@{ff+500,10},@{ff+1000,500},Argb.Red,Argb.Green,Argb.Blue)
-    cdc.drawSolidLine(@{50,50},@{950,500}, 20)
+    cdc.drawSolidLine(@{50,50},@{950,500}, 50)
     cdc.end()
 
     //ff += 0.1
@@ -116,8 +118,11 @@ func messageLoop()
         display()
 
         keyb.update()
+
         if(keyb.isKeyJustPressed(Input.Key.F1))
             g_modeAA = g_modeAA ? false : true
+        if(keyb.isKeyJustPressed(Input.Key.F2))
+            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 4)
     }
 }
 
