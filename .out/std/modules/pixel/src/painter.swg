@@ -60,9 +60,18 @@ impl Painter
 {
     func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
     {
-        cmd := newCommand(CommandId.DrawTriangles)
-        cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
-        cmd.params.drawTriangles.count = 3
+        // If last command is already a 'DrawTriangles', than just increase the number of triangles
+        // to paint instead of adding a new command
+        if commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == CommandId.DrawTriangles
+        {
+            commandBuffer.buffer[commandBuffer.count - 1].params.drawTriangles.count += 3
+        }
+        else
+        {
+            cmd := newCommand(CommandId.DrawTriangles)
+            cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
+            cmd.params.drawTriangles.count = 3
+        }
 
         ptr := vertexBuffer.emplaceAddress(3)
         Memory.clear(ptr, 3'uint * @sizeof(VertexLayout)) // temp
