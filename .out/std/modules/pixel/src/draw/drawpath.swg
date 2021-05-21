@@ -30,7 +30,7 @@ impl Painter
         v2 := Vector2{p.x + n.x, p.y + n.y}
         prim1 := pushTriangle(v0, v1, v2, pen.color)
 
-        //if (m_RenderingParams & RP_ANTIALIASED)
+        if paintParams & .Antialiased
         {
             addEdgeAA(prim1, 0, v1, v2)
             addEdgeAA(prim1, 1, v0, v2)
@@ -50,7 +50,16 @@ impl Painter
     {
         if pen.size == 0 or path.elements.count == 0
             return
-        size2 := pen.size * 0.5
+
+        size := pen.size
+
+        // AA will reduce visually the size. Compensate
+        if paintParams & .Antialiased
+        {
+            size += 0.5
+        }
+
+        size2 := size * 0.5
 
         var vPrevN1, vN1: Vector2
         var prim1, prim2: *VertexLayout
@@ -96,7 +105,7 @@ impl Painter
             prim1 = pushTriangle(v0, v1, v3, pen.color)
             prim2 = pushTriangle(v1, v3, v2, pen.color)
 
-            //if (m_RenderingParams & RP_ANTIALIASED)
+            if paintParams & .Antialiased
             {
                 addEdgeAA(prim1, 0, v0, v1)
                 addEdgeAA(prim1, 1, v3, v2)

@@ -29,12 +29,21 @@ struct Command
     }
 }
 
+#[Swag.enumflags]
+enum PaintParams
+{
+    Normal
+    Antialiased
+    Default = Normal
+}
+
 struct Painter
 {
     commandBuffer:  Array'Command
     vertexBuffer:   Array'VertexLayout
     drawingBegin:   bool
     drawingPath:    LinePath
+    paintParams:    PaintParams = Default
 }
 
 impl Painter
@@ -70,6 +79,7 @@ impl Painter
     {
         Debug.assert(drawingBegin == false)
         drawingBegin = true
+        paintParams = .Default
         commandBuffer.clear()
         vertexBuffer.clear()
     }

@@ -10,15 +10,18 @@ const H = 1024
 var cdc: Painter
 var renderer: RenderOglWin32
 
+var g_modeAA: bool
+
 var ff: f32 = 0
 func display()
 {
     cdc.begin()
     cdc.clear(Argb.White)
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     //cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     //cdc.drawSolidRect(0,0,50,50, Argb.Black)
     //cdc.drawSolidTriangle(@{ff+10,10},@{ff+500,10},@{ff+1000,500},Argb.Red,Argb.Green,Argb.Blue)
-    cdc.drawSolidLine(@{50,50},@{950,500}, 20)
+    cdc.drawSolidLine(@{50,50},@{950,500}, 10)
     cdc.end()
 
     //ff += 0.1
@@ -111,6 +114,10 @@ func messageLoop()
         }
 
         display()
+
+        keyb.update()
+        if(keyb.isKeyJustPressed(Input.Key.F1))
+            g_modeAA = g_modeAA ? false : true
     }
 }
 
