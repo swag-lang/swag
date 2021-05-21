@@ -77,4 +77,17 @@ impl LinePath
 
         endPoint = pt
     }
+
+    // Close the figure
+    // Will add a line to the first point if necessary
+    func close(using self)
+    {
+        if isClosed return
+
+        v := endPoint - startPoint
+        if v.lengthSquared() >= 0.5 * 0.5
+            lineTo(startPoint)
+
+        isClosed = true
+    }
 }

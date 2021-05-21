@@ -136,6 +136,7 @@ impl Painter
         vPrev, vPrevNc       := path.startPoint
         beginLine, firstLine := true
 
+        idxAA := 0'u32
         visit elem: path.elements
         {
             if elem.type == .MoveTo
@@ -157,7 +158,7 @@ impl Painter
             flatBegin := false
             if !path.isClosed and firstLine
             {
-                if (pen.beginCapStyle == CapStyle.None)
+                if pen.beginCapStyle == CapStyle.None
                     flatBegin = true
                 else
                 {
@@ -174,14 +175,25 @@ impl Painter
             prim1 = pushTriangle(v0, v1, v3, pen.color)
             prim2 = pushTriangle(v1, v3, v2, pen.color)
 
+            // Generate AA edges
             if paintParams & .Antialiased
             {
-                addEdgeAA(prim1, 0, v3, v2)
-                addEdgeAA(prim2, 0, v3, v2)
+                idxAA = 0
+                addEdgeAA(prim1, idxAA, v3, v2)
+                addEdgeAA(prim2, idxAA, v3, v2)
                 if !edge
                 {
-                    addEdgeAA(prim1, 1, v0, v1)
-                    addEdgeAA(prim2, 1, v0, v1)
+                    idxAA += 1
+                    addEdgeAA(prim1, idxAA, v0, v1)
+                    addEdgeAA(prim2, idxAA, v0, v1)
+                }
+
+                if flatBegin
+                {
+                    idxAA += 1
+                    prim1t := prim1 + 2
+                    addEdgeAA(prim1, idxAA, prim1.pos, prim1t.pos);
+                    addEdgeAA(prim2, idxAA, prim1.pos, prim1t.pos);
                 }
             }
 
@@ -192,17 +204,26 @@ impl Painter
         }
 
         // End line cap
-        flatBegin := false
+        flatEnd := false
         if prim1 and prim2 and !path.isClosed and !firstLine and !beginLine
         {
             if pen.endCapStyle == CapStyle.None
-                flatBegin = true
+                flatEnd = true
             else
             {
                 vPrev = path.endPoint
                 drawCap(pen.endCapStyle, vPrev, vN1, -1.0, pen)
-                flatBegin = false
+                flatEnd = false
             }
+        }
+
+        // AA end edge if no cap
+        if flatEnd and paintParams & .Antialiased
+        {
+            idxAA += 1
+            prim2t := prim2 + 2
+            addEdgeAA(prim1, idxAA, prim2.pos, prim2t.pos)
+            addEdgeAA(prim2, idxAA, prim2.pos, prim2t.pos)
         }
     }
 }

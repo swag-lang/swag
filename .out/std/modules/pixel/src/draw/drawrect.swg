@@ -1,5 +1,5 @@
 #global public
-using Core.Drawing
+using Core.Drawing, Core.Math
 
 impl Painter
 {
@@ -39,5 +39,17 @@ impl Painter
         ptr.pos.x = left
         ptr.pos.y = top + height
         ptr.color = color
+    }
+
+    func drawEmptyRect(using self, left, top, right, bottom: f32, pen: Pen)
+    {
+        drawingPath.clear()
+        drawingPath.moveTo(@{left, top})
+        drawingPath.lineTo(@{right, top})
+        drawingPath.lineTo(@{right, bottom})
+        drawingPath.lineTo(@{left, bottom})
+        drawingPath.lineTo(@{left, top})
+        drawingPath.close()
+        drawPath(drawingPath, pen)
     }
 }

@@ -14,6 +14,6 @@ struct Pen
     size:  f32
     color: Color
 
-    beginCapStyle:  CapStyle = Round
-    endCapStyle:    CapStyle = Square
+    beginCapStyle:  CapStyle = None
+    endCapStyle:    CapStyle = None
 }
