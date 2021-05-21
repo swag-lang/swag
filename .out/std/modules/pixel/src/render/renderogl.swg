@@ -20,8 +20,23 @@ impl RenderOgl
 
         glGenBuffers(1, &vertexbuffer)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), null)
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), cast(const *void) cast(uint) @sizeof(Vector2))
+
+        var offset: const *void = null
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector2)
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(u32)
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
     public func resize(using self, width, height: s32)
@@ -94,22 +109,89 @@ impl RenderOgl
         #version 330 core
         layout(location = 0) in vec2 vertexPosition;
         layout(location = 1) in vec4 vertexColor;
-        uniform mat4 mvp;
-        out vec4 vcolor;
+        layout(location = 2) in vec4 aa0;
+        layout(location = 3) in vec4 aa1;
+        layout(location = 4) in vec4 aa2;
+        layout(location = 5) in vec4 aa3;
+        layout(location = 6) in vec4 aa4;
+        layout(location = 7) in vec4 aa5;
+
+        uniform mat4    mvp;
+
+        out vec4        vcolor;
+        out vec2        vpixelPos;
+        out vec4        vaa0;
+        out vec4        vaa1;
+        out vec4        vaa2;
+        out vec4        vaa3;
+        out vec4        vaa4;
+        out vec4        vaa5;
+
         void main()
         {
             gl_Position = mvp * vec4(vertexPosition, 0, 1);
+            vpixelPos = vertexPosition.xy;
             vcolor = vertexColor;
+            vaa0 = aa0;
+            vaa1 = aa1;
+            vaa2 = aa2;
+            vaa3 = aa3;
+            vaa4 = aa4;
+            vaa5 = aa5;
         }
     "@
 
     const PixelShader = @"
         #version 330 core
-        in vec4 vcolor;
-        out vec4 color;
+        in vec4     vcolor;
+        in vec2     vpixelPos;
+        in vec4     vaa0;
+        in vec4     vaa1;
+        in vec4     vaa2;
+        in vec4     vaa3;
+        in vec4     vaa4;
+        in vec4     vaa5;
+
+        out vec4    color;
+
+        float computeAlphaAA(vec4 segment)
+        {
+            float norm;
+            vec2 es = segment.zw - segment.xy;
+            vec2 es1 = es;
+            if (es.x != 0 || es.y != 0)
+            {
+                norm = sqrt(es.x * es.x + es.y * es.y);
+                es1.xy /= norm;
+                vec2  ptmp  = vpixelPos - segment.xy;
+                float dot   = (es1.x * ptmp.x) + (es1.y * ptmp.y);
+                float norm2 = dot < 0 ? 1 : 0;
+                dot /= norm;
+                norm2 = dot > 1 ? 1 : norm2;
+                float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
+                norm  = clamp(norm1 + norm2, 0, 1);
+            }
+            else
+                norm = 1;
+            return norm;
+        }
+
+        float computeAlphaEdgesAA()
+        {
+            float norm;
+            norm = min(1,    computeAlphaAA(vaa0));
+            norm = min(norm, computeAlphaAA(vaa1));
+            norm = min(norm, computeAlphaAA(vaa2));
+            norm = min(norm, computeAlphaAA(vaa3));
+            norm = min(norm, computeAlphaAA(vaa4));
+            norm = min(norm, computeAlphaAA(vaa5));
+            return norm;
+        }
+
         void main()
         {
             color = vcolor;
+            color.w *= computeAlphaEdgesAA();
         }
     "@
 

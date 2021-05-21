@@ -87,6 +87,14 @@ impl Painter
             prim1 = pushTriangle(v0, v1, v3, pen.color)
             prim2 = pushTriangle(v1, v3, v2, pen.color)
 
+            //if (m_RenderingParams & RP_ANTIALIASED)
+            {
+                addEdgeAA(prim1, 0, v0, v1)
+                addEdgeAA(prim2, 1, v3, v2)
+                addEdgeAA(prim1, 2, v3, v2)
+                addEdgeAA(prim2, 3, v0, v1)
+            }
+
             vPrevN1 = vN1
             vPrev = vNew
             vPrevNc = vNewNc
@@ -95,7 +103,7 @@ impl Painter
 
         // End line cap
         flatBegin := false
-        if !path.isClosed and !firstLine and !beginLine
+        if prim1 and prim2 and !path.isClosed and !firstLine and !beginLine
         {
             if pen.endCapStyle == CapStyle.None
                 flatBegin = true
