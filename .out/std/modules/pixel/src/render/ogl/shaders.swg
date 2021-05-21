@@ -10,7 +10,7 @@ const VertexShaderAA = @"
     layout(location = 5) in vec4 aa3;
     layout(location = 6) in vec4 aa4;
     layout(location = 7) in vec4 aa5;
-    layout(location = 8) in uint aanum;
+    layout(location = 8) in float aanum;
 
     uniform mat4    mvp;
 
@@ -22,7 +22,7 @@ const VertexShaderAA = @"
     out vec4        vaa3;
     out vec4        vaa4;
     out vec4        vaa5;
-    out uint        vaanum;
+    out float       vaanum;
 
     void main()
     {
@@ -49,7 +49,7 @@ const PixelShaderAA = @"
     in vec4     vaa3;
     in vec4     vaa4;
     in vec4     vaa5;
-    in uint     vaanum;
+    in float    vaanum;
 
     out vec4    color;
 
@@ -75,23 +75,28 @@ const PixelShaderAA = @"
 
     float computeAlphaEdgesAA()
     {
-        float norm;
-        norm = min(1,    computeAlphaAA(vaa0));
+        float norm = 1;
+        if(vaanum < 0.5) return norm;
+        norm = min(norm, computeAlphaAA(vaa0));
+        if(vaanum < 1.5) return norm;
         norm = min(norm, computeAlphaAA(vaa1));
+        if(vaanum < 2.5) return norm;
         norm = min(norm, computeAlphaAA(vaa2));
+        if(vaanum < 3.5) return norm;
         norm = min(norm, computeAlphaAA(vaa3));
+        if(vaanum < 4.5) return norm;
         norm = min(norm, computeAlphaAA(vaa4));
-        norm = min(norm, computeAlphaAA(vaa5));
-        return norm;
+        if(vaanum < 5.5) return norm;
+        return min(norm, computeAlphaAA(vaa5));
     }
 
     void main()
     {
         color = vcolor;
-        //color.w *= computeAlphaEdgesAA();
+        color.w *= computeAlphaEdgesAA();
 
-        float f = computeAlphaEdgesAA();
-        if (f < 1) color.x = f;
+        /*float f = computeAlphaEdgesAA();
+        if (f < 1) color.x = f;*/
     }
 "@
 
@@ -100,16 +105,28 @@ impl RenderOgl
     func createProgram(using self, vertex, pixel: string)->GLint
     {
         var result: GLint
+	    var infoLogLength: s32
+        var infoLog: String
 
         vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
         vertexSourcePointer := @dataof(vertex)
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, null)
         glCompileShader(vertexShaderID)
 
+    glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
+	glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    infoLog.reserve(cast(uint) infoLogLength + 1)
+    glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
+
         fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
         pixelSourcePointer := @dataof(pixel)
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, null)
         glCompileShader(fragmentShaderID)
+
+    glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
+	glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    infoLog.reserve(cast(uint) infoLogLength + 1)
+    glGetShaderInfoLog(fragmentShaderID, infoLogLength, null, @dataof(infoLog))
 
         progID := glCreateProgram()
         glAttachShader(progID, vertexShaderID)

@@ -42,7 +42,7 @@ impl RenderOgl
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
 
-        glVertexAttribPointer(8, 1, GL_UNSIGNED_INT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
     public func resize(using self, width, height: s32)

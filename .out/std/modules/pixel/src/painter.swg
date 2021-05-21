@@ -11,7 +11,7 @@ struct VertexLayout
     aa3:    Vector4
     aa4:    Vector4
     aa5:    Vector4
-    aanum:  u32
+    aanum:  f32
 }
 
 enum CommandId
@@ -74,7 +74,6 @@ impl Painter
         }
 
         ptr := vertexBuffer.emplaceAddress(3)
-        Memory.clear(ptr, 3'uint * @sizeof(VertexLayout)) // temp
         var result: retval = ptr
 
         ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
