@@ -23,7 +23,7 @@ struct Pen
     size:  f32
     color: Color
 
-    beginCapStyle:  CapStyle = None
-    endCapStyle:    CapStyle = None
+    beginCapStyle:  CapStyle = Round
+    endCapStyle:    CapStyle = Round
     jointStyle:     JointStyle = Bevel
 }

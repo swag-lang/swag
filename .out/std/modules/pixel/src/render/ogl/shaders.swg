@@ -55,22 +55,16 @@ const PixelShaderAA = @"
 
     float computeAlphaAA(vec4 segment)
     {
-        float norm;
         vec2 es = segment.zw - segment.xy;
-        if (es.x != 0 || es.y != 0)
-        {
-            norm = sqrt(es.x * es.x + es.y * es.y);
-            vec2  es1 = es / norm;
-            vec2  ptmp  = vpixelPos - segment.xy;
-            float dot   = (es1.x * ptmp.x) + (es1.y * ptmp.y);
-            float norm2 = dot < 0 ? 1 : 0;
-            dot /= norm;
-            norm2 = dot > 1 ? 1 : norm2;
-            float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
-            return clamp(norm1 + norm2, 0, 1);
-        }
-
-        return 1;
+        float norm = sqrt(es.x * es.x + es.y * es.y);
+        vec2  es1 = es / norm;
+        vec2  ptmp  = vpixelPos - segment.xy;
+        float dot   = (es1.x * ptmp.x) + (es1.y * ptmp.y);
+        float norm2 = dot < 0 ? 1 : 0;
+        dot /= norm;
+        norm2 = dot > 1 ? 1 : norm2;
+        float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
+        return clamp(norm1 + norm2, 0, 1);
     }
 
     float computeAlphaEdgesAA()
@@ -93,10 +87,10 @@ const PixelShaderAA = @"
     void main()
     {
         color = vcolor;
-        color.w *= computeAlphaEdgesAA();
+        //color.w *= computeAlphaEdgesAA();
 
-        /*float f = computeAlphaEdgesAA();
-        if (f < 1) color.x = f;*/
+        float f = computeAlphaEdgesAA();
+        if (f < 1) color.x = f;
     }
 "@
 

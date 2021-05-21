@@ -21,14 +21,12 @@ impl RenderOgl
         glGenBuffers(1, &vertexbuffer)
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
 
+        // Vertex buffer layout
         var offset: const *void = null
-
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
-
         glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
-
         glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
@@ -41,7 +39,6 @@ impl RenderOgl
         offset += @sizeof(Vector4)
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-
         glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
@@ -51,7 +48,7 @@ impl RenderOgl
         self.height = #scopefct.height
     }
 
-    func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
+    private func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
     {
         m[0,0] = 2 / (r - l);
         m[0,1] = 0;

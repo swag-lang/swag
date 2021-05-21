@@ -3,7 +3,7 @@ using Core, Drawing, Core.Math
 
 impl Painter
 {
-    func drawSolidLine(using self, start, end: Vector2, pen: Pen)
+    func drawLine(using self, start, end: Vector2, pen: Pen)
     {
         drawingPath.clear()
         drawingPath.moveTo(start)

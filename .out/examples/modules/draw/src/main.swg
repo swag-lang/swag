@@ -17,7 +17,6 @@ var ff: f32 = 0
 func display()
 {
     var pen: Pen
-    pen.color = 0xFF000000
     pen.size = 50
 
     cdc.begin()
@@ -27,7 +26,9 @@ func display()
     cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     cdc.drawSolidRect(0,0,50,50, Argb.Red)
     //cdc.drawSolidTriangle(@{ff+10,10},@{ff+500,10},@{ff+1000,500},Argb.Red,Argb.Green,Argb.Blue)
-    cdc.drawSolidLine(@{50,50},@{950,500}, pen)
+    pen.color = 0xFF000000
+    cdc.drawLine(@{150,150},@{950,500}, pen)
+    pen.color = 0xFF0000FF
     cdc.drawEmptyRect(50, 50, 500, 500, pen)
     cdc.end()
 
