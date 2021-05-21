@@ -46,7 +46,7 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: LinePath, pen: Pen)
+    func drawPath(using self, path: LinePath, pen: Pen, edge = false)
     {
         if pen.size == 0 or path.elements.count == 0
             return
@@ -56,7 +56,10 @@ impl Painter
         // AA will reduce visually the size. Compensate
         if paintParams & .Antialiased
         {
-            size += 0.5
+            if edge
+                size += 1.5
+            else
+                size += 0.5
         }
 
         size2 := size * 0.5
@@ -107,10 +110,13 @@ impl Painter
 
             if paintParams & .Antialiased
             {
-                addEdgeAA(prim1, 0, v0, v1)
-                addEdgeAA(prim1, 1, v3, v2)
+                addEdgeAA(prim1, 0, v3, v2)
                 addEdgeAA(prim2, 0, v3, v2)
-                addEdgeAA(prim2, 1, v0, v1)
+                if !edge
+                {
+                    addEdgeAA(prim1, 1, v0, v1)
+                    addEdgeAA(prim2, 1, v0, v1)
+                }
             }
 
             vPrevN1 = vN1
