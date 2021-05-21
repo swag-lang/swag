@@ -10,11 +10,11 @@ impl Painter
         cmd.params.drawTriangles.count = 3
 
         ptr := vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = color
+        ptr.pos = p1; ptr.color = color.argb
         ptr += 1
-        ptr.pos = p2; ptr.color = color
+        ptr.pos = p2; ptr.color = color.argb
         ptr += 1
-        ptr.pos = p3; ptr.color = color
+        ptr.pos = p3; ptr.color = color.argb
     }
 
     func drawSolidTriangle(using self, p1, p2, p3: Vector2, c1, c2, c3: Color)
@@ -24,10 +24,10 @@ impl Painter
         cmd.params.drawTriangles.count = 3
 
         ptr := vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = c1
+        ptr.pos = p1; ptr.color = c1.argb
         ptr += 1
-        ptr.pos = p2; ptr.color = c2
+        ptr.pos = p2; ptr.color = c2.argb
         ptr += 1
-        ptr.pos = p3; ptr.color = c3
+        ptr.pos = p3; ptr.color = c3.argb
     }
 }

@@ -4,7 +4,7 @@ using Core, Ogl, Core.Drawing, Core.Math
 struct VertexLayout
 {
     pos:    Vector2
-    color:  Color
+    color:  u32
     aa0:    Vector4
     aa1:    Vector4
     aa2:    Vector4

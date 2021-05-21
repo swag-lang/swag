@@ -17,32 +17,32 @@ impl Painter
 
         ptr.pos.x = left
         ptr.pos.y = top
-        ptr.color = color
+        ptr.color = color.argb
         ptr += 1
 
         ptr.pos.x = right
         ptr.pos.y = top
-        ptr.color = color
+        ptr.color = color.argb
         ptr += 1
 
         ptr.pos.x = right
         ptr.pos.y = bottom
-        ptr.color = color
+        ptr.color = color.argb
         ptr += 1
 
         ptr.pos.x = left
         ptr.pos.y = top
-        ptr.color = color
+        ptr.color = color.argb
         ptr += 1
 
         ptr.pos.x = right
         ptr.pos.y = bottom
-        ptr.color = color
+        ptr.color = color.argb
         ptr += 1
 
         ptr.pos.x = left
         ptr.pos.y = bottom
-        ptr.color = color
+        ptr.color = color.argb
     }
 
     func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)

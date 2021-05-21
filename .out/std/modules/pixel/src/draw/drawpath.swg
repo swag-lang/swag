@@ -13,11 +13,11 @@ impl Painter
         var result: retval = ptr
 
         Memory.clear(ptr, 3'uint * @sizeof(VertexLayout))
-        ptr.pos = p1; ptr.color = color
+        ptr.pos = p1; ptr.color = color.argb
         ptr += 1
-        ptr.pos = p2; ptr.color = color
+        ptr.pos = p2; ptr.color = color.argb
         ptr += 1
-        ptr.pos = p3; ptr.color = color
+        ptr.pos = p3; ptr.color = color.argb
 
         return result
     }
