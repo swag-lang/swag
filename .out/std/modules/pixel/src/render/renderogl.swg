@@ -22,11 +22,14 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
 
         var offset: const *void = null
+
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
+
         glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
@@ -84,6 +87,12 @@ impl RenderOgl
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnableVertexAttribArray(0)
         glEnableVertexAttribArray(1)
+        glEnableVertexAttribArray(2)
+        glEnableVertexAttribArray(3)
+        glEnableVertexAttribArray(4)
+        glEnableVertexAttribArray(5)
+        glEnableVertexAttribArray(6)
+        glEnableVertexAttribArray(7)
 
         visit cmd: dc.commandBuffer
         {
@@ -103,6 +112,12 @@ impl RenderOgl
 
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
+        glDisableVertexAttribArray(2)
+        glDisableVertexAttribArray(3)
+        glDisableVertexAttribArray(4)
+        glDisableVertexAttribArray(5)
+        glDisableVertexAttribArray(6)
+        glDisableVertexAttribArray(7)
     }
 
     const VertexShader = @"
@@ -158,22 +173,20 @@ impl RenderOgl
         {
             float norm;
             vec2 es = segment.zw - segment.xy;
-            vec2 es1 = es;
             if (es.x != 0 || es.y != 0)
             {
                 norm = sqrt(es.x * es.x + es.y * es.y);
-                es1.xy /= norm;
+                vec2  es1 = es / norm;
                 vec2  ptmp  = vpixelPos - segment.xy;
                 float dot   = (es1.x * ptmp.x) + (es1.y * ptmp.y);
                 float norm2 = dot < 0 ? 1 : 0;
                 dot /= norm;
                 norm2 = dot > 1 ? 1 : norm2;
                 float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
-                norm  = clamp(norm1 + norm2, 0, 1);
+                return clamp(norm1 + norm2, 0, 1);
             }
-            else
-                norm = 1;
-            return norm;
+
+            return 1;
         }
 
         float computeAlphaEdgesAA()

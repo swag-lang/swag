@@ -11,11 +11,14 @@ impl Painter
 
         ptr := vertexBuffer.emplaceAddress(3)
         var result: retval = ptr
+
+        Memory.clear(ptr, 3'uint * @sizeof(VertexLayout))
         ptr.pos = p1; ptr.color = color
         ptr += 1
         ptr.pos = p2; ptr.color = color
         ptr += 1
         ptr.pos = p3; ptr.color = color
+
         return result
     }
 
@@ -90,9 +93,9 @@ impl Painter
             //if (m_RenderingParams & RP_ANTIALIASED)
             {
                 addEdgeAA(prim1, 0, v0, v1)
-                addEdgeAA(prim2, 1, v3, v2)
-                addEdgeAA(prim1, 2, v3, v2)
-                addEdgeAA(prim2, 3, v0, v1)
+                addEdgeAA(prim1, 1, v3, v2)
+                addEdgeAA(prim2, 0, v3, v2)
+                addEdgeAA(prim2, 1, v0, v1)
             }
 
             vPrevN1 = vN1
