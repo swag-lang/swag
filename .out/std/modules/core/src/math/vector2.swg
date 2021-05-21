@@ -60,16 +60,16 @@ impl Vector2
     }
 
     // Return sthe length of the vector
-    func length(using self) => sqrt((x * x) + (y * y))
+    func length(using const self) => sqrt((x * x) + (y * y))
 
     // Returns the squared length of the vector
-    func lengthSquared(using self) => (x * x) + (y * y)
+    func lengthSquared(using const self) => (x * x) + (y * y)
 
     // Returns the dot product between two vectors
-    func dot(using self, other: Self) => (x * other.x) + (y * other.y)
+    func dot(using const self, other: Self) => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector. 'axis' will give the sign
-    func cross(using self, axis: f32)->Vector2
+    func cross(using const self, axis: f32)->Vector2
     {
         return @{y * axis, -x * axis}
     }

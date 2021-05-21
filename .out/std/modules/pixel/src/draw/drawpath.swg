@@ -37,11 +37,32 @@ impl Painter
         }
     }
 
+    private func drawCapRound(using self, p, d: Vector2, sens: f32, pen: Pen)
+    {
+        radius := d.length()
+        if radius < 2.5
+        {
+            drawCapTriangle(p, d, sens, pen)
+            return
+        }
+
+        v0 := p
+        v1 := Vector2{p.x + d.x, p.y + d.y}
+
+        angle0 := Math.atan2(-d.y, -d.x)
+        angle1 := angle0 + Math.ConstF32.Pi
+        fstep  := Math.ConstF32.Pi * radius
+        step   := 0
+    }
+
     private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
+        #[Swag.complete]
         switch capStyle
         {
-        case Triangle: drawCapTriangle(p, d, sens, pen)
+        case None:      break
+        case Triangle:  drawCapTriangle(p, d, sens, pen)
+        case Round:     drawCapRound(p, d, sens, pen)
         }
     }
 
