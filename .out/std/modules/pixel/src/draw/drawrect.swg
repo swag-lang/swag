@@ -41,8 +41,11 @@ impl Painter
         ptr.color = color
     }
 
-    func drawEmptyRect(using self, left, top, right, bottom: f32, pen: Pen)
+    func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)
     {
+        right := left + width
+        bottom := top + height
+
         drawingPath.clear()
         drawingPath.moveTo(@{left, top})
         drawingPath.lineTo(@{right, top})
@@ -50,6 +53,7 @@ impl Painter
         drawingPath.lineTo(@{left, bottom})
         drawingPath.lineTo(@{left, top})
         drawingPath.close()
+
         drawPath(drawingPath, pen)
     }
 }

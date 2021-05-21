@@ -127,7 +127,7 @@ impl Vector2
     }
 
     // Returns this vector normalized
-    func toNormalize(using self)->Vector2
+    func toNormalize(using const self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -152,7 +152,7 @@ impl Vector2
     }
 
     // Returns this vector normalized even if its length is almost null
-    func toNormalizeSafe(using self)->Vector2
+    func toNormalizeSafe(using const self)->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)

@@ -9,6 +9,15 @@ enum CapStyle
     Square
 }
 
+enum JointStyle
+{
+    None
+    Bevel
+    Round
+    Miter
+    MiterBevel
+}
+
 struct Pen
 {
     size:  f32
@@ -16,4 +25,5 @@ struct Pen
 
     beginCapStyle:  CapStyle = None
     endCapStyle:    CapStyle = None
+    jointStyle:     JointStyle = Bevel
 }

@@ -111,6 +111,46 @@ impl Painter
         }
     }
 
+    private func drawJointBevel(using self, p, d1, d2: Vector2, pen: Pen)
+    {
+        var v0: Vector2 = p
+        d1n := d1.toNormalize()
+        d2n := d2.toNormalize()
+
+        var v1, v2: Vector2 = ?
+        if d1.x * d2.y - d1.y * d2.x < 0
+        {
+            v0 += d1 * 0.25
+            v0 += d2 * 0.25
+            v1 = Vector2{p.x - d1.x, p.y - d1.y}
+            v2 = Vector2{p.x - d2.x, p.y - d2.y}
+        }
+        else
+        {
+            v0 -= d1 * 0.25
+            v0 -= d2 * 0.25
+            v1 = Vector2{p.x + d1.x, p.y + d1.y}
+            v2 = Vector2{p.x + d2.x, p.y + d2.y}
+        }
+
+        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        if paintParams & .Antialiased
+            addEdgeAA(prim1, 0, v1, v2)
+    }
+
+    private func drawJoint(using self, jointStyle: JointStyle, p, d1, d2: Vector2, pen: Pen)
+    {
+        #[Swag.complete]
+        switch jointStyle
+        {
+        case None:          break
+        case Bevel:         drawJointBevel(p, d1, d2, pen)
+        case Round:         break
+        case Miter:         break
+        case MiterBevel:    break
+        }
+    }
+
     // Draw the line path with the given 'pen'
     func drawPath(using self, path: LinePath, pen: Pen, edge = false)
     {
@@ -130,7 +170,7 @@ impl Painter
 
         size2 := size * 0.5
 
-        var vPrevN1, vN1: Vector2
+        var vPrevN1, vFirstN1, vN1: Vector2
         var prim1, prim2: *VertexLayout
 
         vPrev, vPrevNc       := path.startPoint
@@ -167,6 +207,12 @@ impl Painter
                 }
             }
 
+            // Joints
+            if !beginLine
+            {
+                drawJoint(pen.jointStyle, vPrev, vPrevN1, vN1, pen)
+            }
+
             // Draw quad
             v0 := vPrev - vN1
             v1 := vNew - vN1
@@ -197,6 +243,9 @@ impl Painter
                 }
             }
 
+            // To draw end joint
+            if firstLine vFirstN1 = vN1
+
             vPrevN1 = vN1
             vPrev = vNew
             vPrevNc = vNewNc
@@ -215,6 +264,12 @@ impl Painter
                 drawCap(pen.endCapStyle, vPrev, vN1, -1.0, pen)
                 flatEnd = false
             }
+        }
+
+        // Closing join between the end and the beginning in case of a closed path
+        if path.isClosed and !firstLine and !beginLine
+        {
+            drawJoint(pen.jointStyle, vPrev, vN1, vFirstN1, pen)
         }
 
         // AA end edge if no cap

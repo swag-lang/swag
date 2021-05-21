@@ -42,24 +42,26 @@ impl LinePath
     func moveTo(using self, pt: Vector2)
     {
         // First point
-        if !isOpened
+        if !elements.count
         {
-            isOpened = true
             startPoint = pt
+            endPoint = pt
+            return
         }
 
         // Its not useful to have two successive moveTo, so replace the last one if
         // necessary
-        if elements.count and elements.buffer[elements.count - 1].type == .MoveTo
-            elements.buffer[elements.count - 1].position = pt
-        else
+        if elements.buffer[elements.count - 1].type == .MoveTo
         {
-            var elem: Element = ?
-            elem.type = .MoveTo
-            elem.position = pt
-            elements.add(elem)
+            elements.buffer[elements.count - 1].position = pt
+            endPoint = pt
+            return
         }
 
+        var elem: Element = ?
+        elem.type = .MoveTo
+        elem.position = pt
+        elements.add(elem)
         endPoint = pt
     }
 
