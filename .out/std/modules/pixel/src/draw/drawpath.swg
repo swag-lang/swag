@@ -29,6 +29,12 @@ impl Painter
         v1 := Vector2{p.x - d.x, p.y - d.y}
         v2 := Vector2{p.x + n.x, p.y + n.y}
         prim1 := pushTriangle(v0, v1, v2, pen.color)
+
+        //if (m_RenderingParams & RP_ANTIALIASED)
+        {
+            addEdgeAA(prim1, 0, v1, v2)
+            addEdgeAA(prim1, 1, v0, v2)
+        }
     }
 
     private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)
