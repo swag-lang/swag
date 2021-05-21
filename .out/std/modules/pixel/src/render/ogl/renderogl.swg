@@ -40,6 +40,9 @@ impl RenderOgl
         glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+
+        glVertexAttribPointer(8, 1, GL_UNSIGNED_INT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
     public func resize(using self, width, height: s32)
@@ -93,6 +96,7 @@ impl RenderOgl
         glEnableVertexAttribArray(5)
         glEnableVertexAttribArray(6)
         glEnableVertexAttribArray(7)
+        glEnableVertexAttribArray(8)
 
         visit cmd: dc.commandBuffer
         {
@@ -118,5 +122,6 @@ impl RenderOgl
         glDisableVertexAttribArray(5)
         glDisableVertexAttribArray(6)
         glDisableVertexAttribArray(7)
+        glDisableVertexAttribArray(8)
     }
 }

@@ -12,12 +12,11 @@ impl Painter
         ptr := vertexBuffer.emplaceAddress(3)
         var result: retval = ptr
 
-        Memory.clear(ptr, 3'uint * @sizeof(VertexLayout))
-        ptr.pos = p1; ptr.color = color.argb
+        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
-        ptr.pos = p2; ptr.color = color.argb
+        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
-        ptr.pos = p3; ptr.color = color.argb
+        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0
 
         return result
     }
@@ -35,11 +34,11 @@ impl Painter
 
         if paintParams & .Antialiased
         {
-            addEdgeAA(prim1, 0, v0, v3)
-            addEdgeAA(prim1, 1, v1, v2)
-            addEdgeAA(prim2, 0, v3, v2)
-            addEdgeAA(prim2, 1, v1, v2)
-            addEdgeAA(prim2, 2, v0, v3)
+            addEdgeAA(prim1, v0, v3)
+            addEdgeAA(prim1, v1, v2)
+            addEdgeAA(prim2, v3, v2)
+            addEdgeAA(prim2, v1, v2)
+            addEdgeAA(prim2, v0, v3)
         }
     }
 
@@ -53,8 +52,8 @@ impl Painter
 
         if paintParams & .Antialiased
         {
-            addEdgeAA(prim1, 0, v1, v2)
-            addEdgeAA(prim1, 1, v0, v2)
+            addEdgeAA(prim1, v1, v2)
+            addEdgeAA(prim1, v0, v2)
         }
     }
 
@@ -94,7 +93,7 @@ impl Painter
             v2.y = p.y + (Math.sin(t) * radius)
             prim1 := pushTriangle(v0, v1, v2, pen.color)
             if paintParams & .Antialiased
-                addEdgeAA(prim1, 0, v1, v2)
+                addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
     }
@@ -135,7 +134,7 @@ impl Painter
 
         prim1 := pushTriangle(v0, v1, v2, pen.color)
         if paintParams & .Antialiased
-            addEdgeAA(prim1, 0, v1, v2)
+            addEdgeAA(prim1, v1, v2)
     }
 
     private func drawJoint(using self, jointStyle: JointStyle, p, d1, d2: Vector2, pen: Pen)
@@ -224,22 +223,19 @@ impl Painter
             // Generate AA edges
             if paintParams & .Antialiased
             {
-                idxAA = 0
-                addEdgeAA(prim1, idxAA, v3, v2)
-                addEdgeAA(prim2, idxAA, v3, v2)
+                addEdgeAA(prim1, v3, v2)
+                addEdgeAA(prim2, v3, v2)
                 if !edge
                 {
-                    idxAA += 1
-                    addEdgeAA(prim1, idxAA, v0, v1)
-                    addEdgeAA(prim2, idxAA, v0, v1)
+                    addEdgeAA(prim1, v0, v1)
+                    addEdgeAA(prim2, v0, v1)
                 }
 
                 if flatBegin
                 {
-                    idxAA += 1
                     prim1t := prim1 + 2
-                    addEdgeAA(prim1, idxAA, prim1.pos, prim1t.pos);
-                    addEdgeAA(prim2, idxAA, prim1.pos, prim1t.pos);
+                    addEdgeAA(prim1, prim1.pos, prim1t.pos);
+                    addEdgeAA(prim2, prim1.pos, prim1t.pos);
                 }
             }
 
@@ -275,10 +271,9 @@ impl Painter
         // AA end edge if no cap
         if flatEnd and paintParams & .Antialiased
         {
-            idxAA += 1
             prim2t := prim2 + 2
-            addEdgeAA(prim1, idxAA, prim2.pos, prim2t.pos)
-            addEdgeAA(prim2, idxAA, prim2.pos, prim2t.pos)
+            addEdgeAA(prim1, prim2.pos, prim2t.pos)
+            addEdgeAA(prim2, prim2.pos, prim2t.pos)
         }
     }
 }

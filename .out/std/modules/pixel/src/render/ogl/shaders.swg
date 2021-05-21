@@ -10,6 +10,7 @@ const VertexShaderAA = @"
     layout(location = 5) in vec4 aa3;
     layout(location = 6) in vec4 aa4;
     layout(location = 7) in vec4 aa5;
+    layout(location = 8) in uint aanum;
 
     uniform mat4    mvp;
 
@@ -21,6 +22,7 @@ const VertexShaderAA = @"
     out vec4        vaa3;
     out vec4        vaa4;
     out vec4        vaa5;
+    out uint        vaanum;
 
     void main()
     {
@@ -33,6 +35,7 @@ const VertexShaderAA = @"
         vaa3 = aa3;
         vaa4 = aa4;
         vaa5 = aa5;
+        vaanum = aanum;
     }
 "@
 
@@ -46,6 +49,7 @@ const PixelShaderAA = @"
     in vec4     vaa3;
     in vec4     vaa4;
     in vec4     vaa5;
+    in uint     vaanum;
 
     out vec4    color;
 
