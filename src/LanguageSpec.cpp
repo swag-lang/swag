@@ -179,6 +179,7 @@ void LanguageSpec::setup()
     keywords.add("@asin", TokenId::IntrinsicASin);
     keywords.add("@acos", TokenId::IntrinsicACos);
     keywords.add("@atan", TokenId::IntrinsicATan);
+    keywords.add("@atan2", TokenId::IntrinsicATan2);
     keywords.add("@log", TokenId::IntrinsicLog);
     keywords.add("@log2", TokenId::IntrinsicLog2);
     keywords.add("@log10", TokenId::IntrinsicLog10);

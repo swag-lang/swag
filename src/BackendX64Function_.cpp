@@ -3560,6 +3560,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
+            case TokenId::IntrinsicATan2:
+                emitCall(pp, "atan2f");
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -3582,6 +3585,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicMax:
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                break;
+            case TokenId::IntrinsicATan2:
+                emitCall(pp, "atan2");
                 break;
             default:
                 ok = false;
@@ -3703,6 +3709,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicATan:
                 emitCall(pp, "atan");
+                break;
+            case TokenId::IntrinsicATan2:
+                emitCall(pp, "atan2");
                 break;
             case TokenId::IntrinsicLog:
                 emitCall(pp, "log");

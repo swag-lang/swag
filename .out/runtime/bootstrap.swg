@@ -682,6 +682,8 @@ func @cstrlen(value: const *u8)->uint;
     func @exp2(value: f64)->f64;
     func @pow(value1, value2: f32)->f32;
     func @pow(value1, value2: f64)->f64;
+    func @atan2(value1, value2: f32)->f32;
+    func @atan2(value1, value2: f64)->f64;
 
     func @min(value1, value2: s8)->s8;
     func @min(value1, value2: s16)->s16;

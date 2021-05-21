@@ -52,7 +52,23 @@ impl Painter
         angle0 := Math.atan2(-d.y, -d.x)
         angle1 := angle0 + Math.ConstF32.Pi
         fstep  := Math.ConstF32.Pi * radius
-        step   := 0
+
+        step := 0
+        step = cast(s32) fstep
+        if step < 3 step = 3
+        radius *= sens
+
+        var v2: Vector2 = ?
+        loop i: step + 1
+        {
+            t := angle0 + ((angle1 - angle0) * i) / step
+            v2.x = p.x + (Math.cos(t) * radius)
+            v2.y = p.y + (Math.sin(t) * radius)
+            prim1 := pushTriangle(v0, v1, v2, pen.color)
+            if paintParams & .Antialiased
+                addEdgeAA(prim1, 0, v1, v2)
+            v1 = v2
+        }
     }
 
     private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)

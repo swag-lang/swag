@@ -20,14 +20,14 @@ struct LLVMPerThread
     string                filename;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
-    llvm::GlobalVariable* bssSeg              = nullptr;
-    llvm::GlobalVariable* mutableSeg          = nullptr;
-    llvm::GlobalVariable* constantSeg         = nullptr;
-    llvm::GlobalVariable* typeSeg             = nullptr;
-    llvm::GlobalVariable* tlsSeg              = nullptr;
-    llvm::GlobalVariable* mainContext         = nullptr;
-    llvm::GlobalVariable* defaultAllocTable   = nullptr;
-    llvm::GlobalVariable* processInfos        = nullptr;
+    llvm::GlobalVariable* bssSeg               = nullptr;
+    llvm::GlobalVariable* mutableSeg           = nullptr;
+    llvm::GlobalVariable* constantSeg          = nullptr;
+    llvm::GlobalVariable* typeSeg              = nullptr;
+    llvm::GlobalVariable* tlsSeg               = nullptr;
+    llvm::GlobalVariable* mainContext          = nullptr;
+    llvm::GlobalVariable* defaultAllocTable    = nullptr;
+    llvm::GlobalVariable* processInfos         = nullptr;
     llvm::GlobalVariable* symTls_threadLocalId = nullptr;
 
     llvm::Type*         interfaceTy    = nullptr;
@@ -70,6 +70,8 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_tanhf64;
     llvm::FunctionCallee fn_powf32;
     llvm::FunctionCallee fn_powf64;
+    llvm::FunctionCallee fn_atan2f32;
+    llvm::FunctionCallee fn_atan2f64;
     llvm::FunctionCallee fn_memcmp;
     llvm::FunctionCallee fn_strlen;
     llvm::FunctionCallee fn_malloc;

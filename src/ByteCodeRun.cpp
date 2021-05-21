@@ -444,6 +444,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicMax:
             ra.f32 = max(rb.f32, rc.f32);
             break;
+        case TokenId::IntrinsicATan2:
+            ra.f32 = atan2f(rb.f32, rc.f32);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -466,6 +469,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicMax:
             ra.f64 = max(rb.f64, rc.f64);
             break;
+        case TokenId::IntrinsicATan2:
+            ra.f64 = atan2(rb.f64, rc.f64);
+            break;
+
         default:
             SWAG_ASSERT(false);
             break;

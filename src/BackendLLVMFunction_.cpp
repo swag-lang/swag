@@ -4418,6 +4418,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {builder.getFloatTy(), builder.getFloatTy()}, {r1, r2}), r0);
                 break;
+            case TokenId::IntrinsicATan2:
+                builder.CreateStore(builder.CreateCall(pp.fn_atan2f32, {r1, r2}), r0);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -4440,6 +4443,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {builder.getDoubleTy(), builder.getDoubleTy()}, {r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicATan2:
+                builder.CreateStore(builder.CreateCall(pp.fn_atan2f64, {r1, r2}), r0);
                 break;
             default:
                 ok = false;

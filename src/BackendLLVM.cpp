@@ -100,43 +100,45 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // mainContext
     if (precompileIndex == 0)
     {
-        pp.mainContext         = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
-        pp.defaultAllocTable   = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
-        pp.processInfos        = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
+        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
+        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
+        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
         pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_thread_local_id");
     }
     else
     {
-        pp.mainContext         = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
-        pp.defaultAllocTable   = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
-        pp.processInfos        = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
+        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
+        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
+        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
         pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_thread_local_id");
     }
 
     // LIBC functions
     {
 
-        pp.fn_acosf32 = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_asinf32 = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_asinf64 = modu.getOrInsertFunction("asin", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_tanf32  = modu.getOrInsertFunction("tanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_tanf64  = modu.getOrInsertFunction("tan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_atanf32 = modu.getOrInsertFunction("atanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_atanf64 = modu.getOrInsertFunction("atan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_sinhf32 = modu.getOrInsertFunction("sinhf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_sinhf64 = modu.getOrInsertFunction("sinh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_coshf32 = modu.getOrInsertFunction("coshf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_coshf64 = modu.getOrInsertFunction("cosh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_tanhf32 = modu.getOrInsertFunction("tanhf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_tanhf64 = modu.getOrInsertFunction("tanh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_powf32  = modu.getOrInsertFunction("powf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
-        pp.fn_powf64  = modu.getOrInsertFunction("pow", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
-        pp.fn_memcmp  = modu.getOrInsertFunction("memcmp", ::llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_strlen  = modu.getOrInsertFunction("strlen", ::llvm::FunctionType::get(llvm::Type::getInt64Ty(context), {llvm::Type::getInt8PtrTy(context)}, false));
-        pp.fn_malloc  = modu.getOrInsertFunction("malloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_realloc = modu.getOrInsertFunction("realloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_free    = modu.getOrInsertFunction("free", ::llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
+        pp.fn_acosf32  = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_acosf64  = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_asinf32  = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_asinf64  = modu.getOrInsertFunction("asin", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_tanf32   = modu.getOrInsertFunction("tanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_tanf64   = modu.getOrInsertFunction("tan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_atanf32  = modu.getOrInsertFunction("atanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_atanf64  = modu.getOrInsertFunction("atan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_sinhf32  = modu.getOrInsertFunction("sinhf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_sinhf64  = modu.getOrInsertFunction("sinh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_coshf32  = modu.getOrInsertFunction("coshf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_coshf64  = modu.getOrInsertFunction("cosh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_tanhf32  = modu.getOrInsertFunction("tanhf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_tanhf64  = modu.getOrInsertFunction("tanh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_powf32   = modu.getOrInsertFunction("powf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
+        pp.fn_powf64   = modu.getOrInsertFunction("pow", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
+        pp.fn_atan2f32 = modu.getOrInsertFunction("atan2f", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
+        pp.fn_atan2f64 = modu.getOrInsertFunction("atan2", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
+        pp.fn_memcmp   = modu.getOrInsertFunction("memcmp", ::llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_strlen   = modu.getOrInsertFunction("strlen", ::llvm::FunctionType::get(llvm::Type::getInt64Ty(context), {llvm::Type::getInt8PtrTy(context)}, false));
+        pp.fn_malloc   = modu.getOrInsertFunction("malloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_realloc  = modu.getOrInsertFunction("realloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_free     = modu.getOrInsertFunction("free", ::llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
     }
 
     // Cache things
