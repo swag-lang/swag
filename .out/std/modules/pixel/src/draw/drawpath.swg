@@ -393,6 +393,29 @@ impl Painter
         }
     }
 
+    private func drawArc(using self, cxt: *Context, pos, p1, p2: Vector2)
+    {
+        fstep := Math.abs(p1.y - p1.x) * Math.max(p2.x, p2.y)
+        step := 0'u32
+        switch paintQuality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+        loop i: 1..step
+        {
+            t := p1.x + ((p1.y - p1.x) * i) / step
+            v := pos
+            v.x += (Math.sin(t) * p2.x)
+            v.y += -(Math.cos(t) * p2.y)
+            drawLine(cxt, v)
+        }
+    }
+
     private func drawEndCap(using self, cxt: *Context)
     {
         using cxt
@@ -460,6 +483,8 @@ impl Painter
                 drawBezier(&cxt, elem.position, elem.p1)
             case Bezier2:
                 drawBezier(&cxt, elem.position, elem.p1, elem.p2)
+            case Arc:
+                drawArc(&cxt, elem.position, elem.p1, elem.p2)
             }
         }
 

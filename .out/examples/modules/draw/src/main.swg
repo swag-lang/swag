@@ -89,6 +89,14 @@ func display()
     cdc.position(@{400, 500})
     cdc.drawPath(path, pen)
 
+    path.clear()
+    pen.color = Argb.Purple
+    path.arcTo(@{0, 50}, 0, 90, 50, 50)
+    path.moveTo(@{100, 50})
+    path.arcTo(@{150, 50}, -90, 0, 50, 50)
+    cdc.position(@{50, 600})
+    cdc.drawPath(path, pen)
+
     cdc.end()
 
     //ff += 0.1

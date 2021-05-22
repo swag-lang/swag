@@ -5,6 +5,7 @@ enum ElementType
 {
     Move
     Line
+    Arc
     Bezier1
     Bezier2
 }
@@ -110,6 +111,25 @@ impl LinePath
         elements.add(elem)
 
         endPoint = to
+    }
+
+    func arcTo(using self, center: Vector2, initAngle, maxAngle: f32, radiusX, radiusY: f32)
+    {
+        initAngleRad := Math.toRadians(initAngle)
+        maxAngleRad := Math.toRadians(maxAngle)
+
+        var elem: Element = ?
+        elem.type = .Arc
+        elem.position = center
+        elem.p1.x = initAngleRad
+        elem.p1.y = maxAngleRad
+        elem.p2.x = radiusX
+        elem.p2.y = radiusY
+        elements.add(elem)
+
+        endPoint.x = Math.sin(maxAngleRad) * radiusX
+        endPoint.y = -Math.cos(maxAngleRad) * radiusY
+        endPoint += center
     }
 
     // Close the figure
