@@ -21,11 +21,10 @@ func display()
     pen.color = 0xFF000000
 
     cdc.begin()
-    cdc.clear(Argb.White)
+    cdc.clear(Argb.Red)
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    //cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
-    //cdc.drawSolidRect(0,0,50,50, Argb.Red)
+    cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
     pen.color = Argb.Black
     pen.beginCapStyle = .None
