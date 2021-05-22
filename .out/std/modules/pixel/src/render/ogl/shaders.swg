@@ -25,18 +25,42 @@ const VertexShaderAA = @"
     out vec4        vaa5;
     out float       vaanum;
 
+    vec4 computeTransformAA(vec4 aa)
+    {
+        vec4 v0 = mdl * vec4(aa.xy, 0, 1);
+        vec4 v1 = mdl * vec4(aa.zw, 0, 1);
+        return vec4(v0.xy, v1.xy);
+    }
+
+    void transformAA()
+    {
+        vaanum = aanum;
+        if(vaanum < 0.5) return;
+        vaa0 = computeTransformAA(aa0);
+        if(vaanum < 1.5) return;
+        vaa1 = computeTransformAA(aa1);
+        if(vaanum < 2.5) return;
+        vaa2 = computeTransformAA(aa2);
+        if(vaanum < 3.5) return;
+        vaa3 = computeTransformAA(aa3);
+        if(vaanum < 4.5) return;
+        vaa4 = computeTransformAA(aa4);
+        if(vaanum < 5.5) return;
+        vaa5 = computeTransformAA(aa5);
+    }
+
     void main()
     {
         gl_Position = mvp * mdl * vec4(vertexPosition, 0, 1);
-        vpixelPos = vertexPosition.xy;
-        vcolor = vertexColor.zyxw; // source is rgba, and we need bgra
-        vaa0 = aa0;
-        vaa1 = aa1;
-        vaa2 = aa2;
-        vaa3 = aa3;
-        vaa4 = aa4;
-        vaa5 = aa5;
-        vaanum = aanum;
+
+        // transform pixel position with 'mdl'
+        vec4 vp = mdl * vec4(vertexPosition.xy, 0, 1);
+        vpixelPos.xy = vp.xy;
+
+        // source is rgba, and we need bgra
+        vcolor = vertexColor.zyxw;
+
+        transformAA();
     }
 "@
 
