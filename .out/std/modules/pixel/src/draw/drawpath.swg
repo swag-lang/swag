@@ -272,7 +272,7 @@ impl Painter
 
         // Begin line cap
         flatBegin := false
-        if !path.isClosed and firstLine
+        if !path.isClosed and beginLine
         {
             if pen.beginCapStyle == CapStyle.None
                 flatBegin = true
@@ -325,6 +325,32 @@ impl Painter
         beginLine, firstLine = false
     }
 
+    private func drawEndCap(using self, cxt: *Context)
+    {
+        using cxt
+
+        // End line cap
+        flatEnd := false
+        if prim1 and prim2 and !path.isClosed and !beginLine
+        {
+            if pen.endCapStyle == CapStyle.None
+                flatEnd = true
+            else
+            {
+                drawCap(pen.endCapStyle, prev, normal, -1.0, dref pen)
+                flatEnd = false
+            }
+        }
+
+        // AA end edge if no cap
+        if flatEnd and paintParams & .Antialiased
+        {
+            prim2t := prim2 + 2
+            addEdgeAA(prim1, prim2.pos, prim2t.pos)
+            addEdgeAA(prim2, prim2.pos, prim2t.pos)
+        }
+    }
+
     // Draw the line path with the given 'pen'
     func drawPath(using self, path: LinePath, pen: Pen, edge = false)
     {
@@ -356,6 +382,7 @@ impl Painter
         {
             if elem.type == .MoveTo
             {
+                drawEndCap(&cxt)
                 cxt.prev, cxt.prevNc = elem.position
                 cxt.beginLine = true
                 continue
@@ -365,31 +392,12 @@ impl Painter
         }
 
         // End line cap
-        flatEnd := false
-        if cxt.prim1 and cxt.prim2 and !path.isClosed and !cxt.firstLine and !cxt.beginLine
-        {
-            if pen.endCapStyle == CapStyle.None
-                flatEnd = true
-            else
-            {
-                cxt.prev = path.endPoint
-                drawCap(pen.endCapStyle, cxt.prev, cxt.normal, -1.0, pen)
-                flatEnd = false
-            }
-        }
+        drawEndCap(&cxt)
 
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
             drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
-        }
-
-        // AA end edge if no cap
-        if flatEnd and paintParams & .Antialiased
-        {
-            prim2t := cxt.prim2 + 2
-            addEdgeAA(cxt.prim1, cxt.prim2.pos, prim2t.pos)
-            addEdgeAA(cxt.prim2, cxt.prim2.pos, prim2t.pos)
         }
     }
 }

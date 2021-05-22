@@ -68,9 +68,10 @@ func display()
     pen.color = Argb.Green
     path.clear()
     path.lineTo(@{100, 0})
-    path.curveTo(@{150, 50})
-    path.lineTo(@{200, 50})
-
+    path.moveTo(@{0, 50})
+    path.lineTo(@{100, 50})
+    pen.beginCapStyle = .Round
+    pen.endCapStyle = .Round
     cdc.position(@{50, 600})
     cdc.drawPath(path, pen)
 
