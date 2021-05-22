@@ -177,6 +177,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
+    //#[Swag.optim("", false)]
     private func drawJointMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
@@ -195,8 +196,8 @@ impl Painter
             }
         }
 
-        a.x = (a.x / l) * m2 * w
-        a.y = (a.y / l) * m2 * w
+        a.x = a.x / l * m2 * w
+        a.y = a.y / l * m2 * w
 
         v0 := p
 

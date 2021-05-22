@@ -17,18 +17,39 @@ var ff: f32 = 0
 func display()
 {
     var pen: Pen
-    pen.size = 50
+    pen.size = 10
+    pen.color = 0xFF000000
 
     cdc.begin()
-    cdc.clear(Argb.Red)
+    cdc.clear(Argb.White)
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    //cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     //cdc.drawSolidRect(0,0,50,50, Argb.Red)
-    pen.color = 0xFF000000
-    cdc.drawLine(@{150,150},@{950,500}, pen)
+
+    pen.beginCapStyle = .None
+    pen.endCapStyle = .None
+    cdc.drawLine(@{50,50},@{100,200}, pen)
+    pen.beginCapStyle = .Square
+    pen.endCapStyle = .Square
+    cdc.drawLine(@{150,50},@{200,200}, pen)
+    pen.beginCapStyle = .Round
+    pen.endCapStyle = .Round
+    cdc.drawLine(@{250,50},@{300,200}, pen)
+    pen.beginCapStyle = .Triangle
+    pen.endCapStyle = .Triangle
+    cdc.drawLine(@{350,50},@{400,200}, pen)
+
     pen.color = 0xFF0000FF
-    cdc.drawEmptyRect(50, 50, 500, 500, pen)
+    pen.jointStyle = .None
+    cdc.drawEmptyRect(50, 350, 100, 100, pen)
+    pen.jointStyle = .Bevel
+    cdc.drawEmptyRect(250, 350, 100, 100, pen)
+    pen.jointStyle = .Round
+    cdc.drawEmptyRect(450, 350, 100, 100, pen)
+    pen.jointStyle = .Miter
+    cdc.drawEmptyRect(650, 350, 100, 100, pen)
+
     cdc.end()
 
     //ff += 0.1

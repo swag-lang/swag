@@ -53,7 +53,7 @@ struct Painter
     drawingBegin:   bool
     drawingPath:    LinePath
     paintParams:    PaintParams = Default
-    paintQuality:   PaintQuality = Good
+    paintQuality:   PaintQuality = High
 }
 
 impl Painter
