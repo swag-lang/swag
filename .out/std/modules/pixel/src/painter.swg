@@ -26,7 +26,7 @@ struct Command
     params: union
     {
         clear:          struct{color: Color; flags: u32;}
-        drawTriangles:  struct{start: u32; count: u32;}
+        drawTriangles:  struct{start: u32; count: u32; pos: Vector2;}
     }
 }
 
@@ -58,20 +58,33 @@ struct Painter
 
 impl Painter
 {
+    func startTriangles(using self, pos: Vector2)
+    {
+        // Starts a new batch only if batch parameters (like position) are
+        // different from the last one
+        if commandBuffer.count
+        {
+            last := commandBuffer.buffer + commandBuffer.count - 1
+            if last.id == CommandId.DrawTriangles
+            {
+               if last.params.drawTriangles.pos == pos
+                    return
+            }
+        }
+
+        cmd := newCommand(CommandId.DrawTriangles)
+        params := &cmd.params.drawTriangles
+        params.start = cast(u32) vertexBuffer.count
+        params.pos = pos
+        params.count = 0
+    }
+
     func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
     {
-        // If last command is already a 'DrawTriangles', than just increase the number of triangles
-        // to paint instead of adding a new command
-        if commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == CommandId.DrawTriangles
-        {
-            commandBuffer.buffer[commandBuffer.count - 1].params.drawTriangles.count += 3
-        }
-        else
-        {
-            cmd := newCommand(CommandId.DrawTriangles)
-            cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
-            cmd.params.drawTriangles.count = 3
-        }
+        Debug.assert(commandBuffer.count != 0)
+        Debug.assert(commandBuffer.buffer[commandBuffer.count - 1].id == CommandId.DrawTriangles)
+
+        commandBuffer.buffer[commandBuffer.count - 1].params.drawTriangles.count += 3
 
         ptr := vertexBuffer.emplaceAddress(3)
         var result: retval = ptr

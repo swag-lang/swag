@@ -244,11 +244,12 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: LinePath, pen: Pen, edge = false)
+    func drawPath(using self, pos: Vector2, path: LinePath, pen: Pen, edge = false)
     {
         if pen.size == 0 or path.elements.count == 0
             return
 
+        startTriangles(pos)
         size := pen.size
 
         // AA will reduce visually the size. Compensate

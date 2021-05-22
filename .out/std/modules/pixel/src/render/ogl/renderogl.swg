@@ -90,8 +90,6 @@ impl RenderOgl
         modelMatrix.m[0, 0] = 1
         modelMatrix.m[1, 1] = 1
         modelMatrix.m[2, 2] = 1
-        modelMatrix.m[3, 0] = 100
-        modelMatrix.m[3, 1] = 100
         modelMatrix.m[3, 3] = 1
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
@@ -111,6 +109,9 @@ impl RenderOgl
 
             case DrawTriangles:
                 params := &cmd.params.drawTriangles
+                modelMatrix.m[3, 0] = params.pos.x
+                modelMatrix.m[3, 1] = params.pos.y
+                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
             }
         }

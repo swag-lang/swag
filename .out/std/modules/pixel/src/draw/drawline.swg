@@ -8,6 +8,6 @@ impl Painter
         drawingPath.clear()
         drawingPath.moveTo(start)
         drawingPath.lineTo(end)
-        drawPath(drawingPath, pen)
+        drawPath(Vector2.Zero, drawingPath, pen)
     }
 }
