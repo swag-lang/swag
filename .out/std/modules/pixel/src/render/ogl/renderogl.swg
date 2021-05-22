@@ -4,7 +4,6 @@ public struct RenderOgl
 {
     vertexbuffer:       GLuint
     programID:          GLuint
-    orthoMatrix:        Matrix4x4
     width, height:      s32
 }
 
@@ -78,10 +77,21 @@ impl RenderOgl
 
         glUseProgram(programID)
 
-        var matrixID: GLint = glGetUniformLocation(programID, @dataof("mvp"))
+        // View, ortho projection
+        var mvp: GLint = glGetUniformLocation(programID, @dataof("mvp"))
+        var orthoMatrix: Matrix4x4
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
-        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+        glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
 	    glViewport(0, 0, width, height)
+
+        // Draw matrix
+        var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
+        var modelMatrix: Matrix4x4
+        modelMatrix.m[0, 0] = 1
+        modelMatrix.m[1, 1] = 1
+        modelMatrix.m[2, 2] = 1
+        modelMatrix.m[3, 3] = 1
+        glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)

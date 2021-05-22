@@ -13,6 +13,7 @@ const VertexShaderAA = @"
     layout(location = 8) in float aanum;
 
     uniform mat4    mvp;
+    uniform mat4    mdl;
 
     out vec4        vcolor;
     out vec2        vpixelPos;
@@ -26,7 +27,7 @@ const VertexShaderAA = @"
 
     void main()
     {
-        gl_Position = mvp * vec4(vertexPosition, 0, 1);
+        gl_Position = mvp * mdl * vec4(vertexPosition, 0, 1);
         vpixelPos = vertexPosition.xy;
         vcolor = vertexColor.zyxw; // source is rgba, and we need bgra
         vaa0 = aa0;

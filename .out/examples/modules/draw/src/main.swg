@@ -27,6 +27,7 @@ func display()
     //cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     //cdc.drawSolidRect(0,0,50,50, Argb.Red)
 
+    pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
     cdc.drawLine(@{50,50},@{100,200}, pen)
@@ -40,15 +41,23 @@ func display()
     pen.endCapStyle = .Triangle
     cdc.drawLine(@{350,50},@{400,200}, pen)
 
-    pen.color = 0xFF0000FF
+    pen.color = Argb.Blue
     pen.jointStyle = .None
-    cdc.drawEmptyRect(50, 350, 100, 100, pen)
+    cdc.drawEmptyRect(50, 300, 100, 100, pen)
     pen.jointStyle = .Bevel
-    cdc.drawEmptyRect(250, 350, 100, 100, pen)
+    cdc.drawEmptyRect(250, 300, 100, 100, pen)
     pen.jointStyle = .Round
-    cdc.drawEmptyRect(450, 350, 100, 100, pen)
+    cdc.drawEmptyRect(450, 300, 100, 100, pen)
     pen.jointStyle = .Miter
-    cdc.drawEmptyRect(650, 350, 100, 100, pen)
+    cdc.drawEmptyRect(650, 300, 100, 100, pen)
+
+    pen.color = Argb.Red
+    var path: LinePath
+    path.moveTo(@{0, 0})
+    path.lineTo(@{100, 0})
+    path.lineTo(@{100, 50})
+    path.lineTo(@{200, 50})
+    cdc.drawPath(path, pen)
 
     cdc.end()
 
