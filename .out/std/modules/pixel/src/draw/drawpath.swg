@@ -1,6 +1,18 @@
 #global public
 using Core, Core.Math, Core.Drawing
 
+private struct Context
+{
+    size2:                  f32
+    edge:                   bool
+    prevN1, firstN1, n1:    Vector2
+    prim1, prim2:           *VertexLayout
+    prev, prevNc:           Vector2
+    beginLine, firstLine:   bool
+    path:                   const *LinePath
+    pen:                    const *Pen
+}
+
 impl Painter
 {
     private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
@@ -243,29 +255,17 @@ impl Painter
         }
     }
 
-    struct Context
-    {
-        size2:                  f32
-        edge:                   bool
-        vPrevN1, vFirstN1, vN1: Vector2
-        prim1, prim2:           *VertexLayout
-        vPrev, vPrevNc:         Vector2
-        beginLine, firstLine:   bool
-        path:                   const *LinePath
-        pen:                    const *Pen
-    }
-
-    func drawLineTo(using self, cxt: *Context, pos: Vector2)
+    private func drawLineTo(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
 
         // Compute line (half width on each side, except if edge)
         vNew, vNewNc := pos
-        n := vNewNc - vPrevNc
+        n := vNewNc - prevNc
         n.normalize()
-        vN1 = n.cross(1)
-        n2 := vN1
-        vN1 *= size2
+        n1 = n.cross(1)
+        n2 := n1
+        n1 *= size2
 
         // Begin line cap
         flatBegin := false
@@ -275,7 +275,7 @@ impl Painter
                 flatBegin = true
             else
             {
-                drawCap(pen.beginCapStyle, vPrev, vN1, 1.0, dref pen)
+                drawCap(pen.beginCapStyle, prev, n1, 1.0, dref pen)
                 flatBegin = false
             }
         }
@@ -283,14 +283,14 @@ impl Painter
         // Joints
         if !beginLine
         {
-            drawJoint(pen.jointStyle, vPrev, vPrevN1, vN1, dref pen)
+            drawJoint(pen.jointStyle, prev, prevN1, n1, dref pen)
         }
 
         // Draw quad
-        v0 := vPrev - vN1
-        v1 := vNew - vN1
-        v3 := vPrev + vN1
-        v2 := vNew + vN1
+        v0 := prev - n1
+        v1 := vNew - n1
+        v3 := prev + n1
+        v2 := vNew + n1
         prim1 = pushTriangle(v0, v1, v3, pen.color)
         prim2 = pushTriangle(v1, v3, v2, pen.color)
 
@@ -314,11 +314,11 @@ impl Painter
         }
 
         // To draw end joint
-        if firstLine vFirstN1 = vN1
+        if firstLine firstN1 = n1
 
-        vPrevN1 = vN1
-        vPrev = vNew
-        vPrevNc = vNewNc
+        prevN1 = n1
+        prev = vNew
+        prevNc = vNewNc
         beginLine, firstLine = false
     }
 
@@ -342,7 +342,7 @@ impl Painter
         var cxt: Context
         cxt.size2 = size * 0.5
         cxt.edge = edge
-        cxt.vPrev, cxt.vPrevNc = path.startPoint
+        cxt.prev, cxt.prevNc = path.startPoint
         cxt.beginLine, cxt.firstLine = true
         cxt.path = &path
         cxt.pen = &pen
@@ -351,7 +351,7 @@ impl Painter
         {
             if elem.type == .MoveTo
             {
-                cxt.vPrev, cxt.vPrevNc = elem.position
+                cxt.prev, cxt.prevNc = elem.position
                 cxt.beginLine = true
                 continue
             }
@@ -367,8 +367,8 @@ impl Painter
                 flatEnd = true
             else
             {
-                cxt.vPrev = path.endPoint
-                drawCap(pen.endCapStyle, cxt.vPrev, cxt.vN1, -1.0, pen)
+                cxt.prev = path.endPoint
+                drawCap(pen.endCapStyle, cxt.prev, cxt.n1, -1.0, pen)
                 flatEnd = false
             }
         }
@@ -376,7 +376,7 @@ impl Painter
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
-            drawJoint(pen.jointStyle, cxt.vPrev, cxt.vN1, cxt.vFirstN1, pen)
+            drawJoint(pen.jointStyle, cxt.prev, cxt.n1, cxt.firstN1, pen)
         }
 
         // AA end edge if no cap
