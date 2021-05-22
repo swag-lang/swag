@@ -95,8 +95,6 @@ impl Painter
     private func drawJointBevel(using self, p, d1, d2: Vector2, pen: Pen)
     {
         v0  := p
-        d1n := d1.toNormalize()
-        d2n := d2.toNormalize()
 
         var v1, v2: Vector2 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
@@ -119,6 +117,66 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
+    private func drawJointRound(using self, p, d1, d2: Vector2, pen: Pen)
+    {
+        v0 := p
+
+        var angle0, angle1: f32 = ?
+        var v1, v2, vend: Vector2 = ?
+        if d1.x * d2.y - d1.y * d2.x < 0
+        {
+            v0 += d1 * 0.25
+            v0 += d2 * 0.25
+            angle0 = Math.atan2(-d1.y, -d1.x)
+            angle1 = Math.atan2(-d2.y, -d2.x)
+            v1     = Vector2{p.x - d1.x, p.y - d1.y}
+            vend   = Vector2{p.x - d2.x, p.y - d2.y}
+        }
+        else
+        {
+            v0 -= d1 * 0.25
+            v0 -= d2 * 0.25
+            angle0 = Math.atan2(d1.y, d1.x)
+            angle1 = Math.atan2(d2.y, d2.x)
+            v1     = Vector2{p.x + d1.x, p.y + d1.y}
+            vend   = Vector2{p.x + d2.x, p.y + d2.y}
+        }
+
+        radius := d1.length()
+
+        if angle1 > angle0 + Math.ConstF32.Pi
+            angle1 -= Math.ConstF32.TwoPi
+        else if angle1 < angle0 - Math.ConstF32.Pi
+            angle1 += Math.ConstF32.TwoPi
+
+        step  := 0'u32
+        fstep := Math.abs(angle1 - angle0) * radius
+        switch paintQuality
+        {
+        case Draft:     step = cast(s32) (fstep / 6)
+        case Normal:    step = cast(s32) (fstep / 4)
+        case Good:      step = cast(s32) (fstep / 2)
+        case High:      step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+        loop i: step + 1
+        {
+            t := angle0 + ((angle1 - angle0) * i) / step
+            v2.x = p.x + (Math.cos(t) * radius)
+            v2.y = p.y + (Math.sin(t) * radius)
+            prim1 := pushTriangle(v0, v1, v2, pen.color)
+            if paintParams & .Antialiased
+                addEdgeAA(prim1, v1, v2)
+            v1 = v2
+        }
+
+        v2 = vend
+        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        if paintParams & .Antialiased
+            addEdgeAA(prim1, v1, v2)
+    }
+
     private func drawJoint(using self, jointStyle: JointStyle, p, d1, d2: Vector2, pen: Pen)
     {
         #[Swag.complete]
@@ -126,7 +184,7 @@ impl Painter
         {
         case None:          break
         case Bevel:         drawJointBevel(p, d1, d2, pen)
-        case Round:         break
+        case Round:         drawJointRound(p, d1, d2, pen)
         case Miter:         break
         case MiterBevel:    break
         }

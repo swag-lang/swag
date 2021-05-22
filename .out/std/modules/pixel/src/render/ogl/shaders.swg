@@ -87,10 +87,9 @@ const PixelShaderAA = @"
     void main()
     {
         color = vcolor;
-        //color.w *= computeAlphaEdgesAA();
-
-        float f = computeAlphaEdgesAA();
-        if (f < 1) color.x = f;
+        color.w *= computeAlphaEdgesAA();
+        //float f = computeAlphaEdgesAA();
+        //if (f < 1) color.x = f;
     }
 "@
 

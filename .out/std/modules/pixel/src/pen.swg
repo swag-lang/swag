@@ -25,5 +25,5 @@ struct Pen
 
     beginCapStyle:  CapStyle = Round
     endCapStyle:    CapStyle = Round
-    jointStyle:     JointStyle = Bevel
+    jointStyle:     JointStyle = Round
 }
