@@ -26,29 +26,31 @@ func display()
     cdc.paintQuality = g_paintQuality
     cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
+    cdc.position(@{50, 50})
     pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
-    cdc.drawLine(@{50,50},@{100,200}, pen)
+    cdc.drawLine(@{0,0},@{50,150}, pen)
     pen.beginCapStyle = .Square
     pen.endCapStyle = .Square
-    cdc.drawLine(@{150,50},@{200,200}, pen)
+    cdc.drawLine(@{100,0},@{150,150}, pen)
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
-    cdc.drawLine(@{250,50},@{300,200}, pen)
+    cdc.drawLine(@{200,0},@{250,150}, pen)
     pen.beginCapStyle = .Triangle
     pen.endCapStyle = .Triangle
-    cdc.drawLine(@{350,50},@{400,200}, pen)
+    cdc.drawLine(@{300,0},@{350,150}, pen)
 
+    cdc.position(@{50, 250})
     pen.color = Argb.Blue
     pen.jointStyle = .None
-    cdc.drawEmptyRect(50, 300, 100, 100, pen)
+    cdc.drawEmptyRect(0, 0, 100, 100, pen)
     pen.jointStyle = .Bevel
-    cdc.drawEmptyRect(250, 300, 100, 100, pen)
+    cdc.drawEmptyRect(150, 0, 100, 100, pen)
     pen.jointStyle = .Round
-    cdc.drawEmptyRect(450, 300, 100, 100, pen)
+    cdc.drawEmptyRect(300, 0, 100, 100, pen)
     pen.jointStyle = .Miter
-    cdc.drawEmptyRect(650, 300, 100, 100, pen)
+    cdc.drawEmptyRect(450, 0, 100, 100, pen)
 
     pen.color = Argb.Red
     var path: LinePath
@@ -56,13 +58,13 @@ func display()
     path.lineTo(@{100, 50})
     path.lineTo(@{200, 50})
     pen.jointStyle = .Miter
-    cdc.position(@{50, 500})
+    cdc.position(@{50, 400})
     cdc.drawPath(path, pen)
     pen.jointStyle = .Bevel
-    cdc.position(@{250, 500})
+    cdc.position(@{250, 400})
     cdc.drawPath(path, pen)
     pen.jointStyle = .Round
-    cdc.position(@{450, 500})
+    cdc.position(@{450, 400})
     cdc.drawPath(path, pen)
 
     pen.color = Argb.Green
@@ -72,19 +74,19 @@ func display()
     path.lineTo(@{100, 50})
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
-    cdc.position(@{50, 600})
+    cdc.position(@{50, 500})
     cdc.drawPath(path, pen)
 
     path.clear()
     path.bezierTo(@{100, 0}, @{50, -50})
-    cdc.position(@{250, 600})
+    cdc.position(@{250, 500})
     cdc.drawPath(path, pen)
 
     path.clear()
     path.lineTo(@{50, 0})
     path.bezierTo(@{100, 50}, @{100, 0}, @{50, 50})
-    path.lineTo(@{250, 50})
-    cdc.position(@{400, 600})
+    path.lineTo(@{200, 50})
+    cdc.position(@{400, 500})
     cdc.drawPath(path, pen)
 
     cdc.end()
