@@ -93,6 +93,7 @@ impl RenderOgl
         modelMatrix.m[3, 3] = 1
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
+        // State
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
@@ -107,11 +108,14 @@ impl RenderOgl
                 glClearColor(r, g, b, 0)
                 glClear(params.flags)
 
-            case DrawTriangles:
-                params := &cmd.params.drawTriangles
+            case Position:
+                params := &cmd.params.transform
                 modelMatrix.m[3, 0] = params.pos.x
                 modelMatrix.m[3, 1] = params.pos.y
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+
+            case DrawTriangles:
+                params := &cmd.params.drawTriangles
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
             }
         }

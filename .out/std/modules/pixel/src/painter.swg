@@ -17,6 +17,7 @@ struct VertexLayout
 enum CommandId
 {
     Clear
+    Position
     DrawTriangles
 }
 
@@ -26,7 +27,8 @@ struct Command
     params: union
     {
         clear:          struct{color: Color; flags: u32;}
-        drawTriangles:  struct{start: u32; count: u32; pos: Vector2;}
+        drawTriangles:  struct{start: u32; count: u32;}
+        transform:      struct{pos: Vector2;}
     }
 }
 
@@ -58,33 +60,24 @@ struct Painter
 
 impl Painter
 {
-    func startTriangles(using self, pos: Vector2)
+    func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
     {
-        // Starts a new batch only if batch parameters (like position) are
-        // different from the last one
+        var cmd: *Command
         if commandBuffer.count
         {
             last := commandBuffer.buffer + commandBuffer.count - 1
             if last.id == CommandId.DrawTriangles
-            {
-               if last.params.drawTriangles.pos == pos
-                    return
-            }
+                cmd = last
         }
 
-        cmd := newCommand(CommandId.DrawTriangles)
-        params := &cmd.params.drawTriangles
-        params.start = cast(u32) vertexBuffer.count
-        params.pos = pos
-        params.count = 0
-    }
+        if !cmd
+        {
+            cmd = newCommand(CommandId.DrawTriangles)
+            cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
+            cmd.params.drawTriangles.count = 0
+        }
 
-    func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
-    {
-        Debug.assert(commandBuffer.count != 0)
-        Debug.assert(commandBuffer.buffer[commandBuffer.count - 1].id == CommandId.DrawTriangles)
-
-        commandBuffer.buffer[commandBuffer.count - 1].params.drawTriangles.count += 3
+        cmd.params.drawTriangles.count += 3
 
         ptr := vertexBuffer.emplaceAddress(3)
         var result: retval = ptr
@@ -148,5 +141,11 @@ impl Painter
         cmd := newCommand(CommandId.Clear)
         cmd.params.clear.color = color
         cmd.params.clear.flags = flags
+    }
+
+    func position(using self, pos: Vector2)
+    {
+        cmd := newCommand(CommandId.Position)
+        cmd.params.transform.pos = pos
     }
 }

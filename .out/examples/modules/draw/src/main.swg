@@ -57,11 +57,14 @@ func display()
     path.lineTo(@{100, 50})
     path.lineTo(@{200, 50})
     pen.jointStyle = .Miter
-    cdc.drawPath(@{50, 500}, path, pen)
+    cdc.position(@{50, 500})
+    cdc.drawPath(path, pen)
     pen.jointStyle = .Bevel
-    cdc.drawPath(@{250, 500}, path, pen)
+    cdc.position(@{250, 500})
+    cdc.drawPath(path, pen)
     pen.jointStyle = .Round
-    cdc.drawPath(@{450, 500}, path, pen)
+    cdc.position(@{450, 500})
+    cdc.drawPath(path, pen)
 
     cdc.end()
 
