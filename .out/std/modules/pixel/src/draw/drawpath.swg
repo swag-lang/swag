@@ -3,14 +3,17 @@ using Core, Core.Math, Core.Drawing
 
 private struct Context
 {
-    size2:                  f32
-    edge:                   bool
-    prevN1, firstN1, n1:    Vector2
-    prim1, prim2:           *VertexLayout
-    prev, prevNc:           Vector2
-    beginLine, firstLine:   bool
-    path:                   const *LinePath
-    pen:                    const *Pen
+    size2:          f32
+    edge:           bool
+    beginLine:      bool
+    firstLine:      bool
+    normalPrev:     Vector2
+    normalFirst:    Vector2
+    normal:         Vector2
+    prim1, prim2:   *VertexLayout
+    prev, prevNc:   Vector2
+    path:           const *LinePath
+    pen:            const *Pen
 }
 
 impl Painter
@@ -263,9 +266,9 @@ impl Painter
         vNew, vNewNc := pos
         n := vNewNc - prevNc
         n.normalize()
-        n1 = n.cross(1)
-        n2 := n1
-        n1 *= size2
+        normal = n.cross(1)
+        n2 := normal
+        normal *= size2
 
         // Begin line cap
         flatBegin := false
@@ -275,7 +278,7 @@ impl Painter
                 flatBegin = true
             else
             {
-                drawCap(pen.beginCapStyle, prev, n1, 1.0, dref pen)
+                drawCap(pen.beginCapStyle, prev, normal, 1.0, dref pen)
                 flatBegin = false
             }
         }
@@ -283,14 +286,14 @@ impl Painter
         // Joints
         if !beginLine
         {
-            drawJoint(pen.jointStyle, prev, prevN1, n1, dref pen)
+            drawJoint(pen.jointStyle, prev, normalPrev, normal, dref pen)
         }
 
         // Draw quad
-        v0 := prev - n1
-        v1 := vNew - n1
-        v3 := prev + n1
-        v2 := vNew + n1
+        v0 := prev - normal
+        v1 := vNew - normal
+        v3 := prev + normal
+        v2 := vNew + normal
         prim1 = pushTriangle(v0, v1, v3, pen.color)
         prim2 = pushTriangle(v1, v3, v2, pen.color)
 
@@ -314,9 +317,9 @@ impl Painter
         }
 
         // To draw end joint
-        if firstLine firstN1 = n1
+        if firstLine normalFirst = normal
 
-        prevN1 = n1
+        normalPrev = normal
         prev = vNew
         prevNc = vNewNc
         beginLine, firstLine = false
@@ -340,12 +343,14 @@ impl Painter
         }
 
         var cxt: Context
-        cxt.size2 = size * 0.5
-        cxt.edge = edge
-        cxt.prev, cxt.prevNc = path.startPoint
-        cxt.beginLine, cxt.firstLine = true
-        cxt.path = &path
-        cxt.pen = &pen
+        cxt.size2       = size * 0.5
+        cxt.edge        = edge
+        cxt.prev        = path.startPoint
+        cxt.prevNc      = path.startPoint
+        cxt.beginLine   = true
+        cxt.firstLine   = true
+        cxt.path        = &path
+        cxt.pen         = &pen
 
         visit elem: path.elements
         {
@@ -368,7 +373,7 @@ impl Painter
             else
             {
                 cxt.prev = path.endPoint
-                drawCap(pen.endCapStyle, cxt.prev, cxt.n1, -1.0, pen)
+                drawCap(pen.endCapStyle, cxt.prev, cxt.normal, -1.0, pen)
                 flatEnd = false
             }
         }
@@ -376,7 +381,7 @@ impl Painter
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
-            drawJoint(pen.jointStyle, cxt.prev, cxt.n1, cxt.firstN1, pen)
+            drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
         }
 
         // AA end edge if no cap
