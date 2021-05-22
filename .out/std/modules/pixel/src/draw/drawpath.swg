@@ -243,6 +243,85 @@ impl Painter
         }
     }
 
+    struct Context
+    {
+        size2:                  f32
+        edge:                   bool
+        vPrevN1, vFirstN1, vN1: Vector2
+        prim1, prim2:           *VertexLayout
+        vPrev, vPrevNc:         Vector2
+        beginLine, firstLine:   bool
+        path:                   const *LinePath
+        pen:                    const *Pen
+    }
+
+    func drawLineTo(using self, cxt: *Context, pos: Vector2)
+    {
+        using cxt
+
+        // Compute line (half width on each side, except if edge)
+        vNew, vNewNc := pos
+        n := vNewNc - vPrevNc
+        n.normalize()
+        vN1 = n.cross(1)
+        n2 := vN1
+        vN1 *= size2
+
+        // Begin line cap
+        flatBegin := false
+        if !path.isClosed and firstLine
+        {
+            if pen.beginCapStyle == CapStyle.None
+                flatBegin = true
+            else
+            {
+                drawCap(pen.beginCapStyle, vPrev, vN1, 1.0, dref pen)
+                flatBegin = false
+            }
+        }
+
+        // Joints
+        if !beginLine
+        {
+            drawJoint(pen.jointStyle, vPrev, vPrevN1, vN1, dref pen)
+        }
+
+        // Draw quad
+        v0 := vPrev - vN1
+        v1 := vNew - vN1
+        v3 := vPrev + vN1
+        v2 := vNew + vN1
+        prim1 = pushTriangle(v0, v1, v3, pen.color)
+        prim2 = pushTriangle(v1, v3, v2, pen.color)
+
+        // Generate AA edges
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, v3, v2)
+            addEdgeAA(prim2, v3, v2)
+            if !edge
+            {
+                addEdgeAA(prim1, v0, v1)
+                addEdgeAA(prim2, v0, v1)
+            }
+
+            if flatBegin
+            {
+                prim1t := prim1 + 2
+                addEdgeAA(prim1, prim1.pos, prim1t.pos);
+                addEdgeAA(prim2, prim1.pos, prim1t.pos);
+            }
+        }
+
+        // To draw end joint
+        if firstLine vFirstN1 = vN1
+
+        vPrevN1 = vN1
+        vPrev = vNew
+        vPrevNc = vNewNc
+        beginLine, firstLine = false
+    }
+
     // Draw the line path with the given 'pen'
     func drawPath(using self, path: LinePath, pen: Pen, edge = false)
     {
@@ -260,113 +339,52 @@ impl Painter
                 size += 0.5
         }
 
-        size2 := size * 0.5
+        var cxt: Context
+        cxt.size2 = size * 0.5
+        cxt.edge = edge
+        cxt.vPrev, cxt.vPrevNc = path.startPoint
+        cxt.beginLine, cxt.firstLine = true
+        cxt.path = &path
+        cxt.pen = &pen
 
-        var vPrevN1, vFirstN1, vN1: Vector2
-        var prim1, prim2: *VertexLayout
-
-        vPrev, vPrevNc       := path.startPoint
-        beginLine, firstLine := true
-
-        idxAA := 0'u32
         visit elem: path.elements
         {
             if elem.type == .MoveTo
             {
-                vPrev, vPrevNc = elem.position
-                beginLine = true
+                cxt.vPrev, cxt.vPrevNc = elem.position
+                cxt.beginLine = true
                 continue
             }
 
-            // Compute line (half width on each side, except if edge)
-            vNew, vNewNc := elem.position
-            n := vNewNc - vPrevNc
-            n.normalize()
-            vN1 = n.cross(1)
-            n2 := vN1
-            vN1 *= size2
-
-            // Begin line cap
-            flatBegin := false
-            if !path.isClosed and firstLine
-            {
-                if pen.beginCapStyle == CapStyle.None
-                    flatBegin = true
-                else
-                {
-                    drawCap(pen.beginCapStyle, vPrev, vN1, 1.0, pen)
-                    flatBegin = false
-                }
-            }
-
-            // Joints
-            if !beginLine
-            {
-                drawJoint(pen.jointStyle, vPrev, vPrevN1, vN1, pen)
-            }
-
-            // Draw quad
-            v0 := vPrev - vN1
-            v1 := vNew - vN1
-            v3 := vPrev + vN1
-            v2 := vNew + vN1
-            prim1 = pushTriangle(v0, v1, v3, pen.color)
-            prim2 = pushTriangle(v1, v3, v2, pen.color)
-
-            // Generate AA edges
-            if paintParams & .Antialiased
-            {
-                addEdgeAA(prim1, v3, v2)
-                addEdgeAA(prim2, v3, v2)
-                if !edge
-                {
-                    addEdgeAA(prim1, v0, v1)
-                    addEdgeAA(prim2, v0, v1)
-                }
-
-                if flatBegin
-                {
-                    prim1t := prim1 + 2
-                    addEdgeAA(prim1, prim1.pos, prim1t.pos);
-                    addEdgeAA(prim2, prim1.pos, prim1t.pos);
-                }
-            }
-
-            // To draw end joint
-            if firstLine vFirstN1 = vN1
-
-            vPrevN1 = vN1
-            vPrev = vNew
-            vPrevNc = vNewNc
-            beginLine, firstLine = false
+            drawLineTo(&cxt, elem.position)
         }
 
         // End line cap
         flatEnd := false
-        if prim1 and prim2 and !path.isClosed and !firstLine and !beginLine
+        if cxt.prim1 and cxt.prim2 and !path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
             if pen.endCapStyle == CapStyle.None
                 flatEnd = true
             else
             {
-                vPrev = path.endPoint
-                drawCap(pen.endCapStyle, vPrev, vN1, -1.0, pen)
+                cxt.vPrev = path.endPoint
+                drawCap(pen.endCapStyle, cxt.vPrev, cxt.vN1, -1.0, pen)
                 flatEnd = false
             }
         }
 
         // Closing join between the end and the beginning in case of a closed path
-        if path.isClosed and !firstLine and !beginLine
+        if path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
-            drawJoint(pen.jointStyle, vPrev, vN1, vFirstN1, pen)
+            drawJoint(pen.jointStyle, cxt.vPrev, cxt.vN1, cxt.vFirstN1, pen)
         }
 
         // AA end edge if no cap
         if flatEnd and paintParams & .Antialiased
         {
-            prim2t := prim2 + 2
-            addEdgeAA(prim1, prim2.pos, prim2t.pos)
-            addEdgeAA(prim2, prim2.pos, prim2t.pos)
+            prim2t := cxt.prim2 + 2
+            addEdgeAA(cxt.prim1, cxt.prim2.pos, prim2t.pos)
+            addEdgeAA(cxt.prim2, cxt.prim2.pos, prim2t.pos)
         }
     }
 }

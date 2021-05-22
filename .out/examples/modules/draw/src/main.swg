@@ -65,6 +65,7 @@ func display()
     cdc.position(@{450, 500})
     cdc.drawPath(path, pen)
 
+    pen.color = Argb.Green
     path.clear()
     path.lineTo(@{100, 0})
     path.curveTo(@{150, 50})
