@@ -17,7 +17,7 @@ var ff: f32 = 0
 func display()
 {
     var pen: Pen
-    pen.size = 10
+    pen.size = 20
     pen.color = 0xFF000000
 
     cdc.begin()
