@@ -358,6 +358,41 @@ impl Painter
         }
     }
 
+    private func drawBezier(using self, cxt: *Context, pos, p1, p2: Vector2)
+    {
+        using cxt
+
+        v := pos - prev
+        fstep := v.length()
+
+        step := 0'u32
+        switch paintQuality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+
+        startPt := prev
+        loop i: 1..step
+        {
+            t  := i / cast(f32) step
+            it := 1.0 - t
+            a1 := it * it * it
+            a2 := 3.0 * t * it * it
+            a3 := 3.0 * t * t * it
+            a4 := t * t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
+            drawLine(cxt, point)
+        }
+    }
+
     private func drawEndCap(using self, cxt: *Context)
     {
         using cxt
@@ -423,6 +458,8 @@ impl Painter
                 drawLine(&cxt, elem.position)
             case Bezier1:
                 drawBezier(&cxt, elem.position, elem.p1)
+            case Bezier2:
+                drawBezier(&cxt, elem.position, elem.p1, elem.p2)
             }
         }
 

@@ -95,6 +95,23 @@ impl LinePath
         endPoint = to
     }
 
+    // Add a curve from the previous point to 'pt'
+    func bezierTo(using self, to, controlPt1, controlPt2: Vector2)
+    {
+        // Too close from the last point. Just dismiss
+        if endPoint.distanceSquared(to) < 1.0
+            return
+
+        var elem: Element = ?
+        elem.type = .Bezier2
+        elem.position = to
+        elem.p1 = controlPt1
+        elem.p2 = controlPt2
+        elements.add(elem)
+
+        endPoint = to
+    }
+
     // Close the figure
     // Will add a line to the first point if necessary
     func close(using self)
