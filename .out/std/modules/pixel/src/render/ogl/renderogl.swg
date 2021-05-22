@@ -97,15 +97,7 @@ impl RenderOgl
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        glEnableVertexAttribArray(0)
-        glEnableVertexAttribArray(1)
-        glEnableVertexAttribArray(2)
-        glEnableVertexAttribArray(3)
-        glEnableVertexAttribArray(4)
-        glEnableVertexAttribArray(5)
-        glEnableVertexAttribArray(6)
-        glEnableVertexAttribArray(7)
-        glEnableVertexAttribArray(8)
+        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
 
         visit cmd: dc.commandBuffer
         {
@@ -123,14 +115,6 @@ impl RenderOgl
             }
         }
 
-        glDisableVertexAttribArray(0)
-        glDisableVertexAttribArray(1)
-        glDisableVertexAttribArray(2)
-        glDisableVertexAttribArray(3)
-        glDisableVertexAttribArray(4)
-        glDisableVertexAttribArray(5)
-        glDisableVertexAttribArray(6)
-        glDisableVertexAttribArray(7)
-        glDisableVertexAttribArray(8)
+        loop i: 9 glDisableVertexAttribArray(cast(GLuint) i)
     }
 }
