@@ -75,6 +75,10 @@ func display()
     cdc.position(@{50, 600})
     cdc.drawPath(path, pen)
 
+    path.clear()
+    path.bezierTo(@{100, 0}, @{50, -50})
+    cdc.position(@{250, 600})
+    cdc.drawPath(path, pen)
     cdc.end()
 
     //ff += 0.1

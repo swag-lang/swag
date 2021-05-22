@@ -3,11 +3,10 @@ using Core, Core.Math
 
 enum ElementType
 {
-    MoveTo
-    LineTo
-    ArcTo
-    CurveTo
-    CubicTo
+    Move
+    Line
+    Bezier1
+    Bezier2
 }
 
 struct Element
@@ -51,7 +50,7 @@ impl LinePath
 
         // Its not useful to have two successive moveTo, so replace the last one if
         // necessary
-        if elements.buffer[elements.count - 1].type == .MoveTo
+        if elements.buffer[elements.count - 1].type == .Move
         {
             elements.buffer[elements.count - 1].position = pt
             endPoint = pt
@@ -59,40 +58,41 @@ impl LinePath
         }
 
         var elem: Element = ?
-        elem.type = .MoveTo
+        elem.type = .Move
         elem.position = pt
         elements.add(elem)
         endPoint = pt
     }
 
     // Add a line from the previous point to 'pt'
-    func lineTo(using self, pt: Vector2)
+    func lineTo(using self, to: Vector2)
     {
         // Too close from the last point. Just dismiss
-        if endPoint.distanceSquared(pt) < 1.0
+        if endPoint.distanceSquared(to) < 1.0
             return
 
         var elem: Element = ?
-        elem.type = .LineTo
-        elem.position = pt
+        elem.type = .Line
+        elem.position = to
         elements.add(elem)
 
-        endPoint = pt
+        endPoint = to
     }
 
     // Add a curve from the previous point to 'pt'
-    func curveTo(using self, pt: Vector2)
+    func bezierTo(using self, to, controlPt: Vector2)
     {
         // Too close from the last point. Just dismiss
-        if endPoint.distanceSquared(pt) < 1.0
+        if endPoint.distanceSquared(to) < 1.0
             return
 
         var elem: Element = ?
-        elem.type = .CurveTo
-        elem.position = pt
+        elem.type = .Bezier1
+        elem.position = to
+        elem.p1 = controlPt
         elements.add(elem)
 
-        endPoint = pt
+        endPoint = to
     }
 
     // Close the figure

@@ -73,7 +73,7 @@ impl Painter
         step := 0
         switch paintQuality
         {
-        case Draft:     step = cast(s32) (fstep / 6)
+        case Draft:     step = cast(s32) (fstep / 8)
         case Normal:    step = cast(s32) (fstep / 4)
         case Good:      step = cast(s32) (fstep / 2)
         case High:      step = cast(s32) fstep
@@ -168,7 +168,7 @@ impl Painter
         fstep := Math.abs(angle1 - angle0) * radius
         switch paintQuality
         {
-        case Draft:     step = cast(s32) (fstep / 6)
+        case Draft:     step = cast(s32) (fstep / 8)
         case Normal:    step = cast(s32) (fstep / 4)
         case Good:      step = cast(s32) (fstep / 2)
         case High:      step = cast(s32) fstep
@@ -192,7 +192,6 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    //#[Swag.optim("", false)]
     private func drawJointMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
@@ -258,7 +257,7 @@ impl Painter
         }
     }
 
-    private func drawLineTo(using self, cxt: *Context, pos: Vector2)
+    private func drawLine(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
 
@@ -325,6 +324,40 @@ impl Painter
         beginLine, firstLine = false
     }
 
+    private func drawBezier(using self, cxt: *Context, pos, p1: Vector2)
+    {
+        using cxt
+
+        v := pos - prev
+        fstep := v.length()
+
+        step := 0'u32
+        switch paintQuality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+
+        startPt := prev
+        loop i: 1..step
+        {
+            t  := i / cast(f32) step
+            it := 1.0 - t
+            a1 := it * it
+            a2 := 2.0 * t * it
+            a3 := t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
+            drawLine(cxt, point)
+        }
+    }
+
     private func drawEndCap(using self, cxt: *Context)
     {
         using cxt
@@ -380,15 +413,17 @@ impl Painter
 
         visit elem: path.elements
         {
-            if elem.type == .MoveTo
+            switch elem.type
             {
+            case Move:
                 drawEndCap(&cxt)
                 cxt.prev, cxt.prevNc = elem.position
                 cxt.beginLine = true
-                continue
+            case Line:
+                drawLine(&cxt, elem.position)
+            case Bezier1:
+                drawBezier(&cxt, elem.position, elem.p1)
             }
-
-            drawLineTo(&cxt, elem.position)
         }
 
         // End line cap
