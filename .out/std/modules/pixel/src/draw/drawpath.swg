@@ -94,7 +94,7 @@ impl Painter
 
     private func drawJointBevel(using self, p, d1, d2: Vector2, pen: Pen)
     {
-        var v0: Vector2 = p
+        v0  := p
         d1n := d1.toNormalize()
         d2n := d2.toNormalize()
 

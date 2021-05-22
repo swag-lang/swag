@@ -699,7 +699,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
+        node->typeInfo = TypeManager::concreteReferenceType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
         SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->report({node->assignment, Msg0307}));
 

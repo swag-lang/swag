@@ -74,9 +74,27 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(left->resolvedSymbolName, context->report({left, Msg0566}));
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, Msg0567}));
 
+    // Check that left type is mutable
+    // If not, try to find the culprit type
+    if (left->flags & AST_IS_CONST)
     {
-        Utf8 hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
-        SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report(hint, {left, Msg0564}));
+        Utf8 hint;
+        if (left->typeInfo->isConst())
+            hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
+        else if (left->kind == AstNodeKind::IdentifierRef)
+        {
+            for (int i = left->childs.count - 1; i >= 0; i--)
+            {
+                if (left->childs[i]->typeInfo && left->childs[i]->typeInfo->isConst())
+                {
+                    left = left->childs[i];
+                    hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
+                    break;
+                }
+            }
+        }
+
+        return context->report(hint, {left, Msg0564});
     }
 
     // Special case for enum : nothing is possible, except for flags
