@@ -44,8 +44,7 @@ impl LinePath
         // First point
         if !elements.count
         {
-            startPoint = pt
-            endPoint = pt
+            startPoint, endPoint = pt
             return
         }
 
@@ -68,51 +67,37 @@ impl LinePath
     // Add a line from the previous point to 'pt'
     func lineTo(using self, to: Vector2)
     {
-        // Too close from the last point. Just dismiss
-        if endPoint.distanceSquared(to) < 1.0
-            return
-
         var elem: Element = ?
         elem.type = .Line
         elem.position = to
         elements.add(elem)
-
         endPoint = to
     }
 
     // Add a curve from the previous point to 'pt'
     func bezierTo(using self, to, controlPt: Vector2)
     {
-        // Too close from the last point. Just dismiss
-        if endPoint.distanceSquared(to) < 1.0
-            return
-
         var elem: Element = ?
         elem.type = .Bezier1
         elem.position = to
         elem.p1 = controlPt
         elements.add(elem)
-
         endPoint = to
     }
 
     // Add a curve from the previous point to 'pt'
     func bezierTo(using self, to, controlPt1, controlPt2: Vector2)
     {
-        // Too close from the last point. Just dismiss
-        if endPoint.distanceSquared(to) < 1.0
-            return
-
         var elem: Element = ?
         elem.type = .Bezier2
         elem.position = to
         elem.p1 = controlPt1
         elem.p2 = controlPt2
         elements.add(elem)
-
         endPoint = to
     }
 
+    // Add an arc from the previous point
     func arcTo(using self, center: Vector2, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
