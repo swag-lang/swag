@@ -23,7 +23,8 @@ struct Pen
     size:  f32
     color: Color
 
-    beginCapStyle:  CapStyle = Round
-    endCapStyle:    CapStyle = Round
-    jointStyle:     JointStyle = Round
+    jointMiterLimit:    f32 = 3
+    beginCapStyle:      CapStyle = Round
+    endCapStyle:        CapStyle = Round
+    jointStyle:         JointStyle = Miter
 }

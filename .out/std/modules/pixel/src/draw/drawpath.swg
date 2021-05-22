@@ -177,6 +177,58 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
+    private func drawJointMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    {
+        a := Vector2{d1.x + d2.x, d1.y + d2.y}
+        w := d1.length()
+        l := a.length()
+        m2 := (2 * w) / l
+
+        if m2 > pen.jointMiterLimit
+        {
+            if justMiter
+                m2 = pen.jointMiterLimit
+            else
+            {
+                drawJointBevel(p, d1, d2, pen)
+                return
+            }
+        }
+
+        a.x = (a.x / l) * m2 * w
+        a.y = (a.y / l) * m2 * w
+
+        v0 := p
+
+        var v1, v2, v3: Vector2 = ?
+        if d1.x * d2.y - d1.y * d2.x < 0
+        {
+            v0 += d1 * 0.25
+            v0 += d2 * 0.25
+            v1 = Vector2{p.x - d1.x, p.y - d1.y}
+            v2 = Vector2{p.x - a.x, p.y - a.y}
+            v3 = Vector2{p.x - d2.x, p.y - d2.y}
+        }
+        else
+        {
+            v0 -= d1 * 0.25
+            v0 -= d2 * 0.25
+            v1 = Vector2{p.x + d1.x, p.y + d1.y}
+            v2 = Vector2{p.x + a.x, p.y + a.y}
+            v3 = Vector2{p.x + d2.x, p.y + d2.y}
+        }
+
+        prim1 := pushTriangle(v0, v1, v3, pen.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.color)
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, v3, v2)
+            addEdgeAA(prim1, v1, v2)
+            addEdgeAA(prim2, v3, v2)
+            addEdgeAA(prim2, v1, v2)
+        }
+    }
+
     private func drawJoint(using self, jointStyle: JointStyle, p, d1, d2: Vector2, pen: Pen)
     {
         #[Swag.complete]
@@ -185,8 +237,8 @@ impl Painter
         case None:          break
         case Bevel:         drawJointBevel(p, d1, d2, pen)
         case Round:         drawJointRound(p, d1, d2, pen)
-        case Miter:         break
-        case MiterBevel:    break
+        case Miter:         drawJointMiter(p, d1, d2, true, pen)
+        case MiterBevel:    drawJointMiter(p, d1, d2, false, pen)
         }
     }
 
