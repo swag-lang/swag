@@ -52,7 +52,6 @@ func display()
 
     pen.color = Argb.Red
     var path: LinePath
-    path.moveTo(@{0, 0})
     path.lineTo(@{100, 0})
     path.lineTo(@{100, 50})
     path.lineTo(@{200, 50})
@@ -64,6 +63,14 @@ func display()
     cdc.drawPath(path, pen)
     pen.jointStyle = .Round
     cdc.position(@{450, 500})
+    cdc.drawPath(path, pen)
+
+    path.clear()
+    path.lineTo(@{100, 0})
+    path.curveTo(@{150, 50})
+    path.lineTo(@{200, 50})
+
+    cdc.position(@{50, 600})
     cdc.drawPath(path, pen)
 
     cdc.end()

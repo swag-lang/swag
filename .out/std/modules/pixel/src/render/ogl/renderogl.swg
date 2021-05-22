@@ -87,10 +87,7 @@ impl RenderOgl
         // Draw matrix
         var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
         var modelMatrix: Matrix4x4
-        modelMatrix.m[0, 0] = 1
-        modelMatrix.m[1, 1] = 1
-        modelMatrix.m[2, 2] = 1
-        modelMatrix.m[3, 3] = 1
+        modelMatrix.setIdentity()
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         // State
@@ -107,6 +104,10 @@ impl RenderOgl
                 (r, g, b) := params.color.toRgbf()
                 glClearColor(r, g, b, 0)
                 glClear(params.flags)
+
+            case ResetTransform:
+                modelMatrix.setIdentity()
+                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case Position:
                 params := &cmd.params.transform

@@ -80,6 +80,21 @@ impl LinePath
         endPoint = pt
     }
 
+    // Add a curve from the previous point to 'pt'
+    func curveTo(using self, pt: Vector2)
+    {
+        // Too close from the last point. Just dismiss
+        if endPoint.distanceSquared(pt) < 1.0
+            return
+
+        var elem: Element = ?
+        elem.type = .CurveTo
+        elem.position = pt
+        elements.add(elem)
+
+        endPoint = pt
+    }
+
     // Close the figure
     // Will add a line to the first point if necessary
     func close(using self)

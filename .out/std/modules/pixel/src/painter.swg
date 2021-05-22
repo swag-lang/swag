@@ -18,6 +18,7 @@ enum CommandId
 {
     Clear
     Position
+    ResetTransform
     DrawTriangles
 }
 
@@ -143,9 +144,16 @@ impl Painter
         cmd.params.clear.flags = flags
     }
 
+    // Set the paint position
     func position(using self, pos: Vector2)
     {
         cmd := newCommand(CommandId.Position)
         cmd.params.transform.pos = pos
+    }
+
+    // Reset the paint position, rotation, scale
+    func resetTransform(using self)
+    {
+        cmd := newCommand(CommandId.ResetTransform)
     }
 }
