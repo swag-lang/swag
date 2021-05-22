@@ -264,7 +264,7 @@ impl Painter
         // Compute line (half width on each side, except if edge)
         vNew, vNewNc := pos
         n := vNewNc - prevNc
-        n.normalize()
+        n.normalizeSafe()
         normal = n.cross(1)
         n2 := normal
         normal *= size2

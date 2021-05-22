@@ -91,11 +91,15 @@ func display()
 
     path.clear()
     pen.color = Argb.Purple
-    path.arcTo(@{0, 50}, 0, 90, 50, 50)
+    path.arcTo(@{0, 50}, 50, 50, 0, 90)
     path.moveTo(@{100, 50})
-    path.arcTo(@{150, 50}, -90, 0, 50, 50)
+    path.arcTo(@{150, 50}, 50, 50, -90, 0)
     cdc.position(@{50, 600})
     cdc.drawPath(path, pen)
+
+    cdc.position(@{250, 600})
+    pen.size = 5
+    cdc.drawEmptyRoundRect(0, 0, 100, 100, 20, 20, pen)
 
     cdc.end()
 

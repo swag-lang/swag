@@ -113,7 +113,7 @@ impl LinePath
         endPoint = to
     }
 
-    func arcTo(using self, center: Vector2, initAngle, maxAngle: f32, radiusX, radiusY: f32)
+    func arcTo(using self, center: Vector2, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
         maxAngleRad := Math.toRadians(maxAngle)
