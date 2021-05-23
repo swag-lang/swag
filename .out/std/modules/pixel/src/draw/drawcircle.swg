@@ -31,6 +31,9 @@ impl Painter
     {
         setEllipsePath(centerX, centerY, radius, radius)
         fillPath(sharedLinePath)
+        sharedSolidPen.color = Argb.Red
+        sharedSolidPen.size = 4
+        drawPath(sharedLinePath, sharedSolidPen)
     }
 
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)

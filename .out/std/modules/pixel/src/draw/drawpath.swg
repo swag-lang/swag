@@ -474,7 +474,6 @@ impl Painter
         }
     }
 
-    // Draw the line path with the given 'pen'
     private func drawPathInternal(using self, path: LinePath, pen: Pen, flags: Flags)
     {
         if pen.size == 0 or path.elements.count == 0
@@ -543,11 +542,15 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    private func fillPathInternal(using self, path: LinePath, userPen: const *Pen)
+    func drawPath(using self, path: LinePath, pen: Pen)
     {
-        sharedSolidPen.size = 1
-        pen := userPen orelse &sharedSolidPen
-        drawPathInternal(path, dref pen, Flags.CollectPos | Flags.NoDraw)
+        drawPathInternal(path, pen, Flags.Zero)
+    }
+
+    // Draw the line path with the given 'pen'
+    func fillPath(using self, path: LinePath)
+    {
+        drawPathInternal(path, sharedSolidPen, Flags.CollectPos | Flags.NoDraw)
 
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
@@ -564,20 +567,5 @@ impl Painter
                 addEdgeAA(prim, vp, v0)
             }
         }
-    }
-
-    func drawPath(using self, path: LinePath, pen: Pen)
-    {
-        drawPathInternal(path, pen, Flags.Zero)
-    }
-
-    func fillPath(using self, path: LinePath)
-    {
-        fillPathInternal(path, null)
-    }
-
-    func fillPath(using self, path: LinePath, pen: Pen)
-    {
-        fillPathInternal(path, &pen)
     }
 }
