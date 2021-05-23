@@ -474,18 +474,16 @@ impl Painter
         }
     }
 
-    func drawPath(using self, path: LinePath, pen: Pen)
-    {
-        drawPathInternal(path, pen, Flags.Zero)
-    }
-
     // Draw the line path with the given 'pen'
     private func drawPathInternal(using self, path: LinePath, pen: Pen, flags: Flags)
     {
         if pen.size == 0 or path.elements.count == 0
             return
 
+        bvMin.set(Swag.F32.Max, Swag.F32.Max)
+        bvMax.set(Swag.F32.Min, Swag.F32.Min)
         posBuffer.clear()
+
         size := pen.size
 
         // AA will reduce visually the size. Compensate
@@ -545,13 +543,11 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    func fillPath(using self, path: LinePath)
+    private func fillPathInternal(using self, path: LinePath, userPen: const *Pen)
     {
-        bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(Swag.F32.Min, Swag.F32.Min)
-
         sharedSolidPen.size = 1
-        drawPathInternal(path, sharedSolidPen, Flags.CollectPos | Flags.NoDraw)
+        pen := userPen orelse &sharedSolidPen
+        drawPathInternal(path, dref pen, Flags.CollectPos | Flags.NoDraw)
 
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
@@ -568,5 +564,20 @@ impl Painter
                 addEdgeAA(prim, vp, v0)
             }
         }
+    }
+
+    func drawPath(using self, path: LinePath, pen: Pen)
+    {
+        drawPathInternal(path, pen, Flags.Zero)
+    }
+
+    func fillPath(using self, path: LinePath)
+    {
+        fillPathInternal(path, null)
+    }
+
+    func fillPath(using self, path: LinePath, pen: Pen)
+    {
+        fillPathInternal(path, &pen)
     }
 }
