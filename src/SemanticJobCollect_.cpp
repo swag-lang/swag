@@ -151,8 +151,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto offset     = storageOffset;
-        auto result     = collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->declNode, seg);
+        auto result     = collectStructLiteralsNoLock(context, sourceFile, storageOffset, typeStruct->declNode, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -184,18 +183,16 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
     return true;
 }
 
-bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment)
+bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t offsetStruct, AstNode* node, DataSegment* segment)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       module     = sourceFile->module;
+    auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
 
-    auto ptrDest    = segment->addressNoLock(offset);
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
-
-    auto cptField  = 0;
-    auto numFields = typeStruct->fields.size();
+    auto cptField = 0;
     for (auto field : typeStruct->fields)
     {
+        auto ptrDest  = segment->addressNoLock(offsetStruct + field->offset);
         auto child    = field->declNode;
         auto varDecl  = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeInfo = TypeManager::concreteType(varDecl->typeInfo);
@@ -208,9 +205,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 storedV[0].pointer = (uint8_t*) value.text.c_str();
                 storedV[1].u64     = value.text.length();
                 auto strOffset     = module->constantSegment.addStringNoLock(value.text);
-                segment->addInitPtr(offset, strOffset, SegmentKind::Constant);
-                ptrDest += 2 * sizeof(Register);
-                offset += 2 * sizeof(Register);
+                segment->addInitPtr(offsetStruct + field->offset, strOffset, SegmentKind::Constant);
             }
             else
             {
@@ -233,21 +228,12 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 }
 
                 SWAG_ASSERT(typeInfo->sizeOf);
-                ptrDest += typeInfo->sizeOf;
-                offset += typeInfo->sizeOf;
             }
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->declNode, segment));
-            if (cptField != numFields - 1)
-                ptrDest = segment->addressNoLock(offset);
-        }
-        else
-        {
-            ptrDest += typeInfo->sizeOf;
-            offset += typeInfo->sizeOf;
+            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offsetStruct + field->offset, typeSub->declNode, segment));
         }
 
         cptField++;
