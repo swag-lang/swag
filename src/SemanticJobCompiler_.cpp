@@ -508,7 +508,10 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     node->typeInfo = g_TypeMgr.typeInfoVoid;
 
     identifierRef->previousResolvedNode = node;
-    identifierRef->startScope           = node->ownerFct->scope;
+    if (node->ownerInline)
+        identifierRef->startScope = node->ownerInline->parametersScope;
+    else
+        identifierRef->startScope = node->ownerFct->scope;
     node->flags |= AST_NO_BYTECODE;
 
     return true;
