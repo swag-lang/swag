@@ -244,6 +244,11 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
             if (cptField != numFields - 1)
                 ptrDest = segment->addressNoLock(offset);
         }
+        else
+        {
+            ptrDest += typeInfo->sizeOf;
+            offset += typeInfo->sizeOf;
+        }
 
         cptField++;
     }
