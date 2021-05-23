@@ -548,7 +548,7 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    func fillPath(using self, path: LinePath)
+    func fillPath(using self, path: LinePath, brush: Brush)
     {
         drawPathInternal(path, sharedSolidPen, Flags.CollectPos | Flags.NoDraw)
 
@@ -557,7 +557,7 @@ impl Painter
         {
             v0 := dref pos
             v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
-            prim := pushTriangle(v0, v1, center, Argb.Black)
+            prim := pushTriangle(v0, v1, center, brush.color)
             if paintParams & .Antialiased
             {
                 vp := posBuffer.buffer[(i + 2) % posBuffer.count]

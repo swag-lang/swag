@@ -27,13 +27,10 @@ impl Painter
         drawPath(sharedLinePath, pen)
     }
 
-    func fillCircle(using self, centerX, centerY: f32, radius: f32)
+    func fillCircle(using self, centerX, centerY: f32, radius: f32, brush: Brush)
     {
         setEllipsePath(centerX, centerY, radius, radius)
-        fillPath(sharedLinePath)
-        sharedSolidPen.color = Argb.Red
-        sharedSolidPen.size = 4
-        drawPath(sharedLinePath, sharedSolidPen)
+        fillPath(sharedLinePath, brush)
     }
 
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)

@@ -106,8 +106,10 @@ func display()
     cdc.position(@{500, 600})
     cdc.drawEllipse(50, 50, 25, 50, pen)
 
+    var brush: Brush
+    brush.color = Argb.Black
     cdc.position(@{600, 600})
-    cdc.fillCircle(50, 50, 50)
+    cdc.fillCircle(50, 50, 50, brush)
 
     cdc.end()
 
