@@ -110,6 +110,7 @@ func display()
     brush.color = Argb.Black
     cdc.position(@{600, 600})
     cdc.fillCircle(50, 50, 50, brush)
+    cdc.drawCircle(50, 50, 50, pen)
 
     cdc.end()
 
