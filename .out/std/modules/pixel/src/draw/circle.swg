@@ -1,0 +1,27 @@
+#global public
+using Core, Drawing, Core.Math
+
+impl Painter
+{
+    private func setEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32)
+    {
+        sharedLinePath.clear()
+        sharedLinePath.moveTo(centerX, centerY - radiusY)
+        sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
+        sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 90, 180)
+        sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 180, 270)
+        sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 270, 360)
+    }
+
+    func drawEmptyCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
+    {
+        setEllipse(centerX, centerY, radius, radius)
+        drawPath(sharedLinePath, pen)
+    }
+
+    func drawEmptyEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
+    {
+        setEllipse(centerX, centerY, radiusX, radiusY)
+        drawPath(sharedLinePath, pen)
+    }
+}

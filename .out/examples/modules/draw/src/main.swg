@@ -101,6 +101,10 @@ func display()
     cdc.position(@{250, 600})
     pen.size = 5
     cdc.drawEmptyRoundRect(0, 0, 100, 100, 20, 20, pen)
+    cdc.position(@{400, 600})
+    cdc.drawEmptyCircle(50, 50, 50, pen)
+    cdc.position(@{500, 600})
+    cdc.drawEmptyEllipse(50, 50, 25, 50, pen)
 
     cdc.end()
 
