@@ -24,6 +24,13 @@ impl Painter
         sharedLinePath.close()
     }
 
+    func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32)
+    {
+        sharedSolidPen.color = color
+        sharedSolidPen.size = penSize
+        drawRect(left, top, width, height, sharedSolidPen)
+    }
+
     func drawRect(using self, left, top, width, height: f32, pen: Pen)
     {
         setRectPath(left, top, width, height)
@@ -44,6 +51,13 @@ impl Painter
         sharedLinePath.lineTo(@{left + radiusX, bottom})
         sharedLinePath.arcTo(@{left + radiusX, bottom - radiusY}, radiusX, radiusY, 180, 270)
         sharedLinePath.close()
+    }
+
+    func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
+    {
+        sharedSolidPen.color = color
+        sharedSolidPen.size = penSize
+        drawRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidPen)
     }
 
     func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)

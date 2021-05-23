@@ -8,10 +8,10 @@ impl Painter
         drawLine(start.x, start.y, end.x, end.y, pen)
     }
 
-    func drawLine(using self, startX, startY, endX, endY: f32, color: Color, size: f32)
+    func drawLine(using self, startX, startY, endX, endY: f32, color: Color, penSize: f32)
     {
         sharedSolidPen.color = color
-        sharedSolidPen.size = size
+        sharedSolidPen.size = penSize
         drawLine(startX, startY, endX, endY, sharedSolidPen)
     }
 
