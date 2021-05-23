@@ -23,7 +23,7 @@ func display()
     {
         pen.penStyle = .Pattern
         pen.pattern.add(0.5)
-        pen.pattern.add(1)
+        pen.pattern.add(1.0)
         pen.pattern.add(0.5)
     }
 
