@@ -53,10 +53,13 @@ struct Painter
 {
     commandBuffer:      Array'Command
     vertexBuffer:       Array'VertexLayout
-    sharedSolidPen:    Pen
-    sharedLinePath:        LinePath
+    posBuffer:          Array'Vector2
+    sharedSolidPen:     Pen
+    sharedLinePath:     LinePath
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High
+    bvMin:              Vector2
+    bvMax:              Vector2
     drawingBegin:       bool
 }
 

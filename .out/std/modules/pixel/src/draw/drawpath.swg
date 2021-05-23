@@ -5,6 +5,7 @@ private struct Context
 {
     size2:          f32
     edge:           bool
+    computePos:     bool
     beginLine:      bool
     firstLine:      bool
     adapt:          bool
@@ -262,6 +263,17 @@ impl Painter
     {
         using cxt
 
+        // Update bv
+        if computePos
+        {
+            bvMin.x = Math.min(bvMin.x, pos.x)
+            bvMin.y = Math.min(bvMin.y, pos.y)
+            bvMax.x = Math.max(bvMax.x, pos.x)
+            bvMax.y = Math.max(bvMax.y, pos.y)
+            posBuffer.add(pos)
+            return
+        }
+
         // Compute line (half width on each side, except if edge)
         vNew, vNewNc := pos
         n := vNewNc - prevNc
@@ -454,12 +466,18 @@ impl Painter
         }
     }
 
+    func drawPath(using self, path: LinePath, pen: Pen)
+    {
+        drawPath(path, pen, false, false)
+    }
+
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: LinePath, pen: Pen, edge = false)
+    func drawPath(using self, path: LinePath, pen: Pen, edge, computePos: bool)
     {
         if pen.size == 0 or path.elements.count == 0
             return
 
+        posBuffer.clear()
         size := pen.size
 
         // AA will reduce visually the size. Compensate
@@ -479,6 +497,7 @@ impl Painter
         var cxt: Context
         cxt.size2       = size * 0.5
         cxt.edge        = edge
+        cxt.computePos  = computePos
         cxt.adapt       = adapt
         cxt.prev        = path.startPoint
         cxt.prevNc      = path.startPoint
@@ -519,22 +538,26 @@ impl Painter
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: LinePath)
     {
-        bMin := Vector2{Swag.F32.Max, Swag.F32.Max}
-        bMax := Vector2{Swag.F32.Min, Swag.F32.Min}
-        visit elem: path.elements
-        {
-            bMin.x = Math.min(bMin.x, elem.position.x)
-            bMin.y = Math.min(bMin.y, elem.position.y)
-            bMax.x = Math.max(bMax.x, elem.position.x)
-            bMax.y = Math.max(bMax.y, elem.position.y)
-        }
+        bvMin.set(Swag.F32.Max, Swag.F32.Max)
+        bvMax.set(Swag.F32.Min, Swag.F32.Min)
 
-        center := Vector2{bMin.x + (bMax.x - bMin.x) * 0.5, bMin.y + (bMax.y - bMin.y) * 0.5}
-        visit elem, i: path.elements
+        sharedSolidPen.size = 1
+        drawPath(path, sharedSolidPen, false, true)
+
+        center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
+        visit pos, i: posBuffer
         {
-            v0 := elem.position
-            v1 := path.elements.buffer[(i + 1) % path.elements.count].position
+            v0 := dref pos
+            v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
             prim := pushTriangle(v0, v1, center, Argb.Black)
+            if paintParams & .Antialiased
+            {
+                vp := posBuffer.buffer[(i + 2) % posBuffer.count]
+                v2 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+                addEdgeAA(prim, v0, v1)
+                addEdgeAA(prim, v1, v2)
+                addEdgeAA(prim, vp, v0)
+            }
         }
     }
 }
