@@ -14,13 +14,13 @@ impl Painter
         sharedLinePath.close()
     }
 
-    func drawEmptyCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
+    func drawCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
     {
         setEllipsePath(centerX, centerY, radius, radius)
         drawPath(sharedLinePath, pen)
     }
 
-    func drawEmptyEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
+    func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
     {
         setEllipsePath(centerX, centerY, radiusX, radiusY)
         drawPath(sharedLinePath, pen)

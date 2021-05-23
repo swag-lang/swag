@@ -3,7 +3,7 @@ using Core.Drawing, Core.Math
 
 impl Painter
 {
-    func drawSolidRect(using self, left, top, width, height: f32, color: Color)
+    func fillRect(using self, left, top, width, height: f32, color: Color)
     {
         right := left + width
         bottom := top + height
@@ -24,7 +24,7 @@ impl Painter
         sharedLinePath.close()
     }
 
-    func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)
+    func drawRect(using self, left, top, width, height: f32, pen: Pen)
     {
         setRectPath(left, top, width, height)
         drawPath(sharedLinePath, pen)
@@ -46,7 +46,7 @@ impl Painter
         sharedLinePath.close()
     }
 
-    func drawEmptyRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
+    func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
     {
         setRoundRectPath(left, top, width, height, radiusX, radiusY)
         drawPath(sharedLinePath, pen)

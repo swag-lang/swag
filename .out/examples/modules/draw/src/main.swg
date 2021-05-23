@@ -24,7 +24,7 @@ func display()
     cdc.clear(Argb.Red)
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.drawSolidRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
     cdc.position(@{50, 50})
     pen.color = Argb.Black
@@ -45,13 +45,13 @@ func display()
     cdc.position(@{50, 250})
     pen.color = Argb.Blue
     pen.jointStyle = .None
-    cdc.drawEmptyRect(0, 0, 100, 100, pen)
+    cdc.drawRect(0, 0, 100, 100, pen)
     pen.jointStyle = .Bevel
-    cdc.drawEmptyRect(150, 0, 100, 100, pen)
+    cdc.drawRect(150, 0, 100, 100, pen)
     pen.jointStyle = .Round
-    cdc.drawEmptyRect(300, 0, 100, 100, pen)
+    cdc.drawRect(300, 0, 100, 100, pen)
     pen.jointStyle = .Miter
-    cdc.drawEmptyRect(450, 0, 100, 100, pen)
+    cdc.drawRect(450, 0, 100, 100, pen)
 
     pen.color = Argb.Red
     var path: LinePath
@@ -100,11 +100,11 @@ func display()
 
     cdc.position(@{250, 600})
     pen.size = 5
-    cdc.drawEmptyRoundRect(0, 0, 100, 100, 20, 20, pen)
+    cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
     cdc.position(@{400, 600})
-    cdc.drawEmptyCircle(50, 50, 50, pen)
+    cdc.drawCircle(50, 50, 50, pen)
     cdc.position(@{500, 600})
-    cdc.drawEmptyEllipse(50, 50, 25, 50, pen)
+    cdc.drawEllipse(50, 50, 25, 50, pen)
 
     cdc.end()
 
