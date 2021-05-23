@@ -17,6 +17,10 @@ var ff: f32 = 0
 func display()
 {
     var pen: Pen
+    pen.penStyle = .Pattern
+    pen.pattern.add(1)
+    pen.pattern.add(1)
+
     pen.size = 20
     pen.color = 0xFF000000
 

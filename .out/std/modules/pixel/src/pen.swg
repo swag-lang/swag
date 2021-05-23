@@ -4,6 +4,7 @@ using Core, Drawing
 enum PenStyle
 {
     Solid
+    Pattern
 }
 
 enum CapStyle
@@ -25,8 +26,9 @@ enum JointStyle
 
 struct Pen
 {
-    size:  f32 = 1
-    color: Color
+    size:       f32 = 1
+    color:      Color
+    pattern:    Array'u32
 
     jointMiterLimit: f32 = 3
 

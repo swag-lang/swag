@@ -7,7 +7,6 @@ private enum Flags
     Zero
     Edge
     CollectPos
-    NoDraw
 }
 
 private struct Context
@@ -28,6 +27,17 @@ private struct Context
     bvMin:          Vector2
     bvMax:          Vector2
     totalLen:       f32
+
+    patOffset:          f32
+    patEnd:             f32
+    patternLen:         f32
+    patternTotalLen:    f32
+    patternIndex:       s32
+    error:              f32
+    divError:           f32
+    calcError:          f32
+    negError:           bool
+    patternCount:       s32
 }
 
 impl Painter
@@ -392,7 +402,7 @@ impl Painter
     private func moveCursor(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-        if !(flags & .NoDraw)
+        if !(flags & .CollectPos)
             drawEndCap(cxt)
         cxt.prev, cxt.prevNc = pos
         cxt.beginLine = true
@@ -474,6 +484,68 @@ impl Painter
         beginLine, firstLine = false
     }
 
+    private func preparePattern(cxt: *Context)
+    {
+        using cxt
+
+        // From the pen
+        patOffset = 0
+        patEnd = 0
+
+        patternTotalLen = 0
+        visit p: pen.pattern
+            patternTotalLen += cast(f32) p
+        while patEnd >= patternTotalLen
+            patEnd -= patternTotalLen
+        while patOffset >= patternTotalLen
+            patOffset -= patternTotalLen
+        patternTotalLen *= pen.size
+
+        totalLen += patOffset * pen.size
+        error    = (totalLen / patternTotalLen)
+        divError = Math.floor(error)
+        error -= divError
+        error *= patternTotalLen
+
+        // Adjust error with patend adjustement length
+        error += patEnd * pen.size
+        if error >= patternTotalLen
+            error -= patternTotalLen
+
+        // Increase spaces between lines, or increase it ?
+        negError = false
+        if error > patternTotalLen / 2
+        {
+            error -= patternTotalLen
+            negError = true
+        }
+
+        // We must dispatch error at each blank in the pattern. So "diverror" must be
+        // "the number of blanks in the total line"
+        patternCount = cast(s32) pen.pattern.count
+        divError = Math.floor(totalLen / patternTotalLen)
+        divError *= (patternCount / 2.0)
+        calcError = error / divError
+
+        // Take care of offset begin
+        patternIndex = 0
+        patternLen = cast(f32) pen.pattern.buffer[patternIndex]
+        while patOffset > 0
+        {
+            if patternLen >= patOffset
+            {
+                patternLen -= patOffset
+                break
+            }
+
+            patternIndex = (patternIndex + 1) % patternCount
+            patOffset -= patternLen
+            patternLen = cast(f32) pen.pattern.buffer[patternIndex]
+        }
+
+        patternLen *= pen.size
+    }
+
     private func drawLine(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
@@ -487,72 +559,16 @@ impl Painter
             bvMax.x = Math.max(bvMax.x, pos.x)
             bvMax.y = Math.max(bvMax.y, pos.y)
             posBuffer.add(pos)
-        }
-
-        if flags & .NoDraw
             return
+        }
 
         // solid
-        //drawLineInternal(cxt, pos)
-        var pattern: Array'u32
-        pattern.add(1)
-        pattern.add(1)
-
-        patOffset := 0'f32
-        patEnd := 0'f32
-
-        patternTotalLen := 0'f32
-        visit p: pattern
-            patternTotalLen += cast(f32) p
-        while patEnd >= patternTotalLen
-            patEnd -= patternTotalLen
-        while patOffset >= patternTotalLen
-            patOffset -= patternTotalLen
-        patternTotalLen *= pen.size
-
-        totalLen += patOffset * pen.size
-        error    := (totalLen / patternTotalLen)
-        divError := Math.floor(error)
-        error -= divError
-        error *= patternTotalLen
-
-        // Adjust error with patend adjustement length
-        error += patEnd * pen.size
-        if error >= patternTotalLen
-            error -= patternTotalLen
-
-        // Increase spaces between lines, or increase it ?
-        negError := false
-        if error > patternTotalLen / 2
+        if pen.penStyle == .Solid
         {
-            error -= patternTotalLen
-            negError = true
+            drawLineInternal(cxt, pos)
+            return
         }
 
-        // We must dispatch error at each blank in the pattern. So "diverror" must be
-        // "the number of blanks in the total line"
-        patternCount := cast(s32) pattern.count
-        divError = Math.floor(totalLen / patternTotalLen)
-        divError *= (patternCount / 2.0)
-        calcError := error / divError
-
-        // Take care of offset begin
-        patternIndex := 0
-        patternLen   := cast(f32) pattern.buffer[patternIndex]
-        while patOffset > 0
-        {
-            if patternLen >= patOffset
-            {
-                patternLen -= patOffset
-                break
-            }
-
-            patternIndex = (patternIndex + 1) % patternCount
-            patOffset -= patternLen
-            patternLen = cast(f32) pattern.buffer[patternIndex]
-        }
-
-        patternLen *= pen.size
         v := pos - prev
         restLen := v.length()
         v.normalizeSafe()
@@ -583,7 +599,7 @@ impl Painter
                 }
 
                 patternIndex = (patternIndex + 1) % patternCount
-                patternLen   = cast(f32) (pattern.buffer[patternIndex] * pen.size)
+                patternLen   = cast(f32) (pen.pattern.buffer[patternIndex] * pen.size)
             }
             else
             {
@@ -645,7 +661,7 @@ impl Painter
             }
         }
 
-        if !(flags & .NoDraw)
+        if !(flags & .CollectPos)
         {
             // End line cap
             drawEndCap(cxt)
@@ -662,10 +678,14 @@ impl Painter
         var cxt: Context
         cxt.path = &path
         cxt.pen = &pen
-        cxt.flags = Flags.CollectPos | Flags.NoDraw
-        drawPathInternal(&cxt)
+        if pen.penStyle == .Pattern
+        {
+            cxt.flags = .CollectPos
+            drawPathInternal(&cxt)
+            preparePattern(&cxt)
+        }
 
-        cxt.flags = Flags.Zero
+        cxt.flags = .Zero
         drawPathInternal(&cxt)
     }
 
@@ -675,7 +695,7 @@ impl Painter
         var cxt: Context
         cxt.path = &path
         cxt.pen = &sharedSolidPen
-        cxt.flags = Flags.CollectPos | Flags.NoDraw
+        cxt.flags = Flags.CollectPos
         drawPathInternal(&cxt)
 
         using cxt
