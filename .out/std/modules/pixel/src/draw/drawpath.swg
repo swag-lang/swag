@@ -5,7 +5,7 @@ private struct Context
 {
     size2:          f32
     edge:           bool
-    computePos:     bool
+    collectPos:     bool
     beginLine:      bool
     firstLine:      bool
     adapt:          bool
@@ -263,8 +263,8 @@ impl Painter
     {
         using cxt
 
-        // Update bv
-        if computePos
+        // Collect all segments in 'posBuffer'
+        if collectPos
         {
             bvMin.x = Math.min(bvMin.x, pos.x)
             bvMin.y = Math.min(bvMin.y, pos.y)
@@ -308,9 +308,7 @@ impl Painter
 
         // Joints
         if !beginLine
-        {
             drawJoint(pen.jointStyle, prev, normalPrev, normal, dref pen)
-        }
 
         // Draw quad
         v0 := prev - normal
@@ -468,11 +466,11 @@ impl Painter
 
     func drawPath(using self, path: LinePath, pen: Pen)
     {
-        drawPath(path, pen, false, false)
+        drawPathInternal(path, pen, false, false)
     }
 
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: LinePath, pen: Pen, edge, computePos: bool)
+    private func drawPathInternal(using self, path: LinePath, pen: Pen, edge, collectPos: bool)
     {
         if pen.size == 0 or path.elements.count == 0
             return
@@ -497,7 +495,7 @@ impl Painter
         var cxt: Context
         cxt.size2       = size * 0.5
         cxt.edge        = edge
-        cxt.computePos  = computePos
+        cxt.collectPos  = collectPos
         cxt.adapt       = adapt
         cxt.prev        = path.startPoint
         cxt.prevNc      = path.startPoint
@@ -511,7 +509,8 @@ impl Painter
             switch elem.type
             {
             case Move:
-                drawEndCap(&cxt)
+                if !collectPos
+                    drawEndCap(&cxt)
                 cxt.prev, cxt.prevNc = elem.position
                 cxt.beginLine = true
             case Line:
@@ -526,13 +525,12 @@ impl Painter
         }
 
         // End line cap
-        drawEndCap(&cxt)
+        if !collectPos
+            drawEndCap(&cxt)
 
         // Closing join between the end and the beginning in case of a closed path
-        if path.isClosed and !cxt.firstLine and !cxt.beginLine
-        {
+        if !collectPos and path.isClosed and !cxt.firstLine and !cxt.beginLine
             drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
-        }
     }
 
     // Draw the line path with the given 'pen'
@@ -542,7 +540,7 @@ impl Painter
         bvMax.set(Swag.F32.Min, Swag.F32.Min)
 
         sharedSolidPen.size = 1
-        drawPath(path, sharedSolidPen, false, true)
+        drawPathInternal(path, sharedSolidPen, false, true)
 
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
