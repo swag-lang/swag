@@ -1278,11 +1278,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericSignature:
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             explicitCastHint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
-
-        //if (g_TypeMgr.tryOpAffect(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, overload->node, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-        //{
-        //}
-
         break;
     }
 
