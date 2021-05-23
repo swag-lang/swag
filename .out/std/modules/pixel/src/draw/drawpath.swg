@@ -276,22 +276,9 @@ impl Painter
         cxt.beginLine = true
     }
 
-    private func drawLine(using self, cxt: *Context, pos: Vector2)
+    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-
-        // Collect all segments in 'posBuffer'
-        if flags & .CollectPos
-        {
-            bvMin.x = Math.min(bvMin.x, pos.x)
-            bvMin.y = Math.min(bvMin.y, pos.y)
-            bvMax.x = Math.max(bvMax.x, pos.x)
-            bvMax.y = Math.max(bvMax.y, pos.y)
-            posBuffer.add(pos)
-        }
-
-        if flags & .NoDraw
-            return
 
         // Compute line (half width on each side, except if edge)
         vNew, vNewNc := pos
@@ -363,6 +350,26 @@ impl Painter
         prev = vNew
         prevNc = vNewNc
         beginLine, firstLine = false
+    }
+
+    private func drawLine(using self, cxt: *Context, pos: Vector2)
+    {
+        using cxt
+
+        // Collect all segments in 'posBuffer'
+        if flags & .CollectPos
+        {
+            bvMin.x = Math.min(bvMin.x, pos.x)
+            bvMin.y = Math.min(bvMin.y, pos.y)
+            bvMax.x = Math.max(bvMax.x, pos.x)
+            bvMax.y = Math.max(bvMax.y, pos.y)
+            posBuffer.add(pos)
+        }
+
+        if flags & .NoDraw
+            return
+
+        drawLineInternal(cxt, pos)
     }
 
     private func drawBezier(using self, cxt: *Context, pos, p1: Vector2)
