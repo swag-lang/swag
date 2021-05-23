@@ -110,6 +110,12 @@ struct VectorNative
 
     void insertAtIndex(const T& val, int index)
     {
+        if (index == count)
+        {
+            push_back(val);
+            return;
+        }
+
         SWAG_ASSERT(index < count);
         if (count + 1 > allocated)
             reserve(count + 1);

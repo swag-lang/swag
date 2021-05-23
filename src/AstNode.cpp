@@ -832,11 +832,10 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstFuncCallParam>();
     newNode->copyFrom(context, this);
 
-    newNode->namedParam         = namedParam;
-    newNode->namedParamNode     = namedParamNode;
-    newNode->resolvedParameter  = resolvedParameter;
-    newNode->index              = index;
-    newNode->mustSortParameters = mustSortParameters;
+    newNode->namedParam        = namedParam;
+    newNode->namedParamNode    = namedParamNode;
+    newNode->resolvedParameter = resolvedParameter;
+    newNode->index             = index;
     return newNode;
 }
 

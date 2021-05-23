@@ -381,10 +381,11 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 varNode->assignment = assign->clone(cloneContext);
 
                 Ast::removeFromParent(nodeCall);
-                i--;
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-                newParam->index = i;
+                newParam->index = nodeCall->index;
+                Ast::removeFromParent(newParam);
+                Ast::insertChild(identifier->callParameters, newParam, i);
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // We want to export the original parameter, not the temporary variable reference
