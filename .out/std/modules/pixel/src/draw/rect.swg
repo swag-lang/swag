@@ -11,11 +11,10 @@ impl Painter
         prim2 := pushTriangle(@{left, top}, @{right, bottom}, @{left, bottom}, color)
     }
 
-    func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)
+    private func setRectPath(using self, left, top, width, height: f32)
     {
         right := left + width
         bottom := top + height
-
         sharedLinePath.clear()
         sharedLinePath.moveTo(@{left, top})
         sharedLinePath.lineTo(@{right, top})
@@ -23,15 +22,18 @@ impl Painter
         sharedLinePath.lineTo(@{left, bottom})
         sharedLinePath.lineTo(@{left, top})
         sharedLinePath.close()
+    }
 
+    func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)
+    {
+        setRectPath(left, top, width, height)
         drawPath(sharedLinePath, pen)
     }
 
-    func drawEmptyRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
+    private func setRoundRectPath(using self, left, top, width, height: f32, radiusX, radiusY: f32)
     {
         right := left + width
         bottom := top + height
-
         sharedLinePath.clear()
         sharedLinePath.moveTo(@{left, top + radiusY})
         sharedLinePath.arcTo(@{left + radiusX, top + radiusY}, radiusX, radiusY, -90, 0)
@@ -42,7 +44,11 @@ impl Painter
         sharedLinePath.lineTo(@{left + radiusX, bottom})
         sharedLinePath.arcTo(@{left + radiusX, bottom - radiusY}, radiusX, radiusY, 180, 270)
         sharedLinePath.close()
+    }
 
+    func drawEmptyRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
+    {
+        setRoundRectPath(left, top, width, height, radiusX, radiusY)
         drawPath(sharedLinePath, pen)
     }
 }
