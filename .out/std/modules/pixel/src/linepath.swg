@@ -128,22 +128,22 @@ impl LinePath
         arcTo(center.x, center.y, radiusX, radiusY, initAngle, maxAngle)
     }
 
-    func arcTo(using self, x, y: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
+    func arcTo(using self, centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
         maxAngleRad := Math.toRadians(maxAngle)
 
         var elem: Element = ?
         elem.type = .Arc
-        elem.position.set(x, y)
+        elem.position.set(centerX, centerY)
         elem.p1.x = initAngleRad
         elem.p1.y = maxAngleRad
         elem.p2.x = radiusX
         elem.p2.y = radiusY
         elements.add(elem)
 
-        endPoint.x = x + (Math.sin(maxAngleRad) * radiusX)
-        endPoint.y = y + (-Math.cos(maxAngleRad) * radiusY)
+        endPoint.x = centerX + (Math.sin(maxAngleRad) * radiusX)
+        endPoint.y = centerY + (-Math.cos(maxAngleRad) * radiusY)
     }
 
     // Close the figure
