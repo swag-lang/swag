@@ -10,16 +10,16 @@ impl Painter
 
     func drawLine(using self, startX, startY, endX, endY: f32, color: Color, size: f32)
     {
-        drawingSolidPen.color = color
-        drawingSolidPen.size = size
-        drawLine(startX, startY, endX, endY, drawingSolidPen)
+        sharedSolidPen.color = color
+        sharedSolidPen.size = size
+        drawLine(startX, startY, endX, endY, sharedSolidPen)
     }
 
     func drawLine(using self, startX, startY, endX, endY: f32, pen: Pen)
     {
-        drawingPath.clear()
-        drawingPath.moveTo(startX, startY)
-        drawingPath.lineTo(endX, endY)
-        drawPath(drawingPath, pen)
+        sharedLinePath.clear()
+        sharedLinePath.moveTo(startX, startY)
+        sharedLinePath.lineTo(endX, endY)
+        drawPath(sharedLinePath, pen)
     }
 }

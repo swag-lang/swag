@@ -53,8 +53,8 @@ struct Painter
 {
     commandBuffer:      Array'Command
     vertexBuffer:       Array'VertexLayout
-    drawingSolidPen:    Pen
-    drawingPath:        LinePath
+    sharedSolidPen:    Pen
+    sharedLinePath:        LinePath
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High
     drawingBegin:       bool

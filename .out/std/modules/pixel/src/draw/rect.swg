@@ -1,0 +1,48 @@
+#global public
+using Core.Drawing, Core.Math
+
+impl Painter
+{
+    func drawSolidRect(using self, left, top, width, height: f32, color: Color)
+    {
+        right := left + width
+        bottom := top + height
+        prim1 := pushTriangle(@{left, top}, @{right, top}, @{right, bottom}, color)
+        prim2 := pushTriangle(@{left, top}, @{right, bottom}, @{left, bottom}, color)
+    }
+
+    func drawEmptyRect(using self, left, top, width, height: f32, pen: Pen)
+    {
+        right := left + width
+        bottom := top + height
+
+        sharedLinePath.clear()
+        sharedLinePath.moveTo(@{left, top})
+        sharedLinePath.lineTo(@{right, top})
+        sharedLinePath.lineTo(@{right, bottom})
+        sharedLinePath.lineTo(@{left, bottom})
+        sharedLinePath.lineTo(@{left, top})
+        sharedLinePath.close()
+
+        drawPath(sharedLinePath, pen)
+    }
+
+    func drawEmptyRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
+    {
+        right := left + width
+        bottom := top + height
+
+        sharedLinePath.clear()
+        sharedLinePath.moveTo(@{left, top + radiusY})
+        sharedLinePath.arcTo(@{left + radiusX, top + radiusY}, radiusX, radiusY, -90, 0)
+        sharedLinePath.lineTo(@{right - radiusX, top})
+        sharedLinePath.arcTo(@{right - radiusX, top + radiusY}, radiusX, radiusY, 0, 90)
+        sharedLinePath.lineTo(@{right, bottom - radiusY})
+        sharedLinePath.arcTo(@{right - radiusX, bottom - radiusY}, radiusX, radiusY, 90, 180)
+        sharedLinePath.lineTo(@{left + radiusX, bottom})
+        sharedLinePath.arcTo(@{left + radiusX, bottom - radiusY}, radiusX, radiusY, 180, 270)
+        sharedLinePath.close()
+
+        drawPath(sharedLinePath, pen)
+    }
+}
