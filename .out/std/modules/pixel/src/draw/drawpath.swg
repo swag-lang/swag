@@ -1,11 +1,19 @@
 #global public
 using Core, Core.Math, Core.Drawing
 
+#[Swag.enumflags]
+private enum Flags
+{
+    Zero
+    Edge
+    CollectPos
+    NoDraw
+}
+
 private struct Context
 {
     size2:          f32
-    edge:           bool
-    collectPos:     bool
+    flags:          Flags = Zero
     beginLine:      bool
     firstLine:      bool
     adapt:          bool
@@ -264,15 +272,17 @@ impl Painter
         using cxt
 
         // Collect all segments in 'posBuffer'
-        if collectPos
+        if flags & .CollectPos
         {
             bvMin.x = Math.min(bvMin.x, pos.x)
             bvMin.y = Math.min(bvMin.y, pos.y)
             bvMax.x = Math.max(bvMax.x, pos.x)
             bvMax.y = Math.max(bvMax.y, pos.y)
             posBuffer.add(pos)
-            return
         }
+
+        if flags & .NoDraw
+            return
 
         // Compute line (half width on each side, except if edge)
         vNew, vNewNc := pos
@@ -323,7 +333,7 @@ impl Painter
         {
             addEdgeAA(prim1, v3, v2)
             addEdgeAA(prim2, v3, v2)
-            if !edge
+            if !(flags & .Edge)
             {
                 addEdgeAA(prim1, v0, v1)
                 addEdgeAA(prim2, v0, v1)
@@ -466,11 +476,11 @@ impl Painter
 
     func drawPath(using self, path: LinePath, pen: Pen)
     {
-        drawPathInternal(path, pen, false, false)
+        drawPathInternal(path, pen, Flags.Zero)
     }
 
     // Draw the line path with the given 'pen'
-    private func drawPathInternal(using self, path: LinePath, pen: Pen, edge, collectPos: bool)
+    private func drawPathInternal(using self, path: LinePath, pen: Pen, flags: Flags)
     {
         if pen.size == 0 or path.elements.count == 0
             return
@@ -481,7 +491,7 @@ impl Painter
         // AA will reduce visually the size. Compensate
         if paintParams & .Antialiased
         {
-            if edge
+            if flags & .Edge
                 size += 1.5
             else
                 size += 0.5
@@ -489,13 +499,12 @@ impl Painter
 
         // Correction
         adapt := false
-        if !edge and (cast(u32) size & 1)
+        if !(flags & .Edge) and (cast(u32) size & 1)
             adapt = true
 
         var cxt: Context
         cxt.size2       = size * 0.5
-        cxt.edge        = edge
-        cxt.collectPos  = collectPos
+        cxt.flags       = flags
         cxt.adapt       = adapt
         cxt.prev        = path.startPoint
         cxt.prevNc      = path.startPoint
@@ -509,7 +518,7 @@ impl Painter
             switch elem.type
             {
             case Move:
-                if !collectPos
+                if !(flags & .NoDraw)
                     drawEndCap(&cxt)
                 cxt.prev, cxt.prevNc = elem.position
                 cxt.beginLine = true
@@ -524,13 +533,15 @@ impl Painter
             }
         }
 
-        // End line cap
-        if !collectPos
+        if !(flags & .NoDraw)
+        {
+            // End line cap
             drawEndCap(&cxt)
 
-        // Closing join between the end and the beginning in case of a closed path
-        if !collectPos and path.isClosed and !cxt.firstLine and !cxt.beginLine
-            drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
+            // Closing join between the end and the beginning in case of a closed path
+            if path.isClosed and !cxt.firstLine and !cxt.beginLine
+                drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
+        }
     }
 
     // Draw the line path with the given 'pen'
@@ -540,7 +551,7 @@ impl Painter
         bvMax.set(Swag.F32.Min, Swag.F32.Min)
 
         sharedSolidPen.size = 1
-        drawPathInternal(path, sharedSolidPen, false, true)
+        drawPathInternal(path, sharedSolidPen, Flags.CollectPos | Flags.NoDraw)
 
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
