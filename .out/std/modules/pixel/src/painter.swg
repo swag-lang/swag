@@ -51,13 +51,13 @@ enum PaintQuality
 
 struct Painter
 {
-    commandBuffer:  Array'Command
-    vertexBuffer:   Array'VertexLayout
-    drawingBegin:   bool
-    //drawingPen:     Pen
-    drawingPath:    LinePath
-    paintParams:    PaintParams = Default
-    paintQuality:   PaintQuality = High
+    commandBuffer:      Array'Command
+    vertexBuffer:       Array'VertexLayout
+    drawingSolidPen:    Pen
+    drawingPath:        LinePath
+    paintParams:        PaintParams = Default
+    paintQuality:       PaintQuality = High
+    drawingBegin:       bool
 }
 
 impl Painter

@@ -25,13 +25,13 @@ enum JointStyle
 
 struct Pen
 {
-    size:  f32
+    size:  f32 = 1
     color: Color
 
-    jointMiterLimit:    f32 = 3
+    jointMiterLimit: f32 = 3
 
-    penStyle:           PenStyle = Solid
-    beginCapStyle:      CapStyle = Round
-    endCapStyle:        CapStyle = Round
-    jointStyle:         JointStyle = Miter
+    penStyle:       PenStyle   = Solid
+    beginCapStyle:  CapStyle   = Round
+    endCapStyle:    CapStyle   = Round
+    jointStyle:     JointStyle = Miter
 }

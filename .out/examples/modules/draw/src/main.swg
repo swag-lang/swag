@@ -40,6 +40,7 @@ func display()
     pen.beginCapStyle = .Triangle
     pen.endCapStyle = .Triangle
     cdc.drawLine(@{300,0},@{350,150}, pen)
+    cdc.drawLine(400, 0, 450, 150, @{255,100,100,255}/*Argb.Brown*/, 2)
 
     cdc.position(@{50, 250})
     pen.color = Argb.Blue
