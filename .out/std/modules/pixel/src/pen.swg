@@ -28,7 +28,10 @@ struct Pen
 {
     size:       f32 = 1
     color:      Color
-    pattern:    Array'u32
+
+    pattern:               Array'u32
+    patternBeginCapStyle:  CapStyle   = None
+    patternEndCapStyle:    CapStyle   = None
 
     jointMiterLimit: f32 = 3
 

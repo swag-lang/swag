@@ -507,7 +507,7 @@ impl Painter
         error -= divError
         error *= patternTotalLen
 
-        // Adjust error with patend adjustement length
+        // Adjust error with patEnd adjustement length
         error += patEnd * pen.size
         if error >= patternTotalLen
             error -= patternTotalLen
@@ -571,7 +571,7 @@ impl Painter
 
         v := pos - prev
         restLen := v.length()
-        v.normalizeSafe()
+        v.normalize()
         while restLen > 0.1
         {
             len    := patternLen
