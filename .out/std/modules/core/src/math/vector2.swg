@@ -59,6 +59,14 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
+    // Set content
+    #[Swag.inline]
+    func set(using self, x, y: f32)
+    {
+        self.x = #scopefct.x
+        self.y = #scopefct.y
+    }
+
     // Return sthe length of the vector
     func length(using const self) => sqrt((x * x) + (y * y))
 

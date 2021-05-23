@@ -39,12 +39,19 @@ impl LinePath
     }
 
     // Move the current cursor position
+    #[Swag.inline]
     func moveTo(using self, pt: Vector2)
+    {
+        moveTo(pt.x, pt.y)
+    }
+
+    func moveTo(using self, x, y: f32)
     {
         // First point
         if !elements.count
         {
-            startPoint, endPoint = pt
+            startPoint.set(x, y)
+            endPoint.set(x, y)
             return
         }
 
@@ -52,69 +59,91 @@ impl LinePath
         // necessary
         if elements.buffer[elements.count - 1].type == .Move
         {
-            elements.buffer[elements.count - 1].position = pt
-            endPoint = pt
+            elements.buffer[elements.count - 1].position.set(x, y)
+            endPoint.set(x, y)
             return
         }
 
         var elem: Element = ?
         elem.type = .Move
-        elem.position = pt
+        elem.position.set(x, y)
         elements.add(elem)
-        endPoint = pt
+        endPoint.set(x, y)
     }
 
     // Add a line from the previous point to 'pt'
-    func lineTo(using self, to: Vector2)
+    #[Swag.inline]
+    func lineTo(using self, pt: Vector2)
+    {
+        lineTo(pt.x, pt.y)
+    }
+
+    func lineTo(using self, x, y: f32)
     {
         var elem: Element = ?
         elem.type = .Line
-        elem.position = to
+        elem.position.set(x, y)
         elements.add(elem)
-        endPoint = to
+        endPoint.set(x, y)
     }
 
     // Add a curve from the previous point to 'pt'
-    func bezierTo(using self, to, controlPt: Vector2)
+    #[Swag.inline]
+    func bezierTo(using self, pt, ct: Vector2)
+    {
+        bezierTo(pt.x, pt.y, ct.x, ct.y)
+    }
+
+    func bezierTo(using self, x, y: f32, ctx, cty: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier1
-        elem.position = to
-        elem.p1 = controlPt
+        elem.position.set(x, y)
+        elem.p1.set(ctx, cty)
         elements.add(elem)
-        endPoint = to
+        endPoint.set(x, y)
     }
 
     // Add a curve from the previous point to 'pt'
-    func bezierTo(using self, to, controlPt1, controlPt2: Vector2)
+    func bezierTo(using self, pt, ct1, ct2: Vector2)
+    {
+        bezierTo(pt.x, pt.y, ct1.x, ct1.y, ct2.x, ct2.y)
+    }
+
+    func bezierTo(using self, x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier2
-        elem.position = to
-        elem.p1 = controlPt1
-        elem.p2 = controlPt2
+        elem.position.set(x, y)
+        elem.p1.set(ct1x, ct1y)
+        elem.p2.set(ct2x, ct2y)
         elements.add(elem)
-        endPoint = to
+        endPoint.set(x, y)
     }
 
     // Add an arc from the previous point
+    #[Swag.inline]
     func arcTo(using self, center: Vector2, radiusX, radiusY: f32, initAngle, maxAngle: f32)
+    {
+        arcTo(center.x, center.y, radiusX, radiusY, initAngle, maxAngle)
+    }
+
+    func arcTo(using self, x, y: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
         maxAngleRad := Math.toRadians(maxAngle)
 
         var elem: Element = ?
         elem.type = .Arc
-        elem.position = center
+        elem.position.set(x, y)
         elem.p1.x = initAngleRad
         elem.p1.y = maxAngleRad
         elem.p2.x = radiusX
         elem.p2.y = radiusY
         elements.add(elem)
 
-        endPoint.x = Math.sin(maxAngleRad) * radiusX
-        endPoint.y = -Math.cos(maxAngleRad) * radiusY
-        endPoint += center
+        endPoint.x = x + (Math.sin(maxAngleRad) * radiusX)
+        endPoint.y = y + (-Math.cos(maxAngleRad) * radiusY)
     }
 
     // Close the figure
