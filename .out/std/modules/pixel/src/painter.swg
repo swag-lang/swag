@@ -54,6 +54,7 @@ struct Painter
     commandBuffer:  Array'Command
     vertexBuffer:   Array'VertexLayout
     drawingBegin:   bool
+    //drawingPen:     Pen
     drawingPath:    LinePath
     paintParams:    PaintParams = Default
     paintQuality:   PaintQuality = High

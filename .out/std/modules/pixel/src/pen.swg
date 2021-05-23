@@ -1,6 +1,11 @@
 #global public
 using Core, Drawing
 
+enum PenStyle
+{
+    Solid
+}
+
 enum CapStyle
 {
     None
@@ -24,6 +29,8 @@ struct Pen
     color: Color
 
     jointMiterLimit:    f32 = 3
+
+    penStyle:           PenStyle = Solid
     beginCapStyle:      CapStyle = Round
     endCapStyle:        CapStyle = Round
     jointStyle:         JointStyle = Miter
