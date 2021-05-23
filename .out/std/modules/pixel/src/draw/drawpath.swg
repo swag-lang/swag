@@ -267,6 +267,15 @@ impl Painter
         }
     }
 
+    private func moveCursor(using self, cxt: *Context, pos: Vector2)
+    {
+        using cxt
+        if !(flags & .NoDraw)
+            drawEndCap(cxt)
+        cxt.prev, cxt.prevNc = pos
+        cxt.beginLine = true
+    }
+
     private func drawLine(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
@@ -515,10 +524,7 @@ impl Painter
             switch elem.type
             {
             case Move:
-                if !(flags & .NoDraw)
-                    drawEndCap(&cxt)
-                cxt.prev, cxt.prevNc = elem.position
-                cxt.beginLine = true
+                moveCursor(&cxt, elem.position)
             case Line:
                 drawLine(&cxt, elem.position)
             case Bezier1:
