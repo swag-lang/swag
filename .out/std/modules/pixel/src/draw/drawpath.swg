@@ -373,19 +373,19 @@ impl Painter
         }
     }
 
-    private func drawEndCap(using self, cxt: *Context)
+    private func drawEndCap(using self, cxt: *Context, capStyle: CapStyle)
     {
         using cxt
+        if flags & .CollectPos return
 
-        // End line cap
         flatEnd := false
-        if prim1 and prim2 and !path.isClosed and !beginLine
+        if prim1 and prim2 and !path.isClosed
         {
-            if pen.endCapStyle == CapStyle.None
+            if capStyle == CapStyle.None
                 flatEnd = true
             else
             {
-                drawCap(pen.endCapStyle, prev, normal, -1.0, dref pen)
+                drawCap(capStyle, prev, normal, -1.0, dref pen)
                 flatEnd = false
             }
         }
@@ -402,8 +402,6 @@ impl Painter
     private func moveCursor(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-        if !(flags & .CollectPos)
-            drawEndCap(cxt)
         cxt.prev, cxt.prevNc = pos
         cxt.beginLine = true
     }
@@ -431,15 +429,16 @@ impl Painter
             if firstLine prev -= n2
         }
 
-        // Begin line cap
+        // First line cap
         flatBegin := false
-        if !path.isClosed and beginLine
+        if !path.isClosed and (firstLine or beginLine)
         {
-            if pen.beginCapStyle == CapStyle.None
+            capStyle := firstLine ? pen.beginCapStyle : pen.patternBeginCapStyle
+            if capStyle == CapStyle.None
                 flatBegin = true
             else
             {
-                drawCap(pen.beginCapStyle, prev, normal, 1.0, dref pen)
+                drawCap(capStyle, prev, normal, 1.0, dref pen)
                 flatBegin = false
             }
         }
@@ -488,20 +487,11 @@ impl Painter
     {
         using cxt
 
-        // From the pen
-        patOffset = 0
-        patEnd = 0
-
         patternTotalLen = 0
         visit p: pen.pattern
             patternTotalLen += cast(f32) p
-        while patEnd >= patternTotalLen
-            patEnd -= patternTotalLen
-        while patOffset >= patternTotalLen
-            patOffset -= patternTotalLen
         patternTotalLen *= pen.size
 
-        totalLen += patOffset * pen.size
         error    = (totalLen / patternTotalLen)
         divError = Math.floor(error)
         error -= divError
@@ -595,6 +585,7 @@ impl Painter
                     drawLineInternal(cxt, nextp)
                 else
                 {
+                    drawEndCap(cxt, pen.patternEndCapStyle)
                     moveCursor(cxt, nextp)
                     error -= addLen
                 }
@@ -608,7 +599,11 @@ impl Painter
                 if !(patternIndex & 1)
                     drawLineInternal(cxt, pos)
                 else
+                {
+                    drawEndCap(cxt, pen.patternEndCapStyle)
                     moveCursor(cxt, pos)
+                }
+
                 break
             }
         }
@@ -650,7 +645,9 @@ impl Painter
             switch elem.type
             {
             case Move:
+                drawEndCap(cxt, pen.endCapStyle)
                 moveCursor(cxt, elem.position)
+                firstLine = true
             case Line:
                 drawLine(cxt, elem.position)
             case Bezier1:
@@ -662,15 +659,12 @@ impl Painter
             }
         }
 
-        if !(flags & .CollectPos)
-        {
-            // End line cap
-            drawEndCap(cxt)
+        // End line cap
+        drawEndCap(cxt, pen.endCapStyle)
 
-            // Closing join between the end and the beginning in case of a closed path
-            if path.isClosed and !firstLine and !beginLine
-                drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
-        }
+        // Closing join between the end and the beginning in case of a closed path
+        if path.isClosed and !firstLine and !beginLine and !(flags & .CollectPos)
+            drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
     }
 
     // Draw the line path with the given 'pen'

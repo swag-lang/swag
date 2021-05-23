@@ -12,14 +12,20 @@ var renderer: RenderOglWin32
 
 var g_modeAA: bool
 var g_paintQuality: PaintQuality = Normal
+var g_pattern: bool
 
 var ff: f32 = 0
 func display()
 {
     var pen: Pen
-    pen.penStyle = .Pattern
-    pen.pattern.add(1)
-    pen.pattern.add(1)
+
+    if g_pattern
+    {
+        pen.penStyle = .Pattern
+        pen.pattern.add(0.5)
+        pen.pattern.add(1)
+        pen.pattern.add(0.5)
+    }
 
     pen.size = 20
     pen.color = 0xFF000000
@@ -216,6 +222,8 @@ func messageLoop()
             g_modeAA = g_modeAA ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F2))
             g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 4)
+        if(keyb.isKeyJustPressed(Input.Key.F3))
+            g_pattern = g_pattern ? false : true
     }
 }
 
