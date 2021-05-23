@@ -105,6 +105,7 @@ impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
+    #[Swag.inline]
     func bezierTo(using self, pt, ct1, ct2: Vector2)
     {
         bezierTo(pt.x, pt.y, ct1.x, ct1.y, ct2.x, ct2.y)
