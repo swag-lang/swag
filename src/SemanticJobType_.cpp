@@ -570,6 +570,14 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
 
+    // In case case has triggered a special function call, need to get it
+    // (usage of opAffect)
+    if (exprNode->extension && exprNode->extension->resolvedUserOpSymbolOverload)
+    {
+        node->allocateExtension();
+        node->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
+    }
+
     // Revert the implicit cast informations
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
     // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)

@@ -377,7 +377,9 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 typeExpr->identifier = Ast::newIdentifierRef(sourceFile, nodeCall->typeInfo->scopedName, typeExpr);
                 varNode->type        = typeExpr;
 
-                auto assign         = nodeCall->childs.front();
+                auto assign = nodeCall->childs.front();
+                if (assign->kind == AstNodeKind::Cast)
+                    assign = assign->childs.back();
                 varNode->assignment = assign->clone(cloneContext);
 
                 Ast::removeFromParent(nodeCall);
@@ -1263,6 +1265,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     Diagnostic* diag = nullptr;
     Diagnostic* note = nullptr;
 
+    // We do not want the reference type syntax to appear in messages. Instead, we just want to see
+    // the struct.
+    bi.badSignatureRequestedType = TypeManager::concreteReference(bi.badSignatureRequestedType);
+
     // See if it would have worked with an explicit cast, to give a hint in the error message
     Utf8 explicitCastHint;
     switch (match.result)
@@ -1270,11 +1276,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericMatch:
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
-        if (bi.badSignatureRequestedType->kind != TypeInfoKind::Reference)
-        {
-            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                explicitCastHint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
-        }
+        if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            explicitCastHint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
+
+        //if (g_TypeMgr.tryOpAffect(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, overload->node, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+        //{
+        //}
 
         break;
     }

@@ -780,6 +780,12 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
+    if (child->extension && child->extension->resolvedUserOpSymbolOverload)
+    {
+        node->allocateExtension();
+        node->extension->resolvedUserOpSymbolOverload = child->extension->resolvedUserOpSymbolOverload;
+    }
+
     // If the call has been generated because of a 'return tuple', then we force a move
     // instead of a copy, in case the parameter to the tuple init is a local variable
     if (node->autoTupleReturn)
