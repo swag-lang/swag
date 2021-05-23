@@ -559,6 +559,7 @@ impl Painter
             bvMax.x = Math.max(bvMax.x, pos.x)
             bvMax.y = Math.max(bvMax.y, pos.y)
             posBuffer.add(pos)
+            prev = pos
             return
         }
 

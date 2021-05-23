@@ -103,7 +103,8 @@ func display()
     cdc.drawPath(path, pen)
 
     cdc.position(@{250, 600})
-    pen.size = 5
+    pen.size = 4
+    pen.color = Argb.Purple
     cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
     cdc.position(@{400, 600})
     cdc.drawCircle(50, 50, 50, pen)
