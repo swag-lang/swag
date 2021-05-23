@@ -1262,6 +1262,23 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     Diagnostic* diag = nullptr;
     Diagnostic* note = nullptr;
+
+    // See if it would have worked with an explicit cast, to give a hint in the error message
+    Utf8 explicitCastHint;
+    switch (match.result)
+    {
+    case MatchResult::BadGenericMatch:
+    case MatchResult::BadSignature:
+    case MatchResult::BadGenericSignature:
+        if (bi.badSignatureRequestedType->kind != TypeInfoKind::Reference)
+        {
+            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                explicitCastHint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
+        }
+
+        break;
+    }
+
     switch (match.result)
     {
     default:
@@ -1360,17 +1377,15 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericMatch:
     {
         SWAG_ASSERT(callParameters);
-        diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               format(Msg0047,
                                      badParamIdx,
                                      refNiceName.c_str(),
                                      bi.badGenMatch.c_str(),
                                      bi.badSignatureRequestedType->name.c_str(),
                                      bi.badSignatureGivenType->name.c_str())};
-        if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
-
-        note = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
+        diag->hint = explicitCastHint;
+        note       = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -1399,8 +1414,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                          bi.badSignatureRequestedType->getDisplayName().c_str(),
                                          bi.badSignatureGivenType->getDisplayName().c_str())};
         }
-        if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
+
+        diag->hint = explicitCastHint;
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
             note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         else
@@ -1441,9 +1456,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                          refNiceName.c_str(),
                                          bi.badSignatureRequestedType->getDisplayName().c_str(),
                                          bi.badSignatureGivenType->getDisplayName().c_str())};
-            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
-            note = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
+
+            diag->hint = explicitCastHint;
+            note       = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
         }
