@@ -28,8 +28,11 @@ const char* Scope::getNakedKindName(ScopeKind kind)
         return "statement";
     case ScopeKind::Inline:
         return "inline";
+    case ScopeKind::Function:
+    case ScopeKind::FunctionBody:
+        return "function";
     default:
-        return "<scope>";
+        return "scope";
     }
 }
 
@@ -56,8 +59,11 @@ const char* Scope::getArticleKindName(ScopeKind kind)
         return "a statement";
     case ScopeKind::Inline:
         return "an inline";
+    case ScopeKind::Function:
+    case ScopeKind::FunctionBody:
+        return "a function";
     default:
-        return "<scope>";
+        return "a scope";
     }
 }
 
