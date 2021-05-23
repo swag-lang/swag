@@ -515,4 +515,26 @@ impl Painter
             drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
         }
     }
+
+    // Draw the line path with the given 'pen'
+    func fillPath(using self, path: LinePath)
+    {
+        bMin := Vector2{Swag.F32.Max, Swag.F32.Max}
+        bMax := Vector2{Swag.F32.Min, Swag.F32.Min}
+        visit elem: path.elements
+        {
+            bMin.x = Math.min(bMin.x, elem.position.x)
+            bMin.y = Math.min(bMin.y, elem.position.y)
+            bMax.x = Math.max(bMax.x, elem.position.x)
+            bMax.y = Math.max(bMax.y, elem.position.y)
+        }
+
+        center := Vector2{bMin.x + (bMax.x - bMin.x) * 0.5, bMin.y + (bMax.y - bMin.y) * 0.5}
+        visit elem, i: path.elements
+        {
+            v0 := elem.position
+            v1 := path.elements.buffer[(i + 1) % path.elements.count].position
+            prim := pushTriangle(v0, v1, center, Argb.Black)
+        }
+    }
 }
