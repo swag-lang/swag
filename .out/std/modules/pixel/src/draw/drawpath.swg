@@ -27,6 +27,7 @@ private struct Context
     pen:            const *Pen
     bvMin:          Vector2
     bvMax:          Vector2
+    totalLen:       f32
 }
 
 impl Painter
@@ -480,6 +481,7 @@ impl Painter
         // Collect all segments in 'posBuffer'
         if flags & .CollectPos
         {
+            totalLen += prev.distance(pos)
             bvMin.x = Math.min(bvMin.x, pos.x)
             bvMin.y = Math.min(bvMin.y, pos.y)
             bvMax.x = Math.max(bvMax.x, pos.x)
@@ -490,7 +492,109 @@ impl Painter
         if flags & .NoDraw
             return
 
-        drawLineInternal(cxt, pos)
+        // solid
+        //drawLineInternal(cxt, pos)
+        var pattern: Array'u32
+        pattern.add(1)
+        pattern.add(1)
+
+        patOffset := 0'f32
+        patEnd := 0'f32
+
+        patternTotalLen := 0'f32
+        visit p: pattern
+            patternTotalLen += cast(f32) p
+        while patEnd >= patternTotalLen
+            patEnd -= patternTotalLen
+        while patOffset >= patternTotalLen
+            patOffset -= patternTotalLen
+        patternTotalLen *= pen.size
+
+        totalLen += patOffset * pen.size
+        error    := (totalLen / patternTotalLen)
+        divError := Math.floor(error)
+        error -= divError
+        error *= patternTotalLen
+
+        // Adjust error with patend adjustement length
+        error += patEnd * pen.size
+        if error >= patternTotalLen
+            error -= patternTotalLen
+
+        // Increase spaces between lines, or increase it ?
+        negError := false
+        if error > patternTotalLen / 2
+        {
+            error -= patternTotalLen
+            negError = true
+        }
+
+        // We must dispatch error at each blank in the pattern. So "diverror" must be
+        // "the number of blanks in the total line"
+        patternCount := cast(s32) pattern.count
+        divError = Math.floor(totalLen / patternTotalLen)
+        divError *= (patternCount / 2.0)
+        calcError := error / divError
+
+        // Take care of offset begin
+        patternIndex := 0
+        patternLen   := cast(f32) pattern.buffer[patternIndex]
+        while patOffset > 0
+        {
+            if patternLen >= patOffset
+            {
+                patternLen -= patOffset
+                break
+            }
+
+            patternIndex = (patternIndex + 1) % patternCount
+            patOffset -= patternLen
+            patternLen = cast(f32) pattern.buffer[patternIndex]
+        }
+
+        patternLen *= pen.size
+        v := pos - prev
+        restLen := v.length()
+        v.normalizeSafe()
+        while restLen > 0.1
+        {
+            len    := patternLen
+            addLen := 0'f32
+            if divError > 0 and patternIndex & 1
+            {
+                if negError
+                    addLen = Math.max(error, calcError)
+                else
+                    addLen = Math.min(error, calcError)
+                len += addLen
+            }
+
+            if len <= restLen
+            {
+                v1 := v * len
+                restLen -= len
+                nextp := prev + v1
+                if !(patternIndex & 1)
+                    drawLineInternal(cxt, nextp)
+                else
+                {
+                    moveCursor(cxt, nextp)
+                    error -= addLen
+                }
+
+                patternIndex = (patternIndex + 1) % patternCount
+                patternLen   = cast(f32) (pattern.buffer[patternIndex] * pen.size)
+            }
+            else
+            {
+                patternLen -= restLen
+                if !(patternIndex & 1)
+                    drawLineInternal(cxt, pos)
+                else
+                    moveCursor(cxt, pos)
+                break
+            }
+        }
     }
 
     private func drawPathInternal(using self, cxt: *Context)
@@ -558,6 +662,10 @@ impl Painter
         var cxt: Context
         cxt.path = &path
         cxt.pen = &pen
+        cxt.flags = Flags.CollectPos | Flags.NoDraw
+        drawPathInternal(&cxt)
+
+        cxt.flags = Flags.Zero
         drawPathInternal(&cxt)
     }
 
