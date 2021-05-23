@@ -12,6 +12,7 @@ private enum Flags
 
 private struct Context
 {
+    posBuffer:      Array'Vector2
     size2:          f32
     flags:          Flags = Zero
     beginLine:      bool
@@ -24,6 +25,8 @@ private struct Context
     prev, prevNc:   Vector2
     path:           const *LinePath
     pen:            const *Pen
+    bvMin:          Vector2
+    bvMax:          Vector2
 }
 
 impl Painter
@@ -267,111 +270,6 @@ impl Painter
         }
     }
 
-    private func moveCursor(using self, cxt: *Context, pos: Vector2)
-    {
-        using cxt
-        if !(flags & .NoDraw)
-            drawEndCap(cxt)
-        cxt.prev, cxt.prevNc = pos
-        cxt.beginLine = true
-    }
-
-    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
-    {
-        using cxt
-
-        // Compute line (half width on each side, except if edge)
-        vNew, vNewNc := pos
-        n := vNewNc - prevNc
-        n.normalizeSafe()
-        normal = n.cross(1)
-        n2 := normal
-        normal *= size2
-
-        // Correction when size is not divisible by 2
-        if adapt
-        {
-            if path.isClosed
-                n2 *= 0.5
-            else
-                n2 = Vector2{-0.5, -0.5}
-            vNew -= n2
-            if firstLine prev -= n2
-        }
-
-        // Begin line cap
-        flatBegin := false
-        if !path.isClosed and beginLine
-        {
-            if pen.beginCapStyle == CapStyle.None
-                flatBegin = true
-            else
-            {
-                drawCap(pen.beginCapStyle, prev, normal, 1.0, dref pen)
-                flatBegin = false
-            }
-        }
-
-        // Joints
-        if !beginLine
-            drawJoint(pen.jointStyle, prev, normalPrev, normal, dref pen)
-
-        // Draw quad
-        v0 := prev - normal
-        v1 := vNew - normal
-        v3 := prev + normal
-        v2 := vNew + normal
-        prim1 = pushTriangle(v0, v1, v3, pen.color)
-        prim2 = pushTriangle(v1, v3, v2, pen.color)
-
-        // Generate AA edges
-        if paintParams & .Antialiased
-        {
-            addEdgeAA(prim1, v3, v2)
-            addEdgeAA(prim2, v3, v2)
-            if !(flags & .Edge)
-            {
-                addEdgeAA(prim1, v0, v1)
-                addEdgeAA(prim2, v0, v1)
-            }
-
-            if flatBegin
-            {
-                prim1t := prim1 + 2
-                addEdgeAA(prim1, prim1.pos, prim1t.pos);
-                addEdgeAA(prim2, prim1.pos, prim1t.pos);
-            }
-        }
-
-        // To draw end joint
-        if firstLine normalFirst = normal
-
-        normalPrev = normal
-        prev = vNew
-        prevNc = vNewNc
-        beginLine, firstLine = false
-    }
-
-    private func drawLine(using self, cxt: *Context, pos: Vector2)
-    {
-        using cxt
-
-        // Collect all segments in 'posBuffer'
-        if flags & .CollectPos
-        {
-            bvMin.x = Math.min(bvMin.x, pos.x)
-            bvMin.y = Math.min(bvMin.y, pos.y)
-            bvMax.x = Math.max(bvMax.x, pos.x)
-            bvMax.y = Math.max(bvMax.y, pos.y)
-            posBuffer.add(pos)
-        }
-
-        if flags & .NoDraw
-            return
-
-        drawLineInternal(cxt, pos)
-    }
-
     private func drawBezier(using self, cxt: *Context, pos, p1: Vector2)
     {
         using cxt
@@ -490,14 +388,116 @@ impl Painter
         }
     }
 
-    private func drawPathInternal(using self, path: LinePath, pen: Pen, flags: Flags)
+    private func moveCursor(using self, cxt: *Context, pos: Vector2)
     {
-        if pen.size == 0 or path.elements.count == 0
+        using cxt
+        if !(flags & .NoDraw)
+            drawEndCap(cxt)
+        cxt.prev, cxt.prevNc = pos
+        cxt.beginLine = true
+    }
+
+    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
+    {
+        using cxt
+
+        // Compute line (half width on each side, except if edge)
+        vNew, vNewNc := pos
+        n := vNewNc - prevNc
+        n.normalizeSafe()
+        normal = n.cross(1)
+        n2 := normal
+        normal *= size2
+
+        // Correction when size is not divisible by 2
+        if adapt
+        {
+            if path.isClosed
+                n2 *= 0.5
+            else
+                n2 = Vector2{-0.5, -0.5}
+            vNew -= n2
+            if firstLine prev -= n2
+        }
+
+        // Begin line cap
+        flatBegin := false
+        if !path.isClosed and beginLine
+        {
+            if pen.beginCapStyle == CapStyle.None
+                flatBegin = true
+            else
+            {
+                drawCap(pen.beginCapStyle, prev, normal, 1.0, dref pen)
+                flatBegin = false
+            }
+        }
+
+        // Joints
+        if !beginLine
+            drawJoint(pen.jointStyle, prev, normalPrev, normal, dref pen)
+
+        // Draw quad
+        v0 := prev - normal
+        v1 := vNew - normal
+        v3 := prev + normal
+        v2 := vNew + normal
+        prim1 = pushTriangle(v0, v1, v3, pen.color)
+        prim2 = pushTriangle(v1, v3, v2, pen.color)
+
+        // Generate AA edges
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, v3, v2)
+            addEdgeAA(prim2, v3, v2)
+            if !(flags & .Edge)
+            {
+                addEdgeAA(prim1, v0, v1)
+                addEdgeAA(prim2, v0, v1)
+            }
+
+            if flatBegin
+            {
+                prim1t := prim1 + 2
+                addEdgeAA(prim1, prim1.pos, prim1t.pos);
+                addEdgeAA(prim2, prim1.pos, prim1t.pos);
+            }
+        }
+
+        // To draw end joint
+        if firstLine normalFirst = normal
+
+        normalPrev = normal
+        prev = vNew
+        prevNc = vNewNc
+        beginLine, firstLine = false
+    }
+
+    private func drawLine(using self, cxt: *Context, pos: Vector2)
+    {
+        using cxt
+
+        // Collect all segments in 'posBuffer'
+        if flags & .CollectPos
+        {
+            bvMin.x = Math.min(bvMin.x, pos.x)
+            bvMin.y = Math.min(bvMin.y, pos.y)
+            bvMax.x = Math.max(bvMax.x, pos.x)
+            bvMax.y = Math.max(bvMax.y, pos.y)
+            posBuffer.add(pos)
+        }
+
+        if flags & .NoDraw
             return
 
-        bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(Swag.F32.Min, Swag.F32.Min)
-        posBuffer.clear()
+        drawLineInternal(cxt, pos)
+    }
+
+    private func drawPathInternal(using self, cxt: *Context)
+    {
+        using cxt
+        if pen.size == 0 or path.elements.count == 0
+            return
 
         size := pen.size
 
@@ -511,60 +511,66 @@ impl Painter
         }
 
         // Correction
-        adapt := false
+        adapt = false
         if !(flags & .Edge) and (cast(u32) size & 1)
             adapt = true
 
-        var cxt: Context
-        cxt.size2       = size * 0.5
-        cxt.flags       = flags
-        cxt.adapt       = adapt
-        cxt.prev        = path.startPoint
-        cxt.prevNc      = path.startPoint
-        cxt.beginLine   = true
-        cxt.firstLine   = true
-        cxt.path        = &path
-        cxt.pen         = &pen
+        bvMin.set(Swag.F32.Max, Swag.F32.Max)
+        bvMax.set(Swag.F32.Min, Swag.F32.Min)
+        posBuffer.clear()
+        size2       = size * 0.5
+        prev        = path.startPoint
+        prevNc      = path.startPoint
+        beginLine   = true
+        firstLine   = true
 
         visit elem: path.elements
         {
             switch elem.type
             {
             case Move:
-                moveCursor(&cxt, elem.position)
+                moveCursor(cxt, elem.position)
             case Line:
-                drawLine(&cxt, elem.position)
+                drawLine(cxt, elem.position)
             case Bezier1:
-                drawBezier(&cxt, elem.position, elem.p1)
+                drawBezier(cxt, elem.position, elem.p1)
             case Bezier2:
-                drawBezier(&cxt, elem.position, elem.p1, elem.p2)
+                drawBezier(cxt, elem.position, elem.p1, elem.p2)
             case Arc:
-                drawArc(&cxt, elem.position, elem.p1, elem.p2)
+                drawArc(cxt, elem.position, elem.p1, elem.p2)
             }
         }
 
         if !(flags & .NoDraw)
         {
             // End line cap
-            drawEndCap(&cxt)
+            drawEndCap(cxt)
 
             // Closing join between the end and the beginning in case of a closed path
-            if path.isClosed and !cxt.firstLine and !cxt.beginLine
-                drawJoint(pen.jointStyle, cxt.prev, cxt.normal, cxt.normalFirst, pen)
+            if path.isClosed and !firstLine and !beginLine
+                drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
         }
     }
 
     // Draw the line path with the given 'pen'
     func drawPath(using self, path: LinePath, pen: Pen)
     {
-        drawPathInternal(path, pen, Flags.Zero)
+        var cxt: Context
+        cxt.path = &path
+        cxt.pen = &pen
+        drawPathInternal(&cxt)
     }
 
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: LinePath, brush: Brush)
     {
-        drawPathInternal(path, sharedSolidPen, Flags.CollectPos | Flags.NoDraw)
+        var cxt: Context
+        cxt.path = &path
+        cxt.pen = &sharedSolidPen
+        cxt.flags = Flags.CollectPos | Flags.NoDraw
+        drawPathInternal(&cxt)
 
+        using cxt
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
         {
