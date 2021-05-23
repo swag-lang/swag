@@ -829,6 +829,21 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeInfo->alignOf = min(typeInfo->alignOf, node->packing);
     typeInfo->alignOf = max(1, typeInfo->alignOf);
 
+    // An opaque struct will be exported as an array of bytes.
+    // We need to be sure that alignement will be respected, so we force "Swag.align" attribute
+    // if not already present.
+    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute("Swag.opaque"))
+    {
+        OneAttribute       ot;
+        AttributeParameter otp;
+        ot.name           = "Swag.align";
+        otp.name          = "value";
+        otp.typeInfo      = g_TypeMgr.typeInfoU8;
+        otp.value.reg.u64 = typeInfo->alignOf;
+        ot.parameters.push_back(otp);
+        typeInfo->attributes.attributes.push_back(ot);
+    }
+
     // Align structure size
     if (typeInfo->alignOf > 1 && !(typeInfo->flags & TYPEINFO_GENERIC))
         typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);

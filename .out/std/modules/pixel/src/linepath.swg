@@ -1,4 +1,3 @@
-#global public
 using Core, Core.Math
 
 enum ElementType
@@ -17,7 +16,8 @@ struct Element
     p1, p2:     Vector2
 }
 
-struct LinePath
+#[Swag.opaque]
+public struct LinePath
 {
     elements:       Array'Element
     startPoint:     Vector2
@@ -27,7 +27,7 @@ struct LinePath
     isComplex:      bool
 }
 
-impl LinePath
+public impl LinePath
 {
     // Reset the path
     func clear(using self)
