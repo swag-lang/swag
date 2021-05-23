@@ -7,6 +7,7 @@ private struct Context
     edge:           bool
     beginLine:      bool
     firstLine:      bool
+    adapt:          bool
     normalPrev:     Vector2
     normalFirst:    Vector2
     normal:         Vector2
@@ -269,6 +270,17 @@ impl Painter
         n2 := normal
         normal *= size2
 
+        // Correction when size is not divisible by 2
+        if adapt
+        {
+            if path.isClosed
+                n2 *= 0.5
+            else
+                n2 = Vector2{-0.5, -0.5}
+            vNew -= n2
+            if firstLine prev -= n2
+        }
+
         // Begin line cap
         flatBegin := false
         if !path.isClosed and beginLine
@@ -459,9 +471,15 @@ impl Painter
                 size += 0.5
         }
 
+        // Correction
+        adapt := false
+        if !edge and (cast(u32) size & 1)
+            adapt = true
+
         var cxt: Context
         cxt.size2       = size * 0.5
         cxt.edge        = edge
+        cxt.adapt       = adapt
         cxt.prev        = path.startPoint
         cxt.prevNc      = path.startPoint
         cxt.beginLine   = true
