@@ -10,9 +10,9 @@ const H = 1024
 var cdc: Painter
 var renderer: RenderOglWin32
 
-var g_modeAA: bool
+var g_modeAA: bool = true
 var g_paintQuality: PaintQuality = Normal
-var g_pattern: bool
+var g_pattern: bool = true
 
 var ff: f32 = 0
 func display()

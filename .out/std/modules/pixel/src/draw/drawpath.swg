@@ -370,7 +370,7 @@ impl Painter
         }
     }
 
-    private func drawEndCap(using self, cxt: *Context, capStyle: CapStyle)
+    private func drawEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: CapStyle)
     {
         using cxt
         if flags & .CollectPos return
@@ -378,7 +378,7 @@ impl Painter
 
         // Cap is defined
         if capStyle != CapStyle.None
-            drawCap(capStyle, prev, normal, -1.0, dref pen)
+            drawCap(capStyle, posCap, normalCap, -1.0, dref pen)
 
         // AA end edge if no cap
         else if paintParams & .Antialiased
@@ -545,7 +545,7 @@ impl Painter
                 }
                 else
                 {
-                    drawEndCap(cxt, pen.patternEndCapStyle)
+                    drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     moveCursor(cxt, nextp)
                     error -= addLen
                 }
@@ -563,7 +563,7 @@ impl Painter
                 }
                 else
                 {
-                    drawEndCap(cxt, pen.patternEndCapStyle)
+                    drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     moveCursor(cxt, pos)
                 }
 
@@ -614,7 +614,7 @@ impl Painter
 
         // End line cap
         if !path.isClosed
-            drawEndCap(cxt, pen.endCapStyle)
+            drawEndCap(cxt, prev, normal, pen.endCapStyle)
 
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !firstLine and !beginLine and !(flags & .CollectPos)
