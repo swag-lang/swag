@@ -103,17 +103,17 @@ const PixelShaderAA = @"
         float dot = (segNormalized.x * startToPixel.x) + (segNormalized.y * startToPixel.y);
 
         // If outside segment, take distance to the point
-        //if(dot < 0)
-        //{
-        //   float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
-        //    return clamp(normDiff, 0, 1);
-        //}
-        //if(dot > normSeg)
-        //{
-        //    startToPixel = vpixelPos.xy - segment.zw;
-        //    float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
-        //    return clamp(normDiff, 0, 1);
-        //}
+        /*if(dot < 0)
+        {
+           float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
+            return clamp(normDiff, 0, 1);
+        }
+        if(dot > normSeg)
+        {
+            startToPixel = vpixelPos.xy - segment.zw;
+            float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
+            return clamp(normDiff, 0, 1);
+        }*/
 
         vec2  projSeg = segNormalized * dot;
         vec2  diffSeg = startToPixel - projSeg;

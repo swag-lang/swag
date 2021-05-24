@@ -398,7 +398,7 @@ impl Painter
         beginLine = true
     }
 
-    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
+    private func drawLineInternal(using self, cxt: *Context, pos: Vector2, capStyle: CapStyle, drawCap: bool)
     {
         using cxt
 
@@ -422,18 +422,8 @@ impl Painter
         }
 
         // First line cap
-        flatBegin := false
-        if !path.isClosed and (firstLine or beginLine)
-        {
-            capStyle := firstLine ? pen.beginCapStyle : pen.patternBeginCapStyle
-            if capStyle == CapStyle.None
-                flatBegin = true
-            else
-            {
-                drawCap(capStyle, prev, normal, 1.0, dref pen)
-                flatBegin = false
-            }
-        }
+        if capStyle != CapStyle.None and beginLine and drawCap
+            drawCap(capStyle, prev, normal, 1.0, dref pen)
 
         // Joints
         if !beginLine
@@ -455,7 +445,7 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
 
-            if flatBegin
+            if capStyle == CapStyle.None and beginLine and drawCap
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -543,7 +533,7 @@ impl Painter
         // solid
         if pen.penStyle == .Solid
         {
-            drawLineInternal(cxt, pos)
+            drawLineInternal(cxt, pos, pen.beginCapStyle, !path.isClosed)
             return
         }
 
@@ -569,7 +559,10 @@ impl Painter
                 restLen -= len
                 nextp := prev + v1
                 if !(patternIndex & 1)
-                    drawLineInternal(cxt, nextp)
+                {
+                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
+                    drawLineInternal(cxt, nextp, capStyle, true)
+                }
                 else
                 {
                     drawEndCap(cxt, pen.patternEndCapStyle)
@@ -584,7 +577,10 @@ impl Painter
             {
                 patternLen -= restLen
                 if !(patternIndex & 1)
-                    drawLineInternal(cxt, pos)
+                {
+                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
+                    drawLineInternal(cxt, pos, capStyle, true)
+                }
                 else
                 {
                     drawEndCap(cxt, pen.patternEndCapStyle)
@@ -637,7 +633,7 @@ impl Painter
         }
 
         // End line cap
-        if !path.isClosed 
+        if !path.isClosed
             drawEndCap(cxt, pen.endCapStyle)
 
         // Closing join between the end and the beginning in case of a closed path

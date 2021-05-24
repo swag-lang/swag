@@ -24,7 +24,6 @@ func display()
         pen.penStyle = .Pattern
         pen.pattern.add(1.0)
         pen.pattern.add(1.0)
-        //pen.pattern.add(0.5)
     }
 
     pen.size = 20
@@ -36,7 +35,7 @@ func display()
     cdc.paintQuality = g_paintQuality
     cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
-    /*cdc.position(@{50, 50})
+    cdc.position(@{50, 50})
     pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
@@ -106,22 +105,22 @@ func display()
     path.lineTo(@{100, 50})
     path.arcTo(@{150, 50}, 50, 50, -90, 0)
     cdc.position(@{50, 600})
-    cdc.drawPath(path, pen)*/
+    cdc.drawPath(path, pen)
 
-    //cdc.position(@{250, 600})
+    cdc.position(@{250, 600})
     pen.size = 4
-    pen.color = Argb.Purple
-    //cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
+    pen.color = Argb.Blue
+    cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
     cdc.position(@{400, 600})
-    cdc.drawCircle(100, 100, 50, pen)
-    /*cdc.position(@{500, 600})
+    cdc.drawCircle(50, 50, 50, pen)
+    cdc.position(@{500, 600})
     cdc.drawEllipse(50, 50, 25, 50, pen)
 
     var brush: Brush
     brush.color = Argb.Black
     cdc.position(@{600, 600})
     cdc.fillCircle(50, 50, 50, brush)
-    cdc.drawCircle(50, 50, 50, pen)*/
+    cdc.drawCircle(50, 50, 50, pen)
 
     cdc.end()
 
