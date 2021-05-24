@@ -20,7 +20,7 @@ private struct Context
     normalFirst:    Vector2
     normal:         Vector2
     prim1, prim2:   *VertexLayout
-    prev, prevNc:   Vector2
+    prev:           Vector2
     path:           const *LinePath
     pen:            const *Pen
     bvMin:          Vector2
@@ -394,8 +394,8 @@ impl Painter
     private func moveCursor(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-        cxt.prev, cxt.prevNc = pos
-        cxt.beginLine = true
+        prev = pos
+        beginLine = true
     }
 
     private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
@@ -403,8 +403,8 @@ impl Painter
         using cxt
 
         // Compute line (half width on each side, except if edge)
-        vNew, vNewNc := pos
-        n := vNewNc - prevNc
+        newPos := pos
+        n := newPos - prev
         n.normalizeSafe()
         normal = n.cross(1)
         n2 := normal
@@ -417,7 +417,7 @@ impl Painter
                 n2 *= 0.5
             else
                 n2 = Vector2{-0.5, -0.5}
-            vNew -= n2
+            newPos -= n2
             if firstLine prev -= n2
         }
 
@@ -441,9 +441,9 @@ impl Painter
 
         // Draw quad
         v0 := prev - normal
-        v1 := vNew - normal
+        v1 := newPos - normal
         v3 := prev + normal
-        v2 := vNew + normal
+        v2 := newPos + normal
         prim1 = pushTriangle(v0, v1, v3, pen.color)
         prim2 = pushTriangle(v1, v3, v2, pen.color)
 
@@ -466,8 +466,7 @@ impl Painter
         if firstLine normalFirst = normal
 
         normalPrev = normal
-        prev = vNew
-        prevNc = vNewNc
+        prev = newPos
         beginLine, firstLine = false
     }
 
@@ -619,7 +618,6 @@ impl Painter
         posBuffer.clear()
         size2       = size * 0.5
         prev        = path.startPoint
-        prevNc      = path.startPoint
         beginLine   = true
         firstLine   = true
 
