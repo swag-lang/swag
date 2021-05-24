@@ -535,9 +535,7 @@ impl Painter
 
             if len <= restLen
             {
-                v1 := v * len
-                restLen -= len
-                nextp := prev + v1
+                nextp := prev + (v * len)
                 if !(patternIndex & 1)
                 {
                     capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
@@ -550,6 +548,7 @@ impl Painter
                     error -= addLen
                 }
 
+                restLen -= len
                 patternIndex = (patternIndex + 1) % patternCount
                 patternLen   = cast(f32) (pen.pattern.buffer[patternIndex] * pen.size)
             }
