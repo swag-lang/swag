@@ -5,8 +5,7 @@ impl Painter
 {
     private func setEllipsePath(using self, centerX, centerY: f32, radiusX, radiusY: f32)
     {
-        sharedLinePath.clear()
-        sharedLinePath.moveTo(centerX, centerY - radiusY)
+        sharedLinePath.start(centerX, centerY - radiusY)
         sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
         sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 90, 180)
         sharedLinePath.arcTo(centerX, centerY, radiusX, radiusY, 180, 270)

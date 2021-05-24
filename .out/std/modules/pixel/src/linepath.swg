@@ -2,7 +2,6 @@ using Core, Core.Math
 
 enum ElementType
 {
-    Move
     Line
     Arc
     Bezier1
@@ -30,45 +29,12 @@ public struct LinePath
 public impl LinePath
 {
     // Reset the path
-    func clear(using self)
+    func start(using self, startX, startY: f32)
     {
         elements.clear()
         isOpened, isClosed, isComplex = false
-        startPoint = Vector2.Zero
-        endPoint = Vector2.Zero
-    }
-
-    // Move the current cursor position
-    #[Swag.inline]
-    func moveTo(using self, pt: Vector2)
-    {
-        moveTo(pt.x, pt.y)
-    }
-
-    func moveTo(using self, x, y: f32)
-    {
-        // First point
-        if !elements.count
-        {
-            startPoint.set(x, y)
-            endPoint.set(x, y)
-            return
-        }
-
-        // Its not useful to have two successive moveTo, so replace the last one if
-        // necessary
-        if elements.buffer[elements.count - 1].type == .Move
-        {
-            elements.buffer[elements.count - 1].position.set(x, y)
-            endPoint.set(x, y)
-            return
-        }
-
-        var elem: Element = ?
-        elem.type = .Move
-        elem.position.set(x, y)
-        elements.add(elem)
-        endPoint.set(x, y)
+        startPoint = Vector2{startX, startY}
+        endPoint = startPoint
     }
 
     // Add a line from the previous point to 'pt'

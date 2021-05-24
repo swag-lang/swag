@@ -15,8 +15,7 @@ impl Painter
     {
         right := left + width
         bottom := top + height
-        sharedLinePath.clear()
-        sharedLinePath.moveTo(@{left, top})
+        sharedLinePath.start(left, top)
         sharedLinePath.lineTo(@{right, top})
         sharedLinePath.lineTo(@{right, bottom})
         sharedLinePath.lineTo(@{left, bottom})
@@ -41,8 +40,7 @@ impl Painter
     {
         right := left + width
         bottom := top + height
-        sharedLinePath.clear()
-        sharedLinePath.moveTo(@{left, top + radiusY})
+        sharedLinePath.start(left, top + radiusY)
         sharedLinePath.arcTo(@{left + radiusX, top + radiusY}, radiusX, radiusY, -90, 0)
         sharedLinePath.lineTo(@{right - radiusX, top})
         sharedLinePath.arcTo(@{right - radiusX, top + radiusY}, radiusX, radiusY, 0, 90)

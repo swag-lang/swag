@@ -17,8 +17,7 @@ impl Painter
 
     func drawLine(using self, startX, startY, endX, endY: f32, pen: Pen)
     {
-        sharedLinePath.clear()
-        sharedLinePath.moveTo(startX, startY)
+        sharedLinePath.start(startX, startY)
         sharedLinePath.lineTo(endX, endY)
         drawPath(sharedLinePath, pen)
     }

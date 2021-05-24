@@ -644,10 +644,6 @@ impl Painter
         {
             switch elem.type
             {
-            case Move:
-                drawEndCap(cxt, pen.endCapStyle)
-                moveCursor(cxt, elem.position)
-                firstLine = true
             case Line:
                 drawLine(cxt, elem.position)
             case Bezier1:
