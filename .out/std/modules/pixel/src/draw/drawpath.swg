@@ -519,56 +519,67 @@ impl Painter
         }
 
         v := pos - prev
-        restLen := v.length()
+        remainingSegLen := v.length()
         v.normalize()
-        while restLen > 0.1
+
+        // True when we are "drawing" blanks
+        blankPatternIdx := patternIndex & 1 ? true : false
+
+        while remainingSegLen > 0.1
         {
-            len    := remainingPatternLen
+            lengthInPattern := remainingPatternLen
+
+            // If we are drawing a blank, take care of error adjustement
             addLen := 0'f32
-            if divError > 0 and patternIndex & 1
+            if divError > 0 and blankPatternIdx
             {
                 if negError
                     addLen = Math.max(error, calcError)
                 else
                     addLen = Math.min(error, calcError)
-                len += addLen
+                lengthInPattern += addLen
             }
 
-            if len <= restLen
+            // The current remaining length in the current segment is greater
+            // than what's left in the current pattern. We draw to cover the
+            // current pattern, and change the pattern to be the next
+            if remainingSegLen > lengthInPattern
             {
-                nextp := prev + (v * len)
-                if !(patternIndex & 1)
-                {
-                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
-                    drawLineInternal(cxt, nextp, capStyle, true)
-                }
-                else
+                nextp := prev + (v * lengthInPattern)
+                if blankPatternIdx
                 {
                     drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     moveCursor(cxt, nextp)
                     error -= addLen
                 }
+                else
+                {
+                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
+                    drawLineInternal(cxt, nextp, capStyle, true)
+                }
 
-                restLen -= len
+                // Start a new fresh pattern index
+                remainingSegLen -= lengthInPattern
                 patternIndex = (patternIndex + 1) % patternCount
-                remainingPatternLen   = cast(f32) (pen.pattern.buffer[patternIndex] * pen.size)
+                blankPatternIdx = blankPatternIdx ? false : true
+                remainingPatternLen = pen.pattern.buffer[patternIndex] * pen.size
+                continue
+            }
+
+            // Here the segment does not have enough remaining length to cover the current
+            // pattern. So draw what remains, and exit. The next line will try to cover the rest.
+            remainingPatternLen -= remainingSegLen
+            if blankPatternIdx
+            {
+                drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
+                moveCursor(cxt, pos)
             }
             else
             {
-                remainingPatternLen -= restLen
-                if !(patternIndex & 1)
-                {
-                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
-                    drawLineInternal(cxt, pos, capStyle, true)
-                }
-                else
-                {
-                    drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
-                    moveCursor(cxt, pos)
-                }
-
-                break
+                capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
+                drawLineInternal(cxt, pos, capStyle, true)
             }
+            break
         }
     }
 
