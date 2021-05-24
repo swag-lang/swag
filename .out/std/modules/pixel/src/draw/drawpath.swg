@@ -27,8 +27,6 @@ private struct Context
     bvMax:          Vector2
     totalLen:       f32
 
-    patOffset:          f32
-    patEnd:             f32
     patternLen:         f32
     patternTotalLen:    f32
     patternIndex:       s32
@@ -474,11 +472,6 @@ impl Painter
         error -= divError
         error *= patternTotalLen
 
-        // Adjust error with patEnd adjustement length
-        error += patEnd * pen.size
-        if error >= patternTotalLen
-            error -= patternTotalLen
-
         // Increase spaces between lines, or increase it ?
         negError = false
         if error > patternTotalLen / 2
@@ -494,22 +487,9 @@ impl Painter
         divError *= (patternCount / 2.0)
         calcError = error / divError
 
-        // Take care of offset begin
+        // First pattern
         patternIndex = 0
         patternLen = cast(f32) pen.pattern.buffer[patternIndex]
-        while patOffset > 0
-        {
-            if patternLen >= patOffset
-            {
-                patternLen -= patOffset
-                break
-            }
-
-            patternIndex = (patternIndex + 1) % patternCount
-            patOffset -= patternLen
-            patternLen = cast(f32) pen.pattern.buffer[patternIndex]
-        }
-
         patternLen *= pen.size
     }
 
