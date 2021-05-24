@@ -376,21 +376,14 @@ impl Painter
     {
         using cxt
         if flags & .CollectPos return
+        if !prim1 or !prim2 or path.isClosed return
 
-        flatEnd := false
-        if prim1 and prim2 and !path.isClosed
-        {
-            if capStyle == CapStyle.None
-                flatEnd = true
-            else
-            {
-                drawCap(capStyle, prev, normal, -1.0, dref pen)
-                flatEnd = false
-            }
-        }
+        // Cap is defined
+        if capStyle != CapStyle.None
+            drawCap(capStyle, prev, normal, -1.0, dref pen)
 
         // AA end edge if no cap
-        if flatEnd and paintParams & .Antialiased
+        else if paintParams & .Antialiased
         {
             prim2t := prim2 + 2
             addEdgeAA(prim1, prim2.pos, prim2t.pos)
