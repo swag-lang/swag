@@ -466,7 +466,7 @@ impl Painter
 
         patternTotalLen = 0
         visit p: pen.pattern
-            patternTotalLen += cast(f32) p
+            patternTotalLen += p
         patternTotalLen *= pen.size
 
         error    = (totalLen / patternTotalLen)
