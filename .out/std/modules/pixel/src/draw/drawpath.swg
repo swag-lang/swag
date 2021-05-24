@@ -375,6 +375,7 @@ impl Painter
         using cxt
         if flags & .CollectPos return
         if !prim1 or !prim2 return
+        if beginLine return
 
         // Cap is defined
         if capStyle != CapStyle.None
@@ -491,7 +492,10 @@ impl Painter
         // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
         remainingPatternLen = pen.pattern.buffer[patternIndex]
-        remainingPatternLen *= pen.size * 0.5
+        if path.isClosed
+            remainingPatternLen *= pen.size
+        else
+            remainingPatternLen *= pen.size * 0.5
     }
 
     private func drawLine(using self, cxt: *Context, pos: Vector2)
