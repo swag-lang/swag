@@ -5,7 +5,6 @@ using Core, Core.Math, Core.Drawing
 private enum Flags
 {
     Zero
-    Edge
     CollectPos
 }
 
@@ -458,19 +457,15 @@ impl Painter
         // Generate AA edges
         if paintParams & .Antialiased
         {
+            addEdgeAA(prim1, v0, v1)
             addEdgeAA(prim1, v3, v2)
+            addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
-            if !(flags & .Edge)
-            {
-                addEdgeAA(prim1, v0, v1)
-                addEdgeAA(prim2, v0, v1)
-            }
 
             if flatBegin
             {
-                prim1t := prim1 + 2
-                addEdgeAA(prim1, prim1.pos, prim1t.pos);
-                addEdgeAA(prim2, prim1.pos, prim1t.pos);
+                addEdgeAA(prim1, v0, v3)
+                addEdgeAA(prim2, v0, v3)
             }
         }
 
@@ -619,16 +614,11 @@ impl Painter
 
         // AA will reduce visually the size. Compensate
         if paintParams & .Antialiased
-        {
-            if flags & .Edge
-                size += 1.5
-            else
-                size += 0.5
-        }
+            size += 0.5
 
         // Correction
         adapt = false
-        if !(flags & .Edge) and (cast(u32) size & 1)
+        if cast(u32) size & 1
             adapt = true
 
         bvMin.set(Swag.F32.Max, Swag.F32.Max)
