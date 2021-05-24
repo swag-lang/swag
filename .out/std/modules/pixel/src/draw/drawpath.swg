@@ -490,7 +490,7 @@ impl Painter
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
-        remainingPatternLen = cast(f32) pen.pattern.buffer[patternIndex]
+        remainingPatternLen = pen.pattern.buffer[patternIndex]
         remainingPatternLen *= pen.size * 0.5
     }
 
