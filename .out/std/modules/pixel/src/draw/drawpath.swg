@@ -27,14 +27,14 @@ private struct Context
     bvMax:          Vector2
     totalLen:       f32
 
-    patternLen:         f32
-    patternTotalLen:    f32
-    patternIndex:       s32
-    error:              f32
-    divError:           f32
-    calcError:          f32
-    negError:           bool
-    patternCount:       s32
+    remainingPatternLen: f32
+    patternTotalLen:     f32
+    patternIndex:        s32
+    error:               f32
+    divError:            f32
+    calcError:           f32
+    negError:            bool
+    patternCount:        s32
 }
 
 impl Painter
@@ -487,10 +487,11 @@ impl Painter
         divError *= (patternCount / 2.0)
         calcError = error / divError
 
-        // First pattern
+        // First pattern. We start at half the size of the first pattern, in order to not
+        // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
-        patternLen = cast(f32) pen.pattern.buffer[patternIndex]
-        patternLen *= pen.size
+        remainingPatternLen = cast(f32) pen.pattern.buffer[patternIndex]
+        remainingPatternLen *= pen.size * 0.5
     }
 
     private func drawLine(using self, cxt: *Context, pos: Vector2)
@@ -522,7 +523,7 @@ impl Painter
         v.normalize()
         while restLen > 0.1
         {
-            len    := patternLen
+            len    := remainingPatternLen
             addLen := 0'f32
             if divError > 0 and patternIndex & 1
             {
@@ -550,11 +551,11 @@ impl Painter
 
                 restLen -= len
                 patternIndex = (patternIndex + 1) % patternCount
-                patternLen   = cast(f32) (pen.pattern.buffer[patternIndex] * pen.size)
+                remainingPatternLen   = cast(f32) (pen.pattern.buffer[patternIndex] * pen.size)
             }
             else
             {
-                patternLen -= restLen
+                remainingPatternLen -= restLen
                 if !(patternIndex & 1)
                 {
                     capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
