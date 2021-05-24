@@ -78,7 +78,8 @@ const PixelShaderAA = @"
 
     out vec4    color;
 
-    float computeAlphaAA(vec4 segment)
+    // from sdb
+    /*float computeAlphaAA(vec4 segment)
     {
         vec2 es = segment.zw - segment.xy;
         float norm = sqrt(es.x * es.x + es.y * es.y);
@@ -90,6 +91,34 @@ const PixelShaderAA = @"
         norm2 = dot > 1 ? 1 : norm2;
         float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
         return clamp(norm1 + norm2, 0, 1);
+    }*/
+
+    // Compute the distance from the pixel to the segment
+    float computeAlphaAA(vec4 segment)
+    {
+        vec2  seg  = segment.zw - segment.xy;
+        float normSeg = sqrt(seg.x * seg.x + seg.y * seg.y);
+        vec2  segNormalized = seg / normSeg;
+        vec2  startToPixel = vpixelPos.xy - segment.xy;
+        float dot = (segNormalized.x * startToPixel.x) + (segNormalized.y * startToPixel.y);
+
+        // If outside segment, take distance to the point
+        //if(dot < 0)
+        //{
+        //   float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
+        //    return clamp(normDiff, 0, 1);
+        //}
+        //if(dot > normSeg)
+        //{
+        //    startToPixel = vpixelPos.xy - segment.zw;
+        //    float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
+        //    return clamp(normDiff, 0, 1);
+        //}
+
+        vec2  projSeg = segNormalized * dot;
+        vec2  diffSeg = startToPixel - projSeg;
+        float normDiff = sqrt(diffSeg.x * diffSeg.x + diffSeg.y * diffSeg.y);
+        return clamp(normDiff, 0, 1);
     }
 
     float computeAlphaEdgesAA()

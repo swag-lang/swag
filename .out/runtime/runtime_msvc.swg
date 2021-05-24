@@ -11,12 +11,18 @@ private
         func RtlCopyMemory(destination: *void, source: const *void, length: uint);
         func RtlMoveMemory(destination: *void, source: const *void, length: uint);
         func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
+        func RtlFillMemory(destination: *void, length: uint, fill: s32);
     }
 }
 
 ////////////////////////////////////////////////////////////
 #[Swag.callback]
 {
+    func memset(dst: *void, value: s32, size: uint)
+    {
+        RtlFillMemory(dst, size, value)
+    }
+
     func memcpy(dst: *void, src: const *void, size: uint)
     {
         RtlCopyMemory(dst, src, size)
