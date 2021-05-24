@@ -19,7 +19,7 @@ private struct Context
     normalPrev:     Vector2
     normalFirst:    Vector2
     normal:         Vector2
-    prim1, prim2:   *VertexLayout
+    prim1, prim2:   uint
     prev:           Vector2
     path:           const *LinePath
     pen:            const *Pen
@@ -384,9 +384,10 @@ impl Painter
         // AA end edge if no cap
         else if paintParams & .Antialiased
         {
-            prim2t := prim2 + 2
-            addEdgeAA(prim1, prim2.pos, prim2t.pos)
-            addEdgeAA(prim2, prim2.pos, prim2t.pos)
+            prim2p := vertexBuffer.buffer + prim2
+            prim2t := prim2p + 2
+            addEdgeAA(prim1, prim2p.pos, prim2t.pos)
+            addEdgeAA(prim2, prim2p.pos, prim2t.pos)
         }
     }
 

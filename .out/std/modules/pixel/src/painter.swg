@@ -57,7 +57,7 @@ struct Painter
 
 impl Painter
 {
-    func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->*VertexLayout
+    func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
     {
         var cmd: *Command
         if commandBuffer.count
@@ -77,7 +77,6 @@ impl Painter
         cmd.params.drawTriangles.count += 3
 
         ptr := vertexBuffer.emplaceAddress(3)
-        var result: retval = ptr
 
         ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
@@ -85,14 +84,14 @@ impl Painter
         ptr += 1
         ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0
 
-        return result
+        return vertexBuffer.count - 3
     }
 
-    func addEdgeAA(tri: *VertexLayout, start, end: Vector2)
+    func addEdgeAA(using self, tri: uint, start, end: Vector2)
     {
         loop i: 3
         {
-            ptr := tri + i
+            ptr := vertexBuffer.buffer + tri + i
             idx := cast(s32) ptr.aanum
             if idx != 6
             {
