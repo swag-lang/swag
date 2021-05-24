@@ -376,7 +376,7 @@ impl Painter
     {
         using cxt
         if flags & .CollectPos return
-        if !prim1 or !prim2 or path.isClosed return
+        if !prim1 or !prim2 return
 
         // Cap is defined
         if capStyle != CapStyle.None
@@ -402,7 +402,7 @@ impl Painter
     {
         using cxt
 
-        // Compute line (half width on each side, except if edge)
+        // Compute line (half width on each side)
         newPos := pos
         n := newPos - prev
         n.normalizeSafe()
@@ -637,7 +637,8 @@ impl Painter
         }
 
         // End line cap
-        drawEndCap(cxt, pen.endCapStyle)
+        if !path.isClosed 
+            drawEndCap(cxt, pen.endCapStyle)
 
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !firstLine and !beginLine and !(flags & .CollectPos)
