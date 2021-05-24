@@ -5,12 +5,7 @@ struct VertexLayout
 {
     pos:    Vector2
     color:  u32
-    aa0:    Vector4
-    aa1:    Vector4
-    aa2:    Vector4
-    aa3:    Vector4
-    aa4:    Vector4
-    aa5:    Vector4
+    aa:     [6] Vector4
     aanum:  f32
 }
 
@@ -98,15 +93,14 @@ impl Painter
         loop i: 3
         {
             ptr := tri + i
-            idx := ptr.aanum
-            switch idx
+            idx := cast(s32) ptr.aanum
+            if idx != 6
             {
-            case 0: ptr.aa0.x = start.x; ptr.aa0.y = start.y; ptr.aa0.z = end.x; ptr.aa0.w = end.y; ptr.aanum += 1
-            case 1: ptr.aa1.x = start.x; ptr.aa1.y = start.y; ptr.aa1.z = end.x; ptr.aa1.w = end.y; ptr.aanum += 1
-            case 2: ptr.aa2.x = start.x; ptr.aa2.y = start.y; ptr.aa2.z = end.x; ptr.aa2.w = end.y; ptr.aanum += 1
-            case 3: ptr.aa3.x = start.x; ptr.aa3.y = start.y; ptr.aa3.z = end.x; ptr.aa3.w = end.y; ptr.aanum += 1
-            case 4: ptr.aa4.x = start.x; ptr.aa4.y = start.y; ptr.aa4.z = end.x; ptr.aa4.w = end.y; ptr.aanum += 1
-            case 5: ptr.aa5.x = start.x; ptr.aa5.y = start.y; ptr.aa5.z = end.x; ptr.aa5.w = end.y; ptr.aanum += 1
+                ptr.aa[idx].x = start.x
+                ptr.aa[idx].y = start.y
+                ptr.aa[idx].z = end.x
+                ptr.aa[idx].w = end.y
+                ptr.aanum += 1
             }
         }
     }
