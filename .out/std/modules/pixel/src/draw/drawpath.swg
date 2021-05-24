@@ -469,9 +469,8 @@ impl Painter
             patternTotalLen += p
         patternTotalLen *= pen.size
 
-        error    = (totalLen / patternTotalLen)
-        divError = Math.floor(error)
-        error -= divError
+        error = totalLen / patternTotalLen
+        error -= Math.floor(error)
         error *= patternTotalLen
 
         // Increase spaces between lines, or increase it ?
@@ -482,10 +481,10 @@ impl Painter
             negError = true
         }
 
-        // We must dispatch error at each blank in the pattern. So "diverror" must be
+        // We must dispatch error at each blank in the pattern. So "divError" must be
         // "the number of blanks in the total line"
         patternCount = cast(s32) pen.pattern.count
-        divError = Math.floor(totalLen / patternTotalLen)
+        divError = totalLen / patternTotalLen
         divError *= (patternCount / 2.0)
         calcError = error / divError
 
