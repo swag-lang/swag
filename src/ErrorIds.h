@@ -261,7 +261,7 @@
 #define Msg0277 "an '@alias' number should be in the range [0, 31] ('%u' provided)"
 #define Msg0278 "invalid variable name '%s', cannot start with '@'"
 #define Msg0279 "cannot decompose a tuple in %s"
-//#define Msg0280 "'%s' modifier is not valid for operator '%s'"
+#define Msg0280 "cannot evaluate expression return type '%s' at compile time"
 #define Msg0282 "unpacking '%d' variable(s), but the tuple on the right contains '%d' element(s)"
 #define Msg0284 "'#import' location already defined as '%s'"
 #define Msg0285 "expected an identifier, found a literal"

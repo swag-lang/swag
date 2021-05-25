@@ -344,13 +344,6 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         runContext.bp = runContext.sp;
     }
 
-    // If the function returns something by copy, then we need to reserve room on segment to store it
-    uint32_t offsetStorage = UINT32_MAX;
-    if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
-    {
-        offsetStorage = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
-    }
-
     bool result = module->runner.run(&runContext);
 
     node->extension->bc->leaveByteCode(&runContext, false);
@@ -375,6 +368,16 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         }
         else if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
+            bool ok = false;
+            if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                ok = true;
+            if (node->typeInfo->kind == TypeInfoKind::Array)
+                ok = true;
+
+            if (!ok)
+                return callerContext->report({node, format(Msg0280, node->typeInfo->getDisplayName().c_str())});
+
+            auto offsetStorage             = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
             node->computedValue.reg.offset = offsetStorage;
             auto addrDst                   = sourceFile->module->constantSegment.address(offsetStorage);
             auto addrSrc                   = runContext.registersRR[0].pointer;
