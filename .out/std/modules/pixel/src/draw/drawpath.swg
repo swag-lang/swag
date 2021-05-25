@@ -310,11 +310,22 @@ impl Painter
 
         // Compute line (half width on each side)
         newPos := pos
-        n := newPos - prev
-        n.normalizeSafe()
-        normal = n.cross(1)
+        n  := newPos - prev
         n2 := normal
-        normal *= size2
+
+        // If previous and and next point are too close, we take
+        // the last normal
+        if !n.isZeroEpsilon()
+        {
+            n.normalize()
+            normal = n.cross(1)
+            normal *= size2
+            n2 = normal
+        }
+
+        // If this is still invalid, there's nothing we can do
+        if normal.isZeroEpsilon()
+            return
 
         // Correction when size is not divisible by 2
         if adapt
@@ -411,7 +422,7 @@ impl Painter
         // True when we are "drawing" blanks
         blankPatternIdx := patternIndex & 1 ? true : false
 
-        while remainingSegLen > 0.1
+        while true
         {
             lengthInPattern := remainingPatternLen
 
