@@ -21,8 +21,6 @@ private struct Context
     patternIndex:        s32
     error:               f32
     divError:            f32
-    calcError:           f32
-    negError:            bool
     patternCount:        s32
 }
 
@@ -364,25 +362,16 @@ impl Painter
         visit p: pen.pattern
             patternTotalLen += p
         patternTotalLen *= pen.size
-
-        error = path.totalLen / patternTotalLen
-        error -= Math.floor(error)
-        error *= patternTotalLen
-
-        // Increase spaces between lines, or increase it ?
-        negError = false
-        if error > patternTotalLen / 2
-        {
-            error -= patternTotalLen
-            negError = true
-        }
-
-        // We must dispatch error at each blank in the pattern. So "divError" must be
-        // "the number of blanks in the total line"
         patternCount = cast(s32) pen.pattern.count
-        divError = path.totalLen / patternTotalLen
-        divError *= (patternCount / 2.0)
-        calcError = error / divError
+
+        repeatCount := path.totalLen / patternTotalLen
+        repeatCount -= Math.floor(error)
+        error = path.totalLen - (repeatCount * patternTotalLen)
+
+        // We must dispatch error at each blank in the pattern. So "divError" is the
+        // number of blanks to add at each 'move', between solid patterns
+        numBlanks := repeatCount * patternCount / 2
+        divError = error / numBlanks
 
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
@@ -420,11 +409,9 @@ impl Painter
             addLen := 0'f32
             if divError > 0 and blankPatternIdx
             {
-                if negError
-                    addLen = Math.max(error, calcError)
-                else
-                    addLen = Math.min(error, calcError)
-                lengthInPattern += addLen
+                addBlank := Math.min(error, divError)
+                lengthInPattern += addBlank
+                error -= addBlank
             }
 
             // The current remaining length in the current segment is greater
@@ -437,7 +424,6 @@ impl Painter
                 {
                     drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     drawMoveCursor(cxt, nextp)
-                    error -= addLen
                 }
                 else
                 {
@@ -470,15 +456,14 @@ impl Painter
         }
     }
 
-    private func drawPathInternal(using self, cxt: *Context)
+    private func drawPath(using self, cxt: *Context)
     {
         using cxt
-        if pen.size == 0 or path.elements.count == 0
+        if pen.size == 0 or path.posBuffer.count == 0
             return
 
-        size := pen.size
-
         // AA will reduce visually the size. Compensate
+        size := pen.size
         if paintParams & .Antialiased
             size += 0.5
 
@@ -492,6 +477,7 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
+        // Draw all
         visit p: path.posBuffer
             drawLine(cxt, dref p)
 
@@ -513,7 +499,7 @@ impl Painter
         cxt.path = path
         cxt.pen =  &pen
         if pen.penStyle == .Pattern preparePattern(&cxt)
-        drawPathInternal(&cxt)
+        drawPath(&cxt)
     }
 
     // Draw the line path with the given 'pen'
