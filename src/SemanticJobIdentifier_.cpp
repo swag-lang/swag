@@ -831,6 +831,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
+        // If this is a struct variable, and it's referenced (identifierRef has a startScope), then we
+        // wait for the struct container to be solved. We do not want the semantic to continue with
+        // an unsolved struct, because that means that storageOffset has not been computed yet
+        // (and in some cases we can go to the bytecode generation with the struct not solved).
+        if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef->startScope)
+        {
+            auto parentStructNode = identifier->identifierRef->startScope->owner;
+            SWAG_ASSERT(parentStructNode->resolvedSymbolName);
+            unique_lock lk(parentStructNode->resolvedSymbolName->mutex);
+            if (parentStructNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+            {
+                context->job->waitForSymbolNoLock(parentStructNode->resolvedSymbolName);
+                return true;
+            }
+        }
+
         overload->flags |= OVERLOAD_USED;
 
         // Be sure usage is valid
