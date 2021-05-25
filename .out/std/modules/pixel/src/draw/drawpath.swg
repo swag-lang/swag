@@ -426,6 +426,11 @@ impl Painter
         repeatCount := cast(s32) (path.totalLen / patternTotalLen)
         error = path.totalLen - (repeatCount * patternTotalLen)
 
+        // We must dispatch error at each blank in the pattern. So "divError" is the
+        // number of blanks to add at each 'move', between solid patterns
+        numBlanks := repeatCount * patternCount / 2
+        divError = error / numBlanks
+
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
@@ -433,11 +438,6 @@ impl Painter
         remainingPatternLen *= pen.size
         if !path.isClosed
             remainingPatternLen *= 0.5
-
-        // We must dispatch error at each blank in the pattern. So "divError" is the
-        // number of blanks to add at each 'move', between solid patterns
-        numBlanks := repeatCount * patternCount / 2
-        divError = error / numBlanks
     }
 
     private func drawLine(using self, cxt: *Context, pos: Vector2)

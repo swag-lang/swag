@@ -22,9 +22,9 @@ func display()
     if g_pattern
     {
         pen.penStyle = .Pattern
-        pen.pattern.add(0.5)
-        pen.pattern.add(2.0)
-        //pen.pattern.add(0.5)
+        pen.pattern.add(1.0)
+        pen.pattern.add(1.0)
+        //pen.pattern.add(2.0)
         //pen.pattern.add(1.0)
     }
 
@@ -41,7 +41,7 @@ func display()
     pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
-    cdc.drawLine(@{0,0},@{50,150}, pen)
+    cdc.drawLine(@{0,0},@{0,150}, pen)
     pen.beginCapStyle = .Square
     pen.endCapStyle = .Square
     cdc.drawLine(@{100,0},@{150,150}, pen)

@@ -72,6 +72,9 @@ impl RenderOgl
 
     public func draw(using self, dc: *Painter)
     {
+        if height == 0 or width == 0
+            return
+
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
