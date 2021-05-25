@@ -24,7 +24,7 @@ enum DashCapStyle
     Square
 }
 
-enum JointStyle
+enum JoinStyle
 {
     None
     Bevel
@@ -38,14 +38,14 @@ struct Pen
     size:       f32 = 1
     color:      Color
 
-    pattern:               Array'f32
-    patternBeginCapStyle:  DashCapStyle = None
-    patternEndCapStyle:    DashCapStyle = None
+    pattern:            Array'f32
+    dashBeginCapStyle:  DashCapStyle = None
+    dashEndCapStyle:    DashCapStyle = None
 
-    jointMiterLimit: f32 = 3
+    joinMiterLimit: f32 = 3
 
-    penStyle:       PenStyle        = Solid
-    beginCapStyle:  LineCapStyle   = Round
-    endCapStyle:    LineCapStyle   = Round
-    jointStyle:     JointStyle      = Miter
+    penStyle:       PenStyle     = Solid
+    beginCapStyle:  LineCapStyle = Round
+    endCapStyle:    LineCapStyle = Round
+    joinStyle:      JoinStyle    = Miter
 }

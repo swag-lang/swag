@@ -145,7 +145,7 @@ impl Painter
         }
     }
 
-    private func drawJointBevel(using self, p, d1, d2: Vector2, pen: Pen)
+    private func drawJoinBevel(using self, p, d1, d2: Vector2, pen: Pen)
     {
         v0  := p
 
@@ -170,7 +170,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private func drawJointRound(using self, p, d1, d2: Vector2, pen: Pen)
+    private func drawJoinRound(using self, p, d1, d2: Vector2, pen: Pen)
     {
         v0 := p
 
@@ -230,7 +230,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private func drawJointMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    private func drawJoinMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
@@ -239,13 +239,13 @@ impl Painter
 
         m2 := (2 * w) / l
 
-        if m2 > pen.jointMiterLimit
+        if m2 > pen.joinMiterLimit
         {
             if justMiter
-                m2 = pen.jointMiterLimit
+                m2 = pen.joinMiterLimit
             else
             {
-                drawJointBevel(p, d1, d2, pen)
+                drawJoinBevel(p, d1, d2, pen)
                 return
             }
         }
@@ -284,16 +284,16 @@ impl Painter
         }
     }
 
-    private func drawJoint(using self, jointStyle: JointStyle, p, d1, d2: Vector2, pen: Pen)
+    private func drawJoin(using self, joinStyle: JoinStyle, p, d1, d2: Vector2, pen: Pen)
     {
         #[Swag.complete]
-        switch jointStyle
+        switch joinStyle
         {
         case None:          break
-        case Bevel:         drawJointBevel(p, d1, d2, pen)
-        case Round:         drawJointRound(p, d1, d2, pen)
-        case Miter:         drawJointMiter(p, d1, d2, true, pen)
-        case MiterBevel:    drawJointMiter(p, d1, d2, false, pen)
+        case Bevel:         drawJoinBevel(p, d1, d2, pen)
+        case Round:         drawJoinRound(p, d1, d2, pen)
+        case Miter:         drawJoinMiter(p, d1, d2, true, pen)
+        case MiterBevel:    drawJoinMiter(p, d1, d2, false, pen)
         }
     }
 
@@ -369,12 +369,12 @@ impl Painter
         }
 
         // First line cap
-        if !firstLine and beginLine and pen.patternBeginCapStyle != .None
-            drawDashCap(pen.patternBeginCapStyle, prev, normal, 1.0, dref pen)
+        if !firstLine and beginLine and pen.dashBeginCapStyle != .None
+            drawDashCap(pen.dashBeginCapStyle, prev, normal, 1.0, dref pen)
 
         // Joints
         if !beginLine
-            drawJoint(pen.jointStyle, prev, normalPrev, normal, dref pen)
+            drawJoin(pen.joinStyle, prev, normalPrev, normal, dref pen)
 
         // Draw quad
         v0 := prev - normal
@@ -392,7 +392,7 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
 
-            if pen.patternBeginCapStyle == DashCapStyle.None and beginLine and !firstLine
+            if pen.dashBeginCapStyle == DashCapStyle.None and beginLine and !firstLine
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -472,7 +472,7 @@ impl Painter
                 nextp := prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
-                    drawDashEndCap(cxt, prev, normal, pen.patternEndCapStyle)
+                    drawDashEndCap(cxt, prev, normal, pen.dashEndCapStyle)
                     drawMoveCursor(cxt, nextp)
                     error -= addBlank
                 }
@@ -494,7 +494,7 @@ impl Painter
             remainingPatternLen -= remainingSegLen
             if blankPatternIdx
             {
-                drawDashEndCap(cxt, prev, normal, pen.patternEndCapStyle)
+                drawDashEndCap(cxt, prev, normal, pen.dashEndCapStyle)
                 drawMoveCursor(cxt, pos)
             }
             else
@@ -599,7 +599,7 @@ impl Painter
         // Closing join between the end and the beginning in case of a closed path
         else if path.isClosed and !firstLine and !beginLine
         {
-            drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
+            drawJoin(pen.joinStyle, prev, normal, normalFirst, dref pen)
         }
     }
 

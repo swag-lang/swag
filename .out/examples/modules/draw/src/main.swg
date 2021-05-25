@@ -50,20 +50,20 @@ func display()
     cdc.drawLine(@{200,0},@{250,150}, pen)
     pen.beginCapStyle = .ArrowAnchor
     pen.endCapStyle = .ArrowAnchor
-    pen.patternBeginCapStyle = .Round
-    pen.patternEndCapStyle = .Round
+    pen.dashBeginCapStyle = .Round
+    pen.dashEndCapStyle = .Round
     cdc.drawLine(@{300,0},@{350,150}, pen)
     cdc.drawLine(400, 0, 450, 150, Argb.Brown, 2)
 
     cdc.position(@{50, 250})
     pen.color = Argb.Blue
-    pen.jointStyle = .None
+    pen.joinStyle = .None
     cdc.drawRect(0, 0, 100, 100, pen)
-    pen.jointStyle = .Bevel
+    pen.joinStyle = .Bevel
     cdc.drawRect(150, 0, 100, 100, pen)
-    pen.jointStyle = .Round
+    pen.joinStyle = .Round
     cdc.drawRect(300, 0, 100, 100, pen)
-    pen.jointStyle = .Miter
+    pen.joinStyle = .Miter
     cdc.drawRect(450, 0, 100, 100, pen)
 
     pen.color = Argb.Red
@@ -71,13 +71,13 @@ func display()
     path.lineTo(@{100, 0})
     path.lineTo(@{100, 50})
     path.lineTo(@{200, 50})
-    pen.jointStyle = .Miter
+    pen.joinStyle = .Miter
     cdc.position(@{50, 400})
     cdc.drawPath(&path, pen)
-    pen.jointStyle = .Bevel
+    pen.joinStyle = .Bevel
     cdc.position(@{250, 400})
     cdc.drawPath(&path, pen)
-    pen.jointStyle = .Round
+    pen.joinStyle = .Round
     cdc.position(@{450, 400})
     cdc.drawPath(&path, pen)
 
