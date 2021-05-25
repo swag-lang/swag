@@ -34,6 +34,8 @@ x 'in' 0..16
 constexpr sur struct pour pouvoir renvoyer une struct compile time (genre vector2)
 erreur si on return une struct compiletime avec un opDrop
 -------------------------------------
+compile time return Array's32 => convertir en tableau static, avec opIndex ?
+-------------------------------------
 
 ****************************************
 TODO

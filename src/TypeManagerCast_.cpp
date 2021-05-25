@@ -1771,6 +1771,13 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
             auto rightIsFloat = fromType->isNativeFloat();
             if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))
                 castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+            else if (leftIsFloat && fromType->isNativeInteger())
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+        }
+        else
+        {
+            if (toType->isNativeFloat() && fromType->isNativeInteger())
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
         }
     }
 
