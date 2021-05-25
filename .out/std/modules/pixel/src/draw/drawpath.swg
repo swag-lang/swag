@@ -1,18 +1,10 @@
 #global public
 using Core, Core.Math, Core.Drawing
 
-#[Swag.enumflags]
-private enum Flags
-{
-    Zero
-    CollectPos
-}
-
 private struct Context
 {
     posBuffer:      Array'Vector2
     size2:          f32
-    flags:          Flags = Zero
     beginLine:      bool
     firstLine:      bool
     adapt:          bool
@@ -23,9 +15,6 @@ private struct Context
     prev:           Vector2
     path:           const *LinePath
     pen:            const *Pen
-    bvMin:          Vector2
-    bvMax:          Vector2
-    totalLen:       f32
 
     remainingPatternLen: f32
     patternTotalLen:     f32
@@ -278,102 +267,9 @@ impl Painter
         }
     }
 
-    private func drawBezier(using self, cxt: *Context, pos, p1: Vector2)
-    {
-        using cxt
-
-        v := pos - prev
-        fstep := v.length()
-
-        step := 0'u32
-        switch paintQuality
-        {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
-        }
-
-        if step < 3 step = 3
-
-        startPt := prev
-        loop i: 1..step
-        {
-            t  := i / cast(f32) step
-            it := 1.0 - t
-            a1 := it * it
-            a2 := 2.0 * t * it
-            a3 := t * t
-
-            var point: Vector2 = ?
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
-            drawLine(cxt, point)
-        }
-    }
-
-    private func drawBezier(using self, cxt: *Context, pos, p1, p2: Vector2)
-    {
-        using cxt
-
-        v := pos - prev
-        fstep := v.length()
-
-        step := 0'u32
-        switch paintQuality
-        {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
-        }
-
-        if step < 3 step = 3
-
-        startPt := prev
-        loop i: 1..step
-        {
-            t  := i / cast(f32) step
-            it := 1.0 - t
-            a1 := it * it * it
-            a2 := 3.0 * t * it * it
-            a3 := 3.0 * t * t * it
-            a4 := t * t * t
-
-            var point: Vector2 = ?
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
-            drawLine(cxt, point)
-        }
-    }
-
-    private func drawArc(using self, cxt: *Context, pos, p1, p2: Vector2)
-    {
-        fstep := Math.abs(p1.y - p1.x) * Math.max(p2.x, p2.y)
-        step := 0'u32
-        switch paintQuality
-        {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
-        }
-
-        if step < 3 step = 3
-        loop i: 1..step
-        {
-            t := p1.x + ((p1.y - p1.x) * i) / step
-            v := pos
-            v.x += (Math.sin(t) * p2.x)
-            v.y += -(Math.cos(t) * p2.y)
-            drawLine(cxt, v)
-        }
-    }
-
     private func drawEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: CapStyle)
     {
         using cxt
-        if flags & .CollectPos return
         if !prim1 or !prim2 return
         if beginLine return
 
@@ -391,7 +287,7 @@ impl Painter
         }
     }
 
-    private func moveCursor(using self, cxt: *Context, pos: Vector2)
+    private func drawMoveCursor(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
         prev = pos
@@ -469,7 +365,7 @@ impl Painter
             patternTotalLen += p
         patternTotalLen *= pen.size
 
-        error = totalLen / patternTotalLen
+        error = path.totalLen / patternTotalLen
         error -= Math.floor(error)
         error *= patternTotalLen
 
@@ -484,7 +380,7 @@ impl Painter
         // We must dispatch error at each blank in the pattern. So "divError" must be
         // "the number of blanks in the total line"
         patternCount = cast(s32) pen.pattern.count
-        divError = totalLen / patternTotalLen
+        divError = path.totalLen / patternTotalLen
         divError *= (patternCount / 2.0)
         calcError = error / divError
 
@@ -501,19 +397,6 @@ impl Painter
     private func drawLine(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-
-        // Collect all segments in 'posBuffer'
-        if flags & .CollectPos
-        {
-            totalLen += prev.distance(pos)
-            bvMin.x = Math.min(bvMin.x, pos.x)
-            bvMin.y = Math.min(bvMin.y, pos.y)
-            bvMax.x = Math.max(bvMax.x, pos.x)
-            bvMax.y = Math.max(bvMax.y, pos.y)
-            posBuffer.add(pos)
-            prev = pos
-            return
-        }
 
         // solid
         if pen.penStyle == .Solid
@@ -553,7 +436,7 @@ impl Painter
                 if blankPatternIdx
                 {
                     drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
-                    moveCursor(cxt, nextp)
+                    drawMoveCursor(cxt, nextp)
                     error -= addLen
                 }
                 else
@@ -576,7 +459,7 @@ impl Painter
             if blankPatternIdx
             {
                 drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
-                moveCursor(cxt, pos)
+                drawMoveCursor(cxt, pos)
             }
             else
             {
@@ -604,65 +487,41 @@ impl Painter
         if cast(u32) size & 1
             adapt = true
 
-        bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(Swag.F32.Min, Swag.F32.Min)
-        posBuffer.clear()
         size2       = size * 0.5
         prev        = path.startPoint
         beginLine   = true
         firstLine   = true
 
-        visit elem: path.elements
-        {
-            switch elem.type
-            {
-            case Line:
-                drawLine(cxt, elem.position)
-            case Bezier1:
-                drawBezier(cxt, elem.position, elem.p1)
-            case Bezier2:
-                drawBezier(cxt, elem.position, elem.p1, elem.p2)
-            case Arc:
-                drawArc(cxt, elem.position, elem.p1, elem.p2)
-            }
-        }
+        visit p: path.posBuffer
+            drawLine(cxt, dref p)
 
         // End line cap
         if !path.isClosed
             drawEndCap(cxt, prev, normal, pen.endCapStyle)
 
         // Closing join between the end and the beginning in case of a closed path
-        if path.isClosed and !firstLine and !beginLine and !(flags & .CollectPos)
+        if path.isClosed and !firstLine and !beginLine
             drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
     }
 
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: LinePath, pen: Pen)
+    func drawPath(using self, path: *LinePath, pen: Pen)
     {
-        var cxt: Context
-        cxt.path = &path
-        cxt.pen = &pen
-        if pen.penStyle == .Pattern
-        {
-            cxt.flags = .CollectPos
-            drawPathInternal(&cxt)
-            preparePattern(&cxt)
-        }
+        path.flatten(paintQuality)
 
-        cxt.flags = .Zero
+        var cxt: Context
+        cxt.path = path
+        cxt.pen =  &pen
+        if pen.penStyle == .Pattern preparePattern(&cxt)
         drawPathInternal(&cxt)
     }
 
     // Draw the line path with the given 'pen'
-    func fillPath(using self, path: LinePath, brush: Brush)
+    func fillPath(using self, path: *LinePath, brush: Brush)
     {
-        var cxt: Context
-        cxt.path = &path
-        cxt.pen = &sharedSolidPen
-        cxt.flags = Flags.CollectPos
-        drawPathInternal(&cxt)
+        path.flatten(paintQuality)
 
-        using cxt
+        using path
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
         {

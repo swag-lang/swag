@@ -71,13 +71,13 @@ func display()
     path.lineTo(@{200, 50})
     pen.jointStyle = .Miter
     cdc.position(@{50, 400})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
     pen.jointStyle = .Bevel
     cdc.position(@{250, 400})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
     pen.jointStyle = .Round
     cdc.position(@{450, 400})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
 
     pen.color = Argb.Green
     path.start(0, 0)
@@ -87,19 +87,19 @@ func display()
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
     cdc.position(@{50, 500})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
 
     path.start(0, 0)
     path.bezierTo(@{100, 0}, @{50, -50})
     cdc.position(@{250, 500})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
 
     path.start(0, 0)
     path.lineTo(@{50, 0})
     path.bezierTo(@{100, 50}, @{100, 0}, @{50, 50})
     path.lineTo(@{200, 50})
     cdc.position(@{400, 500})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
 
     path.start(0, 0)
     pen.color = Argb.Purple
@@ -107,7 +107,7 @@ func display()
     path.lineTo(@{100, 50})
     path.arcTo(@{150, 50}, 50, 50, -90, 0)
     cdc.position(@{50, 600})
-    cdc.drawPath(path, pen)
+    cdc.drawPath(&path, pen)
 
     cdc.position(@{250, 600})
     pen.size = 4

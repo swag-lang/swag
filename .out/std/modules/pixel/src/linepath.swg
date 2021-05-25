@@ -23,7 +23,12 @@ public struct LinePath
     endPoint:       Vector2
     isOpened:       bool
     isClosed:       bool
-    isComplex:      bool
+
+    // Flatten infos
+    bvMin:          Vector2
+    bvMax:          Vector2
+    totalLen:       f32
+    posBuffer:      Array'Vector2
 }
 
 public impl LinePath
@@ -32,7 +37,7 @@ public impl LinePath
     func start(using self, startX, startY: f32)
     {
         elements.clear()
-        isOpened, isClosed, isComplex = false
+        isOpened, isClosed = false
         startPoint = Vector2{startX, startY}
         endPoint = startPoint
     }
@@ -124,5 +129,128 @@ public impl LinePath
             lineTo(startPoint)
 
         isClosed = true
+    }
+
+    private func flattenBezier(using self, pos, p1: Vector2, quality: PaintQuality)
+    {
+        v := pos - endPoint
+        fstep := v.length()
+
+        step := 0'u32
+        switch quality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+
+        startPt := endPoint
+        loop i: 1..step
+        {
+            t  := i / cast(f32) step
+            it := 1.0 - t
+            a1 := it * it
+            a2 := 2.0 * t * it
+            a3 := t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
+            flattenLine(point)
+        }
+    }
+
+    private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
+    {
+        v := pos - endPoint
+        fstep := v.length()
+
+        step := 0'u32
+        switch quality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+
+        startPt := endPoint
+        loop i: 1..step
+        {
+            t  := i / cast(f32) step
+            it := 1.0 - t
+            a1 := it * it * it
+            a2 := 3.0 * t * it * it
+            a3 := 3.0 * t * t * it
+            a4 := t * t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
+            flattenLine(point)
+        }
+    }
+
+    private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
+    {
+        fstep := Math.abs(p1.y - p1.x) * Math.max(p2.x, p2.y)
+        step := 0'u32
+        switch quality
+        {
+        case Draft:  step = cast(s32) (fstep / 8)
+        case Normal: step = cast(s32) (fstep / 4)
+        case Good:   step = cast(s32) (fstep / 2)
+        case High:   step = cast(s32) fstep
+        }
+
+        if step < 3 step = 3
+        loop i: 1..step
+        {
+            t := p1.x + ((p1.y - p1.x) * i) / step
+            v := pos
+            v.x += (Math.sin(t) * p2.x)
+            v.y += -(Math.cos(t) * p2.y)
+            flattenLine(v)
+        }
+    }
+
+    private func flattenLine(using self, pos: Vector2)
+    {
+        totalLen += endPoint.distance(pos)
+        bvMin.x = Math.min(bvMin.x, pos.x)
+        bvMin.y = Math.min(bvMin.y, pos.y)
+        bvMax.x = Math.max(bvMax.x, pos.x)
+        bvMax.y = Math.max(bvMax.y, pos.y)
+        posBuffer.add(pos)
+        endPoint = pos
+    }
+
+    func flatten(using self, quality: PaintQuality)
+    {
+        bvMin.set(Swag.F32.Max, Swag.F32.Max)
+        bvMax.set(Swag.F32.Min, Swag.F32.Min)
+        totalLen = 0
+        posBuffer.clear()
+
+        endPoint = startPoint
+        visit elem: elements
+        {
+            switch elem.type
+            {
+            case Line:
+                flattenLine(elem.position)
+            case Bezier1:
+                flattenBezier(elem.position, elem.p1, quality)
+            case Bezier2:
+                flattenBezier(elem.position, elem.p1, elem.p2, quality)
+            case Arc:
+                flattenArc(elem.position, elem.p1, elem.p2, quality)
+            }
+        }
     }
 }

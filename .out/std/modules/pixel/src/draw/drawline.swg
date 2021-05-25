@@ -19,6 +19,6 @@ impl Painter
     {
         sharedLinePath.start(startX, startY)
         sharedLinePath.lineTo(endX, endY)
-        drawPath(sharedLinePath, pen)
+        drawPath(&sharedLinePath, pen)
     }
 }

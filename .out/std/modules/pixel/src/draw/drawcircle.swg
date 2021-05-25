@@ -23,13 +23,13 @@ impl Painter
     func drawCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
     {
         setEllipsePath(centerX, centerY, radius, radius)
-        drawPath(sharedLinePath, pen)
+        drawPath(&sharedLinePath, pen)
     }
 
     func fillCircle(using self, centerX, centerY: f32, radius: f32, brush: Brush)
     {
         setEllipsePath(centerX, centerY, radius, radius)
-        fillPath(sharedLinePath, brush)
+        fillPath(&sharedLinePath, brush)
     }
 
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
@@ -42,6 +42,6 @@ impl Painter
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
     {
         setEllipsePath(centerX, centerY, radiusX, radiusY)
-        drawPath(sharedLinePath, pen)
+        drawPath(&sharedLinePath, pen)
     }
 }

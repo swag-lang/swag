@@ -33,7 +33,7 @@ impl Painter
     func drawRect(using self, left, top, width, height: f32, pen: Pen)
     {
         setRectPath(left, top, width, height)
-        drawPath(sharedLinePath, pen)
+        drawPath(&sharedLinePath, pen)
     }
 
     private func setRoundRectPath(using self, left, top, width, height: f32, radiusX, radiusY: f32)
@@ -61,6 +61,6 @@ impl Painter
     func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
     {
         setRoundRectPath(left, top, width, height, radiusX, radiusY)
-        drawPath(sharedLinePath, pen)
+        drawPath(&sharedLinePath, pen)
     }
 }
