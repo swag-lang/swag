@@ -3,18 +3,19 @@ using Core, Core.Math, Core.Drawing
 
 private struct Context
 {
-    posBuffer:      Array'Vector2
-    size2:          f32
-    beginLine:      bool
-    firstLine:      bool
-    adapt:          bool
-    normalPrev:     Vector2
-    normalFirst:    Vector2
-    normal:         Vector2
-    prim1, prim2:   uint
-    prev:           Vector2
-    path:           const *LinePath
-    pen:            const *Pen
+    posBuffer:          Array'Vector2
+    size2:              f32
+    beginLine:          bool
+    firstLine:          bool
+    adapt:              bool
+    lastLineInvalid:    bool
+    normalPrev:         Vector2
+    normalFirst:        Vector2
+    normal:             Vector2
+    prim1, prim2:       uint
+    prev:               Vector2
+    path:               const *LinePath
+    pen:                const *Pen
 
     remainingPatternLen: f32
     patternTotalLen:     f32
@@ -354,7 +355,8 @@ impl Painter
         }
 
         // If this is still invalid, there's nothing we can do
-        if normal.isZeroEpsilon()
+        lastLineInvalid = normal.isZeroEpsilon()
+        if lastLineInvalid
             return
 
         // Correction when size is not divisible by 2
@@ -429,7 +431,7 @@ impl Painter
         // We must dispatch error at each blank in the pattern. So "divError" is the
         // number of blanks to add at each 'move', between solid patterns
         numBlanks := repeatCount * patternCount / 2
-        divError = error / numBlanks
+        divError = numBlanks ? error / numBlanks : 0
 
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
@@ -453,7 +455,7 @@ impl Painter
 
         v := pos - prev
         remainingSegLen := v.length()
-        v.normalize()
+        v.normalizeSafe()
 
         // True when we are "drawing" blanks
         blankPatternIdx := patternIndex & 1 ? true : false
@@ -594,7 +596,7 @@ impl Painter
             drawLine(cxt, dref p)
 
         // AA end edge if no end cap
-        if !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
+        if !lastLineInvalid and !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
         {
             prim2p := vertexBuffer.buffer + prim2
             prim2t := prim2p + 2
@@ -613,12 +615,14 @@ impl Painter
     func drawPath(using self, path: *LinePath, pen: Pen)
     {
         path.flatten(paintQuality)
+        if Math.isZeroEpsilon(path.totalLen) return
 
         var cxt: Context
         cxt.path = path
         cxt.pen =  &pen
         if pen.penStyle == .Pattern
             preparePattern(&cxt)
+
         drawPath(&cxt)
     }
 
@@ -626,6 +630,7 @@ impl Painter
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
+        if Math.isZeroEpsilon(path.totalLen) return
 
         using path
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}

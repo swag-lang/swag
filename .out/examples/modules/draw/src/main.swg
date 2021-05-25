@@ -37,6 +37,12 @@ func display()
     cdc.paintQuality = g_paintQuality
     cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
+    pt := Input.getMousePos()
+    pen.color = Argb.Black
+    pen.beginCapStyle = .None
+    pen.endCapStyle = .None
+    cdc.drawLine(0,0,pt.x,pt.y, pen)
+
     cdc.position(@{50, 50})
     pen.color = Argb.Black
     pen.beginCapStyle = .None
