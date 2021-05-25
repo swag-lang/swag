@@ -369,8 +369,12 @@ impl Painter
         }
 
         // First line cap
-        if !firstLine and beginLine and pen.dashBeginCapStyle != .None
+        flatBegin := true
+        if (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
+        {
+            flatBegin = false
             drawDashCap(pen.dashBeginCapStyle, prev, normal, 1.0, dref pen)
+        }
 
         // Joints
         if !beginLine
@@ -392,7 +396,9 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
 
-            if pen.dashBeginCapStyle == DashCapStyle.None and beginLine and !firstLine
+            // If we are starting a line, and the line does not have a cap before, then
+            // we must AA the corresponding edge
+            if flatBegin and beginLine and (!firstLine or pen.beginCapStyle == .None or path.isClosed)
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -611,7 +617,8 @@ impl Painter
         var cxt: Context
         cxt.path = path
         cxt.pen =  &pen
-        if pen.penStyle == .Pattern preparePattern(&cxt)
+        if pen.penStyle == .Pattern
+            preparePattern(&cxt)
         drawPath(&cxt)
     }
 
