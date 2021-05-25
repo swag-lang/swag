@@ -442,7 +442,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != 0xFFFFFFFF);
             inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
             inst->flags |= BCI_IMM_B;
         }
@@ -689,7 +690,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != 0xFFFFFFFF);
             inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
             inst->flags |= BCI_IMM_B;
         }

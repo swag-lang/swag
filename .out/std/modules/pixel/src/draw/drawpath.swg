@@ -385,10 +385,7 @@ impl Painter
         remainingPatternLen = pen.pattern.buffer[patternIndex]
         remainingPatternLen *= pen.size
         if !path.isClosed
-        {
-            error -= remainingPatternLen
             remainingPatternLen *= 0.5
-        }
 
         // We must dispatch error at each blank in the pattern. So "divError" is the
         // number of blanks to add at each 'move', between solid patterns
@@ -419,12 +416,11 @@ impl Painter
             lengthInPattern := remainingPatternLen
 
             // If we are drawing a blank, take care of error adjustement
-            addLen := 0'f32
+            addBlank := 0'f32
             if divError > 0 and blankPatternIdx
             {
-                addBlank := Math.min(error, divError)
+                addBlank = Math.min(error, divError)
                 lengthInPattern += addBlank
-                error -= addBlank
             }
 
             // The current remaining length in the current segment is greater
@@ -437,6 +433,7 @@ impl Painter
                 {
                     drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     drawMoveCursor(cxt, nextp)
+                    error -= addBlank
                 }
                 else
                 {

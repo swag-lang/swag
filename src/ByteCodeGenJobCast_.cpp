@@ -813,6 +813,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (exprNode->castOffset)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            SWAG_ASSERT(exprNode->castOffset != 0xFFFFFFFF);
             inst->b.u64 = exprNode->castOffset;
             inst->flags |= BCI_IMM_B;
         }

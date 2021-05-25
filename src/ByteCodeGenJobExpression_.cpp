@@ -228,7 +228,10 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
-            emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, totalOffset, r0)->flags |= BCI_IMM_B;
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
+            SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
+            inst->b.u64 = totalOffset;
+            inst->flags |= BCI_IMM_B;
             emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
             SWAG_ASSERT(context->result == ContextResult::Done);
             freeRegisterRC(context, child);
