@@ -205,6 +205,8 @@ impl Painter
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
         l := a.length()
+        if Math.isZeroEpsilon(l) return
+
         m2 := (2 * w) / l
 
         if m2 > pen.jointMiterLimit
@@ -288,8 +290,18 @@ impl Painter
     private func drawMoveCursor(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
-        prev = pos
-        beginLine = true
+
+        if pos.distance(path.endPoint) < 1
+        {
+            prev = path.endPoint
+            if path.isClosed
+                beginLine = true
+        }
+        else
+        {
+            prev = pos
+            beginLine = true
+        }
     }
 
     private func drawLineInternal(using self, cxt: *Context, pos: Vector2, capStyle: CapStyle, drawCap: bool)
@@ -354,6 +366,7 @@ impl Painter
         beginLine, firstLine = false
     }
 
+    #[Swag.printbc]
     private func preparePattern(cxt: *Context)
     {
         using cxt
@@ -364,8 +377,7 @@ impl Painter
         patternTotalLen *= pen.size
         patternCount = cast(s32) pen.pattern.count
 
-        repeatCount := path.totalLen / patternTotalLen
-        repeatCount -= Math.floor(error)
+        repeatCount := cast(s32) (path.totalLen / patternTotalLen)
         error = path.totalLen - (repeatCount * patternTotalLen)
 
         // We must dispatch error at each blank in the pattern. So "divError" is the
@@ -377,10 +389,10 @@ impl Painter
         // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
         remainingPatternLen = pen.pattern.buffer[patternIndex]
-        if path.isClosed
+        //if path.isClosed
             remainingPatternLen *= pen.size
-        else
-            remainingPatternLen *= pen.size * 0.5
+        //else
+        //    remainingPatternLen *= pen.size * 0.5
     }
 
     private func drawLine(using self, cxt: *Context, pos: Vector2)

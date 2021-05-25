@@ -109,7 +109,7 @@ impl Vector2
     }
 
     // Returns the distance between two vectors
-    func distance(using self, to: Self)->f32
+    func distance(using const self, to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -117,7 +117,7 @@ impl Vector2
     }
 
     // Returns the square distance between two vectors
-    func distanceSquared(using self, to: Self)->f32
+    func distanceSquared(using const self, to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)

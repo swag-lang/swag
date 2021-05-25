@@ -22,8 +22,10 @@ func display()
     if g_pattern
     {
         pen.penStyle = .Pattern
-        pen.pattern.add(0.5)
-        pen.pattern.add(1.1)
+        pen.pattern.add(1.0)
+        pen.pattern.add(1.0)
+        //pen.pattern.add(0.5)
+        //pen.pattern.add(1.0)
     }
 
     pen.size = 20
