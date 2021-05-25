@@ -305,11 +305,9 @@ impl Painter
         }
     }
 
-    private func drawDashEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: DashCapStyle)
+    private func drawDashEndCap(using self, using cxt: *Context, posCap, normalCap: Vector2, capStyle: DashCapStyle)
     {
-        using cxt
-        if !prim1 or !prim2 return
-        if beginLine return
+        if beginLine or lastLineInvalid return
 
         // Cap is defined
         if capStyle != DashCapStyle.None
@@ -325,10 +323,8 @@ impl Painter
         }
     }
 
-    private func drawMoveCursor(using self, cxt: *Context, pos: Vector2)
+    private func drawMoveCursor(using self, using cxt: *Context, pos: Vector2)
     {
-        using cxt
-
         if pos.distance(path.endPoint) < 1
         {
             prev = path.endPoint
@@ -342,10 +338,8 @@ impl Painter
         }
     }
 
-    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
+    private func drawLineInternal(using self, using cxt: *Context, pos: Vector2)
     {
-        using cxt
-
         // Compute line (half width on each side)
         newPos := pos
         n  := newPos - prev
@@ -422,10 +416,8 @@ impl Painter
         beginLine, firstLine = false
     }
 
-    private func preparePattern(cxt: *Context)
+    private func preparePattern(using cxt: *Context)
     {
-        using cxt
-
         patternTotalLen = 0
         visit p: pen.pattern
             patternTotalLen += p
@@ -449,10 +441,8 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
-    private func drawLine(using self, cxt: *Context, pos: Vector2)
+    private func drawLine(using self, using cxt: *Context, pos: Vector2)
     {
-        using cxt
-
         // solid
         if pen.penStyle == .Solid
         {
@@ -520,10 +510,8 @@ impl Painter
         }
     }
 
-    private func drawLineBeginCap(using self, cxt: *Context)
+    private func drawLineBeginCap(using self, using cxt: *Context)
     {
-        using cxt
-
         if pen.beginCapStyle == .None
             return
 
@@ -536,10 +524,8 @@ impl Painter
         drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
-    private func drawLineEndCap(using self, cxt: *Context)
+    private func drawLineEndCap(using self, using cxt: *Context)
     {
-        using cxt
-
         if pen.endCapStyle == .None
             return
 
@@ -554,9 +540,8 @@ impl Painter
         drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
-    private func drawPath(using self, cxt: *Context)
+    private func drawPath(using self, using cxt: *Context)
     {
-        using cxt
         if pen.size == 0 or path.posBuffer.count == 0
             return
 
