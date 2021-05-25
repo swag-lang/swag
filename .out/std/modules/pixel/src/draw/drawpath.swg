@@ -72,9 +72,9 @@ impl Painter
         v.normalizeSafe()
         p += v
 
-        d := d1 * 1.5
+        d := d1 * pen.squareAnchorScaleX
         n := Vector2{d.y * sens, -d.x * sens}
-        n.setLengthSafe(d.length() * 2)
+        n.setLengthSafe(d.length() * pen.squareAnchorScaleY)
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
@@ -107,8 +107,8 @@ impl Painter
         v.normalizeSafe()
         p += v
 
-        d := d1 * 2
-        n  := Vector2{d.y * sens * 2, -d.x * sens * 2}
+        d := d1 * pen.arrowAnchorScaleX
+        n  := Vector2{d.y * sens * pen.arrowAnchorScaleY, -d.x * sens * pen.arrowAnchorScaleY}
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
@@ -410,7 +410,7 @@ impl Painter
 
         // First line cap
         flatBegin := true
-        if (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
+        if pen.penStyle == .Pattern and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
         {
             flatBegin = false
             drawDashCap(pen.dashBeginCapStyle, prev, normal, 1.0, dref pen)

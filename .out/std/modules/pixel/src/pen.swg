@@ -43,7 +43,11 @@ struct Pen
     dashBeginCapStyle:  DashCapStyle = None
     dashEndCapStyle:    DashCapStyle = None
 
-    joinMiterLimit: f32 = 3
+    arrowAnchorScaleX:  f32 = 2
+    arrowAnchorScaleY:  f32 = 2.0
+    squareAnchorScaleX: f32 = 1.5
+    squareAnchorScaleY: f32 = 2
+    joinMiterLimit:     f32 = 3
 
     penStyle:       PenStyle     = Solid
     beginCapStyle:  LineCapStyle = Round
