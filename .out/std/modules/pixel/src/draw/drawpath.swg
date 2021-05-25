@@ -63,8 +63,15 @@ impl Painter
         }
     }
 
-    private func drawCapArrow(using self, p, d1: Vector2, sens: f32, pen: Pen)
+    private func drawCapArrow(using self, p1, d1: Vector2, sens: f32, pen: Pen)
     {
+        // Shift a little bit "inside" the line, so that the line will
+        // overwrite the bad AA edges
+        p := p1
+        v := d1.cross(-sens)
+        v.normalize()
+        p += v
+
         d := d1 * 2
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -517,49 +524,34 @@ impl Painter
     {
         using cxt
 
+        if pen.beginCapStyle == .None
+            return
+
         v1 := path.startPoint
         v2 := path.posBuffer.buffer[0]
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
         c *= size2
-
-        // Cap is defined
-        if pen.beginCapStyle != .None
-        {
-            // Shift a little bit "inside" the line, so that the line will
-            // overwrite the bad AA edges
-            if pen.beginCapStyle == .ArrowAnchor
-                v1 += n
-
-            drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
-        }
+        drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
     private func drawLineEndCap(using self, cxt: *Context)
     {
         using cxt
 
+        if pen.endCapStyle == .None
+            return
+
         v1 := path.endPoint
         v2 := path.startPoint
         if path.posBuffer.count > 1
             v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
-
         n := v1 - v2
         n.normalizeSafe()
-        c := n.cross(-1)
+        c := n.cross(1)
         c *= size2
-
-        // Cap is defined
-        if pen.endCapStyle != .None
-        {
-            // Shift a little bit "inside" the line, so that the line will
-            // overwrite the bad AA edges
-            if pen.endCapStyle == .ArrowAnchor
-                v1 -= n
-
-            drawLineCap(pen.endCapStyle, v1, c, 1.0, dref pen)
-        }
+        drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
     private func drawPath(using self, cxt: *Context)
