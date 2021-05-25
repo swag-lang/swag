@@ -143,6 +143,22 @@ impl Vector2
         return Vector2{x * norm, y * norm}
     }
 
+    // Set the vector length
+    func setLengthSafe(using self, newLength: f32)
+    {
+        normalizeSafe()
+        x *= newLength
+        y *= newLength
+    }
+
+    // Set the vector length
+    func setLength(using self, newLength: f32)
+    {
+        normalize()
+        x *= newLength
+        y *= newLength
+    }
+
     // Normalize this vector (set its length to 1) even if its length is almost null
     func normalizeSafe(using self)
     {

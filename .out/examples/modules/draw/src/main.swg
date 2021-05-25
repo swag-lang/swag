@@ -48,18 +48,30 @@ func display()
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
     cdc.drawLine(@{0,0},@{0,150}, pen)
+
     pen.beginCapStyle = .Square
     pen.endCapStyle = .Square
     cdc.drawLine(@{100,0},@{150,150}, pen)
+
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
     cdc.drawLine(@{200,0},@{250,150}, pen)
+
     pen.beginCapStyle = .ArrowAnchor
     pen.endCapStyle = .ArrowAnchor
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
     cdc.drawLine(@{300,0},@{350,150}, pen)
-    cdc.drawLine(400, 0, 450, 150, Argb.Brown, 2)
+
+    pen.beginCapStyle = .SquareAnchor
+    pen.endCapStyle = .SquareAnchor
+    pen.dashBeginCapStyle = .Triangle
+    pen.dashEndCapStyle = .Triangle
+    cdc.drawLine(@{400,0},@{450,150}, pen)
+
+    pen.dashBeginCapStyle = .Round
+    pen.dashEndCapStyle = .Round
+    cdc.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
     cdc.position(@{50, 250})
     pen.color = Argb.Blue

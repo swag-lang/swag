@@ -14,6 +14,7 @@ enum LineCapStyle
     Round
     Square
     ArrowAnchor
+    SquareAnchor
 }
 
 enum DashCapStyle

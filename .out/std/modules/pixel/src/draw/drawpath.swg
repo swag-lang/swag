@@ -63,20 +63,56 @@ impl Painter
         }
     }
 
-    private func drawCapArrow(using self, p1, d1: Vector2, sens: f32, pen: Pen)
+    private func drawCapSquareAnchor(using self, p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
         p := p1
         v := d1.cross(-sens)
-        v.normalize()
+        v.normalizeSafe()
+        p += v
+
+        d := d1 * 1.5
+        n := Vector2{d.y * sens, -d.x * sens}
+        n.setLengthSafe(d.length() * 2)
+
+        v0 := Vector2{p.x + d.x, p.y + d.y}
+        v1 := Vector2{p.x - d.x, p.y - d.y}
+        v2 := Vector2{v1.x + n.x, v1.y + n.y}
+        v3 := Vector2{v0.x + n.x, v0.y + n.y}
+
+        prim1 := pushTriangle(v0, v1, v3, pen.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.color)
+
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, v0, v3)
+            addEdgeAA(prim1, v1, v2)
+            addEdgeAA(prim1, v3, v2)
+            addEdgeAA(prim1, v0, v1)
+
+            addEdgeAA(prim2, v0, v3)
+            addEdgeAA(prim2, v1, v2)
+            addEdgeAA(prim2, v3, v2)
+            addEdgeAA(prim2, v0, v1)
+        }
+    }
+
+    private func drawCapArrowAnchor(using self, p1, d1: Vector2, sens: f32, pen: Pen)
+    {
+        // Shift a little bit "inside" the line, so that the line will
+        // overwrite the bad AA edges
+        p := p1
+        v := d1.cross(-sens)
+        v.normalizeSafe()
         p += v
 
         d := d1 * 2
-        n  := Vector2{d.y * sens, -d.x * sens}
+        n  := Vector2{d.y * sens * 2, -d.x * sens * 2}
+
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
-        v2 := Vector2{p.x + n.x * 2, p.y + n.y * 2}
+        v2 := Vector2{p.x + n.x, p.y + n.y}
         prim1 := pushTriangle(v0, v1, v2, pen.color)
 
         if paintParams & .Antialiased
@@ -135,9 +171,10 @@ impl Painter
         {
         case None:          break
         case Triangle:      drawCapTriangle(p, d, sens, pen)
-        case ArrowAnchor:   drawCapArrow(p, d, sens, pen)
         case Round:         drawCapRound(p, d, sens, pen)
         case Square:        drawCapSquare(p, d, sens, pen)
+        case ArrowAnchor:   drawCapArrowAnchor(p, d, sens, pen)
+        case SquareAnchor:  drawCapSquareAnchor(p, d, sens, pen)
         }
     }
 
