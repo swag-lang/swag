@@ -62,6 +62,23 @@ impl Painter
         }
     }
 
+    private func drawCapArrow(using self, p, d1: Vector2, sens: f32, pen: Pen)
+    {
+        d := d1 * 2
+        n  := Vector2{d.y * sens, -d.x * sens}
+        v0 := Vector2{p.x + d.x, p.y + d.y}
+        v1 := Vector2{p.x - d.x, p.y - d.y}
+        v2 := Vector2{p.x + n.x * 2, p.y + n.y * 2}
+        prim1 := pushTriangle(v0, v1, v2, pen.color)
+
+        if paintParams & .Antialiased
+        {
+            addEdgeAA(prim1, v1, v2)
+            addEdgeAA(prim1, v0, v2)
+            addEdgeAA(prim1, v0, v1)
+        }
+    }
+
     private func drawCapRound(using self, p, d: Vector2, sens: f32, pen: Pen)
     {
         radius := d.length()
@@ -103,15 +120,28 @@ impl Painter
         }
     }
 
-    private func drawCap(using self, capStyle: CapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    private func drawLineCap(using self, capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
         #[Swag.complete]
         switch capStyle
         {
-        case None:      break
-        case Triangle:  drawCapTriangle(p, d, sens, pen)
-        case Round:     drawCapRound(p, d, sens, pen)
-        case Square:    drawCapSquare(p, d, sens, pen)
+        case None:          break
+        case Triangle:      drawCapTriangle(p, d, sens, pen)
+        case ArrowAnchor:   drawCapArrow(p, d, sens, pen)
+        case Round:         drawCapRound(p, d, sens, pen)
+        case Square:        drawCapSquare(p, d, sens, pen)
+        }
+    }
+
+    private func drawDashCap(using self, capStyle: DashCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    {
+        #[Swag.complete]
+        switch capStyle
+        {
+        case None:          break
+        case Triangle:      drawCapTriangle(p, d, sens, pen)
+        case Round:         drawCapRound(p, d, sens, pen)
+        case Square:        drawCapSquare(p, d, sens, pen)
         }
     }
 
@@ -267,15 +297,41 @@ impl Painter
         }
     }
 
-    private func drawEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: CapStyle)
+    private func drawLineEndCap(using self, cxt: *Context)
+    {
+        using cxt
+
+        v1 := path.endPoint
+        v2 := path.startPoint
+        if path.posBuffer.count > 1
+            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
+
+        n := v1 - v2
+        n.normalizeSafe()
+        c := n.cross(-1)
+        c *= size2
+
+        // Cap is defined
+        if pen.endCapStyle != .None
+        {
+            // Shift a little bit "inside" the line, so that the line will
+            // overwrite the bad AA edges
+            if pen.endCapStyle == .ArrowAnchor
+                v1 -= n
+
+            drawLineCap(pen.endCapStyle, v1, c, 1.0, dref pen)
+        }
+    }
+
+    private func drawDashEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: DashCapStyle)
     {
         using cxt
         if !prim1 or !prim2 return
         if beginLine return
 
         // Cap is defined
-        if capStyle != CapStyle.None
-            drawCap(capStyle, posCap, normalCap, -1.0, dref pen)
+        if capStyle != DashCapStyle.None
+            drawDashCap(capStyle, posCap, normalCap, -1.0, dref pen)
 
         // AA end edge if no cap
         else if paintParams & .Antialiased
@@ -304,7 +360,7 @@ impl Painter
         }
     }
 
-    private func drawLineInternal(using self, cxt: *Context, pos: Vector2, capStyle: CapStyle, drawCap: bool)
+    private func drawLineInternal(using self, cxt: *Context, pos: Vector2, lineCapStyle: LineCapStyle, dashCapStyle: DashCapStyle, drawCap: bool)
     {
         using cxt
 
@@ -339,8 +395,10 @@ impl Painter
         }
 
         // First line cap
-        if capStyle != CapStyle.None and beginLine and drawCap
-            drawCap(capStyle, prev, normal, 1.0, dref pen)
+        if lineCapStyle != LineCapStyle.None and beginLine and drawCap
+            drawLineCap(lineCapStyle, prev, normal, 1.0, dref pen)
+        if dashCapStyle != DashCapStyle.None and beginLine and drawCap
+            drawDashCap(dashCapStyle, prev, normal, 1.0, dref pen)
 
         // Joints
         if !beginLine
@@ -362,7 +420,7 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
 
-            if capStyle == CapStyle.None and beginLine and drawCap
+            if lineCapStyle == LineCapStyle.None and dashCapStyle == DashCapStyle.None and beginLine and drawCap
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -411,7 +469,7 @@ impl Painter
         // solid
         if pen.penStyle == .Solid
         {
-            drawLineInternal(cxt, pos, pen.beginCapStyle, !path.isClosed)
+            drawLineInternal(cxt, pos, pen.beginCapStyle, DashCapStyle.None, !path.isClosed)
             return
         }
 
@@ -442,14 +500,16 @@ impl Painter
                 nextp := prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
-                    drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
+                    drawDashEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                     drawMoveCursor(cxt, nextp)
                     error -= addBlank
                 }
                 else
                 {
-                    capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
-                    drawLineInternal(cxt, nextp, capStyle, true)
+                    if firstLine and !path.isClosed
+                        drawLineInternal(cxt, nextp, pen.beginCapStyle, DashCapStyle.None, true)
+                    else
+                        drawLineInternal(cxt, nextp, LineCapStyle.None, pen.patternBeginCapStyle, true)
                 }
 
                 // Start a new fresh pattern index
@@ -465,13 +525,15 @@ impl Painter
             remainingPatternLen -= remainingSegLen
             if blankPatternIdx
             {
-                drawEndCap(cxt, prev, normal, pen.patternEndCapStyle)
+                drawDashEndCap(cxt, prev, normal, pen.patternEndCapStyle)
                 drawMoveCursor(cxt, pos)
             }
             else
             {
-                capStyle := firstLine and !path.isClosed ? pen.beginCapStyle : pen.patternBeginCapStyle
-                drawLineInternal(cxt, pos, capStyle, true)
+                if firstLine and !path.isClosed
+                    drawLineInternal(cxt, pos, pen.beginCapStyle, DashCapStyle.None, true)
+                else
+                    drawLineInternal(cxt, pos, LineCapStyle.None, pen.patternBeginCapStyle, true)
             }
             break
         }
@@ -498,13 +560,22 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
+        // End line cap. Draw it before, so that the line will overwrite it if necessary
+        if !path.isClosed
+            drawLineEndCap(cxt)
+
         // Draw all
         visit p: path.posBuffer
             drawLine(cxt, dref p)
 
-        // End line cap
-        if !path.isClosed
-            drawEndCap(cxt, prev, normal, pen.endCapStyle)
+        // AA end edge if no end cap
+        if !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
+        {
+            prim2p := vertexBuffer.buffer + prim2
+            prim2t := prim2p + 2
+            addEdgeAA(prim1, prim2p.pos, prim2t.pos)
+            addEdgeAA(prim2, prim2p.pos, prim2t.pos)
+        }
 
         // Closing join between the end and the beginning in case of a closed path
         if path.isClosed and !firstLine and !beginLine

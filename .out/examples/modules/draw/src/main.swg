@@ -49,7 +49,7 @@ func display()
     pen.endCapStyle = .Round
     cdc.drawLine(@{200,0},@{250,150}, pen)
     pen.beginCapStyle = .Triangle
-    pen.endCapStyle = .Triangle
+    pen.endCapStyle = .ArrowAnchor
     pen.patternBeginCapStyle = .Round
     pen.patternEndCapStyle = .Round
     cdc.drawLine(@{300,0},@{350,150}, pen)

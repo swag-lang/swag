@@ -7,7 +7,16 @@ enum PenStyle
     Pattern
 }
 
-enum CapStyle
+enum LineCapStyle
+{
+    None
+    Triangle
+    Round
+    Square
+    ArrowAnchor
+}
+
+enum DashCapStyle
 {
     None
     Triangle
@@ -30,13 +39,13 @@ struct Pen
     color:      Color
 
     pattern:               Array'f32
-    patternBeginCapStyle:  CapStyle   = None
-    patternEndCapStyle:    CapStyle   = None
+    patternBeginCapStyle:  DashCapStyle = None
+    patternEndCapStyle:    DashCapStyle = None
 
     jointMiterLimit: f32 = 3
 
-    penStyle:       PenStyle   = Solid
-    beginCapStyle:  CapStyle   = Round
-    endCapStyle:    CapStyle   = Round
-    jointStyle:     JointStyle = Miter
+    penStyle:       PenStyle        = Solid
+    beginCapStyle:  LineCapStyle   = Round
+    endCapStyle:    LineCapStyle   = Round
+    jointStyle:     JointStyle      = Miter
 }
