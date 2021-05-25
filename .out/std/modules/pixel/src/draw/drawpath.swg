@@ -297,32 +297,6 @@ impl Painter
         }
     }
 
-    private func drawLineEndCap(using self, cxt: *Context)
-    {
-        using cxt
-
-        v1 := path.endPoint
-        v2 := path.startPoint
-        if path.posBuffer.count > 1
-            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
-
-        n := v1 - v2
-        n.normalizeSafe()
-        c := n.cross(-1)
-        c *= size2
-
-        // Cap is defined
-        if pen.endCapStyle != .None
-        {
-            // Shift a little bit "inside" the line, so that the line will
-            // overwrite the bad AA edges
-            if pen.endCapStyle == .ArrowAnchor
-                v1 -= n
-
-            drawLineCap(pen.endCapStyle, v1, c, 1.0, dref pen)
-        }
-    }
-
     private func drawDashEndCap(using self, cxt: *Context, posCap, normalCap: Vector2, capStyle: DashCapStyle)
     {
         using cxt
@@ -539,6 +513,55 @@ impl Painter
         }
     }
 
+    private func drawLineBeginCap(using self, cxt: *Context)
+    {
+        using cxt
+
+        v1 := path.startPoint
+        v2 := path.posBuffer.buffer[0]
+        n := v2 - v1
+        n.normalizeSafe()
+        c := n.cross(-1)
+        c *= size2
+
+        // Cap is defined
+        if pen.beginCapStyle != .None
+        {
+            // Shift a little bit "inside" the line, so that the line will
+            // overwrite the bad AA edges
+            if pen.beginCapStyle == .ArrowAnchor
+                v1 += n
+
+            drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
+        }
+    }
+
+    private func drawLineEndCap(using self, cxt: *Context)
+    {
+        using cxt
+
+        v1 := path.endPoint
+        v2 := path.startPoint
+        if path.posBuffer.count > 1
+            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
+
+        n := v1 - v2
+        n.normalizeSafe()
+        c := n.cross(-1)
+        c *= size2
+
+        // Cap is defined
+        if pen.endCapStyle != .None
+        {
+            // Shift a little bit "inside" the line, so that the line will
+            // overwrite the bad AA edges
+            if pen.endCapStyle == .ArrowAnchor
+                v1 -= n
+
+            drawLineCap(pen.endCapStyle, v1, c, 1.0, dref pen)
+        }
+    }
+
     private func drawPath(using self, cxt: *Context)
     {
         using cxt
@@ -560,9 +583,13 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
-        // End line cap. Draw it before, so that the line will overwrite it if necessary
+        // Line caps. Draw them before the line, so that the line will overwrite them a
+        // little if necessary
         if !path.isClosed
+        {
+            drawLineBeginCap(cxt)
             drawLineEndCap(cxt)
+        }
 
         // Draw all
         visit p: path.posBuffer
@@ -578,8 +605,10 @@ impl Painter
         }
 
         // Closing join between the end and the beginning in case of a closed path
-        if path.isClosed and !firstLine and !beginLine
+        else if path.isClosed and !firstLine and !beginLine
+        {
             drawJoint(pen.jointStyle, prev, normal, normalFirst, dref pen)
+        }
     }
 
     // Draw the line path with the given 'pen'
