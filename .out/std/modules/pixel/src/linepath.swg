@@ -23,8 +23,10 @@ public struct LinePath
     endPoint:       Vector2
     isOpened:       bool
     isClosed:       bool
+    isDirty:        bool
 
     // Flatten infos
+    flattenQuality: PaintQuality = ?
     bvMin:          Vector2
     bvMax:          Vector2
     totalLen:       f32
@@ -38,6 +40,7 @@ public impl LinePath
     {
         elements.clear()
         isOpened, isClosed = false
+        isDirty = true
         startPoint = Vector2{startX, startY}
         endPoint = startPoint
     }
@@ -56,6 +59,7 @@ public impl LinePath
         elem.position.set(x, y)
         elements.add(elem)
         endPoint.set(x, y)
+        isDirty = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -73,6 +77,7 @@ public impl LinePath
         elem.p1.set(ctx, cty)
         elements.add(elem)
         endPoint.set(x, y)
+        isDirty = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -91,6 +96,7 @@ public impl LinePath
         elem.p2.set(ct2x, ct2y)
         elements.add(elem)
         endPoint.set(x, y)
+        isDirty = true
     }
 
     // Add an arc from the previous point
@@ -113,6 +119,7 @@ public impl LinePath
         elem.p2.x = radiusX
         elem.p2.y = radiusY
         elements.add(elem)
+        isDirty = true
 
         endPoint.x = centerX + (Math.sin(maxAngleRad) * radiusX)
         endPoint.y = centerY + (-Math.cos(maxAngleRad) * radiusY)
@@ -232,6 +239,13 @@ public impl LinePath
 
     func flatten(using self, quality: PaintQuality)
     {
+        // Already done ?
+        if !isDirty and flattenQuality == quality and posBuffer.count
+            return
+
+        isDirty = false
+        flattenQuality = quality
+
         bvMin.set(Swag.F32.Max, Swag.F32.Max)
         bvMax.set(Swag.F32.Min, Swag.F32.Min)
         totalLen = 0
