@@ -22,7 +22,7 @@ func display()
     if g_pattern
     {
         pen.penStyle = .Pattern
-        pen.pattern.add(0.1)
+        pen.pattern.add(0.5)
         pen.pattern.add(2.0)
         //pen.pattern.add(0.5)
         //pen.pattern.add(1.0)
@@ -48,7 +48,7 @@ func display()
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
     cdc.drawLine(@{200,0},@{250,150}, pen)
-    pen.beginCapStyle = .Triangle
+    pen.beginCapStyle = .ArrowAnchor
     pen.endCapStyle = .ArrowAnchor
     pen.patternBeginCapStyle = .Round
     pen.patternEndCapStyle = .Round

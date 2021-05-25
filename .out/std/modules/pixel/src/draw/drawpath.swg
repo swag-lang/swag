@@ -334,7 +334,7 @@ impl Painter
         }
     }
 
-    private func drawLineInternal(using self, cxt: *Context, pos: Vector2, lineCapStyle: LineCapStyle, dashCapStyle: DashCapStyle, drawCap: bool)
+    private func drawLineInternal(using self, cxt: *Context, pos: Vector2)
     {
         using cxt
 
@@ -369,10 +369,8 @@ impl Painter
         }
 
         // First line cap
-        if lineCapStyle != LineCapStyle.None and beginLine and drawCap
-            drawLineCap(lineCapStyle, prev, normal, 1.0, dref pen)
-        if dashCapStyle != DashCapStyle.None and beginLine and drawCap
-            drawDashCap(dashCapStyle, prev, normal, 1.0, dref pen)
+        if !firstLine and beginLine and pen.patternBeginCapStyle != .None
+            drawDashCap(pen.patternBeginCapStyle, prev, normal, 1.0, dref pen)
 
         // Joints
         if !beginLine
@@ -394,7 +392,7 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
             addEdgeAA(prim2, v3, v2)
 
-            if lineCapStyle == LineCapStyle.None and dashCapStyle == DashCapStyle.None and beginLine and drawCap
+            if pen.patternBeginCapStyle == DashCapStyle.None and beginLine and !firstLine
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -443,7 +441,7 @@ impl Painter
         // solid
         if pen.penStyle == .Solid
         {
-            drawLineInternal(cxt, pos, pen.beginCapStyle, DashCapStyle.None, !path.isClosed)
+            drawLineInternal(cxt, pos)
             return
         }
 
@@ -480,10 +478,7 @@ impl Painter
                 }
                 else
                 {
-                    if firstLine and !path.isClosed
-                        drawLineInternal(cxt, nextp, pen.beginCapStyle, DashCapStyle.None, true)
-                    else
-                        drawLineInternal(cxt, nextp, LineCapStyle.None, pen.patternBeginCapStyle, true)
+                    drawLineInternal(cxt, nextp)
                 }
 
                 // Start a new fresh pattern index
@@ -504,10 +499,7 @@ impl Painter
             }
             else
             {
-                if firstLine and !path.isClosed
-                    drawLineInternal(cxt, pos, pen.beginCapStyle, DashCapStyle.None, true)
-                else
-                    drawLineInternal(cxt, pos, LineCapStyle.None, pen.patternBeginCapStyle, true)
+                drawLineInternal(cxt, pos)
             }
             break
         }
@@ -521,7 +513,7 @@ impl Painter
         v2 := path.posBuffer.buffer[0]
         n := v2 - v1
         n.normalizeSafe()
-        c := n.cross(-1)
+        c := n.cross(1)
         c *= size2
 
         // Cap is defined
