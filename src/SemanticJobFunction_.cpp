@@ -569,6 +569,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
         else if (funcNode->token.text == "opReloc")
         {

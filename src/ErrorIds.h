@@ -184,6 +184,7 @@
 #define Msg0196 "not enough initializers for '%s' ('%d' expected, '%d' provided)"
 #define Msg0197 "too many initializers for '%s' ('%d' expected, '%d' provided)"
 #define Msg0198 "relative types are not supported in expression lists"
+#define Msg0199 "forbidden 'opDrop' special function for '%s' because struct is marked with 'Swag.constexpr'"
 #define Msg0200 "cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'"
 #define Msg0201 "here is one"
 #define Msg0202 "here is another"
