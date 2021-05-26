@@ -664,6 +664,46 @@ impl Painter
         drawPath(&cxt)
     }
 
+    private func triangulateArea(border: const [..] Vector2)->f32
+    {
+        n := @countof(border)
+        q := 0
+        p := n - 1
+        area := 0'f32
+        while q < n
+        {
+            area += border[p].x * border[q].y - border[q].x * border[p].y
+            p = q
+            q += 1
+        }
+
+        return area * 0.5
+    }
+
+    private func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
+    {
+        a := border[pv[u]]
+        b := border[pv[v]]
+        c := border[pv[w]]
+
+        // Cross product to detect if the triangle in the wrong direction
+        val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.y))
+        if val < Math.ConstF32.Epsilon
+            return false
+
+        // Detect if a point of the graph is inside that triangle
+        for p := 0; p < n; p += 1
+        {
+            if (p == u) or (p == v) or (p == w)
+                continue
+            pt := border[pv[p]]
+            if Math.isVec2InTriangle(pt, a, b, c)
+                return false
+        }
+
+        return true
+    }
+
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
@@ -671,6 +711,7 @@ impl Painter
         if Math.isZeroEpsilon(path.totalLen) return
 
         using path
+
         center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
         {
