@@ -22,7 +22,7 @@ namespace Swag
     attr attributeUsage(usage: AttributeUsage)
     attr attributeMulti()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct)]
     attr constexpr()
 
     #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]

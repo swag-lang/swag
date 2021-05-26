@@ -818,8 +818,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
             if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
             {
-                // Value already stored in the node
-                if (node->flags & AST_VALUE_COMPUTED)
+                if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+                    storageOffset = node->assignment->computedValue.reg.offset;
+                else if (node->flags & AST_VALUE_COMPUTED)
                     storageOffset = node->computedValue.reg.offset;
                 else
                     SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));

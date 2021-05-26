@@ -291,12 +291,16 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
         {
             SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
+            if (seg == &node->sourceFile->module->constantSegment)
+                storageOffset = node->assignment->computedValue.reg.offset;
+            else
+            {
+                storageOffset = seg->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
+                auto addrDst  = seg->address(storageOffset);
+                auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->computedValue.reg.offset);
+                memcpy(addrDst, addrSrc, typeInfo->sizeOf);
+            }
 
-            // Should be stored in the compiler segment !
-            storageOffset = seg->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
-            auto addrDst  = seg->address(storageOffset);
-            auto addrSrc  = node->sourceFile->module->compilerSegment.address(node->assignment->computedValue.reg.offset);
-            memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             return true;
         }
     }

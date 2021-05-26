@@ -371,11 +371,17 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
             bool ok = false;
             if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
                 ok = true;
+            if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+                ok = true;
             if (node->typeInfo->kind == TypeInfoKind::Array)
                 ok = true;
 
             if (!ok)
+            {
+                if (node->typeInfo->kind == TypeInfoKind::Struct && !(node->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
+                    return callerContext->report({node, format(Msg0281, node->typeInfo->getDisplayName().c_str())});
                 return callerContext->report({node, format(Msg0280, node->typeInfo->getDisplayName().c_str())});
+            }
 
             auto offsetStorage             = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
             node->computedValue.reg.offset = offsetStorage;
