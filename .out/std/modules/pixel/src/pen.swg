@@ -1,12 +1,6 @@
 #global public
 using Core, Drawing
 
-enum PenStyle
-{
-    Solid
-    Pattern
-}
-
 enum LineCapStyle
 {
     None
@@ -34,6 +28,17 @@ enum JoinStyle
     MiterBevel
 }
 
+enum PenStyle
+{
+    SolidColor
+}
+
+enum DashStyle
+{
+    None
+    Pattern
+}
+
 struct Pen
 {
     size:       f32 = 1
@@ -49,7 +54,8 @@ struct Pen
     squareAnchorScaleY: f32 = 2
     joinMiterLimit:     f32 = 3
 
-    penStyle:       PenStyle     = Solid
+    penStyle:       PenStyle     = SolidColor
+    dashStyle:      DashStyle    = None
     beginCapStyle:  LineCapStyle = Round
     endCapStyle:    LineCapStyle = Round
     joinStyle:      JoinStyle    = Miter

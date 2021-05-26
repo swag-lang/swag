@@ -410,7 +410,7 @@ impl Painter
 
         // First line cap
         flatBegin := true
-        if pen.penStyle == .Pattern and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
+        if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
         {
             flatBegin = false
             drawDashCap(pen.dashBeginCapStyle, prev, normal, 1.0, dref pen)
@@ -481,7 +481,7 @@ impl Painter
     private func drawLine(using self, using cxt: *Context, pos: Vector2)
     {
         // solid
-        if pen.penStyle == .Solid
+        if pen.dashStyle == .None
         {
             drawLineInternal(cxt, pos)
             return
@@ -634,7 +634,7 @@ impl Painter
         var cxt: Context
         cxt.path = path
         cxt.pen =  &pen
-        if pen.penStyle == .Pattern
+        if pen.dashStyle != .None
             preparePattern(&cxt)
 
         drawPath(&cxt)

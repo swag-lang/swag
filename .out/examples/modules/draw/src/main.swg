@@ -21,7 +21,7 @@ func display()
 
     if g_pattern
     {
-        pen.penStyle = .Pattern
+        pen.dashStyle = .Pattern
         pen.pattern.add(1.0)
         pen.pattern.add(1.0)
         //pen.pattern.add(2.0)
