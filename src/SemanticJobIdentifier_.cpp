@@ -467,7 +467,12 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     varNode->assignment->inheritOwners(identifier);
                 }
 
-                auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+                auto newParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+
+                // Make it a named param, in case some other default "normal" parameters are before (because in that case
+                // we let the emitCall to deal with those default parameters)
+                newParam->namedParam = funcParam->token.text;
+
                 newParam->index = i;
                 newParam->flags |= AST_GENERATED;
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
