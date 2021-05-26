@@ -12,8 +12,7 @@ struct VertexLayout
 enum CommandId
 {
     Clear
-    Position
-    Rotation
+    Transform
     ResetTransform
     DrawTriangles
 }
@@ -25,7 +24,7 @@ struct Command
     {
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
-        transform:      struct{pos: Vector2; angle: f32;}
+        transform:      struct{pos: Vector2; angle: f32; scale: Vector2;}
     }
 }
 
@@ -55,6 +54,9 @@ struct Painter
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High
     drawingBegin:       bool
+    curTransformPos:    Vector2
+    curTransformAngle:  f32
+    curTransformScale:  Vector2 = @{1, 1}
 }
 
 impl Painter
@@ -121,6 +123,9 @@ impl Painter
         Debug.assert(drawingBegin == false)
         drawingBegin = true
         paintParams = .Default
+        curTransformPos = Vector2.Zero
+        curTransformAngle = 0
+        curTransformScale = @{1, 1}
         commandBuffer.clear()
         vertexBuffer.clear()
     }
@@ -143,15 +148,32 @@ impl Painter
     // Set the paint position
     func position(using self, pos: Vector2)
     {
-        cmd := newCommand(CommandId.Position)
-        cmd.params.transform.pos = pos
+        curTransformPos = pos
+        transform(curTransformPos, curTransformAngle, curTransformScale)
     }
 
-    // Set the paint position
+    // Set the paint rotation, in degrees
     func rotation(using self, angle: f32)
     {
-        cmd := newCommand(CommandId.Rotation)
-        cmd.params.transform.angle = Math.toRadians(angle)
+        curTransformAngle = angle
+        transform(curTransformPos, curTransformAngle, curTransformScale)
+    }
+
+    // Set the paint scale
+    func scale(using self, factor: Vector2)
+    {
+        curTransformScale = factor
+        transform(curTransformPos, curTransformAngle, curTransformScale)
+    }
+
+    // Set the paint transformation
+    func transform(using self, pos: Vector2, angle: f32, scale: Vector2)
+    {
+        cmd := newCommand(CommandId.Transform)
+        params := &cmd.params.transform
+        params.pos = pos
+        params.angle = angle
+        params.scale = scale
     }
 
     // Reset the paint position, rotation, scale

@@ -5,6 +5,7 @@ public struct RenderOgl
     vertexbuffer:       GLuint
     programID:          GLuint
     width, height:      s32
+    modelMatrix:        Matrix4x4
 }
 
 impl RenderOgl
@@ -70,6 +71,20 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
+    private func buidModelMatrix(using self, pos: Vector2, rot: f32, scale: Vector2)
+    {
+        modelMatrix.setIdentity()
+
+        c := Math.cos(rot)
+        s := Math.sin(rot)
+        modelMatrix.m[0, 0] = c * scale.x
+        modelMatrix.m[0, 1] = -s * scale.x
+        modelMatrix.m[1, 0] = s * scale.y
+        modelMatrix.m[1, 1] = c * scale.y
+        modelMatrix.m[3, 0] = pos.x
+        modelMatrix.m[3, 1] = pos.y
+    }
+
     public func draw(using self, dc: *Painter)
     {
         if height == 0 or width == 0
@@ -89,7 +104,6 @@ impl RenderOgl
 
         // Draw matrix
         var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
-        var modelMatrix: Matrix4x4
         modelMatrix.setIdentity()
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
@@ -112,20 +126,9 @@ impl RenderOgl
                 modelMatrix.setIdentity()
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
-            case Position:
+            case Transform:
                 params := &cmd.params.transform
-                modelMatrix.m[3, 0] = params.pos.x
-                modelMatrix.m[3, 1] = params.pos.y
-                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
-
-            case Rotation:
-                params := &cmd.params.transform
-                c := Math.cos(params.angle)
-                s := Math.sin(params.angle)
-                modelMatrix.m[0, 0] = c
-                modelMatrix.m[0, 1] = -s
-                modelMatrix.m[1, 0] = s
-                modelMatrix.m[1, 1] = c
+                buidModelMatrix(params.pos, params.angle, params.scale)
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case DrawTriangles:
