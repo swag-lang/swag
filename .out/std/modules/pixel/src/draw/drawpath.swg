@@ -343,13 +343,13 @@ impl Painter
         }
     }
 
-    private func drawDashEndCap(using self, using cxt: *Context, posCap, normalCap: Vector2, capStyle: DashCapStyle)
+    private func drawDashEndCap(using self, using cxt: *Context, posCap, normalCap: Vector2)
     {
         if beginLine or lastLineInvalid return
 
         // Cap is defined
-        if capStyle != DashCapStyle.None
-            drawDashCap(capStyle, posCap, normalCap, -1.0, dref pen)
+        if pen.dashEndCapStyle != DashCapStyle.None
+            drawDashCap(pen.dashEndCapStyle, posCap, normalCap, -1.0, dref pen)
 
         // AA end edge if no cap
         else if paintParams & .Antialiased
@@ -410,7 +410,7 @@ impl Painter
         }
 
         // First line cap
-        flatBegin := true
+        flatBegin := !path.isClosed
         if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
         {
             flatBegin = false
@@ -537,7 +537,7 @@ impl Painter
                 nextp := prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
-                    drawDashEndCap(cxt, prev, normal, pen.dashEndCapStyle)
+                    drawDashEndCap(cxt, prev, normal)
                     drawMoveCursor(cxt, nextp)
                     error -= addBlank
                 }
@@ -560,7 +560,7 @@ impl Painter
             remainingPatternLen -= remainingSegLen
             if blankPatternIdx
             {
-                drawDashEndCap(cxt, prev, normal, pen.dashEndCapStyle)
+                drawDashEndCap(cxt, prev, normal)
                 drawMoveCursor(cxt, pos)
             }
             else
