@@ -31,6 +31,8 @@ public struct LinePath
     bvMax:          Vector2
     totalLen:       f32
     posBuffer:      Array'Vector2
+    isConvex:       bool
+    lastDot:        f32
 }
 
 public impl LinePath
@@ -233,6 +235,19 @@ public impl LinePath
         bvMin.y = Math.min(bvMin.y, pos.y)
         bvMax.x = Math.max(bvMax.x, pos.x)
         bvMax.y = Math.max(bvMax.y, pos.y)
+
+        // Compute if shape is convex
+        if isConvex and posBuffer.count > 2
+        {
+            v   := pos - endPoint
+            v1  := endPoint - posBuffer.buffer[posBuffer.count - 2]
+            dot := v.dot(v1)
+            if lastDot == 0
+                lastDot = dot
+            else if Math.sign(dot) != Math.sign(lastDot)
+                isConvex = false
+        }
+
         posBuffer.add(pos)
         endPoint = pos
     }
@@ -242,6 +257,9 @@ public impl LinePath
         // Already done ?
         if !isDirty and flattenQuality == quality and posBuffer.count
             return
+
+        isConvex = true
+        lastDot = 0
 
         isDirty = false
         flattenQuality = quality

@@ -786,34 +786,42 @@ impl Painter
 
         using path
 
-        result := triangulate(path)
-        if result.isEmpty() return
-
-        pidx := result.buffer
-        psrc := path.posBuffer.buffer
-        loop result.count / 3
+        // Convex shape: just add a triangle from the center of the shape to each pair of
+        // vertices
+        if isConvex
         {
-            v0 := psrc[pidx[0]]
-            v1 := psrc[pidx[1]]
-            v2 := psrc[pidx[2]]
-            prim := pushTriangle(v0, v1, v2, brush.color)
-            pidx += 3
+            center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
+            visit pos, i: posBuffer
+            {
+                v0 := dref pos
+                v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
+                prim := pushTriangle(v0, v1, center, brush.color)
+                if paintParams & .Antialiased
+                {
+                    vp := posBuffer.buffer[(i + 2) % posBuffer.count]
+                    v2 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+                    addEdgeAA(prim, v0, v1)
+                    addEdgeAA(prim, v1, v2)
+                    addEdgeAA(prim, vp, v0)
+                }
+            }
         }
 
-        /*center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
-        visit pos, i: posBuffer
+        // Non convex shape: triangulate
+        else
         {
-            v0 := dref pos
-            v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
-            prim := pushTriangle(v0, v1, center, brush.color)
-            if paintParams & .Antialiased
+            result := triangulate(path)
+            if result.isEmpty() return
+            pidx := result.buffer
+            psrc := path.posBuffer.buffer
+            loop result.count / 3
             {
-                vp := posBuffer.buffer[(i + 2) % posBuffer.count]
-                v2 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
-                addEdgeAA(prim, v0, v1)
-                addEdgeAA(prim, v1, v2)
-                addEdgeAA(prim, vp, v0)
+                v0 := psrc[pidx[0]]
+                v1 := psrc[pidx[1]]
+                v2 := psrc[pidx[2]]
+                prim := pushTriangle(v0, v1, v2, brush.color)
+                pidx += 3
             }
-        }*/
+        }
     }
 }
