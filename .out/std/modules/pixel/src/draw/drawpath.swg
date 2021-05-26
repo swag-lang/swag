@@ -704,6 +704,86 @@ impl Painter
         return true
     }
 
+    private func triangulate(using self, path: *LinePath)->Array's32
+    {
+        var result: retval
+
+        // We want a counter-clockwise polygon in V
+        var vidx: Array's32
+        n := cast(s32) path.posBuffer.count
+        vidx.resize(cast(uint) n)
+        if triangulateArea(path.posBuffer.toSlice()) >= 0
+        {
+            loop i: n
+                vidx.buffer[i] = cast(s32) i
+        }
+        else
+        {
+            loop i: n
+                vidx.buffer[i] = cast(s32) ((n - 1) - i)
+        }
+
+        // Remove nv-2 Vertices, creating 1 triangle every time
+        nv := n
+        count := 2 * nv
+        m := 0
+        v := nv - 1
+        while nv > 2
+        {
+            // If we loop, it is probably a non-simple polygon
+            if count <= 0
+            {
+                result.clear()
+                return result
+            }
+
+            count -= 1
+
+            // Three consecutive vertices in current polygon, <u,v,w>
+            u := v
+
+            if nv <= u
+                u = 0
+            v = u + 1
+            if nv <= v
+                v = 0
+
+            // New v
+            w := v + 1
+
+            if nv <= w
+                w = 0
+            if triangulateSnip(path.posBuffer.toSlice(), u, v, w, nv, vidx.buffer)
+            {
+                // Output Triangle
+                a := vidx.buffer[u]
+                b := vidx.buffer[v]
+                c := vidx.buffer[w]
+                result.add(a)
+                result.add(b)
+                result.add(c)
+
+                // Remove v from remaining polygon
+                m += 1
+                s := v
+                t := v + 1
+                while t < nv
+                {
+                    vidx.buffer[s] = vidx.buffer[t]
+                    s += 1
+                    t += 1
+                }
+
+                nv -= 1
+
+                // Reset error detection counter
+                count = 2 * nv
+            }
+        }
+
+        return result
+    }
+
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
