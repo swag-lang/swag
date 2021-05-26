@@ -273,16 +273,8 @@ bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* t
     return checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
 }
 
-bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
+bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)
 {
-    auto& token = node->token;
-    auto& name  = node->token.text;
-
-    if (!symbol)
-        symbol = findNoLock(name);
-    if (!symbol)
-        return true;
-
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
@@ -299,7 +291,26 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             if (kind != SymbolKind::Namespace && node->sourceFile->module->name == node->token.text)
                 return true;
         }
+    }
 
+    return false;
+}
+
+bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
+{
+    auto& token = node->token;
+    auto& name  = node->token.text;
+
+    if (!symbol)
+        symbol = findNoLock(name);
+    if (!symbol)
+        return true;
+    if (acceptGhostSymbolNoLock(context, node, kind, symbol))
+        return true;
+
+    // A symbol with a different kind already exists
+    if (symbol->kind != kind)
+    {
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};

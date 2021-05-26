@@ -3579,12 +3579,16 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         if (scope == startScope)
             continue;
 
+        auto symbol = scope->symTable.find(node->token.text, crc);
+        if (!symbol)
+            continue;
+
+        // Short cut. Sometime, we let the semantic to deal with problems. So no need to go further
+        if (scope->symTable.acceptGhostSymbolNoLock(context, node, kind, symbol))
+            continue;
+
         // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
         {
-            auto symbol = scope->symTable.find(node->token.text, crc);
-            if (!symbol)
-                continue;
-
             scoped_lock lock(symbol->mutex);
             if (symbol->cptOverloadsInit != symbol->overloads.size())
             {
