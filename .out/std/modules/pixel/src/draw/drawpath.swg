@@ -410,7 +410,7 @@ impl Painter
         }
 
         // First line cap
-        flatBegin := !path.isClosed
+        flatBegin := !path.isClosed or pen.dashStyle != .None
         if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
         {
             flatBegin = false

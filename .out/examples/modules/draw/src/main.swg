@@ -21,7 +21,7 @@ func display()
 
     if g_pattern
     {
-        pen.dashStyle = .Dash
+        pen.dashStyle = .DashDot
         //pen.pattern.add(1.0)
         //pen.pattern.add(1.0)
         //pen.pattern.add(2.0)
@@ -130,10 +130,13 @@ func display()
     cdc.drawPath(&path, pen)
 
     cdc.position(@{250, 600})
-    pen.size = 4
+    pen.size = 10
     pen.color = Argb.Blue
+    pen.dashBeginCapStyle = .None
+    pen.dashEndCapStyle = .None
     cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
     cdc.position(@{400, 600})
+    pen.size = 4
     cdc.drawCircle(50, 50, 50, pen)
     cdc.position(@{500, 600})
     cdc.drawEllipse(50, 50, 25, 50, pen)
