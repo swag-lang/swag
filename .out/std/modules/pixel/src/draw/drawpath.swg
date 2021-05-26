@@ -22,6 +22,7 @@ private struct Context
     patternIndex:        s32
     error:               f32
     divError:            f32
+    pattern:             const *f32
     patternCount:        s32
 }
 
@@ -455,11 +456,33 @@ impl Painter
 
     private func preparePattern(using cxt: *Context)
     {
+        #[Swag.complete]
+        switch pen.dashStyle
+        {
+        case None:
+            return
+        case Pattern:
+            pattern = pen.pattern.buffer
+            patternCount = cast(s32) pen.pattern.count
+            if patternCount == 0 fallthrough
+        case Dot:
+            const P = @[1.0, 1.0]
+            pattern = @dataof(P)
+            patternCount = 2
+        case Dash:
+            const P = @[2.0, 1.0]
+            pattern = @dataof(P)
+            patternCount = 2
+        case DashDot:
+            const P = @[2.0, 1.0, 1.0, 1.0]
+            pattern = @dataof(P)
+            patternCount = 4
+        }
+
         patternTotalLen = 0
-        visit p: pen.pattern
-            patternTotalLen += p
+        loop i: patternCount
+            patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
-        patternCount = cast(s32) pen.pattern.count
 
         repeatCount := cast(s32) (path.totalLen / patternTotalLen)
         error = path.totalLen - (repeatCount * patternTotalLen)
@@ -472,7 +495,7 @@ impl Painter
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
         patternIndex = 0
-        remainingPatternLen = pen.pattern.buffer[patternIndex]
+        remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
         remainingPatternLen *= pen.size
         if !path.isClosed
             remainingPatternLen *= 0.5
@@ -527,7 +550,8 @@ impl Painter
                 remainingSegLen -= lengthInPattern
                 patternIndex = (patternIndex + 1) % patternCount
                 blankPatternIdx = blankPatternIdx ? false : true
-                remainingPatternLen = pen.pattern.buffer[patternIndex] * pen.size
+                remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
+                remainingPatternLen *= pen.size
                 continue
             }
 

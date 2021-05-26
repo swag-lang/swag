@@ -37,6 +37,9 @@ enum DashStyle
 {
     None
     Pattern
+    Dot
+    Dash
+    DashDot
 }
 
 struct Pen
