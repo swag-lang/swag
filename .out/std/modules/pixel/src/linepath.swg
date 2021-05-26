@@ -250,7 +250,6 @@ public impl LinePath
         bvMax.set(Swag.F32.Min, Swag.F32.Min)
         totalLen = 0
         posBuffer.clear()
-        posBuffer.add(startPoint)
 
         endPoint = startPoint
         visit elem: elements

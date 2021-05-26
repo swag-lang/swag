@@ -576,8 +576,8 @@ impl Painter
         if pen.beginCapStyle == .None
             return
 
-        v1 := path.posBuffer.buffer[0]
-        v2 := path.posBuffer.buffer[1]
+        v1 := path.startPoint
+        v2 := path.posBuffer.buffer[0]
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
@@ -591,7 +591,9 @@ impl Painter
             return
 
         v1 := path.posBuffer.buffer[path.posBuffer.count - 1]
-        v2 := path.posBuffer.buffer[path.posBuffer.count - 2]
+        v2 := path.startPoint
+        if path.posBuffer.count > 1
+            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
         n := v1 - v2
         n.normalizeSafe()
         c := n.cross(1)
@@ -628,10 +630,8 @@ impl Painter
         }
 
         // Draw all
-        loop i: 1..path.posBuffer.count - 1
-        {
-            drawLine(cxt, path.posBuffer.buffer[i])
-        }
+        visit p: path.posBuffer
+            drawLine(cxt, dref p)
 
         // AA end edge if no end cap
         if !lastLineInvalid and !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
@@ -687,7 +687,7 @@ impl Painter
         c := border[pv[w]]
 
         // Cross product to detect if the triangle in the wrong direction
-        val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.y))
+        val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.x))
         if val < Math.ConstF32.Epsilon
             return false
 
@@ -741,18 +741,12 @@ impl Painter
 
             // Three consecutive vertices in current polygon, <u,v,w>
             u := v
-
-            if nv <= u
-                u = 0
+            if nv <= u u = 0
             v = u + 1
-            if nv <= v
-                v = 0
-
-            // New v
+            if nv <= v v = 0
             w := v + 1
+            if nv <= w w = 0
 
-            if nv <= w
-                w = 0
             if triangulateSnip(path.posBuffer.toSlice(), u, v, w, nv, vidx.buffer)
             {
                 // Output Triangle
