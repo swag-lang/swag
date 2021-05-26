@@ -709,18 +709,18 @@ impl Painter
         var result: retval
 
         // We want a counter-clockwise polygon in V
-        var vidx: Array's32
         n := cast(s32) path.posBuffer.count
-        vidx.resize(cast(uint) n)
+        triangulateIdx.resize(cast(uint) n)
+        idxPtr := triangulateIdx.buffer
         if triangulateArea(path.posBuffer.toSlice()) >= 0
         {
             loop i: n
-                vidx.buffer[i] = cast(s32) i
+                idxPtr[i] = cast(s32) i
         }
         else
         {
             loop i: n
-                vidx.buffer[i] = cast(s32) ((n - 1) - i)
+                idxPtr[i] = cast(s32) ((n - 1) - i)
         }
 
         // Remove nv-2 Vertices, creating 1 triangle every time
@@ -747,12 +747,12 @@ impl Painter
             w := v + 1
             if nv <= w w = 0
 
-            if triangulateSnip(path.posBuffer.toSlice(), u, v, w, nv, vidx.buffer)
+            if triangulateSnip(path.posBuffer.toSlice(), u, v, w, nv, idxPtr)
             {
                 // Output Triangle
-                a := vidx.buffer[u]
-                b := vidx.buffer[v]
-                c := vidx.buffer[w]
+                a := idxPtr[u]
+                b := idxPtr[v]
+                c := idxPtr[w]
                 result.add(a)
                 result.add(b)
                 result.add(c)
@@ -763,7 +763,7 @@ impl Painter
                 t := v + 1
                 while t < nv
                 {
-                    vidx.buffer[s] = vidx.buffer[t]
+                    triangulateIdx.buffer[s] = triangulateIdx.buffer[t]
                     s += 1
                     t += 1
                 }
@@ -790,11 +790,12 @@ impl Painter
         if result.isEmpty() return
 
         pidx := result.buffer
+        psrc := path.posBuffer.buffer
         loop result.count / 3
         {
-            v0 := path.posBuffer.buffer[pidx[0]]
-            v1 := path.posBuffer.buffer[pidx[1]]
-            v2 := path.posBuffer.buffer[pidx[2]]
+            v0 := psrc[pidx[0]]
+            v1 := psrc[pidx[1]]
+            v2 := psrc[pidx[2]]
             prim := pushTriangle(v0, v1, v2, brush.color)
             pidx += 3
         }

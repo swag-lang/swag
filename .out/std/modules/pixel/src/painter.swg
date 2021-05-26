@@ -48,6 +48,7 @@ struct Painter
 {
     commandBuffer:      Array'Command
     vertexBuffer:       Array'VertexLayout
+    triangulateIdx:     Array's32
     sharedSolidPen:     Pen
     sharedLinePath:     LinePath
     paintParams:        PaintParams = Default
