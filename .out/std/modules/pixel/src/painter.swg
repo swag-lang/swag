@@ -13,6 +13,7 @@ enum CommandId
 {
     Clear
     Position
+    Rotation
     ResetTransform
     DrawTriangles
 }
@@ -24,7 +25,7 @@ struct Command
     {
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
-        transform:      struct{pos: Vector2;}
+        transform:      struct{pos: Vector2; angle: f32;}
     }
 }
 
@@ -144,6 +145,13 @@ impl Painter
     {
         cmd := newCommand(CommandId.Position)
         cmd.params.transform.pos = pos
+    }
+
+    // Set the paint position
+    func rotation(using self, angle: f32)
+    {
+        cmd := newCommand(CommandId.Rotation)
+        cmd.params.transform.angle = Math.toRadians(angle)
     }
 
     // Reset the paint position, rotation, scale

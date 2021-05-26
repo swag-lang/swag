@@ -118,6 +118,16 @@ impl RenderOgl
                 modelMatrix.m[3, 1] = params.pos.y
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
+            case Rotation:
+                params := &cmd.params.transform
+                c := Math.cos(params.angle)
+                s := Math.sin(params.angle)
+                modelMatrix.m[0, 0] = c
+                modelMatrix.m[0, 1] = -s
+                modelMatrix.m[1, 0] = s
+                modelMatrix.m[1, 1] = c
+                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+
             case DrawTriangles:
                 params := &cmd.params.drawTriangles
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
