@@ -31,8 +31,20 @@ x 'in' 0..16
 -------------------------------------
 `return au lieu de swag.noreturn ?
 -------------------------------------
-compile time return Array's32 => convertir en tableau static, avec opIndex ?
+compile time return Array's32 => convertir en tableau static, avec opIndex & opCount ?
 -------------------------------------
+code en tant que vrai type ?
+x := #code a := 6
+#mixin x
+var v: Array'code
+v.add(#code a := 5)
+v.add(#code @print(a))
+#mixin v[0]
+#mixin v[1]
+-------------------------------------
+
+
+
 
 ****************************************
 TODO
