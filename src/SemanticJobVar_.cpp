@@ -958,6 +958,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (typeInfo->kind == TypeInfoKind::Struct)
             {
+                // If this has been transformed to an alias cause of const, take the original
+                // type to make the reference
+                if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
+                    typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
+
                 auto typeRef          = allocType<TypeInfoReference>();
                 typeRef->flags        = typeInfo->flags | TYPEINFO_CONST;
                 typeRef->pointedType  = typeInfo;
