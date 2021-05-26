@@ -147,6 +147,17 @@ func display()
     cdc.fillCircle(50, 50, 50, brush)
     cdc.drawCircle(50, 50, 50, pen)
 
+    cdc.position(@{650, 50})
+    path.start(0, 50)
+    path.lineTo(50, 50)
+    path.lineTo(50, 20)
+    path.lineTo(100, 75)
+    path.lineTo(50, 125)
+    path.lineTo(50, 100)
+    path.lineTo(0, 100)
+    path.close()
+    cdc.fillPath(&path, brush)
+
     cdc.end()
 
     //ff += 0.1

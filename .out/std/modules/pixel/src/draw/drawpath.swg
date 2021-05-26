@@ -576,8 +576,8 @@ impl Painter
         if pen.beginCapStyle == .None
             return
 
-        v1 := path.startPoint
-        v2 := path.posBuffer.buffer[0]
+        v1 := path.posBuffer.buffer[0]
+        v2 := path.posBuffer.buffer[1]
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
@@ -590,10 +590,8 @@ impl Painter
         if pen.endCapStyle == .None
             return
 
-        v1 := path.endPoint
-        v2 := path.startPoint
-        if path.posBuffer.count > 1
-            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
+        v1 := path.posBuffer.buffer[path.posBuffer.count - 1]
+        v2 := path.posBuffer.buffer[path.posBuffer.count - 2]
         n := v1 - v2
         n.normalizeSafe()
         c := n.cross(1)
@@ -630,8 +628,10 @@ impl Painter
         }
 
         // Draw all
-        visit p: path.posBuffer
-            drawLine(cxt, dref p)
+        loop i: 1..path.posBuffer.count - 1
+        {
+            drawLine(cxt, path.posBuffer.buffer[i])
+        }
 
         // AA end edge if no end cap
         if !lastLineInvalid and !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
