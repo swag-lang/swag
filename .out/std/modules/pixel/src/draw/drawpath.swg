@@ -193,7 +193,7 @@ impl Painter
 
     private func drawJoinBevel(using self, p, d1, d2: Vector2, pen: Pen)
     {
-        v0  := p
+        v0 := p
 
         var v1, v2: Vector2 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
