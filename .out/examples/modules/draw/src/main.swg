@@ -145,7 +145,7 @@ func display()
     brush.color = Argb.Black
     cdc.position(@{600, 600})
     cdc.fillCircle(50, 50, 50, brush)
-
+     
     cdc.position(@{650, 50})
     path.start(0, 50)
     path.lineTo(50, 50)

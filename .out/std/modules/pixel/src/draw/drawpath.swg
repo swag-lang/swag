@@ -813,14 +813,46 @@ impl Painter
             result := triangulate(path)
             if result.isEmpty() return
             pidx := result.buffer
-            psrc := path.posBuffer.buffer
+            tpos := path.posBuffer.buffer
+            firstPrim := vertexBuffer.count
             loop result.count / 3
             {
-                v0 := psrc[pidx[0]]
-                v1 := psrc[pidx[1]]
-                v2 := psrc[pidx[2]]
+                v0 := tpos[pidx[0]]
+                v1 := tpos[pidx[1]]
+                v2 := tpos[pidx[2]]
                 prim := pushTriangle(v0, v1, v2, brush.color)
                 pidx += 3
+            }
+
+            // Generate all AA edges : for each vertex of the triangle, add the previous and
+            // next edge (even if not in the triangle)
+            if paintParams & .Antialiased
+            {
+                cpt := cast(s32) path.posBuffer.count
+                psrc := result.buffer
+                for i := 0; i < result.count; i += 3
+                {
+                    index  := psrc[0]
+                    indexn := (index + 1) % cpt;
+                    indexp := index ? index - 1 : cpt - 1;
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+
+                    index  = psrc[1]
+                    indexn = (index + 1) % cpt;
+                    indexp = index ? index - 1 : cpt - 1;
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+
+                    index  = psrc[2]
+                    indexn = (index + 1) % cpt;
+                    indexp = index ? index - 1 : cpt - 1;
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
+                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+
+                    psrc += 3
+                    firstPrim += 3
+                }
             }
         }
     }
