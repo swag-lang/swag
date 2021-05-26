@@ -33,9 +33,13 @@ func display()
 
     cdc.begin()
     cdc.clear(Argb.Red)
+    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    cdc.end()
+    renderer.draw(&cdc)
+
+    cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
 
     /*pt := Input.getMousePos()
     pen.color = Argb.Black
@@ -161,8 +165,6 @@ func display()
     cdc.fillPath(&path, brush)
 
     cdc.end()
-
-    //ff += 0.1
 
     renderer.draw(&cdc)
     renderer.flush()
