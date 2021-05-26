@@ -792,7 +792,20 @@ impl Painter
 
         using path
 
-        center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
+        result := triangulate(path)
+        if result.isEmpty() return
+
+        pidx := result.buffer
+        loop result.count / 3
+        {
+            v0 := path.posBuffer.buffer[pidx[0]]
+            v1 := path.posBuffer.buffer[pidx[1]]
+            v2 := path.posBuffer.buffer[pidx[2]]
+            prim := pushTriangle(v0, v1, v2, brush.color)
+            pidx += 3
+        }
+
+        /*center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
         visit pos, i: posBuffer
         {
             v0 := dref pos
@@ -806,6 +819,6 @@ impl Painter
                 addEdgeAA(prim, v1, v2)
                 addEdgeAA(prim, vp, v0)
             }
-        }
+        }*/
     }
 }

@@ -157,6 +157,7 @@ func display()
     path.lineTo(0, 100)
     path.close()
     cdc.fillPath(&path, brush)
+    cdc.drawPath(&path, pen)
 
     cdc.end()
 
