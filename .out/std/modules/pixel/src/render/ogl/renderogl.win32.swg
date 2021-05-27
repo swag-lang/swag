@@ -26,7 +26,7 @@ public impl RenderOglWin32
         catch wglDeleteContext(hRC)
     }
 
-    func flush(using self)
+    func end(using self)
     {
         glFlush()
         assume SwapBuffers(hDC)

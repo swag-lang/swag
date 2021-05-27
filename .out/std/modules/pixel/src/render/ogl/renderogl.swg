@@ -1,3 +1,4 @@
+#global public
 using Core, Ogl, Core.Math
 
 public struct RenderOgl
@@ -5,12 +6,13 @@ public struct RenderOgl
     vertexbuffer:       GLuint
     programID:          GLuint
     width, height:      s32
+    worldTransform:     Transform2
     modelMatrix:        Matrix4x4
 }
 
 impl RenderOgl
 {
-    func init(using self, w, h: s32)
+    protected func init(using self, w, h: s32)
     {
         width = w
         height = h
@@ -42,7 +44,7 @@ impl RenderOgl
         glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
-    public func resize(using self, width, height: s32)
+    func resize(using self, width, height: s32)
     {
         self.width = #scopefct.width
         self.height = #scopefct.height
@@ -71,8 +73,11 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    private func buidModelMatrix(using self, tr: Transform2)
+    private func buidModelMatrix(using self, modelTransform: Transform2)
     {
+        tr := worldTransform
+        tr.multiply(modelTransform)
+
         // Received matrix is in row major order, so transpose it
 
         // x
@@ -88,7 +93,41 @@ impl RenderOgl
         modelMatrix.m[3, 1] = tr.m32
     }
 
-    public func draw(using self, dc: *Painter)
+    // To be called before rendering
+    func begin(using self)
+    {
+        worldTransform.setIdentity()
+    }
+
+    // Translate the world transform
+    func translateTransform(using self, x, y: f32)
+    {
+        tr := Transform2.createTranslation(x, y)
+        worldTransform.multiply(tr)
+    }
+
+    // Rotate the world transform
+    func rotateTransform(using self, angle: f32)
+    {
+        rad := Math.toRadians(angle)
+        tr := Transform2.createRotation(rad, 0, 0)
+        worldTransform.multiply(tr)
+    }
+
+    // Scale the world transform
+    func scaleTransform(using self, x, y: f32)
+    {
+        tr := Transform2.createScale(x, y, 0, 0)
+        worldTransform.multiply(tr)
+    }
+
+    // Reset the world transform
+    func resetTransform(using self)
+    {
+        worldTransform.setIdentity()
+    }
+
+    func draw(using self, dc: *Painter)
     {
         if height == 0 or width == 0
             return
@@ -108,6 +147,8 @@ impl RenderOgl
         // Draw matrix
         var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
         modelMatrix.setIdentity()
+        x := Transform2{1, 0, 0, 1, 0, 0}
+        buidModelMatrix(x)
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         // State

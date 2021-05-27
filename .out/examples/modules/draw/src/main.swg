@@ -19,6 +19,8 @@ func display()
 {
     var pen: Pen
 
+    renderer.begin()
+
     if g_pattern
     {
         pen.dashStyle = .DashDot
@@ -31,12 +33,14 @@ func display()
     pen.size = 20
     pen.color = 0xFF000000
 
+    //////////////////////////////////////
     cdc.begin()
     cdc.clear(Argb.Red)
     cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     cdc.end()
     renderer.draw(&cdc)
 
+    //////////////////////////////////////
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
@@ -172,11 +176,14 @@ func display()
     cdc.resetTransform()
     cdc.translateTransform(600, 600)
     cdc.fillCircle(50, 50, 50, brush)
+    cdc.end()
+    renderer.draw(&cdc)
 
-    cdc.resetTransform()
-    cdc.scaleTransform(0.5, 0.5)
-    cdc.rotateTransform(45)
-    cdc.translateTransform(700, 50)
+    //////////////////////////////////////
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -186,11 +193,16 @@ func display()
     path.lineTo(0, 100)
     path.close()
     cdc.fillPath(&path, brush)
-
     cdc.end()
 
+    renderer.resetTransform()
+    renderer.rotateTransform(45)
+    renderer.scaleTransform(0.5, 0.5)
+    renderer.translateTransform(700, 50)
     renderer.draw(&cdc)
-    renderer.flush()
+
+    //////////////////////////////////////
+    renderer.end()
 }
 
 #[Swag.callback]
