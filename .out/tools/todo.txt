@@ -50,8 +50,6 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
-#[Swag.global] var x: s32 pas visible en debug
--------------------------------------
 byteCodeDebugInline marche pas du tout
 -------------------------------------
 range dynamic order
@@ -78,8 +76,11 @@ cast any avec struct, ca fait quoi (et avec les using ?)
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
-x64/llvm debug, mettre les constants, les enums
-void CodeViewDebug::emitStaticConstMemberList()
+x64/llvm debug
+- mettre les constants, les enums (void CodeViewDebug::emitStaticConstMemberList())
+-------------------------------------
+llvm debug, pas à jour
+- variables local en #[Swag.global]
 -------------------------------------
 
 

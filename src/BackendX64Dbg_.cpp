@@ -1146,6 +1146,44 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
     dbgEmitTruncatedString(concat, "");
     dbgEndRecord(pp, concat);
 
+    // Local variables marked as global
+    /////////////////////////////////
+    auto funcDecl = (AstFuncDecl*) f.node;
+    for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
+    {
+        auto localVar = funcDecl->localGlobalVars[i];
+        if (localVar->ownerScope != scope)
+            continue;
+
+        SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        auto            typeInfo = overload->typeInfo;
+
+        SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
+
+        dbgStartRecord(pp, concat, S_LDATA32);
+        concat.addU32(dbgGetOrCreateType(pp, typeInfo));
+
+        CoffRelocation reloc;
+        auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
+
+        // symbol index relocation inside segment
+        reloc.type           = IMAGE_REL_AMD64_SECREL;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex    = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU32(overload->storageOffset);
+
+        // segment relocation
+        reloc.type           = IMAGE_REL_AMD64_SECTION;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex    = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU16(0);
+
+        dbgEmitTruncatedString(concat, localVar->token.text);
+        dbgEndRecord(pp, concat);
+    }
+
     // Local variables
     /////////////////////////////////
     for (int i = 0; i < (int) f.node->extension->bc->localVars.size(); i++)
