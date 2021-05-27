@@ -3,20 +3,22 @@ using Core, Ogl, Core.Math
 const VertexShaderAA = @"
     #version 330 core
     layout(location = 0) in vec2 vertexPosition;
-    layout(location = 1) in vec4 vertexColor;
-    layout(location = 2) in vec4 aa0;
-    layout(location = 3) in vec4 aa1;
-    layout(location = 4) in vec4 aa2;
-    layout(location = 5) in vec4 aa3;
-    layout(location = 6) in vec4 aa4;
-    layout(location = 7) in vec4 aa5;
-    layout(location = 8) in float aanum;
+    layout(location = 1) in vec2 uv;
+    layout(location = 2) in vec4 vertexColor;
+    layout(location = 3) in vec4 aa0;
+    layout(location = 4) in vec4 aa1;
+    layout(location = 5) in vec4 aa2;
+    layout(location = 6) in vec4 aa3;
+    layout(location = 7) in vec4 aa4;
+    layout(location = 8) in vec4 aa5;
+    layout(location = 9) in float aanum;
 
     uniform mat4    mvp;
     uniform mat4    mdl;
 
     out vec4        vcolor;
     out vec2        vpixelPos;
+    out vec2        vuv;
     out vec4        vaa0;
     out vec4        vaa1;
     out vec4        vaa2;
@@ -60,6 +62,9 @@ const VertexShaderAA = @"
         // source is rgba, and we need bgra
         vcolor = vertexColor.zyxw;
 
+        // uv
+        vuv = uv;
+
         transformAA();
     }
 "@
@@ -68,6 +73,7 @@ const PixelShaderAA = @"
     #version 330 core
     in vec4     vcolor;
     in vec2     vpixelPos;
+    in vec2     vuv;
     in vec4     vaa0;
     in vec4     vaa1;
     in vec4     vaa2;
@@ -76,22 +82,9 @@ const PixelShaderAA = @"
     in vec4     vaa5;
     in float    vaanum;
 
-    out vec4    color;
+    uniform sampler2D texture;
 
-    // from sdb
-    /*float computeAlphaAA(vec4 segment)
-    {
-        vec2 es = segment.zw - segment.xy;
-        float norm = sqrt(es.x * es.x + es.y * es.y);
-        vec2  es1 = es / norm;
-        vec2  ptmp  = vpixelPos - segment.xy;
-        float dot   = (es1.x * ptmp.x) + (es1.y * ptmp.y);
-        float norm2 = dot < 0 ? 1 : 0;
-        dot /= norm;
-        norm2 = dot > 1 ? 1 : norm2;
-        float norm1 = abs((es.x * (segment.y - vpixelPos.y)) - (es.y * (segment.x - vpixelPos.x))) / norm;
-        return clamp(norm1 + norm2, 0, 1);
-    }*/
+    out vec4    color;
 
     // Compute the distance from the pixel to the segment
     float computeAlphaAA(vec4 segment)
@@ -143,8 +136,6 @@ const PixelShaderAA = @"
     {
         color = vcolor;
         color.w *= computeAlphaEdgesAA();
-        //float f = computeAlphaEdgesAA();
-        //if (f < 1) color.x = f;
     }
 "@
 

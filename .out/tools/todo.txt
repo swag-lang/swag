@@ -19,7 +19,7 @@ x(10) => x.opCall(10)
 -------------------------------------
 loop increment ? loop reverse ?
 -------------------------------------
-is ? 
+is ?
 if a is < 2 and > 3
 if a is s32
 if a is "toto"
@@ -50,8 +50,9 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
-#[Swag.offset("x")]
-x, y: s32 merde (marche si on sépare les deux variables)
+#[Swag.global] var x: s32 pas visible en debug
+-------------------------------------
+identifier not found in tuple, afficher le tuple en question dans une note
 -------------------------------------
 range dynamic order
 -------------------------------------

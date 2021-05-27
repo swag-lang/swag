@@ -1,6 +1,8 @@
 #global public
 using Core, Ogl, Core.Math
 
+alias ImageHandle = *void
+
 public struct RenderOgl
 {
     vertexbuffer:       GLuint
@@ -27,10 +29,10 @@ impl RenderOgl
         var offset: const *void = null
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector2)
+        glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector4)
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
@@ -41,7 +43,9 @@ impl RenderOgl
         offset += @sizeof(Vector4)
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
     }
 
     func resize(using self, width, height: s32)
@@ -93,6 +97,32 @@ impl RenderOgl
         modelMatrix.m[3, 1] = tr.m32
     }
 
+    // Register an image for rendering
+    func addImage(using self, image: Image)->ImageHandle
+    {
+        var fmt: GLenum = 0
+        internal := GL_RGB
+
+        #[Swag.complete]
+        switch image.pf
+        {
+        case BGR8:  fmt = GL_BGR
+        case BGRA8: fmt = GL_BGRA; internal = GL_RGBA
+        case RGB8:  fmt = GL_RGB
+        case RGBA8: fmt = GL_RGBA; internal = GL_RGBA
+        }
+
+        var textureID: GLuint
+        glGenTextures(1, &textureID)
+        glBindTexture(GL_TEXTURE_2D, textureID)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) image.width, cast(s32) image.height, 0, fmt, GL_UNSIGNED_BYTE, image.pixels)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        return cast(ImageHandle) cast(uint) textureID
+    }
+
+
     // To be called before rendering
     func begin(using self)
     {
@@ -128,6 +158,7 @@ impl RenderOgl
         modelMatrix.setIdentity()
     }
 
+    // Draw the given painter
     func draw(using self, dc: *Painter)
     {
         if height == 0 or width == 0
@@ -153,7 +184,7 @@ impl RenderOgl
         // State
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
+        loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
         visit cmd: dc.commandBuffer
         {
@@ -173,9 +204,13 @@ impl RenderOgl
             case DrawTriangles:
                 params := &cmd.params.drawTriangles
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
+            case BindImage:
+                params := &cmd.params.image
+                glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) params.handle)
             }
         }
 
-        loop i: 9 glDisableVertexAttribArray(cast(GLuint) i)
+        loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
     }
 }

@@ -1,9 +1,11 @@
 #global public
 using Core, Ogl, Core.Drawing, Core.Math
 
+#[Swag.pack(1)]
 struct VertexLayout
 {
     pos:    Vector2
+    uv:     Vector2
     color:  u32
     aa:     [6] Vector4
     aanum:  f32
@@ -14,6 +16,7 @@ enum CommandId
     Clear
     Transform
     DrawTriangles
+    BindImage
 }
 
 struct Command
@@ -24,6 +27,7 @@ struct Command
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
         transform:      struct{tr: Transform2;}
+        image:          struct{handle: ImageHandle;}
     }
 }
 
@@ -49,6 +53,7 @@ struct Painter
     vertexBuffer:       Array'VertexLayout
     triangulateIdx:     Array's32
     sharedSolidPen:     Pen
+    sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High

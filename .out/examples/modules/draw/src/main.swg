@@ -14,6 +14,21 @@ var g_modeAA: bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern: bool = true
 
+func dataPath()->String
+{
+    dataPath := Path.getDirectoryName(#location.fileName)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = Path.getDirectoryName(dataPath)
+    return Path.combine(dataPath, "std/tests/pixel/datas")
+}
+
+func imagePath(name: string)->String
+{
+    return Path.combine(dataPath(), name)
+}
+
 var ff: f32 = 0
 func display()
 {
@@ -199,6 +214,25 @@ func display()
     renderer.rotateTransform(45)
     renderer.scaleTransform(0.5, 0.5)
     renderer.translateTransform(700, 50)
+    renderer.draw(&cdc)
+
+    //////////////////////////////////////
+    #[Swag.global]
+    var imageHandle: ImageHandle
+
+    if imageHandle == null
+    {
+        img := assume Image.load(imagePath("rgb.bmp"))
+        imageHandle = renderer.addImage(img)
+    }
+
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+    cdc.drawImage(imageHandle, 750, 50)
+    cdc.end()
+
+    renderer.resetTransform()
     renderer.draw(&cdc)
 
     //////////////////////////////////////
