@@ -2446,7 +2446,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
 
-            Diagnostic* diag = new Diagnostic{node, node->token, format(Msg0122, node->token.text.c_str())};
+            vector<const Diagnostic*> notes;
+            Diagnostic*               diag = new Diagnostic{node, node->token, format(Msg0122, node->token.text.c_str())};
             if (identifierRef->startScope)
             {
                 auto typeRef = TypeManager::concreteReferenceType(identifierRef->typeInfo);
@@ -2454,7 +2455,11 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
 
                 if (typeRef && typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    diag = new Diagnostic{node, node->token, format(Msg0093, node->token.text.c_str())};
+                {
+                    diag      = new Diagnostic{node, node->token, format(Msg0093, node->token.text.c_str())};
+                    auto note = new Diagnostic{identifierRef->startScope->owner, identifierRef->startScope->owner->token, Msg0553, DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
                 else
                 {
                     Utf8 displayName;
@@ -2465,12 +2470,18 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     if (displayName.empty() && typeRef)
                         displayName = typeRef->name;
                     if (!displayName.empty())
+                    {
                         diag = new Diagnostic{node, node->token, format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                        if (typeRef && (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::TypeSet || typeRef->kind == TypeInfoKind::Interface))
+                        {
+                            auto note = new Diagnostic{identifierRef->startScope->owner, identifierRef->startScope->owner->token, format(Msg0018, displayName.c_str()), DiagnosticLevel::Note};
+                            notes.push_back(note);
+                        }
+                    }
                 }
             }
 
             VectorNative<OneTryMatch*> v;
-            vector<const Diagnostic*>  notes;
             symbolErrorRemarks(context, v, node, diag);
             symbolErrorNotes(context, v, node, diag, notes);
             symbolNotFoundHint(context, node, scopeHierarchy, notes);

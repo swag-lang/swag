@@ -52,7 +52,7 @@ TODO
 -------------------------------------
 #[Swag.global] var x: s32 pas visible en debug
 -------------------------------------
-identifier not found in tuple, afficher le tuple en question dans une note
+byteCodeDebugInline marche pas du tout
 -------------------------------------
 range dynamic order
 -------------------------------------

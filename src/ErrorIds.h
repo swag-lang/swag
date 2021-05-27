@@ -502,6 +502,7 @@
 #define Msg0550 "module '%s', cannot resolve %s"
 #define Msg0551 "here is the declaration"
 #define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
+#define Msg0553 "here is the definition of the tuple"
 #define Msg0554 "fatal error: some problems have been found in compiler runtime !!!"
 #define Msg0556 "module '%s' cannot be found in that workspace"
 #define Msg0557 "dependency module '%s' cannot be found in that workspace"
