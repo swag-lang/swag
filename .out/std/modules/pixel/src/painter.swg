@@ -148,20 +148,25 @@ impl Painter
     // Set the paint position
     func translateTransform(using self, x, y: f32)
     {
-        transform.m31 += x
-        transform.m32 += y
+        tr := Transform2.createTranslation(x, y)
+        transform.multiply(tr)
         setTransform(transform)
     }
 
     // Set the paint rotation, in degrees
     func rotateTransform(using self, angle: f32)
     {
+        rad := Math.toRadians(angle)
+        tr := Transform2.createRotation(rad, 0, 0)
+        transform.multiply(tr)
         setTransform(transform)
     }
 
     // Set the paint scale
     func scaleTransform(using self, x, y: f32)
     {
+        tr := Transform2.createScale(x, y, 0, 0)
+        transform.multiply(tr)
         setTransform(transform)
     }
 
