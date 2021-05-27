@@ -23,7 +23,7 @@ struct Command
     {
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
-        transform:      struct{tr: Matrix3x3;}
+        transform:      struct{tr: Transform2;}
     }
 }
 
@@ -53,7 +53,7 @@ struct Painter
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High
     drawingBegin:       bool
-    transform:          Matrix3x3
+    transform:          Transform2
 }
 
 impl Painter
@@ -106,9 +106,14 @@ impl Painter
     }
 
     #[Swag.inline]
-    func newCommand(using self, cmd: CommandId)->*Command
+    func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin)
+
+        // Take the previous command if it's the same
+        if replaceLast and commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == cmd
+            return commandBuffer.buffer + commandBuffer.count - 1;
+
         ptr := commandBuffer.emplaceAddress(1)
         ptr.id = cmd
         return ptr
@@ -143,8 +148,8 @@ impl Painter
     // Set the paint position
     func translateTransform(using self, x, y: f32)
     {
-        transform.m[0, 2] += x
-        transform.m[1, 2] += y
+        transform.m31 += x
+        transform.m32 += y
         setTransform(transform)
     }
 
@@ -160,21 +165,19 @@ impl Painter
         setTransform(transform)
     }
 
-    // Set the paint transformation
-    func setTransform(using self, tr: Matrix3x3)
-    {
-        transform = tr
-
-        cmd := newCommand(CommandId.Transform)
-        cmd.params.transform.tr = tr
-    }
-
     // Reset the paint position, rotation, scale
     func resetTransform(using self)
     {
         transform.setIdentity()
+        setTransform(transform)
+    }
 
-        cmd := newCommand(CommandId.Transform)
-        cmd.params.transform.tr = transform
+    // Set the paint transformation
+    func setTransform(using self, tr: Transform2)
+    {
+        transform = tr
+
+        cmd := newCommand(CommandId.Transform, true)
+        cmd.params.transform.tr = tr
     }
 }

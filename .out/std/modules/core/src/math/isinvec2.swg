@@ -1,6 +1,7 @@
 #global namespace Math
 #global public
 
+// Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
 func isVec2InTriangle(pt: Vector2, a, b, c: Vector2)->bool
 {
     ax  := c.x - b.x

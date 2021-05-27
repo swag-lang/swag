@@ -50,6 +50,9 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+#[Swag.offset("x")]
+x, y: s32 merde (marche si on sépare les deux variables)
+-------------------------------------
 range dynamic order
 -------------------------------------
 script, si #main resoud pas, erreur bizarre

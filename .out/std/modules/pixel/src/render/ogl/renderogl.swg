@@ -71,21 +71,21 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    private func buidModelMatrix(using self, tr: Matrix3x3)
+    private func buidModelMatrix(using self, tr: Transform2)
     {
         // Received matrix is in row major order, so transpose it
 
         // x
-        modelMatrix.m[0, 0] = tr.m[0, 0]
-        modelMatrix.m[0, 1] = tr.m[1, 0]
+        modelMatrix.m[0, 0] = tr.m11
+        modelMatrix.m[0, 1] = tr.m12
 
         // y
-        modelMatrix.m[1, 0] = tr.m[0, 1]
-        modelMatrix.m[1, 1] = tr.m[1, 1]
+        modelMatrix.m[1, 0] = tr.m21
+        modelMatrix.m[1, 1] = tr.m22
 
         // translation
-        modelMatrix.m[3, 0] = tr.m[0, 2]
-        modelMatrix.m[3, 1] = tr.m[1, 2]
+        modelMatrix.m[3, 0] = tr.m31
+        modelMatrix.m[3, 1] = tr.m32
     }
 
     public func draw(using self, dc: *Painter)
