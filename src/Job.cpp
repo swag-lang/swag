@@ -186,7 +186,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             kindName    = Msg0128;
             kindArticle = "to ";
             break;
-        case JobContext::ExpansionType::CastNode:
+        case JobContext::ExpansionType::Node:
             kindName    = Msg0134;
             kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)

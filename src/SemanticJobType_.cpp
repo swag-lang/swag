@@ -20,7 +20,17 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 
     if (node->resolvedSymbolName)
     {
-        Diagnostic  diag{node, format(Msg0013, SymTable::getNakedKindName(node->resolvedSymbolName->kind), node->resolvedSymbolName->name.c_str())};
+        Utf8 name = SymTable::getNakedKindName(node->resolvedSymbolName->kind);
+        Utf8 hint;
+
+        // Reference to a static struct member
+        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
+        {
+            name = "struct member";
+            hint = Hnt0003;
+        }
+
+        Diagnostic  diag{node, format(Msg0013, name.c_str(), node->resolvedSymbolName->name.c_str())};
         Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -28,7 +38,8 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
                 note = new Diagnostic{node, Note005, DiagnosticLevel::Note};
 
-        return context->report(diag, note);
+        context->expansionNode.push_back({context->node, JobContext::ExpansionType::Node});
+        return context->report(hint, diag, note);
     }
 
     return true;

@@ -773,6 +773,7 @@
 #define Hnt0000 "this divisor expression is zero"
 #define Hnt0001 "this '@sqrt' is called with a negative value"
 #define Hnt0002 "this value can only be converted to type '%s' with a dynamic call to 'opAffect'"
+#define Hnt0003 "this is a static reference to a struct member"
 #define Hnt0011 "this type is '%s'"
 #define Hnt0012 "this return (%s) should have type '%s'"
 #define Hnt0013 "this should be on another line, or separated with ';'"
