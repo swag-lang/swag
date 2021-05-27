@@ -7,6 +7,6 @@ impl Painter
     {
         cmd := newCommand(CommandId.BindImage, true)
         cmd.params.image.handle = image
-        fillRect(x, y, 100, 100, Argb.Red)
+        fillRect(x, y, 150, 150, Argb.Red)
     }
 }

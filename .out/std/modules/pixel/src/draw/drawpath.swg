@@ -795,11 +795,11 @@ impl Painter
             {
                 v0 := dref pos
                 v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
-                prim := pushTriangle(v0, v1, center, brush.color)
+                prim := pushTriangle(center, v0, v1, brush.color)
                 if paintParams & .Antialiased
                 {
-                    vp := posBuffer.buffer[(i + 2) % posBuffer.count]
-                    v2 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+                    v2 := posBuffer.buffer[(i + 2) % posBuffer.count]
+                    vp := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
                     addEdgeAA(prim, vp, v0)

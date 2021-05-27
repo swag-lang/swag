@@ -59,7 +59,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
         buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeDebugInline      = true;
+        buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
