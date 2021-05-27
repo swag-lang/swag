@@ -47,7 +47,8 @@ func display()
     pen.endCapStyle = .None
     cdc.drawLine(0,0,pt.x,pt.y, pen)*/
 
-    cdc.position(@{50, 50})
+    cdc.resetTransform()
+    cdc.translateTransform(50, 50)
     pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
@@ -77,7 +78,8 @@ func display()
     pen.dashEndCapStyle = .Round
     cdc.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
-    cdc.position(@{50, 250})
+    cdc.resetTransform()
+    cdc.translateTransform(50, 250)
     pen.color = Argb.Blue
     pen.joinStyle = .None
     cdc.drawRect(0, 0, 100, 100, pen)
@@ -94,13 +96,19 @@ func display()
     path.lineTo(@{100, 50})
     path.lineTo(@{200, 50})
     pen.joinStyle = .Miter
-    cdc.position(@{50, 400})
+
+    cdc.resetTransform()
+    cdc.translateTransform(50, 400)
     cdc.drawPath(&path, pen)
     pen.joinStyle = .Bevel
-    cdc.position(@{250, 400})
+
+    cdc.resetTransform()
+    cdc.translateTransform(250, 400)
     cdc.drawPath(&path, pen)
     pen.joinStyle = .Round
-    cdc.position(@{450, 400})
+
+    cdc.resetTransform()
+    cdc.translateTransform(450, 400)
     cdc.drawPath(&path, pen)
 
     pen.color = Argb.Green
@@ -110,19 +118,25 @@ func display()
     path.lineTo(@{0, 50})
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
-    cdc.position(@{50, 500})
+
+    cdc.resetTransform()
+    cdc.translateTransform(50, 500)
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
     path.bezierTo(@{100, 0}, @{50, -50})
-    cdc.position(@{250, 500})
+
+    cdc.resetTransform()
+    cdc.translateTransform(250, 500)
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
     path.lineTo(@{50, 0})
     path.bezierTo(@{100, 50}, @{100, 0}, @{50, 50})
     path.lineTo(@{200, 50})
-    cdc.position(@{400, 500})
+
+    cdc.resetTransform()
+    cdc.translateTransform(400, 500)
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
@@ -130,30 +144,39 @@ func display()
     path.arcTo(@{0, 50}, 50, 50, 0, 90)
     path.lineTo(@{100, 50})
     path.arcTo(@{150, 50}, 50, 50, -90, 0)
-    cdc.position(@{50, 600})
+
+    cdc.resetTransform()
+    cdc.translateTransform(50, 600)
     cdc.drawPath(&path, pen)
 
-    cdc.position(@{250, 600})
+    cdc.resetTransform()
+    cdc.translateTransform(250, 600)
     pen.size = 10
     pen.color = Argb.Blue
     pen.dashBeginCapStyle = .None
     pen.dashEndCapStyle = .None
     cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
-    cdc.position(@{400, 600})
+
+    cdc.resetTransform()
+    cdc.translateTransform(400, 600)
     pen.size = 4
     cdc.drawCircle(50, 50, 50, pen)
-    cdc.position(@{500, 600})
+
+    cdc.resetTransform()
+    cdc.translateTransform(500, 600)
     cdc.drawEllipse(50, 50, 25, 50, pen)
 
     var brush: Brush
     brush.color = Argb.Black
-    cdc.position(@{600, 600})
+
+    cdc.resetTransform()
+    cdc.translateTransform(600, 600)
     cdc.fillCircle(50, 50, 50, brush)
 
     cdc.resetTransform()
-    cdc.position(@{650, 50})
-    cdc.rotation(-45)
-    cdc.scale(@{0.5, 0.5})
+    cdc.translateTransform(650, 50)
+    cdc.rotateTransform(-45)
+    cdc.scaleTransform(0.5, 0.5)
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)

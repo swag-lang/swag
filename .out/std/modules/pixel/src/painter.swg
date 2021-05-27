@@ -13,7 +13,6 @@ enum CommandId
 {
     Clear
     Transform
-    ResetTransform
     DrawTriangles
 }
 
@@ -24,7 +23,7 @@ struct Command
     {
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
-        transform:      struct{pos: Vector2; angle: f32; scale: Vector2;}
+        transform:      struct{tr: Matrix3x3;}
     }
 }
 
@@ -54,9 +53,7 @@ struct Painter
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = High
     drawingBegin:       bool
-    curTransformPos:    Vector2
-    curTransformAngle:  f32
-    curTransformScale:  Vector2 = @{1, 1}
+    transform:          Matrix3x3
 }
 
 impl Painter
@@ -123,9 +120,7 @@ impl Painter
         Debug.assert(drawingBegin == false)
         drawingBegin = true
         paintParams = .Default
-        curTransformPos = Vector2.Zero
-        curTransformAngle = 0
-        curTransformScale = @{1, 1}
+        transform.setIdentity()
         commandBuffer.clear()
         vertexBuffer.clear()
     }
@@ -146,39 +141,40 @@ impl Painter
     }
 
     // Set the paint position
-    func position(using self, pos: Vector2)
+    func translateTransform(using self, x, y: f32)
     {
-        curTransformPos = pos
-        transform(curTransformPos, curTransformAngle, curTransformScale)
+        transform.m[0, 2] += x
+        transform.m[1, 2] += y
+        setTransform(transform)
     }
 
     // Set the paint rotation, in degrees
-    func rotation(using self, angle: f32)
+    func rotateTransform(using self, angle: f32)
     {
-        curTransformAngle = angle
-        transform(curTransformPos, curTransformAngle, curTransformScale)
+        setTransform(transform)
     }
 
     // Set the paint scale
-    func scale(using self, factor: Vector2)
+    func scaleTransform(using self, x, y: f32)
     {
-        curTransformScale = factor
-        transform(curTransformPos, curTransformAngle, curTransformScale)
+        setTransform(transform)
     }
 
     // Set the paint transformation
-    func transform(using self, pos: Vector2, angle: f32, scale: Vector2)
+    func setTransform(using self, tr: Matrix3x3)
     {
+        transform = tr
+
         cmd := newCommand(CommandId.Transform)
-        params := &cmd.params.transform
-        params.pos = pos
-        params.angle = angle
-        params.scale = scale
+        cmd.params.transform.tr = tr
     }
 
     // Reset the paint position, rotation, scale
     func resetTransform(using self)
     {
-        cmd := newCommand(CommandId.ResetTransform)
+        transform.setIdentity()
+
+        cmd := newCommand(CommandId.Transform)
+        cmd.params.transform.tr = transform
     }
 }

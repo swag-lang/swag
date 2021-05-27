@@ -71,18 +71,21 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    private func buidModelMatrix(using self, pos: Vector2, rot: f32, scale: Vector2)
+    private func buidModelMatrix(using self, tr: Matrix3x3)
     {
-        modelMatrix.setIdentity()
+        // Received matrix is in row major order, so transpose it
 
-        c := Math.cos(rot)
-        s := Math.sin(rot)
-        modelMatrix.m[0, 0] = c * scale.x
-        modelMatrix.m[0, 1] = -s * scale.x
-        modelMatrix.m[1, 0] = s * scale.y
-        modelMatrix.m[1, 1] = c * scale.y
-        modelMatrix.m[3, 0] = pos.x
-        modelMatrix.m[3, 1] = pos.y
+        // x
+        modelMatrix.m[0, 0] = tr.m[0, 0]
+        modelMatrix.m[0, 1] = tr.m[1, 0]
+
+        // y
+        modelMatrix.m[1, 0] = tr.m[0, 1]
+        modelMatrix.m[1, 1] = tr.m[1, 1]
+
+        // translation
+        modelMatrix.m[3, 0] = tr.m[0, 2]
+        modelMatrix.m[3, 1] = tr.m[1, 2]
     }
 
     public func draw(using self, dc: *Painter)
@@ -122,13 +125,9 @@ impl RenderOgl
                 glClearColor(r, g, b, 0)
                 glClear(params.flags)
 
-            case ResetTransform:
-                modelMatrix.setIdentity()
-                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
-
             case Transform:
                 params := &cmd.params.transform
-                buidModelMatrix(params.pos, params.angle, params.scale)
+                buidModelMatrix(params.tr)
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case DrawTriangles:
