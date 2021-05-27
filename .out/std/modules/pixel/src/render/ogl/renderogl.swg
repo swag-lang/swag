@@ -125,6 +125,7 @@ impl RenderOgl
     func resetTransform(using self)
     {
         worldTransform.setIdentity()
+        modelMatrix.setIdentity()
     }
 
     func draw(using self, dc: *Painter)
@@ -146,9 +147,7 @@ impl RenderOgl
 
         // Draw matrix
         var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
-        modelMatrix.setIdentity()
-        x := Transform2{1, 0, 0, 1, 0, 0}
-        buidModelMatrix(x)
+        buidModelMatrix(Transform2.Identity)
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         // State

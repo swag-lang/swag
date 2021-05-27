@@ -549,6 +549,22 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
         {
             CONCAT_FIXED_STR(bufferSwg, ": ");
             emitType(node->typeInfo, indent);
+
+            // Type with parameters
+            if (node->type->kind == AstNodeKind::TypeExpression)
+            {
+                auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
+                {
+                    auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+                    if (typeId->callParameters)
+                    {
+                        bufferSwg.addChar('{');
+                        SWAG_CHECK(Ast::output(outputContext, bufferSwg, typeId->callParameters));
+                        bufferSwg.addChar('}');
+                    }
+                }
+            }
         }
     }
     else
