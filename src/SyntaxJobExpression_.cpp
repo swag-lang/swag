@@ -1214,7 +1214,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     if (leftNode->kind == AstNodeKind::MultiIdentifier)
     {
         auto parentNode = parent;
-        if (acceptDeref)
+        if (acceptDeref || parent->kind == AstNodeKind::AttrUse)
         {
             parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             if (result)
