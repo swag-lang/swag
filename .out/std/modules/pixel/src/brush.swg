@@ -3,7 +3,7 @@ using Core.Drawing
 
 struct Brush
 {
-    color:      Color
+    color:      Color = Argb.White
     texture:    Texture
     wrapMode:   WrapMode = Clamp
 }

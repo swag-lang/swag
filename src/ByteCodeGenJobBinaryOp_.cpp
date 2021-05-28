@@ -643,7 +643,8 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     SWAG_ASSERT(symbolOverload);
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
-    if (symbolOverload->node->mustInline())
+    // Note: Do not inline a call when evaluation compile time affectation (AST_SEM_EXEC_RET_STACK)
+    if (symbolOverload->node->mustInline() && !(node->semFlags & AST_SEM_EXEC_RET_STACK))
     {
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
         // The expansion will be done at the lowest level possible

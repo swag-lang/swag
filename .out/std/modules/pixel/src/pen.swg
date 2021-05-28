@@ -45,7 +45,7 @@ enum DashStyle
 struct Pen
 {
     size:       f32 = 1
-    color:      Color
+    color:      Color = Argb.White
 
     pattern:            Array'f32
     dashBeginCapStyle:  DashCapStyle = None
