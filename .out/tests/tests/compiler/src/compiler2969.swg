@@ -5,7 +5,7 @@ struct Color
 
 impl Color
 {
-    #[Swag.constexpr, Swag.inline]
+    #[Swag.constexpr]
     func opAffect(using self, cl: u32)
     {
         argb = cl
@@ -17,8 +17,10 @@ struct VV
     C: Color = 12345678
 }
 
+//#[Swag.printbc]
 #test
 {
     var v: VV
-    @assert(v.C.argb == 12345678)
+    v.C = 666
+    @assert(v.C.argb == 666)
 }

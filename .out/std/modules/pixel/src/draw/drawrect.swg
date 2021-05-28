@@ -15,6 +15,21 @@ impl Painter
         sharedLinePath.close()
     }
 
+    private func setRoundRectPath(using self, left, top, width, height: f32, radiusX, radiusY: f32)
+    {
+        right := left + width
+        bottom := top + height
+        sharedLinePath.start(left, top + radiusY)
+        sharedLinePath.arcTo(left + radiusX, top + radiusY, radiusX, radiusY, -90, 0)
+        sharedLinePath.lineTo(right - radiusX, top)
+        sharedLinePath.arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0, 90)
+        sharedLinePath.lineTo(right, bottom - radiusY)
+        sharedLinePath.arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90, 180)
+        sharedLinePath.lineTo(left + radiusX, bottom)
+        sharedLinePath.arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180, 270)
+        sharedLinePath.close()
+    }
+
     // Draw an empty rectangle
     func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32)
     {
@@ -44,21 +59,6 @@ impl Painter
     {
         setRectPath(left, top, width, height)
         fillPath(&sharedLinePath, brush)
-    }
-
-    private func setRoundRectPath(using self, left, top, width, height: f32, radiusX, radiusY: f32)
-    {
-        right := left + width
-        bottom := top + height
-        sharedLinePath.start(left, top + radiusY)
-        sharedLinePath.arcTo(left + radiusX, top + radiusY, radiusX, radiusY, -90, 0)
-        sharedLinePath.lineTo(right - radiusX, top)
-        sharedLinePath.arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0, 90)
-        sharedLinePath.lineTo(right, bottom - radiusY)
-        sharedLinePath.arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90, 180)
-        sharedLinePath.lineTo(left + radiusX, bottom)
-        sharedLinePath.arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180, 270)
-        sharedLinePath.close()
     }
 
     // Draw an empty round rectangle
