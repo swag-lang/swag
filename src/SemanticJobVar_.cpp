@@ -353,7 +353,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         node->extension->resolvedUserOpSymbolOverload &&
         node->assignment &&
         node->assignment->flags & AST_VALUE_COMPUTED &&
-        node->resolvedSymbolOverload->flags & OVERLOAD_VAR_GLOBAL)
+        node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT))
     {
         auto overload = node->resolvedSymbolOverload;
 
@@ -362,7 +362,9 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         node->assignment->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_CONST_EXPR;
         node->semFlags |= AST_SEM_EXEC_RET_STACK;
-        node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;
+
+        node->byteCodeFct       = ByteCodeGenJob::emitLocalVarDecl;
+        overload->storageOffset = 0;
 
         SWAG_CHECK(evaluateConstExpression(context, node));
         if (context->result == ContextResult::Pending)
@@ -374,7 +376,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         auto module = node->sourceFile->module;
 
         DataSegment* seg = nullptr;
-        if (node->kind == AstNodeKind::ConstDecl)
+        if (node->kind == AstNodeKind::ConstDecl || (overload->flags & OVERLOAD_VAR_STRUCT))
             seg = &module->constantSegment;
         else if (node->attributeFlags & ATTRIBUTE_TLS)
             seg = &module->tlsSegment;
@@ -743,8 +745,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (context->result == ContextResult::Pending)
                     return true;
 
+                // :opAffectConstExpr
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
                 {
+                    symbolFlags |= OVERLOAD_INCOMPLETE;
                     SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
                     if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {

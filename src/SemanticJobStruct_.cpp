@@ -682,6 +682,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                     SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.reg.offset, varDecl, &sourceFile->module->constantSegment));
                 }
             }
+
+            // :opAffectConstExpr
+            // Collect has already been simulated with an opAffect
+            else if (varDecl->assignment)
+            {
+                SWAG_ASSERT(varDecl->semFlags & AST_SEM_EXEC_RET_STACK);
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            }
         }
 
         // Var is an array of structs
