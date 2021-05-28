@@ -232,6 +232,7 @@ struct SemanticJob : public Job
     static void setVarDeclResolve(AstVarDecl* varNode);
     static bool resolveVarDeclAfterType(SemanticContext* context);
     static bool resolveVarDeclBefore(SemanticContext* context);
+    static bool resolveVarDeclAfter(SemanticContext* context);
     static bool resolveVarDeclAfterAssign(SemanticContext* context);
     static bool convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
     static bool resolveVarDecl(SemanticContext* context);

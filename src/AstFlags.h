@@ -88,6 +88,7 @@ static const uint32_t AST_DONE_TRY_2                     = 0x00100000;
 static const uint32_t AST_DONE_STACK_TRACE               = 0x00200000;
 static const uint32_t AST_DONE_STACK_TRACE1              = 0x00400000;
 static const uint32_t AST_DONE_STRUCT_CONVERT            = 0x00800000;
+static const uint32_t AST_DONE_NEG_EATEN                 = 0x01000000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS     = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS  = 0x00000002;
@@ -110,4 +111,4 @@ static const uint32_t AST_SEM_AUTO_CODE_PARAM        = 0x00020000;
 static const uint32_t AST_SEM_ONCE                   = 0x00040000;
 static const uint32_t AST_SEM_USER_CAST              = 0x00080000;
 static const uint32_t AST_SEM_TUPLE_CONVERT          = 0x00100000;
-static const uint32_t AST_DONE_NEG_EATEN             = 0x00200000;
+static const uint32_t AST_SEM_EXEC_RET_STACK         = 0x00200000;

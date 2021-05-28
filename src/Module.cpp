@@ -341,6 +341,12 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     if (node->ownerScope)
     {
         runContext.decSP(node->ownerScope->startStackSize);
+
+        // :opAffectConstExpr
+        // Reserve room on the stack to store the result
+        if (node->semFlags & AST_SEM_EXEC_RET_STACK)
+            runContext.decSP(node->typeInfo->sizeOf);
+
         runContext.bp = runContext.sp;
     }
 
@@ -352,8 +358,19 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     if (!result)
         return false;
 
+    // :opAffectConstExpr
+    // Result is on the stack. Store it in the compiler segment.
+    if (node->semFlags & AST_SEM_EXEC_RET_STACK)
+    {
+        auto offsetStorage             = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
+        node->computedValue.reg.offset = offsetStorage;
+        auto addrDst                   = sourceFile->module->compilerSegment.address(offsetStorage);
+        auto addrSrc                   = runContext.bp;
+        memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+    }
+
     // Transform result to a literal value
-    if (node->resultRegisterRC.size())
+    else if (node->resultRegisterRC.size())
     {
         node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
         if (node->typeInfo->isNative(NativeTypeKind::String))

@@ -276,6 +276,7 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
     varNode->allocateExtension();
     varNode->extension->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+    varNode->extension->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
@@ -338,6 +339,73 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->assignment->allocateExtension();
             varDecl->assignment->extension->alternativeScopes.push_front(typeSet->scope);
         }
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
+{
+    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+
+    // :opAffectConstExpr
+    if (node->extension &&
+        node->extension->resolvedUserOpSymbolOverload &&
+        node->assignment &&
+        node->assignment->flags & AST_VALUE_COMPUTED &&
+        node->resolvedSymbolOverload->flags & OVERLOAD_VAR_GLOBAL)
+    {
+        auto overload = node->resolvedSymbolOverload;
+
+        node->flags &= ~AST_NO_BYTECODE;
+        node->flags &= ~AST_VALUE_COMPUTED;
+        node->assignment->flags &= ~AST_NO_BYTECODE;
+        node->flags |= AST_CONST_EXPR;
+        node->semFlags |= AST_SEM_EXEC_RET_STACK;
+        node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;
+
+        SWAG_CHECK(evaluateConstExpression(context, node));
+        if (context->result == ContextResult::Pending)
+            return true;
+
+        node->flags |= AST_NO_BYTECODE;
+        node->assignment->flags |= AST_NO_BYTECODE;
+
+        auto module = node->sourceFile->module;
+
+        DataSegment* seg = nullptr;
+        if (node->kind == AstNodeKind::ConstDecl)
+            seg = &module->constantSegment;
+        else if (node->attributeFlags & ATTRIBUTE_TLS)
+            seg = &module->tlsSegment;
+        else if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            seg = &module->compilerSegment;
+        else
+            seg = &module->mutableSegment;
+
+        if (seg == &module->compilerSegment)
+        {
+            overload->storageOffset = node->computedValue.reg.offset;
+        }
+        else
+        {
+            overload->storageOffset = seg->reserve(node->typeInfo->sizeOf);
+            auto addr               = seg->address(node->resolvedSymbolOverload->storageOffset);
+            auto addrSrc            = module->compilerSegment.address(node->computedValue.reg.offset);
+            memcpy(addr, addrSrc, node->typeInfo->sizeOf);
+        }
+
+        node->computedValue.reg.offset = node->resolvedSymbolOverload->storageOffset;
+
+        // Will remove the incomplete flag, and finish the resolve
+        node->ownerScope->symTable.addSymbolTypeInfo(context,
+                                                     node,
+                                                     node->typeInfo,
+                                                     overload->symbol->kind,
+                                                     nullptr,
+                                                     overload->flags & ~OVERLOAD_INCOMPLETE,
+                                                     nullptr,
+                                                     overload->storageOffset);
     }
 
     return true;
@@ -671,21 +739,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return context->report({node, msg});
                 }
 
-                if (symbolFlags & OVERLOAD_VAR_STRUCT)
-                {
-                    PushErrHint errh(format(Hnt0002, leftConcreteType->getDisplayName().c_str()));
-                    return context->report({node->assignment, Msg0906});
-                }
-
-                if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-                {
-                    PushErrHint errh(format(Hnt0002, leftConcreteType->getDisplayName().c_str()));
-                    return context->report({node->assignment, Msg0906});
-                }
-
                 SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment, false));
                 if (context->result == ContextResult::Pending)
                     return true;
+
+                if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
+                {
+                    SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
+                    if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    {
+                        PushErrHint errh(format(Hnt0002, leftConcreteType->getDisplayName().c_str()));
+                        return context->report({node->assignment, Msg0906});
+                    }
+                }
             }
         }
 
@@ -815,8 +881,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format(Msg0311, node->typeInfo->getDisplayName().c_str())}));
 
-            // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
-            if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
+            if (node->extension && node->extension->resolvedUserOpSymbolOverload)
+            {
+                storageOffset = 0;
+                symbolFlags |= OVERLOAD_INCOMPLETE;
+            }
+            else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
                     storageOffset = node->assignment->computedValue.reg.offset;
@@ -845,7 +915,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->flags |= AST_R_VALUE;
 
-        if (node->attributeFlags & ATTRIBUTE_TLS)
+        if (node->extension && node->extension->resolvedUserOpSymbolOverload)
+        {
+            storageOffset = 0;
+            symbolFlags |= OVERLOAD_INCOMPLETE;
+        }
+        else if (node->attributeFlags & ATTRIBUTE_TLS)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->tlsSegment));
         }
@@ -891,7 +966,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->attributeFlags & ATTRIBUTE_GLOBAL)
             {
-                if(node->ownerFct)
+                if (node->ownerFct)
                     node->ownerFct->localGlobalVars.push_back(context->node);
             }
             else

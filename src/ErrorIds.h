@@ -768,7 +768,7 @@
 #define Msg0903 ", found token '%s' "
 #define Msg0904 "; did you miss 'var' or 'const' to declare a global variable ?"
 #define Msg0905 "unexpected end of line found in string literal"
-#define Msg0906 "initialization value cannot be evaluated at compile time"
+#define Msg0906 "initialization value cannot be evaluated at compile time because 'opAffect' is not 'Swag.constexpr'"
 #define Msg0908 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
 
 #define Hnt0000 "this divisor expression is zero"
