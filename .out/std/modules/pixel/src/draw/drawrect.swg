@@ -75,4 +75,11 @@ impl Painter
         setRoundRectPath(left, top, width, height, radiusX, radiusY)
         drawPath(&sharedLinePath, pen)
     }
+
+    // Draw a filled round rectangle
+    func fillRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, brush: Brush)
+    {
+        setRoundRectPath(left, top, width, height, radiusX, radiusY)
+        fillPath(&sharedLinePath, brush)
+    }
 }

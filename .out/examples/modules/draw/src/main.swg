@@ -218,18 +218,23 @@ func display()
 
     //////////////////////////////////////
     #[Swag.global]
-    var imageHandle: Texture
-
-    if imageHandle.handle == null
+    var image0, image1: Texture
+    if image0.handle == null
     {
-        img := assume Image.load(imagePath("basn0g01.png"))
-        imageHandle = renderer.addImage(img)
+        img0 := assume Image.load(imagePath("basn0g01.png"))
+        image0 = renderer.addImage(img0)
+        img1 := assume Image.load(imagePath("rgba.bmp"))
+        image1 = renderer.addImage(img1)
     }
 
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.drawImage(imageHandle, 750, 50, 200, 250)
+    cdc.drawImage(image0, 750, 50, 100, 150)
+    var brush1: Brush
+    brush1.color = Argb.White
+    brush1.texture = image1
+    cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
     cdc.end()
 
     renderer.resetTransform()
