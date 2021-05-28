@@ -218,7 +218,7 @@ func display()
 
     //////////////////////////////////////
     #[Swag.global]
-    var imageHandle: TextureHandle
+    var imageHandle: const *Texture
 
     if imageHandle == null
     {
@@ -229,7 +229,7 @@ func display()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.drawImage(imageHandle, 750, 50, 200, 250)
+    cdc.drawImage(dref imageHandle, 750, 50, 200, 250)
     cdc.end()
 
     renderer.resetTransform()
