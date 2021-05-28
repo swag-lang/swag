@@ -24,21 +24,25 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     }
 
     // Request to generate the corresponding bytecode
+    context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
+    ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+    if (context->result == ContextResult::Pending)
     {
-        ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-        if (context->result == ContextResult::Pending)
-            return true;
+        context->expansionNode.pop_back();
+        return true;
     }
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     auto module = sourceFile->module;
     if (!module->WaitForDependenciesDone(context->job))
     {
+        context->expansionNode.pop_back();
         context->result = ContextResult::Pending;
         return true;
     }
 
     SWAG_CHECK(module->executeNode(sourceFile, node, context));
+    context->expansionNode.pop_back();
     return true;
 }
 
