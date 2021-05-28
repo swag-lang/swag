@@ -778,23 +778,35 @@ impl Painter
         return result
     }
 
-    private func computeUVs(using self, prim: uint, v0, v1, v2: Vector2, path: *LinePath)
+    private func computeUV(using self, prim: uint, v0: Vector2, bvMin, bvMax: Vector2, brush: Brush)
     {
-        using path
-        w := bvMax.x - bvMin.x
-        h := bvMax.y - bvMin.y
         primt := vertexBuffer.buffer + prim
 
-        primt.uv.x = (v0.x - bvMin.x) / w
-        primt.uv.y = 1 - (v0.y - bvMin.y) / h
-        primt += 1
+        #[Swag.complete]
+        switch brush.wrapMode
+        {
+        case Clamp:
+            w := bvMax.x - bvMin.x
+            h := bvMax.y - bvMin.y
+            primt.uv.x = (v0.x - bvMin.x) / w
+            primt.uv.y = 1 - (v0.y - bvMin.y) / h
 
-        primt.uv.x = (v1.x - bvMin.x) / w
-        primt.uv.y = 1 - (v1.y - bvMin.y) / h
-        primt += 1
+        case Tile:
+            primt.uv.x = (v0.x - bvMin.x) / brush.texture.width
+            primt.uv.y = 1 - (v0.y - bvMin.y) / brush.texture.height
 
-        primt.uv.x = (v2.x - bvMin.x) / w
-        primt.uv.y = 1 - (v2.y - bvMin.y) / h
+        case TileFlipX:
+            primt.uv.x = 1 - (v0.x - bvMin.x) / brush.texture.width
+            primt.uv.y = 1 - (v0.y - bvMin.y) / brush.texture.height
+
+        case TileFlipY:
+            primt.uv.x = (v0.x - bvMin.x) / brush.texture.width
+            primt.uv.y = (v0.y - bvMin.y) / brush.texture.height
+
+        case TileFlipXY:
+            primt.uv.x = 1 - (v0.x - bvMin.x) / brush.texture.width
+            primt.uv.y = (v0.y - bvMin.y) / brush.texture.height
+        }
     }
 
     // Draw the line path with the given 'pen'
@@ -822,7 +834,9 @@ impl Painter
                 v0 := dref pos
                 v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
                 prim := pushTriangle(center, v0, v1, brush.color)
-                computeUVs(prim, center, v0, v1, path)
+                computeUV(prim, center, path.bvMin, path.bvMax, brush)
+                computeUV(prim + 1, v0, path.bvMin, path.bvMax, brush)
+                computeUV(prim + 2, v1, path.bvMin, path.bvMax, brush)
 
                 if paintParams & .Antialiased
                 {
@@ -849,7 +863,9 @@ impl Painter
                 v1 := tpos[pidx[1]]
                 v2 := tpos[pidx[2]]
                 prim := pushTriangle(v0, v1, v2, brush.color)
-                computeUVs(prim, v0, v1, v2, path)
+                computeUV(prim, v0, path.bvMin, path.bvMax, brush)
+                computeUV(prim + 1, v1, path.bvMin, path.bvMax, brush)
+                computeUV(prim + 2, v2, path.bvMin, path.bvMax, brush)
                 pidx += 3
             }
 

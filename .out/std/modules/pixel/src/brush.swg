@@ -5,4 +5,5 @@ struct Brush
 {
     color:      Color
     texture:    Texture
+    wrapMode:   WrapMode = Clamp
 }

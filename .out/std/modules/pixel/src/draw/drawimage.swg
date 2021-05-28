@@ -7,6 +7,7 @@ impl Painter
     {
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.texture = texture
+        sharedSolidBrush.wrapMode = .Clamp
         fillRect(left, top, width, height, sharedSolidBrush)
     }
 }

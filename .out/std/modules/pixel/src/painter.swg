@@ -26,6 +26,15 @@ struct Texture
     width, height: s32
 }
 
+enum WrapMode
+{
+    Clamp
+    Tile
+    TileFlipX
+    TileFlipY
+    TileFlipXY
+}
+
 struct Command
 {
     id: CommandId = ?
@@ -70,7 +79,7 @@ struct Painter
 
 impl Painter
 {
-    func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
+    protected func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
     {
         var cmd: *Command
         if commandBuffer.count
@@ -100,7 +109,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    func addEdgeAA(using self, tri: uint, start, end: Vector2)
+    protected func addEdgeAA(using self, tri: uint, start, end: Vector2)
     {
         loop i: 3
         {
@@ -118,7 +127,7 @@ impl Painter
     }
 
     #[Swag.inline]
-    func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
+    protected func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin)
 

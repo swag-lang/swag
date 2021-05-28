@@ -222,7 +222,7 @@ func display()
 
     if imageHandle.handle == null
     {
-        img := assume Image.load(imagePath("tbrn2c08.png"))
+        img := assume Image.load(imagePath("basn0g01.png"))
         imageHandle = renderer.addImage(img)
     }
 
