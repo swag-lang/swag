@@ -778,6 +778,21 @@ impl Painter
         return result
     }
 
+    private func computeUVs(using self, v0, v1, v2: Vector2, prim: uint, path: *LinePath)
+    {
+        using path
+        w := bvMax.x - bvMin.x
+        primt := vertexBuffer.buffer + prim
+        primt.uv.x = (v0.x - bvMin.x) / w
+        primt.uv.y = 1 - (v0.y - bvMin.y) / w
+        primt += 1
+        primt.uv.x = (v1.x - bvMin.x) / w
+        primt.uv.y = 1 - (v1.y - bvMin.y) / w
+        primt += 1
+        primt.uv.x = (v2.x - bvMin.x) / w
+        primt.uv.y = 1 - (v2.y - bvMin.y) / w
+    }
+
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
@@ -796,6 +811,8 @@ impl Painter
                 v0 := dref pos
                 v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
                 prim := pushTriangle(center, v0, v1, brush.color)
+                computeUVs(center, v0, v1, prim, path)
+
                 if paintParams & .Antialiased
                 {
                     v2 := posBuffer.buffer[(i + 2) % posBuffer.count]
@@ -821,6 +838,7 @@ impl Painter
                 v1 := tpos[pidx[1]]
                 v2 := tpos[pidx[2]]
                 prim := pushTriangle(v0, v1, v2, brush.color)
+                computeUVs(v0, v1, v2, prim, path)
                 pidx += 3
             }
 

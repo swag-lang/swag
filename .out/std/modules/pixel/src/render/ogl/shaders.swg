@@ -82,7 +82,7 @@ const PixelShaderAA = @"
     in vec4     vaa5;
     in float    vaanum;
 
-    uniform sampler2D texture;
+    uniform sampler2D inTexture;
 
     out vec4    color;
 
@@ -134,7 +134,7 @@ const PixelShaderAA = @"
 
     void main()
     {
-        color = vcolor;
+        color = vcolor * texture(inTexture, vuv);
         color.w *= computeAlphaEdgesAA();
     }
 "@

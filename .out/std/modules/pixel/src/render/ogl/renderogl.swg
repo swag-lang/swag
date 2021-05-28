@@ -10,6 +10,7 @@ public struct RenderOgl
     width, height:      s32
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
+    whiteTexture:       GLuint
 }
 
 impl RenderOgl
@@ -46,6 +47,15 @@ impl RenderOgl
         glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+
+        // Generate white texture
+        const whiteDatas = @[0xFFFFFFFF]
+        glGenTextures(1, &whiteTexture)
+        glBindTexture(GL_TEXTURE_2D, whiteTexture)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, @dataof(whiteDatas))
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
     }
 
     func resize(using self, width, height: s32)
@@ -207,7 +217,10 @@ impl RenderOgl
 
             case BindImage:
                 params := &cmd.params.image
-                glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) params.handle)
+                if !params.handle
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) whiteTexture)
+                else
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) params.handle)
             }
         }
 

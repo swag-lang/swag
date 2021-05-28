@@ -50,8 +50,6 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
-byteCodeDebugInline marche pas du tout
--------------------------------------
 range dynamic order
 -------------------------------------
 script, si #main resoud pas, erreur bizarre
