@@ -34,8 +34,16 @@ impl Painter
     func fillRect(using self, left, top, width, height: f32, color: Color)
     {
         sharedSolidBrush.color = color
+        sharedSolidBrush.texture = null
         setRectPath(left, top, width, height)
         fillPath(&sharedLinePath, sharedSolidBrush)
+    }
+
+    // Draw a filled rectangle
+    func fillRect(using self, left, top, width, height: f32, brush: Brush)
+    {
+        setRectPath(left, top, width, height)
+        fillPath(&sharedLinePath, brush)
     }
 
     private func setRoundRectPath(using self, left, top, width, height: f32, radiusX, radiusY: f32)

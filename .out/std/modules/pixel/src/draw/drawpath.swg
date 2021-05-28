@@ -805,6 +805,13 @@ impl Painter
 
         using path
 
+        // Setup texture
+        if brush.texture
+        {
+            cmd := newCommand(CommandId.BindImage, true)
+            cmd.params.image.handle = brush.texture.handle
+        }
+
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
         if isConvex
@@ -876,6 +883,13 @@ impl Painter
                     firstPrim += 3
                 }
             }
+        }
+
+        // Setup texture
+        if brush.texture
+        {
+            cmd := newCommand(CommandId.BindImage, true)
+            cmd.params.image.handle = null
         }
     }
 }

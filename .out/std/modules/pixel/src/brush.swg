@@ -3,5 +3,6 @@ using Core.Drawing
 
 struct Brush
 {
-    color: Color
+    color:      Color
+    texture:    const *Texture
 }
