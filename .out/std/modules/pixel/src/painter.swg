@@ -19,6 +19,13 @@ enum CommandId
     BindImage
 }
 
+struct Texture
+{
+    handle:             TextureHandle
+    pf:                 PixelFormat = ?
+    width, height: s32
+}
+
 struct Command
 {
     id: CommandId = ?
@@ -27,7 +34,7 @@ struct Command
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
         transform:      struct{tr: Transform2;}
-        image:          struct{handle: ImageHandle;}
+        image:          struct{handle: TextureHandle;}
     }
 }
 

@@ -1,7 +1,7 @@
 #global public
 using Core, Ogl, Core.Math
 
-alias ImageHandle = *void
+alias TextureHandle = *void
 
 public struct RenderOgl
 {
@@ -108,7 +108,7 @@ impl RenderOgl
     }
 
     // Register an image for rendering
-    func addImage(using self, image: Image)->ImageHandle
+    func addImage(using self, image: Image)->TextureHandle
     {
         var fmt: GLenum = 0
         internal := GL_RGB
@@ -129,7 +129,7 @@ impl RenderOgl
         glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) image.width, cast(s32) image.height, 0, fmt, GL_UNSIGNED_BYTE, image.pixels)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        return cast(ImageHandle) cast(uint) textureID
+        return cast(TextureHandle) cast(uint) textureID
     }
 
 
