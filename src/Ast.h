@@ -60,6 +60,7 @@ namespace Ast
             // Some flags are inherited from the parent, whatever...
             node->flags |= parent->flags & AST_NO_BACKEND;
             node->flags |= parent->flags & AST_RUN_BLOCK;
+            node->flags |= parent->flags & AST_IN_MIXIN;
 
             parent->lock();
             node->childParentIdx = (uint32_t) parent->childs.size();

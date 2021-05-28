@@ -718,6 +718,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     auto child  = dependentVar->childs[i];
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
+                    idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef->token);
                     Ast::addChildFront(idRef, idNode);
                     context->job->nodes.push_back(idNode);
@@ -728,6 +729,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             else
             {
                 auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
+                idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
                 idNode->inheritTokenLocation(identifier->token);
 
                 // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
@@ -2257,6 +2259,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;
+    fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
 
     SWAG_ASSERT(match.solvedParameters.size() > 0);
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
@@ -2292,6 +2295,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         {
             auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->token.text, idRef, idRef);
             copyChild->inheritOwners(fctCallParam);
+            copyChild->inheritOrFlag(idRef, AST_IN_MIXIN);
             copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
             copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
             copyChild->typeInfo               = dependentVar->typeInfo;
