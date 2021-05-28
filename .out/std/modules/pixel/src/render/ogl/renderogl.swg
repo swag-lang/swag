@@ -11,7 +11,6 @@ public struct RenderOgl
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
-    textures:           Array'(*Texture)
 }
 
 impl RenderOgl
@@ -109,7 +108,7 @@ impl RenderOgl
     }
 
     // Register an image for rendering
-    func addImage(using self, image: Image)->const *Texture
+    func addImage(using self, image: Image)->Texture
     {
         var fmt: GLenum = 0
         internal := GL_RGB
@@ -131,14 +130,12 @@ impl RenderOgl
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
-        texture := Memory.new'Texture()
-        texture.handle = cast(TextureHandle) cast(uint) textureID
-        texture.width = image.width
-        texture.height = image.height
-        texture.pf = image.pf
-        textures.add(texture)
-
-        return texture
+        var result: retval
+        result.handle = cast(TextureHandle) cast(uint) textureID
+        result.width = image.width
+        result.height = image.height
+        result.pf = image.pf
+        return result
     }
 
 

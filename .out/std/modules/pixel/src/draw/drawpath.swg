@@ -806,7 +806,7 @@ impl Painter
         using path
 
         // Setup texture
-        if brush.texture
+        if brush.texture.handle
         {
             cmd := newCommand(CommandId.BindImage, true)
             cmd.params.image.handle = brush.texture.handle
@@ -886,7 +886,7 @@ impl Painter
         }
 
         // Setup texture
-        if brush.texture
+        if brush.texture.handle
         {
             cmd := newCommand(CommandId.BindImage, true)
             cmd.params.image.handle = null

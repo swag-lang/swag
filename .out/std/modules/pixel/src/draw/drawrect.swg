@@ -34,7 +34,7 @@ impl Painter
     func fillRect(using self, left, top, width, height: f32, color: Color)
     {
         sharedSolidBrush.color = color
-        sharedSolidBrush.texture = null
+        sharedSolidBrush.texture.handle = null
         setRectPath(left, top, width, height)
         fillPath(&sharedLinePath, sharedSolidBrush)
     }

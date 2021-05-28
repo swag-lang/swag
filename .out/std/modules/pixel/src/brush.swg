@@ -4,5 +4,5 @@ using Core.Drawing
 struct Brush
 {
     color:      Color
-    texture:    const *Texture
+    texture:    Texture
 }
