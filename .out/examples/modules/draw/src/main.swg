@@ -270,8 +270,12 @@ func displayPage1()
     {
         if e == .Custom continue
         brush.textureStyle = e
+        brush.wrapMode = .Clamp
         cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
-        cdc.translateTransform(100, 0)
+        brush.wrapMode = .Tile
+        cdc.fillRoundRect(0, 75, 50, 50, 10, 10, brush)
+
+        cdc.translateTransform(75, 0)
     }
 
     cdc.end()
