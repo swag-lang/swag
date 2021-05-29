@@ -231,4 +231,24 @@
         x := Values.A | Values.B
         @assert((x & .A) and (x & .B))
     }
+
+    // You can loop/visit all values of an enum
+    {
+        enum RGB { R; G; B; }
+
+        cpt := 0
+        loop idx: RGB cpt += 1
+        @assert(cpt == 3)
+
+        visit val: RGB
+        {
+            switch val
+            {
+            case R:     break
+            case G:     break
+            case B:     break
+            default:    @assert(false)
+            }
+        }
+    }
 }
