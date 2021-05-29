@@ -77,27 +77,27 @@ func displayPage0()
     pen.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
-    cdc.drawLine(@{0,0},@{0,150}, pen)
+    cdc.drawLine(0, 0, 0, 150, pen)
 
     pen.beginCapStyle = .Square
     pen.endCapStyle = .Square
-    cdc.drawLine(@{100,0},@{150,150}, pen)
+    cdc.drawLine(100, 0, 150, 150, pen)
 
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
-    cdc.drawLine(@{200,0},@{250,150}, pen)
+    cdc.drawLine(200, 0, 250, 150, pen)
 
     pen.beginCapStyle = .ArrowAnchor
     pen.endCapStyle = .ArrowAnchor
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
-    cdc.drawLine(@{300,0},@{350,150}, pen)
+    cdc.drawLine(300, 0, 350, 150, pen)
 
     pen.beginCapStyle = .SquareAnchor
     pen.endCapStyle = .SquareAnchor
     pen.dashBeginCapStyle = .Triangle
     pen.dashEndCapStyle = .Triangle
-    cdc.drawLine(@{400,0},@{450,150}, pen)
+    cdc.drawLine(400, 0, 450, 150, pen)
 
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
@@ -117,9 +117,9 @@ func displayPage0()
 
     pen.color = Argb.Red
     var path: LinePath
-    path.lineTo(@{100, 0})
-    path.lineTo(@{100, 50})
-    path.lineTo(@{200, 50})
+    path.lineTo(100, 0)
+    path.lineTo(100, 50)
+    path.lineTo(200, 50)
     pen.joinStyle = .Miter
 
     cdc.resetTransform()
@@ -138,9 +138,9 @@ func displayPage0()
 
     pen.color = Argb.Green
     path.start(0, 0)
-    path.lineTo(@{100, 0})
-    path.lineTo(@{100, 50})
-    path.lineTo(@{0, 50})
+    path.lineTo(100, 0)
+    path.lineTo(100, 50)
+    path.lineTo(0, 50)
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
 
@@ -149,16 +149,16 @@ func displayPage0()
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
-    path.bezierTo(@{100, 0}, @{50, -50})
+    path.bezierTo(100, 0, 50, -50)
 
     cdc.resetTransform()
     cdc.translateTransform(250, 500)
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
-    path.lineTo(@{50, 0})
-    path.bezierTo(@{100, 50}, @{100, 0}, @{50, 50})
-    path.lineTo(@{200, 50})
+    path.lineTo(50, 0)
+    path.bezierTo(100, 50, 100, 0, 50, 50)
+    path.lineTo(200, 50)
 
     cdc.resetTransform()
     cdc.translateTransform(400, 500)
@@ -166,9 +166,9 @@ func displayPage0()
 
     path.start(0, 0)
     pen.color = Argb.Purple
-    path.arcTo(@{0, 50}, 50, 50, 0, 90)
-    path.lineTo(@{100, 50})
-    path.arcTo(@{150, 50}, 50, 50, -90, 0)
+    path.arcTo(0, 50, 50, 50, 0, 90)
+    path.lineTo(100, 50)
+    path.arcTo(150, 50, 50, 50, -90, 0)
 
     cdc.resetTransform()
     cdc.translateTransform(50, 600)
@@ -264,19 +264,17 @@ func displayPage1()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.resetTransform()
     cdc.translateTransform(50, 50)
 
-    cpt := 0
-    cptLines := 0
+    cpt, cptLines := 0
     visit e: BrushTextureStyle
     {
         if e == .Custom continue
         brush.textureStyle = e
         brush.wrapMode = .Clamp
-        cdc.fillRect(0, 0, 50, 50, brush)
+        cdc.fillRect(0, 0, 48, 48, brush)
         brush.wrapMode = .Tile
-        cdc.fillRect(0, 75, 50, 50, brush)
+        cdc.fillRect(0, 75, 48, 48, brush)
 
         cdc.translateTransform(75, 0)
         cpt += 1
@@ -381,7 +379,6 @@ func messageLoop()
         display()
 
         keyb.update()
-
         if(keyb.isKeyJustPressed(Input.Key.F1))
             g_modeAA = g_modeAA ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F2))
@@ -393,7 +390,6 @@ func messageLoop()
     }
 }
 
-//#[Swag.printbc]
 #main
 {
     try
