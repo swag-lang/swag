@@ -266,16 +266,26 @@ func displayPage1()
     cdc.resetTransform()
     cdc.translateTransform(50, 50)
 
+    cpt := 0
+    cptLines := 0
     visit e: BrushTextureStyle
     {
         if e == .Custom continue
         brush.textureStyle = e
         brush.wrapMode = .Clamp
-        cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+        cdc.fillRect(0, 0, 50, 50, brush)
         brush.wrapMode = .Tile
-        cdc.fillRoundRect(0, 75, 50, 50, 10, 10, brush)
+        cdc.fillRect(0, 75, 50, 50, brush)
 
         cdc.translateTransform(75, 0)
+        cpt += 1
+        if cpt == 12
+        {
+            cptLines += 1
+            cpt = 0
+            cdc.resetTransform()
+            cdc.translateTransform(50, 50 + 150.0 * cptLines)
+        }
     }
 
     cdc.end()

@@ -27,6 +27,380 @@ private const HatchHorizontal: [64] u8 = @[
     0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
+private const HatchHorizontalLight: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchHorizontalNarrow: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchVertical: [64] u8 = @[
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+]
+
+private const HatchVerticalLight: [64] u8 = @[
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+]
+
+private const HatchVerticalNarrow: [64] u8 = @[
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+]
+
+private const HatchSolidDiamond: [64] u8 = @[
+    1, 1, 1, 0, 0, 1, 1, 1,
+    1, 1, 0, 0, 0, 0, 1, 1,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 0, 0, 0, 0, 1, 1,
+    1, 1, 1, 0, 0, 1, 1, 1,
+]
+
+private const HatchOutlinedDiamond: [64] u8 = @[
+    0, 0, 1, 0, 0, 1, 0, 0,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    0, 0, 1, 0, 0, 1, 0, 0,
+]
+
+private const HatchHorizontalDark: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchVerticalDark: [64] u8 = @[
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+]
+
+private const HatchGrid: [64] u8 = @[
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+]
+
+private const HatchGridLarge: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchGridDotted: [64] u8 = @[
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchCross: [64] u8 = @[
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 1, 1, 0, 1, 1, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 1, 1, 0, 1, 1, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchCrossLarge: [64] u8 = @[
+    0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchPercent5: [64] u8 = @[
+    0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchPercent10: [64] u8 = @[
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchPercent20: [64] u8 = @[
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchPercent25: [64] u8 = @[
+    0, 0, 1, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+]
+
+private const HatchPercent30: [64] u8 = @[
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+]
+
+private const HatchPercent40: [64] u8 = @[
+    0, 0, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 0, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+]
+
+private const HatchPercent50: [64] u8 = @[
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+]
+
+private const HatchPercent60: [64] u8 = @[
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 1, 1, 0, 1, 1,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 1, 1, 0, 1, 1, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 1, 1, 0, 1, 1,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 1, 1, 0, 1, 1, 1, 0,
+]
+
+private const HatchPercent70: [64] u8 = @[
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+]
+
+private const HatchPercent75: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 0, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 0, 1,
+]
+
+private const HatchPercent80: [64] u8 = @[
+    1, 1, 0, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 0, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+]
+
+private const HatchPercent90: [64] u8 = @[
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 0, 1, 1, 1,
+]
+
+private const HatchCheckBoard: [64] u8 = @[
+    1, 1, 0, 0, 1, 1, 0, 0,
+    0, 0, 1, 1, 0, 0, 1, 1,
+    0, 0, 1, 1, 0, 0, 1, 1,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    1, 1, 0, 0, 1, 1, 0, 0,
+    0, 0, 1, 1, 0, 0, 1, 1,
+    0, 0, 1, 1, 0, 0, 1, 1,
+    1, 1, 0, 0, 1, 1, 0, 0,
+]
+
+private const HatchCheckBoardLarge: [64] u8 = @[
+    1, 0, 0, 0, 0, 1, 1, 1,
+    1, 0, 0, 0, 0, 1, 1, 1,
+    1, 0, 0, 0, 0, 1, 1, 1,
+    0, 1, 1, 1, 1, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 0, 0,
+    1, 0, 0, 0, 0, 1, 1, 1,
+]
+
+private const HatchWeave: [64] u8 = @[
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    0, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 1, 0,
+]
+
+private const HatchDiagonalForward: [64] u8 = @[
+    0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0,
+]
+
+private const HatchDiagonalForwardLight: [64] u8 = @[
+    0, 0, 0, 1, 0, 0, 0, 1,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    1, 0, 0, 0, 1, 0, 0, 0,
+]
+
+private const HatchDiagonalBackward: [64] u8 = @[
+    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 1,
+]
+
+private const HatchDiagonalBackwardLight: [64] u8 = @[
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0,
+    0, 1, 0, 0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 0, 1, 0, 0, 0, 1,
+]
+
+private const HatchDiagonalCross: [64] u8 = @[
+    1, 0, 0, 0, 0, 0, 0, 1,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    0, 0, 1, 0, 0, 1, 0, 0,
+    0, 0, 0, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 1, 0, 0, 0,
+    0, 0, 1, 0, 0, 1, 0, 0,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    1, 0, 0, 0, 0, 0, 0, 1,
+]
+
 public struct RenderOgl
 {
     vertexbuffer:       GLuint
@@ -88,10 +462,45 @@ impl RenderOgl
         offset += @sizeof(Vector4)
         glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
-        // Generate white texture
+        // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
-        hatchTextures[cast(u32) BrushTextureStyle.Dot] = generateTexture(HatchDot, 8, 8)
-        hatchTextures[cast(u32) BrushTextureStyle.Horizontal] = generateTexture(HatchHorizontal, 8, 8)
+        using BrushTextureStyle
+        hatchTextures[Dot] = generateTexture(HatchDot, 8, 8)
+        hatchTextures[Horizontal] = generateTexture(HatchHorizontal, 8, 8)
+        hatchTextures[HorizontalLight] = generateTexture(HatchHorizontalLight, 8, 8)
+        hatchTextures[HorizontalNarrow] = generateTexture(HatchHorizontalNarrow, 8, 8)
+        hatchTextures[Vertical] = generateTexture(HatchVertical, 8, 8)
+        hatchTextures[VerticalLight] = generateTexture(HatchVerticalLight, 8, 8)
+        hatchTextures[VerticalNarrow] = generateTexture(HatchVerticalNarrow, 8, 8)
+        hatchTextures[SolidDiamond] = generateTexture(HatchSolidDiamond, 8, 8)
+        hatchTextures[OutlinedDiamond] = generateTexture(HatchOutlinedDiamond, 8, 8)
+        hatchTextures[HorizontalDark] = generateTexture(HatchHorizontalDark, 8, 8)
+        hatchTextures[VerticalDark] = generateTexture(HatchVerticalDark, 8, 8)
+        hatchTextures[Grid] = generateTexture(HatchGrid, 8, 8)
+        hatchTextures[GridLarge] = generateTexture(HatchGridLarge, 8, 8)
+        hatchTextures[GridDotted] = generateTexture(HatchGridDotted, 8, 8)
+        hatchTextures[Cross] = generateTexture(HatchCross, 8, 8)
+        hatchTextures[CrossLarge] = generateTexture(HatchCrossLarge, 8, 8)
+        hatchTextures[Percent5] = generateTexture(HatchPercent5, 8, 8)
+        hatchTextures[Percent10] = generateTexture(HatchPercent10, 8, 8)
+        hatchTextures[Percent20] = generateTexture(HatchPercent20, 8, 8)
+        hatchTextures[Percent25] = generateTexture(HatchPercent25, 8, 8)
+        hatchTextures[Percent30] = generateTexture(HatchPercent30, 8, 8)
+        hatchTextures[Percent40] = generateTexture(HatchPercent40, 8, 8)
+        hatchTextures[Percent50] = generateTexture(HatchPercent50, 8, 8)
+        hatchTextures[Percent60] = generateTexture(HatchPercent60, 8, 8)
+        hatchTextures[Percent70] = generateTexture(HatchPercent70, 8, 8)
+        hatchTextures[Percent75] = generateTexture(HatchPercent75, 8, 8)
+        hatchTextures[Percent80] = generateTexture(HatchPercent80, 8, 8)
+        hatchTextures[Percent90] = generateTexture(HatchPercent90, 8, 8)
+        hatchTextures[CheckBoard] = generateTexture(HatchCheckBoard, 8, 8)
+        hatchTextures[CheckBoardLarge] = generateTexture(HatchCheckBoardLarge, 8, 8)
+        hatchTextures[Weave] = generateTexture(HatchWeave, 8, 8)
+        hatchTextures[DiagonalForward] = generateTexture(HatchDiagonalForward, 8, 8)
+        hatchTextures[DiagonalForwardLight] = generateTexture(HatchDiagonalForwardLight, 8, 8)
+        hatchTextures[DiagonalBackward] = generateTexture(HatchDiagonalBackward, 8, 8)
+        hatchTextures[DiagonalBackwardLight] = generateTexture(HatchDiagonalBackwardLight, 8, 8)
+        hatchTextures[DiagonalCross] = generateTexture(HatchDiagonalCross, 8, 8)
     }
 
     func resize(using self, width, height: s32)
