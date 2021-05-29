@@ -1,7 +1,9 @@
 #global public
 using Core, Ogl, Core.Math
 
-alias TextureHandle = *void
+//#[Swag.strict]
+alias TextureHandle = uint
+const InvalidTextureHandle = 0
 
 public struct RenderOgl
 {
@@ -15,6 +17,18 @@ public struct RenderOgl
 
 impl RenderOgl
 {
+    private func generateTexture(datas: const *void, w, h: s32)->GLuint
+    {
+        var result: GLuint
+        glGenTextures(1, &result)
+        glBindTexture(GL_TEXTURE_2D, result)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, datas)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        return result
+    }
+
     protected func init(using self, w, h: s32)
     {
         width = w
@@ -50,12 +64,7 @@ impl RenderOgl
 
         // Generate white texture
         const whiteDatas = @[0xFFFFFFFF]
-        glGenTextures(1, &whiteTexture)
-        glBindTexture(GL_TEXTURE_2D, whiteTexture)
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, @dataof(whiteDatas))
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        whiteTexture = generateTexture(whiteDatas, 1, 1)
     }
 
     func resize(using self, width, height: s32)
@@ -131,7 +140,7 @@ impl RenderOgl
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
         var result: retval
-        result.handle = cast(TextureHandle) cast(uint) textureID
+        result.handle = cast(TextureHandle) textureID
         result.width = image.width
         result.height = image.height
         result.pf = image.pf

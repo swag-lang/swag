@@ -905,7 +905,7 @@ impl Painter
         if brush.texture.handle
         {
             cmd := newCommand(CommandId.BindImage, true)
-            cmd.params.image.handle = null
+            cmd.params.image.handle = InvalidTextureHandle
         }
     }
 }

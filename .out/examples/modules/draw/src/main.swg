@@ -219,7 +219,7 @@ func display()
     //////////////////////////////////////
     #[Swag.global]
     var image0, image1: Texture
-    if image0.handle == null
+    if image0.handle == InvalidTextureHandle
     {
         img0 := assume Image.load(imagePath("basn0g01.png"))
         image0 = renderer.addImage(img0)
