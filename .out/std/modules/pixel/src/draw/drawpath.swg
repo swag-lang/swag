@@ -839,8 +839,8 @@ impl Painter
         if brush.textureStyle != .None
         {
             cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.texture.handle = brush.texture.handle
-            cmd.params.texture.style = brush.textureStyle
+            cmd.params.image.texture = brush.texture
+            cmd.params.image.style = brush.textureStyle
         }
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
@@ -924,8 +924,8 @@ impl Painter
         if brush.textureStyle != .None
         {
             cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.texture.style = .None
-            cmd.params.texture.handle = InvalidTextureHandle
+            cmd.params.image.style = .None
+            cmd.params.image.texture.handle = InvalidTextureHandle
         }
     }
 }

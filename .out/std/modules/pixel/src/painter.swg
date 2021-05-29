@@ -43,7 +43,7 @@ struct Command
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
         transform:      struct{tr: Transform2;}
-        texture:        struct{style: BrushTextureStyle = ?; handle: TextureHandle;}
+        image:          struct{style: BrushTextureStyle = ?; texture: Texture;}
     }
 }
 

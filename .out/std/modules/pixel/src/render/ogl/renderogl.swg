@@ -52,8 +52,6 @@ impl RenderOgl
         glBindTexture(GL_TEXTURE_2D, result)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, &arr[0])
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         return result
     }
 
@@ -165,8 +163,6 @@ impl RenderOgl
         glBindTexture(GL_TEXTURE_2D, textureID)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
         glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) image.width, cast(s32) image.height, 0, fmt, GL_UNSIGNED_BYTE, image.pixels)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
         var result: retval
         result.handle = cast(TextureHandle) textureID
@@ -261,16 +257,19 @@ impl RenderOgl
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
             case BindTexture:
-                params := &cmd.params.texture
+                params := &cmd.params.image
                 switch params.style
                 {
                 case None:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
                 case Custom:
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.handle)
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 default:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[cast(u32) params.style])
                 }
+
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             }
         }
 
