@@ -48,9 +48,9 @@ impl Painter
     // Draw a filled rectangle
     func fillRect(using self, left, top, width, height: f32, color: Color)
     {
-        sharedSolidBrush.color = color
-        sharedSolidBrush.texture.handle = InvalidTextureHandle
         setRectPath(left, top, width, height)
+        sharedSolidBrush.color = color
+        sharedSolidBrush.textureStyle = .None
         fillPath(&sharedLinePath, sharedSolidBrush)
     }
 

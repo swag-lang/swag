@@ -231,12 +231,17 @@ func display()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
     var brush1: Brush
+    brush1.textureStyle = .Custom
     brush1.texture = image0
     brush1.wrapMode = .Tile
     cdc.fillRect(750, 50, 100, 150, brush1)
     brush1.texture = image1
     brush1.wrapMode = .Clamp
     cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
+
+    brush1.textureStyle = .Dot
+    brush1.wrapMode = .Tile
+    brush1.color = Argb.Red
     cdc.fillCircle(750, 400, 50, brush1)
     cdc.end()
 

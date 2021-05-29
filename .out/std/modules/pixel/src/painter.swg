@@ -16,7 +16,7 @@ enum CommandId
     Clear
     Transform
     DrawTriangles
-    BindImage
+    BindTexture
 }
 
 struct Texture
@@ -43,7 +43,7 @@ struct Command
         clear:          struct{color: Color; flags: u32;}
         drawTriangles:  struct{start: u32; count: u32;}
         transform:      struct{tr: Transform2;}
-        image:          struct{handle: TextureHandle;}
+        texture:        struct{style: BrushTextureStyle = ?; handle: TextureHandle;}
     }
 }
 

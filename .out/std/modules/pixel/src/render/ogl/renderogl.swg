@@ -5,6 +5,17 @@ using Core, Ogl, Core.Math
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
 
+private const HatchDot: [64] u8 = @[
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    0, 1, 0, 1, 0, 1, 0, 1,
+]
+
 public struct RenderOgl
 {
     vertexbuffer:       GLuint
@@ -13,17 +24,23 @@ public struct RenderOgl
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
+    hatchTextures:      [@countof(BrushTextureStyle)] GLuint
 }
 
 impl RenderOgl
 {
-    private func generateTexture(datas: const *void, w, h: s32)->GLuint
+    private func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
     {
+        Debug.assert(@countof(datas) <= 8*8)
+
+        var arr: [64] u32
+        visit p, i: datas arr[i] = p ? 0xFFFFFFFF : 0
+
         var result: GLuint
         glGenTextures(1, &result)
         glBindTexture(GL_TEXTURE_2D, result)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, datas)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, &arr[0])
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         return result
@@ -63,8 +80,8 @@ impl RenderOgl
         glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate white texture
-        const whiteDatas = @[0xFFFFFFFF]
-        whiteTexture = generateTexture(whiteDatas, 1, 1)
+        whiteTexture = generateTexture(@[1], 1, 1)
+        hatchTextures[cast(u32) BrushTextureStyle.Dot] = generateTexture(HatchDot, 8, 8)
     }
 
     func resize(using self, width, height: s32)
@@ -210,6 +227,7 @@ impl RenderOgl
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
+        glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
 
         visit cmd: dc.commandBuffer
         {
@@ -230,12 +248,17 @@ impl RenderOgl
                 params := &cmd.params.drawTriangles
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
-            case BindImage:
-                params := &cmd.params.image
-                if !params.handle
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) whiteTexture)
-                else
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) cast(uint) params.handle)
+            case BindTexture:
+                params := &cmd.params.texture
+                switch params.style
+                {
+                case None:
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
+                case Custom:
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.handle)
+                case Dot:
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[cast(u32) params.style])
+                }
             }
         }
 

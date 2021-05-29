@@ -781,6 +781,24 @@ impl Painter
     private func computeUV(using self, prim: uint, v0: Vector2, bvMin, bvMax: Vector2, brush: Brush)
     {
         primt := vertexBuffer.buffer + prim
+        if brush.textureStyle == .None
+        {
+            primt.uv.x = 0
+            primt.uv.y = 0
+            return
+        }
+
+        // For a predefined pattern texture, size is 8x8
+        var wt, ht: s32 = ?
+        if brush.textureStyle != .Custom
+        {
+            wt, ht = 8
+        }
+        else
+        {
+            wt = brush.texture.width
+            ht = brush.texture.height
+         }
 
         #[Swag.complete]
         switch brush.wrapMode
@@ -792,20 +810,20 @@ impl Painter
             primt.uv.y = 1 - (v0.y - bvMin.y) / h
 
         case Tile:
-            primt.uv.x = (v0.x - bvMin.x) / brush.texture.width
-            primt.uv.y = 1 - (v0.y - bvMin.y) / brush.texture.height
+            primt.uv.x = (v0.x - bvMin.x) / wt
+            primt.uv.y = 1 - (v0.y - bvMin.y) / ht
 
         case TileFlipX:
-            primt.uv.x = 1 - (v0.x - bvMin.x) / brush.texture.width
-            primt.uv.y = 1 - (v0.y - bvMin.y) / brush.texture.height
+            primt.uv.x = 1 - (v0.x - bvMin.x) / wt
+            primt.uv.y = 1 - (v0.y - bvMin.y) / ht
 
         case TileFlipY:
-            primt.uv.x = (v0.x - bvMin.x) / brush.texture.width
-            primt.uv.y = (v0.y - bvMin.y) / brush.texture.height
+            primt.uv.x = (v0.x - bvMin.x) / wt
+            primt.uv.y = (v0.y - bvMin.y) / ht
 
         case TileFlipXY:
-            primt.uv.x = 1 - (v0.x - bvMin.x) / brush.texture.width
-            primt.uv.y = (v0.y - bvMin.y) / brush.texture.height
+            primt.uv.x = 1 - (v0.x - bvMin.x) / wt
+            primt.uv.y = (v0.y - bvMin.y) / ht
         }
     }
 
@@ -818,10 +836,11 @@ impl Painter
         using path
 
         // Setup texture
-        if brush.texture.handle
+        if brush.textureStyle != .None
         {
-            cmd := newCommand(CommandId.BindImage, true)
-            cmd.params.image.handle = brush.texture.handle
+            cmd := newCommand(CommandId.BindTexture, true)
+            cmd.params.texture.handle = brush.texture.handle
+            cmd.params.texture.style = brush.textureStyle
         }
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
@@ -902,10 +921,11 @@ impl Painter
         }
 
         // Setup texture
-        if brush.texture.handle
+        if brush.textureStyle != .None
         {
-            cmd := newCommand(CommandId.BindImage, true)
-            cmd.params.image.handle = InvalidTextureHandle
+            cmd := newCommand(CommandId.BindTexture, true)
+            cmd.params.texture.style = .None
+            cmd.params.texture.handle = InvalidTextureHandle
         }
     }
 }
