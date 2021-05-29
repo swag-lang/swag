@@ -848,6 +848,7 @@ impl Painter
             cmd := newCommand(CommandId.BindTexture, true)
             cmd.params.image.texture = brush.texture
             cmd.params.image.style = brush.textureStyle
+            cmd.params.image.stretchMode = brush.stretchMode
         }
 
         boundMin := bvMin

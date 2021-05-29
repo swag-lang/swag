@@ -674,11 +674,19 @@ impl RenderOgl
                 case Custom:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 default:
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[cast(u32) params.style])
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[params.style])
                 }
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+                #[Swag.complete]
+                switch params.stretchMode
+                {
+                case Pixel:
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+                case Linear:
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+                }
             }
         }
 

@@ -4,8 +4,13 @@ using Core.Drawing
 #[Swag.enumindex]
 enum BrushTextureStyle
 {
+    // No texturing. Solid rendering
     None
+
+    // User specified texture/image
     Custom
+
+    // Predefined hatch textures
     Dot
     Horizontal
     HorizontalLight
@@ -44,10 +49,17 @@ enum BrushTextureStyle
     DiagonalCross
 }
 
+enum BrushStretchMode
+{
+    Pixel
+    Linear
+}
+
 struct Brush
 {
     color:          Color = Argb.White
     textureStyle:   BrushTextureStyle = None
     texture:        Texture
     wrapMode:       WrapMode = Clamp
+    stretchMode:    BrushStretchMode = Pixel
 }

@@ -243,12 +243,13 @@ func displayPage0()
     cdc.fillRect(750, 50, 100, 150, brush1)
     brush1.texture = image1
     brush1.wrapMode = .Clamp
+    brush1.stretchMode = .Linear
     cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
 
-    brush1.textureStyle = .Dot
-    brush1.wrapMode = .Tile
-    brush1.color = Argb.Red
-    cdc.fillCircle(750, 400, 50, brush1)
+    brush1.wrapMode = .Clamp
+    brush1.color = Argb.White
+    brush1.stretchMode = .Pixel
+    cdc.fillCircle(850, 450, 50, brush1)
     cdc.end()
 
     renderer.resetTransform()
