@@ -275,6 +275,11 @@ func displayPage1()
     cdc.translateTransform(100, 0)
     brush.textureStyle = .Dot
     cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+
+    cdc.translateTransform(100, 0)
+    brush.textureStyle = .Horizontal
+    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+
     cdc.end()
 
     renderer.resetTransform()

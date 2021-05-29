@@ -268,7 +268,7 @@ impl RenderOgl
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
                 case Custom:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.handle)
-                case Dot:
+                default:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[cast(u32) params.style])
                 }
             }
