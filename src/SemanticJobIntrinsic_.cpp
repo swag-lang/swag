@@ -267,8 +267,18 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-        node->typeInfo    = g_TypeMgr.typeInfoUInt;
+        // :SliceLiteral
+        // Slice literal. This can happen for enum values
+        if (node->flags & AST_VALUE_COMPUTED)
+        {
+            node->computedValue.reg.u64 = node->computedValue.reg.u32;
+            node->typeInfo              = g_TypeMgr.typeInfoUInt;
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+            node->typeInfo    = g_TypeMgr.typeInfoUInt;
+        }
     }
     else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {

@@ -138,9 +138,31 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     // Value
     if (realType->flags & TYPEINFO_DEFINED_VALUE)
     {
-        auto storageOffsetValue = segment->addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
-        concreteType->value     = segment->addressNoLock(storageOffsetValue);
-        segment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
+        if (realType->typeInfo->kind == TypeInfoKind::Array)
+        {
+            concreteType->value = module->constantSegment.addressNoLock(realType->value.reg.offset);
+            segment->addInitPtr(OFFSETOF(concreteType->value), realType->value.reg.offset, SegmentKind::Constant);
+        }
+        else if (realType->typeInfo->kind == TypeInfoKind::Slice)
+        {
+            auto count         = realType->value.reg.u32;
+            auto offsetContent = (uint32_t)(realType->value.reg.u64 >> 32);
+
+            auto offsetSlice = segment->reserveNoLock(2 * sizeof(uint64_t));
+            auto ptrSlice    = (uint64_t*) segment->addressNoLock(offsetSlice);
+            ptrSlice[0]      = (uint64_t) module->constantSegment.addressNoLock(offsetContent);
+            ptrSlice[1]      = count;
+
+            concreteType->value = ptrSlice;
+            segment->addInitPtr(offsetSlice, offsetContent, SegmentKind::Constant);
+            segment->addInitPtr(OFFSETOF(concreteType->value), offsetSlice);
+        }
+        else
+        {
+            auto storageOffsetValue = segment->addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
+            concreteType->value     = segment->addressNoLock(storageOffsetValue);
+            segment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
+        }
     }
 
     return true;

@@ -98,14 +98,20 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         return true;
     case TypeInfoKind::Array:
     {
+        auto front     = typeNode->childs.front();
+        auto hint      = format(Hnt0004, rawTypeInfo->getDisplayName().c_str());
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format(Msg0699, rawTypeInfo->getDisplayName().c_str())}));
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format(Msg0700, rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({front, format(Msg0699, rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(hint, {front, format(Msg0700, rawTypeInfo->getDisplayName().c_str())}));
         return true;
     }
     case TypeInfoKind::Slice:
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format(Msg0701, rawTypeInfo->getDisplayName().c_str())}));
+    {
+        auto front = typeNode->childs.front();
+        auto hint  = format(Hnt0004, rawTypeInfo->getDisplayName().c_str());
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(hint, {front, format(Msg0701, rawTypeInfo->getDisplayName().c_str())}));
         return true;
+    }
 
     case TypeInfoKind::Native:
         if (rawTypeInfo->nativeType != NativeTypeKind::Any)
@@ -141,9 +147,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             auto module = context->sourceFile->module;
+
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+            enumNode->computedValue.reg.offset = storageOffset;
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
@@ -152,9 +160,9 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
-            auto typeList                     = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-            assignNode->computedValue.reg.u32 = (uint32_t) typeList->subTypes.size();
-            enumNode->computedValue           = assignNode->computedValue;
+            auto typeList                      = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+            // :SliceLiteral
+            enumNode->computedValue.reg.u64 = ((uint64_t) storageOffset << 32) | typeList->subTypes.size();
         }
         else
         {

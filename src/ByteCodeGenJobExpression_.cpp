@@ -228,7 +228,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
             inst->b.u64 = totalOffset;
             inst->flags |= BCI_IMM_B;
@@ -422,6 +422,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
+
+    // :SliceLiteral
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         reserveLinearRegisterRC2(context, regList);
