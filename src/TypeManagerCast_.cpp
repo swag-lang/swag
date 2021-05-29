@@ -2466,6 +2466,20 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
         return true;
     }
 
+    if (castFlags & CASTFLAG_EXPLICIT)
+    {
+        if (fromType->kind == TypeInfoKind::Pointer)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toType;
+            }
+
+            return true;
+        }
+    }
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 

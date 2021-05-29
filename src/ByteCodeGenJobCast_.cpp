@@ -812,7 +812,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         if (exprNode->castOffset)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             SWAG_ASSERT(exprNode->castOffset != 0xFFFFFFFF);
             inst->b.u64 = exprNode->castOffset;
             inst->flags |= BCI_IMM_B;
@@ -832,6 +832,17 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
         return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        if (fromTypeInfo->kind == TypeInfoKind::Pointer)
+        {
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
+            exprNode->castedTypeInfo = nullptr;
+            return true;
+        }
     }
 
     if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Reference)
