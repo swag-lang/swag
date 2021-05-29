@@ -804,10 +804,17 @@ impl Painter
         switch brush.wrapMode
         {
         case Clamp:
-            w := bvMax.x - bvMin.x
-            h := bvMax.y - bvMin.y
-            primt.uv.x = (v0.x - bvMin.x) / w
-            primt.uv.y = 1 - (v0.y - bvMin.y) / h
+            // UV correct to center pixel
+            bmin := bvMin
+            bmin.x += (1.0 / wt) * 0.5
+            bmin.y += (1.0 / ht) * 0.5
+            bmax := bvMax
+            bmax.x -= (1.0 / wt) * 0.5
+            bmax.y -= (1.0 / ht) * 0.5
+            w := bmax.x - bmin.x
+            h := bmax.y - bmin.y
+            primt.uv.x = (v0.x - bmin.x) / w
+            primt.uv.y = 1 - (v0.y - bmin.y) / h
 
         case Tile:
             primt.uv.x = (v0.x - bvMin.x) / wt
