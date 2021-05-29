@@ -1,9 +1,9 @@
 #global public
 using Core, Ogl, Core.Math
 
-//#[Swag.strict]
+#[Swag.strict]
 alias TextureHandle = uint
-const InvalidTextureHandle = 0
+const InvalidTextureHandle: TextureHandle = acast 0
 
 public struct RenderOgl
 {

@@ -721,7 +721,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     SWAG_ASSERT(typeInfo);
 
     auto job     = context->job;
-    typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
+    typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
     fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_FUNC);
 
     // opCast
