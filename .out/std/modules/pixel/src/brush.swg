@@ -6,6 +6,7 @@ enum BrushTextureStyle
     None
     Custom
     Dot
+    Horizontal
 }
 
 struct Brush

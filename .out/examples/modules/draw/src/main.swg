@@ -10,9 +10,10 @@ const H = 1024
 var cdc: Painter
 var renderer: RenderOglWin32
 
-var g_modeAA: bool = true
+var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
-var g_pattern: bool = true
+var g_pattern:      bool = true
+var g_page:         s32 = 1
 
 func dataPath()->String
 {
@@ -29,8 +30,26 @@ func imagePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
-var ff: f32 = 0
 func display()
+{
+    renderer.begin()
+
+    cdc.begin()
+    cdc.clear(Argb.Red)
+    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    cdc.end()
+    renderer.draw(&cdc)
+
+    switch g_page
+    {
+    case 0: displayPage0()
+    case 1: displayPage1()
+    }
+
+    renderer.end()
+}
+
+func displayPage0()
 {
     var pen: Pen
 
@@ -50,21 +69,8 @@ func display()
 
     //////////////////////////////////////
     cdc.begin()
-    cdc.clear(Argb.Red)
-    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
-    cdc.end()
-    renderer.draw(&cdc)
-
-    //////////////////////////////////////
-    cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-
-    /*pt := Input.getMousePos()
-    pen.color = Argb.Black
-    pen.beginCapStyle = .None
-    pen.endCapStyle = .None
-    cdc.drawLine(0,0,pt.x,pt.y, pen)*/
 
     cdc.resetTransform()
     cdc.translateTransform(50, 50)
@@ -247,9 +253,32 @@ func display()
 
     renderer.resetTransform()
     renderer.draw(&cdc)
+}
 
-    //////////////////////////////////////
-    renderer.end()
+func displayPage1()
+{
+    var brush: Brush
+    brush.color = Argb.Black
+
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+    cdc.resetTransform()
+    cdc.translateTransform(50, 50)
+
+    /*visit e: BrushTextureStyle
+    {
+    }*/
+
+    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+
+    cdc.translateTransform(100, 0)
+    brush.textureStyle = .Dot
+    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+    cdc.end()
+
+    renderer.resetTransform()
+    renderer.draw(&cdc)
 }
 
 #[Swag.callback]
@@ -345,6 +374,8 @@ func messageLoop()
             g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 4)
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
+        if(keyb.isKeyJustPressed(Input.Key.F4))
+            g_page = (g_page + 1) % 2
     }
 }
 

@@ -16,6 +16,17 @@ private const HatchDot: [64] u8 = @[
     0, 1, 0, 1, 0, 1, 0, 1,
 ]
 
+private const HatchHorizontal: [64] u8 = @[
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+]
+
 public struct RenderOgl
 {
     vertexbuffer:       GLuint
@@ -82,6 +93,7 @@ impl RenderOgl
         // Generate white texture
         whiteTexture = generateTexture(@[1], 1, 1)
         hatchTextures[cast(u32) BrushTextureStyle.Dot] = generateTexture(HatchDot, 8, 8)
+        hatchTextures[cast(u32) BrushTextureStyle.Horizontal] = generateTexture(HatchHorizontal, 8, 8)
     }
 
     func resize(using self, width, height: s32)
