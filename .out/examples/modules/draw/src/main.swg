@@ -266,19 +266,13 @@ func displayPage1()
     cdc.resetTransform()
     cdc.translateTransform(50, 50)
 
-    /*visit e: BrushTextureStyle
+    visit e: BrushTextureStyle
     {
-    }*/
-
-    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
-
-    cdc.translateTransform(100, 0)
-    brush.textureStyle = .Dot
-    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
-
-    cdc.translateTransform(100, 0)
-    brush.textureStyle = .Horizontal
-    cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+        if e == .Custom continue
+        brush.textureStyle = e
+        cdc.fillRoundRect(0, 0, 50, 50, 10, 10, brush)
+        cdc.translateTransform(100, 0)
+    }
 
     cdc.end()
 

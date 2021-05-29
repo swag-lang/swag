@@ -542,10 +542,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto job        = context->job;
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
-    SWAG_CHECK(checkIsConcrete(context, node->expression));
+
+    auto typeInfo = TypeManager::concreteReference(node->expression->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Enum)
+        SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     // Struct type : convert to a opVisit call
-    auto     typeInfo      = TypeManager::concreteReference(node->expression->typeInfo);
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -674,9 +676,21 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
         SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, Msg0627}));
+        content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
         content += format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
+        content += format("var %s = @index; ", alias1Name.c_str());
+        content += "}} ";
+    }
+
+    // Enum
+    else if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, Msg0636}));
+        content += format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += format("loop %d { ", typeEnum->values.size());
+        content += format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
