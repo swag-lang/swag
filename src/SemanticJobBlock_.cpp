@@ -491,7 +491,9 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         // No range
         if (node->expression->kind != AstNodeKind::Range)
         {
-            SWAG_CHECK(checkIsConcrete(context, node->expression));
+            if (node->expression->typeInfo->kind != TypeInfoKind::Enum)
+                SWAG_CHECK(checkIsConcrete(context, node->expression));
+
             SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression->typeInfo));
             if (context->result != ContextResult::Done)
                 return true;

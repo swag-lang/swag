@@ -235,6 +235,15 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeEnum               = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        node->computedValue.reg.u64 = typeEnum->values.size();
+        node->setFlagsValueIsComputed();
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
+        return true;
+    }
+
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -557,16 +566,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCountOf:
     {
         auto expr = node->childs.front();
-        if (expr->typeInfo->kind == TypeInfoKind::Enum)
-        {
-            auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
-            node->computedValue.reg.u64 = typeEnum->values.size();
-            node->setFlagsValueIsComputed();
-            node->typeInfo = g_TypeMgr.typeInfoUInt;
-            break;
-        }
-
-        SWAG_CHECK(checkIsConcrete(context, expr));
+        if (expr->typeInfo->kind != TypeInfoKind::Enum)
+            SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr->typeInfo));
         break;
