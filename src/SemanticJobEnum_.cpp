@@ -146,11 +146,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
-            auto module = context->sourceFile->module;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
+            auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
-            SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue.reg.offset = storageOffset;
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
