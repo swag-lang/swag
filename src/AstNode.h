@@ -418,6 +418,7 @@ struct AstNode
     ByteCodeFct         byteCodeFct;
     SourceFile*         sourceFile;
     Extension*          extension;
+    DataSegment*        concreteTypeInfoSegment;
 
     uint64_t flags;
     uint64_t attributeFlags;
@@ -428,12 +429,11 @@ struct AstNode
     uint32_t doneFlags;
     uint32_t semFlags;
 
-    uint32_t     castOffset;
-    uint32_t     stackOffset;
-    uint32_t     concreteTypeInfoStorage;
-    DataSegment* concreteTypeInfoSegment;
+    uint32_t castOffset;
+    uint32_t stackOffset;
+    uint32_t concreteTypeInfoStorage;
+    uint32_t childParentIdx;
 
-    uint32_t            childParentIdx;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
     AstNodeKind         kind;
