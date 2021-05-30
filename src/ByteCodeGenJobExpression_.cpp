@@ -440,23 +440,27 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->kind == TypeInfoKind::Array)
     {
+        auto overload  = node->resolvedSymbolOverload;
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->castedTypeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
-        SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
+        SWAG_ASSERT(overload);
+        SWAG_ASSERT(overload->computedValue.storageSegment);
+        SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = overload->computedValue.storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
 
     // :SliceLiteral
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
+        auto overload = node->resolvedSymbolOverload;
         reserveLinearRegisterRC2(context, regList);
-        SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.reg.u64 != 0);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = node->resolvedSymbolOverload->computedValue.reg.u64;
+        SWAG_ASSERT(overload);
+        SWAG_ASSERT(overload->computedValue.storageSegment);
+        SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
+        SWAG_ASSERT(overload->computedValue.reg.u64 != 0);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = overload->computedValue.storageOffset;
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = overload->computedValue.reg.u64;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
