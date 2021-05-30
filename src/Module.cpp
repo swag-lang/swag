@@ -400,10 +400,12 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
                 return callerContext->report({node, format(Msg0280, node->typeInfo->getDisplayName().c_str())});
             }
 
-            auto offsetStorage                = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
-            node->computedValue.storageOffset = offsetStorage;
-            auto addrDst                      = sourceFile->module->constantSegment.address(offsetStorage);
-            auto addrSrc                      = runContext.registersRR[0].pointer;
+            auto storageSegment                = &sourceFile->module->constantSegment;
+            auto offsetStorage                 = storageSegment->reserve(node->typeInfo->sizeOf);
+            node->computedValue.storageOffset  = offsetStorage;
+            node->computedValue.storageSegment = storageSegment;
+            auto addrDst                       = storageSegment->address(offsetStorage);
+            auto addrSrc                       = runContext.registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, node->typeInfo->sizeOf);
         }
         else
