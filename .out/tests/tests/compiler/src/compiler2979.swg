@@ -1,4 +1,4 @@
-/*#[Swag.compiler]
+#[Swag.compiler]
 const X: [2] s32 = @[10, 20]
 
 #[Swag.optim("", false)]
@@ -6,7 +6,7 @@ const X: [2] s32 = @[10, 20]
 func test()
 {
     val := X[1]
-    @print(val)
+    @assert(val == 20)
 }
 
-#run test()*/
+#run test()

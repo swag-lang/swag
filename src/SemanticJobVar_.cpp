@@ -532,16 +532,16 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     auto module   = node->sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
-    if (node->kind == AstNodeKind::ConstDecl)
-        return &module->constantSegment;
-    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
-        return &module->constantSegment;
-
     if (node->attributeFlags & ATTRIBUTE_TLS)
         return &module->tlsSegment;
 
     if (node->attributeFlags & ATTRIBUTE_COMPILER)
         return &module->compilerSegment;
+
+    if (node->kind == AstNodeKind::ConstDecl)
+        return &module->constantSegment;
+    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
+        return &module->constantSegment;
 
     if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         return &module->mutableSegment;

@@ -132,9 +132,10 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     if (typeEnum->rawType->flags & TYPEINFO_GENERIC)
         return true;
 
-    auto     assignNode    = valNode->childs.empty() ? nullptr : valNode->childs[0];
-    auto     rawTypeInfo   = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
-    uint32_t storageOffset = UINT32_MAX;
+    auto         assignNode     = valNode->childs.empty() ? nullptr : valNode->childs[0];
+    auto         rawTypeInfo    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
+    uint32_t     storageOffset  = UINT32_MAX;
+    DataSegment* storageSegment = nullptr;
 
     if (assignNode)
     {
@@ -148,23 +149,27 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            auto module = context->sourceFile->module;
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
+            auto module    = context->sourceFile->module;
+            storageSegment = &module->constantSegment;
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
-            enumNode->computedValue.storageOffset = storageOffset;
+            enumNode->computedValue.storageOffset  = storageOffset;
+            enumNode->computedValue.storageSegment = storageSegment;
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            auto module = context->sourceFile->module;
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
+            auto module    = context->sourceFile->module;
+            storageSegment = &module->constantSegment;
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
             // :SliceLiteral
-            enumNode->computedValue.reg.u64       = typeList->subTypes.size();
-            enumNode->computedValue.storageOffset = storageOffset;
+            enumNode->computedValue.reg.u64        = typeList->subTypes.size();
+            enumNode->computedValue.storageOffset  = storageOffset;
+            enumNode->computedValue.storageSegment = storageSegment;
         }
         else
         {
@@ -292,7 +297,15 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     }
 
     valNode->typeInfo = typeEnum;
-    SWAG_CHECK(typeEnum->scope->symTable.addSymbolTypeInfo(context, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue, 0, nullptr, storageOffset));
+    SWAG_CHECK(typeEnum->scope->symTable.addSymbolTypeInfo(context,
+                                                           valNode,
+                                                           valNode->typeInfo,
+                                                           SymbolKind::EnumValue,
+                                                           &enumNode->computedValue,
+                                                           0,
+                                                           nullptr,
+                                                           storageOffset,
+                                                           storageSegment));
 
     // Store each value in the enum type
     auto typeParam = allocType<TypeInfoParam>();
