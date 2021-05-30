@@ -426,16 +426,18 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {
-        auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
-        SWAG_ASSERT(offset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+        auto storageSegment = SemanticJob::getConstantSegFromContext(node);
+        auto storageOffset  = storageSegment->addString(node->computedValue.text);
+        SWAG_ASSERT(storageOffset != UINT32_MAX);
+        emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
     }
     else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {
         reserveLinearRegisterRC2(context, regList);
-        auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
-        SWAG_ASSERT(offset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+        auto storageSegment = SemanticJob::getConstantSegFromContext(node);
+        auto storageOffset  = storageSegment->addString(node->computedValue.text);
+        SWAG_ASSERT(storageOffset != UINT32_MAX);
+        emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue.text.length();
     }
     else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->kind == TypeInfoKind::Array)

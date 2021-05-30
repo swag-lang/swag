@@ -15,6 +15,11 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
 
+DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node)
+{
+    return &node->sourceFile->module->constantSegment;
+}
+
 // Will be called after solving the initial var affect, but before tuple unpacking
 bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 {
