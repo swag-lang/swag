@@ -276,6 +276,30 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
     typeInfo      = TypeManager::concreteType(typeInfo);
 
+    // A reference to a segment
+    if (node->forceTakeAddress())
+    {
+        if (node->computedValue.storageSegment && node->computedValue.storageOffset != 0xFFFFFFFF)
+        {
+            regList = reserveRegisterRC(context);
+            switch (node->computedValue.storageSegment->kind)
+            {
+            case SegmentKind::Constant:
+                emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], node->computedValue.storageOffset);
+                return true;
+            case SegmentKind::Compiler:
+                emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, regList[0], node->computedValue.storageOffset);
+                return true;
+            default:
+                return internalError(context, format("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayName().c_str()).c_str());
+            }
+        }
+        else
+        {
+            return internalError(context, format("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayName().c_str()).c_str());
+        }
+    }
+
     // If we need a cast to an any, then first resolve literal with its real type
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
@@ -302,8 +326,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u64 = node->computedValue.storageOffset;
-        node->parent->resultRegisterRC                                              = node->resultRegisterRC;
+        auto inst                      = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0]);
+        inst->b.u64                    = node->computedValue.storageOffset;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {

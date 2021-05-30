@@ -583,10 +583,8 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 {
-    auto node  = context->node;
-    auto front = node->childs.front();
-    if (front->typeInfo->isRelative())
-        front = front;
+    auto node              = context->node;
+    auto front             = node->childs.front();
     node->resultRegisterRC = front->resultRegisterRC;
     return true;
 }

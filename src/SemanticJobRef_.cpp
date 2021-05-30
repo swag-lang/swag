@@ -364,7 +364,27 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
-        SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
+
+        // Try to dereference as a constant if we can
+        uint32_t     storageOffset  = UINT32_MAX;
+        DataSegment* storageSegment = nullptr;
+        SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
+        if (storageSegment)
+        {
+            arrayNode->computedValue.storageOffset  = storageOffset;
+            arrayNode->computedValue.storageSegment = storageSegment;
+            if (arrayNode->resolvedSymbolOverload)
+            {
+                SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
+                arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
+            }
+
+            arrayNode->setFlagsValueIsComputed();
+        }
+        else
+        {
+            SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
+        }
         break;
     }
 
@@ -413,7 +433,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::getConstantArrayPtr(SemanticContext* context, void** result)
+bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
 {
     auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayType = TypeManager::concreteReferenceType(arrayNode->array->typeInfo);
@@ -447,9 +467,8 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, void** result)
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(overload->computedValue.storageSegment);
-                auto ptr = overload->computedValue.storageSegment->address(overload->computedValue.storageOffset);
-                ptr += offsetAccess;
-                *result = ptr;
+                *storageOffset  = overload->computedValue.storageOffset + (uint32_t) offsetAccess;
+                *storageSegment = overload->computedValue.storageSegment;
                 return true;
             }
         }
@@ -520,10 +539,15 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
         // Try to dereference as a constant if we can
-        void* ptr = nullptr;
-        SWAG_CHECK(getConstantArrayPtr(context, &ptr));
-        if (ptr && derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
-            arrayNode->setFlagsValueIsComputed();
+        uint32_t     storageOffset  = UINT32_MAX;
+        DataSegment* storageSegment = nullptr;
+        SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
+        if (storageSegment)
+        {
+            auto ptr = storageSegment->address(storageOffset);
+            if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
+                arrayNode->setFlagsValueIsComputed();
+        }
 
         break;
     }

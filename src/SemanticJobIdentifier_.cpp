@@ -46,7 +46,10 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     {
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
-        node->flags &= ~AST_L_VALUE;
+
+        // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
+        if (!node->computedValue.storageSegment || node->computedValue.storageOffset == 0xFFFFFFFF)
+            node->flags &= ~AST_L_VALUE;
     }
 
     return true;
