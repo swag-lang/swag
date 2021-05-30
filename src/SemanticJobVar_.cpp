@@ -926,16 +926,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-                    storageOffset = node->assignment->computedValue.storageOffset;
+                {
+                    storageOffset  = node->assignment->computedValue.storageOffset;
+                    storageSegment = node->assignment->computedValue.storageSegment;
+                }
                 else if (node->flags & AST_VALUE_COMPUTED)
-                    storageOffset = node->computedValue.storageOffset;
+                {
+                    storageOffset  = node->computedValue.storageOffset;
+                    storageSegment = node->computedValue.storageSegment;
+                }
                 else
-                    SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+                    SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
             }
             else if (typeInfo->kind == TypeInfoKind::Slice)
             {
                 SWAG_ASSERT(!(node->flags & AST_VALUE_COMPUTED));
-                SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
                 auto typeList                                 = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
                 node->assignment->computedValue.reg.u64       = typeList->subTypes.size();
                 node->assignment->computedValue.storageOffset = storageOffset;
