@@ -446,8 +446,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         SWAG_ASSERT(overload);
         SWAG_ASSERT(overload->computedValue.storageSegment);
         SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = overload->computedValue.storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
+        emitMakeSegPointer(context, overload->computedValue.storageSegment, regList[0], overload->computedValue.storageOffset);
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
     }
 
     // :SliceLiteral
@@ -459,8 +459,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         SWAG_ASSERT(overload->computedValue.storageSegment);
         SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
         SWAG_ASSERT(overload->computedValue.reg.u64 != 0);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = overload->computedValue.storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = overload->computedValue.reg.u64;
+        emitMakeSegPointer(context, overload->computedValue.storageSegment, regList[0], overload->computedValue.storageOffset);
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = overload->computedValue.reg.u64;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
