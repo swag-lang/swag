@@ -942,9 +942,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 SWAG_ASSERT(!(node->flags & AST_VALUE_COMPUTED));
                 SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-                auto typeList                                 = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                node->assignment->computedValue.reg.u64       = typeList->subTypes.size();
-                node->assignment->computedValue.storageOffset = storageOffset;
+                auto typeList                                  = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                node->assignment->computedValue.reg.u64        = typeList->subTypes.size();
+                node->assignment->computedValue.storageOffset  = storageOffset;
+                node->assignment->computedValue.storageSegment = storageSegment;
                 node->assignment->setFlagsValueIsComputed();
             }
 

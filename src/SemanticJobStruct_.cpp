@@ -682,7 +682,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
                 {
                     varDecl->type->flags |= AST_VALUE_COMPUTED;
-                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, &sourceFile->module->constantSegment));
+                    varDecl->type->computedValue.storageSegment = &sourceFile->module->constantSegment;
+                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, varDecl->type->computedValue.storageSegment));
                 }
             }
 
