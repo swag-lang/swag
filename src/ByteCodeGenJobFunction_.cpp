@@ -1012,14 +1012,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store in RR0 the address of the stack to store the result
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64            = node->concreteTypeInfoStorage;
+            inst->b.u64            = node->computedValue.storageOffset;
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
             if (node->resolvedSymbolOverload)
                 node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
 
-            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->concreteTypeInfoStorage);
+            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue.storageOffset);
         }
     }
 
@@ -1415,8 +1415,8 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     uint32_t storageIndex = 0;
     if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
-        auto param              = node->childs.back();
-        auto resolved           = param->resolvedSymbolOverload;
+        auto param                            = node->childs.back();
+        auto resolved                         = param->resolvedSymbolOverload;
         resolved->computedValue.storageOffset = offset;
         offset += g_TypeMgr.typeInfoVariadic->sizeOf;
         SWAG_ASSERT(resolved->storageIndex == 0);
@@ -1428,8 +1428,8 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     {
         if ((i == childSize - 1) && funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
             break;
-        auto param              = node->childs[i];
-        auto resolved           = param->resolvedSymbolOverload;
+        auto param                            = node->childs[i];
+        auto resolved                         = param->resolvedSymbolOverload;
         resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
 

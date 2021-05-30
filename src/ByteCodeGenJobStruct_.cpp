@@ -958,7 +958,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         {
             if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
             {
-                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->concreteTypeInfoStorage)
+                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->computedValue.storageOffset)
                 {
                     mustReinit        = false;
                     toDrop.typeStruct = nullptr;
