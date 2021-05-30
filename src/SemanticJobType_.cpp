@@ -671,12 +671,10 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
 bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags)
 {
     auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
+    auto  module     = sourceFile->module;
+    auto& typeTable  = module->typeTable;
 
-    if (flags & CONCRETE_FOR_COMPILER)
-        node->computedValue.storageSegment = &sourceFile->module->compilerSegment;
-    else
-        node->computedValue.storageSegment = &sourceFile->module->typeSegment;
+    node->computedValue.storageSegment = typeTable.getSegmentStorage(module, CONCRETE_SHOULD_WAIT | flags);
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, resultTypeInfo, &node->computedValue.storageOffset, CONCRETE_SHOULD_WAIT | flags));
     if (context->result != ContextResult::Done)
         return true;
