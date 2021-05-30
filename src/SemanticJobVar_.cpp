@@ -375,25 +375,16 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 
         auto module = node->sourceFile->module;
 
-        DataSegment* seg = nullptr;
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            seg = &module->compilerSegment;
-        else if (node->kind == AstNodeKind::ConstDecl || (overload->flags & OVERLOAD_VAR_STRUCT))
-            seg = &module->constantSegment;
-        else if (node->attributeFlags & ATTRIBUTE_TLS)
-            seg = &module->tlsSegment;
-        else
-            seg = &module->mutableSegment;
-
-        if (seg == &module->compilerSegment)
+        DataSegment* storageSegment = storageSegment = getSegmentForVar(context, node);
+        if (storageSegment->kind == SegmentKind::Compiler)
         {
             overload->computedValue.storageOffset = node->computedValue.storageOffset;
         }
         else
         {
-            auto storageOffset                    = seg->reserve(node->typeInfo->sizeOf);
+            auto storageOffset                    = storageSegment->reserve(node->typeInfo->sizeOf);
             overload->computedValue.storageOffset = storageOffset;
-            auto addr                             = seg->address(storageOffset);
+            auto addr                             = storageSegment->address(storageOffset);
             auto addrSrc                          = module->compilerSegment.address(node->computedValue.storageOffset);
             memcpy(addr, addrSrc, node->typeInfo->sizeOf);
         }
@@ -535,14 +526,22 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     auto module   = node->sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
+    if (node->kind == AstNodeKind::ConstDecl)
+        return &module->constantSegment;
+    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
+        return &module->constantSegment;
+
     if (node->attributeFlags & ATTRIBUTE_TLS)
         return &module->tlsSegment;
+
     if (node->attributeFlags & ATTRIBUTE_COMPILER)
         return &module->compilerSegment;
+
     if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         return &module->mutableSegment;
     if (node->attributeFlags & ATTRIBUTE_NO_BSS)
         return &module->mutableSegment;
+
     if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
         return &module->bssSegment;
     if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
@@ -553,6 +552,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
         (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::TypeSet || node->typeInfo->kind == TypeInfoKind::Interface) &&
         !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
         return &module->bssSegment;
+
     return &module->mutableSegment;
 }
 
