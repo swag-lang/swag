@@ -67,9 +67,6 @@ que faire ?
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------
-y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
-(si on les compare avec un type non compiler, si on les met dans une var any...)
--------------------------------------
 attributes flags qui sont a la fois on et off => error
 -------------------------------------
 cast any avec struct, ca fait quoi (et avec les using ?)
