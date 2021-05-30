@@ -85,7 +85,7 @@
 #define Msg0086 "variable '%s' has only been used to find function '%s'; use scope '%s' instead"
 #define Msg0087 "only calls to 'Swag.mixin' functions can be done at global scope ('%s' is %s)"
 #define Msg0088 "function '%s' is not declared with the 'Swag.mixin' attribute, and this is mandatory for a function call at global scope"
-#define Msg0091 "cannot reference 'Swag.compiler' variable '%s' from runtime function '%s'"
+#define Msg0091 "cannot reference 'Swag.compiler' %s '%s' from runtime %s"
 #define Msg0092 "unused return value of lambda '%s'"
 #define Msg0093 "identifier '%s' cannot be found in tuple"
 #define Msg0094 "cannot discard a function call that returns nothing"
