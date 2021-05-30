@@ -283,17 +283,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         if (node->computedValue.storageSegment && node->computedValue.storageOffset != 0xFFFFFFFF)
         {
             regList = reserveRegisterRC(context);
-            switch (node->computedValue.storageSegment->kind)
-            {
-            case SegmentKind::Constant:
-                emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], node->computedValue.storageOffset);
-                return true;
-            case SegmentKind::Compiler:
-                emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, regList[0], node->computedValue.storageOffset);
-                return true;
-            default:
-                return internalError(context, format("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayName().c_str()).c_str());
-            }
+            emitMakeSegPointer(context, node->computedValue.storageSegment, regList[0], node->computedValue.storageOffset);
+            return true;
         }
         else
         {
