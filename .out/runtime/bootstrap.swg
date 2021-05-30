@@ -11,6 +11,7 @@ namespace Swag
         Struct          = 0x00000020
         Function        = 0x00000040
         File            = 0x00000080
+        Constant        = 0x00000100
         All             = 0x0FFFFFFF
     }
 
@@ -28,7 +29,7 @@ namespace Swag
     #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
     attr printbc()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable|AttributeUsage.Constant)]
     attr compiler()
 
     #[attributeUsage(AttributeUsage.Function)]

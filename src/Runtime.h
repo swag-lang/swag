@@ -16,6 +16,7 @@ enum AttributeUsage
     Struct         = 0x00000020,
     Function       = 0x00000040,
     File           = 0x00000080,
+    Constant       = 0x00000100,
     All            = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,
