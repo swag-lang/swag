@@ -467,28 +467,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             typeInfo->kind == TypeInfoKind::TypeListArray ||
             typeInfo->kind == TypeInfoKind::Struct)
         {
-            ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_COMPILER)
-                inst = emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, node->resultRegisterRC);
-            else if (resolved->flags & OVERLOAD_VAR_BSS)
-                inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
-            else
-                inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
+            ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, node->resultRegisterRC, resolved->computedValue.storageOffset);
             if (node->forceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
         else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_COMPILER)
-                inst = emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, node->resultRegisterRC);
-            else if (resolved->flags & OVERLOAD_VAR_BSS)
-                inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
-            else
-                inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
-            inst->b.u64     = resolved->computedValue.storageOffset;
-            inst->c.pointer = (uint8_t*) resolved;
+            ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, node->resultRegisterRC, resolved->computedValue.storageOffset);
+            inst->c.pointer           = (uint8_t*) resolved;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }

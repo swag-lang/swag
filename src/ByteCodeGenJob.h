@@ -181,6 +181,8 @@ struct ByteCodeGenJob : public Job
     JobResult execute() override;
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
+    static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
+    static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);
@@ -348,7 +350,6 @@ struct ByteCodeGenJob : public Job
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitDebugNop(ByteCodeGenContext* context);
-    static void emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
     static bool emitInit(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters);
     static bool emitDropCopyMove(ByteCodeGenContext* context);
