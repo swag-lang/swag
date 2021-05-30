@@ -375,11 +375,16 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 
         auto module = node->sourceFile->module;
 
-        DataSegment* storageSegment = getSegmentForVar(context, node);
+        DataSegment* storageSegment = overload->computedValue.storageSegment;
+        SWAG_ASSERT(storageSegment);
+
+        // If request segment is compiler, then nothing to do, the value is already stored there
         if (storageSegment->kind == SegmentKind::Compiler)
         {
             overload->computedValue.storageOffset = node->computedValue.storageOffset;
         }
+
+        // Copy value from compiler segment to real requested segment
         else
         {
             auto storageOffset                    = storageSegment->reserve(node->typeInfo->sizeOf);
@@ -912,6 +917,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format(Msg0311, node->typeInfo->getDisplayName().c_str())}));
 
+            storageSegment = getSegmentForVar(context, node);
             if (node->extension && node->extension->resolvedUserOpSymbolOverload)
             {
                 storageOffset = 0;
@@ -939,6 +945,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->inheritComputedValue(node->assignment);
             module->addGlobalVar(node, GlobalVarKind::Constant);
         }
+    }
+    else if (symbolFlags & OVERLOAD_VAR_STRUCT)
+    {
+        storageOffset  = 0;
+        storageSegment = &module->constantSegment;
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {

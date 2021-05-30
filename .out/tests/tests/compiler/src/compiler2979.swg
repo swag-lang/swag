@@ -1,4 +1,4 @@
-#[Swag.compiler]
+/*#[Swag.compiler]
 const X: [2] s32 = @[10, 20]
 
 #[Swag.optim("", false)]
@@ -9,4 +9,4 @@ func test()
     @print(val)
 }
 
-#run test()
+#run test()*/
