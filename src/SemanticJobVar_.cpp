@@ -363,8 +363,8 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         node->flags |= AST_CONST_EXPR;
         node->semFlags |= AST_SEM_EXEC_RET_STACK;
 
-        node->byteCodeFct       = ByteCodeGenJob::emitLocalVarDecl;
-        overload->storageOffset = 0;
+        node->byteCodeFct                     = ByteCodeGenJob::emitLocalVarDecl;
+        overload->computedValue.storageOffset = 0;
 
         SWAG_CHECK(evaluateConstExpression(context, node));
         if (context->result == ContextResult::Pending)
@@ -387,17 +387,18 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 
         if (seg == &module->compilerSegment)
         {
-            overload->storageOffset = node->computedValue.reg.offset;
+            overload->computedValue.storageOffset = node->computedValue.storageOffset;
         }
         else
         {
-            overload->storageOffset = seg->reserve(node->typeInfo->sizeOf);
-            auto addr               = seg->address(node->resolvedSymbolOverload->storageOffset);
-            auto addrSrc            = module->compilerSegment.address(node->computedValue.reg.offset);
+            auto storageOffset                    = seg->reserve(node->typeInfo->sizeOf);
+            overload->computedValue.storageOffset = storageOffset;
+            auto addr                             = seg->address(storageOffset);
+            auto addrSrc                          = module->compilerSegment.address(node->computedValue.storageOffset);
             memcpy(addr, addrSrc, node->typeInfo->sizeOf);
         }
 
-        node->computedValue.reg.offset = node->resolvedSymbolOverload->storageOffset;
+        node->computedValue.storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
 
         // Will remove the incomplete flag, and finish the resolve
         node->ownerScope->symTable.addSymbolTypeInfo(context,
@@ -407,7 +408,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
                                                      nullptr,
                                                      overload->flags & ~OVERLOAD_INCOMPLETE,
                                                      nullptr,
-                                                     overload->storageOffset);
+                                                     overload->computedValue.storageOffset);
     }
 
     return true;
@@ -891,9 +892,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
-                    storageOffset = node->assignment->computedValue.reg.offset;
+                    storageOffset = node->assignment->computedValue.storageOffset;
                 else if (node->flags & AST_VALUE_COMPUTED)
-                    storageOffset = node->computedValue.reg.offset;
+                    storageOffset = node->computedValue.storageOffset;
                 else
                     SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
             }
@@ -901,8 +902,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 SWAG_ASSERT(!(node->flags & AST_VALUE_COMPUTED));
                 SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-                auto typeList                           = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                node->assignment->computedValue.reg.u32 = (uint32_t) typeList->subTypes.size();
+                auto typeList                                 = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                node->assignment->computedValue.reg.u64       = typeList->subTypes.size();
+                node->assignment->computedValue.storageOffset = storageOffset;
                 node->assignment->setFlagsValueIsComputed();
             }
 
@@ -1016,7 +1018,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             for (auto& c : node->assignment->childs)
             {
                 SWAG_ASSERT(c->resolvedSymbolOverload);
-                storageOffset += c->resolvedSymbolOverload->storageOffset;
+                storageOffset += c->resolvedSymbolOverload->computedValue.storageOffset;
             }
         }
 

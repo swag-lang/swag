@@ -215,7 +215,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         }
         else
         {
-            auto offsetIdx = listNode->computedValue.reg.offset;
+            auto offsetIdx = listNode->computedValue.storageOffset;
             auto inst      = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64    = offsetIdx;
         }
@@ -240,7 +240,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         freeRegisterRC(context, r0);
 
         // Reference to the stack, and store the number of element in a register
-        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue.storageOffset;
         if (!node->forTuple)
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
     }
@@ -253,10 +253,10 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         {
             node->doneFlags |= AST_DONE_EXPRLIST_CST;
             auto module = node->sourceFile->module;
-            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.reg.offset, &module->constantSegment, nullptr, typeList, node));
+            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.storageOffset, &module->constantSegment, nullptr, typeList, node));
         }
 
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u64 = node->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u64 = node->computedValue.storageOffset;
         if (!node->forTuple)
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = typeList->subTypes.size();
     }
@@ -302,7 +302,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u64 = node->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u64 = node->computedValue.storageOffset;
         node->parent->resultRegisterRC                                              = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
@@ -380,9 +380,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         uint32_t storageOffset = UINT32_MAX;
         // Compile time evaluation of a function returning a struct stores the offset in computed value.
         if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-            storageOffset = node->resolvedSymbolOverload->storageOffset;
+            storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
         else
-            storageOffset = node->computedValue.reg.u32;
+            storageOffset = node->computedValue.storageOffset;
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
@@ -393,9 +393,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         // In case of compiler structures (like CompilerSourceLocation), there's no symbol. The storage
         // offset is stored in the computed value. Same for compile time evaluation of a function returning a struct.
         if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-            storageOffset = node->resolvedSymbolOverload->storageOffset;
+            storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
         else
-            storageOffset = node->computedValue.reg.u32;
+            storageOffset = node->computedValue.storageOffset;
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         inst->b.u64 = storageOffset;
     }
@@ -418,8 +418,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->castedTypeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
+        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
 
@@ -428,10 +428,10 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.reg.u32 != 0);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = node->resolvedSymbolOverload->computedValue.reg.u32;
+        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+        SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.reg.u64 != 0);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = node->resolvedSymbolOverload->computedValue.reg.u64;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {

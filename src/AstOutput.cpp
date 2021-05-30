@@ -53,7 +53,7 @@ namespace Ast
                         auto& oneParam = one.parameters[i];
                         if (i)
                             CONCAT_FIXED_STR(concat, ", ");
-                        Ast::outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value.text, oneParam.value.reg);
+                        Ast::outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value);
                     }
 
                     concat.addChar(')');
@@ -67,7 +67,7 @@ namespace Ast
         return true;
     }
 
-    bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
+    bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
     {
         if (typeInfo == g_TypeMgr.typeInfoNull)
         {
@@ -82,7 +82,7 @@ namespace Ast
         }
 
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
-        auto str = literalToString(typeInfo, text, reg);
+        auto str = literalToString(typeInfo, value);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::String:

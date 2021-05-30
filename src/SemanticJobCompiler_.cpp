@@ -462,10 +462,10 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         SWAG_VERIFY(rc == 0, context->report({back, format(Msg0223, back->computedValue.text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
-        auto newJob                    = g_Pool_loadFileJob.alloc();
-        node->computedValue.reg.offset = module->constantSegment.reserve(stat_buf.st_size);
-        newJob->destBuffer             = module->constantSegment.address(node->computedValue.reg.offset);
-        newJob->sizeBuffer             = stat_buf.st_size;
+        auto newJob                       = g_Pool_loadFileJob.alloc();
+        node->computedValue.storageOffset = module->constantSegment.reserve(stat_buf.st_size);
+        newJob->destBuffer                = module->constantSegment.address(node->computedValue.storageOffset);
+        newJob->sizeBuffer                = stat_buf.st_size;
 
         newJob->module       = module;
         newJob->sourcePath   = back->computedValue.text;
@@ -606,7 +606,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             locNode       = resolved->node;
         }
 
-        node->computedValue.reg.offset = ByteCodeGenJob::computeSourceLocation(locNode);
+        node->computedValue.storageOffset = ByteCodeGenJob::computeSourceLocation(locNode);
         node->setFlagsValueIsComputed();
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;

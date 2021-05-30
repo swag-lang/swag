@@ -362,10 +362,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)
     {
-        auto offsetStorage             = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
-        node->computedValue.reg.offset = offsetStorage;
-        auto addrDst                   = sourceFile->module->compilerSegment.address(offsetStorage);
-        auto addrSrc                   = runContext.bp;
+        auto offsetStorage                = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
+        node->computedValue.storageOffset = offsetStorage;
+        auto addrDst                      = sourceFile->module->compilerSegment.address(offsetStorage);
+        auto addrSrc                      = runContext.bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
     }
 
@@ -400,10 +400,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
                 return callerContext->report({node, format(Msg0280, node->typeInfo->getDisplayName().c_str())});
             }
 
-            auto offsetStorage             = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
-            node->computedValue.reg.offset = offsetStorage;
-            auto addrDst                   = sourceFile->module->constantSegment.address(offsetStorage);
-            auto addrSrc                   = runContext.registersRR[0].pointer;
+            auto offsetStorage                = sourceFile->module->constantSegment.reserve(node->typeInfo->sizeOf);
+            node->computedValue.storageOffset = offsetStorage;
+            auto addrDst                      = sourceFile->module->constantSegment.address(offsetStorage);
+            auto addrSrc                      = runContext.registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, node->typeInfo->sizeOf);
         }
         else

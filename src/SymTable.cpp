@@ -169,7 +169,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     }
 
     result->flags |= flags;
-    result->storageOffset = storageOffset;
+    result->computedValue.storageOffset = storageOffset;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolOverload = result;
 

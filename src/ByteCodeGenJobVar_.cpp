@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
                 RegisterList r0 = reserveRegisterRC(context);
-                emitRetValRef(context, r0, retVal, resolved->storageOffset);
+                emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset);
                 node->type->resultRegisterRC = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
             }
             else
-                emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
+                emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -158,16 +158,16 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             switch (resolved->typeInfo->sizeOf)
             {
             case 1:
-                emitInstruction(context, ByteCodeOp::SetAtStackPointer8, resolved->storageOffset, resolved->registers);
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer8, resolved->computedValue.storageOffset, resolved->registers);
                 break;
             case 2:
-                emitInstruction(context, ByteCodeOp::SetAtStackPointer16, resolved->storageOffset, resolved->registers);
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer16, resolved->computedValue.storageOffset, resolved->registers);
                 break;
             case 4:
-                emitInstruction(context, ByteCodeOp::SetAtStackPointer32, resolved->storageOffset, resolved->registers);
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer32, resolved->computedValue.storageOffset, resolved->registers);
                 break;
             case 8:
-                emitInstruction(context, ByteCodeOp::SetAtStackPointer64, resolved->storageOffset, resolved->registers);
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, resolved->registers);
                 break;
             }
         }
@@ -239,25 +239,25 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
         else
         {
-            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
+            SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
             switch (typeInfo->sizeOf)
             {
             case 1:
-                emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 2:
-                emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 4:
-                emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             case 8:
-                emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
                 break;
             default:
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
-                inst->a.u32 = resolved->storageOffset;
+                inst->a.u32 = resolved->computedValue.storageOffset;
                 inst->b.u64 = typeInfo->sizeOf;
                 break;
             }

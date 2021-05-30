@@ -222,7 +222,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     else if (typeInfo->isNative(NativeTypeKind::String))
         node->computedValue.text = expr->computedValue.text;
     else if (typeInfo->kind == TypeInfoKind::Native)
-        node->computedValue.text = Ast::literalToString(typeInfo, expr->computedValue.text, expr->computedValue.reg);
+        node->computedValue.text = Ast::literalToString(typeInfo, expr->computedValue);
     else if (typeInfo->kind == TypeInfoKind::Enum)
         node->computedValue.text = Ast::enumToString(typeInfo, expr->computedValue.text, expr->computedValue.reg);
     else
@@ -271,7 +271,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         // Slice literal. This can happen for enum values
         if (node->flags & AST_VALUE_COMPUTED)
         {
-            node->computedValue.reg.u64 = node->computedValue.reg.u32;
+            node->computedValue.reg.u64 = node->computedValue.reg.u64;
             node->typeInfo              = g_TypeMgr.typeInfoUInt;
         }
         else
@@ -552,7 +552,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, Msg0798}));
-        node->computedValue.reg.u64 = expr->resolvedSymbolOverload->storageOffset;
+        node->computedValue.reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
         node->setFlagsValueIsComputed();
         if (node->computedValue.reg.u64 > 0xFFFFFFFF)
             node->typeInfo = g_TypeMgr.typeInfoUInt;

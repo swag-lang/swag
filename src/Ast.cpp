@@ -114,18 +114,19 @@ namespace Ast
         return result;
     }
 
-    Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
+    Utf8 literalToString(TypeInfo* typeInfo, const ComputedValue& value)
     {
         Utf8 result;
-        result.reserve(text.capacity());
+        result.reserve(value.text.capacity());
 
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            result = format("%u", reg.offset);
+            result = format("%u", value.storageOffset);
             return result;
         }
 
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+        auto& reg = value.reg;
+        typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         switch (typeInfo->nativeType)
         {
@@ -174,7 +175,7 @@ namespace Ast
             return result;
         case NativeTypeKind::String:
         {
-            for (auto c : text)
+            for (auto c : value.text)
             {
                 if (c < 32)
                     result += format("\\x%02x", c);

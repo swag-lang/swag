@@ -504,7 +504,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             llvm::DIType*          type  = getType(typeInfo, file);
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
             llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.text.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
-            auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
+            auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->computedValue.storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
     }
@@ -672,7 +672,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         // Convert to int, in order to make an Add
         constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, builder.getInt64Ty());
         // Add the byte offset
-        constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->storageOffset));
+        constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->computedValue.storageOffset));
         // Convert back to a pointer to bytes
         constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, builder.getInt8Ty()->getPointerTo());
 

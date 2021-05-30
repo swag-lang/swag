@@ -185,7 +185,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // A structure initialized with a literal
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
-            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = varDecl->type->computedValue.reg.offset;
+            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = varDecl->type->computedValue.storageOffset;
             emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             continue;
         }
@@ -198,7 +198,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = exprList->computedValue.reg.offset;
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = exprList->computedValue.storageOffset;
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u64 = typeList->subTypes.size();
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
@@ -1027,8 +1027,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         else
         {
             auto inst = emitInstruction(context, ByteCodeOp::SetZeroStackX);
-            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
-            inst->a.u32 = resolved->storageOffset;
+            SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
+            inst->a.u32 = resolved->computedValue.storageOffset;
             inst->b.u64 = typeInfoStruct->sizeOf;
         }
     }
@@ -1036,7 +1036,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     {
         // Push self
         RegisterList r0 = reserveRegisterRC(context);
-        emitRetValRef(context, r0, retVal, resolved->storageOffset);
+        emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset);
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
@@ -1073,7 +1073,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
 
-                emitRetValRef(context, r0, retVal, resolved->storageOffset + typeParam->offset);
+                emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
                 if (retVal && typeParam->offset)
                 {
                     auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);

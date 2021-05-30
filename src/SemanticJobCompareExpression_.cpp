@@ -18,13 +18,13 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
-        if (left->computedValue.reg.offset == right->computedValue.reg.offset)
+        if (left->computedValue.storageOffset == right->computedValue.storageOffset)
             node->computedValue.reg.b = true;
         else
         {
             auto module               = context->sourceFile->module;
-            auto ptr1                 = (ConcreteTypeInfo*) module->typeSegment.address(left->computedValue.reg.offset);
-            auto ptr2                 = (ConcreteTypeInfo*) module->typeSegment.address(right->computedValue.reg.offset);
+            auto ptr1                 = (ConcreteTypeInfo*) module->typeSegment.address(left->computedValue.storageOffset);
+            auto ptr2                 = (ConcreteTypeInfo*) module->typeSegment.address(right->computedValue.storageOffset);
             node->computedValue.reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
         }
     }

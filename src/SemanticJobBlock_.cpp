@@ -123,7 +123,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                                                &callParam->computedValue,
                                                OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
                                                nullptr,
-                                               callParam->computedValue.reg.offset,
+                                               callParam->computedValue.storageOffset,
                                                &funcParam->token.text);
                     isConstant = true;
                     break;
@@ -304,7 +304,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 {
                     auto value = expr->computedValue.reg.u64;
                     if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                        value = expr->computedValue.reg.offset;
+                        value = expr->computedValue.storageOffset;
 
                     if (val64.find(value) != val64.end())
                     {

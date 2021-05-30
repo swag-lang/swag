@@ -896,7 +896,7 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
         reloc.symbolIndex    = segSymIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU32(p->resolvedSymbolOverload->storageOffset);
+        concat.addU32(p->resolvedSymbolOverload->computedValue.storageOffset);
 
         // segment relocation
         reloc.type           = IMAGE_REL_AMD64_SECTION;
@@ -1171,7 +1171,7 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
         reloc.symbolIndex    = segSymIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU32(overload->storageOffset);
+        concat.addU32(overload->computedValue.storageOffset);
 
         // segment relocation
         reloc.type           = IMAGE_REL_AMD64_SECTION;
@@ -1212,7 +1212,7 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
             concat.addU32(f.offsetRetVal);
         else
-            concat.addU32(overload->storageOffset + f.offsetStack);
+            concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
 
         dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
         auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;

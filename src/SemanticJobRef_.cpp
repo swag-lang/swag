@@ -500,8 +500,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 if (subArray->array->resolvedSymbolOverload && (subArray->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
                 {
-                    SWAG_ASSERT(subArray->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-                    auto ptr = context->sourceFile->module->constantSegment.address(subArray->array->resolvedSymbolOverload->storageOffset);
+                    SWAG_ASSERT(subArray->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+                    auto ptr = context->sourceFile->module->constantSegment.address(subArray->array->resolvedSymbolOverload->computedValue.storageOffset);
                     ptr += offsetAccess;
                     if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                         arrayNode->setFlagsValueIsComputed();
@@ -525,8 +525,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_CHECK(boundCheck(context, arrayNode->access, arrayNode->array->computedValue.reg.u32));
-                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
+                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->pointedType->sizeOf;
                 if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
@@ -836,7 +836,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
 {
     auto node = context->node;
 
-    ptr += overload->storageOffset;
+    ptr += overload->computedValue.storageOffset;
     node->typeInfo = overload->typeInfo;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
@@ -844,7 +844,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     {
         auto relPtr = (uint8_t*) RELATIVE_PTR(ptr);
 
-        node->computedValue.reg.offset = segment->offset(relPtr);
+        node->computedValue.storageOffset = segment->offset(relPtr);
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
     else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
@@ -859,10 +859,11 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
 bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment)
 {
     uint32_t storageOffset = UINT32_MAX;
-    if (parent->previousResolvedNode->resolvedSymbolOverload)
-        storageOffset = parent->previousResolvedNode->resolvedSymbolOverload->storageOffset;
+    auto     prevNode      = parent->previousResolvedNode;
+    if (prevNode->resolvedSymbolOverload)
+        storageOffset = prevNode->resolvedSymbolOverload->computedValue.storageOffset;
     else
-        storageOffset = parent->previousResolvedNode->computedValue.reg.u32;
+        storageOffset = prevNode->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
     SWAG_CHECK(derefLiteralStruct(context, segment->address(storageOffset), overload, segment));
     return true;

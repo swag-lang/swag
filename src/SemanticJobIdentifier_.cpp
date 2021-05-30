@@ -652,8 +652,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             if (arrayNode->access->flags & AST_VALUE_COMPUTED)
             {
                 auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
+                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
                 if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
                 {

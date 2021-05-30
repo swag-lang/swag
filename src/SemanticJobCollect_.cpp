@@ -290,14 +290,14 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
     {
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
         {
-            SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
+            SWAG_ASSERT(node->assignment->computedValue.storageOffset != UINT32_MAX);
             if (seg == &node->sourceFile->module->constantSegment)
-                storageOffset = node->assignment->computedValue.reg.offset;
+                storageOffset = node->assignment->computedValue.storageOffset;
             else
             {
                 storageOffset = seg->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
                 auto addrDst  = seg->address(storageOffset);
-                auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->computedValue.reg.offset);
+                auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->computedValue.storageOffset);
                 memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             }
 
@@ -317,7 +317,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
             storageOffset = seg->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
             auto addrDst  = seg->address(storageOffset);
-            auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->storageOffset);
+            auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->computedValue.storageOffset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
         }
         else

@@ -679,7 +679,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
                 {
                     varDecl->type->flags |= AST_VALUE_COMPUTED;
-                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.reg.offset, varDecl, &sourceFile->module->constantSegment));
+                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, &sourceFile->module->constantSegment));
                 }
             }
 
@@ -781,7 +781,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         typeParam->offset                             = realStorageOffset;
-        child->resolvedSymbolOverload->storageOffset  = realStorageOffset;
+        child->resolvedSymbolOverload->computedValue.storageOffset  = realStorageOffset;
         child->resolvedSymbolOverload->storageIndex   = storageIndexField;
         child->resolvedSymbolOverload->attributeFlags = child->attributeFlags;
 
@@ -810,7 +810,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 auto  overload = child->resolvedSymbolOverload;
                 Utf8  name     = format("item%u", storageIndexField);
                 auto& symTable = node->scope->symTable;
-                symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
+                symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->computedValue.storageOffset, &name);
             }
         }
         else
@@ -988,7 +988,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         }
 
         typeParam->offset                            = storageOffset;
-        child->resolvedSymbolOverload->storageOffset = storageOffset;
+        child->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 
         SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
@@ -997,7 +997,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         // Register lambda variable in the scope of the itable struct
         auto  overload = child->resolvedSymbolOverload;
         auto& symTable = typeITable->scope->symTable;
-        symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset);
+        symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->computedValue.storageOffset);
 
         storageOffset += sizeof(void*);
         storageIndex++;

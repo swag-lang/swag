@@ -697,8 +697,8 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     auto node = context->node;
     SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, Msg0798}));
     SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, Msg0798}));
-    left->computedValue.text  = Ast::literalToString(left->typeInfo, left->computedValue.text, left->computedValue.reg);
-    right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue.text, right->computedValue.reg);
+    left->computedValue.text  = Ast::literalToString(left->typeInfo, left->computedValue);
+    right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue);
     node->computedValue.text  = left->computedValue.text + right->computedValue.text.c_str();
     node->typeInfo            = g_TypeMgr.typeInfoString;
     node->setFlagsValueIsComputed();

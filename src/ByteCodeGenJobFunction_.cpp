@@ -1417,7 +1417,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     {
         auto param              = node->childs.back();
         auto resolved           = param->resolvedSymbolOverload;
-        resolved->storageOffset = offset;
+        resolved->computedValue.storageOffset = offset;
         offset += g_TypeMgr.typeInfoVariadic->sizeOf;
         SWAG_ASSERT(resolved->storageIndex == 0);
         storageIndex += 2;
@@ -1430,7 +1430,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
             break;
         auto param              = node->childs[i];
         auto resolved           = param->resolvedSymbolOverload;
-        resolved->storageOffset = offset;
+        resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
 
         auto typeInfo     = TypeManager::concreteType(resolved->typeInfo);

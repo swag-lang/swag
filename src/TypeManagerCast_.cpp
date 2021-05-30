@@ -3000,7 +3000,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
                     // Test sizeof because @{} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)
-                        SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue.reg.offset, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
+                        SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue.storageOffset, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
                 }
             }
         }
