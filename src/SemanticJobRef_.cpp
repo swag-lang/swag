@@ -48,16 +48,26 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
     return true;
 }
 
+bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
+{
+    if (!(node->flags & AST_L_VALUE))
+    {
+        return context->report({node, Msg0469});
+    }
+
+    if (node->kind != AstNodeKind::IdentifierRef && node->kind != AstNodeKind::ArrayPointerIndex)
+        return context->report({node, Msg0470});
+
+    return true;
+}
+
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
     auto node     = context->node;
     auto child    = node->childs.front();
     auto typeInfo = child->typeInfo;
 
-    SWAG_VERIFY(child->flags & AST_L_VALUE, context->report({child, Msg0469}));
-    if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
-        return context->report({child, Msg0470});
-
+    SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
 

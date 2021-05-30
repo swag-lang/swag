@@ -377,6 +377,7 @@ struct SemanticJob : public Job
     static bool checkRelativePointerOverflow(SemanticContext* context, TypeInfo* typeInfo, AstNode* right);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveMove(SemanticContext* context);
+    static bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
     static bool resolveMakePointer(SemanticContext* context);
     static bool resolveRange(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);

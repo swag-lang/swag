@@ -614,14 +614,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // If this is a reference, be sure we can take address of itb
+    // If this is a reference, be sure we can take address of it
     if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference)
     {
         if (node->assignment)
         {
-            SWAG_VERIFY(node->assignment->flags & AST_L_VALUE, context->report({node->assignment, Msg0469}));
-            if (node->assignment->kind != AstNodeKind::IdentifierRef && node->assignment->kind != AstNodeKind::ArrayPointerIndex)
-                return context->report({node->assignment, Msg0470});
+            SWAG_CHECK(checkCanTakeAddress(context, node->assignment));
             SyntaxJob::forceTakeAddress(node->assignment);
         }
     }
