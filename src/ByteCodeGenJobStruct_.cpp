@@ -185,7 +185,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // A structure initialized with a literal
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
-            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = varDecl->type->computedValue.storageOffset;
+            auto varType = varDecl->type;
+            SWAG_ASSERT(varType->computedValue.storageSegment);
+            SWAG_ASSERT(varType->computedValue.storageOffset != 0xFFFFFFFF);
+            emitMakeSegPointer(&cxt, varType->computedValue.storageSegment, 1, varType->computedValue.storageOffset);
             emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             continue;
         }
@@ -197,6 +200,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             {
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 SWAG_ASSERT(exprList->computedValue.storageSegment);
+                SWAG_ASSERT(exprList->computedValue.storageOffset != 0xFFFFFFFF);
                 emitMakeSegPointer(&cxt, exprList->computedValue.storageSegment, 1, exprList->computedValue.storageOffset);
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
