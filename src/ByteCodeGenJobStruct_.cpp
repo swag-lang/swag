@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {
@@ -206,10 +207,11 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             }
             else if (typeVar->isNative(NativeTypeKind::String))
             {
-                auto offset = sourceFile->module->constantSegment.addString(varDecl->assignment->computedValue.text);
-                SWAG_ASSERT(offset != UINT32_MAX);
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = offset;
-                emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64         = varDecl->assignment->computedValue.text.length();
+                auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
+                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue.text);
+                SWAG_ASSERT(storageOffset != UINT32_MAX);
+                emitMakeSegPointer(&cxt, storageSegment, 1, storageOffset);
+                emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue.text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
