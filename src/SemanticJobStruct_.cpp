@@ -291,7 +291,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
-    // Setup constant segment offset. We put the offset to start the of the functions, not the concrete type
+    // :ItfIsConstantSeg
+    // Setup constant segment offset. We put the offset to the start of the functions, not to the concrete type offset (0)
     typeParamItf->offset = itableOffset + sizeof(void*);
     decreaseInterfaceCount(typeStruct);
 

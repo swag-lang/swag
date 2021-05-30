@@ -93,8 +93,9 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     SWAG_ASSERT(itf);
     transformResultToLinear2(context, exprNode);
 
+    // :ItfIsConstantSeg
     SWAG_ASSERT(itf->offset != UINT32_MAX);
-    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, exprNode->resultRegisterRC[1])->b.u64 = itf->offset;
+    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->resultRegisterRC[1], itf->offset);
 
     // We need to emit a pointer, so we emit a pointer to the interface that is stored in the 2 contiguous registers
     if (fromPointer)

@@ -182,6 +182,7 @@ bool TypeTableJob::computeStruct()
             {
                 SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->interfaces[param], cflags));
 
+                // :ItfIsConstantSeg
                 // Compute the storage of the interface for swag_runtime_interfaceof
                 // Not needed if we are computing a compiler type
                 if (!(cflags & CONCRETE_FOR_COMPILER))
