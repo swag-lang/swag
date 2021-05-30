@@ -200,6 +200,19 @@ bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
     return true;
 }
 
+void ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset)
+{
+    SWAG_ASSERT(seg);
+    switch (seg->kind)
+    {
+    case SegmentKind::Type:
+        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0, offset);
+        break;
+    default:
+        SWAG_ASSERT(false);
+    }
+}
+
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
 {
     AstNode* node = context->node;

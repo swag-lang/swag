@@ -415,6 +415,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     castOffset              = from->castOffset;
     stackOffset             = from->stackOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
+    concreteTypeInfoSegment = from->concreteTypeInfoSegment;
 
     attributeFlags = from->attributeFlags;
 

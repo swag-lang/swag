@@ -587,12 +587,11 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
     PushICFlags ic(context, BCI_SAFETY);
 
-    auto r0     = reserveRegisterRC(context);
-    auto inst   = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
-    inst->b.u64 = exprNode->concreteTypeInfoStorage;
+    auto r0 = reserveRegisterRC(context);
+    emitMakeSegPointer(context, exprNode->concreteTypeInfoSegment, r0, exprNode->concreteTypeInfoStorage);
 
     RegisterList result = reserveRegisterRC(context);
-    inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
+    auto         inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32         = SWAG_COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
     emitAssert(context, result, Msg0228);

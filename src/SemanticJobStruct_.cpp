@@ -83,7 +83,8 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
         return true;
 
     // Make a concrete type for the given struct
-    auto& typeTable = node->sourceFile->module->typeTable;
+    auto& typeTable               = module->typeTable;
+    back->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_SHOULD_WAIT);
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
@@ -96,9 +97,11 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
 
     // Move back to concrete type, and initialize it
     itable--;
-    *itable = sourceFile->module->typeSegment.address(back->concreteTypeInfoStorage);
+    auto segType = back->concreteTypeInfoSegment;
+    SWAG_ASSERT(segType);
+    *itable = segType->address(back->concreteTypeInfoStorage);
     SWAG_ASSERT(typeParamItf->offset);
-    module->constantSegment.addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, SegmentKind::Type);
+    module->constantSegment.addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, segType->kind);
 
     return true;
 }

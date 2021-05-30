@@ -100,12 +100,14 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
 
         // Then reference that value and the concrete type info
-        auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
-        *(void**) ptrDest                   = ptrStorage;
-        *(void**) (ptrDest + sizeof(void*)) = module->typeSegment.address(assignment->concreteTypeInfoStorage);
+        auto ptrStorage   = module->constantSegment.addressNoLock(storageOffsetValue);
+        *(void**) ptrDest = ptrStorage;
+        auto segType      = assignment->concreteTypeInfoSegment;
+        SWAG_ASSERT(segType);
+        *(void**) (ptrDest + sizeof(void*)) = segType->address(assignment->concreteTypeInfoStorage);
 
         seg->addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
-        seg->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, SegmentKind::Type);
+        seg->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, segType->kind);
         return true;
     }
 

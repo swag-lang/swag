@@ -2019,9 +2019,11 @@ bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, 
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromType;
-                    fromNode->typeInfo       = toType;
-                    auto& typeTable          = context->sourceFile->module->typeTable;
+                    fromNode->castedTypeInfo          = fromType;
+                    fromNode->typeInfo                = toType;
+                    auto  module                      = context->sourceFile->module;
+                    auto& typeTable                   = module->typeTable;
+                    fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
                     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
                 }
 
@@ -2038,9 +2040,11 @@ bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, 
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromType;
-                    fromNode->typeInfo       = toType;
-                    auto& typeTable          = context->sourceFile->module->typeTable;
+                    fromNode->castedTypeInfo          = fromType;
+                    fromNode->typeInfo                = toType;
+                    auto  module                      = context->sourceFile->module;
+                    auto& typeTable                   = module->typeTable;
+                    fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
                     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
                 }
 
@@ -2070,9 +2074,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                     toNode->ownerFct->stackSize = max(toNode->ownerFct->stackSize, toNode->ownerScope->startStackSize);
                 }
 
-                toNode->castedTypeInfo = toType;
-                toNode->typeInfo       = fromType;
-                auto& typeTable        = context->sourceFile->module->typeTable;
+                toNode->castedTypeInfo            = toType;
+                toNode->typeInfo                  = fromType;
+                auto  module                      = context->sourceFile->module;
+                auto& typeTable                   = module->typeTable;
+                fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
                 SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, nullptr, &toNode->concreteTypeInfoStorage, CONCRETE_ZERO));
             }
 
@@ -2091,9 +2097,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toType;
-            auto& typeTable          = context->sourceFile->module->typeTable;
+            fromNode->castedTypeInfo          = fromType;
+            fromNode->typeInfo                = toType;
+            auto  module                      = context->sourceFile->module;
+            auto& typeTable                   = module->typeTable;
+            fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
         }
     }
@@ -2111,9 +2119,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toType;
-            auto& typeTable          = context->sourceFile->module->typeTable;
+            fromNode->castedTypeInfo          = fromType;
+            fromNode->typeInfo                = toType;
+            auto  module                      = context->sourceFile->module;
+            auto& typeTable                   = module->typeTable;
+            fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
         }
     }

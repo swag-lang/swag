@@ -23,6 +23,7 @@ struct AstNode;
 struct AstFuncCallParam;
 struct AstArrayPointerSlicing;
 struct TypeInfoPointer;
+struct DataSegment;
 enum class ByteCodeOp : uint16_t;
 enum class TokenId : uint16_t;
 
@@ -347,6 +348,7 @@ struct ByteCodeGenJob : public Job
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitDebugNop(ByteCodeGenContext* context);
+    static void emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
     static bool emitInit(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters);
     static bool emitDropCopyMove(ByteCodeGenContext* context);
