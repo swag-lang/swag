@@ -265,7 +265,9 @@ Utf8 AstNode::getKindName(AstNode* node)
             return "global variable";
         if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
             return "struct member";
-        return "variable";
+        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            return "function parameter";
+        return "local variable";
     case AstNodeKind::ConstDecl:
         return "constant";
     case AstNodeKind::FuncDecl:

@@ -45,6 +45,10 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (typeInfo->attributeUsage == AttributeUsage::All)
         return true;
 
+    bool isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
+    bool isStructVar = kind == AstNodeKind::VarDecl && checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl;
+    bool isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
+
     // Check specific hard coded attributes
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
@@ -55,9 +59,10 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "attributeMulti" && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == "global" && kind == AstNodeKind::VarDecl)
-            if (!checkNode->ownerScope->isGlobalOrImpl())
-                return true;
+        if (oneAttribute->token.text == "global" && isLocalVar)
+            return true;
+        if (oneAttribute->token.text == "compiler" && kind == AstNodeKind::ConstDecl)
+            return true;
         if (oneAttribute->token.text == "strict" && kind == AstNodeKind::Alias)
             return true;
         if (oneAttribute->token.text == "printbc" && kind == AstNodeKind::CompilerAst)
@@ -83,13 +88,11 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->attributeUsage & AttributeUsage::Variable) && (kind == AstNodeKind::VarDecl))
         return true;
 
-    if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && (kind == AstNodeKind::VarDecl))
-        if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
-            return true;
+    if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && isStructVar)
+        return true;
 
-    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl))
-        if (checkNode->ownerScope->isGlobalOrImpl())
-            return true;
+    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && isGlobalVar)
+        return true;
 
     const char* specificMsg = nullptr;
     switch (typeInfo->attributeUsage)
