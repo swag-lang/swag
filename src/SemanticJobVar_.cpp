@@ -530,6 +530,32 @@ bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* n
     return true;
 }
 
+DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl* node)
+{
+    auto module   = node->sourceFile->module;
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+
+    if (node->attributeFlags & ATTRIBUTE_TLS)
+        return &module->tlsSegment;
+    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        return &module->compilerSegment;
+    if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
+        return &module->mutableSegment;
+    if (node->attributeFlags & ATTRIBUTE_NO_BSS)
+        return &module->mutableSegment;
+    if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
+        return &module->bssSegment;
+    if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
+        return &module->bssSegment;
+    if (!node->assignment &&
+        !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
+        !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
+        (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::TypeSet || node->typeInfo->kind == TypeInfoKind::Interface) &&
+        !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
+        return &module->bssSegment;
+    return &module->mutableSegment;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -875,8 +901,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    typeInfo               = TypeManager::concreteType(node->typeInfo);
-    uint32_t storageOffset = UINT32_MAX;
+    typeInfo                    = TypeManager::concreteType(node->typeInfo);
+    uint32_t     storageOffset  = UINT32_MAX;
+    DataSegment* storageSegment = nullptr;
     if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
@@ -924,45 +951,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             storageOffset = 0;
             symbolFlags |= OVERLOAD_INCOMPLETE;
         }
-        else if (node->attributeFlags & ATTRIBUTE_TLS)
-        {
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->tlsSegment));
-        }
-        else if (node->attributeFlags & ATTRIBUTE_COMPILER)
-        {
-            symbolFlags |= OVERLOAD_VAR_COMPILER;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->compilerSegment));
-        }
-        else if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
-        {
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
-        }
-        else if (node->attributeFlags & ATTRIBUTE_NO_BSS)
-        {
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
-        }
-        else if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
-        {
-            symbolFlags |= OVERLOAD_VAR_BSS;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
-        }
-        else if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
-        {
-            symbolFlags |= OVERLOAD_VAR_BSS;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
-        }
-        else if (!node->assignment &&
-                 !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
-                 !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
-                 (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::TypeSet || node->typeInfo->kind == TypeInfoKind::Interface) &&
-                 !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
-        {
-            symbolFlags |= OVERLOAD_VAR_BSS;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
-        }
         else
         {
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+            storageSegment = getSegmentForVar(context, node);
+            switch (storageSegment->kind)
+            {
+            case SegmentKind::Compiler:
+                symbolFlags |= OVERLOAD_VAR_COMPILER;
+                break;
+            case SegmentKind::Bss:
+                symbolFlags |= OVERLOAD_VAR_BSS;
+                break;
+            }
+
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
         }
 
         // Register variable for debug
