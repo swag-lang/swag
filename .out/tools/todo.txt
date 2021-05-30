@@ -50,6 +50,8 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+relative pointer strings
+-------------------------------------
 range dynamic order
 -------------------------------------
 script, si #main resoud pas, erreur bizarre

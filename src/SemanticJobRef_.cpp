@@ -119,6 +119,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
                 ptrType->setConst();
             else if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
                 ptrType->setConst();
+            else if (node->flags & AST_IS_CONST)
+                ptrType->setConst();
         }
 
         node->typeInfo = ptrType;
@@ -303,6 +305,12 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format(Msg0478, arrayType->getDisplayName().c_str())}));
     }
+    else
+    {
+        // If array is const, inform the make pointer that it need to make a const pointer
+        if (arrayType->isConst())
+            arrayNode->parent->parent->flags |= AST_IS_CONST;
+    }
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
@@ -415,7 +423,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     // Do not set resolvedSymbolOverload !
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
 
-    // Can we dereference the string at compile time ?
+    // Can we dereference at compile time ?
     if (arrayType->isNative(NativeTypeKind::String))
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
