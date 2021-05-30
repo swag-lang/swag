@@ -124,6 +124,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                                                OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
                                                nullptr,
                                                callParam->computedValue.storageOffset,
+                                               callParam->computedValue.storageSegment,
                                                &funcParam->token.text);
                     isConstant = true;
                     break;

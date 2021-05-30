@@ -88,12 +88,13 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             uint32_t       flags,
                                             SymbolName**   resultName,
                                             uint32_t       storageOffset,
+                                            DataSegment*   storageSegment,
                                             Utf8*          aliasName)
 {
     unique_lock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->isGenerated)
         flags |= OVERLOAD_PUBLIC;
-    return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
+    return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
 }
 
 SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
@@ -104,6 +105,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                                                   uint32_t       flags,
                                                   SymbolName**   resultName,
                                                   uint32_t       storageOffset,
+                                                  DataSegment*   storageSegment,
                                                   Utf8*          aliasName)
 {
     if (!aliasName)
@@ -169,7 +171,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     }
 
     result->flags |= flags;
-    result->computedValue.storageOffset = storageOffset;
+    result->computedValue.storageOffset  = storageOffset;
+    result->computedValue.storageSegment = storageSegment;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolOverload = result;
 

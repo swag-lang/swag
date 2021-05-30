@@ -780,10 +780,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
         }
 
-        typeParam->offset                             = realStorageOffset;
-        child->resolvedSymbolOverload->computedValue.storageOffset  = realStorageOffset;
-        child->resolvedSymbolOverload->storageIndex   = storageIndexField;
-        child->resolvedSymbolOverload->attributeFlags = child->attributeFlags;
+        typeParam->offset                                          = realStorageOffset;
+        child->resolvedSymbolOverload->computedValue.storageOffset = realStorageOffset;
+        child->resolvedSymbolOverload->storageIndex                = storageIndexField;
+        child->resolvedSymbolOverload->attributeFlags              = child->attributeFlags;
 
         typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + child->typeInfo->sizeOf);
 
@@ -810,7 +810,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 auto  overload = child->resolvedSymbolOverload;
                 Utf8  name     = format("item%u", storageIndexField);
                 auto& symTable = node->scope->symTable;
-                symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->computedValue.storageOffset, &name);
+                symTable.addSymbolTypeInfo(context,
+                                           child,
+                                           child->typeInfo,
+                                           SymbolKind::Variable,
+                                           nullptr,
+                                           overload->flags,
+                                           nullptr,
+                                           overload->computedValue.storageOffset,
+                                           overload->computedValue.storageSegment,
+                                           &name);
             }
         }
         else
@@ -987,9 +996,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             return context->report({attr->node, Msg0682});
         }
 
-        typeParam->offset                            = storageOffset;
+        typeParam->offset                                          = storageOffset;
         child->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
-        child->resolvedSymbolOverload->storageIndex  = storageIndex;
+        child->resolvedSymbolOverload->storageIndex                = storageIndex;
 
         SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
         typeITable->sizeOf += sizeof(void*);

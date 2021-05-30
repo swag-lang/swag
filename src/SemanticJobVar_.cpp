@@ -375,7 +375,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 
         auto module = node->sourceFile->module;
 
-        DataSegment* storageSegment = storageSegment = getSegmentForVar(context, node);
+        DataSegment* storageSegment = getSegmentForVar(context, node);
         if (storageSegment->kind == SegmentKind::Compiler)
         {
             overload->computedValue.storageOffset = node->computedValue.storageOffset;
@@ -399,7 +399,8 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
                                                      nullptr,
                                                      overload->flags & ~OVERLOAD_INCOMPLETE,
                                                      nullptr,
-                                                     overload->computedValue.storageOffset);
+                                                     overload->computedValue.storageOffset,
+                                                     overload->computedValue.storageSegment);
     }
 
     return true;
@@ -945,6 +946,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Msg0313}));
 
         node->flags |= AST_R_VALUE;
+        storageSegment = getSegmentForVar(context, node);
+        switch (storageSegment->kind)
+        {
+        case SegmentKind::Compiler:
+            symbolFlags |= OVERLOAD_VAR_COMPILER;
+            break;
+        case SegmentKind::Bss:
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            break;
+        }
 
         if (node->extension && node->extension->resolvedUserOpSymbolOverload)
         {
@@ -953,17 +964,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else
         {
-            storageSegment = getSegmentForVar(context, node);
-            switch (storageSegment->kind)
-            {
-            case SegmentKind::Compiler:
-                symbolFlags |= OVERLOAD_VAR_COMPILER;
-                break;
-            case SegmentKind::Bss:
-                symbolFlags |= OVERLOAD_VAR_BSS;
-                break;
-            }
-
             SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
         }
 
@@ -1079,7 +1079,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                  isCompilerConstant ? &node->computedValue : nullptr,
                                                                  symbolFlags,
                                                                  nullptr,
-                                                                 storageOffset);
+                                                                 storageOffset,
+                                                                 storageSegment);
     SWAG_CHECK(overload);
     node->resolvedSymbolOverload = overload;
 
