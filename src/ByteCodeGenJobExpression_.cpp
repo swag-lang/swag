@@ -252,11 +252,12 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         if (!(node->doneFlags & AST_DONE_EXPRLIST_CST))
         {
             node->doneFlags |= AST_DONE_EXPRLIST_CST;
-            auto module = node->sourceFile->module;
-            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.storageOffset, &module->constantSegment, nullptr, typeList, node));
+            auto module                        = node->sourceFile->module;
+            node->computedValue.storageSegment = &module->constantSegment;
+            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.storageOffset, node->computedValue.storageSegment, nullptr, typeList, node));
         }
 
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u64 = node->computedValue.storageOffset;
+        emitMakeSegPointer(context, node->computedValue.storageSegment, node->resultRegisterRC[0], node->computedValue.storageOffset);
         if (!node->forTuple)
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = typeList->subTypes.size();
     }
