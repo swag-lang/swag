@@ -844,23 +844,25 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     return true;
 }
 
-uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
+void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment)
 {
+    auto seg        = SemanticJob::getConstantSegFromContext(context->node);
+    *storageSegment = seg;
+
     auto sourceFile = node->sourceFile;
-    auto module     = sourceFile->module;
     auto str        = Utf8(normalizePath(sourceFile->path));
-    auto offset     = module->constantSegment.reserve(sizeof(SwagCompilerSourceLocation), sizeof(void*));
-    auto loc        = (SwagCompilerSourceLocation*) module->constantSegment.address(offset);
-    auto offsetName = module->constantSegment.addString(str);
-    auto addrName   = module->constantSegment.address(offsetName);
-    module->constantSegment.addInitPtr(offset, offsetName);
+    auto offset     = seg->reserve(sizeof(SwagCompilerSourceLocation), sizeof(void*));
+    auto loc        = (SwagCompilerSourceLocation*) seg->address(offset);
+    auto offsetName = seg->addString(str);
+    auto addrName   = seg->address(offsetName);
+    seg->addInitPtr(offset, offsetName);
     loc->fileName.buffer = addrName;
     loc->fileName.count  = str.length();
     loc->lineStart       = node->token.startLocation.line;
     loc->colStart        = node->token.startLocation.column;
     loc->lineEnd         = node->token.endLocation.line;
     loc->colEnd          = node->token.endLocation.column;
-    return offset;
+    *storageOffset       = offset;
 }
 
 bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
@@ -875,18 +877,21 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
         case TokenId::CompilerCallerLocation:
         {
-            regList     = reserveRegisterRC(context);
-            auto offset = computeSourceLocation(node);
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+            regList = reserveRegisterRC(context);
+            uint32_t     storageOffset;
+            DataSegment* storageSegment;
+            computeSourceLocation(context, node, &storageOffset, &storageSegment);
+            emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
             break;
         }
         case TokenId::CompilerCallerFunction:
         {
             reserveLinearRegisterRC2(context, regList);
-            const auto& str    = node->ownerFct->getNameForUserCompiler();
-            auto        offset = context->sourceFile->module->constantSegment.addString(str);
-            SWAG_ASSERT(offset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+            const auto& str            = node->ownerFct->getNameForUserCompiler();
+            auto        storageSegment = SemanticJob::getConstantSegFromContext(context->node);
+            auto        storageOffset  = storageSegment->addString(str);
+            SWAG_ASSERT(storageOffset != UINT32_MAX);
+            emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
             break;
         }

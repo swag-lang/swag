@@ -61,10 +61,11 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
 
         if (context->sourceFile->module->buildCfg.stackTrace)
         {
-            auto r0     = reserveRegisterRC(context);
-            auto offset = computeSourceLocation(context->node);
-
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
+            auto         r0 = reserveRegisterRC(context);
+            uint32_t     storageOffset;
+            DataSegment* storageSegment;
+            computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
+            emitMakeSegPointer(context, storageSegment, r0, storageOffset);
             emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
             freeRegisterRC(context, r0);
         }
@@ -214,12 +215,14 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
     if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
     {
-        auto offset = computeSourceLocation(node);
-        auto r1     = reserveRegisterRC(context);
+        uint32_t     storageOffset;
+        DataSegment* storageSegment;
+        computeSourceLocation(context, node, &storageOffset, &storageSegment);
 
+        auto r1 = reserveRegisterRC(context);
         if (context->sourceFile->module->buildCfg.stackTrace)
             emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
+        emitMakeSegPointer(context, storageSegment, r1, storageOffset);
         emitInstruction(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
         freeRegisterRC(context, expr->resultRegisterRC);
         freeRegisterRC(context, r1);
@@ -285,10 +288,12 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     assumeNode->seekInsideJump = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
-    auto offset = computeSourceLocation(context->node);
-    auto r1     = reserveRegisterRC(context);
+    uint32_t     storageOffset;
+    DataSegment* storageSegment;
+    computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
+    auto r1 = reserveRegisterRC(context);
 
-    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
+    emitMakeSegPointer(context, storageSegment, r1, storageOffset);
     emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);

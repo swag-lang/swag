@@ -608,7 +608,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             locNode       = resolved->node;
         }
 
-        node->computedValue.storageOffset = ByteCodeGenJob::computeSourceLocation(locNode);
+        ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue.storageOffset, &node->computedValue.storageSegment);
         node->setFlagsValueIsComputed();
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;

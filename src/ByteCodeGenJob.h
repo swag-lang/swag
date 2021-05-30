@@ -187,7 +187,7 @@ struct ByteCodeGenJob : public Job
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
-    static uint32_t             computeSourceLocation(AstNode* node);
+    static void                 computeSourceLocation(JobContext* context, AstNode* node, uint32_t *storageOffset, DataSegment **storageSegment);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
     static bool canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr);
