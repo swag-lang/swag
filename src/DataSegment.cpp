@@ -12,9 +12,36 @@
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
-void DataSegment::setup(const char* _name, Module* _module)
+void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
-    name   = _name;
+    kind = _kind;
+    switch (kind)
+    {
+    case SegmentKind::Compiler:
+        name = "compiler segment";
+        break;
+    case SegmentKind::Tls:
+        name = "tls segment";
+        break;
+    case SegmentKind::Data:
+        name = "data segment";
+        break;
+    case SegmentKind::Type:
+        name = "type segment";
+        break;
+    case SegmentKind::Bss:
+        name = "bss segment";
+        break;
+    case SegmentKind::Constant:
+        name = "constant segment";
+        break;
+    case SegmentKind::Global:
+        name = "global segment";
+        break;
+    case SegmentKind::String:
+        name = "string segment";
+        break;
+    }
     module = _module;
 }
 
@@ -260,7 +287,7 @@ uint32_t DataSegment::addString(const Utf8& str)
 
 void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
 {
-    if (compilerOnly)
+    if (kind == SegmentKind::Compiler)
         return;
 
     SegmentPatchPtrRef st;
@@ -312,7 +339,7 @@ void DataSegment::doPatchMethods(JobContext* context)
 
 void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg)
 {
-    if (compilerOnly)
+    if (kind == SegmentKind::Compiler)
         return;
 
     SegmentInitPtrRef ref;
@@ -337,7 +364,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
 
 void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType)
 {
-    if (compilerOnly)
+    if (kind == SegmentKind::Compiler)
         return;
 
     scoped_lock lk(mutexPtr);

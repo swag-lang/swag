@@ -376,12 +376,12 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         auto module = node->sourceFile->module;
 
         DataSegment* seg = nullptr;
-        if (node->kind == AstNodeKind::ConstDecl || (overload->flags & OVERLOAD_VAR_STRUCT))
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            seg = &module->compilerSegment;
+        else if (node->kind == AstNodeKind::ConstDecl || (overload->flags & OVERLOAD_VAR_STRUCT))
             seg = &module->constantSegment;
         else if (node->attributeFlags & ATTRIBUTE_TLS)
             seg = &module->tlsSegment;
-        else if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            seg = &module->compilerSegment;
         else
             seg = &module->mutableSegment;
 

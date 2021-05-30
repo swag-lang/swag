@@ -23,8 +23,8 @@ struct ComputedValue
 {
     Utf8         text;
     Register     reg;
-    uint32_t     storageOffset = UINT32_MAX;
-    DataSegment* seg           = nullptr;
+    uint32_t     storageOffset  = UINT32_MAX;
+    DataSegment* storageSegment = nullptr;
 
     bool operator==(const ComputedValue& from) const
     {
@@ -32,7 +32,7 @@ struct ComputedValue
             return false;
         if (reg.u64 != from.reg.u64)
             return false;
-        if (seg != from.seg)
+        if (storageSegment != from.storageSegment)
             return false;
         if (storageOffset != from.storageOffset)
             return false;

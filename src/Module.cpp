@@ -22,12 +22,12 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         return;
     setupDone = true;
 
-    compilerSegment.compilerOnly = true;
-    mutableSegment.setup("mutable segment", this);
-    constantSegment.setup("constant segment", this);
-    bssSegment.setup("bss segment", this);
-    typeSegment.setup("type segment", this);
-    compilerSegment.setup("compiler segment", this);
+    mutableSegment.setup(SegmentKind::Data, this);
+    constantSegment.setup(SegmentKind::Constant, this);
+    bssSegment.setup(SegmentKind::Bss, this);
+    typeSegment.setup(SegmentKind::Type, this);
+    compilerSegment.setup(SegmentKind::Compiler, this);
+    tlsSegment.setup(SegmentKind::Tls, this);
 
     name   = moduleName;
     nameUp = name;

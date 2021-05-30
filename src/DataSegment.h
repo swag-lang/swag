@@ -21,6 +21,10 @@ enum class SegmentKind
     Constant,
     Type,
     Tls,
+    Compiler,
+    Bss,
+    Global,
+    String,
 };
 
 struct SegmentInitPtrRef
@@ -38,7 +42,7 @@ struct SegmentPatchPtrRef
 
 struct DataSegment
 {
-    void     setup(const char* name, Module* module);
+    void     setup(SegmentKind kind, Module* module);
     void     initFrom(DataSegment* other);
     uint32_t reserve(uint32_t size, uint32_t alignOf = 1);
     uint32_t reserveNoLock(TypeInfo* typeInfo);
@@ -83,6 +87,7 @@ struct DataSegment
     vector<SegmentPatchPtrRef>           patchPtr;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
+    SegmentKind kind       = SegmentKind::Me;
     const char* name       = nullptr;
     Module*     module     = nullptr;
     bool        overflow   = false;
@@ -107,6 +112,5 @@ struct DataSegment
     void saveValue(void* address, uint32_t size, bool zero);
     void restoreAllValues();
 
-    bool compilerOnly = false;
     SWAG_RACE_CONDITION_INSTANCE(raceC);
 };
