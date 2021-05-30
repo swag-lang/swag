@@ -114,11 +114,13 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     auto  second     = params->childs[1];
     auto  third      = params->childs[2];
     auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
+    auto  module     = sourceFile->module;
+    auto& typeTable  = module->typeTable;
 
     SWAG_CHECK(checkIsConcrete(context, first));
 
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, nullptr, &third->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
+    third->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_SHOULD_WAIT);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, nullptr, &third->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 

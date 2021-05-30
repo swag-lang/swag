@@ -62,10 +62,11 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];
-    SWAG_ASSERT(childItf->computedValue.reg.u32 != UINT32_MAX);
+    SWAG_ASSERT(childItf->concreteTypeInfoStorage != UINT32_MAX);
+    SWAG_ASSERT(childItf->concreteTypeInfoSegment);
 
-    auto r0                                                             = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = childItf->computedValue.reg.u32;
+    auto r0 = reserveRegisterRC(context);
+    emitMakeSegPointer(context, childItf->concreteTypeInfoSegment, r0, childItf->concreteTypeInfoStorage);
 
     // Copy object pointer to first result register
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
