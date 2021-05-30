@@ -50,13 +50,15 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
 
 bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
-    if (!(node->flags & AST_L_VALUE))
-    {
-        return context->report({node, Msg0469});
-    }
-
     if (node->kind != AstNodeKind::IdentifierRef && node->kind != AstNodeKind::ArrayPointerIndex)
         return context->report({node, Msg0470});
+
+    if (!(node->flags & AST_L_VALUE))
+    {
+        if (node->resolvedSymbolName->kind != SymbolKind::Variable)
+            return context->report({node, format(Msg0465, SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+        return context->report({node, Msg0469});
+    }
 
     return true;
 }
