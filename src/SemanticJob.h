@@ -383,6 +383,7 @@ struct SemanticJob : public Job
     static bool         resolveRange(SemanticContext* context);
     static bool         resolveScopedStmtBefore(SemanticContext* context);
     static bool         boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount);
+    static bool         getConstantArrayPtr(SemanticContext* context, void** result);
     static bool         resolveArrayPointerDeRef(SemanticContext* context);
     static bool         resolveArrayPointerSlicing(SemanticContext* context);
     static bool         resolveArrayPointerIndex(SemanticContext* context);

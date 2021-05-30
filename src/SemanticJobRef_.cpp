@@ -413,6 +413,51 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::getConstantArrayPtr(SemanticContext* context, void** result)
+{
+    auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto arrayType = TypeManager::concreteReferenceType(arrayNode->array->typeInfo);
+    auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+
+    if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
+    {
+        bool     isConstAccess = true;
+        uint64_t offsetAccess  = arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
+        SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
+
+        // Deal with array of array
+        auto subArray = arrayNode;
+        while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            subArray      = CastAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
+            isConstAccess = isConstAccess && (subArray->access->flags & AST_VALUE_COMPUTED);
+            if (isConstAccess)
+            {
+                auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
+                SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
+                offsetAccess += subArray->access->computedValue.reg.u64 * subTypePtr->pointedType->sizeOf;
+                typePtr = subTypePtr;
+            }
+        }
+
+        if (isConstAccess)
+        {
+            auto overload = subArray->array->resolvedSymbolOverload;
+            if (overload && (overload->flags & OVERLOAD_COMPUTED_VALUE))
+            {
+                SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
+                SWAG_ASSERT(overload->computedValue.storageSegment);
+                auto ptr = overload->computedValue.storageSegment->address(overload->computedValue.storageOffset);
+                ptr += offsetAccess;
+                *result = ptr;
+                return true;
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
@@ -475,41 +520,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
         // Try to dereference as a constant if we can
-        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
-        {
-            bool     isConstAccess = true;
-            uint64_t offsetAccess  = arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
-            SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
-
-            // Deal with array of array
-            auto subArray = arrayNode;
-            while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
-            {
-                subArray      = CastAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
-                isConstAccess = isConstAccess && (subArray->access->flags & AST_VALUE_COMPUTED);
-                if (isConstAccess)
-                {
-                    auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
-                    SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
-                    offsetAccess += subArray->access->computedValue.reg.u64 * subTypePtr->pointedType->sizeOf;
-                    typePtr = subTypePtr;
-                }
-            }
-
-            if (isConstAccess)
-            {
-                auto overload = subArray->array->resolvedSymbolOverload;
-                if (overload && (overload->flags & OVERLOAD_COMPUTED_VALUE))
-                {
-                    SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
-                    SWAG_ASSERT(overload->computedValue.storageSegment);
-                    auto ptr = overload->computedValue.storageSegment->address(overload->computedValue.storageOffset);
-                    ptr += offsetAccess;
-                    if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
-                        arrayNode->setFlagsValueIsComputed();
-                }
-            }
-        }
+        void* ptr = nullptr;
+        SWAG_CHECK(getConstantArrayPtr(context, &ptr));
+        if (ptr && derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
+            arrayNode->setFlagsValueIsComputed();
 
         break;
     }
