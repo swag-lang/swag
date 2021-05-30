@@ -402,27 +402,12 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
-        uint32_t storageOffset = UINT32_MAX;
-        // Compile time evaluation of a function returning a struct stores the offset in computed value.
-        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-            storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
-        else
-            storageOffset = node->computedValue.storageOffset;
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
+        emitMakeSegPointer(context, node->computedValue.storageSegment, regList[0], node->computedValue.storageOffset);
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        auto     inst          = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
-        uint32_t storageOffset = UINT32_MAX;
-        // In case of compiler structures (like CompilerSourceLocation), there's no symbol. The storage
-        // offset is stored in the computed value. Same for compile time evaluation of a function returning a struct.
-        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-            storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
-        else
-            storageOffset = node->computedValue.storageOffset;
-        SWAG_ASSERT(storageOffset != UINT32_MAX);
-        inst->b.u64 = storageOffset;
+        emitMakeSegPointer(context, node->computedValue.storageSegment, regList[0], node->computedValue.storageOffset);
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {
