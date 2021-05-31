@@ -270,12 +270,12 @@ func displayPage2()
     cdc.drawTexture(image1, 200, 0)
 
     cdc.setInterpolationMode(InterpolationMode.Pixel)
-    cdc.drawTexture(image0, 50, 0, 100, 100)
+    cdc.drawTexture(image0, 50, 0, 96, 96)
     cdc.setInterpolationMode(InterpolationMode.Linear)
-    cdc.drawTexture(image0, 50, 110, 100, 100)
+    cdc.drawTexture(image0, 50, 110, 96, 96)
 
-    cdc.rotateTransform(45, 550, 550)
-    cdc.drawTexture(image0, 500, 500, 100, 100)
+    cdc.rotateTransform(45, 100, 300)
+    cdc.drawTexture(image0, 50, 250, 96, 96)
 
     cdc.resetTransform()
     var pen: Pen
@@ -285,12 +285,8 @@ func displayPage2()
     pen.size = 20
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    var brush: Brush
-    brush.textureType = .Custom
-    brush.uvMode = .FillSubRect
-    brush.uvRect = @{228, 103, 206, 167}
-    brush.texture = image1
-    cdc.fillRect(50, 600, 200, 200, brush)
+    cdc.drawTexture(image1, 50, 500, 150, 150, @{228, 103, 206, 167})
+    cdc.drawTexture(image1, 50, 700, @{228, 103, 206, 167})
 
     cdc.end()
 
