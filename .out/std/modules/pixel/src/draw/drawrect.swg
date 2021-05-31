@@ -50,7 +50,7 @@ impl Painter
     {
         setRectPath(left, top, width, height)
         sharedSolidBrush.color = color
-        sharedSolidBrush.textureStyle = .None
+        sharedSolidBrush.textureType = .None
         fillPath(&sharedLinePath, sharedSolidBrush)
     }
 

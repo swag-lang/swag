@@ -2,7 +2,7 @@
 using Core.Drawing
 
 #[Swag.enumindex]
-enum BrushTextureStyle
+enum BrushTextureType
 {
     // No texturing. Solid rendering
     None
@@ -58,7 +58,7 @@ enum BrushStretchMode
 struct Brush
 {
     color:          Color = Argb.White
-    textureStyle:   BrushTextureStyle = None
+    textureType:    BrushTextureType = None
     texture:        Texture
     wrapMode:       WrapMode = Clamp
     stretchMode:    BrushStretchMode = Pixel

@@ -40,11 +40,11 @@ struct Command
     id: CommandId = ?
     params: union
     {
-        clear:          struct
-                        {
-                            color: Color
-                            flags: u32
-                        }
+        clear:  struct
+                {
+                    color: Color
+                    flags: u32
+                }
 
         drawTriangles:  struct
                         {
@@ -52,17 +52,17 @@ struct Command
                             count: u32
                         }
 
-        transform:      struct
-                        {
-                            tr: Transform2
-                        }
+        transform:  struct
+                    {
+                        tr: Transform2
+                    }
 
-        image:          struct
-                        {
-                                style:          BrushTextureStyle = ?
-                                stretchMode:    BrushStretchMode = ?
-                                texture:        Texture
-                        }
+        image:  struct
+                {
+                    type:           BrushTextureType = ?
+                    stretchMode:    BrushStretchMode = ?
+                    texture:        Texture
+                }
     }
 }
 

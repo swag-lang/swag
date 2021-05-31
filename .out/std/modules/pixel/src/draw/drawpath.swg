@@ -784,7 +784,7 @@ impl Painter
         var wt, ht: s32 = ?
 
         // For a hatch brush, texture size is always 8x8
-        if brush.textureStyle != .Custom
+        if brush.textureType != .Custom
         {
             result.w, result.h = 8
         }
@@ -800,7 +800,7 @@ impl Painter
     private func computeUV(using self, prim: uint, v0: Vector2, bvMin, bvMax: Vector2, wt, ht: s32, brush: Brush)
     {
         primt := vertexBuffer.buffer + prim
-        if brush.textureStyle == .None
+        if brush.textureType == .None
         {
             primt.uv.x = 0
             primt.uv.y = 0
@@ -843,11 +843,11 @@ impl Painter
         using path
 
         // Setup texture
-        if brush.textureStyle != .None
+        if brush.textureType != .None
         {
             cmd := newCommand(CommandId.BindTexture, true)
             cmd.params.image.texture = brush.texture
-            cmd.params.image.style = brush.textureStyle
+            cmd.params.image.type = brush.textureType
             cmd.params.image.stretchMode = brush.stretchMode
         }
 
@@ -939,10 +939,10 @@ impl Painter
         }
 
         // Setup texture
-        if brush.textureStyle != .None
+        if brush.textureType != .None
         {
             cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.image.style = .None
+            cmd.params.image.type = .None
             cmd.params.image.texture.handle = InvalidTextureHandle
         }
     }

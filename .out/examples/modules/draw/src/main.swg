@@ -10,10 +10,12 @@ const H = 1024
 var cdc: Painter
 var renderer: RenderOglWin32
 
+var image0, image1: Texture
+
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 1
+var g_page:         s32 = 2
 
 func dataPath()->String
 {
@@ -44,6 +46,7 @@ func display()
     {
     case 0: displayPage0()
     case 1: displayPage1()
+    case 2: displayPage2()
     }
 
     renderer.end()
@@ -223,21 +226,11 @@ func displayPage0()
     renderer.draw(&cdc)
 
     //////////////////////////////////////
-    #[Swag.global]
-    var image0, image1: Texture
-    if image0.handle == InvalidTextureHandle
-    {
-        img0 := assume Image.load(imagePath("basn0g01.png"))
-        image0 = renderer.addImage(img0)
-        img1 := assume Image.load(imagePath("rgba.bmp"))
-        image1 = renderer.addImage(img1)
-    }
-
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
     var brush1: Brush
-    brush1.textureStyle = .Custom
+    brush1.textureType = .Custom
     brush1.texture = image0
     brush1.wrapMode = .Tile
     cdc.fillRect(750, 50, 100, 150, brush1)
@@ -267,10 +260,10 @@ func displayPage1()
     cdc.translateTransform(50, 50)
 
     cpt, cptLines := 0
-    visit e: BrushTextureStyle
+    visit e: BrushTextureType
     {
         if e == .Custom continue
-        brush.textureStyle = e
+        brush.textureType = e
         brush.wrapMode = .Clamp
         cdc.fillRect(0, 0, 48, 48, brush)
         brush.wrapMode = .Tile
@@ -287,6 +280,19 @@ func displayPage1()
         }
     }
 
+    cdc.end()
+
+    renderer.resetTransform()
+    renderer.draw(&cdc)
+}
+
+func displayPage2()
+{
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+    cdc.translateTransform(50, 50)
+    cdc.drawTexture(image1, 0, 0, 100, 100)
     cdc.end()
 
     renderer.resetTransform()
@@ -386,7 +392,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % 2
+            g_page = (g_page + 1) % 3
     }
 }
 
@@ -397,7 +403,12 @@ func messageLoop()
         hWnd := createWindow()
 
         hDC = GetDC(hWnd)
+
         renderer.init(hDC, W, H)
+        img0 := assume Image.load(imagePath("basn0g01.png"))
+        image0 = renderer.addImage(img0)
+        img1 := assume Image.load(imagePath("rgba.bmp"))
+        image1 = renderer.addImage(img1)
 
         display()
         ShowWindow(hWnd, SW_SHOW)
