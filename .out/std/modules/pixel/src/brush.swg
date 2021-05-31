@@ -49,17 +49,10 @@ enum BrushTextureType
     DiagonalCross
 }
 
-enum BrushStretchMode
-{
-    Pixel
-    Linear
-}
-
 struct Brush
 {
-    color:          Color = Argb.White
-    textureType:    BrushTextureType = None
-    texture:        Texture
-    wrapMode:       WrapMode = Clamp
-    stretchMode:    BrushStretchMode = Pixel
+    color:       Color = Argb.White
+    textureType: BrushTextureType = None
+    texture:     Texture
+    wrapMode:    WrapMode = Clamp
 }

@@ -846,9 +846,11 @@ impl Painter
         if brush.textureType != .None
         {
             cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.image.texture = brush.texture
-            cmd.params.image.type = brush.textureType
-            cmd.params.image.stretchMode = brush.stretchMode
+            params := &cmd.params.image
+            params.texture = brush.texture
+            params.type = brush.textureType
+            params.wrapMode = brush.wrapMode
+            params.interpolationMode = interpolationMode
         }
 
         boundMin := bvMin

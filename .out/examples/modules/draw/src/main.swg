@@ -236,12 +236,10 @@ func displayPage0()
     cdc.fillRect(750, 50, 100, 150, brush1)
     brush1.texture = image1
     brush1.wrapMode = .Clamp
-    brush1.stretchMode = .Linear
     cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
 
     brush1.wrapMode = .Clamp
     brush1.color = Argb.White
-    brush1.stretchMode = .Pixel
     cdc.fillCircle(850, 450, 50, brush1)
     cdc.end()
 
@@ -292,7 +290,11 @@ func displayPage2()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
     cdc.translateTransform(50, 50)
-    cdc.drawTexture(image1, 0, 0, 100, 100)
+    cdc.setInterpolationMode(InterpolationMode.Pixel)
+    cdc.drawTexture(image0, 0, 0, 100, 100)
+    cdc.setInterpolationMode(InterpolationMode.Linear)
+    cdc.drawTexture(image0, 0, 110, 100, 100)
+    cdc.drawTexture(image1, 120, 0)
     cdc.end()
 
     renderer.resetTransform()

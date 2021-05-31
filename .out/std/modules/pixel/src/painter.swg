@@ -26,6 +26,13 @@ struct Texture
     width, height: s32
 }
 
+// Determin how pixels are interpolated when drawing texture
+enum InterpolationMode
+{
+    Pixel       // No interpolation. Closest pixel
+    Linear      // Linear interpolation.
+}
+
 enum WrapMode
 {
     Clamp
@@ -59,9 +66,10 @@ struct Command
 
         image:  struct
                 {
-                    type:           BrushTextureType = ?
-                    stretchMode:    BrushStretchMode = ?
-                    texture:        Texture
+                    type:               BrushTextureType = ?
+                    wrapMode:           WrapMode = ?
+                    interpolationMode:  InterpolationMode = ?
+                    texture:            Texture
                 }
     }
 }
@@ -94,6 +102,7 @@ struct Painter
     paintQuality:       PaintQuality = High
     drawingBegin:       bool
     transform:          Transform2
+    interpolationMode:  InterpolationMode = Pixel
 }
 
 impl Painter
@@ -168,6 +177,7 @@ impl Painter
         transform.setIdentity()
         commandBuffer.clear()
         vertexBuffer.clear()
+        interpolationMode = .Pixel
     }
 
     // Call this after drawing
@@ -224,5 +234,11 @@ impl Painter
 
         cmd := newCommand(CommandId.Transform, true)
         cmd.params.transform.tr = tr
+    }
+
+    // Set the texture interpolation mode
+    func setInterpolationMode(using self, mode: InterpolationMode)
+    {
+        interpolationMode = mode
     }
 }
