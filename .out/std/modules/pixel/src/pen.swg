@@ -28,11 +28,6 @@ enum JoinStyle
     MiterBevel
 }
 
-enum PenStyle
-{
-    SolidColor
-}
-
 enum DashStyle
 {
     None
@@ -57,7 +52,6 @@ struct Pen
     squareAnchorScaleY: f32 = 2
     joinMiterLimit:     f32 = 3
 
-    penStyle:       PenStyle     = SolidColor
     dashStyle:      DashStyle    = None
     beginCapStyle:  LineCapStyle = Round
     endCapStyle:    LineCapStyle = Round
