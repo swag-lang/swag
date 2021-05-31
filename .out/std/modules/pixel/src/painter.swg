@@ -5,7 +5,6 @@ using Core, Ogl, Core.Drawing, Core.Math
 struct VertexLayout
 {
     pos:    Vector2
-    uv:     Vector2
     color:  u32
     aa:     [6] Vector4
     aanum:  f32
@@ -37,9 +36,6 @@ enum WrapMode
 {
     Clamp
     Tile
-    TileFlipX
-    TileFlipY
-    TileFlipXY
 }
 
 struct Command

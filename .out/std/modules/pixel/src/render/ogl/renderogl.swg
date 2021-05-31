@@ -444,10 +444,10 @@ impl RenderOgl
         var offset: const *void = null
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector2)
-        glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
@@ -458,9 +458,7 @@ impl RenderOgl
         offset += @sizeof(Vector4)
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector4)
-        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
@@ -648,7 +646,7 @@ impl RenderOgl
         // State
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
+        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
         glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
 
         visit cmd: dc.commandBuffer
@@ -692,14 +690,8 @@ impl RenderOgl
                 case Clamp:
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                case Tile, TileFlipXY:
+                case Tile:
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-                case TileFlipX:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                case TileFlipY:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
                 }
 
@@ -716,6 +708,6 @@ impl RenderOgl
             }
         }
 
-        loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
+        loop i: 9 glDisableVertexAttribArray(cast(GLuint) i)
     }
 }
