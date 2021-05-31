@@ -501,6 +501,11 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(HatchDiagonalCross, 8, 8)
     }
 
+    protected func reset(using self)
+    {
+        worldTransform.setIdentity()
+    }
+
     func resize(using self, width, height: s32)
     {
         self.width = #scopefct.width
@@ -577,13 +582,6 @@ impl RenderOgl
         result.height = image.height
         result.pf = image.pf
         return result
-    }
-
-
-    // To be called before rendering
-    func begin(using self)
-    {
-        worldTransform.setIdentity()
     }
 
     // Translate the world transform

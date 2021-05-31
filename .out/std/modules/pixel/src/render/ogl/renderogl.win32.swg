@@ -4,9 +4,8 @@ using Core, Win32, Ogl, Gdi32
 public struct RenderOglWin32
 {
     using base: RenderOgl
-
-    hDC: HDC
-    hRC: HGLRC
+    hDC:        HDC
+    hRC:        HGLRC
 }
 
 public impl RenderOglWin32
@@ -26,6 +25,14 @@ public impl RenderOglWin32
         catch wglDeleteContext(hRC)
     }
 
+    // To be called before rendering
+    func begin(using self)
+    {
+        base.reset()
+        catch wglMakeCurrent(hDC, hRC)
+    }
+
+    // To be called after rendering
     func end(using self)
     {
         glFlush()

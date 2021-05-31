@@ -32,31 +32,9 @@ func imagePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
-func display()
-{
-    renderer.begin()
-
-    cdc.begin()
-    cdc.clear(Argb.Red)
-    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
-    cdc.end()
-    renderer.draw(&cdc)
-
-    switch g_page
-    {
-    case 0: displayPage0()
-    case 1: displayPage1()
-    case 2: displayPage2()
-    }
-
-    renderer.end()
-}
-
 func displayPage0()
 {
     var pen: Pen
-
-    renderer.begin()
 
     if g_pattern
     {
@@ -311,6 +289,26 @@ func displayPage2()
 
     renderer.resetTransform()
     renderer.draw(&cdc)
+}
+
+func display()
+{
+    renderer.begin()
+
+    cdc.begin()
+    cdc.clear(Argb.Red)
+    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    cdc.end()
+    renderer.draw(&cdc)
+
+    switch g_page
+    {
+    case 0: displayPage0()
+    case 1: displayPage1()
+    case 2: displayPage2()
+    }
+
+    renderer.end()
 }
 
 #[Swag.callback]
