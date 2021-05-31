@@ -21,15 +21,8 @@ enum UVMode
 }
 
 #[Swag.enumindex]
-enum TextureType
+enum HatchType
 {
-    // No texturing. Solid rendering
-    SolidColor
-
-    // User specified texture/image
-    Custom
-
-    // Predefined hatch textures
     Dot
     Horizontal
     HorizontalLight

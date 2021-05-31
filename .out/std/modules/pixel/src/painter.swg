@@ -47,7 +47,8 @@ struct Command
                 {
                     boundRect:          Vector4
                     textureRect:        Vector4
-                    type:               TextureType = ?
+                    type:               BrushType = ?
+                    hatch:              HatchType = ?
                     uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
                     texture:            Texture

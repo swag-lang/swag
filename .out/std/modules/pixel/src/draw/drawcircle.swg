@@ -16,7 +16,7 @@ impl Painter
     // Draw an empty circle
     func drawCircle(using self, centerX, centerY: f32, radius: f32, color: Color, penSize: f32)
     {
-        sharedSolidPen.brush.textureType = .SolidColor
+        sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
         drawCircle(centerX, centerY, radius, sharedSolidPen)
@@ -39,7 +39,7 @@ impl Painter
     // Draw an empty ellipse
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
     {
-        sharedSolidPen.brush.textureType = .SolidColor
+        sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
         drawEllipse(centerX, centerY, radiusX, radiusY, sharedSolidPen)

@@ -34,7 +34,7 @@ impl Painter
         var wt, ht: s32 = ?
 
         // For a hatch brush, texture size is always 8x8
-        if brush.textureType != .Custom
+        if brush.type == .Hatch
         {
             result.w, result.h = 8
         }
@@ -49,7 +49,7 @@ impl Painter
 
     private func setTexture(using self, path: *LinePath, brush: Brush)
     {
-        if brush.textureType == .SolidColor
+        if brush.type == .SolidColor
             return
 
         using path
@@ -78,15 +78,16 @@ impl Painter
             params.textureRect.w = ht
         }
 
+        params.type    = brush.type
+        params.hatch   = brush.hatch
         params.texture = brush.texture
-        params.type = brush.textureType
-        params.uvMode = brush.uvMode
+        params.uvMode  = brush.uvMode
         params.interpolationMode = interpolationMode
     }
 
     private func resetTexture(using self, brush: Brush)
     {
-        if brush.textureType == .SolidColor
+        if brush.type == .SolidColor
             return
 
         cmd := newCommand(CommandId.BindTexture, true)

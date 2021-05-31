@@ -1,13 +1,21 @@
 #global public
 using Core, Core.Drawing
 
+enum BrushType
+{
+    SolidColor
+    Texture
+    Hatch
+}
+
 struct Brush
 {
-    color:       Color = Argb.White
-    textureType: TextureType = SolidColor
-    texture:     Texture
-    uvMode:    UVMode = Fill
-    uvRect:      Math.Rectangle
+    color:      Color = Argb.White
+    type:       BrushType = SolidColor
+    hatch:      HatchType = Dot
+    texture:    Texture
+    uvMode:     UVMode = Fill
+    uvRect:     Math.Rectangle
 }
 
 impl Brush
@@ -17,7 +25,7 @@ impl Brush
     {
         var result: retval
         result.color = color
-        result.textureType = .SolidColor
+        result.type = .SolidColor
         return result
     }
 
@@ -26,7 +34,7 @@ impl Brush
     {
         var result: retval
         result.color = Argb.White
-        result.textureType = .Custom
+        result.type = BrushType.Texture
         result.texture = texture
         result.uvMode = .Fill
         return result
@@ -37,7 +45,7 @@ impl Brush
     {
         var result: retval
         result.color = Argb.White
-        result.textureType = .Custom
+        result.type = BrushType.Texture
         result.texture = texture
         result.uvMode = .Tile
         return result
