@@ -5,10 +5,10 @@ using Core.Math
 #test
 {
     {
-        a := Rect{0, 0, 10, 8}
-        b := Rect{5, 5, 15, 15}
+        a := Rectangle{0, 0, 10, 8}
+        b := Rectangle{5, 5, 15, 15}
 
-        c := Rect.getUnion(a, b)
+        c := Rectangle.getUnion(a, b)
         @assert(c.x == 0)
         @assert(c.y == 0)
         @assert(c.width == 20)

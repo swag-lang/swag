@@ -7,5 +7,5 @@ struct Brush
     textureType: TextureType = SolidColor
     texture:     Texture
     wrapMode:    WrapMode = Clamp
-    uvRect:      Math.Rect
+    uvRect:      Math.Rectangle
 }

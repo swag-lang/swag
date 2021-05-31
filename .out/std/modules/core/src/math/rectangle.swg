@@ -2,7 +2,7 @@
 #global namespace Math
 
 // A simple rectangle with 4 coordinates
-struct Rect
+struct Rectangle
 {
     x:      f32
     y:      f32
@@ -10,12 +10,12 @@ struct Rect
     height: f32
 }
 
-impl Rect
+impl Rectangle
 {
     // Represents a rectangle with all coordinates to zero
-    const Zero: Rect{0, 0, 0, 0}
+    const Zero: Rectangle{0, 0, 0, 0}
 
-    func opEquals(using const self, other: Rect)->bool
+    func opEquals(using const self, other: Rectangle)->bool
     {
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
@@ -152,49 +152,49 @@ impl Rect
     }
 
     // Determines if the specfied rectangle is contained within the rectangular region
-    func contains(using const self, rect: Rect)->bool
+    func contains(using const self, rect: Rectangle)->bool
     {
         return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
 
     // Intersect this rectangle with another one
-    func intersect(using self, with: Rect)
+    func intersect(using self, with: Rectangle)
     {
         dref self = intersect(dref self, with)
     }
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.
     // If there is no intersection, Zero is returned.
-    func intersect(a, b: Rect)->Rect
+    func intersect(a, b: Rectangle)->Rectangle
     {
         x1 := max(a.x, b.x)
         x2 := min(a.x + a.width, b.x + b.width)
         y1 := max(a.y, b.y)
         y2 := min(a.y + a.height, b.y + b.height)
         if x2 >= x1 and y2 >= y1
-            return Rect{x1, y1, x2 - x1, y2 - y1}
+            return Rectangle{x1, y1, x2 - x1, y2 - y1}
         return Zero;
     }
 
     // Determines if this rectangle intersets with 'rect'
-    func intersectWith(using const self, rect: Rect)->bool
+    func intersectWith(using const self, rect: Rectangle)->bool
     {
         return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
     }
 
     // Creates a rectangle that represents the union
-    func setUnion(using self, with: Rect)
+    func setUnion(using self, with: Rectangle)
     {
         dref self = getUnion(dref self, with)
     }
 
     // Creates a rectangle that represents the union between 'a' and 'b'.
-    func getUnion(a, b: Rect)->Rect
+    func getUnion(a, b: Rectangle)->Rectangle
     {
         x1 := min(a.x, b.x)
         x2 := max(a.right(), b.right())
         y1 := min(a.y, b.y)
         y2 := max(a.bottom(), b.bottom())
-        return Rect{x1, y1, x2 - x1, y2 - y1}
+        return Rectangle{x1, y1, x2 - x1, y2 - y1}
     }
 }
