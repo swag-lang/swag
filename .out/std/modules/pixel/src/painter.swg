@@ -39,29 +39,16 @@ struct Command
     id: CommandId = ?
     params: union
     {
-        clear:  struct
-                {
-                    color: Color
-                    flags: u32
-                }
-
-        drawTriangles:  struct
-                        {
-                            start: u32
-                            count: u32
-                        }
-
-        transform:  struct
-                    {
-                        tr: Transform2
-                    }
+        clear:          struct{color: Color; flags: u32; }
+        drawTriangles:  struct{start: u32; count: u32; }
+        transform:      struct{tr: Transform2; }
 
         image:  struct
                 {
                     boundRect:          Vector4
                     textureRect:        Vector4
                     type:               TextureType = ?
-                    wrapMode:           WrapMode = ?
+                    uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
                     texture:            Texture
                 }

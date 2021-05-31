@@ -6,6 +6,6 @@ struct Brush
     color:       Color = Argb.White
     textureType: TextureType = SolidColor
     texture:     Texture
-    wrapMode:    WrapMode = Clamp
+    uvMode:    UVMode = Fill
     uvRect:      Math.Rectangle
 }

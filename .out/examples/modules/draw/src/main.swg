@@ -210,13 +210,13 @@ func displayPage0()
     var brush1: Brush
     brush1.textureType = .Custom
     brush1.texture = image0
-    brush1.wrapMode = .Tile
+    brush1.uvMode = .Tile
     cdc.fillRect(750, 50, 100, 150, brush1)
     brush1.texture = image1
-    brush1.wrapMode = .Clamp
+    brush1.uvMode = .Fill
     cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
 
-    brush1.wrapMode = .Clamp
+    brush1.uvMode = .Fill
     brush1.color = Argb.White
     cdc.fillCircle(850, 450, 50, brush1)
     cdc.end()
@@ -240,9 +240,9 @@ func displayPage1()
     {
         if e == .Custom continue
         brush.textureType = e
-        brush.wrapMode = .Clamp
+        brush.uvMode = .Fill
         cdc.fillRect(0, 0, 48, 48, brush)
-        brush.wrapMode = .Tile
+        brush.uvMode = .Tile
         cdc.fillRect(0, 75, 48, 48, brush)
 
         cdc.translateTransform(75, 0)
@@ -281,13 +281,13 @@ func displayPage2()
     var pen: Pen
     pen.brush.color = Argb.Black
     pen.brush.textureType = .SolidDiamond
-    pen.brush.wrapMode = .Tile
+    pen.brush.uvMode = .Tile
     pen.size = 20
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     var brush: Brush
     brush.textureType = .Custom
-    brush.wrapMode = .ClampUvRect
+    brush.uvMode = .FillSubRect
     brush.uvRect = @{228, 103, 206, 167}
     brush.texture = image1
     cdc.fillRect(50, 600, 200, 200, brush)

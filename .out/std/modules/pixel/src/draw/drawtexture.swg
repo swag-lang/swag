@@ -9,7 +9,7 @@ impl Painter
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.textureType = .Custom
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.wrapMode = .Clamp
+        sharedSolidBrush.uvMode = .Fill
         fillRect(left, top, width, height, sharedSolidBrush)
     }
 
@@ -19,7 +19,7 @@ impl Painter
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.textureType = .Custom
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.wrapMode = .Clamp
+        sharedSolidBrush.uvMode = .Fill
         fillRect(left, top, cast(f32) texture.width, cast(f32) texture.height, sharedSolidBrush)
     }
 }

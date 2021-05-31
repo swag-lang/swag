@@ -63,7 +63,7 @@ impl Painter
         params.boundRect.w = bvMax.y
 
         (wt, ht) := getTextureSize(brush)
-        if brush.wrapMode == .ClampUvRect
+        if brush.uvMode == .FillSubRect
         {
             params.textureRect.x = brush.uvRect.x / wt
             params.textureRect.y = brush.uvRect.y / ht
@@ -80,7 +80,7 @@ impl Painter
 
         params.texture = brush.texture
         params.type = brush.textureType
-        params.wrapMode = brush.wrapMode
+        params.uvMode = brush.uvMode
         params.interpolationMode = interpolationMode
     }
 

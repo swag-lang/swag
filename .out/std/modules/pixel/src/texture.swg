@@ -13,10 +13,10 @@ enum InterpolationMode
     Linear
 }
 
-enum WrapMode
+enum UVMode
 {
-    Clamp
-    ClampUvRect
+    Fill
+    FillSubRect
     Tile
 }
 

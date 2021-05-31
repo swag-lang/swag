@@ -33,7 +33,7 @@ const VertexShaderAA = @"
     {
         vec2 uv;
 
-        // Clamp
+        // Fill
         if(uvmode < 0.5)
         {
             float w = boundRect.z - boundRect.x;
@@ -42,7 +42,7 @@ const VertexShaderAA = @"
             uv.y = 1 - (pixelPos.y - boundRect.y) / h;
         }
 
-        // ClampUvRect
+        // FillSubRect
         else if(uvmode < 1.5)
         {
             float w = boundRect.z - boundRect.x;
