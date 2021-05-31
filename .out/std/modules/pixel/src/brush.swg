@@ -9,3 +9,37 @@ struct Brush
     uvMode:    UVMode = Fill
     uvRect:      Math.Rectangle
 }
+
+impl Brush
+{
+    // Returns a solid color brush
+    func createSolid(color: Color)->Brush
+    {
+        var result: retval
+        result.color = color
+        result.textureType = .SolidColor
+        return result
+    }
+
+    // Returns a full texture brush
+    func createTexture(texture: Texture)->Brush
+    {
+        var result: retval
+        result.color = Argb.White
+        result.textureType = .Custom
+        result.texture = texture
+        result.uvMode = .Fill
+        return result
+    }
+
+    // Returns a tiled texture brush
+    func createTiled(texture: Texture)->Brush
+    {
+        var result: retval
+        result.color = Argb.White
+        result.textureType = .Custom
+        result.texture = texture
+        result.uvMode = .Tile
+        return result
+    }
+}

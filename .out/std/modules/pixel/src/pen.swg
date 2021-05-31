@@ -63,3 +63,16 @@ struct Pen
     endCapStyle:    LineCapStyle = Round
     joinStyle:      JoinStyle    = Miter
 }
+
+impl Pen
+{
+    // Returns a solid color pen
+    func createSolid(color: Color, size: f32 = 1)->Pen
+    {
+        var result: retval
+        result.brush.color = color
+        result.brush.textureType = .SolidColor
+        result.size = size
+        return result
+    }
+}

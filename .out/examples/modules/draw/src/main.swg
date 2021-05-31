@@ -34,19 +34,16 @@ func imagePath(name: string)->String
 
 func displayPage0()
 {
-    var pen: Pen
+    pen := Pen.createSolid(Argb.Black, 20)
 
     if g_pattern
     {
-        pen.dashStyle = .DashDot
+        pen.dashStyle = .Dot
         //pen.pattern.add(1.0)
         //pen.pattern.add(1.0)
         //pen.pattern.add(2.0)
         //pen.pattern.add(1.0)
     }
-
-    pen.size = 20
-    pen.brush.color = 0xFF000000
 
     //////////////////////////////////////
     cdc.begin()
@@ -157,10 +154,7 @@ func displayPage0()
 
     cdc.resetTransform()
     cdc.translateTransform(250, 600)
-    pen.size = 10
-    pen.brush.color = Argb.Blue
-    pen.dashBeginCapStyle = .None
-    pen.dashEndCapStyle = .None
+    pen = Pen.createSolid(Argb.Blue, 10)
     cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
 
     cdc.resetTransform()
@@ -172,9 +166,7 @@ func displayPage0()
     cdc.translateTransform(500, 600)
     cdc.drawEllipse(50, 50, 25, 50, pen)
 
-    var brush: Brush
-    brush.color = Argb.Black
-
+    brush := Brush.createSolid(Argb.Black)
     cdc.resetTransform()
     cdc.translateTransform(600, 600)
     cdc.fillCircle(50, 50, 50, brush)
@@ -185,7 +177,6 @@ func displayPage0()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -207,18 +198,11 @@ func displayPage0()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    var brush1: Brush
-    brush1.textureType = .Custom
-    brush1.texture = image0
-    brush1.uvMode = .Tile
-    cdc.fillRect(750, 50, 100, 150, brush1)
-    brush1.texture = image1
-    brush1.uvMode = .Fill
-    cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush1)
-
-    brush1.uvMode = .Fill
-    brush1.color = Argb.White
-    cdc.fillCircle(850, 450, 50, brush1)
+    brush = Brush.createTiled(image0)
+    cdc.fillRect(750, 50, 100, 150, brush)
+    brush = Brush.createTexture(image1)
+    cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
+    cdc.fillCircle(850, 450, 50, brush)
     cdc.end()
 
     renderer.resetTransform()
