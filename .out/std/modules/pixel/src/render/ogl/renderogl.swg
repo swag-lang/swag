@@ -677,6 +677,7 @@ impl RenderOgl
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[params.type])
                 }
 
+                #[Swag.complete]
                 switch params.wrapMode
                 {
                 case Clamp:
