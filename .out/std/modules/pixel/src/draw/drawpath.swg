@@ -54,7 +54,6 @@ impl Painter
 
         using path
 
-        (wt, ht) := getTextureSize(brush)
         cmd := newCommand(CommandId.BindTexture, true)
         params := &cmd.params.image
 
@@ -62,12 +61,14 @@ impl Painter
         params.boundRect.y = bvMin.y
         params.boundRect.z = bvMax.x
         params.boundRect.w = bvMax.y
+
+        (wt, ht) := getTextureSize(brush)
         if brush.wrapMode == .ClampUvRect
         {
-            params.textureRect.x = brush.uvRect.x / brush.texture.width
-            params.textureRect.y = brush.uvRect.y / brush.texture.height
-            params.textureRect.z = brush.uvRect.right() / brush.texture.width
-            params.textureRect.w = brush.uvRect.bottom() / brush.texture.height
+            params.textureRect.x = brush.uvRect.x / wt
+            params.textureRect.y = brush.uvRect.y / ht
+            params.textureRect.z = brush.uvRect.right() / wt
+            params.textureRect.w = brush.uvRect.bottom() / ht
         }
         else
         {
