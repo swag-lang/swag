@@ -86,12 +86,12 @@ impl Painter
 
     private func resetTexture(using self, brush: Brush)
     {
-        if brush.textureType != .SolidColor
-        {
-            cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.image.type = .SolidColor
-            cmd.params.image.texture.handle = InvalidTextureHandle
-        }
+        if brush.textureType == .SolidColor
+            return
+
+        cmd := newCommand(CommandId.BindTexture, true)
+        cmd.params.image.type = .SolidColor
+        cmd.params.image.texture.handle = InvalidTextureHandle
     }
 
     private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
@@ -449,7 +449,7 @@ impl Painter
         n  := newPos - prev
         n2 := normal
 
-        // If previous and and next point are too close, we take
+        // If previous and next point are too close, we will take
         // the last normal
         if !n.isZeroEpsilon()
         {
@@ -470,7 +470,7 @@ impl Painter
             if path.isClosed
                 n2 *= 0.5
             else
-                n2 = Vector2{-0.5, -0.5}
+                n2 = @{-0.5, -0.5}
             newPos -= n2
             if firstLine prev -= n2
         }

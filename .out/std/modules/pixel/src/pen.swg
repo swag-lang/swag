@@ -75,4 +75,15 @@ impl Pen
         result.size = size
         return result
     }
+
+    // Return a predefined hatch pen
+    func createHatch(type: TextureType, color: Color, size: f32 = 1)->Pen
+    {
+        var result: retval
+        result.brush.color = color
+        result.brush.textureType = type
+        result.size = size
+        result.brush.uvMode = .Tile
+        return result
+    }
 }

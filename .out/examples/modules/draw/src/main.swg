@@ -262,11 +262,7 @@ func displayPage2()
     cdc.drawTexture(image0, 50, 250, 96, 96)
 
     cdc.resetTransform()
-    var pen: Pen
-    pen.brush.color = Argb.Black
-    pen.brush.textureType = .SolidDiamond
-    pen.brush.uvMode = .Tile
-    pen.size = 20
+    pen := Pen.createHatch(TextureType.SolidDiamond, Argb.Black, 20)
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     cdc.drawTexture(image1, 50, 500, 150, 150, @{228, 103, 206, 167})
