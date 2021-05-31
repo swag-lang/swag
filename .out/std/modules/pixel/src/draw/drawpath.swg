@@ -28,6 +28,58 @@ private struct Context
 
 impl Painter
 {
+    private func getTextureSize(brush: Brush)->{w: s32, h: s32}
+    {
+        var result: retval
+        var wt, ht: s32 = ?
+
+        // For a hatch brush, texture size is always 8x8
+        if brush.textureType != .Custom
+        {
+            result.w, result.h = 8
+        }
+        else
+        {
+            result.w = brush.texture.width
+            result.h = brush.texture.height
+        }
+
+        return result
+    }
+
+    private func setTexture(using self, path: *LinePath, brush: Brush)
+    {
+        if brush.textureType != .None
+        {
+            using path
+            (wt, ht) := getTextureSize(brush)
+            cmd := newCommand(CommandId.BindTexture, true)
+            params := &cmd.params.image
+            params.boundRect.x = bvMin.x
+            params.boundRect.y = bvMin.y
+            params.boundRect.z = bvMax.x
+            params.boundRect.w = bvMax.y
+            params.textureRect.x = 0
+            params.textureRect.y = 0
+            params.textureRect.z = wt
+            params.textureRect.w = ht
+            params.texture = brush.texture
+            params.type = brush.textureType
+            params.wrapMode = brush.wrapMode
+            params.interpolationMode = interpolationMode
+        }
+    }
+
+    private func resetTexture(using self, brush: Brush)
+    {
+        if brush.textureType != .None
+        {
+            cmd := newCommand(CommandId.BindTexture, true)
+            cmd.params.image.type = .None
+            cmd.params.image.texture.handle = InvalidTextureHandle
+        }
+    }
+
     private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
@@ -661,7 +713,9 @@ impl Painter
         if pen.dashStyle != .None
             preparePattern(&cxt)
 
+        setTexture(path, pen.brush)
         drawPath(&cxt)
+        resetTexture(pen.brush)
     }
 
     private func triangulateArea(border: const [..] Vector2)->f32
@@ -778,25 +832,6 @@ impl Painter
         return result
     }
 
-    private func getTextureSize(brush: Brush)->{w: s32, h: s32}
-    {
-        var result: retval
-        var wt, ht: s32 = ?
-
-        // For a hatch brush, texture size is always 8x8
-        if brush.textureType != .Custom
-        {
-            result.w, result.h = 8
-        }
-        else
-        {
-            result.w = brush.texture.width
-            result.h = brush.texture.height
-        }
-
-        return result
-    }
-
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
@@ -806,24 +841,7 @@ impl Painter
         using path
 
         // Setup texture
-        if brush.textureType != .None
-        {
-            (wt, ht) := getTextureSize(brush)
-            cmd := newCommand(CommandId.BindTexture, true)
-            params := &cmd.params.image
-            params.boundRect.x = bvMin.x
-            params.boundRect.y = bvMin.y
-            params.boundRect.z = bvMax.x
-            params.boundRect.w = bvMax.y
-            params.textureRect.x = 0
-            params.textureRect.y = 0
-            params.textureRect.z = wt
-            params.textureRect.w = ht
-            params.texture = brush.texture
-            params.type = brush.textureType
-            params.wrapMode = brush.wrapMode
-            params.interpolationMode = interpolationMode
-        }
+        setTexture(path, brush)
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
@@ -896,12 +914,7 @@ impl Painter
             }
         }
 
-        // Setup texture
-        if brush.textureType != .None
-        {
-            cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.image.type = .None
-            cmd.params.image.texture.handle = InvalidTextureHandle
-        }
+        // Restore no texture
+        resetTexture(brush)
     }
 }

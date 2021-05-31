@@ -301,7 +301,10 @@ func displayPage2()
 
     cdc.resetTransform()
     var pen: Pen
-    pen.brush.color = Argb.Black
+    pen.brush.color = Argb.White
+    pen.brush.textureType = .Custom
+    pen.brush.texture = image0
+    pen.brush.wrapMode = .Tile
     pen.size = 20
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
