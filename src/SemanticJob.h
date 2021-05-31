@@ -182,7 +182,6 @@ struct SemanticJob : public Job
     static bool     setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     static bool     setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch);
     static void     resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
-    static bool     checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool     setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool     executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool     reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
@@ -346,7 +345,6 @@ struct SemanticJob : public Job
     static void         propagateReturn(AstReturn* node);
     static bool         resolveReturn(SemanticContext* context);
     static bool         resolveRetVal(SemanticContext* context);
-    static bool         resolveNamespace(SemanticContext* context);
     static bool         resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
     static bool         checkPublicAlias(SemanticContext* context, AstNode* node);
     static bool         resolveAlias(SemanticContext* context);

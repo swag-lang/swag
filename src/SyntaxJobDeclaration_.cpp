@@ -84,8 +84,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
     while (true)
     {
-        namespaceNode              = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
-        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
+        namespaceNode = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
         if (first && result)
             *result = namespaceNode;
         if (forGlobal)

@@ -1,6 +1,3 @@
-
-#global testerror
-
 var b: s32
 
 #[Swag.inline]

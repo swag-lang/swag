@@ -573,10 +573,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto module     = sourceFile->module;
     auto node       = static_cast<AstVarDecl*>(context->node);
 
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
-    if (context->result == ContextResult::Pending)
-        return true;
-
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 

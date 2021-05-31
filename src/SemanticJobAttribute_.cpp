@@ -367,11 +367,6 @@ bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
 {
     auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Attribute));
-    if (context->result == ContextResult::Pending)
-        return true;
-
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     return true;
 }

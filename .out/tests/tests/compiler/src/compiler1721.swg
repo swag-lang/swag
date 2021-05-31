@@ -1,6 +1,3 @@
-
-#global testerror
-
 #test
 {
     alias a = s32

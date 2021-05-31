@@ -6,13 +6,6 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::resolveNamespace(SemanticContext* context)
-{
-    auto node = context->node;
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Namespace));
-    return true;
-}
-
 bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
     auto node    = context->node;

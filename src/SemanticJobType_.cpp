@@ -476,9 +476,6 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Msg0028}));
 
     node->flags |= AST_NO_BYTECODE;
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
-    if (context->result == ContextResult::Pending)
-        return true;
 
     // Constraints with alias on a variable
     if (symbol->kind == SymbolKind::Variable)
@@ -519,10 +516,6 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;
-
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
-    if (context->result == ContextResult::Pending)
-        return true;
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));

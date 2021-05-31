@@ -222,10 +222,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Function));
-    if (context->result == ContextResult::Pending)
-        return true;
-
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {

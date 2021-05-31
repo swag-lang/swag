@@ -1,6 +1,3 @@
-
-#global testerror
-
 #[Swag.macro]
 func toto()
 {

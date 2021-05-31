@@ -300,9 +300,8 @@ JobResult SyntaxJob::execute()
 
     if (!npName.empty())
     {
-        auto namespaceNode         = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
-        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
-        namespaceNode->token.text  = npName;
+        auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        namespaceNode->token.text = npName;
 
         scoped_lock lk(parentScope->symTable.mutex);
         auto        symbol = parentScope->symTable.findNoLock(npName);

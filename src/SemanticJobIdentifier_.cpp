@@ -3576,69 +3576,6 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     return true;
 }
 
-bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind)
-{
-    auto job = context->job;
-
-    // No ghosting from struct
-    auto startScope = node->ownerScope;
-    if (startScope->kind == ScopeKind::Struct)
-        return true;
-
-    // Ghosting is authorized for @alias, that way we can have a visit inside a visit even if the
-    // alias name has not been redefined by the user
-    if (strstr(node->token.text.c_str(), "@alias") == node->token.text.c_str())
-        return true;
-
-    // Zap structures. Seems to work to relax the test, as if the definition is done multiple
-    // times, it will be catch anyway
-    uint32_t collectFlags = COLLECT_NO_STRUCT;
-
-    job->cacheScopeHierarchy.clear();
-    job->cacheScopeHierarchyVars.clear();
-
-    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
-
-    auto crc = node->token.text.hash();
-    for (auto scope : job->cacheScopeHierarchy)
-    {
-        // Do not check if this is the same scope
-        if (scope == startScope)
-            continue;
-
-        auto symbol = scope->symTable.find(node->token.text, crc);
-        if (!symbol)
-            continue;
-
-        // Short cut. Sometime, we let the semantic to deal with problems. So no need to go further
-        if (scope->symTable.acceptGhostSymbolNoLock(context, node, kind, symbol))
-            continue;
-
-        // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
-        {
-            scoped_lock lock(symbol->mutex);
-            if (symbol->cptOverloadsInit != symbol->overloads.size())
-            {
-                if (symbol->cptOverloads)
-                {
-                    job->waitForSymbolNoLock(symbol);
-                    return true;
-                }
-            }
-
-            // If symbol is not in the same stackframe, we ignore the ghosting, as the priority will be given to the
-            // one in the same stack frame (if any). And if there's no symbol in the same stack frame, then error will be
-            // raised later during bytecode generation
-            if (!node->isSameStackFrame(symbol->overloads[0]))
-                continue;
-        }
-
-        SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
-    }
-
-    return true;
-}
-
 bool SemanticJob::checkCanThrow(SemanticContext* context)
 {
     auto node = context->node;

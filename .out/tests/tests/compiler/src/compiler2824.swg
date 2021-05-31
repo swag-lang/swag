@@ -1,5 +1,3 @@
-#global testerror
-
 namespace titi
 {
 
