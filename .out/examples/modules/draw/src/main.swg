@@ -289,12 +289,17 @@ func displayPage2()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
-    cdc.translateTransform(50, 50)
+    cdc.drawTexture(image1, 200, 0)
+
     cdc.setInterpolationMode(InterpolationMode.Pixel)
-    cdc.drawTexture(image0, 0, 0, 100, 100)
+    cdc.drawTexture(image0, 50, 0, 100, 100)
     cdc.setInterpolationMode(InterpolationMode.Linear)
-    cdc.drawTexture(image0, 0, 110, 100, 100)
-    cdc.drawTexture(image1, 120, 0)
+    cdc.drawTexture(image0, 50, 110, 100, 100)
+
+    cdc.translateTransform(500, 500)
+    cdc.rotateTransform(45, 550, 550)
+    cdc.drawTexture(image0, 0, 0, 100, 100)
+
     cdc.end()
 
     renderer.resetTransform()

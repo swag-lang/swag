@@ -210,6 +210,15 @@ impl Painter
         setTransform(transform)
     }
 
+    // Set the paint rotation, in degrees
+    func rotateTransform(using self, angle: f32, centerX, centerY: f32)
+    {
+        rad := Math.toRadians(angle)
+        tr := Transform2.createRotation(rad, centerX, centerY)
+        transform.multiply(tr)
+        setTransform(transform)
+    }
+
     // Set the paint scale
     func scaleTransform(using self, x, y: f32)
     {

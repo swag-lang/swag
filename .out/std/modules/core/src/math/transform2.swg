@@ -35,15 +35,15 @@ impl Transform2
 
         s := Math.sin(angle)
         c := Math.cos(angle)
-        tx = (centerX * (1.0 - c)) + (centerY * s)
-        ty = (centerY * (1.0 - c)) - (centerX * s)
+        c1 := 1.0 - c
+
+        tx = (centerX * c1) + (centerY * s)
+        ty = (centerY * c1) - (centerX * s)
 
         m11 = c
         m12 = s
         m21 = -s
         m22 = c
-        tx  = 0
-        ty  = 0
 
         return result
     }
@@ -91,7 +91,8 @@ impl Transform2
         m21 = m21 * matrix2.m11 + m22 * matrix2.m21
         m22 = sm21 * matrix2.m12 + m22 * matrix2.m22
 
-        tx = tx * matrix2.m11 + ty * matrix2.m21 + matrix2.tx
-        ty = tx * matrix2.m12 + ty * matrix2.m22 + matrix2.ty
+        stx := tx
+        tx = stx * matrix2.m11 + ty * matrix2.m21 + matrix2.tx
+        ty = stx * matrix2.m12 + ty * matrix2.m22 + matrix2.ty
     }
 }
