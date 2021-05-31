@@ -5,7 +5,6 @@
 #include "ModuleSemanticJob.h"
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
-#include "CommandLineParser.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
@@ -514,7 +513,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         Diagnostic diag{node, node->token, msg};
-        diag.remarks.push_back(id);
+        if (g_CommandLine.devMode)
+            diag.remarks.push_back(id);
 
         Diagnostic note{declNode, declNode->token, Msg0551, DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
