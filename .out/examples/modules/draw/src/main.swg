@@ -13,7 +13,7 @@ var renderer: RenderOglWin32
 var image0, image1: Texture
 
 var g_modeAA:       bool = true
-var g_paintQuality: PaintQuality = Normal
+var g_paintQuality: PaintQuality = High
 var g_pattern:      bool = true
 var g_page:         s32 = 2
 
@@ -68,7 +68,7 @@ func displayPage0()
     }
 
     pen.size = 20
-    pen.color = 0xFF000000
+    pen.brush.color = 0xFF000000
 
     //////////////////////////////////////
     cdc.begin()
@@ -77,7 +77,7 @@ func displayPage0()
 
     cdc.resetTransform()
     cdc.translateTransform(50, 50)
-    pen.color = Argb.Black
+    pen.brush.color = Argb.Black
     pen.beginCapStyle = .None
     pen.endCapStyle = .None
     cdc.drawLine(0, 0, 0, 150, pen)
@@ -108,7 +108,7 @@ func displayPage0()
 
     cdc.resetTransform()
     cdc.translateTransform(50, 250)
-    pen.color = Argb.Blue
+    pen.brush.color = Argb.Blue
     pen.joinStyle = .None
     cdc.drawRect(0, 0, 100, 100, pen)
     pen.joinStyle = .Bevel
@@ -118,7 +118,7 @@ func displayPage0()
     pen.joinStyle = .Miter
     cdc.drawRect(450, 0, 100, 100, pen)
 
-    pen.color = Argb.Red
+    pen.brush.color = Argb.Red
     var path: LinePath
     path.lineTo(100, 0)
     path.lineTo(100, 50)
@@ -139,7 +139,7 @@ func displayPage0()
     cdc.translateTransform(450, 400)
     cdc.drawPath(&path, pen)
 
-    pen.color = Argb.Green
+    pen.brush.color = Argb.Green
     path.start(0, 0)
     path.lineTo(100, 0)
     path.lineTo(100, 50)
@@ -168,7 +168,7 @@ func displayPage0()
     cdc.drawPath(&path, pen)
 
     path.start(0, 0)
-    pen.color = Argb.Purple
+    pen.brush.color = Argb.Purple
     path.arcTo(0, 50, 50, 50, 0, 90)
     path.lineTo(100, 50)
     path.arcTo(150, 50, 50, 50, -90, 0)
@@ -180,7 +180,7 @@ func displayPage0()
     cdc.resetTransform()
     cdc.translateTransform(250, 600)
     pen.size = 10
-    pen.color = Argb.Blue
+    pen.brush.color = Argb.Blue
     pen.dashBeginCapStyle = .None
     pen.dashEndCapStyle = .None
     cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
@@ -298,6 +298,12 @@ func displayPage2()
 
     cdc.rotateTransform(45, 550, 550)
     cdc.drawTexture(image0, 500, 500, 100, 100)
+
+    cdc.resetTransform()
+    var pen: Pen
+    pen.brush.color = Argb.Black
+    pen.size = 20
+    cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     cdc.end()
 

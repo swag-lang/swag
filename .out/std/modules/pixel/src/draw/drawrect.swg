@@ -33,7 +33,8 @@ impl Painter
     // Draw an empty rectangle
     func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32)
     {
-        sharedSolidPen.color = color
+        sharedSolidPen.brush.textureType = .None
+        sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
         drawRect(left, top, width, height, sharedSolidPen)
     }
@@ -64,7 +65,8 @@ impl Painter
     // Draw an empty round rectangle
     func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
     {
-        sharedSolidPen.color = color
+        sharedSolidPen.brush.textureType = .None
+        sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
         drawRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidPen)
     }

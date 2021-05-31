@@ -36,8 +36,8 @@ impl Painter
         v2 := Vector2{v1.x + n.x, v1.y + n.y}
         v3 := Vector2{v0.x + n.x, v0.y + n.y}
 
-        prim1 := pushTriangle(v0, v1, v3, pen.color)
-        prim2 := pushTriangle(v1, v3, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
 
         if paintParams & .Antialiased
         {
@@ -55,7 +55,7 @@ impl Painter
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
         v2 := Vector2{p.x + n.x, p.y + n.y}
-        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
 
         if paintParams & .Antialiased
         {
@@ -82,8 +82,8 @@ impl Painter
         v2 := Vector2{v1.x + n.x, v1.y + n.y}
         v3 := Vector2{v0.x + n.x, v0.y + n.y}
 
-        prim1 := pushTriangle(v0, v1, v3, pen.color)
-        prim2 := pushTriangle(v1, v3, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
 
         if paintParams & .Antialiased
         {
@@ -114,7 +114,7 @@ impl Painter
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
         v2 := Vector2{p.x + n.x, p.y + n.y}
-        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
 
         if paintParams & .Antialiased
         {
@@ -158,7 +158,7 @@ impl Painter
             t := angle0 + ((angle1 - angle0) * i) / step
             v2.x = p.x + (Math.cos(t) * radius)
             v2.y = p.y + (Math.sin(t) * radius)
-            prim1 := pushTriangle(v0, v1, v2, pen.color)
+            prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
@@ -211,7 +211,7 @@ impl Painter
             v2 = Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
         if paintParams & .Antialiased
             addEdgeAA(prim1, v1, v2)
     }
@@ -264,14 +264,14 @@ impl Painter
             t := angle0 + ((angle1 - angle0) * i) / step
             v2.x = p.x + (Math.cos(t) * radius)
             v2.y = p.y + (Math.sin(t) * radius)
-            prim1 := pushTriangle(v0, v1, v2, pen.color)
+            prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
 
         v2 = vend
-        prim1 := pushTriangle(v0, v1, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
         if paintParams & .Antialiased
             addEdgeAA(prim1, v1, v2)
     }
@@ -319,8 +319,8 @@ impl Painter
             v3 = Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        prim1 := pushTriangle(v0, v1, v3, pen.color)
-        prim2 := pushTriangle(v1, v3, v2, pen.color)
+        prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
+        prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
         if paintParams & .Antialiased
         {
             addEdgeAA(prim1, v3, v2)
@@ -426,8 +426,8 @@ impl Painter
         v1 := newPos - normal
         v3 := prev + normal
         v2 := newPos + normal
-        prim1 = pushTriangle(v0, v1, v3, pen.color)
-        prim2 = pushTriangle(v1, v3, v2, pen.color)
+        prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
+        prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
 
         // Generate AA edges
         if paintParams & .Antialiased

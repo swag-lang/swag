@@ -12,7 +12,8 @@ impl Painter
     // Draw a line
     func drawLine(using self, startX, startY, endX, endY: f32, color: Color, penSize: f32)
     {
-        sharedSolidPen.color = color
+        sharedSolidPen.brush.textureType = .None
+        sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
         drawLine(startX, startY, endX, endY, sharedSolidPen)
     }
