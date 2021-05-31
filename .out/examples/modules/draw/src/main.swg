@@ -296,9 +296,8 @@ func displayPage2()
     cdc.setInterpolationMode(InterpolationMode.Linear)
     cdc.drawTexture(image0, 50, 110, 100, 100)
 
-    cdc.translateTransform(500, 500)
     cdc.rotateTransform(45, 550, 550)
-    cdc.drawTexture(image0, 0, 0, 100, 100)
+    cdc.drawTexture(image0, 500, 500, 100, 100)
 
     cdc.end()
 

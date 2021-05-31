@@ -88,7 +88,7 @@ impl Transform2
         m12 = sm11 * matrix2.m12 + m12 * matrix2.m22
 
         sm21 := m21
-        m21 = m21 * matrix2.m11 + m22 * matrix2.m21
+        m21 = sm21 * matrix2.m11 + m22 * matrix2.m21
         m22 = sm21 * matrix2.m12 + m22 * matrix2.m22
 
         stx := tx
