@@ -797,43 +797,6 @@ impl Painter
         return result
     }
 
-    private func computeUV(using self, prim: uint, v0: Vector2, bvMin, bvMax: Vector2, wt, ht: s32, brush: Brush)
-    {
-        primt := vertexBuffer.buffer + prim
-        if brush.textureType == .None
-        {
-            primt.uv.x = 0
-            primt.uv.y = 0
-            return
-        }
-
-        #[Swag.complete]
-        switch brush.wrapMode
-        {
-        case Clamp:
-            w := bvMax.x - bvMin.x
-            h := bvMax.y - bvMin.y
-            primt.uv.x = (v0.x - bvMin.x) / w
-            primt.uv.y = 1 - (v0.y - bvMin.y) / h
-
-        case Tile:
-            primt.uv.x = (v0.x - bvMin.x) / wt
-            primt.uv.y = 1 - (v0.y - bvMin.y) / ht
-
-        case TileFlipX:
-            primt.uv.x = 1 - (v0.x - bvMin.x) / wt
-            primt.uv.y = 1 - (v0.y - bvMin.y) / ht
-
-        case TileFlipY:
-            primt.uv.x = (v0.x - bvMin.x) / wt
-            primt.uv.y = (v0.y - bvMin.y) / ht
-
-        case TileFlipXY:
-            primt.uv.x = 1 - (v0.x - bvMin.x) / wt
-            primt.uv.y = (v0.y - bvMin.y) / ht
-        }
-    }
-
     // Draw the line path with the given 'pen'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
@@ -845,23 +808,22 @@ impl Painter
         // Setup texture
         if brush.textureType != .None
         {
+            (wt, ht) := getTextureSize(brush)
             cmd := newCommand(CommandId.BindTexture, true)
             params := &cmd.params.image
+            params.boundRect.x = bvMin.x
+            params.boundRect.y = bvMin.y
+            params.boundRect.z = bvMax.x
+            params.boundRect.w = bvMax.y
+            params.textureRect.x = 0
+            params.textureRect.y = 0
+            params.textureRect.z = wt
+            params.textureRect.w = ht
             params.texture = brush.texture
             params.type = brush.textureType
             params.wrapMode = brush.wrapMode
             params.interpolationMode = interpolationMode
         }
-
-        boundMin := bvMin
-        boundMax := bvMax
-
-        // Little uv correction, to center pixels
-        (wt, ht) := getTextureSize(brush)
-        boundMin.x += (1.0 / wt) * 0.5
-        boundMin.y += (1.0 / ht) * 0.5
-        boundMax.x -= (1.0 / wt) * 0.5
-        boundMax.y -= (1.0 / ht) * 0.5
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
@@ -873,9 +835,6 @@ impl Painter
                 v0 := dref pos
                 v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
                 prim := pushTriangle(center, v0, v1, brush.color)
-                computeUV(prim, center, boundMin, boundMax, wt, ht, brush)
-                computeUV(prim + 1, v0, boundMin, boundMax, wt, ht, brush)
-                computeUV(prim + 2, v1, boundMin, boundMax, wt, ht, brush)
 
                 if paintParams & .Antialiased
                 {
@@ -902,9 +861,6 @@ impl Painter
                 v1 := tpos[pidx[1]]
                 v2 := tpos[pidx[2]]
                 prim := pushTriangle(v0, v1, v2, brush.color)
-                computeUV(prim, v0, boundMin, boundMax, wt, ht, brush)
-                computeUV(prim + 1, v1, boundMin, boundMax, wt, ht, brush)
-                computeUV(prim + 2, v2, boundMin, boundMax, wt, ht, brush)
                 pidx += 3
             }
 

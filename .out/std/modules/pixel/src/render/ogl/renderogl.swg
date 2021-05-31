@@ -640,6 +640,11 @@ impl RenderOgl
         buidModelMatrix(Transform2.Identity)
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
+        // UV parameters
+        var uvmode:         GLint = glGetUniformLocation(programID, @dataof("uvmode"))
+        var boundRect:      GLint = glGetUniformLocation(programID, @dataof("boundRect"))
+        var textureRect:    GLint = glGetUniformLocation(programID, @dataof("textureRect"))
+
         // State
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -667,6 +672,10 @@ impl RenderOgl
 
             case BindTexture:
                 params := &cmd.params.image
+                glUniform4fv(boundRect, 1, &params.boundRect.x)
+                glUniform4fv(textureRect, 1, &params.textureRect.x)
+                glUniform1f(uvmode, cast(GLfloat) params.wrapMode)
+
                 switch params.type
                 {
                 case None:

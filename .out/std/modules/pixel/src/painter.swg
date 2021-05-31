@@ -66,6 +66,8 @@ struct Command
 
         image:  struct
                 {
+                    boundRect:          Vector4
+                    textureRect:        Vector4
                     type:               BrushTextureType = ?
                     wrapMode:           WrapMode = ?
                     interpolationMode:  InterpolationMode = ?

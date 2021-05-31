@@ -15,6 +15,9 @@ const VertexShaderAA = @"
 
     uniform mat4    mvp;
     uniform mat4    mdl;
+    uniform float   uvmode;
+    uniform vec4    boundRect;
+    uniform vec4    textureRect;
 
     out vec4        vcolor;
     out vec2        vpixelPos;
@@ -26,6 +29,31 @@ const VertexShaderAA = @"
     out vec4        vaa4;
     out vec4        vaa5;
     out float       vaanum;
+
+    vec2 computeUVs(vec2 pixelPos)
+    {
+        vec2 uv;
+
+        // Clamp
+        if(uvmode < 0.5)
+        {
+            float w = boundRect.z - boundRect.x;
+            float h = boundRect.w - boundRect.y;
+            uv.x = (pixelPos.x - boundRect.x) / w;
+            uv.y = 1 - (pixelPos.y - boundRect.y) / h;
+        }
+
+        // Tile
+        else if(uvmode < 1.5)
+        {
+            float wt = textureRect.z - textureRect.x;
+            float ht = textureRect.w - textureRect.y;
+            uv.x = (pixelPos.x - boundRect.x) / wt;
+            uv.y = 1 - (pixelPos.y - boundRect.y) / ht;
+        }
+
+        return uv;
+    }
 
     vec4 computeTransformAA(vec4 aa)
     {
@@ -63,7 +91,7 @@ const VertexShaderAA = @"
         vcolor = vertexColor.zyxw;
 
         // uv
-        vuv = uv;
+        vuv = computeUVs(vertexPosition.xy);
 
         transformAA();
     }
