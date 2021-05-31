@@ -21,7 +21,7 @@ enum UVMode
 }
 
 #[Swag.enumindex]
-enum HatchType
+enum HatchStyle
 {
     Dot
     Horizontal

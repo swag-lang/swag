@@ -220,7 +220,7 @@ func displayPage1()
     cdc.translateTransform(50, 50)
 
     cpt, cptLines := 0
-    visit e: HatchType
+    visit e: HatchStyle
     {
         brush.type   = .Hatch
         brush.hatch  = e
@@ -262,7 +262,7 @@ func displayPage2()
     cdc.drawTexture(image0, 50, 250, 96, 96)
 
     cdc.resetTransform()
-    pen := Pen.createHatch(HatchType.SolidDiamond, Argb.Black, 20)
+    pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     cdc.drawTexture(image1, 50, 500, 150, 150, @{228, 103, 206, 167})

@@ -12,7 +12,7 @@ struct Brush
 {
     color:      Color = Argb.White
     type:       BrushType = SolidColor
-    hatch:      HatchType = Dot
+    hatch:      HatchStyle = Dot
     texture:    Texture
     uvMode:     UVMode = Fill
     uvRect:     Math.Rectangle

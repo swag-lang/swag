@@ -71,7 +71,7 @@ impl Pen
     }
 
     // Return a predefined hatch pen
-    func createHatch(type: HatchType, color: Color, size: f32 = 1)->Pen
+    func createHatch(type: HatchStyle, color: Color, size: f32 = 1)->Pen
     {
         var result: retval
         result.brush.color = color
