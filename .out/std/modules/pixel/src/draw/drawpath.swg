@@ -49,7 +49,7 @@ impl Painter
 
     private func setTexture(using self, path: *LinePath, brush: Brush)
     {
-        if brush.textureType != .None
+        if brush.textureType != .SolidColor
         {
             using path
             (wt, ht) := getTextureSize(brush)
@@ -72,10 +72,10 @@ impl Painter
 
     private func resetTexture(using self, brush: Brush)
     {
-        if brush.textureType != .None
+        if brush.textureType != .SolidColor
         {
             cmd := newCommand(CommandId.BindTexture, true)
-            cmd.params.image.type = .None
+            cmd.params.image.type = .SolidColor
             cmd.params.image.texture.handle = InvalidTextureHandle
         }
     }

@@ -258,7 +258,7 @@ func displayPage1()
     cdc.translateTransform(50, 50)
 
     cpt, cptLines := 0
-    visit e: BrushTextureType
+    visit e: TextureType
     {
         if e == .Custom continue
         brush.textureType = e

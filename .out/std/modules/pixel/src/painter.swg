@@ -38,6 +38,54 @@ enum WrapMode
     Tile
 }
 
+#[Swag.enumindex]
+enum TextureType
+{
+    // No texturing. Solid rendering
+    SolidColor
+
+    // User specified texture/image
+    Custom
+
+    // Predefined hatch textures
+    Dot
+    Horizontal
+    HorizontalLight
+    HorizontalNarrow
+    Vertical
+    VerticalLight
+    VerticalNarrow
+    SolidDiamond
+    OutlinedDiamond
+    HorizontalDark
+    VerticalDark
+    Grid
+    GridLarge
+    GridDotted
+    Cross
+    CrossLarge
+    Percent5
+    Percent10
+    Percent20
+    Percent25
+    Percent30
+    Percent40
+    Percent50
+    Percent60
+    Percent70
+    Percent75
+    Percent80
+    Percent90
+    CheckBoard
+    CheckBoardLarge
+    Weave
+    DiagonalForward
+    DiagonalForwardLight
+    DiagonalBackward
+    DiagonalBackwardLight
+    DiagonalCross
+}
+
 struct Command
 {
     id: CommandId = ?
@@ -64,7 +112,7 @@ struct Command
                 {
                     boundRect:          Vector4
                     textureRect:        Vector4
-                    type:               BrushTextureType = ?
+                    type:               TextureType = ?
                     wrapMode:           WrapMode = ?
                     interpolationMode:  InterpolationMode = ?
                     texture:            Texture

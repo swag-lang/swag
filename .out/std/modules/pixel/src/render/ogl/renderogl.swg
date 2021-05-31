@@ -409,7 +409,7 @@ public struct RenderOgl
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
-    hatchTextures:      [@countof(BrushTextureType)] GLuint
+    hatchTextures:      [@countof(TextureType)] GLuint
 }
 
 impl RenderOgl
@@ -462,7 +462,7 @@ impl RenderOgl
 
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
-        using BrushTextureType
+        using TextureType
         hatchTextures[Dot] = generateTexture(HatchDot, 8, 8)
         hatchTextures[Horizontal] = generateTexture(HatchHorizontal, 8, 8)
         hatchTextures[HorizontalLight] = generateTexture(HatchHorizontalLight, 8, 8)
@@ -676,7 +676,7 @@ impl RenderOgl
 
                 switch params.type
                 {
-                case None:
+                case SolidColor:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
                 case Custom:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
