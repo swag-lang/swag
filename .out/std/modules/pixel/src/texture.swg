@@ -16,6 +16,7 @@ enum InterpolationMode
 enum WrapMode
 {
     Clamp
+    ClampUvRect
     Tile
 }
 

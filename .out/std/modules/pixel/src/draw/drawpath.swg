@@ -49,25 +49,38 @@ impl Painter
 
     private func setTexture(using self, path: *LinePath, brush: Brush)
     {
-        if brush.textureType != .SolidColor
+        if brush.textureType == .SolidColor
+            return
+
+        using path
+
+        (wt, ht) := getTextureSize(brush)
+        cmd := newCommand(CommandId.BindTexture, true)
+        params := &cmd.params.image
+
+        params.boundRect.x = bvMin.x
+        params.boundRect.y = bvMin.y
+        params.boundRect.z = bvMax.x
+        params.boundRect.w = bvMax.y
+        if brush.wrapMode == .ClampUvRect
         {
-            using path
-            (wt, ht) := getTextureSize(brush)
-            cmd := newCommand(CommandId.BindTexture, true)
-            params := &cmd.params.image
-            params.boundRect.x = bvMin.x
-            params.boundRect.y = bvMin.y
-            params.boundRect.z = bvMax.x
-            params.boundRect.w = bvMax.y
+            params.textureRect.x = brush.uvRect.x / brush.texture.width
+            params.textureRect.y = brush.uvRect.y / brush.texture.height
+            params.textureRect.z = brush.uvRect.right() / brush.texture.width
+            params.textureRect.w = brush.uvRect.bottom() / brush.texture.height
+        }
+        else
+        {
             params.textureRect.x = 0
             params.textureRect.y = 0
             params.textureRect.z = wt
             params.textureRect.w = ht
-            params.texture = brush.texture
-            params.type = brush.textureType
-            params.wrapMode = brush.wrapMode
-            params.interpolationMode = interpolationMode
         }
+
+        params.texture = brush.texture
+        params.type = brush.textureType
+        params.wrapMode = brush.wrapMode
+        params.interpolationMode = interpolationMode
     }
 
     private func resetTexture(using self, brush: Brush)

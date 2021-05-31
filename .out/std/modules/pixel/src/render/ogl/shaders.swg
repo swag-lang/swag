@@ -42,13 +42,22 @@ const VertexShaderAA = @"
             uv.y = 1 - (pixelPos.y - boundRect.y) / h;
         }
 
-        // Tile
+        // ClampUvRect
         else if(uvmode < 1.5)
         {
-            float wt = textureRect.z - textureRect.x;
-            float ht = textureRect.w - textureRect.y;
-            uv.x = (pixelPos.x - boundRect.x) / wt;
-            uv.y = 1 - (pixelPos.y - boundRect.y) / ht;
+            float w = boundRect.z - boundRect.x;
+            float h = boundRect.w - boundRect.y;
+            float xt = (pixelPos.x - boundRect.x) / w;
+            float yt = (pixelPos.y - boundRect.y) / h;
+            uv.x = textureRect.x + (xt * (textureRect.z - textureRect.x));
+            uv.y = 1 - (textureRect.y + (yt * (textureRect.w - textureRect.y)));
+        }
+
+        // Tile
+        else if(uvmode < 2.5)
+        {
+            uv.x = (pixelPos.x - boundRect.x) / textureRect.z;
+            uv.y = 1 - (pixelPos.y - boundRect.y) / textureRect.w;
         }
 
         return uv;

@@ -1,5 +1,5 @@
 #global public
-using Core.Drawing
+using Core, Core.Drawing
 
 struct Brush
 {
@@ -7,4 +7,5 @@ struct Brush
     textureType: TextureType = SolidColor
     texture:     Texture
     wrapMode:    WrapMode = Clamp
+    uvRect:      Math.Rect
 }

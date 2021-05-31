@@ -285,6 +285,13 @@ func displayPage2()
     pen.size = 20
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
+    var brush: Brush
+    brush.textureType = .Custom
+    brush.wrapMode = .ClampUvRect
+    brush.uvRect = @{228, 103, 206, 167}
+    brush.texture = image1
+    cdc.fillRect(50, 600, 200, 200, brush)
+
     cdc.end()
 
     renderer.resetTransform()

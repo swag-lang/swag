@@ -670,6 +670,7 @@ impl RenderOgl
                 params := &cmd.params.image
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
                 glUniform4fv(textureRect, 1, &params.textureRect.x)
+
                 glUniform1f(uvmode, cast(GLfloat) params.wrapMode)
 
                 switch params.type
@@ -685,7 +686,7 @@ impl RenderOgl
                 #[Swag.complete]
                 switch params.wrapMode
                 {
-                case Clamp:
+                case Clamp, ClampUvRect:
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
                 case Tile:
