@@ -79,7 +79,7 @@ struct Painter
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
     paintParams:        PaintParams = Default
-    paintQuality:       PaintQuality = High
+    paintQuality:       PaintQuality = Good
     drawingBegin:       bool
     transform:          Transform2
     interpolationMode:  InterpolationMode = Pixel

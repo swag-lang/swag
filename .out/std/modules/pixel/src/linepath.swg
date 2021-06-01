@@ -207,23 +207,31 @@ public impl LinePath
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        fstep := Math.abs(p1.y - p1.x) * Math.max(p2.x, p2.y)
-        step := 0'u32
-        switch quality
+        func calc(angle: f32, p2, prev: Vector2)->Vector2
         {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
+            var result: retval = prev
+            result.x += (Math.sin(angle) * p2.x)
+            result.y += -(Math.cos(angle) * p2.y)
+            return result
         }
 
-        if step < 3 step = 3
+        // Estimate the number of steps to reach a given quality
+        step := 1'u32
+        angleDiv := 0.5
+        while true
+        {
+            v := calc(p1.x + (p1.y - p1.x) * angleDiv, p2, pos)
+            if endPoint.distanceSquared(v) <= 1.0
+                break
+            angleDiv *= 0.5
+            step += 1
+        }
+
+        // Approximate curve
+        step *= 2
         loop i: 1..step
         {
-            t := p1.x + ((p1.y - p1.x) * i) / step
-            v := pos
-            v.x += (Math.sin(t) * p2.x)
-            v.y += -(Math.cos(t) * p2.y)
+            v := calc(p1.x + ((p1.y - p1.x) * i) / step, p2, pos)
             flattenLine(v)
         }
     }
