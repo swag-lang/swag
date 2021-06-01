@@ -654,6 +654,7 @@ impl RenderOgl
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
+        glDisable(GL_SCISSOR_TEST)
 
         visit cmd: dc.commandBuffer
         {
@@ -669,6 +670,14 @@ impl RenderOgl
                 params := &cmd.params.transform
                 buidModelMatrix(params.tr)
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+
+            case SetClippingRect:
+                params := &cmd.params.clippingRect
+                glEnable(GL_SCISSOR_TEST)
+                glScissor(cast(GLint) params.rect.x, cast(GLint) (self.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
+
+            case ResetClippingRect:
+                glDisable(GL_SCISSOR_TEST)
 
             case DrawTriangles:
                 params := &cmd.params.drawTriangles

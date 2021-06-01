@@ -50,4 +50,15 @@ impl Brush
         result.uvMode = .Tile
         return result
     }
+
+    // Returns a tiled texture brush
+    func createHatch(style: HatchStyle, color: Color)->Brush
+    {
+        var result: retval
+        result.color = color
+        result.type = BrushType.Hatch
+        result.hatch = style
+        result.uvMode = .Tile
+        return result
+    }
 }

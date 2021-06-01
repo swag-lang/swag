@@ -15,7 +15,7 @@ var image0, image1: Texture
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = High
 var g_pattern:      bool = true
-var g_page:         s32 = 2
+var g_page:         s32 = 3
 
 func dataPath()->String
 {
@@ -251,6 +251,7 @@ func displayPage2()
     cdc.begin()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
+
     cdc.drawTexture(image1, 200, 0)
 
     cdc.setInterpolationMode(InterpolationMode.Pixel)
@@ -274,6 +275,22 @@ func displayPage2()
     renderer.draw(&cdc)
 }
 
+func displayPage3()
+{
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+
+    brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
+    cdc.setClippingRect(0, 0, 100, 100)
+    cdc.fillCircle(100, 100, 100, brush)
+    cdc.drawCircle(100, 100, 100, Argb.Red, 4)
+
+    cdc.end()
+    renderer.resetTransform()
+    renderer.draw(&cdc)
+}
+
 func display()
 {
     renderer.begin()
@@ -289,6 +306,7 @@ func display()
     case 0: displayPage0()
     case 1: displayPage1()
     case 2: displayPage2()
+    case 3: displayPage3()
     }
 
     renderer.end()
@@ -387,7 +405,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % 3
+            g_page = (g_page + 1) % 4
     }
 }
 

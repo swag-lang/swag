@@ -16,6 +16,8 @@ enum CommandId
     Transform
     DrawTriangles
     BindTexture
+    SetClippingRect
+    ResetClippingRect
 }
 
 #[Swag.enumflags]
@@ -42,6 +44,7 @@ struct Command
         clear:          struct{color: Color; flags: u32; }
         drawTriangles:  struct{start: u32; count: u32; }
         transform:      struct{tr: Transform2; }
+        clippingRect:   struct{rect: Rectangle; }
 
         image:  struct
                 {
@@ -69,6 +72,8 @@ struct Painter
     drawingBegin:       bool
     transform:          Transform2
     interpolationMode:  InterpolationMode = Pixel
+    clippingRect:       Rectangle
+    clippingRectOn:     bool
 }
 
 impl Painter
@@ -123,7 +128,7 @@ impl Painter
     #[Swag.inline]
     protected func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
     {
-        Debug.assert(drawingBegin)
+        Debug.assert(drawingBegin, "begin() not called before")
 
         // Take the previous command if it's the same
         if replaceLast and commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == cmd
@@ -215,5 +220,21 @@ impl Painter
     func setInterpolationMode(using self, mode: InterpolationMode)
     {
         interpolationMode = mode
+    }
+
+    // Set the current clipping rectangle
+    func setClippingRect(using self, x, y, width, height: f32)
+    {
+        clippingRect = @{x, y, width, height}
+        clippingRectOn = true
+        cmd := newCommand(CommandId.SetClippingRect, true)
+        cmd.params.clippingRect.rect = clippingRect
+    }
+
+    // Reset the current clipping rectangle
+    func resetClippingRect(using self)
+    {
+        clippingRectOn = false
+        discard newCommand(CommandId.ResetClippingRect, true)
     }
 }
