@@ -649,12 +649,16 @@ impl RenderOgl
         boundRect   := glGetUniformLocation(shaderImage, @dataof("boundRect"))
         textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
 
-        // State
+        // Default state
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glDisable(GL_SCISSOR_TEST)
+        glDisable(GL_STENCIL_TEST)
+        glDisable(GL_DEPTH_TEST)
+        glClearStencil(0)
+        glStencilMask(0xFF)
 
         visit cmd: dc.commandBuffer
         {
@@ -671,12 +675,27 @@ impl RenderOgl
                 buidModelMatrix(params.tr)
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
+            case StartClippingRegion:
+                glEnable(GL_STENCIL_TEST)
+                glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
+                glStencilFunc(GL_ALWAYS, 1, 0xFF)
+                glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE)
+
+            case EndClippingRegion:
+                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+                glStencilFunc(GL_EQUAL, 1, 0xFF)
+                glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
+
+            case ResetClippingRegion:
+                glDisable(GL_STENCIL_TEST)
+
             case SetClippingRect:
                 params := &cmd.params.clippingRect
                 glEnable(GL_SCISSOR_TEST)
                 glScissor(cast(GLint) params.rect.x, cast(GLint) (self.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
             case ResetClippingRect:
+                glClearStencil(0)
                 glDisable(GL_SCISSOR_TEST)
 
             case DrawTriangles:

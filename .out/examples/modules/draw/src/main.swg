@@ -285,6 +285,12 @@ func displayPage3()
     cdc.setClippingRect(0, 0, 100, 100)
     cdc.fillCircle(100, 100, 100, brush)
     cdc.drawCircle(100, 100, 100, Argb.Red, 4)
+    cdc.resetClippingRect()
+
+    cdc.startClippingRegion()
+    cdc.fillRoundRect(200, 50, 100, 100, 20, 20, Argb.Red)
+    cdc.endClippingRegion()
+    cdc.fillRect(0, 0, 1000, 1000, Argb.Red)
 
     cdc.end()
     renderer.resetTransform()
@@ -366,6 +372,7 @@ func createWindow()->HWND
     pfd.nVersion     = 1;
     pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
     pfd.iPixelType   = PFD_TYPE_RGBA
+    pfd.cStencilBits = 8
     pfd.cColorBits   = 32
 
     assume

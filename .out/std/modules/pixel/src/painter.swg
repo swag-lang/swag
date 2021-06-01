@@ -18,6 +18,9 @@ enum CommandId
     BindTexture
     SetClippingRect
     ResetClippingRect
+    StartClippingRegion
+    EndClippingRegion
+    ResetClippingRegion
 }
 
 #[Swag.enumflags]
@@ -236,5 +239,23 @@ impl Painter
     {
         clippingRectOn = false
         discard newCommand(CommandId.ResetClippingRect, true)
+    }
+
+    // Start painting in the clipping buffer
+    func startClippingRegion(using self)
+    {
+        discard newCommand(CommandId.StartClippingRegion, true)
+    }
+
+    // Stop painting in the clipping buffer. Back to normal.
+    func endClippingRegion(using self)
+    {
+        discard newCommand(CommandId.EndClippingRegion, true)
+    }
+
+    // Reset clipping buffer to its default value (no more clipping)
+    func resetClippingRegion(using self)
+    {
+        discard newCommand(CommandId.ResetClippingRegion, true)
     }
 }
