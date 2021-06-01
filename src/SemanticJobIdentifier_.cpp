@@ -2339,6 +2339,31 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
+TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node)
+{
+    bool done   = false;
+    auto parent = node->parent;
+    while (parent && parent->kind != AstNodeKind::Statement && !done)
+    {
+        for (auto c : parent->childs)
+        {
+            if (c->typeInfo)
+            {
+                switch (c->typeInfo->kind)
+                {
+                case TypeInfoKind::Enum:
+                case TypeInfoKind::TypeSet:
+                    return c->typeInfo;
+                }
+            }
+        }
+
+        parent = parent->parent;
+    }
+
+    return nullptr;
+}
+
 bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto  job              = context->job;
@@ -2382,42 +2407,28 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if (identifierRef->autoScope)
             {
-                bool done   = false;
-                auto parent = identifierRef->parent;
-                while (parent && parent->kind != AstNodeKind::Statement && !done)
-                {
-                    for (auto c : parent->childs)
-                    {
-                        if (c->typeInfo)
-                        {
-                            switch (c->typeInfo->kind)
-                            {
-                            case TypeInfoKind::Enum:
-                            {
-                                auto typeEnum             = CastTypeInfo<TypeInfoEnum>(c->typeInfo, TypeInfoKind::Enum);
-                                identifierRef->startScope = typeEnum->scope;
-                                scopeHierarchy.clear();
-                                scopeHierarchy.push_back(typeEnum->scope);
-                                done = true;
-                                break;
-                            }
-                            case TypeInfoKind::TypeSet:
-                                auto typeStruct           = CastTypeInfo<TypeInfoStruct>(c->typeInfo, TypeInfoKind::TypeSet);
-                                identifierRef->startScope = typeStruct->scope;
-                                scopeHierarchy.clear();
-                                scopeHierarchy.push_back(typeStruct->scope);
-                                scopeHierarchy.push_back(identifierRef->ownerScope);
-                                done = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    parent = parent->parent;
-                }
-
-                if (!done)
+                auto typeContext = findTypeInContext(context, identifierRef);
+                if (!typeContext)
                     return context->report({identifierRef, Msg0881});
+
+                switch (typeContext->kind)
+                {
+                case TypeInfoKind::Enum:
+                {
+                    auto typeEnum             = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
+                    identifierRef->startScope = typeEnum->scope;
+                    scopeHierarchy.clear();
+                    scopeHierarchy.push_back(typeEnum->scope);
+                    break;
+                }
+                case TypeInfoKind::TypeSet:
+                    auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::TypeSet);
+                    identifierRef->startScope = typeStruct->scope;
+                    scopeHierarchy.clear();
+                    scopeHierarchy.push_back(typeStruct->scope);
+                    scopeHierarchy.push_back(identifierRef->ownerScope);
+                    break;
+                }
             }
 
             // Be sure this is the last try
