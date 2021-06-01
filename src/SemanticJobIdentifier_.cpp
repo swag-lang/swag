@@ -2400,7 +2400,6 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                 collectFlags = COLLECT_BACKTICK;
 
             startScope = node->ownerScope;
-            SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
 
             // :AutoScope
             // Auto scoping depending on the context
@@ -2429,6 +2428,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     scopeHierarchy.push_back(identifierRef->ownerScope);
                     break;
                 }
+            }
+            else
+            {
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
             }
 
             // Be sure this is the last try
