@@ -599,6 +599,14 @@ impl RenderOgl
         worldTransform.multiply(tr)
     }
 
+    // Rotate the world transform
+    func rotateTransform(using self, angle: f32, centerX, centerY: f32)
+    {
+        rad := Math.toRadians(angle)
+        tr := Transform2.createRotation(rad, centerX, centerY)
+        worldTransform.multiply(tr)
+    }
+
     // Scale the world transform
     func scaleTransform(using self, x, y: f32)
     {
