@@ -34,6 +34,15 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         return true;
     }
 
+    if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        node->typeInfo = rightTypeInfo;
+        SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, Msg0144}));
+        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_INTEGER, context->report({left, format(Msg0579, leftTypeInfo->getDisplayName().c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
+        return true;
+    }
+
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format(Msg0142, rightTypeInfo->getDisplayName().c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);

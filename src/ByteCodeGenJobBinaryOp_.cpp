@@ -47,9 +47,21 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
         if (sizeOf > 1)
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer64, r0, rt, r2);
+
+            // Be sure that the pointer is on the left side, because ptr = 1 + ptr is possible
+            if (context->node->childs[0]->typeInfo->kind == TypeInfoKind::Pointer)
+            {
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+                emitInstruction(context, ByteCodeOp::IncPointer64, r0, rt, r2);
+            }
+            else
+            {
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r0);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+                emitInstruction(context, ByteCodeOp::IncPointer64, r1, rt, r2);
+            }
+
             freeRegisterRC(context, rt);
         }
         else
