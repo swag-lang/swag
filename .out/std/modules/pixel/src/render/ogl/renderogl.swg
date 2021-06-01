@@ -501,9 +501,12 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(HatchDiagonalCross, 8, 8)
     }
 
-    protected func reset(using self)
+    protected func start(using self)
     {
         worldTransform.setIdentity()
+        glClearStencil(0)
+        glClearColor(0, 0, 0, 0)
+        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
     func resize(using self, width, height: s32)
@@ -652,13 +655,13 @@ impl RenderOgl
         // Default state
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glDisable(GL_SCISSOR_TEST)
         glDisable(GL_STENCIL_TEST)
         glDisable(GL_DEPTH_TEST)
         glClearStencil(0)
         glStencilMask(0xFF)
+        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
 
         visit cmd: dc.commandBuffer
         {
@@ -689,7 +692,6 @@ impl RenderOgl
                 glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
 
             case ResetClippingRegion:
-                glClearStencil(0)
                 glDisable(GL_STENCIL_TEST)
 
             case SetClippingRect:

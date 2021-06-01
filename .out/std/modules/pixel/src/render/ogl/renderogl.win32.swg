@@ -28,8 +28,8 @@ public impl RenderOglWin32
     // To be called before rendering
     func begin(using self)
     {
-        base.reset()
         catch wglMakeCurrent(hDC, hRC)
+        base.start()
     }
 
     // To be called after rendering
