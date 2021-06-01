@@ -678,7 +678,7 @@ impl RenderOgl
                 {
                 case SolidColor:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
-                case BrushType.Texture:
+                case Texture:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 case Hatch:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[params.hatch])

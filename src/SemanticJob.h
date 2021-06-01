@@ -59,6 +59,7 @@ struct LockSymbolOncePerContext
 struct OneOverload
 {
     SymbolOverload* overload;
+    Scope*          scope;
     uint32_t        cptOverloads;
     uint32_t        cptOverloadsInit;
 };
@@ -67,6 +68,7 @@ struct OneTryMatch
 {
     SymbolMatchContext symMatchContext;
     SymbolOverload*    overload          = nullptr;
+    Scope*             scope             = nullptr;
     AstNode*           dependentVar      = nullptr;
     AstNode*           callParameters    = nullptr;
     AstNode*           genericParameters = nullptr;
@@ -78,6 +80,7 @@ struct OneTryMatch
     {
         symMatchContext.reset();
         overload          = nullptr;
+        scope             = nullptr;
         dependentVar      = nullptr;
         callParameters    = nullptr;
         genericParameters = nullptr;
@@ -91,6 +94,7 @@ struct OneMatch
     VectorNative<TypeInfoParam*> solvedParameters;
 
     SymbolOverload* symbolOverload = nullptr;
+    Scope*          scope          = nullptr;
     AstNode*        dependentVar   = nullptr;
     OneTryMatch*    oneOverload    = nullptr;
 
@@ -316,6 +320,7 @@ struct SemanticJob : public Job
     static void         checkCaninstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
     static bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool         filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches);
+    static bool         filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool         filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool         filterSymbols(SemanticContext* context, AstIdentifier* node);
     static bool         preResolveGeneratedStruct(SemanticContext* context);
@@ -451,9 +456,19 @@ struct SemanticJob : public Job
         return res;
     }
 
+    struct OneSymbolMatch
+    {
+        SymbolName* first;
+        Scope*      scope;
+        bool        operator==(const OneSymbolMatch& other)
+        {
+            return first == other.first;
+        }
+    };
+
     VectorNative<AstNode*>         tmpNodes;
-    VectorNative<SymbolName*>      cacheDependentSymbols;
-    VectorNative<SymbolName*>      cacheToAddSymbols;
+    VectorNative<OneSymbolMatch>   cacheDependentSymbols;
+    VectorNative<OneSymbolMatch>   cacheToAddSymbols;
     VectorNative<Scope*>           cacheScopeHierarchy;
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
     VectorNative<Scope*>           scopesToProcess;

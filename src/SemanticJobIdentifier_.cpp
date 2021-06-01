@@ -1848,6 +1848,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
                 auto match              = job->getOneMatch();
                 match->symbolOverload   = overload;
+                match->scope            = oneMatch->scope;
                 match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
                 match->dependentVar     = dependentVar;
                 match->ufcs             = oneOverload.ufcs;
@@ -2004,6 +2005,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatches(context, matches));
+    if (context->result != ContextResult::Done)
+        return true;
+    SWAG_CHECK(filterMatchesInContext(context, matches));
     if (context->result != ContextResult::Done)
         return true;
     SWAG_CHECK(filterGenericMatches(context, genericMatches));
@@ -2379,7 +2383,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         SWAG_ASSERT(fctDecl);
         auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->kind == TypeInfoKind::Struct);
-        dependentSymbols.push_back(typeFct->returnType->declNode->resolvedSymbolName);
+        dependentSymbols.push_back({typeFct->returnType->declNode->resolvedSymbolName, nullptr});
         return true;
     }
 
@@ -2470,7 +2474,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             auto symbol = scope->symTable.find(node->token.text, crc);
             if (symbol)
-                dependentSymbols.insert(symbol);
+                dependentSymbols.insert({symbol, scope});
         }
 
         if (!dependentSymbols.empty())
@@ -2849,6 +2853,48 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     return true;
 }
 
+bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches)
+{
+    if (matches.size() <= 1)
+        return true;
+
+    for (int i = 0; i < matches.size(); i++)
+    {
+        auto oneMatch    = matches[i];
+        auto over        = matches[i]->symbolOverload;
+        auto typeContext = findTypeInContext(context, over->node);
+        if (typeContext)
+        {
+            switch (typeContext->kind)
+            {
+            case TypeInfoKind::Enum:
+            {
+                auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
+                if (typeEnum->scope == matches[i]->scope)
+                {
+                    matches.clear();
+                    matches.push_back(oneMatch);
+                    return true;
+                }
+            }
+            case TypeInfoKind::TypeSet:
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::Struct);
+                if (typeStruct->scope == matches[i]->scope)
+                {
+                    matches.clear();
+                    matches.push_back(oneMatch);
+                    return true;
+                }
+            }
+            break;
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     auto node = context->node;
@@ -3132,8 +3178,9 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
     auto& toAddSymbol = job->cacheToAddSymbols;
     toAddSymbol.clear();
-    for (auto oneSymbol : dependentSymbols)
+    for (const auto& p : dependentSymbols)
     {
+        auto oneSymbol = p.first;
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
             continue;
         if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
@@ -3165,7 +3212,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         if (!isValid)
             continue;
 
-        toAddSymbol.insert(oneSymbol);
+        toAddSymbol.insert(p);
     }
 
     // Register back all valid symbols
@@ -3211,6 +3258,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             OneMatch oneMatch;
             oneMatch.symbolOverload = node->resolvedSymbolOverload;
+            oneMatch.scope          = node->resolvedSymbolOverload->node->ownerScope;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, oneMatch));
         }
 
@@ -3236,8 +3284,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
-    for (auto symbol : dependentSymbols)
+    for (auto& p : dependentSymbols)
     {
+        auto        symbol = p.first;
         scoped_lock lkn(symbol->mutex);
         if (!symbol->cptOverloads)
             continue;
@@ -3293,13 +3342,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // (number of overloads can change when instantiating a generic)
         auto& toSolveOverload = job->cacheToSolveOverload;
         toSolveOverload.clear();
-        for (auto symbol : dependentSymbols)
+        for (auto& p : dependentSymbols)
         {
+            auto        symbol = p.first;
             unique_lock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
                 OneOverload t;
                 t.overload         = over;
+                t.scope            = p.scope;
                 t.cptOverloads     = (uint32_t) symbol->overloads.size();
                 t.cptOverloadsInit = (uint32_t) symbol->cptOverloadsInit;
                 toSolveOverload.push_back(t);
@@ -3343,6 +3394,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             tryMatch->callParameters    = node->callParameters;
             tryMatch->dependentVar      = dependentVar;
             tryMatch->overload          = symbolOverload;
+            tryMatch->scope             = oneOver.scope;
             tryMatch->ufcs              = ufcsFirstParam;
             tryMatch->cptOverloads      = oneOver.cptOverloads;
             tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
