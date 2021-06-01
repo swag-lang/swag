@@ -334,21 +334,40 @@ impl Painter
         else if angle1 < angle0 - Math.ConstF32.Pi
             angle1 += Math.ConstF32.TwoPi
 
-        step  := 0'u32
-        fstep := Math.abs(angle1 - angle0) * radius
-        switch paintQuality
+        #[Swag.mixin]
+        func calc(angle: f32)->Vector2
         {
-        case Draft:     step = cast(s32) (fstep / 8)
-        case Good:      step = cast(s32) (fstep / 2)
-        case High:      step = cast(s32) fstep
+            var result: retval = p
+            result.x += (Math.cos(angle) * radius)
+            result.y += (Math.sin(angle) * radius)
+            return result
         }
 
-        if step < 3 step = 3
+        minDist := 0'f32
+        switch paintQuality
+        {
+        case Draft:  minDist = Math.max(8, (radius * 2) / 4)
+        case Good:   minDist = 3
+        case High:   minDist = 1
+        }
+
+        // Estimate the number of steps to reach a given quality
+        step := 1'u32
+        angleDiv := 0.5
+        endPoint := calc(angle0)
+        while true
+        {
+            v := calc(angle0 + (angle1 - angle0) * angleDiv)
+            if endPoint.distance(v) <= minDist
+                break
+            angleDiv *= 0.5
+            step += 1
+        }
+
+        step *= 2
         loop i: step + 1
         {
-            t := angle0 + ((angle1 - angle0) * i) / step
-            v2.x = p.x + (Math.cos(t) * radius)
-            v2.y = p.y + (Math.sin(t) * radius)
+            v2 = calc(angle0 + ((angle1 - angle0) * i) / step)
             prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
