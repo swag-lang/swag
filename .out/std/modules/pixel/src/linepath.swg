@@ -218,7 +218,7 @@ public impl LinePath
         switch quality
         {
         case Draft:  minDist = Math.max(8, endPoint.distance(pos) / 4)
-        case Good:   minDist = 2
+        case Good:   minDist = 3
         case High:   minDist = 1
         }
 

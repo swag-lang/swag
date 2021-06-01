@@ -286,7 +286,7 @@ func displayPage3()
     cdc.fillCircle(100, 100, 100, brush)
     cdc.drawCircle(100, 100, 100, Argb.Red, 4)
     cdc.resetClippingRect()
-    cdc.drawCircle(500, 500, 400, Argb.Red, 5)
+    cdc.drawCircle(500, 500, 400, Argb.Red, 1)
 
     cdc.startClippingRegion(ClippingMode.Set)
     cdc.fillRoundRect(200, 50, 100, 100, 20, 20, Argb.Green)
