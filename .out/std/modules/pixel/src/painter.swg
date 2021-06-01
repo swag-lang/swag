@@ -39,15 +39,22 @@ enum PaintQuality
     High
 }
 
+enum ClippingMode
+{
+    Set
+    Clear
+}
+
 struct Command
 {
     id: CommandId = ?
     params: union
     {
-        clear:          struct{color: Color; flags: u32; }
+        clear:          struct{color: Color; }
         drawTriangles:  struct{start: u32; count: u32; }
         transform:      struct{tr: Transform2; }
         clippingRect:   struct{rect: Rectangle; }
+        clippingRegion: struct{mode: ClippingMode = ?; }
 
         image:  struct
                 {
@@ -166,7 +173,6 @@ impl Painter
     {
         cmd := newCommand(CommandId.Clear)
         cmd.params.clear.color = color
-        cmd.params.clear.flags = flags
     }
 
     // Set the paint position
@@ -242,9 +248,10 @@ impl Painter
     }
 
     // Start painting in the clipping buffer
-    func startClippingRegion(using self)
+    func startClippingRegion(using self, mode = ClippingMode.Set)
     {
-        discard newCommand(CommandId.StartClippingRegion, true)
+        cmd := newCommand(CommandId.StartClippingRegion, true)
+        cmd.params.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.

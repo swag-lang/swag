@@ -668,7 +668,7 @@ impl RenderOgl
                 params := &cmd.params.clear
                 (r, g, b) := params.color.toRgbf()
                 glClearColor(r, g, b, 0)
-                glClear(params.flags)
+                glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
             case Transform:
                 params := &cmd.params.transform
@@ -676,10 +676,12 @@ impl RenderOgl
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case StartClippingRegion:
+                params := &cmd.params.clippingRegion
                 glEnable(GL_STENCIL_TEST)
                 glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
                 glStencilFunc(GL_ALWAYS, 1, 0xFF)
-                glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE)
+                mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+                glStencilOp(mode, mode, mode)
 
             case EndClippingRegion:
                 glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
@@ -687,6 +689,7 @@ impl RenderOgl
                 glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
 
             case ResetClippingRegion:
+                glClearStencil(0)
                 glDisable(GL_STENCIL_TEST)
 
             case SetClippingRect:
@@ -695,7 +698,6 @@ impl RenderOgl
                 glScissor(cast(GLint) params.rect.x, cast(GLint) (self.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
             case ResetClippingRect:
-                glClearStencil(0)
                 glDisable(GL_SCISSOR_TEST)
 
             case DrawTriangles:

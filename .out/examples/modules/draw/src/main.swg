@@ -287,10 +287,14 @@ func displayPage3()
     cdc.drawCircle(100, 100, 100, Argb.Red, 4)
     cdc.resetClippingRect()
 
-    cdc.startClippingRegion()
-    cdc.fillRoundRect(200, 50, 100, 100, 20, 20, Argb.Red)
+    cdc.startClippingRegion(ClippingMode.Set)
+    cdc.fillRoundRect(200, 50, 100, 100, 20, 20, Argb.Green)
+    cdc.startClippingRegion(ClippingMode.Clear)
+    cdc.fillCircle(250, 100, 50, Argb.White)
     cdc.endClippingRegion()
+
     cdc.fillRect(0, 0, 1000, 1000, Argb.Red)
+    cdc.resetClippingRegion()
 
     cdc.end()
     renderer.resetTransform()

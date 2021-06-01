@@ -36,6 +36,7 @@ public impl RenderOglWin32
     func end(using self)
     {
         glFlush()
+        glFinish()
         assume SwapBuffers(hDC)
     }
 }
