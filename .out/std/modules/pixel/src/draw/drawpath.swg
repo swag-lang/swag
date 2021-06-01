@@ -211,7 +211,6 @@ impl Painter
         switch paintQuality
         {
         case Draft:     step = cast(s32) (fstep / 8)
-        case Normal:    step = cast(s32) (fstep / 4)
         case Good:      step = cast(s32) (fstep / 2)
         case High:      step = cast(s32) fstep
         }
@@ -320,7 +319,6 @@ impl Painter
         switch paintQuality
         {
         case Draft:     step = cast(s32) (fstep / 8)
-        case Normal:    step = cast(s32) (fstep / 4)
         case Good:      step = cast(s32) (fstep / 2)
         case High:      step = cast(s32) fstep
         }

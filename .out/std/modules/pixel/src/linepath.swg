@@ -149,7 +149,6 @@ public impl LinePath
         switch quality
         {
         case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
         case Good:   step = cast(s32) (fstep / 2)
         case High:   step = cast(s32) fstep
         }
@@ -181,7 +180,6 @@ public impl LinePath
         switch quality
         {
         case Draft:  step = cast(s32) (fstep / 8)
-        case Normal: step = cast(s32) (fstep / 4)
         case Good:   step = cast(s32) (fstep / 2)
         case High:   step = cast(s32) fstep
         }
@@ -207,6 +205,7 @@ public impl LinePath
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
+        #[Swag.inline]
         func calc(angle: f32, p2, prev: Vector2)->Vector2
         {
             var result: retval = prev
@@ -215,13 +214,21 @@ public impl LinePath
             return result
         }
 
+        minDist := 0'f32
+        switch quality
+        {
+        case Draft:  minDist = Math.max(8, endPoint.distance(pos) / 4)
+        case Good:   minDist = 2
+        case High:   minDist = 1
+        }
+
         // Estimate the number of steps to reach a given quality
         step := 1'u32
         angleDiv := 0.5
         while true
         {
             v := calc(p1.x + (p1.y - p1.x) * angleDiv, p2, pos)
-            if endPoint.distanceSquared(v) <= 1.0
+            if endPoint.distance(v) <= minDist
                 break
             angleDiv *= 0.5
             step += 1

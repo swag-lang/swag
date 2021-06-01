@@ -35,7 +35,6 @@ enum PaintParams
 enum PaintQuality
 {
     Draft
-    Normal
     Good
     High
 }

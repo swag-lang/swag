@@ -413,7 +413,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F1))
             g_modeAA = g_modeAA ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F2))
-            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 4)
+            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 3)
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
