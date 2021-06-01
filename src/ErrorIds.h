@@ -772,6 +772,7 @@
 #define Msg0904 "; did you miss 'var' or 'const' to declare a global variable ?"
 #define Msg0905 "unexpected end of line found in string literal"
 #define Msg0906 "initialization value cannot be evaluated at compile time because 'opAffect' is not 'Swag.constexpr'"
+#define Msg0907 "cannot cast from type '%s' to pointer type; only type 'uint' is accepted"
 #define Msg0908 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
 
 #define Hnt0000 "this divisor expression is zero"
@@ -779,6 +780,7 @@
 #define Hnt0002 "this value can only be converted to type '%s' with a dynamic call to 'opAffect'"
 #define Hnt0003 "this is a static reference to a struct member"
 #define Hnt0004 "this should be 'const %s'"
+#define Hnt0005 "this could be casted to 'uint'"
 #define Hnt0011 "this type is '%s'"
 #define Hnt0012 "this return (%s) should have type '%s'"
 #define Hnt0013 "this should be on another line, or separated with ';'"

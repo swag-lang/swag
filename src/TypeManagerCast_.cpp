@@ -245,17 +245,23 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             done = true;
         }
 
-        // General cast error
-        if (!done)
+        if (done)
+            return false;
+
+        if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
-            if (castFlags & CASTFLAG_CONST_ERR)
-            {
-                PushErrHint errh(Hnt0022);
-                context->report({fromNode, format(Msg0418, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
-            }
-            else
-                context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            PushErrHint errh(Hnt0005);
+            return context->report({fromNode, format(Msg0907, fromType->getDisplayName().c_str())});
         }
+
+        if (castFlags & CASTFLAG_CONST_ERR)
+        {
+            PushErrHint errh(Hnt0022);
+            return context->report({fromNode, format(Msg0418, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        }
+
+        // General cast error
+        return context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
     }
 
     return false;
