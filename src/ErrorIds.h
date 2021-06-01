@@ -750,6 +750,7 @@
 #define Msg0878 "missing '#if' expression"
 #define Msg0879 "missing '#global if' expression"
 #define Msg0880 "no corresponding '}' has been found"
+#define Msg0881 "identifier is preceeded with '.', but no scope can be found in context"
 #define Msg0883 "missing function parameters before '{'"
 #define Msg0884 "here is the other definition"
 #define Msg0885 "symbol '%s' already defined as %s in an accessible scope"

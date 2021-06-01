@@ -2393,11 +2393,20 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                             switch (c->typeInfo->kind)
                             {
                             case TypeInfoKind::Enum:
-                                scopeHierarchy.push_back(((TypeInfoEnum*) c->typeInfo)->scope);
+                            {
+                                auto typeEnum             = CastTypeInfo<TypeInfoEnum>(c->typeInfo, TypeInfoKind::Enum);
+                                identifierRef->startScope = typeEnum->scope;
+                                scopeHierarchy.clear();
+                                scopeHierarchy.push_back(typeEnum->scope);
                                 done = true;
                                 break;
+                            }
                             case TypeInfoKind::TypeSet:
-                                scopeHierarchy.push_back(((TypeInfoStruct*) c->typeInfo)->scope);
+                                auto typeStruct           = CastTypeInfo<TypeInfoStruct>(c->typeInfo, TypeInfoKind::TypeSet);
+                                identifierRef->startScope = typeStruct->scope;
+                                scopeHierarchy.clear();
+                                scopeHierarchy.push_back(typeStruct->scope);
+                                scopeHierarchy.push_back(identifierRef->ownerScope);
                                 done = true;
                                 break;
                             }
@@ -2406,6 +2415,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
                     parent = parent->parent;
                 }
+
+                if (!done)
+                    return context->report({identifierRef, Msg0881});
             }
 
             // Be sure this is the last try
