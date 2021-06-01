@@ -21,6 +21,7 @@ enum CommandId
     StartClippingRegion
     EndClippingRegion
     ResetClippingRegion
+    SetClippingRegionMode
 }
 
 #[Swag.enumflags]
@@ -251,6 +252,13 @@ impl Painter
     func startClippingRegion(using self, mode = ClippingMode.Set)
     {
         cmd := newCommand(CommandId.StartClippingRegion, true)
+        cmd.params.clippingRegion.mode = mode
+    }
+
+    // Start painting in the clipping buffer
+    func setClippingRegionMode(using self, mode: ClippingMode)
+    {
+        cmd := newCommand(CommandId.SetClippingRegionMode, true)
         cmd.params.clippingRegion.mode = mode
     }
 

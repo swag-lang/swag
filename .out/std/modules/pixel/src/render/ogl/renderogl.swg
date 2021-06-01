@@ -685,6 +685,12 @@ impl RenderOgl
                 glStencilFunc(GL_ALWAYS, 1, 0xFF)
                 mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
                 glStencilOp(mode, mode, mode)
+                //fallthrough
+
+            case SetClippingRegionMode:
+                params := &cmd.params.clippingRegion
+                mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+                glStencilOp(mode, mode, mode)
 
             case EndClippingRegion:
                 glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
