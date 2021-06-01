@@ -404,7 +404,7 @@ private const HatchDiagonalCross: [64] u8 = @[
 public struct RenderOgl
 {
     vertexbuffer:       GLuint
-    programID:          GLuint
+    shaderImage:        GLuint
     width, height:      s32
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
@@ -622,30 +622,30 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
-        glUseProgram(programID)
+        glUseProgram(shaderImage)
 
         // View, ortho projection
-        var mvp: GLint = glGetUniformLocation(programID, @dataof("mvp"))
+        mvp := glGetUniformLocation(shaderImage, @dataof("mvp"))
         var orthoMatrix: Matrix4x4
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
         glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
 	    glViewport(0, 0, width, height)
 
         // Draw matrix
-        var mdl: GLint = glGetUniformLocation(programID, @dataof("mdl"))
+        mdl := glGetUniformLocation(shaderImage, @dataof("mdl"))
         buidModelMatrix(Transform2.Identity)
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         // UV parameters
-        var uvmode:         GLint = glGetUniformLocation(programID, @dataof("uvmode"))
-        var boundRect:      GLint = glGetUniformLocation(programID, @dataof("boundRect"))
-        var textureRect:    GLint = glGetUniformLocation(programID, @dataof("textureRect"))
+        uvmode      := glGetUniformLocation(shaderImage, @dataof("uvmode"))
+        boundRect   := glGetUniformLocation(shaderImage, @dataof("boundRect"))
+        textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
 
         // State
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
-        glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
+        glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         visit cmd: dc.commandBuffer
         {
@@ -677,11 +677,11 @@ impl RenderOgl
                 switch params.type
                 {
                 case SolidColor:
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) whiteTexture)
+                    glBindTexture(GL_TEXTURE_2D, whiteTexture)
                 case Texture:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 case Hatch:
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) hatchTextures[params.hatch])
+                    glBindTexture(GL_TEXTURE_2D, hatchTextures[params.hatch])
                 }
 
                 #[Swag.complete]

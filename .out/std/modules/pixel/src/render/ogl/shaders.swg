@@ -218,6 +218,6 @@ impl RenderOgl
 
     func createShaders(using self)
     {
-        programID = createProgram(VertexShaderAA, PixelShaderAA)
+        shaderImage = createProgram(VertexShaderAA, PixelShaderAA)
     }
 }
