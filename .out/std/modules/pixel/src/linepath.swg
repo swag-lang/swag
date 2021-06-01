@@ -205,10 +205,10 @@ public impl LinePath
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        #[Swag.inline]
-        func calc(angle: f32, p2, prev: Vector2)->Vector2
+        #[Swag.mixin]
+        func calc(angle: f32)->Vector2
         {
-            var result: retval = prev
+            var result: retval = pos
             result.x += (Math.sin(angle) * p2.x)
             result.y += -(Math.cos(angle) * p2.y)
             return result
@@ -227,7 +227,7 @@ public impl LinePath
         angleDiv := 0.5
         while true
         {
-            v := calc(p1.x + (p1.y - p1.x) * angleDiv, p2, pos)
+            v := calc(p1.x + (p1.y - p1.x) * angleDiv)
             if endPoint.distance(v) <= minDist
                 break
             angleDiv *= 0.5
@@ -238,7 +238,7 @@ public impl LinePath
         step *= 2
         loop i: 1..step
         {
-            v := calc(p1.x + ((p1.y - p1.x) * i) / step, p2, pos)
+            v := calc(p1.x + ((p1.y - p1.x) * i) / step)
             flattenLine(v)
         }
     }

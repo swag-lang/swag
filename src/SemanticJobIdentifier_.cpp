@@ -2876,18 +2876,19 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
                     matches.push_back(oneMatch);
                     return true;
                 }
+                break;
             }
             case TypeInfoKind::TypeSet:
             {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::Struct);
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::TypeSet);
                 if (typeStruct->scope == matches[i]->scope)
                 {
                     matches.clear();
                     matches.push_back(oneMatch);
                     return true;
                 }
+                break;
             }
-            break;
             }
         }
     }
