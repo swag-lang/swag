@@ -21,7 +21,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     AstNode* leftNode;
     while (true)
     {
-        SWAG_CHECK(doLeftExpressionVar(&leftNode, IDENTIFIER_NO_PARAMS));
+        SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS));
+        Ast::removeFromParent(leftNode);
 
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
         SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, format(Msg0455, token.text.c_str())));

@@ -1036,7 +1036,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
+bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
     switch (token.id)
     {
@@ -1066,18 +1066,22 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
         AstNode* multi    = nullptr;
         while (true)
         {
-            SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags));
+            SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
+            if (multi == nullptr)
+                Ast::removeFromParent(exprNode);
+
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
 
             if (!multi)
             {
-                multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifier, sourceFile, nullptr);
+                multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifier, sourceFile, parent);
                 Ast::addChildBack(multi, exprNode);
             }
         }
 
+        Ast::removeFromParent(multi);
         *result = multi ? multi : exprNode;
         break;
     }
@@ -1089,7 +1093,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
     return true;
 }
 
-bool SyntaxJob::doLeftExpression(AstNode** result)
+bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
@@ -1116,7 +1120,8 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::SymLeftParen:
     case TokenId::Identifier:
     case TokenId::SymBackTick:
-        SWAG_CHECK(doLeftExpressionVar(result));
+        SWAG_CHECK(doLeftExpressionVar(parent, result));
+        Ast::removeFromParent(*result);
         return true;
 
     case TokenId::KwdTry:
@@ -1372,7 +1377,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doLeftExpression(&leftNode));
+    SWAG_CHECK(doLeftExpression(parent, &leftNode));
+    Ast::removeFromParent(leftNode);
 
     // Variable declaration and initialization by ':='
     if (token.id == TokenId::SymColonEqual)

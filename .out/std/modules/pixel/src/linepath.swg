@@ -186,23 +186,19 @@ public impl LinePath
 
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        v := pos - endPoint
-        fstep := v.length()
-
-        step := 0'u32
-        switch quality
-        {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
-        }
-
-        if step < 3 step = 3
-
+        /*v := pos - endPoint
+        minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
-        loop i: 1..step
+
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{0, endPoint})
+        tmp.add(@{1, pos})
+        for i := 0; i < tmp.count - 1; i += 1
         {
-            t  := i / cast(f32) step
+            if tmp[i].pos.distance(tmp[i + 1].pos) < minDist
+                continue
+
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
             it := 1.0 - t
             a1 := it * it * it
             a2 := 3.0 * t * it * it
@@ -212,8 +208,12 @@ public impl LinePath
             var point: Vector2 = ?
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
-            flattenLine(point)
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
         }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)*/
     }
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)

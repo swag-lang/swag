@@ -180,8 +180,8 @@ struct SyntaxJob : public Job
     bool        doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool        doContinue(AstNode* parent, AstNode** result = nullptr);
     bool        doArrayPointerIndex(AstNode** exprNode);
-    bool        doLeftExpressionVar(AstNode** result, uint32_t identifierFlags = 0);
-    bool        doLeftExpression(AstNode** result);
+    bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
+    bool        doLeftExpression(AstNode* parent, AstNode** result);
     bool        doInit(AstNode* parent, AstNode** result = nullptr);
     bool        doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
     bool        doReloc(AstNode* parent, AstNode** result = nullptr);
