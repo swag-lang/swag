@@ -203,43 +203,7 @@ impl Painter
         angle0 := Math.atan2(-d.y, -d.x)
         angle1 := angle0 + Math.ConstF32.Pi
         radius *= sens
-
-        var startPos, endPos: Vector2 = ?
-        startPos.x = p.x + (Math.cos(angle0) * radius)
-        startPos.y = p.y + (Math.sin(angle0) * radius)
-        endPos.x = p.x + (Math.cos(angle1) * radius)
-        endPos.y = p.y + (Math.sin(angle1) * radius)
-
-        minDist := LinePath.getFlattenDistance(paintQuality)
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{angle0, startPos})
-        tmp.add(@{angle1, endPos})
-
-        for i := 0; i < tmp.count - 1; i += 1
-        {
-            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            point := p
-            point.x += (Math.cos(angle) * radius)
-            point.y += (Math.sin(angle) * radius)
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
-
-            tmp.insertAt(cast(uint) i + 1, @{angle, point})
-            i -= 1
-        }
-
-        v1 := startPos
-        loop i: 1..tmp.count-1
-        {
-            v2 := tmp[i].pos
-            prim1 := pushTriangle(p, v1, v2, pen.brush.color)
-            if paintParams & .Antialiased
-                addEdgeAA(prim1, v1, v2)
-            v1 = v2
-        }
+        drawRound(p, radius, angle0, angle1, pen)
     }
 
     private func drawLineCap(using self, capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
@@ -295,42 +259,13 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private func drawJoinRound(using self, p, d1, d2: Vector2, pen: Pen)
+    private func drawRound(using self, center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
-        v0 := p
-
-        var angle0, angle1: f32 = ?
-        if d1.x * d2.y - d1.y * d2.x < 0
-        {
-            v0 += d1 * 0.5
-            v0 += d2 * 0.5
-            angle0 = Math.atan2(-d1.y, -d1.x)
-            angle1 = Math.atan2(-d2.y, -d2.x)
-        }
-        else
-        {
-            v0 -= d1 * 0.5
-            v0 -= d2 * 0.5
-            angle0 = Math.atan2(d1.y, d1.x)
-            angle1 = Math.atan2(d2.y, d2.x)
-        }
-
-        if Math.isEqualEpsilon(angle0, angle1)
-            return
-
-        radius := d1.length()
-
-        if angle1 > angle0 + Math.ConstF32.Pi
-            angle1 -= Math.ConstF32.TwoPi
-        else if angle1 < angle0 - Math.ConstF32.Pi
-            angle1 += Math.ConstF32.TwoPi
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var startPos, endPos: Vector2 = ?
-        startPos.x = p.x + (Math.cos(angle0) * radius)
-        startPos.y = p.y + (Math.sin(angle0) * radius)
-        endPos.x = p.x + (Math.cos(angle1) * radius)
-        endPos.y = p.y + (Math.sin(angle1) * radius)
+        startPos.x = center.x + (Math.cos(angle0) * radius)
+        startPos.y = center.y + (Math.sin(angle0) * radius)
+        endPos.x = center.x + (Math.cos(angle1) * radius)
+        endPos.y = center.y + (Math.sin(angle1) * radius)
 
         minDist := LinePath.getFlattenDistance(paintQuality)
 
@@ -342,7 +277,7 @@ impl Painter
         for i := 0; i < tmp.count - 1; i += 1
         {
             angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            point := p
+            point := center
             point.x += (Math.cos(angle) * radius)
             point.y += (Math.sin(angle) * radius)
 
@@ -357,11 +292,38 @@ impl Painter
         loop i: 1..tmp.count-1
         {
             v2 := tmp[i].pos
-            prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
+            prim1 := pushTriangle(center, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
+    }
+
+    private func drawJoinRound(using self, p, d1, d2: Vector2, pen: Pen)
+    {
+        var angle0, angle1: f32 = ?
+        if d1.x * d2.y - d1.y * d2.x < 0
+        {
+            angle0 = Math.atan2(-d1.y, -d1.x)
+            angle1 = Math.atan2(-d2.y, -d2.x)
+        }
+        else
+        {
+            angle0 = Math.atan2(d1.y, d1.x)
+            angle1 = Math.atan2(d2.y, d2.x)
+        }
+
+        if Math.isEqualEpsilon(angle0, angle1)
+            return
+
+        radius := d1.length()
+
+        if angle1 > angle0 + Math.ConstF32.Pi
+            angle1 -= Math.ConstF32.TwoPi
+        else if angle1 < angle0 - Math.ConstF32.Pi
+            angle1 += Math.ConstF32.TwoPi
+
+        drawRound(p, radius, angle0, angle1, pen)
     }
 
     private func drawJoinMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
