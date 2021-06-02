@@ -146,8 +146,7 @@ public impl LinePath
         switch quality
         {
         case Draft:  minDist = 2
-        case Good:   minDist = 0.25
-        case High:   minDist = 0.1
+        case Normal: minDist = 0.2
         }
 
         return minDist

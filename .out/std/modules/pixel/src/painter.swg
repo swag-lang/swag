@@ -35,8 +35,7 @@ enum PaintParams
 enum PaintQuality
 {
     Draft
-    Good
-    High
+    Normal
 }
 
 enum ClippingMode
@@ -78,7 +77,7 @@ struct Painter
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
     paintParams:        PaintParams = Default
-    paintQuality:       PaintQuality = Good
+    paintQuality:       PaintQuality = Normal
     drawingBegin:       bool
     transform:          Transform2
     interpolationMode:  InterpolationMode = Pixel

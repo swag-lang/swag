@@ -13,7 +13,7 @@ var renderer: RenderOglWin32
 var image0, image1: Texture
 
 var g_modeAA:       bool = true
-var g_paintQuality: PaintQuality = High
+var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
 var g_page:         s32 = 3
 
@@ -418,7 +418,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F1))
             g_modeAA = g_modeAA ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F2))
-            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 3)
+            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 2)
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
