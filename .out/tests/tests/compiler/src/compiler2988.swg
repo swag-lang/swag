@@ -3,11 +3,10 @@ struct Vector2
     x, y, z: f32
 }
 
-#[Swag.printbc]
 func toto(y: Vector2)
 {
     var tmp: {Vector2} = @{y}
-    @print(tmp.item0.x)
+    @assert(tmp.item0.x == 1.0)
 }
 
 #test
