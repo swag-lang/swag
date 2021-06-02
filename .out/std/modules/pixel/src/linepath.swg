@@ -140,14 +140,14 @@ public impl LinePath
         isClosed = true
     }
 
-    protected func getFlattenDistance(quality: PaintQuality, len: f32)->f32
+    protected func getFlattenDistance(quality: PaintQuality)->f32
     {
         minDist := 0'f32
         switch quality
         {
-        case Draft:  minDist = Math.max(8, len / 4)
-        case Good:   minDist = 3
-        case High:   minDist = 1
+        case Draft:  minDist = 1
+        case Good:   minDist = 0.5
+        case High:   minDist = 0.25
         }
 
         return minDist
@@ -155,8 +155,7 @@ public impl LinePath
 
     private func flattenBezier(using self, pos, p1: Vector2, quality: PaintQuality)
     {
-        v := pos - endPoint
-        minDist := getFlattenDistance(quality, v.length())
+        minDist := getFlattenDistance(quality)
         startPt := endPoint
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
@@ -190,7 +189,7 @@ public impl LinePath
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
         v := pos - endPoint
-        minDist := getFlattenDistance(quality, v.length())
+        minDist := getFlattenDistance(quality)
         startPt := endPoint
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
@@ -228,7 +227,7 @@ public impl LinePath
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
         endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
 
-        minDist := getFlattenDistance(quality, endPos.distance(endPoint))
+        minDist := getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}

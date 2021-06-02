@@ -210,7 +210,7 @@ impl Painter
         endPos.x = p.x + (Math.cos(angle1) * radius)
         endPos.y = p.y + (Math.sin(angle1) * radius)
 
-        minDist := LinePath.getFlattenDistance(paintQuality, endPos.distance(startPos))
+        minDist := LinePath.getFlattenDistance(paintQuality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
@@ -300,25 +300,23 @@ impl Painter
         v0 := p
 
         var angle0, angle1: f32 = ?
-        var v1, v2, vend: Vector2 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
         {
-            v0 += d1 * 0.25
-            v0 += d2 * 0.25
+            v0 += d1 * 0.5
+            v0 += d2 * 0.5
             angle0 = Math.atan2(-d1.y, -d1.x)
             angle1 = Math.atan2(-d2.y, -d2.x)
-            v1     = Vector2{p.x - d1.x, p.y - d1.y}
-            vend   = Vector2{p.x - d2.x, p.y - d2.y}
         }
         else
         {
-            v0 -= d1 * 0.25
-            v0 -= d2 * 0.25
+            v0 -= d1 * 0.5
+            v0 -= d2 * 0.5
             angle0 = Math.atan2(d1.y, d1.x)
             angle1 = Math.atan2(d2.y, d2.x)
-            v1     = Vector2{p.x + d1.x, p.y + d1.y}
-            vend   = Vector2{p.x + d2.x, p.y + d2.y}
         }
+
+        if Math.isEqualEpsilon(angle0, angle1)
+            return
 
         radius := d1.length()
 
@@ -327,43 +325,43 @@ impl Painter
         else if angle1 < angle0 - Math.ConstF32.Pi
             angle1 += Math.ConstF32.TwoPi
 
-        #[Swag.mixin]
-        func calc(angle: f32)->Vector2
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var startPos, endPos: Vector2 = ?
+        startPos.x = p.x + (Math.cos(angle0) * radius)
+        startPos.y = p.y + (Math.sin(angle0) * radius)
+        endPos.x = p.x + (Math.cos(angle1) * radius)
+        endPos.y = p.y + (Math.sin(angle1) * radius)
+
+        minDist := LinePath.getFlattenDistance(paintQuality)
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{angle0, startPos})
+        tmp.add(@{angle1, endPos})
+
+        for i := 0; i < tmp.count - 1; i += 1
         {
-            var result: retval = p
-            result.x += (Math.cos(angle) * radius)
-            result.y += (Math.sin(angle) * radius)
-            return result
+            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            point := p
+            point.x += (Math.cos(angle) * radius)
+            point.y += (Math.sin(angle) * radius)
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            i -= 1
         }
 
-        // Estimate the number of steps to reach a given quality
-        minDist := LinePath.getFlattenDistance(paintQuality, radius * 2)
-        step := 1'u32
-        angleDiv := 0.5
-        endPoint := calc(angle0)
-        while true
+        v1 := startPos
+        loop i: 1..tmp.count-1
         {
-            v := calc(angle0 + (angle1 - angle0) * angleDiv)
-            if endPoint.distance(v) <= minDist
-                break
-            angleDiv *= 0.5
-            step += 1
-        }
-
-        step *= 2
-        loop i: step + 1
-        {
-            v2 = calc(angle0 + ((angle1 - angle0) * i) / step)
+            v2 := tmp[i].pos
             prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
-
-        v2 = vend
-        prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
-        if paintParams & .Antialiased
-            addEdgeAA(prim1, v1, v2)
     }
 
     private func drawJoinMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
