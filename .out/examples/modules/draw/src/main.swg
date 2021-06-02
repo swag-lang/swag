@@ -284,7 +284,7 @@ func displayPage3()
     brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
     cdc.setClippingRect(0, 0, 100, 100)
     cdc.fillCircle(100, 100, 100, brush)
-    //cdc.drawCircle(100, 100, 100, Argb.Red, 4)
+    cdc.drawCircle(100, 100, 100, Argb.Red, 4)
     cdc.resetClippingRect()
 
     cdc.startClippingRegion(ClippingMode.Set)
@@ -296,7 +296,7 @@ func displayPage3()
     cdc.fillRect(0, 0, 1000, 1000, Argb.Red)
     cdc.resetClippingRegion()
 
-    //cdc.drawCircle(500, 500, 400, Argb.Red, 1)
+    cdc.drawCircle(500, 500, 400, Argb.Red, 1)
     var lp: LinePath
     lp.start(50, 800)
     lp.bezierTo(800, 50, 250, 50)

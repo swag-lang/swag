@@ -784,7 +784,7 @@ impl Painter
             if (p == u) or (p == v) or (p == w)
                 continue
             pt := border[pv[p]]
-            if Math.isVec2InTriangle(pt, a, b, c)
+            if pt.isInTriangle(a, b, c)
                 return false
         }
 

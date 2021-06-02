@@ -159,15 +159,12 @@ public impl LinePath
         minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
 
-        // We divide a segment by half until its length matches 'minDist'
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add(@{0, endPoint})
         tmp.add(@{1, pos})
         for i := 0; i < tmp.count - 1; i += 1
         {
-            if tmp[i].pos.distance(tmp[i + 1].pos) < minDist
-                continue
-
             t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
             it := 1.0 - t
             a1 := it * it
@@ -177,6 +174,10 @@ public impl LinePath
             var point: Vector2 = ?
             point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
             tmp.insertAt(cast(uint) i + 1, @{t, point})
             i -= 1
         }
@@ -197,9 +198,6 @@ public impl LinePath
         tmp.add(@{1, pos})
         for i := 0; i < tmp.count - 1; i += 1
         {
-            if tmp[i].pos.distance(tmp[i + 1].pos) < minDist
-                continue
-
             t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
             it := 1.0 - t
             a1 := it * it * it
@@ -210,6 +208,10 @@ public impl LinePath
             var point: Vector2 = ?
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
             tmp.insertAt(cast(uint) i + 1, @{t, point})
             i -= 1
         }
