@@ -343,15 +343,8 @@ impl Painter
             return result
         }
 
-        minDist := 0'f32
-        switch paintQuality
-        {
-        case Draft:  minDist = Math.max(8, (radius * 2) / 4)
-        case Good:   minDist = 3
-        case High:   minDist = 1
-        }
-
         // Estimate the number of steps to reach a given quality
+        minDist := LinePath.getFlattenDistance(paintQuality, radius * 2)
         step := 1'u32
         angleDiv := 0.5
         endPoint := calc(angle0)

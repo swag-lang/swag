@@ -140,29 +140,28 @@ public impl LinePath
         isClosed = true
     }
 
+    protected func getFlattenDistance(quality: PaintQuality, len: f32)->f32
+    {
+        minDist := 0'f32
+        switch quality
+        {
+        case Draft:  minDist = Math.max(8, len / 4)
+        case Good:   minDist = 3
+        case High:   minDist = 1
+        }
+
+        return minDist
+    }
+
     private func flattenBezier(using self, pos, p1: Vector2, quality: PaintQuality)
     {
         v := pos - endPoint
-        fstep := v.length()
-
-        step := 0'u32
-        switch quality
-        {
-        case Draft:  step = cast(s32) (fstep / 8)
-        case Good:   step = cast(s32) (fstep / 2)
-        case High:   step = cast(s32) fstep
-        }
-
-        if step < 3 step = 3
-
-        minDist := 3.0
+        minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
 
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.reserve(2048)
         tmp.add(@{0, endPoint})
-        xx := pos
-        tmp.add(@{1, xx})
+        tmp.add(@{1, pos})
         for i := 0; i < tmp.count - 1; i += 1
         {
             if tmp[i].pos.distance(tmp[i + 1].pos) < minDist
@@ -183,20 +182,6 @@ public impl LinePath
 
         loop i: 1..tmp.count-1
             flattenLine(tmp[i].pos)
-
-        /*loop i: 1..step
-        {
-            t  := i / cast(f32) step
-            it := 1.0 - t
-            a1 := it * it
-            a2 := 2.0 * t * it
-            a3 := t * t
-
-            var point: Vector2 = ?
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
-            flattenLine(point)
-        }*/
     }
 
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
@@ -242,15 +227,8 @@ public impl LinePath
             return result
         }
 
-        minDist := 0'f32
-        switch quality
-        {
-        case Draft:  minDist = Math.max(8, endPoint.distance(pos) / 4)
-        case Good:   minDist = 3
-        case High:   minDist = 1
-        }
-
         // Estimate the number of steps to reach a given quality
+        minDist := getFlattenDistance(quality, endPoint.distance(pos))
         step := 1'u32
         angleDiv := 0.5
         while true
