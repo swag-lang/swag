@@ -159,6 +159,7 @@ public impl LinePath
         minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
 
+        // We divide a segment by half until its length matches 'minDist'
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add(@{0, endPoint})
         tmp.add(@{1, pos})
@@ -186,10 +187,11 @@ public impl LinePath
 
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        /*v := pos - endPoint
+        v := pos - endPoint
         minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
 
+        // We divide a segment by half until its length matches 'minDist'
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add(@{0, endPoint})
         tmp.add(@{1, pos})
@@ -213,7 +215,7 @@ public impl LinePath
         }
 
         loop i: 1..tmp.count-1
-            flattenLine(tmp[i].pos)*/
+            flattenLine(tmp[i].pos)
     }
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)

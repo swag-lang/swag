@@ -559,7 +559,12 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             context.badSignatureInfos.badSignatureGivenType     = typeInfo;
             context.result                                      = MatchResult::BadGenericSignature;
         }
-        else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->value == callParameter->computedValue))
+
+        // We do not test computedValue for a struct, because it will contain the 'typeinfo', which can be different 
+        // for tuples
+        else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
+                 symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||
+                 (symbolParameter->value == callParameter->computedValue))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())
