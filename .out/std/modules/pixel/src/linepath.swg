@@ -163,6 +163,7 @@ public impl LinePath
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add(@{0, endPoint})
         tmp.add(@{1, pos})
+
         for i := 0; i < tmp.count - 1; i += 1
         {
             t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
@@ -192,10 +193,11 @@ public impl LinePath
         minDist := getFlattenDistance(quality, v.length())
         startPt := endPoint
 
-        // We divide a segment by half until its length matches 'minDist'
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
         tmp.add(@{0, endPoint})
         tmp.add(@{1, pos})
+
         for i := 0; i < tmp.count - 1; i += 1
         {
             t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
@@ -222,35 +224,33 @@ public impl LinePath
 
     private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        #[Swag.mixin]
-        func calc(angle: f32)->Vector2
+        var endPos: Vector2 = ?
+        endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
+        endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
+
+        minDist := getFlattenDistance(quality, endPos.distance(endPoint))
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{p1.x, endPoint})
+        tmp.add(@{p1.y, endPos})
+
+        for i := 0; i < tmp.count - 1; i += 1
         {
-            var result: retval = pos
-            result.x += (Math.sin(angle) * p2.x)
-            result.y += -(Math.cos(angle) * p2.y)
-            return result
+            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            point := pos
+            point.x += (Math.sin(angle) * p2.x)
+            point.y += -(Math.cos(angle) * p2.y)
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            i -= 1
         }
 
-        // Estimate the number of steps to reach a given quality
-        minDist := getFlattenDistance(quality, endPoint.distance(pos))
-        step := 1'u32
-        angleDiv := 0.5
-        while true
-        {
-            v := calc(p1.x + (p1.y - p1.x) * angleDiv)
-            if endPoint.distance(v) <= minDist
-                break
-            angleDiv *= 0.5
-            step += 1
-        }
-
-        // Approximate curve
-        step *= 2
-        loop i: 1..step
-        {
-            v := calc(p1.x + ((p1.y - p1.x) * i) / step)
-            flattenLine(v)
-        }
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
     }
 
     private func flattenLine(using self, pos: Vector2)
