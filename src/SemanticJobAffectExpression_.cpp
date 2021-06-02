@@ -229,7 +229,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             }
             else
             {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST))
+                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST | ISSAME_FOR_AFFECT))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)

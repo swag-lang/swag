@@ -61,9 +61,10 @@ static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'8000000
 static const uint64_t TYPEINFO_CAN_THROW                    = 0x00000001'00000000;
 static const uint64_t TYPEINFO_SPECIAL_NAME                 = 0x00000002'00000000;
 
-static const uint32_t ISSAME_EXACT     = 0x00000001;
-static const uint32_t ISSAME_CAST      = 0x00000002;
-static const uint32_t ISSAME_INTERFACE = 0x00000004;
+static const uint32_t ISSAME_EXACT      = 0x00000001;
+static const uint32_t ISSAME_CAST       = 0x00000002;
+static const uint32_t ISSAME_INTERFACE  = 0x00000004;
+static const uint32_t ISSAME_FOR_AFFECT = 0x00000008;
 
 struct TypeInfo
 {

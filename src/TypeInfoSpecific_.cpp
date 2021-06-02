@@ -859,10 +859,20 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
+
+        // Two tuple types will match if their content is equal, including specific user names
+        // {x: s32} := {y: s32}
         for (int i = 0; i < childCount; i++)
         {
             if (!fields[i]->isSame(other->fields[i], isSameFlags | ISSAME_EXACT))
                 return false;
+
+            // But this is ok to affect one tuple to another even if they do not have the same fields names
+            if (!(isSameFlags & ISSAME_FOR_AFFECT))
+            {
+                if (fields[i]->namedParam != other->fields[i]->namedParam)
+                    return false;
+            }
         }
     }
 

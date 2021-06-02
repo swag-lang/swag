@@ -3129,7 +3129,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::NameAlias)
         return true;
 
-    if (fromType->isSame(toType, ISSAME_CAST))
+    auto isSameFlags = ISSAME_CAST;
+    if (castFlags & CASTFLAG_FOR_AFFECT)
+        isSameFlags |= ISSAME_FOR_AFFECT;
+    if (fromType->isSame(toType, isSameFlags))
         return true;
 
     // Always match against a generic

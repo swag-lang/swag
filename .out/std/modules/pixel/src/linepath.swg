@@ -229,13 +229,13 @@ public impl LinePath
         minDist := getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
+        var tmp: Array'{angle: f32, pos: Vector2}
         tmp.add(@{p1.x, endPoint})
         tmp.add(@{p1.y, endPos})
 
         for i := 0; i < tmp.count - 1; i += 1
         {
-            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            angle := (tmp[i].angle + tmp[i + 1].angle) * 0.5
             point := pos
             point.x += (Math.sin(angle) * p2.x)
             point.y += -(Math.cos(angle) * p2.y)
