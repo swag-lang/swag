@@ -92,9 +92,6 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         }
     }
 
-    Ast::removeFromParent(identifier);
-    AstNode* expr = identifier;
-
     // Array index
     if (token.id == TokenId::SymLeftSquare)
     {
@@ -102,11 +99,11 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
                 return sourceFile->report({identifier, token, Msg0840});
-            SWAG_CHECK(doArrayPointerIndex(&expr));
+            Ast::removeFromParent(identifier);
+            SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
+            Ast::addChildBack(parent, identifier);
         }
     }
-
-    Ast::addChildBack(parent, expr);
 
     return true;
 }
