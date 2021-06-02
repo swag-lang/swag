@@ -300,7 +300,7 @@ func displayPage3()
     var lp: LinePath
     lp.start(50, 800)
     lp.bezierTo(800, 50, 250, 50)
-    cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+    cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 50))
 
     cdc.end()
     renderer.resetTransform()

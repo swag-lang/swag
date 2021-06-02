@@ -200,51 +200,42 @@ impl Painter
             return
         }
 
-        v0 := p
-        v1 := Vector2{p.x + d.x, p.y + d.y}
-
         angle0 := Math.atan2(-d.y, -d.x)
         angle1 := angle0 + Math.ConstF32.Pi
-
-        #[Swag.mixin]
-        func calc(angle: f32)->Vector2
-        {
-            var result: retval = p
-            result.x += (Math.cos(angle) * radius)
-            result.y += (Math.sin(angle) * radius)
-            return result
-        }
-
-        minDist := 0'f32
-        switch paintQuality
-        {
-        case Draft:  minDist = Math.max(8, (radius * 2) / 4)
-        case Good:   minDist = 3
-        case High:   minDist = 1
-        }
-
-        // Estimate the number of steps to reach a given quality
-        step := 1'u32
-        angleDiv := 0.5
-        endPoint := calc(angle0)
-        while true
-        {
-            v := calc(angle0 + (angle1 - angle0) * angleDiv)
-            if endPoint.distance(v) <= minDist
-                break
-            angleDiv *= 0.5
-            step += 1
-        }
-
         radius *= sens
-        step *= 2
 
-        // Approximate curve
-        var v2: Vector2 = ?
-        loop i: step + 1
+        var startPos, endPos: Vector2 = ?
+        startPos.x = p.x + (Math.cos(angle0) * radius)
+        startPos.y = p.y + (Math.sin(angle0) * radius)
+        endPos.x = p.x + (Math.cos(angle1) * radius)
+        endPos.y = p.y + (Math.sin(angle1) * radius)
+
+        minDist := LinePath.getFlattenDistance(paintQuality, endPos.distance(startPos))
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{angle0, startPos})
+        tmp.add(@{angle1, endPos})
+
+        for i := 0; i < tmp.count - 1; i += 1
         {
-            v2 = calc(angle0 + ((angle1 - angle0) * i) / step)
-            prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
+            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            point := p
+            point.x += (Math.cos(angle) * radius)
+            point.y += (Math.sin(angle) * radius)
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            i -= 1
+        }
+
+        v1 := startPos
+        loop i: 1..tmp.count-1
+        {
+            v2 := tmp[i].pos
+            prim1 := pushTriangle(p, v1, v2, pen.brush.color)
             if paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
