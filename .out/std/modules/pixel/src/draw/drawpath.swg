@@ -7,7 +7,6 @@ private struct Context
     size2:              f32
     beginLine:          bool
     firstLine:          bool
-    adapt:              bool
     lastLineInvalid:    bool
     normalPrev:         Vector2
     normalFirst:        Vector2
@@ -495,17 +494,6 @@ impl Painter
         if lastLineInvalid
             return
 
-        // Correction when size is not divisible by 2
-        if adapt
-        {
-            if path.isClosed
-                n2 *= 0.5
-            else
-                n2 = @{-0.5, -0.5}
-            newPos -= n2
-            if firstLine prev -= n2
-        }
-
         // First line cap
         flatBegin := !path.isClosed or pen.dashStyle != .None
         if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
@@ -700,18 +688,13 @@ impl Painter
 
     private func drawPath(using self, using cxt: *Context)
     {
-        if pen.size == 0 or path.posBuffer.count == 0
+        if pen.size < 1 or path.posBuffer.count == 0
             return
 
         // AA will reduce visually the size. Compensate
         size := pen.size
         if paintParams & .Antialiased
             size += 0.5
-
-        // Correction
-        adapt = false
-        if cast(u32) size & 1
-            adapt = true
 
         size2       = size * 0.5
         prev        = path.startPoint
