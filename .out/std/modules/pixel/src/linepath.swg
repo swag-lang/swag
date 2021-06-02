@@ -155,8 +155,36 @@ public impl LinePath
 
         if step < 3 step = 3
 
+        minDist := 3.0
         startPt := endPoint
-        loop i: 1..step
+
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.reserve(2048)
+        tmp.add(@{0, endPoint})
+        xx := pos
+        tmp.add(@{1, xx})
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            if tmp[i].pos.distance(tmp[i + 1].pos) < minDist
+                continue
+
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            it := 1.0 - t
+            a1 := it * it
+            a2 := 2.0 * t * it
+            a3 := t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+
+        /*loop i: 1..step
         {
             t  := i / cast(f32) step
             it := 1.0 - t
@@ -168,7 +196,7 @@ public impl LinePath
             point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
             flattenLine(point)
-        }
+        }*/
     }
 
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)

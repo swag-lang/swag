@@ -431,7 +431,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
             typeInfo->name += ", ";
 
         auto typeParam      = allocType<TypeInfoParam>();
-        typeParam->typeInfo = child->typeInfo;
+        typeParam->typeInfo = TypeManager::concreteReference(child->typeInfo);
         typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
@@ -442,12 +442,12 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
             typeParam->namedParam = child->token.text;
         }
 
-        typeInfo->name += child->typeInfo->name;
+        typeInfo->name += typeParam->typeInfo->name;
 
         if (child->castOffset)
             typeInfo->sizeOf += child->castOffset;
         else
-            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;

@@ -252,8 +252,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         if (!(node->doneFlags & AST_DONE_EXPRLIST_CST))
         {
             node->doneFlags |= AST_DONE_EXPRLIST_CST;
-            auto module                        = node->sourceFile->module;
-            node->computedValue.storageSegment = &module->constantSegment;
+            node->computedValue.storageSegment = SemanticJob::getConstantSegFromContext(node);
             SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.storageOffset, node->computedValue.storageSegment, nullptr, typeList, node));
         }
 
