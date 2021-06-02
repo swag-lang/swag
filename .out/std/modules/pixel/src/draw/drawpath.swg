@@ -4,7 +4,8 @@ using Core, Core.Math, Core.Drawing
 private struct Context
 {
     posBuffer:          Array'Vector2
-    size2:              f32
+    penSize:            f32
+    penSize2:           f32
     beginLine:          bool
     firstLine:          bool
     lastLineInvalid:    bool
@@ -264,15 +265,17 @@ impl Painter
         }
     }
 
-    private func drawDashCap(using self, capStyle: DashCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    private func drawDashCap(using self, using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
     {
+        if penSize < 3 return
+
         #[Swag.complete]
         switch capStyle
         {
         case None:          break
-        case Triangle:      drawCapTriangle(p, d, sens, pen)
-        case Round:         drawCapRound(p, d, sens, pen)
-        case Square:        drawCapSquare(p, d, sens, pen)
+        case Triangle:      drawCapTriangle(p, d, sens, dref pen)
+        case Round:         drawCapRound(p, d, sens, dref pen)
+        case Square:        drawCapSquare(p, d, sens, dref pen)
         }
     }
 
@@ -426,16 +429,18 @@ impl Painter
         }
     }
 
-    private func drawJoin(using self, joinStyle: JoinStyle, p, d1, d2: Vector2, pen: Pen)
+    private func drawJoin(using self, using cxt: *Context, p, d1, d2: Vector2)
     {
+        if penSize < 3 return
+
         #[Swag.complete]
-        switch joinStyle
+        switch pen.joinStyle
         {
         case None:          break
-        case Bevel:         drawJoinBevel(p, d1, d2, pen)
-        case Round:         drawJoinRound(p, d1, d2, pen)
-        case Miter:         drawJoinMiter(p, d1, d2, true, pen)
-        case MiterBevel:    drawJoinMiter(p, d1, d2, false, pen)
+        case Bevel:         drawJoinBevel(p, d1, d2, dref pen)
+        case Round:         drawJoinRound(p, d1, d2, dref pen)
+        case Miter:         drawJoinMiter(p, d1, d2, true, dref pen)
+        case MiterBevel:    drawJoinMiter(p, d1, d2, false, dref pen)
         }
     }
 
@@ -445,7 +450,7 @@ impl Painter
 
         // Cap is defined
         if pen.dashEndCapStyle != DashCapStyle.None
-            drawDashCap(pen.dashEndCapStyle, posCap, normalCap, -1.0, dref pen)
+            drawDashCap(cxt, pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
         else if paintParams & .Antialiased
@@ -485,7 +490,7 @@ impl Painter
         {
             n.normalize()
             normal = n.cross(1)
-            normal *= size2
+            normal *= penSize2
             n2 = normal
         }
 
@@ -499,12 +504,12 @@ impl Painter
         if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
         {
             flatBegin = false
-            drawDashCap(pen.dashBeginCapStyle, prev, normal, 1.0, dref pen)
+            drawDashCap(cxt, pen.dashBeginCapStyle, prev, normal, 1.0)
         }
 
         // Joints
         if !beginLine
-            drawJoin(pen.joinStyle, prev, normalPrev, normal, dref pen)
+            drawJoin(cxt, prev, normalPrev, normal)
 
         // Draw quad
         v0 := prev - normal
@@ -658,22 +663,22 @@ impl Painter
 
     private func drawLineBeginCap(using self, using cxt: *Context)
     {
-        if pen.beginCapStyle == .None
-            return
+        if pen.beginCapStyle == .None return
+        if penSize < 3 return
 
         v1 := path.startPoint
         v2 := path.posBuffer.buffer[0]
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
-        c *= size2
+        c *= penSize2
         drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
     private func drawLineEndCap(using self, using cxt: *Context)
     {
-        if pen.endCapStyle == .None
-            return
+        if pen.endCapStyle == .None return
+        if penSize < 3 return
 
         v1 := path.posBuffer.buffer[path.posBuffer.count - 1]
         v2 := path.startPoint
@@ -682,7 +687,7 @@ impl Painter
         n := v1 - v2
         n.normalizeSafe()
         c := n.cross(1)
-        c *= size2
+        c *= penSize2
         drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
@@ -692,11 +697,11 @@ impl Painter
             return
 
         // AA will reduce visually the size. Compensate
-        size := pen.size
+        penSize = pen.size
         if paintParams & .Antialiased
-            size += 0.5
+            penSize += 0.5
 
-        size2       = size * 0.5
+        penSize2       = penSize * 0.5
         prev        = path.startPoint
         beginLine   = true
         firstLine   = true
@@ -725,7 +730,7 @@ impl Painter
         // Closing join between the end and the beginning in case of a closed path
         else if path.isClosed and !firstLine and !beginLine
         {
-            drawJoin(pen.joinStyle, prev, normal, normalFirst, dref pen)
+            drawJoin(cxt, prev, normal, normalFirst)
         }
     }
 
