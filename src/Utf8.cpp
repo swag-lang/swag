@@ -258,6 +258,8 @@ void Utf8::operator+=(const char* txt)
 
 void Utf8::operator=(const Utf8& other)
 {
+    if (&other == this)
+        return;
     clear();
     append(other);
 }

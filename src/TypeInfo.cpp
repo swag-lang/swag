@@ -5,8 +5,8 @@
 
 void TypeInfo::forceComputeName()
 {
-    name.clear();
-    computeWhateverName(COMPUTE_NAME);
+    computeWhateverName(COMPUTE_NAME, true);
+    computeWhateverName(COMPUTE_DISPLAY_NAME, true);
 }
 
 void TypeInfo::getScopedName(Utf8& newName)
@@ -21,28 +21,44 @@ void TypeInfo::getScopedName(Utf8& newName)
 
 Utf8 TypeInfo::getDisplayName()
 {
-    return name;
+    return displayName.empty() ? name : displayName;
 }
 
-const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
+const Utf8& TypeInfo::computeWhateverName(uint32_t nameType, bool force)
 {
     scoped_lock lk(mutex);
+
+    if (!(flags & TYPEINFO_SPECIAL_NAME))
+        force = false;
 
     switch (nameType)
     {
     case COMPUTE_NAME:
+        if (force)
+            name.clear();
         if (name.empty())
-            computeWhateverName(name, nameType);
+            computeWhateverName(name, nameType, force);
         return name;
 
+    case COMPUTE_DISPLAY_NAME:
+        if (force)
+            displayName.clear();
+        if (displayName.empty())
+            computeWhateverName(displayName, nameType, force);
+        return displayName;
+
     case COMPUTE_SCOPED_NAME:
+        if (force)
+            scopedName.clear();
         if (scopedName.empty())
-            computeWhateverName(scopedName, nameType);
+            computeWhateverName(scopedName, nameType, force);
         return scopedName;
 
     case COMPUTE_SCOPED_NAME_EXPORT:
+        if (force)
+            scopedNameExport.clear();
         if (scopedNameExport.empty())
-            computeWhateverName(scopedNameExport, nameType);
+            computeWhateverName(scopedNameExport, nameType, force);
         return scopedNameExport;
     }
 
@@ -50,12 +66,18 @@ const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
     return name;
 }
 
-void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameFlags)
+void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType, bool force)
 {
-    switch (nameFlags)
+    switch (nameType)
     {
     case COMPUTE_NAME:
         resName = name;
+        break;
+
+    case COMPUTE_DISPLAY_NAME:
+        if (displayName.empty())
+            displayName = name;
+        resName = displayName;
         break;
 
     case COMPUTE_SCOPED_NAME:

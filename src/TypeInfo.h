@@ -24,6 +24,7 @@ struct SemanticContext;
 static const int COMPUTE_NAME               = 0;
 static const int COMPUTE_SCOPED_NAME        = 1;
 static const int COMPUTE_SCOPED_NAME_EXPORT = 2;
+static const int COMPUTE_DISPLAY_NAME       = 3;
 
 static const uint64_t TYPEINFO_SELF                         = 0x00000000'00000001;
 static const uint64_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000000'00000002;
@@ -58,6 +59,7 @@ static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'2000000
 static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
 static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'80000000;
 static const uint64_t TYPEINFO_CAN_THROW                    = 0x00000001'00000000;
+static const uint64_t TYPEINFO_SPECIAL_NAME                 = 0x00000002'00000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -143,19 +145,20 @@ struct TypeInfo
     virtual Utf8      getDisplayName();
 
     // clang-format off
-    void            computeName() { computeWhateverName(COMPUTE_NAME); }
+    void            computeName() { computeWhateverName(COMPUTE_NAME); computeWhateverName(COMPUTE_DISPLAY_NAME); }
     void            computeScopedName() { computeWhateverName(COMPUTE_SCOPED_NAME); }
     void            computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
     // clang-format on
 
-    const Utf8&        computeWhateverName(uint32_t nameType);
-    virtual void       computeWhateverName(Utf8& resName, uint32_t nameType);
+    const Utf8&        computeWhateverName(uint32_t nameType, bool force = false);
+    virtual void       computeWhateverName(Utf8& resName, uint32_t nameType, bool force);
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
     shared_mutex mutex;
 
     Utf8 name;
+    Utf8 displayName;
     Utf8 scopedName;
     Utf8 scopedNameExport;
 
@@ -346,6 +349,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     TypeInfoFuncAttr()
     {
         kind = TypeInfoKind::FuncAttr;
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
     int numParamsRegisters()
@@ -363,7 +367,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
     uint32_t  registerIdxToParamIdx(int argIdx);
@@ -386,9 +390,10 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfoPointer()
     {
         kind = TypeInfoKind::Pointer;
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -401,9 +406,10 @@ struct TypeInfoReference : public TypeInfo
     {
         kind   = TypeInfoKind::Reference;
         sizeOf = sizeof(void*);
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -417,6 +423,7 @@ struct TypeInfoArray : public TypeInfo
     {
         kind = TypeInfoKind::Array;
         flags |= TYPEINFO_RETURN_BY_COPY;
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
     int numRegisters() override
@@ -424,7 +431,7 @@ struct TypeInfoArray : public TypeInfo
         return 1;
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -441,9 +448,10 @@ struct TypeInfoSlice : public TypeInfo
     {
         kind   = TypeInfoKind::Slice;
         sizeOf = 2 * sizeof(void*);
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -476,11 +484,12 @@ struct TypeInfoVariadic : public TypeInfo
     TypeInfoVariadic()
     {
         kind = TypeInfoKind::Variadic;
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
 
     TypeInfo* rawType = nullptr;
 };
@@ -504,6 +513,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoStruct()
     {
         kind = TypeInfoKind::Struct;
+        flags |= TYPEINFO_SPECIAL_NAME;
     }
 
     int numRegisters() override
@@ -515,7 +525,7 @@ struct TypeInfoStruct : public TypeInfo
 
     bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo*      clone() override;
-    void           computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void           computeWhateverName(Utf8& resName, uint32_t nameType, bool force) override;
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);

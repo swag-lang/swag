@@ -1414,8 +1414,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                      badParamIdx,
                                      refNiceName.c_str(),
                                      bi.badGenMatch.c_str(),
-                                     bi.badSignatureRequestedType->name.c_str(),
-                                     bi.badSignatureGivenType->name.c_str())};
+                                     bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                     bi.badSignatureGivenType->getDisplayName().c_str())};
         diag->hint = explicitCastHint;
         note       = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
