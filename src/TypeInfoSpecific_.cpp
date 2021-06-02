@@ -540,6 +540,9 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType, boo
         resName += declNode->token.text;
     }
 
+    if (nameType == COMPUTE_DISPLAY_NAME && declNode)
+        resName += declNode->token.text;
+
     computeNameGenericParameters(genericParameters, resName, nameType, force);
 
     // Parameters
@@ -881,7 +884,7 @@ Utf8 TypeInfoStruct::getDisplayName()
         return format("typeset %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
         return format("union %s", name.c_str());
-    if(displayName.empty())
+    if (displayName.empty())
         return format("struct %s", name.c_str());
     return format("struct %s", displayName.c_str());
 }

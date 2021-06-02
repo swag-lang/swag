@@ -2077,9 +2077,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
-            auto overload = match->symbolOverload;
-            auto couldBe  = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
-            auto note     = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            auto overload     = match->symbolOverload;
+            auto couldBe      = "could be: " + overload->typeInfo->getDisplayName();
+            auto note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            note->printSource = false;
 
             Utf8 width;
             for (auto og : match->genericReplaceTypes)
@@ -2141,10 +2142,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
-            auto overload               = match->symbolOverload;
-            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
-            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
-            note->showMultipleCodeLines = false;
+            auto overload     = match->symbolOverload;
+            auto couldBe      = "could be: " + overload->typeInfo->getDisplayName();
+            auto note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            note->printSource = false;
 
             if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
             {

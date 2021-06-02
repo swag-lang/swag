@@ -85,7 +85,6 @@ namespace Ast
     extern void     normalizeIdentifierName(Utf8& name);
     extern AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
     extern AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
-    extern Utf8     computeTypeDisplay(const Utf8& name, TypeInfo* typeInfo);
     extern Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
     extern void     releaseNode(AstNode* node);
 

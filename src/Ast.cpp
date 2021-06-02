@@ -482,48 +482,6 @@ namespace Ast
         return node;
     }
 
-    Utf8 computeTypeDisplay(const Utf8& name, TypeInfo* typeInfo)
-    {
-        Utf8 result;
-        if (typeInfo->kind == TypeInfoKind::FuncAttr)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-            result        = "func";
-            if (!typeFunc->genericParameters.empty())
-            {
-                result += "(";
-                for (int i = 0; i < (int) typeFunc->genericParameters.size(); i++)
-                {
-                    if (i)
-                        result += ", ";
-                    auto param = typeFunc->genericParameters[i];
-                    result += param->typeInfo->name;
-                }
-                result += ")";
-            }
-            result += " ";
-
-            result += name;
-            result += "(";
-            for (int i = 0; i < (int) typeFunc->parameters.size(); i++)
-            {
-                if (i)
-                    result += ", ";
-                auto param = typeFunc->parameters[i];
-                result += param->typeInfo->name;
-            }
-
-            result += ")";
-            if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
-            {
-                result += "->";
-                result += typeFunc->returnType->name;
-            }
-        }
-
-        return result;
-    }
-
     Utf8 computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params)
     {
         if (params.empty())
