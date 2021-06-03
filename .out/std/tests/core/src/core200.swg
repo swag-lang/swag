@@ -1,5 +1,4 @@
-﻿
-using Core.Memory, Swag
+﻿/*using Core.Memory, Swag
 
 #test
 {
@@ -14,4 +13,4 @@ using Core.Memory, Swag
 
     @assert(mem.usedLeaks == 100)
     mem.freeAll()
-}
+}*/

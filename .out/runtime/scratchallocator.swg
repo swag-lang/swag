@@ -7,7 +7,7 @@ private struct LeakHeader
     size:   uint
 }
 
-impl TempAllocator
+impl ScratchAllocator
 {
     private func align(value: uint, alignement: u32)->uint
     {
@@ -69,7 +69,7 @@ impl TempAllocator
     }
 }
 
-impl IAllocator for TempAllocator
+impl IAllocator for ScratchAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {

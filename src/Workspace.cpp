@@ -169,7 +169,7 @@ void Workspace::addRuntime()
     addRuntimeFile("runtime_win32.swg");
     addRuntimeFile("runtime_msvc.swg");
     addRuntimeFile("systemallocator.swg");
-    addRuntimeFile("tempallocator.swg");
+    addRuntimeFile("scratchallocator.swg");
 }
 
 void Workspace::setupPaths()

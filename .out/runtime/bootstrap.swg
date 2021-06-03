@@ -216,7 +216,7 @@ namespace Swag
         alloc: func(self, *AllocatorRequest)
     }
 
-    struct TempAllocator
+    struct ScratchAllocator
     {
         allocator:    IAllocator
         block:        *u8
@@ -247,7 +247,7 @@ namespace Swag
         flags =         ContextFlags.None
 
         // Other fields, can be in any order
-        tempAllocator:      TempAllocator
+        tempAllocator:      ScratchAllocator
         errorMsg:           [MaxLenErrorMsg] u8
         errorMsgStart:      u32
         errorMsgLen:        u32

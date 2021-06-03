@@ -39,7 +39,7 @@ typedef struct SwagInterface
     void* itable = nullptr;
 } SwagInterface;
 
-typedef struct SwagTempAllocator
+typedef struct SwagScratchAllocator
 {
     SwagInterface allocator;
     void*         data      = nullptr;
@@ -71,7 +71,7 @@ typedef struct SwagContext
 {
     SwagInterface               allocator;
     uint64_t                    flags;
-    SwagTempAllocator           tempAllocator;
+    SwagScratchAllocator        tempAllocator;
     uint8_t                     errorMsg[MAX_LEN_ERROR_MSG];
     uint32_t                    errorMsgStart;
     uint32_t                    errorMsgLen;
