@@ -26,7 +26,7 @@ impl TempAllocator
         allocator.alloc(&req)
     }
 
-    private func alloc(using self, size: uint, alignement: u32)->*void
+    private func alloc(using self, size: uint, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest
         req.mode = .Alloc

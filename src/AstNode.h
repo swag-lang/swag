@@ -537,7 +537,7 @@ struct AstFuncCallParam : public AstNode
     AstNode*       namedParamNode;
     TypeInfoParam* resolvedParameter;
 
-    int index;
+    int indexParam;
 };
 
 struct AstBinaryOpNode : public AstNode

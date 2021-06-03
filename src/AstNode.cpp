@@ -838,7 +838,7 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     newNode->namedParam        = namedParam;
     newNode->namedParamNode    = namedParamNode;
     newNode->resolvedParameter = resolvedParameter;
-    newNode->index             = index;
+    newNode->indexParam        = indexParam;
     return newNode;
 }
 

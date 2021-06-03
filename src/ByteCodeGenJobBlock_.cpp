@@ -109,7 +109,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 for (int j = 0; j < numCallParams; j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
-                    if (callParam->index == i)
+                    if (callParam->indexParam == i)
                     {
                         if (callParam->semFlags & AST_SEM_AUTO_CODE_PARAM)
                         {

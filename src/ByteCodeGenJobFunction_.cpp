@@ -1036,7 +1036,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
             AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
             AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-            return p1->index < p2->index;
+            return p1->indexParam < p2->indexParam;
         });
     }
     else if (allParams && (allParams->semFlags & AST_SEM_INVERSE_PARAMS))
@@ -1124,7 +1124,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             for (int j = 0; j < numCallParams; j++)
             {
                 auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
-                if (param->index == i)
+                if (param->indexParam == i)
                 {
                     if (param->additionalRegisterRC.canFree)
                     {

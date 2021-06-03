@@ -40,7 +40,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.cptResolved                               = (int) context.parameters.size();
             context.solvedParameters[context.cptResolved - 1] = parameters.back();
             param->resolvedParameter                          = parameters.back();
-            param->index                                      = (int) parameters.size() - 1;
+            param->indexParam                                 = (int) parameters.size() - 1;
             return;
         }
 
@@ -273,7 +273,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (param)
         {
             param->resolvedParameter = wantedParameter;
-            param->index             = context.cptResolved;
+            param->indexParam        = context.cptResolved;
         }
 
         context.cptResolved++;
@@ -329,7 +329,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 
             context.solvedParameters[j]      = wantedParameter;
             callParameter->resolvedParameter = wantedParameter;
-            callParameter->index             = j;
+            callParameter->indexParam        = j;
             context.doneParameters[j]        = true;
             context.cptResolved++;
             return;
@@ -370,7 +370,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             context.cptResolved                               = (int) context.parameters.size();
             context.solvedParameters[context.cptResolved - 1] = parameters.back();
             param->resolvedParameter                          = parameters.back();
-            param->index                                      = (int) parameters.size() - 1;
+            param->indexParam                                 = (int) parameters.size() - 1;
             break;
         }
 
@@ -560,7 +560,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             context.result                                      = MatchResult::BadGenericSignature;
         }
 
-        // We do not test computedValue for a struct, because it will contain the 'typeinfo', which can be different 
+        // We do not test computedValue for a struct, because it will contain the 'typeinfo', which can be different
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
                  symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||

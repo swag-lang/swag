@@ -161,7 +161,7 @@ void SemanticJob::sortParameters(AstNode* allParams)
     sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
         AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
         AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-        return p1->index < p2->index;
+        return p1->indexParam < p2->indexParam;
     });
 
     allParams->flags ^= AST_MUST_SORT_CHILDS;
@@ -389,8 +389,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 Ast::removeFromParent(nodeCall);
 
-                auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-                newParam->index = nodeCall->index;
+                auto newParam        = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+                newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
                 Ast::insertChild(identifier->callParameters, newParam, i);
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
@@ -478,7 +478,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // we let the emitCall to deal with those default parameters)
                 newParam->namedParam = funcParam->token.text;
 
-                newParam->index = i;
+                newParam->indexParam = i;
                 newParam->flags |= AST_GENERATED;
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
@@ -833,7 +833,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             for (int i = 0; i < maxParams; i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                int  idx      = nodeCall->index;
+                int  idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                     SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, CASTFLAG_TRY_COERCE));
             }

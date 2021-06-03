@@ -111,7 +111,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                 for (int j = 0; j < identifier->callParameters->childs.size(); j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
-                    if (callParam->index != i)
+                    if (callParam->indexParam != i)
                         continue;
                     if (!(callParam->flags & AST_VALUE_COMPUTED))
                         continue;
