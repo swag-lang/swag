@@ -4,9 +4,9 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
+bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -23,53 +23,53 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        return context->report({op, op->token, format(Msg0827, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, format(Msg0827, typeInfo->getDisplayName().c_str())});
     default:
-        return context->report({op, op->token, format(Msg0828, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, format(Msg0828, typeInfo->getDisplayName().c_str())});
     }
 
-    if (op->flags & AST_VALUE_COMPUTED && !(op->doneFlags & AST_DONE_NEG_EATEN))
+    if (child->flags & AST_VALUE_COMPUTED && !(child->doneFlags & AST_DONE_NEG_EATEN))
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            if (op->computedValue.reg.s8 <= INT8_MIN)
-                return context->report({op, format(Msg0829, op->computedValue.reg.s8, -op->computedValue.reg.s8)});
-            op->computedValue.reg.s64 = -op->computedValue.reg.s8;
+            if (child->computedValue.reg.s8 <= INT8_MIN)
+                return context->report({child, format(Msg0829, child->computedValue.reg.s8, -child->computedValue.reg.s8)});
+            child->computedValue.reg.s64 = -child->computedValue.reg.s8;
             break;
         case NativeTypeKind::S16:
-            if (op->computedValue.reg.s16 <= INT16_MIN)
-                return context->report({op, format(Msg0830, op->computedValue.reg.s16, -op->computedValue.reg.s16)});
-            op->computedValue.reg.s64 = -op->computedValue.reg.s16;
+            if (child->computedValue.reg.s16 <= INT16_MIN)
+                return context->report({child, format(Msg0830, child->computedValue.reg.s16, -child->computedValue.reg.s16)});
+            child->computedValue.reg.s64 = -child->computedValue.reg.s16;
             break;
         case NativeTypeKind::S32:
-            if (op->computedValue.reg.s32 <= INT32_MIN)
-                return context->report({op, format(Msg0831, op->computedValue.reg.s32, -op->computedValue.reg.s32)});
-            op->computedValue.reg.s64 = -op->computedValue.reg.s32;
+            if (child->computedValue.reg.s32 <= INT32_MIN)
+                return context->report({child, format(Msg0831, child->computedValue.reg.s32, -child->computedValue.reg.s32)});
+            child->computedValue.reg.s64 = -child->computedValue.reg.s32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
                 int32_t newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueInteger;
-                op->typeInfo     = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
+                child->typeInfo  = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (op->computedValue.reg.s64 <= INT64_MIN)
-                return context->report({op, format(Msg0832, op->computedValue.reg.s64, -op->computedValue.reg.s64)});
-            op->computedValue.reg.s64 = -op->computedValue.reg.s64;
+            if (child->computedValue.reg.s64 <= INT64_MIN)
+                return context->report({child, format(Msg0832, child->computedValue.reg.s64, -child->computedValue.reg.s64)});
+            child->computedValue.reg.s64 = -child->computedValue.reg.s64;
             break;
 
         case NativeTypeKind::F32:
-            op->computedValue.reg.f32 = -op->computedValue.reg.f32;
+            child->computedValue.reg.f32 = -child->computedValue.reg.f32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
             {
-                float newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueFloat;
-                op->typeInfo   = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
+                float newValue  = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueFloat;
+                child->typeInfo = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
 
             break;
         case NativeTypeKind::F64:
-            op->computedValue.reg.f64 = -op->computedValue.reg.f64;
+            child->computedValue.reg.f64 = -child->computedValue.reg.f64;
             break;
         }
     }
@@ -77,9 +77,9 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     return true;
 }
 
-bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
+bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Lambda)
         return true;
 
@@ -87,33 +87,33 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     if (typeInfo->kind == TypeInfoKind::Pointer)
         return true;
 
-    SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, op, CASTFLAG_AUTO_BOOL));
-    if (op->flags & AST_VALUE_COMPUTED)
+    SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
+    if (child->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            op->computedValue.reg.b = !op->computedValue.reg.b;
+            child->computedValue.reg.b = !child->computedValue.reg.b;
             break;
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            op->computedValue.reg.b = op->computedValue.reg.u8 ? false : true;
+            child->computedValue.reg.b = child->computedValue.reg.u8 ? false : true;
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            op->computedValue.reg.b = op->computedValue.reg.u16 ? false : true;
+            child->computedValue.reg.b = child->computedValue.reg.u16 ? false : true;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            op->computedValue.reg.b = op->computedValue.reg.u32 ? false : true;
+            child->computedValue.reg.b = child->computedValue.reg.u32 ? false : true;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            op->computedValue.reg.b = op->computedValue.reg.u64 ? false : true;
+            child->computedValue.reg.b = child->computedValue.reg.u64 ? false : true;
             break;
         }
     }
@@ -121,9 +121,9 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     return true;
 }
 
-bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
+bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -139,36 +139,36 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({op, op->token, format(Msg0833, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, format(Msg0833, typeInfo->getDisplayName().c_str())});
     }
 
-    if (op->flags & AST_VALUE_COMPUTED)
+    if (child->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            op->computedValue.reg.u64 = op->computedValue.reg.u8;
-            op->computedValue.reg.u8  = ~op->computedValue.reg.u8;
+            child->computedValue.reg.u64 = child->computedValue.reg.u8;
+            child->computedValue.reg.u8  = ~child->computedValue.reg.u8;
             break;
 
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            op->computedValue.reg.u64 = op->computedValue.reg.u16;
-            op->computedValue.reg.u16 = ~op->computedValue.reg.u16;
+            child->computedValue.reg.u64 = child->computedValue.reg.u16;
+            child->computedValue.reg.u16 = ~child->computedValue.reg.u16;
             break;
 
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            op->computedValue.reg.u64 = op->computedValue.reg.u32;
-            op->computedValue.reg.u32 = ~op->computedValue.reg.u32;
+            child->computedValue.reg.u64 = child->computedValue.reg.u32;
+            child->computedValue.reg.u32 = ~child->computedValue.reg.u32;
             break;
 
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            op->computedValue.reg.u64 = ~op->computedValue.reg.u64;
+            child->computedValue.reg.u64 = ~child->computedValue.reg.u64;
             break;
         }
     }
@@ -178,63 +178,63 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 {
-    auto node = context->node;
-    auto op   = node->childs[0];
+    auto op    = context->node;
+    auto child = op->childs[0];
 
-    node->typeInfo    = op->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitUnaryOp;
+    op->typeInfo    = child->typeInfo;
+    op->byteCodeFct = ByteCodeGenJob::emitUnaryOp;
 
-    node->inheritOrFlag(op, AST_CONST_EXPR | AST_SIDE_EFFECTS);
-    SWAG_CHECK(checkIsConcrete(context, op));
-    node->flags |= AST_R_VALUE;
+    op->inheritOrFlag(child, AST_CONST_EXPR | AST_SIDE_EFFECTS);
+    SWAG_CHECK(checkIsConcrete(context, child));
+    op->flags |= AST_R_VALUE;
 
     // Special case for enum : nothing is possible, except for flags
-    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return notAllowed(context, node, typeInfo);
+            return notAllowed(context, op, typeInfo);
     }
 
-    typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
+    typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        switch (node->token.id)
+        switch (op->token.id)
         {
         case TokenId::SymExclam:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "!", nullptr, op, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "!", nullptr, child, nullptr, false));
             break;
         case TokenId::SymMinus:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "-", nullptr, op, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "-", nullptr, child, nullptr, false));
             break;
         case TokenId::SymTilde:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "~", nullptr, op, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "~", nullptr, child, nullptr, false));
             break;
         }
 
-        node->typeInfo = typeInfo;
-        node->flags |= AST_TRANSIENT;
+        op->typeInfo = typeInfo;
+        op->flags |= AST_TRANSIENT;
         return true;
     }
 
-    switch (node->token.id)
+    switch (op->token.id)
     {
     case TokenId::SymExclam:
-        SWAG_CHECK(resolveUnaryOpExclam(context, op));
+        SWAG_CHECK(resolveUnaryOpExclam(context, child));
         break;
     case TokenId::SymMinus:
-        SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
-        SWAG_CHECK(resolveUnaryOpMinus(context, op));
+        SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
+        SWAG_CHECK(resolveUnaryOpMinus(context, child));
         break;
     case TokenId::SymTilde:
-        SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
-        SWAG_CHECK(resolveUnaryOpInvert(context, op));
+        SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
+        SWAG_CHECK(resolveUnaryOpInvert(context, child));
         break;
     }
 
-    node->typeInfo       = op->typeInfo;
-    node->castedTypeInfo = op->castedTypeInfo;
-    node->inheritComputedValue(op);
+    op->typeInfo       = child->typeInfo;
+    op->castedTypeInfo = child->castedTypeInfo;
+    op->inheritComputedValue(child);
     return true;
 }

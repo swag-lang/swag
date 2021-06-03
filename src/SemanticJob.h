@@ -224,8 +224,9 @@ struct SemanticJob : public Job
     static bool         resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right);
-    static bool         resolveUnaryOpExclam(SemanticContext* context, AstNode* op);
-    static bool         resolveUnaryOpMinus(SemanticContext* context, AstNode* op);
+    static bool         resolveUnaryOpExclam(SemanticContext* context, AstNode* child);
+    static bool         resolveUnaryOpMinus(SemanticContext* context, AstNode* child);
+    static bool         resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
     static bool         resolveUnaryOp(SemanticContext* context);
     static void         forceConstType(SemanticContext* context, AstTypeExpression* node);
     static bool         resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags = 0);
@@ -362,7 +363,6 @@ struct SemanticJob : public Job
     static bool         resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveTilde(SemanticContext* context, AstNode* left, AstNode* right);
-    static bool         resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool         resolveExplicitCast(SemanticContext* context);
     static bool         resolveExplicitBitCast(SemanticContext* context);
     static bool         resolveExplicitAutoCast(SemanticContext* context);

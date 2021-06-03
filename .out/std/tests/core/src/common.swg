@@ -27,6 +27,7 @@ protected func filePath(name: string)->String
 
 #drop
 {
+    @getcontext().tempAllocator.release()
     if !g_dbg.isEmpty()
     {
         @print("memory leaks !\n")
