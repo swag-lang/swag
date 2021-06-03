@@ -160,7 +160,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
 
     case TokenId::CompilerHasTag:
-    case TokenId::CompilerTagVal:
+    case TokenId::CompilerGetTag:
         SWAG_CHECK(doCompilerTag(parent, result));
         break;
 

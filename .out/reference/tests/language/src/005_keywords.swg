@@ -14,6 +14,7 @@
 #defined
 #file
 #function
+#gettag
 #global
 #hastag
 #line
@@ -26,7 +27,6 @@
 #swagos
 #swagrevision
 #swagversion
-#tagval
 
 #assert
 #checkif

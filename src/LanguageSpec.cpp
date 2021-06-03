@@ -19,7 +19,7 @@ void LanguageSpec::setup()
     keywords.add("#os", TokenId::CompilerOs);
     keywords.add("#abi", TokenId::CompilerAbi);
     keywords.add("#hastag", TokenId::CompilerHasTag);
-    keywords.add("#tagval", TokenId::CompilerTagVal);
+    keywords.add("#gettag", TokenId::CompilerGetTag);
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
     keywords.add("#function", TokenId::CompilerFunction);

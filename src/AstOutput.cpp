@@ -686,11 +686,13 @@ namespace Ast
                 SWAG_CHECK(output(context, concat, node->childs[0]));
                 CONCAT_FIXED_STR(concat, ")");
                 break;
-            case TokenId::CompilerTagVal:
-                CONCAT_FIXED_STR(concat, "#tagval(");
+            case TokenId::CompilerGetTag:
+                CONCAT_FIXED_STR(concat, "#gettag(");
                 SWAG_CHECK(output(context, concat, node->childs[0]));
                 CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, node->childs[1]));
+                CONCAT_FIXED_STR(concat, ", ");
+                SWAG_CHECK(output(context, concat, node->childs[2]));
                 CONCAT_FIXED_STR(concat, ")");
                 break;
             default:

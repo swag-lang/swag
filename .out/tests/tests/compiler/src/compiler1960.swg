@@ -6,7 +6,7 @@ public func Compiler1960()
 
     }
 
-    if #tagval("toto", string) == "yes"
+    if #gettag("toto", string, "a") == "yes"
     {
 
     }

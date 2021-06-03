@@ -208,13 +208,13 @@ void Workspace::setupInternalTags()
 {
     OneTag oneTag;
 
-    // swag.endian = "little" or "big" depending on the architecture
+    // Swag.Endian = "little" or "big" depending on the architecture
     switch (g_CommandLine.arch)
     {
     case BackendArch::X86_64:
         oneTag.type       = g_TypeMgr.typeInfoString;
         oneTag.value.text = "little";
-        oneTag.name       = "swag.endian";
+        oneTag.name       = "Swag.Endian";
         tags.push_back(oneTag);
         break;
     default:

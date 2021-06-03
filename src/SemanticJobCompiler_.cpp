@@ -568,23 +568,26 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
     }
 
-    case TokenId::CompilerTagVal:
+    case TokenId::CompilerGetTag:
     {
-        auto front = node->childs.front();
-        auto back  = node->childs.back();
-        SWAG_CHECK(evaluateConstExpression(context, back));
+        auto nameNode = node->childs[0];
+        auto typeNode = node->childs[1];
+        SWAG_CHECK(evaluateConstExpression(context, nameNode));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, Msg0250}));
-        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format(Msg0251, back->typeInfo->getDisplayName().c_str())}));
-        node->typeInfo = front->typeInfo;
-        auto tag       = g_Workspace.hasTag(back->computedValue.text);
+
+        SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, Msg0250}));
+        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, Msg0245}));
+        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, format(Msg0251, nameNode->typeInfo->getDisplayName().c_str())}));
+
+        node->typeInfo = typeNode->typeInfo;
+        auto tag       = g_Workspace.hasTag(nameNode->computedValue.text);
         if (tag)
         {
-            if (!TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag(front, front->token, format(Msg0252, front->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
-                Diagnostic note(front, front->token, format(Msg0253, tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(typeNode, typeNode->token, format(Msg0252, typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
+                Diagnostic note(typeNode, typeNode->token, format(Msg0253, tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);

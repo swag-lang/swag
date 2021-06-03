@@ -18,8 +18,10 @@ bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
-    if (node->token.id == TokenId::CompilerTagVal)
+    if (node->token.id == TokenId::CompilerGetTag)
     {
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doTypeExpression(node));
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
