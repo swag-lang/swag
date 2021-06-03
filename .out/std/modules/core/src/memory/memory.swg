@@ -47,3 +47,9 @@ func align(value: const *void, alignement: u32)->const *void
 {
     return acast align(cast(uint) value, alignement)
 }
+
+// Clear the temporary allocator
+func clearTemp()
+{
+    @getcontext().tempAllocator.freeAll()
+}

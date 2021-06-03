@@ -403,7 +403,8 @@ func messageLoop()
 
     loop
     {
-        @getcontext().tempAllocator.freeAll()
+        Memory.clearTemp()
+
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT

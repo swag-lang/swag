@@ -60,11 +60,12 @@ impl ScratchAllocator
 
     // This will call 'release' prior to changing the capacity, so this must
     // be called at an early stage
-    func setCapacity(using self, newCapacity: uint)
+    func setCapacity(using self, newCapacity: uint, alloc: IAllocator = null)
     {
         if capacity == newCapacity
             return
         release()
+        if alloc != null allocator = alloc
         capacity = newCapacity
     }
 }
