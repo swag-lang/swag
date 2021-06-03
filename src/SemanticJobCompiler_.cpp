@@ -570,15 +570,21 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerGetTag:
     {
-        auto nameNode = node->childs[0];
-        auto typeNode = node->childs[1];
+        auto nameNode   = node->childs[0];
+        auto typeNode   = node->childs[1];
+        auto defaultVal = node->childs[2];
         SWAG_CHECK(evaluateConstExpression(context, nameNode));
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_CHECK(evaluateConstExpression(context, defaultVal));
         if (context->result == ContextResult::Pending)
             return true;
 
         SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, Msg0250}));
         SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, Msg0245}));
         SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, format(Msg0251, nameNode->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, Msg0283}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
         node->typeInfo = typeNode->typeInfo;
         auto tag       = g_Workspace.hasTag(nameNode->computedValue.text);
@@ -596,6 +602,11 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             node->typeInfo      = tag->type;
             node->computedValue = tag->value;
         }
+        else
+        {
+            node->computedValue = defaultVal->computedValue;
+        }
+
         node->setFlagsValueIsComputed();
         return true;
     }

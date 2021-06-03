@@ -266,6 +266,7 @@
 #define Msg0280 "cannot evaluate constant expression of type '%s' at compile time"
 #define Msg0281 "cannot evaluate constant expression of type '%s' at compile time, because struct is not marked with 'Swag.constexpr'"
 #define Msg0282 "unpacking '%d' variable(s), but the tuple on the right contains '%d' element(s)"
+#define Msg0283 "'#gettag' default value expected, found a type"
 #define Msg0284 "'#import' location already defined as '%s'"
 #define Msg0285 "expected an identifier, found a literal"
 #define Msg0286 "'#import' version already defined as '%s'"

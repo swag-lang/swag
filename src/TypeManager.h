@@ -9,6 +9,7 @@ struct SemanticContext;
 enum class LiteralType : uint8_t;
 struct Token;
 
+static const uint32_t CASTFLAG_DEFAULT       = 0x00000000;
 static const uint32_t CASTFLAG_NO_ERROR      = 0x00000001;
 static const uint32_t CASTFLAG_EXPLICIT      = 0x00000002;
 static const uint32_t CASTFLAG_CONCRETE_ENUM = 0x00000004;
