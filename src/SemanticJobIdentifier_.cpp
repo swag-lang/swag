@@ -2553,8 +2553,12 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     {
         bool getIt = false;
 
-        // Exact smae scope
-        if (dep.scope->getFullName() == symScope->getFullName())
+        // Exact same scope
+        if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
+            getIt = true;
+
+        // The symbol scope is an 'impl' inside a struct (impl for)
+        else if (symScope->kind == ScopeKind::Impl && symScope->parentScope == dep.scope)
             getIt = true;
 
         // From the normal scope, use something in the private scope

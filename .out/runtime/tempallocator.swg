@@ -78,7 +78,7 @@ impl IAllocator for TempAllocator
         {
             if !capacity            capacity = 4 * 1024 * 1024
             if allocator == null    allocator = @getcontext().allocator
-            block = alloc(capacity, 0)
+            block = alloc(capacity)
         }
 
         switch request.mode
