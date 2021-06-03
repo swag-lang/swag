@@ -134,6 +134,10 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     {
         emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
     }
+    else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
+    {
+        emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC[1]);
+    }
     else
     {
         if (typeInfo->kind != TypeInfoKind::Native)

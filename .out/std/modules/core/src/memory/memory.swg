@@ -49,7 +49,7 @@ func align(value: const *void, alignement: u32)->const *void
 }
 
 // Clear the temporary allocator
-func clearTemp()
+func freeTemp()
 {
     @getcontext().tempAllocator.freeAll()
 }
