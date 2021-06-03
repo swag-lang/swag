@@ -84,7 +84,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
         return true;
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
         return true;
 
     SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));

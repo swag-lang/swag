@@ -77,8 +77,8 @@ impl IAllocator for ScratchAllocator
         // First block allocation
         if !block
         {
-            if !capacity            capacity = 4 * 1024 * 1024
-            if allocator == null    allocator = @getcontext().allocator
+            if !capacity  capacity = 4 * 1024 * 1024
+            if !allocator allocator = @getcontext().allocator
             block = alloc(capacity)
         }
 
