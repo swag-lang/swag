@@ -149,15 +149,24 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         typeExpression->token.id    = TokenId::NativeType;
         typeExpression->literalType = childType;
         break;
+
     case TypeInfoKind::Enum:
+    {
+        unique_lock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         break;
+    }
+
     case TypeInfoKind::Struct:
     case TypeInfoKind::TypeSet:
     case TypeInfoKind::Interface:
+    {
+        unique_lock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         break;
+    }
+
     case TypeInfoKind::TypeListTuple:
     {
         AstStruct* inStructNode;
@@ -166,6 +175,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
         break;
     }
+
     default:
         context->report({assignment, format(Msg0294, orgType->getDisplayName().c_str()).c_str()});
         return nullptr;
@@ -197,13 +207,18 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         auto subAffect = assignment->childs[idx];
 
         bool autoName = false;
+        // User specified name
         if (!typeParam->namedParam.empty())
             varName = typeParam->namedParam;
+
+        // If this is a single identifier, then we take the identifier name
         else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
         {
             varName               = subAffect->childs.back()->token.text;
             typeParam->namedParam = varName;
         }
+
+        // Otherwise generate an 'item<num>' name
         else
         {
             autoName = true;

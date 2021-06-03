@@ -458,6 +458,8 @@ namespace Ast
 
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob)
     {
+        SWAG_ASSERT(!name.empty());
+
         AstIdentifierRef* node = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
         node->token.text       = name;
         if (syntaxJob && !syntaxJob->currentTokenLocation)
@@ -465,6 +467,7 @@ namespace Ast
 
         vector<Utf8> subNames;
         tokenize(name.c_str(), '.', subNames);
+        SWAG_ASSERT(subNames.size());
         node->childs.reserve((int) subNames.size());
 
         for (int i = 0; i < subNames.size(); i++)
