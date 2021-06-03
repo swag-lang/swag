@@ -256,6 +256,7 @@ struct SemanticJob : public Job
     static bool         makeIntrinsicTypeOf(SemanticContext* context);
     static bool         getDigitHexa(SemanticContext* context, const char** pz, int& result, const char* errMsg);
     static bool         processLiteralString(SemanticContext* context);
+    static Utf8         checkLiteralType(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied);
     static bool         resolveLiteralSuffix(SemanticContext* context);
     static bool         resolveIntrinsicTypeOf(SemanticContext* context);
     static bool         resolveIntrinsicProperty(SemanticContext* context);

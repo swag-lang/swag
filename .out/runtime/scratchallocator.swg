@@ -78,7 +78,6 @@ impl IAllocator for ScratchAllocator
         if !block
         {
             if !capacity  capacity = #gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
-            @print("temp alloc size: ", capacity, "\n")
             if !allocator allocator = @getcontext().allocator
             block = alloc(capacity)
         }

@@ -139,6 +139,213 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     return true;
 }
 
+Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied)
+{
+    if (negApplied)
+    {
+        switch (typeSuffix->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+            computedValue.reg.s64 = -computedValue.reg.s64;
+            break;
+        }
+
+        switch (token.literalType)
+        {
+        case LiteralType::TT_U32:
+        case LiteralType::TT_UNTYPED_BINHEXA:
+        case LiteralType::TT_UNTYPED_INT:
+            token.literalType = LiteralType::TT_S32;
+            break;
+        case LiteralType::TT_U64:
+        case LiteralType::TT_UINT:
+            token.literalType = LiteralType::TT_S64;
+            break;
+        }
+    }
+
+    switch (token.literalType)
+    {
+    case LiteralType::TT_RAW_STRING:
+    case LiteralType::TT_ESCAPE_STRING:
+    case LiteralType::TT_STRING:
+    {
+        VectorNative<uint32_t> uni;
+        computedValue.text.toUni32(uni);
+        if (uni.size() != 1)
+            return format("invalid character literal '%s'; this is a string, not a character", token.text.c_str());
+
+        switch (typeSuffix->nativeType)
+        {
+        case NativeTypeKind::Rune:
+            computedValue.reg.ch = uni[0];
+            break;
+
+        case NativeTypeKind::U8:
+            if (uni[0] > UINT8_MAX)
+                return format("cannot convert character literal to 'u8', value '%u' is too big", uni[0]);
+            computedValue.reg.u8 = (uint8_t) uni[0];
+            break;
+
+        case NativeTypeKind::U16:
+            if (uni[0] > UINT16_MAX)
+                return format("cannot convert character literal to 'u16', value '%u' is too big", uni[0]);
+            computedValue.reg.u16 = (uint16_t) uni[0];
+            break;
+
+        case NativeTypeKind::U32:
+            computedValue.reg.u32 = uni[0];
+            break;
+
+        case NativeTypeKind::U64:
+            computedValue.reg.u64 = uni[0];
+            break;
+
+        default:
+            return format("cannot convert from 'string' to '%s'", typeSuffix->getDisplayName().c_str());
+        }
+        break;
+    }
+
+    case LiteralType::TT_UNTYPED_FLOAT:
+        switch (typeSuffix->nativeType)
+        {
+        case NativeTypeKind::F32:
+            computedValue.reg.f32 = (float) token.literalValue.f64;
+            break;
+        case NativeTypeKind::F64:
+            break;
+        default:
+            return format("cannot convert floating point number '%Lf'", token.literalValue.f64);
+        }
+        break;
+
+    case LiteralType::TT_S32:
+    case LiteralType::TT_S64:
+    case LiteralType::TT_INT:
+    case LiteralType::TT_UNTYPED_INT:
+        switch (typeSuffix->nativeType)
+        {
+        case NativeTypeKind::U8:
+            if (computedValue.reg.u64 > UINT8_MAX)
+                return format("literal number '%I64u' is not in the range of 'u8'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U16:
+            if (computedValue.reg.u64 > UINT16_MAX)
+                return format("literal number '%I64u' is not in the range of 'u16'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U32:
+            if (computedValue.reg.u64 > UINT32_MAX)
+                return format("literal number '%I64u' is not in the range of 'u32'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            break;
+
+        case NativeTypeKind::S8:
+            if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
+                return format("literal number '%I64d' is not in the range of 's8'", computedValue.reg.s64);
+            break;
+        case NativeTypeKind::S16:
+            if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
+                return format("literal number '%I64d' is not in the range of 's16'", computedValue.reg.s64);
+            break;
+        case NativeTypeKind::S32:
+            if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
+                return format("literal number '%I64d' is not in the range of 's32'", computedValue.reg.s64);
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            break;
+
+        case NativeTypeKind::Rune:
+            if (computedValue.reg.u64 > UINT32_MAX)
+                return format("literal number '%I64u' is not in the range of 'rune'", computedValue.reg.u64);
+            break;
+
+        case NativeTypeKind::F32:
+        {
+            float   tmpF = static_cast<float>(computedValue.reg.s64);
+            int64_t tmp  = static_cast<int64_t>(tmpF);
+            if (tmp != computedValue.reg.s64)
+                return format("value '%I64d' is truncated in 'f32'", computedValue.reg.s64);
+            computedValue.reg.f32 = tmpF;
+            break;
+        }
+        case NativeTypeKind::F64:
+        {
+            double  tmpF = static_cast<double>(computedValue.reg.s64);
+            int64_t tmp  = static_cast<int64_t>(tmpF);
+            if (tmp != computedValue.reg.s64)
+                return format("value '%I64d' is truncated in 'f64'", computedValue.reg.s64);
+            computedValue.reg.f64 = tmpF;
+            break;
+        }
+
+        default:
+            return format("invalid literal number conversion of '%I64u'", computedValue.reg.u64);
+        }
+
+        break;
+
+    case LiteralType::TT_U32:
+    case LiteralType::TT_U64:
+    case LiteralType::TT_UINT:
+    case LiteralType::TT_UNTYPED_BINHEXA:
+        switch (typeSuffix->nativeType)
+        {
+        case NativeTypeKind::U8:
+            if (computedValue.reg.u64 > UINT8_MAX)
+                return format("literal number '%I64u' is not in the range of 'u8'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U16:
+            if (computedValue.reg.u64 > UINT16_MAX)
+                return format("literal number '%I64u' is not in the range of 'u16'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U32:
+            if (computedValue.reg.u64 > UINT32_MAX)
+                return format("literal number '%I64u' is not in the range of 'u32'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            break;
+
+        case NativeTypeKind::S8:
+            if (computedValue.reg.u64 > UINT8_MAX)
+                return format("literal number '%I64u' is not in the range of 's8'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::S16:
+            if (computedValue.reg.u64 > UINT16_MAX)
+                return format("literal number '%I64u' is not in the range of 's16'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::S32:
+            if (computedValue.reg.u64 > UINT32_MAX)
+                return format("literal number '%I64u' is not in the range of 's32'", computedValue.reg.u64);
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
+                return format("literal number '%I64u' is not in the range of 's64'", computedValue.reg.u64);
+            break;
+
+        case NativeTypeKind::Rune:
+            if (computedValue.reg.u64 > UINT32_MAX)
+                return format("literal number '%I64u' is not in the range of 'rune'", computedValue.reg.u64);
+            break;
+
+        default:
+            return format("invalid literal number conversion of '%I64u'", computedValue.reg.u64);
+        }
+
+        break;
+    }
+
+    return "";
+}
+
 bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 {
     auto   node  = context->node;
@@ -196,204 +403,17 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = -node->computedValue.reg.s64;
             node->doneFlags |= AST_DONE_NEG_EATEN;
             negApplied = true;
             break;
         }
-
-        if (negApplied)
-        {
-            switch (token.literalType)
-            {
-            case LiteralType::TT_U32:
-            case LiteralType::TT_UNTYPED_BINHEXA:
-            case LiteralType::TT_UNTYPED_INT:
-                token.literalType = LiteralType::TT_S32;
-                break;
-            case LiteralType::TT_U64:
-            case LiteralType::TT_UINT:
-                token.literalType = LiteralType::TT_S64;
-                break;
-            }
-        }
     }
 
-    switch (token.literalType)
-    {
-    case LiteralType::TT_RAW_STRING:
-    case LiteralType::TT_ESCAPE_STRING:
-    case LiteralType::TT_STRING:
-    {
-        VectorNative<uint32_t> uni;
-        node->computedValue.text.toUni32(uni);
-        SWAG_VERIFY(uni.size() == 1, context->report({node, node->token, format("invalid character literal '%s'; this is a string, not a character", token.text.c_str())}));
-
-        switch (suffix->typeInfo->nativeType)
-        {
-        case NativeTypeKind::Rune:
-            node->computedValue.reg.ch = uni[0];
-            break;
-
-        case NativeTypeKind::U8:
-            SWAG_VERIFY(uni[0] <= UINT8_MAX, context->report({suffix, format("cannot convert character literal to 'u8', value '%u' is too big", uni[0])}));
-            node->computedValue.reg.u8 = (uint8_t) uni[0];
-            break;
-
-        case NativeTypeKind::U16:
-            SWAG_VERIFY(uni[0] <= UINT16_MAX, context->report({suffix, format("cannot convert character literal to 'u16', value '%u' is too big", uni[0])}));
-            node->computedValue.reg.u16 = (uint16_t) uni[0];
-            break;
-
-        case NativeTypeKind::U32:
-            node->computedValue.reg.u32 = uni[0];
-            break;
-
-        case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = uni[0];
-            break;
-
-        default:
-            context->report({suffix, format("cannot convert from 'string' to '%s'", suffix->typeInfo->getDisplayName().c_str())});
-            break;
-        }
-        break;
-    }
-
-    case LiteralType::TT_UNTYPED_FLOAT:
-        switch (suffix->typeInfo->nativeType)
-        {
-        case NativeTypeKind::F32:
-            node->computedValue.reg.f32 = (float) token.literalValue.f64;
-            break;
-        case NativeTypeKind::F64:
-            break;
-        default:
-            return context->report({node, format("cannot convert floating point number '%Lf'", token.literalValue.f64)});
-        }
-        break;
-
-    case LiteralType::TT_S32:
-    case LiteralType::TT_S64:
-    case LiteralType::TT_INT:
-    case LiteralType::TT_UNTYPED_INT:
-        switch (suffix->typeInfo->nativeType)
-        {
-        case NativeTypeKind::U8:
-            if (node->computedValue.reg.u64 > UINT8_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u8'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U16:
-            if (node->computedValue.reg.u64 > UINT16_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u16'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U32:
-            if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u32'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
-            break;
-
-        case NativeTypeKind::S8:
-            if (node->computedValue.reg.s64 < INT8_MIN || node->computedValue.reg.s64 > INT8_MAX)
-                return context->report({node, format("literal number '%I64d' is not in the range of 's8'", node->computedValue.reg.s64)});
-            break;
-        case NativeTypeKind::S16:
-            if (node->computedValue.reg.s64 < INT16_MIN || node->computedValue.reg.s64 > INT16_MAX)
-                return context->report({node, format("literal number '%I64d' is not in the range of 's16'", node->computedValue.reg.s64)});
-            break;
-        case NativeTypeKind::S32:
-            if (node->computedValue.reg.s64 < INT32_MIN || node->computedValue.reg.s64 > INT32_MAX)
-                return context->report({node, format("literal number '%I64d' is not in the range of 's32'", node->computedValue.reg.s64)});
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
-            break;
-
-        case NativeTypeKind::Rune:
-            if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'rune'", node->computedValue.reg.u64)});
-            break;
-
-        case NativeTypeKind::F32:
-        {
-            float   tmpF = static_cast<float>(node->computedValue.reg.s64);
-            int64_t tmp  = static_cast<int64_t>(tmpF);
-            if (tmp != node->computedValue.reg.s64)
-                return context->report({node, format("value '%I64d' is truncated in 'f32'", node->computedValue.reg.s64)});
-            node->computedValue.reg.f32 = tmpF;
-            break;
-        }
-        case NativeTypeKind::F64:
-        {
-            double  tmpF = static_cast<double>(node->computedValue.reg.s64);
-            int64_t tmp  = static_cast<int64_t>(tmpF);
-            if (tmp != node->computedValue.reg.s64)
-                return context->report({node, format("value '%I64d' is truncated in 'f64'", node->computedValue.reg.s64)});
-            node->computedValue.reg.f64 = tmpF;
-            break;
-        }
-
-        default:
-            return context->report({node, format("invalid literal number conversion of '%I64u'", node->computedValue.reg.u64)});
-        }
-
-        break;
-
-    case LiteralType::TT_U32:
-    case LiteralType::TT_U64:
-    case LiteralType::TT_UINT:
-    case LiteralType::TT_UNTYPED_BINHEXA:
-        switch (suffix->typeInfo->nativeType)
-        {
-        case NativeTypeKind::U8:
-            if (node->computedValue.reg.u64 > UINT8_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u8'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U16:
-            if (node->computedValue.reg.u64 > UINT16_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u16'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U32:
-            if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'u32'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
-            break;
-
-        case NativeTypeKind::S8:
-            if (node->computedValue.reg.u64 > UINT8_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 's8'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::S16:
-            if (node->computedValue.reg.u64 > UINT16_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 's16'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::S32:
-            if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 's32'", node->computedValue.reg.u64)});
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
-            if (node->computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
-                return context->report({node, format("literal number '%I64u' is not in the range of 's64'", node->computedValue.reg.u64)});
-            break;
-
-        case NativeTypeKind::Rune:
-            if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'rune'", node->computedValue.reg.u64)});
-            break;
-
-        default:
-            return context->report({node, format("invalid literal number conversion of '%I64u'", node->computedValue.reg.u64)});
-        }
-
-        break;
-    }
-
+    auto errMsg = checkLiteralType(node->computedValue, token, suffix->typeInfo, negApplied);
+    if (!errMsg.empty())
+        return context->report({node, node->token, errMsg});
     node->typeInfo = suffix->typeInfo;
+
     return true;
 }
 

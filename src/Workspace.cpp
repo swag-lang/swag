@@ -227,6 +227,8 @@ void Workspace::setupUserTags()
 {
     // Command line tags
     // Format is --tag:"TagName : type = value"
+    g_CommandLine.tags.insert("TOTO:f32=1");
+
     for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;
@@ -244,6 +246,7 @@ void Workspace::setupUserTags()
             tokens[1].trim();
 
             // Get the type
+            LiteralType  literalType = LiteralType::TT_MAX;
             vector<Utf8> tokens1;
             tokenize(tokens[0], ':', tokens1);
             if (tokens1.size() == 2)
@@ -253,52 +256,59 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
                 if (!it)
                 {
-                    g_Log.error(format(Msg0539, tokens1[00].c_str(), tokens1[1].c_str()));
+                    g_Log.error(format(Msg0539, tokens1[0].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
-                switch (*it)
-                {
-                case LiteralType::TT_F32:
-                case LiteralType::TT_F64:
-                    oneTag.value.reg.f64 = atof(tokens[1].c_str());
-                    break;
-                case LiteralType::TT_S8:
-                case LiteralType::TT_S16:
-                case LiteralType::TT_S32:
-                case LiteralType::TT_S64:
-                case LiteralType::TT_U8:
-                case LiteralType::TT_U16:
-                case LiteralType::TT_U32:
-                case LiteralType::TT_U64:
-                case LiteralType::TT_INT:
-                case LiteralType::TT_UINT:
-                    oneTag.value.reg.s64 = atoll(tokens[1].c_str());
-                    break;
-                case LiteralType::TT_BOOL:
-                    oneTag.value.reg.b = tokens[1] == "true" ? true : false;
-                    break;
-                case LiteralType::TT_STRING:
-                    oneTag.value.text = tokens1[1];
-                    break;
-                default:
-                    g_Log.error(format(Msg0539, tokens1[00].c_str(), tokens1[1].c_str()));
-                    OS::exit(-1);
-                }
-
-                oneTag.type = TypeManager::literalTypeToType(*it);
-                tokens1[0].trim();
-                oneTag.name = tokens1[0];
-                tags.push_back(oneTag);
+                literalType = *it;
             }
-            else
+
+            // Get value
+            // Use the tokenizer
+            auto tokenVal = tokens[1];
+            tokenVal.trim();
+
+            SourceFile fakeFile;
+            Tokenizer  tokenizer;
+            Token      token;
+            fakeFile.setExternalBuffer(tokenVal.buffer, (uint32_t) tokenVal.count);
+            tokenizer.setFile(&fakeFile);
+
+            bool neg = false;
+            tokenizer.getToken(token);
+            if (token.id == TokenId::SymMinus)
             {
-                oneTag.type = g_TypeMgr.typeInfoString;
-                tokens[1].trim();
-                oneTag.name       = tokens[0];
-                oneTag.value.text = tokens[1];
-                tags.push_back(oneTag);
+                neg = true;
+                tokenizer.getToken(token);
             }
+            else if (token.id == TokenId::SymPlus)
+            {
+                tokenizer.getToken(token);
+            }
+
+            if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
+            {
+                g_Log.error(format(Msg0538, tokenVal.c_str(), tokens1[0].c_str()));
+                OS::exit(-1);
+            }
+
+            // Check type and value
+            if (literalType == LiteralType::TT_MAX)
+                literalType = token.literalType;
+
+            oneTag.type       = TypeManager::literalTypeToType(literalType);
+            oneTag.value.reg  = token.literalValue;
+            oneTag.value.text = token.text;
+            auto errMsg       = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
+            if (!errMsg.empty())
+            {
+                g_Log.error(errMsg);
+                OS::exit(-1);
+            }
+
+            tokens1[0].trim();
+            oneTag.name = tokens1[0];
+            tags.push_back(oneTag);
         }
         else
         {
