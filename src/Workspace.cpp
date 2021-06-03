@@ -226,6 +226,7 @@ void Workspace::setupInternalTags()
 void Workspace::setupUserTags()
 {
     // Command line tags
+    // Format is --tag:"TagName : type = value"
     for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;
@@ -252,7 +253,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
                 if (!it)
                 {
-                    g_Log.error(format(Msg0538, tokens1[1].c_str(), tokens1[0].c_str()));
+                    g_Log.error(format(Msg0539, tokens1[00].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
@@ -270,6 +271,8 @@ void Workspace::setupUserTags()
                 case LiteralType::TT_U16:
                 case LiteralType::TT_U32:
                 case LiteralType::TT_U64:
+                case LiteralType::TT_INT:
+                case LiteralType::TT_UINT:
                     oneTag.value.reg.s64 = atoll(tokens[1].c_str());
                     break;
                 case LiteralType::TT_BOOL:
@@ -279,7 +282,7 @@ void Workspace::setupUserTags()
                     oneTag.value.text = tokens1[1];
                     break;
                 default:
-                    g_Log.error(format(Msg0539, tokens1[1].c_str(), tokens1[0].c_str()));
+                    g_Log.error(format(Msg0539, tokens1[00].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
