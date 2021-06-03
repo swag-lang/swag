@@ -305,7 +305,7 @@
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
 //#define Msg0320 "'nodrop' instruction should be placed before 'move'"
 //#define Msg0321 "'nodrop' instruction defined twice"
-//#define Msg0322 "'move' instruction defined twice"
+#define Msg0322 "fatal error: invalid value for '--tag:%s' (%s)"
 #define Msg0323 "found 'else' without a corresponding 'if'"
 #define Msg0324 "found '#else' without a corresponding '#if'"
 #define Msg0325 "found '#elif' without a corresponding '#if'"

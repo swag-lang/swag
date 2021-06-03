@@ -227,7 +227,7 @@ void Workspace::setupUserTags()
 {
     // Command line tags
     // Format is --tag:"TagName : type = value"
-    g_CommandLine.tags.insert("TOTO:f32=1");
+    g_CommandLine.tags.insert("TOTO=-1.5");
 
     for (auto& tag : g_CommandLine.tags)
     {
@@ -302,7 +302,8 @@ void Workspace::setupUserTags()
             auto errMsg       = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
             if (!errMsg.empty())
             {
-                g_Log.error(errMsg);
+                auto err = format(Msg0322, tokens1[0].c_str(), errMsg.c_str());
+                g_Log.error(err);
                 OS::exit(-1);
             }
 

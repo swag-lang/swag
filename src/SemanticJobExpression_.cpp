@@ -169,6 +169,17 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
     switch (token.literalType)
     {
+    case LiteralType::TT_BOOL:
+        if (typeSuffix->isNativeInteger())
+        {
+            computedValue.reg.u64 = computedValue.reg.b;
+            break;
+        }
+
+        if (typeSuffix->nativeType != NativeTypeKind::Bool)
+            return format("cannot convert boolean literal to '%s'", typeSuffix->getDisplayName().c_str());
+        break;
+
     case LiteralType::TT_RAW_STRING:
     case LiteralType::TT_ESCAPE_STRING:
     case LiteralType::TT_STRING:
@@ -411,7 +422,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 
     auto errMsg = checkLiteralType(node->computedValue, token, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
-        return context->report({node, node->token, errMsg});
+        return context->report({node, errMsg});
     node->typeInfo = suffix->typeInfo;
 
     return true;
