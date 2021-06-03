@@ -86,7 +86,7 @@ impl IAllocator for TempAllocator
         case Free:
             // If this is the last allocated block in the buffer, we can free it
             // by changing the allocated used size
-            ptr := block + used - request.size
+            ptr := (block + used) - request.size
             if ptr == request.address
             {
                 used = lastUsed
@@ -109,6 +109,7 @@ impl IAllocator for TempAllocator
             if leak.next
                 leak.next.prev = leak.prev
             free(leak, leak.size)
+            totalLeak -= leak.size - @sizeof(LeakHeader)
             break
 
         case FreeAll:
@@ -134,6 +135,8 @@ impl IAllocator for TempAllocator
             }
 
             // Otherwise this is a leak
+            // We prepend a LeakHeader to the user block, and linked it in
+            // the chained list of leak allocations (at the first position)
             totalSize := request.size + @sizeof(LeakHeader)
             ptr  := cast(*LeakHeader) alloc(totalSize, request.alignement)
             leak := cast(*LeakHeader) firstLeak
@@ -142,7 +145,7 @@ impl IAllocator for TempAllocator
             ptr.next = firstLeak
             firstLeak = ptr
             ptr.size = totalSize
-            request.address = ptr + 1
+            request.address = ptr + 1 // user block is after the header
             totalLeak += request.size
             maxLeak = @max(maxLeak, totalLeak)
         }
