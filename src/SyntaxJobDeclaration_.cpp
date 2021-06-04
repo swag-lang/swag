@@ -36,7 +36,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::CompilerDependencies:
                     break;
                 case AstNodeKind::AttrUse:
-                    if (((AstAttrUse*) child)->isGlobal)
+                    if (((AstAttrUse*) child)->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
                         break;
                 default:
                 {

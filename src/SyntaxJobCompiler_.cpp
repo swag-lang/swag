@@ -571,8 +571,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             Ast::addChildFront(parent, resultNode);
         }
 
-        auto attrUse          = (AstAttrUse*) resultNode;
-        attrUse->isGlobal     = true;
+        auto attrUse = (AstAttrUse*) resultNode;
+        attrUse->specFlags |= AST_SPEC_ATTRUSE_GLOBAL;
         attrUse->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;

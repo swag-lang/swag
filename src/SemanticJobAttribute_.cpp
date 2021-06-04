@@ -354,7 +354,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 result->attributes.push_back(oneAttr);
         }
 
-        if (!curAttr->isGlobal && !curAttr->ownerAttrUse)
+        if (!(curAttr->specFlags & AST_SPEC_ATTRUSE_GLOBAL) && !curAttr->ownerAttrUse)
             curAttr = forNode->sourceFile->astAttrUse;
         else
             curAttr = curAttr->ownerAttrUse;
@@ -387,7 +387,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || node->isGlobal, context->report({node, Msg0597}));
+    SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, Msg0597}));
 
     for (auto child : node->childs)
     {
@@ -415,7 +415,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         }
 
         // Check that global attribute is authorized
-        if (node->isGlobal)
+        if (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & AttributeUsage::File))

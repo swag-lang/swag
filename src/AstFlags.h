@@ -124,3 +124,4 @@ static const uint8_t AST_SPEC_ARRAYPTRIDX_ISDEREF      = 0x01;
 static const uint8_t AST_SPEC_TYPELAMBDA_CANTHROW      = 0x01;
 static const uint8_t AST_SPEC_SWITCHCASE_ISDEFAULT     = 0x01;
 static const uint8_t AST_SPEC_VISIT_WANTPOINTER        = 0x01;
+static const uint8_t AST_SPEC_ATTRUSE_GLOBAL           = 0x01;

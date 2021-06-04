@@ -175,7 +175,7 @@ JobResult SemanticJob::execute()
                 }
 
                 case AstNodeKind::AttrUse:
-                    if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->isGlobal)
+                    if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
                         break;
 
                 case AstNodeKind::VarDecl:

@@ -518,7 +518,6 @@ struct AstAttrUse : public AstNode
 
     AstNode*         content;
     SymbolAttributes attributes;
-    bool             isGlobal = false;
 };
 
 struct AstFuncCallParams : public AstNode
@@ -712,22 +711,23 @@ const uint16_t TYPEFLAG_ISNAMEALIAS = 0x0080;
 
 struct AstTypeExpression : public AstNode
 {
+    static const int     MAX_PTR_COUNT = 4;
+    static const uint8_t PTR_CONST     = 0x01;
+    static const uint8_t PTR_REF       = 0x02;
+
     AstNode* clone(CloneContext& context) override;
 
     AstNode*  identifier;
     TypeInfo* literalType;
+    AstNode*  relId;
+    AstNode*  ptrRelIds[MAX_PTR_COUNT];
 
-    uint16_t             typeFlags;
-    static const int     MAX_PTR_COUNT = 4;
-    static const uint8_t PTR_CONST     = 0x01;
-    static const uint8_t PTR_REF       = 0x02;
-    uint8_t              ptrFlags[MAX_PTR_COUNT];
-    uint8_t              ptrRel[MAX_PTR_COUNT];
-    AstNode*             ptrRelIds[MAX_PTR_COUNT];
-    uint8_t              ptrCount;
-    uint8_t              arrayDim;
-    uint8_t              relValue;
-    AstNode*             relId;
+    uint16_t typeFlags;
+    uint8_t  ptrFlags[MAX_PTR_COUNT];
+    uint8_t  ptrRel[MAX_PTR_COUNT];
+    uint8_t  ptrCount;
+    uint8_t  arrayDim;
+    uint8_t  relValue;
 };
 
 struct AstTypeLambda : public AstNode
