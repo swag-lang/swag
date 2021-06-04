@@ -31,12 +31,8 @@ SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, Sym
 
 SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
-    Utf8 alName;
     if (!aliasName)
-    {
-        alName    = node->token.text;
-        aliasName = &alName;
-    }
+        aliasName = &node->token.text;
 
     SWAG_ASSERT(!aliasName->empty());
     bool wasPlaceHolder = false;
