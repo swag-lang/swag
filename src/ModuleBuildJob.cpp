@@ -321,7 +321,6 @@ JobResult ModuleBuildJob::execute()
         {
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "OptimizeBc", module->name);
-            timerOptimizeBc.start();
         }
     }
 
@@ -337,9 +336,8 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
-            timerOptimizeBc.stop();
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name, timerOptimizeBc.elapsed);
+                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name);
         }
 
         module->printBC();
@@ -516,7 +514,6 @@ JobResult ModuleBuildJob::execute()
             timerRun.stop();
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "Output", module->name);
-            timerOutput.start();
         }
 
         if (module->numErrors)
@@ -560,9 +557,8 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
-            timerOutput.stop();
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name, timerOutput.elapsed);
+                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name);
         }
 
         if (module->numErrors)

@@ -28,7 +28,6 @@ struct ModuleBuildJob : public Job
     ModuleBuildJob()
         : timerSemanticModule{&g_Stats.semanticModuleTime}
         , timerRun{&g_Stats.runTime}
-        , timerOutput{&g_Stats.outputTime}
     {
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
@@ -43,8 +42,6 @@ struct ModuleBuildJob : public Job
     Timer           timerSyntax;
     Timer           timerSemanticModule;
     Timer           timerRun;
-    Timer           timerOutput;
-    Timer           timerOptimizeBc;
 };
 
 extern thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;

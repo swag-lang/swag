@@ -23,7 +23,6 @@ struct Stats
     atomic<uint64_t> semanticModuleTime        = 0;
     atomic<uint64_t> runTime                   = 0;
     atomic<uint64_t> runTestTime               = 0;
-    atomic<uint64_t> outputTime                = 0;
     atomic<uint64_t> prepOutputTimeJob         = 0;
     atomic<uint64_t> prepOutputTimeJob_GenFunc = 0;
     atomic<uint64_t> prepOutputTimeJob_SaveObj = 0;
