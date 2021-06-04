@@ -572,7 +572,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         identifier->genericParameters->flags |= AST_NO_BYTECODE;
         auto child                 = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
         child->typeInfo            = g_TypeMgr.typeInfoBool;
-        child->computedValue.reg.b = node->wantPointer;
+        child->computedValue.reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
         child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
 
         // Call with arguments
@@ -624,7 +624,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count%u { ", id);
-        if (node->wantPointer)
+        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
@@ -648,7 +648,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
-        if (node->wantPointer)
+        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
@@ -666,7 +666,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
-        if (node->wantPointer)
+        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
             content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
@@ -677,7 +677,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, Msg0627}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0627}));
         content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
         content += format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("var %s = @index; ", alias1Name.c_str());
@@ -688,7 +688,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, Msg0636}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0636}));
         content += format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += format("loop %d { ", typeEnum->values.size());
         content += format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);

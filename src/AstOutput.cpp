@@ -594,7 +594,7 @@ namespace Ast
             auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
             CONCAT_FIXED_STR(concat, "visit ");
 
-            if (visitNode->wantPointer)
+            if (visitNode->specFlags & AST_SPEC_VISIT_WANTPOINTER)
                 concat.addChar('*');
 
             bool first = true;

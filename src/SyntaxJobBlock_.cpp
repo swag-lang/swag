@@ -210,7 +210,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymAsterisk)
     {
         node->wantPointerToken = move(token);
-        node->wantPointer      = true;
+        node->specFlags        = AST_SPEC_VISIT_WANTPOINTER;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
