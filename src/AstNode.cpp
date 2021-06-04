@@ -1453,7 +1453,5 @@ AstNode* AstRange::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     newNode->expressionLow = findChildRef(expressionLow, newNode);
     newNode->expressionUp  = findChildRef(expressionUp, newNode);
-    newNode->excludeLow    = excludeLow;
-    newNode->excludeUp     = excludeUp;
     return newNode;
 }

@@ -1677,7 +1677,7 @@ bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
     *result                  = rangeNode;
 
     if (token.id == TokenId::SymDotDotLess)
-        rangeNode->excludeUp = true;
+        rangeNode->specFlags |= AST_SPEC_RANGE_EXCLUDE_UP;
 
     SWAG_CHECK(eatToken());
     PushErrHint errh(Msg0363);

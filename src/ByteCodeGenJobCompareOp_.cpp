@@ -9,8 +9,8 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     auto rangeNode  = CastAst<AstRange>(right, AstNodeKind::Range);
     auto low        = rangeNode->expressionLow;
     auto up         = rangeNode->expressionUp;
-    bool excludeLow = rangeNode->excludeLow;
-    bool excludeUp  = rangeNode->excludeUp;
+    bool excludeLow = rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_LOW;
+    bool excludeUp  = rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP;
 
     auto typeInfo = TypeManager::concreteReferenceType(low->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())

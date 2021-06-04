@@ -965,6 +965,4 @@ struct AstRange : public AstNode
     AstNode* clone(CloneContext& context) override;
     AstNode* expressionLow;
     AstNode* expressionUp;
-    bool     excludeLow;
-    bool     excludeUp;
 };
