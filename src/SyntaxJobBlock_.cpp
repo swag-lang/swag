@@ -324,9 +324,9 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         // Creates a variable if we have a named index
         if (!name.empty())
         {
-            auto var         = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
-            var->token       = tokenName;
-            var->constAssign = true;
+            auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
+            var->token = tokenName;
+            var->specFlags |= AST_SPEC_VARDECL_CONSTASSIGN;
             var->inheritTokenLocation(node->expression->token);
             node->specificName = var;
 

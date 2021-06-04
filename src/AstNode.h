@@ -449,8 +449,6 @@ struct AstVarDecl : public AstNode
 
     AstNode* type;
     AstNode* assignment;
-
-    bool constAssign;
 };
 
 struct AstIdentifierRef : public AstNode

@@ -618,7 +618,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     else
         isLocalConstant = true;
-    if (node->constAssign)
+    if (node->specFlags & AST_SPEC_VARDECL_CONSTASSIGN)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
