@@ -264,7 +264,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0883));
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->token.text.c_str())));
+
+    // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
+    if (token.id != TokenId::SymLeftParen)
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->token.text.c_str())));
+    else
+        SWAG_CHECK(eatToken());
+
     if (token.id != TokenId::SymRightParen)
     {
         auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
