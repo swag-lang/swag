@@ -86,6 +86,12 @@ uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)
 
 void DataSegment::align(uint32_t alignOf)
 {
+    unique_lock lock(mutex);
+    alignNoLock(alignOf);
+}
+
+void DataSegment::alignNoLock(uint32_t alignOf)
+{
     // Align
     if (buckets.size() && alignOf > 1)
     {
@@ -100,7 +106,7 @@ void DataSegment::align(uint32_t alignOf)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
 {
-    align(alignOf);
+    alignNoLock(alignOf);
     return reserveNoLock(size);
 }
 

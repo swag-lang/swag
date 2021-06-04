@@ -115,8 +115,8 @@ struct Scope
     map<SourceFile*, Scope*> privateScopes;
     DependentJobs            dependentJobs;
     shared_mutex             mutex;
-    set<AstNode*>            doneDefer;
-    set<AstNode*>            doneDrop;
+    VectorNative<AstNode*>   doneDefer;
+    VectorNative<AstNode*>   doneDrop;
 
     ScopePublicSet* publicSet   = nullptr;
     AstNode*        owner       = nullptr;

@@ -912,22 +912,22 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, V
     PushLocation pl(context, &context->node->token.endLocation);
 
     // Emit all 'defer' statements
-    if (scope->doneDefer.find(context->node) == scope->doneDefer.end())
+    if (!scope->doneDefer.contains(context->node))
     {
         SWAG_CHECK(emitDeferredStatements(context, scope, errDefer));
         SWAG_ASSERT(context->result != ContextResult::Pending);
-        scope->doneDefer.insert(context->node);
+        scope->doneDefer.push_back(context->node);
         if (context->result == ContextResult::NewChilds)
             return true;
     }
 
     // Emit all drops
-    if (scope->doneDrop.find(context->node) == scope->doneDrop.end())
+    if (!scope->doneDrop.contains(context->node))
     {
         SWAG_CHECK(emitLeaveScopeDrop(context, scope, forceNoDrop));
         if (context->result == ContextResult::Pending)
             return true;
-        scope->doneDrop.insert(context->node);
+        scope->doneDrop.push_back(context->node);
     }
 
     // Free some registers

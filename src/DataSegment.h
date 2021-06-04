@@ -47,6 +47,7 @@ struct DataSegment
     uint32_t reserve(uint32_t size, uint32_t alignOf = 1);
     uint32_t reserveNoLock(TypeInfo* typeInfo);
     void     align(uint32_t alignOf);
+    void     alignNoLock(uint32_t alignOf);
     uint32_t reserveNoLock(uint32_t size, uint32_t alignOf);
     uint32_t reserveNoLock(uint32_t size);
     uint32_t offset(uint8_t* location);
