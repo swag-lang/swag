@@ -113,8 +113,8 @@ impl IAllocator for ScratchAllocator
                 leak.prev.next = leak.next
             if leak.next
                 leak.next.prev = leak.prev
-            free(leak, leak.size)
             totalLeak -= leak.size - @sizeof(LeakHeader)
+            free(leak, leak.size)
             break
 
         case FreeAll:
