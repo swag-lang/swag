@@ -40,8 +40,12 @@ impl ScratchAllocator
     func release(using self)
     {
         freeAll()
-        free(block, capacity)
-        block = null
+
+        if block
+        {
+            free(block, capacity)
+            block = null
+        }
     }
 
     // Restore all memory
