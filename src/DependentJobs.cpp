@@ -6,6 +6,7 @@
 void DependentJobs::add(Job* job)
 {
     // Add it once !
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.devMode)
     {
         for (auto j : list)
@@ -13,6 +14,7 @@ void DependentJobs::add(Job* job)
             SWAG_ASSERT(j != job);
         }
     }
+#endif
 
     list.push_back(job);
 }

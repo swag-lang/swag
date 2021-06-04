@@ -46,11 +46,13 @@ void ByteCodeGenJob::sortRegistersRC(ByteCodeGenContext* context)
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.devMode)
     {
         for (auto r : context->bc->availableRegistersRC)
             SWAG_ASSERT(r != rc);
     }
+#endif
 
     context->bc->availableRegistersRC.push_back(rc);
     context->bc->dirtyRegistersRC = true;
