@@ -149,7 +149,7 @@ void* AllocatorImpl::alloc(size_t size)
     }
 
     // Try other big buckets
-    for (int i = MAX_FREE_BUCKETS - 2; i > bucket; i--)
+    for (int i = (int) bucket + 1; i <= MAX_FREE_BUCKETS - 2; i++)
     {
         result = tryBucket(i, size);
         if (result)
