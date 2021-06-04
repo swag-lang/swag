@@ -29,7 +29,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             continue;
 
         auto nodeExpr = CastAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
-        if (!nodeExpr->forTuple)
+        if (!(nodeExpr->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
             continue;
 
         if (!nodeParam->type)

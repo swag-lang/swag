@@ -470,7 +470,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
-    if (!exprList->forTuple)
+    if (!(exprList->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with

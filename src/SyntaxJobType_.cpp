@@ -388,8 +388,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-        auto typeNode          = CastAst<AstIntrinsicProp>(node->identifier->childs.front(), AstNodeKind::IntrinsicProp);
-        typeNode->typeOfAsType = true;
+        auto typeNode = CastAst<AstIntrinsicProp>(node->identifier->childs.front(), AstNodeKind::IntrinsicProp);
+        typeNode->specFlags |= AST_SPEC_INTRINSIC_TYPEOFASTYPE;
         return true;
     }
 

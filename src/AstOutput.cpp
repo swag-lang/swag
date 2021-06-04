@@ -395,7 +395,7 @@ namespace Ast
         case AstNodeKind::ExpressionList:
         {
             auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-            if (exprNode->forTuple)
+            if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
                 concat.addString2("@{");
             else
                 concat.addString2("@[");
@@ -410,7 +410,7 @@ namespace Ast
                 SWAG_CHECK(output(context, concat, child));
             }
 
-            if (exprNode->forTuple)
+            if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
                 concat.addChar('}');
             else
                 concat.addChar(']');

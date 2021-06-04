@@ -770,16 +770,10 @@ struct AstArrayPointerSlicing : public AstNode
 
 struct AstIntrinsicProp : public AstNode
 {
-    AstNode* clone(CloneContext& context) override;
-
-    bool typeOfAsType;
 };
 
 struct AstExpressionList : public AstNode
 {
-    AstNode* clone(CloneContext& context) override;
-
-    bool forTuple;
 };
 
 const uint32_t STRUCTFLAG_UNION     = 0x00000001;

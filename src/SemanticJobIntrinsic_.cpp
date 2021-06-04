@@ -452,7 +452,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
     auto typeInfo = expr->typeInfo;
 
     // A @typeof as a type in a declaration
-    if (node->typeOfAsType)
+    if (node->specFlags & AST_SPEC_INTRINSIC_TYPEOFASTYPE)
     {
         node->typeInfo = typeInfo;
     }

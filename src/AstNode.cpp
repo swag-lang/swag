@@ -1096,23 +1096,6 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstIntrinsicProp::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstIntrinsicProp>();
-    newNode->copyFrom(context, this);
-
-    newNode->typeOfAsType = typeOfAsType;
-    return newNode;
-}
-
-AstNode* AstExpressionList::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstExpressionList>();
-    newNode->copyFrom(context, this);
-    newNode->forTuple = forTuple;
-    return newNode;
-}
-
 AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstStruct>();
