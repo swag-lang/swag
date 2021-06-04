@@ -227,8 +227,6 @@ void Workspace::setupUserTags()
 {
     // Command line tags
     // Format is --tag:"TagName : type = value"
-    g_CommandLine.tags.insert("TOTO=-1.5");
-
     for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;
@@ -268,43 +266,54 @@ void Workspace::setupUserTags()
             auto tokenVal = tokens[1];
             tokenVal.trim();
 
-            SourceFile fakeFile;
-            Tokenizer  tokenizer;
-            Token      token;
-            fakeFile.setExternalBuffer(tokenVal.buffer, (uint32_t) tokenVal.count);
-            tokenizer.setFile(&fakeFile);
+            oneTag.type = nullptr;
+            if (literalType != LiteralType::TT_MAX)
+                oneTag.type = TypeManager::literalTypeToType(literalType);
 
-            bool neg = false;
-            tokenizer.getToken(token);
-            if (token.id == TokenId::SymMinus)
+            // If type is already specified as string, just take the value part without any conversion
+            if (oneTag.type && oneTag.type->isNative(NativeTypeKind::String))
             {
-                neg = true;
+                oneTag.value.text = tokenVal;
+            }
+            else
+            {
+                SourceFile fakeFile;
+                Tokenizer  tokenizer;
+                Token      token;
+                fakeFile.setExternalBuffer(tokenVal.buffer, (uint32_t) tokenVal.count);
+                tokenizer.setFile(&fakeFile);
+
+                bool neg = false;
                 tokenizer.getToken(token);
-            }
-            else if (token.id == TokenId::SymPlus)
-            {
-                tokenizer.getToken(token);
-            }
+                if (token.id == TokenId::SymMinus)
+                {
+                    neg = true;
+                    tokenizer.getToken(token);
+                }
+                else if (token.id == TokenId::SymPlus)
+                {
+                    tokenizer.getToken(token);
+                }
 
-            if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
-            {
-                g_Log.error(format(Msg0538, tokenVal.c_str(), tokens1[0].c_str()));
-                OS::exit(-1);
-            }
+                if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
+                {
+                    g_Log.error(format(Msg0538, tokenVal.c_str(), tokens1[0].c_str()));
+                    OS::exit(-1);
+                }
 
-            // Check type and value
-            if (literalType == LiteralType::TT_MAX)
-                literalType = token.literalType;
+                // Check type and value
+                if (literalType == LiteralType::TT_MAX)
+                    literalType = token.literalType;
+                oneTag.value.reg  = token.literalValue;
+                oneTag.value.text = token.text;
 
-            oneTag.type       = TypeManager::literalTypeToType(literalType);
-            oneTag.value.reg  = token.literalValue;
-            oneTag.value.text = token.text;
-            auto errMsg       = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
-            if (!errMsg.empty())
-            {
-                auto err = format(Msg0322, tokens1[0].c_str(), errMsg.c_str());
-                g_Log.error(err);
-                OS::exit(-1);
+                auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
+                if (!errMsg.empty())
+                {
+                    auto err = format(Msg0322, tokens1[0].c_str(), errMsg.c_str());
+                    g_Log.error(err);
+                    OS::exit(-1);
+                }
             }
 
             tokens1[0].trim();

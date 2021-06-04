@@ -226,8 +226,12 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         {
         case NativeTypeKind::F32:
             computedValue.reg.f32 = (float) token.literalValue.f64;
+            if (negApplied)
+                computedValue.reg.f32 = -computedValue.reg.f32;
             break;
         case NativeTypeKind::F64:
+            if (negApplied)
+                computedValue.reg.f64 = -computedValue.reg.f64;
             break;
         default:
             return format("cannot convert floating point number '%Lf'", token.literalValue.f64);
