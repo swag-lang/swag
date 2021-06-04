@@ -121,3 +121,4 @@ static const uint8_t AST_SPEC_OP_SMALL                 = 0x02;
 static const uint8_t AST_SPEC_INTRINSIC_TYPEOFASTYPE   = 0x01;
 static const uint8_t AST_SPEC_EXPRLIST_FORTUPLE        = 0x01;
 static const uint8_t AST_SPEC_ARRAYPTRIDX_ISDEREF      = 0x01;
+static const uint8_t AST_SPEC_TYPELAMBDA_CANTHROW      = 0x01;

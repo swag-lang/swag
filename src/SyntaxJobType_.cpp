@@ -94,7 +94,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     if (token.id == TokenId::KwdThrow)
     {
         SWAG_CHECK(eatToken(TokenId::KwdThrow));
-        node->canThrow = true;
+        node->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
     }
 
     return true;

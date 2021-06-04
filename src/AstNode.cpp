@@ -1061,7 +1061,6 @@ AstNode* AstTypeLambda::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstTypeLambda>();
     newNode->copyFrom(context, this);
-    newNode->canThrow = canThrow;
 
     newNode->parameters = findChildRef(parameters, newNode);
     newNode->returnType = findChildRef(returnType, newNode);

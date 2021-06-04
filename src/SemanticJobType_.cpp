@@ -77,7 +77,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     typeInfo->kind     = TypeInfoKind::Lambda;
     typeInfo->declNode = node;
 
-    if (node->canThrow)
+    if (node->specFlags & AST_SPEC_TYPELAMBDA_CANTHROW)
         typeInfo->flags |= TYPEINFO_CAN_THROW;
 
     if (node->returnType)

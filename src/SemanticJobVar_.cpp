@@ -63,7 +63,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = SemanticJob::resolveTypeLambda;
         if (childType->flags & TYPEINFO_CAN_THROW)
-            typeExprLambda->canThrow = true;
+            typeExprLambda->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
 
         // Parameters
         auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
