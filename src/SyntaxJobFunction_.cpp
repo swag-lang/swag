@@ -447,17 +447,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
 
     // Register function name
-    Scope* newScope = nullptr;
-    {
-        scoped_lock lk(currentScope->symTable.mutex);
-        auto        typeInfo = allocType<TypeInfoFuncAttr>();
-        typeInfo->declNode   = funcNode;
-
-        newScope                     = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
-        funcNode->typeInfo           = typeInfo;
-        funcNode->scope              = newScope;
-        funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
-    }
+    auto typeInfo                = allocType<TypeInfoFuncAttr>();
+    typeInfo->declNode           = funcNode;
+    auto newScope                = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
+    funcNode->typeInfo           = typeInfo;
+    funcNode->scope              = newScope;
+    funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
