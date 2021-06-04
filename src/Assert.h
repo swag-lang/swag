@@ -1,6 +1,8 @@
 #pragma once
 extern void swag_assert(const char* expr, const char* file, int line);
+//#define SWAG_NO_ASSERT
 
+#ifndef SWAG_NO_ASSERT
 #define SWAG_ASSERT(__expr)                           \
     {                                                 \
         if (!(__expr))                                \
@@ -8,3 +10,8 @@ extern void swag_assert(const char* expr, const char* file, int line);
             swag_assert(#__expr, __FILE__, __LINE__); \
         }                                             \
     }
+#else
+#define SWAG_ASSERT(__expr) \
+    {                       \
+    }
+#endif
