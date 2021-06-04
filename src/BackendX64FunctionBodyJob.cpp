@@ -7,11 +7,17 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "Profile.h"
+#include "Timer.h"
 
 thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
+    Timer timer0{&g_Stats.prepOutputTimeJob};
+    Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
+    timer0.start();
+    timer1.start();
+
     SWAG_PROFILE(PRF_GFCT, format("x64 emit functions %s", module->name.c_str()));
 
     BackendX64* bachendX64 = (BackendX64*) backend;
@@ -36,10 +42,12 @@ JobResult BackendX64FunctionBodyJob::execute()
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
         {
-            if(!bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one))
+            if (!bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one))
                 return JobResult::ReleaseJob;
         }
     }
 
+    timer1.stop();
+    timer0.stop();
     return JobResult::ReleaseJob;
 }

@@ -32,7 +32,6 @@ JobResult ModuleOutputJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timerPrepareOutput.start();
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "PrepareOutput", module->name);
         }
@@ -99,9 +98,8 @@ JobResult ModuleOutputJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timerPrepareOutput.stop();
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed);
+                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name);
         }
 
         if (module->buildPass < BuildPass::Full)
@@ -121,7 +119,6 @@ JobResult ModuleOutputJob::execute()
         {
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "GenOutput", module->name);
-            timerGenOutput.start();
         }
 
         if (module->numErrors)
@@ -166,9 +163,8 @@ JobResult ModuleOutputJob::execute()
     // Timing...
     if (g_CommandLine.stats || g_CommandLine.verbose)
     {
-        timerGenOutput.stop();
         if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name, timerGenOutput.elapsed);
+            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name);
     }
 
     return JobResult::ReleaseJob;

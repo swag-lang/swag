@@ -4,11 +4,17 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Timer.h"
 
 thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
 
 JobResult BackendLLVMFunctionBodyJob::execute()
 {
+    Timer timer0{&g_Stats.prepOutputTimeJob};
+    Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
+    timer0.start();
+    timer1.start();
+
     BackendLLVM* bachendLLVM = (BackendLLVM*) backend;
 
     for (auto one : byteCodeFunc)
@@ -25,7 +31,7 @@ JobResult BackendLLVMFunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        if(!bachendLLVM->emitFunctionBody(buildParameters, module, one))
+        if (!bachendLLVM->emitFunctionBody(buildParameters, module, one))
             return JobResult::ReleaseJob;
 
         // Emit public function wrapper, from real C prototype to swag registers
@@ -36,5 +42,7 @@ JobResult BackendLLVMFunctionBodyJob::execute()
         }
     }
 
+    timer1.stop();
+    timer0.stop();
     return JobResult::ReleaseJob;
 }
