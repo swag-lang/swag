@@ -691,8 +691,6 @@ struct AstSwitchCase : public AstNode
     AstSwitch* ownerSwitch;
 
     int caseIndex;
-
-    bool isDefault;
 };
 
 struct AstSwitchCaseBlock : public AstNode
@@ -703,8 +701,6 @@ struct AstSwitchCaseBlock : public AstNode
 
     int seekStart;
     int seekJumpNextCase;
-
-    bool isDefault;
 };
 
 const uint16_t TYPEFLAG_ISREF       = 0x0001;

@@ -1012,7 +1012,6 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
 
     newNode->block       = findChildRef(block, newNode);
     newNode->ownerSwitch = CastAst<AstSwitch>(context.parent, AstNodeKind::Switch);
-    newNode->isDefault   = isDefault;
     newNode->caseIndex   = caseIndex;
     for (auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
@@ -1029,7 +1028,6 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
     context.propageResult(cloneContext);
 
     newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
-    newNode->isDefault = isDefault;
     return newNode;
 }
 

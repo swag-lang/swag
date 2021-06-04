@@ -678,7 +678,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
 
     // For the default case, do nothing, fallback to the end of the switch
-    if (blockNode->ownerCase->isDefault)
+    if (blockNode->ownerCase->specFlags & AST_SPEC_SWITCHCASE_ISDEFAULT)
         return true;
 
     // Jump to exit the switch

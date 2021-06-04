@@ -77,7 +77,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 
         // One case
         auto caseNode         = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
-        caseNode->isDefault   = isDefault;
+        caseNode->specFlags   = isDefault ? AST_SPEC_SWITCHCASE_ISDEFAULT : 0;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = SemanticJob::resolveCase;
         auto previousToken    = token;

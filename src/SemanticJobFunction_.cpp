@@ -865,7 +865,7 @@ void SemanticJob::propagateReturn(AstReturn* node)
         else if (scanNode->kind == AstNodeKind::SwitchCase)
         {
             auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
-            if (sc->isDefault)
+            if (sc->specFlags & AST_SPEC_SWITCHCASE_ISDEFAULT)
                 sc->ownerSwitch->semFlags |= AST_SEM_SCOPE_FORCE_HAS_RETURN;
         }
         else if (scanNode->kind == AstNodeKind::Switch)
