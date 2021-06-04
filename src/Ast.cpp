@@ -392,11 +392,11 @@ namespace Ast
         return node;
     }
 
-    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint32_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob)
+    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob)
     {
         auto node         = Ast::newNode<AstOp>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
-        node->opFlags |= opFlags;
+        node->specFlags |= opFlags;
         node->attributeFlags |= attributeFlags;
         return node;
     }

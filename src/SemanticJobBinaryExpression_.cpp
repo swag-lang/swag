@@ -919,7 +919,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
         return context->report({right, format(Msg0173, rightTypeInfo->getDisplayName().c_str())});
 
-    bool isSmall = node->opFlags & OPFLAG_SMALL;
+    bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
@@ -1056,7 +1056,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
         return context->report({right, format(Msg0173, rightTypeInfo->getDisplayName().c_str())});
 
-    bool isSmall = node->opFlags & OPFLAG_SMALL;
+    bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();

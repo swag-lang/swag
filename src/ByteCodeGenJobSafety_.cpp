@@ -148,7 +148,7 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
 
     auto opNode = CastAst<AstOp>(context->node, AstNodeKind::AffectOp, AstNodeKind::FactorOp);
 
-    bool     isSmall    = opNode->opFlags & OPFLAG_SMALL;
+    bool     isSmall    = opNode->specFlags & AST_SPEC_OP_SMALL;
     uint16_t shiftFlags = 0;
     if (isSmall)
         shiftFlags |= BCI_SHIFT_SMALL;
@@ -260,7 +260,7 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
 
     auto opNode = CastAst<AstOp>(context->node, AstNodeKind::AffectOp, AstNodeKind::FactorOp);
 
-    bool     isSmall    = opNode->opFlags & OPFLAG_SMALL;
+    bool     isSmall    = opNode->specFlags & AST_SPEC_OP_SMALL;
     uint16_t shiftFlags = 0;
     if (isSmall)
         shiftFlags |= BCI_SHIFT_SMALL;

@@ -1431,14 +1431,6 @@ AstNode* AstCast::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstOp::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstOp>();
-    newNode->copyFrom(context, this);
-    newNode->opFlags = opFlags;
-    return newNode;
-}
-
 AstNode* AstFuncCallParams::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstFuncCallParams>();

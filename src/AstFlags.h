@@ -116,3 +116,5 @@ static const uint32_t AST_SEM_EXEC_RET_STACK         = 0x00200000;
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_LOW        = 0x01;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_UP         = 0x02;
+static const uint8_t AST_SPEC_OP_SAFE                  = 0x01;
+static const uint8_t AST_SPEC_OP_SMALL                 = 0x02;

@@ -951,13 +951,8 @@ struct AstCast : public AstNode
     TypeInfo* toCastTypeInfo;
 };
 
-static const uint32_t OPFLAG_SAFE  = 0x00000001;
-static const uint32_t OPFLAG_SMALL = 0x00000002;
-
 struct AstOp : public AstNode
 {
-    AstNode* clone(CloneContext& context) override;
-    uint32_t opFlags;
 };
 
 struct AstRange : public AstNode

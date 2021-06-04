@@ -688,13 +688,13 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         SWAG_CHECK(doModifiers(binaryNode->token, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
-            binaryNode->opFlags |= OPFLAG_SAFE;
+            binaryNode->specFlags |= AST_SPEC_OP_SAFE;
             binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
         }
 
         if (mdfFlags & MODIFIER_SMALL)
         {
-            binaryNode->opFlags |= OPFLAG_SMALL;
+            binaryNode->specFlags |= AST_SPEC_OP_SMALL;
         }
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -1404,7 +1404,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
              token.id == TokenId::SymLowerLowerEqual ||
              token.id == TokenId::SymGreaterGreaterEqual)
     {
-        uint32_t opFlags     = 0;
+        uint8_t  opFlags     = 0;
         uint64_t opAttrFlags = 0;
         auto     savedtoken  = token;
         SWAG_CHECK(tokenizer.getToken(token));
@@ -1415,12 +1415,12 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(doModifiers(savedtoken, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
-            opFlags |= OPFLAG_SAFE;
+            opFlags |= AST_SPEC_OP_SAFE;
             opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
         }
         if (mdfFlags & MODIFIER_SMALL)
         {
-            opFlags |= OPFLAG_SMALL;
+            opFlags |= AST_SPEC_OP_SMALL;
         }
 
         // Multiple affectation

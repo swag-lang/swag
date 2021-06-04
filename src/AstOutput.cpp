@@ -1086,9 +1086,9 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[0]));
             concat.addChar(' ');
             concat.addString(node->token.text);
-            if (opNode->opFlags & OPFLAG_SAFE)
+            if (opNode->specFlags & AST_SPEC_OP_SAFE)
                 CONCAT_FIXED_STR(concat, ",safe");
-            if (opNode->opFlags & OPFLAG_SMALL)
+            if (opNode->specFlags & AST_SPEC_OP_SMALL)
                 CONCAT_FIXED_STR(concat, ",small");
             concat.addChar(' ');
             SWAG_CHECK(output(context, concat, node->childs[1]));
@@ -1102,9 +1102,9 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[0]));
             concat.addChar(' ');
             concat.addString(node->token.text);
-            if (opNode->opFlags & OPFLAG_SAFE)
+            if (opNode->specFlags & AST_SPEC_OP_SAFE)
                 CONCAT_FIXED_STR(concat, ",safe");
-            if (opNode->opFlags & OPFLAG_SMALL)
+            if (opNode->specFlags & AST_SPEC_OP_SMALL)
                 CONCAT_FIXED_STR(concat, ",small");
             concat.addChar(' ');
             SWAG_CHECK(output(context, concat, node->childs[1]));
