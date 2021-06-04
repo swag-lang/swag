@@ -2409,7 +2409,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->autoScope)
+            if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             {
                 auto typeContext = findTypeInContext(context, identifierRef);
                 if (!typeContext)

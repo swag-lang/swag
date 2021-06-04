@@ -112,3 +112,5 @@ static const uint32_t AST_SEM_ONCE                   = 0x00040000;
 static const uint32_t AST_SEM_USER_CAST              = 0x00080000;
 static const uint32_t AST_SEM_TUPLE_CONVERT          = 0x00100000;
 static const uint32_t AST_SEM_EXEC_RET_STACK         = 0x00200000;
+
+static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;

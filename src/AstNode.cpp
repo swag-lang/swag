@@ -418,6 +418,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     concreteTypeInfoSegment = from->concreteTypeInfoSegment;
 
     attributeFlags = from->attributeFlags;
+    specFlags      = from->specFlags;
 
     parent = context.parent;
     if (parent)
@@ -478,7 +479,6 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstIdentifierRef>();
     newNode->copyFrom(context, this);
-    newNode->autoScope = autoScope;
     return newNode;
 }
 

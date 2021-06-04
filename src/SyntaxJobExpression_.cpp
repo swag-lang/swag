@@ -202,7 +202,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         if (result)
             *result = idref;
-        ((AstIdentifierRef*) idref)->autoScope = true;
+        ((AstIdentifierRef*) idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
         break;
     }
 

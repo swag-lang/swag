@@ -437,6 +437,7 @@ struct AstNode
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
     AstNodeKind         kind;
+    uint8_t             specFlags;
 };
 
 struct AstVarDecl : public AstNode
@@ -459,7 +460,6 @@ struct AstIdentifierRef : public AstNode
 
     Scope*   startScope;
     AstNode* previousResolvedNode;
-    bool     autoScope;
 };
 
 struct AstIdentifier : public AstNode
