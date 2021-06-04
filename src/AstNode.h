@@ -754,7 +754,6 @@ struct AstArrayPointerIndex : public AstNode
 
     AstNode* array;
     AstNode* access;
-    bool     isDeref;
 };
 
 struct AstArrayPointerSlicing : public AstNode

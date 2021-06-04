@@ -377,7 +377,7 @@ namespace Ast
         case AstNodeKind::ArrayPointerIndex:
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-            if (arrayNode->isDeref)
+            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
             {
                 CONCAT_FIXED_STR(concat, "dref ");
                 SWAG_CHECK(output(context, concat, arrayNode->array));

@@ -1087,9 +1087,8 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstArrayPointerIndex>();
     newNode->copyFrom(context, this);
 
-    newNode->array   = findChildRef(array, newNode);
-    newNode->access  = findChildRef(access, newNode);
-    newNode->isDeref = isDeref;
+    newNode->array  = findChildRef(array, newNode);
+    newNode->access = findChildRef(access, newNode);
     for (auto f : structFlatParams)
         newNode->structFlatParams.push_back(findChildRef(f, newNode));
 

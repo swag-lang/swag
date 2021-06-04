@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
-    if (!node->isDeref)
+    if (!(node->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
     {
         auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)

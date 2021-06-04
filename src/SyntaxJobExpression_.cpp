@@ -333,7 +333,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
     auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
     arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
-    arrayNode->isDeref     = true;
+    arrayNode->specFlags   = AST_SPEC_ARRAYPTRIDX_ISDEREF;
     Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
