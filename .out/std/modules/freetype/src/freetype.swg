@@ -1,17 +1,21 @@
 #global export
 
-alias FT_Library   = *FT_LibraryRec_
-alias FT_Face      = *FT_FaceRec_
-alias FT_CharMap   = *FT_CharMapRec_
-alias FT_GlyphSlot = *FT_GlyphSlotRec_
-alias FT_SubGlyph  = *FT_SubGlyphRec_
-alias FT_Size      = *FT_SizeRec_
-alias FT_Slot_Internal = *void
-alias FT_Memory    = *void
-alias FT_Module    = *void
-alias FT_Renderer  = *void
+alias FT_Library        = *FT_LibraryRec_
+alias FT_Face           = *FT_FaceRec_
+alias FT_CharMap        = *FT_CharMapRec_
+alias FT_GlyphSlot      = *FT_GlyphSlotRec_
+alias FT_SubGlyph       = *FT_SubGlyphRec_
+alias FT_Size           = *FT_SizeRec_
+alias FT_Slot_Internal  = *void
+alias FT_Size_Internal  = *void
+alias FT_Face_Internal  = *void
+alias FT_Memory         = *void
+alias FT_Module         = *void
+alias FT_Renderer       = *void
 alias FT_DebugHook_Func = *void
-alias FT_ListNode = *void
+alias FT_ListNode       = *void
+alias FT_Driver         = *void
+alias FT_Stream         = *void
 
 alias FT_String = u8
 alias FT_Int    = s32
@@ -69,13 +73,13 @@ struct FT_FaceRec_
     glyph:                  FT_GlyphSlot
     size:                   FT_Size
     charmap:                FT_CharMap
-    driver:                 *void // FT_Driver
-    memory:                 *void // FT_Memory
-    stream:                 *void // FT_Stream
+    driver:                 FT_Driver
+    memory:                 FT_Memory
+    stream:                 FT_Stream
     sizes_list:             FT_ListRec
     autohint:               FT_Generic
     extensions:             *void
-    internal:               *void // FT_Face_Internal
+    internal:               FT_Face_Internal
 }
 
 struct FT_BBox
@@ -130,7 +134,7 @@ struct FT_GlyphSlotRec_
     library:            FT_Library
     face:               FT_Face
     next:               FT_GlyphSlot
-    glyph_inde:         FT_UInt
+    glyph_index:        FT_UInt
     generic:            FT_Generic
     metrics:            FT_Glyph_Metrics
     linearHoriAdvance:  FT_Fixed
@@ -207,10 +211,10 @@ struct FT_SubGlyphRec_
 
 struct FT_SizeRec_
 {
-    face:       *void // FT_Face
+    face:       FT_Face
     generic:    FT_Generic
     metrics:    FT_Size_Metrics
-    internal:   *void // FT_Size_Internal
+    internal:   FT_Size_Internal
 }
 
 struct FT_Size_Metrics
