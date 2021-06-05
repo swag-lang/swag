@@ -92,7 +92,7 @@ struct FT_Generic
 
 struct FT_CharMapRec_
 {
-    face:           *void // FT_Face
+    face:           FT_Face
     encoding:       u32   // FT_Encoding
     platform_id:    FT_UShort
     encoding_id:    FT_UShort
@@ -127,9 +127,9 @@ struct FT_Matrix
 
 struct FT_GlyphSlotRec_
 {
-    library:            *void // FT_Library
-    face:               *void // FT_Face
-    next:               *void // FT_GlyphSlot
+    library:            FT_Library
+    face:               FT_Face
+    next:               FT_GlyphSlot
     glyph_inde:         FT_UInt
     generic:            FT_Generic
     metrics:            FT_Glyph_Metrics
