@@ -2,6 +2,7 @@
 {
     #import "core"
     #import "ogl"
+    #import "freetype2"
 
     #run
     {
