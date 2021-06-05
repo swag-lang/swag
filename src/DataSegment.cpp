@@ -196,6 +196,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
 
 uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue)
 {
+    SWAG_RACE_CONDITION_WRITE(raceC);
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
 
@@ -271,6 +272,8 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
 
 uint32_t DataSegment::addStringNoLock(const Utf8& str)
 {
+    SWAG_RACE_CONDITION_WRITE(raceC);
+
     // Same string already there ?
     auto it = mapString.find(str);
     if (it != mapString.end())

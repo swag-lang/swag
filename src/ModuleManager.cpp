@@ -21,6 +21,14 @@ bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
     return failedLoadedModules.find(moduleName) != failedLoadedModules.end();
 }
 
+void ModuleManager::resetFailedModule(const Utf8& moduleName)
+{
+    shared_lock lk(mutexLoaded);
+    auto        it = failedLoadedModules.find(moduleName);
+    if (it != failedLoadedModules.end())
+        failedLoadedModules.erase(it);
+}
+
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 {
     SWAG_PROFILE(PRF_LOAD, format("load module %s", name.c_str()));
@@ -41,6 +49,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
+        loadModuleError = OS::getLastErrorAsString();
+
         // Try on system folders
         if (canBeSystem)
         {

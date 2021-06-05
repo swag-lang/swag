@@ -273,5 +273,7 @@ dependencies/
 **/output/
 **/modules/**/public
 **/examples/**/public
+**/testsuite/**/public
 **/tests/**/public
+**/foreign/**/objs
 llvm/

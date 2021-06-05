@@ -240,7 +240,7 @@
 #define Msg0254 "'#callerlocation' can only be set in a function parameter declaration"
 #define Msg0255 "'#callerfunction' can only be set in a function parameter declaration"
 #define Msg0256 "'#function' can only be called inside a function"
-#define Msg0257 "failed to load module '%s' while resolving foreign function '%s'"
+#define Msg0257 "failed to load module '%s' while resolving foreign function '%s': %s"
 #define Msg0258 "cannot resolve foreign function call to '%s'"
 #define Msg0259 "<foreign code>"
 #define Msg0260 "invalid token '['"

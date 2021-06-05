@@ -10,6 +10,7 @@ struct ModuleManager
     bool  loadModule(const Utf8& moduleName, bool canBeSystem = true);
     bool  isModuleLoaded(const Utf8& moduleName);
     bool  isModuleFailedLoaded(const Utf8& moduleName);
+    void  resetFailedModule(const Utf8& moduleName);
     void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
     void  addPatchFuncAddress(void** patchAddress, AstFuncDecl* func);
     bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
@@ -27,6 +28,7 @@ struct ModuleManager
 
     shared_mutex                   mutexPatch;
     map<Utf8, vector<PatchOffset>> patchOffsets;
+    Utf8                           loadModuleError;
 };
 
 extern ModuleManager g_ModuleMgr;
