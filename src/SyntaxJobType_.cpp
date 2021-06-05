@@ -27,8 +27,10 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     // This is a type alias
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
     {
-        node->semanticFct        = SemanticJob::resolveTypeAlias;
-        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+        node->allocateExtension();
+        node->extension->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        node->semanticFct                  = SemanticJob::resolveTypeAlias;
+        node->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
     }
     else
     {

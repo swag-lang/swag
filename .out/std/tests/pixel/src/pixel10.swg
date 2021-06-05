@@ -1,4 +1,4 @@
-using Core, FreeType2
+using Core, FreeType
 
 #test
 {

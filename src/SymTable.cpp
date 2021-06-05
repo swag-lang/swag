@@ -132,7 +132,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         node->resolvedSymbolName = symbol;
 
     // Remove incomplete flag
-    if (symbol->kind == SymbolKind::Variable ||
+    if (symbol->kind == SymbolKind::TypeAlias ||
+        symbol->kind == SymbolKind::Variable ||
         symbol->kind == SymbolKind::Struct ||
         symbol->kind == SymbolKind::Interface ||
         symbol->kind == SymbolKind::TypeSet ||

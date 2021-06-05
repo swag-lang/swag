@@ -3302,26 +3302,41 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
             continue;
 
-        // If a structure is referencing itself, we will match the incomplete symbol for now
         bool newToWait = true;
-        if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
-            node->ownerMainNode && (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)))
+        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet)
         {
-            if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
-            {
-                if (!node->callParameters && !node->genericParameters)
-                {
-                    newToWait                    = false;
-                    node->resolvedSymbolName     = symbol;
-                    node->resolvedSymbolOverload = symbol->overloads[0];
-                    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+            bool canIncomplete = false;
 
-                    // If this is a generic type, and it's from an instante, we must wait, because we will
-                    // have to instantiate that symbol too
-                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
-                        newToWait = true;
-                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
-                        newToWait = true;
+            // If a structure is referencing itself, we will match the incomplete symbol for now
+            if (node->ownerMainNode && (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)))
+                canIncomplete = true;
+
+            // If identifier is in a pointer type expression, can incomplete resolve
+            if (!node->ownerMainNode && node->parent->parent->kind == AstNodeKind::TypeExpression)
+            {
+                auto typeExprNode = CastAst<AstTypeExpression>(node->parent->parent, AstNodeKind::TypeExpression);
+                if (typeExprNode->ptrCount)
+                    canIncomplete = true;
+            }
+
+            if (canIncomplete)
+            {
+                if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+                {
+                    if (!node->callParameters && !node->genericParameters)
+                    {
+                        newToWait                    = false;
+                        node->resolvedSymbolName     = symbol;
+                        node->resolvedSymbolOverload = symbol->overloads[0];
+                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+
+                        // If this is a generic type, and it's from an instante, we must wait, because we will
+                        // have to instantiate that symbol too
+                        if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                            newToWait = true;
+                        if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                            newToWait = true;
+                    }
                 }
             }
         }

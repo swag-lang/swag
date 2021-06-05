@@ -242,6 +242,7 @@ struct SemanticJob : public Job
     static bool         convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
     static DataSegment* getSegmentForVar(SemanticContext* context, AstVarDecl* node);
     static bool         resolveVarDecl(SemanticContext* context);
+    static bool         resolveTypeAliasBefore(SemanticContext* context);
     static bool         resolveTypeAlias(SemanticContext* context);
     static bool         resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);

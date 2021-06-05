@@ -225,7 +225,7 @@ struct FT_Size_Metrics
     max_advance:    FT_Pos
 }
 
-#[Swag.foreign("freetype2")]
+#[Swag.foreign("freetype")]
 {
     func FT_Init_FreeType(alibrary: *FT_Library)->FT_Error;
     func FT_Done_FreeType(alibrary: FT_Library)->FT_Error;

@@ -467,6 +467,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         typeResolved->kind == TypeInfoKind::Interface)
     {
         node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
+        SWAG_CHECK(resolveTypeAliasBefore(context));
         SWAG_CHECK(resolveTypeAlias(context));
         return true;
     }
@@ -513,7 +514,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeAlias(SemanticContext* context)
+bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -522,24 +523,33 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
     auto typeInfo      = allocType<TypeInfoAlias>();
     typeInfo->declNode = node;
-    typeInfo->rawType  = node->childs.front()->typeInfo;
     typeInfo->name     = node->token.text;
-    typeInfo->sizeOf   = typeInfo->rawType->sizeOf;
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     if (node->attributeFlags & ATTRIBUTE_STRICT)
         typeInfo->flags |= TYPEINFO_STRICT;
-
-    typeInfo->computeName();
     node->typeInfo = typeInfo;
 
-    uint32_t symbolFlags = 0;
+    uint32_t symbolFlags = OVERLOAD_INCOMPLETE;
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags);
+    SWAG_CHECK(node->resolvedSymbolOverload);
     SWAG_CHECK(checkPublicAlias(context, node));
+    return true;
+}
+
+bool SemanticJob::resolveTypeAlias(SemanticContext* context)
+{
+    auto node         = context->node;
+    auto typeInfo     = CastTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
+    typeInfo->rawType = node->childs.front()->typeInfo;
+    typeInfo->sizeOf  = typeInfo->rawType->sizeOf;
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+    typeInfo->computeName();
+    uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     return true;
 }
 
