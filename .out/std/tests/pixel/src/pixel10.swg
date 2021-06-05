@@ -4,5 +4,10 @@ using Core, FreeType2
 {
     var x: FT_Library
     err := cast(s32) FT_Init_FreeType(&x)
-    Console.printf("%\n", err)
+
+    fntRaw := try File.readAllBytes(imagePath("aAntiCorona.ttf"))
+
+    var face: FT_Face
+    FT_New_Memory_Face(x, fntRaw.buffer, cast(FT_Long) fntRaw.count, 0, &face)
+    Console.printf("num glyphs: %\n", cast(s32) face.num_glyphs)
 }
