@@ -14,6 +14,7 @@ using Swag
         func isStruct(t: typeinfo)      => t.kind == TypeInfoKind.Struct
         func isArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
         func isSlice(t: typeinfo)       => t.kind == TypeInfoKind.Slice
+        func isTypeAlias(t: typeinfo)   => t.kind == TypeInfoKind.Alias
     }
 
     // Returns true if this is a struct of the given name

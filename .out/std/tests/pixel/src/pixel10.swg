@@ -9,5 +9,5 @@ using Core, FreeType2
 
     var face: FT_Face
     FT_New_Memory_Face(x, fntRaw.buffer, cast(FT_Long) fntRaw.count, 0, &face)
-    Console.printf("num glyphs: %\n", cast(s32) face.num_glyphs)
+    Console.printf("num glyphs: %\n", face.num_glyphs)
 }

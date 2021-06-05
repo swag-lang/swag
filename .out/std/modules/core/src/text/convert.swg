@@ -140,12 +140,22 @@ impl ConvertFormatInt
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    type := cast(const *TypeInfo) @kindof(value)
+    valueData := @dataof(value)
+    type      := cast(const *TypeInfo) @kindof(value)
+
+    // In case this is a type alias, need to go deep inside it to find the right type
+    while Reflection.isTypeAlias(type)
+    {
+        typeAlias := cast(const *TypeInfoAlias) type
+        type = typeAlias.rawType
+    }
+
+    concreteValue := @mkany(valueData, type)
 
     // This is a type
     if Reflection.isType(type)
     {
-        ptrType := dref cast(*typeinfo) @dataof(value)
+        ptrType := dref cast(*typeinfo) valueData
         buf.addBytes(ptrType.name)
         return
     }
@@ -158,7 +168,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         fmt.width = 16
         fmt.padding = "0"'u8
         fmt.setFormat(strFormat)
-        fmt.value = dref cast(const *u64) @dataof(value)
+        fmt.value = dref cast(const *u64) valueData
         convertInt(buf, fmt)
         return
     }
@@ -166,7 +176,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // An enum value
     if Reflection.isEnum(type)
     {
-        enumName := Reflection.getEnumName(type, @dataof(value))
+        enumName := Reflection.getEnumName(type, valueData)
         if !enumName.isEmpty()
             buf.addBytes(@mkslice(enumName.buffer, cast(uint) enumName.length))
         else
@@ -178,11 +188,11 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isStruct(type)
     {
         if type == ConvertFormatInt
-            convertInt(buf, cast(ConvertFormatInt) value)
+            convertInt(buf, cast(ConvertFormatInt) concreteValue)
         else if type == ConvertFormatFloat
-            convertFloat(buf, cast(ConvertFormatFloat) value)
+            convertFloat(buf, cast(ConvertFormatFloat) concreteValue)
         else
-            convertStruct(buf, value, strFormat)
+            convertStruct(buf, concreteValue, strFormat)
         return
     }
 
@@ -192,7 +202,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         ptrSlice := cast(const *TypeInfoSlice) type
         buf.addBytes("[")
 
-        sl := cast(const [..] u8) @dataof(value)
+        sl := cast(const [..] u8) valueData
         bufSlice := @dataof(sl)
         loop @countof(sl)
         {
@@ -212,7 +222,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         ptrArr := cast(const *TypeInfoArray) type
         buf.addBytes("[")
 
-        bufArr := cast(const *u8) @dataof(value)
+        bufArr := cast(const *u8) valueData
         loop ptrArr.count
         {
             if @index buf.addBytes(",")
@@ -227,24 +237,24 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 
     if Reflection.isInteger(type)
     {
-        convertInt(buf, value, strFormat)
+        convertInt(buf, concreteValue, strFormat)
         return
     }
 
     if Reflection.isFloat(type)
     {
-        convertFloat(buf, value, strFormat)
+        convertFloat(buf, concreteValue, strFormat)
         return
     }
 
     switch type
     {
         case bool:
-            convertBool(buf, cast(bool) value, strFormat)
+            convertBool(buf, cast(bool) concreteValue, strFormat)
         case rune:
-            convertRune(buf, cast(rune) value, strFormat)
+            convertRune(buf, cast(rune) concreteValue, strFormat)
         case string:
-            buf.addBytes(cast(string) value)
+            buf.addBytes(cast(string) concreteValue)
         default:
             buf.addBytes("?")
     }
