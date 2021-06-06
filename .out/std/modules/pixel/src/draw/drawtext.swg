@@ -21,12 +21,12 @@ impl Painter
         visit ref: arr
         {
             p1 := Vector2{x, y}
-            p2 := Vector2{x + cast(f32) font.size, y}
-            p3 := Vector2{x, y + cast(f32) font.size}
-            p4 := Vector2{x + cast(f32) font.size, y + cast(f32) font.size}
+            p2 := Vector2{x + font.size, y}
+            p3 := Vector2{x, y + font.size}
+            p4 := Vector2{x + font.size, y + font.size}
             tri0 := pushTriangle(p1, p2, p3, color)
             tri1 := pushTriangle(p3, p2, p4, color)
-            x += cast(f32) font.size
+            x += font.size
         }
     }
 }

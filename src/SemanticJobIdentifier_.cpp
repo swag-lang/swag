@@ -281,9 +281,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     varNode->flags |= AST_GENERATED;
     varNode->type = typeNode;
     CloneContext cloneContext;
-    cloneContext.parent  = typeNode;
-    typeNode->identifier = identifier->identifierRef->clone(cloneContext);
-    auto back            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    cloneContext.parent   = typeNode;
+    cloneContext.rawClone = true;
+    typeNode->identifier  = identifier->identifierRef->clone(cloneContext);
+    auto back             = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
     identifier->callParameters = back->callParameters;
