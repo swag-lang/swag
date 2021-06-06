@@ -734,9 +734,11 @@ impl RenderOgl
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
                 }
 
-            case ResetTexture:
+            case ResetTexture0:
                 glActiveTexture(GL_TEXTURE0)
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+            case ResetTexture1:
                 glActiveTexture(GL_TEXTURE1)
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
 

@@ -13,9 +13,10 @@ impl Painter
         }
 
         updateFont(font)
-        //drawTexture(left, top + 100, font.atlases[0].texture)
 
-        discard newCommand(CommandId.ResetTexture)
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        setTexture0(Vector2.Zero, Vector2.Zero, sharedSolidBrush)
 
         x := left
         y := top
@@ -49,7 +50,5 @@ impl Painter
 
             x += ref.advanceX
         }
-
-        discard newCommand(CommandId.ResetTexture, true)
     }
 }

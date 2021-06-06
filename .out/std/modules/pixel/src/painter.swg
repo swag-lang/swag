@@ -18,7 +18,8 @@ enum CommandId
     DrawTriangles
     BindTexture0
     BindTexture1
-    ResetTexture
+    ResetTexture0
+    ResetTexture1
     SetClippingRect
     ResetClippingRect
     StartClippingRegion
@@ -96,6 +97,64 @@ struct Painter
 
 impl Painter
 {
+    protected func getTextureSize(brush: Brush)->{w: s32, h: s32}
+    {
+        var result: retval
+        var wt, ht: s32 = ?
+
+        // For a hatch brush, texture size is always 8x8
+        if brush.type == .Hatch
+        {
+            result.w, result.h = 8
+        }
+        else
+        {
+            result.w = brush.texture.width
+            result.h = brush.texture.height
+        }
+
+        return result
+    }
+
+    protected func setTexture0(using self, bvMin, bvMax: Vector2, brush: Brush)
+    {
+        if brush.type == .SolidColor
+        {
+            discard newCommand(CommandId.ResetTexture0, true)
+            return
+        }
+
+        cmd := newCommand(CommandId.BindTexture0, true)
+        params := &cmd.params.texture0
+
+        params.boundRect.x = bvMin.x
+        params.boundRect.y = bvMin.y
+        params.boundRect.z = bvMax.x
+        params.boundRect.w = bvMax.y
+
+        (wt, ht) := getTextureSize(brush)
+        if brush.uvMode == .FillSubRect
+        {
+            params.textureRect.x = brush.uvRect.x / wt
+            params.textureRect.y = brush.uvRect.y / ht
+            params.textureRect.z = brush.uvRect.right() / wt
+            params.textureRect.w = brush.uvRect.bottom() / ht
+        }
+        else
+        {
+            params.textureRect.x = 0
+            params.textureRect.y = 0
+            params.textureRect.z = wt
+            params.textureRect.w = ht
+        }
+
+        params.type    = brush.type
+        params.hatch   = brush.hatch
+        params.texture = brush.texture
+        params.uvMode  = brush.uvMode
+        params.interpolationMode = interpolationMode
+    }
+
     protected func pushTriangleCmd(using self)->*Command
     {
         var cmd: *Command

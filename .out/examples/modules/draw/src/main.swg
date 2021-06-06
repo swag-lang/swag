@@ -314,7 +314,7 @@ func displayPage4()
 {
     cdc.begin()
     cdc.drawText(100, 100, "abcdefghijkl", &font20, Argb.Black)
-    cdc.drawText(100, 140, "this is a great text", &font20, Argb.Black)
+    cdc.drawText(100, 140, "this is a great text", &font20, Argb.Red)
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)
