@@ -14,6 +14,18 @@ impl Painter
         }
 
         updateFont(font)
-        drawTexture(left, top, font.atlases[0].texture)
+        drawTexture(left, top + 50, font.atlases[0].texture)
+
+        x := left
+        visit ref: arr
+        {
+            p1 := Vector2{x, top}
+            p2 := Vector2{x + cast(f32) font.size, top}
+            p3 := Vector2{x, top + cast(f32) font.size}
+            p4 := Vector2{x + cast(f32) font.size, top + cast(f32) font.size}
+            tri0 := pushTriangle(p1, p2, p3, color)
+            tri1 := pushTriangle(p3, p2, p4, color)
+            x += cast(f32) font.size
+        }
     }
 }
