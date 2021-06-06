@@ -1,10 +1,29 @@
 #global public
 using Core, FreeType
 
+struct GlyphAtlas
+{
+    texture:    Texture
+    width:      u32
+    numGlyphs:  u32
+    maxGlyphs:  u32
+    datas:      Array'u8
+    dirty:      bool
+}
+
+struct GlyphRef
+{
+    uvs:        Math.Rectangle
+    atlasIndex: s32 = -1
+}
+
 struct Font
 {
     typeFace:   const *TypeFace
     size:       u32
+    atlases:    Array'GlyphAtlas
+    asciiRef:   [128] GlyphRef
+    dirty:      bool
 }
 
 impl Font
@@ -16,5 +35,69 @@ impl Font
         result.typeFace = typeFace
         result.size = size
         return result
+    }
+
+    func getGlyphRef(using self, c: rune)->const *GlyphRef
+    {
+        // Already there ?
+        if c < 128
+        {
+            if asciiRef[cast(u32) c].atlasIndex >= 0
+                return &asciiRef[cast(u32) c]
+        }
+        else
+        {
+            Debug.assert(false)
+        }
+
+        // Creates a new atlas if this is the first time, or if the last atlas is full
+        atlas := atlases.count ? atlases[atlases.count - 1] : null
+        if atlases.isEmpty() or (atlas and atlas.numGlyphs == atlas.maxGlyphs * atlas.maxGlyphs)
+        {
+            var newAtlas: GlyphAtlas
+            newAtlas.maxGlyphs = 8
+            newAtlas.width = size * newAtlas.maxGlyphs
+            newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.width)
+            Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
+            atlases.add(newAtlas)
+        }
+
+        // Render the glyph
+        assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
+        assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
+        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+
+        // Copy the rendered glyph to the atlas datas
+        atlas = atlases[atlases.count - 1]
+        x := atlas.numGlyphs % atlas.maxGlyphs
+        y := atlas.numGlyphs / atlas.maxGlyphs
+
+        buffer := atlas.datas.buffer + (x * size) + (y * size * atlas.width)
+        bmp := typeFace.face.glyph.bitmap
+        src := bmp.buffer
+        loop j: bmp.rows
+        {
+            Memory.copy(buffer, src, cast(uint) bmp.width)
+            src += bmp.pitch
+            buffer += atlas.width
+        }
+
+        // Setup GlyphRef
+        var ref: *GlyphRef
+        if c < 128
+            ref = &asciiRef[cast(u32) c]
+        else
+            Debug.assert(false)
+
+        ref.uvs.x = (x * size) / cast(f32) atlas.width
+        ref.uvs.y = (y * size) / cast(f32) atlas.width
+        ref.uvs.width = size / cast(f32) atlas.width
+        ref.uvs.height = ref.uvs.width
+        ref.atlasIndex = cast(u32) (atlases.count - 1)
+
+        dirty = true
+        atlas.dirty = true
+
+        return ref
     }
 }
