@@ -320,6 +320,8 @@ func displayPage4()
     brush := Brush.createSolid(Argb.Red)
     cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
 
+    cdc.drawTexture(100, 400, font80.atlases[0].texture)
+
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)

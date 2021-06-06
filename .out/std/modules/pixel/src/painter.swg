@@ -180,6 +180,16 @@ impl Painter
         lastTexture0Type   = brush.type
     }
 
+    protected func setTexture1(using self, texture: Texture)
+    {
+        if lastTexture1Handle == texture.handle
+            return
+        cmd := newCommand(CommandId.BindTexture1, true)
+        params := &cmd.params.texture1
+        params.texture = texture
+        lastTexture1Handle = texture.handle
+    }
+
     protected func pushTriangleCmd(using self)->*Command
     {
         var cmd: *Command

@@ -13,8 +13,6 @@ impl Painter
             arr.add(font.getGlyphRef(c))
         }
 
-        updateFont(font)
-
         var result: retval
 
         result.x = left
@@ -57,17 +55,10 @@ impl Painter
 
         x := left
         y := top
-        lastAtlas := -1
 
         visit ref: arr
         {
-            if lastAtlas != ref.atlasIndex
-            {
-                lastAtlas = ref.atlasIndex
-                cmd := newCommand(CommandId.BindTexture1, true)
-                params := &cmd.params.texture1
-                params.texture = font.atlases[ref.atlasIndex].texture
-            }
+            setTexture1(font.atlases[ref.atlasIndex].texture)
 
             x1  := x + ref.shiftX
             y1  := y - ref.shiftY
