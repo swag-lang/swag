@@ -50,6 +50,11 @@ impl Font
             Debug.assert(false)
         }
 
+        // Render the glyph
+        assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
+        assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
+        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+
         // Creates a new atlas if this is the first time, or if the last atlas is full
         atlas := atlases.count ? atlases[atlases.count - 1] : null
         if atlases.isEmpty() or (atlas and atlas.numGlyphs == atlas.maxGlyphs * atlas.maxGlyphs)
@@ -61,11 +66,6 @@ impl Font
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             atlases.add(newAtlas)
         }
-
-        // Render the glyph
-        assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
-        assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
 
         // Copy the rendered glyph to the atlas datas
         atlas = atlases[atlases.count - 1]

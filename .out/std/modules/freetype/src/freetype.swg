@@ -1,11 +1,11 @@
 #global export
 
-alias FT_Library        = *FT_LibraryRec_
-alias FT_Face           = *FT_FaceRec_
-alias FT_CharMap        = *FT_CharMapRec_
-alias FT_GlyphSlot      = *FT_GlyphSlotRec_
-alias FT_SubGlyph       = *FT_SubGlyphRec_
-alias FT_Size           = *FT_SizeRec_
+alias FT_Library        = *FT_LibraryRec
+alias FT_Face           = *FT_FaceRec
+alias FT_CharMap        = *FT_CharMapRec
+alias FT_GlyphSlot      = *FT_GlyphSlotRec
+alias FT_SubGlyph       = *FT_SubGlyphRec
+alias FT_Size           = *FT_SizeRec
 alias FT_Slot_Internal  = *void
 alias FT_Size_Internal  = *void
 alias FT_Face_Internal  = *void
@@ -63,7 +63,7 @@ enum FT_Render_Mode
     FT_RENDER_MODE_MAX
 }
 
-struct FT_LibraryRec_
+struct FT_LibraryRec
 {
     memory:             FT_Memory
     version_major:      FT_Int
@@ -79,7 +79,7 @@ struct FT_LibraryRec_
     refcount:           FT_Int
 }
 
-struct FT_FaceRec_
+struct FT_FaceRec
 {
     num_faces:              FT_Long
     face_index:             FT_Long
@@ -126,7 +126,7 @@ struct FT_Generic
     finalizer:  *void // FT_Generic_Finalizer
 }
 
-struct FT_CharMapRec_
+struct FT_CharMapRec
 {
     face:           FT_Face
     encoding:       u32   // FT_Encoding
@@ -161,7 +161,7 @@ struct FT_Matrix
     yx, yy: FT_Fixed
 }
 
-struct FT_GlyphSlotRec_
+struct FT_GlyphSlotRec
 {
     library:            FT_Library
     face:               FT_Face
@@ -232,7 +232,7 @@ struct FT_Glyph_Metrics
     vertAdvance:    FT_Pos
 }
 
-struct FT_SubGlyphRec_
+struct FT_SubGlyphRec
 {
     index:      FT_Int
     flags:      FT_UShort
@@ -241,7 +241,7 @@ struct FT_SubGlyphRec_
     transform:  FT_Matrix
 }
 
-struct FT_SizeRec_
+struct FT_SizeRec
 {
     face:       FT_Face
     generic:    FT_Generic
