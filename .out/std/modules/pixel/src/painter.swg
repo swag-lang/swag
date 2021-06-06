@@ -60,6 +60,7 @@ struct Command
 
         image:  struct
                 {
+                    textureSlot:        u32
                     boundRect:          Vector4
                     textureRect:        Vector4
                     type:               BrushType = ?

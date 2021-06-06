@@ -664,14 +664,9 @@ impl RenderOgl
         glClearStencil(0)
         glStencilMask(0xFF)
 
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
-        glActiveTexture(GL_TEXTURE0);
-
-        text0 := glGetUniformLocation(shaderImage, @dataof("inTexture0"));
-        text1  := glGetUniformLocation(shaderImage, @dataof("inTexture1"));
-        glUniform1i(text0, 0);
-        glUniform1i(text1,  1);
+        glActiveTexture(GL_TEXTURE0)
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
@@ -740,8 +735,8 @@ impl RenderOgl
                 params := &cmd.params.image
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
                 glUniform4fv(textureRect, 1, &params.textureRect.x)
-
                 glUniform1f(uvmode, cast(GLfloat) params.uvMode)
+                glActiveTexture(GL_TEXTURE0 + params.textureSlot)
 
                 #[Swag.complete]
                 switch params.type

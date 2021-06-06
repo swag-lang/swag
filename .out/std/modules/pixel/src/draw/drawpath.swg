@@ -57,6 +57,8 @@ impl Painter
         cmd := newCommand(CommandId.BindTexture, true)
         params := &cmd.params.image
 
+        params.textureSlot = 0
+
         params.boundRect.x = bvMin.x
         params.boundRect.y = bvMin.y
         params.boundRect.z = bvMax.x
@@ -91,6 +93,7 @@ impl Painter
             return
 
         cmd := newCommand(CommandId.BindTexture, true)
+        cmd.params.image.textureSlot = 0
         cmd.params.image.type = .SolidColor
         cmd.params.image.texture.handle = InvalidTextureHandle
     }

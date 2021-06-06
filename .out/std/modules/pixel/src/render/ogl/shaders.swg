@@ -225,5 +225,10 @@ impl RenderOgl
     func createShaders(using self)
     {
         shaderImage = createProgram(VertexShaderAA, PixelShaderAA)
+        glUseProgram(shaderImage)
+        text0 := glGetUniformLocation(shaderImage, @dataof("inTexture0"));
+        text1 := glGetUniformLocation(shaderImage, @dataof("inTexture1"));
+        glUniform1i(text0, 0);
+        glUniform1i(text1,  1);
     }
 }
