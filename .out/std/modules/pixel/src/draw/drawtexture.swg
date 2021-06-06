@@ -4,7 +4,7 @@ using Core, Drawing, Core.Math
 impl Painter
 {
     // Draw a texture image
-    func drawTexture(using self, texture: Texture, left, top, width, height: f32)
+    func drawTexture(using self, left, top, width, height: f32, texture: Texture)
     {
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.type = BrushType.Texture
@@ -14,7 +14,7 @@ impl Painter
     }
 
     // Draw a texture image
-    func drawTexture(using self, texture: Texture, left, top: f32)
+    func drawTexture(using self, left, top: f32, texture: Texture)
     {
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.type = BrushType.Texture
@@ -24,7 +24,7 @@ impl Painter
     }
 
     // Draw a portion of an image
-    func drawTexture(using self, texture: Texture, left, top, width, height: f32, srcRect: Rectangle)
+    func drawTexture(using self, left, top, width, height: f32, srcRect: Rectangle, texture: Texture)
     {
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.type = BrushType.Texture
@@ -35,7 +35,7 @@ impl Painter
     }
 
     // Draw a portion of an image
-    func drawTexture(using self, texture: Texture, left, top: f32, srcRect: Rectangle)
+    func drawTexture(using self, left, top: f32, srcRect: Rectangle, texture: Texture)
     {
         sharedSolidBrush.color = Argb.White
         sharedSolidBrush.type = BrushType.Texture

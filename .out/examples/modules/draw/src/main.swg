@@ -255,22 +255,22 @@ func displayPage2()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.drawTexture(image1, 200, 0)
+    cdc.drawTexture(200, 0, image1)
 
     cdc.setInterpolationMode(InterpolationMode.Pixel)
-    cdc.drawTexture(image0, 50, 0, 96, 96)
+    cdc.drawTexture(50, 0, 96, 96, image0)
     cdc.setInterpolationMode(InterpolationMode.Linear)
-    cdc.drawTexture(image0, 50, 110, 96, 96)
+    cdc.drawTexture(50, 110, 96, 96, image0)
 
     cdc.rotateTransform(45, 100, 300)
-    cdc.drawTexture(image0, 50, 250, 96, 96)
+    cdc.drawTexture(50, 250, 96, 96, image0)
 
     cdc.resetTransform()
     pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
     cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    cdc.drawTexture(image1, 50, 500, 150, 150, @{228, 103, 206, 167})
-    cdc.drawTexture(image1, 50, 700, @{228, 103, 206, 167})
+    cdc.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, image1)
+    cdc.drawTexture(50, 700, @{228, 103, 206, 167}, image1)
 
     cdc.end()
 
@@ -313,6 +313,11 @@ func displayPage3()
 func displayPage4()
 {
     cdc.begin()
+
+    ref := font20.getGlyphRef("A"'rune)
+    cdc.updateFont(&font20)
+    cdc.drawTexture(100, 100, font20.atlases[ref.atlasIndex].texture)
+
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)
@@ -455,7 +460,7 @@ func messageLoop()
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
         typeface = assume TypeFace.load(imagePath("aAntiCorona.ttf"))
-        font20 := Font.create(typeface, 20)
+        font20 = Font.create(typeface, 20)
 
         display()
         ShowWindow(hWnd, SW_SHOW)

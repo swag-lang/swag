@@ -22,6 +22,7 @@ enum CommandId
     EndClippingRegion
     ResetClippingRegion
     SetClippingRegionMode
+    UpdateFont
 }
 
 #[Swag.enumflags]
@@ -54,6 +55,7 @@ struct Command
         transform:      struct{tr: Transform2; }
         clippingRect:   struct{rect: Rectangle; }
         clippingRegion: struct{mode: ClippingMode = ?; }
+        font:           struct{fontRef: *Font; }
 
         image:  struct
                 {
@@ -270,5 +272,12 @@ impl Painter
     func resetClippingRegion(using self)
     {
         discard newCommand(CommandId.ResetClippingRegion, true)
+    }
+
+    func updateFont(using self, fontRef: *Font)
+    {
+        if !fontRef.dirty return
+        cmd := newCommand(CommandId.UpdateFont, false)
+        cmd.params.font.fontRef = fontRef
     }
 }

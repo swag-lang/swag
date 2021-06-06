@@ -710,6 +710,20 @@ impl RenderOgl
                 params := &cmd.params.drawTriangles
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
+            case UpdateFont:
+                font := cmd.params.font.fontRef
+                visit *atlas: font.atlases
+                {
+                    if !atlas.dirty continue
+                    if cast(u32) atlas.texture.handle == 0
+                        glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
+                    atlas.texture.width = atlas.width
+                    atlas.texture.height = atlas.width
+                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
+                    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
+                }
+
             case BindTexture:
                 params := &cmd.params.image
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
