@@ -360,7 +360,6 @@ var Errors: [0xFF] string = ?
 
 #[Swag.foreign("freetype")]
 {
-    func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face);
     func FT_Done_Face(face: FT_Face);
     func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt;
 }
@@ -371,6 +370,7 @@ namespace FreeTypePriv
     {
         func FT_Init_FreeType(alibrary: *FT_Library)->FT_Error;
         func FT_Done_FreeType(alibrary: FT_Library)->FT_Error;
+        func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face)->FT_Error;
         func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width, pixel_height: FT_UInt)->FT_Error;
         func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32)->FT_Error;
         func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32)->FT_Error;
@@ -389,6 +389,12 @@ namespace FreeTypePriv
     func FT_Done_FreeType(alibrary: FT_Library) throw
     {
         err := FreeTypePriv.FT_Done_FreeType(alibrary)
+        if err throw Errors[err]
+    }
+
+    func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face) throw
+    {
+        err := FreeTypePriv.FT_New_Memory_Face(library, file_base, file_size, face_index, aface)
         if err throw Errors[err]
     }
 

@@ -4,18 +4,21 @@
 using Core, Win32, Ogl, Gdi32, Pixel
 using Core.Drawing, Core.Math
 
-var hDC: HDC
 const W = 1024
 const H = 1024
-var cdc: Painter
-var renderer: RenderOglWin32
 
-var image0, image1: Texture
+var hDC:        HDC
+var cdc:        Painter
+var renderer:   RenderOglWin32
+var image0:     Texture
+var image1:     Texture
+var typeface:   TypeFace
+var font20:     Font
 
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 3
+var g_page:         s32 = 4
 
 func dataPath()->String
 {
@@ -307,6 +310,14 @@ func displayPage3()
     renderer.draw(&cdc)
 }
 
+func displayPage4()
+{
+    cdc.begin()
+    cdc.end()
+    renderer.resetTransform()
+    renderer.draw(&cdc)
+}
+
 func display()
 {
     renderer.begin()
@@ -323,6 +334,7 @@ func display()
     case 1: displayPage1()
     case 2: displayPage2()
     case 3: displayPage3()
+    case 4: displayPage4()
     }
 
     renderer.end()
@@ -424,7 +436,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % 4
+            g_page = (g_page + 1) % 5
     }
 }
 
@@ -437,10 +449,13 @@ func messageLoop()
         hDC = GetDC(hWnd)
 
         renderer.init(hDC, W, H)
+
         img0 := assume Image.load(imagePath("basn0g01.png"))
         image0 = renderer.addImage(img0)
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
+        typeface = assume TypeFace.load(imagePath("aAntiCorona.ttf"))
+        font20 := Font.create(typeface, 20)
 
         display()
         ShowWindow(hWnd, SW_SHOW)
