@@ -719,9 +719,11 @@ impl RenderOgl
 
             case UpdateFont:
                 font := cmd.params.font.fontRef
+                font.dirty = false
                 visit *atlas: font.atlases
                 {
                     if !atlas.dirty continue
+                    atlas.dirty = false
                     if cast(u32) atlas.texture.handle == 0
                         glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
                     atlas.texture.width = atlas.width

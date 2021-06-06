@@ -313,7 +313,7 @@ func displayPage3()
 func displayPage4()
 {
     cdc.begin()
-    cdc.drawText(100, 100, "toto la foule", &font20, Argb.Black)
+    cdc.drawText(100, 100, "abcdefghijkl", &font20, Argb.Black)
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)

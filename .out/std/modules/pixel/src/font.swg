@@ -13,8 +13,12 @@ struct GlyphAtlas
 
 struct GlyphRef
 {
-    uvs:        Math.Rectangle
-    atlasIndex: s32 = -1
+    uvs:            Math.Rectangle
+    atlasIndex:     s32 = -1
+    bearingLeft:    f32
+    bearingRight:   f32
+    ascent:         f32
+    descent:        f32
 }
 
 struct Font
@@ -73,14 +77,15 @@ impl Font
         y := atlas.numGlyphs / atlas.maxGlyphs
         atlas.numGlyphs += 1
 
-        buffer := atlas.datas.buffer + (x * size) + (y * size * atlas.width)
+        buffer := atlas.datas.buffer + (x * size) + (atlas.width * (atlas.width - 1))
+        buffer -= (y * atlas.width * size)
         bmp := typeFace.face.glyph.bitmap
         src := bmp.buffer
         loop j: bmp.rows
         {
             Memory.copy(buffer, src, cast(uint) bmp.width)
             src += bmp.pitch
-            buffer += atlas.width
+            buffer -= atlas.width
         }
 
         // Setup GlyphRef
@@ -94,7 +99,14 @@ impl Font
         ref.uvs.y = (y * size) / cast(f32) atlas.width
         ref.uvs.width = size / cast(f32) atlas.width
         ref.uvs.height = ref.uvs.width
+
         ref.atlasIndex = cast(u32) (atlases.count - 1)
+
+        metrics := &typeFace.face.glyph.metrics
+        ref.bearingLeft  = (metrics.horiBearingX / 72.0)
+        ref.bearingRight = (metrics.horiAdvance - metrics.width - metrics.horiBearingX) / 72.0
+        ref.ascent       = (metrics.horiBearingY / 72.0)
+        ref.descent      = (metrics.height - metrics.horiBearingY) / 72.0
 
         dirty = true
         atlas.dirty = true
