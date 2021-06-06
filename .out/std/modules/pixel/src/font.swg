@@ -29,7 +29,7 @@ struct Font
     size:       u32
     atlases:    Array'GlyphAtlas
     asciiRef:   [128] GlyphRef
-    unicodeRef: HashTable'(rune, GlyphRef)
+    unicodeRef: HashTable'(rune, *GlyphRef)
     dirty:      bool
 }
 
@@ -99,10 +99,8 @@ impl Font
             ref = &asciiRef[cast(u32) c]
         else
         {
-            var refC: GlyphRef
-            unicodeRef.add(c, refC)
-            entry := unicodeRef.find(c)
-            ref = &entry.value
+            ref = Memory.new'GlyphRef()
+            unicodeRef.add(c, ref)
         }
 
         ref.width  = bmp.width
@@ -114,13 +112,13 @@ impl Font
         ref.shiftX   = glyph.bitmap_left
         ref.shiftY   = glyph.bitmap_top
 
-        ref.uv.x = (x * size) / cast(f32) atlas.width
-        ref.uv.y = (y * size) / cast(f32) atlas.width
-        ref.uv.width = ref.width / cast(f32) atlas.width
-        ref.uv.height = ref.height / cast(f32) atlas.width
+        widthf := cast(f32) atlas.width
+        ref.uv.x = (x * size) / widthf
+        ref.uv.y = (y * size) / widthf
+        ref.uv.width = ref.width / widthf
+        ref.uv.height = ref.height / widthf
 
         ref.atlasIndex = cast(u32) (atlases.count - 1)
-
 
         dirty = true
         atlas.dirty = true
