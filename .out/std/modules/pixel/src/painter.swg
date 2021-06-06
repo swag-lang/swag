@@ -8,6 +8,7 @@ struct VertexLayout
     color:  u32
     aa:     [6] Vector4
     aanum:  f32
+    uv:     Vector2
 }
 
 enum CommandId

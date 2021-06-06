@@ -11,6 +11,7 @@ const VertexShaderAA = @"
     layout(location = 6) in vec4 aa4;
     layout(location = 7) in vec4 aa5;
     layout(location = 8) in float aanum;
+    layout(location = 9) in vec2 uv1;
 
     uniform mat4    mvp;
     uniform mat4    mdl;
@@ -20,7 +21,8 @@ const VertexShaderAA = @"
 
     out vec4        vcolor;
     out vec2        vpixelPos;
-    out vec2        vuv;
+    out vec2        vuv0;
+    out vec2        vuv1;
     out vec4        vaa0;
     out vec4        vaa1;
     out vec4        vaa2;
@@ -99,7 +101,8 @@ const VertexShaderAA = @"
         vcolor = vertexColor.zyxw;
 
         // uv
-        vuv = computeUVs(vertexPosition.xy);
+        vuv0 = computeUVs(vertexPosition.xy);
+        vuv1 = uv1;
 
         transformAA();
     }
@@ -109,7 +112,8 @@ const PixelShaderAA = @"
     #version 330 core
     in vec4     vcolor;
     in vec2     vpixelPos;
-    in vec2     vuv;
+    in vec2     vuv0;
+    in vec2     vuv1;
     in vec4     vaa0;
     in vec4     vaa1;
     in vec4     vaa2;
@@ -118,7 +122,8 @@ const PixelShaderAA = @"
     in vec4     vaa5;
     in float    vaanum;
 
-    uniform sampler2D inTexture;
+    uniform sampler2D inTexture0;
+    uniform sampler2D inTexture1;
 
     out vec4    color;
 
@@ -170,8 +175,9 @@ const PixelShaderAA = @"
 
     void main()
     {
-        color = vcolor * texture(inTexture, vuv);
+        color = vcolor * texture(inTexture0, vuv0);
         color.w *= computeAlphaEdgesAA();
+        color.w *= texture(inTexture1, vuv1).r;
     }
 "@
 

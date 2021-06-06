@@ -459,6 +459,8 @@ impl RenderOgl
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector2)
+        glVertexAttribPointer(9, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
@@ -661,7 +663,17 @@ impl RenderOgl
         glDisable(GL_DEPTH_TEST)
         glClearStencil(0)
         glStencilMask(0xFF)
-        loop i: 9 glEnableVertexAttribArray(cast(GLuint) i)
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, whiteTexture)
+        glActiveTexture(GL_TEXTURE0);
+
+        text0 := glGetUniformLocation(shaderImage, @dataof("inTexture0"));
+        text1  := glGetUniformLocation(shaderImage, @dataof("inTexture1"));
+        glUniform1i(text0, 0);
+        glUniform1i(text1,  1);
+
+        loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
         visit cmd: dc.commandBuffer
         {
@@ -766,6 +778,6 @@ impl RenderOgl
             }
         }
 
-        loop i: 9 glDisableVertexAttribArray(cast(GLuint) i)
+        loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
     }
 }
