@@ -47,12 +47,10 @@ impl Painter
         return result
     }
 
-    private func setTexture(using self, path: *LinePath, brush: Brush)
+    private func setTexture(using self, bvMin, bvMax: Vector2, brush: Brush)
     {
         if brush.type == .SolidColor
             return
-
-        using path
 
         cmd := newCommand(CommandId.BindTexture0, true)
         params := &cmd.params.texture0
@@ -694,7 +692,7 @@ impl Painter
         if pen.dashStyle != .None
             preparePattern(&cxt)
 
-        setTexture(path, pen.brush)
+        setTexture(path.bvMin, path.bvMax, pen.brush)
         drawPath(&cxt)
         resetTexture(pen.brush)
     }
@@ -822,7 +820,7 @@ impl Painter
         using path
 
         // Setup texture
-        setTexture(path, brush)
+        setTexture(path.bvMin, path.bvMax, brush)
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
