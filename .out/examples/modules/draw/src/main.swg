@@ -13,7 +13,8 @@ var renderer:   RenderOglWin32
 var image0:     Texture
 var image1:     Texture
 var typeface:   TypeFace
-var font20:     Font
+var font40:     Font
+var font80:     Font
 
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
@@ -313,8 +314,11 @@ func displayPage3()
 func displayPage4()
 {
     cdc.begin()
-    cdc.drawText(100, 100, "abcdefghijkl", &font20, Argb.Black)
-    cdc.drawText(100, 140, "this is a great text", &font20, Argb.Red)
+    cdc.drawText(100, 100, "abcdefghijkl", &font40, Argb.Black)
+
+    brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
+    cdc.drawText(100, 200, "this is a great text", &font80, brush)
+
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)
@@ -457,7 +461,8 @@ func messageLoop()
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
         typeface = assume TypeFace.load(imagePath("arial.ttf"))
-        font20 = Font.create(typeface, 40)
+        font40 = Font.create(typeface, 40)
+        font80 = Font.create(typeface, 80)
 
         display()
         ShowWindow(hWnd, SW_SHOW)

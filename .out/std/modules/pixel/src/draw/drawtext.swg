@@ -3,10 +3,11 @@ using Core, Drawing, Core.Math
 
 impl Painter
 {
-    // Draw a texture image
-    func drawText(using self, left, top: f32, text: string, font: *Font, color: Color)
+    func getTextExtent(using self, left, top: f32, text: string, font: *Font)->Rectangle
     {
         var arr: Array'(const *GlyphRef)
+
+        arr.reserve(@countof(text))
         Utf8.visitRunes(|c| text)
         {
             arr.add(font.getGlyphRef(c))
@@ -14,9 +15,45 @@ impl Painter
 
         updateFont(font)
 
+        var result: Rectangle
+
+        result.x = left
+        result.y = top
+        result.width = 0
+
+        visit ref: arr
+        {
+            result.y = Math.min(result.y, top - ref.shiftY)
+            result.height = Math.max(result.height, ref.height)
+            result.width += ref.advanceX
+        }
+
+        return result
+    }
+
+    // Draw a text
+    func drawText(using self, left, top: f32, text: string, font: *Font, color: Color)
+    {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
-        setTexture0(Vector2.Zero, Vector2.Zero, sharedSolidBrush)
+        drawText(left, top, text, font, sharedSolidBrush)
+    }
+
+    // Draw a text
+    func drawText(using self, left, top: f32, text: string, font: *Font, brush: Brush)
+    {
+        var arr: Array'(const *GlyphRef)
+
+        arr.reserve(@countof(text))
+        Utf8.visitRunes(|c| text)
+        {
+            arr.add(font.getGlyphRef(c))
+        }
+
+        updateFont(font)
+
+        rect := getTextExtent(left, top, text, font)
+        setTexture0(@{rect.x, rect.y}, @{rect.x + rect.width, rect.y + rect.height}, brush)
 
         x := left
         y := top
@@ -45,8 +82,8 @@ impl Painter
             uv3 := Vector2{ref.uv.x, ref.uv.y + ref.uv.height}
             uv4 := Vector2{ref.uv.x + ref.uv.width, ref.uv.y + ref.uv.height}
 
-            discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, color)
-            discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, color)
+            discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+            discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
             x += ref.advanceX
         }
