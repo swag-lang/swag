@@ -847,6 +847,8 @@ namespace Ast
 
         case AstNodeKind::IdentifierRef:
         {
+            if (node->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
+                CONCAT_FIXED_STR(concat, ".");
             auto back = node->childs.back();
             if (back->resolvedSymbolName)
             {

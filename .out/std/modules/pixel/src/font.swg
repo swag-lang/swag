@@ -29,6 +29,7 @@ struct Font
     size:       u32
     atlases:    Array'GlyphAtlas
     asciiRef:   [128] GlyphRef
+    unicodeRef: HashTable'(rune, GlyphRef)
     dirty:      bool
 }
 
@@ -53,7 +54,9 @@ impl Font
         }
         else
         {
-            Debug.assert(false)
+            entry := unicodeRef.find(c)
+            if entry
+                return entry.value
         }
 
         // Render the glyph
@@ -95,7 +98,12 @@ impl Font
         if c < 128
             ref = &asciiRef[cast(u32) c]
         else
-            Debug.assert(false)
+        {
+            var refC: GlyphRef
+            unicodeRef.add(c, refC)
+            entry := unicodeRef.find(c)
+            ref = &entry.value
+        }
 
         ref.width  = bmp.width
         ref.height = bmp.rows

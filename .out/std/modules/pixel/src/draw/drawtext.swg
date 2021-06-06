@@ -15,7 +15,7 @@ impl Painter
 
         updateFont(font)
 
-        var result: Rectangle
+        var result: retval
 
         result.x = left
         result.y = top
@@ -23,9 +23,9 @@ impl Painter
 
         visit ref: arr
         {
-            result.y = Math.min(result.y, top - ref.shiftY)
-            result.height = Math.max(result.height, ref.height)
-            result.width += ref.advanceX
+            //result.y = Math.min(result.y, top - ref.shiftY)
+            //result.height = Math.max(result.height, ref.height)
+            //result.width += ref.advanceX
         }
 
         return result

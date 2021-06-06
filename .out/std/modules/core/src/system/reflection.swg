@@ -6,15 +6,15 @@ using Swag
 {
     #[inline]
     {
-        func isInteger(t: typeinfo)     => t.flags & TypeInfoFlags.Integer
-        func isFloat(t: typeinfo)       => t.flags & TypeInfoFlags.Float
-        func isType(t: typeinfo)        => t.flags & TypeInfoFlags.TypeInfoPtr
-        func isPointer(t: typeinfo)     => t.kind == TypeInfoKind.Pointer
-        func isEnum(t: typeinfo)        => t.kind == TypeInfoKind.Enum
-        func isStruct(t: typeinfo)      => t.kind == TypeInfoKind.Struct
-        func isArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
-        func isSlice(t: typeinfo)       => t.kind == TypeInfoKind.Slice
-        func isTypeAlias(t: typeinfo)   => t.kind == TypeInfoKind.Alias
+        func isInteger(t: typeinfo)     => t.flags & .Integer
+        func isFloat(t: typeinfo)       => t.flags & .Float
+        func isType(t: typeinfo)        => t.flags & .TypeInfoPtr
+        func isPointer(t: typeinfo)     => t.kind == .Pointer
+        func isEnum(t: typeinfo)        => t.kind == .Enum
+        func isStruct(t: typeinfo)      => t.kind == .Struct
+        func isArray(t: typeinfo)       => t.kind == .Array
+        func isSlice(t: typeinfo)       => t.kind == .Slice
+        func isTypeAlias(t: typeinfo)   => t.kind == .Alias
     }
 
     // Returns true if this is a struct of the given name

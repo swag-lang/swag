@@ -316,8 +316,9 @@ func displayPage4()
     cdc.begin()
     cdc.drawText(100, 100, "abcdefghijkl", &font40, Argb.Black)
 
-    brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
-    cdc.drawText(100, 200, "this is a great text", &font80, brush)
+    //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
+    brush := Brush.createSolid(Argb.Red)
+    cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
 
     cdc.end()
     renderer.resetTransform()
