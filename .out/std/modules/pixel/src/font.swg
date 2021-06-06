@@ -13,7 +13,7 @@ struct GlyphAtlas
 
 struct GlyphRef
 {
-    uvs:            Math.Rectangle
+    uv:             Math.Rectangle
     atlasIndex:     s32 = -1
     bearingLeft:    f32
     bearingRight:   f32
@@ -95,10 +95,10 @@ impl Font
         else
             Debug.assert(false)
 
-        ref.uvs.x = (x * size) / cast(f32) atlas.width
-        ref.uvs.y = (y * size) / cast(f32) atlas.width
-        ref.uvs.width = size / cast(f32) atlas.width
-        ref.uvs.height = ref.uvs.width
+        ref.uv.x = (x * size) / cast(f32) atlas.width
+        ref.uv.y = (y * size) / cast(f32) atlas.width
+        ref.uv.width = size / cast(f32) atlas.width
+        ref.uv.height = ref.uv.width
 
         ref.atlasIndex = cast(u32) (atlases.count - 1)
 

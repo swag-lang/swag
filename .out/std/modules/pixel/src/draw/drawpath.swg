@@ -54,10 +54,8 @@ impl Painter
 
         using path
 
-        cmd := newCommand(CommandId.BindTexture, true)
-        params := &cmd.params.image
-
-        params.textureSlot = 0
+        cmd := newCommand(CommandId.BindTexture0, true)
+        params := &cmd.params.texture0
 
         params.boundRect.x = bvMin.x
         params.boundRect.y = bvMin.y
@@ -91,11 +89,7 @@ impl Painter
     {
         if brush.type == .SolidColor
             return
-
-        cmd := newCommand(CommandId.BindTexture, true)
-        cmd.params.image.textureSlot = 0
-        cmd.params.image.type = .SolidColor
-        cmd.params.image.texture.handle = InvalidTextureHandle
+        discard newCommand(CommandId.ResetTexture, true)
     }
 
     private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)

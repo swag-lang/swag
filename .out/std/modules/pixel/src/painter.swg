@@ -5,10 +5,10 @@ using Core, Ogl, Core.Drawing, Core.Math
 struct VertexLayout
 {
     pos:    Vector2
+    uv:     Vector2
     color:  u32
     aa:     [6] Vector4
     aanum:  f32
-    uv:     Vector2
 }
 
 enum CommandId
@@ -16,7 +16,9 @@ enum CommandId
     Clear
     Transform
     DrawTriangles
-    BindTexture
+    BindTexture0
+    BindTexture1
+    ResetTexture
     SetClippingRect
     ResetClippingRect
     StartClippingRegion
@@ -58,15 +60,18 @@ struct Command
         clippingRegion: struct{mode: ClippingMode = ?; }
         font:           struct{fontRef: *Font; }
 
-        image:  struct
+        texture0: struct
                 {
-                    textureSlot:        u32
                     boundRect:          Vector4
                     textureRect:        Vector4
                     type:               BrushType = ?
                     hatch:              HatchStyle = ?
                     uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
+                    texture:            Texture
+                }
+        texture1: struct
+                {
                     texture:            Texture
                 }
     }
@@ -91,7 +96,7 @@ struct Painter
 
 impl Painter
 {
-    protected func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
+    protected func pushTriangleCmd(using self)->*Command
     {
         var cmd: *Command
         if commandBuffer.count
@@ -108,10 +113,30 @@ impl Painter
             cmd.params.drawTriangles.count = 0
         }
 
+        return cmd
+    }
+
+    protected func pushTriangle(using self, p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
+    {
+        cmd := pushTriangleCmd()
         cmd.params.drawTriangles.count += 3
 
         ptr := vertexBuffer.emplaceAddress(3)
+        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv1
+        ptr += 1
+        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv2
+        ptr += 1
+        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv3
 
+        return vertexBuffer.count - 3
+    }
+
+    protected func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
+    {
+        cmd := pushTriangleCmd()
+        cmd.params.drawTriangles.count += 3
+
+        ptr := vertexBuffer.emplaceAddress(3)
         ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
         ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0

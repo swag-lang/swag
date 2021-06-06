@@ -444,10 +444,10 @@ impl RenderOgl
         var offset: const *void = null
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector2)
+        glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector4)
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
@@ -458,9 +458,9 @@ impl RenderOgl
         offset += @sizeof(Vector4)
         glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector2)
-        glVertexAttribPointer(9, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
@@ -664,9 +664,10 @@ impl RenderOgl
         glClearStencil(0)
         glStencilMask(0xFF)
 
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
-        glActiveTexture(GL_TEXTURE0)
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
@@ -733,12 +734,18 @@ impl RenderOgl
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
                 }
 
-            case BindTexture:
-                params := &cmd.params.image
+            case ResetTexture:
+                glActiveTexture(GL_TEXTURE0)
+                glBindTexture(GL_TEXTURE_2D, whiteTexture)
+                glActiveTexture(GL_TEXTURE1)
+                glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+            case BindTexture0:
+                params := &cmd.params.texture0
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
                 glUniform4fv(textureRect, 1, &params.textureRect.x)
                 glUniform1f(uvmode, cast(GLfloat) params.uvMode)
-                glActiveTexture(GL_TEXTURE0 + params.textureSlot)
+                glActiveTexture(GL_TEXTURE0)
 
                 #[Swag.complete]
                 switch params.type
@@ -772,6 +779,15 @@ impl RenderOgl
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
                 }
+
+            case BindTexture1:
+                params := &cmd.params.texture1
+                glActiveTexture(GL_TEXTURE1)
+                glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             }
         }
 
