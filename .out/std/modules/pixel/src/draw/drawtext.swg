@@ -7,24 +7,29 @@ impl Painter
     func drawText(using self, left, top: f32, text: string, font: *Font, color: Color)
     {
         var arr: Array'(const *GlyphRef)
-
         Utf8.visitRunes(|c| text)
         {
             arr.add(font.getGlyphRef(c))
         }
 
         updateFont(font)
-        drawTexture(left, top + 100, font.atlases[0].texture)
+        //drawTexture(left, top + 100, font.atlases[0].texture)
 
         discard newCommand(CommandId.ResetTexture)
 
         x := left
         y := top
+        lastAtlas := -1
+
         visit ref: arr
         {
-            cmd := newCommand(CommandId.BindTexture1, true)
-            params := &cmd.params.texture1
-            params.texture = font.atlases[ref.atlasIndex].texture
+            if lastAtlas != ref.atlasIndex
+            {
+                lastAtlas = ref.atlasIndex
+                cmd := newCommand(CommandId.BindTexture1, true)
+                params := &cmd.params.texture1
+                params.texture = font.atlases[ref.atlasIndex].texture
+            }
 
             x1  := x + ref.shiftX
             y1  := y - ref.shiftY
