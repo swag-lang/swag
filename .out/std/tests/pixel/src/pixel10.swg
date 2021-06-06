@@ -14,4 +14,7 @@ using Core, FreeType
     ci2 := FT_Get_Char_Index(face, "Z"'u32)
     @assert(ci1 == 36)
     @assert(ci2 == 61)
+
+    try FT_Load_Char(face, ci1, FT_LOAD_DEFAULT)
+    try FT_Render_Glyph(face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
 }
