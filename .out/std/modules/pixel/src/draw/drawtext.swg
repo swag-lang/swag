@@ -14,7 +14,7 @@ impl Painter
         }
 
         updateFont(font)
-        drawTexture(left, top + 50, font.atlases[0].texture)
+        drawTexture(left, top + 100, font.atlases[0].texture)
 
         discard newCommand(CommandId.ResetTexture)
 
@@ -26,10 +26,13 @@ impl Painter
             params := &cmd.params.texture1
             params.texture = font.atlases[ref.atlasIndex].texture
 
-            p1  := Vector2{x, y}
-            p2  := Vector2{x + font.size, y}
-            p3  := Vector2{x, y + font.size}
-            p4  := Vector2{x + font.size, y + font.size}
+            x1  := x + ref.shiftX
+            y1  := y - ref.shiftY
+
+            p1  := Vector2{x1, y1}
+            p2  := Vector2{x1 + ref.width, y1}
+            p3  := Vector2{x1, y1 + ref.height}
+            p4  := Vector2{x1 + ref.width, y1 + ref.height}
 
             uv1 := Vector2{ref.uv.x, ref.uv.y}
             uv2 := Vector2{ref.uv.x + ref.uv.width, ref.uv.y}
@@ -38,7 +41,8 @@ impl Painter
 
             discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, color)
             discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, color)
-            x += font.size
+
+            x += ref.advanceX
         }
 
         discard newCommand(CommandId.ResetTexture, true)

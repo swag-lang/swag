@@ -15,10 +15,12 @@ struct GlyphRef
 {
     uv:             Math.Rectangle
     atlasIndex:     s32 = -1
-    bearingLeft:    f32
-    bearingRight:   f32
-    ascent:         f32
-    descent:        f32
+    advanceX:       f32
+    advanceY:       f32
+    shiftX:         f32
+    shiftY:         f32
+    width:          f32
+    height:         f32
 }
 
 struct Font
@@ -95,18 +97,22 @@ impl Font
         else
             Debug.assert(false)
 
+        ref.width  = bmp.width
+        ref.height = bmp.rows
+
+        glyph := typeFace.face.glyph
+        ref.advanceX = glyph.advance.x / 64.0
+        ref.advanceY = glyph.advance.y / 64.0
+        ref.shiftX   = glyph.bitmap_left
+        ref.shiftY   = glyph.bitmap_top
+
         ref.uv.x = (x * size) / cast(f32) atlas.width
         ref.uv.y = (y * size) / cast(f32) atlas.width
-        ref.uv.width = size / cast(f32) atlas.width
-        ref.uv.height = ref.uv.width
+        ref.uv.width = ref.width / cast(f32) atlas.width
+        ref.uv.height = ref.height / cast(f32) atlas.width
 
         ref.atlasIndex = cast(u32) (atlases.count - 1)
 
-        metrics := &typeFace.face.glyph.metrics
-        ref.bearingLeft  = (metrics.horiBearingX / 72.0)
-        ref.bearingRight = (metrics.horiAdvance - metrics.width - metrics.horiBearingX) / 72.0
-        ref.ascent       = (metrics.horiBearingY / 72.0)
-        ref.descent      = (metrics.height - metrics.horiBearingY) / 72.0
 
         dirty = true
         atlas.dirty = true
