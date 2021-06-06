@@ -314,9 +314,10 @@ func displayPage4()
 {
     cdc.begin()
 
-    ref := font20.getGlyphRef("A"'rune)
+    discard font20.getGlyphRef("A"'rune)
+    discard font20.getGlyphRef("9"'rune)
     cdc.updateFont(&font20)
-    cdc.drawTexture(100, 100, font20.atlases[ref.atlasIndex].texture)
+    cdc.drawTexture(100, 100, font20.atlases[0].texture)
 
     cdc.end()
     renderer.resetTransform()

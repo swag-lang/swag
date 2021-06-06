@@ -71,6 +71,7 @@ impl Font
         atlas = atlases[atlases.count - 1]
         x := atlas.numGlyphs % atlas.maxGlyphs
         y := atlas.numGlyphs / atlas.maxGlyphs
+        atlas.numGlyphs += 1
 
         buffer := atlas.datas.buffer + (x * size) + (y * size * atlas.width)
         bmp := typeFace.face.glyph.bitmap
