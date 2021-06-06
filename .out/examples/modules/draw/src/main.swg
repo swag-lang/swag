@@ -313,12 +313,7 @@ func displayPage3()
 func displayPage4()
 {
     cdc.begin()
-
-    discard font20.getGlyphRef("A"'rune)
-    discard font20.getGlyphRef("9"'rune)
-    cdc.updateFont(&font20)
-    cdc.drawTexture(100, 100, font20.atlases[0].texture)
-
+    cdc.drawText(100, 100, "toto la foule", &font20, Argb.Black)
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)

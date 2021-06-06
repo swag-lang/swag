@@ -728,7 +728,7 @@ impl RenderOgl
                     atlas.texture.height = atlas.width
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
                     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
                 }
 
             case BindTexture:
