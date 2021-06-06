@@ -631,7 +631,8 @@ impl Painter
             preparePattern(&cxt)
 
         setTexture0(path.bvMin, path.bvMax, pen.brush)
-        discard newCommand(CommandId.ResetTexture1)
+        resetTexture1()
+
         drawPath(&cxt)
     }
 
@@ -759,7 +760,7 @@ impl Painter
 
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)
-        discard newCommand(CommandId.ResetTexture1)
+        resetTexture1()
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices

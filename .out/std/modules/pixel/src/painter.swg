@@ -93,6 +93,9 @@ struct Painter
     interpolationMode:  InterpolationMode = Pixel
     clippingRect:       Rectangle
     clippingRectOn:     bool
+    lastTexture0Handle: TextureHandle
+    lastTexture0Type:   BrushType = SolidColor
+    lastTexture1Handle: TextureHandle
 }
 
 impl Painter
@@ -116,11 +119,30 @@ impl Painter
         return result
     }
 
+    protected func resetTexture0(using self)
+    {
+        if lastTexture0Handle or lastTexture0Type != .SolidColor
+        {
+            lastTexture0Handle = cast(TextureHandle) 0
+            lastTexture0Type = .SolidColor
+            discard newCommand(CommandId.ResetTexture0, true)
+        }
+    }
+
+    protected func resetTexture1(using self)
+    {
+        if lastTexture1Handle
+        {
+            lastTexture1Handle = cast(TextureHandle) 0
+            discard newCommand(CommandId.ResetTexture1, true)
+        }
+    }
+
     protected func setTexture0(using self, bvMin, bvMax: Vector2, brush: Brush)
     {
         if brush.type == .SolidColor
         {
-            discard newCommand(CommandId.ResetTexture0, true)
+            resetTexture0()
             return
         }
 
@@ -153,6 +175,9 @@ impl Painter
         params.texture = brush.texture
         params.uvMode  = brush.uvMode
         params.interpolationMode = interpolationMode
+
+        lastTexture0Handle = brush.texture.handle
+        lastTexture0Type   = brush.type
     }
 
     protected func pushTriangleCmd(using self)->*Command
