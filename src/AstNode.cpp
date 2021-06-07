@@ -363,6 +363,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags &= ~AST_IS_GENERIC;
     flags |= context.forceFlags;
     flags &= ~context.removeFlags;
+    doneFlags |= from->doneFlags & AST_DONE_INLINED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerMainNode        = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
@@ -1288,6 +1289,7 @@ AstNode* AstInline::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
+    cloneContext.ownerInline = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
 
     newNode->scope = cloneContext.parentScope;
