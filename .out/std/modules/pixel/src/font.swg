@@ -5,10 +5,11 @@ struct GlyphAtlas
 {
     texture:    Texture
     width:      u32
-    numGlyphs:  u32
-    maxGlyphs:  u32
     datas:      Array'u8
     dirty:      bool
+    curX:       s32
+    curY:       s32
+    nextY:      s32
 }
 
 struct GlyphRef
@@ -63,28 +64,40 @@ impl Font
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
         assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
         assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+        bmp := typeFace.face.glyph.bitmap
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         atlas := atlases.count ? atlases[atlases.count - 1] : null
-        if atlases.isEmpty() or (atlas and atlas.numGlyphs == atlas.maxGlyphs * atlas.maxGlyphs)
+        if atlas
+        {
+            if atlas.curX + bmp.width > atlas.width
+            {
+                atlas.curX = 0
+                if atlas.nextY + bmp.rows > atlas.width
+                    atlas = null
+                else
+                    atlas.curY = atlas.nextY
+            }
+        }
+
+        if !atlas
         {
             var newAtlas: GlyphAtlas
-            newAtlas.maxGlyphs = 8
-            newAtlas.width = size * newAtlas.maxGlyphs
+            newAtlas.width = Math.roundUpToPowerOf2(size * 4)
             newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.width)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             atlases.add(newAtlas)
+            atlas = atlases[atlases.count - 1]
         }
 
-        // Copy the rendered glyph to the atlas datas
-        atlas = atlases[atlases.count - 1]
-        x := atlas.numGlyphs % atlas.maxGlyphs
-        y := atlas.numGlyphs / atlas.maxGlyphs
-        atlas.numGlyphs += 1
+        x := atlas.curX
+        y := atlas.curY
+        atlas.curX += bmp.width
+        atlas.nextY = Math.max(atlas.nextY, atlas.curY + bmp.rows)
 
-        buffer := atlas.datas.buffer + (x * size) + (atlas.width * (atlas.width - 1))
-        buffer -= (y * atlas.width * size)
-        bmp := typeFace.face.glyph.bitmap
+        // Copy the rendered glyph to the atlas datas
+        buffer := atlas.datas.buffer + x + (atlas.width * (atlas.width - 1))
+        buffer -= (y * atlas.width)
         src := bmp.buffer
         loop j: bmp.rows
         {
@@ -113,8 +126,8 @@ impl Font
         ref.shiftY   = glyph.bitmap_top
 
         widthf := cast(f32) atlas.width
-        ref.uv.x = (x * size) / widthf
-        ref.uv.y = (y * size) / widthf
+        ref.uv.x = x / widthf
+        ref.uv.y = y / widthf
         ref.uv.width = ref.width / widthf
         ref.uv.height = ref.height / widthf
 
