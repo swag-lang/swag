@@ -636,6 +636,32 @@ impl Painter
         drawPath(&cxt)
     }
 
+    // Draw the line path
+    func drawPath(using self, path: *LinePath, color: Color, penSize: f32)
+    {
+        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.color = color
+        sharedSolidPen.size = penSize
+        drawPath(path, sharedSolidPen)
+    }
+
+    // Draw the line path
+    func drawPath(using self, pathList: LinePathList, pen: Pen)
+    {
+        visit p: pathList.paths
+            drawPath(p, pen)
+    }
+
+    // Draw the line path
+    func drawPath(using self, pathList: LinePathList, color: Color, penSize: f32)
+    {
+        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.color = color
+        sharedSolidPen.size = penSize
+        drawPath(pathList, sharedSolidPen)
+    }
+
+
     private func triangulateArea(border: const [..] Vector2)->f32
     {
         n := @countof(border)
@@ -750,7 +776,7 @@ impl Painter
         return result
     }
 
-    // Draw the line path with the given 'pen'
+    // Fill the line path with the given 'brush'
     func fillPath(using self, path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
@@ -832,5 +858,28 @@ impl Painter
                 }
             }
         }
+    }
+
+    // Fill the line path
+    func fillPath(using self, path: *LinePath, color: Color)
+    {
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        fillPath(path, sharedSolidBrush)
+    }
+
+    // Fill the line path
+    func fillPath(using self, pathList: LinePathList, brush: Brush)
+    {
+        visit p: pathList.paths
+            fillPath(p, brush)
+    }
+
+    // Fill the line path
+    func fillPath(using self, pathList: LinePathList, color: Color)
+    {
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        fillPath(pathList, sharedSolidBrush)
     }
 }

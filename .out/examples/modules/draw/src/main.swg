@@ -19,7 +19,7 @@ var font80:     Font
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 4
+var g_page:         s32 = 0
 
 func dataPath()->String
 {
@@ -208,8 +208,30 @@ func displayPage0()
     cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
     cdc.fillCircle(850, 450, 50, brush)
     cdc.end()
-
     renderer.resetTransform()
+    renderer.draw(&cdc)
+
+    //////////////////////////////////////
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+    var lpl: LinePathList
+    cdc.translateTransform(750, 550)
+    p0 := lpl.newPath()
+    p0.start(0, 0)
+    p0.lineTo(100, 0)
+    p0.lineTo(100, 100)
+    p0.lineTo(0, 100)
+    p0.close()
+    p1 := lpl.newPath()
+    p1.start(0, 150)
+    p1.lineTo(100, 150)
+    p1.lineTo(100, 250)
+    p1.lineTo(0, 250)
+    p1.close()
+    cdc.fillPath(lpl, Argb.Black)
+    cdc.end()
+
     renderer.draw(&cdc)
 }
 
