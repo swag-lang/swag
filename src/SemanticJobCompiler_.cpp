@@ -454,11 +454,24 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     {
         node->doneFlags |= AST_DONE_LOAD;
 
-        auto filename = back->computedValue.text.c_str();
-        SWAG_VERIFY(fs::exists(filename), context->report({back, format(Msg0244, back->computedValue.text.c_str())}));
+        auto filename = back->computedValue.text;
+        Utf8 fullFileName;
+
+        // Search first in the same folder as the source file
+        fullFileName = fs::path(node->sourceFile->path.c_str()).parent_path().string();
+        fullFileName += "/";
+        fullFileName += filename;
+        if (!fs::exists(fullFileName.c_str()))
+        {
+            // Search the file itself, without any special path
+            fullFileName = filename;
+
+            if (!fs::exists(fullFileName.c_str()))
+                return context->report({back, format(Msg0244, filename.c_str())});
+        }
 
         struct stat stat_buf;
-        int         rc = stat(filename, &stat_buf);
+        int         rc = stat(fullFileName, &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, format(Msg0223, back->computedValue.text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
@@ -470,7 +483,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         newJob->sizeBuffer                 = stat_buf.st_size;
 
         newJob->module       = module;
-        newJob->sourcePath   = back->computedValue.text;
+        newJob->sourcePath   = fullFileName;
         newJob->dependentJob = job->dependentJob;
         newJob->addDependentJob(job);
         job->jobsToAdd.push_back(newJob);
