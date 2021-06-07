@@ -1293,7 +1293,7 @@ AstNode* AstInline::clone(CloneContext& context)
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
 
     newNode->scope = cloneContext.parentScope;
-    func->content->clone(cloneContext);
+    newNode->cloneChilds(cloneContext, this);
     context.propageResult(cloneContext);
 
     return newNode;

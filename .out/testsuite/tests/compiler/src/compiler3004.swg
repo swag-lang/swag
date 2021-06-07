@@ -1,6 +1,6 @@
-/*struct R
+struct R
 {
-    x: s32
+    x: s32 = 10
 }
 
 impl R
@@ -14,11 +14,11 @@ impl R
 
 func toto(x: R)
 {
-
+    @assert(x.x == 11)
 }
 
 #test
 {
     var v: R
     toto(@{v.Y()})
-}*/
+}

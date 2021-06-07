@@ -21,9 +21,9 @@ impl Painter
 
         visit ref: arr
         {
-            //result.y = Math.min(result.y, top - ref.shiftY)
-            //result.height = Math.max(result.height, ref.height)
-            //result.width += ref.advanceX
+            result.y = Math.min(result.y, top - ref.shiftY)
+            result.height = Math.max(result.height, ref.height)
+            result.width += ref.advanceX
         }
 
         return result
