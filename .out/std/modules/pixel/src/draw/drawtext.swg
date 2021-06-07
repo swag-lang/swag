@@ -3,6 +3,7 @@ using Core, Drawing, Core.Math
 
 impl Painter
 {
+    // Returns the bounding rectangle if a given text, at a given position
     func getTextExtent(using self, left, top: f32, text: string, font: *Font)->Rectangle
     {
         var arr: Array'(const *GlyphRef)
@@ -50,8 +51,11 @@ impl Painter
 
         updateFont(font)
 
-        rect := getTextExtent(left, top, text, font)
-        setTexture0(@{rect.x, rect.y}, @{rect.x + rect.width, rect.y + rect.height}, brush)
+        // Set brush main texture
+        var boundRect: Rectangle
+        if brush.type != .SolidColor
+            boundRect = getTextExtent(left, top, text, font)
+        setTexture0(@{boundRect.x, boundRect.y}, @{boundRect.right(), boundRect.bottom()}, brush)
 
         x := left
         y := top

@@ -317,7 +317,7 @@ func displayPage4()
     cdc.drawText(100, 100, "abcdefghijkl", &font40, Argb.Black)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
-    brush := Brush.createSolid(Argb.Red)
+    brush := Brush.createTexture(image1)
     cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
 
     cdc.drawTexture(100, 400, font80.atlases[0].texture)
