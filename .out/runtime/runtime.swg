@@ -159,7 +159,14 @@ func @print(params: ...)
             #[safety("castany", false)]
             ptr := cast(const *TypeInfo) v
             __printString(ptr.flatName)
-            return
+            continue
+        }
+
+        if ko.kind == .Pointer
+        {
+            #[safety("castany", false)]
+            __printU64(cast(u64) cast(uint) v)
+            continue
         }
 
         switch ko
