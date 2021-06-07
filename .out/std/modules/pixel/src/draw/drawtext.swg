@@ -3,23 +3,28 @@ using Core, Drawing, Core.Math
 
 impl Painter
 {
+    private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphRef)
+    {
+        var result: retval
+        result.reserve(@countof(text))
+        Utf8.visitRunes(|c| text)
+        {
+            result.add(font.getGlyphRef(c))
+        }
+
+        return result
+    }
+
     // Returns the bounding rectangle if a given text, at a given position
     func getTextExtent(using self, left, top: f32, text: string, font: *Font)->Rectangle
     {
-        var arr: Array'(const *GlyphRef)
-
-        arr.reserve(@countof(text))
-        Utf8.visitRunes(|c| text)
-        {
-            arr.add(font.getGlyphRef(c))
-        }
-
         var result: retval
 
         result.x = left
         result.y = top
         result.width = 0
 
+        arr := getGlyphs(text, font)
         visit ref: arr
         {
             result.y = Math.min(result.y, top - ref.shiftY)
@@ -41,14 +46,8 @@ impl Painter
     // Draw a text
     func drawText(using self, left, top: f32, text: string, font: *Font, brush: Brush)
     {
-        var arr: Array'(const *GlyphRef)
-
-        arr.reserve(@countof(text))
-        Utf8.visitRunes(|c| text)
-        {
-            arr.add(font.getGlyphRef(c))
-        }
-
+        arr := getGlyphs(text, font)
+        if arr.isEmpty() return
         updateFont(font)
 
         // Set brush main texture
