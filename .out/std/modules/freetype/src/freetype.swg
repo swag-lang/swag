@@ -261,6 +261,16 @@ struct FT_Size_Metrics
     max_advance:    FT_Pos
 }
 
+struct  FT_Outline_Funcs
+ {
+    move_to:    *void // FT_Outline_MoveToFunc
+    line_to:    *void // FT_Outline_LineToFunc
+    conic_to:   *void // FT_Outline_ConicToFunc
+    cubic_to:   *void // FT_Outline_CubicToFunc
+    shift:      s32
+    delta:      FT_Pos
+}
+
 var Errors: [0xFF] string = ?
 #run
 {
@@ -375,6 +385,7 @@ namespace FreeTypePriv
         func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32)->FT_Error;
         func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32)->FT_Error;
         func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode)->FT_Error;
+        func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void)->FT_Error;
     }
 }
 
@@ -419,6 +430,12 @@ namespace FreeTypePriv
     func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode) throw
     {
         err := FreeTypePriv.FT_Render_Glyph(slot, render_mode)
+        if err throw Errors[err]
+    }
+
+    func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void) throw
+    {
+        err := FreeTypePriv.FT_Outline_Decompose(outline, func_interface, user)
         if err throw Errors[err]
     }
 }
