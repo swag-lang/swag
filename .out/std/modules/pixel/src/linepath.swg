@@ -140,6 +140,57 @@ public impl LinePath
         isClosed = true
     }
 
+    // Initialize the path with a rectangle
+    func setRect(using self, left, top, width, height: f32)
+    {
+        right := left + width
+        bottom := top + height
+        start(left, top)
+        lineTo(right, top)
+        lineTo(right, bottom)
+        lineTo(left, bottom)
+        lineTo(left, top)
+        close()
+    }
+
+    // Initialize the path with a round rectangle
+    func setRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32)
+    {
+        right := left + width
+        bottom := top + height
+        start(left, top + radiusY)
+        arcTo(left + radiusX, top + radiusY, radiusX, radiusY, -90, 0)
+        lineTo(right - radiusX, top)
+        arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0, 90)
+        lineTo(right, bottom - radiusY)
+        arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90, 180)
+        lineTo(left + radiusX, bottom)
+        arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180, 270)
+        close()
+    }
+
+    // Initialize the path with an ellipse
+    func setEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32)
+    {
+        start(centerX, centerY - radiusY)
+        arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
+        arcTo(centerX, centerY, radiusX, radiusY, 90, 180)
+        arcTo(centerX, centerY, radiusX, radiusY, 180, 270)
+        arcTo(centerX, centerY, radiusX, radiusY, 270, 360)
+        close()
+    }
+
+    // Initialize the path with a circle
+    func setCircle(using self, centerX, centerY: f32, radius: f32)
+    {
+        start(centerX, centerY - radius)
+        arcTo(centerX, centerY, radius, radius, 0, 90)
+        arcTo(centerX, centerY, radius, radius, 90, 180)
+        arcTo(centerX, centerY, radius, radius, 180, 270)
+        arcTo(centerX, centerY, radius, radius, 270, 360)
+        close()
+    }
+
     protected func getFlattenDistance(quality: PaintQuality)->f32
     {
         minDist := 0'f32
