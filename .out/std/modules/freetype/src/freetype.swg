@@ -272,7 +272,7 @@ struct  FT_Outline_Funcs
 }
 
 var Errors: [0xFF] string = ?
-#run
+#init
 {
     Errors[0x01] = "cannot open resource"
     Errors[0x02] = "unknown file format"
@@ -372,6 +372,8 @@ var Errors: [0xFF] string = ?
 {
     func FT_Done_Face(face: FT_Face);
     func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt;
+    func FT_Outline_Transform(outline: const *FT_Outline, matrix: const *FT_Matrix);
+    func FT_Outline_Translate(outline: const *FT_Outline, xOffset, yOffset: FT_Pos);
 }
 
 namespace FreeTypePriv

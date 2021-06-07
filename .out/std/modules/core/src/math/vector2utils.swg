@@ -31,7 +31,7 @@ impl Vector2
     {
         toPt := dref self - a
         seg  := b - a
-        seg.normalize()
+        seg.normalizeSafe()
         dot  := toPt.dot(seg)
         seg  *= dot
         cross := toPt - seg

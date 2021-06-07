@@ -19,7 +19,7 @@ var font80:     Font
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 0
+var g_page:         s32 = 4
 
 func dataPath()->String
 {
@@ -328,13 +328,22 @@ func displayPage3()
 func displayPage4()
 {
     cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+
     cdc.drawText(100, 100, "abcdefghijkl", &font40, Argb.Black)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
     cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
 
-    cdc.drawTexture(100, 400, font80.atlases[0].texture)
+    var pathl: LinePathList
+    cdc.translateTransform(100, 300)
+    typeface.getGlyphOutline(&pathl, "A"'rune, 0, 0, 80)
+    typeface.getGlyphOutline(&pathl, "B"'rune, 50, 0, 80)
+    cdc.drawPath(pathl, Argb.Purple, 1)
+
+    //cdc.drawTexture(100, 400, font80.atlases[0].texture)
 
     cdc.end()
     renderer.resetTransform()
