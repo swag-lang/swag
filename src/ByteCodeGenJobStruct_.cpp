@@ -996,8 +996,8 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0
     auto node = context->node;
     if (retVal)
     {
-        if (node->ownerInline)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, node->ownerInline->resultRegisterRC);
+        if (node->resolvedSymbolOverload->node->ownerInline)
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, node->resolvedSymbolOverload->node->ownerInline->resultRegisterRC);
         else
             emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
     }

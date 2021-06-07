@@ -5,7 +5,11 @@ using Swag
 #[constexpr]
 public func(T) hash32(value: T)->u32
 {
-    #if Reflection.isInteger(T)
+    #if @sizeof(T) == 4
+    {
+        return bitcast(u32) value
+    }
+    #else #if Reflection.isInteger(T)
     {
         #[Swag.safety("overflow", false)]
         return cast(u32) value
