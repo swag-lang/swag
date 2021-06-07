@@ -463,11 +463,17 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         fullFileName += filename;
         if (!fs::exists(fullFileName.c_str()))
         {
-            // Search the file itself, without any special path
-            fullFileName = filename;
-
+            // Search relative to the module path
+            fullFileName = node->sourceFile->module->path;
+            fullFileName += "/";
+            fullFileName += filename;
             if (!fs::exists(fullFileName.c_str()))
-                return context->report({back, format(Msg0244, filename.c_str())});
+            {
+                // Search the file itself, without any special path
+                fullFileName = filename;
+                if (!fs::exists(fullFileName.c_str()))
+                    return context->report({back, format(Msg0244, filename.c_str())});
+            }
         }
 
         struct stat stat_buf;
