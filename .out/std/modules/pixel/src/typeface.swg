@@ -56,19 +56,27 @@ impl TypeFace
         return 0
     }
 
-    // Convert a rune to its outline, at a given size
-    func getGlyphOutline(using self, pathList: *LinePathList, c: rune, x, y: s32, size: u32)
+    // Convert a string to its outline, at a given size
+    func getStringOutline(using self, pathList: *LinePathList, text: string, size: u32)
     {
-        assume FT_Set_Pixel_Sizes(face, 0, size)
-        assume FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-
-        FT_Outline_Translate(face.glyph.outline, x * 64, y * 64)
-
         var itf: FT_Outline_Funcs
         itf.move_to = @mkcallback(&moveTo)
         itf.line_to = @mkcallback(&lineTo)
         itf.conic_to = @mkcallback(&conicTo)
         itf.cubic_to = @mkcallback(&bezierTo)
-        assume FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+
+        assume FT_Set_Pixel_Sizes(face, 0, size)
+
+        x := 0
+        Utf8.visitRunes(|c| text)
+        {
+            assume FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+
+            x1 := (x + face.glyph.bitmap_left) * 64
+            FT_Outline_Translate(face.glyph.outline, x1, 0)
+            assume FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+
+            x += face.glyph.advance.x / 64
+        }
     }
 }

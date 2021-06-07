@@ -339,9 +339,9 @@ func displayPage4()
 
     var pathl: LinePathList
     cdc.translateTransform(100, 300)
-    typeface.getGlyphOutline(&pathl, "A"'rune, 0, 0, 80)
-    typeface.getGlyphOutline(&pathl, "B"'rune, 50, 0, 80)
+    typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
     cdc.drawPath(pathl, Argb.Purple, 1)
+    cdc.resetTransform()
 
     //cdc.drawTexture(100, 400, font80.atlases[0].texture)
 
