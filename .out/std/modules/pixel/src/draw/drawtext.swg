@@ -3,13 +3,13 @@ using Core, Drawing, Core.Math
 
 impl Painter
 {
-    private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphRef)
+    private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
     {
         var result: retval
         result.reserve(@countof(text))
         Utf8.visitRunes(|c| text)
         {
-            result.add(font.getGlyphRef(c))
+            result.add(font.getGlyphDesc(c))
         }
 
         return result

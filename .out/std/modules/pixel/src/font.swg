@@ -12,7 +12,7 @@ struct GlyphAtlas
     nextY:      s32
 }
 
-struct GlyphRef
+struct GlyphDesc
 {
     uv:             Math.Rectangle
     atlasIndex:     s32 = -1
@@ -29,8 +29,8 @@ struct Font
     typeFace:   const *TypeFace
     size:       u32
     atlases:    Array'GlyphAtlas
-    asciiRef:   [128] GlyphRef
-    unicodeRef: HashTable'(rune, *GlyphRef)
+    asciiRef:   [128] GlyphDesc
+    unicodeRef: HashTable'(rune, *GlyphDesc)
     dirty:      bool
 }
 
@@ -45,7 +45,8 @@ impl Font
         return result
     }
 
-    func getGlyphRef(using self, c: rune)->const *GlyphRef
+    // Returns the glyph decriptor of a given rune
+    func getGlyphDesc(using self, c: rune)->const *GlyphDesc
     {
         // Already there ?
         if c < 128
@@ -106,13 +107,13 @@ impl Font
             buffer -= atlas.width
         }
 
-        // Setup GlyphRef
-        var ref: *GlyphRef
+        // Setup GlyphDesc
+        var ref: *GlyphDesc
         if c < 128
             ref = &asciiRef[cast(u32) c]
         else
         {
-            ref = Memory.new'GlyphRef()
+            ref = Memory.new'GlyphDesc()
             unicodeRef.add(c, ref)
         }
 
