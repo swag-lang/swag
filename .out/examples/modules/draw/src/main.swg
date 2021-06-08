@@ -332,7 +332,7 @@ func displayPage4()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.drawString(100, 100, "abcdefghijkl", font40, Argb.Black)
+    cdc.drawString(100, 100, "abcdefghijkl", fontFam.getFont(FontFamilyStyle.BoldItalic), Argb.Black)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
@@ -485,14 +485,19 @@ func messageLoop()
 
         renderer.init(hDC, W, H)
 
-        img0 := assume Image.load(imagePath("basn0g01.png"))
+        img0 := Image.load(imagePath("basn0g01.png"))
         image0 = renderer.addImage(img0)
-        img1 := assume Image.load(imagePath("rgba.bmp"))
+        img1 := Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
 
-        typeface = assume TypeFace.create(imagePath("arial.ttf"))
+        typeface = TypeFace.create(imagePath("arial.ttf"))
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)
+
+        fontFam.regular = Font.create(imagePath("arial.ttf"), 30)
+        fontFam.bold = Font.create(imagePath("arialbd.ttf"), 30)
+        fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
+        fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
         display()
         ShowWindow(hWnd, SW_SHOW)
