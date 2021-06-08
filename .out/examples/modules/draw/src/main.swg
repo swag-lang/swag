@@ -12,9 +12,10 @@ var cdc:        Painter
 var renderer:   RenderOglWin32
 var image0:     Texture
 var image1:     Texture
-var typeface:   TypeFace
+var typeface:   const *TypeFace
 var font40:     Font
 var font80:     Font
+var fontFam:    FontFamily
 
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
@@ -488,6 +489,7 @@ func messageLoop()
         image0 = renderer.addImage(img0)
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
+
         typeface = assume TypeFace.load(imagePath("arial.ttf"))
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)

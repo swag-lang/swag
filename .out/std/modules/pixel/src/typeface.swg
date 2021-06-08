@@ -13,15 +13,33 @@ struct TypeFace
     face:   FT_Face
 }
 
+private var g_HashTypeFace: HashTable'(String, *TypeFace)
+private var g_Lock:         Sync.Mutex
+
 impl TypeFace
 {
-    // Load a new font
-    func load(fullname: string, faceIndex: u32 = 0)->TypeFace throw
+    // Load a new typeface
+    func load(fullname: string)->*TypeFace throw
     {
-        var result: retval
-        result.buffer = try File.readAllBytes(fullname)
-        try FT_New_Memory_Face(g_FT, result.buffer.buffer, cast(FT_Long) result.buffer.count, cast(FT_Long) faceIndex, &result.face)
-        return result
+        tf := Memory.new'TypeFace()
+        tf.buffer = try File.readAllBytes(fullname)
+        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
+        return tf
+    }
+
+    // Get or load a new typeface
+    func getOrLoad(fullname: string)->*TypeFace throw
+    {
+        Sync.scopedLock(&g_Lock)
+
+        str := String.from(fullname)
+        here := g_HashTypeFace.find(str)
+        if here return here.value
+
+        tf := try load(fullname)
+
+        g_HashTypeFace.add(str, tf)
+        return tf
     }
 
     #[Swag.callback]
@@ -57,7 +75,7 @@ impl TypeFace
     }
 
     // Convert a string to its outline, at a given size
-    func getStringOutline(using self, pathList: *LinePathList, text: string, size: u32)
+    func getStringOutline(using const self, pathList: *LinePathList, text: string, size: u32)
     {
         var itf: FT_Outline_Funcs
         itf.move_to = @mkcallback(&moveTo)
