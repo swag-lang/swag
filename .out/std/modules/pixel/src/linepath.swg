@@ -304,6 +304,9 @@ public impl LinePath
 
     func flatten(using self, quality: PaintQuality)
     {
+        #[Swag.inline]
+        func roundVal(x: f32) => 0.4 + Math.round(x)
+
         // Already done ?
         if !isDirty and flattenQuality == quality and posBuffer.count
             return
@@ -319,19 +322,31 @@ public impl LinePath
         totalLen = 0
         posBuffer.clear()
 
+        startPoint.x = roundVal(startPoint.x)
+        startPoint.y = roundVal(startPoint.y)
         endPoint = startPoint
+
+        var pos, p1, p2: Vector2 = ?
         visit elem: elements
         {
+            pos.x = roundVal(elem.position.x)
+            pos.y = roundVal(elem.position.y)
             switch elem.type
             {
             case Line:
-                flattenLine(elem.position)
+                flattenLine(pos)
             case Bezier1:
-                flattenBezier(elem.position, elem.p1, quality)
+                p1.x = roundVal(elem.p1.x)
+                p1.y = roundVal(elem.p1.y)
+                flattenBezier(pos, p1, quality)
             case Bezier2:
-                flattenBezier(elem.position, elem.p1, elem.p2, quality)
+                p1.x = roundVal(elem.p1.x)
+                p1.y = roundVal(elem.p1.y)
+                p2.x = roundVal(elem.p2.x)
+                p2.y = roundVal(elem.p2.y)
+                flattenBezier(pos, p1, p2, quality)
             case Arc:
-                flattenArc(elem.position, elem.p1, elem.p2, quality)
+                flattenArc(pos, elem.p1, elem.p2, quality)
             }
         }
     }
