@@ -1,6 +1,5 @@
 #version 330 core
 in vec4     vcolor;
-in vec2     vpixelPos;
 in vec2     vuv0;
 in vec2     vuv1;
 in vec4     vaa0;
@@ -10,6 +9,8 @@ in vec4     vaa3;
 in vec4     vaa4;
 in vec4     vaa5;
 in float    vaanum;
+
+layout(origin_upper_left) in vec4 gl_FragCoord;
 
 uniform sampler2D inTexture0;
 uniform sampler2D inTexture1;
@@ -22,7 +23,7 @@ float computeAlphaAA(vec4 segment)
     vec2  seg  = segment.zw - segment.xy;
     float normSeg = sqrt(seg.x * seg.x + seg.y * seg.y);
     vec2  segNormalized = seg / normSeg;
-    vec2  startToPixel = vpixelPos.xy - segment.xy;
+    vec2  startToPixel = gl_FragCoord.xy - segment.xy;
     float dot = (segNormalized.x * startToPixel.x) + (segNormalized.y * startToPixel.y);
 
     // If outside segment, take distance to the point
@@ -34,7 +35,7 @@ float computeAlphaAA(vec4 segment)
 
     if(dot > normSeg)
     {
-        startToPixel = vpixelPos.xy - segment.zw;
+        startToPixel = gl_FragCoord.xy - segment.zw;
         float normDiff = sqrt(startToPixel.x * startToPixel.x + startToPixel.y * startToPixel.y);
         return clamp(normDiff, 0, 1);
     }

@@ -338,8 +338,10 @@ func displayPage4()
     cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
 
     var pathl: LinePathList
-    cdc.translateTransform(100, 300)
-    typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
+    //cdc.translateTransform(100, 300)
+    //typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
+    cdc.translateTransform(100, 500)
+    typeface.getStringOutline(&pathl, "Й", 80)
     cdc.drawPath(pathl, Argb.Purple, 1)
     cdc.resetTransform()
 

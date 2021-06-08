@@ -18,7 +18,6 @@ uniform vec4    boundRect;
 uniform vec4    textureRect;
 
 out vec4        vcolor;
-out vec2        vpixelPos;
 out vec2        vuv0;
 out vec2        vuv1;
 out vec4        vaa0;
@@ -90,10 +89,6 @@ void transformAA()
 void main()
 {
     gl_Position = mvp * mdl * vec4(vertexPosition, 0, 1);
-
-    // transform pixel position with 'mdl'
-    vec4 vp = mdl * vec4(vertexPosition.xy, 0, 1);
-    vpixelPos.xy = vp.xy;
 
     // source is rgba, and we need bgra
     vcolor = vertexColor.zyxw;

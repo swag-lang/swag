@@ -366,7 +366,6 @@ impl Painter
         // Compute line (half width on each side)
         newPos := pos
         n  := newPos - prev
-        n2 := normal
 
         // If previous and next point are too close, we will take
         // the last normal
@@ -375,7 +374,6 @@ impl Painter
             n.normalize()
             normal = n.cross(1)
             normal *= penSize2
-            n2 = normal
         }
 
         // If this is still invalid, there's nothing we can do
@@ -585,7 +583,7 @@ impl Painter
         if paintParams & .Antialiased
             penSize += 0.5
 
-        penSize2       = penSize * 0.5
+        penSize2    = penSize * 0.5
         prev        = path.startPoint
         beginLine   = true
         firstLine   = true
