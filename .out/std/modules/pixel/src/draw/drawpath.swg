@@ -546,7 +546,7 @@ impl Painter
         if pen.beginCapStyle == .None return
         if penSize < 3 return
 
-        v1 := path.startPoint
+        v1 := path.startPosBuffer
         v2 := path.posBuffer.buffer[0]
         n := v2 - v1
         n.normalizeSafe()
@@ -561,7 +561,7 @@ impl Painter
         if penSize < 3 return
 
         v1 := path.posBuffer.buffer[path.posBuffer.count - 1]
-        v2 := path.startPoint
+        v2 := path.startPosBuffer
         if path.posBuffer.count > 1
             v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
         n := v1 - v2
@@ -582,7 +582,7 @@ impl Painter
             penSize += 0.5
 
         penSize2    = penSize * 0.5
-        prev        = path.startPoint
+        prev        = path.startPosBuffer
         beginLine   = true
         firstLine   = true
 

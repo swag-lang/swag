@@ -21,7 +21,6 @@ public struct LinePath
     elements:       Array'Element
     startPoint:     Vector2
     endPoint:       Vector2
-    isOpened:       bool
     isClosed:       bool
     isDirty:        bool
 
@@ -30,6 +29,8 @@ public struct LinePath
     bvMin:          Vector2
     bvMax:          Vector2
     totalLen:       f32
+    startPosBuffer: Vector2
+    endPosBuffer:   Vector2
     posBuffer:      Array'Vector2
     isConvex:       bool
     lastDot:        f32
@@ -41,7 +42,7 @@ public impl LinePath
     func start(using self, startX, startY: f32)
     {
         elements.clear()
-        isOpened, isClosed = false
+        isClosed = false
         isDirty = true
         startPoint = Vector2{startX, startY}
         endPoint = startPoint
@@ -182,11 +183,11 @@ public impl LinePath
     private func flattenBezier(using self, pos, p1: Vector2, quality: PaintQuality)
     {
         minDist := getFlattenDistance(quality)
-        startPt := endPoint
+        startPt := endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPoint})
+        tmp.add(@{0, endPosBuffer})
         tmp.add(@{1, pos})
 
         for i := 0; i < tmp.count - 1; i += 1
@@ -214,13 +215,13 @@ public impl LinePath
 
     private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        v := pos - endPoint
+        v := pos - endPosBuffer
         minDist := getFlattenDistance(quality)
-        startPt := endPoint
+        startPt := endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPoint})
+        tmp.add(@{0, endPosBuffer})
         tmp.add(@{1, pos})
 
         for i := 0; i < tmp.count - 1; i += 1
@@ -257,7 +258,7 @@ public impl LinePath
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{angle: f32, pos: Vector2}
-        tmp.add(@{p1.x, endPoint})
+        tmp.add(@{p1.x, endPosBuffer})
         tmp.add(@{p1.y, endPos})
 
         for i := 0; i < tmp.count - 1; i += 1
@@ -280,7 +281,7 @@ public impl LinePath
 
     private func flattenLine(using self, pos: Vector2)
     {
-        totalLen += endPoint.distance(pos)
+        totalLen += endPosBuffer.distance(pos)
         bvMin.x = Math.min(bvMin.x, pos.x)
         bvMin.y = Math.min(bvMin.y, pos.y)
         bvMax.x = Math.max(bvMax.x, pos.x)
@@ -289,8 +290,8 @@ public impl LinePath
         // Compute if shape is convex
         if isConvex and posBuffer.count > 2
         {
-            v   := pos - endPoint
-            v1  := endPoint - posBuffer.buffer[posBuffer.count - 2]
+            v   := pos - endPosBuffer
+            v1  := endPosBuffer - posBuffer.buffer[posBuffer.count - 2]
             dot := v.dot(v1)
             if lastDot == 0
                 lastDot = dot
@@ -299,7 +300,7 @@ public impl LinePath
         }
 
         posBuffer.add(pos)
-        endPoint = pos
+        endPosBuffer = pos
     }
 
     func flatten(using self, quality: PaintQuality)
@@ -322,9 +323,9 @@ public impl LinePath
         totalLen = 0
         posBuffer.clear()
 
-        startPoint.x = roundVal(startPoint.x)
-        startPoint.y = roundVal(startPoint.y)
-        endPoint = startPoint
+        startPosBuffer.x = roundVal(startPoint.x)
+        startPosBuffer.y = roundVal(startPoint.y)
+        endPosBuffer = startPosBuffer
 
         var pos, p1, p2: Vector2 = ?
         visit elem: elements
