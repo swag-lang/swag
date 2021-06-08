@@ -13,8 +13,8 @@ var renderer:   RenderOglWin32
 var image0:     Texture
 var image1:     Texture
 var typeface:   const *TypeFace
-var font40:     Font
-var font80:     Font
+var font40:     *Font
+var font80:     *Font
 var fontFam:    FontFamily
 
 var g_modeAA:       bool = true
@@ -332,11 +332,11 @@ func displayPage4()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.drawString(100, 100, "abcdefghijkl", &font40, Argb.Black)
+    cdc.drawString(100, 100, "abcdefghijkl", font40, Argb.Black)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
-    cdc.drawString(100, 200, "this is a great text ЖЙ", &font80, brush)
+    cdc.drawString(100, 200, "this is a great text ЖЙ", font80, brush)
 
     var pathl: LinePathList
     cdc.translateTransform(100, 300)
@@ -490,7 +490,7 @@ func messageLoop()
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
 
-        typeface = assume TypeFace.getOrLoad(imagePath("arial.ttf"))
+        typeface = assume TypeFace.create(imagePath("arial.ttf"))
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)
 

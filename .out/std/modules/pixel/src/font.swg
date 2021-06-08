@@ -34,30 +34,40 @@ struct Font
     dirty:      bool
 }
 
+private var g_HashFont: HashTable'(String, *Font)
+private var g_Lock:     Sync.Mutex
+
 impl Font
 {
     // Creates a new Font of the given typeface and size
-    func create(typeFace: const *TypeFace, size: u32)->Font
+    func create(typeFace: const *TypeFace, size: u32)->*Font
     {
         Debug.assert(typeFace != null)
         Debug.assert(size > 0)
 
-        var result: retval
-        result.typeFace = typeFace
-        result.size = size
-        return result
+        str := Format.toString("%_%", typeFace.fullname, size)
+
+        Sync.scopedLock(&g_Lock)
+
+        here := g_HashFont.find(str)
+        if here return here.value
+
+        font := Memory.new'Font()
+        font.typeFace = typeFace
+        font.size = size
+
+        g_HashFont.add(str, font)
+        return font
     }
 
     // Creates a new Font with the given filename and size
-    func create(fullname: string, size: u32)->Font throw
+    func create(fullname: string, size: u32)->*Font throw
     {
         Debug.assert(@countof(fullname) != 0)
         Debug.assert(size > 0)
 
-        var result: retval
-        result.typeFace = try TypeFace.getOrLoad(fullname)
-        result.size = size
-        return result
+        typeFace := try TypeFace.create(fullname)
+        return create(typeFace, size)
     }
 
     // Returns the glyph decriptor of a given rune

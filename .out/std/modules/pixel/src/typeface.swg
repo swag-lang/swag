@@ -9,8 +9,9 @@ protected var g_FT: FT_Library
 
 struct TypeFace
 {
-    buffer: Array'u8
-    face:   FT_Face
+    fullname:   string
+    buffer:     Array'u8
+    face:       FT_Face
 }
 
 private var g_HashTypeFace: HashTable'(String, *TypeFace)
@@ -19,7 +20,7 @@ private var g_Lock:         Sync.Mutex
 impl TypeFace
 {
     // Get or load a new typeface
-    func getOrLoad(fullname: string)->*TypeFace throw
+    func create(fullname: string)->*TypeFace throw
     {
         Sync.scopedLock(&g_Lock)
 
@@ -28,6 +29,7 @@ impl TypeFace
         if here return here.value
 
         tf := Memory.new'TypeFace()
+        tf.fullname = fullname
         tf.buffer = try File.readAllBytes(fullname)
         try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
