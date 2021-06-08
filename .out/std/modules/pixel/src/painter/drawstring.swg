@@ -1,6 +1,26 @@
 #global public
 using Core, Drawing, Core.Math
 
+enum StringHorzAlignment
+{
+    Center
+    Left
+    Right
+}
+
+enum StringVertAlignment
+{
+    Center
+    Top
+    Bottom
+}
+
+struct StringFormat
+{
+    horzAlignment: StringHorzAlignment = Left
+    vertAlignment: StringVertAlignment = Bottom
+}
+
 impl Painter
 {
     private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
@@ -44,20 +64,47 @@ impl Painter
     }
 
     // Draw a text
+    func drawString(using self, left, top: f32, text: string, font: *Font, color: Color, format: StringFormat)
+    {
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        drawString(left, top, text, font, sharedSolidBrush, format)
+    }
+
+    // Draw a text
     func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush)
+    {
+        var format: StringFormat
+        drawString(left, top, text, font, brush, format)
+    }
+
+    // Draw a text
+    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
         updateFont(font)
 
-        // Set brush main texture
-        var boundRect: Rectangle
-        if brush.type != .SolidColor
-            boundRect = measureString(left, top, text, font)
-        setTexture0(@{boundRect.x, boundRect.y}, @{boundRect.right(), boundRect.bottom()}, brush)
-
         x := left
         y := top
+
+        boundRect := measureString(x, y, text, font)
+        switch format.horzAlignment
+        {
+        case Left:      break
+        case Right:     x -= boundRect.width
+        case Center:    x -= Math.round(boundRect.width / 2)
+        }
+
+        switch format.vertAlignment
+        {
+        case Top:       y += boundRect.height
+        case Bottom:    break
+        case Center:    y += Math.round(boundRect.height / 2)
+        }
+
+        // Set brush main texture
+        setTexture0(@{boundRect.x, boundRect.y}, @{boundRect.right(), boundRect.bottom()}, brush)
 
         visit ref: arr
         {

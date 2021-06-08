@@ -332,14 +332,21 @@ func displayPage4()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.drawString(100, 100, "abcdefghijkl", fontFam.getFont(FontFamilyStyle.BoldItalic), Argb.Black)
+    var format: StringFormat
+    fnt := fontFam.getFont(FontFamilyStyle.Regular)
+    cdc.fillCircle(100, 100, 5, Argb.Red)
+    cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black, format)
+    format.horzAlignment = .Center
+    format.vertAlignment = .Top
+    cdc.fillCircle(100, 140, 5, Argb.Red)
+    cdc.drawString(100, 140, "abcdefghijkl", fnt, Argb.Black, format)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
-    cdc.drawString(100, 200, "this is a great text ЖЙ", font80, brush)
+    cdc.drawString(100, 300, "this is a great text ЖЙ", font80, brush)
 
     var pathl: LinePathList
-    cdc.translateTransform(100, 300)
+    cdc.translateTransform(100, 400)
     typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
     //cdc.translateTransform(100, 500)
     //typeface.getStringOutline(&pathl, "Й", 80)
