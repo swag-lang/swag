@@ -48,6 +48,18 @@ impl Font
         return result
     }
 
+    // Creates a new Font with the given filename and size
+    func create(fullname: string, size: u32)->Font throw
+    {
+        Debug.assert(@countof(fullname) != 0)
+        Debug.assert(size > 0)
+
+        var result: retval
+        result.typeFace = try TypeFace.getOrLoad(fullname)
+        result.size = size
+        return result
+    }
+
     // Returns the glyph decriptor of a given rune
     func getGlyphDesc(using self, c: rune)->const *GlyphDesc
     {

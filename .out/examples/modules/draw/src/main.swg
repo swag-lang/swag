@@ -490,7 +490,7 @@ func messageLoop()
         img1 := assume Image.load(imagePath("rgba.bmp"))
         image1 = renderer.addImage(img1)
 
-        typeface = assume TypeFace.load(imagePath("arial.ttf"))
+        typeface = assume TypeFace.getOrLoad(imagePath("arial.ttf"))
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)
 

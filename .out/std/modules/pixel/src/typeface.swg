@@ -18,15 +18,6 @@ private var g_Lock:         Sync.Mutex
 
 impl TypeFace
 {
-    // Load a new typeface
-    func load(fullname: string)->*TypeFace throw
-    {
-        tf := Memory.new'TypeFace()
-        tf.buffer = try File.readAllBytes(fullname)
-        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
-        return tf
-    }
-
     // Get or load a new typeface
     func getOrLoad(fullname: string)->*TypeFace throw
     {
@@ -36,7 +27,9 @@ impl TypeFace
         here := g_HashTypeFace.find(str)
         if here return here.value
 
-        tf := try load(fullname)
+        tf := Memory.new'TypeFace()
+        tf.buffer = try File.readAllBytes(fullname)
+        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
         g_HashTypeFace.add(str, tf)
         return tf
