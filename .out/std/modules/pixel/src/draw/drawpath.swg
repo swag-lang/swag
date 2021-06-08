@@ -315,8 +315,6 @@ impl Painter
 
     private func drawJoin(using self, using cxt: *Context, p, d1, d2: Vector2)
     {
-        if penSize < 3 return
-
         #[Swag.complete]
         switch pen.joinStyle
         {
