@@ -48,12 +48,6 @@ public impl LinePath
     }
 
     // Add a line from the previous point to 'pt'
-    #[Swag.inline]
-    func lineTo(using self, pt: Vector2)
-    {
-        lineTo(pt.x, pt.y)
-    }
-
     func lineTo(using self, x, y: f32)
     {
         var elem: Element = ?
@@ -65,12 +59,6 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    #[Swag.inline]
-    func bezierTo(using self, pt, ct: Vector2)
-    {
-        bezierTo(pt.x, pt.y, ct.x, ct.y)
-    }
-
     func bezierTo(using self, x, y: f32, ctx, cty: f32)
     {
         var elem: Element = ?
@@ -83,12 +71,6 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    #[Swag.inline]
-    func bezierTo(using self, pt, ct1, ct2: Vector2)
-    {
-        bezierTo(pt.x, pt.y, ct1.x, ct1.y, ct2.x, ct2.y)
-    }
-
     func bezierTo(using self, x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var elem: Element = ?
@@ -102,12 +84,6 @@ public impl LinePath
     }
 
     // Add an arc from the previous point
-    #[Swag.inline]
-    func arcTo(using self, center: Vector2, radiusX, radiusY: f32, initAngle, maxAngle: f32)
-    {
-        arcTo(center.x, center.y, radiusX, radiusY, initAngle, maxAngle)
-    }
-
     func arcTo(using self, centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
@@ -135,7 +111,7 @@ public impl LinePath
 
         v := endPoint - startPoint
         if v.lengthSquared() >= 0.5 * 0.5
-            lineTo(startPoint)
+            lineTo(startPoint.x, startPoint.y)
 
         isClosed = true
     }
