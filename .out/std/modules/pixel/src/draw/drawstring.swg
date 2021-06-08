@@ -16,7 +16,7 @@ impl Painter
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    func getTextExtent(using self, left, top: f32, text: string, font: *Font)->Rectangle
+    func measureString(using self, left, top: f32, text: string, font: *Font)->Rectangle
     {
         var result: retval
 
@@ -36,15 +36,15 @@ impl Painter
     }
 
     // Draw a text
-    func drawText(using self, left, top: f32, text: string, font: *Font, color: Color)
+    func drawString(using self, left, top: f32, text: string, font: *Font, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
-        drawText(left, top, text, font, sharedSolidBrush)
+        drawString(left, top, text, font, sharedSolidBrush)
     }
 
     // Draw a text
-    func drawText(using self, left, top: f32, text: string, font: *Font, brush: Brush)
+    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
@@ -53,7 +53,7 @@ impl Painter
         // Set brush main texture
         var boundRect: Rectangle
         if brush.type != .SolidColor
-            boundRect = getTextExtent(left, top, text, font)
+            boundRect = measureString(left, top, text, font)
         setTexture0(@{boundRect.x, boundRect.y}, @{boundRect.right(), boundRect.bottom()}, brush)
 
         x := left

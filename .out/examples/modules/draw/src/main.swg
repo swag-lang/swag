@@ -331,11 +331,11 @@ func displayPage4()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.drawText(100, 100, "abcdefghijkl", &font40, Argb.Black)
+    cdc.drawString(100, 100, "abcdefghijkl", &font40, Argb.Black)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
-    cdc.drawText(100, 200, "this is a great text ЖЙ", &font80, brush)
+    cdc.drawString(100, 200, "this is a great text ЖЙ", &font80, brush)
 
     var pathl: LinePathList
     cdc.translateTransform(100, 300)
