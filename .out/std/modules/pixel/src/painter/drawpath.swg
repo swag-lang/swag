@@ -779,6 +779,12 @@ impl Painter
         if Math.isZeroEpsilon(path.totalLen) return
 
         using path
+        if paintParams & .Antialiased and !doneOffsetAA
+        {
+            doneOffsetAA = true
+            offset(0.25)
+        }
+
 
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)

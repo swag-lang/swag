@@ -33,6 +33,7 @@ public struct LinePath
     endPosBuffer:   Vector2
     posBuffer:      Array'Vector2
     isConvex:       bool
+    doneOffsetAA:   bool
     lastDot:        f32
 }
 
@@ -360,6 +361,7 @@ public impl LinePath
         if !isDirty and flattenQuality == quality and posBuffer.count
             return
 
+        doneOffsetAA = false
         isConvex = true
         lastDot = 0
 
