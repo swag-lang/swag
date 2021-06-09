@@ -37,4 +37,40 @@ impl Vector2
         cross := toPt - seg
         return cross.length()
     }
+
+    private func getLineLineIntersectCoefs(v1, v2, v3, v4: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
+    {
+        var result: retval
+
+        ua := (v4.x - v3.x) * (v1.y - v3.y) - (v4.y - v3.y) * (v1.x - v3.x)
+        ub := (v2.x - v1.x) * (v1.y - v3.y) - (v2.y - v1.y) * (v1.x - v3.x)
+        d  := (v4.y - v3.y) * (v2.x - v1.x) - (v4.x - v3.x) * (v2.y - v1.y)
+
+        // Parallel lines
+        if Math.abs(d) < epsilon
+        {
+            result.d0, result.d1 = 0
+            if Math.abs(ua) < epsilon and Math.abs(ub) < epsilon
+                result.yes = true
+            return result
+        }
+
+        result.yes = true
+        result.d0 = ua / d
+        result.d1 = ub / d
+        return result
+    }
+
+    func lineLineIntersect(v1, v2, v3, v4: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
+    {
+        var result: retval
+
+        (yes, d0, d1) := getLineLineIntersectCoefs(v1, v2, v3, v4, epsilon)
+        if !yes return result
+
+        result.yes = true
+        result.pos.x = v1.x + d0 * (v2.x - v1.x)
+        result.pos.y = v1.y + d0 * (v2.y - v1.y)
+        return result
+    }
 }

@@ -190,13 +190,15 @@ func displayPage0()
     path.lineTo(50, 100)
     path.lineTo(0, 100)
     path.close()
+    brush.color = Argb.Red
+    cdc.fillPath(&path, brush)
+    path.offset(-10)
+    brush.color = Argb.Blue
     cdc.fillPath(&path, brush)
     cdc.end()
 
     renderer.resetTransform()
-    renderer.rotateTransform(45)
-    renderer.scaleTransform(0.5, 0.5)
-    renderer.translateTransform(700, 50)
+    renderer.translateTransform(625, 50)
     renderer.draw(&cdc)
 
     //////////////////////////////////////
@@ -335,9 +337,11 @@ func displayPage4()
     var format: StringFormat
     fnt := fontFam.getFont(FontFamilyStyle.Regular)
     cdc.fillCircle(100, 100, 5, Argb.Red)
+    rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
+    cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.Blue)
     cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black, format)
     format.horzAlignment = .Center
-    format.vertAlignment = .Top
+    format.vertAlignment = .Center
     cdc.fillCircle(100, 140, 5, Argb.Red)
     cdc.drawString(100, 140, "abcdefghijkl", fnt, Argb.Black, format)
 
@@ -365,8 +369,8 @@ func display()
     renderer.begin()
 
     cdc.begin()
-    cdc.clear(Argb.Red)
-    cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
+    cdc.clear(Color.fromArgb(0xFFEEEEEE))
+    //cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     cdc.end()
     renderer.draw(&cdc)
 

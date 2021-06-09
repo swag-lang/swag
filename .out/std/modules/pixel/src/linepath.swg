@@ -303,10 +303,38 @@ public impl LinePath
         endPosBuffer = pos
     }
 
+    func offset(using self, value: f32)
+    {
+        copy := posBuffer
+        visit *pos, i: copy
+        {
+            v0 := copy.buffer[(i + copy.count - 1) % copy.count]
+            v1 := dref pos
+            v2 := copy.buffer[(i + 1) % copy.count]
+            tmp0 := Vector2.toNormalize(v1 - v0)
+            n0 := tmp0.cross(1)
+            tmp1 := Vector2.toNormalize(v2 - v1)
+            n1 := tmp1.cross(1)
+
+            vva1 := v1 + n0
+            vva0 := v0 + n0
+            vvb1 := v2 + n1
+            vvb0 := v1 + n1
+            (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+            if yes
+                posBuffer[i] += (intPos - v1) * value
+            else
+            {
+                n := Vector2.toNormalize(n0 + n1)
+                posBuffer[i] += n * value
+            }
+        }
+    }
+
     func flatten(using self, quality: PaintQuality)
     {
         #[Swag.inline]
-        func roundVal(x: f32) => 0.4 + Math.round(x)
+        func roundVal(x: f32) => x//0.4 + Math.round(x)
 
         // Already done ?
         if !isDirty and flattenQuality == quality and posBuffer.count
