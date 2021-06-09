@@ -348,8 +348,8 @@ func displayPage4()
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
     rect = cdc.measureString(100, 300, "this is a great text ЖЙ", font80)
-    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
-    cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Argb.Red)
+    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+    cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
     cdc.drawString(100, 300, "this is a great text ЖЙ", font80, brush)
 
     var pathl: LinePathList

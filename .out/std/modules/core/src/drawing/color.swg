@@ -136,6 +136,15 @@ impl Color
 
     // Create a new Color with specified values
     #[inline]
+    func fromArgb(alpha: u8, argb: Argb)->Color
+    {
+        var result: retval = argb
+        result.a = alpha
+        return result
+    }
+
+    // Create a new Color with specified values
+    #[inline]
     func fromArgb(argb: u32)->Color
     {
         var result: retval = argb
