@@ -111,7 +111,7 @@ impl Painter
         {
         case Top:       y += boundRect.height
         case Bottom:    break
-        case Center:    y += Math.round(boundRect.height / 2)
+        case Center:    y += Math.round(boundRect.baseLine / 2)
         }
 
         // Set brush main texture
