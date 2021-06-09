@@ -59,12 +59,16 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
             }
             else
             {
-                auto pz = strrchr(cFileName, '.');
-                if (pz && !_strcmpi(pz, ".swg"))
+                if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                 {
-                    if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
+                    auto pz = strrchr(cFileName, '.');
+                    if (pz && !_strcmpi(pz, ".swg"))
                     {
                         addFileToModule(theModule, allFiles, tmp, cFileName, writeTime);
+                    }
+                    else
+                    {
+                        theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
                     }
                 }
             }
