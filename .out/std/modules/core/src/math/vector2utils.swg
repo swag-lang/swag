@@ -38,20 +38,18 @@ impl Vector2
         return cross.length()
     }
 
-    private func getLineLineIntersectCoefs(v1, v2, v3, v4: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
+    private func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
     {
         var result: retval
 
-        ua := (v4.x - v3.x) * (v1.y - v3.y) - (v4.y - v3.y) * (v1.x - v3.x)
-        ub := (v2.x - v1.x) * (v1.y - v3.y) - (v2.y - v1.y) * (v1.x - v3.x)
-        d  := (v4.y - v3.y) * (v2.x - v1.x) - (v4.x - v3.x) * (v2.y - v1.y)
+        ua := (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
+        ub := (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
+        d  := (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
 
         // Parallel lines
         if Math.abs(d) < epsilon
         {
-            result.d0, result.d1 = 0
-            if Math.abs(ua) < epsilon and Math.abs(ub) < epsilon
-                result.yes = true
+            result.yes = Math.abs(ua) < epsilon and Math.abs(ub) < epsilon
             return result
         }
 
@@ -61,16 +59,17 @@ impl Vector2
         return result
     }
 
-    func lineLineIntersect(v1, v2, v3, v4: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
+    // Compute the intersection point of two lines
+    func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
     {
         var result: retval
 
-        (yes, d0, d1) := getLineLineIntersectCoefs(v1, v2, v3, v4, epsilon)
+        (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
         if !yes return result
 
         result.yes = true
-        result.pos.x = v1.x + d0 * (v2.x - v1.x)
-        result.pos.y = v1.y + d0 * (v2.y - v1.y)
+        result.pos.x = start0.x + d0 * (end0.x - start0.x)
+        result.pos.y = start0.y + d0 * (end0.y - start0.y)
         return result
     }
 }

@@ -303,8 +303,13 @@ public impl LinePath
         endPosBuffer = pos
     }
 
+    // Expand outline by a given amount
+    // Path must be closed and flattened
     func offset(using self, value: f32)
     {
+        if Math.isZeroEpsilon(value) return
+        if !isClosed or !posBuffer.count return
+
         copy := posBuffer
         visit *pos, i: copy
         {
