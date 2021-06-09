@@ -303,6 +303,39 @@ public impl LinePath
         endPosBuffer = pos
     }
 
+    protected func getFlattenPoint(using self, i: u32, offset: f32)->Vector2
+    {
+        if Math.isZeroEpsilon(offset)
+            return posBuffer.buffer[i]
+
+        v0 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+        v1 := posBuffer.buffer[i]
+        v2 := posBuffer.buffer[(i + 1) % posBuffer.count]
+        tmp0 := Vector2.toNormalize(v1 - v0)
+        n0 := tmp0.cross(1)
+        tmp1 := Vector2.toNormalize(v2 - v1)
+        n1 := tmp1.cross(1)
+
+        vva1 := v1 + n0
+        vva0 := v0 + n0
+        vvb1 := v2 + n1
+        vvb0 := v1 + n1
+        (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+
+        var result: retval = v1
+        if yes
+        {
+            result += ((intPos - v1) * offset)
+        }
+        else
+        {
+            n := Vector2.toNormalize(n0 + n1)
+            result += (n * offset)
+        }
+
+        return result
+    }
+
     // Expand outline by a given amount
     // Path must be closed and flattened
     func offset(using self, value: f32)
@@ -310,30 +343,12 @@ public impl LinePath
         if Math.isZeroEpsilon(value) return
         if !isClosed or !posBuffer.count return
 
-        copy := posBuffer
-        visit *pos, i: copy
-        {
-            v0 := copy.buffer[(i + copy.count - 1) % copy.count]
-            v1 := dref pos
-            v2 := copy.buffer[(i + 1) % copy.count]
-            tmp0 := Vector2.toNormalize(v1 - v0)
-            n0 := tmp0.cross(1)
-            tmp1 := Vector2.toNormalize(v2 - v1)
-            n1 := tmp1.cross(1)
+        var copy: Array'Vector2
+        copy.reserve(posBuffer.count)
+        loop i: cast(u32) posBuffer.count
+            copy.add(getFlattenPoint(i, value))
 
-            vva1 := v1 + n0
-            vva0 := v0 + n0
-            vvb1 := v2 + n1
-            vvb0 := v1 + n1
-            (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
-            if yes
-                posBuffer[i] += (intPos - v1) * value
-            else
-            {
-                n := Vector2.toNormalize(n0 + n1)
-                posBuffer[i] += n * value
-            }
-        }
+        posBuffer =,move copy
     }
 
     func flatten(using self, quality: PaintQuality)
