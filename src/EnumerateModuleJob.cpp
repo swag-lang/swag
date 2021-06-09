@@ -66,6 +66,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
                     {
                         addFileToModule(theModule, allFiles, tmp, cFileName, writeTime);
                     }
+
+                    // Even if this is not a .swg file, as this is in the src directory, the file time contribute
+                    // to the rebuild detection (in case file is #load by another for example)
                     else
                     {
                         theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
