@@ -541,14 +541,6 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         setNop(context, ip + 1);
     }
 
-    // Useless pop/push
-    if (ip[0].op == ByteCodeOp::PopRR &&
-        ip[1].op == ByteCodeOp::PushRR)
-    {
-        setNop(context, ip);
-        setNop(context, ip + 1);
-    }
-
     // Useless multi return
     if (ip[0].op == ByteCodeOp::Ret &&
         ip[1].op == ByteCodeOp::Ret)

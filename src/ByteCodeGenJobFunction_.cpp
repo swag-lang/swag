@@ -996,8 +996,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     auto returnType = typeInfoFunc->returnType;
     if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
+        auto testReturn = node;
+        if (testReturn->kind == AstNodeKind::Identifier)
+            testReturn = testReturn->parent;
+
         // If in a return expression, just push the caller retval
-        AstNode* parentReturn = node->parent ? node->parent->inSimpleReturn() : nullptr;
+        AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
         if (parentReturn)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
