@@ -15,6 +15,15 @@ enum StringVertAlignment
     Bottom
 }
 
+struct StringMetrics
+{
+    left:       f32
+    top:        f32
+    width:      f32
+    height:     f32
+    baseLine:   f32
+}
+
 struct StringFormat
 {
     horzAlignment: StringHorzAlignment = Left
@@ -36,22 +45,24 @@ impl Painter
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    func measureString(using self, left, top: f32, text: string, font: *Font)->Rectangle
+    func measureString(using self, left, top: f32, text: string, font: *Font)->StringMetrics
     {
         var result: retval
 
-        result.x = left
-        result.y = top
-        result.width = 0
+        result.left = left
+        result.top = top
+        bottom := top
 
         arr := getGlyphs(text, font)
         visit ref: arr
         {
-            result.y = Math.min(result.y, top - ref.shiftY)
-            result.height = Math.max(result.height, ref.height)
+            result.top = Math.min(result.top, top - ref.shiftY)
+            bottom = Math.max(bottom, top - ref.shiftY + ref.height)
+            result.baseLine = Math.max(result.baseLine, ref.shiftY)
             result.width += ref.advanceX
         }
 
+        result.height = bottom - result.top
         return result
     }
 
@@ -104,7 +115,7 @@ impl Painter
         }
 
         // Set brush main texture
-        setTexture0(@{boundRect.x, boundRect.y}, @{boundRect.right(), boundRect.bottom()}, brush)
+        setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
 
         visit ref: arr
         {

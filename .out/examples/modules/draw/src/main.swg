@@ -338,7 +338,7 @@ func displayPage4()
     fnt := fontFam.getFont(FontFamilyStyle.Regular)
     cdc.fillCircle(100, 100, 5, Argb.Red)
     rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
-    cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.Blue)
+    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
     cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black, format)
     format.horzAlignment = .Center
     format.vertAlignment = .Center
@@ -347,6 +347,9 @@ func displayPage4()
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
+    rect = cdc.measureString(100, 300, "this is a great text ЖЙ", font80)
+    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
+    cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Argb.Red)
     cdc.drawString(100, 300, "this is a great text ЖЙ", font80, brush)
 
     var pathl: LinePathList
