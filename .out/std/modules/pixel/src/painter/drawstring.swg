@@ -146,8 +146,8 @@ impl Painter
         // Divide the text in lines
         lastLine := 0'uint
         testX := 0.0
-        blankIdx := Swag.U32.Max
-        widthOnBlank := 0.0
+        firstBlankIdx := Swag.U32.Max
+        widthAtFirstBlank := 0.0
         Utf8.visitRunes(|c, ci, bi| text)
         {
             if c == "\n"'rune
@@ -157,31 +157,35 @@ impl Painter
                 arr.emplace(&oneStr)
                 lastLine = bi + 1
                 testX = 0
-                blankIdx = Swag.U32.Max
-                widthOnBlank = 0
+                firstBlankIdx = Swag.U32.Max
+                widthAtFirstBlank = 0
                 continue
             }
 
-            if Unicode.isLatin1(c) and Latin1.isSpace(cast(u8) c)
-            {
-                blankIdx = cast(u32) bi
-                widthOnBlank = testX
-            }
-
             desc := font.getGlyphDesc(c)
+
             if format.flags & .WordWrap
             {
+                // Store blank informations
+                if Unicode.isLatin1(c) and Latin1.isSpace(cast(u8) c)
+                {
+                    firstBlankIdx = cast(u32) bi
+                    widthAtFirstBlank = testX
+                }
+
+                // Need to wrap if next character position is outside the box
                 if testX + desc.advanceX > pos.width
                 {
-                    if blankIdx != Swag.U32.Max
+                    if firstBlankIdx != Swag.U32.Max
                     {
-                        oneStr.str = @mkstring(@dataof(text) + lastLine, blankIdx - lastLine)
-                        oneStr.width = widthOnBlank
+                        oneStr.str = @mkstring(@dataof(text) + lastLine, firstBlankIdx - lastLine)
+                        oneStr.width = widthAtFirstBlank
                         arr.emplace(&oneStr)
-                        lastLine = blankIdx + 1
-                        testX -= widthOnBlank
-                        blankIdx = Swag.U32.Max
-                        widthOnBlank = 0
+
+                        lastLine = firstBlankIdx + 1
+                        testX -= widthAtFirstBlank
+                        firstBlankIdx = Swag.U32.Max
+                        widthAtFirstBlank = 0
                         continue
                     }
                 }
