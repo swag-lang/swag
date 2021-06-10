@@ -96,6 +96,7 @@ struct Painter
     lastTexture0Handle: TextureHandle
     lastTexture0Type:   BrushType = SolidColor
     lastTexture1Handle: TextureHandle
+    canSetTexture0:     bool = true
 }
 
 impl Painter
@@ -140,6 +141,8 @@ impl Painter
 
     protected func setTexture0(using self, bvMin, bvMax: Vector2, brush: Brush)
     {
+        if !canSetTexture0
+            return
         if brush.type == .SolidColor
         {
             resetTexture0()
@@ -281,6 +284,7 @@ impl Painter
         commandBuffer.clear()
         vertexBuffer.clear()
         interpolationMode = .Pixel
+        canSetTexture0 = true
     }
 
     // Call this after drawing

@@ -99,6 +99,15 @@ impl Painter
         // Set brush main texture
         setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
 
+        // Underline
+        canSetTexture0 = false
+        yUnder := y - font.underlinePos
+        pen := Pen.createSolid(brush.color, font.underlineSize)
+        pen.beginCapStyle = .None
+        pen.endCapStyle = .None
+        drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
+        canSetTexture0 = true
+
         visit ref: arr
         {
             setTexture1(font.atlases[ref.atlasIndex].texture)
