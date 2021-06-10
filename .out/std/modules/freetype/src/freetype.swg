@@ -51,6 +51,14 @@ const FT_LOAD_COLOR                         = 1 << 20
 const FT_LOAD_COMPUTE_METRICS               = 1 << 21
 const FT_LOAD_BITMAP_METRICS_ONLY           = 1 << 22
 
+#[Swag.constexpr]
+func FT_LOAD_TARGET(x: FT_Int32) => (cast(FT_Int32) (x & 15) << 16)
+const FT_LOAD_TARGET_NORMAL  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+const FT_LOAD_TARGET_LIGHT   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LIGHT)
+const FT_LOAD_TARGET_MONO    = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_MONO)
+const FT_LOAD_TARGET_LCD     = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD)
+const FT_LOAD_TARGET_LCD_V   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD_V)
+
 const FT_MAX_MODULES = 32
 
 enum FT_Render_Mode
