@@ -82,8 +82,8 @@ impl Painter
         if arr.isEmpty() return
         updateFont(font)
 
-        x := left
-        y := top + font.ascent
+        x := Math.round(left)
+        y := Math.round(top + font.ascent)
 
         boundRect := measureString(x, y, text, font)
 
@@ -153,7 +153,7 @@ impl Painter
                 blank = cast(u32) bi
 
             desc := font.getGlyphDesc(c)
-            testX += desc.shiftX + desc.advanceX
+            testX += desc.advanceX
             if testX > pos.x + pos.width
             {
             }
@@ -171,12 +171,12 @@ impl Painter
         x := pos.x
         y := pos.y
 
-        totalHeight := cast(f32) (arr.count * font.size)
+        totalHeight := cast(f32) (arr.count * font.height)
         switch format.vertAlignment
         {
         case Top:       break
         case Bottom:    y = pos.bottom() - totalHeight
-        case Center:    y += totalHeight * 0.5
+        case Center:    y = pos.vertCenter() - totalHeight * 0.5
         }
 
         visit *line: arr
@@ -188,11 +188,11 @@ impl Painter
             {
             case Left:      break
             case Right:     x1 = pos.right() - line.width
-            case Center:    x1 = pos.horzCenter() - Math.round(line.width / 2)
+            case Center:    x1 = pos.horzCenter() - line.width * 0.5
             }
 
             drawString(x1, y1, line.str, font, brush)
-            y += font.size
+            y += font.height
         }
     }
 }

@@ -338,8 +338,10 @@ func displayPage4()
     {
         var format: StringFormat
         var rect:   Rectangle{350, 50, 100, 100}
+        format.horzAlignment = .Center
+        format.vertAlignment = .Center
         cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        cdc.drawString(rect, "this is\na text\non multiple lines", fontSmall, Argb.Black, format)
+        cdc.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", fontSmall, Argb.Black, format)
     }
 
     {

@@ -28,6 +28,7 @@ struct Font
 {
     ascent:     f32
     descent:    f32
+    height:     f32
 
     typeFace:   const *TypeFace
     size:       u32
@@ -60,8 +61,9 @@ impl Font
         font.size = size
 
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
-        font.ascent = typeFace.face.size.metrics.ascender / 72.0
-        font.descent = typeFace.face.size.metrics.descender / 72.0
+        font.ascent  = typeFace.face.size.metrics.ascender / 72.0
+        font.descent = -typeFace.face.size.metrics.descender / 72.0
+        font.height  = font.ascent + font.descent
 
         g_HashFont.add(str, font)
         return font
