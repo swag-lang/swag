@@ -109,7 +109,7 @@ impl Font
         // Render the glyph
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
         assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_LIGHT)
         bmp := typeFace.face.glyph.bitmap
 
         // Creates a new atlas if this is the first time, or if the last atlas is full

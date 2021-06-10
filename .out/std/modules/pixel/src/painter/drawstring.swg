@@ -15,6 +15,13 @@ enum StringVertAlignment
     Bottom
 }
 
+enum UnderlineStyle
+{
+    None
+    Underline
+    Strikeout
+}
+
 #[Swag.enumflags]
 enum StringFormatFlags
 {
@@ -26,7 +33,8 @@ struct StringFormat
 {
     horzAlignment:  StringHorzAlignment = Left
     vertAlignment:  StringVertAlignment = Top
-    lineSpace:      f32
+    underline:      UnderlineStyle = None
+    lineGap:        f32
     flags:          StringFormatFlags = Default
 }
 
@@ -85,7 +93,7 @@ impl Painter
     }
 
     // Draw a string
-    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush)
+    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
@@ -94,19 +102,35 @@ impl Painter
         x := Math.round(left)
         y := Math.round(top + font.ascent)
 
-        boundRect := measureString(x, y, text, font)
+        // Compute text extent only if necessary
+        var boundRect: StringMetrics = ?
+        if under != .None or brush.type != .SolidColor
+            boundRect = measureString(x, y, text, font)
 
         // Set brush main texture
-        setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
+        if brush.type != .SolidColor
+            setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
 
         // Underline
-        canSetTexture0 = false
-        yUnder := y - font.underlinePos
-        pen := Pen.createSolid(brush.color, font.underlineSize)
-        pen.beginCapStyle = .None
-        pen.endCapStyle = .None
-        drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
-        canSetTexture0 = true
+        if under != .None
+        {
+            pen := Pen.createSolid(brush.color, font.underlineSize)
+            pen.beginCapStyle = .None
+            pen.endCapStyle = .None
+
+            canSetTexture0 = false
+            switch under
+            {
+            case Strikeout:
+                yUnder := y - (boundRect.baseLine / 2)
+                drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
+            case Underline:
+                yUnder := y - font.underlinePos
+                drawLine(x, yUnder, x + boundRect.width, yUnder, pen)
+            }
+
+            canSetTexture0 = true
+        }
 
         visit ref: arr
         {
@@ -215,7 +239,7 @@ impl Painter
         y := pos.y
 
         totalHeight := cast(f32) (arr.count * font.height)
-        totalHeight += cast(f32) (arr.count - 1) * format.lineSpace
+        totalHeight += cast(f32) (arr.count - 1) * format.lineGap
 
         switch format.vertAlignment
         {
@@ -236,8 +260,8 @@ impl Painter
             case Center:    x1 = pos.horzCenter() - line.width * 0.5
             }
 
-            drawString(x1, y1, line.str, font, brush)
-            y += font.height + format.lineSpace
+            drawString(x1, y1, line.str, font, brush, format.underline)
+            y += font.height + format.lineGap
         }
     }
 }
