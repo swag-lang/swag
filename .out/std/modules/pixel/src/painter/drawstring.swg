@@ -15,6 +15,21 @@ enum StringVertAlignment
     Bottom
 }
 
+#[Swag.enumflags]
+enum StringFormatFlags
+{
+    Default
+    WordWrap
+}
+
+struct StringFormat
+{
+    horzAlignment:  StringHorzAlignment = Left
+    vertAlignment:  StringVertAlignment = Top
+    lineSpace:      f32
+    flags:          StringFormatFlags = Default
+}
+
 struct StringMetrics
 {
     left:       f32
@@ -22,12 +37,6 @@ struct StringMetrics
     width:      f32
     height:     f32
     baseLine:   f32
-}
-
-struct StringFormat
-{
-    horzAlignment: StringHorzAlignment = Left
-    vertAlignment: StringVertAlignment = Bottom
 }
 
 impl Painter
@@ -67,7 +76,7 @@ impl Painter
         return result
     }
 
-    // Draw a text
+    // Draw a string
     func drawString(using self, left, top: f32, text: string, font: *Font, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
@@ -75,7 +84,7 @@ impl Painter
         drawString(left, top, text, font, sharedSolidBrush)
     }
 
-    // Draw a text
+    // Draw a string
     func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush)
     {
         arr := getGlyphs(text, font)
@@ -114,6 +123,7 @@ impl Painter
         }
     }
 
+    // Draw a string
     func drawString(using self, pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
     {
         sharedSolidBrush.type = .SolidColor
@@ -121,6 +131,7 @@ impl Painter
         drawString(pos, text, font, sharedSolidBrush, format)
     }
 
+    // Draw a string
     func drawString(using self, pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
         struct OneStr
@@ -135,7 +146,8 @@ impl Painter
         // Divide the text in lines
         lastLine := 0'uint
         testX := 0.0
-        blank := Swag.U32.Max
+        blankIdx := Swag.U32.Max
+        widthOnBlank := 0.0
         Utf8.visitRunes(|c, ci, bi| text)
         {
             if c == "\n"'rune
@@ -145,19 +157,37 @@ impl Painter
                 arr.emplace(&oneStr)
                 lastLine = bi + 1
                 testX = 0
-                blank = Swag.U32.Max
+                blankIdx = Swag.U32.Max
+                widthOnBlank = 0
                 continue
             }
 
             if Unicode.isLatin1(c) and Latin1.isSpace(cast(u8) c)
-                blank = cast(u32) bi
-
-            desc := font.getGlyphDesc(c)
-            testX += desc.advanceX
-            if testX > pos.x + pos.width
             {
+                blankIdx = cast(u32) bi
+                widthOnBlank = testX
             }
 
+            desc := font.getGlyphDesc(c)
+            if format.flags & .WordWrap
+            {
+                if testX + desc.advanceX > pos.width
+                {
+                    if blankIdx != Swag.U32.Max
+                    {
+                        oneStr.str = @mkstring(@dataof(text) + lastLine, blankIdx - lastLine)
+                        oneStr.width = widthOnBlank
+                        arr.emplace(&oneStr)
+                        lastLine = blankIdx + 1
+                        testX -= widthOnBlank
+                        blankIdx = Swag.U32.Max
+                        widthOnBlank = 0
+                        continue
+                    }
+                }
+            }
+
+            testX += desc.advanceX
         }
 
         if lastLine != @countof(text)
@@ -172,6 +202,8 @@ impl Painter
         y := pos.y
 
         totalHeight := cast(f32) (arr.count * font.height)
+        totalHeight += cast(f32) (arr.count - 1) * format.lineSpace
+
         switch format.vertAlignment
         {
         case Top:       break
@@ -192,7 +224,7 @@ impl Painter
             }
 
             drawString(x1, y1, line.str, font, brush)
-            y += font.height
+            y += font.height + format.lineSpace
         }
     }
 }
