@@ -526,7 +526,7 @@ func messageLoop()
         image1 = renderer.addImage(img1)
 
         typeface = TypeFace.create(imagePath("arial.ttf"))
-        fontSmall = Font.create(typeface, 16)
+        fontSmall = Font.create(typeface, cast(u32) ((12 * 96) / 72))
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)
 

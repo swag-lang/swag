@@ -26,9 +26,11 @@ struct GlyphDesc
 
 struct Font
 {
-    ascent:     f32
-    descent:    f32
-    height:     f32
+    ascent:         f32
+    descent:        f32
+    height:         f32
+    underlinePos:   f32
+    underlineSize:  f32
 
     typeFace:   const *TypeFace
     size:       u32
@@ -43,6 +45,12 @@ private var g_Lock:     Sync.Mutex
 
 impl Font
 {
+    private func mulFix(a, b: s32)->s32
+    {
+        ab := cast(s64) a * cast(s64) b
+        return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >>,safe 16))
+    }
+
     // Creates a new Font of the given typeface and size
     func create(typeFace: const *TypeFace, size: u32)->*Font
     {
@@ -61,9 +69,12 @@ impl Font
         font.size = size
 
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
-        font.ascent  = typeFace.face.size.metrics.ascender / 72.0
-        font.descent = -typeFace.face.size.metrics.descender / 72.0
-        font.height  = font.ascent + font.descent
+        metrics := &typeFace.face.size.metrics
+        font.ascent  = metrics.ascender / 64.0
+        font.descent = metrics.descender / 64.0
+        font.height  = font.ascent - font.descent
+        font.underlinePos = mulFix(cast(s32) typeFace.face.underline_position, metrics.y_scale) / 64.0
+        font.underlineSize = mulFix(cast(s32) typeFace.face.underline_thickness, metrics.y_scale) / 64.0
 
         g_HashFont.add(str, font)
         return font
