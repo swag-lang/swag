@@ -338,8 +338,8 @@ func displayPage4()
     {
         var format: StringFormat
         var rect:   Rectangle{350, 50, 100, 100}
-        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.Blue)
-        cdc.drawString(rect, "this is\na text", fontSmall, Argb.Black, format)
+        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        cdc.drawString(rect, "this is\na text\non multiple lines", fontSmall, Argb.Black, format)
     }
 
     {
@@ -361,7 +361,7 @@ func displayPage4()
 
     {
         var pathl: LinePathList
-        cdc.translateTransform(100, 400)
+        cdc.translateTransform(100, 500)
         typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
         //cdc.translateTransform(100, 500)
         //typeface.getStringOutline(&pathl, "Й", 80)

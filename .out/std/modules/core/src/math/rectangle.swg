@@ -20,6 +20,20 @@ impl Rectangle
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
+    // horizontal center coordinate (x + width / 2)
+    #[Swag.inline]
+    func horzCenter(using const self)->f32
+    {
+        return x + (width * 0.5)
+    }
+
+    // vertical center coordinate (y + height / 2)
+    #[Swag.inline]
+    func vertCenter(using const self)->f32
+    {
+        return y + (height * 0.5)
+    }
+
     // right coordinate (x + width)
     #[Swag.inline]
     func right(using const self)->f32

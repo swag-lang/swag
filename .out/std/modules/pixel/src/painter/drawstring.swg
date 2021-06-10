@@ -49,15 +49,16 @@ impl Painter
     {
         var result: retval
 
+        y := top + font.ascent
         result.left = left
-        result.top = top
+        result.top = y
         bottom := top
 
         arr := getGlyphs(text, font)
         visit ref: arr
         {
-            result.top = Math.min(result.top, top - ref.shiftY)
-            bottom = Math.max(bottom, top - ref.shiftY + ref.height)
+            result.top = Math.min(result.top, y - ref.shiftY)
+            bottom = Math.max(bottom, y - ref.shiftY + ref.height)
             result.baseLine = Math.max(result.baseLine, ref.shiftY)
             result.width += ref.advanceX
         }
@@ -82,7 +83,8 @@ impl Painter
         updateFont(font)
 
         x := left
-        y := top
+        y := top + font.ascent
+
         boundRect := measureString(x, y, text, font)
 
         // Set brush main texture
@@ -138,7 +140,7 @@ impl Painter
         {
             if c == "\n"'rune
             {
-                oneStr.str = @mkstring(@dataof(text), bi - lastLine)
+                oneStr.str = @mkstring(@dataof(text) + lastLine, bi - lastLine)
                 oneStr.width = testX
                 arr.emplace(&oneStr)
                 lastLine = bi + 1
@@ -165,24 +167,18 @@ impl Painter
             arr.emplace(&oneStr)
         }
 
-        /*boundRect := measureString(x, y, text, font)
-        switch format.horzAlignment
-        {
-        case Left:      break
-        case Right:     x -= boundRect.width
-        case Center:    x -= Math.round(boundRect.width / 2)
-        }
-
-        switch format.vertAlignment
-        {
-        case Top:       y += boundRect.height
-        case Bottom:    break
-        case Center:    y += Math.round(boundRect.baseLine / 2)
-        }*/
-
         // Draw each line
         x := pos.x
         y := pos.y
+
+        totalHeight := cast(f32) (arr.count * font.size)
+        switch format.vertAlignment
+        {
+        case Top:       break
+        case Bottom:    y = pos.bottom() - totalHeight
+        case Center:    y += totalHeight * 0.5
+        }
+
         visit *line: arr
         {
             x1 := x
@@ -191,8 +187,8 @@ impl Painter
             switch format.horzAlignment
             {
             case Left:      break
-            case Right:     x1 -= line.width
-            case Center:    x1 -= Math.round(line.width / 2)
+            case Right:     x1 = pos.right() - line.width
+            case Center:    x1 = pos.horzCenter() - Math.round(line.width / 2)
             }
 
             drawString(x1, y1, line.str, font, brush)

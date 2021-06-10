@@ -26,6 +26,9 @@ struct GlyphDesc
 
 struct Font
 {
+    ascent:     f32
+    descent:    f32
+
     typeFace:   const *TypeFace
     size:       u32
     atlases:    Array'GlyphAtlas
@@ -55,6 +58,10 @@ impl Font
         font := Memory.new'Font()
         font.typeFace = typeFace
         font.size = size
+
+        assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
+        font.ascent = typeFace.face.size.metrics.ascender / 72.0
+        font.descent = typeFace.face.size.metrics.descender / 72.0
 
         g_HashFont.add(str, font)
         return font
