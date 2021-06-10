@@ -13,6 +13,7 @@ var renderer:   RenderOglWin32
 var image0:     Texture
 var image1:     Texture
 var typeface:   const *TypeFace
+var fontSmall:  *Font
 var font40:     *Font
 var font80:     *Font
 var fontFam:    FontFamily
@@ -335,15 +336,13 @@ func displayPage4()
     cdc.paintQuality = g_paintQuality
 
     var format: StringFormat
+    cdc.drawString(@{350, 50, 100, 100}, "this is\na text", fontSmall, Argb.Black, format)
+
     fnt := fontFam.getFont(FontFamilyStyle.Regular)
     cdc.fillCircle(100, 100, 5, Argb.Red)
     rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
     cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
-    cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black, format)
-    format.horzAlignment = .Center
-    format.vertAlignment = .Center
-    cdc.fillCircle(100, 140, 5, Argb.Red)
-    cdc.drawString(100, 140, "abcdefghijkl", fnt, Argb.Black, format)
+    cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.White)
 
     //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
     brush := Brush.createTexture(image1)
@@ -505,6 +504,7 @@ func messageLoop()
         image1 = renderer.addImage(img1)
 
         typeface = TypeFace.create(imagePath("arial.ttf"))
+        fontSmall = Font.create(typeface, 16)
         font40 = Font.create(typeface, 40)
         font80 = Font.create(typeface, 80)
 

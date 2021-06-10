@@ -697,12 +697,16 @@ func visitRunes(buffer: const [..] u8, stmt: code)
         (c, eat) := decodeRune(sl)
         if eat == 0
             break
+
         #macro
         {
-            @alias0 := `c
-            @alias1 := `charIdx
-            @alias2 := `byteIdx
-            #mixin `stmt
+            label inside
+            {
+                @alias0 := `c
+                @alias1 := `charIdx
+                @alias2 := `byteIdx
+                #mixin `stmt { continue=break inside; }
+            }
         }
 
         charIdx += 1

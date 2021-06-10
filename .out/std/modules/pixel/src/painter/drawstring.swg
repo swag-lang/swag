@@ -75,22 +75,7 @@ impl Painter
     }
 
     // Draw a text
-    func drawString(using self, left, top: f32, text: string, font: *Font, color: Color, format: StringFormat)
-    {
-        sharedSolidBrush.type = .SolidColor
-        sharedSolidBrush.color = color
-        drawString(left, top, text, font, sharedSolidBrush, format)
-    }
-
-    // Draw a text
     func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush)
-    {
-        var format: StringFormat
-        drawString(left, top, text, font, brush, format)
-    }
-
-    // Draw a text
-    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
@@ -98,21 +83,7 @@ impl Painter
 
         x := left
         y := top
-
         boundRect := measureString(x, y, text, font)
-        switch format.horzAlignment
-        {
-        case Left:      break
-        case Right:     x -= boundRect.width
-        case Center:    x -= Math.round(boundRect.width / 2)
-        }
-
-        switch format.vertAlignment
-        {
-        case Top:       y += boundRect.height
-        case Bottom:    break
-        case Center:    y += Math.round(boundRect.baseLine / 2)
-        }
 
         // Set brush main texture
         setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
@@ -138,6 +109,81 @@ impl Painter
             discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
             x += ref.advanceX
+        }
+    }
+
+    func drawString(using self, pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
+    {
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        drawString(pos, text, font, sharedSolidBrush, format)
+    }
+
+    func drawString(using self, pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
+    {
+        struct OneStr
+        {
+            str: string
+            br:  StringMetrics
+        }
+
+        var arr: Array'string
+
+        // Divide the text in lines
+        lastLine := 0'uint
+        testX := 0.0
+        blank := Swag.U32.Max
+        Utf8.visitRunes(|c, ci, bi| text)
+        {
+            if c == "\n"'rune
+            {
+                arr.add(@mkstring(@dataof(text), bi - lastLine))
+                lastLine = bi + 1
+                testX = 0
+                blank = Swag.U32.Max
+                continue
+            }
+
+            if Unicode.isLatin1(c) and Latin1.isSpace(cast(u8) c)
+                blank = cast(u32) bi
+
+            desc := font.getGlyphDesc(c)
+            testX += desc.shiftX + desc.advanceX
+            if testX > pos.x + pos.width
+            {
+            }
+
+        }
+
+        if lastLine != @countof(text)
+            arr.add(@mkstring(@dataof(text) + lastLine, @countof(text) - lastLine))
+
+        /*boundRect := measureString(x, y, text, font)
+        switch format.horzAlignment
+        {
+        case Left:      break
+        case Right:     x -= boundRect.width
+        case Center:    x -= Math.round(boundRect.width / 2)
+        }
+
+        switch format.vertAlignment
+        {
+        case Top:       y += boundRect.height
+        case Bottom:    break
+        case Center:    y += Math.round(boundRect.baseLine / 2)
+        }*/
+
+        // Draw each line
+        x := pos.x
+        y := pos.y
+        visit str: arr
+        {
+            x1 := x
+            y1 := y
+
+            boundRect := measureString(x1, y1, str, font)
+            drawString(x1, y1, str, font, brush)
+            y += boundRect.height
         }
     }
 }
