@@ -123,11 +123,12 @@ impl Painter
     {
         struct OneStr
         {
-            str: string
-            br:  StringMetrics
+            str:    string
+            width:  f32
         }
 
-        var arr: Array'string
+        var arr:    Array'OneStr
+        var oneStr: OneStr
 
         // Divide the text in lines
         lastLine := 0'uint
@@ -137,7 +138,9 @@ impl Painter
         {
             if c == "\n"'rune
             {
-                arr.add(@mkstring(@dataof(text), bi - lastLine))
+                oneStr.str = @mkstring(@dataof(text), bi - lastLine)
+                oneStr.width = testX
+                arr.emplace(&oneStr)
                 lastLine = bi + 1
                 testX = 0
                 blank = Swag.U32.Max
@@ -156,7 +159,11 @@ impl Painter
         }
 
         if lastLine != @countof(text)
-            arr.add(@mkstring(@dataof(text) + lastLine, @countof(text) - lastLine))
+        {
+            oneStr.str = @mkstring(@dataof(text) + lastLine, @countof(text) - lastLine)
+            oneStr.width = testX
+            arr.emplace(&oneStr)
+        }
 
         /*boundRect := measureString(x, y, text, font)
         switch format.horzAlignment
@@ -176,14 +183,20 @@ impl Painter
         // Draw each line
         x := pos.x
         y := pos.y
-        visit str: arr
+        visit *line: arr
         {
             x1 := x
             y1 := y
 
-            boundRect := measureString(x1, y1, str, font)
-            drawString(x1, y1, str, font, brush)
-            y += boundRect.height
+            switch format.horzAlignment
+            {
+            case Left:      break
+            case Right:     x1 -= line.width
+            case Center:    x1 -= Math.round(line.width / 2)
+            }
+
+            drawString(x1, y1, line.str, font, brush)
+            y += font.size
         }
     }
 }

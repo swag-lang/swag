@@ -335,29 +335,39 @@ func displayPage4()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    var format: StringFormat
-    cdc.drawString(@{350, 50, 100, 100}, "this is\na text", fontSmall, Argb.Black, format)
+    {
+        var format: StringFormat
+        var rect:   Rectangle{350, 50, 100, 100}
+        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.Blue)
+        cdc.drawString(rect, "this is\na text", fontSmall, Argb.Black, format)
+    }
 
-    fnt := fontFam.getFont(FontFamilyStyle.Regular)
-    cdc.fillCircle(100, 100, 5, Argb.Red)
-    rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
-    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
-    cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.White)
+    {
+        fnt := fontFam.getFont(FontFamilyStyle.Regular)
+        cdc.fillCircle(100, 100, 5, Argb.Red)
+        rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
+        cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
+        cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.White)
+    }
 
-    //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
-    brush := Brush.createTexture(image1)
-    rect = cdc.measureString(100, 300, "this is a great text ЖЙ", font80)
-    cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-    cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
-    cdc.drawString(100, 300, "this is a great text ЖЙ", font80, brush)
+    {
+        //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
+        brush := Brush.createTexture(image1)
+        rect := cdc.measureString(100, 300, "this is a great text ЖЙ", font80)
+        cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
+        cdc.drawString(100, 300, "this is a great text ЖЙ", font80, brush)
+    }
 
-    var pathl: LinePathList
-    cdc.translateTransform(100, 400)
-    typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
-    //cdc.translateTransform(100, 500)
-    //typeface.getStringOutline(&pathl, "Й", 80)
-    cdc.drawPath(pathl, Argb.Purple, 1)
-    cdc.resetTransform()
+    {
+        var pathl: LinePathList
+        cdc.translateTransform(100, 400)
+        typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
+        //cdc.translateTransform(100, 500)
+        //typeface.getStringOutline(&pathl, "Й", 80)
+        cdc.drawPath(pathl, Argb.Purple, 1)
+        cdc.resetTransform()
+    }
 
     //cdc.drawTexture(100, 400, font80.atlases[0].texture)
 
