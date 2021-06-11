@@ -356,6 +356,10 @@ func displayPage4()
     }
 
     {
+        cdc.drawString(100, 200, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black)
+    }
+
+    {
         fnt := fontFam.getFont(FontFamilyStyle.Regular)
         cdc.fillCircle(100, 100, 5, Argb.Red)
         //rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)

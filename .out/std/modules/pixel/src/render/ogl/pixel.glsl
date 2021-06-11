@@ -64,6 +64,51 @@ float computeAlphaEdgesAA()
     return min(norm, computeAlphaAA(vaa5));
 }
 
+vec3 energy_distribution(vec4 previous, vec4 current, vec4 next)
+{
+    float primary   = 32/100.0;
+    float secondary = 25/100.0;
+    float tertiary  = 9/100.0;
+
+    // Energy distribution as explained on:
+    // http://www.grc.com/freeandclear.htm
+    //
+    //  .. v..
+    // RGB RGB RGB
+    // previous.g + previous.b + current.r + current.g + current.b
+    //
+    //   . .v. .
+    // RGB RGB RGB
+    // previous.b + current.r + current.g + current.b + next.r
+    //
+    //     ..v ..
+    // RGB RGB RGB
+    // current.r + current.g + current.b + next.r + next.g
+
+    float r =
+        tertiary  * previous.g +
+        secondary * previous.b +
+        primary   * current.r  +
+        secondary * current.g  +
+        tertiary  * current.b;
+
+    float g =
+        tertiary  * previous.b +
+        secondary * current.r +
+        primary   * current.g  +
+        secondary * current.b  +
+        tertiary  * next.r;
+
+    float b =
+        tertiary  * current.r +
+        secondary * current.g +
+        primary   * current.b +
+        secondary * next.r    +
+        tertiary  * next.g;
+
+    return vec3(r,g,b);
+}
+
 void main()
 {
     vec4 inColor = vcolor * texture(inTexture0, vuv0);
@@ -76,26 +121,16 @@ void main()
         return;
     }
 
-    vec4 current  = texture(inTexture1, vuv1);
-    vec4 previous = texture(inTexture1, vuv1 + vec2(-1,0) * pixelSize.xy);
-    vec4 next     = texture(inTexture1, vuv1 + vec2(+1,0) * pixelSize.xy);
-    //current = pow(current, vec4(1.0/1.8));
-    //previous= pow(previous, vec4(1.0/1.8));
+    vec4 current = texture(inTexture1, vuv1);
     float r = current.r;
     float g = current.g;
     float b = current.b;
 
-    float vshift = 0.666;
-    //if( vshift <= 0.666 )
-    {
-        float z = (vshift-0.33)/0.333;
-        r = mix(current.r, previous.b, z);
-        g = mix(current.g, current.r,  z);
-        b = mix(current.b, current.g,  z);
-    }
+    vec4 tcolor;
+    tcolor.r = mix(r, inColor.r, current.r);
+    tcolor.g = mix(g, inColor.g, current.g);
+    tcolor.b = mix(b, inColor.b, current.b);
+    tcolor.a = mix((r+g+b)/3.0, min(min(r,g),b), max(max(r,g),b));
 
-    float t = max(max(r,g),b);
-    vec4  tcolor = vec4(inColor.rgb, (r+g+b)/3.0);
-    tcolor = t*tcolor + (1.0-t)*vec4(r,g,b, min(min(r,g),b));
     color = vec4(tcolor.rgb, inColor.a * tcolor.a);
 }
