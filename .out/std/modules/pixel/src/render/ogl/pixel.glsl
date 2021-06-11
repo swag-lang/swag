@@ -67,5 +67,8 @@ void main()
 {
     color = vcolor * texture(inTexture0, vuv0);
     color.w *= computeAlphaEdgesAA();
-    color.w *= texture(inTexture1, vuv1).r;
+
+    vec3 blend = texture(inTexture1, vuv1).rgb;
+    //blendW = pow(blendW, 1.8);
+    color.w *= max(max(blend.r, blend.g), blend.b);
 }

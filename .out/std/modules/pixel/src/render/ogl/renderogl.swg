@@ -727,11 +727,13 @@ impl RenderOgl
                     atlas.dirty = false
                     if cast(u32) atlas.texture.handle == 0
                         glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
-                    atlas.texture.width = atlas.width
-                    atlas.texture.height = atlas.width
+                    atlas.texture.width = atlas.width / atlas.bpp
+                    atlas.texture.height = atlas.height
+                    atlas.texture.pf = .RGB8
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
                     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, cast(GLsizei) atlas.width, cast(GLsizei) atlas.width, 0, GL_RED, GL_UNSIGNED_BYTE, atlas.datas.buffer)
+                    fmt := atlas.bpp == 1 ? GL_RED : GL_RGB
+                    glTexImage2D(GL_TEXTURE_2D, 0, fmt, cast(GLsizei) atlas.texture.width, cast(GLsizei) atlas.texture.height, 0, fmt, GL_UNSIGNED_BYTE, atlas.datas.buffer)
                 }
 
             case ResetTexture0:

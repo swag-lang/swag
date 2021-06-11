@@ -5,6 +5,8 @@ struct GlyphAtlas
 {
     texture:    Texture
     width:      u32
+    height:     u32
+    bpp:        u32
     datas:      Array'u8
     dirty:      bool
     curX:       s32
@@ -108,8 +110,14 @@ impl Font
 
         // Render the glyph
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
+
         assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
         assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+        bpp := 1
+        //assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_TARGET_LCD)
+        //assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_LCD)
+        //bpp := 3
+
         bmp := typeFace.face.glyph.bitmap
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
@@ -129,8 +137,10 @@ impl Font
         if !atlas
         {
             var newAtlas: GlyphAtlas
-            newAtlas.width = Math.roundUpToPowerOf2(size * 4)
-            newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.width)
+            newAtlas.bpp = bpp
+            newAtlas.width =  Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
+            newAtlas.height = Math.roundUpToPowerOf2(size * 4)
+            newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             atlases.add(newAtlas)
             atlas = atlases[atlases.count - 1]
@@ -142,7 +152,7 @@ impl Font
         atlas.nextY = Math.max(atlas.nextY, atlas.curY + bmp.rows)
 
         // Copy the rendered glyph to the atlas datas
-        buffer := atlas.datas.buffer + x + (atlas.width * (atlas.width - 1))
+        buffer := atlas.datas.buffer + x + (atlas.width * (atlas.height - 1))
         buffer -= (y * atlas.width)
         src := bmp.buffer
         loop j: bmp.rows
@@ -172,10 +182,12 @@ impl Font
         ref.shiftY   = glyph.bitmap_top
 
         widthf := cast(f32) atlas.width
+        heightf := cast(f32) atlas.height
         ref.uv.x = x / widthf
-        ref.uv.y = y / widthf
+        ref.uv.y = y / heightf
         ref.uv.width = ref.width / widthf
-        ref.uv.height = ref.height / widthf
+        ref.uv.height = ref.height / heightf
+        ref.width /= atlas.bpp
 
         ref.atlasIndex = cast(u32) (atlases.count - 1)
 

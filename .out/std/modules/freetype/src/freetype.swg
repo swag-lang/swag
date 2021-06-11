@@ -269,7 +269,7 @@ struct FT_Size_Metrics
     max_advance:    FT_Pos
 }
 
-struct  FT_Outline_Funcs
+struct FT_Outline_Funcs
  {
     move_to:    *void // FT_Outline_MoveToFunc
     line_to:    *void // FT_Outline_LineToFunc
@@ -277,6 +277,29 @@ struct  FT_Outline_Funcs
     cubic_to:   *void // FT_Outline_CubicToFunc
     shift:      s32
     delta:      FT_Pos
+}
+
+enum FT_LcdFilter
+{
+    FT_LCD_FILTER_NONE    = 0
+    FT_LCD_FILTER_DEFAULT = 1
+    FT_LCD_FILTER_LIGHT   = 2
+    FT_LCD_FILTER_LEGACY1 = 3
+    FT_LCD_FILTER_LEGACY  = 16
+    FT_LCD_FILTER_MAX
+}
+
+enum FT_Pixel_Mode
+{
+    FT_PIXEL_MODE_NONE
+    FT_PIXEL_MODE_MONO
+    FT_PIXEL_MODE_GRAY
+    FT_PIXEL_MODE_GRAY2
+    FT_PIXEL_MODE_GRAY4
+    FT_PIXEL_MODE_LCD
+    FT_PIXEL_MODE_LCD_V
+    FT_PIXEL_MODE_BGRA
+    FT_PIXEL_MODE_MAX
 }
 
 var Errors: [0xFF] string = ?
@@ -396,6 +419,8 @@ namespace FreeTypePriv
         func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32)->FT_Error;
         func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode)->FT_Error;
         func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void)->FT_Error;
+        func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter)->FT_Error;
+        func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8)->FT_Error;
     }
 }
 
@@ -446,6 +471,18 @@ namespace FreeTypePriv
     func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void) throw
     {
         err := FreeTypePriv.FT_Outline_Decompose(outline, func_interface, user)
+        if err throw Errors[err]
+    }
+
+    func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter) throw
+    {
+        err := FreeTypePriv.FT_Library_SetLcdFilter(library, filter)
+        if err throw Errors[err]
+    }
+
+    func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
+    {
+        err := FreeTypePriv.FT_Library_SetLcdFilterWeights(library, weights)
         if err throw Errors[err]
     }
 }
