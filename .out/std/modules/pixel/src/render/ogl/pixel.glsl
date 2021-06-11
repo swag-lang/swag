@@ -14,6 +14,7 @@ layout(origin_upper_left) in vec4 gl_FragCoord;
 
 uniform sampler2D inTexture0;
 uniform sampler2D inTexture1;
+uniform vec3      pixelSize;
 
 out vec4    color;
 
@@ -65,10 +66,36 @@ float computeAlphaEdgesAA()
 
 void main()
 {
-    color = vcolor * texture(inTexture0, vuv0);
-    color.w *= computeAlphaEdgesAA();
+    vec4 inColor = vcolor * texture(inTexture0, vuv0);
+    inColor.w *= computeAlphaEdgesAA();
 
-    vec3 blend = texture(inTexture1, vuv1).rgb;
-    //blendW = pow(blendW, 1.8);
-    color.w *= max(max(blend.r, blend.g), blend.b);
+    if(pixelSize.z == 0)
+    {
+        inColor.w *= texture(inTexture1, vuv1).r;
+        color = inColor;
+        return;
+    }
+
+    vec4 current  = texture(inTexture1, vuv1);
+    vec4 previous = texture(inTexture1, vuv1 + vec2(-1,0) * pixelSize.xy);
+    vec4 next     = texture(inTexture1, vuv1 + vec2(+1,0) * pixelSize.xy);
+    //current = pow(current, vec4(1.0/1.8));
+    //previous= pow(previous, vec4(1.0/1.8));
+    float r = current.r;
+    float g = current.g;
+    float b = current.b;
+
+    float vshift = 0.666;
+    //if( vshift <= 0.666 )
+    {
+        float z = (vshift-0.33)/0.333;
+        r = mix(current.r, previous.b, z);
+        g = mix(current.g, current.r,  z);
+        b = mix(current.b, current.g,  z);
+    }
+
+    float t = max(max(r,g),b);
+    vec4  tcolor = vec4(inColor.rgb, (r+g+b)/3.0);
+    tcolor = t*tcolor + (1.0-t)*vec4(r,g,b, min(min(r,g),b));
+    color = vec4(tcolor.rgb, inColor.a * tcolor.a);
 }

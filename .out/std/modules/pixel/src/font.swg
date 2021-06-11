@@ -111,12 +111,19 @@ impl Font
         // Render the glyph
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
 
-        assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+        clearType := false
         bpp := 1
-        //assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_TARGET_LCD)
-        //assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_LCD)
-        //bpp := 3
+        if !clearType
+        {
+            assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
+            assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+        }
+        else
+        {
+            assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_TARGET_LCD)
+            assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_LCD)
+            bpp = 3
+        }
 
         bmp := typeFace.face.glyph.bitmap
 
