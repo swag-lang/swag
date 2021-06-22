@@ -14,7 +14,6 @@ layout(origin_upper_left) in vec4 gl_FragCoord;
 
 uniform sampler2D inTexture0;
 uniform sampler2D inTexture1;
-uniform vec3      pixelSize;
 
 out vec4    color;
 
@@ -111,26 +110,7 @@ vec3 energy_distribution(vec4 previous, vec4 current, vec4 next)
 
 void main()
 {
-    vec4 inColor = vcolor * texture(inTexture0, vuv0);
-    inColor.w *= computeAlphaEdgesAA();
-
-    if(pixelSize.z == 0)
-    {
-        inColor.w *= texture(inTexture1, vuv1).r;
-        color = inColor;
-        return;
-    }
-
-    vec4 current = texture(inTexture1, vuv1);
-    float r = current.r;
-    float g = current.g;
-    float b = current.b;
-
-    vec4 tcolor;
-    tcolor.r = mix(r, inColor.r, current.r);
-    tcolor.g = mix(g, inColor.g, current.g);
-    tcolor.b = mix(b, inColor.b, current.b);
-    tcolor.a = mix((r+g+b)/3.0, min(min(r,g),b), max(max(r,g),b));
-
-    color = vec4(tcolor.rgb, inColor.a * tcolor.a);
+    color = vcolor * texture(inTexture0, vuv0);
+    color.w *= computeAlphaEdgesAA();
+    color.w *= texture(inTexture1, vuv1).r;
 }

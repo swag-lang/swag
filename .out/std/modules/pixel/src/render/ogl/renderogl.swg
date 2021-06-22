@@ -653,7 +653,6 @@ impl RenderOgl
         uvmode      := glGetUniformLocation(shaderImage, @dataof("uvmode"))
         boundRect   := glGetUniformLocation(shaderImage, @dataof("boundRect"))
         textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
-        pixelSize   := glGetUniformLocation(shaderImage, @dataof("pixelSize"))
 
         // Default state
         glEnable(GL_BLEND)
@@ -787,10 +786,6 @@ impl RenderOgl
 
             case BindTexture1:
                 params := &cmd.params.texture1
-                if(params.texture.pf == .RGB8)
-                    glUniform3f(pixelSize, cast(GLfloat) 1.0 / params.texture.width, cast(GLfloat) 1.0 / params.texture.height, 1)
-                else
-                    glUniform3f(pixelSize, 0, 0, 0)
                 glActiveTexture(GL_TEXTURE1)
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
