@@ -55,29 +55,32 @@ impl Triangle
 {
     func neighborCCW(using self, p: *Point)->*Triangle
     {
-        if p == points[0]
-            return neighbors[2]
-        if p == points[1]
-            return neighbors[0]
-        return neighbors[1]
+        switch p
+        {
+        case points[0]:  return neighbors[2]
+        case points[1]:  return neighbors[0]
+        default:         return neighbors[1]
+        }
     }
 
     func getConstrainedEdgeCCW(using self, p: *Point)->bool
     {
-        if p == points[0]
-            return constrained_edge[2]
-        if p == points[1]
-            return constrained_edge[0]
-        return constrained_edge[1]
+        switch p
+        {
+        case points[0]: return constrained_edge[2]
+        case points[1]: return constrained_edge[0]
+        default:        return constrained_edge[1]
+        }
     }
 
     func getConstrainedEdgeCW(using self, p: *Point)->bool
     {
-        if p == points[0]
-            return constrained_edge[1]
-        if p == points[1]
-            return constrained_edge[2]
-        return constrained_edge[0]
+        switch p
+        {
+        case points[0]: return constrained_edge[1]
+        case points[1]: return constrained_edge[2]
+        default:        return constrained_edge[0]
+        }
     }
 }
 
