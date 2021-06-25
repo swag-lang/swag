@@ -235,8 +235,9 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
+    auto typeInfo = expression->typeInfo;
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeEnum               = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -297,7 +298,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({node, Msg0800});
+            return context->report({expression, Msg0800});
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -308,7 +309,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format(Msg0801, typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, format(Msg0801, typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -317,20 +318,20 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 {
                 case NativeTypeKind::S8:
                     if (node->computedValue.reg.s8 < 0)
-                        return context->report({node, format(Msg0802, node->computedValue.reg.s8)});
+                        return context->report({expression, format(Msg0802, node->computedValue.reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (node->computedValue.reg.s16 < 0)
-                        return context->report({node, format(Msg0802, node->computedValue.reg.s16)});
+                        return context->report({expression, format(Msg0802, node->computedValue.reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (node->computedValue.reg.s32 < 0)
-                        return context->report({node, format(Msg0802, node->computedValue.reg.s32)});
+                        return context->report({expression, format(Msg0802, node->computedValue.reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
                     if (node->computedValue.reg.s64 < 0)
-                        return context->report({node, format(Msg0805, node->computedValue.reg.s64)});
+                        return context->report({expression, format(Msg0805, node->computedValue.reg.s64)});
                     break;
                 }
             }
@@ -581,7 +582,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         if (expr->typeInfo->kind != TypeInfoKind::Enum)
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
-        SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr));
         break;
     }
 

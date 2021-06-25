@@ -702,7 +702,7 @@
 #define Msg0797 "'@dataof' cannot be applied to expression of type '%s'"
 #define Msg0798 "expression cannot be evaluated at compile time"
 #define Msg0800 "'@countof' cannot be used on a tuple type"
-#define Msg0801 "expression should be of type integer, but is '%s'"
+#define Msg0801 "'@countof' cannot be used on type '%s'"
 #define Msg0802 "constant value should be unsigned, but is '%d'"
 #define Msg0805 "constant value should be unsigned, but is '%I64d'"
 #define Msg0806 "'@spread' can only be called as a function parameter"

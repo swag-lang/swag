@@ -495,7 +495,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             if (node->expression->typeInfo->kind != TypeInfoKind::Enum)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-            SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression->typeInfo));
+            SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
             if (context->result != ContextResult::Done)
                 return true;
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
