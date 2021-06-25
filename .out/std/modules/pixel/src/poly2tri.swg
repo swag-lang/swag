@@ -83,17 +83,17 @@ impl Triangle
 
 struct EdgeEvent
 {
-  constrained_edge: *Edge
-  right:            bool
+    constrained_edge: *Edge
+    right:            bool
 }
 
 struct Basin
 {
-  left_node:    *Node
-  bottom_node:  *Node
-  right_node:   *Node
-  width:        f64
-  left_highest: bool
+    left_node:    *Node
+    bottom_node:  *Node
+    right_node:   *Node
+    width:        f64
+    left_highest: bool
 }
 
 struct Node
@@ -112,7 +112,8 @@ struct AdvancingFront
     search_node:    *Node
 }
 
-struct Sweep
+#[Swag.opaque]
+public struct Poly2Tri
 {
     basin:      Basin
     edge_event: EdgeEvent
@@ -126,11 +127,19 @@ struct Sweep
     af_head:    *Node
     af_middle:  *Node
     af_tail:    *Node
+    polyStart:  uint
 }
 
-impl Sweep
+impl Poly2Tri
 {
-    func addPoint(using self, x, y: f64)
+    // To call before adding a polyline
+    public func startPolyLine(using self)
+    {
+        polyStart = points.count
+    }
+
+    // Register a new point
+    public func addPoint(using self, x, y: f64)
     {
         p := Memory.new'Point()
         p.x = x
@@ -138,8 +147,29 @@ impl Sweep
         points.add(p)
     }
 
-    func triangulate(using self)
+    // To call to register the polyline
+    public func endPolyLine(using self)
     {
+        func initEdges(using self, polyline: [..] *Point)
+        {
+            visit pt, i: polyline
+            {
+                nexti := (i + 1) % @countof(polyline)
+                edge := Memory.new'Edge()
+                edge.set(polyline[i], polyline[nexti])
+                edge_list.add(edge)
+            }
+        }
+
+        Debug.assert(polyStart != points.count, "no points !")
+        initEdges(self, points[polyStart .. points.count - 1])
+    }
+
+    // Triangulate
+    public func triangulate(using self)
+    {
+        if points.isEmpty() return
+
         initTriangulation()
         createAdvancingFront()
         sweepPoints()
@@ -164,17 +194,6 @@ impl Sweep
 
     func meshClean(triangle: *Triangle)
     {
-    }
-
-    func initEdges(using self, polyline: Array'*Point)
-    {
-        visit pt, i: polyline
-        {
-            nexti := (i + 1) % @countof(polyline)
-            edge := Memory.new'Edge()
-            edge.set(polyline[i], polyline[nexti])
-            edge_list.add(edge)
-        }
     }
 
     func initTriangulation(using self)
