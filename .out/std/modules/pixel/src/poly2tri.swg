@@ -97,7 +97,7 @@ impl Sweep
     {
         visit pt, i: polyline
         {
-            nexti := (i + 1) % polyline.count
+            nexti := (i + 1) % @countof(polyline)//.count
             edge := Memory.new'Edge()
             edge.set(polyline[i], polyline[nexti])
             edge_list.add(edge)

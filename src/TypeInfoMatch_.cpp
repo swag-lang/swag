@@ -394,6 +394,24 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     }
 }
 
+static bool valueEqualsTo(const ComputedValue& value, AstNode* node)
+{
+    if (!(node->flags & AST_VALUE_IS_TYPEINFO))
+        return value == node->computedValue;
+    if (value.reg.u64 == node->computedValue.reg.u64)
+        return true;
+
+    auto typeInfo1 = (TypeInfo*) value.reg.u64;
+    auto typeInfo2 = (TypeInfo*) node->computedValue.reg.u64;
+    if (!typeInfo1 || !typeInfo2)
+        return false;
+
+    if (typeInfo1->isSame(typeInfo2, ISSAME_EXACT))
+        return true;
+
+    return false;
+}
+
 static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
 {
     // Solve generic parameters
@@ -564,13 +582,11 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
                  symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||
-                 (symbolParameter->value == callParameter->computedValue))
+                 (valueEqualsTo(symbolParameter->value, callParameter)))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())
-            {
                 context.genericParametersCallTypes[i] = callParameter->typeInfo;
-            }
         }
         else
         {
