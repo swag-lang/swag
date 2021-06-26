@@ -153,7 +153,7 @@ struct SyntaxJob : public Job
     bool        doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool        doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);
     bool        doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
-    bool        doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
+    bool        doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false, bool isMethod = false);
     bool        doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool        doAttrUse(AstNode* parent, AstNode** result = nullptr, bool single = false);
     void        registerSubDecl(AstNode* subDecl);

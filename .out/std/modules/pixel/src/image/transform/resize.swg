@@ -2,7 +2,7 @@ using Core
 
 public impl Image
 {
-    enum ResizeMethod
+    enum ResizeMode
     {
         Raw
         Bilinear
@@ -15,17 +15,17 @@ public impl Image
     }
 
     // Resize image
-    func resize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)
+    func resize(using self, newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 and newHeight > 0)
         if newWidth == width and newHeight == height return
         allocWorkingBuffer(newWidth, newHeight, pf)
-        doResize(self, workingBuffer, method)
+        doResize(self, workingBuffer, mode)
         applyWorkingBuffer()
     }
 
     // Resize image
-    func toResize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)->Image
+    func toResize(using self, newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 and newHeight > 0)
 
@@ -36,7 +36,7 @@ public impl Image
         }
 
         var result: retval = create(newWidth, newHeight, pf)
-        doResize(self, &result, method)
+        doResize(self, &result, mode)
         return result
     }
 }
@@ -67,7 +67,7 @@ private
         return res;
     }
 
-    func getFilterWidth(rmode: Image.ResizeMethod)->f64
+    func getFilterWidth(rmode: Image.ResizeMode)->f64
     {
         switch rmode
         {
@@ -83,7 +83,7 @@ private
         return 0
     }
 
-    func getFilter(resf: f64, rmode: Image.ResizeMethod)->f64
+    func getFilter(resf: f64, rmode: Image.ResizeMode)->f64
     {
         switch rmode
         {
@@ -128,7 +128,7 @@ private
         return 0
     }
 
-    func calcContributions(lineSize, srcSize: int, scale: f64, rmode: Image.ResizeMethod)->LineContrib
+    func calcContributions(lineSize, srcSize: int, scale: f64, rmode: Image.ResizeMode)->LineContrib
     {
         filterWidth := getFilterWidth(rmode)
 
@@ -307,7 +307,7 @@ private
         }
     }
 
-    func scaleCol(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
+    func scaleCol(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
     {
         sh := cast(int) imgSrc.height
         dh := cast(int) imgDst.height
@@ -321,7 +321,7 @@ private
         }
     }
 
-    func scaleRow(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
+    func scaleRow(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
     {
         sw := cast(int) imgSrc.width
         dw := cast(int) imgDst.width
@@ -335,11 +335,11 @@ private
         }
     }
 
-    func doResizeFilter(srcImage, dstImage: *Image, method: Image.ResizeMethod)
+    func doResizeFilter(srcImage, dstImage: *Image, mode: Image.ResizeMode)
     {
         tmp := Image.create(dstImage.width, srcImage.height, srcImage.pf)
-        scaleRow(&tmp, srcImage, method)
-        scaleCol(dstImage, &tmp, method)
+        scaleRow(&tmp, srcImage, mode)
+        scaleCol(dstImage, &tmp, mode)
     }
 
     func doResizeRaw(srcImage, dstImage: *Image)
@@ -369,12 +369,12 @@ private
         }
     }
 
-    func doResize(srcImage, dstImage: *Image, method: Image.ResizeMethod)
+    func doResize(srcImage, dstImage: *Image, mode: Image.ResizeMode)
     {
-        switch method
+        switch mode
         {
         case Raw:   doResizeRaw(srcImage, dstImage)
-        default:    doResizeFilter(srcImage, dstImage, method)
+        default:    doResizeFilter(srcImage, dstImage, mode)
         }
     }
 }

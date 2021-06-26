@@ -250,7 +250,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
-    // This is a function
+    // This is a lambda
     if (token.id == TokenId::KwdFunc)
     {
         SWAG_CHECK(eatToken());

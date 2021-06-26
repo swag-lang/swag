@@ -470,6 +470,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doEnum(parent, result));
         break;
 
+    case TokenId::KwdMethod:
     case TokenId::KwdFunc:
     {
         AstNode* subFunc;
@@ -587,6 +588,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::TopLevelInstruction));
         break;
     case TokenId::KwdFunc:
+    case TokenId::KwdMethod:
     case TokenId::CompilerFuncTest:
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:

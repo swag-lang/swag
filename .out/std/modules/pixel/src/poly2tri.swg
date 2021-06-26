@@ -16,7 +16,7 @@ struct Edge
 
 impl Edge
 {
-    func set(using self, p1, p2: *Point)
+    method set(p1, p2: *Point)
     {
         if p1.y > p2.y
         {
@@ -53,7 +53,7 @@ struct Triangle
 
 impl Triangle
 {
-    func neighborCCW(using self, p: *Point)->*Triangle
+    method neighborCCW(p: *Point)->*Triangle
     {
         switch p
         {
@@ -63,7 +63,7 @@ impl Triangle
         }
     }
 
-    func getConstrainedEdgeCCW(using self, p: *Point)->bool
+    method getConstrainedEdgeCCW(p: *Point)->bool
     {
         switch p
         {
@@ -73,7 +73,7 @@ impl Triangle
         }
     }
 
-    func getConstrainedEdgeCW(using self, p: *Point)->bool
+    method getConstrainedEdgeCW(p: *Point)->bool
     {
         switch p
         {
@@ -136,13 +136,13 @@ public struct Poly2Tri
 impl Poly2Tri
 {
     // To call before adding a polyline
-    public func startPolyLine(using self)
+    public method startPolyLine()
     {
         polyStart = points.count
     }
 
     // Register a new point
-    public func addPoint(using self, x, y: f64)
+    public method addPoint(x, y: f64)
     {
         p := Memory.new'Point()
         p.x = x
@@ -151,7 +151,7 @@ impl Poly2Tri
     }
 
     // To call to register the polyline
-    public func endPolyLine(using self)
+    public method endPolyLine()
     {
         func initEdges(using self, polyline: [..] *Point)
         {
@@ -169,7 +169,7 @@ impl Poly2Tri
     }
 
     // Triangulate
-    public func triangulate(using self)
+    public method triangulate()
     {
         if points.isEmpty() return
 
@@ -179,14 +179,14 @@ impl Poly2Tri
         finalizationPolygon()
     }
 
-    func sweepPoints(using self)
+    method sweepPoints()
     {
         visit p: points
         {
         }
     }
 
-    func finalizationPolygon(using self)
+    method finalizationPolygon()
     {
         t := front.head.next.triangle
         p := front.head.next.point
@@ -195,11 +195,11 @@ impl Poly2Tri
         if t meshClean(t)
     }
 
-    func meshClean(triangle: *Triangle)
+    method meshClean(triangle: *Triangle)
     {
     }
 
-    func initTriangulation(using self)
+    method initTriangulation()
     {
         xmin, xmax := points[0].x
         ymin, ymax := points[0].y
@@ -232,7 +232,7 @@ impl Poly2Tri
         Slice.sort(points.toSlice(), &cmp)
     }
 
-    func createAdvancingFront(using self)
+    method createAdvancingFront()
     {
         triangle := Memory.new'Triangle()
         triangle.points[0] = points[0]

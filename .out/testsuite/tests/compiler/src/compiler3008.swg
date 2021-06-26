@@ -1,0 +1,5 @@
+#global testerror
+method toto()
+{
+
+}

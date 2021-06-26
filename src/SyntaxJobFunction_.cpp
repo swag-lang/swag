@@ -261,7 +261,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType)
+bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool isMethod)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0883));
 
@@ -271,13 +271,26 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
     else
         SWAG_CHECK(eatToken());
 
-    if (token.id != TokenId::SymRightParen)
+    if (token.id != TokenId::SymRightParen || isMethod)
     {
         auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
         allParams->semanticFct = SemanticJob::resolveFuncDeclParams;
         allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
             *result = allParams;
+
+        // Add 'using self' as the first parameter in case of a method
+        if (isMethod)
+        {
+            auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
+            paramNode->flags |= AST_DECL_USING;
+            paramNode->token.text = "self";
+            auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->ptrCount    = 1;
+            typeNode->typeFlags   = TYPEFLAG_ISSELF;
+            typeNode->identifier  = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
+            paramNode->type       = typeNode;
+        }
 
         while (token.id != TokenId::SymRightParen)
         {
@@ -342,6 +355,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     bool funcForCompiler = false;
     bool isIntrinsic     = false;
+
+    bool isMethod = token.id == TokenId::KwdMethod;
+    if (isMethod)
+    {
+        SWAG_VERIFY(funcNode->ownerStructScope && funcNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Msg0407));
+    }
 
     if (typeFuncId == TokenId::Invalid)
     {
@@ -487,7 +506,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, isMethod));
     }
 
     // #compiler has an expression has parameters

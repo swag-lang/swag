@@ -63,6 +63,7 @@ void LanguageSpec::setup()
     keywords.add("interface", TokenId::KwdInterface);
     keywords.add("typeset", TokenId::KwdTypeSet);
     keywords.add("func", TokenId::KwdFunc);
+    keywords.add("method", TokenId::KwdMethod);
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);
     keywords.add("null", TokenId::KwdNull);

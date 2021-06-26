@@ -92,6 +92,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         {
         case TokenId::SymLeftCurly:
         case TokenId::KwdFunc:
+        case TokenId::KwdMethod:
         case TokenId::KwdAttr:
         case TokenId::KwdVar:
         case TokenId::KwdConst:
