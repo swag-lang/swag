@@ -814,5 +814,5 @@
 #define Note013 "symbol has been found thanks to a 'using'"
 
 #define Rem0000 "this could be casted with 'cast(%s)'"
-#define Rem0001 "symbol '%s' was not found in %s '%s'"
+#define Rem0001 "symbol '%s' was not found in '%s'"
 #define Rem0002 "symbol '%s' exists in interface scope '%s'"

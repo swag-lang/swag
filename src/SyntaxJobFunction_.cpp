@@ -284,6 +284,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
         {
             auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
             paramNode->flags |= AST_DECL_USING;
+            paramNode->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
             paramNode->token.text = "self";
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;

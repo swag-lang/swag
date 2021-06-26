@@ -419,6 +419,15 @@ impl Array
     }
 
     // Returns the last element, and remove it from the array
+    func back()->T
+    {
+        Debug.assert(count > 0)
+        var result: retval = ?
+        result =,nodrop,moveraw buffer[count - 1]
+        return result
+    }
+
+    // Returns the last element, and remove it from the array
     func popBack(using self)->T
     {
         Debug.assert(count > 0)

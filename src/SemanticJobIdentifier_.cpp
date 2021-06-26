@@ -1567,8 +1567,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     // Symbol has been found with a using : display it
     if (overloads.size() == 1 && overloads[0]->dependentVar)
     {
-        auto note = new Diagnostic{overloads[0]->dependentVar, Note013, DiagnosticLevel::Note};
-        notes.push_back(note);
+        // Do not generate a note if this is a generated 'using' in case of methods
+        if (overloads[0]->dependentVar->kind != AstNodeKind::FuncDeclParam || !(overloads[0]->dependentVar->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF))
+        {
+            auto note = new Diagnostic{overloads[0]->dependentVar, Note013, DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
     }
 
     // Additional error if the first parameter does not match, or if nothing matches
@@ -1632,10 +1636,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
 
         if (notFound && notFound == overloads.size())
         {
-            diag->remarks.push_back(format(Rem0001,
-                                           node->token.text.c_str(),
-                                           TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
-                                           identifier->identifierRef->typeInfo->getDisplayName().c_str()));
+            diag->remarks.push_back(format(Rem0001, node->token.text.c_str(), identifier->identifierRef->typeInfo->getDisplayName().c_str()));
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)

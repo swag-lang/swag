@@ -82,6 +82,58 @@ impl Triangle
         default:        return constrained_edge[0]
         }
     }
+
+    method pointCW(point: *Point)->*Point
+    {
+        switch point
+        {
+        case points[0]: return points[2]
+        case points[1]: return points[0]
+        case points[2]: return points[1]
+        }
+
+        Debug.assert(false)
+        return null
+    }
+
+    method contains(p: *Point)->bool
+    {
+        return p == points[0] or p == points[1] or p == points[2]
+    }
+
+    method contains(p1, p2: *Point)->bool
+    {
+        return contains(p1) or contains(p2)
+    }
+
+    method markNeighbor(p1, p2: *Point, t: *Triangle)
+    {
+        if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2])
+            neighbors[0] = t
+        else if (p1 == points[0] and p2 == points[2]) or (p1 == points[2] and p2 == points[0])
+            neighbors[1] = t
+        else if (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0])
+            neighbors[2] = t
+    }
+
+    method markNeighbor(t: *Triangle)
+    {
+        if t.contains(points[1], points[2])
+        {
+            neighbors[0] = t
+            t.markNeighbor(points[1], points[2], self)
+        }
+        else if t.contains(points[0], points[2])
+        {
+            neighbors[1] = t
+            t.markNeighbor(points[0], points[2], self)
+        }
+        else if t.contains(points[0], points[1])
+        {
+            neighbors[2] = t
+            t.markNeighbor(points[0], points[1], self)
+        }
+    }
 }
 
 struct EdgeEvent
@@ -115,6 +167,49 @@ struct AdvancingFront
     search_node:    *Node
 }
 
+impl AdvancingFront
+{
+    method locatePoint(point: *Point)->*Node
+    {
+        return null
+    }
+
+    method locateNode(x: f64)->*Node
+    {
+        node := search_node
+        if x < node.value
+        {
+            node = node.prev
+            while node
+            {
+                if x >= node.value
+                {
+                    search_node = node
+                    return node
+                }
+
+                node = node.prev
+            }
+        }
+        else
+        {
+            node = node.next
+            while node
+            {
+                if x < node.value
+                {
+                    search_node = node.prev
+                    return node.prev
+                }
+
+                node = node.next
+            }
+        }
+
+        return null
+    }
+}
+
 #[Swag.opaque]
 public struct Poly2Tri
 {
@@ -124,6 +219,7 @@ public struct Poly2Tri
     map:        Array'*Triangle
     edge_list:  Array'*Edge
     points:     Array'*Point
+    nodes:      Array'*Node
     front:      AdvancingFront
     head:       *Point
     tail:       *Point
@@ -181,9 +277,63 @@ impl Poly2Tri
 
     method sweepPoints()
     {
-        visit p: points
+        loop i: 1..points.count-1
         {
+            node := pointEvent(points[i])
         }
+    }
+
+    method pointEvent(point: *Point)->*Node
+    {
+        node := locateNode(point)
+        Debug.assert(node and node.point and node.next and node.next.point, "null node")
+        new_node := newFrontTriangle(point, node)
+        /*if point.x < node.point.x + Math.ConstF64.Epsilon
+            fill(node)
+        fillAdvancingFront(new_node)*/
+        return new_node
+    }
+
+    method newFrontTriangle(point: *Point, node: *Node)->*Node
+    {
+        triangle := Memory.new'Triangle()
+        triangle.markNeighbor(node.triangle)
+        map.add(triangle)
+
+        new_node := Memory.new'Node()
+        nodes.add(new_node)
+
+        new_node.next = node.next
+        new_node.prev = node
+        node.next.prev = new_node
+        node.next = new_node
+
+        if !legalize(triangle)
+            mapTriangleToNodes(triangle)
+
+        return new_node
+    }
+
+    method legalize(triangle: *Triangle)->bool
+    {
+        return true
+    }
+
+    method mapTriangleToNodes(t: *Triangle)
+    {
+        loop i: 3
+        {
+            if !t.neighbors[i]
+            {
+                n := front.locatePoint(t.pointCW(t.points[i]))
+                if n n.triangle = t
+            }
+        }
+    }
+
+    method locateNode(point: *Point)->*Node
+    {
+        return front.locateNode(point.x)
     }
 
     method finalizationPolygon()
@@ -197,6 +347,21 @@ impl Poly2Tri
 
     method meshClean(triangle: *Triangle)
     {
+        var stack: Array'*Triangle
+        stack.add(triangle)
+
+        while stack.count
+        {
+            t := stack.popBack()
+            if !t or t.interior continue
+            t.interior = true
+            triangles.add(t)
+            loop i: 3
+            {
+                if !t.constrained_edge[i]
+                    stack.add(t.neighbors[i])
+            }
+        }
     }
 
     method initTriangulation()
