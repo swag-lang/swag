@@ -21,6 +21,20 @@ func orient2d(pa, pb, pc: *Point)->Orientation
     return Orientation.CW
 }
 
+func inScanArea(pa, pb, pc, pd: *Point)->bool
+{
+    oadb := (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
+    if oadb >= -Math.ConstF64.Epsilon
+        return false
+
+    oadc := (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
+    if oadc <= Math.ConstF64.Epsilon
+        return false
+
+    return true
+}
+
+
 struct Point
 {
     x, y:       f64
@@ -129,6 +143,16 @@ impl Triangle
 
         Debug.assert(false)
         return -1
+    }
+
+    method neighborAcross(point: *Point)->*Triangle
+    {
+        switch point
+        {
+        case points[0]: return neighbors[0]
+        case points[1]: return neighbors[1]
+        default:        return neighbors[2]
+        }
     }
 
     method neighborCW(point: *Point)->*Triangle
@@ -272,6 +296,13 @@ impl Triangle
         neighbors[0] = null
         neighbors[1] = null
         neighbors[2] = null
+    }
+
+    method clearDelunayEdges()
+    {
+        delaunay_edge[0] = false
+        delaunay_edge[1] = false
+        delaunay_edge[2] = false
     }
 
     method contains(p: *Point)->bool
@@ -525,6 +556,155 @@ impl Poly2Tri
         }
     }
 
+    method edgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
+    {
+        triangle := t
+        Debug.assert(triangle != null, "EdgeEvent - null triangle")
+
+        if isEdgeSideOfTriangle(triangle, ep, eq)
+            return
+
+        p1 := triangle.pointCCW(point)
+        o1 := orient2d(eq, p1, ep)
+        if o1 == .Collinear
+        {
+            if triangle.contains(eq, p1)
+            {
+                triangle.markConstrainedEdge(eq, p1)
+                edge_event.constrained_edge.q = p1
+                triangle = triangle.neighborAcross(point)
+                edgeEvent(ep, p1, triangle, p1)
+            }
+            else
+            {
+                Debug.assert(false, "EdgeEvent - collinear points not supported")
+            }
+
+            return
+        }
+
+        p2 := triangle.pointCW(point)
+        o2 := orient2d(eq, p2, ep)
+        if o2 == .Collinear
+        {
+            if triangle.contains(eq, p2)
+            {
+                triangle.markConstrainedEdge(eq, p2)
+                edge_event.constrained_edge.q = p2
+                triangle = triangle.neighborAcross(point)
+                edgeEvent(ep, p2, triangle, p2)
+            }
+            else
+            {
+                Debug.assert(false, "EdgeEvent - collinear points not supported")
+            }
+
+            return
+        }
+
+        if o1 == o2
+        {
+            if o1 == .CW
+                triangle = triangle.neighborCCW(point)
+            else
+                triangle = triangle.neighborCW(point)
+            edgeEvent(ep, eq, triangle, point)
+        }
+        else
+        {
+            flipEdgeEvent(ep, eq, triangle, point)
+        }
+    }
+
+    method flipEdgeEvent(ep, eq: *Point, tri: *Triangle, p: *Point)
+    {
+        t := tri
+        Debug.assert(t != null)
+
+        ot := t.neighborAcross(p)
+        Debug.assert(ot != null, "FlipEdgeEvent - null neighbor across")
+
+        op := ot.oppositePoint(t, p)
+
+        if inScanArea(p, t.pointCCW(p), t.pointCW(p), op)
+        {
+            rotateTrianglePair(t, p, ot, op)
+            mapTriangleToNodes(t)
+            mapTriangleToNodes(ot)
+
+            if p == eq and op == ep
+            {
+                if eq == edge_event.constrained_edge.q and ep == edge_event.constrained_edge.p
+                {
+                    t.markConstrainedEdge(ep, eq)
+                    ot.markConstrainedEdge(ep, eq)
+                    discard legalize(t)
+                    discard legalize(ot)
+                }
+            }
+            else
+            {
+                o := orient2d(eq, op, ep)
+                t = nextFlipTriangle(o, t, ot, p, op)
+                flipEdgeEvent(ep, eq, t, p)
+            }
+        }
+        else
+        {
+            newP := nextFlipPoint(ep, eq, ot, op)
+            flipScanEdgeEvent(ep, eq, t, ot, newP)
+            edgeEvent(ep, eq, t, p)
+        }
+    }
+
+    method nextFlipTriangle(o: Orientation, t, ot: *Triangle, p, op: *Point)->*Triangle
+    {
+        if o == .CCW
+        {
+            edge_index := ot.edgeIndex(p, op)
+            ot.delaunay_edge[edge_index] = true
+            discard legalize(ot)
+            ot.clearDelunayEdges()
+            return t
+        }
+
+        edge_index := t.edgeIndex(p, op)
+        t.delaunay_edge[edge_index] = true
+        discard legalize(t)
+        t.clearDelunayEdges()
+        return ot
+    }
+
+    func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
+    {
+        o2d := orient2d(eq, op, ep)
+        if o2d == .CW  return ot.pointCCW(op)
+        if o2d == .CCW return ot.pointCW(op)
+        Debug.assert(false, "[Unsupported] Opposing point on constrained edge")
+        return null
+    }
+
+    method flipScanEdgeEvent(ep, eq: *Point, flip_triangle: *Triangle, t: *Triangle, p: *Point)
+    {
+        ot := t.neighborAcross(p)
+        Debug.assert(ot != null, "FlipScanEdgeEvent - null neighbor across")
+
+        op := ot.oppositePoint(t, p)
+        Debug.assert(op != null, "FlipScanEdgeEvent - null opposing point")
+
+        p1 := flip_triangle.pointCCW(eq)
+        p2 := flip_triangle.pointCW(eq)
+        Debug.assert(p1 != null and p2 != null, "FlipScanEdgeEvent - null on either of points")
+
+        if inScanArea(eq, p1, p2, op)
+            flipEdgeEvent(eq, op, ot, op)
+        else
+        {
+            newP := nextFlipPoint(ep, eq, ot, op)
+            flipScanEdgeEvent(ep, eq, flip_triangle, ot, newP)
+        }
+    }
+
     method edgeEvent(edge: *Edge, node: *Node)
     {
         edge_event.constrained_edge = edge
@@ -534,7 +714,7 @@ impl Poly2Tri
             return
 
         fillEdgeEvent(edge, node)
-        //edgeEvent(edge.p, edge.q, node.triangle, edge.q)
+        edgeEvent(edge.p, edge.q, node.triangle, edge.q)
     }
 
     method fillEdgeEvent(edge: *Edge, node: *Node)
