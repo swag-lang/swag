@@ -478,8 +478,16 @@ impl Poly2Tri
     {
         loop i: 1..points.count-1
         {
-            node := pointEvent(points[i])
+            point := points[i]
+            node := pointEvent(point)
+            visit e: point.edge_list
+                edgeEvent(e, node)
         }
+    }
+
+    method edgeEvent(edge: *Edge, node: *Node)
+    {
+
     }
 
     method pointEvent(point: *Point)->*Node
