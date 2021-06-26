@@ -323,20 +323,13 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
     g_Log.print(str);
 }
 
-void ByteCode::printInstructionReg(const char* header, uint32_t sizeOf, const Register& reg, bool regW, bool regR, bool regR32, bool regR64, bool regImm)
+void ByteCode::printInstructionReg(const char* header, const Register& reg, bool regW, bool regR, bool regImm)
 {
     if (regW)
         g_Log.print(format("%s[%u] ", header, reg.u32));
     if (regR && !regImm)
         g_Log.print(format("%s(%u) ", header, reg.u32));
-
-    if (regImm && sizeOf == 1)
-        g_Log.print(format("%s{0x%X} ", header, reg.u8));
-    else if (regImm && sizeOf == 2)
-        g_Log.print(format("%s{0x%X} ", header, reg.u16));
-    else if ((regImm && sizeOf == 4) || regR32)
-        g_Log.print(format("%s{0x%X} ", header, reg.u32));
-    else if (regImm || regR64)
+    if (regImm)
         g_Log.print(format("%s{0x%llX} ", header, reg.u64));
 }
 
@@ -375,11 +368,10 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Parameters
     g_Log.setColor(LogColor::Gray);
     auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
-    auto sizeOf  = ip->node && ip->node->typeInfo ? ip->node->typeInfo->sizeOf : 0;
-    printInstructionReg("A", sizeOf, ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & OPFLAG_READ_VAL32_A, opFlags & OPFLAG_READ_VAL64_A, ip->flags & BCI_IMM_A);
-    printInstructionReg("B", sizeOf, ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & OPFLAG_READ_VAL32_B, opFlags & OPFLAG_READ_VAL64_B, ip->flags & BCI_IMM_B);
-    printInstructionReg("C", sizeOf, ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & OPFLAG_READ_VAL32_C, opFlags & OPFLAG_READ_VAL64_C, ip->flags & BCI_IMM_C);
-    printInstructionReg("D", sizeOf, ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & OPFLAG_READ_VAL32_D, opFlags & OPFLAG_READ_VAL64_D, ip->flags & BCI_IMM_D);
+    printInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A | BCI_IMM_A));
+    printInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B | BCI_IMM_B));
+    printInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C | BCI_IMM_C));
+    printInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D | BCI_IMM_D));
 
     // Flags 1
     while (g_Log.length < ALIGN_FLAGS1)
