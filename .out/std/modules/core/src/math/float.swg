@@ -11,6 +11,7 @@ struct(T) Const
     const PiBy4: T        = Pi / 4
     const PiBy6: T        = Pi / 6
     const PiBy8: T        = Pi / 8
+    const ThreePiBy4: T   = 3 * Pi / 4
     const OneByPi: T      = 1 / Pi
     const TwoByPi: T      = 2 / Pi
     const Sqrt2: T        = sqrt(cast(T) 2)

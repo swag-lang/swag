@@ -171,7 +171,45 @@ impl AdvancingFront
 {
     method locatePoint(point: *Point)->*Node
     {
-        return null
+        px := point.x
+        node := search_node
+        nx := node.point.x
+
+        if px == nx
+        {
+            if point != node.point
+            {
+                if point == node.prev.point
+                    node = node.prev
+                else if point == node.next.point
+                    node = node.next
+                else
+                    Debug.assert(false)
+            }
+        }
+        else if px < nx
+        {
+            node = node.prev
+            while node
+            {
+                if point == node.point
+                    break
+                node = node.prev
+            }
+        }
+        else
+        {
+            node = node.next
+            while node
+            {
+                if point == node.point
+                    break
+                node = node.next
+            }
+        }
+
+        if node search_node = node
+        return node
     }
 
     method locateNode(x: f64)->*Node
@@ -288,10 +326,108 @@ impl Poly2Tri
         node := locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
         new_node := newFrontTriangle(point, node)
-        /*if point.x < node.point.x + Math.ConstF64.Epsilon
+        if point.x < node.point.x + Math.ConstF64.Epsilon
             fill(node)
-        fillAdvancingFront(new_node)*/
+        fillAdvancingFront(new_node)
         return new_node
+    }
+
+    method fillAdvancingFront(n: *Node)
+    {
+        node := n.next
+        while node and node.next
+        {
+            if largeHoleDontFill(node) break
+            fill(node)
+            node = node.next
+        }
+
+        node = n.prev
+        while node and node.prev
+        {
+            if largeHoleDontFill(node) break
+            fill(node)
+            node = node.prev
+        }
+
+        if n.next and n.next.next
+        {
+            angle := basinAngle(n)
+            if angle < Math.ConstF64.ThreePiBy4
+                fillBasin(n)
+        }
+    }
+
+    method fillBasin(node: *Node)
+    {
+    }
+
+    func basinAngle(node: *Node)->f64
+    {
+        ax := node.point.x - node.next.next.point.x
+        ay := node.point.y - node.next.next.point.y
+        return Math.atan2(ay, ax)
+    }
+
+    func largeHoleDontFill(node: *Node)->bool
+    {
+        nextNode := node.next
+        prevNode := node.prev
+        if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point)
+            return false
+
+        next2Node := nextNode.next
+        if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point)
+            return false
+
+        prev2Node := prevNode.prev
+        if prev2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, nextNode.point, prev2Node.point)
+            return false
+
+        return true;
+    }
+
+    func angleExceeds90Degrees(origin, pa, pb: *Point)->bool
+    {
+        angle := angle(origin, pa, pb)
+        return (angle > Math.ConstF64.PiBy2) or (angle < -Math.ConstF64.PiBy2)
+    }
+
+    func angleExceedsPlus90DegreesOrIsNegative(origin, pa, pb: *Point)->bool
+    {
+        angle := angle(origin, pa, pb)
+        return (angle > Math.ConstF64.PiBy2) or (angle < 0)
+    }
+
+    func angle(origin, pa, pb: *Point)->f64
+    {
+        px := origin.x
+        py := origin.y
+        ax := pa.x - px
+        ay := pa.y - py
+        bx := pb.x - px
+        by := pb.y - py
+        x := ax * by - ay * bx
+        y := ax * bx + ay * by
+        return Math.atan2(x, y)
+    }
+
+    method fill(node: *Node)
+    {
+        triangle := Memory.new'Triangle()
+        triangle.points[0] = node.prev.point
+        triangle.points[1] = node.point
+        triangle.points[2] = node.next.point
+
+        triangle.markNeighbor(node.prev.triangle)
+        triangle.markNeighbor(node.triangle)
+        map.add(triangle)
+
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+        if !legalize(triangle)
+            mapTriangleToNodes(triangle)
     }
 
     method newFrontTriangle(point: *Point, node: *Node)->*Node
