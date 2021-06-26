@@ -2354,13 +2354,14 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
     {
         for (auto c : parent->childs)
         {
-            if (c->typeInfo)
+            auto cType = TypeManager::concreteReferenceType(c->typeInfo, CONCRETE_FUNC);
+            if (cType)
             {
-                switch (c->typeInfo->kind)
+                switch (cType->kind)
                 {
                 case TypeInfoKind::Enum:
                 case TypeInfoKind::TypeSet:
-                    return c->typeInfo;
+                    return cType;
                 }
             }
         }

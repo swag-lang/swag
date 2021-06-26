@@ -379,7 +379,7 @@ impl Poly2Tri
 
     method fillBasin(node: *Node)
     {
-        if orient2d(node.point, node.next.point, node.next.next.point) == Orientation.CCW
+        if orient2d(node.point, node.next.point, node.next.next.point) == .CCW
             basin.left_node = node.next.next
         else
             basin.left_node = node.next
