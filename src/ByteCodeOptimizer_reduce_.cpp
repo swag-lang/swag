@@ -7,6 +7,23 @@
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    // Clear stack followed by a setstack
+    if ((ip[0].op == ByteCodeOp::SetZeroStack32) &&
+        (ip[1].op == ByteCodeOp::SetAtStackPointer32) &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip);
+    }
+
+    if ((ip[0].op == ByteCodeOp::SetZeroStack64) &&
+        (ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip);
+    }
+
     // CopyRBToRa, by convention, clear the remaining bits. So no need for a cast just after
     if ((ip[0].op == ByteCodeOp::CopyRBtoRA8) &&
         (ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
