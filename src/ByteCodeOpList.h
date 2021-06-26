@@ -42,6 +42,7 @@ BYTECODE_OP(IntrinsicMakeForeign, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_ = @mkfor
 BYTECODE_OP(IntrinsicSetErr, OPFLAG_READ_A | OPFLAG_READ_B, "@seterr(_ra_, _rb_)")
 BYTECODE_OP(IntrinsicGetErr, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @geterr()")
 BYTECODE_OP(IntrinsicBcDbg, 0, "@bcdbg()")
+BYTECODE_OP(InternalClearErr, 0, "clear err")
 BYTECODE_OP(InternalPushErr, 0, "push err")
 BYTECODE_OP(InternalPopErr, 0, "pop err")
 BYTECODE_OP(InternalGetTlsPtr, OPFLAG_WRITE_A, "_ra_ = &tls")

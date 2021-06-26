@@ -328,6 +328,12 @@ func @seterr(value: string)
     }
 }
 
+func __clearerr()
+{
+    cxt := @getcontext()
+    cxt.errorMsgLen = 0
+}
+
 func __geterr()->string
 {
     cxt := @getcontext()

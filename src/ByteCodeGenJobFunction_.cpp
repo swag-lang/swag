@@ -1466,12 +1466,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     // Clear error when entering a #<function> or a function than can raise en error
     if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
-    {
-        RegisterList r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::ClearRA, r0);
-        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, r0, r0);
-        freeRegisterRC(context, r0);
-    }
+        emitInstruction(context, ByteCodeOp::InternalClearErr);
 
     if (funcNode->stackSize)
     {

@@ -2282,6 +2282,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
         break;
     }
+    case ByteCodeOp::InternalClearErr:
+    {
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__clearerr");
+        localCall(context, bc, 0);
+        break;
+    }
     case ByteCodeOp::InternalPushErr:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("__pusherr");

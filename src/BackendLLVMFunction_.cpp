@@ -3362,6 +3362,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, "@seterr", {ip->a.u32, ip->b.u32}, {});
             break;
         }
+        case ByteCodeOp::InternalClearErr:
+        {
+            localCall(buildParameters, allocR, allocT, "__clearerr", {}, {});
+            break;
+        }
         case ByteCodeOp::InternalPushErr:
         {
             localCall(buildParameters, allocR, allocT, "__pusherr", {}, {});

@@ -3775,6 +3775,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::InternalClearErr:
+            emitCall(pp, "__clearerr");
+            break;
         case ByteCodeOp::InternalPushErr:
             emitCall(pp, "__pusherr");
             break;

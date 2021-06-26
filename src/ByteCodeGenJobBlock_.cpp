@@ -21,12 +21,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
     // Clear current error
     if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)
-    {
-        RegisterList r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::ClearRA, r0);
-        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, r0, r0);
-        freeRegisterRC(context, r0);
-    }
+        emitInstruction(context, ByteCodeOp::InternalClearErr);
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
