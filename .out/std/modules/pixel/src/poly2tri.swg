@@ -221,7 +221,7 @@ impl Triangle
         return null
     }
 
-    method getDelunayEdgeCCW(p: *Point)->bool
+    method getDelaunayEdgeCCW(p: *Point)->bool
     {
         switch p
         {
@@ -231,7 +231,7 @@ impl Triangle
         }
     }
 
-    method getDelunayEdgeCW(p: *Point)->bool
+    method getDelaunayEdgeCW(p: *Point)->bool
     {
         switch p
         {
@@ -241,7 +241,7 @@ impl Triangle
         }
     }
 
-    method setDelunayEdgeCCW(p: *Point, e: bool)
+    method setDelaunayEdgeCCW(p: *Point, e: bool)
     {
         switch p
         {
@@ -251,7 +251,7 @@ impl Triangle
         }
     }
 
-    method setDelunayEdgeCW(p: *Point, e: bool)
+    method setDelaunayEdgeCW(p: *Point, e: bool)
     {
         switch p
         {
@@ -298,7 +298,7 @@ impl Triangle
         neighbors[2] = null
     }
 
-    method clearDelunayEdges()
+    method clearDelaunayEdges()
     {
         delaunay_edge[0] = false
         delaunay_edge[1] = false
@@ -664,14 +664,14 @@ impl Poly2Tri
             edge_index := ot.edgeIndex(p, op)
             ot.delaunay_edge[edge_index] = true
             discard legalize(ot)
-            ot.clearDelunayEdges()
+            ot.clearDelaunayEdges()
             return t
         }
 
         edge_index := t.edgeIndex(p, op)
         t.delaunay_edge[edge_index] = true
         discard legalize(t)
-        t.clearDelunayEdges()
+        t.clearDelaunayEdges()
         return ot
     }
 
@@ -1130,18 +1130,18 @@ impl Poly2Tri
         ce3 := ot.getConstrainedEdgeCCW(op)
         ce4 := ot.getConstrainedEdgeCW(op)
 
-        de1 := t.getDelunayEdgeCCW(p)
-        de2 := t.getDelunayEdgeCW(p)
-        de3 := ot.getDelunayEdgeCCW(op)
-        de4 := ot.getDelunayEdgeCW(op)
+        de1 := t.getDelaunayEdgeCCW(p)
+        de2 := t.getDelaunayEdgeCW(p)
+        de3 := ot.getDelaunayEdgeCCW(op)
+        de4 := ot.getDelaunayEdgeCW(op)
 
         t.legalize(p, op)
         ot.legalize(op, p)
 
-        ot.setDelunayEdgeCCW(p, de1)
-        t.setDelunayEdgeCW(p, de2)
-        t.setDelunayEdgeCCW(op, de3)
-        ot.setDelunayEdgeCW(op, de4)
+        ot.setDelaunayEdgeCCW(p, de1)
+        t.setDelaunayEdgeCW(p, de2)
+        t.setDelaunayEdgeCCW(op, de3)
+        ot.setDelaunayEdgeCW(op, de4)
 
         ot.setConstrainedEdgeCCW(p, ce1)
         t.setConstrainedEdgeCW(p, ce2)
