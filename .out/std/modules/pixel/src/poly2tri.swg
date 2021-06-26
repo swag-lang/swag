@@ -2,6 +2,25 @@
 
 using Core
 
+enum Orientation
+{
+    CW
+    CCW
+    Collinear
+}
+
+func orient2d(pa, pb, pc: *Point)->Orientation
+{
+    detleft  := (pa.x - pc.x) * (pb.y - pc.y)
+    detright := (pa.y - pc.y) * (pb.x - pc.x)
+    val := detleft - detright
+    if val > -Math.ConstF64.Epsilon and val < Math.ConstF64.Epsilon
+        return Orientation.Collinear
+    if val > 0
+        return Orientation.CCW
+    return Orientation.CW
+}
+
 struct Point
 {
     x, y:       f64
@@ -360,6 +379,32 @@ impl Poly2Tri
 
     method fillBasin(node: *Node)
     {
+        if orient2d(node.point, node.next.point, node.next.next.point) == Orientation.CCW
+            basin.left_node = node.next.next
+        else
+            basin.left_node = node.next
+
+        basin.bottom_node = basin.left_node
+        while basin.bottom_node.next and basin.bottom_node.point.y >= basin.bottom_node.next.point.y
+            basin.bottom_node = basin.bottom_node.next
+        if basin.bottom_node == basin.left_node
+            return
+
+        basin.right_node = basin.bottom_node
+        while basin.right_node.next and basin.right_node.point.y < basin.right_node.next.point.y
+            basin.right_node = basin.right_node.next
+        if basin.right_node == basin.bottom_node
+            return
+
+        basin.width = basin.right_node.point.x - basin.left_node.point.x
+        basin.left_highest = basin.left_node.point.y > basin.right_node.point.y
+
+        fillBasinReq(basin.bottom_node)
+    }
+
+    method fillBasinReq(node: *Node)
+    {
+
     }
 
     func basinAngle(node: *Node)->f64
