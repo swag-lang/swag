@@ -38,7 +38,7 @@ func inScanArea(pa, pb, pc, pd: *Point)->bool
 struct Point
 {
     x, y:       f64
-    edge_list:  Array'(*Edge)
+    edge_list:  Array'*Edge
 }
 
 struct Edge

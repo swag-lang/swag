@@ -1433,13 +1433,16 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             ScopedLocation lk(this, &savedtoken);
 
             // Generate an expression of the form "var firstVar = assignment", and "secondvar = firstvar" for the rest
-            // This avoid to do the right expression multiple times (if this is a function call for example).
+            // This will avoid to do the right expression multiple times (if this is a function call for example).
             //
-            // If this is not '=' operator, then we have to duplicate the affectation for each variable
+            // If this is not the '=' operator, then we have to duplicate the affectation for each variable
             AstNode* affectExpression = nullptr;
             bool     firstDone        = false;
             auto     front            = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
             front->computeName();
+
+            auto cloneFront = Ast::clone(front, nullptr);
+
             while (!leftNode->childs.empty())
             {
                 auto child        = leftNode->childs.front();
@@ -1469,7 +1472,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 // In case of an affectation, create 'otherVar = firstVar'
                 else
                 {
-                    Ast::newIdentifierRef(sourceFile, front->token.text, affectNode, this)->token = savedtoken;
+                    Ast::clone(cloneFront, affectNode);
                 }
             }
         }
