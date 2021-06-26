@@ -72,10 +72,50 @@ struct Triangle
 
 impl Triangle
 {
+    method markConstrainedEdge(index: s32)
+    {
+        constrained_edge[index] = true
+    }
+
+    method markConstrainedEdge(edge: *Edge)
+    {
+        markConstrainedEdge(edge.p, edge.q)
+    }
+
+    method markConstrainedEdge(p, q: *Point)
+    {
+        if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0])
+            constrained_edge[2] = true
+        else if (q == points[0] and p == points[2]) or (q == points[2] and p == points[0])
+            constrained_edge[1] = true
+        else if (q == points[1] and p == points[2]) or (q == points[2] and p == points[1])
+            constrained_edge[0] = true
+    }
+
     method oppositePoint(t: *Triangle, p: *Point)->*Point
     {
         cw := t.pointCW(p)
         return pointCW(cw)
+    }
+
+    method edgeIndex(p1, p2: *Point)->s32
+    {
+        switch p1
+        {
+        case points[0]:
+            if points[1] == p2 return 2
+            if points[2] == p2 return 1
+
+        case points[1]:
+            if points[2] == p2 return 0
+            if points[0] == p2 return 2
+
+        case points[2]:
+            if points[0] == p2 return 1
+            if points[1] == p2 return 0
+        }
+
+        return -1
     }
 
     method index(p: *Point)->s32
@@ -487,7 +527,138 @@ impl Poly2Tri
 
     method edgeEvent(edge: *Edge, node: *Node)
     {
+        edge_event.constrained_edge = edge
+        edge_event.right = edge.p.x > edge.q.x
 
+        if isEdgeSideOfTriangle(node.triangle, edge.p, edge.q)
+            return
+
+        fillEdgeEvent(edge, node)
+        //edgeEvent(edge.p, edge.q, node.triangle, edge.q)
+    }
+
+    method fillEdgeEvent(edge: *Edge, node: *Node)
+    {
+        if edge_event.right
+            fillRightAboveEdgeEvent(edge, node)
+        else
+            fillLeftAboveEdgeEvent(edge, node)
+    }
+
+    method fillRightAboveEdgeEvent(edge: *Edge, n: *Node)
+    {
+        node := n
+        while node.next.point.x < edge.p.x
+        {
+            if orient2d(edge.q, node.next.point, edge.p) == .CCW
+                fillRightBelowEdgeEvent(edge, node)
+            else
+                node = node.next
+        }
+    }
+
+    method fillRightBelowEdgeEvent(edge: *Edge, node: *Node)
+    {
+        if node.point.x < edge.p.x
+        {
+            if orient2d(node.point, node.next.point, node.next.next.point) == .CCW
+                fillRightConcaveEdgeEvent(edge, node)
+            else
+            {
+                fillRightConvexEdgeEvent(edge, node)
+                fillRightBelowEdgeEvent(edge, node)
+            }
+        }
+    }
+
+    method fillRightConcaveEdgeEvent(edge: *Edge, node: *Node)
+    {
+        fill(node.next)
+        if node.next.point != edge.p
+        {
+            if orient2d(edge.q, node.next.point, edge.p) == .CCW
+            {
+                if orient2d(node.point, node.next.point, node.next.next.point) == .CCW
+                    fillRightConcaveEdgeEvent(edge, node);
+            }
+        }
+    }
+
+    method fillRightConvexEdgeEvent(edge: *Edge, node: *Node)
+    {
+        if orient2d(node.next.point, node.next.next.point, node.next.next.next.point) == .CCW
+        {
+            fillRightConcaveEdgeEvent(edge, node.next)
+        }
+        else
+        {
+            if orient2d(edge.q, node.next.next.point, edge.p) == .CCW
+                fillRightConvexEdgeEvent(edge, node.next);
+        }
+    }
+
+    method fillLeftAboveEdgeEvent(edge: *Edge, n: *Node)
+    {
+        node := n
+        while node.prev.point.x > edge.p.x
+        {
+            if orient2d(edge.q, node.prev.point, edge.p) == .CW
+                fillLeftBelowEdgeEvent(edge, node)
+            else
+                node = node.prev
+        }
+    }
+
+    method fillLeftBelowEdgeEvent(edge: *Edge, node: *Node)
+    {
+        if node.point.x > edge.p.x
+        {
+            if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW
+                fillLeftConcaveEdgeEvent(edge, node)
+            else
+            {
+                fillLeftConvexEdgeEvent(edge, node)
+                fillLeftBelowEdgeEvent(edge, node)
+            }
+        }
+    }
+
+    method fillLeftConvexEdgeEvent(edge: *Edge, node: *Node)
+    {
+        if orient2d(node.prev.point, node.prev.prev.point, node.prev.prev.prev.point) == .CW
+            fillLeftConcaveEdgeEvent(edge, node.prev)
+        else
+        {
+            if orient2d(edge.q, node.prev.prev.point, edge.p) == .CW
+                fillLeftConvexEdgeEvent(edge, node.prev)
+        }
+    }
+
+    method fillLeftConcaveEdgeEvent(edge: *Edge, node: *Node)
+    {
+        fill(node.prev)
+        if node.prev.point != edge.p
+        {
+            if orient2d(edge.q, node.prev.point, edge.p) == .CW
+            {
+                if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW
+                    fillLeftConcaveEdgeEvent(edge, node)
+            }
+        }
+    }
+
+    func isEdgeSideOfTriangle(triangle: *Triangle, ep, eq : *Point)->bool
+    {
+        index := triangle.edgeIndex(ep, eq)
+        if index != -1
+        {
+            triangle.markConstrainedEdge(index)
+            t := triangle.neighbors[index]
+            if t t.markConstrainedEdge(ep, eq)
+            return true
+        }
+
+        return false
     }
 
     method pointEvent(point: *Point)->*Node
