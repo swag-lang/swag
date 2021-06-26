@@ -72,6 +72,35 @@ struct Triangle
 
 impl Triangle
 {
+    method oppositePoint(t: *Triangle, p: *Point)->*Point
+    {
+        cw := t.pointCW(p)
+        return pointCW(cw)
+    }
+
+    method index(p: *Point)->s32
+    {
+        switch p
+        {
+        case points[0]: return 0
+        case points[1]: return 1
+        case points[1]: return 2
+        }
+
+        Debug.assert(false)
+        return -1
+    }
+
+    method neighborCW(point: *Point)->*Triangle
+    {
+        switch point
+        {
+        case points[0]: return neighbors[1]
+        case points[1]: return neighbors[2]
+        default:        return neighbors[0]
+        }
+    }
+
     method neighborCCW(p: *Point)->*Triangle
     {
         switch p
@@ -115,6 +144,96 @@ impl Triangle
         return null
     }
 
+    method pointCCW(point: *Point)->*Point
+    {
+        switch point
+        {
+        case points[0]: return points[1]
+        case points[1]: return points[2]
+        case points[2]: return points[0]
+        }
+
+        Debug.assert(false)
+        return null
+    }
+
+    method getDelunayEdgeCCW(p: *Point)->bool
+    {
+        switch p
+        {
+        case points[0]: return delaunay_edge[2]
+        case points[1]: return delaunay_edge[0]
+        default:        return delaunay_edge[1]
+        }
+    }
+
+    method getDelunayEdgeCW(p: *Point)->bool
+    {
+        switch p
+        {
+        case points[0]: return delaunay_edge[1]
+        case points[1]: return delaunay_edge[2]
+        default:        return delaunay_edge[0]
+        }
+    }
+
+    method setDelunayEdgeCCW(p: *Point, e: bool)
+    {
+        switch p
+        {
+        case points[0]: delaunay_edge[2] = e
+        case points[1]: delaunay_edge[0] = e
+        default:        delaunay_edge[1] = e
+        }
+    }
+
+    method setDelunayEdgeCW(p: *Point, e: bool)
+    {
+        switch p
+        {
+        case points[0]: delaunay_edge[1] = e
+        case points[1]: delaunay_edge[2] = e
+        default:        delaunay_edge[0] = e
+        }
+    }
+
+    method setConstrainedEdgeCCW(p: *Point, ce: bool)
+    {
+        switch p
+        {
+        case points[0]: constrained_edge[2] = ce
+        case points[1]: constrained_edge[0] = ce
+        default:        constrained_edge[1] = ce
+        }
+    }
+
+    method setConstrainedEdgeCW(p: *Point, ce: bool)
+    {
+        switch p
+        {
+        case points[0]: constrained_edge[1] = ce
+        case points[1]: constrained_edge[2] = ce
+        default:        constrained_edge[0] = ce
+        }
+    }
+
+    method clearNeighbor(triangle: *Triangle)
+    {
+        switch triangle
+        {
+        case neighbors[0]:  neighbors[0] = null
+        case neighbors[1]:  neighbors[1] = null
+        default:            neighbors[2] = null
+        }
+    }
+
+    method clearNeighbors()
+    {
+        neighbors[0] = null
+        neighbors[1] = null
+        neighbors[2] = null
+    }
+
     method contains(p: *Point)->bool
     {
         return p == points[0] or p == points[1] or p == points[2]
@@ -133,6 +252,8 @@ impl Triangle
             neighbors[1] = t
         else if (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0])
             neighbors[2] = t
+        else
+            Debug.assert(false)
     }
 
     method markNeighbor(t: *Triangle)
@@ -152,6 +273,27 @@ impl Triangle
             neighbors[2] = t
             t.markNeighbor(points[0], points[1], self)
         }
+    }
+
+    method legalize(opoint, npoint: *Point)
+    {
+        switch opoint
+        {
+        case points[0]:
+            points[1] = points[0]
+            points[0] = points[2]
+            points[2] = npoint
+        case points[1]:
+            points[2] = points[1]
+            points[1] = points[0]
+            points[0] = npoint
+        case points[2]:
+            points[0] = points[2]
+            points[2] = points[1]
+            points[1] = npoint
+        }
+
+        Debug.assert(false)
     }
 }
 
@@ -402,9 +544,50 @@ impl Poly2Tri
         fillBasinReq(basin.bottom_node)
     }
 
-    method fillBasinReq(node: *Node)
+    method fillBasinReq(n: *Node)
     {
+        node := n
+        if isShallow(node)
+            return
 
+        fill(node)
+
+        if node.prev == basin.left_node and node.next == basin.right_node
+            return
+
+        if node.prev == basin.left_node
+        {
+            o := orient2d(node.point, node.next.point, node.next.next.point)
+            if o == .CW
+                return
+            node = node.next
+        }
+        else if node.next == basin.right_node
+        {
+            o := orient2d(node.point, node.prev.point, node.prev.prev.point)
+            if o == .CCW
+                return
+            node = node.prev
+        }
+        else
+        {
+            if node.prev.point.y < node.next.point.y
+                node = node.prev
+            else
+                node = node.next
+        }
+
+        fillBasinReq(node)
+    }
+
+    method isShallow(node: *Node)->bool
+    {
+        var height: f64
+        if basin.left_highest
+            height = basin.left_node.point.y - node.point.y
+         else
+            height = basin.right_node.point.y - node.point.y
+        return basin.width > height
     }
 
     func basinAngle(node: *Node)->f64
@@ -495,9 +678,124 @@ impl Poly2Tri
         return new_node
     }
 
-    method legalize(triangle: *Triangle)->bool
+    func incircle(pa, pb, pc, pd: *Point)->bool
     {
-        return true
+        adx := pa.x - pd.x
+        ady := pa.y - pd.y
+        bdx := pb.x - pd.x
+        bdy := pb.y - pd.y
+
+        adxbdy := adx * bdy
+        bdxady := bdx * ady
+        oabd := adxbdy - bdxady
+
+        if oabd <= 0
+            return false
+
+        cdx := pc.x - pd.x
+        cdy := pc.y - pd.y
+
+        cdxady := cdx * ady
+        adxcdy := adx * cdy
+        ocad := cdxady - adxcdy
+
+        if ocad <= 0
+            return false
+
+        bdxcdy := bdx * cdy
+        cdxbdy := cdx * bdy
+
+        alift := adx * adx + ady * ady
+        blift := bdx * bdx + bdy * bdy
+        clift := cdx * cdx + cdy * cdy
+
+        det := alift * (bdxcdy - cdxbdy) + blift * ocad + clift * oabd
+        return det > 0
+    }
+
+    method legalize(t: *Triangle)->bool
+    {
+        loop i: 3
+        {
+            if t.delaunay_edge[i]
+                continue
+
+            ot := t.neighbors[i]
+            if ot
+            {
+                p := t.points[i]
+                op := ot.oppositePoint(t, p)
+                oi := ot.index(op)
+
+                if (ot.constrained_edge[oi] or ot.delaunay_edge[oi])
+                {
+                    t.constrained_edge[i] = ot.constrained_edge[oi]
+                    continue
+                }
+
+                inside := incircle(p, t.pointCCW(p), t.pointCW(p), op)
+                if (inside)
+                {
+                    t.delaunay_edge[i] = true
+                    ot.delaunay_edge[oi] = true
+
+                    rotateTrianglePair(t, p, ot, op)
+
+                    not_legalized := !legalize(t)
+                    if not_legalized
+                        mapTriangleToNodes(t)
+
+                    not_legalized = !legalize(ot)
+                    if not_legalized
+                        mapTriangleToNodes(ot)
+
+                    t.delaunay_edge[i] = false
+                    ot.delaunay_edge[oi] = false
+                    return true;
+                }
+            }
+        }
+
+        return false
+    }
+
+    func rotateTrianglePair(t: *Triangle, p: *Point, ot: *Triangle, op: *Point)
+    {
+        n1 := t.neighborCCW(p)
+        n2 := t.neighborCW(p)
+        n3 := ot.neighborCCW(op)
+        n4 := ot.neighborCW(op)
+
+        ce1 := t.getConstrainedEdgeCCW(p)
+        ce2 := t.getConstrainedEdgeCW(p)
+        ce3 := ot.getConstrainedEdgeCCW(op)
+        ce4 := ot.getConstrainedEdgeCW(op)
+
+        de1 := t.getDelunayEdgeCCW(p)
+        de2 := t.getDelunayEdgeCW(p)
+        de3 := ot.getDelunayEdgeCCW(op)
+        de4 := ot.getDelunayEdgeCW(op)
+
+        t.legalize(p, op)
+        ot.legalize(op, p)
+
+        ot.setDelunayEdgeCCW(p, de1)
+        t.setDelunayEdgeCW(p, de2)
+        t.setDelunayEdgeCCW(op, de3)
+        ot.setDelunayEdgeCW(op, de4)
+
+        ot.setConstrainedEdgeCCW(p, ce1)
+        t.setConstrainedEdgeCW(p, ce2)
+        t.setConstrainedEdgeCCW(op, ce3)
+        ot.setConstrainedEdgeCW(op, ce4)
+
+        t.clearNeighbors()
+        ot.clearNeighbors()
+        if n1 ot.markNeighbor(n1)
+        if n2 t.markNeighbor(n2)
+        if n3 t.markNeighbor(n3)
+        if n4 ot.markNeighbor(n4)
+        t.markNeighbor(ot)
     }
 
     method mapTriangleToNodes(t: *Triangle)
