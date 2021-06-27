@@ -76,8 +76,15 @@ struct DbgTypeRecordFuncId
     DbgTypeIndex type = 0;
 };
 
+struct DbgTypeRecordMFuncId
+{
+    DbgTypeIndex parentType = 0;
+    DbgTypeIndex type       = 0;
+};
+
 struct DbgTypeField
 {
+    uint16_t      kind = 0;
     ComputedValue value;
     TypeInfo*     valueType       = nullptr;
     const char*   name            = nullptr;
@@ -88,7 +95,6 @@ struct DbgTypeField
 struct DbgTypeRecordFieldList
 {
     vector<DbgTypeField> fields;
-    uint16_t             kind = 0;
 };
 
 struct DbgTypeRecordStructure
@@ -126,6 +132,7 @@ struct DbgTypeRecord
     DbgTypeRecordProcedure LF_Procedure;
     DbgTypeRecordMFunction LF_MFunction;
     DbgTypeRecordFuncId    LF_FuncId;
+    DbgTypeRecordMFuncId   LF_MFuncId;
     DbgTypeRecordFieldList LF_FieldList;
     DbgTypeRecordStructure LF_Structure;
     DbgTypeRecordArray     LF_Array;

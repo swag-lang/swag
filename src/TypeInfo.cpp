@@ -262,3 +262,20 @@ bool TypeInfo::isArrayOfRelative()
     auto ptr = (TypeInfoArray*) this;
     return ptr->finalType->isRelative();
 }
+
+bool TypeInfo::isMethod()
+{
+    if (kind != TypeInfoKind::FuncAttr)
+        return false;
+    auto ptr = (TypeInfoFuncAttr*) this;
+    if (ptr->parameters.size() == 0)
+        return false;
+    auto param = ptr->parameters[0];
+    if (param->typeInfo->kind != TypeInfoKind::Pointer)
+        return false;
+    if (!(param->typeInfo->flags & TYPEINFO_SELF))
+        return false;
+    if (!(param->typeInfo->flags & TYPEINFO_HAS_USING))
+        return false;
+    return true;
+}

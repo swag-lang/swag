@@ -98,6 +98,7 @@ struct TypeInfo
     bool isInitializerList();
     bool isArrayOfStruct();
     bool isArrayOfRelative();
+    bool isMethod();
 
     // clang-format off
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }

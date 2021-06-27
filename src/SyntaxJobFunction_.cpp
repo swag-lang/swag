@@ -292,7 +292,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             paramNode->token.text = "self";
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
-            typeNode->typeFlags   = TYPEFLAG_ISSELF;
+            typeNode->typeFlags   = TYPEFLAG_ISSELF | TYPEFLAG_USING;
             typeNode->identifier  = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type       = typeNode;
         }
