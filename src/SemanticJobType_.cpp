@@ -270,6 +270,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrPointer1->flags |= TYPEINFO_CONST;
             if (typeNode->typeFlags & TYPEFLAG_ISSELF)
                 ptrPointer1->flags |= TYPEINFO_SELF;
+            if (typeNode->typeFlags & TYPEFLAG_USING)
+                ptrPointer1->flags |= TYPEINFO_HAS_USING;
 
             // Relative pointer
             ptrPointer1->relative = typeNode->ptrRel[i];

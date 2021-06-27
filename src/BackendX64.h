@@ -62,6 +62,15 @@ struct DbgTypeRecordProcedure
     uint16_t     numArgs    = 0;
 };
 
+struct DbgTypeRecordMFunction
+{
+    DbgTypeIndex returnType = 0;
+    DbgTypeIndex structType = 0;
+    DbgTypeIndex thisType   = 0;
+    DbgTypeIndex argsType   = 0;
+    uint16_t     numArgs    = 0;
+};
+
 struct DbgTypeRecordFuncId
 {
     DbgTypeIndex type = 0;
@@ -115,6 +124,7 @@ struct DbgTypeRecord
     AstNode*               node = nullptr;
     DbgTypeRecordArgList   LF_ArgList;
     DbgTypeRecordProcedure LF_Procedure;
+    DbgTypeRecordMFunction LF_MFunction;
     DbgTypeRecordFuncId    LF_FuncId;
     DbgTypeRecordFieldList LF_FieldList;
     DbgTypeRecordStructure LF_Structure;
@@ -247,7 +257,7 @@ struct X64PerThread
     uint32_t symMC_mainContext_allocator_itable = 0;
     uint32_t symMC_mainContext_flags            = 0;
     uint32_t symDefaultAllocTable               = 0;
-    uint32_t symTls_threadLocalId                = 0;
+    uint32_t symTls_threadLocalId               = 0;
     uint32_t symPI_processInfos                 = 0;
     uint32_t symPI_args_addr                    = 0;
     uint32_t symPI_args_count                   = 0;

@@ -10,6 +10,8 @@
 #include "Version.h"
 #include "Workspace.h"
 
+// https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
+
 const uint32_t DEBUG_SECTION_MAGIC = 4;
 
 const uint32_t SUBSECTION_SYMBOL        = 0xF1;
@@ -34,6 +36,7 @@ const uint16_t S_LDATA32                   = 0x110C;
 
 const uint16_t LF_POINTER      = 0x1002;
 const uint16_t LF_PROCEDURE    = 0x1008;
+const uint16_t LF_MFUNCTION    = 0x1009;
 const uint16_t LF_ARGLIST      = 0x1201;
 const uint16_t LF_FIELDLIST    = 0x1203;
 const uint16_t LF_ENUMERATE    = 0x1502;
@@ -42,6 +45,7 @@ const uint16_t LF_STRUCTURE    = 0x1505;
 const uint16_t LF_ENUM         = 0x1507;
 const uint16_t LF_MEMBER       = 0x150d;
 const uint16_t LF_FUNC_ID      = 0x1601;
+const uint16_t LF_MFUNC_ID     = 0x1602;
 const uint16_t LF_UDT_SRC_LINE = 0x1606;
 
 const uint16_t LF_NUMERIC   = 0x8000;
@@ -364,11 +368,25 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
                 concat.addU32(f.LF_ArgList.args[i]);
             break;
 
+        // lfProc
         case LF_PROCEDURE:
             concat.addU32(f.LF_Procedure.returnType);
-            concat.addU16(0);                       // calling convention
+            concat.addU8(0);                        // calling convention
+            concat.addU8(0);                        // attributes
             concat.addU16(f.LF_Procedure.numArgs);  // #params
             concat.addU32(f.LF_Procedure.argsType); // @argstype
+            break;
+
+        // lfMFunc
+        case LF_MFUNCTION:
+            concat.addU32(f.LF_MFunction.returnType);
+            concat.addU32(f.LF_MFunction.structType);
+            concat.addU32(f.LF_MFunction.thisType);
+            concat.addU8(0);                        // calling convention
+            concat.addU8(0);                        // attributes
+            concat.addU16(f.LF_MFunction.numArgs);  // #params
+            concat.addU32(f.LF_MFunction.argsType); // @argstype
+            concat.addU32(0);                       // thisAdjust
             break;
 
         case LF_FUNC_ID:
@@ -806,18 +824,16 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-
-        DbgTypeRecord tr0;
-        tr0.kind                    = LF_PROCEDURE;
-        tr0.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
-        tr0.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
+        DbgTypeRecord     tr0;
 
         // Get the arg list type. We construct a string with all parameters to be able to
         // store something in the cache
         Utf8 args;
         for (auto& p : typeFunc->parameters)
             args += p->typeInfo->name;
-        auto itn = pp.dbgMapTypesNames.find(args);
+
+        DbgTypeIndex argsTypeIndex;
+        auto         itn = pp.dbgMapTypesNames.find(args);
         if (itn == pp.dbgMapTypesNames.end())
         {
             DbgTypeRecord tr1;
@@ -826,11 +842,24 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
             for (auto& p : typeFunc->parameters)
                 tr1.LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
             dbgAddTypeRecord(pp, tr1);
-            tr0.LF_Procedure.argsType = tr1.index;
             pp.dbgMapTypesNames[args] = tr1.index;
+            argsTypeIndex             = tr1.index;
         }
         else
-            tr0.LF_Procedure.argsType = itn->second;
+            argsTypeIndex = itn->second;
+
+        bool isMethod = false;
+        if (typeFunc->parameters.size())
+        {
+            auto typeFirst = typeFunc->parameters[0]->typeInfo;
+            if (typeFirst->flags & TYPEINFO_SELF && typeFirst->flags & TYPEINFO_HAS_USING)
+                isMethod = true;
+        }
+
+        tr0.kind                    = LF_PROCEDURE;
+        tr0.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
+        tr0.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
+        tr0.LF_Procedure.argsType   = argsTypeIndex;
 
         dbgAddTypeRecord(pp, tr0);
         return tr0.index;

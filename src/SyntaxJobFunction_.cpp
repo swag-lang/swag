@@ -163,6 +163,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= TYPEFLAG_ISSELF;
+            if (paramNode->flags & AST_DECL_USING)
+                typeNode->typeFlags |= TYPEFLAG_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
@@ -174,6 +176,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
             typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
             typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
             typeNode->typeFlags |= TYPEFLAG_ISSELF;
+            if (paramNode->flags & AST_DECL_USING)
+                typeNode->typeFlags |= TYPEFLAG_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
