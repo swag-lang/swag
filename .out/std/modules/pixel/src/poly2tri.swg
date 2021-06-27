@@ -8,13 +8,13 @@ enum Orientation
     Collinear
 }
 
-struct Point
+public struct Point
 {
     x, y:       f64
     edge_list:  Array'*Edge
 }
 
-struct Edge
+public struct Edge
 {
     p: *Point
     q: *Point
@@ -48,15 +48,13 @@ impl Edge
     }
 }
 
-
-struct Triangle
+public struct Triangle
 {
     constrained_edge:   [3] bool
     delaunay_edge:      [3] bool
-
-    points:     [3] *Point
-    neighbors:  [3] *Triangle
-    interior:   bool
+    points:             [3] *Point
+    neighbors:          [3] *Triangle
+    interior:           bool
 }
 
 impl Triangle
@@ -518,6 +516,12 @@ impl Poly2Tri
         createAdvancingFront()
         sweepPoints()
         finalizationPolygon()
+    }
+
+    // Get the result
+    public method getTriangles()->const [..] *Triangle
+    {
+        return triangles.toSlice()
     }
 
     method sweepPoints()
