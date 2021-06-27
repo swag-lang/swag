@@ -1,5 +1,4 @@
 // https://github.com/jhasse/poly2tri
-
 using Core
 
 enum Orientation
@@ -8,32 +7,6 @@ enum Orientation
     CCW
     Collinear
 }
-
-func orient2d(pa, pb, pc: *Point)->Orientation
-{
-    detleft  := (pa.x - pc.x) * (pb.y - pc.y)
-    detright := (pa.y - pc.y) * (pb.x - pc.x)
-    val := detleft - detright
-    if val > -Math.ConstF64.Epsilon and val < Math.ConstF64.Epsilon
-        return Orientation.Collinear
-    if val > 0
-        return Orientation.CCW
-    return Orientation.CW
-}
-
-func inScanArea(pa, pb, pc, pd: *Point)->bool
-{
-    oadb := (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
-    if oadb >= -Math.ConstF64.Epsilon
-        return false
-
-    oadc := (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
-    if oadc <= Math.ConstF64.Epsilon
-        return false
-
-    return true
-}
-
 
 struct Point
 {
@@ -51,6 +24,8 @@ impl Edge
 {
     method set(p1, p2: *Point)
     {
+        p = p1
+        q = p2
         if p1.y > p2.y
         {
             q = p1
@@ -138,7 +113,7 @@ impl Triangle
         {
         case points[0]: return 0
         case points[1]: return 1
-        case points[1]: return 2
+        case points[2]: return 2
         }
 
         Debug.assert(false)
@@ -312,7 +287,7 @@ impl Triangle
 
     method contains(p1, p2: *Point)->bool
     {
-        return contains(p1) or contains(p2)
+        return contains(p1) and contains(p2)
     }
 
     method markNeighbor(p1, p2: *Point, t: *Triangle)
@@ -362,9 +337,9 @@ impl Triangle
             points[0] = points[2]
             points[2] = points[1]
             points[1] = npoint
+        default:
+            Debug.assert(false)
         }
-
-        Debug.assert(false)
     }
 }
 
@@ -846,7 +821,7 @@ impl Poly2Tri
         node := locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
         new_node := newFrontTriangle(point, node)
-        if point.x < node.point.x + Math.ConstF64.Epsilon
+        if point.x <= node.point.x + Math.ConstF64.Epsilon
             fill(node)
         fillAdvancingFront(new_node)
         return new_node
@@ -1020,10 +995,16 @@ impl Poly2Tri
     method newFrontTriangle(point: *Point, node: *Node)->*Node
     {
         triangle := Memory.new'Triangle()
+        triangle.points[0] = point
+        triangle.points[1] = node.point
+        triangle.points[2] = node.next.point
+
         triangle.markNeighbor(node.triangle)
         map.add(triangle)
 
         new_node := Memory.new'Node()
+        new_node.point = point
+        new_node.value = point.x
         nodes.add(new_node)
 
         new_node.next = node.next
@@ -1035,6 +1016,31 @@ impl Poly2Tri
             mapTriangleToNodes(triangle)
 
         return new_node
+    }
+
+    func orient2d(pa, pb, pc: *Point)->Orientation
+    {
+        detleft  := (pa.x - pc.x) * (pb.y - pc.y)
+        detright := (pa.y - pc.y) * (pb.x - pc.x)
+        val := detleft - detright
+        if val > -Math.ConstF64.Epsilon and val < Math.ConstF64.Epsilon
+            return Orientation.Collinear
+        if val > 0
+            return Orientation.CCW
+        return Orientation.CW
+    }
+
+    func inScanArea(pa, pb, pc, pd: *Point)->bool
+    {
+        oadb := (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
+        if oadb >= -Math.ConstF64.Epsilon
+            return false
+
+        oadc := (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
+        if oadc <= Math.ConstF64.Epsilon
+            return false
+
+        return true
     }
 
     func incircle(pa, pb, pc, pd: *Point)->bool
@@ -1214,7 +1220,7 @@ impl Poly2Tri
             ymin = Math.min(ymin, p.y)
         }
 
-        const KAlpha = 0.3
+        const KAlpha = 0.3'f64
         dx := KAlpha * (xmax - xmin)
         dy := KAlpha * (ymax - ymin)
         head = Memory.new'Point()
@@ -1249,18 +1255,22 @@ impl Poly2Tri
 
         front.head = af_head
         front.tail = af_tail
+        front.search_node = af_head
 
         af_head.point = triangle.points[1]
         af_head.triangle = triangle
         af_head.next = af_middle
+        af_head.value = af_head.point.x
 
         af_middle.point = triangle.points[0]
         af_middle.triangle = triangle
         af_middle.next = af_tail
         af_middle.prev = af_head
+        af_middle.value = af_middle.point.x
 
         af_tail.point = triangle.points[2]
         af_tail.triangle = triangle
         af_tail.prev = af_middle
+        af_tail.value = af_tail.point.x
     }
 }

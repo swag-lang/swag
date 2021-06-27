@@ -8,6 +8,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
     {
         if !expr
         {
+            if Debugger.isAttached() Debugger.debugBreak()
             @panic(message, loc)
         }
     }
