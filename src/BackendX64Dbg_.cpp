@@ -860,16 +860,18 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         for (auto& p : typeFunc->parameters)
             args += p->typeInfo->name;
 
-        bool         isMethod = typeFunc->isMethod();
+        bool isMethod = typeFunc->isMethod();
+        auto numArgs  = (uint16_t) typeFunc->parameters.size();
+        if (isMethod) // Remove 'using self' first parameter
+            numArgs--;
+
         DbgTypeIndex argsTypeIndex;
         auto         itn = pp.dbgMapTypesNames.find(args);
         if (itn == pp.dbgMapTypesNames.end())
         {
             DbgTypeRecord tr1;
             tr1.kind             = LF_ARGLIST;
-            tr1.LF_ArgList.count = (uint16_t) typeFunc->parameters.size();
-            if (isMethod) // Remove 'using self' first parameter
-                tr1.LF_ArgList.count--;
+            tr1.LF_ArgList.count = numArgs;
             for (int i = 0; i < typeFunc->parameters.size(); i++)
             {
                 if (isMethod && i == 0) // Remove 'using self' first parameter
@@ -892,14 +894,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
             auto typeThis               = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
             tr0.LF_MFunction.structType = dbgGetOrCreateType(pp, typeThis->pointedType);
             tr0.LF_MFunction.thisType   = dbgGetOrCreateType(pp, typeThis);
-            tr0.LF_MFunction.numArgs    = (uint16_t) typeFunc->parameters.size();
+            tr0.LF_MFunction.numArgs    = numArgs;
             tr0.LF_MFunction.argsType   = argsTypeIndex;
         }
         else
         {
             tr0.kind                    = LF_PROCEDURE;
             tr0.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
-            tr0.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
+            tr0.LF_Procedure.numArgs    = numArgs;
             tr0.LF_Procedure.argsType   = argsTypeIndex;
         }
 
@@ -1095,7 +1097,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
-                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference)
+                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
@@ -1107,6 +1109,27 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
                     dbgEndRecord(pp, concat);
+
+                    // Codeview seems to need this pointer to be named "this"...
+                    // So add it
+                    if (typeFunc->isMethod() && child->token.text == "self")
+                    {
+                        //////////
+                        dbgStartRecord(pp, concat, S_LOCAL);
+                        concat.addU32(typeIdx); // Type
+                        concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+                        dbgEmitTruncatedString(concat, "this");
+                        dbgEndRecord(pp, concat);
+
+                        //////////
+                        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                        concat.addU16(R_RDI); // Register
+                        concat.addU16(0);     // Flags
+                        concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
+                        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                        concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
+                        dbgEndRecord(pp, concat);
+                    }
 
                     idxParam += typeParam->numRegisters();
                 }
