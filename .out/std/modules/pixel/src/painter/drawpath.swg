@@ -903,7 +903,21 @@ impl Painter
                     v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
                     v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
                     v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                    discard pushTriangle(v0, v1, v2, brush.color)
+                    prim := pushTriangle(v0, v1, v2, brush.color)
+
+                    if paintParams & .Antialiased
+                    {
+                        loop e: 3
+                        {
+                            if !tri.constrained_edge[e] continue
+                            switch e
+                            {
+                            case 0: addEdgeAA(prim, v1, v2)
+                            case 1: addEdgeAA(prim, v0, v2)
+                            case 2: addEdgeAA(prim, v0, v1)
+                            }
+                        }
+                    }
                 }
 
                 @init(&t)
