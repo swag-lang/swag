@@ -23,6 +23,7 @@ public struct LinePath
     endPoint:       Vector2
     isClosed:       bool
     isDirty:        bool
+    serial:         s32
 
     // Flatten infos
     flattenQuality: PaintQuality = ?

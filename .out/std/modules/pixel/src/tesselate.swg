@@ -503,6 +503,17 @@ public struct Tesselate
 
 impl Tesselate
 {
+    method opDrop()
+    {
+        clear()
+    }
+
+    method clear()
+    {
+
+        @init(self)
+    }
+
     // To call before adding a polyline
     public method startPolyLine()
     {

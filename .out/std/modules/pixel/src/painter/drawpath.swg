@@ -875,30 +875,43 @@ impl Painter
     {
         var t: Tesselate
 
-        visit p: pathList.paths
+        serial := 0
+        idx := 0
+        while idx < pathList.paths.count
         {
-            if @index != 0 and @index != 1 continue
+            p := pathList.paths[idx]
+            idx += 1
+
             p.flatten(paintQuality)
-            if Math.isZeroEpsilon(p.totalLen) continue
+            if !Math.isZeroEpsilon(p.totalLen)
+            {
+                t.startPolyLine()
+                visit *pt: p.posBuffer
+                    t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+                t.endPolyLine()
+            }
 
-            t.startPolyLine()
-            visit *pt: p.posBuffer
-                t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
-            t.endPolyLine()
+            if idx == pathList.paths.count or pathList.paths[idx].serial != serial
+            {
+                setTexture0(Vector2.Zero, Vector2.Zero, brush)
+                resetTexture1()
+
+                t.triangulate()
+                res := t.getTriangles()
+                visit tri: res
+                {
+                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+                    discard pushTriangle(v0, v1, v2, brush.color)
+                }
+
+                @init(&t)
+                serial += 1
+            }
         }
 
-        setTexture0(Vector2.Zero, Vector2.Zero, brush)
-        resetTexture1()
 
-        t.triangulate()
-        res := t.getTriangles()
-        visit tri: res
-        {
-            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-            discard pushTriangle(v0, v1, v2, brush.color)
-        }
     }
 
     // Fill the line path

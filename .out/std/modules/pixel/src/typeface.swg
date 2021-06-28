@@ -73,21 +73,32 @@ impl TypeFace
     func getStringOutline(using const self, pathList: *LinePathList, text: string, size: u32)
     {
         var itf: FT_Outline_Funcs
-        itf.move_to = @mkcallback(&moveTo)
-        itf.line_to = @mkcallback(&lineTo)
+        itf.move_to  = @mkcallback(&moveTo)
+        itf.line_to  = @mkcallback(&lineTo)
         itf.conic_to = @mkcallback(&conicTo)
         itf.cubic_to = @mkcallback(&bezierTo)
 
         assume FT_Set_Pixel_Sizes(face, 0, size)
 
+        serial := 0
         x := 0
+
         Utf8.visitRunes(|c| text)
         {
             assume FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
 
             x1 := x + (face.glyph.bitmap_left * 64)
             FT_Outline_Translate(face.glyph.outline, x1, 0)
+
+            prevIdx := pathList.paths.count
             assume FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+
+            if prevIdx != pathList.paths.count
+            {
+                loop i: prevIdx..pathList.paths.count-1
+                    pathList.paths[i].serial = serial
+                serial += 1
+            }
 
             x += face.glyph.advance.x
         }

@@ -8,13 +8,16 @@ struct LinePathList
 
 impl LinePathList
 {
-    func opDrop(using self)
+    method opDrop()
     {
         clear()
     }
 
+    #[Swag.inline]
+    method count() => paths.count
+
     // Remove all internal line paths
-    func clear(using self)
+    method clear()
     {
         visit p: paths
             Memory.delete(p)
@@ -22,7 +25,7 @@ impl LinePathList
     }
 
     // Returns a new path
-    func newPath(using self)->*LinePath
+    method newPath()->*LinePath
     {
         ptr := Memory.new'LinePath()
         paths.add(ptr)
