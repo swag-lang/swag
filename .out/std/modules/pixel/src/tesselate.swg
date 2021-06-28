@@ -510,7 +510,6 @@ impl Tesselate
 
     method clear()
     {
-
         @init(self)
     }
 

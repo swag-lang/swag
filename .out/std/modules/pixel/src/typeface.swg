@@ -86,9 +86,7 @@ impl TypeFace
         Utf8.visitRunes(|c| text)
         {
             assume FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-
-            x1 := x + (face.glyph.bitmap_left * 64)
-            FT_Outline_Translate(face.glyph.outline, x1, 0)
+            FT_Outline_Translate(face.glyph.outline, x, 0)
 
             prevIdx := pathList.paths.count
             assume FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)

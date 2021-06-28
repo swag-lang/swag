@@ -920,7 +920,7 @@ impl Painter
                     }
                 }
 
-                @init(&t)
+                t.clear()
                 serial += 1
             }
         }
