@@ -188,17 +188,21 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
+void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 {
-    auto node = context->node;
-    if (!node->childs.empty())
-        node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     if (!context->sourceFile->module->buildCfg.byteCodeOptimize)
     {
         PushLocation lk(context, &node->token.endLocation);
         emitInstruction(context, ByteCodeOp::DebugNop);
     }
+}
 
+bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    if (!node->childs.empty())
+        node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    emitDebugLine(context, node);
     return true;
 }
 
