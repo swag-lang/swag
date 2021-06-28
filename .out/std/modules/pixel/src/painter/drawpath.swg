@@ -873,8 +873,32 @@ impl Painter
     // Fill the line path
     func fillPath(using self, pathList: LinePathList, brush: Brush)
     {
+        var t: Tesselate
+
         visit p: pathList.paths
-            fillPath(p, brush)
+        {
+            if @index != 0 and @index != 1 continue
+            p.flatten(paintQuality)
+            if Math.isZeroEpsilon(p.totalLen) continue
+
+            t.startPolyLine()
+            visit *pt: p.posBuffer
+                t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+            t.endPolyLine()
+        }
+
+        setTexture0(Vector2.Zero, Vector2.Zero, brush)
+        resetTexture1()
+
+        t.triangulate()
+        res := t.getTriangles()
+        visit tri: res
+        {
+            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+            discard pushTriangle(v0, v1, v2, brush.color)
+        }
     }
 
     // Fill the line path

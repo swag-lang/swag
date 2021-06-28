@@ -382,11 +382,13 @@ func displayPage4()
         typeface.getStringOutline(&pathl, "this is a great text ЖЙ", 80)
         //cdc.translateTransform(100, 500)
         //typeface.getStringOutline(&pathl, "Й", 80)
-        cdc.drawPath(pathl, Argb.Purple, 1)
+        cdc.fillPath(pathl, Argb.Black)
+        //cdc.drawPath(pathl, Argb.Red, 2)
         cdc.resetTransform()
     }
 
-    cdc.drawTexture(100, 400, font80.atlases[0].texture)
+    // Draw font page
+    //cdc.drawTexture(100, 400, font80.atlases[0].texture)
 
     cdc.end()
     renderer.resetTransform()

@@ -931,8 +931,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
-                        Diagnostic diag(identifier, identifier->token, format(Msg0092, overload->node->token.text.c_str()));
-                        Diagnostic note(overload->node, overload->node->token, Msg0095, DiagnosticLevel::Note);
+                        PushErrHint errh(Hnt0023);
+                        Diagnostic  diag(identifier, identifier->token, format(Msg0092, overload->node->token.text.c_str()));
+                        Diagnostic  note(overload->node, overload->node->token, Msg0095, DiagnosticLevel::Note);
                         return context->report(diag, &note);
                     }
                     else
@@ -1091,8 +1092,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
-                    Diagnostic diag(identifier, identifier->token, format(Msg0109, overload->node->token.text.c_str()));
-                    Diagnostic note(overload->node, overload->node->token, Msg0106, DiagnosticLevel::Note);
+                    PushErrHint errh(Hnt0023);
+                    Diagnostic  diag(identifier, identifier->token, format(Msg0109, overload->node->token.text.c_str()));
+                    Diagnostic  note(overload->node, overload->node->token, Msg0106, DiagnosticLevel::Note);
                     return context->report(diag, &note);
                 }
                 else

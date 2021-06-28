@@ -797,6 +797,7 @@
 #define Hnt0020 "this should be 'impl %s'"
 #define Hnt0021 "this should be 'impl typeset %s'"
 #define Hnt0022 "this type is immutable ('const')"
+#define Hnt0023 "this call could be preceeded by 'discard' if you do not want to use the return value"
 
 #define Note000 "here is its declaration"
 #define Note001 "'%s' is %s of type '%s' which does not contain a subscope"

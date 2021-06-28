@@ -19,34 +19,31 @@ func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
 // Quick sort algorithm
 func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 {
-    count := @countof(values)
+    count := cast(int) @countof(values)
     if(count == 0)
         return
 
-    begin := 0'uint
-    end := count - 1
+    begin  := 0'int
+    end    := count - 1
     buffer := @dataof(values)
 
     loop
     {
         // If range is too small, simple sort
-        if end - begin <= 10
+        /*if end - begin <= 10
         {
             insertionSort(@mkslice(buffer + begin, (end - begin) + 1), cb)
             return
-        }
+        }*/
 
-        // Pick a pivot and,move it out of the way
-        pivot := (begin + end) / 2
-        swap(&buffer[pivot], &buffer[end])
-
-        low := begin
-        high := end
+        pivot := begin
+        low   := begin
+        high  := end
         loop
         {
-            while low < high and cb(buffer[low], buffer[end]) <= 0
+            while low < high and cb(buffer[low], buffer[pivot]) <= 0
                 low += 1
-            while low < high and cb(buffer[high], buffer[end]) >= 0
+            while cb(buffer[high], buffer[pivot]) > 0
                 high -= 1
             if low >= high
                 break
@@ -54,30 +51,31 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
         }
 
         // Put the median in the "center" of the list
-        swap(&buffer[end], &buffer[high])
+        swap(&buffer[pivot], &buffer[high])
 
         // To avoid too much recursions, we recurse only for the smaller partition
-        set1 := cast(int) ((low -,safe 1) - begin)
-        set2 := cast(int) (end -,safe (high +,safe 1))
+        set1 := (high - 1) - begin
+        set2 := end - (high + 1)
         if set1 > 0 and set2 > 0
         {
+            var first, last: int = ?
             if set1 <= set2
             {
-                first := begin
-                last := low - 1
-                quickSort(@mkslice(buffer + first, 1 + (last - first)), cb);
+                first = begin
+                last  = high - 1
                 begin = high + 1
             }
             else
             {
-                first := high + 1
-                last := end
-                quickSort(@mkslice(buffer + first, 1 + (last - first)), cb);
-                end = low - 1
+                first = high + 1
+                last  = end
+                end   = high - 1
             }
+
+            quickSort(@mkslice(buffer + first, (last - first) + 1), cb);
         }
         else if set1 > 0
-            end = low - 1
+            end = high - 1
         else if set2 > 0
             begin = high + 1
         else
