@@ -1371,21 +1371,24 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         if (!(typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
-            auto numRegs = typeInfoFunc->returnType->numRegisters();
-            reserveRegisterRC(context, node->resultRegisterRC, numRegs);
-            context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-            if (numRegs == 1)
-            {
-                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
-            }
-            else
-            {
-                SWAG_ASSERT(numRegs == 2);
-                emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            }
+            auto numRegs                = typeInfoFunc->returnType->numRegisters();
 
-            if (node->flags & AST_DISCARD)
-                freeRegisterRC(context, node->resultRegisterRC);
+            // Need to do that even if discard, not sure why
+            context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
+
+            if (!(node->flags & AST_DISCARD))
+            {
+                reserveRegisterRC(context, node->resultRegisterRC, numRegs);
+                if (numRegs == 1)
+                {
+                    emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
+                }
+                else
+                {
+                    SWAG_ASSERT(numRegs == 2);
+                    emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+                }
+            }
         }
     }
 
