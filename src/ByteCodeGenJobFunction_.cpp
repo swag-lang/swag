@@ -1029,6 +1029,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
 
             node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue.storageOffset);
+
+            if (node->flags & AST_DISCARD)
+                freeRegisterRC(context, node->resultRegisterRC);
         }
     }
 

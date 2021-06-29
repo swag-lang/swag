@@ -10,7 +10,7 @@ impl Vector
     {
         var result: retval = ?
         zz := @max(x.x, y.x)
-        @print(zz)
+        //@print(zz)
         return result
     }
 }
@@ -21,6 +21,6 @@ impl Vector
 {
     x := Vector{200}
     y := Vector{100}
-    x = Vector.max(x, y)
+    discard Vector.max(x, y)
     //discard Vector.min(x, y)
 }
