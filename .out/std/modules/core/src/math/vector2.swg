@@ -184,4 +184,22 @@ impl Vector2
         norm = 1 / norm
         return Vector2{x * norm, y * norm}
     }
+
+    // Returns a vector which is the 'min' of two vectors
+    func min(a, b: Vector2)->Vector2
+    {
+        var result: retval = ?
+        result.x = Math.min(a.x, b.x)
+        result.y = Math.min(a.y, b.y)
+        return result
+    }
+
+    // Returns a vector which is the 'min' of two vectors
+    func max(a, b: Vector2)->Vector2
+    {
+        var result: retval = ?
+        result.x = Math.max(a.x, b.x)
+        result.y = Math.max(a.y, b.y)
+        return result
+    }
 }

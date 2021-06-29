@@ -284,10 +284,8 @@ public impl LinePath
     private func flattenLine(using self, pos: Vector2)
     {
         totalLen += endPosBuffer.distance(pos)
-        bvMin.x = Math.min(bvMin.x, pos.x)
-        bvMin.y = Math.min(bvMin.y, pos.y)
-        bvMax.x = Math.max(bvMax.x, pos.x)
-        bvMax.y = Math.max(bvMax.y, pos.y)
+        bvMin = Vector2.min(bvMin, pos)
+        bvMax = Vector2.max(bvMax, pos)
 
         // Compute if shape is convex
         if isConvex and posBuffer.count > 2
@@ -370,7 +368,7 @@ public impl LinePath
         flattenQuality = quality
 
         bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(Swag.F32.Min, Swag.F32.Min)
+        bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
         totalLen = 0
         posBuffer.clear()
 

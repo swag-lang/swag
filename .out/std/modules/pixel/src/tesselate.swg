@@ -510,6 +510,16 @@ impl Tesselate
 
     method clear()
     {
+        Memory.delete(head)
+        Memory.delete(tail)
+        Memory.delete(af_head)
+        Memory.delete(af_middle)
+        Memory.delete(af_tail)
+        visit p: map Memory.delete(p)
+        visit p: edge_list Memory.delete(p)
+        visit p: nodes Memory.delete(p)
+        visit p: points Memory.delete(p)
+
         @init(self)
     }
 

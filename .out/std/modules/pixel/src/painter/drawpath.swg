@@ -870,9 +870,9 @@ impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
-    private method triangulate(t: *Tesselate, brush: Brush)
+    private method triangulate(t: *Tesselate, bvMin, bvMax: Vector2, brush: Brush)
     {
-        setTexture0(Vector2.Zero, Vector2.Zero, brush)
+        setTexture0(bvMin, bvMax, brush)
         resetTexture1()
 
         t.triangulate()
@@ -919,9 +919,9 @@ impl Painter
     {
         var t: Tesselate
 
-        idx    := 0
-        serial := 0
-        flush  := false
+        // Flatten all path, and compute BV
+        bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
+        bvMax := Vector2{-Swag.F32.Max, -Swag.F32.Max}
         visit p: pathList.paths
         {
             p.flatten(paintQuality)
@@ -931,6 +931,14 @@ impl Painter
                 p.offset(0.25)
             }
 
+            bvMin = Vector2.min(bvMin, p.bvMin)
+            bvMax = Vector2.max(bvMax, p.bvMax)
+        }
+
+        serial := 0
+        flush  := false
+        visit p: pathList.paths
+        {
             // Compute path orientation. If clockwise, this is a fill, otherwise
             // this is a hole
             idp    := 0
@@ -952,7 +960,7 @@ impl Painter
             if (orient > 0 or serial != p.serial) and flush
             {
                 serial = p.serial
-                triangulate(&t, brush)
+                triangulate(&t, bvMin, bvMax, brush)
                 flush = false
             }
 
@@ -967,7 +975,7 @@ impl Painter
         }
 
         if flush
-            triangulate(&t, brush)
+            triangulate(&t, bvMin, bvMax, brush)
     }
 
     // Fill the line path
