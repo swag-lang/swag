@@ -910,10 +910,14 @@ impl Painter
         idx    := 0
         serial := 0
         flush  := false
-        while idx < pathList.paths.count
+        visit p: pathList.paths
         {
-            p := pathList.paths[idx]
             p.flatten(paintQuality)
+            if paintParams & .Antialiased and !p.doneOffsetAA
+            {
+                p.doneOffsetAA = true
+                p.offset(0.25)
+            }
 
             // Compute path orientation. If clockwise, this is a fill, otherwise
             // this is a hole
@@ -940,7 +944,6 @@ impl Painter
                 flush = false
             }
 
-            idx += 1
             if !Math.isZeroEpsilon(p.totalLen)
             {
                 flush = true
