@@ -30,7 +30,6 @@ public struct LinePath
     bvMin:          Vector2
     bvMax:          Vector2
     totalLen:       f32
-    startPosBuffer: Vector2
     endPosBuffer:   Vector2
     posBuffer:      Array'Vector2
     isConvex:       bool
@@ -303,14 +302,18 @@ public impl LinePath
         endPosBuffer = pos
     }
 
-    protected func getFlattenPoint(using self, i: u32, offset: f32)->Vector2
+    protected func getFlattenPoint(using const self, i: uint, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset)
             return posBuffer.buffer[i]
 
-        v0 := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+        // If path is closed, then first and last points are equals
+        count := posBuffer.count - (isClosed ? 1 : 0)
+
+        v0 := posBuffer.buffer[(i + count - 1) % count]
         v1 := posBuffer.buffer[i]
-        v2 := posBuffer.buffer[(i + 1) % posBuffer.count]
+        v2 := posBuffer.buffer[(i + 1) % count]
+
         tmp0 := Vector2.toNormalize(v1 - v0)
         n0 := tmp0.cross(1)
         tmp1 := Vector2.toNormalize(v2 - v1)
@@ -345,7 +348,7 @@ public impl LinePath
 
         var copy: Array'Vector2
         copy.reserve(posBuffer.count)
-        loop i: cast(u32) posBuffer.count
+        loop i: posBuffer.count
             copy.add(getFlattenPoint(i, value))
 
         posBuffer =,move copy
@@ -372,9 +375,9 @@ public impl LinePath
         totalLen = 0
         posBuffer.clear()
 
-        startPosBuffer.x = roundVal(startPoint.x)
-        startPosBuffer.y = roundVal(startPoint.y)
-        endPosBuffer = startPosBuffer
+        endPosBuffer.x = roundVal(startPoint.x)
+        endPosBuffer.y = roundVal(startPoint.y)
+        posBuffer.add(endPosBuffer)
 
         var pos, p1, p2: Vector2 = ?
         visit elem: elements

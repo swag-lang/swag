@@ -16,6 +16,7 @@ private struct Context
     prev:               Vector2
     path:               const *LinePath
     pen:                const *Pen
+    offsetPath:         f32
 
     remainingPatternLen: f32
     patternTotalLen:     f32
@@ -546,8 +547,8 @@ impl Painter
         if pen.beginCapStyle == .None return
         if penSize < 3 return
 
-        v1 := path.startPosBuffer
-        v2 := path.posBuffer.buffer[0]
+        v1 := path.getFlattenPoint(0, cxt.offsetPath)
+        v2 := path.getFlattenPoint(1, cxt.offsetPath)
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
@@ -560,10 +561,8 @@ impl Painter
         if pen.endCapStyle == .None return
         if penSize < 3 return
 
-        v1 := path.posBuffer.buffer[path.posBuffer.count - 1]
-        v2 := path.startPosBuffer
-        if path.posBuffer.count > 1
-            v2 = path.posBuffer.buffer[path.posBuffer.count - 2]
+        v1 := path.getFlattenPoint(path.posBuffer.count - 1, cxt.offsetPath)
+        v2 := path.getFlattenPoint(path.posBuffer.count - 2, cxt.offsetPath)
         n := v1 - v2
         n.normalizeSafe()
         c := n.cross(1)
@@ -582,7 +581,7 @@ impl Painter
             penSize += 0.5
 
         penSize2    = penSize * 0.5
-        prev        = path.startPosBuffer
+        prev        = path.getFlattenPoint(0, cxt.offsetPath)
         beginLine   = true
         firstLine   = true
 
@@ -595,8 +594,11 @@ impl Painter
         }
 
         // Draw all
-        visit p: path.posBuffer
+        loop i: 1..path.posBuffer.count-1
+        {
+            p := path.posBuffer[i]
             drawLine(cxt, dref p)
+        }
 
         // AA end edge if no end cap
         if !lastLineInvalid and !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
@@ -702,11 +704,13 @@ impl Painter
     {
         var result: retval
 
+        slice := @mkslice(path.posBuffer.buffer + 1, path.posBuffer.count - 1)
+        n := cast(s32) @countof(slice)
+
         // We want a counter-clockwise polygon in V
-        n := cast(s32) path.posBuffer.count
         triangulateIdx.resize(cast(uint) n)
         idxPtr := triangulateIdx.buffer
-        if triangulateArea(path.posBuffer.toSlice()) >= 0
+        if triangulateArea(slice) >= 0
         {
             loop i: n
                 idxPtr[i] = cast(s32) i
@@ -741,7 +745,7 @@ impl Painter
             w := v + 1
             if nv <= w w = 0
 
-            if triangulateSnip(path.posBuffer.toSlice(), u, v, w, nv, idxPtr)
+            if triangulateSnip(slice, u, v, w, nv, idxPtr)
             {
                 // Output Triangle
                 a := idxPtr[u]
@@ -794,17 +798,19 @@ impl Painter
         // vertices
         if isConvex
         {
+            count := posBuffer.count - 1
             center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
-            visit pos, i: posBuffer
+            loop i: count
             {
+                pos := posBuffer[i]
                 v0 := dref pos
-                v1 := posBuffer.buffer[(i + 1) % posBuffer.count]
+                v1 := posBuffer.buffer[(i + 1) % count]
                 prim := pushTriangle(center, v0, v1, brush.color)
 
                 if paintParams & .Antialiased
                 {
-                    v2 := posBuffer.buffer[(i + 2) % posBuffer.count]
-                    vp := posBuffer.buffer[(i + posBuffer.count - 1) % posBuffer.count]
+                    v2 := posBuffer.buffer[(i + 2) % count]
+                    vp := posBuffer.buffer[(i + count - 1) % count]
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
                     addEdgeAA(prim, vp, v0)
@@ -818,7 +824,7 @@ impl Painter
             result := triangulate(path)
             if result.isEmpty() return
             pidx := result.buffer
-            tpos := path.posBuffer.buffer
+            tpos := path.posBuffer.buffer + 1
             firstPrim := vertexBuffer.count
             loop result.count / 3
             {
@@ -833,7 +839,7 @@ impl Painter
             // next edge (even if not in the triangle)
             if paintParams & .Antialiased
             {
-                cpt := cast(s32) path.posBuffer.count
+                cpt := cast(s32) path.posBuffer.count - 1
                 psrc := result.buffer
                 for i := 0; i < result.count; i += 3
                 {
@@ -941,7 +947,7 @@ impl Painter
         {
             // Compute path orientation. If clockwise, this is a fill, otherwise
             // this is a hole
-            idp    := 0
+            idp    := 1
             orient := 0'f32
             if p.posBuffer.count >= 3 and serial == p.serial
             {
@@ -968,8 +974,12 @@ impl Painter
             {
                 flush = true
                 t.startPolyLine()
-                visit *pt: p.posBuffer
+                loop i: 0..p.posBuffer.count-2
+                {
+                    pt := p.posBuffer[i]
                     t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+                }
+
                 t.endPolyLine()
             }
         }

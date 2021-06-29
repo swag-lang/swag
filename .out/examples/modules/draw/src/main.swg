@@ -368,6 +368,7 @@ func displayPage4()
     }
 
     const str = "abcdefghijklmnopqrstuvwxyz"
+    //const str = "a"
 
     {
         //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
@@ -386,8 +387,8 @@ func displayPage4()
         //cdc.translateTransform(100, 500)
         //typeface.getStringOutline(&pathl, "Й", 80)
         brush := Brush.createTexture(image1)
-        cdc.fillPath(pathl, brush)
-        //cdc.drawPath(pathl, Argb.White, 1)
+        cdc.fillPath(pathl, Argb.Black)
+        //cdc.drawPath(pathl, Argb.White, 5)
         cdc.resetTransform()
     }
 
