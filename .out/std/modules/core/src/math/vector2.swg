@@ -108,6 +108,12 @@ impl Vector2
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
+    // Returns true if this Vector2 is equals to another with an epsilon
+    func isEqualEpsilon(using self, other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
+    {
+        return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
+    }
+
     // Returns the distance between two vectors
     func distance(using const self, to: Self)->f32
     {

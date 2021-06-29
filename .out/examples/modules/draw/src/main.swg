@@ -367,8 +367,8 @@ func displayPage4()
         cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
 
-    const str = "abcdefghijklmnopqrstuvwxyz"
-    //const str = "a"
+    //const str = "abcdefghijklmnopqrstuvwxyz"
+    const str = "A"
 
     {
         //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
@@ -383,12 +383,13 @@ func displayPage4()
     {
         var pathl: LinePathList
         cdc.translateTransform(100, 450)
-        typeface.getStringOutline(&pathl, str, 60)
-        //cdc.translateTransform(100, 500)
-        //typeface.getStringOutline(&pathl, "Й", 80)
+        typeface.getStringOutline(&pathl, str, 180)
         brush := Brush.createTexture(image1)
-        cdc.fillPath(pathl, Argb.Black)
-        //cdc.drawPath(pathl, Argb.White, 5)
+        //cdc.fillPath(pathl, Argb.Black)
+        pen := Pen.createSolid(Argb.Red, 10)
+        pen.joinStyle = .Round
+        pen.plotOffset = 2
+        cdc.drawPath(pathl, pen)
         cdc.resetTransform()
     }
 

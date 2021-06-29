@@ -585,6 +585,8 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
+        cxt.offsetPath = pen.plotOffset
+
         // Line caps. Draw them before the line, so that the line will overwrite them a
         // little if necessary
         if !path.isClosed
@@ -596,8 +598,8 @@ impl Painter
         // Draw all
         loop i: 1..path.posBuffer.count-1
         {
-            p := path.posBuffer[i]
-            drawLine(cxt, dref p)
+            p := path.getFlattenPoint(i, cxt.offsetPath)
+            drawLine(cxt, p)
         }
 
         // AA end edge if no end cap

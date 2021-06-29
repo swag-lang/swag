@@ -51,6 +51,7 @@ struct Pen
     squareAnchorScaleX: f32 = 1.5
     squareAnchorScaleY: f32 = 2
     joinMiterLimit:     f32 = 3
+    plotOffset:         f32
 
     dashStyle:      DashStyle    = None
     beginCapStyle:  LineCapStyle = Round

@@ -302,13 +302,15 @@ public impl LinePath
         endPosBuffer = pos
     }
 
-    protected func getFlattenPoint(using const self, i: uint, offset: f32)->Vector2
+    protected func getFlattenPoint(using const self, idx: uint, offset: f32)->Vector2
     {
-        if Math.isZeroEpsilon(offset)
+        i := idx
+        if !isClosed or Math.isZeroEpsilon(offset)
             return posBuffer.buffer[i]
 
         // If path is closed, then first and last points are equals
-        count := posBuffer.count - (isClosed ? 1 : 0)
+        count := posBuffer.count - 1
+        if i == count i = 0
 
         v0 := posBuffer.buffer[(i + count - 1) % count]
         v1 := posBuffer.buffer[i]

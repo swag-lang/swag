@@ -94,7 +94,11 @@ impl TypeFace
             if prevIdx != pathList.paths.count
             {
                 loop i: prevIdx..pathList.paths.count-1
+                {
+                    pathList.paths[i].isClosed = true
                     pathList.paths[i].serial = serial
+                }
+
                 serial += 1
             }
 
