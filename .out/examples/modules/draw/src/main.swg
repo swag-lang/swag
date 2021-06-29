@@ -382,7 +382,7 @@ func displayPage4()
     {
         var pathl: LinePathList
         cdc.translateTransform(100, 450)
-        typeface.getStringOutline(&pathl, str, 40)
+        typeface.getStringOutline(&pathl, str, 60)
         //cdc.translateTransform(100, 500)
         //typeface.getStringOutline(&pathl, "Й", 80)
         cdc.fillPath(pathl, Argb.Black)

@@ -886,16 +886,28 @@ impl Painter
 
             if paintParams & .Antialiased
             {
-                loop e: 3
+                method addAA(prim: uint, tri: const *Triangle)
                 {
-                    if !tri.constrained_edge[e] continue
-                    switch e
+                    if !tri return
+                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+                    loop e: 3
                     {
-                    case 0: addEdgeAA(prim, v1, v2)
-                    case 1: addEdgeAA(prim, v0, v2)
-                    case 2: addEdgeAA(prim, v0, v1)
+                        if !tri.constrained_edge[e] continue
+                        switch e
+                        {
+                        case 0: addEdgeAA(prim, v1, v2)
+                        case 1: addEdgeAA(prim, v0, v2)
+                        case 2: addEdgeAA(prim, v0, v1)
+                        }
                     }
                 }
+
+                addAA(self, prim, tri)
+                addAA(self, prim, tri.neighbors[0])
+                addAA(self, prim, tri.neighbors[1])
+                addAA(self, prim, tri.neighbors[2])
             }
         }
 
