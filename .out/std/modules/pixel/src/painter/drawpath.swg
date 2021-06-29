@@ -870,62 +870,89 @@ impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
+    private method triangulate(t: *Tesselate, brush: Brush)
+    {
+        setTexture0(Vector2.Zero, Vector2.Zero, brush)
+        resetTexture1()
+
+        t.triangulate()
+        res := t.getTriangles()
+        visit tri: res
+        {
+            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+            prim := pushTriangle(v0, v1, v2, brush.color)
+
+            if paintParams & .Antialiased
+            {
+                loop e: 3
+                {
+                    if !tri.constrained_edge[e] continue
+                    switch e
+                    {
+                    case 0: addEdgeAA(prim, v1, v2)
+                    case 1: addEdgeAA(prim, v0, v2)
+                    case 2: addEdgeAA(prim, v0, v1)
+                    }
+                }
+            }
+        }
+
+        t.clear()
+    }
+
     // Fill the line path
     func fillPath(using self, pathList: LinePathList, brush: Brush)
     {
         var t: Tesselate
 
+        idx    := 0
         serial := 0
-        idx := 0
+        flush  := false
         while idx < pathList.paths.count
         {
             p := pathList.paths[idx]
-            idx += 1
-
             p.flatten(paintQuality)
+
+            // Compute path orientation. If clockwise, this is a fill, otherwise
+            // this is a hole
+            idp    := 0
+            orient := 0'f32
+            if p.posBuffer.count >= 3 and serial == p.serial
+            {
+                while idp < p.posBuffer.count - 3
+                {
+                    pa := p.posBuffer[idp]
+                    pb := p.posBuffer[idp+1]
+                    pc := p.posBuffer[idp+2]
+                    detleft  := (pa.x - pc.x) * (pb.y - pc.y)
+                    detright := (pa.y - pc.y) * (pb.x - pc.x)
+                    orient = detleft - detright
+                    if !Math.isZeroEpsilon(orient) break
+                }
+            }
+
+            if (orient > 0 or serial != p.serial) and flush
+            {
+                serial = p.serial
+                triangulate(&t, brush)
+                flush = false
+            }
+
+            idx += 1
             if !Math.isZeroEpsilon(p.totalLen)
             {
+                flush = true
                 t.startPolyLine()
                 visit *pt: p.posBuffer
                     t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
                 t.endPolyLine()
             }
-
-            if idx == pathList.paths.count or pathList.paths[idx].serial != serial
-            {
-                setTexture0(Vector2.Zero, Vector2.Zero, brush)
-                resetTexture1()
-
-                t.triangulate()
-                res := t.getTriangles()
-                visit tri: res
-                {
-                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                    prim := pushTriangle(v0, v1, v2, brush.color)
-
-                    if paintParams & .Antialiased
-                    {
-                        loop e: 3
-                        {
-                            if !tri.constrained_edge[e] continue
-                            switch e
-                            {
-                            case 0: addEdgeAA(prim, v1, v2)
-                            case 1: addEdgeAA(prim, v0, v2)
-                            case 2: addEdgeAA(prim, v0, v1)
-                            }
-                        }
-                    }
-                }
-
-                t.clear()
-                serial += 1
-            }
         }
 
-
+        if flush
+            triangulate(&t, brush)
     }
 
     // Fill the line path

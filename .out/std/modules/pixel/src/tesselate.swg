@@ -508,7 +508,6 @@ impl Tesselate
         clear()
     }
 
-    #[Swag.printbc]
     method clear()
     {
         @init(self)
@@ -1067,7 +1066,7 @@ impl Tesselate
         detleft  := (pa.x - pc.x) * (pb.y - pc.y)
         detright := (pa.y - pc.y) * (pb.x - pc.x)
         val := detleft - detright
-        if val > -Math.ConstF64.Epsilon and val < Math.ConstF64.Epsilon
+        if Math.isZeroEpsilon(val)
             return Orientation.Collinear
         if val > 0
             return Orientation.CCW
