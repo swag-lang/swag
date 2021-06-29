@@ -815,13 +815,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
 
-        // A struct with parameters is in fact the creation of a temporary variable
-        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
-        {
-            SWAG_CHECK(createTmpVarStruct(context, identifier));
-            return true;
-        }
-
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
             return context->report({identifier, identifier->token, format(Msg0082, identifier->typeInfo->getDisplayName().c_str())});
@@ -838,6 +831,40 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                     SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, CASTFLAG_TRY_COERCE));
             }
+        }
+
+        // A struct with parameters is in fact the creation of a temporary variable
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
+        {
+            if (identifier->parent->parent->kind == AstNodeKind::VarDecl)
+            {
+                // Optim if we have var := Struct{}
+                // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+                // of 'var'
+                auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl);
+                if (varNode->assignment == identifier->parent)
+                {
+                    if (!varNode->type)
+                    {
+                        auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
+                        varNode->type       = typeNode;
+                        varNode->assignment = nullptr;
+                        typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+                        identifier->semFlags |= AST_SEM_ONCE;
+                        Ast::removeFromParent(identifier->parent);
+                        Ast::addChildBack(typeNode, identifier->parent);
+                        typeNode->identifier = identifier->parent;
+                        context->job->nodes.pop_back();
+                        context->job->nodes.pop_back();
+                        context->job->nodes.push_back(typeNode);
+                        context->result = ContextResult::NewChilds;
+                        return true;
+                    }
+                }
+            }
+
+            SWAG_CHECK(createTmpVarStruct(context, identifier));
+            return true;
         }
 
         break;
