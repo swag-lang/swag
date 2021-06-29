@@ -731,6 +731,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
     {
         typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStruct);
+        if (context->result != ContextResult::Done)
+            return true;
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
     }
@@ -757,10 +760,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         SWAG_ASSERT(typeStruct);
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
-            context->job->waitStructGenerated(typeStruct);
-            if (context->result != ContextResult::Done)
-                return true;
-
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             if (!generateStruct_opInit(context, typeStruct))
                 return false;

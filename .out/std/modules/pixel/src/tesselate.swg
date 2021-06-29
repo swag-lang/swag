@@ -508,6 +508,7 @@ impl Tesselate
         clear()
     }
 
+    #[Swag.printbc]
     method clear()
     {
         @init(self)
