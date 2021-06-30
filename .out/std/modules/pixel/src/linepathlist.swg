@@ -13,6 +13,16 @@ impl LinePathList
         clear()
     }
 
+    method opPostCopy()
+    {
+        visit p, i: paths
+        {
+            ptr := Memory.new'LinePath()
+            dref ptr = dref p
+            paths[i] = ptr
+        }
+    }
+
     #[Swag.inline]
     method count() => paths.count
 

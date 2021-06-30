@@ -42,9 +42,6 @@ v.add(#code @print(a))
 #mixin v[0]
 #mixin v[1]
 -------------------------------------
-opInit user ?
-en jai on peut dans une struct initialiser des champs d'une sous struct
--------------------------------------
 
 
 

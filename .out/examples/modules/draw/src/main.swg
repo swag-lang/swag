@@ -382,14 +382,27 @@ func displayPage4()
 
     {
         var pathl: LinePathList
-        cdc.translateTransform(100, 450)
-        typeface.getStringOutline(&pathl, str, 80)
-        brush := Brush.createTexture(image1)
-        cdc.fillPath(pathl, Argb.Black)
+        cdc.translateTransform(50, 470)
+
         pen := Pen.createSolid(Argb.Red, 5)
         pen.joinStyle = .Round
         pen.plotOffset = 2
+
+        typeface.getStringOutline(&pathl, str, 70)
         cdc.drawPath(pathl, pen)
+        cdc.fillPath(pathl, Argb.Black)
+
+        cdc.resetTransform()
+    }
+
+    {
+        var pathl: LinePathList
+        cdc.translateTransform(50, 570)
+
+        typeface.getStringOutline(&pathl, str, 70)
+        cdc.fillPath(pathl, Argb.Red)
+        cdc.fillPath(pathl, Argb.Black)
+
         cdc.resetTransform()
     }
 
