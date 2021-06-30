@@ -29,7 +29,7 @@ private struct Context
 
 impl Painter
 {
-    private func drawCapSquare(using self, p, d: Vector2, sens: f32, pen: Pen)
+    private method drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -50,7 +50,7 @@ impl Painter
         }
     }
 
-    private func drawCapTriangle(using self, p, d: Vector2, sens: f32, pen: Pen)
+    private method drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -65,7 +65,7 @@ impl Painter
         }
     }
 
-    private func drawCapSquareAnchor(using self, p1, d1: Vector2, sens: f32, pen: Pen)
+    private method drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -100,7 +100,7 @@ impl Painter
         }
     }
 
-    private func drawCapArrowAnchor(using self, p1, d1: Vector2, sens: f32, pen: Pen)
+    private method drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -125,7 +125,7 @@ impl Painter
         }
     }
 
-    private func drawCapRound(using self, p, d: Vector2, sens: f32, pen: Pen)
+    private method drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
     {
         radius := d.length()
         if radius < 2.5
@@ -140,7 +140,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private func drawLineCap(using self, capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    private method drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
         #[Swag.complete]
         switch capStyle
@@ -154,7 +154,7 @@ impl Painter
         }
     }
 
-    private func drawDashCap(using self, using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
+    private method drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
     {
         if penSize < 3 return
 
@@ -168,7 +168,7 @@ impl Painter
         }
     }
 
-    private func drawJoinBevel(using self, p, d1, d2: Vector2, pen: Pen)
+    private method drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
     {
         v0 := p
 
@@ -193,7 +193,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private func drawRound(using self, center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
+    private method drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
         var startPos, endPos: Vector2 = ?
         startPos.x = center.x + (Math.cos(angle0) * radius)
@@ -233,7 +233,7 @@ impl Painter
         }
     }
 
-    private func drawJoinRound(using self, p, d1, d2: Vector2, pen: Pen)
+    private method drawJoinRound(p, d1, d2: Vector2, pen: Pen)
     {
         var angle0, angle1: f32 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
@@ -260,7 +260,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private func drawJoinMiter(using self, p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    private method drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
@@ -314,7 +314,7 @@ impl Painter
         }
     }
 
-    private func drawJoin(using self, using cxt: *Context, p, d1, d2: Vector2)
+    private method drawJoin(using cxt: *Context, p, d1, d2: Vector2)
     {
         #[Swag.complete]
         switch pen.joinStyle
@@ -327,7 +327,7 @@ impl Painter
         }
     }
 
-    private func drawDashEndCap(using self, using cxt: *Context, posCap, normalCap: Vector2)
+    private method drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
     {
         if beginLine or lastLineInvalid return
 
@@ -345,7 +345,7 @@ impl Painter
         }
     }
 
-    private func drawMoveCursor(using self, using cxt: *Context, pos: Vector2)
+    private method drawMoveCursor(using cxt: *Context, pos: Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {
@@ -360,7 +360,7 @@ impl Painter
         }
     }
 
-    private func drawLineInternal(using self, using cxt: *Context, pos: Vector2)
+    private method drawLineInternal(using cxt: *Context, pos: Vector2)
     {
         // Compute line (half width on each side)
         newPos := pos
@@ -472,7 +472,7 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
-    private func drawLine(using self, using cxt: *Context, pos: Vector2)
+    private method drawLine(using cxt: *Context, pos: Vector2)
     {
         // solid
         if pen.dashStyle == .None
@@ -542,7 +542,7 @@ impl Painter
         }
     }
 
-    private func drawLineBeginCap(using self, using cxt: *Context)
+    private method drawLineBeginCap(using cxt: *Context)
     {
         if pen.beginCapStyle == .None return
         if penSize < 3 return
@@ -556,7 +556,7 @@ impl Painter
         drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
-    private func drawLineEndCap(using self, using cxt: *Context)
+    private method drawLineEndCap(using cxt: *Context)
     {
         if pen.endCapStyle == .None return
         if penSize < 3 return
@@ -570,7 +570,7 @@ impl Painter
         drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
-    private func drawPath(using self, using cxt: *Context)
+    private method drawPath(using cxt: *Context)
     {
         if pen.size < 1 or path.posBuffer.count == 0
             return
@@ -619,7 +619,7 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    func drawPath(using self, path: *LinePath, pen: Pen)
+    method drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(paintQuality)
         if Math.isZeroEpsilon(path.totalLen) return
@@ -637,7 +637,7 @@ impl Painter
     }
 
     // Draw the line path
-    func drawPath(using self, path: *LinePath, color: Color, penSize: f32)
+    method drawPath(path: *LinePath, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
@@ -646,14 +646,14 @@ impl Painter
     }
 
     // Draw the line path
-    func drawPath(using self, pathList: LinePathList, pen: Pen)
+    method drawPath(pathList: LinePathList, pen: Pen)
     {
         visit p: pathList.paths
             drawPath(p, pen)
     }
 
     // Draw the line path
-    func drawPath(using self, pathList: LinePathList, color: Color, penSize: f32)
+    method drawPath(pathList: LinePathList, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
@@ -686,7 +686,7 @@ impl Painter
         return true
     }
 
-    private func triangulate(using self, path: *LinePath)->Array's32
+    private method triangulate(path: *LinePath)->Array's32
     {
         var result: retval
 
@@ -763,7 +763,7 @@ impl Painter
     }
 
     // Fill the line path with the given 'brush'
-    func fillPath(using self, path: *LinePath, brush: Brush)
+    method fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
         if Math.isZeroEpsilon(path.totalLen) return
@@ -855,7 +855,7 @@ impl Painter
     }
 
     // Fill the line path
-    func fillPath(using self, path: *LinePath, color: Color)
+    method fillPath(path: *LinePath, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -907,7 +907,7 @@ impl Painter
     }
 
     // Fill the line path
-    func fillPath(using self, pathList: LinePathList, brush: Brush)
+    method fillPath(pathList: LinePathList, brush: Brush)
     {
         var t: Tesselate
 
@@ -957,7 +957,7 @@ impl Painter
     }
 
     // Fill the line path
-    func fillPath(using self, pathList: LinePathList, color: Color)
+    method fillPath(pathList: LinePathList, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
