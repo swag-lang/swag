@@ -881,7 +881,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 bool TypeInfoStruct::canRawCopy()
 {
-    return !opPostCopy && !opPostMove && !opReloc;
+    return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct && !opReloc && !opUserRelocFct;
 }
 
 Utf8 TypeInfoStruct::getDisplayName()

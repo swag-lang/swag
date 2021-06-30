@@ -197,7 +197,6 @@ struct ByteCode
     uint32_t numJumps              = 0;
 
     bool         compilerGenerated = false;
-    bool         isPostMove        = false;
     bool         addedToList       = false;
     atomic<bool> running;
     atomic<bool> isEmpty;

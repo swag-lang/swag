@@ -92,6 +92,14 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
         return true;
 
+    // Need to wait for user function full semantic resolve
+    if (typeInfoStruct->opUserInitFct)
+    {
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
@@ -461,6 +469,14 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
     if (typeInfoStruct->opUserRelocFct && typeInfoStruct->opUserRelocFct->attributeFlags & ATTRIBUTE_FOREIGN)
         return true;
 
+    // Need to wait for user function full semantic resolve
+    if (typeInfoStruct->opUserRelocFct)
+    {
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserRelocFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
@@ -642,9 +658,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
-    // Do we need a postmove ?
-    bool needPostMove = false;
-
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
@@ -662,6 +675,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         return true;
 
     // Need to wait for function full semantic resolve
+    bool needPostMove = false;
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
@@ -703,7 +717,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
-    opPostMove->isPostMove            = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -770,9 +783,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
-    // Do we need a postcopy ?
-    bool needPostCopy = false;
-
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
@@ -785,16 +795,18 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         }
     }
 
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
+
     // Need to wait for function full semantic resolve
+    bool needPostCopy = false;
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        if (!(typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN))
-        {
-            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-            if (context->result == ContextResult::Pending)
-                return true;
-        }
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
     }
 
     // Be sure sub structs are generated too
