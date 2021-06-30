@@ -198,6 +198,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
         auto child    = field->declNode;
         auto varDecl  = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeInfo = TypeManager::concreteType(varDecl->typeInfo);
+
         if (varDecl->assignment)
         {
             auto& value = varDecl->assignment->computedValue;
@@ -236,6 +237,15 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offsetStruct + field->offset, typeSub->declNode, segment));
+        }
+
+        if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+        {
+            auto varType = varDecl->type;
+            SWAG_ASSERT(varType->computedValue.storageSegment);
+            SWAG_ASSERT(varType->computedValue.storageOffset != 0xFFFFFFFF);
+            auto srcAddr = varType->computedValue.storageSegment->addressNoLock(varType->computedValue.storageOffset);
+            memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
 
         cptField++;

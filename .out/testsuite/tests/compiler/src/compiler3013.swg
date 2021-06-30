@@ -5,7 +5,7 @@ struct Base
 
 struct AA
 {
-    base: Base = @{x: 666}
+    base: Base{x: 666}
 }
 
 var v: AA
