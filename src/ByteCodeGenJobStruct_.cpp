@@ -346,9 +346,12 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             return true;
     }
 
+    // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
@@ -667,9 +670,12 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             return true;
     }
 
+    // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
@@ -791,9 +797,12 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         }
     }
 
+    // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
