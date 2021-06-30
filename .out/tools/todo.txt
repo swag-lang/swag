@@ -42,6 +42,9 @@ v.add(#code @print(a))
 #mixin v[0]
 #mixin v[1]
 -------------------------------------
+opInit user ?
+en jai on peut dans une struct initialiser des champs d'une sous struct
+-------------------------------------
 
 
 
@@ -56,9 +59,9 @@ range dynamic order
 -------------------------------------
 script, si #main resoud pas, erreur bizarre
 -------------------------------------
-dbg x64, self doit etre comme this (possible ?)
--------------------------------------
 debugger : print
+-------------------------------------
+pb des pointers alias avec retval (retval qui pointe sur une variable qu'on utilise dans la fonction elle-même)
 -------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
@@ -95,7 +98,7 @@ x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------
-makestackpointer suivi de copyrctort, faire un copy address stack to rt
+makestackpointer suivi de copyrctort, faire une instruction "copy address stack to rt"
 -------------------------------------
 getfromstackparam8/16/32 pour eviter le cast d'après
 -------------------------------------
