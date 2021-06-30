@@ -32,6 +32,7 @@ public struct LinePath
     totalLen:       f32
     endPosBuffer:   Vector2
     posBuffer:      Array'Vector2
+    clockwise:      bool
     isConvex:       bool
     doneOffsetAA:   bool
     lastDot:        f32
@@ -302,15 +303,12 @@ public impl LinePath
         endPosBuffer = pos
     }
 
-    protected func getFlattenPoint(using const self, idx: uint, offset: f32)->Vector2
+    protected func getFlattenPoint(using const self, i: uint, offset: f32)->Vector2
     {
-        i := idx
         if !isClosed or Math.isZeroEpsilon(offset)
             return posBuffer.buffer[i]
 
-        // If path is closed, then first and last points are equals
         count := posBuffer.count - 1
-        if i == count i = 0
 
         v0 := posBuffer.buffer[(i + count - 1) % count]
         v1 := posBuffer.buffer[i]
@@ -356,6 +354,7 @@ public impl LinePath
         posBuffer =,move copy
     }
 
+    // Convert the path to a list of points
     func flatten(using self, quality: PaintQuality)
     {
         #[Swag.inline]
@@ -404,5 +403,20 @@ public impl LinePath
                 flattenArc(pos, elem.p1, elem.p2, quality)
             }
         }
+
+        // Compute area
+        // Could be done during flatten ?
+        n := @countof(posBuffer)
+        q := 0
+        p := n - 1
+        area := 0'f32
+        while q < n
+        {
+            area += posBuffer[p].x * posBuffer[q].y - posBuffer[q].x * posBuffer[p].y
+            p = q
+            q += 1
+        }
+
+        clockwise = area >= 0
     }
 }

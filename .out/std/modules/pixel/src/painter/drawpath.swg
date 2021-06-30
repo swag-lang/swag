@@ -580,12 +580,12 @@ impl Painter
         if paintParams & .Antialiased
             penSize += 0.5
 
+        cxt.offsetPath = pen.plotOffset
+
         penSize2    = penSize * 0.5
         prev        = path.getFlattenPoint(0, cxt.offsetPath)
         beginLine   = true
         firstLine   = true
-
-        cxt.offsetPath = pen.plotOffset
 
         // Line caps. Draw them before the line, so that the line will overwrite them a
         // little if necessary
@@ -662,29 +662,13 @@ impl Painter
     }
 
 
-    private func triangulateArea(border: const [..] Vector2)->f32
-    {
-        n := @countof(border)
-        q := 0
-        p := n - 1
-        area := 0'f32
-        while q < n
-        {
-            area += border[p].x * border[q].y - border[q].x * border[p].y
-            p = q
-            q += 1
-        }
-
-        return area * 0.5
-    }
-
     private func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
     {
         a := border[pv[u]]
         b := border[pv[v]]
         c := border[pv[w]]
 
-        // Cross product to detect if the triangle in the wrong direction
+        // Cross product to detect if the triangle is in the wrong direction
         val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.x))
         if val < Math.ConstF32.Epsilon
             return false
@@ -712,7 +696,7 @@ impl Painter
         // We want a counter-clockwise polygon in V
         triangulateIdx.resize(cast(uint) n)
         idxPtr := triangulateIdx.buffer
-        if triangulateArea(slice) >= 0
+        if path.clockwise
         {
             loop i: n
                 idxPtr[i] = cast(s32) i
@@ -947,25 +931,7 @@ impl Painter
         flush  := false
         visit p: pathList.paths
         {
-            // Compute path orientation. If clockwise, this is a fill, otherwise
-            // this is a hole
-            idp    := 1
-            orient := 0'f32
-            if p.posBuffer.count >= 3 and serial == p.serial
-            {
-                while idp < p.posBuffer.count - 3
-                {
-                    pa := p.posBuffer[idp]
-                    pb := p.posBuffer[idp+1]
-                    pc := p.posBuffer[idp+2]
-                    detleft  := (pa.x - pc.x) * (pb.y - pc.y)
-                    detright := (pa.y - pc.y) * (pb.x - pc.x)
-                    orient = detleft - detright
-                    if !Math.isZeroEpsilon(orient) break
-                }
-            }
-
-            if (orient > 0 or serial != p.serial) and flush
+            if (p.clockwise or serial != p.serial) and flush
             {
                 serial = p.serial
                 triangulate(&t, bvMin, bvMax, brush)
