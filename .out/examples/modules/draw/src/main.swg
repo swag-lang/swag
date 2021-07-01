@@ -368,7 +368,7 @@ func displayPage4()
     }
 
     const str = "abcdefghijklmnopqrstuvwxyz"
-    //const str = "j"
+    //const str = "a"
 
     {
         //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
@@ -388,7 +388,7 @@ func displayPage4()
         pen.joinStyle = .Round
         pen.plotOffset = 2
 
-        typeface.getStringOutline(&pathl, str, 70)
+        assume typeface.getStringOutline(&pathl, str, 70)
         cdc.drawPath(pathl, pen)
         cdc.fillPath(pathl, Argb.Black)
 
@@ -396,11 +396,13 @@ func displayPage4()
     }
 
     {
-        var pathl: LinePathList
+        var pathl, pathl1: LinePathList
         cdc.translateTransform(50, 570)
 
-        typeface.getStringOutline(&pathl, str, 70)
-        cdc.fillPath(pathl, Argb.Red)
+        assume typeface.getStringOutline(&pathl, str, 150)
+        assume typeface.getStringOutline(&pathl1, str, 150, 4)
+        cdc.fillPath(pathl1, Argb.Red)
+        cdc.translateTransform(1, 1)
         cdc.fillPath(pathl, Argb.Black)
 
         cdc.resetTransform()
