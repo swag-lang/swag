@@ -513,6 +513,8 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        SWAG_ASSERT(typeStruct->sizeOf);
+        SWAG_ASSERT(typeStruct->alignOf);
         return typeStruct->alignOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
