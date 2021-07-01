@@ -410,7 +410,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
-    return false;
+    return errorLevel == DiagnosticLevel::Error ? false : true;
 }
 
 bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
