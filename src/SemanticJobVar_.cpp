@@ -923,7 +923,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    typeInfo                    = TypeManager::concreteType(node->typeInfo);
+    typeInfo = TypeManager::concreteType(node->typeInfo);
+
+    // In case of a struct (or array of structs), be sure struct is now completed before
+    // parsing variable.
+    // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
+    // problems.
+    if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
+    {
+        context->job->waitTypeCompleted(typeInfo);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
     if (isCompilerConstant)
