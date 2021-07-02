@@ -180,6 +180,7 @@ uint8_t* DataSegment::address(uint32_t location)
 
 uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
+    SWAG_RACE_CONDITION_READ(raceC);
     SWAG_ASSERT(location != UINT32_MAX);
     SWAG_ASSERT(buckets.size());
     for (int i = 0; i < buckets.size(); i++)
