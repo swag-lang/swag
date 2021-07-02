@@ -140,7 +140,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     {
         if (realType->typeInfo->kind == TypeInfoKind::Array)
         {
-            concreteType->value = module->constantSegment.addressNoLock(realType->value.storageOffset);
+            concreteType->value = module->constantSegment.address(realType->value.storageOffset);
             segment->addInitPtr(OFFSETOF(concreteType->value), realType->value.storageOffset, SegmentKind::Constant);
         }
         else if (realType->typeInfo->kind == TypeInfoKind::Slice)
@@ -151,7 +151,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
 
             auto offsetSlice = segment->reserveNoLock(2 * sizeof(uint64_t));
             auto ptrSlice    = (uint64_t*) segment->addressNoLock(offsetSlice);
-            ptrSlice[0]      = (uint64_t) module->constantSegment.addressNoLock(offsetContent);
+            ptrSlice[0]      = (uint64_t) module->constantSegment.address(offsetContent);
             ptrSlice[1]      = count;
 
             concreteType->value = ptrSlice;
