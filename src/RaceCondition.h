@@ -6,10 +6,8 @@ struct RaceCondition
     {
         shared_mutex     mutex;
         thread::id       lastThreadID;
-        std::atomic<int> count   = 0;
-        bool             defined = false;
-        bool             read    = false;
-        Instance()               = default;
+        std::atomic<int> countWrite = 0;
+        Instance()                  = default;
     };
 
     RaceCondition()                     = delete;
@@ -17,6 +15,7 @@ struct RaceCondition
     RaceCondition(Instance* _instance, bool read);
     ~RaceCondition();
 
+    bool      read = false;
     Instance* myInstance;
 };
 
