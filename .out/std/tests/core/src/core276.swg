@@ -15,7 +15,7 @@ struct(N: s32) Vector
     }
 }
 
-#[Swag.printbc]
+//#[Swag.printbc]
 #test
 {
     x := Vector'3{}
