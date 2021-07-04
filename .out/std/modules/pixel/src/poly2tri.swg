@@ -483,7 +483,7 @@ impl AdvancingFront
 }
 
 #[Swag.opaque]
-public struct Tesselate
+public struct Poly2Tri
 {
     basin:      Basin
     edge_event: EdgeEvent
@@ -501,7 +501,7 @@ public struct Tesselate
     polyStart:  uint
 }
 
-impl Tesselate
+impl Poly2Tri
 {
     method opDrop()
     {

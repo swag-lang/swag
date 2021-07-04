@@ -862,7 +862,7 @@ impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
-    private method triangulate(t: *Tesselate, bvMin, bvMax: Vector2, brush: Brush)
+    private method triangulate(t: *Poly2Tri, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTexture1()
@@ -909,7 +909,7 @@ impl Painter
     // Fill the line path
     method fillPath(pathList: LinePathList, brush: Brush)
     {
-        var t: Tesselate
+        var t: Poly2Tri
 
         // Flatten all path, and compute BV
         bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
