@@ -19,6 +19,13 @@ void TypeInfo::getScopedName(Utf8& newName)
     }
 }
 
+Utf8 TypeInfo::getName()
+{
+    scoped_lock lk(mutex);
+    SWAG_ASSERT(!name.empty());
+    return name;
+}
+
 Utf8 TypeInfo::getDisplayName()
 {
     return displayName.empty() ? name : displayName;
@@ -31,34 +38,43 @@ const Utf8& TypeInfo::computeWhateverName(uint32_t nameType, bool force)
     if (!(flags & TYPEINFO_SPECIAL_NAME))
         force = false;
 
+    Utf8 str;
     switch (nameType)
     {
     case COMPUTE_NAME:
-        if (force)
-            name.clear();
-        if (name.empty())
-            computeWhateverName(name, nameType, force);
+        if (name.empty() || force)
+        {
+            computeWhateverName(str, nameType, force);
+            name = move(str);
+        }
+
         return name;
 
     case COMPUTE_DISPLAY_NAME:
-        if (force)
-            displayName.clear();
-        if (displayName.empty())
-            computeWhateverName(displayName, nameType, force);
+        if (displayName.empty() || force)
+        {
+            computeWhateverName(str, nameType, force);
+            displayName = move(str);
+        }
+
         return displayName;
 
     case COMPUTE_SCOPED_NAME:
-        if (force)
-            scopedName.clear();
-        if (scopedName.empty())
-            computeWhateverName(scopedName, nameType, force);
+        if (scopedName.empty() || force)
+        {
+            computeWhateverName(str, nameType, force);
+            scopedName = move(str);
+        }
+
         return scopedName;
 
     case COMPUTE_SCOPED_NAME_EXPORT:
-        if (force)
-            scopedNameExport.clear();
-        if (scopedNameExport.empty())
-            computeWhateverName(scopedNameExport, nameType, force);
+        if (scopedNameExport.empty() || force)
+        {
+            computeWhateverName(str, nameType, force);
+            scopedNameExport = move(str);
+        }
+
         return scopedNameExport;
     }
 

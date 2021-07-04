@@ -244,7 +244,7 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
 
     auto offset = segment->addStringNoLock(str);
     segment->addInitPtr(offsetInBuffer, offset);
-    result->buffer = (void*) str.c_str();
+    result->buffer = segment->addressNoLock(offset);
     SWAG_ASSERT(result->buffer);
     result->count = str.length();
     return true;
@@ -392,7 +392,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name), cflags));
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->name, OFFSETOF(concreteTypeInfoValue->flatName), cflags));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->getName(), OFFSETOF(concreteTypeInfoValue->flatName), cflags));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 

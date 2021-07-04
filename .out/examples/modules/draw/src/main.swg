@@ -380,7 +380,7 @@ func displayPage4()
         cdc.drawString(100, 350, str, font40, Argb.Black)
     }
 
-    {
+    /*{
         var pathl: LinePathList
         cdc.translateTransform(50, 470)
 
@@ -393,17 +393,17 @@ func displayPage4()
         cdc.fillPath(pathl, Argb.Black)
 
         cdc.resetTransform()
-    }
+    }*/
 
     {
         var pathl, pathl1: LinePathList
         cdc.translateTransform(50, 570)
 
-        assume typeface.getStringOutline(&pathl, str, 150)
-        assume typeface.getStringOutline(&pathl1, str, 150, 4)
+        //assume typeface.getStringOutline(&pathl, str, 150)
+        assume typeface.getStringOutline(&pathl1, "A", 70, 4)
         cdc.fillPath(pathl1, Argb.Red)
-        cdc.translateTransform(1, 1)
-        cdc.fillPath(pathl, Argb.Black)
+        /*cdc.translateTransform(1, 1)
+        cdc.fillPath(pathl, Argb.Black)*/
 
         cdc.resetTransform()
     }
