@@ -1,6 +1,6 @@
 #test
 {
-    // A tuple is an anonymous structure
+    // A tuple is an anonymous structure, aka a struct literal
     {
         tuple1 := @{2, 2}
         tuple2 := @{"string", 2, true}
@@ -88,7 +88,7 @@
     }
 
     // When creating a tuple literal with variables, the tuple
-    // fields will take the name of the variables
+    // fields will take the name of the variables (except if specified)
     {
         x := 555
         y := 666

@@ -9,7 +9,7 @@
         @assert(cpt == 10)
     }
 
-    // The intrinsic @index returns the current index of the loop.
+    // The intrinsic '@index' returns the current index of the loop.
     {
         cpt := 0'uint
         loop 5
@@ -35,7 +35,7 @@
         @assert(cpt1 == cpt)
     }
 
-    // loop can be used on every types that accept the @countof intrinsic
+    // loop can be used on every types that accept the '@countof' intrinsic
     {
         arr := @[1, 2, 3, 4]
         @assert(@countof(arr) == 4)
@@ -87,7 +87,7 @@
     {
         count := 0
         sum := 0
-        loop i: -1..1   // loop from -1 to 1 included
+        loop i: -1..1   // loop from -1 to 1, all included
         {
             count += 1
             sum += i

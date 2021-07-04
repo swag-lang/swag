@@ -134,6 +134,9 @@
 // Language keywords
 // -----------------
 
+move
+nodrop
+
 alias
 assume
 attr
@@ -141,7 +144,6 @@ acast
 bitcast
 cast
 catch
-code
 const
 discard
 enum
@@ -149,9 +151,7 @@ false
 func
 impl
 interface
-move
 namespace
-nodrop
 null
 private
 protected
@@ -161,12 +161,12 @@ struct
 throw
 true
 try
-typeinfo
 typeset
 union
 using
 var
 
+and
 break
 case
 continue
@@ -179,6 +179,7 @@ for
 if
 label
 loop
+or
 return
 switch
 visit
@@ -189,6 +190,7 @@ while
 
 any
 bool
+code
 rune
 f32
 f64
@@ -204,3 +206,4 @@ u64
 uint
 void
 string
+typeinfo

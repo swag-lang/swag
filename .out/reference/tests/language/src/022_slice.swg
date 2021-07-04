@@ -1,9 +1,9 @@
 #test
 {
-    // A slice is a pointer on datas, and a 'u64' for the count
+    // A slice is a pointer on datas, and a 'uint' for the count
     {
         var a: [..] bool
-        @assert(@sizeof(a) == @sizeof(*void) + @sizeof(u64))
+        @assert(@sizeof(a) == @sizeof(*void) + @sizeof(uint))
     }
 
     // You can initialize a slice like an array

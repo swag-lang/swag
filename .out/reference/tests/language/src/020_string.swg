@@ -9,14 +9,14 @@
         @assert(b == "this are some cyrillic characters: ӜИ")
     }
 
-    // A character is unicode, and 32 bits
+    // A rune is unicode, and 32 bits
     {
         const a = "是"'rune
         @assert(a == "是"'rune)
         @assert(@sizeof(a) == @sizeof(u32))
     }
 
-    // You cannot index a string to get a character, except in ascii strings.
+    // You cannot index a string to get a rune, except in ascii strings.
     // You will retrieve a byte
     {
         const a = "this is a chinese character: 是"

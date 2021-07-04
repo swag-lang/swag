@@ -83,7 +83,8 @@
         @assert(a == 2)
     }
 
-    // You can extend the language with macros
+    // You can extend the language with macros, without using pointers to functions
+    // (no lambda call cost)
     {
         #[Swag.macro]
         func repeat(count: s32, what: code)

@@ -1,6 +1,6 @@
 #test
 {
-    // 'switch' works like in C, except that no 'break' is necessary
+    // 'switch' works like in C, except that no 'break' is necessary (except if the 'case' is empty)
     {
         value := 6
         switch value

@@ -35,7 +35,7 @@
         @assert(c == 0)
     }
 
-    // If you do not want the variable to be initialized, you can
+    // If you do not want the variable to be initialized, you can assign it with '?'
     {
         var a: bool = ?
         var b: string = ?

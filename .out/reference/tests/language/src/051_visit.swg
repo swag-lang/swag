@@ -14,7 +14,7 @@
         }
     }
 
-    // You can name both the value and the loop index
+    // You can name both the value and the loop index, in that order
     {
         visit value, index: "ABC"
         {
@@ -65,7 +65,8 @@
         @assert(result == 1+2+3+4)
     }
 
-    // You can visit with a pointer to the value, and not the value itself
+    // You can visit with a pointer to the value, and not the value itself, by
+    // adding '*' before the value name
     {
         var array: [2, 2] s32 = @[[1, 2], [3, 4]]
 

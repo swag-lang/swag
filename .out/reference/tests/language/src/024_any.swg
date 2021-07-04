@@ -11,7 +11,7 @@
         @assert(a == true)
     }
 
-    // 'any' is in fact a pointer to the value, and a const *TypeInfo
+    // 'any' is in fact a pointer to the value, and a 'const *Swag.TypeInfo'
     {
         var a: any = 6
         ptr := cast(const *s32) @dataof(a)
@@ -39,7 +39,7 @@
         @assert(array[3] == "4")
     }
 
-    // for a function, '@typeof' is the function scoped type, so it cannot be compared
+    // For a function, '@typeof' is the function scoped type, so it cannot be compared
     // with a flat type, but '@kindof' returns the flat type.
     {
         func foo()->s32 => 666

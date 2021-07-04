@@ -14,7 +14,7 @@
         @assert(@dataof(arr) == ptr)
     }
 
-    // You can dereference a pointer by index, or with ':ptr'
+    // You can dereference a pointer by index, or with 'dref'
     {
         arr := @[1, 2, 3, 4]
         ptr := &arr[0]

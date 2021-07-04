@@ -31,16 +31,28 @@ impl MyStruct
     func returnZ(me: Self) => me.z
 }
 
+// If you declare your function with 'method' instead of 'func', then
+// the first parameter is automatically 'using self'. Other than that,
+// it's exactly the same.
+// So this is just syntaxic sugar to avoid repeating the 'using self'.
+
+impl MyStruct
+{
+    method methodReturnX()          => x
+    func   funcReturnX(using self)  => x
+}
+
 #test
 {
     var c: MyStruct
     @assert(c.returnX() == 5)
+    @assert(c.methodReturnX() == 5)
+    @assert(c.funcReturnX() == 5)
     @assert(c.returnY() == 10)
     @assert(c.returnZ() == 20)
 }
 
-// All functions (aka methods) in an impl block can be retreived by
-// reflection
+// All functions in an impl block can be retreived by reflection
 #test
 {
     alias Lambda = func(MyStruct)->s32
