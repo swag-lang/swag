@@ -2472,9 +2472,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CloneString:
     {
-        char*    ptr                   = (char*) registersRC[ip->a.u32].pointer;
-        uint32_t count                 = registersRC[ip->b.u32].u32;
-        auto     size                  = Allocator::alignSize(count + 1);
+        char*    ptr   = (char*) registersRC[ip->a.u32].pointer;
+        uint32_t count = registersRC[ip->b.u32].u32;
+        if (!count)
+            break;
+        auto size                      = Allocator::alignSize(count + 1);
         registersRC[ip->a.u32].pointer = (uint8_t*) g_Allocator.alloc(size);
         context->bc->autoFree.push_back({(void*) registersRC[ip->a.u32].pointer, size});
         memcpy((void*) registersRC[ip->a.u32].pointer, ptr, count + 1);
