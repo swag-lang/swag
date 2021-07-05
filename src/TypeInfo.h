@@ -142,6 +142,7 @@ struct TypeInfo
     }
 
     virtual TypeInfo* clone() = 0;
+    void              clearName();
     void              forceComputeName();
     void              getScopedName(Utf8& name);
     Utf8              getName();

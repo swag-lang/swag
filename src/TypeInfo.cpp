@@ -3,6 +3,13 @@
 #include "AstNode.h"
 #include "TypeManager.h"
 
+void TypeInfo::clearName()
+{
+    scoped_lock lk(mutex);
+    name.clear();
+    displayName.clear();
+}
+
 void TypeInfo::forceComputeName()
 {
     computeWhateverName(COMPUTE_NAME, true);
