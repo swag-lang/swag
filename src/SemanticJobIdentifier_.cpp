@@ -2425,7 +2425,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
-    for (int oneTry = 0; oneTry < 2; oneTry++)
+    bool forceEnd = false;
+    for (int oneTry = 0; oneTry < 2 && !forceEnd; oneTry++)
     {
         auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
@@ -2472,7 +2473,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             }
 
             // Be sure this is the last try
-            oneTry++;
+            forceEnd = true;
         }
         else
         {
@@ -2512,6 +2513,30 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
         if (!dependentSymbols.empty())
             break;
+
+        // Not sure why, but it can happen that sometimes we fail to find a symbol in an incomplete struct.
+        // If this is the case, we continue to try until the struct is complete, to be sure that symbol will not be added 
+        // by another thread.
+        // As this happens really not often, we just retry, and do not put the job in pending.
+        bool tryAgain = false;
+        for (auto scope : scopeHierarchy)
+        {
+            if (scope->owner &&
+                scope->owner->resolvedSymbolOverload &&
+                scope->owner->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE &&
+                scope->owner->resolvedSymbolOverload->symbol->kind == SymbolKind::Struct)
+            {
+                tryAgain = true;
+                break;
+            }
+        }
+
+        if (tryAgain)
+        {
+            forceEnd = false;
+            oneTry--;
+            continue;
+        }
 
         // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
         // from the previous symbol

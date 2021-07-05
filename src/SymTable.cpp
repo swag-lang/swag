@@ -23,6 +23,12 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
     return symbol;
 }
 
+uint32_t SymTable::getNumSymbols()
+{
+    shared_lock lk(mutex);
+    return mapNames.count;
+}
+
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     unique_lock lk(mutex);

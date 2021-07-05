@@ -124,6 +124,7 @@ struct StructToDrop
 
 struct SymTable
 {
+    uint32_t        getNumSymbols();
     SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);

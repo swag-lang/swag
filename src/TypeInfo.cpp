@@ -22,6 +22,7 @@ void TypeInfo::getScopedName(Utf8& newName)
 Utf8 TypeInfo::getName()
 {
     scoped_lock lk(mutex);
+    computeWhateverNameNoLock(COMPUTE_NAME);
     SWAG_ASSERT(!name.empty());
     return name;
 }
@@ -34,7 +35,11 @@ Utf8 TypeInfo::getDisplayName()
 const Utf8& TypeInfo::computeWhateverName(uint32_t nameType, bool force)
 {
     scoped_lock lk(mutex);
+    return computeWhateverNameNoLock(nameType, force);
+}
 
+const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType, bool force)
+{
     if (!(flags & TYPEINFO_SPECIAL_NAME))
         force = false;
 

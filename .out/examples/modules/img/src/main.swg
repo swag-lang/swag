@@ -261,12 +261,12 @@ func messageLoop()
         }
 
         keyb.update()
-        if(keyb.isKeyJustPressed(Input.Key.F1))
+        if keyb.isKeyJustPressed(Input.Key.F1)
         {
             imageIdx += 1
             loadImg()
         }
-        if(keyb.isKeyJustPressed(Input.Key.F2))
+        if keyb.isKeyJustPressed(Input.Key.F2)
         {
             effectIdx += 1
             loadImg()

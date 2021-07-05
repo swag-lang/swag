@@ -154,6 +154,7 @@ struct TypeInfo
     // clang-format on
 
     const Utf8&        computeWhateverName(uint32_t nameType, bool force = false);
+    const Utf8&        computeWhateverNameNoLock(uint32_t nameType, bool force = false);
     virtual void       computeWhateverName(Utf8& resName, uint32_t nameType, bool force);
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
