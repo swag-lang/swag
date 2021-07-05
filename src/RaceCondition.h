@@ -10,10 +10,11 @@ struct RaceCondition
         Instance()                  = default;
     };
 
-    RaceCondition()                     = delete;
-    RaceCondition(const RaceCondition&) = delete;
+    RaceCondition(){};
     RaceCondition(Instance* _instance, bool read);
     ~RaceCondition();
+    void lock(Instance* _instance, bool read);
+    void unlock();
 
     bool      read = false;
     Instance* myInstance;
