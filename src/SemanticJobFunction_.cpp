@@ -639,7 +639,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     if (returnType->kind == TypeInfoKind::Struct)
     {
         Utf8 retVal = "retval";
-        funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, nullptr, &retVal);
+        funcNode->scope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, nullptr, &retVal);
     }
 
     // Register method
