@@ -446,6 +446,9 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
+    if (node->attributeFlags & ATTRIBUTE_NO_COPY)
+        typeInfo->flags |= TYPEINFO_STRUCT_NO_COPY;
+
     // Be sure we have only one struct node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
@@ -885,9 +888,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeInfo->flags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         typeInfo->flags &= ~TYPEINFO_STRUCT_HAS_INIT_VALUES;
     }
-
-    if (node->attributeFlags & ATTRIBUTE_NO_COPY)
-        structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
