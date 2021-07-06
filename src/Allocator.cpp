@@ -3,6 +3,10 @@
 #include "CommandLine.h"
 #include "Global.h"
 
+const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
+const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
+#define SWAG_CHECK_MEMORY
+
 thread_local Allocator g_Allocator;
 
 mutex      g_allocatorMutex;
@@ -10,9 +14,9 @@ Allocator* g_sharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
-    t           = Allocator::alignSize((int) t);
-    uint64_t* p = (uint64_t*) g_Allocator.alloc(t + sizeof(uint64_t));
-    *p          = (uint64_t) t;
+    t           = Allocator::alignSize((int) t + sizeof(uint32_t));
+    uint32_t* p = (uint32_t*) g_Allocator.alloc(t);
+    *p          = (uint32_t) t;
     return p + 1;
 }
 
@@ -20,7 +24,7 @@ void operator delete(void* addr)
 {
     if (!addr)
         return;
-    uint64_t* p = (uint64_t*) addr;
+    uint32_t* p = (uint32_t*) addr;
     p--;
     return g_Allocator.free(p, *p);
 }
@@ -276,7 +280,21 @@ void* Allocator::alloc(size_t size)
 {
     if (shared)
         g_allocatorMutex.lock();
-    auto result = impl->alloc(size);
+
+#ifdef SWAG_CHECK_MEMORY
+    auto userSize = size;
+    size += 2 * sizeof(uint64_t);
+#endif
+
+    uint8_t* result = (uint8_t*) impl->alloc(size);
+
+#ifdef SWAG_CHECK_MEMORY
+    *(uint64_t*) result = MAGIC_ALLOC;
+    result += sizeof(uint64_t);
+    auto end         = result + userSize;
+    *(uint64_t*) end = MAGIC_ALLOC;
+#endif
+
     if (shared)
         g_allocatorMutex.unlock();
     return result;
@@ -284,9 +302,23 @@ void* Allocator::alloc(size_t size)
 
 void Allocator::free(void* ptr, size_t size)
 {
+    if (!ptr)
+        return;
+
     if (shared)
         g_allocatorMutex.lock();
-    impl->free(ptr, size);
+
+    uint8_t* addr = (uint8_t*) ptr;
+#ifdef SWAG_CHECK_MEMORY
+    auto end = addr + size;
+    SWAG_ASSERT(*(uint64_t*) end == MAGIC_ALLOC);
+    addr -= sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
+    size += 2 * sizeof(uint64_t);
+#endif
+
+    impl->free(addr, size);
+
     if (shared)
         g_allocatorMutex.unlock();
 }

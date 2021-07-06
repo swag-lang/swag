@@ -616,12 +616,26 @@ namespace OS
 
     void assertBox(const char* expr, const char* file, int line)
     {
-        string msg;
-        msg += "Assertion failed\n";
-        msg += format("File: %s\n", file);
-        msg += format("Line: %d\n", line);
-        msg += format("Expression: %s", expr);
-        auto result = ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
+        char msg[2048];
+        msg[0] = 0;
+
+        strcat_s(msg, "Assertion failed\n");
+
+        strcat_s(msg, "File: ");
+        strcat_s(msg, file);
+        strcat_s(msg, "\n");
+
+        strcat_s(msg, "Line: ");
+        char lineB[64];
+        _itoa_s(line, lineB, 10);
+        strcat_s(msg, lineB);
+        strcat_s(msg, "\n");
+
+        strcat_s(msg, "Expression: ");
+        strcat_s(msg, expr);
+        strcat_s(msg, "\n");
+
+        auto result = ::MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
         switch (result)
         {
         case IDCANCEL:
