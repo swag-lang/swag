@@ -1,6 +1,5 @@
 #pragma once
 extern void swag_assert(const char* expr, const char* file, int line);
-#define SWAG_HAS_ASSERT
 
 #ifdef SWAG_HAS_ASSERT
 #define SWAG_ASSERT(__expr)                           \

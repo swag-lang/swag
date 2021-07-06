@@ -19,8 +19,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     if (!registersRR)
     {
         registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
-        if (g_CommandLine.devMode)
-            memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
+#ifdef SWAG_DEV_MODE
+        memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
+#endif
         if (g_CommandLine.stats)
             g_Stats.memBcStack += MAX_ALLOC_RR * sizeof(Register);
     }
@@ -31,8 +32,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
         stack     = (uint8_t*) realloc(stack, stackS);
         if (g_CommandLine.stats)
             g_Stats.memBcStack += stackS;
-        if (g_CommandLine.devMode)
-            memset(stack, 0xFE, stackS);
+#ifdef SWAG_DEV_MODE
+        memset(stack, 0xFE, stackS);
+#endif
     }
 
     bp = stack + stackSize;

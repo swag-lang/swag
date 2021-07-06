@@ -27,7 +27,6 @@ struct CommandLine
     bool runBackendTests  = true;
 
     bool warningsAsErrors = false;
-    bool devMode          = false;
     bool dbgCatch         = false;
     bool randomize        = false;
     int  randSeed         = 0;

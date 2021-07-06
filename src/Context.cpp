@@ -243,7 +243,8 @@ uint64_t getDefaultContextFlags(Module* module)
     uint64_t flags = 0;
     if (module->kind == ModuleKind::Test)
         flags |= (uint64_t) ContextFlags::Test;
-    if (g_CommandLine.devMode)
-        flags |= (uint64_t) ContextFlags::DevMode;
+#ifdef SWAG_DEV_MODE
+    flags |= (uint64_t) ContextFlags::DevMode;
+#endif
     return flags;
 }

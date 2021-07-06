@@ -343,10 +343,15 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
 
     llvm::PassManagerBuilder pmb;
-    pmb.OptLevel           = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
-    pmb.SizeLevel          = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
-    pmb.VerifyInput        = g_CommandLine.devMode;
-    pmb.VerifyOutput       = g_CommandLine.devMode;
+    pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
+    pmb.SizeLevel = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
+#ifdef SWAG_DEV_MODE
+    pmb.VerifyInput  = true;
+    pmb.VerifyOutput = true;
+#else
+    pmb.VerifyInput  = false;
+    pmb.VerifyOutput = false;
+#endif
     pmb.DisableTailCalls   = isDebug;
     pmb.DisableUnrollLoops = isDebug;
     pmb.DisableGVNLoadPRE  = isDebug;
@@ -373,7 +378,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     dest.close();
 
     // Output IR code
-    if (buildParameters.buildCfg->backendLLVM.outputIR || g_CommandLine.devMode)
+    if (buildParameters.buildCfg->backendLLVM.outputIR)
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);

@@ -5,7 +5,6 @@
 
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
-#define SWAG_CHECK_MEMORY
 
 thread_local Allocator g_Allocator;
 
@@ -126,8 +125,9 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
     g_Stats.wastedMemory -= bucket * 8;
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
-    if (g_CommandLine.devMode)
-        memset(result, 0xCC, size);
+#ifdef SWAG_DEV_MODE
+    memset(result, 0xCC, size);
+#endif
     freeBucketsCpt[bucket]--;
 
     return result;
@@ -165,8 +165,9 @@ void* AllocatorImpl::alloc(size_t size)
     result            = tryFreeBlock(maxTries, size);
     if (result)
     {
-        if (g_CommandLine.devMode)
-            memset(result, 0xCC, size);
+#ifdef SWAG_DEV_MODE
+        memset(result, 0xCC, size);
+#endif
         return result;
     }
 
@@ -221,8 +222,9 @@ void AllocatorImpl::free(void* ptr, size_t size)
         return;
     SWAG_ASSERT(!(size & 7));
 
-    if (g_CommandLine.devMode)
-        memset(ptr, 0xFE, size);
+#ifdef SWAG_DEV_MODE
+    memset(ptr, 0xFE, size);
+#endif
 
     g_Stats.wastedMemory += size;
 

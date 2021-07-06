@@ -201,12 +201,11 @@ static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 
 static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
 {
-    if (g_CommandLine.devMode)
-    {
-        g_byteCodeStack.reportError("exception during job execution !");
-        OS::errorBox("[Developer Mode]", "Exception raised !");
-        return EXCEPTION_CONTINUE_EXECUTION;
-    }
+#ifdef SWAG_DEV_MODE
+    g_byteCodeStack.reportError("exception during job execution !");
+    OS::errorBox("[Developer Mode]", "Exception raised !");
+    return EXCEPTION_CONTINUE_EXECUTION;
+#endif
 
     exceptionMessage(job, args);
     return EXCEPTION_EXECUTE_HANDLER;

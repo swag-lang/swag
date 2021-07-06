@@ -187,8 +187,10 @@ namespace BackendLinker
 
         auto result = OS::doProcess(module, cmdLine, linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
 
-        if (!result && g_CommandLine.devMode)
+#ifdef SWAG_DEV_MODE
+        if (!result)
             OS::errorBox("[Developer Mode]", "Error raised !");
+#endif
 
         if (!result)
         {
@@ -266,8 +268,10 @@ namespace BackendLinker
             break;
         }
 
-        if (!result && g_CommandLine.devMode)
+#ifdef SWAG_DEV_MODE
+        if (!result)
             OS::errorBox("[Developer Mode]", "Error raised !");
+#endif
 
         if (!result)
         {

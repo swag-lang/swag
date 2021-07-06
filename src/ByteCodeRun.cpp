@@ -3550,9 +3550,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
-    // Hardware exception
-    if (g_CommandLine.devMode)
-        OS::errorBox("[Developer Mode]", "Exception raised !");
+// Hardware exception
+#ifdef SWAG_DEV_MODE
+    OS::errorBox("[Developer Mode]", "Exception raised !");
+#endif
 
     runContext->ip--;
     auto       ip = runContext->ip;
@@ -3564,7 +3565,11 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     runContext->bc->sourceFile->report(diag, &note1, &note2);
     g_byteCodeStack.currentContext = nullptr;
     runContext->ip++;
-    return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
+#ifdef SWAG_DEV_MODE
+    return EXCEPTION_CONTINUE_EXECUTION;
+#else
+    return EXCEPTION_EXECUTE_HANDLER;
+#endif
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)

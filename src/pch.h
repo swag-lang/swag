@@ -64,7 +64,14 @@ namespace fs = std::experimental::filesystem;
 
 extern void* Memcpy(void* destination, const void* source, size_t size);
 
-//#define SWAG_HAS_PROFILE
+////////// CONFIG //////////
+
 #define FFI_BUILDING
+//#define SWAG_HAS_PROFILE
+#ifdef SWAG_DEV_MODE
+#define SWAG_CHECK_MEMORY
+#define SWAG_HAS_ASSERT
+#endif
+////////////////////////////
 
 #endif

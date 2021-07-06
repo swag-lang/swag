@@ -42,8 +42,9 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         g_ModuleMgr.resetFailedModule(moduleName.text);
         if (!g_ModuleMgr.loadModule(moduleName.text))
         {
-            if (g_CommandLine.devMode)
-                SWAG_ASSERT(false);
+#ifdef SWAG_DEV_MODE
+            SWAG_ASSERT(false);
+#endif
             Diagnostic diag{nodeFunc, format(Msg0257, moduleName.text.c_str(), funcName.c_str(), g_ModuleMgr.loadModuleError.c_str())};
             diag.printSource = false;
             context->report(diag);
@@ -60,8 +61,9 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 
     if (!fn)
     {
-        if (g_CommandLine.devMode)
-            SWAG_ASSERT(false);
+#ifdef SWAG_DEV_MODE
+        SWAG_ASSERT(false);
+#endif
         context->report({format(Msg0258, funcName.c_str())});
         return nullptr;
     }

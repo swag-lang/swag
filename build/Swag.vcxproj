@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (DevMode)|x64">
+      <Configuration>Release (DevMode)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
@@ -33,6 +37,14 @@
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -44,12 +56,15 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\.out\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
-    <TargetName>swag_d</TargetName>
+    <TargetName>swag_debug</TargetName>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -57,6 +72,12 @@
     <OutDir>..\.out\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\.out\</OutDir>
+    <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
+    <TargetName>swag_devmode</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -92,6 +113,34 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>false</Profile>
+      <AdditionalLibraryDirectories>../llvm/llvm/build/release/lib;../llvm/lld/build/release/lib;../.out</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_DEV_MODE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -277,11 +326,13 @@
     <ClCompile Include="../src/ffi/closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/CommandLine.cpp" />
     <ClCompile Include="../src/CommandLineParser.cpp" />
     <ClCompile Include="../src/Concat.cpp">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">false</ShowIncludes>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeStack.cpp" />
     <ClCompile Include="../src/EnumerateModuleJob.cpp" />
@@ -293,10 +344,12 @@
     <ClCompile Include="../src/ffi/ffi.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/ffi/ffi64.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/Generic.cpp" />
     <ClCompile Include="../src/Global.cpp" />
@@ -355,10 +408,12 @@
     <ClCompile Include="../src/pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/ffi/prep_cif.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />
@@ -375,6 +430,7 @@
     <ClCompile Include="../src/ffi/types.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/TypeTable.cpp" />
     <ClCompile Include="../src/TypeTableJob.cpp" />
@@ -398,15 +454,21 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
 
-ml64.exe /c /Cx /Fo ../.tmp/swag/$(Configuration)/win64.obj ../src/ffi/win64_plain.asm
+ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
 
-ml64.exe /c /Cx /Fo ../.tmp/swag/$(Configuration)/win64.obj ../src/ffi/win64_plain.asm
+ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
+cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
+
+ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, "will only compile files that match the filter");
     addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only test files that match the filter");
 
-    addArg("bu li ge", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
     addArg("bu", "--dbgcatch", nullptr, CommandLineType::Bool, &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
     addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");
     addArg("bu", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "swag compiler developer mode, set seed for randomize behavior");

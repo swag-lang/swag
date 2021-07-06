@@ -536,8 +536,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         Diagnostic diag{node, node->token, msg};
-        if (g_CommandLine.devMode)
-            diag.remarks.push_back(id);
+#ifdef SWAG_DEV_MODE
+        diag.remarks.push_back(id);
+#endif
 
         Diagnostic note{declNode, declNode->token, Msg0551, DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
@@ -801,12 +802,11 @@ bool Workspace::build()
     g_Global.setup();
 
     // [devmode] stuff
-    if (g_CommandLine.devMode)
-    {
-        g_Log.setColor(LogColor::DarkBlue);
-        g_Log.print("[devmode] is activated\n");
-        g_Log.setDefaultColor();
-    }
+#ifdef SWAG_DEV_MODE
+    g_Log.setColor(LogColor::DarkBlue);
+    g_Log.print("[devmode] is activated\n");
+    g_Log.setDefaultColor();
+#endif
 
     // Dev mode randomize/seed
     if (g_CommandLine.randomize)
