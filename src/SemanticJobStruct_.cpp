@@ -444,6 +444,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl || node->kind == AstNodeKind::TypeSet);
 
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
     // Be sure we have only one struct node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
@@ -568,7 +569,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode == node);
 
     // Structure packing
-    SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     ComputedValue value;
     if (node->structFlags & STRUCTFLAG_UNION)
         node->packing = 0;
