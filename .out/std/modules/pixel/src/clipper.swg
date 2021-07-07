@@ -71,6 +71,16 @@ struct LocalMinimum
     RightBound:   *TEdge
 }
 
+impl LocalMinimum
+{
+    method opCmp(other: LocalMinimum)->s32
+    {
+        if Y < other.Y return -1
+        if Y == other.Y return 0
+        return 1
+    }
+}
+
 struct TEdge
 {
     Bot:          IntPoint
@@ -131,6 +141,7 @@ public struct Clipper
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
+    m_CurrentLM:            uint
 }
 
 impl Clipper
@@ -174,7 +185,8 @@ impl Clipper
         m_UsingPolyTree = false
 
         defer DisposeAllOutRecs()
-        if !ExecuteInternal() throw "Failed"
+        try ExecuteInternal()
+
         BuildResult(solution)
     }
 
@@ -537,9 +549,40 @@ impl Clipper
         return Result
     }
 
-    method ExecuteInternal()->bool
+    method Reset()
     {
-        return true
+        m_CurrentLM = 0
+        if m_CurrentLM == m_MinimaList.count return
+        m_MinimaList.sort()
+
+/*        m_Scanbeam = ScanbeamList(); //clears/resets priority_queue
+        //reset all edges ...
+        for (MinimaList::iterator lm = m_MinimaList.begin(); lm != m_MinimaList.end(); ++lm)
+        {
+            InsertScanbeam(lm->Y);
+            TEdge* e = lm->LeftBound;
+            if (e)
+            {
+            e->Curr = e->Bot;
+            e->Side = esLeft;
+            e->OutIdx = Unassigned;
+            }
+
+            e = lm->RightBound;
+            if (e)
+            {
+            e->Curr = e->Bot;
+            e->Side = esRight;
+            e->OutIdx = Unassigned;
+            }
+        }
+        m_ActiveEdges = 0;
+        m_CurrentLM = m_MinimaList.begin();*/
+    }
+
+    method ExecuteInternal() throw
+    {
+        Reset()
     }
 
     func PointCount(Pts: *OutPt)->s32
