@@ -30,11 +30,11 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
     loop
     {
         // If range is too small, simple sort
-        /*if end - begin <= 10
+        if end - begin <= 10
         {
             insertionSort(@mkslice(buffer + begin, (end - begin) + 1), cb)
             return
-        }*/
+        }
 
         pivot := begin
         low   := begin
@@ -85,23 +85,36 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
-func(T) sort(values: [..] T, cb: func(T, T)->s32 = null)
+func(T) sort(values: [..] T)
 {
-    lambda := cb orelse @(x, y: T)->s32 => x <=> y
+    sort(values, @(x, y: T)->s32 => x <=> y)
+}
+
+// Sort the slice, by picking the right algorithm depending on the type and the
+// number of elements
+func(T) sort(values: [..] T, cb: func(T, T)->s32)
+{
+    Debug.assert(cb != null)
     if(@countof(values) <= 10)
-        insertionSort(values, lambda)
+        insertionSort(values, cb)
     else
-        quickSort(values, lambda)
+        quickSort(values, cb)
 }
 
 // Returns true if the slice is sorted
-func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
+func(T) isSorted(values: const [..] T)->bool
 {
-    lambda := cb orelse @(x, y: T)->s32 => x <=> y
+    return isSorted(values, @(x, y: T)->s32 => x <=> y)
+}
+
+// Returns true if the slice is sorted
+func(T) isSorted(values: const [..] T, cb: func(T, T)->s32)->bool
+{
+    Debug.assert(cb != null)
     countof := @countof(values)
     loop i: countof - 1
     {
-        if lambda(values[i], values[i + 1]) > 0
+        if cb(values[i], values[i + 1]) > 0
             return false
     }
 
