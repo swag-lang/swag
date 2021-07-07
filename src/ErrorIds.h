@@ -14,7 +14,7 @@
 #define Msg0014 "cannot evaluate relative size at compile time"
 #define Msg0015 "relative size value should be 0, 8, 16, 32 or 64 ('%u' provided)"
 #define Msg0016 "not enough parameters for %s"
-#define Msg0017 "symbol '%s' is not a type (it's %s)"
+#define Msg0017 "invalid type declaration, symbol '%s' is not a type (it's %s)"
 #define Msg0018 "here is the definition of '%s'"
 #define Msg0020 "missing function call '()' to %s"
 #define Msg0021 "array dimension cannot be evaluated at compile time"
@@ -798,6 +798,7 @@
 #define Hnt0021 "this should be 'impl typeset %s'"
 #define Hnt0022 "this type is immutable ('const')"
 #define Hnt0023 "this call could be preceeded by 'discard' if you do not want to use the return value"
+#define Hnt0024 "this is a pointer type declaration because of '*'"
 
 #define Note000 "here is its declaration"
 #define Note001 "'%s' is %s of type '%s' which does not contain a subscope"
@@ -813,6 +814,7 @@
 #define Note011 "%s is marked with 'Swag.noreturn', so the return is used inside %s"
 #define Note012 "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder"
 #define Note013 "symbol has been found thanks to a 'using'"
+#define Note014 "if you want to dereference variable '%s' like in C, use 'dref %s'"
 
 #define Rem0000 "this could be casted with 'cast(%s)'"
 #define Rem0001 "symbol '%s' was not found in '%s'"

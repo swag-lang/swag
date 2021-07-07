@@ -246,6 +246,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 {
                     Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
                     Diagnostic note{symOver->node, symOver->node->token, format(Msg0018, symName->name.c_str()), DiagnosticLevel::Note};
+                    if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
+                    {
+                        if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
+                        {
+                            Diagnostic note1{format(Note014, symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
+                            return context->report(Hnt0024, diag, &note1, &note);
+                        }
+                        else
+                            return context->report(Hnt0024, diag, &note);
+                    }
+
                     return context->report(diag, &note);
                 }
             }
