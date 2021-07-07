@@ -53,8 +53,15 @@ const HORIZONTAL = -1.0E+40
 
 alias CInt  = s32
 alias ClipperPath  = Array'IntPoint
+alias ClipperPaths  = Array'ClipperPath
 
-public enum PolyType { ptSubject; ptClip; }
+public enum PolyType        { ptSubject; ptClip; }
+public enum ClipType        { ctIntersection; ctUnion; ctDifference; ctXor; }
+public enum PolyFillType    { pftEvenOdd; pftNonZero; pftPositive; pftNegative; }
+public enum InitOptions     { ioReverseSolution = 1; ioStrictlySimple = 2; ioPreserveCollinear = 4; }
+public enum JoinType        { jtSquare; jtRound; jtMiter; }
+public enum EndType         { etClosedPolygon; etClosedLine; etOpenButt; etOpenSquare; etOpenRound; }
+
 enum EdgeSide { esLeft = 1; esRight = 2; }
 
 struct LocalMinimum
@@ -85,14 +92,45 @@ struct TEdge
     PrevInSEL:    *TEdge
 }
 
+struct OutRec
+{
+    Idx:        s32
+    IsHole:     bool
+    IsOpen:     bool
+    FirstLeft:  *OutRec
+    PolyNd:     *PolyNode
+    Pts:        *OutPt
+    BottomPt:   *OutPt
+}
+
+struct OutPt
+{
+    Idx:      s32
+    Pt:       IntPoint
+    Next:     *OutPt
+    Prev:     *OutPt
+}
+
+struct PolyNode
+{
+    Index:      u32
+    m_IsOpen:   bool
+    m_jointype: JoinType = ?
+    m_endtype:  EndType = ?
+}
+
 #[Swag.opaque]
 public struct Clipper
 {
     m_UseFullRange:         bool
     m_PreserveCollinear:    bool
+    m_UsingPolyTree:        bool
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
-
+    m_PolyOuts:             Array'*OutRec
+    m_ClipFillType:         PolyFillType = ?
+    m_SubjFillType:         PolyFillType = ?
+    m_ClipType:             ClipType = ?
 }
 
 impl Clipper
@@ -106,6 +144,40 @@ impl Clipper
         visit p: pg.posBuffer
             pt.add(IntPoint{cast(s32) p.x, cast(s32) p.y})
         try addPath(&pt, polyType)
+    }
+
+    public method execute(clipType: ClipType, solution: *LinePathList, subjFillType, clipFillType: PolyFillType)->bool
+    {
+        var res: ClipperPaths
+        if !Execute(clipType, &res, subjFillType, clipFillType) return false
+
+        loop i: res
+        {
+            path := Memory.new'LinePath()
+            visit *pt: dref res[i]
+            {
+                if @index == 0
+                    path.start(cast(f32) pt.X, cast(f32) pt.Y)
+                else
+                    path.lineTo(cast(f32) pt.X, cast(f32) pt.Y)
+            }
+
+            solution.paths.add(path)
+        }
+
+        return true
+    }
+
+    method Execute(clipType: ClipType, solution: *ClipperPaths, subjFillType, clipFillType: PolyFillType)->bool
+    {
+        m_SubjFillType  = subjFillType
+        m_ClipFillType  = clipFillType
+        m_ClipType      = clipType;
+        m_UsingPolyTree = false
+        succeeded := ExecuteInternal()
+        if succeeded BuildResult(solution)
+        DisposeAllOutRecs()
+        return succeeded
     }
 
     method addPath(pg: *ClipperPath, polyType: PolyType) throw
@@ -465,5 +537,41 @@ impl Clipper
         }
 
         return Result
+    }
+
+    method ExecuteInternal()->bool
+    {
+        return false
+    }
+
+    method BuildResult(polys: *ClipperPaths)
+    {
+    }
+
+    method DisposeAllOutRecs()
+    {
+        loop i: m_PolyOuts.count DisposeOutRec(i)
+        m_PolyOuts.clear()
+    }
+
+    func DisposeOutPts(pts: *OutPt)
+    {
+        pp := pts
+        if pp == null return
+        pp.Prev.Next = null
+        while pp
+        {
+            tmpPp := pp
+            pp = pp.Next
+            Memory.delete(tmpPp)
+        }
+    }
+
+    method DisposeOutRec(index: uint)
+    {
+        outRec := m_PolyOuts[index]
+        if outRec.Pts DisposeOutPts(outRec.Pts)
+        Memory.delete(outRec)
+        m_PolyOuts[index] = null
     }
 }
