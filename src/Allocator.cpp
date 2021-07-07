@@ -13,9 +13,9 @@ Allocator* g_sharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
-    t           = Allocator::alignSize((int) t + sizeof(uint32_t));
-    uint32_t* p = (uint32_t*) g_Allocator.alloc(t);
-    *p          = (uint32_t) t;
+    t           = Allocator::alignSize((int) t + sizeof(uint64_t));
+    uint64_t* p = (uint64_t*) g_Allocator.alloc(t);
+    *p          = (uint64_t) t;
     return p + 1;
 }
 
@@ -23,7 +23,7 @@ void operator delete(void* addr)
 {
     if (!addr)
         return;
-    uint32_t* p = (uint32_t*) addr;
+    uint64_t* p = (uint64_t*) addr;
     p--;
     return g_Allocator.free(p, *p);
 }
