@@ -761,6 +761,7 @@
 #define Msg0886 "symbol '%s' already defined in an accessible scope"
 #define Msg0888 "symbol '%s' already defined with the same signature in an accessible scope"
 #define Msg0890 "symbol '%s' already defined as a name alias in an accessible scope"
+#define Msg0891 "invalid '%s', use '%s' instead to do a logical test"
 #define Msg0892 "placeholder identifier '%s' has not been solved"
 #define Msg0893 "identifier '%s' has not been solved (do you have a cycle ?)"
 #define Msg0894 "variable '%s' is used before being declared"

@@ -23,6 +23,14 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
 {
     switch (token.id)
     {
+    case TokenId::SymAmpersandAmpersand:
+        if (kind == InvalidTokenError::EmbeddedInstruction)
+            return error(token, format(Msg0891, "&&", "and"));
+        break;
+    case TokenId::SymVerticalVertical:
+        if (kind == InvalidTokenError::EmbeddedInstruction)
+            return error(token, format(Msg0891, "||", "or"));
+        break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
             return error(token, Msg0323);

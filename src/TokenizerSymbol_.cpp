@@ -205,6 +205,12 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             ADDC2(c);
             treatChar(c, offset);
         }
+        else if (c == '&')
+        {
+            token.id = TokenId::SymAmpersandAmpersand;
+            ADDC2(c);
+            treatChar(c, offset);
+        }
         return true;
 
     case '|':
@@ -213,6 +219,12 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
         if (c == '=')
         {
             token.id = TokenId::SymVerticalEqual;
+            ADDC2(c);
+            treatChar(c, offset);
+        }
+        else if (c == '|')
+        {
+            token.id = TokenId::SymVerticalVertical;
             ADDC2(c);
             treatChar(c, offset);
         }

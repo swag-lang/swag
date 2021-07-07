@@ -338,7 +338,15 @@ impl Clipper
         return E
     }
 
-    func ProcessBound(edge: *TEdge, NextIsForward: bool)->*TEdge
+    func ReverseHorizontal(e: *TEdge)
+    {
+        //swap horizontal edges' Top and Bottom x's so they follow the natural
+        //progression of the bounds - ie so their xbots will align with the
+        //adjoining lower edge. [Helpful in the ProcessHorizontal() method.]
+        swap(&e.Top.X, &e.Bot.X)
+    }
+
+    method ProcessBound(edge: *TEdge, NextIsForward: bool)->*TEdge
     {
         E := edge
         var Result: *TEdge = E
@@ -358,7 +366,7 @@ impl Clipper
             else
             {
                 while E.Top.Y == E.Prev.Bot.Y E = E.Prev
-                while E != Result && IsHorizontal(E) E = E.Next
+                while E != Result and IsHorizontal(E) E = E.Next
             }
 
             if E == Result
@@ -385,73 +393,76 @@ impl Clipper
             return Result
         }
 
-/*        TEdge *EStart
-
-        if (IsHorizontal(*E))
+        var EStart: *TEdge
+        if IsHorizontal(E)
         {
             //We need to be careful with open paths because this may not be a
             //true local minima (ie E may be following a skip edge).
             //Also, consecutive horz. edges may start heading left before going right.
-            if (NextIsForward)
-            EStart = E->Prev;
+            if NextIsForward
+                EStart = E.Prev
             else
-            EStart = E->Next;
-            if (IsHorizontal(*EStart)) //ie an adjoining horizontal skip edge
+                EStart = E.Next
+            if IsHorizontal(EStart)
             {
-                if (EStart->Bot.X != E->Bot.X && EStart->Top.X != E->Bot.X)
-                ReverseHorizontal(*E);
+                if EStart.Bot.X != E.Bot.X and EStart.Top.X != E.Bot.X
+                    ReverseHorizontal(E)
             }
-            else if (EStart->Bot.X != E->Bot.X)
-                ReverseHorizontal(*E);
+            else if EStart.Bot.X != E.Bot.X
+                ReverseHorizontal(E)
         }
 
-        EStart = E;
-        if (NextIsForward)
+        EStart = E
+        if NextIsForward
         {
-            while (Result->Top.Y == Result->Next->Bot.Y && Result->Next->OutIdx != Skip)
-            Result = Result->Next;
-            if (IsHorizontal(*Result) && Result->Next->OutIdx != Skip)
+            while Result.Top.Y == Result.Next.Bot.Y and Result.Next.OutIdx != Skip
+                Result = Result.Next
+            if IsHorizontal(Result) and Result.Next.OutIdx != Skip
             {
-            //nb: at the top of a bound, horizontals are added to the bound
-            //only when the preceding edge attaches to the horizontal's left vertex
-            //unless a Skip edge is encountered when that becomes the top divide
-            Horz = Result;
-            while (IsHorizontal(*Horz->Prev)) Horz = Horz->Prev;
-            if (Horz->Prev->Top.X > Result->Next->Top.X) Result = Horz->Prev;
-            }
-            while (E != Result)
-            {
-            E->NextInLML = E->Next;
-            if (IsHorizontal(*E) && E != EStart &&
-                E->Bot.X != E->Prev->Top.X) ReverseHorizontal(*E);
-            E = E->Next;
-            }
-            if (IsHorizontal(*E) && E != EStart && E->Bot.X != E->Prev->Top.X)
-            ReverseHorizontal(*E);
-            Result = Result->Next; //move to the edge just beyond current bound
-        } else
-        {
-            while (Result->Top.Y == Result->Prev->Bot.Y && Result->Prev->OutIdx != Skip)
-            Result = Result->Prev;
-            if (IsHorizontal(*Result) && Result->Prev->OutIdx != Skip)
-            {
-            Horz = Result;
-            while (IsHorizontal(*Horz->Next)) Horz = Horz->Next;
-            if (Horz->Next->Top.X == Result->Prev->Top.X ||
-                Horz->Next->Top.X > Result->Prev->Top.X) Result = Horz->Next;
+                //nb: at the top of a bound, horizontals are added to the bound
+                //only when the preceding edge attaches to the horizontal's left vertex
+                //unless a Skip edge is encountered when that becomes the top divide
+                Horz = Result
+                while IsHorizontal(Horz.Prev) Horz = Horz.Prev
+                if Horz.Prev.Top.X > Result.Next.Top.X Result = Horz.Prev
             }
 
-            while (E != Result)
+            while E != Result
             {
-            E->NextInLML = E->Prev;
-            if (IsHorizontal(*E) && E != EStart && E->Bot.X != E->Next->Top.X)
-                ReverseHorizontal(*E);
-            E = E->Prev;
+                E.NextInLML = E.Next
+                if IsHorizontal(E) and E != EStart and E.Bot.X != E.Prev.Top.X
+                    ReverseHorizontal(E)
+                E = E.Next
             }
-            if (IsHorizontal(*E) && E != EStart && E->Bot.X != E->Next->Top.X)
-            ReverseHorizontal(*E);
-            Result = Result->Prev; //move to the edge just beyond current bound
-        }*/
+
+            if IsHorizontal(E) and E != EStart and E.Bot.X != E.Prev.Top.X
+                ReverseHorizontal(E)
+            Result = Result.Next
+        }
+        else
+        {
+            while Result.Top.Y == Result.Prev.Bot.Y and Result.Prev.OutIdx != Skip
+                Result = Result.Prev
+            if IsHorizontal(Result) and Result.Prev.OutIdx != Skip
+            {
+                Horz = Result
+                while IsHorizontal(Horz.Next) Horz = Horz.Next
+                if Horz.Next.Top.X == Result.Prev.Top.X or Horz.Next.Top.X > Result.Prev.Top.X
+                    Result = Horz.Next
+            }
+
+            while E != Result
+            {
+                E.NextInLML = E.Prev
+                if IsHorizontal(E) and E != EStart and E.Bot.X != E.Next.Top.X
+                    ReverseHorizontal(E);
+                E = E.Prev
+            }
+
+            if IsHorizontal(E) and E != EStart and E.Bot.X != E.Next.Top.X
+                ReverseHorizontal(E)
+            Result = Result.Prev
+        }
 
         return Result
     }
