@@ -139,6 +139,7 @@ public struct Clipper
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
     m_Scanbeam:             Array'CInt
+    m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
@@ -552,6 +553,19 @@ impl Clipper
         return Result
     }
 
+    method PopScanbeam(res: *CInt)->bool
+    {
+        if !m_Scanbeam.count
+            return false
+
+        Y := m_Scanbeam.popBack()
+        dref res = Y
+        while m_Scanbeam.count and Y == m_Scanbeam.back()
+            m_Scanbeam.count -= 1
+
+        return true
+    }
+
     method InsertScanbeam(Y: CInt)
     {
         m_Scanbeam.add(Y)
@@ -592,8 +606,22 @@ impl Clipper
     method ExecuteInternal() throw
     {
         Reset()
-        //m_Maxima.clear()
+        m_Maxima.clear()
         m_SortedEdges = null
+
+        var botY, topY: CInt
+        if !PopScanbeam(&botY) throw "Error"
+
+        /*InsertLocalMinimaIntoAEL(botY)
+        while PopScanbeam(topY) or LocalMinimaPending()
+        {
+            ProcessHorizontals()
+            ClearGhostJoins()
+            if !ProcessIntersections(topY) throw "Error"
+            ProcessEdgesAtTopOfScanbeam(topY)
+            botY = topY
+            InsertLocalMinimaIntoAEL(botY)
+        }*/
     }
 
     func PointCount(Pts: *OutPt)->s32
