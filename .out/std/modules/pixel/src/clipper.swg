@@ -542,8 +542,43 @@ impl Clipper
         return true
     }
 
+    func PointCount(Pts: *OutPt)->s32
+    {
+        if !Pts return 0
+        result := 0
+        p := Pts
+        loop
+        {
+            result += 1
+            p = p.Next
+            if p == Pts break
+        }
+
+        return result
+    }
+
     method BuildResult(polys: *ClipperPaths)
     {
+        polys.reserve(m_PolyOuts.count)
+        loop i: m_PolyOuts
+        {
+            if !m_PolyOuts[i].Pts continue
+
+            var pg: ClipperPath
+
+            p := m_PolyOuts[i].Pts.Prev
+            cnt := PointCount(p)
+            if cnt < 2 continue
+
+            pg.reserve(cast(uint) cnt)
+            loop cnt
+            {
+                pg.add(p.Pt)
+                p = p.Prev
+            }
+
+            polys.emplace(&pg)
+        }
     }
 
     method DisposeAllOutRecs()
