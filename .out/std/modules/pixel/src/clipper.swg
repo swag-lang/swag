@@ -146,10 +146,10 @@ impl Clipper
         try addPath(&pt, polyType)
     }
 
-    public method execute(clipType: ClipType, solution: *LinePathList, subjFillType, clipFillType: PolyFillType)->bool
+    public method execute(clipType: ClipType, solution: *LinePathList, subjFillType, clipFillType: PolyFillType) throw
     {
         var res: ClipperPaths
-        if !Execute(clipType, &res, subjFillType, clipFillType) return false
+        try Execute(clipType, &res, subjFillType, clipFillType)
 
         loop i: res
         {
@@ -164,20 +164,18 @@ impl Clipper
 
             solution.paths.add(path)
         }
-
-        return true
     }
 
-    method Execute(clipType: ClipType, solution: *ClipperPaths, subjFillType, clipFillType: PolyFillType)->bool
+    method Execute(clipType: ClipType, solution: *ClipperPaths, subjFillType, clipFillType: PolyFillType) throw
     {
         m_SubjFillType  = subjFillType
         m_ClipFillType  = clipFillType
         m_ClipType      = clipType;
         m_UsingPolyTree = false
-        succeeded := ExecuteInternal()
-        if succeeded BuildResult(solution)
-        DisposeAllOutRecs()
-        return succeeded
+
+        defer DisposeAllOutRecs()
+        if !ExecuteInternal() throw "Failed"
+        BuildResult(solution)
     }
 
     method addPath(pg: *ClipperPath, polyType: PolyType) throw
@@ -541,7 +539,7 @@ impl Clipper
 
     method ExecuteInternal()->bool
     {
-        return false
+        return true
     }
 
     method BuildResult(polys: *ClipperPaths)
@@ -550,7 +548,7 @@ impl Clipper
 
     method DisposeAllOutRecs()
     {
-        loop i: m_PolyOuts.count DisposeOutRec(i)
+        loop i: m_PolyOuts DisposeOutRec(i)
         m_PolyOuts.clear()
     }
 
