@@ -412,10 +412,22 @@ impl Array
     }
 
     // Sort array
-    func sort(using self, cb: func(T, T)->s32 = null)
+    func sort(using self)
     {
-        lambda := cb orelse @(x, y: T)->s32 => x <=> y
-        Slice.sort(@mkslice(buffer, count), lambda)
+        Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => x <=> y)
+    }
+
+    // Sort array in reverse order (from biggest to lowest value)
+    func sortReverse(using self)
+    {
+        Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => y <=> x)
+    }
+
+    // Sort array
+    func sort(using self, cb: func(T, T)->s32)
+    {
+        Debug.assert(cb != null)
+        Slice.sort(@mkslice(buffer, count), cb)
     }
 
     // Returns the last element, and remove it from the array

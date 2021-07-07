@@ -138,10 +138,13 @@ public struct Clipper
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
+    m_Scanbeam:             Array'CInt
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
     m_CurrentLM:            uint
+    m_ActiveEdges:          *TEdge
+    m_SortedEdges:          *TEdge
 }
 
 impl Clipper
@@ -549,40 +552,48 @@ impl Clipper
         return Result
     }
 
+    method InsertScanbeam(Y: CInt)
+    {
+        m_Scanbeam.add(Y)
+        m_Scanbeam.sort()
+    }
+
     method Reset()
     {
         m_CurrentLM = 0
         if m_CurrentLM == m_MinimaList.count return
         m_MinimaList.sort()
 
-/*        m_Scanbeam = ScanbeamList(); //clears/resets priority_queue
-        //reset all edges ...
-        for (MinimaList::iterator lm = m_MinimaList.begin(); lm != m_MinimaList.end(); ++lm)
+        m_Scanbeam.clear()
+        visit lm: m_MinimaList
         {
-            InsertScanbeam(lm->Y);
-            TEdge* e = lm->LeftBound;
-            if (e)
+            InsertScanbeam(lm.Y)
+            e := lm.LeftBound
+            if e
             {
-            e->Curr = e->Bot;
-            e->Side = esLeft;
-            e->OutIdx = Unassigned;
+                e.Curr = e.Bot
+                e.Side = .esLeft
+                e.OutIdx = Unassigned
             }
 
-            e = lm->RightBound;
-            if (e)
+            e = lm.RightBound
+            if e
             {
-            e->Curr = e->Bot;
-            e->Side = esRight;
-            e->OutIdx = Unassigned;
+                e.Curr = e.Bot
+                e.Side = .esRight
+                e.OutIdx = Unassigned
             }
         }
-        m_ActiveEdges = 0;
-        m_CurrentLM = m_MinimaList.begin();*/
+
+        m_ActiveEdges = null
+        m_CurrentLM = 0
     }
 
     method ExecuteInternal() throw
     {
         Reset()
+        //m_Maxima.clear()
+        m_SortedEdges = null
     }
 
     func PointCount(Pts: *OutPt)->s32
