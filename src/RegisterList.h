@@ -62,7 +62,20 @@ struct RegisterList
     void clear()
     {
         countResults = 0;
-        canFree = true;
+        canFree      = true;
+    }
+
+    bool operator==(const RegisterList& other)
+    {
+        if (countResults != other.countResults)
+            return false;
+        for (int i = 0; i < countResults; i++)
+        {
+            if (oneResult[i] != other.oneResult[i])
+                return false;
+        }
+
+        return true;
     }
 
     operator uint32_t()

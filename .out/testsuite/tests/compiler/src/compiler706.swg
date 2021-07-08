@@ -19,7 +19,7 @@ impl Point
 {
 	var pt: Point
 	cpt := 0
-	loop(pt)
+	loop pt
 	{
 		cpt += 1
 	}

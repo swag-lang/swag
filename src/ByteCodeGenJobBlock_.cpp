@@ -277,17 +277,28 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
                     freeRegisterRC(context, rangeNode->expressionUp);
                 }
                 else
-                    freeRegisterRC(context, loopNode->expression);
+                {
+                    if (!loopNode->expression->hasSpecialFuncCall())
+                        freeRegisterRC(context, loopNode->expression);
+                }
             }
             break;
         }
 
         case AstNodeKind::While:
-            freeRegisterRC(context, ((AstWhile*) node)->boolExpression);
+        {
+            auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
+            if (!whileNode->boolExpression->hasSpecialFuncCall())
+                freeRegisterRC(context, whileNode->boolExpression);
             break;
+        }
         case AstNodeKind::For:
-            freeRegisterRC(context, ((AstFor*) node)->boolExpression);
+        {
+            auto forNode = CastAst<AstFor>(node, AstNodeKind::For);
+            if (!forNode->boolExpression->hasSpecialFuncCall())
+                freeRegisterRC(context, forNode->boolExpression);
             break;
+        }
         }
     }
 

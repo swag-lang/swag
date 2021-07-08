@@ -174,6 +174,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         condVarDone.notify_all();
 }
 
+#ifndef SWAG_DEV_MODE
 static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 {
     g_Log.lock();
@@ -198,6 +199,7 @@ static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 
     g_Log.unlock();
 }
+#endif
 
 static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
 {
@@ -205,10 +207,10 @@ static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
     g_byteCodeStack.reportError("exception during job execution !");
     OS::errorBox("[Developer Mode]", "Exception raised !");
     return EXCEPTION_CONTINUE_EXECUTION;
-#endif
-
+#else
     exceptionMessage(job, args);
     return EXCEPTION_EXECUTE_HANDLER;
+#endif
 }
 
 void ThreadManager::executeOneJob(Job* job)

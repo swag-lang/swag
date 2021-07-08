@@ -146,6 +146,7 @@ public struct Clipper
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
     m_Joins:                Array'*Join
+    m_GhostJoins:           Array'*Join
     m_Scanbeam:             Array'CInt
     m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
@@ -943,6 +944,7 @@ impl Clipper
         }
     }
 
+    #[Swag.discardable]
     method AddOutPt(e: *TEdge, pt: IntPoint)->*OutPt
     {
         if e.OutIdx < 0
@@ -981,6 +983,7 @@ impl Clipper
         }
     }
 
+    #[Swag.discardable]
     method AddLocalMinPoly(e1, e2: *TEdge, Pt: IntPoint)->*OutPt
     {
         var result: *OutPt
@@ -1028,6 +1031,444 @@ impl Clipper
         return result
     }
 
+    method AddEdgeToSEL(edge: *TEdge)
+    {
+        if !m_SortedEdges
+        {
+            m_SortedEdges = edge
+            edge.PrevInSEL = null
+            edge.NextInSEL = null
+        }
+        else
+        {
+            edge.NextInSEL = m_SortedEdges
+            edge.PrevInSEL = null
+            m_SortedEdges.PrevInSEL = edge
+            m_SortedEdges = edge
+        }
+    }
+
+    func HorzSegmentsOverlap(s1a, s1b, s2a, s2b: CInt)->bool
+    {
+        seg1a := s1a
+        seg1b := s1b
+        seg2a := s2a
+        seg2b := s2b
+        if seg1a > seg1b swap(&seg1a, &seg1b)
+        if seg2a > seg2b swap(&seg2a, &seg2b)
+        return (seg1a < seg2b) and (seg2a < seg1b)
+    }
+
+    func OutRec1RightOfOutRec2(o1, outRec2: *OutRec)->bool
+    {
+        outRec1 := o1
+        loop
+        {
+            outRec1 = outRec1.FirstLeft
+            if outRec1 == outRec2 return true
+            if !outRec1 break
+        }
+        return false
+    }
+
+    func GetDx(pt1, pt2: IntPoint)->f64
+    {
+        return (pt1.Y == pt2.Y) ? HORIZONTAL : cast(f64) (pt2.X - pt1.X) / (pt2.Y - pt1.Y)
+    }
+
+    func Area(op1: *OutPt)->f64
+    {
+        op := op1
+        startOp := op
+        if !op return 0
+
+        a := 0'f64
+        loop
+        {
+            a += cast(f64) (op.Prev.Pt.X + op.Pt.X) * cast(f64) (op.Prev.Pt.Y - op.Pt.Y)
+            op = op.Next
+            if op == startOp break
+        }
+
+        return a * 0.5
+    }
+
+    func FirstIsBottomPt(btmPt1, btmPt2: *OutPt)->bool
+    {
+        p := btmPt1.Prev
+        while (p.Pt == btmPt1.Pt) and (p != btmPt1) p = p.Prev
+        dx1p := Math.abs(GetDx(btmPt1.Pt, p.Pt))
+        p = btmPt1.Next
+        while (p.Pt == btmPt1.Pt) and (p != btmPt1) p = p.Next
+        dx1n := Math.abs(GetDx(btmPt1.Pt, p.Pt))
+
+        p = btmPt2.Prev
+        while (p.Pt == btmPt2.Pt) and (p != btmPt2) p = p.Prev
+        dx2p := Math.abs(GetDx(btmPt2.Pt, p.Pt))
+        p = btmPt2.Next
+        while (p.Pt == btmPt2.Pt) and (p != btmPt2) p = p.Next
+        dx2n := Math.abs(GetDx(btmPt2.Pt, p.Pt))
+
+        if Math.max(dx1p, dx1n) == Math.max(dx2p, dx2n) and
+           Math.min(dx1p, dx1n) == Math.min(dx2p, dx2n)
+            return Area(btmPt1) > 0
+        else
+            return (dx1p >= dx2p and dx1p >= dx2n) or (dx1n >= dx2p and dx1n >= dx2n)
+    }
+
+    func GetBottomPt(pp1: *OutPt)->*OutPt
+    {
+        var dups: *OutPt
+        pp := pp1
+        p := pp.Next
+        while p != pp
+        {
+            if p.Pt.Y > pp.Pt.Y
+            {
+                pp = p
+                dups = null
+            }
+            else if p.Pt.Y == pp.Pt.Y and p.Pt.X <= pp.Pt.X
+            {
+                if p.Pt.X < pp.Pt.X
+                {
+                    dups = null
+                    pp = p
+                }
+                else
+                {
+                    if p.Next != pp and p.Prev != pp dups = p
+                }
+            }
+            p = p.Next
+        }
+
+        if dups
+        {
+            while dups != p
+            {
+                if !FirstIsBottomPt(p, dups) pp = dups
+                dups = dups.Next
+                while dups.Pt != pp.Pt
+                    dups = dups.Next
+            }
+        }
+
+        return pp
+    }
+
+    func GetLowermostRec(outRec1, outRec2: *OutRec)->*OutRec
+    {
+        if !outRec1.BottomPt
+            outRec1.BottomPt = GetBottomPt(outRec1.Pts)
+        if !outRec2.BottomPt
+            outRec2.BottomPt = GetBottomPt(outRec2.Pts)
+        OutPt1 := outRec1.BottomPt
+        OutPt2 := outRec2.BottomPt
+        if OutPt1.Pt.Y > OutPt2.Pt.Y return outRec1
+        if OutPt1.Pt.Y < OutPt2.Pt.Y return outRec2
+        if OutPt1.Pt.X < OutPt2.Pt.X return outRec1
+        if OutPt1.Pt.X > OutPt2.Pt.X return outRec2
+        if OutPt1.Next == OutPt1 return outRec2
+        if OutPt2.Next == OutPt2 return outRec1
+        if FirstIsBottomPt(OutPt1, OutPt2) return outRec1
+        return outRec2
+    }
+
+    func ReversePolyPtLinks(pp: *OutPt)
+    {
+        if !pp return
+        var pp1, pp2: *OutPt
+        pp1 = pp
+        loop
+        {
+            pp2 = pp1.Next
+            pp1.Next = pp1.Prev
+            pp1.Prev = pp2
+            pp1 = pp2
+            if pp1 == pp break
+        }
+    }
+
+    method AppendPolygon(e1, e2: *TEdge)
+    {
+        //get the start and ends of both output polygons ...
+        outRec1 := m_PolyOuts[e1.OutIdx]
+        outRec2 := m_PolyOuts[e2.OutIdx]
+
+        var holeStateRec: *OutRec
+        if OutRec1RightOfOutRec2(outRec1, outRec2)
+            holeStateRec = outRec2
+        else if OutRec1RightOfOutRec2(outRec2, outRec1)
+            holeStateRec = outRec1
+        else
+            holeStateRec = GetLowermostRec(outRec1, outRec2)
+
+        //get the start and ends of both output polygons and
+        //join e2 poly onto e1 poly and delete pointers to e2 ...
+
+        p1_lft := outRec1.Pts
+        p1_rt := p1_lft.Prev
+        p2_lft := outRec2.Pts
+        p2_rt := p2_lft.Prev
+
+        //join e2 poly onto e1 poly and delete pointers to e2 ...
+        if e1.Side == .esLeft
+        {
+            if e2.Side == .esLeft
+            {
+                ReversePolyPtLinks(p2_lft)
+                p2_lft.Next = p1_lft
+                p1_lft.Prev = p2_lft
+                p1_rt.Next = p2_rt
+                p2_rt.Prev = p1_rt
+                outRec1.Pts = p2_rt
+            }
+            else
+            {
+                p2_rt.Next = p1_lft
+                p1_lft.Prev = p2_rt
+                p2_lft.Prev = p1_rt
+                p1_rt.Next = p2_lft
+                outRec1.Pts = p2_lft
+            }
+        }
+        else
+        {
+            if e2.Side == .esRight
+            {
+                ReversePolyPtLinks(p2_lft)
+                p1_rt.Next = p2_rt
+                p2_rt.Prev = p1_rt
+                p2_lft.Next = p1_lft
+                p1_lft.Prev = p2_lft
+            }
+            else
+            {
+                p1_rt.Next = p2_lft
+                p2_lft.Prev = p1_rt
+                p1_lft.Prev = p2_rt
+                p2_rt.Next = p1_lft
+            }
+        }
+
+        outRec1.BottomPt = null
+        if holeStateRec == outRec2
+        {
+            if outRec2.FirstLeft != outRec1
+                outRec1.FirstLeft = outRec2.FirstLeft
+            outRec1.IsHole = outRec2.IsHole
+        }
+
+        outRec2.Pts = null
+        outRec2.BottomPt = null
+        outRec2.FirstLeft = outRec1
+
+        OKIdx := e1.OutIdx
+        ObsoleteIdx := e2.OutIdx
+
+        e1.OutIdx = Unassigned
+        e2.OutIdx = Unassigned
+
+        e := m_ActiveEdges
+        while e
+        {
+            if e.OutIdx == ObsoleteIdx
+            {
+                e.OutIdx = OKIdx
+                e.Side = e1.Side
+                break
+            }
+
+            e = e.NextInAEL
+        }
+
+        outRec2.Idx = outRec1.Idx
+    }
+
+    method AddLocalMaxPoly(e1, e2: *TEdge, Pt: IntPoint)
+    {
+        AddOutPt(e1, Pt)
+        if e2.WindDelta == 0 AddOutPt(e2, Pt)
+
+        if e1.OutIdx == e2.OutIdx
+        {
+            e1.OutIdx = Unassigned
+            e2.OutIdx = Unassigned
+        }
+        else if e1.OutIdx < e2.OutIdx
+            AppendPolygon(e1, e2)
+        else
+            AppendPolygon(e2, e1)
+    }
+
+    func SwapSides(Edge1, Edge2: *TEdge)
+    {
+        Side := Edge1.Side
+        Edge1.Side = Edge2.Side
+        Edge2.Side = Side
+    }
+
+    func SwapPolyIndexes(Edge1, Edge2: *TEdge)
+    {
+        OutIdx := Edge1.OutIdx
+        Edge1.OutIdx = Edge2.OutIdx
+        Edge2.OutIdx = OutIdx
+    }
+
+    method IntersectEdges(e1, e2: *TEdge, Pt: IntPoint)
+    {
+        e1Contributing := e1.OutIdx >= 0
+        e2Contributing := e2.OutIdx >= 0
+
+        //update winding counts...
+        //assumes that e1 will be to the Right of e2 ABOVE the intersection
+        if e1.PolyTyp == e2.PolyTyp
+        {
+            if IsEvenOddFillType(e1)
+            {
+                oldE1WindCnt := e1.WindCnt
+                e1.WindCnt = e2.WindCnt
+                e2.WindCnt = oldE1WindCnt
+            }
+            else
+            {
+                if e1.WindCnt + e2.WindDelta == 0
+                    e1.WindCnt = -e1.WindCnt
+                else
+                    e1.WindCnt += e2.WindDelta
+                if e2.WindCnt - e1.WindDelta == 0
+                    e2.WindCnt = -e2.WindCnt
+                else
+                    e2.WindCnt -= e1.WindDelta
+            }
+        }
+        else
+        {
+            if !IsEvenOddFillType(e2)
+                e1.WindCnt2 += e2.WindDelta
+            else
+                e1.WindCnt2 = (e1.WindCnt2 == 0) ? 1 : 0
+            if !IsEvenOddFillType(e1)
+                e2.WindCnt2 -= e1.WindDelta
+            else
+                e2.WindCnt2 = (e2.WindCnt2 == 0) ? 1 : 0
+        }
+
+        var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = ?
+        if e1.PolyTyp == .ptSubject
+        {
+            e1FillType = m_SubjFillType
+            e1FillType2 = m_ClipFillType
+        }
+        else
+        {
+            e1FillType = m_ClipFillType
+            e1FillType2 = m_SubjFillType
+        }
+
+        if e2.PolyTyp == .ptSubject
+        {
+            e2FillType = m_SubjFillType
+            e2FillType2 = m_ClipFillType
+        }
+        else
+        {
+            e2FillType = m_ClipFillType
+            e2FillType2 = m_SubjFillType
+        }
+
+        var e1Wc, e2Wc: CInt
+        switch e1FillType
+        {
+        case pftPositive:   e1Wc = e1.WindCnt
+        case pftNegative:   e1Wc = -e1.WindCnt
+        default:            e1Wc = Math.abs(e1.WindCnt)
+        }
+
+        switch e2FillType
+        {
+        case pftPositive:   e2Wc = e2.WindCnt
+        case pftNegative:   e2Wc = -e2.WindCnt
+        default:            e2Wc = Math.abs(e2.WindCnt)
+        }
+
+        if e1Contributing and e2Contributing
+        {
+            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.PolyTyp != e2.PolyTyp and m_ClipType != .ctXor)
+            {
+                AddLocalMaxPoly(e1, e2, Pt)
+            }
+            else
+            {
+                AddOutPt(e1, Pt)
+                AddOutPt(e2, Pt)
+                SwapSides(e1, e2)
+                SwapPolyIndexes(e1, e2)
+            }
+        }
+        else if e1Contributing
+        {
+            if e2Wc == 0 or e2Wc == 1
+            {
+                AddOutPt(e1, Pt)
+                SwapSides(e1, e2)
+                SwapPolyIndexes(e1, e2)
+            }
+        }
+        else if e2Contributing
+        {
+            if e1Wc == 0 or e1Wc == 1
+            {
+                AddOutPt(e2, Pt);
+                SwapSides(e1, e2)
+                SwapPolyIndexes(e1, e2)
+            }
+        }
+        else if (e1Wc == 0 or e1Wc == 1) and (e2Wc == 0 or e2Wc == 1)
+        {
+            var e1Wc2, e2Wc2: CInt
+            switch e1FillType2
+            {
+            case pftPositive:   e1Wc2 = e1.WindCnt2
+            case pftNegative:   e1Wc2 = -e1.WindCnt2
+            default:            e1Wc2 = Math.abs(e1.WindCnt2)
+            }
+
+            switch e2FillType2
+            {
+            case pftPositive:   e2Wc2 = e2.WindCnt2
+            case pftNegative:   e2Wc2 = -e2.WindCnt2
+            default:            e2Wc2 = Math.abs(e2.WindCnt2)
+            }
+
+            if e1.PolyTyp != e2.PolyTyp
+            {
+                AddLocalMinPoly(e1, e2, Pt);
+            }
+            else if e1Wc == 1 and e2Wc == 1
+            {
+                switch m_ClipType
+                {
+                case ctIntersection:
+                    if e1Wc2 > 0 and e2Wc2 > 0
+                        AddLocalMinPoly(e1, e2, Pt)
+                case ctUnion:
+                    if e1Wc2 <= 0 and e2Wc2 <= 0
+                        AddLocalMinPoly(e1, e2, Pt)
+                case ctDifference:
+                    if ((e1.PolyTyp == .ptClip) and (e1Wc2 > 0) and (e2Wc2 > 0)) or
+                       ((e1.PolyTyp == .ptSubject) and (e1Wc2 <= 0) and (e2Wc2 <= 0))
+                        AddLocalMinPoly(e1, e2, Pt)
+                case ctXor:
+                    AddLocalMinPoly(e1, e2, Pt)
+                }
+            }
+            else
+                SwapSides(e1, e2)
+        }
+    }
+
     method InsertLocalMinimaIntoAEL(botY: CInt)
     {
         var lm: *LocalMinimum
@@ -1064,66 +1505,64 @@ impl Clipper
                     Op1 = AddLocalMinPoly(lb, rb, lb.Bot)
                 InsertScanbeam(lb.Top.Y)
             }
-/*
-            if (rb)
+
+            if rb
             {
-                if (IsHorizontal(*rb))
+                if IsHorizontal(rb)
                 {
-                    AddEdgeToSEL(rb);
-                    if (rb->NextInLML)
-                        InsertScanbeam(rb->NextInLML->Top.Y);
+                    AddEdgeToSEL(rb)
+                    if rb.NextInLML
+                        InsertScanbeam(rb.NextInLML.Top.Y)
                 }
-                else InsertScanbeam( rb->Top.Y );
+                else
+                    InsertScanbeam(rb.Top.Y)
             }
 
-            if (!lb || !rb) continue;
+            if !lb or !rb continue
 
             //if any output polygons share an edge, they'll need joining later ...
-            if  Op1 && IsHorizontal(*rb) &&
-                m_GhostJoins.size() > 0 && (rb->WindDelta != 0)
+            if Op1 and IsHorizontal(rb) and m_GhostJoins.count > 0 and (rb.WindDelta != 0)
             {
-                for (JoinList::size_type i = 0; i < m_GhostJoins.size(); ++i)
+                loop i: m_GhostJoins.count
                 {
-                    Join* jr = m_GhostJoins[i];
-                    //if the horizontal Rb and a 'ghost' horizontal overlap, then convert
-                    //the 'ghost' join to a real join ready for later ...
-                    if (HorzSegmentsOverlap(jr->OutPt1->Pt.X, jr->OffPt.X, rb->Bot.X, rb->Top.X))
-                    AddJoin(jr->OutPt1, Op1, jr->OffPt);
+                    jr := m_GhostJoins[i]
+                    if HorzSegmentsOverlap(jr.OutPt1.Pt.X, jr.OffPt.X, rb.Bot.X, rb.Top.X)
+                        AddJoin(jr.OutPt1, Op1, jr.OffPt)
                 }
             }
 
-            if  lb->OutIdx >= 0 && lb->PrevInAEL &&
-                lb->PrevInAEL->Curr.X == lb->Bot.X &&
-                lb->PrevInAEL->OutIdx >= 0 &&
-                SlopesEqual(lb->PrevInAEL->Bot, lb->PrevInAEL->Top, lb->Curr, lb->Top, m_UseFullRange) &&
-                (lb->WindDelta != 0) && (lb->PrevInAEL->WindDelta != 0)
+            if  lb.OutIdx >= 0 and lb.PrevInAEL and
+                lb.PrevInAEL.Curr.X == lb.Bot.X and
+                lb.PrevInAEL.OutIdx >= 0 and
+                SlopesEqual(lb.PrevInAEL.Bot, lb.PrevInAEL.Top, lb.Curr, lb.Top) and
+                (lb.WindDelta != 0) and (lb.PrevInAEL.WindDelta != 0)
             {
-                OutPt *Op2 = AddOutPt(lb->PrevInAEL, lb->Bot);
-                AddJoin(Op1, Op2, lb->Top);
+                Op2 := AddOutPt(lb.PrevInAEL, lb.Bot)
+                AddJoin(Op1, Op2, lb.Top)
             }
 
-            if(lb->NextInAEL != rb)
+            if lb.NextInAEL != rb
             {
-                if (rb->OutIdx >= 0 && rb->PrevInAEL->OutIdx >= 0 &&
-                    SlopesEqual(rb->PrevInAEL->Curr, rb->PrevInAEL->Top, rb->Curr, rb->Top, m_UseFullRange) &&
-                    (rb->WindDelta != 0) && (rb->PrevInAEL->WindDelta != 0))
+                if  rb.OutIdx >= 0 and
+                    rb.PrevInAEL.OutIdx >= 0 and
+                    SlopesEqual(rb.PrevInAEL.Curr, rb.PrevInAEL.Top, rb.Curr, rb.Top) and
+                    (rb.WindDelta != 0) and
+                    (rb.PrevInAEL.WindDelta != 0)
                 {
-                    OutPt *Op2 = AddOutPt(rb->PrevInAEL, rb->Bot);
-                    AddJoin(Op1, Op2, rb->Top);
+                    Op2 := AddOutPt(rb.PrevInAEL, rb.Bot)
+                    AddJoin(Op1, Op2, rb.Top)
                 }
 
-                TEdge* e = lb->NextInAEL;
-                if (e)
+                e := lb.NextInAEL
+                if e
                 {
-                    while( e != rb )
+                    while e != rb
                     {
-                        //nb: For calculating winding counts etc, IntersectEdges() assumes
-                        //that param1 will be to the Right of param2 ABOVE the intersection ...
-                        IntersectEdges(rb , e , lb->Curr); //order important here
-                        e = e->NextInAEL;
+                        IntersectEdges(rb, e, lb.Curr)
+                        e = e.NextInAEL
                     }
                 }
-            }*/
+            }
         }
     }
 

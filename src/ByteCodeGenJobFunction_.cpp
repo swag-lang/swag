@@ -1371,7 +1371,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         if (!(typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
-            auto numRegs                = typeInfoFunc->returnType->numRegisters();
+            auto numRegs = typeInfoFunc->returnType->numRegisters();
 
             // Need to do that even if discard, not sure why
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);

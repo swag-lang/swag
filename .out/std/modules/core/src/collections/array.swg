@@ -412,26 +412,26 @@ impl Array
     }
 
     // Sort array
-    func sort(using self)
+    method sort()
     {
         Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => x <=> y)
     }
 
     // Sort array in reverse order (from biggest to lowest value)
-    func sortReverse(using self)
+    method sortReverse()
     {
         Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => y <=> x)
     }
 
     // Sort array
-    func sort(using self, cb: func(T, T)->s32)
+    method sort(cb: func(T, T)->s32)
     {
         Debug.assert(cb != null)
         Slice.sort(@mkslice(buffer, count), cb)
     }
 
     // Returns the last element, and remove it from the array
-    func back()->T
+    method back()->T
     {
         Debug.assert(count > 0)
         var result: retval = ?
@@ -440,7 +440,7 @@ impl Array
     }
 
     // Returns the last element, and remove it from the array
-    func popBack(using self)->T
+    method popBack()->T
     {
         Debug.assert(count > 0)
         var result: retval = ?
