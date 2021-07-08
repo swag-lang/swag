@@ -998,16 +998,6 @@ impl Clipper
         ///....
     }
 
-    method FixupIntersectionOrder()->bool
-    {
-        return true
-    }
-
-    method ProcessIntersectList()
-    {
-
-    }
-
     method ProcessIntersections(topY: CInt) throw
     {
         if !m_ActiveEdges return
@@ -1068,6 +1058,15 @@ impl Clipper
         }
 
         m_SortedEdges = null
+    }
+
+    method FixupIntersectionOrder()->bool
+    {
+        return true
+    }
+
+    method ProcessIntersectList()
+    {
     }
 
     method SwapPositionsInSEL(Edge1, Edge2: *TEdge)
