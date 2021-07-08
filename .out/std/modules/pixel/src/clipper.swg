@@ -612,8 +612,8 @@ impl Clipper
         var botY, topY: CInt
         if !PopScanbeam(&botY) throw "Error"
 
-        /*InsertLocalMinimaIntoAEL(botY)
-        while PopScanbeam(topY) or LocalMinimaPending()
+        InsertLocalMinimaIntoAEL(botY)
+        /*while PopScanbeam(topY) or LocalMinimaPending()
         {
             ProcessHorizontals()
             ClearGhostJoins()
@@ -622,6 +622,440 @@ impl Clipper
             botY = topY
             InsertLocalMinimaIntoAEL(botY)
         }*/
+    }
+
+    method PopLocalMinima(Y: CInt, locMin: **LocalMinimum)->bool
+    {
+        if m_CurrentLM == m_MinimaList.count or m_MinimaList[m_CurrentLM].Y != Y return false
+        dref locMin = m_MinimaList[m_CurrentLM]
+        m_CurrentLM += 1
+        return true
+    }
+
+    func Round(val: f64)->CInt
+    {
+        if val < 0 return cast(CInt) (val - 0.5)
+        return cast(CInt) (val + 0.5)
+    }
+
+    func TopX(edge: *TEdge, currentY: CInt)->CInt
+    {
+        return currentY == edge.Top.Y ? edge.Top.X : edge.Bot.X + Round(edge.Dx * (currentY - edge.Bot.Y))
+    }
+
+    func E2InsertsBeforeE1(e1, e2: *TEdge)->bool
+    {
+        if e2.Curr.X == e1.Curr.X
+        {
+            if e2.Top.Y > e1.Top.Y
+                return e2.Top.X < TopX(e1, e2.Top.Y)
+            else
+                return e1.Top.X > TopX(e2, e1.Top.Y)
+        }
+        else
+            return e2.Curr.X < e1.Curr.X
+    }
+
+    method InsertEdgeIntoAEL(edge, startE: *TEdge)
+    {
+        startEdge := startE
+        if !m_ActiveEdges
+        {
+            edge.PrevInAEL = null
+            edge.NextInAEL = null
+            m_ActiveEdges = edge
+        }
+        else if !startEdge and E2InsertsBeforeE1(m_ActiveEdges, edge)
+        {
+            edge.PrevInAEL = null
+            edge.NextInAEL = m_ActiveEdges
+            m_ActiveEdges.PrevInAEL = edge
+            m_ActiveEdges = edge
+        }
+        else
+        {
+            if !startEdge startEdge = m_ActiveEdges
+            while startEdge.NextInAEL and !E2InsertsBeforeE1(startEdge.NextInAEL, edge)
+                startEdge = startEdge.NextInAEL
+            edge.NextInAEL = startEdge.NextInAEL
+            if startEdge.NextInAEL startEdge.NextInAEL.PrevInAEL = edge
+            edge.PrevInAEL = startEdge
+            startEdge.NextInAEL = edge
+        }
+    }
+
+    method IsEvenOddFillType(edge: *TEdge)->bool
+    {
+        if edge.PolyTyp == .ptSubject
+            return m_SubjFillType == .pftEvenOdd
+        return m_ClipFillType == .pftEvenOdd
+    }
+
+    method IsEvenOddAltFillType(edge: *TEdge)->bool
+    {
+        if edge.PolyTyp == .ptSubject
+            return m_ClipFillType == .pftEvenOdd
+        return m_SubjFillType == .pftEvenOdd
+    }
+
+    method SetWindingCount(edge: *TEdge)
+    {
+        e := edge.PrevInAEL
+
+        while e and ((e.PolyTyp != edge.PolyTyp) or (e.WindDelta == 0))
+            e = e.PrevInAEL
+
+        if !e
+        {
+            if edge.WindDelta == 0
+            {
+                pft := edge.PolyTyp == .ptSubject ? m_SubjFillType : m_ClipFillType
+                edge.WindCnt = (pft == .pftNegative ? -1 : 1)
+            }
+            else
+                edge.WindCnt = edge.WindDelta
+            edge.WindCnt2 = 0
+            e = m_ActiveEdges
+        }
+        else if edge.WindDelta == 0 and m_ClipType != .ctUnion
+        {
+            edge.WindCnt = 1
+            edge.WindCnt2 = e.WindCnt2
+            e = e.NextInAEL
+        }
+        else if IsEvenOddFillType(edge)
+        {
+            if edge.WindDelta == 0
+            {
+                Inside := true
+                e2 := e.PrevInAEL
+                while e2
+                {
+                    if e2.PolyTyp == e.PolyTyp and e2.WindDelta != 0
+                        Inside = !Inside
+                    e2 = e2.PrevInAEL
+                }
+                edge.WindCnt = (Inside ? 0 : 1)
+            }
+            else
+                edge.WindCnt = edge.WindDelta
+            edge.WindCnt2 = e.WindCnt2
+            e = e.NextInAEL
+        }
+        else
+        {
+            if e.WindCnt * e.WindDelta < 0
+            {
+                if Math.abs(e.WindCnt) > 1
+                {
+                    if e.WindDelta * edge.WindDelta < 0
+                        edge.WindCnt = e.WindCnt
+                    else
+                        edge.WindCnt = e.WindCnt + edge.WindDelta
+                }
+                else
+                    edge.WindCnt = edge.WindDelta == 0 ? 1 : edge.WindDelta
+            }
+            else
+            {
+                if edge.WindDelta == 0
+                    edge.WindCnt = (e.WindCnt < 0 ? e.WindCnt - 1 : e.WindCnt + 1)
+                else if e.WindDelta * edge.WindDelta < 0
+                    edge.WindCnt = e.WindCnt
+                else
+                    edge.WindCnt = e.WindCnt + edge.WindDelta
+            }
+
+            edge.WindCnt2 = e.WindCnt2
+            e = e.NextInAEL
+        }
+
+        if IsEvenOddAltFillType(edge)
+        {
+            while e != edge
+            {
+                if e.WindDelta != 0
+                    edge.WindCnt2 = edge.WindCnt2 == 0 ? 1 : 0
+                e = e.NextInAEL
+            }
+        }
+        else
+        {
+            while e != edge
+            {
+                edge.WindCnt2 += e.WindDelta
+                e = e.NextInAEL
+            }
+        }
+    }
+
+    method IsContributing(edge: *TEdge)->bool
+    {
+        var pft, pft2: PolyFillType = ?
+        if edge.PolyTyp == .ptSubject
+        {
+            pft = m_SubjFillType
+            pft2 = m_ClipFillType
+        }
+        else
+        {
+            pft = m_ClipFillType
+            pft2 = m_SubjFillType
+        }
+
+        switch pft
+        {
+        case pftEvenOdd:
+            if edge.WindDelta == 0 and edge.WindCnt != 1
+                return false
+        case pftNonZero:
+            if Math.abs(edge.WindCnt) != 1
+                return false
+        case pftPositive:
+            if edge.WindCnt != 1
+                return false
+        default:
+            if edge.WindCnt != -1
+                return false
+        }
+
+        switch m_ClipType
+        {
+        case ctIntersection:
+            switch pft2
+            {
+            case pftEvenOdd, pftNonZero:
+                return edge.WindCnt2 != 0
+            case pftPositive:
+                return edge.WindCnt2 > 0
+            default:
+                return edge.WindCnt2 < 0
+            }
+
+        case ctUnion:
+            switch pft2
+            {
+            case pftEvenOdd, pftNonZero:
+                return edge.WindCnt2 == 0
+            case pftPositive:
+                return edge.WindCnt2 <= 0
+            default:
+                return edge.WindCnt2 >= 0
+            }
+
+        case ctDifference:
+            if edge.PolyTyp == .ptSubject
+            {
+                switch pft2
+                {
+                case pftEvenOdd, pftNonZero:
+                    return edge.WindCnt2 == 0
+                case pftPositive:
+                    return edge.WindCnt2 <= 0
+                default:
+                    return edge.WindCnt2 >= 0
+                }
+            }
+            else
+            {
+                switch(pft2)
+                {
+                case pftEvenOdd, pftNonZero:
+                    return edge.WindCnt2 != 0
+                case pftPositive:
+                    return edge.WindCnt2 > 0
+                default:
+                    return edge.WindCnt2 < 0
+                }
+            }
+
+        case ctXor:
+            if edge.WindDelta == 0
+            {
+                switch pft2
+                {
+                case pftEvenOdd, pftNonZero:
+                    return edge.WindCnt2 == 0
+                case pftPositive:
+                    return edge.WindCnt2 <= 0
+                default:
+                    return edge.WindCnt2 >= 0
+                }
+            }
+        }
+
+        return true
+    }
+
+    method CreateOutRec()->*OutRec
+    {
+        result := Memory.new'OutRec()
+        m_PolyOuts.add(result)
+        result.Idx = cast(s32) (m_PolyOuts.count - 1)
+        return result
+    }
+
+    method SetHoleState(e: *TEdge, outrec: *OutRec)
+    {
+        e2 := e.PrevInAEL
+        var eTmp: *TEdge
+        while e2
+        {
+            if e2.OutIdx >= 0 and e2.WindDelta != 0
+            {
+                if !eTmp eTmp = e2
+                else if eTmp.OutIdx == e2.OutIdx eTmp = null
+            }
+
+            e2 = e2.PrevInAEL
+        }
+        if !eTmp
+        {
+            outrec.FirstLeft = null
+            outrec.IsHole = false
+        }
+        else
+        {
+            outrec.FirstLeft = m_PolyOuts[eTmp.OutIdx]
+            outrec.IsHole = !outrec.FirstLeft.IsHole
+        }
+    }
+
+    method AddOutPt(e: *TEdge, pt: IntPoint)->*OutPt
+    {
+        if e.OutIdx < 0
+        {
+            outRec := CreateOutRec()
+            outRec.IsOpen = e.WindDelta == 0
+            newOp := Memory.new'OutPt();
+            outRec.Pts = newOp
+            newOp.Idx = outRec.Idx
+            newOp.Pt = pt
+            newOp.Next = newOp
+            newOp.Prev = newOp
+            if !outRec.IsOpen
+                SetHoleState(e, outRec)
+            e.OutIdx = outRec.Idx
+            return newOp
+        }
+        else
+        {
+            outRec := m_PolyOuts[e.OutIdx]
+            op := outRec.Pts
+
+            ToFront := (e.Side == .esLeft)
+            if ToFront and (pt == op.Pt) return op
+            if !ToFront and (pt == op.Prev.Pt) return op.Prev
+
+            newOp := Memory.new'OutPt()
+            newOp.Idx = outRec.Idx
+            newOp.Pt = pt
+            newOp.Next = op
+            newOp.Prev = op.Prev
+            newOp.Prev.Next = newOp;
+            op.Prev = newOp
+            if ToFront outRec.Pts = newOp
+            return newOp
+        }
+    }
+
+    method InsertLocalMinimaIntoAEL(botY: CInt)
+    {
+        var lm: *LocalMinimum
+        while PopLocalMinima(botY, &lm)
+        {
+            lb := lm.LeftBound
+            rb := lm.RightBound
+
+            var Op1: *OutPt
+            if !lb
+            {
+                //nb: don't insert LB into either AEL or SEL
+                InsertEdgeIntoAEL(rb, null)
+                SetWindingCount(rb)
+                if IsContributing(rb)
+                    Op1 = AddOutPt(rb, rb.Bot)
+            }
+            /*else if (!rb)
+            {
+                InsertEdgeIntoAEL(lb, 0);
+                SetWindingCount(*lb);
+                if (IsContributing(*lb))
+                    Op1 = AddOutPt(lb, lb->Bot);
+                InsertScanbeam(lb->Top.Y);
+            }
+            else
+            {
+                InsertEdgeIntoAEL(lb, 0);
+                InsertEdgeIntoAEL(rb, lb);
+                SetWindingCount( *lb );
+                rb->WindCnt = lb->WindCnt;
+                rb->WindCnt2 = lb->WindCnt2;
+                if (IsContributing(*lb))
+                    Op1 = AddLocalMinPoly(lb, rb, lb->Bot);
+                InsertScanbeam(lb->Top.Y);
+            }
+
+            if (rb)
+            {
+                if (IsHorizontal(*rb))
+                {
+                    AddEdgeToSEL(rb);
+                    if (rb->NextInLML)
+                        InsertScanbeam(rb->NextInLML->Top.Y);
+                }
+                else InsertScanbeam( rb->Top.Y );
+            }
+
+            if (!lb || !rb) continue;
+
+            //if any output polygons share an edge, they'll need joining later ...
+            if  Op1 && IsHorizontal(*rb) &&
+                m_GhostJoins.size() > 0 && (rb->WindDelta != 0)
+            {
+                for (JoinList::size_type i = 0; i < m_GhostJoins.size(); ++i)
+                {
+                    Join* jr = m_GhostJoins[i];
+                    //if the horizontal Rb and a 'ghost' horizontal overlap, then convert
+                    //the 'ghost' join to a real join ready for later ...
+                    if (HorzSegmentsOverlap(jr->OutPt1->Pt.X, jr->OffPt.X, rb->Bot.X, rb->Top.X))
+                    AddJoin(jr->OutPt1, Op1, jr->OffPt);
+                }
+            }
+
+            if  lb->OutIdx >= 0 && lb->PrevInAEL &&
+                lb->PrevInAEL->Curr.X == lb->Bot.X &&
+                lb->PrevInAEL->OutIdx >= 0 &&
+                SlopesEqual(lb->PrevInAEL->Bot, lb->PrevInAEL->Top, lb->Curr, lb->Top, m_UseFullRange) &&
+                (lb->WindDelta != 0) && (lb->PrevInAEL->WindDelta != 0)
+            {
+                OutPt *Op2 = AddOutPt(lb->PrevInAEL, lb->Bot);
+                AddJoin(Op1, Op2, lb->Top);
+            }
+
+            if(lb->NextInAEL != rb)
+            {
+                if (rb->OutIdx >= 0 && rb->PrevInAEL->OutIdx >= 0 &&
+                    SlopesEqual(rb->PrevInAEL->Curr, rb->PrevInAEL->Top, rb->Curr, rb->Top, m_UseFullRange) &&
+                    (rb->WindDelta != 0) && (rb->PrevInAEL->WindDelta != 0))
+                {
+                    OutPt *Op2 = AddOutPt(rb->PrevInAEL, rb->Bot);
+                    AddJoin(Op1, Op2, rb->Top);
+                }
+
+                TEdge* e = lb->NextInAEL;
+                if (e)
+                {
+                    while( e != rb )
+                    {
+                        //nb: For calculating winding counts etc, IntersectEdges() assumes
+                        //that param1 will be to the Right of param2 ABOVE the intersection ...
+                        IntersectEdges(rb , e , lb->Curr); //order important here
+                        e = e->NextInAEL;
+                    }
+                }
+            }*/
+        }
     }
 
     func PointCount(Pts: *OutPt)->s32
