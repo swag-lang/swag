@@ -1409,7 +1409,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // This is usefull when function call is inside an expression like func().something
     // The emitIdentifier will have to know the register where the result of func() is stored
-    node->parent->resultRegisterRC = node->resultRegisterRC;
+    switch (node->parent->kind)
+    {
+    case AstNodeKind::While:
+        break;
+    default:
+        node->parent->resultRegisterRC = node->resultRegisterRC;
+        break;
+    }
 
     return true;
 }
