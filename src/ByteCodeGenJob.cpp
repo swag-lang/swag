@@ -763,7 +763,11 @@ JobResult ByteCodeGenJob::execute()
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
             context.sourceFile->report({context.bc->node, context.bc->node->token, format(Msg0059, context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
+        {
             context.sourceFile->report({context.bc->node, context.bc->node->token, format(Msg0060, context.bc->node->token.text.c_str())});
+            if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+                context.bc->print();
+        }
     }
 
     return JobResult::ReleaseJob;
