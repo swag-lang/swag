@@ -129,6 +129,13 @@ struct PolyNode
     m_endtype:  EndType = ?
 }
 
+struct Join
+{
+    OutPt1: *OutPt
+    OutPt2: *OutPt
+    OffPt:  IntPoint
+}
+
 #[Swag.opaque]
 public struct Clipper
 {
@@ -138,6 +145,7 @@ public struct Clipper
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
+    m_Joins:                Array'*Join
     m_Scanbeam:             Array'CInt
     m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
@@ -368,6 +376,15 @@ impl Clipper
         return result
     }
 
+    method AddJoin(op1, op2: *OutPt, OffPt: IntPoint)
+    {
+        j := Memory.new'Join()
+        j.OutPt1 = op1
+        j.OutPt2 = op2
+        j.OffPt = OffPt
+        m_Joins.add(j)
+    }
+
     func SlopesEqual(e1: *TEdge, e2: *TEdge)->bool
     {
         return (e1.Top.Y - e1.Bot.Y) * (e2.Top.X - e2.Bot.X) == (e1.Top.X - e1.Bot.X) * (e2.Top.Y - e2.Bot.Y)
@@ -375,7 +392,12 @@ impl Clipper
 
     func SlopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
-        return (pt1.Y-pt2.Y)*(pt2.X-pt3.X) == (pt1.X-pt2.X)*(pt2.Y-pt3.Y);
+        return (pt1.Y-pt2.Y)*(pt2.X-pt3.X) == (pt1.X-pt2.X)*(pt2.Y-pt3.Y)
+    }
+
+    func SlopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
+    {
+        return (pt1.Y-pt2.Y)*(pt3.X-pt4.X) == (pt1.X-pt2.X)*(pt3.Y-pt4.Y)
     }
 
     func Pt2IsBetweenPt1AndPt3(pt1, pt2, pt3: IntPoint)->bool
@@ -959,6 +981,53 @@ impl Clipper
         }
     }
 
+    method AddLocalMinPoly(e1, e2: *TEdge, Pt: IntPoint)->*OutPt
+    {
+        var result: *OutPt
+        var e, prevE: *TEdge
+
+        if IsHorizontal(e2) or (e1.Dx > e2.Dx)
+        {
+            result = AddOutPt(e1, Pt)
+            e2.OutIdx = e1.OutIdx
+            e1.Side = .esLeft
+            e2.Side = .esRight
+            e = e1
+            if e.PrevInAEL == e2
+                prevE = e2.PrevInAEL
+            else
+                prevE = e.PrevInAEL
+        }
+        else
+        {
+            result = AddOutPt(e2, Pt)
+            e1.OutIdx = e2.OutIdx
+            e1.Side = .esRight
+            e2.Side = .esLeft
+            e = e2
+            if e.PrevInAEL == e1
+                prevE = e1.PrevInAEL
+            else
+                prevE = e.PrevInAEL
+        }
+
+        if prevE and prevE.OutIdx >= 0 and prevE.Top.Y < Pt.Y and e.Top.Y < Pt.Y
+        {
+            xPrev := TopX(prevE, Pt.Y)
+            xE := TopX(e, Pt.Y)
+            if  xPrev == xE and
+                (e.WindDelta != 0) and
+                (prevE.WindDelta != 0) and
+                SlopesEqual(IntPoint{xPrev, Pt.Y}, prevE.Top, IntPoint{xE, Pt.Y}, e.Top)
+            {
+                outPt := AddOutPt(prevE, Pt)
+                AddJoin(result, outPt, e.Top)
+            }
+        }
+
+        return result
+    }
+
     method InsertLocalMinimaIntoAEL(botY: CInt)
     {
         var lm: *LocalMinimum
@@ -976,26 +1045,26 @@ impl Clipper
                 if IsContributing(rb)
                     Op1 = AddOutPt(rb, rb.Bot)
             }
-            /*else if (!rb)
+            else if (!rb)
             {
-                InsertEdgeIntoAEL(lb, 0);
-                SetWindingCount(*lb);
-                if (IsContributing(*lb))
-                    Op1 = AddOutPt(lb, lb->Bot);
-                InsertScanbeam(lb->Top.Y);
+                InsertEdgeIntoAEL(lb, null)
+                SetWindingCount(lb)
+                if IsContributing(lb)
+                    Op1 = AddOutPt(lb, lb.Bot)
+                InsertScanbeam(lb.Top.Y)
             }
             else
             {
-                InsertEdgeIntoAEL(lb, 0);
-                InsertEdgeIntoAEL(rb, lb);
-                SetWindingCount( *lb );
-                rb->WindCnt = lb->WindCnt;
-                rb->WindCnt2 = lb->WindCnt2;
-                if (IsContributing(*lb))
-                    Op1 = AddLocalMinPoly(lb, rb, lb->Bot);
-                InsertScanbeam(lb->Top.Y);
+                InsertEdgeIntoAEL(lb, null)
+                InsertEdgeIntoAEL(rb, lb)
+                SetWindingCount(lb)
+                rb.WindCnt = lb.WindCnt
+                rb.WindCnt2 = lb.WindCnt2
+                if IsContributing(lb)
+                    Op1 = AddLocalMinPoly(lb, rb, lb.Bot)
+                InsertScanbeam(lb.Top.Y)
             }
-
+/*
             if (rb)
             {
                 if (IsHorizontal(*rb))
