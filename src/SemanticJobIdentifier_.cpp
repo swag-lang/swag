@@ -2423,6 +2423,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
 
+    if (node->token.text == "x")
+        node = node;
+
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     bool forceEnd = false;
@@ -2477,15 +2480,6 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         }
         else
         {
-            if (startScope->owner &&
-                startScope->owner->resolvedSymbolOverload &&
-                startScope->owner->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
-            {
-                job->waitTypeCompleted(startScope->owner->typeInfo);
-                if (context->result == ContextResult::Pending)
-                    return true;
-            }
-
             scopeHierarchy.insert(startScope);
 
             // Only deal with previous scope if the previous node wants to
@@ -2522,6 +2516,35 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
         if (!dependentSymbols.empty())
             break;
+
+        // If we dereference something, be sure the owner has been completed
+        if (identifierRef->startScope &&
+            identifierRef->startScope->owner &&
+            identifierRef->startScope->owner->resolvedSymbolOverload &&
+            identifierRef->startScope->owner->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+        {
+            job->waitTypeCompleted(startScope->owner->typeInfo);
+            if (context->result == ContextResult::Pending)
+            {
+                return true;
+            }
+        }
+
+        // Same if dereference is implied by a using var
+        for (auto& sv : scopeHierarchyVars)
+        {
+            if (sv.scope &&
+                sv.scope->owner &&
+                sv.scope->owner->resolvedSymbolOverload &&
+                sv.scope->owner->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+            {
+                job->waitTypeCompleted(sv.scope->owner->typeInfo);
+                if (context->result == ContextResult::Pending)
+                {
+                    return true;
+                }
+            }
+        }
 
         // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
         // from the previous symbol
