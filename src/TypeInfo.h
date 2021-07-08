@@ -116,7 +116,8 @@ struct TypeInfo
         if (flags & TYPEINFO_CONST)
             return;
         flags |= TYPEINFO_CONST;
-        name = "const " + name;
+        name        = "const " + name;
+        displayName = "const " + displayName;
     }
 
     virtual int numRegisters()

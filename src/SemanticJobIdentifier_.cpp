@@ -2423,9 +2423,6 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
 
-    if (node->token.text == "x")
-        node = node;
-
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     bool forceEnd = false;

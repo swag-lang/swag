@@ -63,6 +63,7 @@ public enum JoinType        { jtSquare; jtRound; jtMiter; }
 public enum EndType         { etClosedPolygon; etClosedLine; etOpenButt; etOpenSquare; etOpenRound; }
 
 enum EdgeSide { esLeft = 1; esRight = 2; }
+enum Direction { dRightToLeft; dLeftToRight; }
 
 struct LocalMinimum
 {
@@ -449,9 +450,6 @@ impl Clipper
 
     func ReverseHorizontal(e: *TEdge)
     {
-        //swap horizontal edges' Top and Bottom x's so they follow the natural
-        //progression of the bounds - ie so their xbots will align with the
-        //adjoining lower edge. [Helpful in the ProcessHorizontal() method.]
         swap(&e.Top.X, &e.Bot.X)
     }
 
@@ -463,29 +461,30 @@ impl Clipper
 
         if E.OutIdx == Skip
         {
-            //if edges still remain in the current bound beyond the skip edge then
-            //create another LocMin and call ProcessBound once more
             if NextIsForward
             {
-                while (E.Top.Y == E.Next.Bot.Y) E = E.Next
-                //don't include top horizontals when parsing a bound a second time,
-                //they will be contained in the opposite bound ...
-                while E != Result and IsHorizontal(E) E = E.Prev
+                while E.Top.Y == E.Next.Bot.Y
+                    E = E.Next
+                while E != Result and IsHorizontal(E)
+                    E = E.Prev
             }
             else
             {
-                while E.Top.Y == E.Prev.Bot.Y E = E.Prev
-                while E != Result and IsHorizontal(E) E = E.Next
+                while E.Top.Y == E.Prev.Bot.Y
+                    E = E.Prev
+                while E != Result and IsHorizontal(E)
+                    E = E.Next
             }
 
             if E == Result
             {
-                if NextIsForward Result = E.Next
-                else Result = E.Prev
+                if NextIsForward
+                    Result = E.Next
+                else
+                    Result = E.Prev
             }
             else
             {
-                //there are more edges in the bound beyond result starting with E
                 if NextIsForward
                     E = Result.Next
                 else
@@ -505,9 +504,6 @@ impl Clipper
         var EStart: *TEdge
         if IsHorizontal(E)
         {
-            //We need to be careful with open paths because this may not be a
-            //true local minima (ie E may be following a skip edge).
-            //Also, consecutive horz. edges may start heading left before going right.
             if NextIsForward
                 EStart = E.Prev
             else
@@ -528,9 +524,6 @@ impl Clipper
                 Result = Result.Next
             if IsHorizontal(Result) and Result.Next.OutIdx != Skip
             {
-                //nb: at the top of a bound, horizontals are added to the bound
-                //only when the preceding edge attaches to the horizontal's left vertex
-                //unless a Skip edge is encountered when that becomes the top divide
                 Horz = Result
                 while IsHorizontal(Horz.Prev) Horz = Horz.Prev
                 if Horz.Prev.Top.X > Result.Next.Top.X Result = Horz.Prev
@@ -626,6 +619,347 @@ impl Clipper
         m_CurrentLM = 0
     }
 
+    method LocalMinimaPending()->bool
+    {
+        return m_CurrentLM != m_MinimaList.count
+    }
+
+    method DeleteFromSEL(e: *TEdge)
+    {
+        SelPrev := e.PrevInSEL
+        SelNext := e.NextInSEL
+        if !SelPrev and !SelNext and (e != m_SortedEdges) return
+        if SelPrev
+            SelPrev.NextInSEL = SelNext
+        else
+            m_SortedEdges = SelNext
+        if SelNext
+            SelNext.PrevInSEL = SelPrev
+        e.NextInSEL = null
+        e.PrevInSEL = null
+    }
+
+    method PopEdgeFromSEL(edge: **TEdge)->bool
+    {
+        if !m_SortedEdges return false
+        dref edge = m_SortedEdges
+        DeleteFromSEL(m_SortedEdges)
+        return true
+    }
+
+    method ProcessHorizontals()
+    {
+        var horzEdge: *TEdge
+        while PopEdgeFromSEL(&horzEdge)
+            ProcessHorizontal(horzEdge)
+    }
+
+    func GetHorzDirection(HorzEdge: *TEdge, Dir: *Direction, Left, Right: *CInt)
+    {
+        if HorzEdge.Bot.X < HorzEdge.Top.X
+        {
+            dref Left = HorzEdge.Bot.X
+            dref Right = HorzEdge.Top.X
+            dref Dir = .dLeftToRight
+        }
+        else
+        {
+            dref Left = HorzEdge.Top.X
+            dref Right = HorzEdge.Bot.X
+            dref Dir = .dRightToLeft
+        }
+    }
+
+    func GetMaximaPair(e: *TEdge)->*TEdge
+    {
+        if (e.Next.Top == e.Top) and !e.Next.NextInLML
+            return e.Next
+        else if (e.Prev.Top == e.Top) and !e.Prev.NextInLML
+            return e.Prev
+        else
+            return null
+    }
+
+    func GetNextInAEL(e: *TEdge, dir: Direction)->*TEdge
+    {
+        return dir == .dLeftToRight ? e.NextInAEL : e.PrevInAEL
+    }
+
+    method GetLastOutPt(e: *TEdge)->*OutPt
+    {
+        outRec := m_PolyOuts[e.OutIdx]
+        if e.Side == .esLeft
+            return outRec.Pts
+        else
+            return outRec.Pts.Prev
+    }
+
+    method AddGhostJoin(op: *OutPt, OffPt: IntPoint)
+    {
+        j := Memory.new'Join()
+        j.OutPt1 = op
+        j.OutPt2 = null
+        j.OffPt = OffPt
+        m_GhostJoins.add(j)
+    }
+
+    method ProcessHorizontal(hE: *TEdge)
+    {
+        horzEdge := hE
+
+        var dir: Direction = ?
+        var horzLeft, horzRight: CInt
+
+        IsOpen := (horzEdge.WindDelta == 0)
+        GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
+
+        eLastHorz := horzEdge
+        var eMaxPair: *TEdge
+        while eLastHorz.NextInLML and IsHorizontal(eLastHorz.NextInLML)
+            eLastHorz = eLastHorz.NextInLML
+        if !eLastHorz.NextInLML
+            eMaxPair = GetMaximaPair(eLastHorz)
+
+        var maxIt, maxRit: uint
+        if m_Maxima.count > 0
+        {
+            if dir == .dLeftToRight
+            {
+                maxIt = 0
+                while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] <= horzEdge.Bot.X
+                    maxIt += 1
+                if maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] >= eLastHorz.Top.X
+                    maxIt = m_Maxima.count
+            }
+            else
+            {
+                maxRit = m_Maxima.count -,safe 1
+                while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > horzEdge.Bot.X
+                    maxRit = maxRit -,safe 1
+                if maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] <= eLastHorz.Top.X
+                    maxRit = Swag.UInt.Max
+            }
+        }
+
+        var op1: *OutPt
+        loop
+        {
+            IsLastHorz := (horzEdge == eLastHorz)
+            e := GetNextInAEL(horzEdge, dir)
+            while e
+            {
+                if m_Maxima.count > 0
+                {
+                    if dir == .dLeftToRight
+                    {
+                        while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] < e.Curr.X
+                        {
+                            if horzEdge.OutIdx >= 0 and !IsOpen
+                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxIt], horzEdge.Bot.Y})
+                            maxIt += 1
+                        }
+                    }
+                    else
+                    {
+                        while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > e.Curr.X
+                        {
+                            if horzEdge.OutIdx >= 0 and !IsOpen
+                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxRit], horzEdge.Bot.Y})
+                            maxRit = maxRit -,safe 1
+                        }
+                    }
+                }
+
+                if (dir == .dLeftToRight and e.Curr.X > horzRight) or (dir == .dRightToLeft and e.Curr.X < horzLeft)
+                    break
+                if e.Curr.X == horzEdge.Top.X and horzEdge.NextInLML and e.Dx < horzEdge.NextInLML.Dx
+                    break
+
+                if horzEdge.OutIdx >= 0 and !IsOpen
+                {
+                    op1 = AddOutPt(horzEdge, e.Curr)
+                    eNextHorz := m_SortedEdges
+                    while eNextHorz
+                    {
+                        if eNextHorz.OutIdx >= 0 and
+                           HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X)
+                        {
+                            op2 := GetLastOutPt(eNextHorz)
+                            AddJoin(op2, op1, eNextHorz.Top)
+                        }
+
+                        eNextHorz = eNextHorz.NextInSEL
+                    }
+
+                    AddGhostJoin(op1, horzEdge.Bot)
+                }
+
+                if e == eMaxPair and IsLastHorz
+                {
+                    if horzEdge.OutIdx >= 0
+                        AddLocalMaxPoly(horzEdge, eMaxPair, horzEdge.Top)
+                    DeleteFromAEL(horzEdge)
+                    DeleteFromAEL(eMaxPair)
+                    return
+                }
+
+                if dir == .dLeftToRight
+                {
+                    Pt := IntPoint{e.Curr.X, horzEdge.Curr.Y}
+                    IntersectEdges(horzEdge, e, Pt)
+                }
+                else
+                {
+                    Pt := IntPoint{e.Curr.X, horzEdge.Curr.Y}
+                    IntersectEdges(e, horzEdge, Pt)
+                }
+
+                eNext := GetNextInAEL(e, dir)
+                SwapPositionsInAEL(horzEdge, e)
+                e = eNext
+            }
+
+            if !horzEdge.NextInLML or !IsHorizontal(horzEdge.NextInLML) break
+            UpdateEdgeIntoAEL(&horzEdge)
+            if horzEdge.OutIdx >= 0 AddOutPt(horzEdge, horzEdge.Bot)
+            GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
+        }
+
+        if horzEdge.OutIdx >= 0 and !op1
+        {
+            op1 = GetLastOutPt(horzEdge)
+            eNextHorz := m_SortedEdges
+            while eNextHorz
+            {
+                if eNextHorz.OutIdx >= 0 and
+                   HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X)
+                {
+                    op2 := GetLastOutPt(eNextHorz)
+                    AddJoin(op2, op1, eNextHorz.Top)
+                }
+
+                eNextHorz = eNextHorz.NextInSEL
+            }
+
+            AddGhostJoin(op1, horzEdge.Top)
+        }
+
+        if horzEdge.NextInLML
+        {
+            if horzEdge.OutIdx >= 0
+            {
+                op1 = AddOutPt(horzEdge, horzEdge.Top)
+                UpdateEdgeIntoAEL(&horzEdge)
+                if horzEdge.WindDelta == 0 return
+                ePrev := horzEdge.PrevInAEL
+                eNext := horzEdge.NextInAEL
+                if ePrev and ePrev.Curr.X == horzEdge.Bot.X and
+                   ePrev.Curr.Y == horzEdge.Bot.Y and ePrev.WindDelta != 0 and
+                   ePrev.OutIdx >= 0 and ePrev.Curr.Y > ePrev.Top.Y and SlopesEqual(horzEdge, ePrev)
+                {
+                    op2 := AddOutPt(ePrev, horzEdge.Bot)
+                    AddJoin(op1, op2, horzEdge.Top)
+                }
+                else if eNext and eNext.Curr.X == horzEdge.Bot.X and
+                        eNext.Curr.Y == horzEdge.Bot.Y and eNext.WindDelta != 0 and
+                        eNext.OutIdx >= 0 and eNext.Curr.Y > eNext.Top.Y and SlopesEqual(horzEdge, eNext)
+                {
+                    op2 := AddOutPt(eNext, horzEdge.Bot)
+                    AddJoin(op1, op2, horzEdge.Top)
+                }
+            }
+            else
+                UpdateEdgeIntoAEL(&horzEdge)
+        }
+        else
+        {
+            if horzEdge.OutIdx >= 0 AddOutPt(horzEdge, horzEdge.Top)
+            DeleteFromAEL(horzEdge)
+        }
+    }
+
+    method UpdateEdgeIntoAEL(ed: **TEdge)
+    {
+        e := dref ed
+        e.NextInLML.OutIdx = e.OutIdx
+        AelPrev := e.PrevInAEL
+        AelNext := e.NextInAEL
+        if AelPrev AelPrev.NextInAEL = e.NextInLML
+        else m_ActiveEdges = e.NextInLML
+        if AelNext AelNext.PrevInAEL = e.NextInLML
+        e.NextInLML.Side = e.Side
+        e.NextInLML.WindDelta = e.WindDelta
+        e.NextInLML.WindCnt = e.WindCnt
+        e.NextInLML.WindCnt2 = e.WindCnt2
+        e = e.NextInLML
+        e.Curr = e.Bot
+        e.PrevInAEL = AelPrev
+        e.NextInAEL = AelNext
+        if !IsHorizontal(e) InsertScanbeam(e.Top.Y)
+        dref ed = e
+    }
+
+    method SwapPositionsInAEL(Edge1, Edge2: *TEdge)
+    {
+        if Edge1.NextInAEL == Edge1.PrevInAEL or Edge2.NextInAEL == Edge2.PrevInAEL
+            return
+
+        if Edge1.NextInAEL == Edge2
+        {
+            Next := Edge2.NextInAEL;
+            if Next Next.PrevInAEL = Edge1
+            Prev := Edge1.PrevInAEL
+            if Prev Prev.NextInAEL = Edge2
+            Edge2.PrevInAEL = Prev
+            Edge2.NextInAEL = Edge1
+            Edge1.PrevInAEL = Edge2
+            Edge1.NextInAEL = Next
+        }
+        else if Edge2.NextInAEL == Edge1
+        {
+            Next := Edge1.NextInAEL;
+            if Next Next.PrevInAEL = Edge2
+            Prev := Edge2.PrevInAEL
+            if Prev Prev.NextInAEL = Edge1
+            Edge1.PrevInAEL = Prev
+            Edge1.NextInAEL = Edge2
+            Edge2.PrevInAEL = Edge1
+            Edge2.NextInAEL = Next
+        }
+        else
+        {
+            Next := Edge1.NextInAEL
+            Prev := Edge1.PrevInAEL
+            Edge1.NextInAEL = Edge2.NextInAEL
+            if Edge1.NextInAEL Edge1.NextInAEL.PrevInAEL = Edge1
+            Edge1.PrevInAEL = Edge2.PrevInAEL
+            if Edge1.PrevInAEL Edge1.PrevInAEL.NextInAEL = Edge1
+            Edge2.NextInAEL = Next
+            if Edge2.NextInAEL Edge2.NextInAEL.PrevInAEL = Edge2
+            Edge2.PrevInAEL = Prev
+            if Edge2.PrevInAEL Edge2.PrevInAEL.NextInAEL = Edge2
+        }
+
+        if !Edge1.PrevInAEL m_ActiveEdges = Edge1
+        else if !Edge2.PrevInAEL m_ActiveEdges = Edge2
+    }
+
+    method DeleteFromAEL(e: *TEdge)
+    {
+        AelPrev := e.PrevInAEL
+        AelNext := e.NextInAEL
+        if !AelPrev and !AelNext and (e != m_ActiveEdges)
+            return
+        if AelPrev
+            AelPrev.NextInAEL = AelNext
+        else
+            m_ActiveEdges = AelNext
+        if AelNext
+            AelNext.PrevInAEL = AelPrev
+        e.NextInAEL = null
+        e.PrevInAEL = null
+    }
+
     method ExecuteInternal() throw
     {
         Reset()
@@ -636,15 +970,16 @@ impl Clipper
         if !PopScanbeam(&botY) throw "Error"
 
         InsertLocalMinimaIntoAEL(botY)
-        /*while PopScanbeam(topY) or LocalMinimaPending()
+        while PopScanbeam(&topY) or LocalMinimaPending()
         {
             ProcessHorizontals()
-            ClearGhostJoins()
-            if !ProcessIntersections(topY) throw "Error"
+            /*ClearGhostJoins()
+            if !ProcessIntersections(topY)
+                throw "Error"
             ProcessEdgesAtTopOfScanbeam(topY)
             botY = topY
-            InsertLocalMinimaIntoAEL(botY)
-        }*/
+            InsertLocalMinimaIntoAEL(botY)*/
+        }
     }
 
     method PopLocalMinima(Y: CInt, locMin: **LocalMinimum)->bool
