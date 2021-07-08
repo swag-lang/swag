@@ -137,7 +137,7 @@ impl Array
         }
     }
 
-    func free(using self)
+    method free()
     {
         if !buffer
             return
@@ -152,7 +152,7 @@ impl Array
         Memory.free(buffer, capacity * @sizeof(T), allocator)
     }
 
-    func realloc(using self, newCapacity: uint)
+    method realloc(newCapacity: uint)
     {
         if allocator == null
             allocator = @getcontext().allocator
@@ -181,17 +181,17 @@ impl Array
 
     // Returns true if the array is empty
     #[inline]
-    func isEmpty(using self) => count == 0
+    method isEmpty() => count == 0
 
     // Returns a slice
-    func toSlice(using self)->[..] T
+    method toSlice()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements
     // Number of valid elements does not change
-    func grow(using self, newCount : uint)
+    method grow(newCount : uint)
     {
         if newCount <= capacity
             return
@@ -201,7 +201,7 @@ impl Array
 
     // Reserve room for 'newCapacity' elements without changing the array count
     // Number of valid elements does not change
-    func reserve(using self, newCapacity: uint)
+    method reserve(newCapacity: uint)
     {
         if !newCapacity
         {
@@ -218,7 +218,7 @@ impl Array
     }
 
     // Change the number of valid elements in the array
-    func resize(using self, newCount : uint)
+    method resize(newCount : uint)
     {
         if newCount == count
             return
@@ -236,7 +236,7 @@ impl Array
     }
 
     // Set the number of elements to 0
-    func clear(using self)
+    method clear()
     {
         #if Reflection.hasDrop(@typeof(T))
         {
@@ -248,7 +248,7 @@ impl Array
     }
 
     // Add a copy of one element at the end of the array
-    func add(using self, value: T)
+    method add(value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
@@ -258,7 +258,7 @@ impl Array
 
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
-    func(G) addAny(using self, value: G)
+    method(G) addAny(value: G)
         #selectif Reflection.canCopy(@typeof(G))
     {
         #if @typeof(G) != @typeof(T)
@@ -274,7 +274,7 @@ impl Array
 
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
-    func emplaceAddress(using self, num: u32)->*T
+    method emplaceAddress(num: u32)->*T
     {
         grow(count + num)
         count += num
@@ -282,7 +282,7 @@ impl Array
     }
 
     // Move one element at the end of the array
-    func emplace(using self, value: *T)
+    method emplace(value: *T)
     {
         grow(count + 1)
         buffer[count] =,nodrop,move dref value
@@ -292,7 +292,7 @@ impl Array
     // Insert a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    func insertAt(using self, index: uint, value: T)
+    method insertAt(index: uint, value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index <= count, "index out of range")
@@ -310,7 +310,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    func emplaceAt(using self, index: uint, value: *T)
+    method emplaceAt(index: uint, value: *T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -325,7 +325,7 @@ impl Array
     }
 
     // Append a slice to the end of this instance
-    func add(using self, values: const [..] T)
+    method add(values: const [..] T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         sliceCount := @countof(values)
@@ -357,7 +357,7 @@ impl Array
 
     // Remove an element at 'index' by replacing it with the last element.
     // Order is not preserved
-    func removeAt(using self, index: uint)
+    method removeAt(index: uint)
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
@@ -373,7 +373,7 @@ impl Array
 
     // Remove an element at 'index' by shifting all others.
     // Order is preserved
-    func removeAtOrdered(using self, index: uint)
+    method removeAtOrdered(index: uint)
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
@@ -391,7 +391,7 @@ impl Array
     }
 
     // Remove last element
-    func removeBack(using self)
+    method removeBack()
     {
         Debug.assert(count > 0)
         @drop(&buffer[count - 1])
@@ -400,7 +400,7 @@ impl Array
 
     // Returns 'true' if the array contains 'value'.
     // O(n)
-    func contains(using self, value: T)->bool
+    method contains(value: T)->bool
     {
         loop count
         {
@@ -452,7 +452,7 @@ impl Array
 
 impl StrConv.IConvert for Array
 {
-    func convert(using self, buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    method convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
 
