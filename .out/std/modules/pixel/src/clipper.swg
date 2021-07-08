@@ -65,6 +65,13 @@ public enum EndType         { etClosedPolygon; etClosedLine; etOpenButt; etOpenS
 enum EdgeSide { esLeft = 1; esRight = 2; }
 enum Direction { dRightToLeft; dLeftToRight; }
 
+struct IntersectNode
+{
+    Edge1:    *TEdge
+    Edge2:    *TEdge
+    Pt:       IntPoint
+}
+
 struct LocalMinimum
 {
     Y:            CInt
@@ -148,6 +155,7 @@ public struct Clipper
     m_PolyOuts:             Array'*OutRec
     m_Joins:                Array'*Join
     m_GhostJoins:           Array'*Join
+    m_IntersectList:        Array'*IntersectNode
     m_Scanbeam:             Array'CInt
     m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
@@ -960,6 +968,13 @@ impl Clipper
         e.PrevInAEL = null
     }
 
+    method ClearGhostJoins()
+    {
+        visit p: m_GhostJoins
+            Memory.delete(p)
+        m_GhostJoins.clear()
+    }
+
     method ExecuteInternal() throw
     {
         Reset()
@@ -973,13 +988,94 @@ impl Clipper
         while PopScanbeam(&topY) or LocalMinimaPending()
         {
             ProcessHorizontals()
-            /*ClearGhostJoins()
-            if !ProcessIntersections(topY)
-                throw "Error"
-            ProcessEdgesAtTopOfScanbeam(topY)
+            ClearGhostJoins()
+            try ProcessIntersections(topY)
+            //ProcessEdgesAtTopOfScanbeam(topY)
             botY = topY
-            InsertLocalMinimaIntoAEL(botY)*/
+            //InsertLocalMinimaIntoAEL(botY)
         }
+
+        ///....
+    }
+
+    method FixupIntersectionOrder()->bool
+    {
+        return true
+    }
+
+    method ProcessIntersectList()
+    {
+
+    }
+
+    method ProcessIntersections(topY: CInt) throw
+    {
+        if !m_ActiveEdges return
+        BuildIntersectList(topY)
+        IlSize := m_IntersectList.count
+        if IlSize == 0 return
+
+        if IlSize == 1 or FixupIntersectionOrder()
+            ProcessIntersectList()
+        else
+            throw "ProcessIntersections"
+        m_SortedEdges = null
+    }
+
+    method BuildIntersectList(topY: CInt)
+    {
+        if !m_ActiveEdges return
+
+        e := m_ActiveEdges
+        m_SortedEdges = e
+        while e
+        {
+            e.PrevInSEL = e.PrevInAEL
+            e.NextInSEL = e.NextInAEL
+            e.Curr.X = TopX(e, topY)
+            e = e.NextInAEL
+        }
+
+        //bubblesort ...
+        var isModified: bool
+        loop
+        {
+            isModified = false
+            e = m_SortedEdges
+            while e.NextInSEL
+            {
+                eNext := e.NextInSEL
+                var Pt: IntPoint
+                if e.Curr.X > eNext.Curr.X
+                {
+                    IntersectPoint(e, eNext, &Pt)
+                    if Pt.Y < topY Pt = IntPoint{TopX(e, topY), topY}
+                    newNode := Memory.new'IntersectNode()
+                    newNode.Edge1 = e;
+                    newNode.Edge2 = eNext
+                    newNode.Pt = Pt
+                    m_IntersectList.add(newNode)
+                    SwapPositionsInSEL(e, eNext)
+                    isModified = true
+                }
+                else
+                    e = eNext
+            }
+
+            if !e.PrevInSEL break
+            e.PrevInSEL.NextInSEL = null
+            if !isModified break
+        }
+
+        m_SortedEdges = null
+    }
+
+    method SwapPositionsInSEL(Edge1, Edge2: *TEdge)
+    {
+    }
+
+    method IntersectPoint(Edge1, Edge2: *TEdge, ip: *IntPoint)
+    {
     }
 
     method PopLocalMinima(Y: CInt, locMin: **LocalMinimum)->bool
