@@ -1411,6 +1411,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // The emitIdentifier will have to know the register where the result of func() is stored
     switch (node->parent->kind)
     {
+    // To avoid a double release of the register in emitLoop... sight...
     case AstNodeKind::While:
         break;
     default:

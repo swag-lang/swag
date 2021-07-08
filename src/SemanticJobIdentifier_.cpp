@@ -2477,6 +2477,15 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         }
         else
         {
+            if (startScope->owner &&
+                startScope->owner->resolvedSymbolOverload &&
+                startScope->owner->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+            {
+                job->waitTypeCompleted(startScope->owner->typeInfo);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
+
             scopeHierarchy.insert(startScope);
 
             // Only deal with previous scope if the previous node wants to
@@ -3315,6 +3324,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (dependentSymbols.empty())
     {
         SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
+        if (context->result == ContextResult::Pending)
+            return true;
         if (dependentSymbols.empty())
         {
             SWAG_ASSERT(identifierRef->flags & AST_SILENT_CHECK);
