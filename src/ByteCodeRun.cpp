@@ -2137,7 +2137,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::BinOpXorBool:
+    case ByteCodeOp::BinOpXorU8:
     {
         auto val1                 = IMMA_U8(ip);
         auto val2                 = IMMB_U8(ip);
@@ -3147,22 +3147,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::AffectOpXorEqS8:
+    case ByteCodeOp::AffectOpXorEqU8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXorEqS16:
+    case ByteCodeOp::AffectOpXorEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer ^= IMMB_S16(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXorEqS32:
+    case ByteCodeOp::AffectOpXorEqU32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer ^= IMMB_S32(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXorEqS64:
+    case ByteCodeOp::AffectOpXorEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer ^= IMMB_S64(ip);
         break;

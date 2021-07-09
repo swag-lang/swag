@@ -1037,7 +1037,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitShiftArithmetic(pp, concat, ip, 64);
             break;
 
-        case ByteCodeOp::BinOpXorBool:
+        case ByteCodeOp::BinOpXorU8:
             BackendX64Inst::emit_BinOpInt8_At_Reg(pp, ip, X64Op::XOR);
             break;
         case ByteCodeOp::BinOpXorU32:
@@ -1213,16 +1213,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitShiftEqArithmetic(pp, concat, ip, 64);
             break;
 
-        case ByteCodeOp::AffectOpXorEqS8:
+        case ByteCodeOp::AffectOpXorEqU8:
             MK_BINOPEQ8_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXorEqS16:
+        case ByteCodeOp::AffectOpXorEqU16:
             MK_BINOPEQ16_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXorEqS32:
+        case ByteCodeOp::AffectOpXorEqU32:
             MK_BINOPEQ32_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXorEqS64:
+        case ByteCodeOp::AffectOpXorEqU64:
             MK_BINOPEQ64_CAB(X64Op::XOR);
             break;
 

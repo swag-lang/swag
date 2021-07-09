@@ -191,7 +191,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 BINOP_U64(|);
                 break;
             case ByteCodeOp::BinOpXorU32:
-            case ByteCodeOp::BinOpXorBool:
+            case ByteCodeOp::BinOpXorU8:
                 BINOP_U32(^);
                 break;
             case ByteCodeOp::BinOpXorU64:

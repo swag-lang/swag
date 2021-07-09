@@ -551,22 +551,22 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqS8, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqS16, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqS32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::AffectOpXorEqS64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
         return true;
     default:
         return internalError(context, "emitAffectXorEqual, type not supported");
