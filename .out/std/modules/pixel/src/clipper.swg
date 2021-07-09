@@ -1,3 +1,6 @@
+// The original code has been modified for swag
+// http://www.angusj.com
+
 /*******************************************************************************
 *                                                                              *
 * Author    :  Angus Johnson                                                   *

@@ -1,6 +1,6 @@
-// This code is heavily based on Poly2Tri, and has been adapted for swag.
+// The original code has been modified for swag
 // https://github.com/jhasse/poly2tri
-//
+
 // Copyright (c) 2009-2018, Poly2Tri Contributors
 // All rights reserved.
 //
