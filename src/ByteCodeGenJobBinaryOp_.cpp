@@ -433,6 +433,9 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
+        emitInstruction(context, ByteCodeOp::BinOpXorBool, r0, r1, r2);
+        return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:

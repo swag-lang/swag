@@ -1037,6 +1037,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitShiftArithmetic(pp, concat, ip, 64);
             break;
 
+        case ByteCodeOp::BinOpXorBool:
+            BackendX64Inst::emit_BinOpInt8_At_Reg(pp, ip, X64Op::XOR);
+            break;
         case ByteCodeOp::BinOpXorU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::XOR);
             break;

@@ -157,6 +157,7 @@ public struct Clipper
     m_PreserveCollinear:    bool
     m_UsingPolyTree:        bool
     m_StrictSimple:         bool
+    m_ReverseOutput:        bool
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
@@ -997,12 +998,25 @@ impl Clipper
             ProcessHorizontals()
             ClearGhostJoins()
             try ProcessIntersections(topY)
-            //ProcessEdgesAtTopOfScanbeam(topY)
+            ProcessEdgesAtTopOfScanbeam(topY)
             botY = topY
-            //InsertLocalMinimaIntoAEL(botY)
+            InsertLocalMinimaIntoAEL(botY)
         }
 
-        ///....
+        //fix orientations ...
+        visit outRec: m_PolyOuts
+        {
+            if !outRec.Pts or outRec.IsOpen continue
+            //if (outRec.IsHole ^ m_ReverseOutput) == (Area(outRec) > 0)
+                ReversePolyPtLinks(outRec.Pts)
+        }
+
+        if m_Joins.count JoinCommonEdges()
+    }
+
+    method JoinCommonEdges()
+    {
+
     }
 
     func IsMaxima(e: *TEdge, Y: CInt)->bool
@@ -1026,6 +1040,38 @@ impl Clipper
 
     method DoMaxima(e: *TEdge)
     {
+        eMaxPair := GetMaximaPairEx(e)
+        if !eMaxPair
+        {
+            if e.OutIdx >= 0
+                AddOutPt(e, e.Top)
+            DeleteFromAEL(e)
+            return;
+        }
+
+        eNext := e.NextInAEL
+        while eNext and eNext != eMaxPair
+        {
+            IntersectEdges(e, eNext, e.Top)
+            SwapPositionsInAEL(e, eNext)
+            eNext = e.NextInAEL
+        }
+
+        if e.OutIdx == Unassigned and eMaxPair.OutIdx == Unassigned
+        {
+            DeleteFromAEL(e)
+            DeleteFromAEL(eMaxPair)
+        }
+        else if e.OutIdx >= 0 and eMaxPair.OutIdx >= 0
+        {
+            if e.OutIdx >= 0 AddLocalMaxPoly(e, eMaxPair, e.Top)
+            DeleteFromAEL(e)
+            DeleteFromAEL(eMaxPair)
+        }
+        else
+        {
+            Debug.assert(false)
+        }
     }
 
     method ProcessEdgesAtTopOfScanbeam(topY: CInt)

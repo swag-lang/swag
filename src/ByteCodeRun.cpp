@@ -2137,6 +2137,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpXorBool:
+    {
+        auto val1                 = IMMA_U8(ip);
+        auto val2                 = IMMB_U8(ip);
+        registersRC[ip->c.u32].u8 = val1 ^ val2;
+        break;
+    }
     case ByteCodeOp::BinOpXorU32:
     {
         auto val1                  = IMMA_U32(ip);

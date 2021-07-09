@@ -1789,6 +1789,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpXorBool:
+        {
+            MK_BINOP8_CAB();
+            auto v0 = builder.CreateXor(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
+            break;
+        }
         case ByteCodeOp::BinOpXorU32:
         {
             MK_BINOP32_CAB();

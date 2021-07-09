@@ -728,6 +728,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
@@ -746,6 +747,9 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::Bool:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 ^ right->computedValue.reg.u8;
+            break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
