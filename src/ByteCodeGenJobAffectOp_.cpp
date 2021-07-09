@@ -550,6 +550,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
         emitInstruction(context, ByteCodeOp::AffectOpXorEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:

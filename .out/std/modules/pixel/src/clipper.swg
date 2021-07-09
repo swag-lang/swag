@@ -1007,7 +1007,7 @@ impl Clipper
         visit outRec: m_PolyOuts
         {
             if !outRec.Pts or outRec.IsOpen continue
-            //if (outRec.IsHole ^ m_ReverseOutput) == (Area(outRec) > 0)
+            if (outRec.IsHole ^ m_ReverseOutput) == (Area(outRec.Pts) > 0)
                 ReversePolyPtLinks(outRec.Pts)
         }
 
