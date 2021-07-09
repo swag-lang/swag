@@ -1,4 +1,3 @@
-#global skip
 using Core, Pixel
 
 #test
@@ -16,5 +15,7 @@ using Core, Pixel
     assume clipper.addPath(&lp, PolyType.ptSubject)
 
     var lpl: LinePathList
-    assume clipper.execute(ClipType.ctIntersection, &lpl, PolyFillType.pftNonZero, PolyFillType.pftNonZero)
+    assume clipper.execute(ClipType.ctUnion, &lpl, PolyFillType.pftNonZero, PolyFillType.pftNonZero)
+    @assert(lpl.paths.count == 1)
+    @assert(lpl.paths[0].posBuffer.count == 4)
 }

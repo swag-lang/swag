@@ -197,10 +197,12 @@ impl Clipper
             path := Memory.new'LinePath()
             visit *pt: dref res[i]
             {
-                if @index == 0
+                vec := Math.Vector2{cast(f32) pt.X, cast(f32) pt.Y}
+                path.posBuffer.add(vec)
+                /*if @index == 0
                     path.start(cast(f32) pt.X, cast(f32) pt.Y)
                 else
-                    path.lineTo(cast(f32) pt.X, cast(f32) pt.Y)
+                    path.lineTo(cast(f32) pt.X, cast(f32) pt.Y)*/
             }
 
             solution.paths.add(path)
@@ -223,8 +225,10 @@ impl Clipper
     method addPath(pg: *ClipperPath, polyType: PolyType) throw
     {
         highI := cast(int) pg.count - 1
-        while highI > 0 and (dref pg[highI] == dref pg[0]) highI -= 1
-        while highI > 0 and (dref pg[highI] == dref pg[highI -1]) highI -= 1
+        while highI > 0 and (pg.buffer[highI] == pg.buffer[0])
+            highI -= 1
+        while highI > 0 and (pg.buffer[highI] == pg.buffer[highI -1])
+            highI -= 1
         if highI < 2 return
 
         edges  := Memory.new'TEdge(cast(uint) highI + 1)
@@ -1096,7 +1100,6 @@ impl Clipper
             }
         }
     }
-
 
     func FixupOutPolyline(outrec: *OutRec)
     {

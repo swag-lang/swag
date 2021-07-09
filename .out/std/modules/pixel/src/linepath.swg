@@ -1,6 +1,6 @@
 using Core, Core.Math
 
-enum ElementType
+public enum ElementType
 {
     Line
     Arc
@@ -8,14 +8,13 @@ enum ElementType
     Bezier2
 }
 
-struct Element
+public struct Element
 {
     type:       ElementType = ?
     position:   Vector2
     p1, p2:     Vector2
 }
 
-#[Swag.opaque]
 public struct LinePath
 {
     elements:       Array'Element
