@@ -1173,7 +1173,289 @@ impl Clipper
 
     method JoinPoints(j: *Join, outRec1, outRec2: *OutRec)->bool
     {
+        op1 := j.OutPt1
+        op2 := j.OutPt2
+        var op1b, op2b: *OutPt
+
+        isHorizontal := (j.OutPt1.Pt.Y == j.OffPt.Y)
+
+        if isHorizontal and (j.OffPt == j.OutPt1.Pt) and (j.OffPt == j.OutPt2.Pt)
+        {
+            if outRec1 != outRec2 return false
+            op1b = j.OutPt1.Next
+            while op1b != op1 and (op1b.Pt == j.OffPt)
+                op1b = op1b.Next
+            reverse1 := (op1b.Pt.Y > j.OffPt.Y)
+            op2b = j.OutPt2.Next
+            while op2b != op2 and (op2b.Pt == j.OffPt)
+                op2b = op2b.Next
+            reverse2 := (op2b.Pt.Y > j.OffPt.Y)
+            if reverse1 == reverse2 return false
+            if reverse1
+            {
+                op1b = DupOutPt(op1, false)
+                op2b = DupOutPt(op2, true)
+                op1.Prev = op2
+                op2.Next = op1
+                op1b.Next = op2b
+                op2b.Prev = op1b
+                j.OutPt1 = op1
+                j.OutPt2 = op1b
+                return true
+            }
+
+            op1b = DupOutPt(op1, true)
+            op2b = DupOutPt(op2, false)
+            op1.Next = op2
+            op2.Prev = op1
+            op1b.Prev = op2b
+            op2b.Next = op1b
+            j.OutPt1 = op1
+            j.OutPt2 = op1b
+            return true
+        }
+
+        if isHorizontal
+        {
+            op1b = op1
+            while op1.Prev.Pt.Y == op1.Pt.Y and op1.Prev != op1b and op1.Prev != op2
+                op1 = op1.Prev
+            while op1b.Next.Pt.Y == op1b.Pt.Y and op1b.Next != op1 and op1b.Next != op2
+                op1b = op1b.Next
+            if op1b.Next == op1 or op1b.Next == op2 return false
+
+            op2b = op2
+            while op2.Prev.Pt.Y == op2.Pt.Y and op2.Prev != op2b and op2.Prev != op1b
+                op2 = op2.Prev
+            while op2b.Next.Pt.Y == op2b.Pt.Y and op2b.Next != op2 and op2b.Next != op1
+                op2b = op2b.Next
+            if op2b.Next == op2 or op2b.Next == op1 return false
+
+            var Left, Right: CInt
+            if !GetOverlap(op1.Pt.X, op1b.Pt.X, op2.Pt.X, op2b.Pt.X, &Left, &Right)
+                return false
+
+            var Pt: IntPoint
+            var DiscardLeftSide: bool
+            if op1.Pt.X >= Left and op1.Pt.X <= Right
+            {
+                Pt = op1.Pt
+                DiscardLeftSide = (op1.Pt.X > op1b.Pt.X)
+            }
+            else if op2.Pt.X >= Left and op2.Pt.X <= Right
+            {
+                Pt = op2.Pt
+                DiscardLeftSide = (op2.Pt.X > op2b.Pt.X)
+            }
+            else if op1b.Pt.X >= Left and op1b.Pt.X <= Right
+            {
+                Pt = op1b.Pt
+                DiscardLeftSide = op1b.Pt.X > op1.Pt.X
+            }
+            else
+            {
+                Pt = op2b.Pt
+                DiscardLeftSide = (op2b.Pt.X > op2.Pt.X)
+            }
+
+            j.OutPt1 = op1
+            j.OutPt2 = op2
+            return JoinHorz(op1, op1b, op2, op2b, Pt, DiscardLeftSide)
+        }
+
+        op1b = op1.Next
+        while (op1b.Pt == op1.Pt) and (op1b != op1)
+            op1b = op1b.Next
+        Reverse1 := ((op1b.Pt.Y > op1.Pt.Y) or !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt))
+        if Reverse1
+        {
+            op1b = op1.Prev
+            while (op1b.Pt == op1.Pt) and (op1b != op1)
+                op1b = op1b.Prev
+            if (op1b.Pt.Y > op1.Pt.Y) or !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt)
+                return false
+        }
+
+        op2b = op2.Next
+        while (op2b.Pt == op2.Pt) and (op2b != op2)
+            op2b = op2b.Next
+        Reverse2 := ((op2b.Pt.Y > op2.Pt.Y) or !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt))
+        if Reverse2
+        {
+            op2b = op2.Prev
+            while (op2b.Pt == op2.Pt) and (op2b != op2)
+                op2b = op2b.Prev
+            if (op2b.Pt.Y > op2.Pt.Y) or !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt)
+                return false
+        }
+
+        if (op1b == op1) or (op2b == op2) or (op1b == op2b) or ((outRec1 == outRec2) and (Reverse1 == Reverse2))
+            return false
+
+        if (Reverse1)
+        {
+            op1b = DupOutPt(op1, false)
+            op2b = DupOutPt(op2, true)
+            op1.Prev = op2
+            op2.Next = op1
+            op1b.Next = op2b
+            op2b.Prev = op1b
+            j.OutPt1 = op1
+            j.OutPt2 = op1b
+            return true
+        }
+
+        op1b = DupOutPt(op1, true)
+        op2b = DupOutPt(op2, false)
+        op1.Next = op2
+        op2.Prev = op1
+        op1b.Prev = op2b
+        op2b.Next = op1b
+        j.OutPt1 = op1
+        j.OutPt2 = op1b
         return true
+    }
+
+    func JoinHorz(op1P, op1bP, op2P, op2bP: *OutPt, Pt: IntPoint, DiscardLeft: bool)->bool
+    {
+        op1 := op1P
+        op1b:= op1bP
+        op2 := op2P
+        op2b:= op2bP
+
+        var Dir1: Direction = (op1.Pt.X > op1b.Pt.X ? .dRightToLeft : .dLeftToRight)
+        var Dir2: Direction = (op2.Pt.X > op2b.Pt.X ? .dRightToLeft : .dLeftToRight)
+        if Dir1 == Dir2 return false
+
+        if Dir1 == .dLeftToRight
+        {
+            while op1.Next.Pt.X <= Pt.X and op1.Next.Pt.X >= op1.Pt.X and op1.Next.Pt.Y == Pt.Y
+                op1 = op1.Next
+            if DiscardLeft and (op1.Pt.X != Pt.X)
+                op1 = op1.Next
+            op1b = DupOutPt(op1, !DiscardLeft)
+            if op1b.Pt != Pt
+            {
+                op1 = op1b
+                op1.Pt = Pt
+                op1b = DupOutPt(op1, !DiscardLeft)
+            }
+        }
+        else
+        {
+            while op1.Next.Pt.X >= Pt.X and op1.Next.Pt.X <= op1.Pt.X and op1.Next.Pt.Y == Pt.Y
+                op1 = op1.Next
+            if !DiscardLeft and (op1.Pt.X != Pt.X)
+                op1 = op1.Next
+            op1b = DupOutPt(op1, DiscardLeft)
+            if op1b.Pt != Pt
+            {
+                op1 = op1b
+                op1.Pt = Pt
+                op1b = DupOutPt(op1, DiscardLeft)
+            }
+        }
+
+        if Dir2 == .dLeftToRight
+        {
+            while op2.Next.Pt.X <= Pt.X and op2.Next.Pt.X >= op2.Pt.X and op2.Next.Pt.Y == Pt.Y
+                op2 = op2.Next
+            if DiscardLeft and (op2.Pt.X != Pt.X)
+                op2 = op2.Next
+            op2b = DupOutPt(op2, !DiscardLeft)
+            if op2b.Pt != Pt
+            {
+                op2 = op2b
+                op2.Pt = Pt
+                op2b = DupOutPt(op2, !DiscardLeft)
+            }
+        }
+        else
+        {
+            while op2.Next.Pt.X >= Pt.X and op2.Next.Pt.X <= op2.Pt.X and op2.Next.Pt.Y == Pt.Y
+                op2 = op2.Next
+            if !DiscardLeft and (op2.Pt.X != Pt.X)
+                op2 = op2.Next
+            op2b = DupOutPt(op2, DiscardLeft)
+            if op2b.Pt != Pt
+            {
+                op2 = op2b
+                op2.Pt = Pt
+                op2b = DupOutPt(op2, DiscardLeft)
+            }
+        }
+
+        if Dir1 == .dLeftToRight and DiscardLeft
+        {
+            op1.Prev = op2
+            op2.Next = op1
+            op1b.Next = op2b
+            op2b.Prev = op1b
+        }
+        else
+        {
+            op1.Next = op2
+            op2.Prev = op1
+            op1b.Prev = op2b
+            op2b.Next = op1b
+        }
+
+        return true
+    }
+
+    func GetOverlap(a1, a2, b1, b2: CInt, Left, Right: *CInt)->bool
+    {
+        if a1 < a2
+        {
+            if b1 < b2
+            {
+                dref Left = Math.max(a1, b1)
+                dref Right = Math.min(a2, b2)
+            }
+            else
+            {
+                dref Left = Math.max(a1, b2)
+                dref Right = Math.min(a2, b1)
+            }
+        }
+        else
+        {
+            if b1 < b2
+            {
+                dref Left = Math.max(a2, b1)
+                dref Right = Math.min(a1, b2)
+            }
+            else
+            {
+                dref Left = Math.max(a2, b2)
+                dref Right = Math.min(a1, b1)
+            }
+        }
+
+        return Left < Right
+    }
+
+    func DupOutPt(outPt: *OutPt, InsertAfter: bool)->*OutPt
+    {
+        result := Memory.new'OutPt()
+        result.Pt = outPt.Pt
+        result.Idx = outPt.Idx
+        if InsertAfter
+        {
+            result.Next = outPt.Next
+            result.Prev = outPt
+            outPt.Next.Prev = result
+            outPt.Next = result
+        }
+        else
+        {
+            result.Prev = outPt.Prev
+            result.Next = outPt
+            outPt.Prev.Next = result
+            outPt.Prev = result
+        }
+
+        return result
     }
 
     func UpdateOutPtIdxs(outrec: *OutRec)
