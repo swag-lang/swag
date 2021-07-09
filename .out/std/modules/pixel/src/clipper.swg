@@ -156,6 +156,7 @@ public struct Clipper
     m_UseFullRange:         bool
     m_PreserveCollinear:    bool
     m_UsingPolyTree:        bool
+    m_StrictSimple:         bool
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
     m_PolyOuts:             Array'*OutRec
@@ -1004,6 +1005,128 @@ impl Clipper
         ///....
     }
 
+    func IsMaxima(e: *TEdge, Y: CInt)->bool
+    {
+        return e and e.Top.Y == Y and !e.NextInLML
+    }
+
+    func GetMaximaPairEx(e: *TEdge)->*TEdge
+    {
+        result := GetMaximaPair(e)
+        if result and (result.OutIdx == Skip or
+           (result.NextInAEL == result.PrevInAEL and !IsHorizontal(result)))
+            return null
+        return result
+    }
+
+    func IsIntermediate(e: *TEdge, Y: CInt)->bool
+    {
+        return e.Top.Y == Y and e.NextInLML
+    }
+
+    method DoMaxima(e: *TEdge)
+    {
+    }
+
+    method ProcessEdgesAtTopOfScanbeam(topY: CInt)
+    {
+        e := m_ActiveEdges
+        while e
+        {
+            //1. process maxima, treating them as if they're 'bent' horizontal edges,
+            //   but exclude maxima with horizontal edges. nb: e can't be a horizontal.
+            IsMaximaEdge := IsMaxima(e, topY)
+            if IsMaximaEdge
+            {
+                eMaxPair := GetMaximaPairEx(e)
+                IsMaximaEdge = !eMaxPair or !IsHorizontal(eMaxPair)
+            }
+
+            if IsMaximaEdge
+            {
+                if m_StrictSimple m_Maxima.add(e.Top.X)
+                ePrev := e.PrevInAEL
+                DoMaxima(e)
+                if !ePrev e = m_ActiveEdges
+                else e = ePrev.NextInAEL
+            }
+            else
+            {
+                //2. promote horizontal edges, otherwise update Curr.X and Curr.Y ...
+                if IsIntermediate(e, topY) and IsHorizontal(e.NextInLML)
+                {
+                    UpdateEdgeIntoAEL(&e)
+                    if e.OutIdx >= 0
+                        AddOutPt(e, e.Bot)
+                    AddEdgeToSEL(e)
+                }
+                else
+                {
+                    e.Curr.X = TopX(e, topY)
+                    e.Curr.Y = topY
+                }
+
+                //When StrictlySimple and 'e' is being touched by another edge, then
+                //make sure both edges have a vertex here ...
+                if m_StrictSimple
+                {
+                    ePrev := e.PrevInAEL
+                    if  (e.OutIdx >= 0) and (e.WindDelta != 0) and ePrev and (ePrev.OutIdx >= 0) and
+                        (ePrev.Curr.X == e.Curr.X) and (ePrev.WindDelta != 0)
+                    {
+                        pt := e.Curr
+                        op := AddOutPt(ePrev, pt)
+                        op2 := AddOutPt(e, pt)
+                        AddJoin(op, op2, pt)
+                    }
+                }
+
+                e = e.NextInAEL
+            }
+        }
+
+        //3. Process horizontals at the Top of the scanbeam ...
+        m_Maxima.sort()
+        ProcessHorizontals()
+        m_Maxima.clear()
+
+        //4. Promote intermediate vertices ...
+        e = m_ActiveEdges
+        while e
+        {
+            if IsIntermediate(e, topY)
+            {
+                var op: *OutPt
+                if e.OutIdx >= 0
+                    op = AddOutPt(e, e.Top)
+                UpdateEdgeIntoAEL(&e)
+
+                ePrev := e.PrevInAEL
+                eNext := e.NextInAEL
+                if ePrev and ePrev.Curr.X == e.Bot.X and
+                    ePrev.Curr.Y == e.Bot.Y and op and
+                    ePrev.OutIdx >= 0 and ePrev.Curr.Y > ePrev.Top.Y and
+                    SlopesEqual(e.Curr, e.Top, ePrev.Curr, ePrev.Top) and
+                    (e.WindDelta != 0) and (ePrev.WindDelta != 0)
+                {
+                    op2 := AddOutPt(ePrev, e.Bot)
+                    AddJoin(op, op2, e.Top)
+                }
+                else if eNext and eNext.Curr.X == e.Bot.X and
+                    eNext.Curr.Y == e.Bot.Y and op and
+                    eNext.OutIdx >= 0 and eNext.Curr.Y > eNext.Top.Y and
+                    SlopesEqual(e.Curr, e.Top, eNext.Curr, eNext.Top) and
+                    (e.WindDelta != 0) and (eNext.WindDelta != 0)
+                {
+                    op2 := AddOutPt(eNext, e.Bot)
+                    AddJoin(op, op2, e.Top)
+                }
+            }
+
+            e = e.NextInAEL
+        }
+    }
+
     method ProcessIntersections(topY: CInt) throw
     {
         if !m_ActiveEdges return
@@ -1032,7 +1155,6 @@ impl Clipper
             e = e.NextInAEL
         }
 
-        //bubblesort ...
         var isModified: bool
         loop
         {
@@ -1105,6 +1227,14 @@ impl Clipper
 
     method ProcessIntersectList()
     {
+        visit iNode: m_IntersectList
+        {
+            IntersectEdges(iNode.Edge1, iNode.Edge2, iNode.Pt)
+            SwapPositionsInAEL(iNode.Edge1, iNode.Edge2)
+            Memory.delete(iNode)
+        }
+
+        m_IntersectList.clear()
     }
 
     method SwapPositionsInSEL(Edge1, Edge2: *TEdge)
@@ -1154,6 +1284,67 @@ impl Clipper
 
     method IntersectPoint(Edge1, Edge2: *TEdge, ip: *IntPoint)
     {
+        var b1, b2: f64
+        if Edge1.Dx == Edge2.Dx
+        {
+            ip.Y = Edge1.Curr.Y
+            ip.X = TopX(Edge1, ip.Y)
+            return
+        }
+        else if Edge1.Dx == 0
+        {
+            ip.X = Edge1.Bot.X
+            if IsHorizontal(Edge2)
+                ip.Y = Edge2.Bot.Y
+            else
+            {
+                b2 = Edge2.Bot.Y - (Edge2.Bot.X / Edge2.Dx)
+                ip.Y = Round(ip.X / Edge2.Dx + b2)
+            }
+        }
+        else if Edge2.Dx == 0
+        {
+            ip.X = Edge2.Bot.X
+            if IsHorizontal(Edge1)
+                ip.Y = Edge1.Bot.Y
+            else
+            {
+                b1 = Edge1.Bot.Y - (Edge1.Bot.X / Edge1.Dx)
+                ip.Y = Round(ip.X / Edge1.Dx + b1)
+            }
+        }
+        else
+        {
+            b1 = Edge1.Bot.X - Edge1.Bot.Y * Edge1.Dx
+            b2 = Edge2.Bot.X - Edge2.Bot.Y * Edge2.Dx
+            q := (b2-b1) / (Edge1.Dx - Edge2.Dx)
+            ip.Y = Round(q)
+            if Math.abs(Edge1.Dx) < Math.abs(Edge2.Dx)
+                ip.X = Round(Edge1.Dx * q + b1)
+            else
+                ip.X = Round(Edge2.Dx * q + b2)
+        }
+
+        if ip.Y < Edge1.Top.Y or ip.Y < Edge2.Top.Y
+        {
+            if Edge1.Top.Y > Edge2.Top.Y
+                ip.Y = Edge1.Top.Y
+            else
+                ip.Y = Edge2.Top.Y
+            if Math.abs(Edge1.Dx) < Math.abs(Edge2.Dx)
+                ip.X = TopX(Edge1, ip.Y)
+            else
+                ip.X = TopX(Edge2, ip.Y)
+        }
+
+        if (ip.Y > Edge1.Curr.Y)
+        {
+            ip.Y = Edge1.Curr.Y
+            if Math.abs(Edge1.Dx) > Math.abs(Edge2.Dx)
+                ip.X = TopX(Edge2, ip.Y)
+            else
+                ip.X = TopX(Edge1, ip.Y)
+        }
     }
 
     method PopLocalMinima(Y: CInt, locMin: **LocalMinimum)->bool
