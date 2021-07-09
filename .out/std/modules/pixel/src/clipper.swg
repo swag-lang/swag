@@ -589,7 +589,7 @@ impl Clipper
         return Result
     }
 
-    method PopScanbeam(res: *CInt)->bool
+    method popScanbeam(res: *CInt)->bool
     {
         if !m_Scanbeam.count
             return false
@@ -602,13 +602,13 @@ impl Clipper
         return true
     }
 
-    method InsertScanbeam(y: CInt)
+    method insertScanbeam(y: CInt)
     {
         m_Scanbeam.add(y)
         m_Scanbeam.sort()
     }
 
-    method Reset()
+    method reset()
     {
         m_CurrentLM = 0
         if m_CurrentLM == m_MinimaList.count return
@@ -617,7 +617,7 @@ impl Clipper
         m_Scanbeam.clear()
         visit lm: m_MinimaList
         {
-            InsertScanbeam(lm.y)
+            insertScanbeam(lm.y)
             e := lm.leftBound
             if e
             {
@@ -639,12 +639,12 @@ impl Clipper
         m_CurrentLM = 0
     }
 
-    method LocalMinimaPending()->bool
+    method localMinimaPending()->bool
     {
         return m_CurrentLM != m_MinimaList.count
     }
 
-    method DeleteFromSEL(e: *TEdge)
+    method deleteFromSEL(e: *TEdge)
     {
         SelPrev := e.prevInSEL
         SelNext := e.nextInSEL
@@ -659,22 +659,22 @@ impl Clipper
         e.prevInSEL = null
     }
 
-    method PopEdgeFromSEL(edge: **TEdge)->bool
+    method popEdgeFromSEL(edge: **TEdge)->bool
     {
         if !sortedEdges return false
         dref edge = sortedEdges
-        DeleteFromSEL(sortedEdges)
+        deleteFromSEL(sortedEdges)
         return true
     }
 
     method processHorizontals()
     {
         var horzEdge: *TEdge
-        while PopEdgeFromSEL(&horzEdge)
+        while popEdgeFromSEL(&horzEdge)
             processHorizontal(horzEdge)
     }
 
-    func GetHorzDirection(HorzEdge: *TEdge, Dir: *Direction, left, right: *CInt)
+    func getHorzDirection(HorzEdge: *TEdge, Dir: *Direction, left, right: *CInt)
     {
         if HorzEdge.bot.x < HorzEdge.top.x
         {
@@ -690,7 +690,7 @@ impl Clipper
         }
     }
 
-    func GetMaximaPair(e: *TEdge)->*TEdge
+    func getMaximaPair(e: *TEdge)->*TEdge
     {
         if (e.next.top == e.top) and !e.next.nextInLML
             return e.next
@@ -700,12 +700,12 @@ impl Clipper
             return null
     }
 
-    func GetNextInAEL(e: *TEdge, dir: Direction)->*TEdge
+    func getNextInAEL(e: *TEdge, dir: Direction)->*TEdge
     {
         return dir == .LeftToRight ? e.nextInAEL : e.prevInAEL
     }
 
-    method GetLastOutPt(e: *TEdge)->*OutPt
+    method getLastOutPt(e: *TEdge)->*OutPt
     {
         outRec := polyOuts[e.outIdx]
         if e.side == .left
@@ -714,7 +714,7 @@ impl Clipper
             return outRec.pts.prev
     }
 
-    method AddGhostJoin(op: *OutPt, offPt: IntPoint)
+    method addGhostJoin(op: *OutPt, offPt: IntPoint)
     {
         j := Memory.new'Join()
         j.outPt1 = op
@@ -731,14 +731,14 @@ impl Clipper
         var horzLeft, horzRight: CInt
 
         isOpen := (horzEdge.windDelta == 0)
-        GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
+        getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
 
         eLastHorz := horzEdge
         var eMaxPair: *TEdge
         while eLastHorz.nextInLML and isHorizontal(eLastHorz.nextInLML)
             eLastHorz = eLastHorz.nextInLML
         if !eLastHorz.nextInLML
-            eMaxPair = GetMaximaPair(eLastHorz)
+            eMaxPair = getMaximaPair(eLastHorz)
 
         var maxIt, maxRit: uint
         if m_Maxima.count > 0
@@ -765,7 +765,7 @@ impl Clipper
         loop
         {
             IsLastHorz := (horzEdge == eLastHorz)
-            e := GetNextInAEL(horzEdge, dir)
+            e := getNextInAEL(horzEdge, dir)
             while e
             {
                 if m_Maxima.count > 0
@@ -804,14 +804,14 @@ impl Clipper
                         if eNextHorz.outIdx >= 0 and
                            horzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                         {
-                            op2 := GetLastOutPt(eNextHorz)
+                            op2 := getLastOutPt(eNextHorz)
                             addJoin(op2, op1, eNextHorz.top)
                         }
 
                         eNextHorz = eNextHorz.nextInSEL
                     }
 
-                    AddGhostJoin(op1, horzEdge.bot)
+                    addGhostJoin(op1, horzEdge.bot)
                 }
 
                 if e == eMaxPair and IsLastHorz
@@ -834,7 +834,7 @@ impl Clipper
                     intersectEdges(e, horzEdge, pt)
                 }
 
-                eNext := GetNextInAEL(e, dir)
+                eNext := getNextInAEL(e, dir)
                 swapPositionsInAEL(horzEdge, e)
                 e = eNext
             }
@@ -842,26 +842,26 @@ impl Clipper
             if !horzEdge.nextInLML or !isHorizontal(horzEdge.nextInLML) break
             updateEdgeIntoAEL(&horzEdge)
             if horzEdge.outIdx >= 0 addOutPt(horzEdge, horzEdge.bot)
-            GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
+            getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
         }
 
         if horzEdge.outIdx >= 0 and !op1
         {
-            op1 = GetLastOutPt(horzEdge)
+            op1 = getLastOutPt(horzEdge)
             eNextHorz := sortedEdges
             while eNextHorz
             {
                 if eNextHorz.outIdx >= 0 and
                    horzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                 {
-                    op2 := GetLastOutPt(eNextHorz)
+                    op2 := getLastOutPt(eNextHorz)
                     addJoin(op2, op1, eNextHorz.top)
                 }
 
                 eNextHorz = eNextHorz.nextInSEL
             }
 
-            AddGhostJoin(op1, horzEdge.top)
+            addGhostJoin(op1, horzEdge.top)
         }
 
         if horzEdge.nextInLML
@@ -915,7 +915,7 @@ impl Clipper
         e.curr = e.bot
         e.prevInAEL = AelPrev
         e.nextInAEL = AelNext
-        if !isHorizontal(e) InsertScanbeam(e.top.y)
+        if !isHorizontal(e) insertScanbeam(e.top.y)
         dref ed = e
     }
 
@@ -996,15 +996,15 @@ impl Clipper
 
     method executeInternal() throw
     {
-        Reset()
+        reset()
         m_Maxima.clear()
         sortedEdges = null
 
         var botY, topY: CInt
-        if !PopScanbeam(&botY) throw "Error"
+        if !popScanbeam(&botY) throw "Error"
 
         insertLocalMinimaIntoAEL(botY)
-        while PopScanbeam(&topY) or LocalMinimaPending()
+        while popScanbeam(&topY) or localMinimaPending()
         {
             processHorizontals()
             clearGhostJoins()
@@ -1658,7 +1658,7 @@ impl Clipper
 
     func getMaximaPairEx(e: *TEdge)->*TEdge
     {
-        result := GetMaximaPair(e)
+        result := getMaximaPair(e)
         if result and (result.outIdx == Skip or
            (result.nextInAEL == result.prevInAEL and !isHorizontal(result)))
             return null
@@ -2870,7 +2870,7 @@ impl Clipper
                 setWindingCount(lb)
                 if isContributing(lb)
                     Op1 = addOutPt(lb, lb.bot)
-                InsertScanbeam(lb.top.y)
+                insertScanbeam(lb.top.y)
             }
             else
             {
@@ -2881,7 +2881,7 @@ impl Clipper
                 rb.windCnt2 = lb.windCnt2
                 if isContributing(lb)
                     Op1 = addLocalMinPoly(lb, rb, lb.bot)
-                InsertScanbeam(lb.top.y)
+                insertScanbeam(lb.top.y)
             }
 
             if rb
@@ -2890,10 +2890,10 @@ impl Clipper
                 {
                     addEdgeToSEL(rb)
                     if rb.nextInLML
-                        InsertScanbeam(rb.nextInLML.top.y)
+                        insertScanbeam(rb.nextInLML.top.y)
                 }
                 else
-                    InsertScanbeam(rb.top.y)
+                    insertScanbeam(rb.top.y)
             }
 
             if !lb or !rb continue
