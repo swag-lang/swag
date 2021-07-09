@@ -156,11 +156,11 @@ public struct Clipper
     m_UseFullRange:         bool
     m_PreserveCollinear:    bool
     m_UsingPolyTree:        bool
-    m_StrictSimple:         bool
+    strictSimple:         bool
     m_ReverseOutput:        bool
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
-    m_PolyOuts:             Array'*OutRec
+    polyOuts:             Array'*OutRec
     m_Joins:                Array'*Join
     m_GhostJoins:           Array'*Join
     intersectList:        Array'*IntersectNode
@@ -707,7 +707,7 @@ impl Clipper
 
     method GetLastOutPt(e: *TEdge)->*OutPt
     {
-        outRec := m_PolyOuts[e.outIdx]
+        outRec := polyOuts[e.outIdx]
         if e.side == .Left
             return outRec.pts
         else
@@ -1009,23 +1009,23 @@ impl Clipper
             processHorizontals()
             ClearGhostJoins()
             try processIntersections(topY)
-            ProcessEdgesAtTopOfScanbeam(topY)
+            processEdgesAtTopOfScanbeam(topY)
             botY = topY
             insertLocalMinimaIntoAEL(botY)
         }
 
         //fix orientations ...
-        visit outRec: m_PolyOuts
+        visit outRec: polyOuts
         {
             if !outRec.pts or outRec.isOpen continue
             if (outRec.isHole ^ m_ReverseOutput) == (area(outRec.pts) > 0)
                 reversePolyPtLinks(outRec.pts)
         }
 
-        if m_Joins.count JoinCommonEdges()
+        if m_Joins.count joinCommonEdges()
 
-        //unfortunately FixupOutPolygon() must be done after JoinCommonEdges()
-        visit outRec: m_PolyOuts
+        //unfortunately FixupOutPolygon() must be done after joinCommonEdges()
+        visit outRec: polyOuts
         {
             if !outRec.pts continue
             if outRec.isOpen
@@ -1034,7 +1034,7 @@ impl Clipper
                 FixupOutPolygon(outRec)
         }
 
-        if m_StrictSimple DoSimplePolygons()
+        if strictSimple DoSimplePolygons()
 
         ClearJoins()
         ClearGhostJoins()
@@ -1043,9 +1043,9 @@ impl Clipper
     method DoSimplePolygons()
     {
         var i: uint
-        while i < m_PolyOuts.count
+        while i < polyOuts.count
         {
-            outrec := m_PolyOuts[i]
+            outrec := polyOuts[i]
             i += 1
             op := outrec.pts
             if !op or outrec.isOpen continue
@@ -1072,7 +1072,7 @@ impl Clipper
                         {
                             outrec2.isHole = !outrec.isHole
                             outrec2.firstLeft = outrec
-                            if m_UsingPolyTree FixupFirstLefts2(outrec2, outrec)
+                            if m_UsingPolyTree fixupFirstLefts2(outrec2, outrec)
                         }
                         else if Poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
@@ -1080,13 +1080,13 @@ impl Clipper
                             outrec.isHole = !outrec2.isHole
                             outrec2.firstLeft = outrec.firstLeft
                             outrec.firstLeft = outrec2
-                            if m_UsingPolyTree FixupFirstLefts2(outrec, outrec2)
+                            if m_UsingPolyTree fixupFirstLefts2(outrec, outrec2)
                         }
                         else
                         {
                             outrec2.isHole = outrec.isHole
                             outrec2.firstLeft = outrec.firstLeft
-                            if m_UsingPolyTree FixupFirstLefts1(outrec, outrec2)
+                            if m_UsingPolyTree fixupFirstLefts1(outrec, outrec2)
                         }
 
                         op2 = op
@@ -1132,7 +1132,7 @@ impl Clipper
         var lastOK: *OutPt
         outrec.bottomPt = null
         pp := outrec.pts
-        preserveCol := m_PreserveCollinear or m_StrictSimple
+        preserveCol := m_PreserveCollinear or strictSimple
 
         loop
         {
@@ -1168,9 +1168,9 @@ impl Clipper
 
     method GetOutRec(idx: s32)->*OutRec
     {
-        outrec := m_PolyOuts[idx]
-        while outrec != m_PolyOuts[outrec.idx]
-            outrec = m_PolyOuts[outrec.idx]
+        outrec := polyOuts[idx]
+        while outrec != polyOuts[outrec.idx]
+            outrec = polyOuts[outrec.idx]
         return outrec
     }
 
@@ -1530,7 +1530,7 @@ impl Clipper
         return true
     }
 
-    func ParseFirstLeft(FL: *OutRec)->*OutRec
+    func parseFirstLeft(FL: *OutRec)->*OutRec
     {
         firstLeft := FL
         while firstLeft and !firstLeft.pts
@@ -1538,49 +1538,49 @@ impl Clipper
         return firstLeft
     }
 
-    method FixupFirstLefts2(InnerOutRec, OuterOutRec: *OutRec)
+    method fixupFirstLefts2(innerOutRec, outerOutRec: *OutRec)
     {
-        orfl := OuterOutRec.firstLeft
-        visit outRec: m_PolyOuts
+        orfl := outerOutRec.firstLeft
+        visit outRec: polyOuts
         {
-            if !outRec.pts or outRec == OuterOutRec or outRec == InnerOutRec
+            if !outRec.pts or outRec == outerOutRec or outRec == innerOutRec
                 continue
-            firstLeft := ParseFirstLeft(outRec.firstLeft)
-            if firstLeft != orfl and firstLeft != InnerOutRec and firstLeft != OuterOutRec
+            firstLeft := parseFirstLeft(outRec.firstLeft)
+            if firstLeft != orfl and firstLeft != innerOutRec and firstLeft != outerOutRec
                 continue
-            if Poly2ContainsPoly1(outRec.pts, InnerOutRec.pts)
-                outRec.firstLeft = InnerOutRec
-            else if Poly2ContainsPoly1(outRec.pts, OuterOutRec.pts)
-                outRec.firstLeft = OuterOutRec
-            else if outRec.firstLeft == InnerOutRec or outRec.firstLeft == OuterOutRec
+            if Poly2ContainsPoly1(outRec.pts, innerOutRec.pts)
+                outRec.firstLeft = innerOutRec
+            else if Poly2ContainsPoly1(outRec.pts, outerOutRec.pts)
+                outRec.firstLeft = outerOutRec
+            else if outRec.firstLeft == innerOutRec or outRec.firstLeft == outerOutRec
                 outRec.firstLeft = orfl
         }
     }
 
-    method FixupFirstLefts1(OldOutRec, NewOutRec: *OutRec)
+    method fixupFirstLefts1(oldOutRec, newOutRec: *OutRec)
     {
-        visit outRec: m_PolyOuts
+        visit outRec: polyOuts
         {
-            firstLeft := ParseFirstLeft(outRec.firstLeft)
-            if outRec.pts and firstLeft == OldOutRec
+            firstLeft := parseFirstLeft(outRec.firstLeft)
+            if outRec.pts and firstLeft == oldOutRec
             {
-                if Poly2ContainsPoly1(outRec.pts, NewOutRec.pts)
-                    outRec.firstLeft = NewOutRec
+                if Poly2ContainsPoly1(outRec.pts, newOutRec.pts)
+                    outRec.firstLeft = newOutRec
             }
         }
     }
 
-    method FixupFirstLefts3(OldOutRec, NewOutRec: *OutRec)
+    method fixupFirstLefts3(oldOutRec, newOutRec: *OutRec)
     {
-        visit outRec: m_PolyOuts
+        visit outRec: polyOuts
         {
-            firstLeft := ParseFirstLeft(outRec.firstLeft)
-            if outRec.pts and firstLeft == OldOutRec
-                outRec.firstLeft = NewOutRec
+            firstLeft := parseFirstLeft(outRec.firstLeft)
+            if outRec.pts and firstLeft == oldOutRec
+                outRec.firstLeft = newOutRec
         }
     }
 
-    method JoinCommonEdges()
+    method joinCommonEdges()
     {
         visit join: m_Joins
         {
@@ -1610,7 +1610,7 @@ impl Clipper
                 {
                     outRec2.isHole = !outRec1.isHole
                     outRec2.firstLeft = outRec1
-                    if m_UsingPolyTree FixupFirstLefts2(outRec2, outRec1)
+                    if m_UsingPolyTree fixupFirstLefts2(outRec2, outRec1)
                     if (outRec2.isHole ^ m_ReverseOutput) == (area(outRec2.pts) > 0)
                     reversePolyPtLinks(outRec2.pts)
 
@@ -1622,7 +1622,7 @@ impl Clipper
                     outRec2.firstLeft = outRec1.firstLeft
                     outRec1.firstLeft = outRec2
 
-                    if m_UsingPolyTree FixupFirstLefts2(outRec1, outRec2)
+                    if m_UsingPolyTree fixupFirstLefts2(outRec1, outRec2)
 
                     if (outRec1.isHole ^ m_ReverseOutput) == (area(outRec1.pts) > 0)
                     reversePolyPtLinks(outRec1.pts)
@@ -1631,7 +1631,7 @@ impl Clipper
                 {
                     outRec2.isHole = outRec1.isHole
                     outRec2.firstLeft = outRec1.firstLeft
-                    if m_UsingPolyTree FixupFirstLefts1(outRec1, outRec2)
+                    if m_UsingPolyTree fixupFirstLefts1(outRec1, outRec2)
                 }
 
             }
@@ -1646,17 +1646,17 @@ impl Clipper
                     outRec1.firstLeft = outRec2.firstLeft
                 outRec2.firstLeft = outRec1
 
-                if m_UsingPolyTree FixupFirstLefts3(outRec2, outRec1)
+                if m_UsingPolyTree fixupFirstLefts3(outRec2, outRec1)
             }
         }
     }
 
-    func IsMaxima(e: *TEdge, y: CInt)->bool
+    func isMaxima(e: *TEdge, y: CInt)->bool
     {
         return e and e.top.y == y and !e.nextInLML
     }
 
-    func GetMaximaPairEx(e: *TEdge)->*TEdge
+    func getMaximaPairEx(e: *TEdge)->*TEdge
     {
         result := GetMaximaPair(e)
         if result and (result.outIdx == Skip or
@@ -1665,14 +1665,14 @@ impl Clipper
         return result
     }
 
-    func IsIntermediate(e: *TEdge, y: CInt)->bool
+    func isIntermediate(e: *TEdge, y: CInt)->bool
     {
         return e.top.y == y and e.nextInLML
     }
 
-    method DoMaxima(e: *TEdge)
+    method doMaxima(e: *TEdge)
     {
-        eMaxPair := GetMaximaPairEx(e)
+        eMaxPair := getMaximaPairEx(e)
         if !eMaxPair
         {
             if e.outIdx >= 0
@@ -1706,32 +1706,32 @@ impl Clipper
         }
     }
 
-    method ProcessEdgesAtTopOfScanbeam(topY: CInt)
+    method processEdgesAtTopOfScanbeam(topY: CInt)
     {
         e := activeEdges
         while e
         {
             //1. process maxima, treating them as if they're 'bent' horizontal edges,
             //   but exclude maxima with horizontal edges. nb: e can't be a horizontal.
-            IsMaximaEdge := IsMaxima(e, topY)
-            if IsMaximaEdge
+            isMaximaEdge := isMaxima(e, topY)
+            if isMaximaEdge
             {
-                eMaxPair := GetMaximaPairEx(e)
-                IsMaximaEdge = !eMaxPair or !isHorizontal(eMaxPair)
+                eMaxPair := getMaximaPairEx(e)
+                isMaximaEdge = !eMaxPair or !isHorizontal(eMaxPair)
             }
 
-            if IsMaximaEdge
+            if isMaximaEdge
             {
-                if m_StrictSimple m_Maxima.add(e.top.x)
+                if strictSimple m_Maxima.add(e.top.x)
                 ePrev := e.prevInAEL
-                DoMaxima(e)
+                doMaxima(e)
                 if !ePrev e = activeEdges
                 else e = ePrev.nextInAEL
             }
             else
             {
                 //2. promote horizontal edges, otherwise update curr.x and curr.y ...
-                if IsIntermediate(e, topY) and isHorizontal(e.nextInLML)
+                if isIntermediate(e, topY) and isHorizontal(e.nextInLML)
                 {
                     UpdateEdgeIntoAEL(&e)
                     if e.outIdx >= 0
@@ -1746,7 +1746,7 @@ impl Clipper
 
                 //When StrictlySimple and 'e' is being touched by another edge, then
                 //make sure both edges have a vertex here ...
-                if m_StrictSimple
+                if strictSimple
                 {
                     ePrev := e.prevInAEL
                     if  (e.outIdx >= 0) and (e.windDelta != 0) and ePrev and (ePrev.outIdx >= 0) and
@@ -1772,7 +1772,7 @@ impl Clipper
         e = activeEdges
         while e
         {
-            if IsIntermediate(e, topY)
+            if isIntermediate(e, topY)
             {
                 var op: *OutPt
                 if e.outIdx >= 0
@@ -2291,8 +2291,8 @@ impl Clipper
     method createOutRec()->*OutRec
     {
         result := Memory.new'OutRec()
-        m_PolyOuts.add(result)
-        result.idx = cast(s32) (m_PolyOuts.count - 1)
+        polyOuts.add(result)
+        result.idx = cast(s32) (polyOuts.count - 1)
         return result
     }
 
@@ -2317,7 +2317,7 @@ impl Clipper
         }
         else
         {
-            outrec.firstLeft = m_PolyOuts[eTmp.outIdx]
+            outrec.firstLeft = polyOuts[eTmp.outIdx]
             outrec.isHole = !outrec.firstLeft.isHole
         }
     }
@@ -2342,7 +2342,7 @@ impl Clipper
         }
         else
         {
-            outRec := m_PolyOuts[e.outIdx]
+            outRec := polyOuts[e.outIdx]
             op := outRec.pts
 
             ToFront := (e.side == .Left)
@@ -2571,8 +2571,8 @@ impl Clipper
     method appendPolygon(e1, e2: *TEdge)
     {
         //get the start and ends of both output polygons ...
-        outRec1 := m_PolyOuts[e1.outIdx]
-        outRec2 := m_PolyOuts[e2.outIdx]
+        outRec1 := polyOuts[e1.outIdx]
+        outRec2 := polyOuts[e2.outIdx]
 
         var holeStateRec: *OutRec
         if outRec1RightOfOutRec2(outRec1, outRec2)
@@ -2961,14 +2961,14 @@ impl Clipper
 
     method buildResult(polys: *ClipperPaths)
     {
-        polys.reserve(m_PolyOuts.count)
-        loop i: m_PolyOuts
+        polys.reserve(polyOuts.count)
+        loop i: polyOuts
         {
-            if !m_PolyOuts[i].pts continue
+            if !polyOuts[i].pts continue
 
             var pg: ClipperPath
 
-            p := m_PolyOuts[i].pts.prev
+            p := polyOuts[i].pts.prev
             cnt := pointCount(p)
             if cnt < 2 continue
 
@@ -2985,8 +2985,8 @@ impl Clipper
 
     method disposeAllOutRecs()
     {
-        loop i: m_PolyOuts disposeOutRec(i)
-        m_PolyOuts.clear()
+        loop i: polyOuts disposeOutRec(i)
+        polyOuts.clear()
     }
 
     func disposeOutPts(pts: *OutPt)
@@ -3004,9 +3004,9 @@ impl Clipper
 
     method disposeOutRec(index: uint)
     {
-        outRec := m_PolyOuts[index]
+        outRec := polyOuts[index]
         if outRec.pts disposeOutPts(outRec.pts)
         Memory.delete(outRec)
-        m_PolyOuts[index] = null
+        polyOuts[index] = null
     }
 }
