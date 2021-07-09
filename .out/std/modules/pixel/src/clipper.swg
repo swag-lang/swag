@@ -1014,9 +1014,207 @@ impl Clipper
         if m_Joins.count JoinCommonEdges()
     }
 
+    method GetOutRec(Idx: s32)->*OutRec
+    {
+        outrec := m_PolyOuts[Idx]
+        while outrec != m_PolyOuts[outrec.Idx]
+            outrec = m_PolyOuts[outrec.Idx]
+        return outrec
+    }
+
+    method JoinPoints(j: *Join, outRec1, outRec2: *OutRec)->bool
+    {
+        return true
+    }
+
+    func UpdateOutPtIdxs(outrec: *OutRec)
+    {
+        op := outrec.Pts
+        loop
+        {
+            op.Idx = outrec.Idx
+            op = op.Prev
+            if op == outrec.Pts break
+        }
+    }
+
+    func PointInPolygon(pt: IntPoint, outPoints: *OutPt)->s32
+    {
+        op := outPoints
+        result := 0
+        startOp := op
+        loop
+        {
+            if op.Next.Pt.Y == pt.Y
+            {
+                if (op.Next.Pt.X == pt.X) or (op.Pt.Y == pt.Y and ((op.Next.Pt.X > pt.X) == (op.Pt.X < pt.X)))
+                    return -1
+            }
+
+            if (op.Pt.Y < pt.Y) != (op.Next.Pt.Y < pt.Y)
+            {
+                if op.Pt.X >= pt.X
+                {
+                    if op.Next.Pt.X > pt.X
+                        result = 1 - result
+                    else
+                    {
+                        d := cast(f64) (op.Pt.X - pt.X) * (op.Next.Pt.Y - pt.Y) - cast(f64) (op.Next.Pt.X - pt.X) * (op.Pt.Y - pt.Y)
+                        if d == 0 return -1
+                        if (d > 0) == (op.Next.Pt.Y > op.Pt.Y) result = 1 - result
+                    }
+                }
+                else
+                {
+                    if op.Next.Pt.X > pt.X
+                    {
+                        d := cast(f64) (op.Pt.X - pt.X) * (op.Next.Pt.Y - pt.Y) - cast(f64) (op.Next.Pt.X - pt.X) * (op.Pt.Y - pt.Y)
+                        if d == 0 return -1
+                        if (d > 0) == (op.Next.Pt.Y > op.Pt.Y) result = 1 - result
+                    }
+                }
+            }
+
+            op = op.Next
+            if startOp == op break
+        }
+
+        return result
+    }
+
+    func Poly2ContainsPoly1(OutPt1, OutPt2: *OutPt)->bool
+    {
+        op := OutPt1
+        loop
+        {
+            res := PointInPolygon(op.Pt, OutPt2)
+            if res >= 0 return res > 0
+            op = op.Next
+            if op == OutPt1 break
+        }
+
+        return true
+    }
+
+    func ParseFirstLeft(FL: *OutRec)->*OutRec
+    {
+        FirstLeft := FL
+        while FirstLeft and !FirstLeft.Pts
+            FirstLeft = FirstLeft.FirstLeft
+        return FirstLeft
+    }
+
+    method FixupFirstLefts2(InnerOutRec, OuterOutRec: *OutRec)
+    {
+        orfl := OuterOutRec.FirstLeft
+        visit outRec: m_PolyOuts
+        {
+            if !outRec.Pts or outRec == OuterOutRec or outRec == InnerOutRec
+                continue
+            firstLeft := ParseFirstLeft(outRec.FirstLeft)
+            if firstLeft != orfl and firstLeft != InnerOutRec and firstLeft != OuterOutRec
+                continue
+            if Poly2ContainsPoly1(outRec.Pts, InnerOutRec.Pts)
+                outRec.FirstLeft = InnerOutRec
+            else if Poly2ContainsPoly1(outRec.Pts, OuterOutRec.Pts)
+                outRec.FirstLeft = OuterOutRec
+            else if outRec.FirstLeft == InnerOutRec or outRec.FirstLeft == OuterOutRec
+                outRec.FirstLeft = orfl
+        }
+    }
+
+    method FixupFirstLefts1(OldOutRec, NewOutRec: *OutRec)
+    {
+        visit outRec: m_PolyOuts
+        {
+            firstLeft := ParseFirstLeft(outRec.FirstLeft)
+            if outRec.Pts and firstLeft == OldOutRec
+            {
+                if Poly2ContainsPoly1(outRec.Pts, NewOutRec.Pts)
+                    outRec.FirstLeft = NewOutRec
+            }
+        }
+    }
+
+    method FixupFirstLefts3(OldOutRec, NewOutRec: *OutRec)
+    {
+        visit outRec: m_PolyOuts
+        {
+            firstLeft := ParseFirstLeft(outRec.FirstLeft)
+            if outRec.Pts and firstLeft == OldOutRec
+                outRec.FirstLeft = NewOutRec
+        }
+    }
+
     method JoinCommonEdges()
     {
+        visit join: m_Joins
+        {
+            outRec1 := GetOutRec(join.OutPt1.Idx)
+            outRec2 := GetOutRec(join.OutPt2.Idx)
 
+            if !outRec1.Pts or !outRec2.Pts continue
+            if outRec1.IsOpen or outRec2.IsOpen continue
+
+            var holeStateRec: *OutRec
+            if outRec1 == outRec2 holeStateRec = outRec1
+            else if OutRec1RightOfOutRec2(outRec1, outRec2) holeStateRec = outRec2
+            else if OutRec1RightOfOutRec2(outRec2, outRec1) holeStateRec = outRec1
+            else holeStateRec = GetLowermostRec(outRec1, outRec2)
+
+            if !JoinPoints(join, outRec1, outRec2) continue
+
+            if (outRec1 == outRec2)
+            {
+                outRec1.Pts = join.OutPt1
+                outRec1.BottomPt = null
+                outRec2 = CreateOutRec()
+                outRec2.Pts = join.OutPt2
+                UpdateOutPtIdxs(outRec2)
+
+                if Poly2ContainsPoly1(outRec2.Pts, outRec1.Pts)
+                {
+                    outRec2.IsHole = !outRec1.IsHole
+                    outRec2.FirstLeft = outRec1
+                    if m_UsingPolyTree FixupFirstLefts2(outRec2, outRec1)
+                    if (outRec2.IsHole ^ m_ReverseOutput) == (Area(outRec2.Pts) > 0)
+                    ReversePolyPtLinks(outRec2.Pts)
+
+                }
+                else if Poly2ContainsPoly1(outRec1.Pts, outRec2.Pts)
+                {
+                    outRec2.IsHole = outRec1.IsHole
+                    outRec1.IsHole = !outRec2.IsHole
+                    outRec2.FirstLeft = outRec1.FirstLeft
+                    outRec1.FirstLeft = outRec2
+
+                    if m_UsingPolyTree FixupFirstLefts2(outRec1, outRec2)
+
+                    if (outRec1.IsHole ^ m_ReverseOutput) == (Area(outRec1.Pts) > 0)
+                    ReversePolyPtLinks(outRec1.Pts)
+                }
+                else
+                {
+                    outRec2.IsHole = outRec1.IsHole
+                    outRec2.FirstLeft = outRec1.FirstLeft
+                    if m_UsingPolyTree FixupFirstLefts1(outRec1, outRec2)
+                }
+
+            }
+            else
+            {
+                outRec2.Pts = null
+                outRec2.BottomPt = null
+                outRec2.Idx = outRec1.Idx
+
+                outRec1.IsHole = holeStateRec.IsHole
+                if holeStateRec == outRec2
+                    outRec1.FirstLeft = outRec2.FirstLeft
+                outRec2.FirstLeft = outRec1
+
+                if m_UsingPolyTree FixupFirstLefts3(outRec2, outRec1)
+            }
+        }
     }
 
     func IsMaxima(e: *TEdge, Y: CInt)->bool
