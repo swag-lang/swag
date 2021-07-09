@@ -72,6 +72,14 @@ struct IntersectNode
     Pt:       IntPoint
 }
 
+impl IntersectNode
+{
+    method opCmp(other: *IntersectNode)->s32
+    {
+        return Pt.Y <=> other.Pt.Y
+    }
+}
+
 struct LocalMinimum
 {
     Y:            CInt
@@ -83,9 +91,7 @@ impl LocalMinimum
 {
     method opCmp(other: LocalMinimum)->s32
     {
-        if Y < other.Y return -1
-        if Y == other.Y return 0
-        return 1
+        return Y <=> other.Y
     }
 }
 
@@ -1060,8 +1066,40 @@ impl Clipper
         m_SortedEdges = null
     }
 
+    method CopyAELToSEL()
+    {
+        e := m_ActiveEdges
+        m_SortedEdges = e
+        while e
+        {
+            e.PrevInSEL = e.PrevInAEL
+            e.NextInSEL = e.NextInAEL
+            e = e.NextInAEL
+        }
+    }
+
+    func EdgesAdjacent(inode: *IntersectNode)->bool
+    {
+        return (inode.Edge1.NextInSEL == inode.Edge2) or (inode.Edge1.PrevInSEL == inode.Edge2)
+    }
+
     method FixupIntersectionOrder()->bool
     {
+        CopyAELToSEL()
+        m_IntersectList.sort()
+        loop i: m_IntersectList.count
+        {
+            if !EdgesAdjacent(m_IntersectList[i])
+            {
+                j := i + 1
+                while j < m_IntersectList.count and !EdgesAdjacent(m_IntersectList[j]) j += 1
+                if j == m_IntersectList.count return false
+                swap(m_IntersectList.buffer + i, m_IntersectList.buffer + j)
+            }
+
+            SwapPositionsInSEL(m_IntersectList[i].Edge1, m_IntersectList[i].Edge2)
+        }
+
         return true
     }
 
@@ -1071,6 +1109,47 @@ impl Clipper
 
     method SwapPositionsInSEL(Edge1, Edge2: *TEdge)
     {
+        if !Edge1.NextInSEL and !Edge1.PrevInSEL return
+        if !Edge2.NextInSEL and !Edge2.PrevInSEL return
+
+        if Edge1.NextInSEL == Edge2
+        {
+            Next := Edge2.NextInSEL
+            if Next Next.PrevInSEL = Edge1
+            Prev := Edge1.PrevInSEL
+            if Prev Prev.NextInSEL = Edge2
+            Edge2.PrevInSEL = Prev
+            Edge2.NextInSEL = Edge1
+            Edge1.PrevInSEL = Edge2
+            Edge1.NextInSEL = Next
+        }
+        else if Edge2.NextInSEL == Edge1
+        {
+            Next := Edge1.NextInSEL
+            if Next Next.PrevInSEL = Edge2
+            Prev := Edge2.PrevInSEL
+            if Prev Prev.NextInSEL = Edge1
+            Edge1.PrevInSEL = Prev
+            Edge1.NextInSEL = Edge2
+            Edge2.PrevInSEL = Edge1
+            Edge2.NextInSEL = Next
+        }
+        else
+        {
+            Next := Edge1.NextInSEL
+            Prev := Edge1.PrevInSEL
+            Edge1.NextInSEL = Edge2.NextInSEL
+            if Edge1.NextInSEL Edge1.NextInSEL.PrevInSEL = Edge1
+            Edge1.PrevInSEL = Edge2.PrevInSEL
+            if Edge1.PrevInSEL Edge1.PrevInSEL.NextInSEL = Edge1
+            Edge2.NextInSEL = Next
+            if Edge2.NextInSEL Edge2.NextInSEL.PrevInSEL = Edge2
+            Edge2.PrevInSEL = Prev
+            if Edge2.PrevInSEL Edge2.PrevInSEL.NextInSEL = Edge2
+        }
+
+        if !Edge1.PrevInSEL m_SortedEdges = Edge1
+        else if !Edge2.PrevInSEL m_SortedEdges = Edge2
     }
 
     method IntersectPoint(Edge1, Edge2: *TEdge, ip: *IntPoint)
