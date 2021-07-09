@@ -163,15 +163,15 @@ public struct Clipper
     m_PolyOuts:             Array'*OutRec
     m_Joins:                Array'*Join
     m_GhostJoins:           Array'*Join
-    m_IntersectList:        Array'*IntersectNode
+    intersectList:        Array'*IntersectNode
     m_Scanbeam:             Array'CInt
     m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
     m_CurrentLM:            uint
-    m_ActiveEdges:          *TEdge
-    m_SortedEdges:          *TEdge
+    activeEdges:          *TEdge
+    sortedEdges:          *TEdge
 }
 
 impl Clipper
@@ -635,7 +635,7 @@ impl Clipper
             }
         }
 
-        m_ActiveEdges = null
+        activeEdges = null
         m_CurrentLM = 0
     }
 
@@ -648,11 +648,11 @@ impl Clipper
     {
         SelPrev := e.prevInSEL
         SelNext := e.nextInSEL
-        if !SelPrev and !SelNext and (e != m_SortedEdges) return
+        if !SelPrev and !SelNext and (e != sortedEdges) return
         if SelPrev
             SelPrev.nextInSEL = SelNext
         else
-            m_SortedEdges = SelNext
+            sortedEdges = SelNext
         if SelNext
             SelNext.prevInSEL = SelPrev
         e.nextInSEL = null
@@ -661,13 +661,13 @@ impl Clipper
 
     method PopEdgeFromSEL(edge: **TEdge)->bool
     {
-        if !m_SortedEdges return false
-        dref edge = m_SortedEdges
-        DeleteFromSEL(m_SortedEdges)
+        if !sortedEdges return false
+        dref edge = sortedEdges
+        DeleteFromSEL(sortedEdges)
         return true
     }
 
-    method ProcessHorizontals()
+    method processHorizontals()
     {
         var horzEdge: *TEdge
         while PopEdgeFromSEL(&horzEdge)
@@ -798,7 +798,7 @@ impl Clipper
                 if horzEdge.outIdx >= 0 and !isOpen
                 {
                     op1 = addOutPt(horzEdge, e.curr)
-                    eNextHorz := m_SortedEdges
+                    eNextHorz := sortedEdges
                     while eNextHorz
                     {
                         if eNextHorz.outIdx >= 0 and
@@ -835,7 +835,7 @@ impl Clipper
                 }
 
                 eNext := GetNextInAEL(e, dir)
-                SwapPositionsInAEL(horzEdge, e)
+                swapPositionsInAEL(horzEdge, e)
                 e = eNext
             }
 
@@ -848,7 +848,7 @@ impl Clipper
         if horzEdge.outIdx >= 0 and !op1
         {
             op1 = GetLastOutPt(horzEdge)
-            eNextHorz := m_SortedEdges
+            eNextHorz := sortedEdges
             while eNextHorz
             {
                 if eNextHorz.outIdx >= 0 and
@@ -905,7 +905,7 @@ impl Clipper
         AelPrev := e.prevInAEL
         AelNext := e.nextInAEL
         if AelPrev AelPrev.nextInAEL = e.nextInLML
-        else m_ActiveEdges = e.nextInLML
+        else activeEdges = e.nextInLML
         if AelNext AelNext.prevInAEL = e.nextInLML
         e.nextInLML.side = e.side
         e.nextInLML.windDelta = e.windDelta
@@ -919,7 +919,7 @@ impl Clipper
         dref ed = e
     }
 
-    method SwapPositionsInAEL(edge1, edge2: *TEdge)
+    method swapPositionsInAEL(edge1, edge2: *TEdge)
     {
         if edge1.nextInAEL == edge1.prevInAEL or edge2.nextInAEL == edge2.prevInAEL
             return
@@ -960,20 +960,20 @@ impl Clipper
             if edge2.prevInAEL edge2.prevInAEL.nextInAEL = edge2
         }
 
-        if !edge1.prevInAEL m_ActiveEdges = edge1
-        else if !edge2.prevInAEL m_ActiveEdges = edge2
+        if !edge1.prevInAEL activeEdges = edge1
+        else if !edge2.prevInAEL activeEdges = edge2
     }
 
     method DeleteFromAEL(e: *TEdge)
     {
         AelPrev := e.prevInAEL
         AelNext := e.nextInAEL
-        if !AelPrev and !AelNext and (e != m_ActiveEdges)
+        if !AelPrev and !AelNext and (e != activeEdges)
             return
         if AelPrev
             AelPrev.nextInAEL = AelNext
         else
-            m_ActiveEdges = AelNext
+            activeEdges = AelNext
         if AelNext
             AelNext.prevInAEL = AelPrev
         e.nextInAEL = null
@@ -998,7 +998,7 @@ impl Clipper
     {
         Reset()
         m_Maxima.clear()
-        m_SortedEdges = null
+        sortedEdges = null
 
         var botY, topY: CInt
         if !PopScanbeam(&botY) throw "Error"
@@ -1006,9 +1006,9 @@ impl Clipper
         insertLocalMinimaIntoAEL(botY)
         while PopScanbeam(&topY) or LocalMinimaPending()
         {
-            ProcessHorizontals()
+            processHorizontals()
             ClearGhostJoins()
-            try ProcessIntersections(topY)
+            try processIntersections(topY)
             ProcessEdgesAtTopOfScanbeam(topY)
             botY = topY
             insertLocalMinimaIntoAEL(botY)
@@ -1685,7 +1685,7 @@ impl Clipper
         while eNext and eNext != eMaxPair
         {
             intersectEdges(e, eNext, e.top)
-            SwapPositionsInAEL(e, eNext)
+            swapPositionsInAEL(e, eNext)
             eNext = e.nextInAEL
         }
 
@@ -1708,7 +1708,7 @@ impl Clipper
 
     method ProcessEdgesAtTopOfScanbeam(topY: CInt)
     {
-        e := m_ActiveEdges
+        e := activeEdges
         while e
         {
             //1. process maxima, treating them as if they're 'bent' horizontal edges,
@@ -1725,7 +1725,7 @@ impl Clipper
                 if m_StrictSimple m_Maxima.add(e.top.x)
                 ePrev := e.prevInAEL
                 DoMaxima(e)
-                if !ePrev e = m_ActiveEdges
+                if !ePrev e = activeEdges
                 else e = ePrev.nextInAEL
             }
             else
@@ -1765,11 +1765,11 @@ impl Clipper
 
         //3. Process horizontals at the top of the scanbeam ...
         m_Maxima.sort()
-        ProcessHorizontals()
+        processHorizontals()
         m_Maxima.clear()
 
         //4. Promote intermediate vertices ...
-        e = m_ActiveEdges
+        e = activeEdges
         while e
         {
             if IsIntermediate(e, topY)
@@ -1805,26 +1805,26 @@ impl Clipper
         }
     }
 
-    method ProcessIntersections(topY: CInt) throw
+    method processIntersections(topY: CInt) throw
     {
-        if !m_ActiveEdges return
-        BuildIntersectList(topY)
-        IlSize := m_IntersectList.count
+        if !activeEdges return
+        buildIntersectList(topY)
+        IlSize := intersectList.count
         if IlSize == 0 return
 
-        if IlSize == 1 or FixupIntersectionOrder()
+        if IlSize == 1 or fixupIntersectionOrder()
             processIntersectList()
         else
-            throw "ProcessIntersections"
-        m_SortedEdges = null
+            throw "processIntersections"
+        sortedEdges = null
     }
 
-    method BuildIntersectList(topY: CInt)
+    method buildIntersectList(topY: CInt)
     {
-        if !m_ActiveEdges return
+        if !activeEdges return
 
-        e := m_ActiveEdges
-        m_SortedEdges = e
+        e := activeEdges
+        sortedEdges = e
         while e
         {
             e.prevInSEL = e.prevInAEL
@@ -1837,7 +1837,7 @@ impl Clipper
         loop
         {
             isModified = false
-            e = m_SortedEdges
+            e = sortedEdges
             while e.nextInSEL
             {
                 eNext := e.nextInSEL
@@ -1850,7 +1850,7 @@ impl Clipper
                     newNode.edge1 = e;
                     newNode.edge2 = eNext
                     newNode.pt = pt
-                    m_IntersectList.add(newNode)
+                    intersectList.add(newNode)
                     swapPositionsInSEL(e, eNext)
                     isModified = true
                 }
@@ -1863,13 +1863,13 @@ impl Clipper
             if !isModified break
         }
 
-        m_SortedEdges = null
+        sortedEdges = null
     }
 
-    method CopyAELToSEL()
+    method copyAELToSEL()
     {
-        e := m_ActiveEdges
-        m_SortedEdges = e
+        e := activeEdges
+        sortedEdges = e
         while e
         {
             e.prevInSEL = e.prevInAEL
@@ -1878,26 +1878,26 @@ impl Clipper
         }
     }
 
-    func EdgesAdjacent(inode: *IntersectNode)->bool
+    func edgesAdjacent(inode: *IntersectNode)->bool
     {
         return (inode.edge1.nextInSEL == inode.edge2) or (inode.edge1.prevInSEL == inode.edge2)
     }
 
-    method FixupIntersectionOrder()->bool
+    method fixupIntersectionOrder()->bool
     {
-        CopyAELToSEL()
-        m_IntersectList.sort()
-        loop i: m_IntersectList.count
+        copyAELToSEL()
+        intersectList.sort()
+        loop i: intersectList.count
         {
-            if !EdgesAdjacent(m_IntersectList[i])
+            if !edgesAdjacent(intersectList[i])
             {
                 j := i + 1
-                while j < m_IntersectList.count and !EdgesAdjacent(m_IntersectList[j]) j += 1
-                if j == m_IntersectList.count return false
-                swap(m_IntersectList.buffer + i, m_IntersectList.buffer + j)
+                while j < intersectList.count and !edgesAdjacent(intersectList[j]) j += 1
+                if j == intersectList.count return false
+                swap(intersectList.buffer + i, intersectList.buffer + j)
             }
 
-            swapPositionsInSEL(m_IntersectList[i].edge1, m_IntersectList[i].edge2)
+            swapPositionsInSEL(intersectList[i].edge1, intersectList[i].edge2)
         }
 
         return true
@@ -1905,14 +1905,14 @@ impl Clipper
 
     method processIntersectList()
     {
-        visit iNode: m_IntersectList
+        visit iNode: intersectList
         {
             intersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
-            SwapPositionsInAEL(iNode.edge1, iNode.edge2)
+            swapPositionsInAEL(iNode.edge1, iNode.edge2)
             Memory.delete(iNode)
         }
 
-        m_IntersectList.clear()
+        intersectList.clear()
     }
 
     method swapPositionsInSEL(edge1, edge2: *TEdge)
@@ -1956,8 +1956,8 @@ impl Clipper
             if edge2.prevInSEL edge2.prevInSEL.nextInSEL = edge2
         }
 
-        if !edge1.prevInSEL m_SortedEdges = edge1
-        else if !edge2.prevInSEL m_SortedEdges = edge2
+        if !edge1.prevInSEL sortedEdges = edge1
+        else if !edge2.prevInSEL sortedEdges = edge2
     }
 
     method intersectPoint(edge1, edge2: *TEdge, ip: *IntPoint)
@@ -2060,22 +2060,22 @@ impl Clipper
     method insertEdgeIntoAEL(edge, startE: *TEdge)
     {
         startEdge := startE
-        if !m_ActiveEdges
+        if !activeEdges
         {
             edge.prevInAEL = null
             edge.nextInAEL = null
-            m_ActiveEdges = edge
+            activeEdges = edge
         }
-        else if !startEdge and e2InsertsBeforeE1(m_ActiveEdges, edge)
+        else if !startEdge and e2InsertsBeforeE1(activeEdges, edge)
         {
             edge.prevInAEL = null
-            edge.nextInAEL = m_ActiveEdges
-            m_ActiveEdges.prevInAEL = edge
-            m_ActiveEdges = edge
+            edge.nextInAEL = activeEdges
+            activeEdges.prevInAEL = edge
+            activeEdges = edge
         }
         else
         {
-            if !startEdge startEdge = m_ActiveEdges
+            if !startEdge startEdge = activeEdges
             while startEdge.nextInAEL and !e2InsertsBeforeE1(startEdge.nextInAEL, edge)
                 startEdge = startEdge.nextInAEL
             edge.nextInAEL = startEdge.nextInAEL
@@ -2116,7 +2116,7 @@ impl Clipper
             else
                 edge.windCnt = edge.windDelta
             edge.windCnt2 = 0
-            e = m_ActiveEdges
+            e = activeEdges
         }
         else if edge.windDelta == 0 and m_ClipType != .Union
         {
@@ -2411,18 +2411,18 @@ impl Clipper
 
     method addEdgeToSEL(edge: *TEdge)
     {
-        if !m_SortedEdges
+        if !sortedEdges
         {
-            m_SortedEdges = edge
+            sortedEdges = edge
             edge.prevInSEL = null
             edge.nextInSEL = null
         }
         else
         {
-            edge.nextInSEL = m_SortedEdges
+            edge.nextInSEL = sortedEdges
             edge.prevInSEL = null
-            m_SortedEdges.prevInSEL = edge
-            m_SortedEdges = edge
+            sortedEdges.prevInSEL = edge
+            sortedEdges = edge
         }
     }
 
@@ -2648,7 +2648,7 @@ impl Clipper
         e1.outIdx = Unassigned
         e2.outIdx = Unassigned
 
-        e := m_ActiveEdges
+        e := activeEdges
         while e
         {
             if e.outIdx == ObsoleteIdx
