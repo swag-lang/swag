@@ -976,6 +976,13 @@ impl Clipper
         e.PrevInAEL = null
     }
 
+    method ClearJoins()
+    {
+        visit p: m_Joins
+            Memory.delete(p)
+        m_Joins.clear()
+    }
+
     method ClearGhostJoins()
     {
         visit p: m_GhostJoins
@@ -1012,6 +1019,148 @@ impl Clipper
         }
 
         if m_Joins.count JoinCommonEdges()
+
+        //unfortunately FixupOutPolygon() must be done after JoinCommonEdges()
+        visit outRec: m_PolyOuts
+        {
+            if !outRec.Pts continue
+            if outRec.IsOpen
+                FixupOutPolyline(outRec)
+            else
+                FixupOutPolygon(outRec)
+        }
+
+        if m_StrictSimple DoSimplePolygons()
+
+        ClearJoins()
+        ClearGhostJoins()
+    }
+
+    method DoSimplePolygons()
+    {
+        var i: uint
+        while i < m_PolyOuts.count
+        {
+            outrec := m_PolyOuts[i]
+            i += 1
+            op := outrec.Pts
+            if !op or outrec.IsOpen continue
+
+            loop
+            {
+                op2 := op.Next
+                while op2 != outrec.Pts
+                {
+                    if op.Pt == op2.Pt and op2.Next != op and op2.Prev != op
+                    {
+                        op3 := op.Prev
+                        op4 := op2.Prev
+                        op.Prev = op4
+                        op4.Next = op
+                        op2.Prev = op3
+                        op3.Next = op2
+
+                        outrec.Pts = op
+                        outrec2 := CreateOutRec()
+                        outrec2.Pts = op2
+                        UpdateOutPtIdxs(outrec2)
+                        if Poly2ContainsPoly1(outrec2.Pts, outrec.Pts)
+                        {
+                            outrec2.IsHole = !outrec.IsHole
+                            outrec2.FirstLeft = outrec
+                            if m_UsingPolyTree FixupFirstLefts2(outrec2, outrec)
+                        }
+                        else if Poly2ContainsPoly1(outrec.Pts, outrec2.Pts)
+                        {
+                            outrec2.IsHole = outrec.IsHole
+                            outrec.IsHole = !outrec2.IsHole
+                            outrec2.FirstLeft = outrec.FirstLeft
+                            outrec.FirstLeft = outrec2
+                            if m_UsingPolyTree FixupFirstLefts2(outrec, outrec2)
+                        }
+                        else
+                        {
+                            outrec2.IsHole = outrec.IsHole
+                            outrec2.FirstLeft = outrec.FirstLeft
+                            if m_UsingPolyTree FixupFirstLefts1(outrec, outrec2)
+                        }
+
+                        op2 = op
+                    }
+
+                    op2 = op2.Next
+                }
+
+                op = op.Next
+                if op == outrec.Pts break
+            }
+        }
+    }
+
+
+    func FixupOutPolyline(outrec: *OutRec)
+    {
+        pp := outrec.Pts
+        lastPP := pp.Prev
+        while pp != lastPP
+        {
+            pp = pp.Next
+            if pp.Pt == pp.Prev.Pt
+            {
+                if pp == lastPP lastPP = pp.Prev
+                tmpPP := pp.Prev
+                tmpPP.Next = pp.Next
+                pp.Next.Prev = tmpPP
+                Memory.delete(pp)
+                pp = tmpPP
+            }
+        }
+
+        if pp == pp.Prev
+        {
+            DisposeOutPts(pp)
+            outrec.Pts = null
+            return
+        }
+    }
+
+    method FixupOutPolygon(outrec: *OutRec)
+    {
+        var lastOK: *OutPt
+        outrec.BottomPt = null
+        pp := outrec.Pts
+        preserveCol := m_PreserveCollinear or m_StrictSimple
+
+        loop
+        {
+            if pp.Prev == pp or pp.Prev == pp.Next
+            {
+                DisposeOutPts(pp)
+                outrec.Pts = null
+                return
+            }
+
+            if (pp.Pt == pp.Next.Pt) or (pp.Pt == pp.Prev.Pt) or
+                (SlopesEqual(pp.Prev.Pt, pp.Pt, pp.Next.Pt) and
+                (!preserveCol or !Pt2IsBetweenPt1AndPt3(pp.Prev.Pt, pp.Pt, pp.Next.Pt)))
+            {
+                lastOK = null
+                tmp := pp
+                pp.Prev.Next = pp.Next
+                pp.Next.Prev = pp.Prev
+                pp = pp.Prev
+                Memory.delete(tmp)
+            }
+            else if pp == lastOK
+                break
+            else
+            {
+                if !lastOK lastOK = pp
+                pp = pp.Next
+            }
+        }
+
+        outrec.Pts = pp
     }
 
     method GetOutRec(Idx: s32)->*OutRec
