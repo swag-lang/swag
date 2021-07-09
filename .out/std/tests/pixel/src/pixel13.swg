@@ -12,10 +12,10 @@ using Core, Pixel
     lp.close()
 
     lp.flatten(PaintQuality.Normal)
-    assume clipper.addPath(&lp, PolyType.ptSubject)
+    assume clipper.addPath(&lp, PolyType.Subject)
 
     var lpl: LinePathList
-    assume clipper.execute(ClipType.ctUnion, &lpl, PolyFillType.pftNonZero, PolyFillType.pftNonZero)
+    assume clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
     @assert(lpl.paths.count == 1)
     @assert(lpl.paths[0].posBuffer.count == 4)
 }

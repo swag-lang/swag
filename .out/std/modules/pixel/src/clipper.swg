@@ -34,19 +34,19 @@ using Core
 
 struct IntPoint
 {
-    X, Y: CInt
+    x, y: CInt
 }
 
 impl IntPoint
 {
     method opEquals(other: Self)->bool
     {
-        return X == other.X and Y == other.Y
+        return x == other.x and y == other.y
     }
 }
 
-const loRange = 0x7FFF
-const hiRange = 0x7FFF
+const LoRange = 0x7FFF
+const HiRange = 0x7FFF
 const Unassigned = -1
 const Skip = -2
 const HORIZONTAL = -1.0E+40
@@ -55,99 +55,99 @@ alias CInt  = s32
 alias ClipperPath  = Array'IntPoint
 alias ClipperPaths  = Array'ClipperPath
 
-public enum PolyType        { ptSubject; ptClip; }
-public enum ClipType        { ctIntersection; ctUnion; ctDifference; ctXor; }
-public enum PolyFillType    { pftEvenOdd; pftNonZero; pftPositive; pftNegative; }
-public enum InitOptions     { ioReverseSolution = 1; ioStrictlySimple = 2; ioPreserveCollinear = 4; }
-public enum JoinType        { jtSquare; jtRound; jtMiter; }
-public enum EndType         { etClosedPolygon; etClosedLine; etOpenButt; etOpenSquare; etOpenRound; }
+public enum PolyType        { Subject; Clip; }
+public enum ClipType        { Intersection; Union; Difference; Xor; }
+public enum PolyFillType    { EvenOdd; NonZero; Positive; Negative; }
+public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveCollinear = 4; }
+public enum JoinType        { Square; Round; Miter; }
+public enum EndType         { ClosedPolygon; ClosedLine; OpenButt; OpenSquare; OpenRound; }
 
-enum EdgeSide { esLeft = 1; esRight = 2; }
-enum Direction { dRightToLeft; dLeftToRight; }
+enum EdgeSide { Left = 1; Right = 2; }
+enum Direction { RightToLeft; LeftToRight; }
 
 struct IntersectNode
 {
-    Edge1:    *TEdge
-    Edge2:    *TEdge
-    Pt:       IntPoint
+    edge1:    *TEdge
+    edge2:    *TEdge
+    pt:       IntPoint
 }
 
 impl IntersectNode
 {
     method opCmp(other: *IntersectNode)->s32
     {
-        return Pt.Y <=> other.Pt.Y
+        return pt.y <=> other.pt.y
     }
 }
 
 struct LocalMinimum
 {
-    Y:            CInt
-    LeftBound:    *TEdge
-    RightBound:   *TEdge
+    y:            CInt
+    leftBound:    *TEdge
+    rightBound:   *TEdge
 }
 
 impl LocalMinimum
 {
     method opCmp(other: LocalMinimum)->s32
     {
-        return Y <=> other.Y
+        return y <=> other.y
     }
 }
 
 struct TEdge
 {
-    Bot:          IntPoint
-    Curr:         IntPoint
-    Top:          IntPoint
-    Dx:           f64
-    PolyTyp:      PolyType = ?
-    Side:         EdgeSide = ?
-    WindDelta:    s32
-    WindCnt:      s32
-    WindCnt2:     s32
-    OutIdx:       s32
-    Next:         *TEdge
-    Prev:         *TEdge
-    NextInLML:    *TEdge
-    NextInAEL:    *TEdge
-    PrevInAEL:    *TEdge
-    NextInSEL:    *TEdge
-    PrevInSEL:    *TEdge
+    bot:          IntPoint
+    curr:         IntPoint
+    top:          IntPoint
+    dx:           f64
+    polyType:     PolyType = ?
+    side:         EdgeSide = ?
+    windDelta:    s32
+    windCnt:      s32
+    windCnt2:     s32
+    outIdx:       s32
+    next:         *TEdge
+    prev:         *TEdge
+    nextInLML:    *TEdge
+    nextInAEL:    *TEdge
+    prevInAEL:    *TEdge
+    nextInSEL:    *TEdge
+    prevInSEL:    *TEdge
 }
 
 struct OutRec
 {
-    Idx:        s32
-    IsHole:     bool
-    IsOpen:     bool
-    FirstLeft:  *OutRec
-    PolyNd:     *PolyNode
-    Pts:        *OutPt
-    BottomPt:   *OutPt
+    idx:        s32
+    isHole:     bool
+    isOpen:     bool
+    firstLeft:  *OutRec
+    polyNd:     *PolyNode
+    pts:        *OutPt
+    bottomPt:   *OutPt
 }
 
 struct OutPt
 {
-    Idx:      s32
-    Pt:       IntPoint
-    Next:     *OutPt
-    Prev:     *OutPt
+    idx:      s32
+    pt:       IntPoint
+    next:     *OutPt
+    prev:     *OutPt
 }
 
 struct PolyNode
 {
-    Index:      u32
-    m_IsOpen:   bool
-    m_jointype: JoinType = ?
-    m_endtype:  EndType = ?
+    Index:    u32
+    isOpen:   bool
+    jointype: JoinType = ?
+    endtype:  EndType = ?
 }
 
 struct Join
 {
-    OutPt1: *OutPt
-    OutPt2: *OutPt
-    OffPt:  IntPoint
+    outPt1: *OutPt
+    outPt2: *OutPt
+    offPt:  IntPoint
 }
 
 #[Swag.opaque]
@@ -197,12 +197,12 @@ impl Clipper
             path := Memory.new'LinePath()
             visit *pt: dref res[i]
             {
-                vec := Math.Vector2{cast(f32) pt.X, cast(f32) pt.Y}
+                vec := Math.Vector2{cast(f32) pt.x, cast(f32) pt.y}
                 path.posBuffer.add(vec)
                 /*if @index == 0
-                    path.start(cast(f32) pt.X, cast(f32) pt.Y)
+                    path.start(cast(f32) pt.x, cast(f32) pt.y)
                 else
-                    path.lineTo(cast(f32) pt.X, cast(f32) pt.Y)*/
+                    path.lineTo(cast(f32) pt.x, cast(f32) pt.y)*/
             }
 
             solution.paths.add(path)
@@ -237,7 +237,7 @@ impl Clipper
         // 1. Basic (first) edge initialization ...
         try
         {
-            edges[1].Curr = pg.buffer[1]
+            edges[1].curr = pg.buffer[1]
             RangeTest(pg.buffer[0], &m_UseFullRange)
             RangeTest(pg.buffer[highI], &m_UseFullRange)
             InitEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
@@ -257,38 +257,38 @@ impl Clipper
         loop
         {
             //nb: allows matching start and end points when not Closed ...
-            if E.Curr == E.Next.Curr
+            if E.curr == E.next.curr
             {
-                if E == E.Next break
-                if E == eStart eStart = E.Next
+                if E == E.next break
+                if E == eStart eStart = E.next
                 E = RemoveEdge(E)
                 eLoopStop = E
                 continue
             }
 
             //only two vertices
-            if E.Prev == E.Next
+            if E.prev == E.next
                 break
-            else if SlopesEqual(E.Prev.Curr, E.Curr, E.Next.Curr) and
-                    (!m_PreserveCollinear or !Pt2IsBetweenPt1AndPt3(E.Prev.Curr, E.Curr, E.Next.Curr))
+            else if SlopesEqual(E.prev.curr, E.curr, E.next.curr) and
+                    (!m_PreserveCollinear or !Pt2IsBetweenPt1AndPt3(E.prev.curr, E.curr, E.next.curr))
             {
                 //Collinear edges are allowed for open paths but in closed paths
                 //the default is to merge adjacent collinear edges into a single edge.
                 //However, if the PreserveCollinear property is enabled, only overlapping
                 //collinear edges (ie spikes) will be removed from closed paths.
-                if E == eStart eStart = E.Next
+                if E == eStart eStart = E.next
                 E = RemoveEdge(E)
-                E = E.Prev
+                E = E.prev
                 eLoopStop = E
                 continue
             }
 
-            E = E.Next
+            E = E.next
             if E == eLoopStop
                 break
         }
 
-        if E.Prev == E.Next
+        if E.prev == E.next
             throw "invalid path"
 
         //3. Do second stage of edge initialization ...
@@ -296,8 +296,8 @@ impl Clipper
         loop
         {
             InitEdge2(E, polyType)
-            E = E.Next
-            if IsFlat and E.Curr.Y != eStart.Curr.Y IsFlat = false
+            E = E.next
+            if IsFlat and E.curr.y != eStart.curr.y IsFlat = false
             if E == eStart break
         }
 
@@ -310,7 +310,7 @@ impl Clipper
 
         //workaround to avoid an endless loop in the while loop below when
         //open paths have matching start and end points ...
-        if E.Prev.Bot == E.Prev.Top E = E.Next
+        if E.prev.bot == E.prev.top E = E.next
 
         loop
         {
@@ -318,39 +318,39 @@ impl Clipper
             if E == EMin break
             else if !EMin EMin = E
 
-            //E and E.Prev now share a local minima (left aligned if horizontal).
+            //E and E.prev now share a local minima (left aligned if horizontal).
             //Compare their slopes to find which starts which bound ...
             var locMin: LocalMinimum
-            locMin.Y = E.Bot.Y
-            if E.Dx < E.Prev.Dx
+            locMin.y = E.bot.y
+            if E.dx < E.prev.dx
             {
-                locMin.LeftBound = E.Prev
-                locMin.RightBound = E
+                locMin.leftBound = E.prev
+                locMin.rightBound = E
                 leftBoundIsForward = false
             }
             else
             {
-                locMin.LeftBound = E
-                locMin.RightBound = E.Prev
+                locMin.leftBound = E
+                locMin.rightBound = E.prev
                 leftBoundIsForward = true
             }
 
-            if locMin.LeftBound.Next == locMin.RightBound
-                locMin.LeftBound.WindDelta = -1
+            if locMin.leftBound.next == locMin.rightBound
+                locMin.leftBound.windDelta = -1
             else
-                locMin.LeftBound.WindDelta = 1
-            locMin.RightBound.WindDelta = -locMin.LeftBound.WindDelta
+                locMin.leftBound.windDelta = 1
+            locMin.rightBound.windDelta = -locMin.leftBound.windDelta
 
-            E = ProcessBound(locMin.LeftBound, leftBoundIsForward)
-            if E.OutIdx == Skip E = ProcessBound(E, leftBoundIsForward)
+            E = ProcessBound(locMin.leftBound, leftBoundIsForward)
+            if E.outIdx == Skip E = ProcessBound(E, leftBoundIsForward)
 
-            E2 := ProcessBound(locMin.RightBound, !leftBoundIsForward)
-            if E2.OutIdx == Skip E2 = ProcessBound(E2, !leftBoundIsForward)
+            E2 := ProcessBound(locMin.rightBound, !leftBoundIsForward)
+            if E2.outIdx == Skip E2 = ProcessBound(E2, !leftBoundIsForward)
 
-            if locMin.LeftBound.OutIdx == Skip
-                locMin.LeftBound = null
-            else if locMin.RightBound.OutIdx == Skip
-                locMin.RightBound = null
+            if locMin.leftBound.outIdx == Skip
+                locMin.leftBound = null
+            else if locMin.rightBound.outIdx == Skip
+                locMin.rightBound = null
             m_MinimaList.add(locMin)
             if !leftBoundIsForward E = E2
         }
@@ -359,95 +359,95 @@ impl Clipper
     func InitEdge(e, eNext, ePrev: *TEdge, pt: IntPoint)
     {
         Memory.clear(e, @sizeof(TEdge))
-        e.Next = eNext
-        e.Prev = ePrev
-        e.Curr = pt
-        e.OutIdx = Unassigned
+        e.next = eNext
+        e.prev = ePrev
+        e.curr = pt
+        e.outIdx = Unassigned
     }
 
-    func InitEdge2(e: *TEdge, Pt: PolyType)
+    func InitEdge2(e: *TEdge, pt: PolyType)
     {
-        if e.Curr.Y >= e.Next.Curr.Y
+        if e.curr.y >= e.next.curr.y
         {
-            e.Bot = e.Curr
-            e.Top = e.Next.Curr
+            e.bot = e.curr
+            e.top = e.next.curr
         }
         else
         {
-            e.Top = e.Curr;
-            e.Bot = e.Next.Curr
+            e.top = e.curr;
+            e.bot = e.next.curr
         }
 
         SetDx(e)
-        e.PolyTyp = Pt
+        e.polyType = pt
     }
 
     func SetDx(e: *TEdge)
     {
-        dy := (e.Top.Y - e.Bot.Y)
-        if dy == 0 e.Dx = HORIZONTAL
-        else e.Dx = cast(f64) (e.Top.X - e.Bot.X) / dy
+        dy := (e.top.y - e.bot.y)
+        if dy == 0 e.dx = HORIZONTAL
+        else e.dx = cast(f64) (e.top.x - e.bot.x) / dy
     }
 
     func RemoveEdge(e: *TEdge)->*TEdge
     {
-        e.Prev.Next = e.Next;
-        e.Next.Prev = e.Prev;
-        result := e.Next
-        e.Prev = null
+        e.prev.next = e.next;
+        e.next.prev = e.prev;
+        result := e.next
+        e.prev = null
         return result
     }
 
-    method AddJoin(op1, op2: *OutPt, OffPt: IntPoint)
+    method AddJoin(op1, op2: *OutPt, offPt: IntPoint)
     {
         j := Memory.new'Join()
-        j.OutPt1 = op1
-        j.OutPt2 = op2
-        j.OffPt = OffPt
+        j.outPt1 = op1
+        j.outPt2 = op2
+        j.offPt = offPt
         m_Joins.add(j)
     }
 
     func SlopesEqual(e1: *TEdge, e2: *TEdge)->bool
     {
-        return (e1.Top.Y - e1.Bot.Y) * (e2.Top.X - e2.Bot.X) == (e1.Top.X - e1.Bot.X) * (e2.Top.Y - e2.Bot.Y)
+        return (e1.top.y - e1.bot.y) * (e2.top.x - e2.bot.x) == (e1.top.x - e1.bot.x) * (e2.top.y - e2.bot.y)
     }
 
     func SlopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
-        return (pt1.Y-pt2.Y)*(pt2.X-pt3.X) == (pt1.X-pt2.X)*(pt2.Y-pt3.Y)
+        return (pt1.y-pt2.y)*(pt2.x-pt3.x) == (pt1.x-pt2.x)*(pt2.y-pt3.y)
     }
 
     func SlopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
     {
-        return (pt1.Y-pt2.Y)*(pt3.X-pt4.X) == (pt1.X-pt2.X)*(pt3.Y-pt4.Y)
+        return (pt1.y-pt2.y)*(pt3.x-pt4.x) == (pt1.x-pt2.x)*(pt3.y-pt4.y)
     }
 
     func Pt2IsBetweenPt1AndPt3(pt1, pt2, pt3: IntPoint)->bool
     {
         if (pt1 == pt3) or (pt1 == pt2) or (pt3 == pt2)
             return false
-        if pt1.X != pt3.X
-            return (pt2.X > pt1.X) == (pt2.X < pt3.X)
-        return (pt2.Y > pt1.Y) == (pt2.Y < pt3.Y)
+        if pt1.x != pt3.x
+            return (pt2.x > pt1.x) == (pt2.x < pt3.x)
+        return (pt2.y > pt1.y) == (pt2.y < pt3.y)
     }
 
-    func RangeTest(Pt: IntPoint, useFullRange: *bool) throw
+    func RangeTest(pt: IntPoint, useFullRange: *bool) throw
     {
         if dref useFullRange
         {
-            if Pt.X > hiRange or Pt.Y > hiRange or -Pt.X > hiRange or -Pt.Y > hiRange
+            if pt.x > HiRange or pt.y > HiRange or -pt.x > HiRange or -pt.y > HiRange
                 throw "Coordinate outside allowed range"
         }
-        else if Pt.X > loRange or Pt.Y > loRange or -Pt.X > loRange or -Pt.Y > loRange
+        else if pt.x > LoRange or pt.y > LoRange or -pt.x > LoRange or -pt.y > LoRange
         {
             dref useFullRange = true
-            try RangeTest(Pt, useFullRange)
+            try RangeTest(pt, useFullRange)
         }
     }
 
     func IsHorizontal(e: *TEdge)->bool
     {
-        return e.Dx == HORIZONTAL
+        return e.dx == HORIZONTAL
     }
 
     func FindNextLocMin(edge: *TEdge)->*TEdge
@@ -455,13 +455,13 @@ impl Clipper
         E := edge
         loop
         {
-            while E.Bot != E.Prev.Bot or E.Curr == E.Top E = E.Next
-            if !IsHorizontal(E) and !IsHorizontal(E.Prev) break
-            while IsHorizontal(E.Prev) E = E.Prev
+            while E.bot != E.prev.bot or E.curr == E.top E = E.next
+            if !IsHorizontal(E) and !IsHorizontal(E.prev) break
+            while IsHorizontal(E.prev) E = E.prev
             E2 := E;
-            while IsHorizontal(E) E = E.Next
-            if E.Top.Y == E.Prev.Bot.Y continue
-            if E2.Prev.Bot.X < E.Bot.X E = E2
+            while IsHorizontal(E) E = E.next
+            if E.top.y == E.prev.bot.y continue
+            if E2.prev.bot.x < E.bot.x E = E2
             break
         }
 
@@ -470,7 +470,7 @@ impl Clipper
 
     func ReverseHorizontal(e: *TEdge)
     {
-        swap(&e.Top.X, &e.Bot.X)
+        swap(&e.top.x, &e.bot.x)
     }
 
     method ProcessBound(edge: *TEdge, NextIsForward: bool)->*TEdge
@@ -479,41 +479,41 @@ impl Clipper
         var Result: *TEdge = E
         var Horz: *TEdge
 
-        if E.OutIdx == Skip
+        if E.outIdx == Skip
         {
             if NextIsForward
             {
-                while E.Top.Y == E.Next.Bot.Y
-                    E = E.Next
+                while E.top.y == E.next.bot.y
+                    E = E.next
                 while E != Result and IsHorizontal(E)
-                    E = E.Prev
+                    E = E.prev
             }
             else
             {
-                while E.Top.Y == E.Prev.Bot.Y
-                    E = E.Prev
+                while E.top.y == E.prev.bot.y
+                    E = E.prev
                 while E != Result and IsHorizontal(E)
-                    E = E.Next
+                    E = E.next
             }
 
             if E == Result
             {
                 if NextIsForward
-                    Result = E.Next
+                    Result = E.next
                 else
-                    Result = E.Prev
+                    Result = E.prev
             }
             else
             {
                 if NextIsForward
-                    E = Result.Next
+                    E = Result.next
                 else
-                    E = Result.Prev
+                    E = Result.prev
                 var locMin: LocalMinimum
-                locMin.Y = E.Bot.Y
-                locMin.LeftBound = null
-                locMin.RightBound = E
-                E.WindDelta = 0
+                locMin.y = E.bot.y
+                locMin.leftBound = null
+                locMin.rightBound = E
+                E.windDelta = 0
                 Result = ProcessBound(E, NextIsForward)
                 m_MinimaList.add(locMin)
             }
@@ -525,65 +525,65 @@ impl Clipper
         if IsHorizontal(E)
         {
             if NextIsForward
-                EStart = E.Prev
+                EStart = E.prev
             else
-                EStart = E.Next
+                EStart = E.next
             if IsHorizontal(EStart)
             {
-                if EStart.Bot.X != E.Bot.X and EStart.Top.X != E.Bot.X
+                if EStart.bot.x != E.bot.x and EStart.top.x != E.bot.x
                     ReverseHorizontal(E)
             }
-            else if EStart.Bot.X != E.Bot.X
+            else if EStart.bot.x != E.bot.x
                 ReverseHorizontal(E)
         }
 
         EStart = E
         if NextIsForward
         {
-            while Result.Top.Y == Result.Next.Bot.Y and Result.Next.OutIdx != Skip
-                Result = Result.Next
-            if IsHorizontal(Result) and Result.Next.OutIdx != Skip
+            while Result.top.y == Result.next.bot.y and Result.next.outIdx != Skip
+                Result = Result.next
+            if IsHorizontal(Result) and Result.next.outIdx != Skip
             {
                 Horz = Result
-                while IsHorizontal(Horz.Prev) Horz = Horz.Prev
-                if Horz.Prev.Top.X > Result.Next.Top.X Result = Horz.Prev
+                while IsHorizontal(Horz.prev) Horz = Horz.prev
+                if Horz.prev.top.x > Result.next.top.x Result = Horz.prev
             }
 
             while E != Result
             {
-                E.NextInLML = E.Next
-                if IsHorizontal(E) and E != EStart and E.Bot.X != E.Prev.Top.X
+                E.nextInLML = E.next
+                if IsHorizontal(E) and E != EStart and E.bot.x != E.prev.top.x
                     ReverseHorizontal(E)
-                E = E.Next
+                E = E.next
             }
 
-            if IsHorizontal(E) and E != EStart and E.Bot.X != E.Prev.Top.X
+            if IsHorizontal(E) and E != EStart and E.bot.x != E.prev.top.x
                 ReverseHorizontal(E)
-            Result = Result.Next
+            Result = Result.next
         }
         else
         {
-            while Result.Top.Y == Result.Prev.Bot.Y and Result.Prev.OutIdx != Skip
-                Result = Result.Prev
-            if IsHorizontal(Result) and Result.Prev.OutIdx != Skip
+            while Result.top.y == Result.prev.bot.y and Result.prev.outIdx != Skip
+                Result = Result.prev
+            if IsHorizontal(Result) and Result.prev.outIdx != Skip
             {
                 Horz = Result
-                while IsHorizontal(Horz.Next) Horz = Horz.Next
-                if Horz.Next.Top.X == Result.Prev.Top.X or Horz.Next.Top.X > Result.Prev.Top.X
-                    Result = Horz.Next
+                while IsHorizontal(Horz.next) Horz = Horz.next
+                if Horz.next.top.x == Result.prev.top.x or Horz.next.top.x > Result.prev.top.x
+                    Result = Horz.next
             }
 
             while E != Result
             {
-                E.NextInLML = E.Prev
-                if IsHorizontal(E) and E != EStart and E.Bot.X != E.Next.Top.X
+                E.nextInLML = E.prev
+                if IsHorizontal(E) and E != EStart and E.bot.x != E.next.top.x
                     ReverseHorizontal(E);
-                E = E.Prev
+                E = E.prev
             }
 
-            if IsHorizontal(E) and E != EStart and E.Bot.X != E.Next.Top.X
+            if IsHorizontal(E) and E != EStart and E.bot.x != E.next.top.x
                 ReverseHorizontal(E)
-            Result = Result.Prev
+            Result = Result.prev
         }
 
         return Result
@@ -594,17 +594,17 @@ impl Clipper
         if !m_Scanbeam.count
             return false
 
-        Y := m_Scanbeam.popBack()
-        dref res = Y
-        while m_Scanbeam.count and Y == m_Scanbeam.back()
+        y := m_Scanbeam.popBack()
+        dref res = y
+        while m_Scanbeam.count and y == m_Scanbeam.back()
             m_Scanbeam.count -= 1
 
         return true
     }
 
-    method InsertScanbeam(Y: CInt)
+    method InsertScanbeam(y: CInt)
     {
-        m_Scanbeam.add(Y)
+        m_Scanbeam.add(y)
         m_Scanbeam.sort()
     }
 
@@ -617,21 +617,21 @@ impl Clipper
         m_Scanbeam.clear()
         visit lm: m_MinimaList
         {
-            InsertScanbeam(lm.Y)
-            e := lm.LeftBound
+            InsertScanbeam(lm.y)
+            e := lm.leftBound
             if e
             {
-                e.Curr = e.Bot
-                e.Side = .esLeft
-                e.OutIdx = Unassigned
+                e.curr = e.bot
+                e.side = .Left
+                e.outIdx = Unassigned
             }
 
-            e = lm.RightBound
+            e = lm.rightBound
             if e
             {
-                e.Curr = e.Bot
-                e.Side = .esRight
-                e.OutIdx = Unassigned
+                e.curr = e.bot
+                e.side = .Right
+                e.outIdx = Unassigned
             }
         }
 
@@ -646,17 +646,17 @@ impl Clipper
 
     method DeleteFromSEL(e: *TEdge)
     {
-        SelPrev := e.PrevInSEL
-        SelNext := e.NextInSEL
+        SelPrev := e.prevInSEL
+        SelNext := e.nextInSEL
         if !SelPrev and !SelNext and (e != m_SortedEdges) return
         if SelPrev
-            SelPrev.NextInSEL = SelNext
+            SelPrev.nextInSEL = SelNext
         else
             m_SortedEdges = SelNext
         if SelNext
-            SelNext.PrevInSEL = SelPrev
-        e.NextInSEL = null
-        e.PrevInSEL = null
+            SelNext.prevInSEL = SelPrev
+        e.nextInSEL = null
+        e.prevInSEL = null
     }
 
     method PopEdgeFromSEL(edge: **TEdge)->bool
@@ -676,50 +676,50 @@ impl Clipper
 
     func GetHorzDirection(HorzEdge: *TEdge, Dir: *Direction, Left, Right: *CInt)
     {
-        if HorzEdge.Bot.X < HorzEdge.Top.X
+        if HorzEdge.bot.x < HorzEdge.top.x
         {
-            dref Left = HorzEdge.Bot.X
-            dref Right = HorzEdge.Top.X
-            dref Dir = .dLeftToRight
+            dref Left = HorzEdge.bot.x
+            dref Right = HorzEdge.top.x
+            dref Dir = .LeftToRight
         }
         else
         {
-            dref Left = HorzEdge.Top.X
-            dref Right = HorzEdge.Bot.X
-            dref Dir = .dRightToLeft
+            dref Left = HorzEdge.top.x
+            dref Right = HorzEdge.bot.x
+            dref Dir = .RightToLeft
         }
     }
 
     func GetMaximaPair(e: *TEdge)->*TEdge
     {
-        if (e.Next.Top == e.Top) and !e.Next.NextInLML
-            return e.Next
-        else if (e.Prev.Top == e.Top) and !e.Prev.NextInLML
-            return e.Prev
+        if (e.next.top == e.top) and !e.next.nextInLML
+            return e.next
+        else if (e.prev.top == e.top) and !e.prev.nextInLML
+            return e.prev
         else
             return null
     }
 
     func GetNextInAEL(e: *TEdge, dir: Direction)->*TEdge
     {
-        return dir == .dLeftToRight ? e.NextInAEL : e.PrevInAEL
+        return dir == .LeftToRight ? e.nextInAEL : e.prevInAEL
     }
 
     method GetLastOutPt(e: *TEdge)->*OutPt
     {
-        outRec := m_PolyOuts[e.OutIdx]
-        if e.Side == .esLeft
-            return outRec.Pts
+        outRec := m_PolyOuts[e.outIdx]
+        if e.side == .Left
+            return outRec.pts
         else
-            return outRec.Pts.Prev
+            return outRec.pts.prev
     }
 
-    method AddGhostJoin(op: *OutPt, OffPt: IntPoint)
+    method AddGhostJoin(op: *OutPt, offPt: IntPoint)
     {
         j := Memory.new'Join()
-        j.OutPt1 = op
-        j.OutPt2 = null
-        j.OffPt = OffPt
+        j.outPt1 = op
+        j.outPt2 = null
+        j.offPt = offPt
         m_GhostJoins.add(j)
     }
 
@@ -730,33 +730,33 @@ impl Clipper
         var dir: Direction = ?
         var horzLeft, horzRight: CInt
 
-        IsOpen := (horzEdge.WindDelta == 0)
+        isOpen := (horzEdge.windDelta == 0)
         GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
 
         eLastHorz := horzEdge
         var eMaxPair: *TEdge
-        while eLastHorz.NextInLML and IsHorizontal(eLastHorz.NextInLML)
-            eLastHorz = eLastHorz.NextInLML
-        if !eLastHorz.NextInLML
+        while eLastHorz.nextInLML and IsHorizontal(eLastHorz.nextInLML)
+            eLastHorz = eLastHorz.nextInLML
+        if !eLastHorz.nextInLML
             eMaxPair = GetMaximaPair(eLastHorz)
 
         var maxIt, maxRit: uint
         if m_Maxima.count > 0
         {
-            if dir == .dLeftToRight
+            if dir == .LeftToRight
             {
                 maxIt = 0
-                while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] <= horzEdge.Bot.X
+                while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] <= horzEdge.bot.x
                     maxIt += 1
-                if maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] >= eLastHorz.Top.X
+                if maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] >= eLastHorz.top.x
                     maxIt = m_Maxima.count
             }
             else
             {
                 maxRit = m_Maxima.count -,safe 1
-                while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > horzEdge.Bot.X
+                while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > horzEdge.bot.x
                     maxRit = maxRit -,safe 1
-                if maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] <= eLastHorz.Top.X
+                if maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] <= eLastHorz.top.x
                     maxRit = Swag.UInt.Max
             }
         }
@@ -770,68 +770,68 @@ impl Clipper
             {
                 if m_Maxima.count > 0
                 {
-                    if dir == .dLeftToRight
+                    if dir == .LeftToRight
                     {
-                        while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] < e.Curr.X
+                        while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] < e.curr.x
                         {
-                            if horzEdge.OutIdx >= 0 and !IsOpen
-                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxIt], horzEdge.Bot.Y})
+                            if horzEdge.outIdx >= 0 and !isOpen
+                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxIt], horzEdge.bot.y})
                             maxIt += 1
                         }
                     }
                     else
                     {
-                        while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > e.Curr.X
+                        while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > e.curr.x
                         {
-                            if horzEdge.OutIdx >= 0 and !IsOpen
-                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxRit], horzEdge.Bot.Y})
+                            if horzEdge.outIdx >= 0 and !isOpen
+                                AddOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxRit], horzEdge.bot.y})
                             maxRit = maxRit -,safe 1
                         }
                     }
                 }
 
-                if (dir == .dLeftToRight and e.Curr.X > horzRight) or (dir == .dRightToLeft and e.Curr.X < horzLeft)
+                if (dir == .LeftToRight and e.curr.x > horzRight) or (dir == .RightToLeft and e.curr.x < horzLeft)
                     break
-                if e.Curr.X == horzEdge.Top.X and horzEdge.NextInLML and e.Dx < horzEdge.NextInLML.Dx
+                if e.curr.x == horzEdge.top.x and horzEdge.nextInLML and e.dx < horzEdge.nextInLML.dx
                     break
 
-                if horzEdge.OutIdx >= 0 and !IsOpen
+                if horzEdge.outIdx >= 0 and !isOpen
                 {
-                    op1 = AddOutPt(horzEdge, e.Curr)
+                    op1 = AddOutPt(horzEdge, e.curr)
                     eNextHorz := m_SortedEdges
                     while eNextHorz
                     {
-                        if eNextHorz.OutIdx >= 0 and
-                           HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X)
+                        if eNextHorz.outIdx >= 0 and
+                           HorzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                         {
                             op2 := GetLastOutPt(eNextHorz)
-                            AddJoin(op2, op1, eNextHorz.Top)
+                            AddJoin(op2, op1, eNextHorz.top)
                         }
 
-                        eNextHorz = eNextHorz.NextInSEL
+                        eNextHorz = eNextHorz.nextInSEL
                     }
 
-                    AddGhostJoin(op1, horzEdge.Bot)
+                    AddGhostJoin(op1, horzEdge.bot)
                 }
 
                 if e == eMaxPair and IsLastHorz
                 {
-                    if horzEdge.OutIdx >= 0
-                        AddLocalMaxPoly(horzEdge, eMaxPair, horzEdge.Top)
+                    if horzEdge.outIdx >= 0
+                        AddLocalMaxPoly(horzEdge, eMaxPair, horzEdge.top)
                     DeleteFromAEL(horzEdge)
                     DeleteFromAEL(eMaxPair)
                     return
                 }
 
-                if dir == .dLeftToRight
+                if dir == .LeftToRight
                 {
-                    Pt := IntPoint{e.Curr.X, horzEdge.Curr.Y}
-                    IntersectEdges(horzEdge, e, Pt)
+                    pt := IntPoint{e.curr.x, horzEdge.curr.y}
+                    IntersectEdges(horzEdge, e, pt)
                 }
                 else
                 {
-                    Pt := IntPoint{e.Curr.X, horzEdge.Curr.Y}
-                    IntersectEdges(e, horzEdge, Pt)
+                    pt := IntPoint{e.curr.x, horzEdge.curr.y}
+                    IntersectEdges(e, horzEdge, pt)
                 }
 
                 eNext := GetNextInAEL(e, dir)
@@ -839,53 +839,53 @@ impl Clipper
                 e = eNext
             }
 
-            if !horzEdge.NextInLML or !IsHorizontal(horzEdge.NextInLML) break
+            if !horzEdge.nextInLML or !IsHorizontal(horzEdge.nextInLML) break
             UpdateEdgeIntoAEL(&horzEdge)
-            if horzEdge.OutIdx >= 0 AddOutPt(horzEdge, horzEdge.Bot)
+            if horzEdge.outIdx >= 0 AddOutPt(horzEdge, horzEdge.bot)
             GetHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
         }
 
-        if horzEdge.OutIdx >= 0 and !op1
+        if horzEdge.outIdx >= 0 and !op1
         {
             op1 = GetLastOutPt(horzEdge)
             eNextHorz := m_SortedEdges
             while eNextHorz
             {
-                if eNextHorz.OutIdx >= 0 and
-                   HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X)
+                if eNextHorz.outIdx >= 0 and
+                   HorzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                 {
                     op2 := GetLastOutPt(eNextHorz)
-                    AddJoin(op2, op1, eNextHorz.Top)
+                    AddJoin(op2, op1, eNextHorz.top)
                 }
 
-                eNextHorz = eNextHorz.NextInSEL
+                eNextHorz = eNextHorz.nextInSEL
             }
 
-            AddGhostJoin(op1, horzEdge.Top)
+            AddGhostJoin(op1, horzEdge.top)
         }
 
-        if horzEdge.NextInLML
+        if horzEdge.nextInLML
         {
-            if horzEdge.OutIdx >= 0
+            if horzEdge.outIdx >= 0
             {
-                op1 = AddOutPt(horzEdge, horzEdge.Top)
+                op1 = AddOutPt(horzEdge, horzEdge.top)
                 UpdateEdgeIntoAEL(&horzEdge)
-                if horzEdge.WindDelta == 0 return
-                ePrev := horzEdge.PrevInAEL
-                eNext := horzEdge.NextInAEL
-                if ePrev and ePrev.Curr.X == horzEdge.Bot.X and
-                   ePrev.Curr.Y == horzEdge.Bot.Y and ePrev.WindDelta != 0 and
-                   ePrev.OutIdx >= 0 and ePrev.Curr.Y > ePrev.Top.Y and SlopesEqual(horzEdge, ePrev)
+                if horzEdge.windDelta == 0 return
+                ePrev := horzEdge.prevInAEL
+                eNext := horzEdge.nextInAEL
+                if ePrev and ePrev.curr.x == horzEdge.bot.x and
+                   ePrev.curr.y == horzEdge.bot.y and ePrev.windDelta != 0 and
+                   ePrev.outIdx >= 0 and ePrev.curr.y > ePrev.top.y and SlopesEqual(horzEdge, ePrev)
                 {
-                    op2 := AddOutPt(ePrev, horzEdge.Bot)
-                    AddJoin(op1, op2, horzEdge.Top)
+                    op2 := AddOutPt(ePrev, horzEdge.bot)
+                    AddJoin(op1, op2, horzEdge.top)
                 }
-                else if eNext and eNext.Curr.X == horzEdge.Bot.X and
-                        eNext.Curr.Y == horzEdge.Bot.Y and eNext.WindDelta != 0 and
-                        eNext.OutIdx >= 0 and eNext.Curr.Y > eNext.Top.Y and SlopesEqual(horzEdge, eNext)
+                else if eNext and eNext.curr.x == horzEdge.bot.x and
+                        eNext.curr.y == horzEdge.bot.y and eNext.windDelta != 0 and
+                        eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and SlopesEqual(horzEdge, eNext)
                 {
-                    op2 := AddOutPt(eNext, horzEdge.Bot)
-                    AddJoin(op1, op2, horzEdge.Top)
+                    op2 := AddOutPt(eNext, horzEdge.bot)
+                    AddJoin(op1, op2, horzEdge.top)
                 }
             }
             else
@@ -893,7 +893,7 @@ impl Clipper
         }
         else
         {
-            if horzEdge.OutIdx >= 0 AddOutPt(horzEdge, horzEdge.Top)
+            if horzEdge.outIdx >= 0 AddOutPt(horzEdge, horzEdge.top)
             DeleteFromAEL(horzEdge)
         }
     }
@@ -901,83 +901,83 @@ impl Clipper
     method UpdateEdgeIntoAEL(ed: **TEdge)
     {
         e := dref ed
-        e.NextInLML.OutIdx = e.OutIdx
-        AelPrev := e.PrevInAEL
-        AelNext := e.NextInAEL
-        if AelPrev AelPrev.NextInAEL = e.NextInLML
-        else m_ActiveEdges = e.NextInLML
-        if AelNext AelNext.PrevInAEL = e.NextInLML
-        e.NextInLML.Side = e.Side
-        e.NextInLML.WindDelta = e.WindDelta
-        e.NextInLML.WindCnt = e.WindCnt
-        e.NextInLML.WindCnt2 = e.WindCnt2
-        e = e.NextInLML
-        e.Curr = e.Bot
-        e.PrevInAEL = AelPrev
-        e.NextInAEL = AelNext
-        if !IsHorizontal(e) InsertScanbeam(e.Top.Y)
+        e.nextInLML.outIdx = e.outIdx
+        AelPrev := e.prevInAEL
+        AelNext := e.nextInAEL
+        if AelPrev AelPrev.nextInAEL = e.nextInLML
+        else m_ActiveEdges = e.nextInLML
+        if AelNext AelNext.prevInAEL = e.nextInLML
+        e.nextInLML.side = e.side
+        e.nextInLML.windDelta = e.windDelta
+        e.nextInLML.windCnt = e.windCnt
+        e.nextInLML.windCnt2 = e.windCnt2
+        e = e.nextInLML
+        e.curr = e.bot
+        e.prevInAEL = AelPrev
+        e.nextInAEL = AelNext
+        if !IsHorizontal(e) InsertScanbeam(e.top.y)
         dref ed = e
     }
 
-    method SwapPositionsInAEL(Edge1, Edge2: *TEdge)
+    method SwapPositionsInAEL(edge1, edge2: *TEdge)
     {
-        if Edge1.NextInAEL == Edge1.PrevInAEL or Edge2.NextInAEL == Edge2.PrevInAEL
+        if edge1.nextInAEL == edge1.prevInAEL or edge2.nextInAEL == edge2.prevInAEL
             return
 
-        if Edge1.NextInAEL == Edge2
+        if edge1.nextInAEL == edge2
         {
-            Next := Edge2.NextInAEL;
-            if Next Next.PrevInAEL = Edge1
-            Prev := Edge1.PrevInAEL
-            if Prev Prev.NextInAEL = Edge2
-            Edge2.PrevInAEL = Prev
-            Edge2.NextInAEL = Edge1
-            Edge1.PrevInAEL = Edge2
-            Edge1.NextInAEL = Next
+            next := edge2.nextInAEL;
+            if next next.prevInAEL = edge1
+            prev := edge1.prevInAEL
+            if prev prev.nextInAEL = edge2
+            edge2.prevInAEL = prev
+            edge2.nextInAEL = edge1
+            edge1.prevInAEL = edge2
+            edge1.nextInAEL = next
         }
-        else if Edge2.NextInAEL == Edge1
+        else if edge2.nextInAEL == edge1
         {
-            Next := Edge1.NextInAEL;
-            if Next Next.PrevInAEL = Edge2
-            Prev := Edge2.PrevInAEL
-            if Prev Prev.NextInAEL = Edge1
-            Edge1.PrevInAEL = Prev
-            Edge1.NextInAEL = Edge2
-            Edge2.PrevInAEL = Edge1
-            Edge2.NextInAEL = Next
+            next := edge1.nextInAEL;
+            if next next.prevInAEL = edge2
+            prev := edge2.prevInAEL
+            if prev prev.nextInAEL = edge1
+            edge1.prevInAEL = prev
+            edge1.nextInAEL = edge2
+            edge2.prevInAEL = edge1
+            edge2.nextInAEL = next
         }
         else
         {
-            Next := Edge1.NextInAEL
-            Prev := Edge1.PrevInAEL
-            Edge1.NextInAEL = Edge2.NextInAEL
-            if Edge1.NextInAEL Edge1.NextInAEL.PrevInAEL = Edge1
-            Edge1.PrevInAEL = Edge2.PrevInAEL
-            if Edge1.PrevInAEL Edge1.PrevInAEL.NextInAEL = Edge1
-            Edge2.NextInAEL = Next
-            if Edge2.NextInAEL Edge2.NextInAEL.PrevInAEL = Edge2
-            Edge2.PrevInAEL = Prev
-            if Edge2.PrevInAEL Edge2.PrevInAEL.NextInAEL = Edge2
+            next := edge1.nextInAEL
+            prev := edge1.prevInAEL
+            edge1.nextInAEL = edge2.nextInAEL
+            if edge1.nextInAEL edge1.nextInAEL.prevInAEL = edge1
+            edge1.prevInAEL = edge2.prevInAEL
+            if edge1.prevInAEL edge1.prevInAEL.nextInAEL = edge1
+            edge2.nextInAEL = next
+            if edge2.nextInAEL edge2.nextInAEL.prevInAEL = edge2
+            edge2.prevInAEL = prev
+            if edge2.prevInAEL edge2.prevInAEL.nextInAEL = edge2
         }
 
-        if !Edge1.PrevInAEL m_ActiveEdges = Edge1
-        else if !Edge2.PrevInAEL m_ActiveEdges = Edge2
+        if !edge1.prevInAEL m_ActiveEdges = edge1
+        else if !edge2.prevInAEL m_ActiveEdges = edge2
     }
 
     method DeleteFromAEL(e: *TEdge)
     {
-        AelPrev := e.PrevInAEL
-        AelNext := e.NextInAEL
+        AelPrev := e.prevInAEL
+        AelNext := e.nextInAEL
         if !AelPrev and !AelNext and (e != m_ActiveEdges)
             return
         if AelPrev
-            AelPrev.NextInAEL = AelNext
+            AelPrev.nextInAEL = AelNext
         else
             m_ActiveEdges = AelNext
         if AelNext
-            AelNext.PrevInAEL = AelPrev
-        e.NextInAEL = null
-        e.PrevInAEL = null
+            AelNext.prevInAEL = AelPrev
+        e.nextInAEL = null
+        e.prevInAEL = null
     }
 
     method ClearJoins()
@@ -1017,9 +1017,9 @@ impl Clipper
         //fix orientations ...
         visit outRec: m_PolyOuts
         {
-            if !outRec.Pts or outRec.IsOpen continue
-            if (outRec.IsHole ^ m_ReverseOutput) == (Area(outRec.Pts) > 0)
-                ReversePolyPtLinks(outRec.Pts)
+            if !outRec.pts or outRec.isOpen continue
+            if (outRec.isHole ^ m_ReverseOutput) == (Area(outRec.pts) > 0)
+                ReversePolyPtLinks(outRec.pts)
         }
 
         if m_Joins.count JoinCommonEdges()
@@ -1027,8 +1027,8 @@ impl Clipper
         //unfortunately FixupOutPolygon() must be done after JoinCommonEdges()
         visit outRec: m_PolyOuts
         {
-            if !outRec.Pts continue
-            if outRec.IsOpen
+            if !outRec.pts continue
+            if outRec.isOpen
                 FixupOutPolyline(outRec)
             else
                 FixupOutPolygon(outRec)
@@ -1047,82 +1047,82 @@ impl Clipper
         {
             outrec := m_PolyOuts[i]
             i += 1
-            op := outrec.Pts
-            if !op or outrec.IsOpen continue
+            op := outrec.pts
+            if !op or outrec.isOpen continue
 
             loop
             {
-                op2 := op.Next
-                while op2 != outrec.Pts
+                op2 := op.next
+                while op2 != outrec.pts
                 {
-                    if op.Pt == op2.Pt and op2.Next != op and op2.Prev != op
+                    if op.pt == op2.pt and op2.next != op and op2.prev != op
                     {
-                        op3 := op.Prev
-                        op4 := op2.Prev
-                        op.Prev = op4
-                        op4.Next = op
-                        op2.Prev = op3
-                        op3.Next = op2
+                        op3 := op.prev
+                        op4 := op2.prev
+                        op.prev = op4
+                        op4.next = op
+                        op2.prev = op3
+                        op3.next = op2
 
-                        outrec.Pts = op
+                        outrec.pts = op
                         outrec2 := CreateOutRec()
-                        outrec2.Pts = op2
+                        outrec2.pts = op2
                         UpdateOutPtIdxs(outrec2)
-                        if Poly2ContainsPoly1(outrec2.Pts, outrec.Pts)
+                        if Poly2ContainsPoly1(outrec2.pts, outrec.pts)
                         {
-                            outrec2.IsHole = !outrec.IsHole
-                            outrec2.FirstLeft = outrec
+                            outrec2.isHole = !outrec.isHole
+                            outrec2.firstLeft = outrec
                             if m_UsingPolyTree FixupFirstLefts2(outrec2, outrec)
                         }
-                        else if Poly2ContainsPoly1(outrec.Pts, outrec2.Pts)
+                        else if Poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
-                            outrec2.IsHole = outrec.IsHole
-                            outrec.IsHole = !outrec2.IsHole
-                            outrec2.FirstLeft = outrec.FirstLeft
-                            outrec.FirstLeft = outrec2
+                            outrec2.isHole = outrec.isHole
+                            outrec.isHole = !outrec2.isHole
+                            outrec2.firstLeft = outrec.firstLeft
+                            outrec.firstLeft = outrec2
                             if m_UsingPolyTree FixupFirstLefts2(outrec, outrec2)
                         }
                         else
                         {
-                            outrec2.IsHole = outrec.IsHole
-                            outrec2.FirstLeft = outrec.FirstLeft
+                            outrec2.isHole = outrec.isHole
+                            outrec2.firstLeft = outrec.firstLeft
                             if m_UsingPolyTree FixupFirstLefts1(outrec, outrec2)
                         }
 
                         op2 = op
                     }
 
-                    op2 = op2.Next
+                    op2 = op2.next
                 }
 
-                op = op.Next
-                if op == outrec.Pts break
+                op = op.next
+                if op == outrec.pts break
             }
         }
     }
 
     func FixupOutPolyline(outrec: *OutRec)
     {
-        pp := outrec.Pts
-        lastPP := pp.Prev
+        pp := outrec.pts
+        lastPP := pp.prev
         while pp != lastPP
         {
-            pp = pp.Next
-            if pp.Pt == pp.Prev.Pt
+            pp = pp.next
+            if pp.pt == pp.prev.pt
             {
-                if pp == lastPP lastPP = pp.Prev
-                tmpPP := pp.Prev
-                tmpPP.Next = pp.Next
-                pp.Next.Prev = tmpPP
+                if pp == lastPP lastPP = pp.prev
+                tmpPP := pp.prev
+                tmpPP.next = pp.next
+                pp.next.prev = tmpPP
                 Memory.delete(pp)
                 pp = tmpPP
             }
         }
 
-        if pp == pp.Prev
+        if pp == pp.prev
         {
             DisposeOutPts(pp)
-            outrec.Pts = null
+            outrec.pts = null
             return
         }
     }
@@ -1130,28 +1130,28 @@ impl Clipper
     method FixupOutPolygon(outrec: *OutRec)
     {
         var lastOK: *OutPt
-        outrec.BottomPt = null
-        pp := outrec.Pts
+        outrec.bottomPt = null
+        pp := outrec.pts
         preserveCol := m_PreserveCollinear or m_StrictSimple
 
         loop
         {
-            if pp.Prev == pp or pp.Prev == pp.Next
+            if pp.prev == pp or pp.prev == pp.next
             {
                 DisposeOutPts(pp)
-                outrec.Pts = null
+                outrec.pts = null
                 return
             }
 
-            if (pp.Pt == pp.Next.Pt) or (pp.Pt == pp.Prev.Pt) or
-                (SlopesEqual(pp.Prev.Pt, pp.Pt, pp.Next.Pt) and
-                (!preserveCol or !Pt2IsBetweenPt1AndPt3(pp.Prev.Pt, pp.Pt, pp.Next.Pt)))
+            if (pp.pt == pp.next.pt) or (pp.pt == pp.prev.pt) or
+                (SlopesEqual(pp.prev.pt, pp.pt, pp.next.pt) and
+                (!preserveCol or !Pt2IsBetweenPt1AndPt3(pp.prev.pt, pp.pt, pp.next.pt)))
             {
                 lastOK = null
                 tmp := pp
-                pp.Prev.Next = pp.Next
-                pp.Next.Prev = pp.Prev
-                pp = pp.Prev
+                pp.prev.next = pp.next
+                pp.next.prev = pp.prev
+                pp = pp.prev
                 Memory.delete(tmp)
             }
             else if pp == lastOK
@@ -1159,136 +1159,136 @@ impl Clipper
             else
             {
                 if !lastOK lastOK = pp
-                pp = pp.Next
+                pp = pp.next
             }
         }
 
-        outrec.Pts = pp
+        outrec.pts = pp
     }
 
-    method GetOutRec(Idx: s32)->*OutRec
+    method GetOutRec(idx: s32)->*OutRec
     {
-        outrec := m_PolyOuts[Idx]
-        while outrec != m_PolyOuts[outrec.Idx]
-            outrec = m_PolyOuts[outrec.Idx]
+        outrec := m_PolyOuts[idx]
+        while outrec != m_PolyOuts[outrec.idx]
+            outrec = m_PolyOuts[outrec.idx]
         return outrec
     }
 
     method JoinPoints(j: *Join, outRec1, outRec2: *OutRec)->bool
     {
-        op1 := j.OutPt1
-        op2 := j.OutPt2
+        op1 := j.outPt1
+        op2 := j.outPt2
         var op1b, op2b: *OutPt
 
-        isHorizontal := (j.OutPt1.Pt.Y == j.OffPt.Y)
+        isHorizontal := (j.outPt1.pt.y == j.offPt.y)
 
-        if isHorizontal and (j.OffPt == j.OutPt1.Pt) and (j.OffPt == j.OutPt2.Pt)
+        if isHorizontal and (j.offPt == j.outPt1.pt) and (j.offPt == j.outPt2.pt)
         {
             if outRec1 != outRec2 return false
-            op1b = j.OutPt1.Next
-            while op1b != op1 and (op1b.Pt == j.OffPt)
-                op1b = op1b.Next
-            reverse1 := (op1b.Pt.Y > j.OffPt.Y)
-            op2b = j.OutPt2.Next
-            while op2b != op2 and (op2b.Pt == j.OffPt)
-                op2b = op2b.Next
-            reverse2 := (op2b.Pt.Y > j.OffPt.Y)
+            op1b = j.outPt1.next
+            while op1b != op1 and (op1b.pt == j.offPt)
+                op1b = op1b.next
+            reverse1 := (op1b.pt.y > j.offPt.y)
+            op2b = j.outPt2.next
+            while op2b != op2 and (op2b.pt == j.offPt)
+                op2b = op2b.next
+            reverse2 := (op2b.pt.y > j.offPt.y)
             if reverse1 == reverse2 return false
             if reverse1
             {
                 op1b = DupOutPt(op1, false)
                 op2b = DupOutPt(op2, true)
-                op1.Prev = op2
-                op2.Next = op1
-                op1b.Next = op2b
-                op2b.Prev = op1b
-                j.OutPt1 = op1
-                j.OutPt2 = op1b
+                op1.prev = op2
+                op2.next = op1
+                op1b.next = op2b
+                op2b.prev = op1b
+                j.outPt1 = op1
+                j.outPt2 = op1b
                 return true
             }
 
             op1b = DupOutPt(op1, true)
             op2b = DupOutPt(op2, false)
-            op1.Next = op2
-            op2.Prev = op1
-            op1b.Prev = op2b
-            op2b.Next = op1b
-            j.OutPt1 = op1
-            j.OutPt2 = op1b
+            op1.next = op2
+            op2.prev = op1
+            op1b.prev = op2b
+            op2b.next = op1b
+            j.outPt1 = op1
+            j.outPt2 = op1b
             return true
         }
 
         if isHorizontal
         {
             op1b = op1
-            while op1.Prev.Pt.Y == op1.Pt.Y and op1.Prev != op1b and op1.Prev != op2
-                op1 = op1.Prev
-            while op1b.Next.Pt.Y == op1b.Pt.Y and op1b.Next != op1 and op1b.Next != op2
-                op1b = op1b.Next
-            if op1b.Next == op1 or op1b.Next == op2 return false
+            while op1.prev.pt.y == op1.pt.y and op1.prev != op1b and op1.prev != op2
+                op1 = op1.prev
+            while op1b.next.pt.y == op1b.pt.y and op1b.next != op1 and op1b.next != op2
+                op1b = op1b.next
+            if op1b.next == op1 or op1b.next == op2 return false
 
             op2b = op2
-            while op2.Prev.Pt.Y == op2.Pt.Y and op2.Prev != op2b and op2.Prev != op1b
-                op2 = op2.Prev
-            while op2b.Next.Pt.Y == op2b.Pt.Y and op2b.Next != op2 and op2b.Next != op1
-                op2b = op2b.Next
-            if op2b.Next == op2 or op2b.Next == op1 return false
+            while op2.prev.pt.y == op2.pt.y and op2.prev != op2b and op2.prev != op1b
+                op2 = op2.prev
+            while op2b.next.pt.y == op2b.pt.y and op2b.next != op2 and op2b.next != op1
+                op2b = op2b.next
+            if op2b.next == op2 or op2b.next == op1 return false
 
             var Left, Right: CInt
-            if !GetOverlap(op1.Pt.X, op1b.Pt.X, op2.Pt.X, op2b.Pt.X, &Left, &Right)
+            if !GetOverlap(op1.pt.x, op1b.pt.x, op2.pt.x, op2b.pt.x, &Left, &Right)
                 return false
 
-            var Pt: IntPoint
+            var pt: IntPoint
             var DiscardLeftSide: bool
-            if op1.Pt.X >= Left and op1.Pt.X <= Right
+            if op1.pt.x >= Left and op1.pt.x <= Right
             {
-                Pt = op1.Pt
-                DiscardLeftSide = (op1.Pt.X > op1b.Pt.X)
+                pt = op1.pt
+                DiscardLeftSide = (op1.pt.x > op1b.pt.x)
             }
-            else if op2.Pt.X >= Left and op2.Pt.X <= Right
+            else if op2.pt.x >= Left and op2.pt.x <= Right
             {
-                Pt = op2.Pt
-                DiscardLeftSide = (op2.Pt.X > op2b.Pt.X)
+                pt = op2.pt
+                DiscardLeftSide = (op2.pt.x > op2b.pt.x)
             }
-            else if op1b.Pt.X >= Left and op1b.Pt.X <= Right
+            else if op1b.pt.x >= Left and op1b.pt.x <= Right
             {
-                Pt = op1b.Pt
-                DiscardLeftSide = op1b.Pt.X > op1.Pt.X
+                pt = op1b.pt
+                DiscardLeftSide = op1b.pt.x > op1.pt.x
             }
             else
             {
-                Pt = op2b.Pt
-                DiscardLeftSide = (op2b.Pt.X > op2.Pt.X)
+                pt = op2b.pt
+                DiscardLeftSide = (op2b.pt.x > op2.pt.x)
             }
 
-            j.OutPt1 = op1
-            j.OutPt2 = op2
-            return JoinHorz(op1, op1b, op2, op2b, Pt, DiscardLeftSide)
+            j.outPt1 = op1
+            j.outPt2 = op2
+            return JoinHorz(op1, op1b, op2, op2b, pt, DiscardLeftSide)
         }
 
-        op1b = op1.Next
-        while (op1b.Pt == op1.Pt) and (op1b != op1)
-            op1b = op1b.Next
-        Reverse1 := ((op1b.Pt.Y > op1.Pt.Y) or !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt))
+        op1b = op1.next
+        while (op1b.pt == op1.pt) and (op1b != op1)
+            op1b = op1b.next
+        Reverse1 := ((op1b.pt.y > op1.pt.y) or !SlopesEqual(op1.pt, op1b.pt, j.offPt))
         if Reverse1
         {
-            op1b = op1.Prev
-            while (op1b.Pt == op1.Pt) and (op1b != op1)
-                op1b = op1b.Prev
-            if (op1b.Pt.Y > op1.Pt.Y) or !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt)
+            op1b = op1.prev
+            while (op1b.pt == op1.pt) and (op1b != op1)
+                op1b = op1b.prev
+            if (op1b.pt.y > op1.pt.y) or !SlopesEqual(op1.pt, op1b.pt, j.offPt)
                 return false
         }
 
-        op2b = op2.Next
-        while (op2b.Pt == op2.Pt) and (op2b != op2)
-            op2b = op2b.Next
-        Reverse2 := ((op2b.Pt.Y > op2.Pt.Y) or !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt))
+        op2b = op2.next
+        while (op2b.pt == op2.pt) and (op2b != op2)
+            op2b = op2b.next
+        Reverse2 := ((op2b.pt.y > op2.pt.y) or !SlopesEqual(op2.pt, op2b.pt, j.offPt))
         if Reverse2
         {
-            op2b = op2.Prev
-            while (op2b.Pt == op2.Pt) and (op2b != op2)
-                op2b = op2b.Prev
-            if (op2b.Pt.Y > op2.Pt.Y) or !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt)
+            op2b = op2.prev
+            while (op2b.pt == op2.pt) and (op2b != op2)
+                op2b = op2b.prev
+            if (op2b.pt.y > op2.pt.y) or !SlopesEqual(op2.pt, op2b.pt, j.offPt)
                 return false
         }
 
@@ -1299,108 +1299,108 @@ impl Clipper
         {
             op1b = DupOutPt(op1, false)
             op2b = DupOutPt(op2, true)
-            op1.Prev = op2
-            op2.Next = op1
-            op1b.Next = op2b
-            op2b.Prev = op1b
-            j.OutPt1 = op1
-            j.OutPt2 = op1b
+            op1.prev = op2
+            op2.next = op1
+            op1b.next = op2b
+            op2b.prev = op1b
+            j.outPt1 = op1
+            j.outPt2 = op1b
             return true
         }
 
         op1b = DupOutPt(op1, true)
         op2b = DupOutPt(op2, false)
-        op1.Next = op2
-        op2.Prev = op1
-        op1b.Prev = op2b
-        op2b.Next = op1b
-        j.OutPt1 = op1
-        j.OutPt2 = op1b
+        op1.next = op2
+        op2.prev = op1
+        op1b.prev = op2b
+        op2b.next = op1b
+        j.outPt1 = op1
+        j.outPt2 = op1b
         return true
     }
 
-    func JoinHorz(op1P, op1bP, op2P, op2bP: *OutPt, Pt: IntPoint, DiscardLeft: bool)->bool
+    func JoinHorz(op1P, op1bP, op2P, op2bP: *OutPt, pt: IntPoint, DiscardLeft: bool)->bool
     {
         op1 := op1P
         op1b:= op1bP
         op2 := op2P
         op2b:= op2bP
 
-        var Dir1: Direction = (op1.Pt.X > op1b.Pt.X ? .dRightToLeft : .dLeftToRight)
-        var Dir2: Direction = (op2.Pt.X > op2b.Pt.X ? .dRightToLeft : .dLeftToRight)
+        var Dir1: Direction = (op1.pt.x > op1b.pt.x ? .RightToLeft : .LeftToRight)
+        var Dir2: Direction = (op2.pt.x > op2b.pt.x ? .RightToLeft : .LeftToRight)
         if Dir1 == Dir2 return false
 
-        if Dir1 == .dLeftToRight
+        if Dir1 == .LeftToRight
         {
-            while op1.Next.Pt.X <= Pt.X and op1.Next.Pt.X >= op1.Pt.X and op1.Next.Pt.Y == Pt.Y
-                op1 = op1.Next
-            if DiscardLeft and (op1.Pt.X != Pt.X)
-                op1 = op1.Next
+            while op1.next.pt.x <= pt.x and op1.next.pt.x >= op1.pt.x and op1.next.pt.y == pt.y
+                op1 = op1.next
+            if DiscardLeft and (op1.pt.x != pt.x)
+                op1 = op1.next
             op1b = DupOutPt(op1, !DiscardLeft)
-            if op1b.Pt != Pt
+            if op1b.pt != pt
             {
                 op1 = op1b
-                op1.Pt = Pt
+                op1.pt = pt
                 op1b = DupOutPt(op1, !DiscardLeft)
             }
         }
         else
         {
-            while op1.Next.Pt.X >= Pt.X and op1.Next.Pt.X <= op1.Pt.X and op1.Next.Pt.Y == Pt.Y
-                op1 = op1.Next
-            if !DiscardLeft and (op1.Pt.X != Pt.X)
-                op1 = op1.Next
+            while op1.next.pt.x >= pt.x and op1.next.pt.x <= op1.pt.x and op1.next.pt.y == pt.y
+                op1 = op1.next
+            if !DiscardLeft and (op1.pt.x != pt.x)
+                op1 = op1.next
             op1b = DupOutPt(op1, DiscardLeft)
-            if op1b.Pt != Pt
+            if op1b.pt != pt
             {
                 op1 = op1b
-                op1.Pt = Pt
+                op1.pt = pt
                 op1b = DupOutPt(op1, DiscardLeft)
             }
         }
 
-        if Dir2 == .dLeftToRight
+        if Dir2 == .LeftToRight
         {
-            while op2.Next.Pt.X <= Pt.X and op2.Next.Pt.X >= op2.Pt.X and op2.Next.Pt.Y == Pt.Y
-                op2 = op2.Next
-            if DiscardLeft and (op2.Pt.X != Pt.X)
-                op2 = op2.Next
+            while op2.next.pt.x <= pt.x and op2.next.pt.x >= op2.pt.x and op2.next.pt.y == pt.y
+                op2 = op2.next
+            if DiscardLeft and (op2.pt.x != pt.x)
+                op2 = op2.next
             op2b = DupOutPt(op2, !DiscardLeft)
-            if op2b.Pt != Pt
+            if op2b.pt != pt
             {
                 op2 = op2b
-                op2.Pt = Pt
+                op2.pt = pt
                 op2b = DupOutPt(op2, !DiscardLeft)
             }
         }
         else
         {
-            while op2.Next.Pt.X >= Pt.X and op2.Next.Pt.X <= op2.Pt.X and op2.Next.Pt.Y == Pt.Y
-                op2 = op2.Next
-            if !DiscardLeft and (op2.Pt.X != Pt.X)
-                op2 = op2.Next
+            while op2.next.pt.x >= pt.x and op2.next.pt.x <= op2.pt.x and op2.next.pt.y == pt.y
+                op2 = op2.next
+            if !DiscardLeft and (op2.pt.x != pt.x)
+                op2 = op2.next
             op2b = DupOutPt(op2, DiscardLeft)
-            if op2b.Pt != Pt
+            if op2b.pt != pt
             {
                 op2 = op2b
-                op2.Pt = Pt
+                op2.pt = pt
                 op2b = DupOutPt(op2, DiscardLeft)
             }
         }
 
-        if Dir1 == .dLeftToRight and DiscardLeft
+        if Dir1 == .LeftToRight and DiscardLeft
         {
-            op1.Prev = op2
-            op2.Next = op1
-            op1b.Next = op2b
-            op2b.Prev = op1b
+            op1.prev = op2
+            op2.next = op1
+            op1b.next = op2b
+            op2b.prev = op1b
         }
         else
         {
-            op1.Next = op2
-            op2.Prev = op1
-            op1b.Prev = op2b
-            op2b.Next = op1b
+            op1.next = op2
+            op2.prev = op1
+            op1b.prev = op2b
+            op2b.next = op1b
         }
 
         return true
@@ -1441,21 +1441,21 @@ impl Clipper
     func DupOutPt(outPt: *OutPt, InsertAfter: bool)->*OutPt
     {
         result := Memory.new'OutPt()
-        result.Pt = outPt.Pt
-        result.Idx = outPt.Idx
+        result.pt = outPt.pt
+        result.idx = outPt.idx
         if InsertAfter
         {
-            result.Next = outPt.Next
-            result.Prev = outPt
-            outPt.Next.Prev = result
-            outPt.Next = result
+            result.next = outPt.next
+            result.prev = outPt
+            outPt.next.prev = result
+            outPt.next = result
         }
         else
         {
-            result.Prev = outPt.Prev
-            result.Next = outPt
-            outPt.Prev.Next = result
-            outPt.Prev = result
+            result.prev = outPt.prev
+            result.next = outPt
+            outPt.prev.next = result
+            outPt.prev = result
         }
 
         return result
@@ -1463,12 +1463,12 @@ impl Clipper
 
     func UpdateOutPtIdxs(outrec: *OutRec)
     {
-        op := outrec.Pts
+        op := outrec.pts
         loop
         {
-            op.Idx = outrec.Idx
-            op = op.Prev
-            if op == outrec.Pts break
+            op.idx = outrec.idx
+            op = op.prev
+            if op == outrec.pts break
         }
     }
 
@@ -1479,52 +1479,52 @@ impl Clipper
         startOp := op
         loop
         {
-            if op.Next.Pt.Y == pt.Y
+            if op.next.pt.y == pt.y
             {
-                if (op.Next.Pt.X == pt.X) or (op.Pt.Y == pt.Y and ((op.Next.Pt.X > pt.X) == (op.Pt.X < pt.X)))
+                if (op.next.pt.x == pt.x) or (op.pt.y == pt.y and ((op.next.pt.x > pt.x) == (op.pt.x < pt.x)))
                     return -1
             }
 
-            if (op.Pt.Y < pt.Y) != (op.Next.Pt.Y < pt.Y)
+            if (op.pt.y < pt.y) != (op.next.pt.y < pt.y)
             {
-                if op.Pt.X >= pt.X
+                if op.pt.x >= pt.x
                 {
-                    if op.Next.Pt.X > pt.X
+                    if op.next.pt.x > pt.x
                         result = 1 - result
                     else
                     {
-                        d := cast(f64) (op.Pt.X - pt.X) * (op.Next.Pt.Y - pt.Y) - cast(f64) (op.Next.Pt.X - pt.X) * (op.Pt.Y - pt.Y)
+                        d := cast(f64) (op.pt.x - pt.x) * (op.next.pt.y - pt.y) - cast(f64) (op.next.pt.x - pt.x) * (op.pt.y - pt.y)
                         if d == 0 return -1
-                        if (d > 0) == (op.Next.Pt.Y > op.Pt.Y) result = 1 - result
+                        if (d > 0) == (op.next.pt.y > op.pt.y) result = 1 - result
                     }
                 }
                 else
                 {
-                    if op.Next.Pt.X > pt.X
+                    if op.next.pt.x > pt.x
                     {
-                        d := cast(f64) (op.Pt.X - pt.X) * (op.Next.Pt.Y - pt.Y) - cast(f64) (op.Next.Pt.X - pt.X) * (op.Pt.Y - pt.Y)
+                        d := cast(f64) (op.pt.x - pt.x) * (op.next.pt.y - pt.y) - cast(f64) (op.next.pt.x - pt.x) * (op.pt.y - pt.y)
                         if d == 0 return -1
-                        if (d > 0) == (op.Next.Pt.Y > op.Pt.Y) result = 1 - result
+                        if (d > 0) == (op.next.pt.y > op.pt.y) result = 1 - result
                     }
                 }
             }
 
-            op = op.Next
+            op = op.next
             if startOp == op break
         }
 
         return result
     }
 
-    func Poly2ContainsPoly1(OutPt1, OutPt2: *OutPt)->bool
+    func Poly2ContainsPoly1(outPt1, outPt2: *OutPt)->bool
     {
-        op := OutPt1
+        op := outPt1
         loop
         {
-            res := PointInPolygon(op.Pt, OutPt2)
+            res := PointInPolygon(op.pt, outPt2)
             if res >= 0 return res > 0
-            op = op.Next
-            if op == OutPt1 break
+            op = op.next
+            if op == outPt1 break
         }
 
         return true
@@ -1532,28 +1532,28 @@ impl Clipper
 
     func ParseFirstLeft(FL: *OutRec)->*OutRec
     {
-        FirstLeft := FL
-        while FirstLeft and !FirstLeft.Pts
-            FirstLeft = FirstLeft.FirstLeft
-        return FirstLeft
+        firstLeft := FL
+        while firstLeft and !firstLeft.pts
+            firstLeft = firstLeft.firstLeft
+        return firstLeft
     }
 
     method FixupFirstLefts2(InnerOutRec, OuterOutRec: *OutRec)
     {
-        orfl := OuterOutRec.FirstLeft
+        orfl := OuterOutRec.firstLeft
         visit outRec: m_PolyOuts
         {
-            if !outRec.Pts or outRec == OuterOutRec or outRec == InnerOutRec
+            if !outRec.pts or outRec == OuterOutRec or outRec == InnerOutRec
                 continue
-            firstLeft := ParseFirstLeft(outRec.FirstLeft)
+            firstLeft := ParseFirstLeft(outRec.firstLeft)
             if firstLeft != orfl and firstLeft != InnerOutRec and firstLeft != OuterOutRec
                 continue
-            if Poly2ContainsPoly1(outRec.Pts, InnerOutRec.Pts)
-                outRec.FirstLeft = InnerOutRec
-            else if Poly2ContainsPoly1(outRec.Pts, OuterOutRec.Pts)
-                outRec.FirstLeft = OuterOutRec
-            else if outRec.FirstLeft == InnerOutRec or outRec.FirstLeft == OuterOutRec
-                outRec.FirstLeft = orfl
+            if Poly2ContainsPoly1(outRec.pts, InnerOutRec.pts)
+                outRec.firstLeft = InnerOutRec
+            else if Poly2ContainsPoly1(outRec.pts, OuterOutRec.pts)
+                outRec.firstLeft = OuterOutRec
+            else if outRec.firstLeft == InnerOutRec or outRec.firstLeft == OuterOutRec
+                outRec.firstLeft = orfl
         }
     }
 
@@ -1561,11 +1561,11 @@ impl Clipper
     {
         visit outRec: m_PolyOuts
         {
-            firstLeft := ParseFirstLeft(outRec.FirstLeft)
-            if outRec.Pts and firstLeft == OldOutRec
+            firstLeft := ParseFirstLeft(outRec.firstLeft)
+            if outRec.pts and firstLeft == OldOutRec
             {
-                if Poly2ContainsPoly1(outRec.Pts, NewOutRec.Pts)
-                    outRec.FirstLeft = NewOutRec
+                if Poly2ContainsPoly1(outRec.pts, NewOutRec.pts)
+                    outRec.firstLeft = NewOutRec
             }
         }
     }
@@ -1574,9 +1574,9 @@ impl Clipper
     {
         visit outRec: m_PolyOuts
         {
-            firstLeft := ParseFirstLeft(outRec.FirstLeft)
-            if outRec.Pts and firstLeft == OldOutRec
-                outRec.FirstLeft = NewOutRec
+            firstLeft := ParseFirstLeft(outRec.firstLeft)
+            if outRec.pts and firstLeft == OldOutRec
+                outRec.firstLeft = NewOutRec
         }
     }
 
@@ -1584,11 +1584,11 @@ impl Clipper
     {
         visit join: m_Joins
         {
-            outRec1 := GetOutRec(join.OutPt1.Idx)
-            outRec2 := GetOutRec(join.OutPt2.Idx)
+            outRec1 := GetOutRec(join.outPt1.idx)
+            outRec2 := GetOutRec(join.outPt2.idx)
 
-            if !outRec1.Pts or !outRec2.Pts continue
-            if outRec1.IsOpen or outRec2.IsOpen continue
+            if !outRec1.pts or !outRec2.pts continue
+            if outRec1.isOpen or outRec2.isOpen continue
 
             var holeStateRec: *OutRec
             if outRec1 == outRec2 holeStateRec = outRec1
@@ -1600,74 +1600,74 @@ impl Clipper
 
             if (outRec1 == outRec2)
             {
-                outRec1.Pts = join.OutPt1
-                outRec1.BottomPt = null
+                outRec1.pts = join.outPt1
+                outRec1.bottomPt = null
                 outRec2 = CreateOutRec()
-                outRec2.Pts = join.OutPt2
+                outRec2.pts = join.outPt2
                 UpdateOutPtIdxs(outRec2)
 
-                if Poly2ContainsPoly1(outRec2.Pts, outRec1.Pts)
+                if Poly2ContainsPoly1(outRec2.pts, outRec1.pts)
                 {
-                    outRec2.IsHole = !outRec1.IsHole
-                    outRec2.FirstLeft = outRec1
+                    outRec2.isHole = !outRec1.isHole
+                    outRec2.firstLeft = outRec1
                     if m_UsingPolyTree FixupFirstLefts2(outRec2, outRec1)
-                    if (outRec2.IsHole ^ m_ReverseOutput) == (Area(outRec2.Pts) > 0)
-                    ReversePolyPtLinks(outRec2.Pts)
+                    if (outRec2.isHole ^ m_ReverseOutput) == (Area(outRec2.pts) > 0)
+                    ReversePolyPtLinks(outRec2.pts)
 
                 }
-                else if Poly2ContainsPoly1(outRec1.Pts, outRec2.Pts)
+                else if Poly2ContainsPoly1(outRec1.pts, outRec2.pts)
                 {
-                    outRec2.IsHole = outRec1.IsHole
-                    outRec1.IsHole = !outRec2.IsHole
-                    outRec2.FirstLeft = outRec1.FirstLeft
-                    outRec1.FirstLeft = outRec2
+                    outRec2.isHole = outRec1.isHole
+                    outRec1.isHole = !outRec2.isHole
+                    outRec2.firstLeft = outRec1.firstLeft
+                    outRec1.firstLeft = outRec2
 
                     if m_UsingPolyTree FixupFirstLefts2(outRec1, outRec2)
 
-                    if (outRec1.IsHole ^ m_ReverseOutput) == (Area(outRec1.Pts) > 0)
-                    ReversePolyPtLinks(outRec1.Pts)
+                    if (outRec1.isHole ^ m_ReverseOutput) == (Area(outRec1.pts) > 0)
+                    ReversePolyPtLinks(outRec1.pts)
                 }
                 else
                 {
-                    outRec2.IsHole = outRec1.IsHole
-                    outRec2.FirstLeft = outRec1.FirstLeft
+                    outRec2.isHole = outRec1.isHole
+                    outRec2.firstLeft = outRec1.firstLeft
                     if m_UsingPolyTree FixupFirstLefts1(outRec1, outRec2)
                 }
 
             }
             else
             {
-                outRec2.Pts = null
-                outRec2.BottomPt = null
-                outRec2.Idx = outRec1.Idx
+                outRec2.pts = null
+                outRec2.bottomPt = null
+                outRec2.idx = outRec1.idx
 
-                outRec1.IsHole = holeStateRec.IsHole
+                outRec1.isHole = holeStateRec.isHole
                 if holeStateRec == outRec2
-                    outRec1.FirstLeft = outRec2.FirstLeft
-                outRec2.FirstLeft = outRec1
+                    outRec1.firstLeft = outRec2.firstLeft
+                outRec2.firstLeft = outRec1
 
                 if m_UsingPolyTree FixupFirstLefts3(outRec2, outRec1)
             }
         }
     }
 
-    func IsMaxima(e: *TEdge, Y: CInt)->bool
+    func IsMaxima(e: *TEdge, y: CInt)->bool
     {
-        return e and e.Top.Y == Y and !e.NextInLML
+        return e and e.top.y == y and !e.nextInLML
     }
 
     func GetMaximaPairEx(e: *TEdge)->*TEdge
     {
         result := GetMaximaPair(e)
-        if result and (result.OutIdx == Skip or
-           (result.NextInAEL == result.PrevInAEL and !IsHorizontal(result)))
+        if result and (result.outIdx == Skip or
+           (result.nextInAEL == result.prevInAEL and !IsHorizontal(result)))
             return null
         return result
     }
 
-    func IsIntermediate(e: *TEdge, Y: CInt)->bool
+    func IsIntermediate(e: *TEdge, y: CInt)->bool
     {
-        return e.Top.Y == Y and e.NextInLML
+        return e.top.y == y and e.nextInLML
     }
 
     method DoMaxima(e: *TEdge)
@@ -1675,28 +1675,28 @@ impl Clipper
         eMaxPair := GetMaximaPairEx(e)
         if !eMaxPair
         {
-            if e.OutIdx >= 0
-                AddOutPt(e, e.Top)
+            if e.outIdx >= 0
+                AddOutPt(e, e.top)
             DeleteFromAEL(e)
             return;
         }
 
-        eNext := e.NextInAEL
+        eNext := e.nextInAEL
         while eNext and eNext != eMaxPair
         {
-            IntersectEdges(e, eNext, e.Top)
+            IntersectEdges(e, eNext, e.top)
             SwapPositionsInAEL(e, eNext)
-            eNext = e.NextInAEL
+            eNext = e.nextInAEL
         }
 
-        if e.OutIdx == Unassigned and eMaxPair.OutIdx == Unassigned
+        if e.outIdx == Unassigned and eMaxPair.outIdx == Unassigned
         {
             DeleteFromAEL(e)
             DeleteFromAEL(eMaxPair)
         }
-        else if e.OutIdx >= 0 and eMaxPair.OutIdx >= 0
+        else if e.outIdx >= 0 and eMaxPair.outIdx >= 0
         {
-            if e.OutIdx >= 0 AddLocalMaxPoly(e, eMaxPair, e.Top)
+            if e.outIdx >= 0 AddLocalMaxPoly(e, eMaxPair, e.top)
             DeleteFromAEL(e)
             DeleteFromAEL(eMaxPair)
         }
@@ -1722,48 +1722,48 @@ impl Clipper
 
             if IsMaximaEdge
             {
-                if m_StrictSimple m_Maxima.add(e.Top.X)
-                ePrev := e.PrevInAEL
+                if m_StrictSimple m_Maxima.add(e.top.x)
+                ePrev := e.prevInAEL
                 DoMaxima(e)
                 if !ePrev e = m_ActiveEdges
-                else e = ePrev.NextInAEL
+                else e = ePrev.nextInAEL
             }
             else
             {
-                //2. promote horizontal edges, otherwise update Curr.X and Curr.Y ...
-                if IsIntermediate(e, topY) and IsHorizontal(e.NextInLML)
+                //2. promote horizontal edges, otherwise update curr.x and curr.y ...
+                if IsIntermediate(e, topY) and IsHorizontal(e.nextInLML)
                 {
                     UpdateEdgeIntoAEL(&e)
-                    if e.OutIdx >= 0
-                        AddOutPt(e, e.Bot)
+                    if e.outIdx >= 0
+                        AddOutPt(e, e.bot)
                     AddEdgeToSEL(e)
                 }
                 else
                 {
-                    e.Curr.X = TopX(e, topY)
-                    e.Curr.Y = topY
+                    e.curr.x = TopX(e, topY)
+                    e.curr.y = topY
                 }
 
                 //When StrictlySimple and 'e' is being touched by another edge, then
                 //make sure both edges have a vertex here ...
                 if m_StrictSimple
                 {
-                    ePrev := e.PrevInAEL
-                    if  (e.OutIdx >= 0) and (e.WindDelta != 0) and ePrev and (ePrev.OutIdx >= 0) and
-                        (ePrev.Curr.X == e.Curr.X) and (ePrev.WindDelta != 0)
+                    ePrev := e.prevInAEL
+                    if  (e.outIdx >= 0) and (e.windDelta != 0) and ePrev and (ePrev.outIdx >= 0) and
+                        (ePrev.curr.x == e.curr.x) and (ePrev.windDelta != 0)
                     {
-                        pt := e.Curr
+                        pt := e.curr
                         op := AddOutPt(ePrev, pt)
                         op2 := AddOutPt(e, pt)
                         AddJoin(op, op2, pt)
                     }
                 }
 
-                e = e.NextInAEL
+                e = e.nextInAEL
             }
         }
 
-        //3. Process horizontals at the Top of the scanbeam ...
+        //3. Process horizontals at the top of the scanbeam ...
         m_Maxima.sort()
         ProcessHorizontals()
         m_Maxima.clear()
@@ -1775,33 +1775,33 @@ impl Clipper
             if IsIntermediate(e, topY)
             {
                 var op: *OutPt
-                if e.OutIdx >= 0
-                    op = AddOutPt(e, e.Top)
+                if e.outIdx >= 0
+                    op = AddOutPt(e, e.top)
                 UpdateEdgeIntoAEL(&e)
 
-                ePrev := e.PrevInAEL
-                eNext := e.NextInAEL
-                if ePrev and ePrev.Curr.X == e.Bot.X and
-                    ePrev.Curr.Y == e.Bot.Y and op and
-                    ePrev.OutIdx >= 0 and ePrev.Curr.Y > ePrev.Top.Y and
-                    SlopesEqual(e.Curr, e.Top, ePrev.Curr, ePrev.Top) and
-                    (e.WindDelta != 0) and (ePrev.WindDelta != 0)
+                ePrev := e.prevInAEL
+                eNext := e.nextInAEL
+                if ePrev and ePrev.curr.x == e.bot.x and
+                    ePrev.curr.y == e.bot.y and op and
+                    ePrev.outIdx >= 0 and ePrev.curr.y > ePrev.top.y and
+                    SlopesEqual(e.curr, e.top, ePrev.curr, ePrev.top) and
+                    (e.windDelta != 0) and (ePrev.windDelta != 0)
                 {
-                    op2 := AddOutPt(ePrev, e.Bot)
-                    AddJoin(op, op2, e.Top)
+                    op2 := AddOutPt(ePrev, e.bot)
+                    AddJoin(op, op2, e.top)
                 }
-                else if eNext and eNext.Curr.X == e.Bot.X and
-                    eNext.Curr.Y == e.Bot.Y and op and
-                    eNext.OutIdx >= 0 and eNext.Curr.Y > eNext.Top.Y and
-                    SlopesEqual(e.Curr, e.Top, eNext.Curr, eNext.Top) and
-                    (e.WindDelta != 0) and (eNext.WindDelta != 0)
+                else if eNext and eNext.curr.x == e.bot.x and
+                    eNext.curr.y == e.bot.y and op and
+                    eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and
+                    SlopesEqual(e.curr, e.top, eNext.curr, eNext.top) and
+                    (e.windDelta != 0) and (eNext.windDelta != 0)
                 {
-                    op2 := AddOutPt(eNext, e.Bot)
-                    AddJoin(op, op2, e.Top)
+                    op2 := AddOutPt(eNext, e.bot)
+                    AddJoin(op, op2, e.top)
                 }
             }
 
-            e = e.NextInAEL
+            e = e.nextInAEL
         }
     }
 
@@ -1827,10 +1827,10 @@ impl Clipper
         m_SortedEdges = e
         while e
         {
-            e.PrevInSEL = e.PrevInAEL
-            e.NextInSEL = e.NextInAEL
-            e.Curr.X = TopX(e, topY)
-            e = e.NextInAEL
+            e.prevInSEL = e.prevInAEL
+            e.nextInSEL = e.nextInAEL
+            e.curr.x = TopX(e, topY)
+            e = e.nextInAEL
         }
 
         var isModified: bool
@@ -1838,18 +1838,18 @@ impl Clipper
         {
             isModified = false
             e = m_SortedEdges
-            while e.NextInSEL
+            while e.nextInSEL
             {
-                eNext := e.NextInSEL
-                var Pt: IntPoint
-                if e.Curr.X > eNext.Curr.X
+                eNext := e.nextInSEL
+                var pt: IntPoint
+                if e.curr.x > eNext.curr.x
                 {
-                    IntersectPoint(e, eNext, &Pt)
-                    if Pt.Y < topY Pt = IntPoint{TopX(e, topY), topY}
+                    IntersectPoint(e, eNext, &pt)
+                    if pt.y < topY pt = IntPoint{TopX(e, topY), topY}
                     newNode := Memory.new'IntersectNode()
-                    newNode.Edge1 = e;
-                    newNode.Edge2 = eNext
-                    newNode.Pt = Pt
+                    newNode.edge1 = e;
+                    newNode.edge2 = eNext
+                    newNode.pt = pt
                     m_IntersectList.add(newNode)
                     SwapPositionsInSEL(e, eNext)
                     isModified = true
@@ -1858,8 +1858,8 @@ impl Clipper
                     e = eNext
             }
 
-            if !e.PrevInSEL break
-            e.PrevInSEL.NextInSEL = null
+            if !e.prevInSEL break
+            e.prevInSEL.nextInSEL = null
             if !isModified break
         }
 
@@ -1872,15 +1872,15 @@ impl Clipper
         m_SortedEdges = e
         while e
         {
-            e.PrevInSEL = e.PrevInAEL
-            e.NextInSEL = e.NextInAEL
-            e = e.NextInAEL
+            e.prevInSEL = e.prevInAEL
+            e.nextInSEL = e.nextInAEL
+            e = e.nextInAEL
         }
     }
 
     func EdgesAdjacent(inode: *IntersectNode)->bool
     {
-        return (inode.Edge1.NextInSEL == inode.Edge2) or (inode.Edge1.PrevInSEL == inode.Edge2)
+        return (inode.edge1.nextInSEL == inode.edge2) or (inode.edge1.prevInSEL == inode.edge2)
     }
 
     method FixupIntersectionOrder()->bool
@@ -1897,7 +1897,7 @@ impl Clipper
                 swap(m_IntersectList.buffer + i, m_IntersectList.buffer + j)
             }
 
-            SwapPositionsInSEL(m_IntersectList[i].Edge1, m_IntersectList[i].Edge2)
+            SwapPositionsInSEL(m_IntersectList[i].edge1, m_IntersectList[i].edge2)
         }
 
         return true
@@ -1907,127 +1907,127 @@ impl Clipper
     {
         visit iNode: m_IntersectList
         {
-            IntersectEdges(iNode.Edge1, iNode.Edge2, iNode.Pt)
-            SwapPositionsInAEL(iNode.Edge1, iNode.Edge2)
+            IntersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
+            SwapPositionsInAEL(iNode.edge1, iNode.edge2)
             Memory.delete(iNode)
         }
 
         m_IntersectList.clear()
     }
 
-    method SwapPositionsInSEL(Edge1, Edge2: *TEdge)
+    method SwapPositionsInSEL(edge1, edge2: *TEdge)
     {
-        if !Edge1.NextInSEL and !Edge1.PrevInSEL return
-        if !Edge2.NextInSEL and !Edge2.PrevInSEL return
+        if !edge1.nextInSEL and !edge1.prevInSEL return
+        if !edge2.nextInSEL and !edge2.prevInSEL return
 
-        if Edge1.NextInSEL == Edge2
+        if edge1.nextInSEL == edge2
         {
-            Next := Edge2.NextInSEL
-            if Next Next.PrevInSEL = Edge1
-            Prev := Edge1.PrevInSEL
-            if Prev Prev.NextInSEL = Edge2
-            Edge2.PrevInSEL = Prev
-            Edge2.NextInSEL = Edge1
-            Edge1.PrevInSEL = Edge2
-            Edge1.NextInSEL = Next
+            next := edge2.nextInSEL
+            if next next.prevInSEL = edge1
+            prev := edge1.prevInSEL
+            if prev prev.nextInSEL = edge2
+            edge2.prevInSEL = prev
+            edge2.nextInSEL = edge1
+            edge1.prevInSEL = edge2
+            edge1.nextInSEL = next
         }
-        else if Edge2.NextInSEL == Edge1
+        else if edge2.nextInSEL == edge1
         {
-            Next := Edge1.NextInSEL
-            if Next Next.PrevInSEL = Edge2
-            Prev := Edge2.PrevInSEL
-            if Prev Prev.NextInSEL = Edge1
-            Edge1.PrevInSEL = Prev
-            Edge1.NextInSEL = Edge2
-            Edge2.PrevInSEL = Edge1
-            Edge2.NextInSEL = Next
+            next := edge1.nextInSEL
+            if next next.prevInSEL = edge2
+            prev := edge2.prevInSEL
+            if prev prev.nextInSEL = edge1
+            edge1.prevInSEL = prev
+            edge1.nextInSEL = edge2
+            edge2.prevInSEL = edge1
+            edge2.nextInSEL = next
         }
         else
         {
-            Next := Edge1.NextInSEL
-            Prev := Edge1.PrevInSEL
-            Edge1.NextInSEL = Edge2.NextInSEL
-            if Edge1.NextInSEL Edge1.NextInSEL.PrevInSEL = Edge1
-            Edge1.PrevInSEL = Edge2.PrevInSEL
-            if Edge1.PrevInSEL Edge1.PrevInSEL.NextInSEL = Edge1
-            Edge2.NextInSEL = Next
-            if Edge2.NextInSEL Edge2.NextInSEL.PrevInSEL = Edge2
-            Edge2.PrevInSEL = Prev
-            if Edge2.PrevInSEL Edge2.PrevInSEL.NextInSEL = Edge2
+            next := edge1.nextInSEL
+            prev := edge1.prevInSEL
+            edge1.nextInSEL = edge2.nextInSEL
+            if edge1.nextInSEL edge1.nextInSEL.prevInSEL = edge1
+            edge1.prevInSEL = edge2.prevInSEL
+            if edge1.prevInSEL edge1.prevInSEL.nextInSEL = edge1
+            edge2.nextInSEL = next
+            if edge2.nextInSEL edge2.nextInSEL.prevInSEL = edge2
+            edge2.prevInSEL = prev
+            if edge2.prevInSEL edge2.prevInSEL.nextInSEL = edge2
         }
 
-        if !Edge1.PrevInSEL m_SortedEdges = Edge1
-        else if !Edge2.PrevInSEL m_SortedEdges = Edge2
+        if !edge1.prevInSEL m_SortedEdges = edge1
+        else if !edge2.prevInSEL m_SortedEdges = edge2
     }
 
-    method IntersectPoint(Edge1, Edge2: *TEdge, ip: *IntPoint)
+    method IntersectPoint(edge1, edge2: *TEdge, ip: *IntPoint)
     {
         var b1, b2: f64
-        if Edge1.Dx == Edge2.Dx
+        if edge1.dx == edge2.dx
         {
-            ip.Y = Edge1.Curr.Y
-            ip.X = TopX(Edge1, ip.Y)
+            ip.y = edge1.curr.y
+            ip.x = TopX(edge1, ip.y)
             return
         }
-        else if Edge1.Dx == 0
+        else if edge1.dx == 0
         {
-            ip.X = Edge1.Bot.X
-            if IsHorizontal(Edge2)
-                ip.Y = Edge2.Bot.Y
+            ip.x = edge1.bot.x
+            if IsHorizontal(edge2)
+                ip.y = edge2.bot.y
             else
             {
-                b2 = Edge2.Bot.Y - (Edge2.Bot.X / Edge2.Dx)
-                ip.Y = Round(ip.X / Edge2.Dx + b2)
+                b2 = edge2.bot.y - (edge2.bot.x / edge2.dx)
+                ip.y = Round(ip.x / edge2.dx + b2)
             }
         }
-        else if Edge2.Dx == 0
+        else if edge2.dx == 0
         {
-            ip.X = Edge2.Bot.X
-            if IsHorizontal(Edge1)
-                ip.Y = Edge1.Bot.Y
+            ip.x = edge2.bot.x
+            if IsHorizontal(edge1)
+                ip.y = edge1.bot.y
             else
             {
-                b1 = Edge1.Bot.Y - (Edge1.Bot.X / Edge1.Dx)
-                ip.Y = Round(ip.X / Edge1.Dx + b1)
+                b1 = edge1.bot.y - (edge1.bot.x / edge1.dx)
+                ip.y = Round(ip.x / edge1.dx + b1)
             }
         }
         else
         {
-            b1 = Edge1.Bot.X - Edge1.Bot.Y * Edge1.Dx
-            b2 = Edge2.Bot.X - Edge2.Bot.Y * Edge2.Dx
-            q := (b2-b1) / (Edge1.Dx - Edge2.Dx)
-            ip.Y = Round(q)
-            if Math.abs(Edge1.Dx) < Math.abs(Edge2.Dx)
-                ip.X = Round(Edge1.Dx * q + b1)
+            b1 = edge1.bot.x - edge1.bot.y * edge1.dx
+            b2 = edge2.bot.x - edge2.bot.y * edge2.dx
+            q := (b2-b1) / (edge1.dx - edge2.dx)
+            ip.y = Round(q)
+            if Math.abs(edge1.dx) < Math.abs(edge2.dx)
+                ip.x = Round(edge1.dx * q + b1)
             else
-                ip.X = Round(Edge2.Dx * q + b2)
+                ip.x = Round(edge2.dx * q + b2)
         }
 
-        if ip.Y < Edge1.Top.Y or ip.Y < Edge2.Top.Y
+        if ip.y < edge1.top.y or ip.y < edge2.top.y
         {
-            if Edge1.Top.Y > Edge2.Top.Y
-                ip.Y = Edge1.Top.Y
+            if edge1.top.y > edge2.top.y
+                ip.y = edge1.top.y
             else
-                ip.Y = Edge2.Top.Y
-            if Math.abs(Edge1.Dx) < Math.abs(Edge2.Dx)
-                ip.X = TopX(Edge1, ip.Y)
+                ip.y = edge2.top.y
+            if Math.abs(edge1.dx) < Math.abs(edge2.dx)
+                ip.x = TopX(edge1, ip.y)
             else
-                ip.X = TopX(Edge2, ip.Y)
+                ip.x = TopX(edge2, ip.y)
         }
 
-        if (ip.Y > Edge1.Curr.Y)
+        if (ip.y > edge1.curr.y)
         {
-            ip.Y = Edge1.Curr.Y
-            if Math.abs(Edge1.Dx) > Math.abs(Edge2.Dx)
-                ip.X = TopX(Edge2, ip.Y)
+            ip.y = edge1.curr.y
+            if Math.abs(edge1.dx) > Math.abs(edge2.dx)
+                ip.x = TopX(edge2, ip.y)
             else
-                ip.X = TopX(Edge1, ip.Y)
+                ip.x = TopX(edge1, ip.y)
         }
     }
 
-    method PopLocalMinima(Y: CInt, locMin: **LocalMinimum)->bool
+    method PopLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
     {
-        if m_CurrentLM == m_MinimaList.count or m_MinimaList[m_CurrentLM].Y != Y return false
+        if m_CurrentLM == m_MinimaList.count or m_MinimaList[m_CurrentLM].y != y return false
         dref locMin = m_MinimaList[m_CurrentLM]
         m_CurrentLM += 1
         return true
@@ -2041,20 +2041,20 @@ impl Clipper
 
     func TopX(edge: *TEdge, currentY: CInt)->CInt
     {
-        return currentY == edge.Top.Y ? edge.Top.X : edge.Bot.X + Round(edge.Dx * (currentY - edge.Bot.Y))
+        return currentY == edge.top.y ? edge.top.x : edge.bot.x + Round(edge.dx * (currentY - edge.bot.y))
     }
 
     func E2InsertsBeforeE1(e1, e2: *TEdge)->bool
     {
-        if e2.Curr.X == e1.Curr.X
+        if e2.curr.x == e1.curr.x
         {
-            if e2.Top.Y > e1.Top.Y
-                return e2.Top.X < TopX(e1, e2.Top.Y)
+            if e2.top.y > e1.top.y
+                return e2.top.x < TopX(e1, e2.top.y)
             else
-                return e1.Top.X > TopX(e2, e1.Top.Y)
+                return e1.top.x > TopX(e2, e1.top.y)
         }
         else
-            return e2.Curr.X < e1.Curr.X
+            return e2.curr.x < e1.curr.x
     }
 
     method InsertEdgeIntoAEL(edge, startE: *TEdge)
@@ -2062,130 +2062,130 @@ impl Clipper
         startEdge := startE
         if !m_ActiveEdges
         {
-            edge.PrevInAEL = null
-            edge.NextInAEL = null
+            edge.prevInAEL = null
+            edge.nextInAEL = null
             m_ActiveEdges = edge
         }
         else if !startEdge and E2InsertsBeforeE1(m_ActiveEdges, edge)
         {
-            edge.PrevInAEL = null
-            edge.NextInAEL = m_ActiveEdges
-            m_ActiveEdges.PrevInAEL = edge
+            edge.prevInAEL = null
+            edge.nextInAEL = m_ActiveEdges
+            m_ActiveEdges.prevInAEL = edge
             m_ActiveEdges = edge
         }
         else
         {
             if !startEdge startEdge = m_ActiveEdges
-            while startEdge.NextInAEL and !E2InsertsBeforeE1(startEdge.NextInAEL, edge)
-                startEdge = startEdge.NextInAEL
-            edge.NextInAEL = startEdge.NextInAEL
-            if startEdge.NextInAEL startEdge.NextInAEL.PrevInAEL = edge
-            edge.PrevInAEL = startEdge
-            startEdge.NextInAEL = edge
+            while startEdge.nextInAEL and !E2InsertsBeforeE1(startEdge.nextInAEL, edge)
+                startEdge = startEdge.nextInAEL
+            edge.nextInAEL = startEdge.nextInAEL
+            if startEdge.nextInAEL startEdge.nextInAEL.prevInAEL = edge
+            edge.prevInAEL = startEdge
+            startEdge.nextInAEL = edge
         }
     }
 
     method IsEvenOddFillType(edge: *TEdge)->bool
     {
-        if edge.PolyTyp == .ptSubject
-            return m_SubjFillType == .pftEvenOdd
-        return m_ClipFillType == .pftEvenOdd
+        if edge.polyType == .Subject
+            return m_SubjFillType == .EvenOdd
+        return m_ClipFillType == .EvenOdd
     }
 
     method IsEvenOddAltFillType(edge: *TEdge)->bool
     {
-        if edge.PolyTyp == .ptSubject
-            return m_ClipFillType == .pftEvenOdd
-        return m_SubjFillType == .pftEvenOdd
+        if edge.polyType == .Subject
+            return m_ClipFillType == .EvenOdd
+        return m_SubjFillType == .EvenOdd
     }
 
     method SetWindingCount(edge: *TEdge)
     {
-        e := edge.PrevInAEL
+        e := edge.prevInAEL
 
-        while e and ((e.PolyTyp != edge.PolyTyp) or (e.WindDelta == 0))
-            e = e.PrevInAEL
+        while e and ((e.polyType != edge.polyType) or (e.windDelta == 0))
+            e = e.prevInAEL
 
         if !e
         {
-            if edge.WindDelta == 0
+            if edge.windDelta == 0
             {
-                pft := edge.PolyTyp == .ptSubject ? m_SubjFillType : m_ClipFillType
-                edge.WindCnt = (pft == .pftNegative ? -1 : 1)
+                pft := edge.polyType == .Subject ? m_SubjFillType : m_ClipFillType
+                edge.windCnt = (pft == .Negative ? -1 : 1)
             }
             else
-                edge.WindCnt = edge.WindDelta
-            edge.WindCnt2 = 0
+                edge.windCnt = edge.windDelta
+            edge.windCnt2 = 0
             e = m_ActiveEdges
         }
-        else if edge.WindDelta == 0 and m_ClipType != .ctUnion
+        else if edge.windDelta == 0 and m_ClipType != .Union
         {
-            edge.WindCnt = 1
-            edge.WindCnt2 = e.WindCnt2
-            e = e.NextInAEL
+            edge.windCnt = 1
+            edge.windCnt2 = e.windCnt2
+            e = e.nextInAEL
         }
         else if IsEvenOddFillType(edge)
         {
-            if edge.WindDelta == 0
+            if edge.windDelta == 0
             {
                 Inside := true
-                e2 := e.PrevInAEL
+                e2 := e.prevInAEL
                 while e2
                 {
-                    if e2.PolyTyp == e.PolyTyp and e2.WindDelta != 0
+                    if e2.polyType == e.polyType and e2.windDelta != 0
                         Inside = !Inside
-                    e2 = e2.PrevInAEL
+                    e2 = e2.prevInAEL
                 }
-                edge.WindCnt = (Inside ? 0 : 1)
+                edge.windCnt = (Inside ? 0 : 1)
             }
             else
-                edge.WindCnt = edge.WindDelta
-            edge.WindCnt2 = e.WindCnt2
-            e = e.NextInAEL
+                edge.windCnt = edge.windDelta
+            edge.windCnt2 = e.windCnt2
+            e = e.nextInAEL
         }
         else
         {
-            if e.WindCnt * e.WindDelta < 0
+            if e.windCnt * e.windDelta < 0
             {
-                if Math.abs(e.WindCnt) > 1
+                if Math.abs(e.windCnt) > 1
                 {
-                    if e.WindDelta * edge.WindDelta < 0
-                        edge.WindCnt = e.WindCnt
+                    if e.windDelta * edge.windDelta < 0
+                        edge.windCnt = e.windCnt
                     else
-                        edge.WindCnt = e.WindCnt + edge.WindDelta
+                        edge.windCnt = e.windCnt + edge.windDelta
                 }
                 else
-                    edge.WindCnt = edge.WindDelta == 0 ? 1 : edge.WindDelta
+                    edge.windCnt = edge.windDelta == 0 ? 1 : edge.windDelta
             }
             else
             {
-                if edge.WindDelta == 0
-                    edge.WindCnt = (e.WindCnt < 0 ? e.WindCnt - 1 : e.WindCnt + 1)
-                else if e.WindDelta * edge.WindDelta < 0
-                    edge.WindCnt = e.WindCnt
+                if edge.windDelta == 0
+                    edge.windCnt = (e.windCnt < 0 ? e.windCnt - 1 : e.windCnt + 1)
+                else if e.windDelta * edge.windDelta < 0
+                    edge.windCnt = e.windCnt
                 else
-                    edge.WindCnt = e.WindCnt + edge.WindDelta
+                    edge.windCnt = e.windCnt + edge.windDelta
             }
 
-            edge.WindCnt2 = e.WindCnt2
-            e = e.NextInAEL
+            edge.windCnt2 = e.windCnt2
+            e = e.nextInAEL
         }
 
         if IsEvenOddAltFillType(edge)
         {
             while e != edge
             {
-                if e.WindDelta != 0
-                    edge.WindCnt2 = edge.WindCnt2 == 0 ? 1 : 0
-                e = e.NextInAEL
+                if e.windDelta != 0
+                    edge.windCnt2 = edge.windCnt2 == 0 ? 1 : 0
+                e = e.nextInAEL
             }
         }
         else
         {
             while e != edge
             {
-                edge.WindCnt2 += e.WindDelta
-                e = e.NextInAEL
+                edge.windCnt2 += e.windDelta
+                e = e.nextInAEL
             }
         }
     }
@@ -2193,7 +2193,7 @@ impl Clipper
     method IsContributing(edge: *TEdge)->bool
     {
         var pft, pft2: PolyFillType = ?
-        if edge.PolyTyp == .ptSubject
+        if edge.polyType == .Subject
         {
             pft = m_SubjFillType
             pft2 = m_ClipFillType
@@ -2206,81 +2206,81 @@ impl Clipper
 
         switch pft
         {
-        case pftEvenOdd:
-            if edge.WindDelta == 0 and edge.WindCnt != 1
+        case EvenOdd:
+            if edge.windDelta == 0 and edge.windCnt != 1
                 return false
-        case pftNonZero:
-            if Math.abs(edge.WindCnt) != 1
+        case NonZero:
+            if Math.abs(edge.windCnt) != 1
                 return false
-        case pftPositive:
-            if edge.WindCnt != 1
+        case Positive:
+            if edge.windCnt != 1
                 return false
         default:
-            if edge.WindCnt != -1
+            if edge.windCnt != -1
                 return false
         }
 
         switch m_ClipType
         {
-        case ctIntersection:
+        case Intersection:
             switch pft2
             {
-            case pftEvenOdd, pftNonZero:
-                return edge.WindCnt2 != 0
-            case pftPositive:
-                return edge.WindCnt2 > 0
+            case EvenOdd, NonZero:
+                return edge.windCnt2 != 0
+            case Positive:
+                return edge.windCnt2 > 0
             default:
-                return edge.WindCnt2 < 0
+                return edge.windCnt2 < 0
             }
 
-        case ctUnion:
+        case Union:
             switch pft2
             {
-            case pftEvenOdd, pftNonZero:
-                return edge.WindCnt2 == 0
-            case pftPositive:
-                return edge.WindCnt2 <= 0
+            case EvenOdd, NonZero:
+                return edge.windCnt2 == 0
+            case Positive:
+                return edge.windCnt2 <= 0
             default:
-                return edge.WindCnt2 >= 0
+                return edge.windCnt2 >= 0
             }
 
-        case ctDifference:
-            if edge.PolyTyp == .ptSubject
+        case Difference:
+            if edge.polyType == .Subject
             {
                 switch pft2
                 {
-                case pftEvenOdd, pftNonZero:
-                    return edge.WindCnt2 == 0
-                case pftPositive:
-                    return edge.WindCnt2 <= 0
+                case EvenOdd, NonZero:
+                    return edge.windCnt2 == 0
+                case Positive:
+                    return edge.windCnt2 <= 0
                 default:
-                    return edge.WindCnt2 >= 0
+                    return edge.windCnt2 >= 0
                 }
             }
             else
             {
                 switch(pft2)
                 {
-                case pftEvenOdd, pftNonZero:
-                    return edge.WindCnt2 != 0
-                case pftPositive:
-                    return edge.WindCnt2 > 0
+                case EvenOdd, NonZero:
+                    return edge.windCnt2 != 0
+                case Positive:
+                    return edge.windCnt2 > 0
                 default:
-                    return edge.WindCnt2 < 0
+                    return edge.windCnt2 < 0
                 }
             }
 
-        case ctXor:
-            if edge.WindDelta == 0
+        case Xor:
+            if edge.windDelta == 0
             {
                 switch pft2
                 {
-                case pftEvenOdd, pftNonZero:
-                    return edge.WindCnt2 == 0
-                case pftPositive:
-                    return edge.WindCnt2 <= 0
+                case EvenOdd, NonZero:
+                    return edge.windCnt2 == 0
+                case Positive:
+                    return edge.windCnt2 <= 0
                 default:
-                    return edge.WindCnt2 >= 0
+                    return edge.windCnt2 >= 0
                 }
             }
         }
@@ -2292,117 +2292,117 @@ impl Clipper
     {
         result := Memory.new'OutRec()
         m_PolyOuts.add(result)
-        result.Idx = cast(s32) (m_PolyOuts.count - 1)
+        result.idx = cast(s32) (m_PolyOuts.count - 1)
         return result
     }
 
     method SetHoleState(e: *TEdge, outrec: *OutRec)
     {
-        e2 := e.PrevInAEL
+        e2 := e.prevInAEL
         var eTmp: *TEdge
         while e2
         {
-            if e2.OutIdx >= 0 and e2.WindDelta != 0
+            if e2.outIdx >= 0 and e2.windDelta != 0
             {
                 if !eTmp eTmp = e2
-                else if eTmp.OutIdx == e2.OutIdx eTmp = null
+                else if eTmp.outIdx == e2.outIdx eTmp = null
             }
 
-            e2 = e2.PrevInAEL
+            e2 = e2.prevInAEL
         }
         if !eTmp
         {
-            outrec.FirstLeft = null
-            outrec.IsHole = false
+            outrec.firstLeft = null
+            outrec.isHole = false
         }
         else
         {
-            outrec.FirstLeft = m_PolyOuts[eTmp.OutIdx]
-            outrec.IsHole = !outrec.FirstLeft.IsHole
+            outrec.firstLeft = m_PolyOuts[eTmp.outIdx]
+            outrec.isHole = !outrec.firstLeft.isHole
         }
     }
 
     #[Swag.discardable]
     method AddOutPt(e: *TEdge, pt: IntPoint)->*OutPt
     {
-        if e.OutIdx < 0
+        if e.outIdx < 0
         {
             outRec := CreateOutRec()
-            outRec.IsOpen = e.WindDelta == 0
+            outRec.isOpen = e.windDelta == 0
             newOp := Memory.new'OutPt();
-            outRec.Pts = newOp
-            newOp.Idx = outRec.Idx
-            newOp.Pt = pt
-            newOp.Next = newOp
-            newOp.Prev = newOp
-            if !outRec.IsOpen
+            outRec.pts = newOp
+            newOp.idx = outRec.idx
+            newOp.pt = pt
+            newOp.next = newOp
+            newOp.prev = newOp
+            if !outRec.isOpen
                 SetHoleState(e, outRec)
-            e.OutIdx = outRec.Idx
+            e.outIdx = outRec.idx
             return newOp
         }
         else
         {
-            outRec := m_PolyOuts[e.OutIdx]
-            op := outRec.Pts
+            outRec := m_PolyOuts[e.outIdx]
+            op := outRec.pts
 
-            ToFront := (e.Side == .esLeft)
-            if ToFront and (pt == op.Pt) return op
-            if !ToFront and (pt == op.Prev.Pt) return op.Prev
+            ToFront := (e.side == .Left)
+            if ToFront and (pt == op.pt) return op
+            if !ToFront and (pt == op.prev.pt) return op.prev
 
             newOp := Memory.new'OutPt()
-            newOp.Idx = outRec.Idx
-            newOp.Pt = pt
-            newOp.Next = op
-            newOp.Prev = op.Prev
-            newOp.Prev.Next = newOp;
-            op.Prev = newOp
-            if ToFront outRec.Pts = newOp
+            newOp.idx = outRec.idx
+            newOp.pt = pt
+            newOp.next = op
+            newOp.prev = op.prev
+            newOp.prev.next = newOp;
+            op.prev = newOp
+            if ToFront outRec.pts = newOp
             return newOp
         }
     }
 
     #[Swag.discardable]
-    method AddLocalMinPoly(e1, e2: *TEdge, Pt: IntPoint)->*OutPt
+    method AddLocalMinPoly(e1, e2: *TEdge, pt: IntPoint)->*OutPt
     {
         var result: *OutPt
         var e, prevE: *TEdge
 
-        if IsHorizontal(e2) or (e1.Dx > e2.Dx)
+        if IsHorizontal(e2) or (e1.dx > e2.dx)
         {
-            result = AddOutPt(e1, Pt)
-            e2.OutIdx = e1.OutIdx
-            e1.Side = .esLeft
-            e2.Side = .esRight
+            result = AddOutPt(e1, pt)
+            e2.outIdx = e1.outIdx
+            e1.side = .Left
+            e2.side = .Right
             e = e1
-            if e.PrevInAEL == e2
-                prevE = e2.PrevInAEL
+            if e.prevInAEL == e2
+                prevE = e2.prevInAEL
             else
-                prevE = e.PrevInAEL
+                prevE = e.prevInAEL
         }
         else
         {
-            result = AddOutPt(e2, Pt)
-            e1.OutIdx = e2.OutIdx
-            e1.Side = .esRight
-            e2.Side = .esLeft
+            result = AddOutPt(e2, pt)
+            e1.outIdx = e2.outIdx
+            e1.side = .Right
+            e2.side = .Left
             e = e2
-            if e.PrevInAEL == e1
-                prevE = e1.PrevInAEL
+            if e.prevInAEL == e1
+                prevE = e1.prevInAEL
             else
-                prevE = e.PrevInAEL
+                prevE = e.prevInAEL
         }
 
-        if prevE and prevE.OutIdx >= 0 and prevE.Top.Y < Pt.Y and e.Top.Y < Pt.Y
+        if prevE and prevE.outIdx >= 0 and prevE.top.y < pt.y and e.top.y < pt.y
         {
-            xPrev := TopX(prevE, Pt.Y)
-            xE := TopX(e, Pt.Y)
+            xPrev := TopX(prevE, pt.y)
+            xE := TopX(e, pt.y)
             if  xPrev == xE and
-                (e.WindDelta != 0) and
-                (prevE.WindDelta != 0) and
-                SlopesEqual(IntPoint{xPrev, Pt.Y}, prevE.Top, IntPoint{xE, Pt.Y}, e.Top)
+                (e.windDelta != 0) and
+                (prevE.windDelta != 0) and
+                SlopesEqual(IntPoint{xPrev, pt.y}, prevE.top, IntPoint{xE, pt.y}, e.top)
             {
-                outPt := AddOutPt(prevE, Pt)
-                AddJoin(result, outPt, e.Top)
+                outPt := AddOutPt(prevE, pt)
+                AddJoin(result, outPt, e.top)
             }
         }
 
@@ -2414,14 +2414,14 @@ impl Clipper
         if !m_SortedEdges
         {
             m_SortedEdges = edge
-            edge.PrevInSEL = null
-            edge.NextInSEL = null
+            edge.prevInSEL = null
+            edge.nextInSEL = null
         }
         else
         {
-            edge.NextInSEL = m_SortedEdges
-            edge.PrevInSEL = null
-            m_SortedEdges.PrevInSEL = edge
+            edge.nextInSEL = m_SortedEdges
+            edge.prevInSEL = null
+            m_SortedEdges.prevInSEL = edge
             m_SortedEdges = edge
         }
     }
@@ -2442,7 +2442,7 @@ impl Clipper
         outRec1 := o1
         loop
         {
-            outRec1 = outRec1.FirstLeft
+            outRec1 = outRec1.firstLeft
             if outRec1 == outRec2 return true
             if !outRec1 break
         }
@@ -2451,7 +2451,7 @@ impl Clipper
 
     func GetDx(pt1, pt2: IntPoint)->f64
     {
-        return (pt1.Y == pt2.Y) ? HORIZONTAL : cast(f64) (pt2.X - pt1.X) / (pt2.Y - pt1.Y)
+        return (pt1.y == pt2.y) ? HORIZONTAL : cast(f64) (pt2.x - pt1.x) / (pt2.y - pt1.y)
     }
 
     func Area(op1: *OutPt)->f64
@@ -2463,8 +2463,8 @@ impl Clipper
         a := 0'f64
         loop
         {
-            a += cast(f64) (op.Prev.Pt.X + op.Pt.X) * cast(f64) (op.Prev.Pt.Y - op.Pt.Y)
-            op = op.Next
+            a += cast(f64) (op.prev.pt.x + op.pt.x) * cast(f64) (op.prev.pt.y - op.pt.y)
+            op = op.next
             if op == startOp break
         }
 
@@ -2473,19 +2473,19 @@ impl Clipper
 
     func FirstIsBottomPt(btmPt1, btmPt2: *OutPt)->bool
     {
-        p := btmPt1.Prev
-        while (p.Pt == btmPt1.Pt) and (p != btmPt1) p = p.Prev
-        dx1p := Math.abs(GetDx(btmPt1.Pt, p.Pt))
-        p = btmPt1.Next
-        while (p.Pt == btmPt1.Pt) and (p != btmPt1) p = p.Next
-        dx1n := Math.abs(GetDx(btmPt1.Pt, p.Pt))
+        p := btmPt1.prev
+        while (p.pt == btmPt1.pt) and (p != btmPt1) p = p.prev
+        dx1p := Math.abs(GetDx(btmPt1.pt, p.pt))
+        p = btmPt1.next
+        while (p.pt == btmPt1.pt) and (p != btmPt1) p = p.next
+        dx1n := Math.abs(GetDx(btmPt1.pt, p.pt))
 
-        p = btmPt2.Prev
-        while (p.Pt == btmPt2.Pt) and (p != btmPt2) p = p.Prev
-        dx2p := Math.abs(GetDx(btmPt2.Pt, p.Pt))
-        p = btmPt2.Next
-        while (p.Pt == btmPt2.Pt) and (p != btmPt2) p = p.Next
-        dx2n := Math.abs(GetDx(btmPt2.Pt, p.Pt))
+        p = btmPt2.prev
+        while (p.pt == btmPt2.pt) and (p != btmPt2) p = p.prev
+        dx2p := Math.abs(GetDx(btmPt2.pt, p.pt))
+        p = btmPt2.next
+        while (p.pt == btmPt2.pt) and (p != btmPt2) p = p.next
+        dx2n := Math.abs(GetDx(btmPt2.pt, p.pt))
 
         if Math.max(dx1p, dx1n) == Math.max(dx2p, dx2n) and
            Math.min(dx1p, dx1n) == Math.min(dx2p, dx2n)
@@ -2498,27 +2498,27 @@ impl Clipper
     {
         var dups: *OutPt
         pp := pp1
-        p := pp.Next
+        p := pp.next
         while p != pp
         {
-            if p.Pt.Y > pp.Pt.Y
+            if p.pt.y > pp.pt.y
             {
                 pp = p
                 dups = null
             }
-            else if p.Pt.Y == pp.Pt.Y and p.Pt.X <= pp.Pt.X
+            else if p.pt.y == pp.pt.y and p.pt.x <= pp.pt.x
             {
-                if p.Pt.X < pp.Pt.X
+                if p.pt.x < pp.pt.x
                 {
                     dups = null
                     pp = p
                 }
                 else
                 {
-                    if p.Next != pp and p.Prev != pp dups = p
+                    if p.next != pp and p.prev != pp dups = p
                 }
             }
-            p = p.Next
+            p = p.next
         }
 
         if dups
@@ -2526,9 +2526,9 @@ impl Clipper
             while dups != p
             {
                 if !FirstIsBottomPt(p, dups) pp = dups
-                dups = dups.Next
-                while dups.Pt != pp.Pt
-                    dups = dups.Next
+                dups = dups.next
+                while dups.pt != pp.pt
+                    dups = dups.next
             }
         }
 
@@ -2537,19 +2537,19 @@ impl Clipper
 
     func GetLowermostRec(outRec1, outRec2: *OutRec)->*OutRec
     {
-        if !outRec1.BottomPt
-            outRec1.BottomPt = GetBottomPt(outRec1.Pts)
-        if !outRec2.BottomPt
-            outRec2.BottomPt = GetBottomPt(outRec2.Pts)
-        OutPt1 := outRec1.BottomPt
-        OutPt2 := outRec2.BottomPt
-        if OutPt1.Pt.Y > OutPt2.Pt.Y return outRec1
-        if OutPt1.Pt.Y < OutPt2.Pt.Y return outRec2
-        if OutPt1.Pt.X < OutPt2.Pt.X return outRec1
-        if OutPt1.Pt.X > OutPt2.Pt.X return outRec2
-        if OutPt1.Next == OutPt1 return outRec2
-        if OutPt2.Next == OutPt2 return outRec1
-        if FirstIsBottomPt(OutPt1, OutPt2) return outRec1
+        if !outRec1.bottomPt
+            outRec1.bottomPt = GetBottomPt(outRec1.pts)
+        if !outRec2.bottomPt
+            outRec2.bottomPt = GetBottomPt(outRec2.pts)
+        outPt1 := outRec1.bottomPt
+        outPt2 := outRec2.bottomPt
+        if outPt1.pt.y > outPt2.pt.y return outRec1
+        if outPt1.pt.y < outPt2.pt.y return outRec2
+        if outPt1.pt.x < outPt2.pt.x return outRec1
+        if outPt1.pt.x > outPt2.pt.x return outRec2
+        if outPt1.next == outPt1 return outRec2
+        if outPt2.next == outPt2 return outRec1
+        if FirstIsBottomPt(outPt1, outPt2) return outRec1
         return outRec2
     }
 
@@ -2560,9 +2560,9 @@ impl Clipper
         pp1 = pp
         loop
         {
-            pp2 = pp1.Next
-            pp1.Next = pp1.Prev
-            pp1.Prev = pp2
+            pp2 = pp1.next
+            pp1.next = pp1.prev
+            pp1.prev = pp2
             pp1 = pp2
             if pp1 == pp break
         }
@@ -2571,8 +2571,8 @@ impl Clipper
     method AppendPolygon(e1, e2: *TEdge)
     {
         //get the start and ends of both output polygons ...
-        outRec1 := m_PolyOuts[e1.OutIdx]
-        outRec2 := m_PolyOuts[e2.OutIdx]
+        outRec1 := m_PolyOuts[e1.outIdx]
+        outRec2 := m_PolyOuts[e2.outIdx]
 
         var holeStateRec: *OutRec
         if OutRec1RightOfOutRec2(outRec1, outRec2)
@@ -2585,156 +2585,156 @@ impl Clipper
         //get the start and ends of both output polygons and
         //join e2 poly onto e1 poly and delete pointers to e2 ...
 
-        p1_lft := outRec1.Pts
-        p1_rt := p1_lft.Prev
-        p2_lft := outRec2.Pts
-        p2_rt := p2_lft.Prev
+        p1_lft := outRec1.pts
+        p1_rt := p1_lft.prev
+        p2_lft := outRec2.pts
+        p2_rt := p2_lft.prev
 
         //join e2 poly onto e1 poly and delete pointers to e2 ...
-        if e1.Side == .esLeft
+        if e1.side == .Left
         {
-            if e2.Side == .esLeft
+            if e2.side == .Left
             {
                 ReversePolyPtLinks(p2_lft)
-                p2_lft.Next = p1_lft
-                p1_lft.Prev = p2_lft
-                p1_rt.Next = p2_rt
-                p2_rt.Prev = p1_rt
-                outRec1.Pts = p2_rt
+                p2_lft.next = p1_lft
+                p1_lft.prev = p2_lft
+                p1_rt.next = p2_rt
+                p2_rt.prev = p1_rt
+                outRec1.pts = p2_rt
             }
             else
             {
-                p2_rt.Next = p1_lft
-                p1_lft.Prev = p2_rt
-                p2_lft.Prev = p1_rt
-                p1_rt.Next = p2_lft
-                outRec1.Pts = p2_lft
+                p2_rt.next = p1_lft
+                p1_lft.prev = p2_rt
+                p2_lft.prev = p1_rt
+                p1_rt.next = p2_lft
+                outRec1.pts = p2_lft
             }
         }
         else
         {
-            if e2.Side == .esRight
+            if e2.side == .Right
             {
                 ReversePolyPtLinks(p2_lft)
-                p1_rt.Next = p2_rt
-                p2_rt.Prev = p1_rt
-                p2_lft.Next = p1_lft
-                p1_lft.Prev = p2_lft
+                p1_rt.next = p2_rt
+                p2_rt.prev = p1_rt
+                p2_lft.next = p1_lft
+                p1_lft.prev = p2_lft
             }
             else
             {
-                p1_rt.Next = p2_lft
-                p2_lft.Prev = p1_rt
-                p1_lft.Prev = p2_rt
-                p2_rt.Next = p1_lft
+                p1_rt.next = p2_lft
+                p2_lft.prev = p1_rt
+                p1_lft.prev = p2_rt
+                p2_rt.next = p1_lft
             }
         }
 
-        outRec1.BottomPt = null
+        outRec1.bottomPt = null
         if holeStateRec == outRec2
         {
-            if outRec2.FirstLeft != outRec1
-                outRec1.FirstLeft = outRec2.FirstLeft
-            outRec1.IsHole = outRec2.IsHole
+            if outRec2.firstLeft != outRec1
+                outRec1.firstLeft = outRec2.firstLeft
+            outRec1.isHole = outRec2.isHole
         }
 
-        outRec2.Pts = null
-        outRec2.BottomPt = null
-        outRec2.FirstLeft = outRec1
+        outRec2.pts = null
+        outRec2.bottomPt = null
+        outRec2.firstLeft = outRec1
 
-        OKIdx := e1.OutIdx
-        ObsoleteIdx := e2.OutIdx
+        OKIdx := e1.outIdx
+        ObsoleteIdx := e2.outIdx
 
-        e1.OutIdx = Unassigned
-        e2.OutIdx = Unassigned
+        e1.outIdx = Unassigned
+        e2.outIdx = Unassigned
 
         e := m_ActiveEdges
         while e
         {
-            if e.OutIdx == ObsoleteIdx
+            if e.outIdx == ObsoleteIdx
             {
-                e.OutIdx = OKIdx
-                e.Side = e1.Side
+                e.outIdx = OKIdx
+                e.side = e1.side
                 break
             }
 
-            e = e.NextInAEL
+            e = e.nextInAEL
         }
 
-        outRec2.Idx = outRec1.Idx
+        outRec2.idx = outRec1.idx
     }
 
-    method AddLocalMaxPoly(e1, e2: *TEdge, Pt: IntPoint)
+    method AddLocalMaxPoly(e1, e2: *TEdge, pt: IntPoint)
     {
-        AddOutPt(e1, Pt)
-        if e2.WindDelta == 0 AddOutPt(e2, Pt)
+        AddOutPt(e1, pt)
+        if e2.windDelta == 0 AddOutPt(e2, pt)
 
-        if e1.OutIdx == e2.OutIdx
+        if e1.outIdx == e2.outIdx
         {
-            e1.OutIdx = Unassigned
-            e2.OutIdx = Unassigned
+            e1.outIdx = Unassigned
+            e2.outIdx = Unassigned
         }
-        else if e1.OutIdx < e2.OutIdx
+        else if e1.outIdx < e2.outIdx
             AppendPolygon(e1, e2)
         else
             AppendPolygon(e2, e1)
     }
 
-    func SwapSides(Edge1, Edge2: *TEdge)
+    func SwapSides(edge1, edge2: *TEdge)
     {
-        Side := Edge1.Side
-        Edge1.Side = Edge2.Side
-        Edge2.Side = Side
+        side := edge1.side
+        edge1.side = edge2.side
+        edge2.side = side
     }
 
-    func SwapPolyIndexes(Edge1, Edge2: *TEdge)
+    func SwapPolyIndexes(edge1, edge2: *TEdge)
     {
-        OutIdx := Edge1.OutIdx
-        Edge1.OutIdx = Edge2.OutIdx
-        Edge2.OutIdx = OutIdx
+        outIdx := edge1.outIdx
+        edge1.outIdx = edge2.outIdx
+        edge2.outIdx = outIdx
     }
 
-    method IntersectEdges(e1, e2: *TEdge, Pt: IntPoint)
+    method IntersectEdges(e1, e2: *TEdge, pt: IntPoint)
     {
-        e1Contributing := e1.OutIdx >= 0
-        e2Contributing := e2.OutIdx >= 0
+        e1Contributing := e1.outIdx >= 0
+        e2Contributing := e2.outIdx >= 0
 
         //update winding counts...
         //assumes that e1 will be to the Right of e2 ABOVE the intersection
-        if e1.PolyTyp == e2.PolyTyp
+        if e1.polyType == e2.polyType
         {
             if IsEvenOddFillType(e1)
             {
-                oldE1WindCnt := e1.WindCnt
-                e1.WindCnt = e2.WindCnt
-                e2.WindCnt = oldE1WindCnt
+                oldE1WindCnt := e1.windCnt
+                e1.windCnt = e2.windCnt
+                e2.windCnt = oldE1WindCnt
             }
             else
             {
-                if e1.WindCnt + e2.WindDelta == 0
-                    e1.WindCnt = -e1.WindCnt
+                if e1.windCnt + e2.windDelta == 0
+                    e1.windCnt = -e1.windCnt
                 else
-                    e1.WindCnt += e2.WindDelta
-                if e2.WindCnt - e1.WindDelta == 0
-                    e2.WindCnt = -e2.WindCnt
+                    e1.windCnt += e2.windDelta
+                if e2.windCnt - e1.windDelta == 0
+                    e2.windCnt = -e2.windCnt
                 else
-                    e2.WindCnt -= e1.WindDelta
+                    e2.windCnt -= e1.windDelta
             }
         }
         else
         {
             if !IsEvenOddFillType(e2)
-                e1.WindCnt2 += e2.WindDelta
+                e1.windCnt2 += e2.windDelta
             else
-                e1.WindCnt2 = (e1.WindCnt2 == 0) ? 1 : 0
+                e1.windCnt2 = (e1.windCnt2 == 0) ? 1 : 0
             if !IsEvenOddFillType(e1)
-                e2.WindCnt2 -= e1.WindDelta
+                e2.windCnt2 -= e1.windDelta
             else
-                e2.WindCnt2 = (e2.WindCnt2 == 0) ? 1 : 0
+                e2.windCnt2 = (e2.windCnt2 == 0) ? 1 : 0
         }
 
         var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = ?
-        if e1.PolyTyp == .ptSubject
+        if e1.polyType == .Subject
         {
             e1FillType = m_SubjFillType
             e1FillType2 = m_ClipFillType
@@ -2745,7 +2745,7 @@ impl Clipper
             e1FillType2 = m_SubjFillType
         }
 
-        if e2.PolyTyp == .ptSubject
+        if e2.polyType == .Subject
         {
             e2FillType = m_SubjFillType
             e2FillType2 = m_ClipFillType
@@ -2759,28 +2759,28 @@ impl Clipper
         var e1Wc, e2Wc: CInt
         switch e1FillType
         {
-        case pftPositive:   e1Wc = e1.WindCnt
-        case pftNegative:   e1Wc = -e1.WindCnt
-        default:            e1Wc = Math.abs(e1.WindCnt)
+        case Positive:   e1Wc = e1.windCnt
+        case Negative:   e1Wc = -e1.windCnt
+        default:            e1Wc = Math.abs(e1.windCnt)
         }
 
         switch e2FillType
         {
-        case pftPositive:   e2Wc = e2.WindCnt
-        case pftNegative:   e2Wc = -e2.WindCnt
-        default:            e2Wc = Math.abs(e2.WindCnt)
+        case Positive:   e2Wc = e2.windCnt
+        case Negative:   e2Wc = -e2.windCnt
+        default:            e2Wc = Math.abs(e2.windCnt)
         }
 
         if e1Contributing and e2Contributing
         {
-            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.PolyTyp != e2.PolyTyp and m_ClipType != .ctXor)
+            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.polyType != e2.polyType and m_ClipType != .Xor)
             {
-                AddLocalMaxPoly(e1, e2, Pt)
+                AddLocalMaxPoly(e1, e2, pt)
             }
             else
             {
-                AddOutPt(e1, Pt)
-                AddOutPt(e2, Pt)
+                AddOutPt(e1, pt)
+                AddOutPt(e2, pt)
                 SwapSides(e1, e2)
                 SwapPolyIndexes(e1, e2)
             }
@@ -2789,7 +2789,7 @@ impl Clipper
         {
             if e2Wc == 0 or e2Wc == 1
             {
-                AddOutPt(e1, Pt)
+                AddOutPt(e1, pt)
                 SwapSides(e1, e2)
                 SwapPolyIndexes(e1, e2)
             }
@@ -2798,7 +2798,7 @@ impl Clipper
         {
             if e1Wc == 0 or e1Wc == 1
             {
-                AddOutPt(e2, Pt);
+                AddOutPt(e2, pt);
                 SwapSides(e1, e2)
                 SwapPolyIndexes(e1, e2)
             }
@@ -2808,38 +2808,38 @@ impl Clipper
             var e1Wc2, e2Wc2: CInt
             switch e1FillType2
             {
-            case pftPositive:   e1Wc2 = e1.WindCnt2
-            case pftNegative:   e1Wc2 = -e1.WindCnt2
-            default:            e1Wc2 = Math.abs(e1.WindCnt2)
+            case Positive:   e1Wc2 = e1.windCnt2
+            case Negative:   e1Wc2 = -e1.windCnt2
+            default:            e1Wc2 = Math.abs(e1.windCnt2)
             }
 
             switch e2FillType2
             {
-            case pftPositive:   e2Wc2 = e2.WindCnt2
-            case pftNegative:   e2Wc2 = -e2.WindCnt2
-            default:            e2Wc2 = Math.abs(e2.WindCnt2)
+            case Positive:   e2Wc2 = e2.windCnt2
+            case Negative:   e2Wc2 = -e2.windCnt2
+            default:            e2Wc2 = Math.abs(e2.windCnt2)
             }
 
-            if e1.PolyTyp != e2.PolyTyp
+            if e1.polyType != e2.polyType
             {
-                AddLocalMinPoly(e1, e2, Pt);
+                AddLocalMinPoly(e1, e2, pt);
             }
             else if e1Wc == 1 and e2Wc == 1
             {
                 switch m_ClipType
                 {
-                case ctIntersection:
+                case Intersection:
                     if e1Wc2 > 0 and e2Wc2 > 0
-                        AddLocalMinPoly(e1, e2, Pt)
-                case ctUnion:
+                        AddLocalMinPoly(e1, e2, pt)
+                case Union:
                     if e1Wc2 <= 0 and e2Wc2 <= 0
-                        AddLocalMinPoly(e1, e2, Pt)
-                case ctDifference:
-                    if ((e1.PolyTyp == .ptClip) and (e1Wc2 > 0) and (e2Wc2 > 0)) or
-                       ((e1.PolyTyp == .ptSubject) and (e1Wc2 <= 0) and (e2Wc2 <= 0))
-                        AddLocalMinPoly(e1, e2, Pt)
-                case ctXor:
-                    AddLocalMinPoly(e1, e2, Pt)
+                        AddLocalMinPoly(e1, e2, pt)
+                case Difference:
+                    if ((e1.polyType == .Clip) and (e1Wc2 > 0) and (e2Wc2 > 0)) or
+                       ((e1.polyType == .Subject) and (e1Wc2 <= 0) and (e2Wc2 <= 0))
+                        AddLocalMinPoly(e1, e2, pt)
+                case Xor:
+                    AddLocalMinPoly(e1, e2, pt)
                 }
             }
             else
@@ -2852,8 +2852,8 @@ impl Clipper
         var lm: *LocalMinimum
         while PopLocalMinima(botY, &lm)
         {
-            lb := lm.LeftBound
-            rb := lm.RightBound
+            lb := lm.leftBound
+            rb := lm.rightBound
 
             var Op1: *OutPt
             if !lb
@@ -2862,26 +2862,26 @@ impl Clipper
                 InsertEdgeIntoAEL(rb, null)
                 SetWindingCount(rb)
                 if IsContributing(rb)
-                    Op1 = AddOutPt(rb, rb.Bot)
+                    Op1 = AddOutPt(rb, rb.bot)
             }
             else if (!rb)
             {
                 InsertEdgeIntoAEL(lb, null)
                 SetWindingCount(lb)
                 if IsContributing(lb)
-                    Op1 = AddOutPt(lb, lb.Bot)
-                InsertScanbeam(lb.Top.Y)
+                    Op1 = AddOutPt(lb, lb.bot)
+                InsertScanbeam(lb.top.y)
             }
             else
             {
                 InsertEdgeIntoAEL(lb, null)
                 InsertEdgeIntoAEL(rb, lb)
                 SetWindingCount(lb)
-                rb.WindCnt = lb.WindCnt
-                rb.WindCnt2 = lb.WindCnt2
+                rb.windCnt = lb.windCnt
+                rb.windCnt2 = lb.windCnt2
                 if IsContributing(lb)
-                    Op1 = AddLocalMinPoly(lb, rb, lb.Bot)
-                InsertScanbeam(lb.Top.Y)
+                    Op1 = AddLocalMinPoly(lb, rb, lb.bot)
+                InsertScanbeam(lb.top.y)
             }
 
             if rb
@@ -2889,71 +2889,71 @@ impl Clipper
                 if IsHorizontal(rb)
                 {
                     AddEdgeToSEL(rb)
-                    if rb.NextInLML
-                        InsertScanbeam(rb.NextInLML.Top.Y)
+                    if rb.nextInLML
+                        InsertScanbeam(rb.nextInLML.top.y)
                 }
                 else
-                    InsertScanbeam(rb.Top.Y)
+                    InsertScanbeam(rb.top.y)
             }
 
             if !lb or !rb continue
 
             //if any output polygons share an edge, they'll need joining later ...
-            if Op1 and IsHorizontal(rb) and m_GhostJoins.count > 0 and (rb.WindDelta != 0)
+            if Op1 and IsHorizontal(rb) and m_GhostJoins.count > 0 and (rb.windDelta != 0)
             {
                 loop i: m_GhostJoins.count
                 {
                     jr := m_GhostJoins[i]
-                    if HorzSegmentsOverlap(jr.OutPt1.Pt.X, jr.OffPt.X, rb.Bot.X, rb.Top.X)
-                        AddJoin(jr.OutPt1, Op1, jr.OffPt)
+                    if HorzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x)
+                        AddJoin(jr.outPt1, Op1, jr.offPt)
                 }
             }
 
-            if  lb.OutIdx >= 0 and lb.PrevInAEL and
-                lb.PrevInAEL.Curr.X == lb.Bot.X and
-                lb.PrevInAEL.OutIdx >= 0 and
-                SlopesEqual(lb.PrevInAEL.Bot, lb.PrevInAEL.Top, lb.Curr, lb.Top) and
-                (lb.WindDelta != 0) and (lb.PrevInAEL.WindDelta != 0)
+            if  lb.outIdx >= 0 and lb.prevInAEL and
+                lb.prevInAEL.curr.x == lb.bot.x and
+                lb.prevInAEL.outIdx >= 0 and
+                SlopesEqual(lb.prevInAEL.bot, lb.prevInAEL.top, lb.curr, lb.top) and
+                (lb.windDelta != 0) and (lb.prevInAEL.windDelta != 0)
             {
-                Op2 := AddOutPt(lb.PrevInAEL, lb.Bot)
-                AddJoin(Op1, Op2, lb.Top)
+                Op2 := AddOutPt(lb.prevInAEL, lb.bot)
+                AddJoin(Op1, Op2, lb.top)
             }
 
-            if lb.NextInAEL != rb
+            if lb.nextInAEL != rb
             {
-                if  rb.OutIdx >= 0 and
-                    rb.PrevInAEL.OutIdx >= 0 and
-                    SlopesEqual(rb.PrevInAEL.Curr, rb.PrevInAEL.Top, rb.Curr, rb.Top) and
-                    (rb.WindDelta != 0) and
-                    (rb.PrevInAEL.WindDelta != 0)
+                if  rb.outIdx >= 0 and
+                    rb.prevInAEL.outIdx >= 0 and
+                    SlopesEqual(rb.prevInAEL.curr, rb.prevInAEL.top, rb.curr, rb.top) and
+                    (rb.windDelta != 0) and
+                    (rb.prevInAEL.windDelta != 0)
                 {
-                    Op2 := AddOutPt(rb.PrevInAEL, rb.Bot)
-                    AddJoin(Op1, Op2, rb.Top)
+                    Op2 := AddOutPt(rb.prevInAEL, rb.bot)
+                    AddJoin(Op1, Op2, rb.top)
                 }
 
-                e := lb.NextInAEL
+                e := lb.nextInAEL
                 if e
                 {
                     while e != rb
                     {
-                        IntersectEdges(rb, e, lb.Curr)
-                        e = e.NextInAEL
+                        IntersectEdges(rb, e, lb.curr)
+                        e = e.nextInAEL
                     }
                 }
             }
         }
     }
 
-    func PointCount(Pts: *OutPt)->s32
+    func PointCount(pts: *OutPt)->s32
     {
-        if !Pts return 0
+        if !pts return 0
         result := 0
-        p := Pts
+        p := pts
         loop
         {
             result += 1
-            p = p.Next
-            if p == Pts break
+            p = p.next
+            if p == pts break
         }
 
         return result
@@ -2964,19 +2964,19 @@ impl Clipper
         polys.reserve(m_PolyOuts.count)
         loop i: m_PolyOuts
         {
-            if !m_PolyOuts[i].Pts continue
+            if !m_PolyOuts[i].pts continue
 
             var pg: ClipperPath
 
-            p := m_PolyOuts[i].Pts.Prev
+            p := m_PolyOuts[i].pts.prev
             cnt := PointCount(p)
             if cnt < 2 continue
 
             pg.reserve(cast(uint) cnt)
             loop cnt
             {
-                pg.add(p.Pt)
-                p = p.Prev
+                pg.add(p.pt)
+                p = p.prev
             }
 
             polys.emplace(&pg)
@@ -2993,11 +2993,11 @@ impl Clipper
     {
         pp := pts
         if pp == null return
-        pp.Prev.Next = null
+        pp.prev.next = null
         while pp
         {
             tmpPp := pp
-            pp = pp.Next
+            pp = pp.next
             Memory.delete(tmpPp)
         }
     }
@@ -3005,7 +3005,7 @@ impl Clipper
     method DisposeOutRec(index: uint)
     {
         outRec := m_PolyOuts[index]
-        if outRec.Pts DisposeOutPts(outRec.Pts)
+        if outRec.pts DisposeOutPts(outRec.pts)
         Memory.delete(outRec)
         m_PolyOuts[index] = null
     }
