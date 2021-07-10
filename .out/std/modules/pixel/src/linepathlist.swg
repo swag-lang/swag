@@ -42,13 +42,13 @@ impl LinePathList
         return ptr
     }
 
-    func flatten(using self, quality: PaintQuality)
+    method flatten(quality: PaintQuality)
     {
         visit p: paths
             p.flatten(quality)
     }
 
-    func offset(using self, value: f32)
+    method offset(value: f32)
     {
         visit p: paths
             p.offset(value)

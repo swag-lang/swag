@@ -417,5 +417,22 @@ public impl LinePath
         }
 
         clockwise = area >= 0
+
+        if isClosed
+        {
+            using Clipper
+            var   clipper: Transform
+
+            catch clipper.addPath(posBuffer, PolyType.Subject)
+
+            var   lpl: LinePathList
+            catch clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
+            if lpl.paths.count
+            {
+                posBuffer =,move lpl.paths[0].posBuffer
+                v := posBuffer.buffer[0]
+                posBuffer.add(v)
+            }
+        }
     }
 }

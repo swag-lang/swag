@@ -54,6 +54,7 @@ const HiRange = 0x7FFF
 const Unassigned = -1
 const Skip = -2
 const HORIZONTAL = -1.0E+40
+const ScaleCoords = 100
 
 alias CInt  = s32
 alias ClipperPath  = Array'IntPoint
@@ -185,7 +186,7 @@ impl Transform
     {
         var pt: ClipperPath
         visit p: pg
-            pt.add(IntPoint{cast(s32) p.x, cast(s32) p.y})
+            pt.add(IntPoint{cast(s32) p.x * ScaleCoords, cast(s32) p.y * ScaleCoords})
         try addPath(&pt, polyType)
     }
 
@@ -200,7 +201,7 @@ impl Transform
             path := Memory.new'LinePath()
             visit *pt: dref res[i]
             {
-                vec := Math.Vector2{cast(f32) pt.x, cast(f32) pt.y}
+                vec := Math.Vector2{pt.x / cast(f32) ScaleCoords, pt.y / cast(f32) ScaleCoords}
                 path.posBuffer.add(vec)
                 /*if @index == 0
                     path.start(cast(f32) pt.x, cast(f32) pt.y)
