@@ -862,7 +862,7 @@ impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
-    private method triangulate(t: *Poly2Tri, bvMin, bvMax: Vector2, brush: Brush)
+    private method triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTexture1()
@@ -878,7 +878,7 @@ impl Painter
 
             if paintParams & .Antialiased
             {
-                method addAA(prim: uint, tri: const *Triangle)
+                method addAA(prim: uint, tri: const *Poly2Tri.Triangle)
                 {
                     if !tri return
                     v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
@@ -886,7 +886,7 @@ impl Painter
                     v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
                     loop e: 3
                     {
-                        if !tri.constrained_edge[e] continue
+                        if !tri.constrainedEdge[e] continue
                         switch e
                         {
                         case 0: addEdgeAA(prim, v1, v2)
@@ -909,7 +909,7 @@ impl Painter
     // Fill the line path
     method fillPath(pathList: LinePathList, brush: Brush)
     {
-        var t: Poly2Tri
+        var t: Poly2Tri.Tesselate
 
         // Flatten all path, and compute BV
         bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}

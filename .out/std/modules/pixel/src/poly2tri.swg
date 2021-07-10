@@ -27,7 +27,7 @@
 // LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+#global namespace Poly2Tri
 using Core
 
 enum Orientation
@@ -40,7 +40,7 @@ enum Orientation
 public struct Point
 {
     x, y:       f64
-    edge_list:  Array'*Edge
+    edgeList:  Array'*Edge
 }
 
 public struct Edge
@@ -73,24 +73,24 @@ impl Edge
             }
         }
 
-        q.edge_list.add(self)
+        q.edgeList.add(self)
     }
 }
 
 public struct Triangle
 {
-    constrained_edge:   [3] bool
-    delaunay_edge:      [3] bool
-    points:             [3] *Point
-    neighbors:          [3] *Triangle
-    interior:           bool
+    constrainedEdge:   [3] bool
+    delaunayEdge:      [3] bool
+    points:            [3] *Point
+    neighbors:         [3] *Triangle
+    interior:          bool
 }
 
 impl Triangle
 {
     method markConstrainedEdge(index: s32)
     {
-        constrained_edge[index] = true
+        constrainedEdge[index] = true
     }
 
     method markConstrainedEdge(edge: *Edge)
@@ -101,11 +101,11 @@ impl Triangle
     method markConstrainedEdge(p, q: *Point)
     {
         if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0])
-            constrained_edge[2] = true
+            constrainedEdge[2] = true
         else if (q == points[0] and p == points[2]) or (q == points[2] and p == points[0])
-            constrained_edge[1] = true
+            constrainedEdge[1] = true
         else if (q == points[1] and p == points[2]) or (q == points[2] and p == points[1])
-            constrained_edge[0] = true
+            constrainedEdge[0] = true
     }
 
     method oppositePoint(t: *Triangle, p: *Point)->*Point
@@ -181,9 +181,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return constrained_edge[2]
-        case points[1]: return constrained_edge[0]
-        default:        return constrained_edge[1]
+        case points[0]: return constrainedEdge[2]
+        case points[1]: return constrainedEdge[0]
+        default:        return constrainedEdge[1]
         }
     }
 
@@ -191,9 +191,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return constrained_edge[1]
-        case points[1]: return constrained_edge[2]
-        default:        return constrained_edge[0]
+        case points[0]: return constrainedEdge[1]
+        case points[1]: return constrainedEdge[2]
+        default:        return constrainedEdge[0]
         }
     }
 
@@ -227,9 +227,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return delaunay_edge[2]
-        case points[1]: return delaunay_edge[0]
-        default:        return delaunay_edge[1]
+        case points[0]: return delaunayEdge[2]
+        case points[1]: return delaunayEdge[0]
+        default:        return delaunayEdge[1]
         }
     }
 
@@ -237,9 +237,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return delaunay_edge[1]
-        case points[1]: return delaunay_edge[2]
-        default:        return delaunay_edge[0]
+        case points[0]: return delaunayEdge[1]
+        case points[1]: return delaunayEdge[2]
+        default:        return delaunayEdge[0]
         }
     }
 
@@ -247,9 +247,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: delaunay_edge[2] = e
-        case points[1]: delaunay_edge[0] = e
-        default:        delaunay_edge[1] = e
+        case points[0]: delaunayEdge[2] = e
+        case points[1]: delaunayEdge[0] = e
+        default:        delaunayEdge[1] = e
         }
     }
 
@@ -257,9 +257,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: delaunay_edge[1] = e
-        case points[1]: delaunay_edge[2] = e
-        default:        delaunay_edge[0] = e
+        case points[0]: delaunayEdge[1] = e
+        case points[1]: delaunayEdge[2] = e
+        default:        delaunayEdge[0] = e
         }
     }
 
@@ -267,9 +267,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: constrained_edge[2] = ce
-        case points[1]: constrained_edge[0] = ce
-        default:        constrained_edge[1] = ce
+        case points[0]: constrainedEdge[2] = ce
+        case points[1]: constrainedEdge[0] = ce
+        default:        constrainedEdge[1] = ce
         }
     }
 
@@ -277,9 +277,9 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: constrained_edge[1] = ce
-        case points[1]: constrained_edge[2] = ce
-        default:        constrained_edge[0] = ce
+        case points[0]: constrainedEdge[1] = ce
+        case points[1]: constrainedEdge[2] = ce
+        default:        constrainedEdge[0] = ce
         }
     }
 
@@ -302,9 +302,9 @@ impl Triangle
 
     method clearDelaunayEdges()
     {
-        delaunay_edge[0] = false
-        delaunay_edge[1] = false
-        delaunay_edge[2] = false
+        delaunayEdge[0] = false
+        delaunayEdge[1] = false
+        delaunayEdge[2] = false
     }
 
     method contains(p: *Point)->bool
@@ -372,17 +372,17 @@ impl Triangle
 
 struct EdgeEvent
 {
-    constrained_edge: *Edge
+    constrainedEdge: *Edge
     right:            bool
 }
 
 struct Basin
 {
-    left_node:    *Node
-    bottom_node:  *Node
-    right_node:   *Node
-    width:        f64
-    left_highest: bool
+    leftNode:       *Node
+    bottomNode:     *Node
+    rightNode:      *Node
+    width:          f64
+    leftHighest:    bool
 }
 
 struct Node
@@ -398,7 +398,7 @@ struct AdvancingFront
 {
     head:           *Node
     tail:           *Node
-    search_node:    *Node
+    searchNode:     *Node
 }
 
 impl AdvancingFront
@@ -406,7 +406,7 @@ impl AdvancingFront
     method locatePoint(point: *Point)->*Node
     {
         px := point.x
-        node := search_node
+        node := searchNode
         nx := node.point.x
 
         if px == nx
@@ -442,13 +442,13 @@ impl AdvancingFront
             }
         }
 
-        if node search_node = node
+        if node searchNode = node
         return node
     }
 
     method locateNode(x: f64)->*Node
     {
-        node := search_node
+        node := searchNode
         if x < node.value
         {
             node = node.prev
@@ -456,7 +456,7 @@ impl AdvancingFront
             {
                 if x >= node.value
                 {
-                    search_node = node
+                    searchNode = node
                     return node
                 }
 
@@ -470,7 +470,7 @@ impl AdvancingFront
             {
                 if x < node.value
                 {
-                    search_node = node.prev
+                    searchNode = node.prev
                     return node.prev
                 }
 
@@ -483,25 +483,25 @@ impl AdvancingFront
 }
 
 #[Swag.opaque]
-public struct Poly2Tri
+public struct Tesselate
 {
     basin:      Basin
-    edge_event: EdgeEvent
+    edgeEvent:  EdgeEvent
     triangles:  Array'*Triangle
     map:        Array'*Triangle
-    edge_list:  Array'*Edge
+    edgeList:   Array'*Edge
     points:     Array'*Point
     nodes:      Array'*Node
     front:      AdvancingFront
     head:       *Point
     tail:       *Point
-    af_head:    *Node
-    af_middle:  *Node
-    af_tail:    *Node
+    afHead:     *Node
+    afMiddle:   *Node
+    afTail:     *Node
     polyStart:  uint
 }
 
-impl Poly2Tri
+impl Tesselate
 {
     method opDrop()
     {
@@ -512,11 +512,11 @@ impl Poly2Tri
     {
         Memory.delete(head)
         Memory.delete(tail)
-        Memory.delete(af_head)
-        Memory.delete(af_middle)
-        Memory.delete(af_tail)
+        Memory.delete(afHead)
+        Memory.delete(afMiddle)
+        Memory.delete(afTail)
         visit p: map Memory.delete(p)
-        visit p: edge_list Memory.delete(p)
+        visit p: edgeList Memory.delete(p)
         visit p: nodes Memory.delete(p)
         visit p: points Memory.delete(p)
 
@@ -548,7 +548,7 @@ impl Poly2Tri
                 nexti := (i + 1) % @countof(polyline)
                 edge := Memory.new'Edge()
                 edge.set(polyline[i], polyline[nexti])
-                edge_list.add(edge)
+                edgeList.add(edge)
             }
         }
 
@@ -579,12 +579,12 @@ impl Poly2Tri
         {
             point := points[i]
             node := pointEvent(point)
-            visit e: point.edge_list
-                edgeEvent(e, node)
+            visit e: point.edgeList
+                addEdgeEvent(e, node)
         }
     }
 
-    method edgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
+    method addEdgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
     {
         triangle := t
         Debug.assert(triangle != null, "EdgeEvent - null triangle")
@@ -599,9 +599,9 @@ impl Poly2Tri
             if triangle.contains(eq, p1)
             {
                 triangle.markConstrainedEdge(eq, p1)
-                edge_event.constrained_edge.q = p1
+                edgeEvent.constrainedEdge.q = p1
                 triangle = triangle.neighborAcross(point)
-                edgeEvent(ep, p1, triangle, p1)
+                addEdgeEvent(ep, p1, triangle, p1)
             }
             else
             {
@@ -618,9 +618,9 @@ impl Poly2Tri
             if triangle.contains(eq, p2)
             {
                 triangle.markConstrainedEdge(eq, p2)
-                edge_event.constrained_edge.q = p2
+                edgeEvent.constrainedEdge.q = p2
                 triangle = triangle.neighborAcross(point)
-                edgeEvent(ep, p2, triangle, p2)
+                addEdgeEvent(ep, p2, triangle, p2)
             }
             else
             {
@@ -636,7 +636,7 @@ impl Poly2Tri
                 triangle = triangle.neighborCCW(point)
             else
                 triangle = triangle.neighborCW(point)
-            edgeEvent(ep, eq, triangle, point)
+            addEdgeEvent(ep, eq, triangle, point)
         }
         else
         {
@@ -662,7 +662,7 @@ impl Poly2Tri
 
             if p == eq and op == ep
             {
-                if eq == edge_event.constrained_edge.q and ep == edge_event.constrained_edge.p
+                if eq == edgeEvent.constrainedEdge.q and ep == edgeEvent.constrainedEdge.p
                 {
                     t.markConstrainedEdge(ep, eq)
                     ot.markConstrainedEdge(ep, eq)
@@ -681,7 +681,7 @@ impl Poly2Tri
         {
             newP := nextFlipPoint(ep, eq, ot, op)
             flipScanEdgeEvent(ep, eq, t, ot, newP)
-            edgeEvent(ep, eq, t, p)
+            addEdgeEvent(ep, eq, t, p)
         }
     }
 
@@ -690,14 +690,14 @@ impl Poly2Tri
         if o == .CCW
         {
             edge_index := ot.edgeIndex(p, op)
-            ot.delaunay_edge[edge_index] = true
+            ot.delaunayEdge[edge_index] = true
             discard legalize(ot)
             ot.clearDelaunayEdges()
             return t
         }
 
         edge_index := t.edgeIndex(p, op)
-        t.delaunay_edge[edge_index] = true
+        t.delaunayEdge[edge_index] = true
         discard legalize(t)
         t.clearDelaunayEdges()
         return ot
@@ -733,21 +733,21 @@ impl Poly2Tri
         }
     }
 
-    method edgeEvent(edge: *Edge, node: *Node)
+    method addEdgeEvent(edge: *Edge, node: *Node)
     {
-        edge_event.constrained_edge = edge
-        edge_event.right = edge.p.x > edge.q.x
+        edgeEvent.constrainedEdge = edge
+        edgeEvent.right = edge.p.x > edge.q.x
 
         if isEdgeSideOfTriangle(node.triangle, edge.p, edge.q)
             return
 
         fillEdgeEvent(edge, node)
-        edgeEvent(edge.p, edge.q, node.triangle, edge.q)
+        addEdgeEvent(edge.p, edge.q, node.triangle, edge.q)
     }
 
     method fillEdgeEvent(edge: *Edge, node: *Node)
     {
-        if edge_event.right
+        if edgeEvent.right
             fillRightAboveEdgeEvent(edge, node)
         else
             fillLeftAboveEdgeEvent(edge, node)
@@ -909,26 +909,26 @@ impl Poly2Tri
     method fillBasin(node: *Node)
     {
         if orient2d(node.point, node.next.point, node.next.next.point) == .CCW
-            basin.left_node = node.next.next
+            basin.leftNode = node.next.next
         else
-            basin.left_node = node.next
+            basin.leftNode = node.next
 
-        basin.bottom_node = basin.left_node
-        while basin.bottom_node.next and basin.bottom_node.point.y >= basin.bottom_node.next.point.y
-            basin.bottom_node = basin.bottom_node.next
-        if basin.bottom_node == basin.left_node
+        basin.bottomNode = basin.leftNode
+        while basin.bottomNode.next and basin.bottomNode.point.y >= basin.bottomNode.next.point.y
+            basin.bottomNode = basin.bottomNode.next
+        if basin.bottomNode == basin.leftNode
             return
 
-        basin.right_node = basin.bottom_node
-        while basin.right_node.next and basin.right_node.point.y < basin.right_node.next.point.y
-            basin.right_node = basin.right_node.next
-        if basin.right_node == basin.bottom_node
+        basin.rightNode = basin.bottomNode
+        while basin.rightNode.next and basin.rightNode.point.y < basin.rightNode.next.point.y
+            basin.rightNode = basin.rightNode.next
+        if basin.rightNode == basin.bottomNode
             return
 
-        basin.width = basin.right_node.point.x - basin.left_node.point.x
-        basin.left_highest = basin.left_node.point.y > basin.right_node.point.y
+        basin.width = basin.rightNode.point.x - basin.leftNode.point.x
+        basin.leftHighest = basin.leftNode.point.y > basin.rightNode.point.y
 
-        fillBasinReq(basin.bottom_node)
+        fillBasinReq(basin.bottomNode)
     }
 
     method fillBasinReq(n: *Node)
@@ -939,17 +939,17 @@ impl Poly2Tri
 
         fill(node)
 
-        if node.prev == basin.left_node and node.next == basin.right_node
+        if node.prev == basin.leftNode and node.next == basin.rightNode
             return
 
-        if node.prev == basin.left_node
+        if node.prev == basin.leftNode
         {
             o := orient2d(node.point, node.next.point, node.next.next.point)
             if o == .CW
                 return
             node = node.next
         }
-        else if node.next == basin.right_node
+        else if node.next == basin.rightNode
         {
             o := orient2d(node.point, node.prev.point, node.prev.prev.point)
             if o == .CCW
@@ -970,10 +970,10 @@ impl Poly2Tri
     method isShallow(node: *Node)->bool
     {
         var height: f64
-        if basin.left_highest
-            height = basin.left_node.point.y - node.point.y
+        if basin.leftHighest
+            height = basin.leftNode.point.y - node.point.y
          else
-            height = basin.right_node.point.y - node.point.y
+            height = basin.rightNode.point.y - node.point.y
         return basin.width > height
     }
 
@@ -1135,7 +1135,7 @@ impl Poly2Tri
     {
         loop i: 3
         {
-            if t.delaunay_edge[i]
+            if t.delaunayEdge[i]
                 continue
 
             ot := t.neighbors[i]
@@ -1145,17 +1145,17 @@ impl Poly2Tri
                 op := ot.oppositePoint(t, p)
                 oi := ot.index(op)
 
-                if (ot.constrained_edge[oi] or ot.delaunay_edge[oi])
+                if (ot.constrainedEdge[oi] or ot.delaunayEdge[oi])
                 {
-                    t.constrained_edge[i] = ot.constrained_edge[oi]
+                    t.constrainedEdge[i] = ot.constrainedEdge[oi]
                     continue
                 }
 
                 inside := incircle(p, t.pointCCW(p), t.pointCW(p), op)
                 if (inside)
                 {
-                    t.delaunay_edge[i] = true
-                    ot.delaunay_edge[oi] = true
+                    t.delaunayEdge[i] = true
+                    ot.delaunayEdge[oi] = true
 
                     rotateTrianglePair(t, p, ot, op)
 
@@ -1167,8 +1167,8 @@ impl Poly2Tri
                     if not_legalized
                         mapTriangleToNodes(ot)
 
-                    t.delaunay_edge[i] = false
-                    ot.delaunay_edge[oi] = false
+                    t.delaunayEdge[i] = false
+                    ot.delaunayEdge[oi] = false
                     return true;
                 }
             }
@@ -1255,7 +1255,7 @@ impl Poly2Tri
             triangles.add(t)
             loop i: 3
             {
-                if !t.constrained_edge[i]
+                if !t.constrainedEdge[i]
                     stack.add(t.neighbors[i])
             }
         }
@@ -1303,28 +1303,28 @@ impl Poly2Tri
         triangle.points[2] = tail
         map.add(triangle)
 
-        af_head = Memory.new'Node()
-        af_middle = Memory.new'Node()
-        af_tail = Memory.new'Node()
+        afHead = Memory.new'Node()
+        afMiddle = Memory.new'Node()
+        afTail = Memory.new'Node()
 
-        front.head = af_head
-        front.tail = af_tail
-        front.search_node = af_head
+        front.head = afHead
+        front.tail = afTail
+        front.searchNode = afHead
 
-        af_head.point = triangle.points[1]
-        af_head.triangle = triangle
-        af_head.next = af_middle
-        af_head.value = af_head.point.x
+        afHead.point = triangle.points[1]
+        afHead.triangle = triangle
+        afHead.next = afMiddle
+        afHead.value = afHead.point.x
 
-        af_middle.point = triangle.points[0]
-        af_middle.triangle = triangle
-        af_middle.next = af_tail
-        af_middle.prev = af_head
-        af_middle.value = af_middle.point.x
+        afMiddle.point = triangle.points[0]
+        afMiddle.triangle = triangle
+        afMiddle.next = afTail
+        afMiddle.prev = afHead
+        afMiddle.value = afMiddle.point.x
 
-        af_tail.point = triangle.points[2]
-        af_tail.triangle = triangle
-        af_tail.prev = af_middle
-        af_tail.value = af_tail.point.x
+        afTail.point = triangle.points[2]
+        afTail.triangle = triangle
+        afTail.prev = afMiddle
+        afTail.value = afTail.point.x
     }
 }
