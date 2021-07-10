@@ -155,7 +155,7 @@ struct Join
 }
 
 #[Swag.opaque]
-public struct Clip
+public struct Transform
 {
     useFullRange:           bool
     preserveCollinear:      bool
@@ -178,16 +178,13 @@ public struct Clip
     sortedEdges:            *Edge
 }
 
-impl Clip
+impl Transform
 {
-    // Register a new polyline (line path) of a given type
-    public method addPath(pg: *LinePath, polyType: PolyType) throw
+    // Register a new series of point (line path) of a given type
+    public method addPath(pg: Array'Math.Vector2, polyType: PolyType) throw
     {
-        if !pg.isClosed throw "Path not closed"
-        if !pg.posBuffer.count throw "Path not flatten"
-
         var pt: ClipperPath
-        visit p: pg.posBuffer
+        visit p: pg
             pt.add(IntPoint{cast(s32) p.x, cast(s32) p.y})
         try addPath(&pt, polyType)
     }

@@ -2,17 +2,15 @@ using Core, Pixel, Clipper
 
 #test
 {
-    clipper := Clip{}
+    clipper := Transform{}
 
-    lp := LinePath{}
-    lp.start(0, 0)
-    lp.lineTo(100, 0)
-    lp.lineTo(100, 100)
-    lp.lineTo(0, 100)
-    lp.close()
-
-    lp.flatten(PaintQuality.Normal)
-    assume clipper.addPath(&lp, PolyType.Subject)
+    using Math
+    lp := Array'Vector2{}
+    lp.add(Vector2{0, 0})
+    lp.add(Vector2{100, 0})
+    lp.add(Vector2{100, 100})
+    lp.add(Vector2{0, 100})
+    assume clipper.addPath(lp, PolyType.Subject)
 
     var lpl: LinePathList
     assume clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
