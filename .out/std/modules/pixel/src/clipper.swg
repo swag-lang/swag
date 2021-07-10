@@ -49,14 +49,14 @@ impl IntPoint
     }
 }
 
-const LoRange = 0x7FFF
-const HiRange = 0x7FFF
+const LoRange = 0x3FFFFFFF
+const HiRange = 0x3FFFFFFFFFFFFFFF's64
 const Unassigned = -1
 const Skip = -2
 const HORIZONTAL = -1.0E+40
-const ScaleCoords = 100
+const ScaleCoords = 1000'f32
 
-alias CInt  = s32
+alias CInt         = s64
 alias ClipperPath  = Array'IntPoint
 alias ClipperPaths = Array'ClipperPath
 
@@ -201,7 +201,7 @@ impl Transform
             path := Memory.new'LinePath()
             visit *pt: dref res[i]
             {
-                vec := Math.Vector2{pt.x / cast(f32) ScaleCoords, pt.y / cast(f32) ScaleCoords}
+                vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
                 path.posBuffer.add(vec)
                 /*if @index == 0
                     path.start(cast(f32) pt.x, cast(f32) pt.y)
@@ -411,19 +411,40 @@ impl Transform
         joinList.add(j)
     }
 
-    func slopesEqual(e1: *Edge, e2: *Edge)->bool
+    method slopesEqual(e1: *Edge, e2: *Edge)->bool
     {
+        if useFullRange
+        {
+            v1 := Math.Int128.mul(e1.top.y - e1.bot.y, e2.top.x - e2.bot.x)
+            v2 := Math.Int128.mul(e1.top.x - e1.bot.x, e2.top.y - e2.bot.y)
+            return v1 == v2
+        }
+
         return (e1.top.y - e1.bot.y) * (e2.top.x - e2.bot.x) == (e1.top.x - e1.bot.x) * (e2.top.y - e2.bot.y)
     }
 
-    func slopesEqual(pt1, pt2, pt3: IntPoint)->bool
+    method slopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
-        return (pt1.y-pt2.y)*(pt2.x-pt3.x) == (pt1.x-pt2.x)*(pt2.y-pt3.y)
+        if useFullRange
+        {
+            v1 := Math.Int128.mul(pt1.y - pt2.y, pt2.x - pt3.x)
+            v2 := Math.Int128.mul(pt1.x - pt2.x, pt2.y - pt3.y)
+            return v1 == v2
+        }
+
+        return (pt1.y - pt2.y) * (pt2.x - pt3.x) == (pt1.x - pt2.x) * (pt2.y - pt3.y)
     }
 
-    func slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
+    method slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
     {
-        return (pt1.y-pt2.y)*(pt3.x-pt4.x) == (pt1.x-pt2.x)*(pt3.y-pt4.y)
+        if useFullRange
+        {
+            v1 := Math.Int128.mul(pt1.y - pt2.y, pt3.x - pt4.x)
+            v2 := Math.Int128.mul(pt1.x - pt2.x, pt3.y - pt4.y)
+            return v1 == v2
+        }
+
+        return (pt1.y - pt2.y) * (pt3.x - pt4.x) == (pt1.x - pt2.x) * (pt3.y - pt4.y)
     }
 
     func pt2IsBetweenPt1AndPt3(pt1, pt2, pt3: IntPoint)->bool
