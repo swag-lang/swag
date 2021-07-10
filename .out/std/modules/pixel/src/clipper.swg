@@ -33,6 +33,7 @@
 * http://www.me.berkeley.edu/~mcmains/pubs/DAC05OffsetPolygon.pdf              *
 *                                                                              *
 *******************************************************************************/
+#global namespace Clipper
 using Core
 
 struct IntPoint
@@ -154,30 +155,30 @@ struct Join
 }
 
 #[Swag.opaque]
-public struct Clipper
+public struct Clip
 {
     m_UseFullRange:         bool
     m_PreserveCollinear:    bool
     m_UsingPolyTree:        bool
-    strictSimple:         bool
+    strictSimple:           bool
     m_ReverseOutput:        bool
     m_edges:                Array'*TEdge
     m_MinimaList:           Array'LocalMinimum
-    polyOuts:             Array'*OutRec
+    polyOuts:               Array'*OutRec
     m_Joins:                Array'*Join
     m_GhostJoins:           Array'*Join
-    intersectList:        Array'*IntersectNode
+    intersectList:          Array'*IntersectNode
     m_Scanbeam:             Array'CInt
     m_Maxima:               Array'CInt
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
     m_CurrentLM:            uint
-    activeEdges:          *TEdge
-    sortedEdges:          *TEdge
+    activeEdges:            *TEdge
+    sortedEdges:            *TEdge
 }
 
-impl Clipper
+impl Clip
 {
     public method addPath(pg: *LinePath, polyType: PolyType) throw
     {

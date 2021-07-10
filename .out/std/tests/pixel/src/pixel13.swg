@@ -1,8 +1,8 @@
-using Core, Pixel
+using Core, Pixel, Clipper
 
 #test
 {
-    clipper := Clipper{}
+    clipper := Clip{}
 
     lp := LinePath{}
     lp.start(0, 0)
