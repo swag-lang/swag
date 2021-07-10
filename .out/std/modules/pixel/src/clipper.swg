@@ -186,7 +186,7 @@ impl Transform
     {
         var pt: ClipperPath
         visit p: pg
-            pt.add(IntPoint{cast(s32) p.x * ScaleCoords, cast(s32) p.y * ScaleCoords})
+            pt.add(IntPoint{cast(s32) (p.x * ScaleCoords), cast(s32) (p.y * ScaleCoords)})
         try addPath(&pt, polyType)
     }
 

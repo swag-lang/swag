@@ -21,7 +21,7 @@ var fontFam:    FontFamily
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 4
+var g_page:         s32 = 5
 
 func dataPath()->String
 {
@@ -416,6 +416,19 @@ func displayPage4()
     renderer.draw(&cdc)
 }
 
+func displayPage5()
+{
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+
+    cdc.fillCircle(100, 100, 50, Argb.Red)
+
+    cdc.end()
+    renderer.resetTransform()
+    renderer.draw(&cdc)
+}
+
 func display()
 {
     renderer.begin()
@@ -433,6 +446,7 @@ func display()
     case 2: displayPage2()
     case 3: displayPage3()
     case 4: displayPage4()
+    case 5: displayPage5()
     }
 
     renderer.end()
@@ -534,7 +548,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % 5
+            g_page = (g_page + 1) % 6
     }
 }
 
