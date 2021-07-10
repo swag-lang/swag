@@ -57,7 +57,7 @@ const HORIZONTAL = -1.0E+40
 
 alias CInt  = s32
 alias ClipperPath  = Array'IntPoint
-alias ClipperPaths  = Array'ClipperPath
+alias ClipperPaths = Array'ClipperPath
 
 public enum PolyType        { Subject; Clip; }
 public enum ClipType        { Intersection; Union; Difference; Xor; }
@@ -66,7 +66,7 @@ public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveC
 public enum JoinType        { Square; round; Miter; }
 public enum EndType         { ClosedPolygon; ClosedLine; OpenButt; OpenSquare; OpenRound; }
 
-enum EdgeSide { left = 1; right = 2; }
+enum EdgeSide  { Left = 1; Right = 2; }
 enum Direction { RightToLeft; LeftToRight; }
 
 struct IntersectNode
@@ -162,14 +162,14 @@ public struct Clip
     m_UsingPolyTree:        bool
     strictSimple:           bool
     m_ReverseOutput:        bool
-    m_edges:                Array'*TEdge
-    m_MinimaList:           Array'LocalMinimum
+    edgeList:               Array'*TEdge
+    minimaList:             Array'LocalMinimum
     polyOuts:               Array'*OutRec
-    m_Joins:                Array'*Join
-    m_GhostJoins:           Array'*Join
+    joinList:               Array'*Join
+    ghostJoinList:          Array'*Join
     intersectList:          Array'*IntersectNode
-    m_Scanbeam:             Array'CInt
-    m_Maxima:               Array'CInt
+    scanBeamList:           Array'CInt
+    maximaList:             Array'CInt
     m_ClipFillType:         PolyFillType = ?
     m_SubjFillType:         PolyFillType = ?
     m_ClipType:             ClipType = ?
@@ -308,7 +308,7 @@ impl Clip
         //4. Finally, add edge bounds to LocalMinima list ...
         if IsFlat throw "Flat path"
 
-        m_edges.add(edges);
+        edgeList.add(edges);
         var leftBoundIsForward: bool
         var EMin: *TEdge
 
@@ -355,7 +355,7 @@ impl Clip
                 locMin.leftBound = null
             else if locMin.rightBound.outIdx == Skip
                 locMin.rightBound = null
-            m_MinimaList.add(locMin)
+            minimaList.add(locMin)
             if !leftBoundIsForward E = E2
         }
     }
@@ -408,7 +408,7 @@ impl Clip
         j.outPt1 = op1
         j.outPt2 = op2
         j.offPt = offPt
-        m_Joins.add(j)
+        joinList.add(j)
     }
 
     func slopesEqual(e1: *TEdge, e2: *TEdge)->bool
@@ -519,7 +519,7 @@ impl Clip
                 locMin.rightBound = E
                 E.windDelta = 0
                 Result = processBound(E, nextIsForward)
-                m_MinimaList.add(locMin)
+                minimaList.add(locMin)
             }
 
             return Result
@@ -595,38 +595,38 @@ impl Clip
 
     method popScanbeam(res: *CInt)->bool
     {
-        if !m_Scanbeam.count
+        if !scanBeamList.count
             return false
 
-        y := m_Scanbeam.popBack()
+        y := scanBeamList.popBack()
         dref res = y
-        while m_Scanbeam.count and y == m_Scanbeam.back()
-            m_Scanbeam.count -= 1
+        while scanBeamList.count and y == scanBeamList.back()
+            scanBeamList.count -= 1
 
         return true
     }
 
     method insertScanbeam(y: CInt)
     {
-        m_Scanbeam.add(y)
-        m_Scanbeam.sort()
+        scanBeamList.add(y)
+        scanBeamList.sort()
     }
 
     method reset()
     {
         m_CurrentLM = 0
-        if m_CurrentLM == m_MinimaList.count return
-        m_MinimaList.sort()
+        if m_CurrentLM == minimaList.count return
+        minimaList.sort()
 
-        m_Scanbeam.clear()
-        visit lm: m_MinimaList
+        scanBeamList.clear()
+        visit lm: minimaList
         {
             insertScanbeam(lm.y)
             e := lm.leftBound
             if e
             {
                 e.curr = e.bot
-                e.side = .left
+                e.side = .Left
                 e.outIdx = Unassigned
             }
 
@@ -634,7 +634,7 @@ impl Clip
             if e
             {
                 e.curr = e.bot
-                e.side = .right
+                e.side = .Right
                 e.outIdx = Unassigned
             }
         }
@@ -645,7 +645,7 @@ impl Clip
 
     method localMinimaPending()->bool
     {
-        return m_CurrentLM != m_MinimaList.count
+        return m_CurrentLM != minimaList.count
     }
 
     method deleteFromSEL(e: *TEdge)
@@ -712,7 +712,7 @@ impl Clip
     method getLastOutPt(e: *TEdge)->*OutPt
     {
         outRec := polyOuts[e.outIdx]
-        if e.side == .left
+        if e.side == .Left
             return outRec.pts
         else
             return outRec.pts.prev
@@ -724,7 +724,7 @@ impl Clip
         j.outPt1 = op
         j.outPt2 = null
         j.offPt = offPt
-        m_GhostJoins.add(j)
+        ghostJoinList.add(j)
     }
 
     method processHorizontal(hE: *TEdge)
@@ -745,22 +745,22 @@ impl Clip
             eMaxPair = getMaximaPair(eLastHorz)
 
         var maxIt, maxRit: uint
-        if m_Maxima.count > 0
+        if maximaList.count > 0
         {
             if dir == .LeftToRight
             {
                 maxIt = 0
-                while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] <= horzEdge.bot.x
+                while maxIt != maximaList.count and maximaList.buffer[maxIt] <= horzEdge.bot.x
                     maxIt += 1
-                if maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] >= eLastHorz.top.x
-                    maxIt = m_Maxima.count
+                if maxIt != maximaList.count and maximaList.buffer[maxIt] >= eLastHorz.top.x
+                    maxIt = maximaList.count
             }
             else
             {
-                maxRit = m_Maxima.count -,safe 1
-                while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > horzEdge.bot.x
+                maxRit = maximaList.count -,safe 1
+                while maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] > horzEdge.bot.x
                     maxRit = maxRit -,safe 1
-                if maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] <= eLastHorz.top.x
+                if maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x
                     maxRit = Swag.UInt.Max
             }
         }
@@ -772,23 +772,23 @@ impl Clip
             e := getNextInAEL(horzEdge, dir)
             while e
             {
-                if m_Maxima.count > 0
+                if maximaList.count > 0
                 {
                     if dir == .LeftToRight
                     {
-                        while maxIt != m_Maxima.count and m_Maxima.buffer[maxIt] < e.curr.x
+                        while maxIt != maximaList.count and maximaList.buffer[maxIt] < e.curr.x
                         {
                             if horzEdge.outIdx >= 0 and !isOpen
-                                addOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxIt], horzEdge.bot.y})
+                                addOutPt(horzEdge, IntPoint{maximaList.buffer[maxIt], horzEdge.bot.y})
                             maxIt += 1
                         }
                     }
                     else
                     {
-                        while maxRit != Swag.UInt.Max and m_Maxima.buffer[maxRit] > e.curr.x
+                        while maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] > e.curr.x
                         {
                             if horzEdge.outIdx >= 0 and !isOpen
-                                addOutPt(horzEdge, IntPoint{m_Maxima.buffer[maxRit], horzEdge.bot.y})
+                                addOutPt(horzEdge, IntPoint{maximaList.buffer[maxRit], horzEdge.bot.y})
                             maxRit = maxRit -,safe 1
                         }
                     }
@@ -986,22 +986,22 @@ impl Clip
 
     method clearJoins()
     {
-        visit p: m_Joins
+        visit p: joinList
             Memory.delete(p)
-        m_Joins.clear()
+        joinList.clear()
     }
 
     method clearGhostJoins()
     {
-        visit p: m_GhostJoins
+        visit p: ghostJoinList
             Memory.delete(p)
-        m_GhostJoins.clear()
+        ghostJoinList.clear()
     }
 
     method executeInternal() throw
     {
         reset()
-        m_Maxima.clear()
+        maximaList.clear()
         sortedEdges = null
 
         var botY, topY: CInt
@@ -1026,7 +1026,7 @@ impl Clip
                 reversePolyPtLinks(outRec.pts)
         }
 
-        if m_Joins.count joinCommonEdges()
+        if joinList.count joinCommonEdges()
 
         //unfortunately fixupOutPolygon() must be done after joinCommonEdges()
         visit outRec: polyOuts
@@ -1586,7 +1586,7 @@ impl Clip
 
     method joinCommonEdges()
     {
-        visit join: m_Joins
+        visit join: joinList
         {
             outRec1 := getOutRec(join.outPt1.idx)
             outRec2 := getOutRec(join.outPt2.idx)
@@ -1726,7 +1726,7 @@ impl Clip
 
             if isMaximaEdge
             {
-                if strictSimple m_Maxima.add(e.top.x)
+                if strictSimple maximaList.add(e.top.x)
                 ePrev := e.prevInAEL
                 doMaxima(e)
                 if !ePrev e = activeEdges
@@ -1768,9 +1768,9 @@ impl Clip
         }
 
         //3. Process horizontals at the top of the scanbeam ...
-        m_Maxima.sort()
+        maximaList.sort()
         processHorizontals()
-        m_Maxima.clear()
+        maximaList.clear()
 
         //4. Promote intermediate vertices ...
         e = activeEdges
@@ -2031,8 +2031,8 @@ impl Clip
 
     method popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
     {
-        if m_CurrentLM == m_MinimaList.count or m_MinimaList[m_CurrentLM].y != y return false
-        dref locMin = m_MinimaList[m_CurrentLM]
+        if m_CurrentLM == minimaList.count or minimaList[m_CurrentLM].y != y return false
+        dref locMin = minimaList[m_CurrentLM]
         m_CurrentLM += 1
         return true
     }
@@ -2349,7 +2349,7 @@ impl Clip
             outRec := polyOuts[e.outIdx]
             op := outRec.pts
 
-            ToFront := (e.side == .left)
+            ToFront := (e.side == .Left)
             if ToFront and (pt == op.pt) return op
             if !ToFront and (pt == op.prev.pt) return op.prev
 
@@ -2375,8 +2375,8 @@ impl Clip
         {
             result = addOutPt(e1, pt)
             e2.outIdx = e1.outIdx
-            e1.side = .left
-            e2.side = .right
+            e1.side = .Left
+            e2.side = .Right
             e = e1
             if e.prevInAEL == e2
                 prevE = e2.prevInAEL
@@ -2387,8 +2387,8 @@ impl Clip
         {
             result = addOutPt(e2, pt)
             e1.outIdx = e2.outIdx
-            e1.side = .right
-            e2.side = .left
+            e1.side = .Right
+            e2.side = .Left
             e = e2
             if e.prevInAEL == e1
                 prevE = e1.prevInAEL
@@ -2595,9 +2595,9 @@ impl Clip
         p2_rt := p2_lft.prev
 
         //join e2 poly onto e1 poly and delete pointers to e2 ...
-        if e1.side == .left
+        if e1.side == .Left
         {
-            if e2.side == .left
+            if e2.side == .Left
             {
                 reversePolyPtLinks(p2_lft)
                 p2_lft.next = p1_lft
@@ -2617,7 +2617,7 @@ impl Clip
         }
         else
         {
-            if e2.side == .right
+            if e2.side == .Right
             {
                 reversePolyPtLinks(p2_lft)
                 p1_rt.next = p2_rt
@@ -2903,11 +2903,11 @@ impl Clip
             if !lb or !rb continue
 
             //if any output polygons share an edge, they'll need joining later ...
-            if Op1 and isHorizontal(rb) and m_GhostJoins.count > 0 and (rb.windDelta != 0)
+            if Op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
             {
-                loop i: m_GhostJoins.count
+                loop i: ghostJoinList.count
                 {
-                    jr := m_GhostJoins[i]
+                    jr := ghostJoinList[i]
                     if horzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x)
                         addJoin(jr.outPt1, Op1, jr.offPt)
                 }
