@@ -167,8 +167,7 @@ impl FloatExt
     // but not normalized.
     func multiply(using self, g: FloatExt)
     {
-        (hi, lo) := Math.mul64(mant, g.mant)
-        // Round up.
+        (hi, lo) := Math.mulU64(mant, g.mant)
         mant = hi + (lo >> 63)
         exp = exp + g.exp + 64
     }
