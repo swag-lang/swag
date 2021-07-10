@@ -157,9 +157,9 @@ struct Join
 #[Swag.opaque]
 public struct Clip
 {
-    m_UseFullRange:         bool
-    m_PreserveCollinear:    bool
-    usingPolyTree:        bool
+    useFullRange:           bool
+    preserveCollinear:      bool
+    usingPolyTree:          bool
     strictSimple:           bool
     reverseOutput:          bool
     edgeList:               Array'*Edge
@@ -170,9 +170,9 @@ public struct Clip
     intersectList:          Array'*IntersectNode
     scanBeamList:           Array'CInt
     maximaList:             Array'CInt
-    clipFillType:         PolyFillType = ?
-    subjFillType:         PolyFillType = ?
-    clipType:             ClipType = ?
+    clipFillType:           PolyFillType = ?
+    subjFillType:           PolyFillType = ?
+    clipType:               ClipType = ?
     currentLM:              uint
     activeEdges:            *Edge
     sortedEdges:            *Edge
@@ -180,6 +180,7 @@ public struct Clip
 
 impl Clip
 {
+    // Register a new polyline (line path) of a given type
     public method addPath(pg: *LinePath, polyType: PolyType) throw
     {
         if !pg.isClosed throw "Path not closed"
@@ -191,6 +192,7 @@ impl Clip
         try addPath(&pt, polyType)
     }
 
+    // Do the stuff...
     public method execute(clipT: ClipType, solution: *LinePathList, subjFillT, clipFillT: PolyFillType) throw
     {
         var res: ClipperPaths
@@ -242,13 +244,13 @@ impl Clip
         try
         {
             edges[1].curr = pg.buffer[1]
-            rangeTest(pg.buffer[0], &m_UseFullRange)
-            rangeTest(pg.buffer[highI], &m_UseFullRange)
+            rangeTest(pg.buffer[0], &useFullRange)
+            rangeTest(pg.buffer[highI], &useFullRange)
             initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
             initEdge(&edges[highI], &edges[0], &edges[highI-1], pg.buffer[highI])
             loop i: highI-1 .. 1
             {
-                rangeTest(pg.buffer[i], &m_UseFullRange)
+                rangeTest(pg.buffer[i], &useFullRange)
                 initEdge(&edges[i], &edges[i+1], &edges[i-1], pg.buffer[i])
             }
         }
@@ -274,7 +276,7 @@ impl Clip
             if E.prev == E.next
                 break
             else if slopesEqual(E.prev.curr, E.curr, E.next.curr) and
-                    (!m_PreserveCollinear or !pt2IsBetweenPt1AndPt3(E.prev.curr, E.curr, E.next.curr))
+                    (!preserveCollinear or !pt2IsBetweenPt1AndPt3(E.prev.curr, E.curr, E.next.curr))
             {
                 //Collinear edges are allowed for open paths but in closed paths
                 //the default is to merge adjacent collinear edges into a single edge.
@@ -1136,7 +1138,7 @@ impl Clip
         var lastOK: *OutPt
         outrec.bottomPt = null
         pp := outrec.pts
-        preserveCol := m_PreserveCollinear or strictSimple
+        preserveCol := preserveCollinear or strictSimple
 
         loop
         {
