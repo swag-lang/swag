@@ -49,6 +49,10 @@ v.add(#code @print(a))
 ****************************************
 TODO
 ****************************************
+-------------------------------------
+comme examples et std partagent .out, ca merde avec les debug infos des fichiers publiques qui sont regénérés
+quand on compile /examples (et differents) du coup test_std a été compilé avec des lignes differentes
+-------------------------------------
 relative pointer strings
 -------------------------------------
 range dynamic order
