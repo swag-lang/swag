@@ -71,8 +71,8 @@ enum Direction { RightToLeft; LeftToRight; }
 
 struct IntersectNode
 {
-    edge1:    *TEdge
-    edge2:    *TEdge
+    edge1:    *Edge
+    edge2:    *Edge
     pt:       IntPoint
 }
 
@@ -87,8 +87,8 @@ impl IntersectNode
 struct LocalMinimum
 {
     y:            CInt
-    leftBound:    *TEdge
-    rightBound:   *TEdge
+    leftBound:    *Edge
+    rightBound:   *Edge
 }
 
 impl LocalMinimum
@@ -99,7 +99,7 @@ impl LocalMinimum
     }
 }
 
-struct TEdge
+struct Edge
 {
     bot:          IntPoint
     curr:         IntPoint
@@ -111,13 +111,13 @@ struct TEdge
     windCnt:      s32
     windCnt2:     s32
     outIdx:       s32
-    next:         *TEdge
-    prev:         *TEdge
-    nextInLML:    *TEdge
-    nextInAEL:    *TEdge
-    prevInAEL:    *TEdge
-    nextInSEL:    *TEdge
-    prevInSEL:    *TEdge
+    next:         *Edge
+    prev:         *Edge
+    nextInLML:    *Edge
+    nextInAEL:    *Edge
+    prevInAEL:    *Edge
+    nextInSEL:    *Edge
+    prevInSEL:    *Edge
 }
 
 struct OutRec
@@ -159,10 +159,10 @@ public struct Clip
 {
     m_UseFullRange:         bool
     m_PreserveCollinear:    bool
-    m_UsingPolyTree:        bool
+    usingPolyTree:        bool
     strictSimple:           bool
-    m_ReverseOutput:        bool
-    edgeList:               Array'*TEdge
+    reverseOutput:          bool
+    edgeList:               Array'*Edge
     minimaList:             Array'LocalMinimum
     polyOuts:               Array'*OutRec
     joinList:               Array'*Join
@@ -170,12 +170,12 @@ public struct Clip
     intersectList:          Array'*IntersectNode
     scanBeamList:           Array'CInt
     maximaList:             Array'CInt
-    m_ClipFillType:         PolyFillType = ?
-    m_SubjFillType:         PolyFillType = ?
-    m_ClipType:             ClipType = ?
-    m_CurrentLM:            uint
-    activeEdges:            *TEdge
-    sortedEdges:            *TEdge
+    clipFillType:         PolyFillType = ?
+    subjFillType:         PolyFillType = ?
+    clipType:             ClipType = ?
+    currentLM:              uint
+    activeEdges:            *Edge
+    sortedEdges:            *Edge
 }
 
 impl Clip
@@ -191,10 +191,10 @@ impl Clip
         try addPath(&pt, polyType)
     }
 
-    public method execute(clipType: ClipType, solution: *LinePathList, subjFillType, clipFillType: PolyFillType) throw
+    public method execute(clipT: ClipType, solution: *LinePathList, subjFillT, clipFillT: PolyFillType) throw
     {
         var res: ClipperPaths
-        try execute(clipType, &res, subjFillType, clipFillType)
+        try execute(clipT, &res, subjFillT, clipFillT)
 
         loop i: res
         {
@@ -213,12 +213,12 @@ impl Clip
         }
     }
 
-    method execute(clipType: ClipType, solution: *ClipperPaths, subjFillType, clipFillType: PolyFillType) throw
+    method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType) throw
     {
-        m_SubjFillType  = subjFillType
-        m_ClipFillType  = clipFillType
-        m_ClipType      = clipType;
-        m_UsingPolyTree = false
+        subjFillType  = subjFillT
+        clipFillType  = clipFillT
+        clipType      = clipT
+        usingPolyTree = false
 
         defer disposeAllOutRecs()
         try executeInternal()
@@ -235,7 +235,7 @@ impl Clip
             highI -= 1
         if highI < 2 return
 
-        edges  := Memory.new'TEdge(cast(uint) highI + 1)
+        edges  := Memory.new'Edge(cast(uint) highI + 1)
         IsFlat := true
 
         // 1. Basic (first) edge initialization ...
@@ -310,7 +310,7 @@ impl Clip
 
         edgeList.add(edges);
         var leftBoundIsForward: bool
-        var EMin: *TEdge
+        var EMin: *Edge
 
         //workaround to avoid an endless loop in the while loop below when
         //open paths have matching start and end points ...
@@ -360,16 +360,16 @@ impl Clip
         }
     }
 
-    func initEdge(e, eNext, ePrev: *TEdge, pt: IntPoint)
+    func initEdge(e, eNext, ePrev: *Edge, pt: IntPoint)
     {
-        Memory.clear(e, @sizeof(TEdge))
+        Memory.clear(e, @sizeof(Edge))
         e.next = eNext
         e.prev = ePrev
         e.curr = pt
         e.outIdx = Unassigned
     }
 
-    func initEdge2(e: *TEdge, pt: PolyType)
+    func initEdge2(e: *Edge, pt: PolyType)
     {
         if e.curr.y >= e.next.curr.y
         {
@@ -386,14 +386,14 @@ impl Clip
         e.polyType = pt
     }
 
-    func setDx(e: *TEdge)
+    func setDx(e: *Edge)
     {
         dy := (e.top.y - e.bot.y)
         if dy == 0 e.dx = HORIZONTAL
         else e.dx = cast(f64) (e.top.x - e.bot.x) / dy
     }
 
-    func removeEdge(e: *TEdge)->*TEdge
+    func removeEdge(e: *Edge)->*Edge
     {
         e.prev.next = e.next;
         e.next.prev = e.prev;
@@ -411,7 +411,7 @@ impl Clip
         joinList.add(j)
     }
 
-    func slopesEqual(e1: *TEdge, e2: *TEdge)->bool
+    func slopesEqual(e1: *Edge, e2: *Edge)->bool
     {
         return (e1.top.y - e1.bot.y) * (e2.top.x - e2.bot.x) == (e1.top.x - e1.bot.x) * (e2.top.y - e2.bot.y)
     }
@@ -449,12 +449,12 @@ impl Clip
         }
     }
 
-    func isHorizontal(e: *TEdge)->bool
+    func isHorizontal(e: *Edge)->bool
     {
         return e.dx == HORIZONTAL
     }
 
-    func findNextLocMin(edge: *TEdge)->*TEdge
+    func findNextLocMin(edge: *Edge)->*Edge
     {
         E := edge
         loop
@@ -472,16 +472,16 @@ impl Clip
         return E
     }
 
-    func reverseHorizontal(e: *TEdge)
+    func reverseHorizontal(e: *Edge)
     {
         swap(&e.top.x, &e.bot.x)
     }
 
-    method processBound(edge: *TEdge, nextIsForward: bool)->*TEdge
+    method processBound(edge: *Edge, nextIsForward: bool)->*Edge
     {
         E := edge
-        var Result: *TEdge = E
-        var Horz: *TEdge
+        var Result: *Edge = E
+        var Horz: *Edge
 
         if E.outIdx == Skip
         {
@@ -525,7 +525,7 @@ impl Clip
             return Result
         }
 
-        var EStart: *TEdge
+        var EStart: *Edge
         if isHorizontal(E)
         {
             if nextIsForward
@@ -614,8 +614,8 @@ impl Clip
 
     method reset()
     {
-        m_CurrentLM = 0
-        if m_CurrentLM == minimaList.count return
+        currentLM = 0
+        if currentLM == minimaList.count return
         minimaList.sort()
 
         scanBeamList.clear()
@@ -640,15 +640,15 @@ impl Clip
         }
 
         activeEdges = null
-        m_CurrentLM = 0
+        currentLM = 0
     }
 
     method localMinimaPending()->bool
     {
-        return m_CurrentLM != minimaList.count
+        return currentLM != minimaList.count
     }
 
-    method deleteFromSEL(e: *TEdge)
+    method deleteFromSEL(e: *Edge)
     {
         SelPrev := e.prevInSEL
         SelNext := e.nextInSEL
@@ -663,7 +663,7 @@ impl Clip
         e.prevInSEL = null
     }
 
-    method popEdgeFromSEL(edge: **TEdge)->bool
+    method popEdgeFromSEL(edge: **Edge)->bool
     {
         if !sortedEdges return false
         dref edge = sortedEdges
@@ -673,12 +673,12 @@ impl Clip
 
     method processHorizontals()
     {
-        var horzEdge: *TEdge
+        var horzEdge: *Edge
         while popEdgeFromSEL(&horzEdge)
             processHorizontal(horzEdge)
     }
 
-    func getHorzDirection(HorzEdge: *TEdge, Dir: *Direction, left, right: *CInt)
+    func getHorzDirection(HorzEdge: *Edge, Dir: *Direction, left, right: *CInt)
     {
         if HorzEdge.bot.x < HorzEdge.top.x
         {
@@ -694,7 +694,7 @@ impl Clip
         }
     }
 
-    func getMaximaPair(e: *TEdge)->*TEdge
+    func getMaximaPair(e: *Edge)->*Edge
     {
         if (e.next.top == e.top) and !e.next.nextInLML
             return e.next
@@ -704,12 +704,12 @@ impl Clip
             return null
     }
 
-    func getNextInAEL(e: *TEdge, dir: Direction)->*TEdge
+    func getNextInAEL(e: *Edge, dir: Direction)->*Edge
     {
         return dir == .LeftToRight ? e.nextInAEL : e.prevInAEL
     }
 
-    method getLastOutPt(e: *TEdge)->*OutPt
+    method getLastOutPt(e: *Edge)->*OutPt
     {
         outRec := polyOuts[e.outIdx]
         if e.side == .Left
@@ -727,7 +727,7 @@ impl Clip
         ghostJoinList.add(j)
     }
 
-    method processHorizontal(hE: *TEdge)
+    method processHorizontal(hE: *Edge)
     {
         horzEdge := hE
 
@@ -738,7 +738,7 @@ impl Clip
         getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
 
         eLastHorz := horzEdge
-        var eMaxPair: *TEdge
+        var eMaxPair: *Edge
         while eLastHorz.nextInLML and isHorizontal(eLastHorz.nextInLML)
             eLastHorz = eLastHorz.nextInLML
         if !eLastHorz.nextInLML
@@ -902,7 +902,7 @@ impl Clip
         }
     }
 
-    method updateEdgeIntoAEL(ed: **TEdge)
+    method updateEdgeIntoAEL(ed: **Edge)
     {
         e := dref ed
         e.nextInLML.outIdx = e.outIdx
@@ -923,7 +923,7 @@ impl Clip
         dref ed = e
     }
 
-    method swapPositionsInAEL(edge1, edge2: *TEdge)
+    method swapPositionsInAEL(edge1, edge2: *Edge)
     {
         if edge1.nextInAEL == edge1.prevInAEL or edge2.nextInAEL == edge2.prevInAEL
             return
@@ -968,7 +968,7 @@ impl Clip
         else if !edge2.prevInAEL activeEdges = edge2
     }
 
-    method deleteFromAEL(e: *TEdge)
+    method deleteFromAEL(e: *Edge)
     {
         AelPrev := e.prevInAEL
         AelNext := e.nextInAEL
@@ -1022,7 +1022,7 @@ impl Clip
         visit outRec: polyOuts
         {
             if !outRec.pts or outRec.isOpen continue
-            if (outRec.isHole ^ m_ReverseOutput) == (area(outRec.pts) > 0)
+            if (outRec.isHole ^ reverseOutput) == (area(outRec.pts) > 0)
                 reversePolyPtLinks(outRec.pts)
         }
 
@@ -1076,7 +1076,7 @@ impl Clip
                         {
                             outrec2.isHole = !outrec.isHole
                             outrec2.firstLeft = outrec
-                            if m_UsingPolyTree fixupFirstLefts2(outrec2, outrec)
+                            if usingPolyTree fixupFirstLefts2(outrec2, outrec)
                         }
                         else if poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
@@ -1084,13 +1084,13 @@ impl Clip
                             outrec.isHole = !outrec2.isHole
                             outrec2.firstLeft = outrec.firstLeft
                             outrec.firstLeft = outrec2
-                            if m_UsingPolyTree fixupFirstLefts2(outrec, outrec2)
+                            if usingPolyTree fixupFirstLefts2(outrec, outrec2)
                         }
                         else
                         {
                             outrec2.isHole = outrec.isHole
                             outrec2.firstLeft = outrec.firstLeft
-                            if m_UsingPolyTree fixupFirstLefts1(outrec, outrec2)
+                            if usingPolyTree fixupFirstLefts1(outrec, outrec2)
                         }
 
                         op2 = op
@@ -1614,8 +1614,8 @@ impl Clip
                 {
                     outRec2.isHole = !outRec1.isHole
                     outRec2.firstLeft = outRec1
-                    if m_UsingPolyTree fixupFirstLefts2(outRec2, outRec1)
-                    if (outRec2.isHole ^ m_ReverseOutput) == (area(outRec2.pts) > 0)
+                    if usingPolyTree fixupFirstLefts2(outRec2, outRec1)
+                    if (outRec2.isHole ^ reverseOutput) == (area(outRec2.pts) > 0)
                     reversePolyPtLinks(outRec2.pts)
 
                 }
@@ -1626,16 +1626,16 @@ impl Clip
                     outRec2.firstLeft = outRec1.firstLeft
                     outRec1.firstLeft = outRec2
 
-                    if m_UsingPolyTree fixupFirstLefts2(outRec1, outRec2)
+                    if usingPolyTree fixupFirstLefts2(outRec1, outRec2)
 
-                    if (outRec1.isHole ^ m_ReverseOutput) == (area(outRec1.pts) > 0)
+                    if (outRec1.isHole ^ reverseOutput) == (area(outRec1.pts) > 0)
                     reversePolyPtLinks(outRec1.pts)
                 }
                 else
                 {
                     outRec2.isHole = outRec1.isHole
                     outRec2.firstLeft = outRec1.firstLeft
-                    if m_UsingPolyTree fixupFirstLefts1(outRec1, outRec2)
+                    if usingPolyTree fixupFirstLefts1(outRec1, outRec2)
                 }
 
             }
@@ -1650,17 +1650,17 @@ impl Clip
                     outRec1.firstLeft = outRec2.firstLeft
                 outRec2.firstLeft = outRec1
 
-                if m_UsingPolyTree fixupFirstLefts3(outRec2, outRec1)
+                if usingPolyTree fixupFirstLefts3(outRec2, outRec1)
             }
         }
     }
 
-    func isMaxima(e: *TEdge, y: CInt)->bool
+    func isMaxima(e: *Edge, y: CInt)->bool
     {
         return e and e.top.y == y and !e.nextInLML
     }
 
-    func getMaximaPairEx(e: *TEdge)->*TEdge
+    func getMaximaPairEx(e: *Edge)->*Edge
     {
         result := getMaximaPair(e)
         if result and (result.outIdx == Skip or
@@ -1669,12 +1669,12 @@ impl Clip
         return result
     }
 
-    func isIntermediate(e: *TEdge, y: CInt)->bool
+    func isIntermediate(e: *Edge, y: CInt)->bool
     {
         return e.top.y == y and e.nextInLML
     }
 
-    method doMaxima(e: *TEdge)
+    method doMaxima(e: *Edge)
     {
         eMaxPair := getMaximaPairEx(e)
         if !eMaxPair
@@ -1919,7 +1919,7 @@ impl Clip
         intersectList.clear()
     }
 
-    method swapPositionsInSEL(edge1, edge2: *TEdge)
+    method swapPositionsInSEL(edge1, edge2: *Edge)
     {
         if !edge1.nextInSEL and !edge1.prevInSEL return
         if !edge2.nextInSEL and !edge2.prevInSEL return
@@ -1964,7 +1964,7 @@ impl Clip
         else if !edge2.prevInSEL sortedEdges = edge2
     }
 
-    method intersectPoint(edge1, edge2: *TEdge, ip: *IntPoint)
+    method intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
     {
         var b1, b2: f64
         if edge1.dx == edge2.dx
@@ -2031,9 +2031,9 @@ impl Clip
 
     method popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
     {
-        if m_CurrentLM == minimaList.count or minimaList[m_CurrentLM].y != y return false
-        dref locMin = minimaList[m_CurrentLM]
-        m_CurrentLM += 1
+        if currentLM == minimaList.count or minimaList[currentLM].y != y return false
+        dref locMin = minimaList[currentLM]
+        currentLM += 1
         return true
     }
 
@@ -2043,12 +2043,12 @@ impl Clip
         return cast(CInt) (val + 0.5)
     }
 
-    func topX(edge: *TEdge, currentY: CInt)->CInt
+    func topX(edge: *Edge, currentY: CInt)->CInt
     {
         return currentY == edge.top.y ? edge.top.x : edge.bot.x + round(edge.dx * (currentY - edge.bot.y))
     }
 
-    func e2InsertsBeforeE1(e1, e2: *TEdge)->bool
+    func e2InsertsBeforeE1(e1, e2: *Edge)->bool
     {
         if e2.curr.x == e1.curr.x
         {
@@ -2061,7 +2061,7 @@ impl Clip
             return e2.curr.x < e1.curr.x
     }
 
-    method insertEdgeIntoAEL(edge, startE: *TEdge)
+    method insertEdgeIntoAEL(edge, startE: *Edge)
     {
         startEdge := startE
         if !activeEdges
@@ -2089,21 +2089,21 @@ impl Clip
         }
     }
 
-    method isEvenOddFillType(edge: *TEdge)->bool
+    method isEvenOddFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject
-            return m_SubjFillType == .EvenOdd
-        return m_ClipFillType == .EvenOdd
+            return subjFillType == .EvenOdd
+        return clipFillType == .EvenOdd
     }
 
-    method isEvenOddAltFillType(edge: *TEdge)->bool
+    method isEvenOddAltFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject
-            return m_ClipFillType == .EvenOdd
-        return m_SubjFillType == .EvenOdd
+            return clipFillType == .EvenOdd
+        return subjFillType == .EvenOdd
     }
 
-    method setWindingCount(edge: *TEdge)
+    method setWindingCount(edge: *Edge)
     {
         e := edge.prevInAEL
 
@@ -2114,7 +2114,7 @@ impl Clip
         {
             if edge.windDelta == 0
             {
-                pft := edge.polyType == .Subject ? m_SubjFillType : m_ClipFillType
+                pft := edge.polyType == .Subject ? subjFillType : clipFillType
                 edge.windCnt = (pft == .Negative ? -1 : 1)
             }
             else
@@ -2122,7 +2122,7 @@ impl Clip
             edge.windCnt2 = 0
             e = activeEdges
         }
-        else if edge.windDelta == 0 and m_ClipType != .Union
+        else if edge.windDelta == 0 and clipType != .Union
         {
             edge.windCnt = 1
             edge.windCnt2 = e.windCnt2
@@ -2194,18 +2194,18 @@ impl Clip
         }
     }
 
-    method isContributing(edge: *TEdge)->bool
+    method isContributing(edge: *Edge)->bool
     {
         var pft, pft2: PolyFillType = ?
         if edge.polyType == .Subject
         {
-            pft = m_SubjFillType
-            pft2 = m_ClipFillType
+            pft = subjFillType
+            pft2 = clipFillType
         }
         else
         {
-            pft = m_ClipFillType
-            pft2 = m_SubjFillType
+            pft = clipFillType
+            pft2 = subjFillType
         }
 
         switch pft
@@ -2224,7 +2224,7 @@ impl Clip
                 return false
         }
 
-        switch m_ClipType
+        switch clipType
         {
         case Intersection:
             switch pft2
@@ -2300,10 +2300,10 @@ impl Clip
         return result
     }
 
-    method setHoleState(e: *TEdge, outrec: *OutRec)
+    method setHoleState(e: *Edge, outrec: *OutRec)
     {
         e2 := e.prevInAEL
-        var eTmp: *TEdge
+        var eTmp: *Edge
         while e2
         {
             if e2.outIdx >= 0 and e2.windDelta != 0
@@ -2327,7 +2327,7 @@ impl Clip
     }
 
     #[Swag.discardable]
-    method addOutPt(e: *TEdge, pt: IntPoint)->*OutPt
+    method addOutPt(e: *Edge, pt: IntPoint)->*OutPt
     {
         if e.outIdx < 0
         {
@@ -2366,10 +2366,10 @@ impl Clip
     }
 
     #[Swag.discardable]
-    method addLocalMinPoly(e1, e2: *TEdge, pt: IntPoint)->*OutPt
+    method addLocalMinPoly(e1, e2: *Edge, pt: IntPoint)->*OutPt
     {
         var result: *OutPt
-        var e, prevE: *TEdge
+        var e, prevE: *Edge
 
         if isHorizontal(e2) or (e1.dx > e2.dx)
         {
@@ -2413,7 +2413,7 @@ impl Clip
         return result
     }
 
-    method addEdgeToSEL(edge: *TEdge)
+    method addEdgeToSEL(edge: *Edge)
     {
         if !sortedEdges
         {
@@ -2572,7 +2572,7 @@ impl Clip
         }
     }
 
-    method appendPolygon(e1, e2: *TEdge)
+    method appendPolygon(e1, e2: *Edge)
     {
         //get the start and ends of both output polygons ...
         outRec1 := polyOuts[e1.outIdx]
@@ -2668,7 +2668,7 @@ impl Clip
         outRec2.idx = outRec1.idx
     }
 
-    method addLocalMaxPoly(e1, e2: *TEdge, pt: IntPoint)
+    method addLocalMaxPoly(e1, e2: *Edge, pt: IntPoint)
     {
         addOutPt(e1, pt)
         if e2.windDelta == 0 addOutPt(e2, pt)
@@ -2684,21 +2684,21 @@ impl Clip
             appendPolygon(e2, e1)
     }
 
-    func swapSides(edge1, edge2: *TEdge)
+    func swapSides(edge1, edge2: *Edge)
     {
         side := edge1.side
         edge1.side = edge2.side
         edge2.side = side
     }
 
-    func swapPolyIndexes(edge1, edge2: *TEdge)
+    func swapPolyIndexes(edge1, edge2: *Edge)
     {
         outIdx := edge1.outIdx
         edge1.outIdx = edge2.outIdx
         edge2.outIdx = outIdx
     }
 
-    method intersectEdges(e1, e2: *TEdge, pt: IntPoint)
+    method intersectEdges(e1, e2: *Edge, pt: IntPoint)
     {
         e1Contributing := e1.outIdx >= 0
         e2Contributing := e2.outIdx >= 0
@@ -2740,24 +2740,24 @@ impl Clip
         var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = ?
         if e1.polyType == .Subject
         {
-            e1FillType = m_SubjFillType
-            e1FillType2 = m_ClipFillType
+            e1FillType = subjFillType
+            e1FillType2 = clipFillType
         }
         else
         {
-            e1FillType = m_ClipFillType
-            e1FillType2 = m_SubjFillType
+            e1FillType = clipFillType
+            e1FillType2 = subjFillType
         }
 
         if e2.polyType == .Subject
         {
-            e2FillType = m_SubjFillType
-            e2FillType2 = m_ClipFillType
+            e2FillType = subjFillType
+            e2FillType2 = clipFillType
         }
         else
         {
-            e2FillType = m_ClipFillType
-            e2FillType2 = m_SubjFillType
+            e2FillType = clipFillType
+            e2FillType2 = subjFillType
         }
 
         var e1Wc, e2Wc: CInt
@@ -2777,7 +2777,7 @@ impl Clip
 
         if e1Contributing and e2Contributing
         {
-            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.polyType != e2.polyType and m_ClipType != .Xor)
+            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.polyType != e2.polyType and clipType != .Xor)
             {
                 addLocalMaxPoly(e1, e2, pt)
             }
@@ -2830,7 +2830,7 @@ impl Clip
             }
             else if e1Wc == 1 and e2Wc == 1
             {
-                switch m_ClipType
+                switch clipType
                 {
                 case Intersection:
                     if e1Wc2 > 0 and e2Wc2 > 0
