@@ -21,7 +21,8 @@ var fontFam:    FontFamily
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 5
+var g_page:         s32 = 4
+const MaxPages = 5
 
 func dataPath()->String
 {
@@ -400,29 +401,20 @@ func displayPage4()
         cdc.translateTransform(50, 570)
 
         //assume typeface.getStringOutline(&pathl, str, 150)
-        assume typeface.getStringOutline(&pathl1, "A", 70, 6)
+        assume typeface.getStringOutline(&pathl1, "A", 70)
+        pathl1.flatten(PaintQuality.Normal)
+        pathl1.offset(4)
+        pathl1.cleanPoints()
         cdc.fillPath(pathl1, Argb.Red)
-        /*cdc.translateTransform(1, 1)
-        cdc.fillPath(pathl, Argb.Black)*/
+
+        assume typeface.getStringOutline(&pathl1, "A", 70)
+        cdc.fillPath(pathl1, Argb.Black)
 
         cdc.resetTransform()
     }
 
     // Draw font page
     //cdc.drawTexture(100, 400, font80.atlases[0].texture)
-
-    cdc.end()
-    renderer.resetTransform()
-    renderer.draw(&cdc)
-}
-
-func displayPage5()
-{
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
-
-    cdc.fillCircle(100, 100, 50, Argb.Red)
 
     cdc.end()
     renderer.resetTransform()
@@ -446,7 +438,6 @@ func display()
     case 2: displayPage2()
     case 3: displayPage3()
     case 4: displayPage4()
-    case 5: displayPage5()
     }
 
     renderer.end()
@@ -548,7 +539,7 @@ func messageLoop()
         if(keyb.isKeyJustPressed(Input.Key.F3))
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % 6
+            g_page = (g_page + 1) % MaxPages
     }
 }
 

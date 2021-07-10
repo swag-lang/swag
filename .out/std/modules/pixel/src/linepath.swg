@@ -347,10 +347,31 @@ public impl LinePath
 
         var copy: Array'Vector2
         copy.reserve(posBuffer.count)
+
         loop i: posBuffer.count
             copy.add(getFlattenPoint(i, value))
 
         posBuffer =,move copy
+    }
+
+    method cleanPoints()
+    {
+        if !isClosed return
+        if !posBuffer.count return
+
+        using Clipper
+        var   clipper: Transform
+
+        catch clipper.addPath(posBuffer, PolyType.Subject)
+
+        var   lpl: LinePathList
+        catch clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
+        if lpl.paths.count
+        {
+            posBuffer =,move lpl.paths[0].posBuffer
+            v := posBuffer.buffer[0]
+            posBuffer.add(v)
+        }
     }
 
     // Convert the path to a list of points
@@ -417,22 +438,5 @@ public impl LinePath
         }
 
         clockwise = area >= 0
-
-        if isClosed
-        {
-            using Clipper
-            var   clipper: Transform
-
-            catch clipper.addPath(posBuffer, PolyType.Subject)
-
-            var   lpl: LinePathList
-            catch clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
-            if lpl.paths.count
-            {
-                posBuffer =,move lpl.paths[0].posBuffer
-                v := posBuffer.buffer[0]
-                posBuffer.add(v)
-            }
-        }
     }
 }

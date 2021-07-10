@@ -53,4 +53,10 @@ impl LinePathList
         visit p: paths
             p.offset(value)
     }
+
+    method cleanPoints()
+    {
+        visit p: paths
+            p.cleanPoints()
+    }
 }

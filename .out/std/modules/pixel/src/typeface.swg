@@ -73,6 +73,8 @@ impl TypeFace
     func getStringOutline(using const self, pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
     {
         var itf: FT_Outline_Funcs
+
+        pathList.clear()
         itf.move_to  = @mkcallback(&moveTo)
         itf.line_to  = @mkcallback(&lineTo)
         itf.conic_to = @mkcallback(&conicTo)
