@@ -95,7 +95,7 @@ impl LocalMinimum
 {
     method opCmp(other: LocalMinimum)->s32
     {
-        return y <=> other.y
+        return other.y <=> y
     }
 }
 
