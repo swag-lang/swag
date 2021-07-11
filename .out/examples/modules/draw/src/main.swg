@@ -422,8 +422,6 @@ func displayPage4()
         cdc.drawPath(&p, Argb.Red, 2)
         p.polygon.offset(10, JoinStyle.Round)
         cdc.drawPath(&p, Argb.Green, 2)
-        p.polygon.offset(-10, JoinStyle.Round)
-        cdc.drawPath(&p, Argb.Blue, 2)
 
         cdc.resetTransform()
     }
@@ -431,7 +429,7 @@ func displayPage4()
     {
         var p: LinePathList
         cdc.translateTransform(150, 570)
-        assume typeface.getStringOutline(&p, "B", 70)
+        assume typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
         cdc.fillPath(&p, Argb.Red)
