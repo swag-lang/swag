@@ -1,0 +1,100 @@
+#global public
+using Core.Math
+
+struct Polygon
+{
+    points: Array'Vector2
+}
+
+impl Polygon
+{
+    // Get the given point, with an optional offset
+    method getPoint(i: uint)->Vector2
+    {
+        return points.buffer[i]
+    }
+
+    // Get the given point, with an optional offset
+    method getPoint(i: uint, offset: f32)->Vector2
+    {
+        if Math.isZeroEpsilon(offset)
+            return points.buffer[i]
+
+        count := points.count - 1
+
+        v0 := points.buffer[(i + count - 1) % count]
+        v1 := points.buffer[i]
+        v2 := points.buffer[(i + 1) % count]
+
+        tmp0 := Vector2.toNormalizeSafe(v1 - v0)
+        n0 := tmp0.cross(1)
+        tmp1 := Vector2.toNormalizeSafe(v2 - v1)
+        n1 := tmp1.cross(1)
+
+        vva1 := v1 + n0
+        vva0 := v0 + n0
+        vvb1 := v2 + n1
+        vvb0 := v1 + n1
+        (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+
+        var result: retval = v1
+        if yes
+        {
+            result += ((intPos - v1) * offset)
+        }
+        else
+        {
+            n := Vector2.toNormalizeSafe(n0 + n1)
+            result += (n * offset)
+        }
+
+        return result
+    }
+
+    // Expand outline by a given amount
+    // Path must be closed and flattened
+    method offset(value: f32)
+    {
+        if Math.isZeroEpsilon(value) return
+        if !points.count return
+
+        var copy: Array'Vector2
+        copy.reserve(points.count)
+
+        loop i: points.count
+            copy.add(getPoint(i, value))
+
+        points =,move copy
+    }
+
+    // Clear all points
+    method clear()
+    {
+        points.clear()
+    }
+
+    method add(v: Vector2)
+    {
+        points.add(v)
+    }
+
+    method offset1(value: f32)
+    {
+        using Clipper
+        var off: Clipper.Offset
+        catch off.addPath(points, JoinType.Round, EndType.ClosedPolygon)
+        catch off.execute(self, cast(f64) value)
+    }
+
+    method clean()
+    {
+        if !points.count return
+
+        using Clipper
+        var   clipper: Transform
+
+        clipper.strictSimple = true
+        catch clipper.addPath(points, PolyType.Subject)
+        catch clipper.execute(ClipType.Union, self, PolyFillType.NonZero, PolyFillType.NonZero)
+    }
+}

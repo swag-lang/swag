@@ -47,25 +47,4 @@ impl LinePathList
         visit p: paths
             p.flatten(quality)
     }
-
-    method offset(value: f32)
-    {
-        visit p: paths
-            p.offset(value)
-    }
-
-    method offset1(value: f32)
-    {
-        visit p: paths
-        {
-            v := p.clockwise ? value : -value
-            p.offset1(v)
-        }
-    }
-
-    method cleanPoints()
-    {
-        visit p: paths
-            p.cleanPoints()
-    }
 }

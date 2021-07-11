@@ -547,8 +547,8 @@ impl Painter
         if pen.beginCapStyle == .None return
         if penSize < 3 return
 
-        v1 := path.getFlattenPoint(0, cxt.offsetPath)
-        v2 := path.getFlattenPoint(1, cxt.offsetPath)
+        v1 := path.polygon.getPoint(0, cxt.offsetPath)
+        v2 := path.polygon.getPoint(1, cxt.offsetPath)
         n := v2 - v1
         n.normalizeSafe()
         c := n.cross(1)
@@ -561,8 +561,8 @@ impl Painter
         if pen.endCapStyle == .None return
         if penSize < 3 return
 
-        v1 := path.getFlattenPoint(path.posBuffer.count - 1, cxt.offsetPath)
-        v2 := path.getFlattenPoint(path.posBuffer.count - 2, cxt.offsetPath)
+        v1 := path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+        v2 := path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
         n := v1 - v2
         n.normalizeSafe()
         c := n.cross(1)
@@ -572,7 +572,7 @@ impl Painter
 
     private method drawPath(using cxt: *Context)
     {
-        if pen.size < 1 or path.posBuffer.count == 0
+        if pen.size < 1 or path.polygon.points.count == 0
             return
 
         // AA will reduce visually the size. Compensate
@@ -583,7 +583,7 @@ impl Painter
         cxt.offsetPath = pen.plotOffset
 
         penSize2    = penSize * 0.5
-        prev        = path.getFlattenPoint(0, cxt.offsetPath)
+        prev        = path.polygon.getPoint(0, cxt.offsetPath)
         beginLine   = true
         firstLine   = true
 
@@ -596,9 +596,9 @@ impl Painter
         }
 
         // Draw all
-        loop i: 1..path.posBuffer.count-1
+        loop i: 1..path.polygon.points.count-1
         {
-            p := path.getFlattenPoint(i, cxt.offsetPath)
+            p := path.polygon.getPoint(i, cxt.offsetPath)
             drawLine(cxt, p)
         }
 
@@ -690,7 +690,7 @@ impl Painter
     {
         var result: retval
 
-        slice := @mkslice(path.posBuffer.buffer + 1, path.posBuffer.count - 1)
+        slice := @mkslice(path.polygon.points.buffer + 1, path.polygon.points.count - 1)
         n := cast(s32) @countof(slice)
 
         // We want a counter-clockwise polygon in V
@@ -772,7 +772,7 @@ impl Painter
         if paintParams & .Antialiased and !doneOffsetAA
         {
             doneOffsetAA = true
-            offset(0.25)
+            polygon.offset(0.25)
         }
 
 
@@ -784,19 +784,18 @@ impl Painter
         // vertices
         if isConvex
         {
-            count := posBuffer.count - 1
+            count := path.polygon.points.count - 1
             center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
             loop i: count
             {
-                pos := posBuffer[i]
-                v0 := dref pos
-                v1 := posBuffer.buffer[(i + 1) % count]
+                v0 := path.polygon.getPoint(i)
+                v1 := path.polygon.getPoint((i + 1) % count)
                 prim := pushTriangle(center, v0, v1, brush.color)
 
                 if paintParams & .Antialiased
                 {
-                    v2 := posBuffer.buffer[(i + 2) % count]
-                    vp := posBuffer.buffer[(i + count - 1) % count]
+                    v2 := path.polygon.getPoint((i + 2) % count)
+                    vp := path.polygon.getPoint((i + count - 1) % count)
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
                     addEdgeAA(prim, vp, v0)
@@ -810,7 +809,7 @@ impl Painter
             result := triangulate(path)
             if result.isEmpty() return
             pidx := result.buffer
-            tpos := path.posBuffer.buffer + 1
+            tpos := path.polygon.points.buffer + 1
             firstPrim := vertexBuffer.count
             loop result.count / 3
             {
@@ -825,7 +824,7 @@ impl Painter
             // next edge (even if not in the triangle)
             if paintParams & .Antialiased
             {
-                cpt := cast(s32) path.posBuffer.count - 1
+                cpt := cast(s32) path.polygon.points.count - 1
                 psrc := result.buffer
                 for i := 0; i < result.count; i += 3
                 {
@@ -920,7 +919,7 @@ impl Painter
             if paintParams & .Antialiased and !p.doneOffsetAA
             {
                 p.doneOffsetAA = true
-                p.offset(0.25)
+                p.polygon.offset(0.25)
             }
 
             bvMin = Vector2.min(bvMin, p.bvMin)
@@ -942,9 +941,9 @@ impl Painter
             {
                 flush = true
                 t.startPolyLine()
-                loop i: 0..p.posBuffer.count-2
+                loop i: 0..p.polygon.points.count-2
                 {
-                    pt := p.posBuffer[i]
+                    pt := p.polygon.getPoint(i)
                     t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
                 }
 

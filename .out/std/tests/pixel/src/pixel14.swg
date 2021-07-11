@@ -19,8 +19,7 @@ using Core, Pixel, Clipper
     lp.add(Vector2{50, 150})
     assume clipper.addPath(lp, PolyType.Subject)
 
-    var lpl: LinePathList
+    var lpl: Polygon
     assume clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
-    @assert(lpl.paths.count == 1)
-    @assert(lpl.paths[0].posBuffer.count == 9)
+    @assert(lpl.points.count == 9)
 }

@@ -30,7 +30,7 @@ public struct LinePath
     bvMax:          Vector2
     totalLen:       f32
     endPosBuffer:   Vector2
-    posBuffer:      Array'Vector2
+    polygon:        Polygon
     clockwise:      bool
     isConvex:       bool
     doneOffsetAA:   bool
@@ -287,10 +287,10 @@ public impl LinePath
         bvMax = Vector2.max(bvMax, pos)
 
         // Compute if shape is convex
-        if isConvex and posBuffer.count > 2
+        if isConvex and polygon.points.count > 2
         {
             v   := pos - endPosBuffer
-            v1  := endPosBuffer - posBuffer.buffer[posBuffer.count - 2]
+            v1  := endPosBuffer - polygon.points.buffer[polygon.points.count - 2]
             dot := v.dot(v1)
             if lastDot == 0
                 lastDot = dot
@@ -298,91 +298,8 @@ public impl LinePath
                 isConvex = false
         }
 
-        posBuffer.add(pos)
+        polygon.points.add(pos)
         endPosBuffer = pos
-    }
-
-    protected func getFlattenPoint(using const self, i: uint, offset: f32)->Vector2
-    {
-        if !isClosed or Math.isZeroEpsilon(offset)
-            return posBuffer.buffer[i]
-
-        count := posBuffer.count - 1
-
-        v0 := posBuffer.buffer[(i + count - 1) % count]
-        v1 := posBuffer.buffer[i]
-        v2 := posBuffer.buffer[(i + 1) % count]
-
-        tmp0 := Vector2.toNormalize(v1 - v0)
-        n0 := tmp0.cross(1)
-        tmp1 := Vector2.toNormalize(v2 - v1)
-        n1 := tmp1.cross(1)
-
-        vva1 := v1 + n0
-        vva0 := v0 + n0
-        vvb1 := v2 + n1
-        vvb0 := v1 + n1
-        (yes, intPos) := Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
-
-        var result: retval = v1
-        if yes
-        {
-            result += ((intPos - v1) * offset)
-        }
-        else
-        {
-            n := Vector2.toNormalize(n0 + n1)
-            result += (n * offset)
-        }
-
-        return result
-    }
-
-    // Expand outline by a given amount
-    // Path must be closed and flattened
-    method offset(value: f32)
-    {
-        if Math.isZeroEpsilon(value) return
-        if !isClosed or !posBuffer.count return
-
-        var copy: Array'Vector2
-        copy.reserve(posBuffer.count)
-
-        loop i: posBuffer.count
-            copy.add(getFlattenPoint(i, value))
-
-        posBuffer =,move copy
-    }
-
-    method offset1(value: f32)
-    {
-        using Clipper
-        var off: Clipper.Offset
-        catch off.addPath(posBuffer, JoinType.Round, EndType.ClosedPolygon)
-        var solution: LinePath
-        catch off.execute(&solution, cast(f64) value)
-        posBuffer =,move solution.posBuffer
-    }
-
-    method cleanPoints()
-    {
-        if !isClosed return
-        if !posBuffer.count return
-
-        using Clipper
-        var   clipper: Transform
-
-        clipper.strictSimple = true
-        catch clipper.addPath(posBuffer, PolyType.Subject)
-
-        var   lpl: LinePathList
-        catch clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
-        if lpl.paths.count
-        {
-            posBuffer =,move lpl.paths[0].posBuffer
-            v := posBuffer.buffer[0]
-            posBuffer.add(v)
-        }
     }
 
     // Convert the path to a list of points
@@ -392,7 +309,7 @@ public impl LinePath
         func roundVal(x: f32) => x//0.4 + Math.round(x)
 
         // Already done ?
-        if !isDirty and flattenQuality == quality and posBuffer.count
+        if !isDirty and flattenQuality == quality and polygon.points.count
             return
 
         doneOffsetAA = false
@@ -405,11 +322,11 @@ public impl LinePath
         bvMin.set(Swag.F32.Max, Swag.F32.Max)
         bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
         totalLen = 0
-        posBuffer.clear()
+        polygon.points.clear()
 
         endPosBuffer.x = roundVal(startPoint.x)
         endPosBuffer.y = roundVal(startPoint.y)
-        posBuffer.add(endPosBuffer)
+        polygon.points.add(endPosBuffer)
 
         var pos, p1, p2: Vector2 = ?
         visit elem: elements
@@ -437,13 +354,13 @@ public impl LinePath
 
         // Compute area
         // Could be done during flatten ?
-        n := @countof(posBuffer)
+        n := @countof(polygon.points)
         q := 0
         p := n - 1
         area := 0'f32
         while q < n
         {
-            area += posBuffer[p].x * posBuffer[q].y - posBuffer[q].x * posBuffer[p].y
+            area += polygon.points[p].x * polygon.points[q].y - polygon.points[q].x * polygon.points[p].y
             p = q
             q += 1
         }

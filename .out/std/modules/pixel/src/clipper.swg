@@ -202,24 +202,23 @@ impl Transform
     }
 
     // Do the stuff...
-    public method execute(clipT: ClipType, solution: *LinePathList, subjFillT, clipFillT: PolyFillType) throw
+    public method execute(clipT: ClipType, solution: *Polygon, subjFillT, clipFillT: PolyFillType) throw
     {
+        solution.clear()
+
         var res: ClipperPaths
         try execute(clipT, &res, subjFillT, clipFillT)
 
-        loop i: res
+        if res.count
         {
-            path := Memory.new'LinePath()
-            visit *pt: dref res[i]
+            visit *pt: dref res[0]
             {
                 vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-                path.posBuffer.add(vec)
+                solution.add(vec)
             }
 
-            v0 := path.posBuffer.buffer[0]
-            path.posBuffer.add(v0)
-
-            solution.paths.add(path)
+            v0 := solution.getPoint(0)
+            solution.add(v0)
         }
     }
 
@@ -3149,8 +3148,10 @@ impl Offset
         try addPath(pt, joinType, endType)
     }
 
-    public method execute(solution: *LinePath, delta: f64) throw
+    public method execute(solution: *Polygon, delta: f64) throw
     {
+        solution.clear()
+
         var res: ClipperPaths
         try execute(&res, delta * ScaleCoords)
 
@@ -3159,11 +3160,11 @@ impl Offset
             visit *pt: dref res[0]
             {
                 vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-                solution.posBuffer.add(vec)
+                solution.add(vec)
             }
 
-            v0 := solution.posBuffer.buffer[0]
-            solution.posBuffer.add(v0)
+            v0 := solution.getPoint(0)
+            solution.add(v0)
         }
     }
 

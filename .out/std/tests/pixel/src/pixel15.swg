@@ -1,3 +1,4 @@
+#global skip
 using Core, Pixel, Clipper
 
 #test
@@ -19,7 +20,7 @@ using Core, Pixel, Clipper
     assume clipper.addPath(subj1, PolyType.Subject)
     assume clipper.addPath(clip, PolyType.Clip)
 
-    var lpl: LinePathList
+    var lpl: Polygon
     assume clipper.execute(ClipType.Intersection, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
     @assert(lpl.paths.count == 2)
 }
