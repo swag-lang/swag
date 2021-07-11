@@ -67,42 +67,12 @@ impl Offset
         clear()
     }
 
-    // Reset everything
     method clear()
     {
         loop i: polyNodes.childs
             Memory.delete(polyNodes.childs[i])
         polyNodes.childs.clear()
         lowest.x = -1
-    }
-
-    // Offset the given polygon
-    public method execute(polygon: *Polygon, joinType: JoinType, delta: f32) throw
-    {
-        // Register path
-        var path: ClipperPath
-        visit pt: polygon.points
-            path.add(IntPoint{cast(s32) (pt.x * ScaleCoords), cast(s32) (pt.y * ScaleCoords)})
-        try addPath(path, joinType, EndType.ClosedPolygon)
-
-        // Compute
-        var res: ClipperPaths
-        try execute(&res, cast(f64) (delta * ScaleCoords))
-
-        // Get result
-        polygon.clear()
-        if !res.count return
-
-        visit *pt: dref res[0]
-        {
-            vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-            polygon.add(vec)
-        }
-
-        v0 := polygon.getPoint(0)
-        polygon.add(v0)
-
-        polygon.compute()
     }
 
     method addPath(path: ClipperPath, joinType: JoinType, endType: EndType) throw

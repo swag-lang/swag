@@ -68,7 +68,7 @@ impl Polygon
         points.add(v)
     }
 
-    // Fast expand outline by a given amount
+    // Fast expand polygon by a given amount
     method offset(value: f32)
     {
         if Math.isZeroEpsilon(value) return
@@ -83,20 +83,48 @@ impl Polygon
         points =,move copy
     }
 
-    // Slow quality offset
+    // Slow but quality offset with a joinStyle
     method offset(value: f32, joinStyle: JoinStyle)
     {
-        var off:  Clipper.Offset
-        var type: Clipper.JoinType = JoinType.Square
+        const ScaleCoords = 1000.0'f64
+
+        var off:        Clipper.Offset
+        var joinType:   Clipper.JoinType = JoinType.Square
 
         switch joinStyle
         {
-        case Round: type = Clipper.JoinType.Round
-        case Bevel: type = Clipper.JoinType.Square
-        case Miter: type = Clipper.JoinType.Miter
+        case Round: joinType = Clipper.JoinType.Round
+        case Bevel: joinType = Clipper.JoinType.Square
+        case Miter: joinType = Clipper.JoinType.Miter
         }
 
-        catch off.execute(self, type, value)
+        // Register path
+        var path: Clipper.ClipperPath
+        visit pt: points
+            path.add(Clipper.IntPoint{cast(s32) (pt.x * ScaleCoords), cast(s32) (pt.y * ScaleCoords)})
+        catch off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
+        if @err return
+
+        // Compute
+        var res: Clipper.ClipperPaths
+        catch off.execute(&res, cast(f64) (value * ScaleCoords))
+        if @err return
+
+        // Get result
+        clear()
+        if !res.count return
+
+        visit *pt: dref res[0]
+        {
+            vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
+            add(vec)
+        }
+
+        // Closed path needs last point to be the same as the first one
+        v0 := getPoint(0)
+        add(v0)
+
+        compute()
     }
 
     // Clean polygon by removing bad/unecessary points
