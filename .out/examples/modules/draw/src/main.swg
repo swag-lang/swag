@@ -422,6 +422,8 @@ func displayPage4()
         cdc.drawPath(&p, Argb.Red, 2)
         p.polygon.offset(10, JoinStyle.Round)
         cdc.drawPath(&p, Argb.Green, 2)
+        p.polygon.offset(-10, JoinStyle.Round)
+        cdc.drawPath(&p, Argb.Blue, 2)
 
         cdc.resetTransform()
     }

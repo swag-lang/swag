@@ -171,7 +171,7 @@ impl Offset
         }
     }
 
-    method execute(solution: *ClipperPaths, delta: f64) throw
+    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false) throw
     {
         solution.clear()
         fixOrientations()
@@ -195,7 +195,7 @@ impl Offset
             outer.add(IntPoint{r.left - 10, r.top - 10})
 
             try clpr.addPath(&outer, PolyType.Subject)
-            clpr.reverseOutput = true
+            clpr.reverseOutput = reverseNeg
             try clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
             if solution.count > 0
                 solution.removeAt(0)
