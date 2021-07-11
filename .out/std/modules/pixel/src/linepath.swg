@@ -340,7 +340,7 @@ public impl LinePath
 
     // Expand outline by a given amount
     // Path must be closed and flattened
-    func offset(using self, value: f32)
+    method offset(value: f32)
     {
         if Math.isZeroEpsilon(value) return
         if !isClosed or !posBuffer.count return
@@ -352,6 +352,16 @@ public impl LinePath
             copy.add(getFlattenPoint(i, value))
 
         posBuffer =,move copy
+    }
+
+    method offset1(value: f32)
+    {
+        using Clipper
+        var off: Clipper.Offset
+        catch off.addPath(posBuffer, JoinType.Square, EndType.ClosedPolygon)
+        var solution: LinePath
+        catch off.execute(&solution, cast(f64) value)
+        posBuffer =,move solution.posBuffer
     }
 
     method cleanPoints()

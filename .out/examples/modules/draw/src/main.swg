@@ -397,19 +397,29 @@ func displayPage4()
     }
 
     {
-        var pathl, pathl1: LinePathList
+        var p: LinePathList
         cdc.translateTransform(50, 570)
+        assume typeface.getStringOutline(&p, "A", 70)
+        p.flatten(PaintQuality.Normal)
+        p.offset(4)
+        p.cleanPoints()
+        cdc.drawPath(p, Argb.Red, 2)
 
-        //assume typeface.getStringOutline(&pathl, str, 150)
-        assume typeface.getStringOutline(&pathl1, "A", 70)
-        pathl1.flatten(PaintQuality.Normal)
-        pathl1.offset(4)
-        pathl1.cleanPoints()
-        cdc.drawPath(pathl1, Argb.Red, 2)
-        //cdc.fillPath(pathl1, Argb.Red)
+        cdc.resetTransform()
+    }
 
-        //assume typeface.getStringOutline(&pathl1, "A", 70)
-        //cdc.fillPath(pathl1, Argb.Black)
+    {
+        var p: LinePath
+        cdc.translateTransform(150, 570)
+        p.start(0, 0)
+        p.lineTo(100, 0)
+        p.lineTo(100, 100)
+        p.lineTo(0, 100)
+        p.close()
+        p.flatten(PaintQuality.Normal)
+        cdc.drawPath(&p, Argb.Red, 2)
+        p.offset1(10)
+        cdc.drawPath(&p, Argb.Green, 2)
 
         cdc.resetTransform()
     }

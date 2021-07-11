@@ -214,11 +214,10 @@ impl Transform
             {
                 vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
                 path.posBuffer.add(vec)
-                /*if @index == 0
-                    path.start(cast(f32) pt.x, cast(f32) pt.y)
-                else
-                    path.lineTo(cast(f32) pt.x, cast(f32) pt.y)*/
             }
+
+            v0 := path.posBuffer.buffer[0]
+            path.posBuffer.add(v0)
 
             solution.paths.add(path)
         }
@@ -3099,15 +3098,19 @@ struct DoublePoint
 #[Swag.opaque]
 public struct Offset
 {
-    MiterLimit:     f64
-    ArcTolerance:   f64
+    MiterLimit:     f64 = 2
+    ArcTolerance:   f64 = 0.25
     m_destPolys:    ClipperPaths
     m_srcPoly:      ClipperPath
     m_destPoly:     ClipperPath
     m_normals:      Array'DoublePoint
-    m_delta, m_sinA, m_sin, m_cos:  f64
-    m_miterLim, m_StepsPerRad:      f64
-    m_lowest:       IntPoint
+    m_delta:        f64
+    m_sinA:         f64
+    m_sin:          f64
+    m_cos:          f64
+    m_miterLim:     f64
+    m_StepsPerRad:  f64
+    m_lowest:       IntPoint = @{-1, 0}
     m_polyNodes:    PolyNode
 }
 
@@ -3144,6 +3147,24 @@ impl Offset
         visit p: pg
             pt.add(IntPoint{cast(s32) (p.x * ScaleCoords), cast(s32) (p.y * ScaleCoords)})
         try addPath(pt, joinType, endType)
+    }
+
+    public method execute(solution: *LinePath, delta: f64) throw
+    {
+        var res: ClipperPaths
+        try execute(&res, delta * ScaleCoords)
+
+        if res.count
+        {
+            visit *pt: dref res[0]
+            {
+                vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
+                solution.posBuffer.add(vec)
+            }
+
+            v0 := solution.posBuffer.buffer[0]
+            solution.posBuffer.add(v0)
+        }
     }
 
     method addPath(path: ClipperPath, joinType: JoinType, endType: EndType) throw
@@ -3239,7 +3260,7 @@ impl Offset
         }
     }
 
-    method Execute(solution: *ClipperPaths, delta: f64) throw
+    method execute(solution: *ClipperPaths, delta: f64) throw
     {
         solution.clear()
         fixOrientations()
