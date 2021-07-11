@@ -70,7 +70,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->opInit)
         return true;
 
@@ -318,7 +318,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
 bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
     if (typeInfoStruct->opDrop)
@@ -445,7 +445,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
 bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->opReloc)
         return true;
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
@@ -649,7 +649,7 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
     if (typeInfoStruct->opPostMove)
@@ -774,7 +774,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
         return true;
     if (typeInfoStruct->opPostCopy)

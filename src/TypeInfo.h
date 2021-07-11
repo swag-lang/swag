@@ -539,6 +539,7 @@ struct TypeInfoStruct : public TypeInfo
     map<Utf8, TypeInfo*>         replaceTypes;
     SymbolAttributes             attributes;
     Utf8                         structName;
+    shared_mutex                 mutexGen;
 
     TypeInfoStruct* itable            = nullptr;
     TypeInfoStruct* fromGeneric       = nullptr;
