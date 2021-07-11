@@ -49,6 +49,14 @@ impl IntPoint
     }
 }
 
+struct IntRect
+{
+    left:   CInt
+    top:    CInt
+    right:  CInt
+    bottom: CInt
+}
+
 const LoRange = 0x3FFFFFFF
 const HiRange = 0x3FFFFFFFFFFFFFFF's64
 const Unassigned = -1
@@ -3037,6 +3045,50 @@ impl Transform
         Memory.delete(outRec)
         polyOuts[index] = null
     }
+
+    method getBounds()->IntRect
+    {
+        var result: retval
+
+        lm := 0'uint
+        if lm == minimaList.count
+            return result
+
+        result.left = minimaList[lm].leftBound.bot.x
+        result.top = minimaList[lm].leftBound.bot.y
+        result.right = minimaList[lm].leftBound.bot.x
+        result.bottom = minimaList[lm].leftBound.bot.y
+
+        while lm != minimaList.count
+        {
+            result.bottom = Math.max(result.bottom, minimaList[lm].leftBound.bot.y)
+            e := minimaList[lm].leftBound
+            loop
+            {
+                bottomE := e
+                while e.nextInLML
+                {
+                    if (e.bot.x < result.left) result.left = e.bot.x
+                    if (e.bot.x > result.right) result.right = e.bot.x
+                    e = e.nextInLML
+                }
+
+                result.left = Math.min(result.left, e.bot.x)
+                result.right = Math.max(result.right, e.bot.x)
+                result.left = Math.min(result.left, e.top.x)
+                result.right = Math.max(result.right, e.top.x)
+                result.top = Math.min(result.top, e.top.y)
+                if bottomE == minimaList[lm].leftBound
+                    e = minimaList[lm].rightBound
+                else
+                    break
+            }
+
+            lm += 1
+        }
+
+        return result
+    }
 }
 
 struct DoublePoint
@@ -3187,33 +3239,36 @@ impl Offset
         }
     }
 
-    method Execute(solution: *ClipperPaths, delta: f64)
+    method Execute(solution: *ClipperPaths, delta: f64) throw
     {
         solution.clear()
         fixOrientations()
         doOffset(delta)
 
         //now clean up 'corners' ...
-        /*Clipper clpr;
-        clpr.AddPaths(m_destPolys, ptSubject, true);
-        if (delta > 0)
+        var clpr: Transform
+        visit *p: m_destPolys
+            try clpr.addPath(p, PolyType.Subject)
+
+        if delta > 0
         {
-            clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
+            try clpr.execute(ClipType.Union, solution, PolyFillType.Positive, PolyFillType.Positive)
         }
         else
         {
-            IntRect r = clpr.GetBounds();
-            Path outer(4);
-            outer[0] = IntPoint(r.left - 10, r.bottom + 10);
-            outer[1] = IntPoint(r.right + 10, r.bottom + 10);
-            outer[2] = IntPoint(r.right + 10, r.top - 10);
-            outer[3] = IntPoint(r.left - 10, r.top - 10);
+            r := clpr.getBounds()
+            var outer: ClipperPath
+            outer.add(IntPoint{r.left - 10, r.bottom + 10})
+            outer.add(IntPoint{r.right + 10, r.bottom + 10})
+            outer.add(IntPoint{r.right + 10, r.top - 10})
+            outer.add(IntPoint{r.left - 10, r.top - 10})
 
-            clpr.AddPath(outer, ptSubject, true);
-            clpr.ReverseSolution(true);
-            clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
-            if (solution.size() > 0) solution.erase(solution.begin());
-        }    */
+            try clpr.addPath(&outer, PolyType.Subject)
+            clpr.reverseOutput = true
+            try clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
+            if solution.count > 0
+                solution.removeAt(0)
+        }
     }
 
     func getUnitNormal(pt1, pt2: *IntPoint)->DoublePoint
