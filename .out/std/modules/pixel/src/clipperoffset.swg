@@ -47,10 +47,10 @@ public struct Offset
     miterLimit:     f64 = 2
     arcTolerance:   f64 = 0.25
     destPolys:      ClipperPaths
-    m_srcPoly:      ClipperPath
-    m_destPoly:     ClipperPath
-    m_normals:      Array'DoublePoint
-    m_delta:        f64
+    srcPoly:        ClipperPath
+    destPoly:       ClipperPath
+    normals:        Array'DoublePoint
+    deltaVal:       f64
     sinaVal:        f64
     sinVal:         f64
     cosVal:         f64
@@ -247,7 +247,7 @@ impl Offset
     method doOffset(delta: f64)
     {
         destPolys.clear()
-        m_delta = delta
+        deltaVal = delta
 
         if Math.isZeroEpsilon(delta)
         {
@@ -286,13 +286,13 @@ impl Offset
         destPolys.reserve(polyNodes.Childs.count * 2)
         visit node, i: polyNodes.Childs
         {
-            m_srcPoly = node.Contour
+            srcPoly = node.Contour
 
-            len := cast(s32) m_srcPoly.count
+            len := cast(s32) srcPoly.count
             if len == 0 or (delta <= 0 and (len < 3 or node.endtype != .ClosedPolygon))
                 continue
 
-            m_destPoly.clear()
+            destPoly.clear()
             if len == 1
             {
                 if node.jointype == .Round
@@ -301,7 +301,7 @@ impl Offset
                     var Y: f64 = 0.0
                     for j := 1; j <= steps; j += 1
                     {
-                        m_destPoly.add(IntPoint{Transform.round(m_srcPoly[0].x + X * delta), Transform.round(m_srcPoly[0].y + Y * delta)});
+                        destPoly.add(IntPoint{Transform.round(srcPoly[0].x + X * delta), Transform.round(srcPoly[0].y + Y * delta)});
                         X2 := X
                         X = X * cosVal - sinVal * Y
                         Y = X2 * sinVal + Y * cosVal
@@ -313,29 +313,29 @@ impl Offset
                     var Y: f64 = -1.0
                     loop j: 4
                     {
-                        m_destPoly.add(IntPoint{Transform.round(m_srcPoly[0].x + X * delta), Transform.round(m_srcPoly[0].y + Y * delta)})
+                        destPoly.add(IntPoint{Transform.round(srcPoly[0].x + X * delta), Transform.round(srcPoly[0].y + Y * delta)})
                         if X < 0 X = 1
                         else if Y < 0 Y = 1
                         else X = -1
                     }
                 }
 
-                destPolys.add(m_destPoly)
+                destPolys.add(destPoly)
                 continue
             }
 
-            //build m_normals ...
-            m_normals.clear()
-            m_normals.reserve(cast(uint) len)
+            //build normals ...
+            normals.clear()
+            normals.reserve(cast(uint) len)
             loop j: len - 1
-                m_normals.add(getUnitNormal(m_srcPoly[j], m_srcPoly[j + 1]))
+                normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
 
             if (node.endtype == .ClosedLine or node.endtype == .ClosedPolygon)
-                m_normals.add(getUnitNormal(m_srcPoly[len - 1], m_srcPoly[0]))
+                normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
             else
             {
-                t := dref m_normals[len - 2]
-                m_normals.add(t)
+                t := dref normals[len - 2]
+                normals.add(t)
             }
 
             if (node.endtype == .ClosedPolygon)
@@ -343,24 +343,24 @@ impl Offset
                 k := len - 1
                 loop j: len
                     offsetPoint(j, &k, node.jointype)
-                destPolys.add(m_destPoly)
+                destPolys.add(destPoly)
             }
             else if (node.endtype == .ClosedLine)
             {
                 k := len - 1;
                 loop j: len
                     offsetPoint(j, &k, node.jointype)
-                destPolys.add(m_destPoly)
+                destPolys.add(destPoly)
 
-                m_destPoly.clear()
-                n := dref m_normals[len - 1]
+                destPoly.clear()
+                n := dref normals[len - 1]
                 for j := len - 1; j > 0; j -= 1
-                    m_normals[j] = DoublePoint{-m_normals[j - 1].x, -m_normals[j - 1].y};
-                m_normals[0] = DoublePoint{-n.x, -n.y}
+                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y};
+                normals[0] = DoublePoint{-n.x, -n.y}
                 k = 0
                 for j := len - 1; j >= 0; j -= 1
                     offsetPoint(j, &k, node.jointype)
-                destPolys.add(m_destPoly)
+                destPolys.add(destPoly)
             }
             else
             {
@@ -372,32 +372,32 @@ impl Offset
                 {
                     j := len - 1
 
-                    r1 := cast(CInt) Transform.round(m_srcPoly[j].x + m_normals[j].x * delta)
-                    r2 := cast(CInt) Transform.round(m_srcPoly[j].y + m_normals[j].y * delta)
+                    r1 := cast(CInt) Transform.round(srcPoly[j].x + normals[j].x * delta)
+                    r2 := cast(CInt) Transform.round(srcPoly[j].y + normals[j].y * delta)
                     pt1 := IntPoint{r1, r2}
-                    m_destPoly.add(pt1)
+                    destPoly.add(pt1)
 
-                    r1 = cast(CInt) Transform.round(m_srcPoly[j].x - m_normals[j].x * delta)
-                    r2 = cast(CInt) Transform.round(m_srcPoly[j].y - m_normals[j].y * delta)
+                    r1 = cast(CInt) Transform.round(srcPoly[j].x - normals[j].x * delta)
+                    r2 = cast(CInt) Transform.round(srcPoly[j].y - normals[j].y * delta)
                     pt1 = IntPoint{r1, r2}
-                    m_destPoly.add(pt1)
+                    destPoly.add(pt1)
                 }
                 else
                 {
                     j := len - 1
                     k = len - 2
                     sinaVal = 0
-                    m_normals[j] = DoublePoint{-m_normals[j].x, -m_normals[j].y}
+                    normals[j] = DoublePoint{-normals[j].x, -normals[j].y}
                     if (node.endtype == .OpenSquare)
                         doSquare(j, k)
                     else
                         doRound(j, k)
                 }
 
-                //re-build m_normals ...
+                //re-build normals ...
                 for j := len - 1; j > 0; j -= 1
-                    m_normals[j] = DoublePoint{-m_normals[j - 1].x, -m_normals[j - 1].y}
-                m_normals[0] = DoublePoint{-m_normals[1].x, -m_normals[1].y}
+                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y}
+                normals[0] = DoublePoint{-normals[1].x, -normals[1].y}
 
                 k = len - 1
                 for j := k - 1; j > 0; j -= 1
@@ -405,15 +405,15 @@ impl Offset
 
                 if (node.endtype == .OpenButt)
                 {
-                    r1 := cast(CInt) Transform.round(m_srcPoly[0].x - m_normals[0].x * delta)
-                    r2 := cast(CInt) Transform.round(m_srcPoly[0].y - m_normals[0].y * delta)
+                    r1 := cast(CInt) Transform.round(srcPoly[0].x - normals[0].x * delta)
+                    r2 := cast(CInt) Transform.round(srcPoly[0].y - normals[0].y * delta)
                     pt1 := IntPoint{r1, r2}
-                    m_destPoly.add(pt1)
+                    destPoly.add(pt1)
 
-                    r1 = cast(CInt) Transform.round(m_srcPoly[0].x + m_normals[0].x * delta)
-                    r2 = cast(CInt) Transform.round(m_srcPoly[0].y + m_normals[0].y * delta)
+                    r1 = cast(CInt) Transform.round(srcPoly[0].x + normals[0].x * delta)
+                    r2 = cast(CInt) Transform.round(srcPoly[0].y + normals[0].y * delta)
                     pt1 = IntPoint{r1, r2}
-                    m_destPoly.add(pt1)
+                    destPoly.add(pt1)
 
                 }
                 else
@@ -426,7 +426,7 @@ impl Offset
                         doRound(0, 1)
                 }
 
-                destPolys.add(m_destPoly)
+                destPolys.add(destPoly)
             }
         }
     }
@@ -434,15 +434,15 @@ impl Offset
     method offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         k := dref ptrk
-        sinaVal = (m_normals[k].x * m_normals[j].y - m_normals[j].x * m_normals[k].y)
-        if Math.abs(sinaVal * m_delta) < 1.0
+        sinaVal = (normals[k].x * normals[j].y - normals[j].x * normals[k].y)
+        if Math.abs(sinaVal * deltaVal) < 1.0
         {
-            cosA := (m_normals[k].x * m_normals[j].x + m_normals[j].y * m_normals[k].y)
+            cosA := (normals[k].x * normals[j].x + normals[j].y * normals[k].y)
             if cosA > 0
             {
-                r1 := Transform.round(m_srcPoly[j].x + m_normals[k].x * m_delta)
-                r2 := Transform.round(m_srcPoly[j].y + m_normals[k].y * m_delta)
-                m_destPoly.add(IntPoint{r1, r2})
+                r1 := Transform.round(srcPoly[j].x + normals[k].x * deltaVal)
+                r2 := Transform.round(srcPoly[j].y + normals[k].y * deltaVal)
+                destPoly.add(IntPoint{r1, r2})
                 return
             }
         }
@@ -451,22 +451,22 @@ impl Offset
         else if sinaVal < -1.0
             sinaVal = -1.0
 
-        if sinaVal * m_delta < 0
+        if sinaVal * deltaVal < 0
         {
-            r1 := Transform.round(m_srcPoly[j].x + m_normals[k].x * m_delta)
-            r2 := Transform.round(m_srcPoly[j].y + m_normals[k].y * m_delta)
-            m_destPoly.add(IntPoint{r1, r2})
-            m_destPoly.add(dref m_srcPoly[j])
-            r1 = Transform.round(m_srcPoly[j].x + m_normals[j].x * m_delta)
-            r2 = Transform.round(m_srcPoly[j].y + m_normals[j].y * m_delta)
-            m_destPoly.add(IntPoint{r1, r2})
+            r1 := Transform.round(srcPoly[j].x + normals[k].x * deltaVal)
+            r2 := Transform.round(srcPoly[j].y + normals[k].y * deltaVal)
+            destPoly.add(IntPoint{r1, r2})
+            destPoly.add(dref srcPoly[j])
+            r1 = Transform.round(srcPoly[j].x + normals[j].x * deltaVal)
+            r2 = Transform.round(srcPoly[j].y + normals[j].y * deltaVal)
+            destPoly.add(IntPoint{r1, r2})
         }
         else
         {
             switch jointype
             {
             case Miter:
-                r := 1 + (m_normals[j].x * m_normals[k].x + m_normals[j].y * m_normals[k].y)
+                r := 1 + (normals[j].x * normals[k].x + normals[j].y * normals[k].y)
                 if r >= miterLim
                     doMiter(j, k, r)
                 else
@@ -483,44 +483,44 @@ impl Offset
 
     method doSquare(j, k: s32)
     {
-        dx := Math.tan(Math.atan2(sinaVal, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y) / 4)
-        r1 := Transform.round(m_srcPoly[j].x + m_delta * (m_normals[k].x - m_normals[k].y * dx))
-        r2 := Transform.round(m_srcPoly[j].y + m_delta * (m_normals[k].y + m_normals[k].x * dx))
-        m_destPoly.add(IntPoint{r1, r2})
+        dx := Math.tan(Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y) / 4)
+        r1 := Transform.round(srcPoly[j].x + deltaVal * (normals[k].x - normals[k].y * dx))
+        r2 := Transform.round(srcPoly[j].y + deltaVal * (normals[k].y + normals[k].x * dx))
+        destPoly.add(IntPoint{r1, r2})
 
-        r1 = Transform.round(m_srcPoly[j].x + m_delta * (m_normals[j].x + m_normals[j].y * dx))
-        r2 = Transform.round(m_srcPoly[j].y + m_delta * (m_normals[j].y - m_normals[j].x * dx))
-        m_destPoly.add(IntPoint{r1, r2})
+        r1 = Transform.round(srcPoly[j].x + deltaVal * (normals[j].x + normals[j].y * dx))
+        r2 = Transform.round(srcPoly[j].y + deltaVal * (normals[j].y - normals[j].x * dx))
+        destPoly.add(IntPoint{r1, r2})
     }
 
     method doMiter(j, k: s32, r: f64)
     {
-        q := m_delta / r
-        r1 := Transform.round(m_srcPoly[j].x + (m_normals[k].x + m_normals[j].x) * q)
-        r2 := Transform.round(m_srcPoly[j].y + (m_normals[k].y + m_normals[j].y) * q)
-        m_destPoly.add(IntPoint{r1, r2})
+        q := deltaVal / r
+        r1 := Transform.round(srcPoly[j].x + (normals[k].x + normals[j].x) * q)
+        r2 := Transform.round(srcPoly[j].y + (normals[k].y + normals[j].y) * q)
+        destPoly.add(IntPoint{r1, r2})
     }
 
     method doRound(j, k: s32)
     {
-        a := Math.atan2(sinaVal, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y)
+        a := Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y)
         steps := Math.max(cast(s32) Transform.round(stepsPerRad * Math.abs(a)), 1)
 
-        x := m_normals[k].x
-        y := m_normals[k].y
+        x := normals[k].x
+        y := normals[k].y
         var X2: f64
         loop i: steps
         {
-            r1 := Transform.round(m_srcPoly[j].x + x * m_delta)
-            r2 := Transform.round(m_srcPoly[j].y + y * m_delta)
-            m_destPoly.add(IntPoint{r1, r2})
+            r1 := Transform.round(srcPoly[j].x + x * deltaVal)
+            r2 := Transform.round(srcPoly[j].y + y * deltaVal)
+            destPoly.add(IntPoint{r1, r2})
             X2 = x
             x = x * cosVal - sinVal * y
             y = X2 * sinVal + y * cosVal
         }
 
-        r1 := Transform.round(m_srcPoly[j].x + m_normals[j].x * m_delta)
-        r2 := Transform.round(m_srcPoly[j].y + m_normals[j].y * m_delta)
-        m_destPoly.add(IntPoint{r1, r2})
+        r1 := Transform.round(srcPoly[j].x + normals[j].x * deltaVal)
+        r2 := Transform.round(srcPoly[j].y + normals[j].y * deltaVal)
+        destPoly.add(IntPoint{r1, r2})
     }
 }
