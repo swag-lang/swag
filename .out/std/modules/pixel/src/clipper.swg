@@ -61,8 +61,7 @@ const LoRange = 0x3FFFFFFF
 const HiRange = 0x3FFFFFFFFFFFFFFF's64
 const Unassigned = -1
 const Skip = -2
-const HORIZONTAL = -1.0E+40
-const ScaleCoords = 1000'f32
+const HorizontalVal = -1.0E+40
 
 alias CInt         = s64
 alias ClipperPath  = Array'IntPoint
@@ -203,36 +202,6 @@ public struct Transform
 
 impl Transform
 {
-    // Register a new series of point (line path) of a given type
-    public method addPath(pg: Array'Math.Vector2, polyType: PolyType) throw
-    {
-        var pt: ClipperPath
-        visit p: pg
-            pt.add(IntPoint{cast(s32) (p.x * ScaleCoords), cast(s32) (p.y * ScaleCoords)})
-        try addPath(&pt, polyType)
-    }
-
-    // Do the stuff...
-    public method execute(clipT: ClipType, solution: *Polygon, subjFillT, clipFillT: PolyFillType) throw
-    {
-        solution.clear()
-
-        var res: ClipperPaths
-        try execute(clipT, &res, subjFillT, clipFillT)
-        if !res.count return
-        
-        visit *pt: dref res[0]
-        {
-            vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-            solution.add(vec)
-        }
-
-        v0 := solution.getPoint(0)
-        solution.add(v0)
-       
-        solution.compute()
-    }
-
     method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType) throw
     {
         subjFillType  = subjFillT
@@ -296,10 +265,6 @@ impl Transform
             else if slopesEqual(E.prev.curr, E.curr, E.next.curr) and
                     (!preserveCollinear or !pt2IsBetweenPt1AndPt3(E.prev.curr, E.curr, E.next.curr))
             {
-                //Collinear edges are allowed for open paths but in closed paths
-                //the default is to merge adjacent collinear edges into a single edge.
-                //However, if the PreserveCollinear property is enabled, only overlapping
-                //collinear edges (ie spikes) will be removed from closed paths.
                 if E == eStart eStart = E.next
                 E = removeEdge(E)
                 E = E.prev
@@ -409,7 +374,7 @@ impl Transform
     func setDx(e: *Edge)
     {
         dy := (e.top.y - e.bot.y)
-        if dy == 0 e.dx = HORIZONTAL
+        if dy == 0 e.dx = HorizontalVal
         else e.dx = cast(f64) (e.top.x - e.bot.x) / dy
     }
 
@@ -492,7 +457,7 @@ impl Transform
 
     func isHorizontal(e: *Edge)->bool
     {
-        return e.dx == HORIZONTAL
+        return e.dx == HorizontalVal
     }
 
     func findNextLocMin(edge: *Edge)->*Edge
@@ -2496,7 +2461,7 @@ impl Transform
 
     func getDx(pt1, pt2: IntPoint)->f64
     {
-        return (pt1.y == pt2.y) ? HORIZONTAL : cast(f64) (pt2.x - pt1.x) / (pt2.y - pt1.y)
+        return (pt1.y == pt2.y) ? HorizontalVal : cast(f64) (pt2.x - pt1.x) / (pt2.y - pt1.y)
     }
 
     func area(op1: *OutPt)->f64
