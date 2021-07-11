@@ -81,7 +81,8 @@ impl Polygon
         points =,move copy
     }
 
-    method offset1(value: f32, joinStyle: JoinStyle)
+    // Slow quality offset
+    method offset(value: f32, joinStyle: JoinStyle)
     {
         var off:  Clipper.Offset
         var type: Clipper.JoinType = JoinType.Square
@@ -97,6 +98,7 @@ impl Polygon
         catch off.execute(self, cast(f64) value)
     }
 
+    // Clean polygon by removing bad/unecessary points
     method clean()
     {
         if !points.count return
@@ -109,6 +111,8 @@ impl Polygon
         catch clipper.execute(ClipType.Union, self, PolyFillType.NonZero, PolyFillType.NonZero)
     }
 
+    // Compute internal values, like convex/clockwise
+    // Call it once the polygon contains all its points
     method compute()
     {
         if !points.count return

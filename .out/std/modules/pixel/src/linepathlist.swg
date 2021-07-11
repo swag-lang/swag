@@ -48,4 +48,21 @@ impl LinePathList
         visit p: paths
             p.flatten(quality)
     }
+
+    // Call fast offset on all paths
+    method offset(value: f32)
+    {
+        visit p: paths
+            p.polygon.offset(value)
+    }
+
+    // Call quality offset on all paths
+    method offset(value: f32, joinStyle: JoinStyle)
+    {
+        visit p: paths
+        {
+            v := p.polygon.clockwise ? value : -value
+            p.polygon.offset(v, joinStyle)
+        }
+    }
 }
