@@ -547,7 +547,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->report({typeNode->childs.front(), format(Msg0764, typeInfo->returnType->getDisplayName().c_str())});
 
-    typeInfo->forceComputeName();
+    typeInfo->clearName();
+    typeInfo->computeName();
 
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)

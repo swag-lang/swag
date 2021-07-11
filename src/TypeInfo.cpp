@@ -12,8 +12,9 @@ void TypeInfo::clearName()
 
 void TypeInfo::forceComputeName()
 {
-    computeWhateverName(COMPUTE_NAME, true);
-    computeWhateverName(COMPUTE_DISPLAY_NAME, true);
+    clearName();
+    computeWhateverName(COMPUTE_NAME);
+    computeWhateverName(COMPUTE_DISPLAY_NAME);
 }
 
 void TypeInfo::getScopedName(Utf8& newName)

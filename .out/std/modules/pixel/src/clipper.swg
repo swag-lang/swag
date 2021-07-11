@@ -64,7 +64,7 @@ public enum PolyType        { Subject; Clip; }
 public enum ClipType        { Intersection; Union; Difference; Xor; }
 public enum PolyFillType    { EvenOdd; NonZero; Positive; Negative; }
 public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveCollinear = 4; }
-public enum JoinType        { Square; round; Miter; }
+public enum JoinType        { Square; Round; Miter; }
 public enum EndType         { ClosedPolygon; ClosedLine; OpenButt; OpenSquare; OpenRound; }
 
 enum EdgeSide  { Left = 1; Right = 2; }
@@ -3141,6 +3141,273 @@ impl Offset
             if  newNode.Contour[k].y > ip.y or
                 (newNode.Contour[k].y == ip.y and newNode.Contour[k].x < ip.x)
             m_lowest = IntPoint{m_polyNodes.Childs.count - 1, k}
+        }
+    }
+
+    func area(poly: ClipperPath)->f64
+    {
+        size := cast(s32) poly.count
+        if size < 3 return 0
+
+        a := 0'f64
+        j := size - 1
+        loop i: size
+        {
+            a += (cast(f64) poly.buffer[j].x + poly.buffer[i].x) * (cast(f64) poly.buffer[j].y - poly.buffer[i].y)
+            j = i
+        }
+
+        return -a * 0.5
+    }
+
+    func orientation(poly: ClipperPath)->bool
+    {
+        return area(poly) >= 0
+    }
+
+    method fixOrientations()
+    {
+        if m_lowest.x >= 0 and !orientation(m_polyNodes.Childs[cast(s32) m_lowest.x].Contour)
+        {
+            loop i: m_polyNodes.Childs.count
+            {
+                node := m_polyNodes.Childs[i]
+                if node.endtype == .ClosedPolygon or (node.endtype == .ClosedLine and orientation(node.Contour))
+                    Slice.reverse(node.Contour.toSlice())
+            }
+        }
+        else
+        {
+            loop i: m_polyNodes.Childs.count
+            {
+                node := m_polyNodes.Childs[i]
+                if node.endtype == .ClosedLine and !orientation(node.Contour)
+                    Slice.reverse(node.Contour.toSlice())
+            }
+        }
+    }
+
+    method Execute(solution: *ClipperPaths, delta: f64)
+    {
+        solution.clear()
+        fixOrientations()
+        doOffset(delta)
+
+        //now clean up 'corners' ...
+        /*Clipper clpr;
+        clpr.AddPaths(m_destPolys, ptSubject, true);
+        if (delta > 0)
+        {
+            clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
+        }
+        else
+        {
+            IntRect r = clpr.GetBounds();
+            Path outer(4);
+            outer[0] = IntPoint(r.left - 10, r.bottom + 10);
+            outer[1] = IntPoint(r.right + 10, r.bottom + 10);
+            outer[2] = IntPoint(r.right + 10, r.top - 10);
+            outer[3] = IntPoint(r.left - 10, r.top - 10);
+
+            clpr.AddPath(outer, ptSubject, true);
+            clpr.ReverseSolution(true);
+            clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
+            if (solution.size() > 0) solution.erase(solution.begin());
+        }    */
+    }
+
+    func getUnitNormal(pt1, pt2: *IntPoint)->DoublePoint
+    {
+        var result: retval
+        if pt2.x == pt1.x and pt2.y == pt1.y
+            return result
+
+        dx := cast(f64) (pt2.x - pt1.x)
+        dy := cast(f64) (pt2.y - pt1.y)
+        f  := 1.0 / Math.sqrt(dx*dx + dy*dy)
+        dx *= f
+        dy *= f
+        result.x = dy
+        result.y = -dx
+        return result
+    }
+
+    method doOffset(delta: f64)
+    {
+        m_destPolys.clear()
+        m_delta = delta
+
+        //if Zero offset, just copy any CLOSED polygons to m_p and return ...
+        if Math.isZeroEpsilon(delta)
+        {
+            m_destPolys.reserve(m_polyNodes.Childs.count)
+            visit node: m_polyNodes.Childs
+            {
+                if node.endtype == .ClosedPolygon
+                    m_destPolys.add(node.Contour)
+            }
+
+            return
+        }
+
+        if MiterLimit > 2
+            m_miterLim = 2 / (MiterLimit * MiterLimit)
+        else
+            m_miterLim = 0.5
+
+        const def_arc_tolerance = 0.25'f64
+        var y: f64
+        if ArcTolerance <= 0.0
+            y = def_arc_tolerance
+        else if ArcTolerance > Math.abs(delta) * def_arc_tolerance
+            y = Math.abs(delta) * def_arc_tolerance
+        else
+            y = ArcTolerance
+
+        steps := Math.ConstF64.Pi / Math.acos(1 - y / Math.abs(delta))
+        if steps > Math.abs(delta) * Math.ConstF64.Pi
+            steps = Math.abs(delta) * Math.ConstF64.Pi
+        m_sin = Math.sin(Math.ConstF64.TwoPi / steps)
+        m_cos = Math.cos(Math.ConstF64.TwoPi / steps)
+        m_StepsPerRad = steps / Math.ConstF64.TwoPi
+        if (delta < 0.0) m_sin = -m_sin
+
+        m_destPolys.reserve(m_polyNodes.Childs.count * 2)
+        visit node, i: m_polyNodes.Childs
+        {
+            m_srcPoly = node.Contour
+
+            len := cast(s32) m_srcPoly.count
+            if len == 0 or (delta <= 0 and (len < 3 or node.endtype != .ClosedPolygon))
+                continue
+
+            m_destPoly.clear()
+            if len == 1
+            {
+                if node.jointype == .Round
+                {
+                    var X: f64 = 1.0
+                    var Y: f64 = 0.0
+                    for j := 1; j <= steps; j += 1
+                    {
+                        m_destPoly.add(IntPoint{Transform.round(m_srcPoly[0].x + X * delta), Transform.round(m_srcPoly[0].y + Y * delta)});
+                        X2 := X
+                        X = X * m_cos - m_sin * Y
+                        Y = X2 * m_sin + Y * m_cos
+                    }
+                }
+                else
+                {
+                    var X: f64 = -1.0
+                    var Y: f64 = -1.0
+                    loop j: 4
+                    {
+                        m_destPoly.add(IntPoint{Transform.round(m_srcPoly[0].x + X * delta), Transform.round(m_srcPoly[0].y + Y * delta)})
+                        if X < 0 X = 1
+                        else if Y < 0 Y = 1
+                        else X = -1
+                    }
+                }
+
+                m_destPolys.add(m_destPoly)
+                continue
+            }
+
+            //build m_normals ...
+            m_normals.clear()
+            m_normals.reserve(cast(uint) len)
+            loop j: len - 1
+                m_normals.add(getUnitNormal(m_srcPoly[j], m_srcPoly[j + 1]))
+
+            if (node.endtype == .ClosedLine or node.endtype == .ClosedPolygon)
+                m_normals.add(getUnitNormal(m_srcPoly[len - 1], m_srcPoly[0]))
+            else
+            {
+                t := dref m_normals[len - 2]
+                m_normals.add(t)
+            }
+
+            /*if (node.endtype == .ClosedPolygon)
+            {
+                int k = len - 1;
+                for (int j = 0; j < len; ++j)
+                    OffsetPoint(j, k, node.m_jointype);
+                m_destPolys.push_back(m_destPoly);
+            }
+            else if (node.endtype == .ClosedLine)
+            {
+                int k = len - 1;
+                for (int j = 0; j < len; ++j)
+                    OffsetPoint(j, k, node.m_jointype);
+                m_destPolys.push_back(m_destPoly);
+                m_destPoly.clear();
+                //re-build m_normals ...
+                DoublePoint n = m_normals[len -1];
+                for (int j = len - 1; j > 0; j--)
+                    m_normals[j] = DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
+                m_normals[0] = DoublePoint(-n.X, -n.Y);
+                k = 0;
+                for (int j = len - 1; j >= 0; j--)
+                    OffsetPoint(j, k, node.m_jointype);
+                m_destPolys.push_back(m_destPoly);
+            }
+            else
+            {
+                int k = 0;
+                for (int j = 1; j < len - 1; ++j)
+                    OffsetPoint(j, k, node.m_jointype);
+
+                IntPoint pt1;
+                if (node.m_endtype == etOpenButt)
+                {
+                    int j = len - 1;
+                    pt1 = IntPoint((cInt)Round(m_srcPoly[j].X + m_normals[j].X *
+                    delta), (cInt)Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
+                    m_destPoly.push_back(pt1);
+                    pt1 = IntPoint((cInt)Round(m_srcPoly[j].X - m_normals[j].X *
+                    delta), (cInt)Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
+                    m_destPoly.push_back(pt1);
+                }
+                else
+                {
+                    int j = len - 1;
+                    k = len - 2;
+                    m_sinA = 0;
+                    m_normals[j] = DoublePoint(-m_normals[j].X, -m_normals[j].Y);
+                    if (node.m_endtype == etOpenSquare)
+                    DoSquare(j, k);
+                    else
+                    DoRound(j, k);
+                }
+
+                //re-build m_normals ...
+                for (int j = len - 1; j > 0; j--)
+                    m_normals[j] = DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
+                m_normals[0] = DoublePoint(-m_normals[1].X, -m_normals[1].Y);
+
+                k = len - 1;
+                for (int j = k - 1; j > 0; --j) OffsetPoint(j, k, node.m_jointype);
+
+                if (node.m_endtype == etOpenButt)
+                {
+                    pt1 = IntPoint((cInt)Round(m_srcPoly[0].X - m_normals[0].X * delta),
+                    (cInt)Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
+                    m_destPoly.push_back(pt1);
+                    pt1 = IntPoint((cInt)Round(m_srcPoly[0].X + m_normals[0].X * delta),
+                    (cInt)Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
+                    m_destPoly.push_back(pt1);
+                }
+                else
+                {
+                    k = 1;
+                    m_sinA = 0;
+                    if (node.m_endtype == etOpenSquare)
+                    DoSquare(0, 1);
+                    else
+                    DoRound(0, 1);
+                }
+                m_destPolys.push_back(m_destPoly);
+            }*/
         }
     }
 }
