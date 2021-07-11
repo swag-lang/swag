@@ -358,7 +358,7 @@ public impl LinePath
     {
         using Clipper
         var off: Clipper.Offset
-        catch off.addPath(posBuffer, JoinType.Square, EndType.ClosedPolygon)
+        catch off.addPath(posBuffer, JoinType.Round, EndType.ClosedPolygon)
         var solution: LinePath
         catch off.execute(&solution, cast(f64) value)
         posBuffer =,move solution.posBuffer

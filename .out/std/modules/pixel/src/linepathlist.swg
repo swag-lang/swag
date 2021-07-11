@@ -57,7 +57,10 @@ impl LinePathList
     method offset1(value: f32)
     {
         visit p: paths
-            p.offset1(value)
+        {
+            v := p.clockwise ? value : -value
+            p.offset1(v)
+        }
     }
 
     method cleanPoints()

@@ -410,7 +410,7 @@ func displayPage4()
 
     {
         var p: LinePath
-        cdc.translateTransform(150, 570)
+        cdc.translateTransform(50, 670)
         p.start(0, 0)
         p.lineTo(100, 0)
         p.lineTo(100, 100)
@@ -420,6 +420,17 @@ func displayPage4()
         cdc.drawPath(&p, Argb.Red, 2)
         p.offset1(10)
         cdc.drawPath(&p, Argb.Green, 2)
+
+        cdc.resetTransform()
+    }
+
+    {
+        var p: LinePathList
+        cdc.translateTransform(150, 570)
+        assume typeface.getStringOutline(&p, "A", 70)
+        p.flatten(PaintQuality.Normal)
+        p.offset1(4)
+        cdc.drawPath(p, Argb.Red, 2)
 
         cdc.resetTransform()
     }
