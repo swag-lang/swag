@@ -42,7 +42,7 @@ impl LinePathList
         return ptr
     }
 
-    // Flatten all sub paths
+    // Flatten all paths
     method flatten(quality: PaintQuality)
     {
         visit p: paths
@@ -50,6 +50,7 @@ impl LinePathList
     }
 
     // Call fast offset on all paths
+    // They must before be flattened
     method offset(value: f32)
     {
         visit p: paths
@@ -57,11 +58,12 @@ impl LinePathList
     }
 
     // Call quality offset on all paths
+    // They must before be flattened
     method offset(value: f32, joinStyle: JoinStyle)
     {
         visit p: paths
         {
-            v := p.polygon.clockwise ? value : -value
+            v := p.polygon.isClockwise ? value : -value
             p.polygon.offset(v, joinStyle)
         }
     }

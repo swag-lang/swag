@@ -3,10 +3,12 @@ using Core.Math
 
 struct Polygon
 {
-    points:     Array'Vector2
-    clockwise:  bool
-    isConvex:   bool
-    area:       f32
+    points:         Array'Vector2
+
+    // Fill with a call to compute()
+    isClockwise:    bool
+    isConvex:       bool
+    area:           f32
 }
 
 impl Polygon
@@ -118,7 +120,7 @@ impl Polygon
         if !points.count return
 
         area = 0
-        clockwise = false
+        isClockwise = false
         isConvex  = true
 
         n := points.count
@@ -137,12 +139,12 @@ impl Polygon
             else if Math.sign(dot) != Math.sign(lastDot)
                 isConvex = false
 
-            // Aread
+            // Area
             area += points[p].x * points[q].y - points[q].x * points[p].y
             p = q
             q += 1
         }
 
-        clockwise = area >= 0
+        isClockwise = area >= 0
     }
 }
