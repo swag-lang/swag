@@ -96,8 +96,7 @@ impl Polygon
         case Miter: type = Clipper.JoinType.Miter
         }
 
-        catch off.addPath(points, type, Clipper.EndType.ClosedPolygon)
-        catch off.execute(self, cast(f64) value)
+        catch off.execute(self, type, value)
     }
 
     // Clean polygon by removing bad/unecessary points

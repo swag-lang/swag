@@ -67,6 +67,7 @@ impl Offset
         clear()
     }
 
+    // Reset everything
     method clear()
     {
         loop i: polyNodes.childs
@@ -75,32 +76,33 @@ impl Offset
         lowest.x = -1
     }
 
-    // Register a new series of point (line path) of a given type
-    public method addPath(pg: Array'Math.Vector2, joinType: JoinType, endType: EndType) throw
+    // Offset the given polygon
+    public method execute(polygon: *Polygon, joinType: JoinType, delta: f32) throw
     {
-        var pt: ClipperPath
-        visit p: pg
-            pt.add(IntPoint{cast(s32) (p.x * ScaleCoords), cast(s32) (p.y * ScaleCoords)})
-        try addPath(pt, joinType, endType)
-    }
+        // Register path
+        var path: ClipperPath
+        visit pt: polygon.points
+            path.add(IntPoint{cast(s32) (pt.x * ScaleCoords), cast(s32) (pt.y * ScaleCoords)})
+        try addPath(path, joinType, EndType.ClosedPolygon)
 
-    public method execute(solution: *Polygon, delta: f64) throw
-    {
+        // Compute
         var res: ClipperPaths
-        try execute(&res, delta * ScaleCoords)
+        try execute(&res, cast(f64) (delta * ScaleCoords))
 
-        solution.clear()
-        if res.count
+        // Get result
+        polygon.clear()
+        if !res.count return
+
+        visit *pt: dref res[0]
         {
-            visit *pt: dref res[0]
-            {
-                vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-                solution.add(vec)
-            }
-
-            v0 := solution.getPoint(0)
-            solution.add(v0)
+            vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
+            polygon.add(vec)
         }
+
+        v0 := polygon.getPoint(0)
+        polygon.add(v0)
+
+        polygon.compute()
     }
 
     method addPath(path: ClipperPath, joinType: JoinType, endType: EndType) throw
