@@ -405,10 +405,11 @@ func displayPage4()
         pathl1.flatten(PaintQuality.Normal)
         pathl1.offset(4)
         pathl1.cleanPoints()
-        cdc.fillPath(pathl1, Argb.Red)
+        cdc.drawPath(pathl1, Argb.Red, 2)
+        //cdc.fillPath(pathl1, Argb.Red)
 
-        assume typeface.getStringOutline(&pathl1, "A", 70)
-        cdc.fillPath(pathl1, Argb.Black)
+        //assume typeface.getStringOutline(&pathl1, "A", 70)
+        //cdc.fillPath(pathl1, Argb.Black)
 
         cdc.resetTransform()
     }

@@ -362,6 +362,7 @@ public impl LinePath
         using Clipper
         var   clipper: Transform
 
+        clipper.strictSimple = true
         catch clipper.addPath(posBuffer, PolyType.Subject)
 
         var   lpl: LinePathList

@@ -142,10 +142,13 @@ struct OutPt
 
 struct PolyNode
 {
-    Index:    u32
-    isOpen:   bool
-    jointype: JoinType = ?
-    endtype:  EndType = ?
+    Index:      u32
+    isOpen:     bool
+    jointype:   JoinType = ?
+    endtype:    EndType = ?
+    Contour:    ClipperPath
+    Childs:     Array'*PolyNode
+    Parent:     *PolyNode
 }
 
 struct Join
@@ -3033,5 +3036,111 @@ impl Transform
         if outRec.pts disposeOutPts(outRec.pts)
         Memory.delete(outRec)
         polyOuts[index] = null
+    }
+}
+
+struct DoublePoint
+{
+    x, y: f64
+}
+
+#[Swag.opaque]
+public struct Offset
+{
+    MiterLimit:     f64
+    ArcTolerance:   f64
+    m_destPolys:    ClipperPaths
+    m_srcPoly:      ClipperPath
+    m_destPoly:     ClipperPath
+    m_normals:      Array'DoublePoint
+    m_delta, m_sinA, m_sin, m_cos:  f64
+    m_miterLim, m_StepsPerRad:      f64
+    m_lowest:       IntPoint
+    m_polyNodes:    PolyNode
+}
+
+impl PolyNode
+{
+    method addChild(child: *PolyNode)
+    {
+        cnt := cast(u32) Childs.count
+        Childs.add(child)
+        child.Parent = self
+        child.Index = cnt
+    }
+}
+
+impl Offset
+{
+    method opDrop()
+    {
+        clear()
+    }
+
+    method clear()
+    {
+        loop i: m_polyNodes.Childs
+            Memory.delete(m_polyNodes.Childs[i])
+        m_polyNodes.Childs.clear()
+        m_lowest.x = -1
+    }
+
+    // Register a new series of point (line path) of a given type
+    public method addPath(pg: Array'Math.Vector2, joinType: JoinType, endType: EndType) throw
+    {
+        var pt: ClipperPath
+        visit p: pg
+            pt.add(IntPoint{cast(s32) (p.x * ScaleCoords), cast(s32) (p.y * ScaleCoords)})
+        try addPath(pt, joinType, endType)
+    }
+
+    method addPath(path: ClipperPath, joinType: JoinType, endType: EndType) throw
+    {
+        highI := cast(s32) path.count - 1
+        if highI < 0 return
+
+        newNode := Memory.new'PolyNode()
+        newNode.jointype = joinType
+        newNode.endtype = endType
+
+        if (endType == .ClosedLine or endType == .ClosedPolygon)
+            while highI > 0 and path.buffer[0] == path.buffer[highI]
+                highI -= 1
+
+        newNode.Contour.reserve(cast(uint) highI + 1)
+        newNode.Contour.add(path.buffer[0])
+
+        var j, k: s32
+        loop i: 1 .. highI
+        {
+            if newNode.Contour.buffer[j] != path.buffer[i]
+            {
+                j += 1
+                newNode.Contour.add(path.buffer[i])
+                if path[i].y > newNode.Contour[k].y or
+                   (path[i].y == newNode.Contour[k].y and path[i].x < newNode.Contour[k].x)
+                        k = j
+            }
+        }
+
+        if endType == .ClosedPolygon and j < 2
+        {
+            Memory.delete(newNode)
+            return
+        }
+
+        m_polyNodes.addChild(newNode)
+
+        if (endType != .ClosedPolygon) return
+
+        if m_lowest.x < 0
+            m_lowest = IntPoint{m_polyNodes.Childs.count - 1, k}
+        else
+        {
+            ip := m_polyNodes.Childs[cast(s32) m_lowest.x].Contour[cast(s32) m_lowest.y]
+            if  newNode.Contour[k].y > ip.y or
+                (newNode.Contour[k].y == ip.y and newNode.Contour[k].x < ip.x)
+            m_lowest = IntPoint{m_polyNodes.Childs.count - 1, k}
+        }
     }
 }
