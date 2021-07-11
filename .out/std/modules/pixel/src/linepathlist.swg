@@ -42,6 +42,7 @@ impl LinePathList
         return ptr
     }
 
+    // Flatten all sub paths
     method flatten(quality: PaintQuality)
     {
         visit p: paths

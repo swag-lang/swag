@@ -3150,11 +3150,10 @@ impl Offset
 
     public method execute(solution: *Polygon, delta: f64) throw
     {
-        solution.clear()
-
         var res: ClipperPaths
         try execute(&res, delta * ScaleCoords)
 
+        solution.clear()
         if res.count
         {
             visit *pt: dref res[0]
@@ -3314,7 +3313,6 @@ impl Offset
         m_destPolys.clear()
         m_delta = delta
 
-        //if Zero offset, just copy any CLOSED polygons to m_p and return ...
         if Math.isZeroEpsilon(delta)
         {
             m_destPolys.reserve(m_polyNodes.Childs.count)

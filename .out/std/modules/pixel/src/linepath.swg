@@ -26,6 +26,7 @@ public struct LinePath
 
     // Flatten infos
     flattenQuality: PaintQuality = ?
+    isFlatten:      bool
     bvMin:          Vector2
     bvMax:          Vector2
     totalLen:       f32
@@ -293,11 +294,12 @@ public impl LinePath
         func roundVal(x: f32) => x//0.4 + Math.round(x)
 
         // Already done ?
-        if !isDirty and flattenQuality == quality and polygon.points.count
+        if !isDirty and flattenQuality == quality and isFlatten
             return
 
         doneOffsetAA   = false
         isDirty        = false
+        isFlatten      = true
         flattenQuality = quality
 
         bvMin.set(Swag.F32.Max, Swag.F32.Max)

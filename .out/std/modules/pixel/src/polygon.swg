@@ -54,8 +54,19 @@ impl Polygon
         return result
     }
 
-    // Expand outline by a given amount
-    // Path must be closed and flattened
+    // Clear all points
+    method clear()
+    {
+        points.clear()
+    }
+
+    // Add a new point
+    method add(v: Vector2)
+    {
+        points.add(v)
+    }
+
+    // Fast expand outline by a given amount
     method offset(value: f32)
     {
         if Math.isZeroEpsilon(value) return
@@ -70,22 +81,19 @@ impl Polygon
         points =,move copy
     }
 
-    // Clear all points
-    method clear()
+    method offset1(value: f32, joinStyle: JoinStyle)
     {
-        points.clear()
-    }
+        var off:  Clipper.Offset
+        var type: Clipper.JoinType = JoinType.Square
 
-    method add(v: Vector2)
-    {
-        points.add(v)
-    }
+        switch joinStyle
+        {
+        case Round: type = Clipper.JoinType.Round
+        case Bevel: type = Clipper.JoinType.Square
+        case Miter: type = Clipper.JoinType.Miter
+        }
 
-    method offset1(value: f32)
-    {
-        using Clipper
-        var off: Clipper.Offset
-        catch off.addPath(points, JoinType.Round, EndType.ClosedPolygon)
+        catch off.addPath(points, type, Clipper.EndType.ClosedPolygon)
         catch off.execute(self, cast(f64) value)
     }
 
