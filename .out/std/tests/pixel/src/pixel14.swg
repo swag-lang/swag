@@ -22,5 +22,5 @@ using Core, Pixel, Clipper
     var lpl: LinePathList
     assume clipper.execute(ClipType.Union, &lpl, PolyFillType.NonZero, PolyFillType.NonZero)
     @assert(lpl.paths.count == 1)
-    @assert(lpl.paths[0].posBuffer.count == 8)
+    @assert(lpl.paths[0].posBuffer.count == 9)
 }
