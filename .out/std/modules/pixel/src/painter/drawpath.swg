@@ -782,7 +782,7 @@ impl Painter
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
-        if isConvex
+        if path.polygon.isConvex
         {
             count := path.polygon.points.count - 1
             center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}

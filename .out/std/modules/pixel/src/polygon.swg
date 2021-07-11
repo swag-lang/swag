@@ -5,6 +5,7 @@ struct Polygon
 {
     points:     Array'Vector2
     clockwise:  bool
+    isConvex:   bool
     area:       f32
 }
 
@@ -106,13 +107,25 @@ impl Polygon
 
         area = 0
         clockwise = false
+        isConvex  = true
 
         n := points.count
         q := 0
         p := n - 1
 
+        lastDot := 0'f32
         while q < n
         {
+            // Convex
+            v   := points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
+            v1  := points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
+            dot := v.dot(v1)
+            if lastDot == 0
+                lastDot = dot
+            else if Math.sign(dot) != Math.sign(lastDot)
+                isConvex = false
+
+            // Aread
             area += points[p].x * points[q].y - points[q].x * points[p].y
             p = q
             q += 1
