@@ -69,9 +69,9 @@ impl Offset
 
     method clear()
     {
-        loop i: polyNodes.Childs
-            Memory.delete(polyNodes.Childs[i])
-        polyNodes.Childs.clear()
+        loop i: polyNodes.childs
+            Memory.delete(polyNodes.childs[i])
+        polyNodes.childs.clear()
         lowest.x = -1
     }
 
@@ -116,18 +116,18 @@ impl Offset
             while highI > 0 and path.buffer[0] == path.buffer[highI]
                 highI -= 1
 
-        newNode.Contour.reserve(cast(uint) highI + 1)
-        newNode.Contour.add(path.buffer[0])
+        newNode.contour.reserve(cast(uint) highI + 1)
+        newNode.contour.add(path.buffer[0])
 
         var j, k: s32
         loop i: 1 .. highI
         {
-            if newNode.Contour.buffer[j] != path.buffer[i]
+            if newNode.contour.buffer[j] != path.buffer[i]
             {
                 j += 1
-                newNode.Contour.add(path.buffer[i])
-                if path[i].y > newNode.Contour[k].y or
-                   (path[i].y == newNode.Contour[k].y and path[i].x < newNode.Contour[k].x)
+                newNode.contour.add(path.buffer[i])
+                if path[i].y > newNode.contour[k].y or
+                   (path[i].y == newNode.contour[k].y and path[i].x < newNode.contour[k].x)
                         k = j
             }
         }
@@ -143,13 +143,13 @@ impl Offset
         if (endType != .ClosedPolygon) return
 
         if lowest.x < 0
-            lowest = IntPoint{polyNodes.Childs.count - 1, k}
+            lowest = IntPoint{polyNodes.childs.count - 1, k}
         else
         {
-            ip := polyNodes.Childs[cast(s32) lowest.x].Contour[cast(s32) lowest.y]
-            if  newNode.Contour[k].y > ip.y or
-                (newNode.Contour[k].y == ip.y and newNode.Contour[k].x < ip.x)
-            lowest = IntPoint{polyNodes.Childs.count - 1, k}
+            ip := polyNodes.childs[cast(s32) lowest.x].contour[cast(s32) lowest.y]
+            if  newNode.contour[k].y > ip.y or
+                (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x)
+            lowest = IntPoint{polyNodes.childs.count - 1, k}
         }
     }
 
@@ -176,22 +176,22 @@ impl Offset
 
     method fixOrientations()
     {
-        if lowest.x >= 0 and !orientation(polyNodes.Childs[cast(s32) lowest.x].Contour)
+        if lowest.x >= 0 and !orientation(polyNodes.childs[cast(s32) lowest.x].contour)
         {
-            loop i: polyNodes.Childs.count
+            loop i: polyNodes.childs.count
             {
-                node := polyNodes.Childs[i]
-                if node.endtype == .ClosedPolygon or (node.endtype == .ClosedLine and orientation(node.Contour))
-                    Slice.reverse(node.Contour.toSlice())
+                node := polyNodes.childs[i]
+                if node.endtype == .ClosedPolygon or (node.endtype == .ClosedLine and orientation(node.contour))
+                    Slice.reverse(node.contour.toSlice())
             }
         }
         else
         {
-            loop i: polyNodes.Childs.count
+            loop i: polyNodes.childs.count
             {
-                node := polyNodes.Childs[i]
-                if node.endtype == .ClosedLine and !orientation(node.Contour)
-                    Slice.reverse(node.Contour.toSlice())
+                node := polyNodes.childs[i]
+                if node.endtype == .ClosedLine and !orientation(node.contour)
+                    Slice.reverse(node.contour.toSlice())
             }
         }
     }
@@ -251,11 +251,11 @@ impl Offset
 
         if Math.isZeroEpsilon(delta)
         {
-            destPolys.reserve(polyNodes.Childs.count)
-            visit node: polyNodes.Childs
+            destPolys.reserve(polyNodes.childs.count)
+            visit node: polyNodes.childs
             {
                 if node.endtype == .ClosedPolygon
-                    destPolys.add(node.Contour)
+                    destPolys.add(node.contour)
             }
 
             return
@@ -283,10 +283,10 @@ impl Offset
         stepsPerRad = steps / Math.ConstF64.TwoPi
         if (delta < 0.0) sinVal = -sinVal
 
-        destPolys.reserve(polyNodes.Childs.count * 2)
-        visit node, i: polyNodes.Childs
+        destPolys.reserve(polyNodes.childs.count * 2)
+        visit node, i: polyNodes.childs
         {
-            srcPoly = node.Contour
+            srcPoly = node.contour
 
             len := cast(s32) srcPoly.count
             if len == 0 or (delta <= 0 and (len < 3 or node.endtype != .ClosedPolygon))

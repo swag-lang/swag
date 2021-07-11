@@ -150,12 +150,12 @@ struct OutPt
 
 struct PolyNode
 {
-    Index:      u32
+    index:      u32
     isOpen:     bool
     jointype:   JoinType = ?
     endtype:    EndType = ?
-    Contour:    ClipperPath
-    Childs:     Array'*PolyNode
+    contour:    ClipperPath
+    childs:     Array'*PolyNode
     Parent:     *PolyNode
 }
 
@@ -163,10 +163,10 @@ impl PolyNode
 {
     method addChild(child: *PolyNode)
     {
-        cnt := cast(u32) Childs.count
-        Childs.add(child)
+        cnt := cast(u32) childs.count
+        childs.add(child)
         child.Parent = self
-        child.Index = cnt
+        child.index = cnt
     }
 }
 
