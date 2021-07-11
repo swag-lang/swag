@@ -107,7 +107,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
             typeVariadic->rawType = newType;
             typeVariadic->flags &= ~TYPEINFO_GENERIC;
-            typeVariadic->forceComputeName();
+            typeVariadic->clearName();
+            typeVariadic->computeName();
             return typeVariadic;
         }
 
@@ -123,7 +124,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
             typeAlias->rawType = newType;
             typeAlias->flags &= ~TYPEINFO_GENERIC;
-            typeAlias->forceComputeName();
+            typeAlias->clearName();
+            typeAlias->computeName();
             return typeAlias;
         }
 
@@ -139,7 +141,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typePointer              = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
             typePointer->pointedType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
-            typePointer->forceComputeName();
+            typePointer->clearName();
+            typePointer->computeName();
             return typePointer;
         }
 
@@ -161,7 +164,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
-            typeArray->forceComputeName();
+            typeArray->clearName();
+            typeArray->computeName();
             return typeArray;
         }
 
@@ -177,7 +181,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
             typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
-            typeSlice->forceComputeName();
+            typeSlice->clearName();
+            typeSlice->computeName();
             return typeSlice;
         }
 
@@ -220,7 +225,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
 
         if (newLambda)
         {
-            newLambda->forceComputeName();
+            newLambda->clearName();
+            newLambda->computeName();
             return newLambda;
         }
 
