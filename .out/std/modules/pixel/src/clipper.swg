@@ -156,7 +156,7 @@ struct PolyNode
     endtype:    EndType = ?
     contour:    ClipperPath
     childs:     Array'*PolyNode
-    Parent:     *PolyNode
+    parent:     *PolyNode
 }
 
 impl PolyNode
@@ -165,7 +165,7 @@ impl PolyNode
     {
         cnt := cast(u32) childs.count
         childs.add(child)
-        child.Parent = self
+        child.parent = self
         child.index = cnt
     }
 }
@@ -219,18 +219,18 @@ impl Transform
 
         var res: ClipperPaths
         try execute(clipT, &res, subjFillT, clipFillT)
-
-        if res.count
+        if !res.count return
+        
+        visit *pt: dref res[0]
         {
-            visit *pt: dref res[0]
-            {
-                vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
-                solution.add(vec)
-            }
-
-            v0 := solution.getPoint(0)
-            solution.add(v0)
+            vec := Math.Vector2{cast(f32) (pt.x / ScaleCoords), cast(f32) (pt.y / ScaleCoords)}
+            solution.add(vec)
         }
+
+        v0 := solution.getPoint(0)
+        solution.add(v0)
+       
+        solution.compute()
     }
 
     method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType) throw
