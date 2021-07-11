@@ -3384,32 +3384,38 @@ impl Offset
                 }
 
                 //re-build m_normals ...
-                /*for (int j = len - 1; j > 0; j--)
-                    m_normals[j] = DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
-                m_normals[0] = DoublePoint(-m_normals[1].X, -m_normals[1].Y);
+                for j := len - 1; j > 0; j -= 1
+                    m_normals[j] = DoublePoint{-m_normals[j - 1].x, -m_normals[j - 1].y}
+                m_normals[0] = DoublePoint{-m_normals[1].x, -m_normals[1].y}
 
-                k = len - 1;
-                for (int j = k - 1; j > 0; --j) OffsetPoint(j, k, node.m_jointype);
+                k = len - 1
+                for j := k - 1; j > 0; j -= 1
+                    offsetPoint(j, &k, node.jointype)
 
-                if (node.m_endtype == etOpenButt)
+                if (node.endtype == .OpenButt)
                 {
-                    pt1 = IntPoint((cInt)Round(m_srcPoly[0].X - m_normals[0].X * delta),
-                    (cInt)Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
-                    m_destPoly.push_back(pt1);
-                    pt1 = IntPoint((cInt)Round(m_srcPoly[0].X + m_normals[0].X * delta),
-                    (cInt)Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
-                    m_destPoly.push_back(pt1);
+                    r1 := cast(CInt) Transform.round(m_srcPoly[0].x - m_normals[0].x * delta)
+                    r2 := cast(CInt) Transform.round(m_srcPoly[0].y - m_normals[0].y * delta)
+                    pt1 := IntPoint{r1, r2}
+                    m_destPoly.add(pt1)
+
+                    r1 = cast(CInt) Transform.round(m_srcPoly[0].x + m_normals[0].x * delta)
+                    r2 = cast(CInt) Transform.round(m_srcPoly[0].y + m_normals[0].y * delta)
+                    pt1 = IntPoint{r1, r2}
+                    m_destPoly.add(pt1)
+
                 }
                 else
                 {
-                    k = 1;
-                    m_sinA = 0;
-                    if (node.m_endtype == etOpenSquare)
-                    DoSquare(0, 1);
-                    else
-                    DoRound(0, 1);
+                    k = 1
+                    m_sinA = 0
+                    if (node.endtype == .OpenSquare)
+                        doSquare(0, 1)
+                        else
+                        doRound(0, 1)
                 }
-                m_destPolys.push_back(m_destPoly);*/
+
+                m_destPolys.add(m_destPoly)
             }
         }
     }
