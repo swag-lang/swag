@@ -2545,7 +2545,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
         // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
         // from the previous symbol
-        if (oneTry || !identifierRef->startScope)
+        if (oneTry || forceEnd || !identifierRef->startScope)
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
