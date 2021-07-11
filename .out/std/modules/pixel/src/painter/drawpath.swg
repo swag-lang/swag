@@ -696,7 +696,7 @@ impl Painter
         // We want a counter-clockwise polygon in V
         triangulateIdx.resize(cast(uint) n)
         idxPtr := triangulateIdx.buffer
-        if path.clockwise
+        if path.polygon.clockwise
         {
             loop i: n
                 idxPtr[i] = cast(s32) i
@@ -930,7 +930,7 @@ impl Painter
         flush  := false
         visit p: pathList.paths
         {
-            if (p.clockwise or serial != p.serial) and flush
+            if (p.polygon.clockwise or serial != p.serial) and flush
             {
                 serial = p.serial
                 triangulate(&t, bvMin, bvMax, brush)

@@ -3,7 +3,9 @@ using Core.Math
 
 struct Polygon
 {
-    points: Array'Vector2
+    points:     Array'Vector2
+    clockwise:  bool
+    area:       f32
 }
 
 impl Polygon
@@ -96,5 +98,26 @@ impl Polygon
         clipper.strictSimple = true
         catch clipper.addPath(points, PolyType.Subject)
         catch clipper.execute(ClipType.Union, self, PolyFillType.NonZero, PolyFillType.NonZero)
+    }
+
+    method compute()
+    {
+        if !points.count return
+
+        area = 0
+        clockwise = false
+
+        n := points.count
+        q := 0
+        p := n - 1
+
+        while q < n
+        {
+            area += points[p].x * points[q].y - points[q].x * points[p].y
+            p = q
+            q += 1
+        }
+
+        clockwise = area >= 0
     }
 }

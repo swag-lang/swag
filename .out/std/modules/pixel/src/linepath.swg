@@ -31,7 +31,6 @@ public struct LinePath
     totalLen:       f32
     endPosBuffer:   Vector2
     polygon:        Polygon
-    clockwise:      bool
     isConvex:       bool
     doneOffsetAA:   bool
     lastDot:        f32
@@ -321,8 +320,8 @@ public impl LinePath
 
         bvMin.set(Swag.F32.Max, Swag.F32.Max)
         bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
+        polygon.clear()
         totalLen = 0
-        polygon.points.clear()
 
         endPosBuffer.x = roundVal(startPoint.x)
         endPosBuffer.y = roundVal(startPoint.y)
@@ -352,19 +351,6 @@ public impl LinePath
             }
         }
 
-        // Compute area
-        // Could be done during flatten ?
-        n := @countof(polygon.points)
-        q := 0
-        p := n - 1
-        area := 0'f32
-        while q < n
-        {
-            area += polygon.points[p].x * polygon.points[q].y - polygon.points[q].x * polygon.points[p].y
-            p = q
-            q += 1
-        }
-
-        clockwise = area >= 0
+        polygon.compute()
     }
 }
