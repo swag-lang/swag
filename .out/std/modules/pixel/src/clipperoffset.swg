@@ -1,4 +1,4 @@
-// The original code has been modified for swag
+// The original code from the Clipper library has been modified for swag
 // http://www.angusj.com
 
 /*******************************************************************************
@@ -84,9 +84,11 @@ impl Offset
         newNode.jointype = joinType
         newNode.endtype = endType
 
-        if (endType == .ClosedLine or endType == .ClosedPolygon)
+        if endType == .ClosedLine or endType == .ClosedPolygon
+        {
             while highI > 0 and path.buffer[0] == path.buffer[highI]
                 highI -= 1
+        }
 
         newNode.contour.reserve(cast(uint) highI + 1)
         newNode.contour.add(path.buffer[0])
@@ -112,7 +114,8 @@ impl Offset
 
         polyNodes.addChild(newNode)
 
-        if (endType != .ClosedPolygon) return
+        if endType != .ClosedPolygon
+            return
 
         if lowest.x < 0
             lowest = IntPoint{polyNodes.childs.count - 1, k}
@@ -174,7 +177,6 @@ impl Offset
         fixOrientations()
         doOffset(delta)
 
-        //now clean up 'corners' ...
         var clpr: Transform
         visit *p: destPolys
             try clpr.addPath(p, PolyType.Subject)
@@ -238,12 +240,12 @@ impl Offset
         else
             miterLim = 0.5
 
-        const def_arc_tolerance = 0.25'f64
+        const DefaultArcTolerance = 0.25'f64
         var y: f64
         if arcTolerance <= 0.0
-            y = def_arc_tolerance
-        else if arcTolerance > Math.abs(delta) * def_arc_tolerance
-            y = Math.abs(delta) * def_arc_tolerance
+            y = DefaultArcTolerance
+        else if arcTolerance > Math.abs(delta) * DefaultArcTolerance
+            y = Math.abs(delta) * DefaultArcTolerance
         else
             y = arcTolerance
 
@@ -296,7 +298,7 @@ impl Offset
                 continue
             }
 
-            //build normals ...
+            // Build normals
             normals.clear()
             normals.reserve(cast(uint) len)
             loop j: len - 1
