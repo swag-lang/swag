@@ -44,20 +44,20 @@ struct DoublePoint
 #[Swag.opaque]
 public struct Offset
 {
-    MiterLimit:     f64 = 2
-    ArcTolerance:   f64 = 0.25
-    m_destPolys:    ClipperPaths
+    miterLimit:     f64 = 2
+    arcTolerance:   f64 = 0.25
+    destPolys:      ClipperPaths
     m_srcPoly:      ClipperPath
     m_destPoly:     ClipperPath
     m_normals:      Array'DoublePoint
     m_delta:        f64
-    m_sinA:         f64
-    m_sin:          f64
-    m_cos:          f64
-    m_miterLim:     f64
-    m_StepsPerRad:  f64
-    m_lowest:       IntPoint = @{-1, 0}
-    m_polyNodes:    PolyNode
+    sinaVal:        f64
+    sinVal:         f64
+    cosVal:         f64
+    miterLim:       f64
+    stepsPerRad:    f64
+    lowest:         IntPoint = @{-1, 0}
+    polyNodes:      PolyNode
 }
 
 impl Offset
@@ -69,10 +69,10 @@ impl Offset
 
     method clear()
     {
-        loop i: m_polyNodes.Childs
-            Memory.delete(m_polyNodes.Childs[i])
-        m_polyNodes.Childs.clear()
-        m_lowest.x = -1
+        loop i: polyNodes.Childs
+            Memory.delete(polyNodes.Childs[i])
+        polyNodes.Childs.clear()
+        lowest.x = -1
     }
 
     // Register a new series of point (line path) of a given type
@@ -138,18 +138,18 @@ impl Offset
             return
         }
 
-        m_polyNodes.addChild(newNode)
+        polyNodes.addChild(newNode)
 
         if (endType != .ClosedPolygon) return
 
-        if m_lowest.x < 0
-            m_lowest = IntPoint{m_polyNodes.Childs.count - 1, k}
+        if lowest.x < 0
+            lowest = IntPoint{polyNodes.Childs.count - 1, k}
         else
         {
-            ip := m_polyNodes.Childs[cast(s32) m_lowest.x].Contour[cast(s32) m_lowest.y]
+            ip := polyNodes.Childs[cast(s32) lowest.x].Contour[cast(s32) lowest.y]
             if  newNode.Contour[k].y > ip.y or
                 (newNode.Contour[k].y == ip.y and newNode.Contour[k].x < ip.x)
-            m_lowest = IntPoint{m_polyNodes.Childs.count - 1, k}
+            lowest = IntPoint{polyNodes.Childs.count - 1, k}
         }
     }
 
@@ -176,20 +176,20 @@ impl Offset
 
     method fixOrientations()
     {
-        if m_lowest.x >= 0 and !orientation(m_polyNodes.Childs[cast(s32) m_lowest.x].Contour)
+        if lowest.x >= 0 and !orientation(polyNodes.Childs[cast(s32) lowest.x].Contour)
         {
-            loop i: m_polyNodes.Childs.count
+            loop i: polyNodes.Childs.count
             {
-                node := m_polyNodes.Childs[i]
+                node := polyNodes.Childs[i]
                 if node.endtype == .ClosedPolygon or (node.endtype == .ClosedLine and orientation(node.Contour))
                     Slice.reverse(node.Contour.toSlice())
             }
         }
         else
         {
-            loop i: m_polyNodes.Childs.count
+            loop i: polyNodes.Childs.count
             {
-                node := m_polyNodes.Childs[i]
+                node := polyNodes.Childs[i]
                 if node.endtype == .ClosedLine and !orientation(node.Contour)
                     Slice.reverse(node.Contour.toSlice())
             }
@@ -204,7 +204,7 @@ impl Offset
 
         //now clean up 'corners' ...
         var clpr: Transform
-        visit *p: m_destPolys
+        visit *p: destPolys
             try clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
@@ -246,45 +246,45 @@ impl Offset
 
     method doOffset(delta: f64)
     {
-        m_destPolys.clear()
+        destPolys.clear()
         m_delta = delta
 
         if Math.isZeroEpsilon(delta)
         {
-            m_destPolys.reserve(m_polyNodes.Childs.count)
-            visit node: m_polyNodes.Childs
+            destPolys.reserve(polyNodes.Childs.count)
+            visit node: polyNodes.Childs
             {
                 if node.endtype == .ClosedPolygon
-                    m_destPolys.add(node.Contour)
+                    destPolys.add(node.Contour)
             }
 
             return
         }
 
-        if MiterLimit > 2
-            m_miterLim = 2 / (MiterLimit * MiterLimit)
+        if miterLimit > 2
+            miterLim = 2 / (miterLimit * miterLimit)
         else
-            m_miterLim = 0.5
+            miterLim = 0.5
 
         const def_arc_tolerance = 0.25'f64
         var y: f64
-        if ArcTolerance <= 0.0
+        if arcTolerance <= 0.0
             y = def_arc_tolerance
-        else if ArcTolerance > Math.abs(delta) * def_arc_tolerance
+        else if arcTolerance > Math.abs(delta) * def_arc_tolerance
             y = Math.abs(delta) * def_arc_tolerance
         else
-            y = ArcTolerance
+            y = arcTolerance
 
         steps := Math.ConstF64.Pi / Math.acos(1 - y / Math.abs(delta))
         if steps > Math.abs(delta) * Math.ConstF64.Pi
             steps = Math.abs(delta) * Math.ConstF64.Pi
-        m_sin = Math.sin(Math.ConstF64.TwoPi / steps)
-        m_cos = Math.cos(Math.ConstF64.TwoPi / steps)
-        m_StepsPerRad = steps / Math.ConstF64.TwoPi
-        if (delta < 0.0) m_sin = -m_sin
+        sinVal = Math.sin(Math.ConstF64.TwoPi / steps)
+        cosVal = Math.cos(Math.ConstF64.TwoPi / steps)
+        stepsPerRad = steps / Math.ConstF64.TwoPi
+        if (delta < 0.0) sinVal = -sinVal
 
-        m_destPolys.reserve(m_polyNodes.Childs.count * 2)
-        visit node, i: m_polyNodes.Childs
+        destPolys.reserve(polyNodes.Childs.count * 2)
+        visit node, i: polyNodes.Childs
         {
             m_srcPoly = node.Contour
 
@@ -303,8 +303,8 @@ impl Offset
                     {
                         m_destPoly.add(IntPoint{Transform.round(m_srcPoly[0].x + X * delta), Transform.round(m_srcPoly[0].y + Y * delta)});
                         X2 := X
-                        X = X * m_cos - m_sin * Y
-                        Y = X2 * m_sin + Y * m_cos
+                        X = X * cosVal - sinVal * Y
+                        Y = X2 * sinVal + Y * cosVal
                     }
                 }
                 else
@@ -320,7 +320,7 @@ impl Offset
                     }
                 }
 
-                m_destPolys.add(m_destPoly)
+                destPolys.add(m_destPoly)
                 continue
             }
 
@@ -343,14 +343,14 @@ impl Offset
                 k := len - 1
                 loop j: len
                     offsetPoint(j, &k, node.jointype)
-                m_destPolys.add(m_destPoly)
+                destPolys.add(m_destPoly)
             }
             else if (node.endtype == .ClosedLine)
             {
                 k := len - 1;
                 loop j: len
                     offsetPoint(j, &k, node.jointype)
-                m_destPolys.add(m_destPoly)
+                destPolys.add(m_destPoly)
 
                 m_destPoly.clear()
                 n := dref m_normals[len - 1]
@@ -360,7 +360,7 @@ impl Offset
                 k = 0
                 for j := len - 1; j >= 0; j -= 1
                     offsetPoint(j, &k, node.jointype)
-                m_destPolys.add(m_destPoly)
+                destPolys.add(m_destPoly)
             }
             else
             {
@@ -386,7 +386,7 @@ impl Offset
                 {
                     j := len - 1
                     k = len - 2
-                    m_sinA = 0
+                    sinaVal = 0
                     m_normals[j] = DoublePoint{-m_normals[j].x, -m_normals[j].y}
                     if (node.endtype == .OpenSquare)
                         doSquare(j, k)
@@ -419,14 +419,14 @@ impl Offset
                 else
                 {
                     k = 1
-                    m_sinA = 0
+                    sinaVal = 0
                     if (node.endtype == .OpenSquare)
                         doSquare(0, 1)
                         else
                         doRound(0, 1)
                 }
 
-                m_destPolys.add(m_destPoly)
+                destPolys.add(m_destPoly)
             }
         }
     }
@@ -434,8 +434,8 @@ impl Offset
     method offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         k := dref ptrk
-        m_sinA = (m_normals[k].x * m_normals[j].y - m_normals[j].x * m_normals[k].y)
-        if Math.abs(m_sinA * m_delta) < 1.0
+        sinaVal = (m_normals[k].x * m_normals[j].y - m_normals[j].x * m_normals[k].y)
+        if Math.abs(sinaVal * m_delta) < 1.0
         {
             cosA := (m_normals[k].x * m_normals[j].x + m_normals[j].y * m_normals[k].y)
             if cosA > 0
@@ -446,12 +446,12 @@ impl Offset
                 return
             }
         }
-        else if m_sinA > 1.0
-            m_sinA = 1.0
-        else if m_sinA < -1.0
-            m_sinA = -1.0
+        else if sinaVal > 1.0
+            sinaVal = 1.0
+        else if sinaVal < -1.0
+            sinaVal = -1.0
 
-        if m_sinA * m_delta < 0
+        if sinaVal * m_delta < 0
         {
             r1 := Transform.round(m_srcPoly[j].x + m_normals[k].x * m_delta)
             r2 := Transform.round(m_srcPoly[j].y + m_normals[k].y * m_delta)
@@ -467,7 +467,7 @@ impl Offset
             {
             case Miter:
                 r := 1 + (m_normals[j].x * m_normals[k].x + m_normals[j].y * m_normals[k].y)
-                if r >= m_miterLim
+                if r >= miterLim
                     doMiter(j, k, r)
                 else
                     doSquare(j, k)
@@ -483,7 +483,7 @@ impl Offset
 
     method doSquare(j, k: s32)
     {
-        dx := Math.tan(Math.atan2(m_sinA, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y) / 4)
+        dx := Math.tan(Math.atan2(sinaVal, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y) / 4)
         r1 := Transform.round(m_srcPoly[j].x + m_delta * (m_normals[k].x - m_normals[k].y * dx))
         r2 := Transform.round(m_srcPoly[j].y + m_delta * (m_normals[k].y + m_normals[k].x * dx))
         m_destPoly.add(IntPoint{r1, r2})
@@ -503,8 +503,8 @@ impl Offset
 
     method doRound(j, k: s32)
     {
-        a := Math.atan2(m_sinA, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y)
-        steps := Math.max(cast(s32) Transform.round(m_StepsPerRad * Math.abs(a)), 1)
+        a := Math.atan2(sinaVal, m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y)
+        steps := Math.max(cast(s32) Transform.round(stepsPerRad * Math.abs(a)), 1)
 
         x := m_normals[k].x
         y := m_normals[k].y
@@ -515,8 +515,8 @@ impl Offset
             r2 := Transform.round(m_srcPoly[j].y + y * m_delta)
             m_destPoly.add(IntPoint{r1, r2})
             X2 = x
-            x = x * m_cos - m_sin * y
-            y = X2 * m_sin + y * m_cos
+            x = x * cosVal - sinVal * y
+            y = X2 * sinVal + y * cosVal
         }
 
         r1 := Transform.round(m_srcPoly[j].x + m_normals[j].x * m_delta)
