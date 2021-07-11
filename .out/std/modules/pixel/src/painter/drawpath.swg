@@ -646,14 +646,14 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPath(pathList: LinePathList, pen: Pen)
+    method drawPath(pathList: *LinePathList, pen: Pen)
     {
         visit p: pathList.paths
             drawPath(p, pen)
     }
 
     // Draw the line path
-    method drawPath(pathList: LinePathList, color: Color, penSize: f32)
+    method drawPath(pathList: *LinePathList, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
@@ -909,24 +909,17 @@ impl Painter
         t.clear()
     }
 
-    // Fill the line path
-    method fillPath(pathList: LinePathList, brush: Brush)
+    // Fill the list of paths
+    // clockwise = fill, anti-clockwise = hole
+    method fillPath(pathList: *LinePathList, brush: Brush)
     {
-        var t: Poly2Tri.Tesselate
-
         // Add a little offset in case of AA
         offsetPath := paintParams & .Antialiased ? 0.25 : 0
 
-        // Flatten all path, and compute BV
-        bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
-        bvMax := Vector2{-Swag.F32.Max, -Swag.F32.Max}
-        visit p: pathList.paths
-        {
-            p.flatten(paintQuality)
-            bvMin = Vector2.min(bvMin, p.bvMin)
-            bvMax = Vector2.max(bvMax, p.bvMax)
-        }
+        // Flatten all paths
+        pathList.flatten(paintQuality)
 
+        var t: Poly2Tri.Tesselate
         serial := 0
         flush  := false
         visit p: pathList.paths
@@ -934,7 +927,7 @@ impl Painter
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
                 serial = p.serial
-                triangulate(&t, bvMin, bvMax, brush)
+                triangulate(&t, pathList.bvMin, pathList.bvMax, brush)
                 flush = false
             }
 
@@ -953,11 +946,11 @@ impl Painter
         }
 
         if flush
-            triangulate(&t, bvMin, bvMax, brush)
+            triangulate(&t, pathList.bvMin, pathList.bvMax, brush)
     }
 
     // Fill the line path
-    method fillPath(pathList: LinePathList, color: Color)
+    method fillPath(pathList: *LinePathList, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color

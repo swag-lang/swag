@@ -226,7 +226,7 @@ func displayPage0()
     p0.setRect(0, 0, 100, 100)
     p1 := lpl.newPath()
     p1.setCircle(50, 160, 50)
-    cdc.fillPath(lpl, Argb.Red)
+    cdc.fillPath(&lpl, Argb.Red)
     cdc.end()
 
     renderer.draw(&cdc)
@@ -390,8 +390,8 @@ func displayPage4()
         pen.plotOffset = 2
 
         assume typeface.getStringOutline(&pathl, str, 70)
-        cdc.drawPath(pathl, pen)
-        cdc.fillPath(pathl, Argb.Black)
+        cdc.drawPath(&pathl, pen)
+        cdc.fillPath(&pathl, Argb.Black)
 
         cdc.resetTransform()
     }
@@ -405,7 +405,7 @@ func displayPage4()
         p.paths[0].polygon.clean()
         p.paths[1].polygon.offset(4)
         p.paths[1].polygon.clean()
-        cdc.drawPath(p, Argb.Red, 2)
+        cdc.drawPath(&p, Argb.Red, 2)
 
         cdc.resetTransform()
     }
@@ -432,7 +432,8 @@ func displayPage4()
         assume typeface.getStringOutline(&p, "A", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
-        cdc.drawPath(p, Argb.Red, 2)
+        cdc.fillPath(&p, Argb.Red)
+        cdc.drawPath(&p, Argb.Black, 2)
 
         cdc.resetTransform()
     }
