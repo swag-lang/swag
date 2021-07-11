@@ -85,9 +85,30 @@ impl Polygon
         points =,move copy
     }
 
+    private method storeClipperResult(res: Clipper.ClipperPaths)
+    {
+        clear()
+        if !res.count return
+
+        visit *pt: dref res[0]
+        {
+            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+            add(vec)
+        }
+
+        // Closed path needs last point to be the same as the first one
+        v0 := getPoint(0)
+        add(v0)
+
+        compute()
+    }
+
     // Slow but quality offset with a joinStyle
     method offset(value: f32, joinStyle: JoinStyle)
     {
+        if Math.isZeroEpsilon(value) return
+        if !points.count return
+
         var off:        Clipper.Offset
         var joinType:   Clipper.JoinType = JoinType.Square
 
@@ -111,20 +132,7 @@ impl Polygon
         if @err return
 
         // Get result
-        clear()
-        if !res.count return
-
-        visit *pt: dref res[0]
-        {
-            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-            add(vec)
-        }
-
-        // Closed path needs last point to be the same as the first one
-        v0 := getPoint(0)
-        add(v0)
-
-        compute()
+        storeClipperResult(res)
     }
 
     // Clean polygon by removing bad/unecessary points
@@ -132,34 +140,23 @@ impl Polygon
     {
         if !points.count return
 
-        var   clipper: Clipper.Transform
-        clipper.strictSimple = true
+        var trf: Clipper.Transform
+        trf.strictSimple = true
 
         // Register path
         var path: Clipper.ClipperPath
         visit pt: points
             path.add(Clipper.IntPoint{cast(s32) (pt.x * ClipperScaleCoords), cast(s32) (pt.y * ClipperScaleCoords)})
-        catch clipper.addPath(&path, Clipper.PolyType.Subject)
+        catch trf.addPath(&path, Clipper.PolyType.Subject)
         if @err return
 
         // Compute
         var res: Clipper.ClipperPaths
-        catch clipper.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
+        catch trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
         if @err return
 
         // Get result
-        clear()
-        visit *pt: dref res[0]
-        {
-            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-            add(vec)
-        }
-
-        // Closed path needs last point to be the same as the first one
-        v0 := getPoint(0)
-        add(v0)
-
-        compute()
+        storeClipperResult(res)
     }
 
     // Compute internal values, like convex/clockwise
