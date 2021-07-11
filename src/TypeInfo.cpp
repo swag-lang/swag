@@ -40,51 +40,48 @@ Utf8 TypeInfo::getDisplayName()
     return displayName.empty() ? name : displayName;
 }
 
-const Utf8& TypeInfo::computeWhateverName(uint32_t nameType, bool force)
+const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 {
     scoped_lock lk(mutex);
-    return computeWhateverNameNoLock(nameType, force);
+    return computeWhateverNameNoLock(nameType);
 }
 
-const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType, bool force)
+const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
 {
-    if (!(flags & TYPEINFO_SPECIAL_NAME))
-        force = false;
-
     Utf8 str;
     switch (nameType)
     {
     case COMPUTE_NAME:
-        if (name.empty() || force)
+        if (name.empty())
         {
-            computeWhateverName(str, nameType, force);
+            computeWhateverName(str, nameType);
             name = move(str);
         }
 
         return name;
 
     case COMPUTE_DISPLAY_NAME:
-        if (displayName.empty() || force)
+        if (displayName.empty())
         {
-            computeWhateverName(str, nameType, force);
+            computeWhateverName(str, nameType);
             displayName = move(str);
         }
 
         return displayName;
 
     case COMPUTE_SCOPED_NAME:
-        if (scopedName.empty() || force)
+        if (scopedName.empty())
         {
-            computeWhateverName(str, nameType, force);
+            computeWhateverName(str, nameType);
             scopedName = move(str);
         }
 
         return scopedName;
 
     case COMPUTE_SCOPED_NAME_EXPORT:
-        if (scopedNameExport.empty() || force)
+        if (scopedNameExport.empty())
         {
-            computeWhateverName(str, nameType, force);
+            computeWhateverName(str, nameType);
             scopedNameExport = move(str);
         }
 
@@ -95,7 +92,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType, bool force)
     return name;
 }
 
-void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType, bool force)
+void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     switch (nameType)
     {

@@ -293,14 +293,12 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrPointer1->sizeOf = ptrPointer1->relative;
             }
 
-            ptrPointer1->clearName();
-            ptrPointer1->computeName();
+            ptrPointer1->forceComputeName();
 
             if (ptrPointer)
             {
                 ptrPointer->pointedType = ptrPointer1;
-                ptrPointer->clearName();
-                ptrPointer->computeName();
+                ptrPointer->forceComputeName();
             }
 
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_REF)
@@ -313,8 +311,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
                 ptrRef->computeName();
                 ptrPointer1->pointedType = ptrRef;
-                ptrPointer1->clearName();
-                ptrPointer1->computeName();
+                ptrPointer1->forceComputeName();
             }
 
             ptrPointer = ptrPointer1;
