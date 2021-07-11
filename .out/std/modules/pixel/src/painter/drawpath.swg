@@ -768,13 +768,8 @@ impl Painter
         path.flatten(paintQuality)
         if Math.isZeroEpsilon(path.totalLen) return
 
-        using path
-        if paintParams & .Antialiased and !doneOffsetAA
-        {
-            doneOffsetAA = true
-            polygon.offset(0.25)
-        }
-
+        // Add a little offset in case of AA
+        offsetPath := paintParams & .Antialiased ? 0.25 : 0
 
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)
@@ -782,20 +777,21 @@ impl Painter
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
-        if path.polygon.isConvex
+        polygon := &path.polygon
+        if polygon.isConvex
         {
             count := path.polygon.points.count - 1
-            center := Vector2{bvMin.x + (bvMax.x - bvMin.x) * 0.5, bvMin.y + (bvMax.y - bvMin.y) * 0.5}
+            center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
             loop i: count
             {
-                v0 := path.polygon.getPoint(i)
-                v1 := path.polygon.getPoint((i + 1) % count)
+                v0 := polygon.getPoint(i, offsetPath)
+                v1 := polygon.getPoint((i + 1) % count, offsetPath)
                 prim := pushTriangle(center, v0, v1, brush.color)
 
                 if paintParams & .Antialiased
                 {
-                    v2 := path.polygon.getPoint((i + 2) % count)
-                    vp := path.polygon.getPoint((i + count - 1) % count)
+                    v2 := polygon.getPoint((i + 2) % count, offsetPath)
+                    vp := polygon.getPoint((i + count - 1) % count, offsetPath)
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
                     addEdgeAA(prim, vp, v0)
@@ -809,13 +805,12 @@ impl Painter
             result := triangulate(path)
             if result.isEmpty() return
             pidx := result.buffer
-            tpos := path.polygon.points.buffer + 1
             firstPrim := vertexBuffer.count
             loop result.count / 3
             {
-                v0 := tpos[pidx[0]]
-                v1 := tpos[pidx[1]]
-                v2 := tpos[pidx[2]]
+                v0 := polygon.getPoint(cast(uint) pidx[0] + 1, offsetPath)
+                v1 := polygon.getPoint(cast(uint) pidx[1] + 1, offsetPath)
+                v2 := polygon.getPoint(cast(uint) pidx[2] + 1, offsetPath)
                 prim := pushTriangle(v0, v1, v2, brush.color)
                 pidx += 3
             }
@@ -829,22 +824,31 @@ impl Painter
                 for i := 0; i < result.count; i += 3
                 {
                     index  := psrc[0]
-                    indexn := (index + 1) % cpt;
-                    indexp := index ? index - 1 : cpt - 1;
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+                    indexn := (index + 1) % cpt
+                    indexp := index ? index - 1 : cpt - 1
+                    v  := polygon.getPoint(cast(uint) index + 1, offsetPath)
+                    vp := polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                    vn := polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                    addEdgeAA(firstPrim, v, vp)
+                    addEdgeAA(firstPrim, v, vn)
 
                     index  = psrc[1]
-                    indexn = (index + 1) % cpt;
-                    indexp = index ? index - 1 : cpt - 1;
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+                    indexn = (index + 1) % cpt
+                    indexp = index ? index - 1 : cpt - 1
+                    v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
+                    vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                    vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                    addEdgeAA(firstPrim, v, vp)
+                    addEdgeAA(firstPrim, v, vn)
 
                     index  = psrc[2]
-                    indexn = (index + 1) % cpt;
-                    indexp = index ? index - 1 : cpt - 1;
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexp]);
-                    addEdgeAA(firstPrim, tpos[index], tpos[indexn]);
+                    indexn = (index + 1) % cpt
+                    indexp = index ? index - 1 : cpt - 1
+                    v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
+                    vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                    vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                    addEdgeAA(firstPrim, v, vp)
+                    addEdgeAA(firstPrim, v, vn)
 
                     psrc += 3
                     firstPrim += 3
@@ -910,18 +914,15 @@ impl Painter
     {
         var t: Poly2Tri.Tesselate
 
+        // Add a little offset in case of AA
+        offsetPath := paintParams & .Antialiased ? 0.25 : 0
+
         // Flatten all path, and compute BV
         bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
         bvMax := Vector2{-Swag.F32.Max, -Swag.F32.Max}
         visit p: pathList.paths
         {
             p.flatten(paintQuality)
-            if paintParams & .Antialiased and !p.doneOffsetAA
-            {
-                p.doneOffsetAA = true
-                p.polygon.offset(0.25)
-            }
-
             bvMin = Vector2.min(bvMin, p.bvMin)
             bvMax = Vector2.max(bvMax, p.bvMax)
         }
@@ -943,7 +944,7 @@ impl Painter
                 t.startPolyLine()
                 loop i: 0..p.polygon.points.count-2
                 {
-                    pt := p.polygon.getPoint(i)
+                    pt := p.polygon.getPoint(i, offsetPath)
                     t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
                 }
 

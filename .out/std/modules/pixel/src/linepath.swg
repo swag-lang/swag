@@ -32,7 +32,6 @@ public struct LinePath
     totalLen:       f32
     endPosBuffer:   Vector2
     polygon:        Polygon
-    doneOffsetAA:   bool
 }
 
 public impl LinePath
@@ -297,7 +296,6 @@ public impl LinePath
         if !isDirty and flattenQuality == quality and isFlatten
             return
 
-        doneOffsetAA   = false
         isDirty        = false
         isFlatten      = true
         flattenQuality = quality
