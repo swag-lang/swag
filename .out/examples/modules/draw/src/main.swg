@@ -429,7 +429,7 @@ func displayPage4()
     {
         var p: LinePathList
         cdc.translateTransform(150, 570)
-        assume typeface.getStringOutline(&p, "A", 70)
+        assume typeface.getStringOutline(&p, "B", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
         cdc.fillPath(&p, Argb.Red)

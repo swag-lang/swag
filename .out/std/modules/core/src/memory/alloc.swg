@@ -64,7 +64,7 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     return req.address
 }
 
-// Allocate a given amount of bytes
+// Allocate a given amount of bytes in the temporary allocator
 func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
