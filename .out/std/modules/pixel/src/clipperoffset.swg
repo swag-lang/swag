@@ -165,6 +165,7 @@ impl Offset
         return -a * 0.5
     }
 
+    #[Swag.inline]
     func orientation(poly: ClipperPath)->bool
     {
         return area(poly) >= 0
@@ -172,7 +173,7 @@ impl Offset
 
     method fixOrientations()
     {
-        if lowest.x >= 0 and !orientation(polyNodes.childs[cast(s32) lowest.x].contour)
+        if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
             loop i: polyNodes.childs.count
             {
@@ -198,6 +199,7 @@ impl Offset
         return result
     }
 
+    //#[Swag.inline]
     func round(val: f64)->CInt
     {
         if val < 0 return cast(CInt) (val - 0.5)
