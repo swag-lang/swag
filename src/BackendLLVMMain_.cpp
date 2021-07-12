@@ -124,6 +124,10 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         localCall(buildParameters, nullptr, allocT, "__tlsSetValue", {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
+    {
+        localCall(buildParameters, nullptr, allocT, "__setupRuntime", {}, {});
+    }
+
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);

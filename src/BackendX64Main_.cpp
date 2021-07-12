@@ -97,6 +97,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
     emitCall(pp, "__tlsSetValue");
 
+    emitCall(pp, "__setupRuntime");
+
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);

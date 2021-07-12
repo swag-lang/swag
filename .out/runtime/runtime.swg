@@ -308,6 +308,13 @@ func @args()->[..] string
 }
 
 ////////////////////////////////////////////////////////////
+func __setupRuntime()
+{
+    capacity := #gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
+    @getcontext().tempAllocator.setCapacity(capacity)
+}
+
+////////////////////////////////////////////////////////////
 func @seterr(value: string)
 {
     cxt := @getcontext()

@@ -69,8 +69,15 @@ impl ScratchAllocator
         if capacity == newCapacity
             return
         release()
-        if alloc != null allocator = alloc
+
+        allocator = alloc orelse @getcontext().allocator
         capacity = newCapacity
+
+        var req: AllocatorRequest
+        req.mode = AllocatorMode.Alloc
+        req.size = capacity
+        allocator.alloc(&req)
+        block = req.address
     }
 }
 
@@ -78,14 +85,7 @@ impl IAllocator for ScratchAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        // First block allocation
-        if !block
-        {
-            if !capacity  capacity = #gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
-            if !allocator allocator = @getcontext().allocator
-            block = alloc(capacity)
-        }
-
+        @assert(block != null)
         switch request.mode
         {
         case Free:

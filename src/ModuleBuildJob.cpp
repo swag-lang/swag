@@ -373,6 +373,13 @@ JobResult ModuleBuildJob::execute()
         // Push a copy of the default context, in case the user code changes it (or push a new one)
         PushSwagContext cxt;
 
+        // Setup runtime
+        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct("__setupRuntime");
+        SWAG_ASSERT(setupFct);
+        module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
+        if (module->criticalErrors)
+            return JobResult::ReleaseJob;
+
         // #init functions are only executed in script mode, if the module has a #main
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode && module->byteCodeMainFunc;
         // OR in a test module, during testing
