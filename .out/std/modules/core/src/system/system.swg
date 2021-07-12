@@ -14,20 +14,3 @@ func pushContext(cxt: Swag.Context, stmt: code)
         #mixin `stmt
     }
 }
-
-// Push a new allocator for the given block of code
-#[Swag.macro]
-func pushAllocator(allocator: Swag.IAllocator, stmt: code)
-{
-    prev := @getcontext()
-    defer @setcontext(prev)
-
-    cxt := dref prev
-    cxt.allocator = allocator
-    @setcontext(cxt)
-
-    #macro
-    {
-        #mixin `stmt
-    }
-}

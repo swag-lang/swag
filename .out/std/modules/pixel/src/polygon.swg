@@ -119,7 +119,7 @@ impl Polygon
         }
 
         var res: Clipper.ClipperPaths
-        System.pushAllocator(@getcontext().tempAllocator)
+        Memory.pushTempAllocator()
         {
             var off: Clipper.Offset
 
@@ -145,7 +145,7 @@ impl Polygon
         if !points.count return
 
         var res: Clipper.ClipperPaths
-        System.pushAllocator(@getcontext().tempAllocator)
+        Memory.pushTempAllocator()
         {
             var trf: Clipper.Transform
             trf.strictSimple = true

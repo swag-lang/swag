@@ -22,7 +22,7 @@ impl IAllocator for My
 #test
 {
     var v: My
-    System.pushAllocator(v)
+    Memory.pushAllocator(v)
     {
         const value = "this is a string this is a string this is a string"
         var s: String = value
