@@ -255,26 +255,26 @@ impl Offset
             {
                 if node.jointype == .Round
                 {
-                    var X: f64 = 1.0
-                    var Y: f64 = 0.0
+                    x := 1.0'f64
+                    y := 0.0'f64
                     for j := 1; j <= steps; j += 1
                     {
-                        destPoly.add(IntPoint{round(srcPoly[0].x + X * delta), round(srcPoly[0].y + Y * delta)})
-                        X2 := X
-                        X = X * cosVal - sinVal * Y
-                        Y = X2 * sinVal + Y * cosVal
+                        destPoly.add(IntPoint{round(srcPoly[0].x + x * delta), round(srcPoly[0].y + y * delta)})
+                        x2 := x
+                        x = x * cosVal - sinVal * y
+                        y = x2 * sinVal + y * cosVal
                     }
                 }
                 else
                 {
-                    var X: f64 = -1.0
-                    var Y: f64 = -1.0
+                    x := -1.0'f64
+                    y := -1.0'f64
                     loop j: 4
                     {
-                        destPoly.add(IntPoint{round(srcPoly[0].x + X * delta), round(srcPoly[0].y + Y * delta)})
-                        if X < 0 X = 1
-                        else if Y < 0 Y = 1
-                        else X = -1
+                        destPoly.add(IntPoint{round(srcPoly[0].x + x * delta), round(srcPoly[0].y + y * delta)})
+                        if x < 0 x = 1
+                        else if y < 0 y = 1
+                        else x = -1
                     }
                 }
 
