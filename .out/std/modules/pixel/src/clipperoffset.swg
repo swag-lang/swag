@@ -122,9 +122,39 @@ impl Offset
         else
         {
             ip := polyNodes.childs[cast(s32) lowest.x].contour[cast(s32) lowest.y]
-            if  newNode.contour[k].y > ip.y or
-                (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x)
-            lowest = IntPoint{polyNodes.childs.count - 1, k}
+            if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x)
+                lowest = IntPoint{polyNodes.childs.count - 1, k}
+        }
+    }
+
+    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
+    {
+        solution.clear()
+        fixOrientations()
+        doOffset(delta)
+
+        var clpr: Transform
+        visit *p: destPolys
+            clpr.addPath(p, PolyType.Subject)
+
+        if delta > 0
+        {
+            clpr.execute(ClipType.Union, solution, PolyFillType.Positive, PolyFillType.Positive)
+        }
+        else
+        {
+            r := clpr.getBounds()
+            var outer: ClipperPath
+            outer.add(IntPoint{r.left - 10, r.bottom + 10})
+            outer.add(IntPoint{r.right + 10, r.bottom + 10})
+            outer.add(IntPoint{r.right + 10, r.top - 10})
+            outer.add(IntPoint{r.left - 10, r.top - 10})
+
+            clpr.addPath(&outer, PolyType.Subject)
+            clpr.reverseOutput = reverseNeg
+            clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
+            if solution.count > 0
+                solution.removeAt(0)
         }
     }
 
@@ -168,37 +198,6 @@ impl Offset
                 if node.endtype == .ClosedLine and !orientation(node.contour)
                     Slice.reverse(node.contour.toSlice())
             }
-        }
-    }
-
-    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
-    {
-        solution.clear()
-        fixOrientations()
-        doOffset(delta)
-
-        var clpr: Transform
-        visit *p: destPolys
-            clpr.addPath(p, PolyType.Subject)
-
-        if delta > 0
-        {
-            clpr.execute(ClipType.Union, solution, PolyFillType.Positive, PolyFillType.Positive)
-        }
-        else
-        {
-            r := clpr.getBounds()
-            var outer: ClipperPath
-            outer.add(IntPoint{r.left - 10, r.bottom + 10})
-            outer.add(IntPoint{r.right + 10, r.bottom + 10})
-            outer.add(IntPoint{r.right + 10, r.top - 10})
-            outer.add(IntPoint{r.left - 10, r.top - 10})
-
-            clpr.addPath(&outer, PolyType.Subject)
-            clpr.reverseOutput = reverseNeg
-            clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
-            if solution.count > 0
-                solution.removeAt(0)
         }
     }
 
