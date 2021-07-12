@@ -217,6 +217,12 @@ impl Offset
         return result
     }
 
+    func round(val: f64)->CInt
+    {
+        if val < 0 return cast(CInt) (val - 0.5)
+        return cast(CInt) (val + 0.5)
+    }
+
     method doOffset(delta: f64)
     {
         destPolys.clear()
@@ -274,7 +280,7 @@ impl Offset
                     var Y: f64 = 0.0
                     for j := 1; j <= steps; j += 1
                     {
-                        destPoly.add(IntPoint{Transform.round(srcPoly[0].x + X * delta), Transform.round(srcPoly[0].y + Y * delta)});
+                        destPoly.add(IntPoint{round(srcPoly[0].x + X * delta), round(srcPoly[0].y + Y * delta)})
                         X2 := X
                         X = X * cosVal - sinVal * Y
                         Y = X2 * sinVal + Y * cosVal
@@ -286,7 +292,7 @@ impl Offset
                     var Y: f64 = -1.0
                     loop j: 4
                     {
-                        destPoly.add(IntPoint{Transform.round(srcPoly[0].x + X * delta), Transform.round(srcPoly[0].y + Y * delta)})
+                        destPoly.add(IntPoint{round(srcPoly[0].x + X * delta), round(srcPoly[0].y + Y * delta)})
                         if X < 0 X = 1
                         else if Y < 0 Y = 1
                         else X = -1
@@ -320,7 +326,7 @@ impl Offset
             }
             else if (node.endtype == .ClosedLine)
             {
-                k := len - 1;
+                k := len - 1
                 loop j: len
                     offsetPoint(j, &k, node.jointype)
                 destPolys.add(destPoly)
@@ -328,7 +334,7 @@ impl Offset
                 destPoly.clear()
                 n := dref normals[len - 1]
                 for j := len - 1; j > 0; j -= 1
-                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y};
+                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y}
                 normals[0] = DoublePoint{-n.x, -n.y}
                 k = 0
                 for j := len - 1; j >= 0; j -= 1
@@ -345,13 +351,13 @@ impl Offset
                 {
                     j := len - 1
 
-                    r1 := cast(CInt) Transform.round(srcPoly[j].x + normals[j].x * delta)
-                    r2 := cast(CInt) Transform.round(srcPoly[j].y + normals[j].y * delta)
+                    r1 := round(srcPoly[j].x + normals[j].x * delta)
+                    r2 := round(srcPoly[j].y + normals[j].y * delta)
                     pt1 := IntPoint{r1, r2}
                     destPoly.add(pt1)
 
-                    r1 = cast(CInt) Transform.round(srcPoly[j].x - normals[j].x * delta)
-                    r2 = cast(CInt) Transform.round(srcPoly[j].y - normals[j].y * delta)
+                    r1 = round(srcPoly[j].x - normals[j].x * delta)
+                    r2 = round(srcPoly[j].y - normals[j].y * delta)
                     pt1 = IntPoint{r1, r2}
                     destPoly.add(pt1)
                 }
@@ -378,13 +384,13 @@ impl Offset
 
                 if (node.endtype == .OpenButt)
                 {
-                    r1 := cast(CInt) Transform.round(srcPoly[0].x - normals[0].x * delta)
-                    r2 := cast(CInt) Transform.round(srcPoly[0].y - normals[0].y * delta)
+                    r1 := round(srcPoly[0].x - normals[0].x * delta)
+                    r2 := round(srcPoly[0].y - normals[0].y * delta)
                     pt1 := IntPoint{r1, r2}
                     destPoly.add(pt1)
 
-                    r1 = cast(CInt) Transform.round(srcPoly[0].x + normals[0].x * delta)
-                    r2 = cast(CInt) Transform.round(srcPoly[0].y + normals[0].y * delta)
+                    r1 = round(srcPoly[0].x + normals[0].x * delta)
+                    r2 = round(srcPoly[0].y + normals[0].y * delta)
                     pt1 = IntPoint{r1, r2}
                     destPoly.add(pt1)
 
@@ -413,8 +419,8 @@ impl Offset
             cosA := (normals[k].x * normals[j].x + normals[j].y * normals[k].y)
             if cosA > 0
             {
-                r1 := Transform.round(srcPoly[j].x + normals[k].x * deltaVal)
-                r2 := Transform.round(srcPoly[j].y + normals[k].y * deltaVal)
+                r1 := round(srcPoly[j].x + normals[k].x * deltaVal)
+                r2 := round(srcPoly[j].y + normals[k].y * deltaVal)
                 destPoly.add(IntPoint{r1, r2})
                 return
             }
@@ -426,12 +432,12 @@ impl Offset
 
         if sinaVal * deltaVal < 0
         {
-            r1 := Transform.round(srcPoly[j].x + normals[k].x * deltaVal)
-            r2 := Transform.round(srcPoly[j].y + normals[k].y * deltaVal)
+            r1 := round(srcPoly[j].x + normals[k].x * deltaVal)
+            r2 := round(srcPoly[j].y + normals[k].y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             destPoly.add(dref srcPoly[j])
-            r1 = Transform.round(srcPoly[j].x + normals[j].x * deltaVal)
-            r2 = Transform.round(srcPoly[j].y + normals[j].y * deltaVal)
+            r1 = round(srcPoly[j].x + normals[j].x * deltaVal)
+            r2 = round(srcPoly[j].y + normals[j].y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
         }
         else
@@ -457,43 +463,42 @@ impl Offset
     method doSquare(j, k: s32)
     {
         dx := Math.tan(Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y) / 4)
-        r1 := Transform.round(srcPoly[j].x + deltaVal * (normals[k].x - normals[k].y * dx))
-        r2 := Transform.round(srcPoly[j].y + deltaVal * (normals[k].y + normals[k].x * dx))
+        r1 := round(srcPoly[j].x + deltaVal * (normals[k].x - normals[k].y * dx))
+        r2 := round(srcPoly[j].y + deltaVal * (normals[k].y + normals[k].x * dx))
         destPoly.add(IntPoint{r1, r2})
 
-        r1 = Transform.round(srcPoly[j].x + deltaVal * (normals[j].x + normals[j].y * dx))
-        r2 = Transform.round(srcPoly[j].y + deltaVal * (normals[j].y - normals[j].x * dx))
+        r1 = round(srcPoly[j].x + deltaVal * (normals[j].x + normals[j].y * dx))
+        r2 = round(srcPoly[j].y + deltaVal * (normals[j].y - normals[j].x * dx))
         destPoly.add(IntPoint{r1, r2})
     }
 
     method doMiter(j, k: s32, r: f64)
     {
         q := deltaVal / r
-        r1 := Transform.round(srcPoly[j].x + (normals[k].x + normals[j].x) * q)
-        r2 := Transform.round(srcPoly[j].y + (normals[k].y + normals[j].y) * q)
+        r1 := round(srcPoly[j].x + (normals[k].x + normals[j].x) * q)
+        r2 := round(srcPoly[j].y + (normals[k].y + normals[j].y) * q)
         destPoly.add(IntPoint{r1, r2})
     }
 
     method doRound(j, k: s32)
     {
         a := Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y)
-        steps := Math.max(cast(s32) Transform.round(stepsPerRad * Math.abs(a)), 1)
+        steps := Math.max(cast(s32) round(stepsPerRad * Math.abs(a)), 1)
 
         x := normals[k].x
         y := normals[k].y
-        var X2: f64
         loop i: steps
         {
-            r1 := Transform.round(srcPoly[j].x + x * deltaVal)
-            r2 := Transform.round(srcPoly[j].y + y * deltaVal)
+            r1 := round(srcPoly[j].x + x * deltaVal)
+            r2 := round(srcPoly[j].y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
-            X2 = x
+            x2 := x
             x = x * cosVal - sinVal * y
-            y = X2 * sinVal + y * cosVal
+            y = x2 * sinVal + y * cosVal
         }
 
-        r1 := Transform.round(srcPoly[j].x + normals[j].x * deltaVal)
-        r2 := Transform.round(srcPoly[j].y + normals[j].y * deltaVal)
+        r1 := round(srcPoly[j].x + normals[j].x * deltaVal)
+        r2 := round(srcPoly[j].y + normals[j].y * deltaVal)
         destPoly.add(IntPoint{r1, r2})
     }
 }
