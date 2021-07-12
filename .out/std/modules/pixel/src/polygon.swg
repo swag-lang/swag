@@ -127,7 +127,7 @@ impl Polygon
             var path: Clipper.ClipperPath
             visit pt: points
                 path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-            off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
+            off.addPath(path, joinType)
 
             // Compute
             off.execute(&res, cast(f64) (value * ClipperScaleCoords))

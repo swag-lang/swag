@@ -1,5 +1,5 @@
-// The original code from the Clipper library has been modified for swag
-// http://www.angusj.com
+// The original code from the Clipper library (http://www.angusj.com) has been modified for swag
+// Only the ClosedPolygon end type is supported (everything else has been removed)
 
 /*******************************************************************************
 *                                                                              *
@@ -75,22 +75,16 @@ impl Offset
         lowest.x = -1
     }
 
-    method addPath(path: ClipperPath, joinType: JoinType, endType: EndType)
+    method addPath(path: ClipperPath, joinType: JoinType)
     {
-        highI := cast(s32) path.count - 1
+        highI := path.count - 1
         if highI < 0 return
+        while highI > 0 and path.buffer[0] == path.buffer[highI]
+            highI -= 1
 
         newNode := Memory.new'PolyNode()
         newNode.jointype = joinType
-        newNode.endtype = endType
-
-        if endType == .ClosedLine or endType == .ClosedPolygon
-        {
-            while highI > 0 and path.buffer[0] == path.buffer[highI]
-                highI -= 1
-        }
-
-        newNode.contour.reserve(cast(uint) highI + 1)
+        newNode.contour.reserve(highI + 1)
         newNode.contour.add(path.buffer[0])
 
         var j, k: s32
@@ -106,16 +100,13 @@ impl Offset
             }
         }
 
-        if endType == .ClosedPolygon and j < 2
+        if j < 2
         {
             Memory.delete(newNode)
             return
         }
 
         polyNodes.addChild(newNode)
-
-        if endType != .ClosedPolygon
-            return
 
         if lowest.x < 0
             lowest = IntPoint{polyNodes.childs.count - 1, k}
@@ -186,17 +177,7 @@ impl Offset
             loop i: polyNodes.childs.count
             {
                 node := polyNodes.childs[i]
-                if node.endtype == .ClosedPolygon or (node.endtype == .ClosedLine and orientation(node.contour))
-                    Slice.reverse(node.contour.toSlice())
-            }
-        }
-        else
-        {
-            loop i: polyNodes.childs.count
-            {
-                node := polyNodes.childs[i]
-                if node.endtype == .ClosedLine and !orientation(node.contour)
-                    Slice.reverse(node.contour.toSlice())
+                Slice.reverse(node.contour.toSlice())
             }
         }
     }
@@ -232,11 +213,7 @@ impl Offset
         {
             destPolys.reserve(polyNodes.childs.count)
             visit node: polyNodes.childs
-            {
-                if node.endtype == .ClosedPolygon
-                    destPolys.add(node.contour)
-            }
-
+                destPolys.add(node.contour)
             return
         }
 
@@ -268,7 +245,7 @@ impl Offset
             srcPoly = node.contour
 
             len := cast(s32) srcPoly.count
-            if len == 0 or (delta <= 0 and (len < 3 or node.endtype != .ClosedPolygon))
+            if len == 0 or (delta <= 0 and len < 3)
                 continue
 
             destPoly.clear()
@@ -308,105 +285,12 @@ impl Offset
             normals.reserve(cast(uint) len)
             loop j: len - 1
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
+            normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
 
-            if (node.endtype == .ClosedLine or node.endtype == .ClosedPolygon)
-                normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
-            else
-            {
-                t := dref normals[len - 2]
-                normals.add(t)
-            }
-
-            if (node.endtype == .ClosedPolygon)
-            {
-                k := len - 1
-                loop j: len
-                    offsetPoint(j, &k, node.jointype)
-                destPolys.add(destPoly)
-            }
-            else if (node.endtype == .ClosedLine)
-            {
-                k := len - 1
-                loop j: len
-                    offsetPoint(j, &k, node.jointype)
-                destPolys.add(destPoly)
-
-                destPoly.clear()
-                n := dref normals[len - 1]
-                for j := len - 1; j > 0; j -= 1
-                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y}
-                normals[0] = DoublePoint{-n.x, -n.y}
-                k = 0
-                for j := len - 1; j >= 0; j -= 1
-                    offsetPoint(j, &k, node.jointype)
-                destPolys.add(destPoly)
-            }
-            else
-            {
-                k := 0
-                for j := 1; j < len - 1; j += 1
-                    offsetPoint(j, &k, node.jointype)
-
-                if node.endtype == .OpenButt
-                {
-                    j := len - 1
-
-                    r1 := round(srcPoly[j].x + normals[j].x * delta)
-                    r2 := round(srcPoly[j].y + normals[j].y * delta)
-                    pt1 := IntPoint{r1, r2}
-                    destPoly.add(pt1)
-
-                    r1 = round(srcPoly[j].x - normals[j].x * delta)
-                    r2 = round(srcPoly[j].y - normals[j].y * delta)
-                    pt1 = IntPoint{r1, r2}
-                    destPoly.add(pt1)
-                }
-                else
-                {
-                    j := len - 1
-                    k = len - 2
-                    sinaVal = 0
-                    normals[j] = DoublePoint{-normals[j].x, -normals[j].y}
-                    if (node.endtype == .OpenSquare)
-                        doSquare(j, k)
-                    else
-                        doRound(j, k)
-                }
-
-                //re-build normals ...
-                for j := len - 1; j > 0; j -= 1
-                    normals[j] = DoublePoint{-normals[j - 1].x, -normals[j - 1].y}
-                normals[0] = DoublePoint{-normals[1].x, -normals[1].y}
-
-                k = len - 1
-                for j := k - 1; j > 0; j -= 1
-                    offsetPoint(j, &k, node.jointype)
-
-                if (node.endtype == .OpenButt)
-                {
-                    r1 := round(srcPoly[0].x - normals[0].x * delta)
-                    r2 := round(srcPoly[0].y - normals[0].y * delta)
-                    pt1 := IntPoint{r1, r2}
-                    destPoly.add(pt1)
-
-                    r1 = round(srcPoly[0].x + normals[0].x * delta)
-                    r2 = round(srcPoly[0].y + normals[0].y * delta)
-                    pt1 = IntPoint{r1, r2}
-                    destPoly.add(pt1)
-
-                }
-                else
-                {
-                    k = 1
-                    sinaVal = 0
-                    if (node.endtype == .OpenSquare)
-                        doSquare(0, 1)
-                        else
-                        doRound(0, 1)
-                }
-
-                destPolys.add(destPoly)
-            }
+            k := len - 1
+            loop j: len
+                offsetPoint(j, &k, node.jointype)
+            destPolys.add(destPoly)
         }
     }
 

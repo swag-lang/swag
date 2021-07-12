@@ -72,7 +72,6 @@ public enum ClipType        { Intersection; Union; Difference; Xor; }
 public enum PolyFillType    { EvenOdd; NonZero; Positive; Negative; }
 public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveCollinear = 4; }
 public enum JoinType        { Square; Round; Miter; }
-public enum EndType         { ClosedPolygon; ClosedLine; OpenButt; OpenSquare; OpenRound; }
 
 enum EdgeSide  { Left = 1; Right = 2; }
 enum Direction { RightToLeft; LeftToRight; }
@@ -152,7 +151,6 @@ struct PolyNode
     index:      u32
     isOpen:     bool
     jointype:   JoinType = ?
-    endtype:    EndType = ?
     contour:    ClipperPath
     childs:     Array'*PolyNode
     parent:     *PolyNode
