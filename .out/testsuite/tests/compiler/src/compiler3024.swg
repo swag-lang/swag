@@ -11,9 +11,11 @@ func round(val: s32)->s32
 
 func titi(a: A)
 {
+    @print(a.x)
 }
 
+#[Swag.printbc, Swag.optim("", false)]
 #test
 {
-    titi(A{round(0)})
+    titi(A{round(666)})
 }*/
