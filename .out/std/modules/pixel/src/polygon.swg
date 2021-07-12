@@ -109,7 +109,6 @@ impl Polygon
         if Math.isZeroEpsilon(value) return
         if !points.count return
 
-        var off:        Clipper.Offset
         var joinType:   Clipper.JoinType = JoinType.Square
 
         switch joinStyle
@@ -119,17 +118,22 @@ impl Polygon
         case Miter: joinType = Clipper.JoinType.Miter
         }
 
-        // Register path
-        var path: Clipper.ClipperPath
-        visit pt: points
-            path.add(Clipper.IntPoint{cast(s32) (pt.x * ClipperScaleCoords), cast(s32) (pt.y * ClipperScaleCoords)})
-        catch off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
-        if @err return
-
-        // Compute
         var res: Clipper.ClipperPaths
-        catch off.execute(&res, cast(f64) (value * ClipperScaleCoords))
-        if @err return
+        System.pushAllocator(@getcontext().tempAllocator)
+        {
+            var off: Clipper.Offset
+
+            // Register path
+            var path: Clipper.ClipperPath
+            visit pt: points
+                path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
+            catch off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
+            if @err return
+
+            // Compute
+            catch off.execute(&res, cast(f64) (value * ClipperScaleCoords))
+            if @err return
+        }
 
         // Get result
         storeClipperResult(res)
@@ -140,20 +144,23 @@ impl Polygon
     {
         if !points.count return
 
-        var trf: Clipper.Transform
-        trf.strictSimple = true
-
-        // Register path
-        var path: Clipper.ClipperPath
-        visit pt: points
-            path.add(Clipper.IntPoint{cast(s32) (pt.x * ClipperScaleCoords), cast(s32) (pt.y * ClipperScaleCoords)})
-        catch trf.addPath(&path, Clipper.PolyType.Subject)
-        if @err return
-
-        // Compute
         var res: Clipper.ClipperPaths
-        catch trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
-        if @err return
+        System.pushAllocator(@getcontext().tempAllocator)
+        {
+            var trf: Clipper.Transform
+            trf.strictSimple = true
+
+            // Register path
+            var path: Clipper.ClipperPath
+            visit pt: points
+                path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
+            catch trf.addPath(&path, Clipper.PolyType.Subject)
+            if @err return
+
+            // Compute
+            catch trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
+            if @err return
+        }
 
         // Get result
         storeClipperResult(res)

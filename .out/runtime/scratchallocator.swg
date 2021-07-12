@@ -66,7 +66,7 @@ impl ScratchAllocator
     // be called at an early stage
     func setCapacity(using self, newCapacity: uint, alloc: IAllocator = null)
     {
-        if capacity == newCapacity
+        if capacity == newCapacity and block
             return
         release()
 

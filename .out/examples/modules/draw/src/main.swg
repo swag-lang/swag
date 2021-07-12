@@ -543,7 +543,7 @@ func messageLoop()
 
     loop
     {
-        //Console.print(@getcontext().tempAllocator.maxUsed, "\n")
+        //Console.printf("max used: %\n", @getcontext().tempAllocator.maxUsed)
         Memory.freeTemp()
 
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
