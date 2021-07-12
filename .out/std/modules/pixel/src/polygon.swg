@@ -127,12 +127,10 @@ impl Polygon
             var path: Clipper.ClipperPath
             visit pt: points
                 path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-            catch off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
-            if @err return
+            off.addPath(path, joinType, Clipper.EndType.ClosedPolygon)
 
             // Compute
-            catch off.execute(&res, cast(f64) (value * ClipperScaleCoords))
-            if @err return
+            off.execute(&res, cast(f64) (value * ClipperScaleCoords))
         }
 
         // Get result
@@ -154,12 +152,10 @@ impl Polygon
             var path: Clipper.ClipperPath
             visit pt: points
                 path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-            catch trf.addPath(&path, Clipper.PolyType.Subject)
-            if @err return
+            trf.addPath(&path, Clipper.PolyType.Subject)
 
             // Compute
-            catch trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
-            if @err return
+            trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
         }
 
         // Get result

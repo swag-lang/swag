@@ -75,7 +75,7 @@ impl Offset
         lowest.x = -1
     }
 
-    method addPath(path: ClipperPath, joinType: JoinType, endType: EndType) throw
+    method addPath(path: ClipperPath, joinType: JoinType, endType: EndType)
     {
         highI := cast(s32) path.count - 1
         if highI < 0 return
@@ -171,7 +171,7 @@ impl Offset
         }
     }
 
-    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false) throw
+    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
     {
         solution.clear()
         fixOrientations()
@@ -179,11 +179,11 @@ impl Offset
 
         var clpr: Transform
         visit *p: destPolys
-            try clpr.addPath(p, PolyType.Subject)
+            clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
         {
-            try clpr.execute(ClipType.Union, solution, PolyFillType.Positive, PolyFillType.Positive)
+            clpr.execute(ClipType.Union, solution, PolyFillType.Positive, PolyFillType.Positive)
         }
         else
         {
@@ -194,9 +194,9 @@ impl Offset
             outer.add(IntPoint{r.right + 10, r.top - 10})
             outer.add(IntPoint{r.left - 10, r.top - 10})
 
-            try clpr.addPath(&outer, PolyType.Subject)
+            clpr.addPath(&outer, PolyType.Subject)
             clpr.reverseOutput = reverseNeg
-            try clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
+            clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
             if solution.count > 0
                 solution.removeAt(0)
         }

@@ -202,7 +202,7 @@ public struct Transform
 
 impl Transform
 {
-    method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType) throw
+    method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType)
     {
         subjFillType  = subjFillT
         clipFillType  = clipFillT
@@ -210,12 +210,12 @@ impl Transform
         usingPolyTree = false
 
         defer disposeAllOutRecs()
-        try executeInternal()
+        executeInternal()
 
         buildResult(solution)
     }
 
-    method addPath(pg: *ClipperPath, polyType: PolyType) throw
+    method addPath(pg: *ClipperPath, polyType: PolyType)
     {
         highI := cast(int) pg.count - 1
         while highI > 0 and (pg.buffer[highI] == pg.buffer[0])
@@ -228,18 +228,15 @@ impl Transform
         IsFlat := true
 
         // 1. Basic (first) edge initialization ...
-        try
+        edges[1].curr = pg.buffer[1]
+        rangeTest(pg.buffer[0])
+        rangeTest(pg.buffer[highI])
+        initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
+        initEdge(&edges[highI], &edges[0], &edges[highI-1], pg.buffer[highI])
+        loop i: highI-1 .. 1
         {
-            edges[1].curr = pg.buffer[1]
-            rangeTest(pg.buffer[0], &useFullRange)
-            rangeTest(pg.buffer[highI], &useFullRange)
-            initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
-            initEdge(&edges[highI], &edges[0], &edges[highI-1], pg.buffer[highI])
-            loop i: highI-1 .. 1
-            {
-                rangeTest(pg.buffer[i], &useFullRange)
-                initEdge(&edges[i], &edges[i+1], &edges[i-1], pg.buffer[i])
-            }
+            rangeTest(pg.buffer[i])
+            initEdge(&edges[i], &edges[i+1], &edges[i-1], pg.buffer[i])
         }
 
         eStart := &edges[0]
@@ -278,7 +275,7 @@ impl Transform
         }
 
         if E.prev == E.next
-            throw "invalid path"
+            return
 
         //3. Do second stage of edge initialization ...
         E = eStart
@@ -291,7 +288,8 @@ impl Transform
         }
 
         //4. Finally, add edge bounds to LocalMinima list ...
-        if IsFlat throw "Flat path"
+        if IsFlat
+            return
 
         edgeList.add(edges);
         var leftBoundIsForward: bool
@@ -441,17 +439,13 @@ impl Transform
         return (pt2.y > pt1.y) == (pt2.y < pt3.y)
     }
 
-    func rangeTest(pt: IntPoint, useFullRange: *bool) throw
+    method rangeTest(pt: IntPoint)
     {
-        if dref useFullRange
+        if pt.x > LoRange or pt.y > LoRange or -pt.x > LoRange or -pt.y > LoRange
         {
+            useFullRange = true
             if pt.x > HiRange or pt.y > HiRange or -pt.x > HiRange or -pt.y > HiRange
-                throw "Coordinate outside allowed range"
-        }
-        else if pt.x > LoRange or pt.y > LoRange or -pt.x > LoRange or -pt.y > LoRange
-        {
-            dref useFullRange = true
-            try rangeTest(pt, useFullRange)
+                Debug.assert(false, "Coordinate outside allowed range")
         }
     }
 
@@ -1004,21 +998,21 @@ impl Transform
         ghostJoinList.clear()
     }
 
-    method executeInternal() throw
+    method executeInternal()
     {
         reset()
         maximaList.clear()
         sortedEdges = null
 
         var botY, topY: CInt
-        if !popScanbeam(&botY) throw "Error"
+        if !popScanbeam(&botY) return
 
         insertLocalMinimaIntoAEL(botY)
         while popScanbeam(&topY) or localMinimaPending()
         {
             processHorizontals()
             clearGhostJoins()
-            try processIntersections(topY)
+            processIntersections(topY)
             processEdgesAtTopOfScanbeam(topY)
             botY = topY
             insertLocalMinimaIntoAEL(botY)
@@ -1815,7 +1809,7 @@ impl Transform
         }
     }
 
-    method processIntersections(topY: CInt) throw
+    method processIntersections(topY: CInt)
     {
         if !activeEdges return
         buildIntersectList(topY)
@@ -1824,8 +1818,7 @@ impl Transform
 
         if IlSize == 1 or fixupIntersectionOrder()
             processIntersectList()
-        else
-            throw "processIntersections"
+
         sortedEdges = null
     }
 
