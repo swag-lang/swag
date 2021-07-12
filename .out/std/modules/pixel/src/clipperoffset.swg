@@ -199,7 +199,7 @@ impl Offset
         return result
     }
 
-    //#[Swag.inline]
+    #[Swag.inline]
     func round(val: f64)->CInt
     {
         if val < 0 return cast(CInt) (val - 0.5)
@@ -259,7 +259,9 @@ impl Offset
                     y := 0.0'f64
                     for j := 1; j <= steps; j += 1
                     {
-                        destPoly.add(IntPoint{round(srcPoly[0].x + x * delta), round(srcPoly[0].y + y * delta)})
+                        r1 := round(srcPoly[0].x + x * delta)
+                        r2 := round(srcPoly[0].y + y * delta)
+                        destPoly.add(IntPoint{r1, r2})
                         x2 := x
                         x = x * cosVal - sinVal * y
                         y = x2 * sinVal + y * cosVal
@@ -271,7 +273,9 @@ impl Offset
                     y := -1.0'f64
                     loop j: 4
                     {
-                        destPoly.add(IntPoint{round(srcPoly[0].x + x * delta), round(srcPoly[0].y + y * delta)})
+                        r1 := round(srcPoly[0].x + x * delta)
+                        r2 := round(srcPoly[0].y + y * delta)
+                        destPoly.add(IntPoint{r1, r2})
                         if x < 0 x = 1
                         else if y < 0 y = 1
                         else x = -1
