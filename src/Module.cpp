@@ -260,6 +260,8 @@ void Module::addFileNoLock(SourceFile* file)
         file->scopePrivate->parentScope = scopeRoot;
 
     // Keep track of the most recent file
+    if (!file->writeTime)
+        file->writeTime = OS::getFileWriteTime(file->path.c_str());
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
     // If the file is flagged as '#global export', register it
