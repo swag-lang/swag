@@ -1,4 +1,4 @@
-/*struct A
+struct A
 {
     x: s32
 }
@@ -11,11 +11,11 @@ func round(val: s32)->s32
 
 func titi(a: A)
 {
-    @print(a.x)
+    @assert(a.x == 36)
 }
 
-#[Swag.printbc, Swag.optim("", false)]
+#[/*Swag.printbc,*/ Swag.optim("", false)]
 #test
 {
-    titi(A{round(666)})
-}*/
+    titi(A{round(6)})
+}

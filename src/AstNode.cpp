@@ -1239,6 +1239,11 @@ AstNode* AstReturn::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstReturn>();
     newNode->copyFrom(context, this);
+
+    // If return in an inline block has already been solved, we need this flag !
+    if (context.rawClone)
+        newNode->semFlags |= semFlags & AST_SEM_EMBEDDED_RETURN;
+
     return newNode;
 }
 
@@ -1284,8 +1289,15 @@ AstNode* AstInline::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstInline>();
     newNode->copyFrom(context, this, false);
-    newNode->func            = func;
-    newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
+    newNode->func = func;
+
+    // Is this correct ? Seems a little wierd, but that way we do not have to copy the parametersScope
+    // content, which is not really possible for now (12/07/2021) (i.e. no way to copy already registered symbols in the scope).
+    // Because it can happen that an inline block already solved is copied.
+    // For example because of createTmpVarStruct, with inline calls as parameters: titi(A{round(6)}) => round already inlined.
+    // I guess one day this will hit me in the face...
+    newNode->parametersScope = parametersScope;
+    //newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
