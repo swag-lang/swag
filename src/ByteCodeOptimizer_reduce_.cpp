@@ -276,41 +276,37 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
     // leave the MakeStackPointer which will be removed later (?) if no more used
     if (ip[0].op == ByteCodeOp::MakeStackPointer &&
         ip[1].op == ByteCodeOp::SetAtPointer8 &&
-        ip[1].c.u32 == 0 &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         ip[1].op                      = ByteCodeOp::SetAtStackPointer8;
-        ip[1].a.u32                   = ip[0].b.u32;
+        ip[1].a.u32                   = ip[0].b.u32 + ip[1].c.u32;
         context->passHasDoneSomething = true;
     }
 
     if (ip[0].op == ByteCodeOp::MakeStackPointer &&
         ip[1].op == ByteCodeOp::SetAtPointer16 &&
-        ip[1].c.u32 == 0 &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         ip[1].op                      = ByteCodeOp::SetAtStackPointer16;
-        ip[1].a.u32                   = ip[0].b.u32;
+        ip[1].a.u32                   = ip[0].b.u32 + ip[1].c.u32;
         context->passHasDoneSomething = true;
     }
 
     if (ip[0].op == ByteCodeOp::MakeStackPointer &&
         ip[1].op == ByteCodeOp::SetAtPointer32 &&
-        ip[1].c.u32 == 0 &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         ip[1].op                      = ByteCodeOp::SetAtStackPointer32;
-        ip[1].a.u32                   = ip[0].b.u32;
+        ip[1].a.u32                   = ip[0].b.u32 + ip[1].c.u32;
         context->passHasDoneSomething = true;
     }
 
     if (ip[0].op == ByteCodeOp::MakeStackPointer &&
         ip[1].op == ByteCodeOp::SetAtPointer64 &&
-        ip[1].c.u32 == 0 &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         ip[1].op                      = ByteCodeOp::SetAtStackPointer64;
-        ip[1].a.u32                   = ip[0].b.u32;
+        ip[1].a.u32                   = ip[0].b.u32 + ip[1].c.u32;
         context->passHasDoneSomething = true;
     }
 
