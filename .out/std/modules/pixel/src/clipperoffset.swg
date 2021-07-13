@@ -94,9 +94,9 @@ impl Offset
             {
                 j += 1
                 newNode.contour.add(path.buffer[i])
-                if path[i].y > newNode.contour[k].y or
-                   (path[i].y == newNode.contour[k].y and path[i].x < newNode.contour[k].x)
-                        k = j
+                kC := newNode.contour[k]
+                if path[i].y > kC.y or (path[i].y == kC.y and path[i].x < kC.x)
+                    k = j
             }
         }
 
@@ -303,14 +303,19 @@ impl Offset
     method offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         k := dref ptrk
-        sinaVal = (normals[k].x * normals[j].y - normals[j].x * normals[k].y)
+
+        kN := normals[k]
+        jN := normals[j]
+        jP := srcPoly[j]
+
+        sinaVal = (kN.x * jN.y - jN.x * kN.y)
         if Math.abs(sinaVal * deltaVal) < 1.0
         {
-            cosA := (normals[k].x * normals[j].x + normals[j].y * normals[k].y)
+            cosA := (kN.x * jN.x + jN.y * kN.y)
             if cosA > 0
             {
-                r1 := round(srcPoly[j].x + normals[k].x * deltaVal)
-                r2 := round(srcPoly[j].y + normals[k].y * deltaVal)
+                r1 := round(jP.x + kN.x * deltaVal)
+                r2 := round(jP.y + kN.y * deltaVal)
                 destPoly.add(IntPoint{r1, r2})
                 return
             }
@@ -322,12 +327,12 @@ impl Offset
 
         if sinaVal * deltaVal < 0
         {
-            r1 := round(srcPoly[j].x + normals[k].x * deltaVal)
-            r2 := round(srcPoly[j].y + normals[k].y * deltaVal)
+            r1 := round(jP.x + kN.x * deltaVal)
+            r2 := round(jP.y + kN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
-            destPoly.add(dref srcPoly[j])
-            r1 = round(srcPoly[j].x + normals[j].x * deltaVal)
-            r2 = round(srcPoly[j].y + normals[j].y * deltaVal)
+            destPoly.add(dref jP)
+            r1 = round(jP.x + jN.x * deltaVal)
+            r2 = round(jP.y + jN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
         }
         else
@@ -335,7 +340,7 @@ impl Offset
             switch jointype
             {
             case Miter:
-                r := 1 + (normals[j].x * normals[k].x + normals[j].y * normals[k].y)
+                r := 1 + (jN.x * kN.x + jN.y * kN.y)
                 if r >= miterLim
                     doMiter(j, k, r)
                 else
