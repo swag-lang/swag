@@ -46,30 +46,68 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
         }
 
         // [Safety] no need to test if a parameter is not null multiple times
-        uint32_t paramIdx = UINT32_MAX;
+        uint32_t paramNPIdx = UINT32_MAX;
+        uint32_t paramNPReg = UINT32_MAX;
         if ((ip[1].flags & BCI_SAFETY) &&
             ip[0].op == ByteCodeOp::GetFromStackParam64 &&
             ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
             !(ip[1].flags & BCI_IMM_A) &&
             ip[0].a.u32 == ip[1].a.u32)
         {
-            paramIdx = ip[0].c.u32;
+            paramNPReg = ip[0].a.u32;
+            paramNPIdx = ip[0].c.u32;
+        }
+        else if (ip[0].op == ByteCodeOp::GetFromStackParam64 &&
+                 ip[1].op == ByteCodeOp::IncPointer64 &&
+                 ip[0].a.u32 == ip[1].a.u32 &&
+                 ip[1].a.u32 == ip[1].c.u32)
+        {
+            paramNPReg = ip[0].a.u32;
+            paramNPIdx = ip[0].c.u32;
         }
 
-        if (paramIdx == UINT32_MAX)
+        if (paramNPIdx == UINT32_MAX)
             return;
 
         parseTree(context, parseCxt.curNode, parseCxt.curIp, 0x00000002, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1) {
             auto ip1 = parseCxt1.curIp;
-            if (ip1 == ip)
+            if (ip1 == ip || ip1 == ip + 1)
                 return;
 
+            auto flags1 = g_ByteCodeOpFlags[(int) ip1->op];
+
+            // Incrmenting the tested pointer is fine. The safety check after on the same pointer could be removed...
+            if (ip1->op == ByteCodeOp::IncPointer64 && ip1->a.u32 == paramNPReg && ip1->c.u32 == paramNPReg)
+                paramNPReg = paramNPReg;
+            else
+            {
+                if ((flags1 & OPFLAG_WRITE_A) && !(ip1->flags & BCI_IMM_A) && ip1->a.u32 == paramNPReg)
+                    paramNPReg = UINT32_MAX;
+                if ((flags1 & OPFLAG_WRITE_B) && !(ip1->flags & BCI_IMM_B) && ip1->b.u32 == paramNPReg)
+                    paramNPReg = UINT32_MAX;
+                if ((flags1 & OPFLAG_WRITE_C) && !(ip1->flags & BCI_IMM_C) && ip1->c.u32 == paramNPReg)
+                    paramNPReg = UINT32_MAX;
+                if ((flags1 & OPFLAG_WRITE_D) && !(ip1->flags & BCI_IMM_D) && ip1->d.u32 == paramNPReg)
+                    paramNPReg = UINT32_MAX;
+            }
+
+            // Check not null done multiple times with the same register
+            if ((ip1[0].flags & BCI_SAFETY) &&
+                ip1[0].op == ByteCodeOp::JumpIfNotZero64 &&
+                !(ip1[0].flags & BCI_IMM_A) &&
+                ip1[0].a.u32 == paramNPReg)
+            {
+                ip1[0].op                     = ByteCodeOp::Jump;
+                context->passHasDoneSomething = true;
+            }
+
+            // Check not null done multiple times with the same parameter
             if ((ip1[1].flags & BCI_SAFETY) &&
                 ip1[0].op == ByteCodeOp::GetFromStackParam64 &&
                 ip1[1].op == ByteCodeOp::JumpIfNotZero64 &&
                 !(ip1[1].flags & BCI_IMM_A) &&
                 ip1[0].a.u32 == ip1[1].a.u32 &&
-                ip1[0].c.u32 == paramIdx)
+                ip1[0].c.u32 == paramNPIdx)
             {
                 ip1[1].op                     = ByteCodeOp::Jump;
                 context->passHasDoneSomething = true;

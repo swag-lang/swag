@@ -350,46 +350,57 @@ impl Offset
         dref ptrk = j
     }
 
-    //#[Swag.printbc]
     method doSquare(j, k: s32)
     {
-        dx := Math.tan(Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y) / 4)
-        r1 := round(srcPoly[j].x + deltaVal * (normals[k].x - normals[k].y * dx))
-        r2 := round(srcPoly[j].y + deltaVal * (normals[k].y + normals[k].x * dx))
+        kN := normals[k]
+        jN := normals[j]
+        jP := srcPoly[j]
+
+        dx := Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
+        r1 := round(jP.x + deltaVal * (kN.x - kN.y * dx))
+        r2 := round(jP.y + deltaVal * (kN.y + kN.x * dx))
         destPoly.add(IntPoint{r1, r2})
 
-        r1 = round(srcPoly[j].x + deltaVal * (normals[j].x + normals[j].y * dx))
-        r2 = round(srcPoly[j].y + deltaVal * (normals[j].y - normals[j].x * dx))
+        r1 = round(jP.x + deltaVal * (jN.x + jN.y * dx))
+        r2 = round(jP.y + deltaVal * (jN.y - jN.x * dx))
         destPoly.add(IntPoint{r1, r2})
     }
 
     method doMiter(j, k: s32, r: f64)
     {
+        kN := normals[k]
+        jN := normals[j]
+        jP := srcPoly[j]
+
         q := deltaVal / r
-        r1 := round(srcPoly[j].x + (normals[k].x + normals[j].x) * q)
-        r2 := round(srcPoly[j].y + (normals[k].y + normals[j].y) * q)
+        r1 := round(jP.x + (kN.x + jN.x) * q)
+        r2 := round(jP.y + (kN.y + jN.y) * q)
         destPoly.add(IntPoint{r1, r2})
     }
 
     method doRound(j, k: s32)
     {
-        a := Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y)
+        kN := normals[k]
+        jN := normals[j]
+        jP := srcPoly[j]
+
+        a := Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
         steps := Math.max(cast(s32) round(stepsPerRad * Math.abs(a)), 1)
 
-        x := normals[k].x
-        y := normals[k].y
+        x := kN.x
+        y := kN.y
         loop i: steps
         {
-            r1 := round(srcPoly[j].x + x * deltaVal)
-            r2 := round(srcPoly[j].y + y * deltaVal)
+            r1 := round(jP.x + x * deltaVal)
+            r2 := round(jP.y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             x2 := x
             x = x * cosVal - sinVal * y
             y = x2 * sinVal + y * cosVal
         }
 
-        r1 := round(srcPoly[j].x + normals[j].x * deltaVal)
-        r2 := round(srcPoly[j].y + normals[j].y * deltaVal)
+        r1 := round(jP.x + jN.x * deltaVal)
+        r2 := round(jP.y + jN.y * deltaVal)
         destPoly.add(IntPoint{r1, r2})
     }
 }
