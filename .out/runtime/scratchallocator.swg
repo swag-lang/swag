@@ -17,7 +17,7 @@ impl ScratchAllocator
         return result
     }
 
-    private func free(using self, addr: *void, size: uint)
+    private method free(addr: *void, size: uint)
     {
         var req: AllocatorRequest
         req.mode = .Free
@@ -26,7 +26,7 @@ impl ScratchAllocator
         allocator.alloc(&req)
     }
 
-    private func alloc(using self, size: uint, alignement: u32 = 0)->*void
+    private method alloc(size: uint, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest
         req.mode = .Alloc
@@ -37,7 +37,7 @@ impl ScratchAllocator
     }
 
     // Release the allocated block
-    func release(using self)
+    method release()
     {
         freeAll()
 
@@ -49,10 +49,9 @@ impl ScratchAllocator
     }
 
     // Restore all memory
-    func freeAll(using self)
+    method freeAll()
     {
         used = 0
-
         while firstLeak
         {
             p := cast(*LeakHeader) firstLeak
@@ -62,9 +61,17 @@ impl ScratchAllocator
         }
     }
 
+    // First initialize the allocator, by allocating the main block
+    // Will call 'setCapacity'
+    method setup()
+    {
+        c := #gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
+        setCapacity(c)
+    }
+
     // This will call 'release' prior to changing the capacity, so this must
     // be called at an early stage
-    func setCapacity(using self, newCapacity: uint, alloc: IAllocator = null)
+    method setCapacity(newCapacity: uint, alloc: IAllocator = null)
     {
         if capacity == newCapacity and block
             return

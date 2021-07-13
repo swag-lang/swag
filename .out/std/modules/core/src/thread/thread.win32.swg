@@ -19,12 +19,9 @@ func yield()
 private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
-
-    th.context.tempAllocator.block = null
-    th.context.tempAllocator.used = 0
     @setcontext(th.context)
-
     th.userLambda(dref th)
+    th.context.tempAllocator.release()
 }
 
 // Wait multiple threads
@@ -57,12 +54,18 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) throw
+    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
         Debug.assert(!isValid(), "thread already created")
         Debug.assert(lambda != null, "lambda parameter is null")
 
+        // Get a copy of current context, and initialize a temporary allocator for that thread
         context = dref @getcontext()
+        @init(&context.tempAllocator)
+        if tempAllocSize < 0
+            context.tempAllocator.setup()
+        else if tempAllocSize != 0
+            context.tempAllocator.setCapacity(cast(uint) tempAllocSize)
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
