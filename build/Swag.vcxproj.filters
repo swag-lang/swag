@@ -470,6 +470,9 @@
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeOptimizer_np_.cpp">
+      <Filter>ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

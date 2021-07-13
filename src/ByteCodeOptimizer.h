@@ -81,6 +81,7 @@ struct ByteCodeOptimizer
     static bool optimizePassRetCopyInline(ByteCodeOptContext* context);
     static bool optimizePassSwap(ByteCodeOptContext* context);
     static bool optimizePassErr(ByteCodeOptContext* context);
+    static bool optimizePassNullPointer(ByteCodeOptContext* context);
 
     static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);
     static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);
