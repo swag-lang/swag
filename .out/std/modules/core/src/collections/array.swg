@@ -62,6 +62,7 @@ impl Array
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
+    #[Swag.inline]
     func opIndex(using self, index: uint)->*T
         #selectif Reflection.isStruct(T)
     {
@@ -69,6 +70,7 @@ impl Array
         return buffer + index
     }
 
+    #[Swag.inline]
     func opIndex(using self, index: uint)->T
         #selectif !Reflection.isStruct(T)
     {

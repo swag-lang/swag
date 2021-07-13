@@ -350,6 +350,7 @@ impl Offset
         dref ptrk = j
     }
 
+    //#[Swag.printbc]
     method doSquare(j, k: s32)
     {
         dx := Math.tan(Math.atan2(sinaVal, normals[k].x * normals[j].x + normals[k].y * normals[j].y) / 4)
