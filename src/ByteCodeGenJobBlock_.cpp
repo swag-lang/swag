@@ -39,14 +39,24 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
     AstNode* allParams     = nullptr;
     int      numCallParams = 0;
-    if (node->parent->kind == AstNodeKind::Identifier)
+    parent                 = node->parent;
+
+    if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
-        auto identifier                             = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
+        allParams     = parent;
+        numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
+        while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
+            parent = parent->parent;
+        parent->resultRegisterRC = node->resultRegisterRC;
+    }
+    else if (parent->kind == AstNodeKind::Identifier)
+    {
+        auto identifier                             = CastAst<AstIdentifier>(parent, AstNodeKind::Identifier);
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         allParams                                   = identifier->callParameters;
         numCallParams                               = allParams ? (int) allParams->childs.size() : 0;
     }
-    else if (node->parent->kind == AstNodeKind::Loop)
+    else if (parent->kind == AstNodeKind::Loop)
     {
         // This should be opCount
         SWAG_ASSERT(node->parent->extension && node->parent->extension->resolvedUserOpSymbolOverload);
@@ -55,7 +65,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     }
     else
     {
-        allParams     = node->parent;
+        allParams     = parent;
         numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
     }
 
