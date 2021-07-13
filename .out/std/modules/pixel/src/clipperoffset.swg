@@ -225,7 +225,7 @@ impl Offset
             miterLim = 0.5
 
         const DefaultArcTolerance = 0.25'f64
-        var y: f64
+        var y: f64 = ?
         if arcTolerance <= 0.0
             y = DefaultArcTolerance
         else if arcTolerance > Math.abs(delta) * DefaultArcTolerance
@@ -233,13 +233,15 @@ impl Offset
         else
             y = arcTolerance
 
-        steps := Math.ConstF64.Pi / Math.acos(1 - y / Math.abs(delta))
-        if steps > Math.abs(delta) * Math.ConstF64.Pi
-            steps = Math.abs(delta) * Math.ConstF64.Pi
-        sinVal = Math.sin(Math.ConstF64.TwoPi / steps)
-        cosVal = Math.cos(Math.ConstF64.TwoPi / steps)
-        stepsPerRad = steps / Math.ConstF64.TwoPi
-        if (delta < 0.0) sinVal = -sinVal
+        const Pi    = Math.ConstF64.Pi
+        const TwoPi = Math.ConstF64.TwoPi
+        steps := Pi / Math.acos(1 - y / Math.abs(delta))
+        if steps > Math.abs(delta) * Pi
+            steps = Math.abs(delta) * Pi
+        sinVal = Math.sin(TwoPi / steps)
+        cosVal = Math.cos(TwoPi / steps)
+        stepsPerRad = steps / TwoPi
+        if delta < 0.0 sinVal = -sinVal
 
         destPolys.reserve(polyNodes.childs.count * 2)
         visit node, i: polyNodes.childs
