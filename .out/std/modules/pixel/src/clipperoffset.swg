@@ -200,14 +200,12 @@ impl Offset
     }
 
     #[Swag.inline]
-    func round(val: f64)->CInt
-    {
-        if val < 0 return cast(CInt) (val - 0.5)
-        return cast(CInt) (val + 0.5)
-    }
+    func cround(val: f64) => cast(CInt) Math.round(val)
 
     method doOffset(delta: f64)
     {
+        using Math
+
         destPolys.clear()
         deltaVal = delta
 
@@ -228,18 +226,18 @@ impl Offset
         var y: f64 = ?
         if arcTolerance <= 0.0
             y = DefaultArcTolerance
-        else if arcTolerance > Math.abs(delta) * DefaultArcTolerance
-            y = Math.abs(delta) * DefaultArcTolerance
+        else if arcTolerance > abs(delta) * DefaultArcTolerance
+            y = abs(delta) * DefaultArcTolerance
         else
             y = arcTolerance
 
-        const Pi    = Math.ConstF64.Pi
-        const TwoPi = Math.ConstF64.TwoPi
-        steps := Pi / Math.acos(1 - y / Math.abs(delta))
-        if steps > Math.abs(delta) * Pi
-            steps = Math.abs(delta) * Pi
-        sinVal = Math.sin(TwoPi / steps)
-        cosVal = Math.cos(TwoPi / steps)
+        const Pi    = ConstF64.Pi
+        const TwoPi = ConstF64.TwoPi
+        steps := Pi / acos(1 - y / abs(delta))
+        if steps > abs(delta) * Pi
+            steps = abs(delta) * Pi
+        sinVal = sin(TwoPi / steps)
+        cosVal = cos(TwoPi / steps)
         stepsPerRad = steps / TwoPi
         if delta < 0.0 sinVal = -sinVal
 
@@ -261,8 +259,8 @@ impl Offset
                     y := 0.0'f64
                     for j := 1; j <= steps; j += 1
                     {
-                        r1 := round(srcPoly[0].x + x * delta)
-                        r2 := round(srcPoly[0].y + y * delta)
+                        r1 := cround(srcPoly[0].x + x * delta)
+                        r2 := cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
                         x2 := x
                         x = x * cosVal - sinVal * y
@@ -275,8 +273,8 @@ impl Offset
                     y := -1.0'f64
                     loop j: 4
                     {
-                        r1 := round(srcPoly[0].x + x * delta)
-                        r2 := round(srcPoly[0].y + y * delta)
+                        r1 := cround(srcPoly[0].x + x * delta)
+                        r2 := cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
                         if x < 0 x = 1
                         else if y < 0 y = 1
@@ -316,8 +314,8 @@ impl Offset
             cosA := (kN.x * jN.x + jN.y * kN.y)
             if cosA > 0
             {
-                r1 := round(jP.x + kN.x * deltaVal)
-                r2 := round(jP.y + kN.y * deltaVal)
+                r1 := cround(jP.x + kN.x * deltaVal)
+                r2 := cround(jP.y + kN.y * deltaVal)
                 destPoly.add(IntPoint{r1, r2})
                 return
             }
@@ -329,12 +327,12 @@ impl Offset
 
         if sinaVal * deltaVal < 0
         {
-            r1 := round(jP.x + kN.x * deltaVal)
-            r2 := round(jP.y + kN.y * deltaVal)
+            r1 := cround(jP.x + kN.x * deltaVal)
+            r2 := cround(jP.y + kN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             destPoly.add(dref jP)
-            r1 = round(jP.x + jN.x * deltaVal)
-            r2 = round(jP.y + jN.y * deltaVal)
+            r1 = cround(jP.x + jN.x * deltaVal)
+            r2 = cround(jP.y + jN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
         }
         else
@@ -357,6 +355,7 @@ impl Offset
         dref ptrk = j
     }
 
+    #[Swag.printbc]
     method doSquare(j, k: s32)
     {
         kN := normals[k]
@@ -364,12 +363,12 @@ impl Offset
         jP := srcPoly[j]
 
         dx := Math.tan(Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
-        r1 := round(jP.x + deltaVal * (kN.x - kN.y * dx))
-        r2 := round(jP.y + deltaVal * (kN.y + kN.x * dx))
+        r1 := cround(jP.x + deltaVal * (kN.x - kN.y * dx))
+        r2 := cround(jP.y + deltaVal * (kN.y + kN.x * dx))
         destPoly.add(IntPoint{r1, r2})
 
-        r1 = round(jP.x + deltaVal * (jN.x + jN.y * dx))
-        r2 = round(jP.y + deltaVal * (jN.y - jN.x * dx))
+        r1 = cround(jP.x + deltaVal * (jN.x + jN.y * dx))
+        r2 = cround(jP.y + deltaVal * (jN.y - jN.x * dx))
         destPoly.add(IntPoint{r1, r2})
     }
 
@@ -380,8 +379,8 @@ impl Offset
         jP := srcPoly[j]
 
         q := deltaVal / r
-        r1 := round(jP.x + (kN.x + jN.x) * q)
-        r2 := round(jP.y + (kN.y + jN.y) * q)
+        r1 := cround(jP.x + (kN.x + jN.x) * q)
+        r2 := cround(jP.y + (kN.y + jN.y) * q)
         destPoly.add(IntPoint{r1, r2})
     }
 
@@ -392,22 +391,22 @@ impl Offset
         jP := srcPoly[j]
 
         a := Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
-        steps := Math.max(cast(s32) round(stepsPerRad * Math.abs(a)), 1)
+        steps := Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
 
         x := kN.x
         y := kN.y
         loop i: steps
         {
-            r1 := round(jP.x + x * deltaVal)
-            r2 := round(jP.y + y * deltaVal)
+            r1 := cround(jP.x + x * deltaVal)
+            r2 := cround(jP.y + y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
             x2 := x
             x = x * cosVal - sinVal * y
             y = x2 * sinVal + y * cosVal
         }
 
-        r1 := round(jP.x + jN.x * deltaVal)
-        r2 := round(jP.y + jN.y * deltaVal)
+        r1 := cround(jP.x + jN.x * deltaVal)
+        r2 := cround(jP.y + jN.y * deltaVal)
         destPoly.add(IntPoint{r1, r2})
     }
 }
