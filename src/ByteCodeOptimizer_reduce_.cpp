@@ -2217,27 +2217,37 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             }
         }
 
-        if (ip[1].op == ByteCodeOp::JumpIfNotZero64 && !(ip[1].flags & BCI_IMM_A))
+        // Testing if a stack pointer is not null is irrelevant. This can happen often because of
+        // safety checks, when dereferencing a struct on the stack
+        if ((ip[0].op == ByteCodeOp::MakeStackPointer || ip[0].op == ByteCodeOp::CopyRRtoRC) &&
+            ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            ip[0].a.u32 == ip[1].a.u32)
         {
-            // Testing if a stack pointer is not null is irrelevant. This can happen often because of
-            // safety checks, when dereferencing a struct on the stack
-            if ((ip[0].op == ByteCodeOp::MakeStackPointer ||
-                 ip[0].op == ByteCodeOp::CopyRRtoRC) &&
-                ip[0].a.u32 == ip[1].a.u32)
-            {
-                context->passHasDoneSomething = true;
-                ip[1].op                      = ByteCodeOp::Jump;
-            }
+            ip[1].op                      = ByteCodeOp::Jump;
+            context->passHasDoneSomething = true;
+        }
 
-            // Testing if a pointer is not null is irrelevant if previous instruction has incremented the pointer.
-            if (ip[0].op == ByteCodeOp::IncPointer64 &&
-                ip[0].c.u32 == ip[1].a.u32 &&
-                (ip[0].flags & BCI_IMM_B) &&
-                ip[0].b.u32)
-            {
-                context->passHasDoneSomething = true;
-                ip[1].op                      = ByteCodeOp::Jump;
-            }
+        if (ip[0].op == ByteCodeOp::CopyRTtoRC &&
+            ip[1].op == ByteCodeOp::IncSPPostCall &&
+            ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
+            !(ip[2].flags & BCI_IMM_A) &&
+            ip[0].a.u32 == ip[2].a.u32)
+        {
+            ip[2].op                      = ByteCodeOp::Jump;
+            context->passHasDoneSomething = true;
+        }
+
+        // Testing if a pointer is not null is irrelevant if previous instruction has incremented the pointer.
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            ip[0].c.u32 == ip[1].a.u32 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].b.u32)
+        {
+            ip[1].op                      = ByteCodeOp::Jump;
+            context->passHasDoneSomething = true;
         }
 
         // A = something followed by B = A
