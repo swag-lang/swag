@@ -65,8 +65,13 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             paramNPReg = ip[0].a.u32;
             paramNPIdx = ip[0].c.u32;
         }
+        else if ((ip[0].flags & BCI_SAFETY) &&
+                 ip[0].op == ByteCodeOp::JumpIfNotZero64)
+        {
+            paramNPReg = ip[0].a.u32;
+        }
 
-        if (paramNPIdx == UINT32_MAX)
+        if (paramNPIdx == UINT32_MAX && paramNPReg == UINT32_MAX)
             return;
 
         parseTree(context, parseCxt.curNode, parseCxt.curIp, 0x00000002, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1) {

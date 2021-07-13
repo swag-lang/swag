@@ -355,7 +355,6 @@ impl Offset
         dref ptrk = j
     }
 
-    #[Swag.printbc]
     method doSquare(j, k: s32)
     {
         kN := normals[k]
