@@ -643,9 +643,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
 
-        emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
+            emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
             ensureCanBeChangedRC(context, node->resultRegisterRC);
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != 0xFFFFFFFF);
@@ -654,9 +654,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
 
         if (!(node->forceTakeAddress()))
+        {
+            emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
             emitStructDeRef(context);
+        }
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
+        {
+            emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
