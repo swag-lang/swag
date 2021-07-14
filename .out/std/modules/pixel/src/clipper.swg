@@ -206,10 +206,9 @@ impl Transform
         clipType      = clipT
         usingPolyTree = false
 
-        defer disposeAllOutRecs()
         executeInternal()
-
         buildResult(solution)
+        disposeAllOutRecs()
     }
 
     method addPath(pg: *ClipperPath, polyType: PolyType)
@@ -219,7 +218,8 @@ impl Transform
             highI -= 1
         while highI > 0 and (pg.buffer[highI] == pg.buffer[highI -1])
             highI -= 1
-        if highI < 2 return
+        if highI < 2
+            return
 
         edges  := Memory.new'Edge(cast(uint) highI + 1)
         isFlat := true
