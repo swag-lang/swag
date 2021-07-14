@@ -5,7 +5,7 @@ struct Color
 
 impl Color
 {
-    //#[Swag.implicit]
+    //#[Swag.Implicit]
     func opAffect(using self, v: bool)
     {
         b = v

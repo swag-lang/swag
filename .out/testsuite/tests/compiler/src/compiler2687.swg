@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.implicit]
+#[Swag.Implicit]
 func toto()
 {
 }

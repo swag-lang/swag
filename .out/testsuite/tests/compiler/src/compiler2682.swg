@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[Swag.implicit, Swag.complete]
+    #[Swag.Implicit, Swag.complete]
     func opAffect(using self, p: s64)
     {
         x = p

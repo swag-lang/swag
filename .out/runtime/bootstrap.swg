@@ -45,7 +45,7 @@ namespace Swag
     attr test()
 
     #[AttrUsage(AttributeUsage.Function)]
-    attr implicit()
+    attr Implicit()
 
     // Hardcoded also for switch
     #[AttrUsage(AttributeUsage.Function)]

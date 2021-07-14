@@ -17,7 +17,7 @@ func toto1()
 
 impl AA
 {
-    #[Swag.implicit]
+    #[Swag.Implicit]
     func opCast(using self)->s64
     {
         return x

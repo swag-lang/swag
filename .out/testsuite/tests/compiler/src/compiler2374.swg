@@ -12,7 +12,7 @@ impl AA
         return other == "toto"
     }
 
-    #[implicit]
+    #[Implicit]
     func opCast(using self)->string
     {
         return "toto"
