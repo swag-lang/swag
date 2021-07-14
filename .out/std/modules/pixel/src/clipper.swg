@@ -1360,13 +1360,13 @@ impl Transform
 
     func joinHorz(op1P, op1bP, op2P, op2bP: *OutPt, pt: IntPoint, discardLeft: bool)->bool
     {
-        op1 := op1P
-        op1b:= op1bP
-        op2 := op2P
-        op2b:= op2bP
+        op1  := op1P
+        op1b := op1bP
+        op2  := op2P
+        op2b := op2bP
 
-        var dir1: Direction = (op1.pt.x > op1b.pt.x ? .RightToLeft : .LeftToRight)
-        var dir2: Direction = (op2.pt.x > op2b.pt.x ? .RightToLeft : .LeftToRight)
+        dir1 := op1.pt.x > op1b.pt.x ? Direction.RightToLeft : Direction.LeftToRight
+        dir2 := op2.pt.x > op2b.pt.x ? Direction.RightToLeft : Direction.LeftToRight
         if dir1 == dir2
             return false
 
@@ -1478,12 +1478,12 @@ impl Transform
         return left < right
     }
 
-    func dupOutPt(outPt: *OutPt, InsertAfter: bool)->*OutPt
+    func dupOutPt(outPt: *OutPt, insertAfter: bool)->*OutPt
     {
         result := Memory.new'OutPt()
         result.pt = outPt.pt
         result.idx = outPt.idx
-        if InsertAfter
+        if insertAfter
         {
             result.next = outPt.next
             result.prev = outPt
@@ -1508,7 +1508,8 @@ impl Transform
         {
             op.idx = outrec.idx
             op = op.prev
-            if op == outrec.pts break
+            if op == outrec.pts
+                break
         }
     }
 
@@ -1534,8 +1535,10 @@ impl Transform
                     else
                     {
                         d := cast(f64) (op.pt.x - pt.x) * (op.next.pt.y - pt.y) - cast(f64) (op.next.pt.x - pt.x) * (op.pt.y - pt.y)
-                        if d == 0 return -1
-                        if (d > 0) == (op.next.pt.y > op.pt.y) result = 1 - result
+                        if d == 0
+                            return -1
+                        if (d > 0) == (op.next.pt.y > op.pt.y)
+                            result = 1 - result
                     }
                 }
                 else
@@ -1543,14 +1546,17 @@ impl Transform
                     if op.next.pt.x > pt.x
                     {
                         d := cast(f64) (op.pt.x - pt.x) * (op.next.pt.y - pt.y) - cast(f64) (op.next.pt.x - pt.x) * (op.pt.y - pt.y)
-                        if d == 0 return -1
-                        if (d > 0) == (op.next.pt.y > op.pt.y) result = 1 - result
+                        if d == 0
+                            return -1
+                        if (d > 0) == (op.next.pt.y > op.pt.y)
+                            result = 1 - result
                     }
                 }
             }
 
             op = op.next
-            if startOp == op break
+            if startOp == op
+                break
         }
 
         return result
@@ -1562,17 +1568,19 @@ impl Transform
         loop
         {
             res := pointInPolygon(op.pt, outPt2)
-            if res >= 0 return res > 0
+            if res >= 0
+                return res > 0
             op = op.next
-            if op == outPt1 break
+            if op == outPt1
+                break
         }
 
         return true
     }
 
-    func parseFirstLeft(FL: *OutRec)->*OutRec
+    func parseFirstLeft(fl: *OutRec)->*OutRec
     {
-        firstLeft := FL
+        firstLeft := fl
         while firstLeft and !firstLeft.pts
             firstLeft = firstLeft.firstLeft
         return firstLeft
@@ -1627,16 +1635,23 @@ impl Transform
             outRec1 := getOutRec(join.outPt1.idx)
             outRec2 := getOutRec(join.outPt2.idx)
 
-            if !outRec1.pts or !outRec2.pts continue
-            if outRec1.isOpen or outRec2.isOpen continue
+            if !outRec1.pts or !outRec2.pts
+                continue
+            if outRec1.isOpen or outRec2.isOpen
+                continue
 
             var holeStateRec: *OutRec
-            if outRec1 == outRec2 holeStateRec = outRec1
-            else if outRec1RightOfOutRec2(outRec1, outRec2) holeStateRec = outRec2
-            else if outRec1RightOfOutRec2(outRec2, outRec1) holeStateRec = outRec1
-            else holeStateRec = getLowermostRec(outRec1, outRec2)
+            if outRec1 == outRec2
+                holeStateRec = outRec1
+            else if outRec1RightOfOutRec2(outRec1, outRec2)
+                holeStateRec = outRec2
+            else if outRec1RightOfOutRec2(outRec2, outRec1)
+                holeStateRec = outRec1
+            else
+                holeStateRec = getLowermostRec(outRec1, outRec2)
 
-            if !joinPoints(join, outRec1, outRec2) continue
+            if !joinPoints(join, outRec1, outRec2)
+                continue
 
             if (outRec1 == outRec2)
             {
@@ -1650,9 +1665,10 @@ impl Transform
                 {
                     outRec2.isHole = !outRec1.isHole
                     outRec2.firstLeft = outRec1
-                    if usingPolyTree fixupFirstLefts2(outRec2, outRec1)
+                    if usingPolyTree
+                        fixupFirstLefts2(outRec2, outRec1)
                     if (outRec2.isHole ^ reverseOutput) == (area(outRec2.pts) > 0)
-                    reversePolyPtLinks(outRec2.pts)
+                        reversePolyPtLinks(outRec2.pts)
 
                 }
                 else if poly2ContainsPoly1(outRec1.pts, outRec2.pts)
@@ -1662,16 +1678,17 @@ impl Transform
                     outRec2.firstLeft = outRec1.firstLeft
                     outRec1.firstLeft = outRec2
 
-                    if usingPolyTree fixupFirstLefts2(outRec1, outRec2)
-
+                    if usingPolyTree
+                        fixupFirstLefts2(outRec1, outRec2)
                     if (outRec1.isHole ^ reverseOutput) == (area(outRec1.pts) > 0)
-                    reversePolyPtLinks(outRec1.pts)
+                        reversePolyPtLinks(outRec1.pts)
                 }
                 else
                 {
                     outRec2.isHole = outRec1.isHole
                     outRec2.firstLeft = outRec1.firstLeft
-                    if usingPolyTree fixupFirstLefts1(outRec1, outRec2)
+                    if usingPolyTree
+                        fixupFirstLefts1(outRec1, outRec2)
                 }
 
             }
@@ -1686,11 +1703,13 @@ impl Transform
                     outRec1.firstLeft = outRec2.firstLeft
                 outRec2.firstLeft = outRec1
 
-                if usingPolyTree fixupFirstLefts3(outRec2, outRec1)
+                if usingPolyTree
+                    fixupFirstLefts3(outRec2, outRec1)
             }
         }
     }
 
+    #[Swag.Inline]
     func isMaxima(e: *Edge, y: CInt)->bool
     {
         return e and e.top.y == y and !e.nextInLML
@@ -1705,6 +1724,7 @@ impl Transform
         return result
     }
 
+    #[Swag.Inline]
     func isIntermediate(e: *Edge, y: CInt)->bool
     {
         return e.top.y == y and e.nextInLML
@@ -1718,7 +1738,7 @@ impl Transform
             if e.outIdx >= 0
                 addOutPt(e, e.top)
             deleteFromAEL(e)
-            return;
+            return
         }
 
         eNext := e.nextInAEL
