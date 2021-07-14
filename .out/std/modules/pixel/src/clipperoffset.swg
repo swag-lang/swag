@@ -41,8 +41,7 @@ struct DoublePoint
     x, y: f64
 }
 
-#[Swag.Opaque]
-public struct Offset
+struct Offset
 {
     miterLimit:     f64 = 2
     arcTolerance:   f64 = 0.25
@@ -69,8 +68,8 @@ impl Offset
 
     method clear()
     {
-        loop i: polyNodes.childs
-            Memory.delete(polyNodes.childs[i])
+        visit node: polyNodes.childs
+            Memory.delete(node)
         polyNodes.childs.clear()
         lowest.x = -1
     }
