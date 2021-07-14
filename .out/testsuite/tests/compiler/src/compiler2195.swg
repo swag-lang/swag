@@ -3,7 +3,7 @@
 
 var G = 0
 
-#[Swag.macro]
+#[Swag.Macro]
 func cstr(x: string)->string
 {
     defer G = 1

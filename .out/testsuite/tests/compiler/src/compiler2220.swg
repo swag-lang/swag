@@ -1,4 +1,4 @@
-#[Swag.macro]
+#[Swag.Macro]
 public func toto2220()
 {
     #[Swag.Safety("", true)]

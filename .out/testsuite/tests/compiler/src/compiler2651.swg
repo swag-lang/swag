@@ -1,7 +1,7 @@
 #[Swag.Inline]
 func res() => 666
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto(stmt: code)
 {
     #mixin stmt

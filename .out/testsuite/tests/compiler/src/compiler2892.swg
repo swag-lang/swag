@@ -3,7 +3,7 @@
 
 var G = 0
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto()
 {
     G = 1

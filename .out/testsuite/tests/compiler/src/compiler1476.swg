@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[Swag.macro]
+#[Swag.Macro]
 #test
 {
 }

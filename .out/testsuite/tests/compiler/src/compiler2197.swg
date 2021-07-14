@@ -14,7 +14,7 @@ impl CStr
     }
 }
 
-//#[Swag.macro]
+//#[Swag.Macro]
 func cstr(x: string)->CStr
 {
     var tmp: retval = ?

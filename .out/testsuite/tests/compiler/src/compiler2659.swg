@@ -1,4 +1,4 @@
-#[Swag.macro]
+#[Swag.Macro]
 func titi(stmt: code)
 {
     func tata()

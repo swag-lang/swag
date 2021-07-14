@@ -2,7 +2,7 @@ using Swag
 
 var G = 0
 
-#[macro]
+#[Macro]
 func toto()
 {
     func titi()

@@ -9,7 +9,7 @@ impl A
     #[Swag.Inline]
     func(T) titi(x, y: T) => 1'u32
 
-    #[Swag.macro]
+    #[Swag.Macro]
     func(ptr: bool) toto(using self, stmt: code)
     {
         #assert ptr == true

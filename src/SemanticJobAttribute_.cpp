@@ -227,7 +227,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_FOREIGN;
             else if (child->token.text == "Inline")
                 flags |= ATTRIBUTE_INLINE;
-            else if (child->token.text == "macro")
+            else if (child->token.text == "Macro")
                 flags |= ATTRIBUTE_MACRO;
             else if (child->token.text == "mixin")
                 flags |= ATTRIBUTE_MIXIN;

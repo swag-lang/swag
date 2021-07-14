@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         #mixin stmt

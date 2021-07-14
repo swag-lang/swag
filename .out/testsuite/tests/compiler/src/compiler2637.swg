@@ -15,7 +15,7 @@ struct BB
 
 impl BB
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func(N: s32) toto(stmt: code)
     {
         func titi()

@@ -681,7 +681,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 // @alias0 will contain the character
 // @alias1 will contain the character index
 // @alias2 will contain the byte index of that character within the utf8 sequence
-#[Swag.macro]
+#[Swag.Macro]
 func visitRunes(buffer: const [..] u8, stmt: code)
 {
     count := @countof(buffer)

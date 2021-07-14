@@ -1,6 +1,6 @@
 
 
-#[Swag.macro]
+#[Swag.Macro]
 func Visit(str: string, user: code)
 {
     ptr := @dataof(str)

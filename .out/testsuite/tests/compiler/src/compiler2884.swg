@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto()
 {
     var @alias1 = 0

@@ -2,7 +2,7 @@
 #global namespace System
 
 // Push a new execution context for the given block of code
-#[Swag.macro]
+#[Swag.Macro]
 func pushContext(cxt: Swag.Context, stmt: code)
 {
     prev := @getcontext()

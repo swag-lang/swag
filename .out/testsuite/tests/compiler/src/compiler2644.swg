@@ -1,13 +1,13 @@
 var G = 0
 
-#[Swag.macro]
+#[Swag.Macro]
 func titi(stmt: code)
 {
     #mixin stmt
     G *= 2
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto(stmt: code)
 {
     titi(stmt)

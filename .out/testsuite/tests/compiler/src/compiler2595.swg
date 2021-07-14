@@ -1,6 +1,6 @@
 using Swag
 
-#[macro]
+#[Macro]
 func toto(stmt: code)
 {
     struct Point

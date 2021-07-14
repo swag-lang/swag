@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func toto(using self)
     {
         if !myTruc

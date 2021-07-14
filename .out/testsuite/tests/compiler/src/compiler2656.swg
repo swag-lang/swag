@@ -10,7 +10,7 @@ impl AA
 
     }
 
-    #[Swag.macro]
+    #[Swag.Macro]
     func titi(using self, ptr: *void, stmt: code)
     {
         func toto(ptr: *void)

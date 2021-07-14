@@ -183,7 +183,7 @@ public func waitJob(job: *Job)
 // Exposed variables:
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
-#[Swag.macro]
+#[Swag.Macro]
 public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
     if(!@countof(range)) return
@@ -254,7 +254,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 // Exposed variables:
 // - index: current loop index
 // - data:  userData as passed to the macro
-#[Swag.macro]
+#[Swag.Macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
 {
     if !count return

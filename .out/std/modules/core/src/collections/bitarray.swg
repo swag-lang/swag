@@ -88,7 +88,7 @@ public impl BitArray
     }
 
     // Visit all the booleans
-    #[macro]
+    #[Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         #assert(ptr == false, "pointer visit not supported for BitArray")

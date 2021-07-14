@@ -8,7 +8,7 @@ struct(T) Arr
     x: T
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 public func(T) toto2648(v: [..] T, stmt: code)
 {
     /*func titi(val: *void)

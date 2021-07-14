@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto(stmt: code)
 {
     if true

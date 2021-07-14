@@ -1,4 +1,4 @@
-#[Swag.macro]
+#[Swag.Macro]
 func Visit(user: code)
 {
     var c: rune

@@ -55,7 +55,7 @@ func freeTemp()
 }
 
 // Push a new allocator for the given block of code
-#[Swag.macro]
+#[Swag.Macro]
 func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 {
     prev := @getcontext()
@@ -72,7 +72,7 @@ func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 }
 
 // Push the temporary allocator for the given block of code
-#[Swag.macro]
+#[Swag.Macro]
 func pushTempAllocator(stmt: code)
 {
     prev := @getcontext()

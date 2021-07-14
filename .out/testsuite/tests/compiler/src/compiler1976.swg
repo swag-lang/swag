@@ -10,7 +10,7 @@ const TITI = 5
 
 impl AA1976
 {
-    #[macro, NoReturn]
+    #[Macro, NoReturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         a := TITI

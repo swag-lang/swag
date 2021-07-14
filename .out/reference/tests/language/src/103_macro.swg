@@ -1,8 +1,8 @@
 #test
 {
-    // A macro, like a mixin, is declared like a function, but with the attribute 'Swag.macro'
+    // A macro, like a mixin, is declared like a function, but with the attribute 'Swag.Macro'
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func myMacro()
         {
         }
@@ -11,7 +11,7 @@
     // Unlike a mixin, a macro has its own scope, and cannot conflict with the function
     // it is inserted inside
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func myMacro()
         {
             a := 666
@@ -25,7 +25,7 @@
 
     // But you can force an identifier to be found outside of the scope of the macro
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func myMacro()
         {
             `a += 1 // Back ticked to reference the 'a' of the caller
@@ -39,7 +39,7 @@
 
     // Like a mixin, macro accepts 'code' parameters
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func myMacro(what: code)
         {
             #mixin what
@@ -61,7 +61,7 @@
     // same scope of the caller. That is, no back tick is necessary to reference
     // variables of the caller.
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func myMacro(what: code)
         {
             // No conflict, in its own scope
@@ -86,7 +86,7 @@
     // You can extend the language with macros, without using pointers to functions
     // (no lambda call cost)
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func repeat(count: s32, what: code)
         {
             a := 0
@@ -112,7 +112,7 @@
     // When you need 'break' in the user code to break outside of
     // a multi loop
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
         {
             label up loop count
@@ -141,7 +141,7 @@
     // In a macro, you can use special variables named '@alias<num>'
     // Note that this is also valid for mixins.
     {
-        #[Swag.macro]
+        #[Swag.Macro]
         func call(v: s32, stmt: code)
         {
             @alias0 := v

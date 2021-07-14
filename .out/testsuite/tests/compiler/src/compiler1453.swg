@@ -7,7 +7,7 @@ struct S
 
 impl S
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: s32)
     {
         loop 10

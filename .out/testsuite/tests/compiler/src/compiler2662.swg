@@ -1,6 +1,6 @@
 var G = 0
 
-#[Swag.macro]
+#[Swag.Macro]
 func toto(stmt: code)
 {
     func tata()
@@ -11,7 +11,7 @@ func toto(stmt: code)
     tata()
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 func titi(stmt: code)
 {
     toto()

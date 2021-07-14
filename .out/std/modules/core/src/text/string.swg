@@ -143,7 +143,7 @@ impl String
     // Visit the String utf8 bytes
     // @alias0 will contain the byte or the pointer to the byte
     // @alias1 will contain the byte index
-    #[macro]
+    #[Macro]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         if !length
@@ -172,7 +172,7 @@ impl String
     // @alias0 will contain the character or the pointer to the character
     // @alias1 will contain the byte index of that character within the utf8 sequence
     // @alias2 will contain the character index
-    #[macro]
+    #[Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         if !length

@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func toto()
     {
         `a += 2

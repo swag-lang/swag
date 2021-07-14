@@ -2,7 +2,7 @@
 
 namespace tt
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func(ptr: bool) opVisit(x: string, stmt: code)
     {
         loop x #mixin stmt

@@ -36,7 +36,7 @@ namespace Swag
     attr Inline()
 
     #[AttrUsage(AttributeUsage.Function)]
-    attr macro()
+    attr Macro()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr mixin()

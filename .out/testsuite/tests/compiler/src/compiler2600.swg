@@ -3,7 +3,7 @@ using Swag
 
 var G = 0
 
-#[macro]
+#[Macro]
 func toto(cpt: s64, stmt: code)
 {
     //#[PrintBc]

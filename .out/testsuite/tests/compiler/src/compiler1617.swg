@@ -6,7 +6,7 @@ struct A
 //#[Swag.PrintBc]
 impl A
 {
-    #[Swag.macro]
+    #[Swag.Macro]
     func mac(using self)
     {
         xx = 666

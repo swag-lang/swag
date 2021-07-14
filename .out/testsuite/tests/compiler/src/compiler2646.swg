@@ -4,7 +4,7 @@ namespace AA
     {
     }
 
-    #[Swag.macro]
+    #[Swag.Macro]
     func toto(stmt: code)
     {
         func titi()

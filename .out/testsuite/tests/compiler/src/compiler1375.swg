@@ -26,7 +26,7 @@ func toto()
     cxt.allocator.alloc(&req)
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 func changeContext(user: code)
 {
     savedCxt := @getcontext()

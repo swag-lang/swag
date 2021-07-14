@@ -28,7 +28,7 @@ impl HashTable
         free()
     }
 
-    #[macro]
+    #[Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         if !count

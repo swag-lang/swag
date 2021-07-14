@@ -30,7 +30,7 @@ impl AA
     ew := AA.titi()
 }
 
-/*#[Swag.macro]
+/*#[Swag.Macro]
 func toto()
 {
     a := 0

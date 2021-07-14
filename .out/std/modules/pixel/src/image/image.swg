@@ -50,7 +50,7 @@ impl Image
         }
     }
 
-    #[Swag.macro]
+    #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         scan := pixels
@@ -140,7 +140,7 @@ impl Image
     // - image: the processed image
     // - index: the pixel index
     // - x, y: the pixel coordinates
-    #[Swag.macro]
+    #[Swag.Macro]
     func visitPixels(using self, userData: *void = null, stride: s32 = 1, stmt: code)
     {
         Debug.assert(stride > 0)

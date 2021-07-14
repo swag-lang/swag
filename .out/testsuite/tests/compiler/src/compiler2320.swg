@@ -1,4 +1,4 @@
-#[Swag.macro]
+#[Swag.Macro]
 func pushContext(cxt: Swag.Context, stmt: code)
 {
     prev := @getcontext()

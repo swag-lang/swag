@@ -3,7 +3,7 @@ struct R
     x: s32
 }
 
-#[Swag.macro]
+#[Swag.Macro]
 func vis(stmt: code)
 {
     #mixin stmt
