@@ -149,7 +149,6 @@ impl Offset
         }
     }
 
-    #[Swag.printbc]
     func area(poly: ClipperPath)->f64
     {
         size := cast(s32) poly.count
