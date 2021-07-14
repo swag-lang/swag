@@ -10,7 +10,7 @@ var G: u8 = 2
 var G1: u32 = 0xFFFFFFFF
 
 //#[Swag.PrintBc]
-#[Swag.safety("", false)]
+#[Swag.Safety("", false)]
 func toto()
 {
     consumeBits(G & 1)

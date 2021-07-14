@@ -1,4 +1,4 @@
-#[Swag.safety("overflow", true)]
+#[Swag.Safety("overflow", true)]
 {
 #semerror #assert cast(s8) 256 == 0
 #semerror #assert cast(s8) 257 == 0

@@ -2,7 +2,7 @@
 #global testerror
 #global testerror
 
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #[Swag.optim("", false)]
 #test
 {
@@ -10,7 +10,7 @@
     y := cast(u64) x
 }
 
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #[Swag.optim("", false)]
 #test
 {
@@ -18,7 +18,7 @@
     y := cast(u64) x
 }
 
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #[Swag.optim("", false)]
 #test
 {

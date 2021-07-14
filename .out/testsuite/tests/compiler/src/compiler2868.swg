@@ -1,7 +1,7 @@
 #global testerror
 
 //#[Swag.optim("", false)]
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #test
 {
     y := Swag.S32.Min

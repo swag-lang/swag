@@ -255,16 +255,16 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_NO_COPY;
             else if (child->token.text == "opaque")
                 flags |= ATTRIBUTE_OPAQUE;
-            else if (child->token.text == "safety")
+            else if (child->token.text == "Safety")
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("Swag.safety", "what", attrWhat);
+                curAttr->attributes.getValue("Swag.Safety", "what", attrWhat);
                 attrWhat.text.trim();
                 tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.safety", "value", attrValue);
+                curAttr->attributes.getValue("Swag.Safety", "value", attrValue);
 
                 if (attrWhat.text.empty())
                 {

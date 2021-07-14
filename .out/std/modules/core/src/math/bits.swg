@@ -55,7 +55,7 @@ func reverse(x: u16)->u16
 	return cast(u16) Rev8Arr[x >>,safe 8] | cast(u16) (Rev8Arr[x & 0xFF]) <<,safe 8
 }
 
-#[safety("overflow", false)]
+#[Safety("overflow", false)]
 #[ConstExpr]
 func reverse(x: u32)->u32
 {
@@ -68,7 +68,7 @@ func reverse(x: u32)->u32
 	return @byteswap(v)
 }
 
-#[safety("overflow", false)]
+#[Safety("overflow", false)]
 #[ConstExpr]
 func reverse(x: u64)->u64
 {

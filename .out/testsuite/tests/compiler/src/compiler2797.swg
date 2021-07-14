@@ -1,4 +1,4 @@
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #test
 {
     #semerror x := 10'u32 >> 32
@@ -7,7 +7,7 @@
     #semerror x := 10'u64 << 64
 }
 
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #test
 {
     x := 1

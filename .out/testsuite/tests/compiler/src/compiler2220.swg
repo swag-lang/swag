@@ -1,7 +1,7 @@
 #[Swag.macro]
 public func toto2220()
 {
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     a := 0
 }
 

@@ -4,7 +4,7 @@
 #global namespace Math
 using Swag
 
-#[Swag.safety("overflow", false)]
+#[Swag.Safety("overflow", false)]
 func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 {
 	const mask32 = (1'u64 << 32) - 1

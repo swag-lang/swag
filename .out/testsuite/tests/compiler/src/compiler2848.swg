@@ -1,4 +1,4 @@
-//#[Swag.safety("", true)]
+//#[Swag.Safety("", true)]
 //#[Swag.PrintBc]
 #test
 {

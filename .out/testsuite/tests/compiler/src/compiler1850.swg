@@ -12,6 +12,6 @@ struct A
 #test
 {
     var x : A
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     ptr := x.x[1]
 }

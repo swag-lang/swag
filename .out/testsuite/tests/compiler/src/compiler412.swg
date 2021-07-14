@@ -7,7 +7,7 @@
 	var c = @[666, 666];
 	var d: [..] s32 = c;
 
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     d[2] = 100;
 
 	//var c = {0};

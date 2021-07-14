@@ -6,6 +6,6 @@
 #test
 {
     a := "toto"
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     c := a[0..4]
 }

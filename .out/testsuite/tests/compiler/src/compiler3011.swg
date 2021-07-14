@@ -5,7 +5,7 @@ struct Vector
 
 impl Vector
 {
-    //#[Swag.PrintBc, Swag.safety("", false)]
+    //#[Swag.PrintBc, Swag.Safety("", false)]
     func max(x, y: Vector)->Vector
     {
         var result: retval = ?

@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #[Swag.optim("", false)]
 #test
 {

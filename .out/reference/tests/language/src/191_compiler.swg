@@ -71,7 +71,7 @@ attr EnumFlags()
 attr EnumIndex()
 
 #[AttrUsage(AttributeUsage.All)]
-attr safety(what: string, value: bool)
+attr Safety(what: string, value: bool)
 
 #[AttrUsage(AttributeUsage.All)]
 attr selectif(value: bool)

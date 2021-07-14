@@ -25,14 +25,14 @@ impl NumericArray
         return true
     }
 
-    #[safety("boundcheck", false), complete]
+    #[Safety("boundcheck", false), complete]
     func opAffect(using self, what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
         loop N buf[@index] = what[@index]
     }
 
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func from(values: T...)->Self
     {
         Debug.assert(@countof(values) == N)
@@ -42,14 +42,14 @@ impl NumericArray
     }
 
     // Set all values
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func setAll(using self, value: T)
     {
         loop N buf[@index] = value
     }
 
     // Set all values
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func set(using self, values: T...)
     {
         Debug.assert(@countof(values) == N)
@@ -57,42 +57,42 @@ impl NumericArray
     }
 
     // Add
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func add(using self, value: T)
     {
         loop N buf[@index] += value
     }
 
     // Multiply
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func mul(using self, value: T)
     {
         loop N buf[@index] *= value
     }
 
     // Multiply & add
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func mulAdd(using self, value1, value2: T)
     {
         loop N buf[@index] = (buf[@index] * value1) + value2
     }
 
     // Add
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func add(using self, value: Self)
     {
         loop N buf[@index] += value.buf[@index]
     }
 
     // Multiply
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func mul(using self, value: Self)
     {
         loop N buf[@index] *= value.buf[@index]
     }
 
     // Multiply & Add
-    #[safety("boundcheck", false)]
+    #[Safety("boundcheck", false)]
     func mulAdd(using self, value1, value2: Self)
     {
         loop N buf[@index] = (buf[@index] * value1[@index]) + value2.buf[@index]

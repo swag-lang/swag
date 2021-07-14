@@ -6,6 +6,6 @@
 #test
 {
     x := "64"
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     y := &x[3]
 }

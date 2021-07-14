@@ -5,7 +5,7 @@
 #test
 {
 	var a: *s32 = null;
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
 	if(a[0] == 0)
 	{
 	}

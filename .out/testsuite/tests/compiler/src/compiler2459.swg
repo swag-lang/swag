@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.safety("overflow", true)]
+#[Swag.Safety("overflow", true)]
 #test
 {
     var x: s8 = 0

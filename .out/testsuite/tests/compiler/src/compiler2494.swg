@@ -9,7 +9,7 @@ struct Node
 }
 
 //#[Swag.PrintBc]
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #test
 {
     var a, b: Node

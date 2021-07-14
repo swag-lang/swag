@@ -3,6 +3,6 @@
 #test
 {
 	var a: [4] s32;
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
 	var c = a[5];
 }

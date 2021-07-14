@@ -17,7 +17,7 @@
 #global if DEBUG == true
 
 // Some attributes can be assigned to the full file
-#global #[Swag.safety("", true)]
+#global #[Swag.Safety("", true)]
 
 // The file will be exported for external usage
 // It's like putting everything in public, except that the file will

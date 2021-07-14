@@ -34,7 +34,7 @@ impl Image
         PrevitVertical3x3A   = @[3, 0,    1, 0, -1, 1, 0, -1, 1, 0, -1]
     }
 
-    #[Swag.safety("", false)]
+    #[Swag.Safety("", false)]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
         // unsupported pixel format

@@ -21,7 +21,7 @@ impl CMWC4096
         c = value % 809430660
     }
 
-    #[Swag.safety("overflow", false)]
+    #[Swag.Safety("overflow", false)]
     func nextU32(using self)->u32
     {
         const a = 18782'u64

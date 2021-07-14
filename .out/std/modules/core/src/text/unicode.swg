@@ -174,7 +174,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
-        #[Swag.safety("boundcheck", false)]
+        #[Swag.Safety("boundcheck", false)]
         loop i: minLen
         {
             c1 := toLower(src[i])

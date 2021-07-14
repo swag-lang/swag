@@ -1,5 +1,5 @@
 #global namespace Hash
-#global #[Swag.safety("overflow", false)]
+#global #[Swag.Safety("overflow", false)]
 
 #[Swag.inline]
 {

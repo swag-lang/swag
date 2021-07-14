@@ -3,7 +3,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.optim("", false)]
-#[Swag.safety("", true)]
+#[Swag.Safety("", true)]
 #test
 {
     x := "toto"

@@ -13,7 +13,7 @@
         // + - * << >> and their equivalent += -= *= <<= >>=
         //
         // If you know what your are doing, you can use a special version of those operators, which will not panic.
-        // Add ',safe' after the operation. This will disable safety checks.
+        // Add ',safe' after the operation. This will disable Safety checks.
 
         x := 255'u8
         x +=,safe 1     // wrap around
@@ -25,10 +25,10 @@
     }
 
     {
-        // Note that you can remove safety checks with a special swag attribute
+        // Note that you can remove Safety checks with a special swag attribute
         // Can be defined for a file, a function, or just a piece of code.
         // "of" stands for "OverFlow".
-        #[Swag.safety("overflow", false)]
+        #[Swag.Safety("overflow", false)]
         {
             x := 255'u8
             x += 255    // 254

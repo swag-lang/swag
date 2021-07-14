@@ -2,7 +2,7 @@ using Swag
 
 ////////////////////////////////////////////////////////////
 #[Discardable]
-#[safety("", false)]
+#[Safety("", false)]
 func __itoa(result: *u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -40,7 +40,7 @@ func __itoa(result: *u8, value: s64)->*u8
 }
 
 #[Discardable]
-#[safety("", false)]
+#[Safety("", false)]
 func __utoa(result: *u8, value: u64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -71,7 +71,7 @@ func __utoa(result: *u8, value: u64)->*u8
     return retVal
 }
 
-#[safety("", false)]
+#[Safety("", false)]
 func __ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -156,7 +156,7 @@ func @print(params: ...)
 
         if ko.flags & TypeInfoFlags.TypeInfoPtr
         {
-            #[safety("castany", false)]
+            #[Safety("castany", false)]
             ptr := cast(const *TypeInfo) v
             __printString(ptr.flatName)
             continue
@@ -164,7 +164,7 @@ func @print(params: ...)
 
         if ko.kind == .Pointer
         {
-            #[safety("castany", false)]
+            #[Safety("castany", false)]
             __printU64(cast(u64) cast(uint) v)
             continue
         }
@@ -250,7 +250,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 }
 
 ////////////////////////////////////////////////////////////
-#[safety("", false)]
+#[Safety("", false)]
 func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces

@@ -1,7 +1,7 @@
 #[Swag.NoReturn, Swag.macro]
 func toto()
 {
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     #macro
     {
         return

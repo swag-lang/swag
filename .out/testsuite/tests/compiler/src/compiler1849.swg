@@ -5,7 +5,7 @@
 #test
 {
     var x : string
-    #[Swag.safety("", true)]
+    #[Swag.Safety("", true)]
     ptr := &x[1]
     @assert(:ptr == "A"'u8)
 }

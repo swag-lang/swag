@@ -1,7 +1,7 @@
 //https://github.com/golang/go/blob/master/src/strconv/extfloat.go
 
 #global namespace StrConv
-#global #[Swag.safety("overflow", false)]
+#global #[Swag.Safety("overflow", false)]
 
 // An extFloat represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the
@@ -479,7 +479,7 @@ impl FloatExt
 
         exp10 := frexp10Many(lower, self, upper)
 
-        // Take a safety margin due to rounding in frexp10Many, but we lose precision.
+        // Take a Safety margin due to rounding in frexp10Many, but we lose precision.
         upper.mant += 1
         lower.mant -= 1
 

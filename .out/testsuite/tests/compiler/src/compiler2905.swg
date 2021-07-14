@@ -2,7 +2,7 @@ func toto(x: s32)
 {
 }
 
-//#[Swag.safety("", false)]
+//#[Swag.Safety("", false)]
 //#[Swag.PrintBc]
 #test
 {
