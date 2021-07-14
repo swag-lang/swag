@@ -8,7 +8,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     cptPercent := countPercent(fmt)
     if cptPercent != @countof(values)
     {
-        #[selectif(false)]
+        #[SelectIf(false)]
         str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
         @errormsg(str, #location(values))
     }
@@ -44,7 +44,7 @@ func toString(fmt: string, values: ...)->String
     }
 {
     var buf: ConcatBuffer
-    #[selectif(false)]
+    #[SelectIf(false)]
     append(&buf, fmt, values)
     return buf.moveToString()
 }

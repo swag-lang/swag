@@ -100,7 +100,7 @@ namespace Swag
     attr Safety(what: string, value: bool)
 
     #[AttrUsage(AttributeUsage.All)]
-    attr selectif(value: bool)
+    attr SelectIf(value: bool)
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr optim(what: string, value: bool)
