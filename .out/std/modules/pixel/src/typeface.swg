@@ -37,7 +37,7 @@ impl TypeFace
         return tf
     }
 
-    #[Swag.callback]
+    #[Swag.Callback]
     private func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.newPath()
@@ -45,7 +45,7 @@ impl TypeFace
         return 0
     }
 
-    #[Swag.callback]
+    #[Swag.Callback]
     private func lineTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]
@@ -53,7 +53,7 @@ impl TypeFace
         return 0
     }
 
-    #[Swag.callback]
+    #[Swag.Callback]
     private func conicTo(ctrl, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]
@@ -61,7 +61,7 @@ impl TypeFace
         return 0
     }
 
-    #[Swag.callback]
+    #[Swag.Callback]
     private func bezierTo(ctrl1, ctrl2, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]

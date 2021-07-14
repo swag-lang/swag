@@ -177,7 +177,7 @@ func loadImg()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
 
-#[Swag.callback]
+#[Swag.Callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg

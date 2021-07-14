@@ -310,7 +310,7 @@ public func tcf_alloc(size: u32)
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-#[Swag.callback]
+#[Swag.Callback]
 public func tcf_entry(param: *void)
 {
     ptr := cast(*u64) param

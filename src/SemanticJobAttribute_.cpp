@@ -249,7 +249,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_TLS;
             else if (child->token.text == "strict")
                 flags |= ATTRIBUTE_STRICT;
-            else if (child->token.text == "callback")
+            else if (child->token.text == "Callback")
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "NoCopy")
                 flags |= ATTRIBUTE_NO_COPY;

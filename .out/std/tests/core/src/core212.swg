@@ -2,7 +2,7 @@
 
 using Win32, Core
 
-#[Swag.callback]
+#[Swag.Callback]
 func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     if msg == WM_DESTROY

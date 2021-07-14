@@ -16,7 +16,7 @@ private
 }
 
 ////////////////////////////////////////////////////////////
-#[Swag.callback]
+#[Swag.Callback]
 {
     func memset(dst: *void, value: s32, size: uint)
     {

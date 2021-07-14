@@ -472,7 +472,7 @@ func display()
     renderer.end()
 }
 
-#[Swag.callback]
+#[Swag.Callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg

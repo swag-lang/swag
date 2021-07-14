@@ -11,7 +11,7 @@ const INFINITE = 0xFFFFFFFF
 
 var G: u64
 
-#[Swag.callback]
+#[Swag.Callback]
 func entry(param: *void)
 {
     ptr := cast(*u64) param

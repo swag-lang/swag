@@ -22,7 +22,7 @@ func display()
     assume SwapBuffers(hDC)
 }
 
-#[Swag.callback]
+#[Swag.Callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
