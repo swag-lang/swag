@@ -21,7 +21,7 @@ var fontFam:    FontFamily
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 4
+var g_page:         s32 = 3
 const MaxPages = 5
 
 func dataPath()->String
@@ -323,7 +323,7 @@ func displayPage3()
     var lp: LinePath
     lp.start(50, 800)
     lp.bezierTo(800, 50, 250, 50)
-    cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 50))
+    cdc.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
 
     cdc.end()
     renderer.resetTransform()

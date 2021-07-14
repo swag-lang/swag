@@ -216,7 +216,8 @@ impl Painter
             point.y += (Math.sin(angle) * radius)
 
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
+            if dist < minDist
+                continue
 
             tmp.insertAt(cast(uint) i + 1, @{angle, point})
             i -= 1
@@ -265,10 +266,10 @@ impl Painter
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
         l := a.length()
-        if Math.isZeroEpsilon(l) return
+        if Math.isZeroEpsilon(l)
+            return
 
         m2 := (2 * w) / l
-
         if m2 > pen.joinMiterLimit
         {
             if justMiter
