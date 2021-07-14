@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glAttachShader(program: GLuint, shader: GLuint);
     func glBindAttribLocation(program: GLuint, index: GLuint, name: const *GLchar);

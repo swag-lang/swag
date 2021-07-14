@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glGetGraphicsResetStatus()->GLenum;
     func glGetnCompressedTexImage(target: GLenum, lod: GLint, bufSize: GLsizei, pixels: *GLvoid);

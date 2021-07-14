@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glBeginConditionalRender(id: GLuint, mode: GLenum);
     func glBeginTransformFeedback(primitiveMode: GLenum);

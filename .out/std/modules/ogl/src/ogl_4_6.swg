@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glMultiDrawArraysIndirectCount(mode: GLenum, indirect: const *GLvoid, drawcount: GLintptr, maxdrawcount: GLsizei, stride: GLsizei);
     func glMultiDrawElementsIndirectCount(mode: GLenum, type: GLenum, indirect: const *GLvoid, drawcount: GLintptr, maxdrawcount: GLsizei, stride: GLsizei);

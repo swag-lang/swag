@@ -1,7 +1,7 @@
 #global public
 using Swag
 
-#[extension]
+#[Extension]
 {
     func glBlendColor(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf);
     func glBlendEquation(mode: GLenum);

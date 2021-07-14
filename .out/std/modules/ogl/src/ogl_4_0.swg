@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glBlendEquationSeparatei(buf: GLuint, modeRGB: GLenum, modeAlpha: GLenum);
     func glBlendEquationi(buf: GLuint, mode: GLenum);

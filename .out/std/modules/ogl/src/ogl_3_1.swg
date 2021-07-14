@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glDrawArraysInstanced(mode: GLenum, first: GLint, count: GLsizei, primcount: GLsizei);
     func glDrawElementsInstanced(mode: GLenum, count: GLsizei, type: GLenum, indices: const *void, primcount: GLsizei);

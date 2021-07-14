@@ -2,9 +2,9 @@
 using Core, Swag, StrConv
 
 #[AttrUsage(AttributeUsage.Function)]
-attr extension()
+attr Extension()
 
-#[extension]
+#[Extension]
 {
     func extension1();
     func extension2();
@@ -23,7 +23,7 @@ var g: Array'OneFunc
     itf := @compiler()
     msg := itf.getMessage()
     if msg.type.kind != TypeInfoKind.Func return
-    if !Reflection.hasAttribute(msg.type, "__core214.extension") return
+    if !Reflection.hasAttribute(msg.type, "__core214.Extension") return
 
     g.add(@{msg.type, msg.name})
 }

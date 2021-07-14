@@ -2,34 +2,34 @@ using Swag
 
 // Attributes are tags associated with functions, structures etc...
 // They are declared like functions, with 'attr' before instead of 'func'
-attr attributeA();
+attr AttributeA();
 
 // Attributes can have parameters
-attr attributeB(x, y: s32, z: string);
+attr AttributeB(x, y: s32, z: string);
 
 // Attributes can have default values
-attr attributeBA(x: s32, y: string = "string");
+attr AttributeBA(x: s32, y: string = "string");
 
 // You can define a usage before the attribute definition to restric its use
 #[AttrUsage(AttributeUsage.Function)]
-attr attributeC();
+attr AttributeC();
 
 // To use an attribute, syntax is #[attribute, attribute...]
-#[attributeA, attributeB(0, 0, "string")]
+#[AttributeA, AttributeB(0, 0, "string")]
 func function1()
 {
 }
 
 // You can declare multiple usages
 #[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]
-attr attributeD(x: s32);
+attr AttributeD(x: s32);
 
-#[attributeD(6)]
+#[AttributeD(6)]
 func function2()
 {
 }
 
-#[attributeD(150)]
+#[AttributeD(150)]
 struct struct1
 {
 }

@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glVertexAttribDivisor(index: GLuint, divisor: GLuint);
 }

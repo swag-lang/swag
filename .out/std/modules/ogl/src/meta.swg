@@ -1,7 +1,7 @@
 using Core, Swag, StrConv
 
 #[AttrUsage(AttributeUsage.Function)]
-attr extension()
+attr Extension()
 
 struct OneFunc
 {
@@ -16,7 +16,7 @@ private var g_Functions: Array'OneFunc
 {
     itf := @compiler()
     msg := itf.getMessage()
-    if !Reflection.hasAttribute(msg.type, "Ogl.extension") return
+    if !Reflection.hasAttribute(msg.type, "Ogl.Extension") return
 
     g_Functions.add(@{msg.type, msg.name})
 }

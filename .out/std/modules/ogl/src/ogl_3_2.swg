@@ -1,6 +1,6 @@
 #global public
 
-#[extension]
+#[Extension]
 {
     func glFramebufferTexture(target: GLenum, attachment: GLenum, texture: GLuint, level: GLint);
     func glGetBufferParameteri64v(target: GLenum, value: GLenum, data: *GLint64);
