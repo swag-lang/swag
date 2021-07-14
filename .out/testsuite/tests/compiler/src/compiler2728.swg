@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.discardable]
+#[Swag.Discardable]
 func toto()
 {
 

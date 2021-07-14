@@ -308,7 +308,7 @@ struct PROCESS_INFORMATION
     dwThreadId:     DWORD
 }
 
-#[foreign("kernel32"), discardable]
+#[foreign("kernel32"), Discardable]
 {
     func SwitchToThread()->BOOL;
 }
@@ -437,7 +437,7 @@ namespace Win32Priv
         return h
     }
 
-    #[discardable]
+    #[Discardable]
     func ResumeThread(hThread: HANDLE)->DWORD throw
     {
         res := Win32Priv.ResumeThread(hThread)
@@ -452,7 +452,7 @@ namespace Win32Priv
             try setError(GetLastError())
     }
 
-    #[discardable]
+    #[Discardable]
     func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD throw
     {
         res := Win32Priv.WaitForSingleObject(hHandle, dwMilliseconds)
@@ -461,7 +461,7 @@ namespace Win32Priv
         return res
     }
 
-    #[discardable]
+    #[Discardable]
     func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD throw
     {
         res := Win32Priv.WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds)
@@ -547,7 +547,7 @@ namespace Win32Priv
         }
     }
 
-    #[discardable]
+    #[Discardable]
     func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL throw
     {
         res := Win32Priv.WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped)
@@ -672,7 +672,7 @@ namespace Win32Priv
             try setError(GetLastError())
     }
 
-    #[discardable]
+    #[Discardable]
     func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD throw
     {
         low := Win32Priv.SetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod)
@@ -689,7 +689,7 @@ namespace Win32Priv
         return low
     }
 
-    #[discardable]
+    #[Discardable]
     func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD throw
     {
         res := Win32Priv.GetFullPathNameA(lpFileName, nBufferLength, lpBuffer, lpFilePart)
@@ -698,7 +698,7 @@ namespace Win32Priv
         return res
     }
 
-    #[discardable]
+    #[Discardable]
     func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD throw
     {
         res := Win32Priv.GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart)

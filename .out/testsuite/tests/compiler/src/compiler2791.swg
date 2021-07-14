@@ -2,6 +2,6 @@
 
 #test
 {
-    #[Swag.discardable]
+    #[Swag.Discardable]
     var x: s32
 }

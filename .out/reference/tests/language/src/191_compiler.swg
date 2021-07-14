@@ -41,7 +41,7 @@ attr foreign(module: string, function: string = "");
 attr callback()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]
-attr discardable()
+attr Discardable()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
 attr deprecated(msg: string = null)

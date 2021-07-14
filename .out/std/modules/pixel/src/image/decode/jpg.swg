@@ -1611,7 +1611,7 @@ impl Decoder
         if !res throw "unexpected marker"
     }
 
-    #[safety("overflow", false), discardable]
+    #[safety("overflow", false), Discardable]
     func getBits1(using self, numBits: s32)->u32
     {
         i := bitBuf >> cast(u32) ((16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1632,7 +1632,7 @@ impl Decoder
         return i
     }
 
-    #[safety("overflow", false), discardable]
+    #[safety("overflow", false), Discardable]
     func getBits2(using self, numBits: s32)->u32
     {
         i := (bitBuf >> cast(u32) (16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1744,7 +1744,7 @@ impl Decoder
         return cast(Marker) c
     }
 
-    #[discardable]
+    #[Discardable]
     func processMarkers(using self)->Marker throw
     {
         loop

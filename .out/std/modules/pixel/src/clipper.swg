@@ -2323,7 +2323,7 @@ impl Transform
         }
     }
 
-    #[Swag.discardable]
+    #[Swag.Discardable]
     method addOutPt(e: *Edge, pt: IntPoint)->*OutPt
     {
         if e.outIdx < 0
@@ -2362,7 +2362,7 @@ impl Transform
         }
     }
 
-    #[Swag.discardable]
+    #[Swag.Discardable]
     method addLocalMinPoly(e1, e2: *Edge, pt: IntPoint)->*OutPt
     {
         var result: *OutPt

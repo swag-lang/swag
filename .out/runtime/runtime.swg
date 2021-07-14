@@ -1,7 +1,7 @@
 using Swag
 
 ////////////////////////////////////////////////////////////
-#[discardable]
+#[Discardable]
 #[safety("", false)]
 func __itoa(result: *u8, value: s64)->*u8
 {
@@ -39,7 +39,7 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
-#[discardable]
+#[Discardable]
 #[safety("", false)]
 func __utoa(result: *u8, value: u64)->*u8
 {

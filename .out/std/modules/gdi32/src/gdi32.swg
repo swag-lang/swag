@@ -96,7 +96,7 @@ namespace gdi32priv
             try setError(GetLastError())
     }
 
-    #[discardable]
+    #[Discardable]
     func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
     {
         res := gdi32priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)

@@ -61,7 +61,7 @@ namespace Swag
     attr callback()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]
-    attr discardable()
+    attr Discardable()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
     attr deprecated(msg: string = null)
@@ -574,7 +574,7 @@ func @memcmp(dst, src: const *void, size: uint)->s32;
 func @cstrlen(value: const *u8)->uint;
 
 // Atomic operations
-#[Swag.discardable]
+#[Swag.Discardable]
 {
     func @atomadd(addr: *s8, value: s8)->s8;
     func @atomadd(addr: *s16, value: s16)->s16;

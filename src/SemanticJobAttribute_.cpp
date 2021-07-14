@@ -241,7 +241,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_NO_BSS;
             else if (child->token.text == "NoReturn")
                 flags |= ATTRIBUTE_NO_RETURN;
-            else if (child->token.text == "discardable")
+            else if (child->token.text == "Discardable")
                 flags |= ATTRIBUTE_DISCARDABLE;
             else if (child->token.text == "deprecated")
                 flags |= ATTRIBUTE_DEPRECATED;

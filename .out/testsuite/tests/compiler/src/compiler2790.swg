@@ -2,7 +2,7 @@
 
 interface AA
 {
-    //#[Swag.discardable]
+    //#[Swag.Discardable]
     fb: func(self)->s32
 }
 
