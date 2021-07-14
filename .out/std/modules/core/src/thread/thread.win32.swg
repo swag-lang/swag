@@ -92,7 +92,7 @@ impl Thread
         self.priority = newPrio
 
         wprio := 0
-        #[Swag.complete]
+        #[Swag.Complete]
         switch newPrio
         {
             case Lowest:        wprio = THREAD_PRIORITY_LOWEST

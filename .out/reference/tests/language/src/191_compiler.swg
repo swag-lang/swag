@@ -29,7 +29,7 @@ attr implicit()
 
 // Hardcoded also for switch
 #[AttrUsage(AttributeUsage.Function)]
-attr complete()
+attr Complete()
 
 #[AttrUsage(AttributeUsage.Function)]
 attr NoReturn()

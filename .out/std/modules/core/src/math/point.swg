@@ -15,7 +15,7 @@ impl Point
     // Represents a Point with all coordinates to one
     const One:  Point{1, 1}
 
-    #[Swag.complete]
+    #[Swag.Complete]
     func opAffect(using self, value: f32)
     {
         x, y = value

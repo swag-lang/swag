@@ -25,7 +25,7 @@ impl NumericArray
         return true
     }
 
-    #[Safety("boundcheck", false), complete]
+    #[Safety("boundcheck", false), Complete]
     func opAffect(using self, what: const [..] T)
     {
         Debug.assert(@countof(what) == N)

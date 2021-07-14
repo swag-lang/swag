@@ -16,7 +16,7 @@ impl enum PixelFormat
     #[ConstExpr]
     func bpp(self)->u8
     {
-        #[complete]
+        #[Complete]
         switch self
         {
             case BGR8:  return 24
@@ -32,7 +32,7 @@ impl enum PixelFormat
     #[ConstExpr]
     func channels(self)->u8
     {
-        #[complete]
+        #[Complete]
         switch self
         {
             case BGR8:  return 3
@@ -48,7 +48,7 @@ impl enum PixelFormat
     #[ConstExpr]
     func bitDepth(self)->u8
     {
-        #[complete]
+        #[Complete]
         switch self
         {
             case BGR8:  return 8
@@ -64,7 +64,7 @@ impl enum PixelFormat
     #[ConstExpr]
     func hasAlpha(self)->bool
     {
-        #[complete]
+        #[Complete]
         switch self
         {
             case BGR8:  return false

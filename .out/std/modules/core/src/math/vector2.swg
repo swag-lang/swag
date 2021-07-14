@@ -15,7 +15,7 @@ impl Vector2
     const UnitNX:   Vector2{-1, 0}
     const UnitNY:   Vector2{0, -1}
 
-    #[Swag.complete]
+    #[Swag.Complete]
     func opAffect(using self, value: f32)
     {
         x = value

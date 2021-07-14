@@ -160,7 +160,7 @@ func loadImg()
     var fmt: GLenum = 0
     internal := GL_RGB
 
-    #[Swag.complete]
+    #[Swag.Complete]
     switch myImage.pf
     {
     case BGR8:  fmt = GL_BGR

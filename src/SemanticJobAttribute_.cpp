@@ -53,7 +53,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
     {
-        if (oneAttribute->token.text == "complete" && kind == AstNodeKind::Switch)
+        if (oneAttribute->token.text == "Complete" && kind == AstNodeKind::Switch)
             return true;
         if (oneAttribute->token.text == "AttrUsage" && kind == AstNodeKind::AttrDecl)
             return true;
@@ -233,7 +233,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_MACRO;
             else if (child->token.text == "mixin")
                 flags |= ATTRIBUTE_MIXIN;
-            else if (child->token.text == "complete")
+            else if (child->token.text == "Complete")
                 flags |= ATTRIBUTE_COMPLETE;
             else if (child->token.text == "Implicit")
                 flags |= ATTRIBUTE_IMPLICIT;

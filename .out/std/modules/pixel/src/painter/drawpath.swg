@@ -142,7 +142,7 @@ impl Painter
 
     private method drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
-        #[Swag.complete]
+        #[Swag.Complete]
         switch capStyle
         {
         case None:          break
@@ -158,7 +158,7 @@ impl Painter
     {
         if penSize < 3 return
 
-        #[Swag.complete]
+        #[Swag.Complete]
         switch capStyle
         {
         case None:          break
@@ -316,7 +316,7 @@ impl Painter
 
     private method drawJoin(using cxt: *Context, p, d1, d2: Vector2)
     {
-        #[Swag.complete]
+        #[Swag.Complete]
         switch pen.joinStyle
         {
         case None:          break
@@ -427,7 +427,7 @@ impl Painter
 
     private func preparePattern(using cxt: *Context)
     {
-        #[Swag.complete]
+        #[Swag.Complete]
         switch pen.dashStyle
         {
         case None:

@@ -566,7 +566,7 @@ impl RenderOgl
         var fmt: GLenum = 0
         internal := GL_RGB
 
-        #[Swag.complete]
+        #[Swag.Complete]
         switch image.pf
         {
         case BGR8:  fmt = GL_BGR
@@ -751,7 +751,7 @@ impl RenderOgl
                 glUniform1f(uvmode, cast(GLfloat) params.uvMode)
                 glActiveTexture(GL_TEXTURE0)
 
-                #[Swag.complete]
+                #[Swag.Complete]
                 switch params.type
                 {
                 case SolidColor:
@@ -762,7 +762,7 @@ impl RenderOgl
                     glBindTexture(GL_TEXTURE_2D, hatchTextures[params.hatch])
                 }
 
-                #[Swag.complete]
+                #[Swag.Complete]
                 switch params.uvMode
                 {
                 case Fill, FillSubRect:
@@ -773,7 +773,7 @@ impl RenderOgl
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
                 }
 
-                #[Swag.complete]
+                #[Swag.Complete]
                 switch params.interpolationMode
                 {
                 case Pixel:

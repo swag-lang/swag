@@ -89,12 +89,12 @@
         }
     }
 
-    // switch can be marked with 'Swag.complete' to force all cases to be covered
+    // switch can be marked with 'Swag.Complete' to force all cases to be covered
     {
         enum Color { Red; Green; Blue; }
         color := Color.Red
 
-        #[Swag.complete]
+        #[Swag.Complete]
         switch color
         {
         case Color.Red:     break

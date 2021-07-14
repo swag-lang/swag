@@ -4,7 +4,7 @@
 #test
 {
     x := 0
-    #[Swag.complete]
+    #[Swag.Complete]
     switch
     {
         case x == 0: x = 50

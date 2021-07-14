@@ -10,7 +10,7 @@
 
     var x: XX = Bool{true}
 
-    #[Swag.complete]
+    #[Swag.Complete]
     switch x
     {
     case Bool:

@@ -42,7 +42,7 @@ impl Image
             mode := params.rmode
 
             var color: u8 = ?
-            #[Swag.complete]
+            #[Swag.Complete]
             switch params.value
             {
             case Color:     color = params.color

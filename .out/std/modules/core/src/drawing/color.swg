@@ -20,11 +20,11 @@ struct Color
 
 impl Color
 {
-    #[complete, inline, ConstExpr]
+    #[Complete, inline, ConstExpr]
     func opAffect(self, argb: u32)    = self.argb = argb
-    #[complete, inline, Implicit, ConstExpr]
+    #[Complete, inline, Implicit, ConstExpr]
     func opAffect(self, argb: Argb)   = self.argb = cast(u32) argb
-    #[complete, inline, ConstExpr]
+    #[Complete, inline, ConstExpr]
     func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
 
     #[inline]

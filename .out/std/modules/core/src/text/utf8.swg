@@ -624,7 +624,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 {
     using ComparisonType
 
-    #[Swag.complete]
+    #[Swag.Complete]
     switch comparisonType
     {
     case Latin1:

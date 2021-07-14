@@ -12,7 +12,7 @@
 
     a := 0//Color.Red
 
-    #[Swag.complete]
+    #[Swag.Complete]
     switch a
     {
         /*case Color.Red:
