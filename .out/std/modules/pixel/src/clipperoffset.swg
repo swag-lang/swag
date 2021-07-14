@@ -157,10 +157,13 @@ impl Offset
 
         a := 0'f64
         j := size - 1
+        pJ := poly[j]
         loop i: size
         {
-            a += (cast(f64) poly[j].x + poly[i].x) * (cast(f64) poly[j].y - poly[i].y)
+            pI := poly[i]
+            a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
             j = i
+            pJ = pI
         }
 
         return -a * 0.5
