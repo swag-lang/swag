@@ -565,8 +565,6 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 
     if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         return &module->mutableSegment;
-    if (node->attributeFlags & ATTRIBUTE_NO_BSS)
-        return &module->mutableSegment;
 
     if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
         return &module->bssSegment;

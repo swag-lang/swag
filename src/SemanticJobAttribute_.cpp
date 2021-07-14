@@ -237,8 +237,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_COMPLETE;
             else if (child->token.text == "implicit")
                 flags |= ATTRIBUTE_IMPLICIT;
-            else if (child->token.text == "nobss")
-                flags |= ATTRIBUTE_NO_BSS;
             else if (child->token.text == "NoReturn")
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->token.text == "Discardable")
