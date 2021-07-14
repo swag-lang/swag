@@ -516,10 +516,8 @@ impl Transform
                     e = result.next
                 else
                     e = result.prev
-                var locMin: LocalMinimum
-                locMin.y = e.bot.y
-                locMin.leftBound = null
-                locMin.rightBound = e
+
+                locMin := LocalMinimum{y: e.bot.y, rightBound: e}
                 e.windDelta = 0
                 result = processBound(e, nextIsForward)
                 minimaList.add(locMin)
@@ -621,7 +619,8 @@ impl Transform
     method reset()
     {
         currentLM = 0
-        if currentLM == minimaList.count return
+        if currentLM == minimaList.count
+            return
         minimaList.sort()
 
         scanBeamList.clear()
@@ -649,6 +648,7 @@ impl Transform
         currentLM = 0
     }
 
+    #[Swag.Inline]
     method localMinimaPending()->bool
     {
         return currentLM != minimaList.count
@@ -658,7 +658,8 @@ impl Transform
     {
         SelPrev := e.prevInSEL
         SelNext := e.nextInSEL
-        if !SelPrev and !SelNext and (e != sortedEdges) return
+        if !SelPrev and !SelNext and e != sortedEdges
+            return
         if SelPrev
             SelPrev.nextInSEL = SelNext
         else
