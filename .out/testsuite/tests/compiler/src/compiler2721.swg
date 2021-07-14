@@ -1,4 +1,4 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto()->{s64, s64}
 {
     var result: retval

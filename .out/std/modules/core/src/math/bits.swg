@@ -21,7 +21,7 @@ private const Rev8Arr: [256] u8 = @[
 	0x0f, 0x8f, 0x4f, 0xcf, 0x2f, 0xaf, 0x6f, 0xef, 0x1f, 0x9f, 0x5f, 0xdf, 0x3f, 0xbf, 0x7f, 0xff,
 ]
 
-#[constexpr, inline]
+#[ConstExpr, inline]
 {
     // Returns the number of bits set to 0 from the left
     func leadingZeros(x: u8)->u8   => @bitcountlz(x)
@@ -43,20 +43,20 @@ private const Rev8Arr: [256] u8 = @[
 }
 
 // Reverse all bits
-#[constexpr]
+#[ConstExpr]
 func reverse(x: u8)->u8
 {
 	return Rev8Arr[x]
 }
 
-#[constexpr]
+#[ConstExpr]
 func reverse(x: u16)->u16
 {
 	return cast(u16) Rev8Arr[x >>,safe 8] | cast(u16) (Rev8Arr[x & 0xFF]) <<,safe 8
 }
 
 #[safety("overflow", false)]
-#[constexpr]
+#[ConstExpr]
 func reverse(x: u32)->u32
 {
     const m0 = 0x55555555
@@ -69,7 +69,7 @@ func reverse(x: u32)->u32
 }
 
 #[safety("overflow", false)]
-#[constexpr]
+#[ConstExpr]
 func reverse(x: u64)->u64
 {
     const m0 = 0x55555555_55555555

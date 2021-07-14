@@ -1,6 +1,6 @@
 using Swag
 
-#[constexpr]
+#[ConstExpr]
 {
     #[inline]
     {

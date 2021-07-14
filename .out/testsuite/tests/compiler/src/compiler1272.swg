@@ -1,4 +1,4 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto()->bool
 {
     x := 1

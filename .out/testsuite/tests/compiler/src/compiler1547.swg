@@ -1,6 +1,6 @@
 using Swag
 
-#[constexpr]
+#[ConstExpr]
 func hasMember(type: const* TypeInfo, name: string)->bool
 {
     if(name == "titi")

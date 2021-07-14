@@ -1,6 +1,6 @@
 attr ife(expr: bool);
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func titi()->bool
 {
     return true

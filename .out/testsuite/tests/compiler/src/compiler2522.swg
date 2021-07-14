@@ -2,7 +2,7 @@
 
 (x, y) := toto()
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto() -> {x: s32, y: s32}
 {
     return @{10, 20}

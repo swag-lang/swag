@@ -2,7 +2,7 @@ using Swag
 namespace A {
 namespace B {
 
-#[constexpr]
+#[ConstExpr]
 func toto()
 {
 }

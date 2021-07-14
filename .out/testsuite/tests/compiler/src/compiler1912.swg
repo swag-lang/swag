@@ -1,4 +1,4 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto() => "tag"
 
 //#[Swag.printbc]

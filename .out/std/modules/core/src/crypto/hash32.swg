@@ -2,7 +2,7 @@
 using Swag
 
 // Hash the given value and returns the corresponding u32
-#[constexpr]
+#[ConstExpr]
 public func(T) hash32(value: T)->u32
 {
     #if @sizeof(T) == 4

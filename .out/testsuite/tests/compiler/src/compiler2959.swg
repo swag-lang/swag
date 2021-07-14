@@ -1,4 +1,4 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 struct V
 {
     x, y: f32 = 0

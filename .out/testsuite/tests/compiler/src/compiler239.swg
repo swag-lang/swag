@@ -2,7 +2,7 @@ using Swag;
 
 func main1 ()->s32 { return 77; }
 
-#[constexpr]
+#[ConstExpr]
 func main2 ()->s32 { return 666; }
 
 //#[printbc]

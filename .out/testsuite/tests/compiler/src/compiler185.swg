@@ -1,6 +1,6 @@
 using Swag
 
-#[constexpr]
+#[ConstExpr]
 func main () -> u32 { return 1; }
 
 #assert 1 << main() == 2;

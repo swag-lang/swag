@@ -16,7 +16,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
 
 // Count the number of valid '%' placeholders in the string format
 // Note that %% will not be counted, as this represents the '%' character
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func countPercent(fmt: string)->u32
 {
     cptPercent := 0'u32

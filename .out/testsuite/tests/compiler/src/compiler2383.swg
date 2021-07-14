@@ -1,6 +1,6 @@
 #global testerror
 
-//#[Swag.constexpr]
+//#[Swag.ConstExpr]
 func isStruct(t: typeinfo) => t.kind == Swag.TypeInfoKind.Struct
 
 //#[Swag.printbc]

@@ -4,7 +4,7 @@
 // All are located in the reserved 'swag' namespace
 
 #[AttrUsage(AttributeUsage.Function)]
-attr constexpr()
+attr ConstExpr()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
 attr printbc()

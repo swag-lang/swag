@@ -1,4 +1,4 @@
-//#[Swag.constexpr]
+//#[Swag.ConstExpr]
 //#[Swag.printbc]
 func fibonacci(num: s32) -> s32
 {

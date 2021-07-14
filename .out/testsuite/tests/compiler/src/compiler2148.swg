@@ -1,6 +1,6 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto(x: f32)=> 0'f32
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto(x: f64)=> 0'f64
 
 struct(T) A

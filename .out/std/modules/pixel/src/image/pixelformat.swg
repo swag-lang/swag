@@ -13,7 +13,7 @@ enum PixelFormat: u8
 impl enum PixelFormat
 {
     // Returns the bpp (bits per pixel) of the given pixel format
-    #[constexpr]
+    #[ConstExpr]
     func bpp(self)->u8
     {
         #[complete]
@@ -29,7 +29,7 @@ impl enum PixelFormat
     }
 
     // Returns the number of image channels
-    #[constexpr]
+    #[ConstExpr]
     func channels(self)->u8
     {
         #[complete]
@@ -45,7 +45,7 @@ impl enum PixelFormat
     }
 
     // Returns the bit depth of each channel
-    #[constexpr]
+    #[ConstExpr]
     func bitDepth(self)->u8
     {
         #[complete]
@@ -61,7 +61,7 @@ impl enum PixelFormat
     }
 
     // Returns true if the given pixel format has an alpha channel
-    #[constexpr]
+    #[ConstExpr]
     func hasAlpha(self)->bool
     {
         #[complete]

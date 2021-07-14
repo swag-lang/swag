@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-#[constexpr]
+#[ConstExpr]
 func main() -> s32
 {
 	//@print("toto\n");

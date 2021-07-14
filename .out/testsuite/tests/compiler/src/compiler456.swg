@@ -1,7 +1,7 @@
 
 
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func T()->s32 { return 666; }
 
 func F(x: s32 = T())

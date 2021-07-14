@@ -15,7 +15,7 @@ attr ife(expr: bool);
 
 impl AA
 {
-    #[Swag.constexpr]
+    #[Swag.ConstExpr]
     func titi(t: typeinfo)->bool
     {
         return t == s32

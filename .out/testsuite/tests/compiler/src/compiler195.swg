@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-#[constexpr]
+#[ConstExpr]
 func main ()->u16
 {
 	return 45;

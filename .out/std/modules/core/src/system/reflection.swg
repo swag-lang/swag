@@ -2,7 +2,7 @@
 #global namespace Reflection
 using Swag
 
-#[constexpr]
+#[ConstExpr]
 {
     #[inline]
     {

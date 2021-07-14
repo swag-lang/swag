@@ -7,7 +7,7 @@ using Swag;
 #assert 3 & 1 == 1;
 #assert 0xFF000000 | 0xFF == 0xFF0000FF;
 
-#[constexpr]
+#[ConstExpr]
 func mask () -> s32 { return 1; }
 
 #assert mask() | 2 == 3;

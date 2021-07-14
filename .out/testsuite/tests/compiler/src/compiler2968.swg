@@ -5,7 +5,7 @@ struct Color
 
 impl Color
 {
-    #[Swag.constexpr]
+    #[Swag.ConstExpr]
     func opAffect(using self, cl: u32)
     {
         argb = cl

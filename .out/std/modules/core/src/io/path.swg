@@ -7,14 +7,14 @@ const AltDirectorySeparatorChar = "\\"'u8
 const VolumeSeparatorChar       = ":"'u8
 
 // Returns true if the given character is a directory separator
-#[inline, constexpr]
+#[inline, ConstExpr]
 func isDirectorySeparator(c: u8)->bool
 {
     return c == DirectorySeparatorChar or c == AltDirectorySeparatorChar
 }
 
 // Returns the file name part of the path, null if not found
-#[constexpr]
+#[ConstExpr]
 func getFileName(fullname: string)->string
 {
     if fullname == null return null
@@ -37,7 +37,7 @@ func getFileName(fullname: string)->string
 }
 
 // Returns the directory part of the path, null if not found
-#[constexpr]
+#[ConstExpr]
 func getRootName(fullname: string)->string
 {
     if fullname == null return null
@@ -48,7 +48,7 @@ func getRootName(fullname: string)->string
 
 // Tests if the given path contains a root. A path is considered rooted
 // if it starts with a directory separatpr or a drive letter and a colon.
-#[constexpr]
+#[ConstExpr]
 func isRooted(fullname: string)->bool
 {
     if fullname == null return false
@@ -62,7 +62,7 @@ func isRooted(fullname: string)->bool
 }
 
 // Returns the directory part of the path, null if not found
-#[constexpr]
+#[ConstExpr]
 func getDirectoryName(fullname: string)->string
 {
     if fullname == null return null
@@ -82,7 +82,7 @@ func getDirectoryName(fullname: string)->string
 }
 
 // Returns the path file name, null if not found
-#[constexpr]
+#[ConstExpr]
 func getFileNameWithoutExtension(fullname: string)->string
 {
     if(fullname == null) return null
@@ -109,7 +109,7 @@ func getFileNameWithoutExtension(fullname: string)->string
 
 // Returns the file name extension, including the '.' character
 // Returns null if no extension was found
-#[constexpr]
+#[ConstExpr]
 func getExtension(fullname: string)->string
 {
     if(fullname == null) return null
@@ -137,7 +137,7 @@ func getExtensionLowerCase(fullname: string)->String
 }
 
 // Returns true if the file name contains an extension
-#[constexpr]
+#[ConstExpr]
 func hasExtension(fullname: string)->bool
 {
     if(fullname == null) return false

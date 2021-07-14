@@ -24,7 +24,7 @@ namespace Swag
     attr AttrMulti()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct)]
-    attr constexpr()
+    attr ConstExpr()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
     attr printbc()
@@ -632,7 +632,7 @@ func @cstrlen(value: const *u8)->uint;
 }
 
 // Constant intrinsics
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 {
     func @sqrt(value: f32)->f32;
     func @sqrt(value: f64)->f64;

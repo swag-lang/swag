@@ -2,14 +2,14 @@
 
 #global namespace Unicode
 
-#[Swag.inline, Swag.constexpr]
+#[Swag.inline, Swag.ConstExpr]
 public
 {
     func isLatin1(c: rune)  => c <= 0xFF
     func isAscii(c: rune)   => c <= 0x7F
 }
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 public
 {
     func isDigit(c: rune)->bool

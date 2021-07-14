@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-#[constexpr]
+#[ConstExpr]
 func main ()->s32 { return 555; }
 
 var v = main();

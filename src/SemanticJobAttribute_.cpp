@@ -213,7 +213,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Predefined attributes will mark some flags (to speed up detection)
-            if (child->token.text == "constexpr")
+            if (child->token.text == "ConstExpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
             else if (child->token.text == "printbc")
                 flags |= ATTRIBUTE_PRINT_BC;

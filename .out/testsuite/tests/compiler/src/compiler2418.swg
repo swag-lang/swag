@@ -1,6 +1,6 @@
 //#global testerror
 
-#[Swag.compiler, Swag.constexpr]
+#[Swag.compiler, Swag.ConstExpr]
 func check(T: typeinfo, N: u32)->bool
 {
     return N > 0 and N <= 4 and T == f32

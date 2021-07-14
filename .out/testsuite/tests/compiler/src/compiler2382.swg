@@ -1,4 +1,4 @@
-//#[Swag.constexpr]
+//#[Swag.ConstExpr]
 func toto() => 0
 func titi() => 555
 

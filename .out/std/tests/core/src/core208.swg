@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto(rep: u32)->String
 {
     var result: retval

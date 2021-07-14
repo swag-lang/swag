@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-#[constexpr]
+#[ConstExpr]
 func value ()->s32 { return 55; }
 
 func main (a: s32 = value())->s32

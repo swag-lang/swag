@@ -2,7 +2,7 @@
 #global namespace Math
 using Swag
 
-#[constexpr]
+#[ConstExpr]
 func roundUpToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -11,7 +11,7 @@ func roundUpToPowerOf2(x: u32)->u32
     return i
 }
 
-#[constexpr]
+#[ConstExpr]
 func roundDownToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -20,14 +20,14 @@ func roundDownToPowerOf2(x: u32)->u32
     return i
 }
 
-#[constexpr, inline]
+#[ConstExpr, inline]
 func isPowerOf2(x: u32)->bool
 {
     Debug.assert(x != 0)
     return x & (x - 1) == 0
 }
 
-#[constexpr, inline]
+#[ConstExpr, inline]
 {
     func sign(x: s8) => x < 0 ? -1 : 1
     func sign(x: s16) => x < 0 ? -1 : 1
@@ -35,7 +35,7 @@ func isPowerOf2(x: u32)->bool
     func sign(x: s64) => x < 0 ? -1 : 1
 }
 
-#[constexpr, inline]
+#[ConstExpr, inline]
 {
     func min(x, y: s8)  => @min(x, y)
     func min(x, y: s16) => @min(x, y)

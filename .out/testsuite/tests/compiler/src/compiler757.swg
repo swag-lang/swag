@@ -1,6 +1,6 @@
 
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func toto()->s32
 {
 	return 666

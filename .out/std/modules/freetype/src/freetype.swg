@@ -51,7 +51,7 @@ const FT_LOAD_COLOR                         = 1 << 20
 const FT_LOAD_COMPUTE_METRICS               = 1 << 21
 const FT_LOAD_BITMAP_METRICS_ONLY           = 1 << 22
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func FT_LOAD_TARGET(x: FT_Int32) => (cast(FT_Int32) (x & 15) << 16)
 const FT_LOAD_TARGET_NORMAL  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)
 const FT_LOAD_TARGET_LIGHT   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LIGHT)
@@ -195,7 +195,7 @@ struct FT_GlyphSlotRec
     internal:           FT_Slot_Internal
 }
 
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func FT_IMAGE_TAG(x1, x2, x3, x4: u32)->u32 => (x1 << 24) | (x2 << 16) | (x3 << 8) | (x4)
 enum FT_Glyph_Format
 {

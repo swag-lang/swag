@@ -1,4 +1,4 @@
-#[Swag.constexpr]
+#[Swag.ConstExpr]
 func abs(x: f32) => -x
 
 //#[Swag.printbc]
