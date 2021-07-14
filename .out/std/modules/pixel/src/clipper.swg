@@ -1074,13 +1074,11 @@ impl Transform
 
     method doSimplePolygons()
     {
-        var i: uint
-        while i < polyOuts.count
+        visit outrec: polyOuts
         {
-            outrec := polyOuts[i]
-            i += 1
             op := outrec.pts
-            if !op or outrec.isOpen continue
+            if !op or outrec.isOpen
+                continue
 
             loop
             {
@@ -1146,7 +1144,8 @@ impl Transform
             pp = pp.next
             if pp.pt == pp.prev.pt
             {
-                if pp == lastPP lastPP = pp.prev
+                if pp == lastPP
+                    lastPP = pp.prev
                 tmpPP := pp.prev
                 tmpPP.next = pp.next
                 pp.next.prev = tmpPP
@@ -1159,17 +1158,16 @@ impl Transform
         {
             disposeOutPts(pp)
             outrec.pts = null
-            return
         }
     }
 
     method fixupOutPolygon(outrec: *OutRec)
     {
-        var lastOK: *OutPt
         outrec.bottomPt = null
         pp := outrec.pts
         preserveCol := preserveCollinear or strictSimple
 
+        var lastOK: *OutPt
         loop
         {
             if pp.prev == pp or pp.prev == pp.next
@@ -1194,7 +1192,8 @@ impl Transform
                 break
             else
             {
-                if !lastOK lastOK = pp
+                if !lastOK
+                    lastOK = pp
                 pp = pp.next
             }
         }
@@ -1214,13 +1213,14 @@ impl Transform
     {
         op1 := j.outPt1
         op2 := j.outPt2
-        var op1b, op2b: *OutPt
 
         isHorizontal := (j.outPt1.pt.y == j.offPt.y)
 
+        var op1b, op2b: *OutPt
         if isHorizontal and (j.offPt == j.outPt1.pt) and (j.offPt == j.outPt2.pt)
         {
-            if outRec1 != outRec2 return false
+            if outRec1 != outRec2
+                return false
             op1b = j.outPt1.next
             while op1b != op1 and (op1b.pt == j.offPt)
                 op1b = op1b.next
@@ -1229,7 +1229,8 @@ impl Transform
             while op2b != op2 and (op2b.pt == j.offPt)
                 op2b = op2b.next
             reverse2 := (op2b.pt.y > j.offPt.y)
-            if reverse1 == reverse2 return false
+            if reverse1 == reverse2
+                return false
             if reverse1
             {
                 op1b = dupOutPt(op1, false)
@@ -1261,52 +1262,54 @@ impl Transform
                 op1 = op1.prev
             while op1b.next.pt.y == op1b.pt.y and op1b.next != op1 and op1b.next != op2
                 op1b = op1b.next
-            if op1b.next == op1 or op1b.next == op2 return false
+            if op1b.next == op1 or op1b.next == op2
+                return false
 
             op2b = op2
             while op2.prev.pt.y == op2.pt.y and op2.prev != op2b and op2.prev != op1b
                 op2 = op2.prev
             while op2b.next.pt.y == op2b.pt.y and op2b.next != op2 and op2b.next != op1
                 op2b = op2b.next
-            if op2b.next == op2 or op2b.next == op1 return false
+            if op2b.next == op2 or op2b.next == op1
+                return false
 
             var left, right: CInt
             if !getOverlap(op1.pt.x, op1b.pt.x, op2.pt.x, op2b.pt.x, &left, &right)
                 return false
 
             var pt: IntPoint
-            var DiscardLeftSide: bool
+            var discardLeftSide: bool
             if op1.pt.x >= left and op1.pt.x <= right
             {
                 pt = op1.pt
-                DiscardLeftSide = (op1.pt.x > op1b.pt.x)
+                discardLeftSide = (op1.pt.x > op1b.pt.x)
             }
             else if op2.pt.x >= left and op2.pt.x <= right
             {
                 pt = op2.pt
-                DiscardLeftSide = (op2.pt.x > op2b.pt.x)
+                discardLeftSide = (op2.pt.x > op2b.pt.x)
             }
             else if op1b.pt.x >= left and op1b.pt.x <= right
             {
                 pt = op1b.pt
-                DiscardLeftSide = op1b.pt.x > op1.pt.x
+                discardLeftSide = op1b.pt.x > op1.pt.x
             }
             else
             {
                 pt = op2b.pt
-                DiscardLeftSide = (op2b.pt.x > op2.pt.x)
+                discardLeftSide = (op2b.pt.x > op2.pt.x)
             }
 
             j.outPt1 = op1
             j.outPt2 = op2
-            return joinHorz(op1, op1b, op2, op2b, pt, DiscardLeftSide)
+            return joinHorz(op1, op1b, op2, op2b, pt, discardLeftSide)
         }
 
         op1b = op1.next
         while (op1b.pt == op1.pt) and (op1b != op1)
             op1b = op1b.next
-        Reverse1 := ((op1b.pt.y > op1.pt.y) or !slopesEqual(op1.pt, op1b.pt, j.offPt))
-        if Reverse1
+        reverse1 := ((op1b.pt.y > op1.pt.y) or !slopesEqual(op1.pt, op1b.pt, j.offPt))
+        if reverse1
         {
             op1b = op1.prev
             while (op1b.pt == op1.pt) and (op1b != op1)
@@ -1318,8 +1321,8 @@ impl Transform
         op2b = op2.next
         while (op2b.pt == op2.pt) and (op2b != op2)
             op2b = op2b.next
-        Reverse2 := ((op2b.pt.y > op2.pt.y) or !slopesEqual(op2.pt, op2b.pt, j.offPt))
-        if Reverse2
+        reverse2 := ((op2b.pt.y > op2.pt.y) or !slopesEqual(op2.pt, op2b.pt, j.offPt))
+        if reverse2
         {
             op2b = op2.prev
             while (op2b.pt == op2.pt) and (op2b != op2)
@@ -1328,10 +1331,10 @@ impl Transform
                 return false
         }
 
-        if (op1b == op1) or (op2b == op2) or (op1b == op2b) or ((outRec1 == outRec2) and (Reverse1 == Reverse2))
+        if (op1b == op1) or (op2b == op2) or (op1b == op2b) or ((outRec1 == outRec2) and (reverse1 == reverse2))
             return false
 
-        if (Reverse1)
+        if (reverse1)
         {
             op1b = dupOutPt(op1, false)
             op2b = dupOutPt(op2, true)
@@ -1362,11 +1365,12 @@ impl Transform
         op2 := op2P
         op2b:= op2bP
 
-        var Dir1: Direction = (op1.pt.x > op1b.pt.x ? .RightToLeft : .LeftToRight)
-        var Dir2: Direction = (op2.pt.x > op2b.pt.x ? .RightToLeft : .LeftToRight)
-        if Dir1 == Dir2 return false
+        var dir1: Direction = (op1.pt.x > op1b.pt.x ? .RightToLeft : .LeftToRight)
+        var dir2: Direction = (op2.pt.x > op2b.pt.x ? .RightToLeft : .LeftToRight)
+        if dir1 == dir2
+            return false
 
-        if Dir1 == .LeftToRight
+        if dir1 == .LeftToRight
         {
             while op1.next.pt.x <= pt.x and op1.next.pt.x >= op1.pt.x and op1.next.pt.y == pt.y
                 op1 = op1.next
@@ -1395,7 +1399,7 @@ impl Transform
             }
         }
 
-        if Dir2 == .LeftToRight
+        if dir2 == .LeftToRight
         {
             while op2.next.pt.x <= pt.x and op2.next.pt.x >= op2.pt.x and op2.next.pt.y == pt.y
                 op2 = op2.next
@@ -1424,7 +1428,7 @@ impl Transform
             }
         }
 
-        if Dir1 == .LeftToRight and discardLeft
+        if dir1 == .LeftToRight and discardLeft
         {
             op1.prev = op2
             op2.next = op1
