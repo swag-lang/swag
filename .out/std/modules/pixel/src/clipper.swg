@@ -1897,19 +1897,20 @@ impl Transform
             e = e.nextInAEL
         }
 
-        var isModified: bool
-        loop
+        isModified := true
+        while isModified
         {
             isModified = false
             e = sortedEdges
             while e.nextInSEL
             {
                 eNext := e.nextInSEL
-                var pt: IntPoint
                 if e.curr.x > eNext.curr.x
                 {
+                    var pt: IntPoint
                     intersectPoint(e, eNext, &pt)
-                    if pt.y < topY pt = IntPoint{topX(e, topY), topY}
+                    if pt.y < topY
+                        pt = IntPoint{topX(e, topY), topY}
                     newNode := Memory.new'IntersectNode()
                     newNode.edge1 = e;
                     newNode.edge2 = eNext
@@ -1925,8 +1926,6 @@ impl Transform
             if !e.prevInSEL
                 break
             e.prevInSEL.nextInSEL = null
-            if !isModified
-                break
         }
 
         sortedEdges = null
@@ -1953,13 +1952,15 @@ impl Transform
     {
         copyAELToSEL()
         intersectList.sort()
-        loop i: intersectList.count
+        loop i: intersectList
         {
             if !edgesAdjacent(intersectList[i])
             {
                 j := i + 1
-                while j < intersectList.count and !edgesAdjacent(intersectList[j]) j += 1
-                if j == intersectList.count return false
+                while j < intersectList.count and !edgesAdjacent(intersectList[j])
+                    j += 1
+                if j == intersectList.count
+                    return false
                 swap(intersectList.buffer + i, intersectList.buffer + j)
             }
 
@@ -1983,15 +1984,19 @@ impl Transform
 
     method swapPositionsInSEL(edge1, edge2: *Edge)
     {
-        if !edge1.nextInSEL and !edge1.prevInSEL return
-        if !edge2.nextInSEL and !edge2.prevInSEL return
+        if !edge1.nextInSEL and !edge1.prevInSEL
+            return
+        if !edge2.nextInSEL and !edge2.prevInSEL
+            return
 
         if edge1.nextInSEL == edge2
         {
             next := edge2.nextInSEL
-            if next next.prevInSEL = edge1
+            if next
+                next.prevInSEL = edge1
             prev := edge1.prevInSEL
-            if prev prev.nextInSEL = edge2
+            if prev
+                prev.nextInSEL = edge2
             edge2.prevInSEL = prev
             edge2.nextInSEL = edge1
             edge1.prevInSEL = edge2
@@ -2000,9 +2005,11 @@ impl Transform
         else if edge2.nextInSEL == edge1
         {
             next := edge1.nextInSEL
-            if next next.prevInSEL = edge2
+            if next
+                next.prevInSEL = edge2
             prev := edge2.prevInSEL
-            if prev prev.nextInSEL = edge1
+            if prev
+                prev.nextInSEL = edge1
             edge1.prevInSEL = prev
             edge1.nextInSEL = edge2
             edge2.prevInSEL = edge1
@@ -2013,17 +2020,23 @@ impl Transform
             next := edge1.nextInSEL
             prev := edge1.prevInSEL
             edge1.nextInSEL = edge2.nextInSEL
-            if edge1.nextInSEL edge1.nextInSEL.prevInSEL = edge1
+            if edge1.nextInSEL
+                edge1.nextInSEL.prevInSEL = edge1
             edge1.prevInSEL = edge2.prevInSEL
-            if edge1.prevInSEL edge1.prevInSEL.nextInSEL = edge1
+            if edge1.prevInSEL
+                edge1.prevInSEL.nextInSEL = edge1
             edge2.nextInSEL = next
-            if edge2.nextInSEL edge2.nextInSEL.prevInSEL = edge2
+            if edge2.nextInSEL
+                edge2.nextInSEL.prevInSEL = edge2
             edge2.prevInSEL = prev
-            if edge2.prevInSEL edge2.prevInSEL.nextInSEL = edge2
+            if edge2.prevInSEL
+                edge2.prevInSEL.nextInSEL = edge2
         }
 
-        if !edge1.prevInSEL sortedEdges = edge1
-        else if !edge2.prevInSEL sortedEdges = edge2
+        if !edge1.prevInSEL
+            sortedEdges = edge1
+        else if !edge2.prevInSEL
+            sortedEdges = edge2
     }
 
     method intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
@@ -2035,7 +2048,8 @@ impl Transform
             ip.x = topX(edge1, ip.y)
             return
         }
-        else if edge1.dx == 0
+
+        if edge1.dx == 0
         {
             ip.x = edge1.bot.x
             if isHorizontal(edge2)
@@ -2093,7 +2107,8 @@ impl Transform
 
     method popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
     {
-        if currentLM == minimaList.count or minimaList[currentLM].y != y return false
+        if currentLM == minimaList.count or minimaList[currentLM].y != y
+            return false
         dref locMin = minimaList[currentLM]
         currentLM += 1
         return true
@@ -2101,7 +2116,8 @@ impl Transform
 
     func round(val: f64)->CInt
     {
-        if val < 0 return cast(CInt) (val - 0.5)
+        if val < 0
+            return cast(CInt) (val - 0.5)
         return cast(CInt) (val + 0.5)
     }
 
