@@ -1,4 +1,4 @@
-#[Swag.noreturn, Swag.macro]
+#[Swag.NoReturn, Swag.macro]
 func toto()
 {
     #[Swag.safety("", true)]

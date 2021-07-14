@@ -4,7 +4,7 @@ struct S
 
 impl S
 {
-    #[Swag.macro, Swag.noreturn]
+    #[Swag.macro, Swag.NoReturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         label up

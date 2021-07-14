@@ -32,7 +32,7 @@ attr implicit()
 attr complete()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr noreturn()
+attr NoReturn()
 
 #[AttrUsage(AttributeUsage.Function)]
 attr foreign(module: string, function: string = "");
