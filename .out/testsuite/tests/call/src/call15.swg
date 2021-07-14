@@ -9,7 +9,7 @@ using Swag
     func GetProcAddress(hModule: const *void, lpProcName: const *u8)->const *void;
 }
 
-//#[Swag.PrintBc, Swag.optim(false)]
+//#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
     h := GetModuleHandleA(@dataof("tests_foreign"))

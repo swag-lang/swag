@@ -1,7 +1,7 @@
 #[Swag.compiler]
 const X: [2] s32 = @[10, 20]
 
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #[Swag.compiler]
 func test()
 {

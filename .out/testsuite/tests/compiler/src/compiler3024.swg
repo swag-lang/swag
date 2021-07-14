@@ -14,7 +14,7 @@ func titi(a: A)
     @assert(a.x == 36)
 }
 
-#[/*Swag.PrintBc,*/ Swag.optim("", false)]
+#[/*Swag.PrintBc,*/ Swag.Optim("", false)]
 #test
 {
     titi(A{round(6)})

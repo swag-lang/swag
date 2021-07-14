@@ -38,7 +38,7 @@ func titi()->A
 }
 
 //#[Swag.PrintBc]
-#[Swag.optim("", true)]
+#[Swag.Optim("", true)]
 #test
 {
     {

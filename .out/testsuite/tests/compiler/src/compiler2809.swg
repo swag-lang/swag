@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     b := false

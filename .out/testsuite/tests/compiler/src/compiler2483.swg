@@ -7,7 +7,7 @@ func panic(msg: string, loc: Swag.CompilerSourceLocation)
 }
 
 #[Safety("overflow", true)]
-#[optim("", false)]
+#[Optim("", false)]
 //#[PrintBc]
 #test
 {

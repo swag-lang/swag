@@ -103,7 +103,7 @@ namespace Swag
     attr SelectIf(value: bool)
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
-    attr optim(what: string, value: bool)
+    attr Optim(what: string, value: bool)
 
     // #########################################################
     // Constants

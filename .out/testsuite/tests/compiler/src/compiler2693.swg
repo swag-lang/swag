@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.optim("", false)]
+//#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
     var scale: f64 = ?

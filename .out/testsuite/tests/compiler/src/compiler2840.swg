@@ -1,3 +1,3 @@
 #global protected
 #global #[Swag.Safety("", false)]
-#global #[Swag.optim("", true)]
+#global #[Swag.Optim("", true)]

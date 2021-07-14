@@ -2,7 +2,7 @@ using tests_foreign
 
 using Swag
 
-//#[Swag.PrintBc, Swag.optim(false)]
+//#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
     tcf_join8("titi", 1, 2, 3, 4)

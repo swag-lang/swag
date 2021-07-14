@@ -15,7 +15,7 @@ impl Vector
     }
 }
 
-//#[Swag.optim("", false)]
+//#[Swag.Optim("", false)]
 //#[Swag.PrintBc]
 #test
 {

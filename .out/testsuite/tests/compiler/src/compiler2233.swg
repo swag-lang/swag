@@ -36,7 +36,7 @@ func toto1()->TOTO
 }
 
 //#[Swag.PrintBc]
-//#[Swag.optim("", true)]
+//#[Swag.Optim("", true)]
 #test
 {
     res := toto1()

@@ -34,7 +34,7 @@ func toto()-> {x: AA}
 }
 
 //#[Swag.PrintBc]
-#[Swag.optim("bytecode", true)]
+#[Swag.Optim("bytecode", true)]
 #test
 {
     {

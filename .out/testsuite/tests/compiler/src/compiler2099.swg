@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     c := 0'u8

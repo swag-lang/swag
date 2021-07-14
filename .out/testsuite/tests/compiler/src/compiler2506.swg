@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[Swag.PrintBc, Swag.optim("bc", false)]
+//#[Swag.PrintBc, Swag.Optim("bc", false)]
 #test
 {
     var x: [..] *~32 s32

@@ -35,7 +35,7 @@ func toto1()->TOTO
     return result
 }
 
-#[Swag.optim("", true)]
+#[Swag.Optim("", true)]
 #test
 {
     res := toto1()

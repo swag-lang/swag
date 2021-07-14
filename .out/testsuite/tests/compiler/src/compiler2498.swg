@@ -15,7 +15,7 @@ struct MNode
     node: [2] Node
 }
 
-//#[Swag.PrintBc, Swag.optim("bc",false)]
+//#[Swag.PrintBc, Swag.Optim("bc",false)]
 #test
 {
     var a, b: MNode

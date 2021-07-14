@@ -1,7 +1,7 @@
 #global testerror
 
 #[Swag.Safety("", true)]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     x := Swag.MaxF64

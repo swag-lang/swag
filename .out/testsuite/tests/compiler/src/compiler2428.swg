@@ -7,7 +7,7 @@ func print(s: string, f: ...)
 {
 }
 
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     print("toto", 1, 2, 3)

@@ -10,7 +10,7 @@ func entry(param: *void)
     G = ptr[1]
 }
 
-//#[Swag.PrintBc, Swag.optim(false)]
+//#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
     tcf_createThread(&entry, 666)

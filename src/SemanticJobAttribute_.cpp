@@ -290,16 +290,16 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({child, format(Msg0593, w.c_str())});
                 }
             }
-            else if (child->token.text == "optim")
+            else if (child->token.text == "Optim")
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("Swag.optim", "what", attrWhat);
+                curAttr->attributes.getValue("Swag.Optim", "what", attrWhat);
                 attrWhat.text.trim();
                 tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.optim", "value", attrValue);
+                curAttr->attributes.getValue("Swag.Optim", "value", attrValue);
 
                 if (attrWhat.text.empty())
                 {

@@ -4,7 +4,7 @@
 #global testerror
 
 #[Swag.Safety("", true)]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     x := -1's8
@@ -12,7 +12,7 @@
 }
 
 #[Swag.Safety("", true)]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     x := -1's16
@@ -20,7 +20,7 @@
 }
 
 #[Swag.Safety("", true)]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     x := -1's32
@@ -28,7 +28,7 @@
 }
 
 #[Swag.Safety("", true)]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     x := -1's64

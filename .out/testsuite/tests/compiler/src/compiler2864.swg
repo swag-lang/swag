@@ -1,6 +1,6 @@
 #global testerror
 //#[Swag.PrintBc]
-//#[Swag.optim("", false)]
+//#[Swag.Optim("", false)]
 #test
 {
     /*x := 0xFFFFFFFF'u32

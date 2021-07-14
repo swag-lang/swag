@@ -15,7 +15,7 @@ namespace NN
 }
 
 //#[Swag.PrintBc]
-//#[Swag.optim("", false)]
+//#[Swag.Optim("", false)]
 #test
 {
     NN.titi()

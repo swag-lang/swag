@@ -2,7 +2,7 @@
 #global testerror
 
 //#[Swag.PrintBc]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 func arithmeticMean(numbers: ...)
 {
     #[Swag.Safety("", true)]

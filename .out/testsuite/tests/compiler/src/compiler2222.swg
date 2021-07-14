@@ -4,7 +4,7 @@ struct A
     y: s32
 }
 
-//#[Swag.PrintBc, Swag.optim(false)]
+//#[Swag.PrintBc, Swag.Optim(false)]
 #[Swag.Inline]
 func toto1()->A
 {

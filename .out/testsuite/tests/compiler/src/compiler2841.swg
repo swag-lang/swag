@@ -3,7 +3,7 @@ func toto()
 }
 
 //#[Swag.PrintBc]
-//#[Swag.optim("", false)]
+//#[Swag.Optim("", false)]
 #test
 {
     a := 0

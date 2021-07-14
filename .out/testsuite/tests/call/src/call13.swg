@@ -8,7 +8,7 @@ using Swag
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-//#[Swag.PrintBc, Swag.optim(false)]
+//#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
     var paramBC: [2] *void

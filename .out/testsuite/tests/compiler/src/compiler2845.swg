@@ -1,6 +1,6 @@
 //#[Swag.Safety("", true)]
 //#[Swag.PrintBc]
-#[Swag.optim("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     {
