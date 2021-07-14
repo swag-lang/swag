@@ -5,7 +5,7 @@ public func toto2220()
     a := 0
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 }

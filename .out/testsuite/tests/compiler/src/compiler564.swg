@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct point
 {
 	x: s32

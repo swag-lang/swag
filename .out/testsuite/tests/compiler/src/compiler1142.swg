@@ -9,7 +9,7 @@ func toto()->s32
 		return 0
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	g = true

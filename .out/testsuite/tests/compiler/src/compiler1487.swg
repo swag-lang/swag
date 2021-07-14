@@ -9,7 +9,7 @@ func(op: bool) toto()
         G += 2
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     G = 0

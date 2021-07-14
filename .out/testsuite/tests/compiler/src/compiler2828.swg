@@ -5,7 +5,7 @@ func level0()
 }
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 func test(level: int)
 {

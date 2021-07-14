@@ -12,7 +12,7 @@ func entry(th: Threading.Thread)
     @assert(G == ITER)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var th: [N] Threading.Thread

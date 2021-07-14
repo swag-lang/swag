@@ -1,5 +1,5 @@
-//#[Swag.printbc, Swag.safety("", false)]
-//#[Swag.printbc]
+//#[Swag.PrintBc, Swag.safety("", false)]
+//#[Swag.PrintBc]
 #test
 {
     visit "toto"

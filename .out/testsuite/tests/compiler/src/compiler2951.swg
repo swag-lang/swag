@@ -3,7 +3,7 @@ struct AA
     x, y: s32 = 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: AA)
 {
     @assert(x.x == 666)

@@ -10,7 +10,7 @@ func toto(v: const &IAllocator)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var v: AA

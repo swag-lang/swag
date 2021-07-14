@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	//var array = {1,2,3}
@@ -9,13 +9,13 @@
 	@assert(c[1] == 668)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func T(param: *s32)
 {
 	param[0] += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func F(param: [..] s32, b: func(*s32))
 {
 	var data = @dataof(param)

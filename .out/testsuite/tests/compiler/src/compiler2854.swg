@@ -3,7 +3,7 @@
 #global testerror
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.safety("", true)]
 #test
 {

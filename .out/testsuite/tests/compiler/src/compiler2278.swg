@@ -3,7 +3,7 @@ func toto()->Swag.IAllocator
     return @getcontext().allocator
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     a := toto()

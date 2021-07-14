@@ -1,12 +1,12 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: const [..] s32)
 {
 	@assert(@countof(x) == 2)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	array := @[1 , 2]

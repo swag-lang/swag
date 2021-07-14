@@ -7,19 +7,19 @@ struct TT
     value4: s64 = 456
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func D(x: ...)
 {
     E(x[0])
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func E(x: any)
 {
     C(cast(TT) x)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func C(x: TT)
 {
     //@print(cast(s64) x.value)

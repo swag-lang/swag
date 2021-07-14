@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(N: s32) toto()->s32
 {
 	cpt := 0
@@ -12,7 +12,7 @@ func(N: s32) toto()->s32
 	return cpt
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto'4() == 1)

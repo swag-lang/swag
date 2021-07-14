@@ -1,13 +1,13 @@
 ;
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func test (arr: [2] s32, idx: s32, val: s32)
 {
 	@assert(arr[idx] == val);
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr = @[6, 10];

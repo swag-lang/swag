@@ -1,7 +1,7 @@
 
 #global testpass syntax
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct toto
 {
 	x, y, z: f32;

@@ -17,7 +17,7 @@ impl Y
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var y: Y

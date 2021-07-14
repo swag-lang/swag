@@ -1,6 +1,6 @@
 ;
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
 	@assert(@countof("toto") == 4);

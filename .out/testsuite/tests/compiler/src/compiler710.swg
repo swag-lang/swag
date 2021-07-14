@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: T)->s32
 {
 	switch x
@@ -11,7 +11,7 @@ func(T) toto(x: T)->s32
 	return 0
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto(0'u32) == 0)

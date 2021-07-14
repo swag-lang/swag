@@ -5,7 +5,7 @@ func toto(x, y: s64 = 666)
     @assert(y == 444)
 }
 
-//#[Swag.printbc]//, Swag.optim("", false)]
+//#[Swag.PrintBc]//, Swag.optim("", false)]
 #test
 {
     toto(y: 444)

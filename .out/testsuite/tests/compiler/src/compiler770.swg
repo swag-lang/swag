@@ -22,7 +22,7 @@ impl Point
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt = 0

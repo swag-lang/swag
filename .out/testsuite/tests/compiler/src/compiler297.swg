@@ -1,10 +1,10 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func test1 ()-> string
 {
 	return "toto1";
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var c = test1();

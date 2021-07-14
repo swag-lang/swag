@@ -9,7 +9,7 @@ impl A
     func opEquals(self, _v: u32) => self.v == _v
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var pt: A

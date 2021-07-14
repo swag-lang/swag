@@ -4,7 +4,7 @@ typeset AA
     T1 {x: s32, y: f32}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var v: AA

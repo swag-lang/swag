@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	const pt = @{x: 1, y: 2}

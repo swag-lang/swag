@@ -28,14 +28,14 @@ impl IIncrementable for TITI
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func Loop(x: *IIncrementable)
 {
     while !x.done()
         x.decr()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var str: TITI

@@ -3,7 +3,7 @@ func(T) inc(x: *T)
     dref x += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) map(cb: func(*T))
 {
     var x: T

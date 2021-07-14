@@ -11,14 +11,14 @@ impl A
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->A
 {
     var x: A // Should not call opDrop, because we have a,move optim
     return x
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

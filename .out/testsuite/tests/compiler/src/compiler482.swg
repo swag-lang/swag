@@ -1,7 +1,7 @@
 
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #global testerror
 #test
 {
@@ -11,7 +11,7 @@
 	@print(b.0)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func T()-> {s32, s32}
 {
 	return {1,2}

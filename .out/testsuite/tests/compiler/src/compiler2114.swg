@@ -16,7 +16,7 @@ func titi()
 var toTreat: [4] string
 var toTreatCpt: u32
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()

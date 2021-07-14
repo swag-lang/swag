@@ -21,7 +21,7 @@ impl A
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     G = 0

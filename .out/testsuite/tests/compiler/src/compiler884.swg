@@ -4,7 +4,7 @@ func stepForward(input: s32) => input + 1
 func stepBackward(input: s32) => input - 1
 func chooseStepFunction(backward: bool) => backward ? &stepBackward : &stepForward
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	currentValue := 3

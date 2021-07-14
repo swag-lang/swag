@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.inline]
 func swap(x, y: *s32)
 {
@@ -7,7 +7,7 @@ func swap(x, y: *s32)
     dref y = tmp
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 #test
 {

@@ -2,7 +2,7 @@
 {
 }*/
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x, y: {s32, s32}

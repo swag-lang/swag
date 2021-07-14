@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optim("", false)]
 func toto()->s64
 {

@@ -3,7 +3,7 @@
 
 func T()->string { return "toto"; }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(T() == "toto")

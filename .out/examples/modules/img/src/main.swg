@@ -51,7 +51,7 @@ func display()
 }
 
 var textureID: GLuint
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func loadImg()
 {
     using Pixel, Color
@@ -289,7 +289,7 @@ func messageLoop()
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #main
 {
     if Slice.contains(@args(), "test")

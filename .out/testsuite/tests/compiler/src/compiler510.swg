@@ -4,7 +4,7 @@ func(T) valueof(x: any)->T
 	return ptr[0]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(xx: string, a: ...)
 {
 	x0 := valueof's32(a[0])
@@ -15,7 +15,7 @@ func toto(xx: string, a: ...)
 	@assert(x2 == 600)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto("true", 10, "toto", 600)

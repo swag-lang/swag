@@ -34,7 +34,7 @@ func Loop(x: IIncrementable)
      //   x.decr()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var str: TITI

@@ -19,7 +19,7 @@ impl AA
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var v: AA

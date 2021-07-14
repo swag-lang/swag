@@ -18,7 +18,7 @@ impl Toto
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x: Toto

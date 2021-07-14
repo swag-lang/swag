@@ -22,7 +22,7 @@ func Visit(str: const [..] u8, user: code)
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     cpt := 0

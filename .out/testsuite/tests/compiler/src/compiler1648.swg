@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #run
 {
     x := 0xFFFFFFFF'u64

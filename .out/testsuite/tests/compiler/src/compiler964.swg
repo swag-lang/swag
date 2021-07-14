@@ -6,7 +6,7 @@ struct Point
 	value: string
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Point

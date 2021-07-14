@@ -1,18 +1,18 @@
 
 /*
-#[Swag.printbc]
+#[Swag.PrintBc]
 func lambda(x: f32)
 {
 	@print(x)
 }
 
-#[Swag.printbc]
+#[Swag.PrintBc]
 func(T) toto(x: (T))
 {
 	x(666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(&lambda)

@@ -3,7 +3,7 @@ func toto() -> {x: s32, y: s32}
 	return @{1, 2}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	res := toto()

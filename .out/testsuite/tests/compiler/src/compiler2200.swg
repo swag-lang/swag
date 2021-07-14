@@ -1,4 +1,4 @@
-//#[Swag.printbc, Swag.nooptim]
+//#[Swag.PrintBc, Swag.nooptim]
 #test
 {
     {

@@ -10,7 +10,7 @@ func toto1(x: s32)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	//@print(toto)

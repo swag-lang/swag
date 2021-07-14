@@ -2,7 +2,7 @@ func(T) AA()
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     alias RR = AA's32

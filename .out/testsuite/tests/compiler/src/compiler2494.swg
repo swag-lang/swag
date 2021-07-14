@@ -8,7 +8,7 @@ struct Node
     value = 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.safety("", true)]
 #test
 {

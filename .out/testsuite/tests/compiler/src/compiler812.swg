@@ -28,7 +28,7 @@ impl Utf8
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var str: Utf8;

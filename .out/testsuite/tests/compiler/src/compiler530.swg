@@ -16,7 +16,7 @@ impl toto
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	using toto

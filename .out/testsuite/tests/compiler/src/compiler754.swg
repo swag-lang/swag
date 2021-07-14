@@ -10,7 +10,7 @@ func concrete1()->f32
 	return 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: func()->T)->T
 {
 	return x()

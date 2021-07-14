@@ -6,7 +6,7 @@ struct TT
     value:  s64 = 456
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func C(x: ...)
 {
     //@print(@typeof(x[0]).name)

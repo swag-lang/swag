@@ -2,7 +2,7 @@
 
 alias toto = bool
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a := &toto

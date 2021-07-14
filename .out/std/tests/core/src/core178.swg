@@ -5,7 +5,7 @@ func entry(th: Threading.Thread)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var th: Threading.Thread

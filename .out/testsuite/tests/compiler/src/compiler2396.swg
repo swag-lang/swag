@@ -15,7 +15,7 @@ func isPowerOf2(x: u32)
     assert(x)
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     isPowerOf2(1024)

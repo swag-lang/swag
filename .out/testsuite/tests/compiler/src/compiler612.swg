@@ -2,7 +2,7 @@
 
 
 #global testerror
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	x := 0

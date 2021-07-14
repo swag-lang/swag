@@ -1,6 +1,6 @@
 func toto() {}
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := @typeof(toto)

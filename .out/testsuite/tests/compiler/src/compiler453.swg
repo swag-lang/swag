@@ -4,7 +4,7 @@ func F(a: string = null)
 	@assert(@dataof(a) == null)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	F()

@@ -16,7 +16,7 @@ impl Vector2
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->Vector2
 {
     var a: Vector2{10, 10}

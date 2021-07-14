@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	x := @["10", "20", "30"]

@@ -3,7 +3,7 @@ interface I
     op: func(self)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: I

@@ -1,10 +1,10 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: s64)
 {
     @assert(x == 666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func titi(x: bool)
 {
     #run

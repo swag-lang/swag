@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: [2] s64)
 {
     ptr := &x[0]
@@ -7,7 +7,7 @@ func toto(x: [2] s64)
     ptr[0] = 66
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := @[10's64, 20's64]

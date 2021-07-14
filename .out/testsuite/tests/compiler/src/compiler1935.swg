@@ -3,14 +3,14 @@ struct SALUTE
     s, t: f64
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func cc(st: *SALUTE)
 {
     st.s = 55
     st.t = 55
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var st: SALUTE

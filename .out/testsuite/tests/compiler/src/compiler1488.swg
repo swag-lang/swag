@@ -6,7 +6,7 @@ func toto(x: code)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto()

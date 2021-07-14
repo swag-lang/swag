@@ -12,7 +12,7 @@ func valueof(x: any)
 	@assert(ptr[0] == 666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x: any

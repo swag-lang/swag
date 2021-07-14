@@ -1,7 +1,7 @@
 
 
 /*
-#[Swag.printbc]
+#[Swag.PrintBc]
 #test
 {
 	var array = {1,2,3}
@@ -13,7 +13,7 @@ func T(param: *s32)
 	@print(param[0])
 }
 
-#[Swag.printbc]
+#[Swag.PrintBc]
 func F(param: [3] s32, b: (*s32))
 {
 	var data = @dataof(param)
@@ -23,7 +23,7 @@ func F(param: [3] s32, b: (*s32))
 	}
 }*/
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var array = @[1,2,3]

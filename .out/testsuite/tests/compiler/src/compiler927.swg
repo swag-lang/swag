@@ -1,13 +1,13 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func average(x: any)
 {
 	tt := @kindof(x)
 	@assert(tt == @typeof(s32))
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average(0)

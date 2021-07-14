@@ -22,14 +22,14 @@ func compare (str1: string, str2: string)-> bool
 	return true;
 }*/
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func compare (str: string)
 {
 	var count = @countof(str);
 	@assert(count == 4);
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	compare("toto");

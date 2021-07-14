@@ -9,7 +9,7 @@ impl AA
     func opCast(using self)->s64 => 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optim("", false)]
 func toto()->s64
 {

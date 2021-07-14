@@ -1,6 +1,6 @@
 ﻿using Core.File
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var reader: TextReader

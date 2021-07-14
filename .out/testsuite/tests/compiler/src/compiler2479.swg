@@ -4,7 +4,7 @@ func panic(msg: string, loc: Swag.CompilerSourceLocation)
     G += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.safety("overflow", true)]
 #[Swag.optim("", false)]
 #test

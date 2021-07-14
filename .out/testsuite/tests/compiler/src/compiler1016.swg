@@ -1,6 +1,6 @@
 using Swag
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	ptr := @typeof(const *TypeInfo)

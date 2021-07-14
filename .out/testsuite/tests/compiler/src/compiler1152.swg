@@ -4,7 +4,7 @@ func toto(x: bool)
 	@assert(x)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(true)

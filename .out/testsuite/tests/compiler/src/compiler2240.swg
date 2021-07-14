@@ -7,7 +7,7 @@ func scopeLock()
 
 var G = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

@@ -10,7 +10,7 @@ func toto()->s32
 	return toto1() + 2
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto() == 3)

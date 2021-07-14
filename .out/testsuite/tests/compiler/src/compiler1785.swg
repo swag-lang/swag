@@ -6,7 +6,7 @@
 
 var G = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func foo()->s32
 {
     var S666 = @{ x: 1234's32 }

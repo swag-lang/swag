@@ -7,7 +7,7 @@ func(T) valueof(x: any)->T
 	return ptr[0]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(xx: string, a: ...)
 {
 	@assert(valueof'string(a[0]) == "toto")
@@ -37,7 +37,7 @@ func toto(xx: string, a: ...)
 	}*/
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto("%s%d", "toto", 10)

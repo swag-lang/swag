@@ -4,7 +4,7 @@ struct Point
 	y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pair : {string, Point} = @{"toto", {10, 20}}

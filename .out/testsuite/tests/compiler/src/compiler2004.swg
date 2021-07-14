@@ -4,7 +4,7 @@ func toto()->bool
     return true
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 #test
 {

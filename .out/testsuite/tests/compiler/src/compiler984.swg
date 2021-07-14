@@ -13,7 +13,7 @@ struct Pair
 	y: Point
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pair: Pair{"toto", @{10,20}}

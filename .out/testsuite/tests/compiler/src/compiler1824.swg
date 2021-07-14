@@ -1,6 +1,6 @@
 using Swag
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     var x: const* TypeInfo

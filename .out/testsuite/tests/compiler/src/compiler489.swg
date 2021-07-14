@@ -1,7 +1,7 @@
 
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	res := @{1, 2}

@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 
 func(T) toto(x: [1] *T)
 {

@@ -4,7 +4,7 @@ func set()
     @assert(@isbytecode())
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := 0

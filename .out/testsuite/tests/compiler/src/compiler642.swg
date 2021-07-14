@@ -5,14 +5,14 @@ struct(T) Point
 
 impl Point
 {
-	//#[Swag.printbc]
+	//#[Swag.PrintBc]
 	func toto(self)->T
 	{
 		return self.x
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Point's32

@@ -9,7 +9,7 @@ impl AA
     func opCount(using self)->uint => l
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optimizebc(0)]
 #test
 {

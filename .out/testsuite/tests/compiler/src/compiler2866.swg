@@ -1,6 +1,6 @@
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.safety("", true)]
 #[Swag.optim("", false)]
 #test

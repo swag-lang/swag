@@ -3,7 +3,7 @@
 
 var a = @["0", "1.0"];
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var b = @["0", "1.0"];

@@ -1,13 +1,13 @@
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct Point
 {
 	x: f32
 	y: f32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func Print(x: s64)
 {
 /*	@print(x)
@@ -16,7 +16,7 @@ func Print(x: s64)
 	@print("\n")*/
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	Print(s32)

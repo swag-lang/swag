@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var cpt: const [..] s32 = @[1, 2, 4];

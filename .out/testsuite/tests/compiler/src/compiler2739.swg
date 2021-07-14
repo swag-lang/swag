@@ -1,4 +1,4 @@
-//#[Swag.printbc]//, Swag.optim("", false)]
+//#[Swag.PrintBc]//, Swag.optim("", false)]
 func toto() throw
 {
     try
@@ -8,7 +8,7 @@ func toto() throw
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     catch toto()

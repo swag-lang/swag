@@ -1,7 +1,7 @@
 ﻿
 using Core.Memory
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

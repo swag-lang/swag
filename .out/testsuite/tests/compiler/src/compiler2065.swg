@@ -5,14 +5,14 @@ func strlen(value: const *u8)->u32
     return idx
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optimizebc(0)]
 func toto(message: const *u8)
 {
     var msg: string = message ? @mkstring(message, cast(uint) strlen(message)) : ""
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(null)

@@ -1,10 +1,10 @@
 
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(uint) v.length)
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: String = "coucou㐁㐄㐅"

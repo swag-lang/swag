@@ -10,7 +10,7 @@ struct Monster
     using entity: *Entity
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var e: Entity

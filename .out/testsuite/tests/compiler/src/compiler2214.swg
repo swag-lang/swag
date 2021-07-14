@@ -31,14 +31,14 @@ func toto()->A
     return res
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", true)]
 func titi()->A
 {
     return toto()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", true)]
 #test
 {

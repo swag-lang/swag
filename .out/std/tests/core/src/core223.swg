@@ -1,7 +1,7 @@
 
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     alias arr4 = Math.NumericArray'(f32, 4)

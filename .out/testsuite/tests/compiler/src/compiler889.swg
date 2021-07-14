@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var result: [] f32 = @[1, 2, 3, 4, 5]

@@ -11,7 +11,7 @@ var spaceTest: []rune = @[
 	0x3000,
 ]
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     g := 0

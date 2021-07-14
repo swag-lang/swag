@@ -10,7 +10,7 @@ namespace toto.titi
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: toto.titi.point

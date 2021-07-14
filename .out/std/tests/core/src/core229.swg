@@ -10,7 +10,7 @@ var t: [] struct {
     {["a"'rune, "b"'rune, 0xd7ff, 0xd800, 0xdfff, 0xe000, 0x110000, 0xffffffff], ["a"'u16, "b"'u16, 0xd7ff, 0xfffd, 0xfffd, 0xe000, 0xfffd, 0xfffd]},
 ]
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     visit *p: t

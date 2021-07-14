@@ -1,6 +1,6 @@
 alias toto = Swag
 
-//#[toto.printbc]
+//#[toto.PrintBc]
 #test
 {
     const a = @[1, 2, 3]

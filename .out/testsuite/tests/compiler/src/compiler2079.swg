@@ -6,7 +6,7 @@ struct AA
     x: u8 = 5
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var t: AA

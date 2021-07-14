@@ -1,7 +1,7 @@
 
 using Core.Math
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := abs(-1.0'f64)

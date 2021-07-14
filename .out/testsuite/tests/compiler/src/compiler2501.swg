@@ -1,7 +1,7 @@
 /*//#global testerror
 using Swag
 
-#[printbc]
+#[PrintBc]
 struct Node
 {
     value = 666
@@ -15,7 +15,7 @@ func toto()->Node
     return x
 }
 
-//#[printbc]
+//#[PrintBc]
 #[optim("bc",false)]
 #test
 {

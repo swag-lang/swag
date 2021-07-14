@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := cast(rune) "A"

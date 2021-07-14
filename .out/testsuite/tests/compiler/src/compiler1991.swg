@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 func(T) way(x1, x2: T)
 {

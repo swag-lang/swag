@@ -6,7 +6,7 @@ func toto() -> {x: s32} throw
     return @{1}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     @assert(assume toto().x == 1)

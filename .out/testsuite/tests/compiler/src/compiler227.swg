@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func main ()
 {
 	var a : s32;
@@ -16,7 +16,7 @@ func main ()
 	@assert(b == 100);
 }
 
-//#[printbc]
+//#[PrintBc]
 func main1 ()
 {
 	main();

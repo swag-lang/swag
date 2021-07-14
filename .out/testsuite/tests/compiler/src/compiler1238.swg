@@ -1,6 +1,6 @@
 alias T = func()->void
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: T

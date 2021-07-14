@@ -19,7 +19,7 @@ impl AA
 func toto()->AA  { return AA{}; }
 func titi(x: AA) { }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

@@ -10,7 +10,7 @@ func cstr(x: string)->string
     return "toto"
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     v := cstr("toto")

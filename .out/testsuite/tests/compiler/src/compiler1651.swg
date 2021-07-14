@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto1(x: any)
 {
     v := cast(s32) x

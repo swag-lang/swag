@@ -3,7 +3,7 @@ func toto(x: s32)
 }
 
 //#[Swag.safety("", false)]
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := @typeof(toto)

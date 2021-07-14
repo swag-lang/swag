@@ -8,7 +8,7 @@ struct point
 
 var pt: point
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(pt.x == "toto")

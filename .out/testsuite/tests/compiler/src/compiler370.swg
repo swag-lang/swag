@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var slice: const [..] s32;

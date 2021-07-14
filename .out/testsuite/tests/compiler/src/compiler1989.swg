@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) swap(x, y: *T)
 {
     tmp :=,moveraw dref x

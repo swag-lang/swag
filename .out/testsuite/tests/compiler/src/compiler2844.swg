@@ -6,7 +6,7 @@ func print(params: ...)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := &print

@@ -1,13 +1,13 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #global testerror
 func(T) toto(x: T)->s32
 {
 	return T
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto(0) == 0)

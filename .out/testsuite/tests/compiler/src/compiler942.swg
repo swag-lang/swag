@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x: [2] any = @[6, "6"]

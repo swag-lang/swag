@@ -7,7 +7,7 @@ struct point
 	y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	pt := cast(*point) @alloc(cast(uint) @sizeof(point))

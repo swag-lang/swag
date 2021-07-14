@@ -3,7 +3,7 @@ struct A
     x = 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto1()->[2] A
 {
     var result: retval

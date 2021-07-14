@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #run
 {
     const tbl = "0123456789ABCDEF"

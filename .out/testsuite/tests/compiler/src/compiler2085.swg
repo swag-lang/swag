@@ -9,7 +9,7 @@ struct AA
     y: BB = @{555, 666}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var tt: AA

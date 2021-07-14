@@ -15,7 +15,7 @@ func set(entity: *Entity)
     entity.position[0] = 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var e: Entity

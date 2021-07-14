@@ -16,14 +16,14 @@ impl AA
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->AA
 {
     var result: retval
     return result
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func titi()->AA
 {
     var result: retval = toto()

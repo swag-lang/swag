@@ -7,7 +7,7 @@
 attr ConstExpr()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
-attr printbc()
+attr PrintBc()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]
 attr compiler()

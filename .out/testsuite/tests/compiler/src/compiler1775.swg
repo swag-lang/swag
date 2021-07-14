@@ -3,7 +3,7 @@ func test1()
 
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     test1()

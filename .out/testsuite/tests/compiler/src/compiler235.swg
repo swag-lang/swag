@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func main ()
 {
 	var a = 0xFFFFFF45;

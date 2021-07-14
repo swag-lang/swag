@@ -1,7 +1,7 @@
 using Swag
 
 #[safety("overflow", true)]
-//#[printbc]
+//#[PrintBc]
 #test
 {
     #semerror x0 := 1'u8 << 8

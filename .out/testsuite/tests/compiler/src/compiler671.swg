@@ -1,7 +1,7 @@
 
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	/*var a : {s32, s32}

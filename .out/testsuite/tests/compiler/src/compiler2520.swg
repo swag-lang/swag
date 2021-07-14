@@ -1,4 +1,4 @@
-//#global #[Swag.printbc]
+//#global #[Swag.PrintBc]
 //#global #[Swag.safety("", false)]
 
 var t: [] struct {

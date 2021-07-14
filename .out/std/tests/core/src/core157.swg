@@ -1,7 +1,7 @@
 
 using Core.Math
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var pt0, pt1, pt2: Point

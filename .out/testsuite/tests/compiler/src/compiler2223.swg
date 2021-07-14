@@ -4,7 +4,7 @@ struct A
     y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto1()->A
 {
     return @{y: 555, x: 444}

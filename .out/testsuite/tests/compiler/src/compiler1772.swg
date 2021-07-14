@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := [10's64, 20's64]

@@ -6,7 +6,7 @@ func cstr(x: string)
     defer G = 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

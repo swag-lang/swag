@@ -5,7 +5,7 @@ func toto()->const &u64
     return G
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := toto()

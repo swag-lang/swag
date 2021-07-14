@@ -14,7 +14,7 @@ namespace NN
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optim("", false)]
 #test
 {

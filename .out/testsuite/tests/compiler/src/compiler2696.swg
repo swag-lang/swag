@@ -8,7 +8,7 @@ func(T) toto() #selectif false
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto's32()

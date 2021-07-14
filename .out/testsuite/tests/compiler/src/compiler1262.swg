@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto()->T
 {
 	#if @typeof(T) == @typeof(string)

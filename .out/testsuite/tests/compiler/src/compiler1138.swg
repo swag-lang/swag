@@ -1,7 +1,7 @@
 #[Swag.inline]
 func toto()->s32 => 1
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	r := toto()

@@ -1,7 +1,7 @@
 ﻿
 using Core.Time
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     dt := DateTime.now()

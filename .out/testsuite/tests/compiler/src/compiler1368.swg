@@ -4,7 +4,7 @@ interface IIncrementable
     done: func(self)->bool
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: IIncrementable

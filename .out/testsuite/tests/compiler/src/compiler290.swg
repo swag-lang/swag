@@ -1,6 +1,6 @@
 /*using Swag;
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
 	var a: s32 = 666;

@@ -4,7 +4,7 @@ func toto(stmt: code)
     #mixin stmt
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto()

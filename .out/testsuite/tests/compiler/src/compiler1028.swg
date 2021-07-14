@@ -5,7 +5,7 @@ struct Point
 	x: s32 = 10
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt : [2] Point

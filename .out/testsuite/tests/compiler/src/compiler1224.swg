@@ -8,7 +8,7 @@ const One: Vector2{1, 1}
 func dot(other: Vector2) {}
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	dot(One)

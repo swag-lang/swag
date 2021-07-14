@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	F(&T)

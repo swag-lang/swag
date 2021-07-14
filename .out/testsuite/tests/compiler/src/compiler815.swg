@@ -4,7 +4,7 @@ func toto(x: const [4] s32)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	const a = @[0,1,2,3]

@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func a (ptr: string, cpt: s32)
 {
 	@assert(cpt == 10);
@@ -6,7 +6,7 @@ func a (ptr: string, cpt: s32)
 	@assert(ptr[3] == cast(u8) ("o"'rune));
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a("toto", 10);

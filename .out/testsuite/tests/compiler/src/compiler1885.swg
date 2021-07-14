@@ -26,7 +26,7 @@ struct(T) AA
     enPlus: bool
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     struct BB

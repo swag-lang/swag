@@ -16,7 +16,7 @@ impl point
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: [2] point

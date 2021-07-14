@@ -1,6 +1,6 @@
 using Pixel.Image
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var options: DecodeOptions

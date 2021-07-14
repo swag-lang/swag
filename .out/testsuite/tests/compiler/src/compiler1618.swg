@@ -3,7 +3,7 @@ func toto1()->{s32, s32}
     return @{0, 1}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->{s32, s32}
 {
     result := toto1()

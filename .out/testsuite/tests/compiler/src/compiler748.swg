@@ -10,7 +10,7 @@ func(T) toto(x: func(T))
 	x(666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(&lambda)

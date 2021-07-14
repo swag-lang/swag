@@ -24,7 +24,7 @@ func compare: (str1: string, str2: string)-> bool
 	return true;
 }*/
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(g == true);

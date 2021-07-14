@@ -9,7 +9,7 @@ func cc(sl: const [..] u8, val: s32)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     Core.Debug.assert(true, "")

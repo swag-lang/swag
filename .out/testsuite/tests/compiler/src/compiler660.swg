@@ -6,7 +6,7 @@ enum OT
 	B
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#global testerror
 #test
 {

@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var a: [2, 2] s32

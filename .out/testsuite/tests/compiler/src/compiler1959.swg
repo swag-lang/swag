@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     if @typeof(s32).flags & Swag.TypeInfoFlags.Integer

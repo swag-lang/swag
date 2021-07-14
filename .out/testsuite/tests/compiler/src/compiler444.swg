@@ -8,7 +8,7 @@ func F(a: s32, b: s32)
 	@assert(b == 0)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	F(a: 0, a: 1)

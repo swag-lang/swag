@@ -3,7 +3,7 @@ using Swag
 
 func toto(x: s32, y: bool)->s32 => x
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var t: func(s32, bool)->s32 = &toto

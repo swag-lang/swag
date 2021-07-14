@@ -3,7 +3,7 @@
 
 var a = @["0", "1.0"];
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(a[0] == "0");

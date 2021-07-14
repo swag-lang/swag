@@ -9,7 +9,7 @@ func titi()->string throw
     return "666"
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := catch titi()

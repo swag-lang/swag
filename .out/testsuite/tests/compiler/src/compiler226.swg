@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func main ()
 {
 	var a : s32;
@@ -15,7 +15,7 @@ func main ()
 	}
 }
 
-//#[printbc]
+//#[PrintBc]
 func main1 ()
 {
 	main();

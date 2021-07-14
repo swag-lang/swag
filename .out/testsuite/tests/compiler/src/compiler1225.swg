@@ -6,14 +6,14 @@ struct Vector2
 
 impl Vector2
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func normalize(using self)->Vector2
     {
         return Vector2{x + 1, y + 1}
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Vector2{5, 100}

@@ -1,7 +1,7 @@
 func toto()->s32 => 0
 func titi()->s32 => 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     @assert(@typeof(s32).name == "s32");

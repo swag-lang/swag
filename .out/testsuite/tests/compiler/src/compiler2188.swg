@@ -8,7 +8,7 @@ func toFloat() -> {a: f32, r: f32, g: f32}//, b: f32}
     return result
 }
 
-//#[Swag.printbc, Swag.nooptim]
+//#[Swag.PrintBc, Swag.nooptim]
 #test
 {
     v := toFloat()

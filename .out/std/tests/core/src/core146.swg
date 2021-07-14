@@ -1,7 +1,7 @@
 
 using Core, Utf8, Tokenize
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: String = "    toto titi  指事字   "

@@ -4,7 +4,7 @@ using Swag
 func toto()->s32 => 666
 func toto1()->s32 => 667
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	ptr := &toto

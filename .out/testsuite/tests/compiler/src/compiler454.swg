@@ -6,7 +6,7 @@ func F(a: string = "toto")
 	@assert(a == "toto")
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	F()

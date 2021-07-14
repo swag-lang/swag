@@ -1,6 +1,6 @@
 using Core, Utf8, Tokenize
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: String = "指toto指指指titi指tata"

@@ -25,7 +25,7 @@ impl A
 
 alias TOTO = [3] A
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto1()->TOTO
 {
     var result: TOTO

@@ -22,7 +22,7 @@
         const BACKGROUND_INTENSITY: u16 = 0x0080 // background color is intensified.
     }
 
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     #test
     {
         //using Windows

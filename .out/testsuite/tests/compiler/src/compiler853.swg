@@ -2,7 +2,7 @@
 
 var cpt: s32 = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()
 {
 	defer cpt -= 1

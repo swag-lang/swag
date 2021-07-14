@@ -13,7 +13,7 @@ func concrete1()->*f32
 	return &gf
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: func()->*T)->T
 {
 	ptr := x()

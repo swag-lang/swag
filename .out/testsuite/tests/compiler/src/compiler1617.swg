@@ -3,7 +3,7 @@ struct A
     xx: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 impl A
 {
     #[Swag.macro]

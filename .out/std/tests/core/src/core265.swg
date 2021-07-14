@@ -1,6 +1,6 @@
 using Core.Math
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Vector2 = 5

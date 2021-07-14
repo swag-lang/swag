@@ -2,7 +2,7 @@
 using Core
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var str: String = "toto"

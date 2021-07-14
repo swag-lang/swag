@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 #[Swag.safety("", true)]
 #test

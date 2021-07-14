@@ -20,7 +20,7 @@ namespace titi
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a = false

@@ -1,6 +1,6 @@
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     t := @typeof(String)

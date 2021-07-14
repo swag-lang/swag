@@ -7,7 +7,7 @@ func average(x: any)
 	//t1 := @typeof(x)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average(10.0)

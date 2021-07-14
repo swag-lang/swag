@@ -16,7 +16,7 @@ impl B
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var arr: B

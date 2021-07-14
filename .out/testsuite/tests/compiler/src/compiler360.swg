@@ -3,7 +3,7 @@
 
 var a = @[1, 2];
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#global testerror;
 #test
 {

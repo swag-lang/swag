@@ -1,9 +1,9 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) sum(x, y: *T) => x[0] + y[0]
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a := 1

@@ -10,7 +10,7 @@ impl Rdom
 	func nextF32(using self)->f32 => rng.nextU32() / cast(f32) Swag.U32.Max
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var rng: Rdom

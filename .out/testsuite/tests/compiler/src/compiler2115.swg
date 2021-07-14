@@ -13,7 +13,7 @@ var G: s32 = 0
 
 impl IT for Arr
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func toto(self)
     {
         G += 1
@@ -27,7 +27,7 @@ impl IT for Arr
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: Arr's32

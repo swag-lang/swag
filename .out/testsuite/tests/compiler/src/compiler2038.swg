@@ -12,7 +12,7 @@ impl Argb
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var color: Argb

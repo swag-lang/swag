@@ -3,7 +3,7 @@ struct pt
     x, y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#global testerror
 #test
 {

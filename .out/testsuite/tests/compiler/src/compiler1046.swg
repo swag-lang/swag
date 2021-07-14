@@ -7,7 +7,7 @@ struct Point
 
 func new()->Point { return @{1}; }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	new().x = 1

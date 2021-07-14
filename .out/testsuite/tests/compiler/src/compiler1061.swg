@@ -21,7 +21,7 @@ struct Point
 	x: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr: Array!Point

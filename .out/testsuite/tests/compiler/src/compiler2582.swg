@@ -9,7 +9,7 @@ func toto1() throw
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 }

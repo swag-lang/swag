@@ -11,7 +11,7 @@ func D(x: TT)
     @assert(x.value == 456)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func C(x: any)
 {
     D(x)

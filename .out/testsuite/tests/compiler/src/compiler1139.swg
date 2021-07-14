@@ -1,7 +1,7 @@
 #[Swag.inline]
 func toto()->s32 => 666
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	x := toto()

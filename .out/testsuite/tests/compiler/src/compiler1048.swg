@@ -13,7 +13,7 @@ struct Point
 {
 	x, y: string = "coucou"
 }
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	ptr := new'Point()

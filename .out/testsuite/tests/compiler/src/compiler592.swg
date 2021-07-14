@@ -3,7 +3,7 @@
 
 var c: s32 = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	op := "toto10"

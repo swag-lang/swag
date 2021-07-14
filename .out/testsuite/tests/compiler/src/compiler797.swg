@@ -14,7 +14,7 @@ func myAlloc(v: u32)->*void
 	return @alloc(cast(uint) v)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt = 0

@@ -20,14 +20,14 @@ impl Point
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->Point
 {
 	var pt: Point
 	return pt
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt = 0

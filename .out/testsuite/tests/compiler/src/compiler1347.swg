@@ -9,14 +9,14 @@ struct TITI
 
 impl TOTO for TITI
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func print(using self, x: bool)
     {
         //@print("x")
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: TOTO

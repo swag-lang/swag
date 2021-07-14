@@ -7,7 +7,7 @@ enum TOTO : string
 	B = "str300"
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	using Swag

@@ -63,7 +63,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "strict" && kind == AstNodeKind::Alias)
             return true;
-        if (oneAttribute->token.text == "printbc" && kind == AstNodeKind::CompilerAst)
+        if (oneAttribute->token.text == "PrintBc" && kind == AstNodeKind::CompilerAst)
             return true;
         if (oneAttribute->token.text == "align" && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
             return true;
@@ -215,7 +215,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Predefined attributes will mark some flags (to speed up detection)
             if (child->token.text == "ConstExpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
-            else if (child->token.text == "printbc")
+            else if (child->token.text == "PrintBc")
                 flags |= ATTRIBUTE_PRINT_BC;
             else if (child->token.text == "test")
                 flags |= ATTRIBUTE_TEST_FUNC;
@@ -239,7 +239,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_IMPLICIT;
             else if (child->token.text == "nobss")
                 flags |= ATTRIBUTE_NO_BSS;
-            else if (child->token.text == "noreturn")
+            else if (child->token.text == "NoReturn")
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->token.text == "discardable")
                 flags |= ATTRIBUTE_DISCARDABLE;

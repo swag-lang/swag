@@ -1,6 +1,6 @@
 using tests_foreign
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     tcf_toto16(456,3.14)

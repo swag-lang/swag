@@ -13,7 +13,7 @@ impl titi
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var t: titi

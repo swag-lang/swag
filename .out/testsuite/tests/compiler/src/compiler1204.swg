@@ -9,7 +9,7 @@ impl A
     func toto(v: u32) => v
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var pt: A

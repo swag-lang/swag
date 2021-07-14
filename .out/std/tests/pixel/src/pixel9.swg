@@ -1,6 +1,6 @@
 using Core, Pixel
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var options: DecodeOptions

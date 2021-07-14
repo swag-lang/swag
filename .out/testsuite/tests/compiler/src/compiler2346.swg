@@ -1,6 +1,6 @@
 var G = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()
 {
     x := 0

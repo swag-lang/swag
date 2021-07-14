@@ -15,7 +15,7 @@ impl Point
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Point's32

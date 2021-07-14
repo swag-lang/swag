@@ -1,6 +1,6 @@
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var c = 0xFFFFFFFF_FFFFFFFF

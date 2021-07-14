@@ -1,7 +1,7 @@
 
 using Core.Drawing
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var y: Color = "Aqua"

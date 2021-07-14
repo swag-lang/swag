@@ -5,7 +5,7 @@ struct Point
 	z: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->Point
 {
 	var pt: Point
@@ -15,7 +15,7 @@ func toto()->Point
 	return pt
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var a : Point

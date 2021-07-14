@@ -17,7 +17,7 @@ impl BB
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: BB

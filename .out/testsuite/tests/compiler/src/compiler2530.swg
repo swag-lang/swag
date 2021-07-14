@@ -4,7 +4,7 @@ func toto()->s64
     return 555
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := toto()

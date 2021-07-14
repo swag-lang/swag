@@ -7,7 +7,7 @@ struct A
     x: string
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 #test
 {

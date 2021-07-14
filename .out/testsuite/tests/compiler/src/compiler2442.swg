@@ -10,7 +10,7 @@ func toto()->{A, err: string}
     return result
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     (v, err) := toto()

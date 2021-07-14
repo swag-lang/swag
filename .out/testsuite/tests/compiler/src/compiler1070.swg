@@ -16,7 +16,7 @@ func toto(v: string)
 	@assert(v != "123")
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var t: titi

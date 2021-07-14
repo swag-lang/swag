@@ -1,7 +1,7 @@
 
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func fromCapa(capa: uint)->BitArray
 {
     var x: BitArray

@@ -7,7 +7,7 @@ func toto()->[2] s32 throw
     return @[1, 2]
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     x := catch toto()

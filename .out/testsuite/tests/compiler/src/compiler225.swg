@@ -6,7 +6,7 @@ var b0: bool = true;
 var b1: u64 = 666;
 var b2: f32 = 1.5;
 
-//#[printbc]
+//#[PrintBc]
 func main ()
 {
 	@assert(b0 == true);

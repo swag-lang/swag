@@ -5,7 +5,7 @@ func F(a: s32, b: s32)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	F(a: 0, b: 1)

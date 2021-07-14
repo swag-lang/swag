@@ -11,7 +11,7 @@ func toto(x: Pt)
     @print(x.x)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(@{true})

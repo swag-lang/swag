@@ -2,7 +2,7 @@
 
 func toto(x: s32)->s32 => x * x
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto(4) == 16)

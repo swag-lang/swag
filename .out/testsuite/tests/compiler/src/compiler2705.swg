@@ -4,7 +4,7 @@ func toto(x: const [2] s32 = @[1, 2])
     @assert(x[1] == 2)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto()

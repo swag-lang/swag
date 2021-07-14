@@ -1,10 +1,10 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #run
 {
 //    G += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #init
 {
     //@assert(G == 1)

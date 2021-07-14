@@ -12,7 +12,7 @@ func toto(pt: Point)
 	@assert(pt.y == 2)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(Point{1.0, 2.0})

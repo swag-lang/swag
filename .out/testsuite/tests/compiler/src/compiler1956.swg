@@ -24,7 +24,7 @@ impl A
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

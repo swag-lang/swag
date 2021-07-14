@@ -1,6 +1,6 @@
 using Core.Random
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var rng: CMWC4096

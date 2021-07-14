@@ -1,7 +1,7 @@
 
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     @assert(Path.getExtension("loc.fileName") == ".fileName")

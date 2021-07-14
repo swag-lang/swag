@@ -1,7 +1,7 @@
 
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func T(xx: string, xy: bool, a: ...)
 {
 	@assert(@countof(a) == 3)
@@ -9,7 +9,7 @@ func T(xx: string, xy: bool, a: ...)
 	@assert(xy == true)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	T("true", true, 10, 100, 1000)

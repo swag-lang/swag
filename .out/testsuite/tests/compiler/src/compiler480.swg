@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	c := @[666,667]
@@ -7,7 +7,7 @@
 	@assert(c[1] == 668)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func T(param: *s32)
 {
 	param[0] += 1

@@ -6,7 +6,7 @@ func set()
     X = 6
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #run
 {
     #run set()

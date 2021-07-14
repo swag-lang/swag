@@ -1,7 +1,7 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) sum(x, y: T) => x + y
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(sum(1's32, 3) == 4)

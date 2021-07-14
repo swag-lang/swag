@@ -2,7 +2,7 @@
 
 var G: s32 = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	G = 0

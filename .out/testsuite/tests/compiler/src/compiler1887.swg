@@ -6,7 +6,7 @@ func(T) checker()
     @assert(ptr == s32)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto()
 {
     //#print "toto"
@@ -16,7 +16,7 @@ func(T) toto()
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func titi()
 {
     toto's32()

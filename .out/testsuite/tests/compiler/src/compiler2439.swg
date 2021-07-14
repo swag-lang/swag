@@ -27,7 +27,7 @@ impl B
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: A

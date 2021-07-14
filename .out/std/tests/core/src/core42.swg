@@ -1,7 +1,7 @@
 
 using Core.Math
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var rect: Rectangle{0, 0, 10, 10}

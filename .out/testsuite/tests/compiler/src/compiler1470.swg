@@ -5,7 +5,7 @@ func toto()
         xx := 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     yy := 5

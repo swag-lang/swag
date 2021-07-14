@@ -6,7 +6,7 @@ struct Array
 	value: s32 = 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr: Array

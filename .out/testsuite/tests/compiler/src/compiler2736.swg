@@ -21,7 +21,7 @@ func toto() throw
     try tata()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     catch toto()

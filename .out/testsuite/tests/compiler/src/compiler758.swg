@@ -8,7 +8,7 @@ func toto()->s32
 
 const titi = toto()
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(titi == 666)

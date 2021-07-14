@@ -12,7 +12,7 @@ impl Point
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 }

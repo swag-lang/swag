@@ -35,7 +35,7 @@ func toto1()->TOTO
     return resultXX
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optim("", true)]
 #test
 {

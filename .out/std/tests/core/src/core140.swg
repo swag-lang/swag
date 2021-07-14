@@ -1,7 +1,7 @@
 
 using Core.StrConv
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.nooptim]
 #test
 {

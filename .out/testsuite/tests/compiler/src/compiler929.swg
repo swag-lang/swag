@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func average(x: any)
 {
 	tt := @kindof(x)
@@ -11,7 +11,7 @@ func average(x: any)
 	@assert(tt.sizeof == 4)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average(666)

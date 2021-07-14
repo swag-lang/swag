@@ -7,7 +7,7 @@ struct(T) Point
 	y: T = 10
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt : Point'u64{100'u64, 500'u64}

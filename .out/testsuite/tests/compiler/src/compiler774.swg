@@ -21,13 +21,13 @@ struct Point
 
 var cpt: s32 = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->Point
 {
 	return Point(1, 2) // one,move
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt = 0

@@ -4,7 +4,7 @@ func toto() throw
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: func()

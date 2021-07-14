@@ -15,7 +15,7 @@ func toto(stmt: code)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     cpt := 0

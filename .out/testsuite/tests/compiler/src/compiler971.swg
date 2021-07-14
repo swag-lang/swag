@@ -9,7 +9,7 @@ struct Point
 
 var x: Point{10,20}
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(x.x == 10)

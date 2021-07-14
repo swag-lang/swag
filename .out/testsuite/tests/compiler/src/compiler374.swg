@@ -1,7 +1,7 @@
 ;
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	const a = 666;

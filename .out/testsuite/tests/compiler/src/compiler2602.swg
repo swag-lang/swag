@@ -15,7 +15,7 @@ func toto(stmt: code)
     loop 5 titi(@index)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto()

@@ -4,7 +4,7 @@ struct(T) BB
     //alias y = {T, T}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: BB's32

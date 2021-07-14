@@ -32,7 +32,7 @@ public func tcf_toto3(a, b, c, d, e, f: s8)
     @assert(f == 6)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 public func tcf_toto4()->string
 {
     return "toto"
@@ -84,7 +84,7 @@ public impl tcf_Point
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 public func tcf_toto10()->tcf_Point
 {
     return @{10, 20}
@@ -265,7 +265,7 @@ public func tcf_join32(titi: string, values: s32...)
 
 private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 public func tcf_toto20(a: u16)
 {
 //    @assert(a == 2020)
@@ -349,7 +349,7 @@ public func tcf_manualcall(x: s64)->s64
     return x
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s16, s32, string, s64))
 {
     @assert(v == 33)

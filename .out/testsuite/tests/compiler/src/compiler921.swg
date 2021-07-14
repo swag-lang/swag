@@ -6,7 +6,7 @@ func average(x: any)
 	t := @dataof(any)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average(1)

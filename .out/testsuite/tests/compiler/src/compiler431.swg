@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cst :=  0x01_02_03_04
@@ -6,7 +6,7 @@
 	len(slice)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func len(buffer: const [..] u8)
 {
 	result := 0

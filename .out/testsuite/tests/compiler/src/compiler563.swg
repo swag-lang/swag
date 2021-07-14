@@ -2,7 +2,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct point
 {
 	x: s32 = 60

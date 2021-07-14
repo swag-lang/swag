@@ -8,14 +8,14 @@ struct(T) Point
 
 impl Point
 {
-	//#[Swag.printbc]
+	//#[Swag.PrintBc]
 	func toto(xx: T)->T
 	{
 		return xx
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Point's32

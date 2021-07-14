@@ -2,7 +2,7 @@ using Swag;
 
 //#global testerror;
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
 	var b = "XYZ";

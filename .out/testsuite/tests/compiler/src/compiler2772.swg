@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto()
 {
     x := cast(T) 2

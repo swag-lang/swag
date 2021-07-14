@@ -12,7 +12,7 @@ func toto()->AA throw
     return @{1, 2}
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     x := catch toto()

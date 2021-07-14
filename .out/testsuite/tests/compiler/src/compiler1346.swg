@@ -11,14 +11,14 @@ var G: bool
 
 impl TOTO for TITI
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func print(using self, x: string)
     {
         G = true
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     G = false

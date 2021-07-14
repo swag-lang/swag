@@ -16,7 +16,7 @@ func testInline(type: const* TypeInfoFunc)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()

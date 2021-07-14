@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.inline]
 public func toto2927()
 {

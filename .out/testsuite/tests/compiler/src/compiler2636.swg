@@ -8,7 +8,7 @@ public func scopedLock(syncObj: s64)
 var G1 = 5's64
 var G2 = 0's64
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     scopedLock(G1)

@@ -2,7 +2,7 @@
 func toto() => 0
 func titi() => 555
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := toto() orelse titi()

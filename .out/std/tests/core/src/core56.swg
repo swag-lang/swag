@@ -4,7 +4,7 @@
 
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: BitArray = [true, false, true, false]

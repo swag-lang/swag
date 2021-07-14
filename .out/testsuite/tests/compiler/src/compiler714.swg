@@ -1,12 +1,12 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: T)->T
 {
 	return x
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(toto(0'u8) == 0)

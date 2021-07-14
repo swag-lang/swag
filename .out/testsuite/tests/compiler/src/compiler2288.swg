@@ -27,7 +27,7 @@ func set1(monster: Monster)
     set(monster)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var e: Entity

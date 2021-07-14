@@ -1,13 +1,13 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func average(x: any)
 {
 	tx:= cast(*string) @dataof(x)
 	@assert(tx[0] == "toto")
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average("toto")

@@ -6,7 +6,7 @@ struct AA
     z: f64 = 3
 }
 
-/*#[Swag.printbc]
+/*#[Swag.PrintBc]
 func toto(x: AA)
 {
     //@print(x.x)

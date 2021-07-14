@@ -4,7 +4,7 @@ func sum(x: f32, nums: ...)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func average(nums: ...)
 {
     sum(1, nums, 1)

@@ -8,7 +8,7 @@ func arithmeticMean(numbers: f64...) -> f64 {
     return total / @countof(numbers)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	res := arithmeticMean(1, 2, 3, 4, 5)

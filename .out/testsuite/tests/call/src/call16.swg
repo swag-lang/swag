@@ -1,6 +1,6 @@
 using tests_foreign
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := &tcf_print

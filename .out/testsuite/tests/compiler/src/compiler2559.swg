@@ -11,13 +11,13 @@ impl AA
     }*/
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->[2] AA
 {
     return @[{1},{1}]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := toto()

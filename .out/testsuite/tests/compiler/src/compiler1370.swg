@@ -16,7 +16,7 @@ impl Itf for TOTO
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := cast(const *TypeInfoStruct) @typeof(TOTO)

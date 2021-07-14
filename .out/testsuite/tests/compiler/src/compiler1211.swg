@@ -1,7 +1,7 @@
 #[Swag.ConstExpr]
 func abs(x: f32) => -x
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     y := -1'f32

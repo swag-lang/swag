@@ -5,7 +5,7 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func set(using self, value: T)
     {
         #ast "a := value"

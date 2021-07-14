@@ -2,7 +2,7 @@
 ;
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func main (a: s32 = 6)->s32
 {
 	//@print("1");

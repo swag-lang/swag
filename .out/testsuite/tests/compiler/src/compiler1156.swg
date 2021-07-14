@@ -4,7 +4,7 @@ func toto(x: s64, y: s64)
 	@assert((x * 2) + y == 5)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(x: 2, y: 1)

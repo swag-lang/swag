@@ -40,7 +40,7 @@ var notupperTest: []rune = @[
     0x10000,
 ]
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     visit c: upperTest @assert(Unicode.isUpper(c))

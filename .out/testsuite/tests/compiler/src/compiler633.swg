@@ -5,7 +5,7 @@ struct(T) Point
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: Point)
 {
 }

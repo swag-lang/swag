@@ -2,7 +2,7 @@
 
 alias toto = s32
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a := 0

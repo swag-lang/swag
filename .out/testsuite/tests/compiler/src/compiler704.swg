@@ -11,7 +11,7 @@ struct(T) Point
 	var pt1: Point
 }*/
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: Point

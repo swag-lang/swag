@@ -7,7 +7,7 @@ func toto(x: code)
         @assert(false)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     a := 1

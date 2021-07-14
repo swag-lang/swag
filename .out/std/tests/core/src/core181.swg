@@ -14,7 +14,7 @@ func entry(th: Thread)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var th: [N] Thread

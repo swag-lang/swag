@@ -2,7 +2,7 @@
 
 using Swag
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x: any = 6

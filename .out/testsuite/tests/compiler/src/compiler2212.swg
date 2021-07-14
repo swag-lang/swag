@@ -21,7 +21,7 @@ func swap(x, y: *A)
     dref y =,nodrop,moveraw tmp
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

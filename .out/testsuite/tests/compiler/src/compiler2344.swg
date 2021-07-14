@@ -19,7 +19,7 @@ const str = toto(10)
 #[Swag.inline]
 func toto(t: typeinfo) => t.name
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     s := @typeof(bool)

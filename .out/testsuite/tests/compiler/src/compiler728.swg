@@ -5,7 +5,7 @@ struct Array
 	values: [] s32 = @[1, 2, 3]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr: Array

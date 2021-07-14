@@ -1,12 +1,12 @@
 //#global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct AA
 {
     x: [2] *~32 s32
 }
 
-//#[Swag.printbc, Swag.optim("bc", false)]
+//#[Swag.PrintBc, Swag.optim("bc", false)]
 #test
 {
     v := @[10, 20]

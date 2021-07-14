@@ -6,7 +6,7 @@ struct Point
 	y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt := Point{10, 20}

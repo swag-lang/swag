@@ -8,7 +8,7 @@ struct TOTO
     y: s32 = 666
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var buf: ConcatBuffer

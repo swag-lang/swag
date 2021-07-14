@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: [2] s32)
 {
     @assert(x[0] == 1)
@@ -6,7 +6,7 @@ func toto(x: [2] s32)
     @assert(cast(s64) x[0] == 66)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := @[1, 2]

@@ -12,7 +12,7 @@ struct(T, V) Array
 	pt2: Point'V
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr: Array'(s32, bool)

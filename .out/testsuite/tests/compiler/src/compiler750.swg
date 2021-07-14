@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func lambda(x: f32)
 {
 	@assert(x == 666)
@@ -11,13 +11,13 @@ func lambda1(x: s32)
 	@assert(x == 666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: func(T))
 {
 	x(666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(&lambda)

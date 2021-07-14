@@ -6,7 +6,7 @@ struct(T) Point
 	x: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: Point'(s32)){}
 func toto1(x: Point'(s32)){}
 func toto2(x: Point'(s32)){}

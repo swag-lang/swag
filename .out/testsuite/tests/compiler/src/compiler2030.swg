@@ -8,7 +8,7 @@ func(T) dec(x: *T)
     dref x -= 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) map(values: [..] T, cb: func(*T))
 {
     loop values

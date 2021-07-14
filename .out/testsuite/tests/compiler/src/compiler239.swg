@@ -5,7 +5,7 @@ func main1 ()->s32 { return 77; }
 #[ConstExpr]
 func main2 ()->s32 { return 666; }
 
-//#[printbc]
+//#[PrintBc]
 func main ()
 {
 	var a = #run main1();

@@ -17,7 +17,7 @@ func toto(y: s32, x: AA = 5)
     @assert(x.v == 5)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(10)

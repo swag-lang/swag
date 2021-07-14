@@ -4,7 +4,7 @@ enum TOTO
 	B
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(@countof(TOTO) == 2)

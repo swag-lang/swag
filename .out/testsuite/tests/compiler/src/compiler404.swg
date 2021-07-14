@@ -1,6 +1,6 @@
 ;
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#assert true
 
 enum TOTO

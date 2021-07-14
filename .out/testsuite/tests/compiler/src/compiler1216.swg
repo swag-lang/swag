@@ -9,7 +9,7 @@ struct Vector2
 
 const XAxis: Vector2 = {1, 4, 5}
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	@assert(XAxis.x == 1)

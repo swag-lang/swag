@@ -1,7 +1,7 @@
 ;
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
 	var b = "XYZ";

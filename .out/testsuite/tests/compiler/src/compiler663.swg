@@ -4,7 +4,7 @@ enum OT
 	B
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	pt := OT

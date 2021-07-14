@@ -6,7 +6,7 @@ func(op: s32) count()->s32
 	return op
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	x := count'(1)()

@@ -1,6 +1,6 @@
 var x: any = 666
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	t := @kindof(x)

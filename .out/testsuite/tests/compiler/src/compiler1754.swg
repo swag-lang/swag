@@ -1,6 +1,6 @@
 var x: string = "64"
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     y := &x[0]

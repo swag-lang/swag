@@ -9,7 +9,7 @@ func toto(x: AA)
     G = true
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := &toto

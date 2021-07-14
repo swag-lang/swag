@@ -6,7 +6,7 @@ struct XXX
 	value: string
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var t: [2] XXX

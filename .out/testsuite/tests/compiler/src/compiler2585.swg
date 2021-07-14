@@ -3,7 +3,7 @@ func toto() throw
     throw "toto"
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: func() throw

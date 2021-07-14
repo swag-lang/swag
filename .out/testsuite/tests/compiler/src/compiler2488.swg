@@ -1,7 +1,7 @@
 using Swag
 
 #[safety("overflow", true)]
-//#[printbc]
+//#[PrintBc]
 #test
 {
     #semerror var x0: u8 = cast(u8) 256.0

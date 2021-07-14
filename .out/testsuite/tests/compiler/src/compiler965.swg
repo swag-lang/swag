@@ -9,7 +9,7 @@ func toto()->Point
 	return @{1, 2}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	pt := toto()

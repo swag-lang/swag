@@ -6,7 +6,7 @@ struct A
 
 #assert @sizeof(A) == 8
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: A

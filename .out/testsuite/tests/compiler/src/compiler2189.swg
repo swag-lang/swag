@@ -20,7 +20,7 @@ impl P
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.nooptim]
 #test
 {

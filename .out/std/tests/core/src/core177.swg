@@ -1,7 +1,7 @@
 ﻿
 using Core.Math
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := Point{1, 1}

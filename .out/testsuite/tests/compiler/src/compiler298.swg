@@ -1,12 +1,12 @@
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func test2 ()-> string
 {
 	return "toto1";
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
 	var res = test2();

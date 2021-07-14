@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     loc := #location

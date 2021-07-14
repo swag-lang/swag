@@ -8,7 +8,7 @@ struct point
 	z: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: point

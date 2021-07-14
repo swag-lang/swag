@@ -1,6 +1,6 @@
 func toto() => 3
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: [4] u32 = @[0, 1, 2, 3]

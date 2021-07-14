@@ -1,7 +1,7 @@
 #global if #hastag("Pixel.FullTest")
 using Core, Pixel
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     pathName := dataPath()

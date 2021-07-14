@@ -12,7 +12,7 @@ func toto()
     titi()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto()

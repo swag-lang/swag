@@ -18,7 +18,7 @@ func toto(v1, v2: AA)
     @assert(v2.x == 2)
 }
 
-//#[Swag.printbc]//, Swag.optim("", false)]
+//#[Swag.PrintBc]//, Swag.optim("", false)]
 #test
 {
     toto(AA.from(1), AA.from(2))

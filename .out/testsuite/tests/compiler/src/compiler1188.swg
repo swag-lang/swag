@@ -10,7 +10,7 @@ struct TOTO
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var pt: TOTO

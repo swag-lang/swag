@@ -1,7 +1,7 @@
 
 using Core.Console
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     silent(true)

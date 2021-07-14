@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     loop 5

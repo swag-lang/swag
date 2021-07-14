@@ -1,6 +1,6 @@
 var a: u32 = 700
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	a = 700

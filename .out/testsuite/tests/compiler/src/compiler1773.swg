@@ -3,7 +3,7 @@ func a(x: ...)
 
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     a(0)

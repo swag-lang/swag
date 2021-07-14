@@ -8,7 +8,7 @@ struct A
     z: s32 = 555
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var a: A

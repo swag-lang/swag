@@ -11,7 +11,7 @@ namespace aa1650
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #run
 {
     x := @typeof(aa1650.B)

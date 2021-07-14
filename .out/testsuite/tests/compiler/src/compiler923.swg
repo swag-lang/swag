@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func average(x, y: any)
 {
 	tx:= cast(*s32) @dataof(x)
@@ -9,7 +9,7 @@ func average(x, y: any)
 	@assert(ty[0] == 10)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	average(5, 10)

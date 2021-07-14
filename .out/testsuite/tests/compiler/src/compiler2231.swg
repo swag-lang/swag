@@ -5,7 +5,7 @@ struct A
 
 alias TOTO = A
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto1()->[2] TOTO
 {
     var result: retval

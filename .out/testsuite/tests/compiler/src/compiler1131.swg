@@ -5,7 +5,7 @@ func(T) toto(x, y: T)
 	@assert(@typeof(x) == f32)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(1.0'f32, 1)

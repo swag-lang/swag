@@ -25,14 +25,14 @@ func toto()->s32 throw
     return try tata()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func titi()->s32 throw
 {
     var x: AA
     return try toto()
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     a := catch titi()

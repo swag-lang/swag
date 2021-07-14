@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     v := @[10, 20]

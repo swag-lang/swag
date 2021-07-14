@@ -9,7 +9,7 @@ func tata()->s32 throw
     return 0
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto() throw
 {
     try

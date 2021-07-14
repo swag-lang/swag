@@ -19,14 +19,14 @@ impl Point
 		cpt += 1
 	}
 
-	//#[Swag.printbc]
+	//#[Swag.PrintBc]
 	func(op: string) opBinary(self, other: Self)->Point
 	{
 		return Point(self.x + other.x, self.y + other.y) //,move
 	}
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	cpt = 0

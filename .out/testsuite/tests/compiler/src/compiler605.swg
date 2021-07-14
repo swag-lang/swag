@@ -7,7 +7,7 @@ struct Point
 	y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 impl Point
 {
 	func(op: string) opAssign(self, v: s32)

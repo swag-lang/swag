@@ -13,7 +13,7 @@ struct Toto
 	var x: OT
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 }

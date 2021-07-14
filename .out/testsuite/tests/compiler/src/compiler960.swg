@@ -8,7 +8,7 @@ struct toto
 	x: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 }

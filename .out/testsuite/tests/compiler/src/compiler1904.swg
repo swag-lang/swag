@@ -1,10 +1,10 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 struct TT
 {
     x, y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var buf: [100] u8

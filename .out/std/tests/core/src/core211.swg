@@ -7,7 +7,7 @@ func entry(t: Timer)
     G += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var timer: Timer

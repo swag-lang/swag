@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: ...)
 {
     v := cast(*s32) @dataof(x[0])
@@ -14,7 +14,7 @@ func toto(x: ...)
 }
 */
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(@[1,2,3,4])

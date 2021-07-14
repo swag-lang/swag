@@ -21,7 +21,7 @@ impl X
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     #if hasMember(@typeof(X), "toto")

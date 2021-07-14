@@ -14,7 +14,7 @@ using Swag
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     #assert isInteger(s32)

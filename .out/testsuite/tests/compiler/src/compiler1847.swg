@@ -1,4 +1,4 @@
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func test(x: f64)
 {
     //@print(x)
@@ -6,7 +6,7 @@ func test(x: f64)
     @assert(x >= -1 and x < 222)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     test(cast(f64) @abs(-5's8))

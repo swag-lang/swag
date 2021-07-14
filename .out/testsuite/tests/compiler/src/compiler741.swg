@@ -4,7 +4,7 @@ func(T) toto(x: [..] T)
 	@assert(x[0] == 10)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var cpt: [1] s32 = @[10]

@@ -18,7 +18,7 @@ func thisFunc1(x, y: s64)
     @assert(y == 666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr3 := &tcf_toto18

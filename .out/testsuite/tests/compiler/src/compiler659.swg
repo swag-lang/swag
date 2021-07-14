@@ -6,7 +6,7 @@ enum OT
 	B
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var pt: [1] OT

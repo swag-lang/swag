@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto(x: f32, y: ...)
 {
 	//@assert(x == 1.0)
@@ -12,7 +12,7 @@ func toto(x: f32, y: ...)
 	//@assert(ptr1[0] == 20)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(1.0, "10", 20)

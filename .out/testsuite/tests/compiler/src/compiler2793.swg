@@ -31,7 +31,7 @@ func titi()
     a += 1
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: AA = ?

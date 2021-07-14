@@ -1,6 +1,6 @@
 using Swag;
 
-//#[printbc]
+//#[PrintBc]
 func fact (v: s32)->s32
 {
 	if(v == 1)

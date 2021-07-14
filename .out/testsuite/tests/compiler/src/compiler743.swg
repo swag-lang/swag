@@ -1,13 +1,13 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) toto(x: [..] T)
 {
 	@assert(@countof(x) == 1)
 	@assert(x[0] == 10)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var cpt: [1] s32 = @[10]

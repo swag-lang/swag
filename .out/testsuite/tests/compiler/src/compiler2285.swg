@@ -22,7 +22,7 @@ func set(phys: Phys)
     @assert(speed[0] == 666)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var e: Entity

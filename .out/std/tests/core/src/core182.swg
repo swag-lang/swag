@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr0 := Memory.alloc(10, null, 1)

@@ -1,6 +1,6 @@
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	func chooseStepFunction(backward: bool) -> func(s32)->s32

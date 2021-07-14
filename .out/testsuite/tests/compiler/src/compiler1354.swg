@@ -11,7 +11,7 @@ func print1(s: *TOTO, x: string)
     @assert(x == "true")
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: TOTO

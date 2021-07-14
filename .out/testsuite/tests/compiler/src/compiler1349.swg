@@ -6,7 +6,7 @@ func toto(x: s64)
     G = true
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     G = false

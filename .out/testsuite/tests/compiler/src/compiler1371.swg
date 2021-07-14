@@ -5,7 +5,7 @@ struct TOTO
     x: func(*TOTO)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ptr := cast(const *TypeInfoStruct) @typeof(TOTO)

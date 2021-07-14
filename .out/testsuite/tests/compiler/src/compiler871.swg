@@ -6,7 +6,7 @@ func toto(x: string)
 	@assert(@dataof(x) == null)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(null)

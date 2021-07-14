@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	g = 0
@@ -18,7 +18,7 @@ func T(param: *s32)
 	g += param[0]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func F(param: [..] s32, b: func(*s32))
 {
 	var data = @dataof(param)

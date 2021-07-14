@@ -1,7 +1,7 @@
 ﻿
 using Core.File
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

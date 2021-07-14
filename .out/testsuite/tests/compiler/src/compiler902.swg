@@ -1,7 +1,7 @@
 
 #global testerror
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #[Swag.optim("", false)]
 func arithmeticMean(numbers: s32...)
 {
@@ -11,7 +11,7 @@ func arithmeticMean(numbers: s32...)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	arithmeticMean(10)

@@ -17,7 +17,7 @@ struct Point
 	y: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	t := cast(const *TypeInfoStruct) @typeof(Point)

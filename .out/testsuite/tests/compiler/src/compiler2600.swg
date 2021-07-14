@@ -6,7 +6,7 @@ var G = 0
 #[macro]
 func toto(cpt: s64, stmt: code)
 {
-    //#[printbc]
+    //#[PrintBc]
     func titi()
     {
         @print(cpt)
@@ -16,7 +16,7 @@ func toto(cpt: s64, stmt: code)
     loop 10 titi()
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     x := 5's64

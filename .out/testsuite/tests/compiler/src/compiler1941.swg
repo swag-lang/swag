@@ -16,7 +16,7 @@ impl IHash for AA
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) hash(value: T)->u32
 {
     #if @typeof(T) == u32

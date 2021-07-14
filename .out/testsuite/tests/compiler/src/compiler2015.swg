@@ -3,7 +3,7 @@ func variadic(x: any)
     @print(cast(s64) cast(s32) x)
 }
 /*
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func(T) isSorted(values: const [..] T)->bool
 {
     countof := @countof(values)

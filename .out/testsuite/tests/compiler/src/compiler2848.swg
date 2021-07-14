@@ -1,5 +1,5 @@
 //#[Swag.safety("", true)]
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     {

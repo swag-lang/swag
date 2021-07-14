@@ -2,7 +2,7 @@
 
 var g: string = "tata";
 
-#[printbc]
+#[PrintBc]
 #test
 {
 }

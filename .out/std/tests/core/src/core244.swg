@@ -1,7 +1,7 @@
 
 using Core.Drawing
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var x: Color = Argb.Red

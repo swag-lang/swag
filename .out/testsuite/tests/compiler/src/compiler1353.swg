@@ -10,7 +10,7 @@ func print1(s: *TOTO, x: bool)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var x: TOTO

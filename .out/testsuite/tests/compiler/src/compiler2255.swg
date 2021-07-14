@@ -18,7 +18,7 @@ func toto()->[1] B
     return result
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     a := toto()

@@ -12,7 +12,7 @@ struct Array
 	pt: Point
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var arr: Array

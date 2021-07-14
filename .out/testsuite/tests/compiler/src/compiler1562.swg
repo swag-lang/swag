@@ -16,7 +16,7 @@ impl BOUBOU
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var arr: Array'BOUBOU

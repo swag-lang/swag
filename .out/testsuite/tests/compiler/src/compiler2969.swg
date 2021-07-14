@@ -17,7 +17,7 @@ struct VV
     C: Color = 12345678
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var v: VV

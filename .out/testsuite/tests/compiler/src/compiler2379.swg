@@ -3,7 +3,7 @@ struct AA
     s = "toto"
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     var arr: [4] AA

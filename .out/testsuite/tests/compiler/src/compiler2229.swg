@@ -4,7 +4,7 @@ func toto1()->[2] s32
     return @[1, 2]
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     res := toto1()

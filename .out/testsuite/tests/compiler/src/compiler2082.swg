@@ -9,7 +9,7 @@ func toto()->AA
     return AA{};
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     ex := toto()

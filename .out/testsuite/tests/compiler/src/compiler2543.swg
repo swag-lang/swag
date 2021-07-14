@@ -7,7 +7,7 @@ func toto()->string throw
     return "10"
 }
 
-//#[printbc]
+//#[PrintBc]
 #test
 {
     x := catch toto()

@@ -2,7 +2,7 @@ using Swag
 
 func toto()->s32 => 666
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#global testerror
 #test
 {

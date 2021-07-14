@@ -10,7 +10,7 @@ func toto(x: s32)->s32
     return clamp(x)
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     @assert(toto(6) == 6)

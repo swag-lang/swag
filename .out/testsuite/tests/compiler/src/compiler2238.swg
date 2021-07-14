@@ -11,7 +11,7 @@ func toto(x: Pt)
 #[Swag.ConstExpr]
 func offset() => 555
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(Pt{offset()})

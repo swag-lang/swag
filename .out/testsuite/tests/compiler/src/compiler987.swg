@@ -3,7 +3,7 @@ struct Point
 	x: s32
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	pair := @{"toto", Point{10}}

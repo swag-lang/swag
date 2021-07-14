@@ -1,7 +1,7 @@
 
 using Core, Utf8
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     //res := "A假CD"

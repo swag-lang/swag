@@ -1,6 +1,6 @@
 using Pixel
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     img := try Image.load(imagePath("rgb.png"))

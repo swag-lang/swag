@@ -6,20 +6,20 @@ struct AA
 
 impl AA
 {
-    //#[Swag.printbc]
+    //#[Swag.PrintBc]
     func opPostMove(using self)
     {
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 func toto()->AA
 {
     var x: AA
     return x
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.nooptim]
 #test
 {

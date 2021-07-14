@@ -1,6 +1,6 @@
 var G = 0
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 //#[Swag.optimizebc(0)]
 func toto()->s32
 {
@@ -8,7 +8,7 @@ func toto()->s32
     return 0
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     y := 0's32

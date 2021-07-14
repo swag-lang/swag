@@ -36,7 +36,7 @@ func toto8(x: u64)
 {
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	toto(0)

@@ -1,7 +1,7 @@
 
 #global testpass syntax
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	var a: const c = 666;

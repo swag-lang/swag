@@ -1,7 +1,7 @@
 
 
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #global testerror
 func T(xx: string, a: ...)
 {
@@ -9,7 +9,7 @@ func T(xx: string, a: ...)
 	@print(cast(s64) @countof(a))
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
 	T(true, 10, 100, 1000)

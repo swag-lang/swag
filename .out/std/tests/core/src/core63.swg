@@ -13,7 +13,7 @@ impl X
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     tt := @typeof(X)

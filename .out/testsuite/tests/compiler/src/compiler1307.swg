@@ -14,7 +14,7 @@ func toto(t: s32, x: code)
     }
 }
 
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     toto(100)

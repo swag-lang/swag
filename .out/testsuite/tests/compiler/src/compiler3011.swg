@@ -5,7 +5,7 @@ struct Vector
 
 impl Vector
 {
-    //#[Swag.printbc, Swag.safety("", false)]
+    //#[Swag.PrintBc, Swag.safety("", false)]
     func max(x, y: Vector)->Vector
     {
         var result: retval = ?
@@ -16,7 +16,7 @@ impl Vector
 }
 
 //#[Swag.optim("", false)]
-//#[Swag.printbc]
+//#[Swag.PrintBc]
 #test
 {
     x := Vector{200}
