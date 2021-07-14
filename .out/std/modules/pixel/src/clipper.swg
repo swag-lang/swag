@@ -1771,8 +1771,8 @@ impl Transform
         e := activeEdges
         while e
         {
-            //1. process maxima, treating them as if they're 'bent' horizontal edges,
-            //   but exclude maxima with horizontal edges. nb: e can't be a horizontal.
+            // 1. process maxima, treating them as if they're 'bent' horizontal edges,
+            //    but exclude maxima with horizontal edges. nb: e can't be a horizontal.
             isMaximaEdge := isMaxima(e, topY)
             if isMaximaEdge
             {
@@ -1782,15 +1782,18 @@ impl Transform
 
             if isMaximaEdge
             {
-                if strictSimple maximaList.add(e.top.x)
+                if strictSimple
+                    maximaList.add(e.top.x)
                 ePrev := e.prevInAEL
                 doMaxima(e)
-                if !ePrev e = activeEdges
-                else e = ePrev.nextInAEL
+                if !ePrev
+                    e = activeEdges
+                else
+                    e = ePrev.nextInAEL
             }
             else
             {
-                //2. promote horizontal edges, otherwise update curr.x and curr.y ...
+                // 2. promote horizontal edges, otherwise update curr.x and curr.y ...
                 if isIntermediate(e, topY) and isHorizontal(e.nextInLML)
                 {
                     updateEdgeIntoAEL(&e)
@@ -1804,8 +1807,8 @@ impl Transform
                     e.curr.y = topY
                 }
 
-                //When StrictlySimple and 'e' is being touched by another edge, then
-                //make sure both edges have a vertex here ...
+                // When StrictlySimple and 'e' is being touched by another edge, then
+                // make sure both edges have a vertex here ...
                 if strictSimple
                 {
                     ePrev := e.prevInAEL
@@ -1823,12 +1826,12 @@ impl Transform
             }
         }
 
-        //3. Process horizontals at the top of the scanbeam ...
+        // 3. Process horizontals at the top of the scanbeam ...
         maximaList.sort()
         processHorizontals()
         maximaList.clear()
 
-        //4. Promote intermediate vertices ...
+        // 4. Promote intermediate vertices ...
         e = activeEdges
         while e
         {
@@ -1867,20 +1870,22 @@ impl Transform
 
     method processIntersections(topY: CInt)
     {
-        if !activeEdges return
+        if !activeEdges
+            return
+
         buildIntersectList(topY)
-        IlSize := intersectList.count
-        if IlSize == 0 return
-
-        if IlSize == 1 or fixupIntersectionOrder()
+        ilSize := intersectList.count
+        if ilSize == 0
+            return
+        if ilSize == 1 or fixupIntersectionOrder()
             processIntersectList()
-
         sortedEdges = null
     }
 
     method buildIntersectList(topY: CInt)
     {
-        if !activeEdges return
+        if !activeEdges
+            return
 
         e := activeEdges
         sortedEdges = e
@@ -1917,9 +1922,11 @@ impl Transform
                     e = eNext
             }
 
-            if !e.prevInSEL break
+            if !e.prevInSEL
+                break
             e.prevInSEL.nextInSEL = null
-            if !isModified break
+            if !isModified
+                break
         }
 
         sortedEdges = null
