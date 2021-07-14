@@ -59,7 +59,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "AttrMulti" && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == "global" && isLocalVar)
+        if (oneAttribute->token.text == "Global" && isLocalVar)
             return true;
         if (oneAttribute->token.text == "Strict" && kind == AstNodeKind::Alias)
             return true;
@@ -241,7 +241,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_DISCARDABLE;
             else if (child->token.text == "Deprecated")
                 flags |= ATTRIBUTE_DEPRECATED;
-            else if (child->token.text == "global")
+            else if (child->token.text == "Global")
                 flags |= ATTRIBUTE_GLOBAL;
             else if (child->token.text == "tls")
                 flags |= ATTRIBUTE_TLS;

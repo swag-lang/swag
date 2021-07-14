@@ -8,7 +8,7 @@ using Swag
 
 func toto()->s32
 {
-    #[global] var x = 555
+    #[Global] var x = 555
     x += 1
     return x
 }

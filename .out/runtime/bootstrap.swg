@@ -70,7 +70,7 @@ namespace Swag
     attr Strict()
 
     // Hardcoded for local variables
-    attr global()
+    attr Global()
 
     // Hardcoded for struct and variables
     attr align(value: u8)
