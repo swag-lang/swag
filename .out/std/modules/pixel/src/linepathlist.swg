@@ -76,4 +76,12 @@ impl LinePathList
             p.polygon.offset(v, joinStyle)
         }
     }
+
+    // Clean all paths
+    // They must before be flattened
+    method clean()
+    {
+        visit p: paths
+            p.polygon.clean()
+    }
 }

@@ -363,13 +363,10 @@ func displayPage4()
     {
         fnt := fontFam.getFont(FontFamilyStyle.Regular)
         cdc.fillCircle(100, 100, 5, Argb.Red)
-        //rect := cdc.measureString(100, 100, "abcdefghijkl", fnt)
-        //cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Argb.Blue)
         cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
 
     const str = "abcdefghijklmnopqrstuvwxyz"
-    //const str = "a"
 
     {
         //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
@@ -399,20 +396,30 @@ func displayPage4()
     {
         var p: LinePathList
         cdc.translateTransform(50, 570)
-        assume typeface.getStringOutline(&p, "A", 70)
+        assume typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
-        p.paths[0].polygon.offset(4)
-        p.paths[0].polygon.clean()
-        p.paths[1].polygon.offset(4)
-        p.paths[1].polygon.clean()
+        p.offset(4)
+        p.clean()
         cdc.drawPath(&p, Argb.Red, 2)
 
         cdc.resetTransform()
     }
 
     {
-        var p: LinePath
+        var p: LinePathList
         cdc.translateTransform(50, 670)
+        assume typeface.getStringOutline(&p, "A B C D", 70)
+        p.flatten(PaintQuality.Normal)
+        p.offset(5, JoinStyle.Round)
+        cdc.fillPath(&p, Argb.Red)
+        cdc.drawPath(&p, Argb.Black, 2)
+
+        cdc.resetTransform()
+    }
+
+    {
+        var p: LinePath
+        cdc.translateTransform(500, 570)
         p.start(0, 0)
         p.lineTo(100, 0)
         p.lineTo(100, 100)
@@ -425,19 +432,7 @@ func displayPage4()
         p.polygon.offset(10, JoinStyle.Bevel)
         cdc.drawPath(&p, Argb.Green, 2)
         p.polygon.offset(10, JoinStyle.Round)
-        cdc.drawPath(&p, Argb.Green, 2)
-
-        cdc.resetTransform()
-    }
-
-    {
-        var p: LinePathList
-        cdc.translateTransform(150, 570)
-        assume typeface.getStringOutline(&p, "A B C D", 70)
-        p.flatten(PaintQuality.Normal)
-        p.offset(5, JoinStyle.Round)
-        cdc.fillPath(&p, Argb.Red)
-        cdc.drawPath(&p, Argb.Black, 2)
+        cdc.drawPath(&p, Argb.Green, 4)
 
         cdc.resetTransform()
     }
@@ -456,7 +451,6 @@ func display()
 
     cdc.begin()
     cdc.clear(Color.fromArgb(0xFFEEEEEE))
-    //cdc.fillRect(0,0,cast(f32) W,cast(f32) H, Argb.White)
     cdc.end()
     renderer.draw(&cdc)
 
