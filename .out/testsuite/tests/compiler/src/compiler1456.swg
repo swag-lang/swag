@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func toto(stmt: code)
 {
     label up

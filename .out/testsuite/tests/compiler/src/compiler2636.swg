@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 public func scopedLock(syncObj: s64)
 {
     @assert(syncObj == 5)

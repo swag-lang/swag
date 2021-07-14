@@ -4,7 +4,7 @@ using Swag
 
 var G = 0
 
-#[mixin]
+#[Mixin]
 func toto()
 {
     func titi()

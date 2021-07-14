@@ -216,7 +216,7 @@ private
         dstRow := imgDst.pixels + row * bpp8 * imgDst.width
         srcRow := imgSrc.pixels + row * bpp8 * imgSrc.width
 
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             crow0 := contrib.row.buffer
@@ -266,7 +266,7 @@ private
         w8Dst  := imgDst.width * bpp8
         w8Src  := imgSrc.width * bpp8
 
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             var v: u8
@@ -348,7 +348,7 @@ private
         yscale := srcImage.height / cast(f32) dstImage.height
         f := @{xscale, yscale, srcImage}
 
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             dstImage.visitPixels(&f)

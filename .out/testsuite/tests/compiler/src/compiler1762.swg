@@ -1,6 +1,6 @@
 #test
 {
-    #[Swag.mixin]
+    #[Swag.Mixin]
     func myMixin(what: code)
     {
         #mixin what

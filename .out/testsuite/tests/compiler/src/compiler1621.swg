@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[Swag.mixin]
+#[Swag.Mixin]
 func mac(stmt: code)
 {
     #mixin stmt

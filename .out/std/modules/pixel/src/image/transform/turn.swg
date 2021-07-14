@@ -12,7 +12,7 @@ impl Image
     #[Swag.Safety("", false)]
     private func doTurn(using self, dstImage: *Image, angle: TurnAngle)
     {
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             f := self

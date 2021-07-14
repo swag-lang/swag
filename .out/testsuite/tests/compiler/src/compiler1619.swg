@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func mac()->s32
 {
     return 1

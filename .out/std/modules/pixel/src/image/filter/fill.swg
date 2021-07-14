@@ -9,7 +9,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(PF: PixelFormat) fillFirstLine()
         {
             pix := pixels

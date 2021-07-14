@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func toto()
 {
     loop 5

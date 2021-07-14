@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[Swag.mixin, Swag.Macro]
+#[Swag.Mixin, Swag.Macro]
 func toto()
 {
     x := 0

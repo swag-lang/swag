@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func mix(v, val: alias)
 {
     v += val

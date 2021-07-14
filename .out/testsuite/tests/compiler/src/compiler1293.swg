@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func toto(y: s32)
 {
     x = y

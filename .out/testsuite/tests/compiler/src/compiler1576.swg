@@ -3,5 +3,5 @@
 
 using Swag
 
-#[mixin]
+#[Mixin]
 attr NC();

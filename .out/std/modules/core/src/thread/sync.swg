@@ -1,6 +1,6 @@
 #global namespace Sync
 
-#[Swag.mixin]
+#[Swag.Mixin]
 public func(T) scopedLock(syncObj: *T)
 {
     syncObj.lock()

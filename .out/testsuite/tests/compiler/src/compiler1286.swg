@@ -4,7 +4,7 @@
     a := 666
     if a == 666
     {
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func toto()
         {
             a = 1

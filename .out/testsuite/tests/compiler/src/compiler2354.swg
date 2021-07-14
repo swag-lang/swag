@@ -1,6 +1,6 @@
 #global testerror
 
-//#[Swag.mixin]
+//#[Swag.Mixin]
 func mkVar(name: string, value: s32)
 {
     #ast "titi := 0"

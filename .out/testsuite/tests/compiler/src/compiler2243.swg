@@ -1,6 +1,6 @@
 // You can use special type 'alias' to create a named alias
 // for an identifier
-#[Swag.mixin]
+#[Swag.Mixin]
 func inc10(variable: alias)
 {
     variable := 10

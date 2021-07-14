@@ -6,7 +6,7 @@ impl Image
     {
         f := dstImage
 
-        #[Swag.mixin]
+        #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
             visitPixels(f)

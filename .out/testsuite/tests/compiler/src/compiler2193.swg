@@ -1,6 +1,6 @@
 var G = 0
 
-#[Swag.mixin]
+#[Swag.Mixin]
 func cstr(x: string)
 {
     defer G = 1

@@ -1,4 +1,4 @@
-#[Swag.mixin]
+#[Swag.Mixin]
 func scopeLock()
 {
     a := 4
