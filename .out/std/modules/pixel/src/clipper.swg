@@ -2955,21 +2955,20 @@ impl Transform
             lb := lm.leftBound
             rb := lm.rightBound
 
-            var Op1: *OutPt
+            var op1: *OutPt
             if !lb
             {
-                //nb: don't insert LB into either AEL or SEL
                 insertEdgeIntoAEL(rb, null)
                 setWindingCount(rb)
                 if isContributing(rb)
-                    Op1 = addOutPt(rb, rb.bot)
+                    op1 = addOutPt(rb, rb.bot)
             }
             else if (!rb)
             {
                 insertEdgeIntoAEL(lb, null)
                 setWindingCount(lb)
                 if isContributing(lb)
-                    Op1 = addOutPt(lb, lb.bot)
+                    op1 = addOutPt(lb, lb.bot)
                 insertScanbeam(lb.top.y)
             }
             else
@@ -2980,7 +2979,7 @@ impl Transform
                 rb.windCnt = lb.windCnt
                 rb.windCnt2 = lb.windCnt2
                 if isContributing(lb)
-                    Op1 = addLocalMinPoly(lb, rb, lb.bot)
+                    op1 = addLocalMinPoly(lb, rb, lb.bot)
                 insertScanbeam(lb.top.y)
             }
 
@@ -2996,16 +2995,17 @@ impl Transform
                     insertScanbeam(rb.top.y)
             }
 
-            if !lb or !rb continue
+            if !lb or !rb
+                continue
 
             //if any output polygons share an edge, they'll need joining later ...
-            if Op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
+            if op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
             {
                 loop i: ghostJoinList.count
                 {
                     jr := ghostJoinList[i]
                     if horzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x)
-                        addJoin(jr.outPt1, Op1, jr.offPt)
+                        addJoin(jr.outPt1, op1, jr.offPt)
                 }
             }
 
@@ -3015,8 +3015,8 @@ impl Transform
                 slopesEqual(lb.prevInAEL.bot, lb.prevInAEL.top, lb.curr, lb.top) and
                 (lb.windDelta != 0) and (lb.prevInAEL.windDelta != 0)
             {
-                Op2 := addOutPt(lb.prevInAEL, lb.bot)
-                addJoin(Op1, Op2, lb.top)
+                op2 := addOutPt(lb.prevInAEL, lb.bot)
+                addJoin(op1, op2, lb.top)
             }
 
             if lb.nextInAEL != rb
@@ -3027,8 +3027,8 @@ impl Transform
                     (rb.windDelta != 0) and
                     (rb.prevInAEL.windDelta != 0)
                 {
-                    Op2 := addOutPt(rb.prevInAEL, rb.bot)
-                    addJoin(Op1, Op2, rb.top)
+                    op2 := addOutPt(rb.prevInAEL, rb.bot)
+                    addJoin(op1, op2, rb.top)
                 }
 
                 e := lb.nextInAEL
@@ -3046,14 +3046,17 @@ impl Transform
 
     func pointCount(pts: *OutPt)->s32
     {
-        if !pts return 0
+        if !pts
+            return 0
+
         result := 0
         p := pts
         loop
         {
             result += 1
             p = p.next
-            if p == pts break
+            if p == pts
+                break
         }
 
         return result
@@ -3064,14 +3067,14 @@ impl Transform
         polys.reserve(polyOuts.count)
         loop i: polyOuts
         {
-            if !polyOuts[i].pts continue
-
-            var pg: ClipperPath
+            if !polyOuts[i].pts
+                continue
 
             p := polyOuts[i].pts.prev
             cnt := pointCount(p)
             if cnt < 2 continue
 
+            var pg: ClipperPath
             pg.reserve(cast(uint) cnt)
             loop cnt
             {
@@ -3092,7 +3095,9 @@ impl Transform
     func disposeOutPts(pts: *OutPt)
     {
         pp := pts
-        if pp == null return
+        if pp == null
+            return
+
         pp.prev.next = null
         while pp
         {
@@ -3105,7 +3110,8 @@ impl Transform
     method disposeOutRec(index: uint)
     {
         outRec := polyOuts[index]
-        if outRec.pts disposeOutPts(outRec.pts)
+        if outRec.pts
+            disposeOutPts(outRec.pts)
         Memory.delete(outRec)
         polyOuts[index] = null
     }
@@ -3132,8 +3138,10 @@ impl Transform
                 bottomE := e
                 while e.nextInLML
                 {
-                    if (e.bot.x < result.left) result.left = e.bot.x
-                    if (e.bot.x > result.right) result.right = e.bot.x
+                    if e.bot.x < result.left
+                        result.left = e.bot.x
+                    if e.bot.x > result.right
+                        result.right = e.bot.x
                     e = e.nextInLML
                 }
 
