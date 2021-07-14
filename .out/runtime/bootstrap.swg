@@ -73,7 +73,7 @@ namespace Swag
     attr Global()
 
     // Hardcoded for struct and variables
-    attr align(value: u8)
+    attr Align(value: u8)
 
     #[AttrUsage(AttributeUsage.GlobalVariable)]
     attr Tls()

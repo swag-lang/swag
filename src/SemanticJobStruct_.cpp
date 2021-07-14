@@ -847,7 +847,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // User specific alignment
     ComputedValue userAlignOf;
-    auto          hasUserAlignOf = typeInfo->attributes.getValue("Swag.align", "value", userAlignOf);
+    auto          hasUserAlignOf = typeInfo->attributes.getValue("Swag.Align", "value", userAlignOf);
     if (hasUserAlignOf)
         typeInfo->alignOf = userAlignOf.reg.u8;
     else if (node->packing)
@@ -855,13 +855,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     typeInfo->alignOf = max(1, typeInfo->alignOf);
 
     // An opaque struct will be exported as an array of bytes.
-    // We need to be sure that alignement will be respected, so we force "Swag.align" attribute
+    // We need to be sure that alignement will be respected, so we force "Swag.Align" attribute
     // if not already present.
     if (!hasUserAlignOf && typeInfo->attributes.hasAttribute("Swag.Opaque"))
     {
         OneAttribute       ot;
         AttributeParameter otp;
-        ot.name           = "Swag.align";
+        ot.name           = "Swag.Align";
         otp.name          = "value";
         otp.typeInfo      = g_TypeMgr.typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
