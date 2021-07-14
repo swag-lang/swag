@@ -344,7 +344,6 @@ impl Transform
 
     func initEdge(e, eNext, ePrev: *Edge, pt: IntPoint)
     {
-        Memory.clear(e, @sizeof(Edge))
         e.next = eNext
         e.prev = ePrev
         e.curr = pt
@@ -370,9 +369,11 @@ impl Transform
 
     func setDx(e: *Edge)
     {
-        dy := (e.top.y - e.bot.y)
-        if dy == 0 e.dx = HorizontalVal
-        else e.dx = cast(f64) (e.top.x - e.bot.x) / dy
+        dy := e.top.y - e.bot.y
+        if dy == 0
+            e.dx = HorizontalVal
+        else
+            e.dx = cast(f64) (e.top.x - e.bot.x) / dy
     }
 
     func removeEdge(e: *Edge)->*Edge
