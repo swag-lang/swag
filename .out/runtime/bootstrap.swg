@@ -76,7 +76,7 @@ namespace Swag
     attr align(value: u8)
 
     #[AttrUsage(AttributeUsage.GlobalVariable)]
-    attr tls()
+    attr Tls()
 
     #[AttrUsage(AttributeUsage.Struct)]
     attr pack(value: u8)

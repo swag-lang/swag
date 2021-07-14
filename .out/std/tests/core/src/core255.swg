@@ -1,6 +1,6 @@
 using Core
 
-#[Swag.tls]
+#[Swag.Tls]
 var G = 0's64
 
 const N = 3

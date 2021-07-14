@@ -1,4 +1,4 @@
-#[Swag.tls]
+#[Swag.Tls]
 var G: [2] string = @["titi", "toto"]
 
 //#[Swag.PrintBc]

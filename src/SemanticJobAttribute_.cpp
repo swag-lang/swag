@@ -243,7 +243,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_DEPRECATED;
             else if (child->token.text == "Global")
                 flags |= ATTRIBUTE_GLOBAL;
-            else if (child->token.text == "tls")
+            else if (child->token.text == "Tls")
                 flags |= ATTRIBUTE_TLS;
             else if (child->token.text == "Strict")
                 flags |= ATTRIBUTE_STRICT;

@@ -1,4 +1,4 @@
-#[Swag.tls]
+#[Swag.Tls]
 var G: s32 = 5
 
 //#[Swag.PrintBc]
