@@ -174,15 +174,13 @@ impl Offset
         return area(poly) >= 0
     }
 
+    //#[Swag.PrintBc]
     method fixOrientations()
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
-            loop i: polyNodes.childs.count
-            {
-                node := polyNodes.childs[i]
+            visit node: polyNodes.childs
                 Slice.reverse(node.contour.toSlice())
-            }
         }
     }
 

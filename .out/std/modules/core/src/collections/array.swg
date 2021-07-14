@@ -11,6 +11,7 @@ struct(T) Array
 
 impl Array
 {
+    #[Swag.Inline]
     func opCount(using self)->uint
     {
         return count
