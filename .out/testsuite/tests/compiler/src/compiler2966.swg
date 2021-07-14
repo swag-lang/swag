@@ -1,7 +1,7 @@
 struct Color
 {
     a, r, g, b: u8
-    #[Swag.offset("a")]
+    #[Swag.Offset("a")]
     argb: u32
 }
 

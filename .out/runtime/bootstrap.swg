@@ -88,7 +88,7 @@ namespace Swag
     attr Opaque()
 
     #[AttrUsage(AttributeUsage.StructVariable)]
-    attr offset(name: string)
+    attr Offset(name: string)
 
     #[AttrUsage(AttributeUsage.Enum)]
     attr EnumFlags()

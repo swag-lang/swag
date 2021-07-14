@@ -1,7 +1,7 @@
 struct TOTO
 {
     x: s32
-    #[Swag.offset("x")]
+    #[Swag.Offset("x")]
     y: s32
 }
 

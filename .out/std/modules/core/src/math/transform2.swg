@@ -7,11 +7,11 @@ struct Transform2
     m21, m22:   f32
     m31, m32:   f32
 
-    #[Swag.offset("m11")]
+    #[Swag.Offset("m11")]
     m:  [2,2] f32
-    #[Swag.offset("m31")]
+    #[Swag.Offset("m31")]
     tx: f32
-    #[Swag.offset("m32")]
+    #[Swag.Offset("m32")]
     ty: f32
 }
 

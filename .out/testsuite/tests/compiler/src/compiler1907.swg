@@ -1,7 +1,7 @@
 struct ConvertFormatInt
 {
     unsignedValue:  u64
-//    #[Swag.offset("unsignedValue")]
+//    #[Swag.Offset("unsignedValue")]
     signedValue:    s64
     bits:           u32 = 32
     base:           u32 = 10

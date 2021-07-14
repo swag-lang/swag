@@ -756,7 +756,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Attribute 'Swag.offset' can be used to force the storage offset of the member
         ComputedValue forceOffset;
         bool          relocated = false;
-        if (typeParam && typeParam->attributes.getValue("Swag.offset", "name", forceOffset))
+        if (typeParam && typeParam->attributes.getValue("Swag.Offset", "name", forceOffset))
         {
             for (auto p : typeInfo->fields)
             {
@@ -770,7 +770,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!relocated)
             {
-                auto attr = typeParam->attributes.getAttribute("Swag.offset");
+                auto attr = typeParam->attributes.getAttribute("Swag.Offset");
                 SWAG_ASSERT(attr);
                 return context->report({attr->node, format(Msg0673, forceOffset.text.c_str())});
             }
@@ -994,9 +994,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute("Swag.offset"))
+        if (typeParam->attributes.hasAttribute("Swag.Offset"))
         {
-            auto attr = typeParam->attributes.getAttribute("Swag.offset");
+            auto attr = typeParam->attributes.getAttribute("Swag.Offset");
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0682});
         }
@@ -1120,9 +1120,9 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0686, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute("Swag.offset"))
+        if (typeParam->attributes.hasAttribute("Swag.Offset"))
         {
-            auto attr = typeParam->attributes.getAttribute("Swag.offset");
+            auto attr = typeParam->attributes.getAttribute("Swag.Offset");
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0687});
         }

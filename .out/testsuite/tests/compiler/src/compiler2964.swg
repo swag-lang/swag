@@ -1,7 +1,7 @@
 struct AA
 {
     x: s32
-    #[Swag.offset("x")]
+    #[Swag.Offset("x")]
     y, z: s32
 }
 

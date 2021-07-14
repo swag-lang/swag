@@ -7,13 +7,13 @@ struct Color
     #if BIG_ENDIAN
     {
         a, r, g, b: u8
-        #[offset("a")]
+        #[Offset("a")]
         argb: u32
     }
     #else
     {
         b, g, r, a: u8
-        #[offset("b")]
+        #[Offset("b")]
         argb: u32
     }
 }
