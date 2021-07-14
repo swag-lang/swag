@@ -19,11 +19,11 @@
         @assert(@typeof(Float64) == f64)
     }
 
-    // A type alias can be marked with the 'Swag.strict' attribute
+    // A type alias can be marked with the 'Swag.Strict' attribute
     // in that case, implicit cast is not done, but explicit cast is
     // still possible
     {
-        #[Swag.strict]
+        #[Swag.Strict]
         alias MyType = s32
         @assert(@typeof(MyType) != s32)
         var x: MyType = cast(MyType) 0

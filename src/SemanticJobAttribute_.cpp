@@ -61,7 +61,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "global" && isLocalVar)
             return true;
-        if (oneAttribute->token.text == "strict" && kind == AstNodeKind::Alias)
+        if (oneAttribute->token.text == "Strict" && kind == AstNodeKind::Alias)
             return true;
         if (oneAttribute->token.text == "PrintBc" && kind == AstNodeKind::CompilerAst)
             return true;
@@ -245,7 +245,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_GLOBAL;
             else if (child->token.text == "tls")
                 flags |= ATTRIBUTE_TLS;
-            else if (child->token.text == "strict")
+            else if (child->token.text == "Strict")
                 flags |= ATTRIBUTE_STRICT;
             else if (child->token.text == "Callback")
                 flags |= ATTRIBUTE_CALLBACK;

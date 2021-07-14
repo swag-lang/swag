@@ -1,4 +1,4 @@
-#[Swag.strict]
+#[Swag.Strict]
 alias Handle = u32
 
 #test

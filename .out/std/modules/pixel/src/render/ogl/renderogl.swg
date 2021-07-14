@@ -1,7 +1,7 @@
 #global public
 using Core, Ogl, Core.Math
 
-#[Swag.strict]
+#[Swag.Strict]
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
 

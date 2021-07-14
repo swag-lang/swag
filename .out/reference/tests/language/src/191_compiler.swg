@@ -47,7 +47,7 @@ attr Discardable()
 attr Deprecated(msg: string = null)
 
 // Hardcoded for type alias
-attr strict()
+attr Strict()
 
 // Hardcoded for local variables
 attr global()
