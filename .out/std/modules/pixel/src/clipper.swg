@@ -239,49 +239,49 @@ impl Transform
         eStart := &edges[0]
 
         //2. Remove duplicate vertices, and (when closed) collinear edges ...
-        E, eLoopStop := eStart
+        e, eLoopStop := eStart
 
         loop
         {
             //nb: allows matching start and end points when not Closed ...
-            if E.curr == E.next.curr
+            if e.curr == e.next.curr
             {
-                if E == E.next break
-                if E == eStart eStart = E.next
-                E = removeEdge(E)
-                eLoopStop = E
+                if e == e.next break
+                if e == eStart eStart = e.next
+                e = removeEdge(e)
+                eLoopStop = e
                 continue
             }
 
             //only two vertices
-            if E.prev == E.next
+            if e.prev == e.next
                 break
-            else if slopesEqual(E.prev.curr, E.curr, E.next.curr) and
-                    (!preserveCollinear or !pt2IsBetweenPt1AndPt3(E.prev.curr, E.curr, E.next.curr))
+            else if slopesEqual(e.prev.curr, e.curr, e.next.curr) and
+                    (!preserveCollinear or !pt2IsBetweenPt1AndPt3(e.prev.curr, e.curr, e.next.curr))
             {
-                if E == eStart eStart = E.next
-                E = removeEdge(E)
-                E = E.prev
-                eLoopStop = E
+                if e == eStart eStart = e.next
+                e = removeEdge(e)
+                e = e.prev
+                eLoopStop = e
                 continue
             }
 
-            E = E.next
-            if E == eLoopStop
+            e = e.next
+            if e == eLoopStop
                 break
         }
 
-        if E.prev == E.next
+        if e.prev == e.next
             return
 
         //3. Do second stage of edge initialization ...
-        E = eStart
+        e = eStart
         loop
         {
-            initEdge2(E, polyType)
-            E = E.next
-            if IsFlat and E.curr.y != eStart.curr.y IsFlat = false
-            if E == eStart break
+            initEdge2(e, polyType)
+            e = e.next
+            if IsFlat and e.curr.y != eStart.curr.y IsFlat = false
+            if e == eStart break
         }
 
         //4. Finally, add edge bounds to LocalMinima list ...
@@ -294,28 +294,28 @@ impl Transform
 
         //workaround to avoid an endless loop in the while loop below when
         //open paths have matching start and end points ...
-        if E.prev.bot == E.prev.top E = E.next
+        if e.prev.bot == e.prev.top e = e.next
 
         loop
         {
-            E = findNextLocMin(E)
-            if E == EMin break
-            else if !EMin EMin = E
+            e = findNextLocMin(e)
+            if e == EMin break
+            else if !EMin EMin = e
 
-            //E and E.prev now share a local minima (left aligned if horizontal).
+            //e and e.prev now share a local minima (left aligned if horizontal).
             //Compare their slopes to find which starts which bound ...
             var locMin: LocalMinimum
-            locMin.y = E.bot.y
-            if E.dx < E.prev.dx
+            locMin.y = e.bot.y
+            if e.dx < e.prev.dx
             {
-                locMin.leftBound = E.prev
-                locMin.rightBound = E
+                locMin.leftBound = e.prev
+                locMin.rightBound = e
                 leftBoundIsForward = false
             }
             else
             {
-                locMin.leftBound = E
-                locMin.rightBound = E.prev
+                locMin.leftBound = e
+                locMin.rightBound = e.prev
                 leftBoundIsForward = true
             }
 
@@ -325,8 +325,8 @@ impl Transform
                 locMin.leftBound.windDelta = 1
             locMin.rightBound.windDelta = -locMin.leftBound.windDelta
 
-            E = processBound(locMin.leftBound, leftBoundIsForward)
-            if E.outIdx == Skip E = processBound(E, leftBoundIsForward)
+            e = processBound(locMin.leftBound, leftBoundIsForward)
+            if e.outIdx == Skip e = processBound(e, leftBoundIsForward)
 
             E2 := processBound(locMin.rightBound, !leftBoundIsForward)
             if E2.outIdx == Skip E2 = processBound(E2, !leftBoundIsForward)
@@ -336,7 +336,7 @@ impl Transform
             else if locMin.rightBound.outIdx == Skip
                 locMin.rightBound = null
             minimaList.add(locMin)
-            if !leftBoundIsForward E = E2
+            if !leftBoundIsForward e = E2
         }
     }
 
@@ -483,118 +483,120 @@ impl Transform
 
     method processBound(edge: *Edge, nextIsForward: bool)->*Edge
     {
-        E := edge
-        Result := E
+        e := edge
+        result := e
 
-        var Horz: *Edge
-        if E.outIdx == Skip
+        if e.outIdx == Skip
         {
             if nextIsForward
             {
-                while E.top.y == E.next.bot.y
-                    E = E.next
-                while E != Result and isHorizontal(E)
-                    E = E.prev
+                while e.top.y == e.next.bot.y
+                    e = e.next
+                while e != result and isHorizontal(e)
+                    e = e.prev
             }
             else
             {
-                while E.top.y == E.prev.bot.y
-                    E = E.prev
-                while E != Result and isHorizontal(E)
-                    E = E.next
+                while e.top.y == e.prev.bot.y
+                    e = e.prev
+                while e != result and isHorizontal(e)
+                    e = e.next
             }
 
-            if E == Result
+            if e == result
             {
                 if nextIsForward
-                    Result = E.next
+                    result = e.next
                 else
-                    Result = E.prev
+                    result = e.prev
             }
             else
             {
                 if nextIsForward
-                    E = Result.next
+                    e = result.next
                 else
-                    E = Result.prev
+                    e = result.prev
                 var locMin: LocalMinimum
-                locMin.y = E.bot.y
+                locMin.y = e.bot.y
                 locMin.leftBound = null
-                locMin.rightBound = E
-                E.windDelta = 0
-                Result = processBound(E, nextIsForward)
+                locMin.rightBound = e
+                e.windDelta = 0
+                result = processBound(e, nextIsForward)
                 minimaList.add(locMin)
             }
 
-            return Result
+            return result
         }
 
-        var EStart: *Edge
-        if isHorizontal(E)
+        var eStart: *Edge
+        if isHorizontal(e)
         {
             if nextIsForward
-                EStart = E.prev
+                eStart = e.prev
             else
-                EStart = E.next
-            if isHorizontal(EStart)
+                eStart = e.next
+            if isHorizontal(eStart)
             {
-                if EStart.bot.x != E.bot.x and EStart.top.x != E.bot.x
-                    reverseHorizontal(E)
+                if eStart.bot.x != e.bot.x and eStart.top.x != e.bot.x
+                    reverseHorizontal(e)
             }
-            else if EStart.bot.x != E.bot.x
-                reverseHorizontal(E)
+            else if eStart.bot.x != e.bot.x
+                reverseHorizontal(e)
         }
 
-        EStart = E
+        eStart = e
         if nextIsForward
         {
-            while Result.top.y == Result.next.bot.y and Result.next.outIdx != Skip
-                Result = Result.next
-            if isHorizontal(Result) and Result.next.outIdx != Skip
+            while result.top.y == result.next.bot.y and result.next.outIdx != Skip
+                result = result.next
+            if isHorizontal(result) and result.next.outIdx != Skip
             {
-                Horz = Result
-                while isHorizontal(Horz.prev) Horz = Horz.prev
-                if Horz.prev.top.x > Result.next.top.x Result = Horz.prev
+                horz := result
+                while isHorizontal(horz.prev)
+                    horz = horz.prev
+                if horz.prev.top.x > result.next.top.x
+                    result = horz.prev
             }
 
-            while E != Result
+            while e != result
             {
-                E.nextInLML = E.next
-                if isHorizontal(E) and E != EStart and E.bot.x != E.prev.top.x
-                    reverseHorizontal(E)
-                E = E.next
+                e.nextInLML = e.next
+                if isHorizontal(e) and e != eStart and e.bot.x != e.prev.top.x
+                    reverseHorizontal(e)
+                e = e.next
             }
 
-            if isHorizontal(E) and E != EStart and E.bot.x != E.prev.top.x
-                reverseHorizontal(E)
-            Result = Result.next
+            if isHorizontal(e) and e != eStart and e.bot.x != e.prev.top.x
+                reverseHorizontal(e)
+            result = result.next
         }
         else
         {
-            while Result.top.y == Result.prev.bot.y and Result.prev.outIdx != Skip
-                Result = Result.prev
-            if isHorizontal(Result) and Result.prev.outIdx != Skip
+            while result.top.y == result.prev.bot.y and result.prev.outIdx != Skip
+                result = result.prev
+            if isHorizontal(result) and result.prev.outIdx != Skip
             {
-                Horz = Result
-                while isHorizontal(Horz.next) Horz = Horz.next
-                if Horz.next.top.x == Result.prev.top.x or Horz.next.top.x > Result.prev.top.x
-                    Result = Horz.next
+                horz := result
+                while isHorizontal(horz.next)
+                    horz = horz.next
+                if horz.next.top.x == result.prev.top.x or horz.next.top.x > result.prev.top.x
+                    result = horz.next
             }
 
-            while E != Result
+            while e != result
             {
-                E.nextInLML = E.prev
-                if isHorizontal(E) and E != EStart and E.bot.x != E.next.top.x
-                    reverseHorizontal(E);
-                E = E.prev
+                e.nextInLML = e.prev
+                if isHorizontal(e) and e != eStart and e.bot.x != e.next.top.x
+                    reverseHorizontal(e);
+                e = e.prev
             }
 
-            if isHorizontal(E) and E != EStart and E.bot.x != E.next.top.x
-                reverseHorizontal(E)
-            Result = Result.prev
+            if isHorizontal(e) and e != eStart and e.bot.x != e.next.top.x
+                reverseHorizontal(e)
+            result = result.prev
         }
 
-        return Result
+        return result
     }
 
     method popScanbeam(res: *CInt)->bool
