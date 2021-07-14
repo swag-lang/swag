@@ -174,7 +174,6 @@ impl Offset
         return area(poly) >= 0
     }
 
-    //#[Swag.PrintBc]
     method fixOrientations()
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)

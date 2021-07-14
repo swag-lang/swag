@@ -42,7 +42,23 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             ip[0].a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            ip[1].a.u32 = ip[0].b.u32;
+            ip[1].a.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
+        }
+
+        // 2 CopyRBRA followed by one single pushraparam2, take the original registers
+        if (ip[0].op == ByteCodeOp::CopyRBtoRA64 &&
+            ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+            ip[2].op == ByteCodeOp::PushRAParam2 &&
+            ip[0].a.u32 == ip[2].b.u32 &&
+            ip[1].a.u32 == ip[2].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            ip[2].a.u32                   = ip[1].b.u32;
+            ip[2].b.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
         }
 
         if (ip->op == op)
