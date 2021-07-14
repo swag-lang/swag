@@ -215,7 +215,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_CONSTEXPR;
             else if (child->token.text == "PrintBc")
                 flags |= ATTRIBUTE_PRINT_BC;
-            else if (child->token.text == "test")
+            else if (child->token.text == "Test")
                 flags |= ATTRIBUTE_TEST_FUNC;
             else if (child->token.text == "Compiler")
                 flags |= ATTRIBUTE_COMPILER;

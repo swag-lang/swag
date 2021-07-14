@@ -42,7 +42,7 @@ namespace Swag
     attr Mixin()
 
     #[AttrUsage(AttributeUsage.Function)]
-    attr test()
+    attr Test()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr Implicit()

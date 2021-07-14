@@ -2,7 +2,7 @@ using Swag;
 
 //#global testerror;
 
-#[test]
+#[Test]
 func main ()
 {
 }

@@ -1,7 +1,7 @@
 #global testerror;
 using Swag;
 
-#[test]
+#[Test]
 func main ()->s32
 {
 	return 0;
