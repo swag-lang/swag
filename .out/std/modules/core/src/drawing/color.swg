@@ -55,7 +55,7 @@ impl Color
     }
 
     // Just set r, g and b components.
-    // Alpha will be opaque
+    // Alpha will be Opaque
     #[inline]
     func setRgb(self, r, g, b: u8)
     {
@@ -66,7 +66,7 @@ impl Color
     }
 
     // Set r,g,b with floats in the range [0 1]
-    // Alpha will be opaque
+    // Alpha will be Opaque
     #[inline]
     func setRgbf(self, r, g, b: f32)
     {

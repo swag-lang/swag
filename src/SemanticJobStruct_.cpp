@@ -857,7 +857,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // An opaque struct will be exported as an array of bytes.
     // We need to be sure that alignement will be respected, so we force "Swag.align" attribute
     // if not already present.
-    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute("Swag.opaque"))
+    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute("Swag.Opaque"))
     {
         OneAttribute       ot;
         AttributeParameter otp;

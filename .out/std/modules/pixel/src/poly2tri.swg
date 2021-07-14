@@ -482,7 +482,7 @@ impl AdvancingFront
     }
 }
 
-#[Swag.opaque]
+#[Swag.Opaque]
 public struct Tesselate
 {
     basin:      Basin

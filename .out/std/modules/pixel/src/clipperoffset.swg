@@ -41,7 +41,7 @@ struct DoublePoint
     x, y: f64
 }
 
-#[Swag.opaque]
+#[Swag.Opaque]
 public struct Offset
 {
     miterLimit:     f64 = 2

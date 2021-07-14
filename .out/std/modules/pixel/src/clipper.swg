@@ -174,7 +174,7 @@ struct Join
     offPt:  IntPoint
 }
 
-#[Swag.opaque]
+#[Swag.Opaque]
 public struct Transform
 {
     useFullRange:           bool

@@ -76,7 +76,7 @@ struct Header
 	interlaceMethod:    InterlaceMethod = ?
 }
 
-#[opaque]
+#[Opaque]
 public struct Decoder
 {
     decOptions:     const *DecodeOptions

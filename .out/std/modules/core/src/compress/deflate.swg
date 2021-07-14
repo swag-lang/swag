@@ -130,7 +130,7 @@ impl HuffmanTable
     }
 }
 
-#[Swag.opaque]
+#[Swag.Opaque]
 public struct DeflateDecoder
 {
     stream:     CompressStream

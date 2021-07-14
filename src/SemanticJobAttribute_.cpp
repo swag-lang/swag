@@ -253,7 +253,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "NoCopy")
                 flags |= ATTRIBUTE_NO_COPY;
-            else if (child->token.text == "opaque")
+            else if (child->token.text == "Opaque")
                 flags |= ATTRIBUTE_OPAQUE;
             else if (child->token.text == "Safety")
             {

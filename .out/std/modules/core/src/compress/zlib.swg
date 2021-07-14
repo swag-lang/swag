@@ -1,7 +1,7 @@
 #global public
 #global namespace Compress
 
-#[Swag.opaque]
+#[Swag.Opaque]
 struct ZLibDecoder
 {
     decoder: DeflateDecoder

@@ -50,7 +50,7 @@ struct CoeffBuf
     blockSize: s32
 }
 
-#[opaque]
+#[Opaque]
 public struct Decoder
 {
     stream:             const *u8
