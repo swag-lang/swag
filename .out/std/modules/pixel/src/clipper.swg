@@ -35,6 +35,25 @@
 #global namespace Clipper
 using Core
 
+const LoRange = 0x3FFFFFFF
+const HiRange = 0x3FFFFFFFFFFFFFFF's64
+const Unassigned = -1
+const Skip = -2
+const HorizontalVal = -1.0E+40
+
+alias CInt         = s64
+alias ClipperPath  = Array'IntPoint
+alias ClipperPaths = Array'ClipperPath
+
+public enum PolyType        { Subject; Clip; }
+public enum ClipType        { Intersection; Union; Difference; Xor; }
+public enum PolyFillType    { EvenOdd; NonZero; Positive; Negative; }
+public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveCollinear = 4; }
+public enum JoinType        { Square; Round; Miter; }
+
+enum EdgeSide  { Left = 1; Right = 2; }
+enum Direction { RightToLeft; LeftToRight; }
+
 struct IntPoint
 {
     x, y: CInt
@@ -55,25 +74,6 @@ struct IntRect
     right:  CInt
     bottom: CInt
 }
-
-const LoRange = 0x3FFFFFFF
-const HiRange = 0x3FFFFFFFFFFFFFFF's64
-const Unassigned = -1
-const Skip = -2
-const HorizontalVal = -1.0E+40
-
-alias CInt         = s64
-alias ClipperPath  = Array'IntPoint
-alias ClipperPaths = Array'ClipperPath
-
-public enum PolyType        { Subject; Clip; }
-public enum ClipType        { Intersection; Union; Difference; Xor; }
-public enum PolyFillType    { EvenOdd; NonZero; Positive; Negative; }
-public enum InitOptions     { ReverseSolution = 1; StrictlySimple = 2; PreserveCollinear = 4; }
-public enum JoinType        { Square; Round; Miter; }
-
-enum EdgeSide  { Left = 1; Right = 2; }
-enum Direction { RightToLeft; LeftToRight; }
 
 struct IntersectNode
 {
