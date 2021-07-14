@@ -5,6 +5,7 @@ using Core, Ogl, Core.Drawing, Core.Math
 struct VertexLayout
 {
     pos:    Vector2
+    z:      f32
     uv:     Vector2
     color:  u32
     aa:     [6] Vector4
@@ -27,6 +28,8 @@ enum CommandId
     ResetClippingRegion
     SetClippingRegionMode
     UpdateFont
+    StartTransparency
+    StopTransparency
 }
 
 #[Swag.EnumFlags]
@@ -97,6 +100,8 @@ struct Painter
     lastTexture0Type:   BrushType = SolidColor
     lastTexture1Handle: TextureHandle
     canSetTexture0:     bool = true
+    curZ:               f32
+    curZOffset:         f32
 }
 
 impl Painter
@@ -218,12 +223,14 @@ impl Painter
         cmd := pushTriangleCmd()
         cmd.params.drawTriangles.count += 3
 
+        curZ += curZOffset
+
         ptr := vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv1
+        ptr.pos = p1; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv1
         ptr += 1
-        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv2
+        ptr.pos = p2; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv2
         ptr += 1
-        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv3
+        ptr.pos = p3; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv3
 
         return vertexBuffer.count - 3
     }
@@ -233,12 +240,14 @@ impl Painter
         cmd := pushTriangleCmd()
         cmd.params.drawTriangles.count += 3
 
+        curZ += curZOffset
+
         ptr := vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos = p1; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
-        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos = p2; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0
         ptr += 1
-        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos = p3; ptr.z = curZ; ptr.color = color.argb; ptr.aanum = 0
 
         return vertexBuffer.count - 3
     }
@@ -285,6 +294,8 @@ impl Painter
         vertexBuffer.clear()
         interpolationMode = .Pixel
         canSetTexture0 = true
+        curZ = 0
+        curZOffset = 0
     }
 
     // Call this after drawing
@@ -404,5 +415,18 @@ impl Painter
         if !fontRef.dirty return
         cmd := newCommand(CommandId.UpdateFont, false)
         cmd.params.font.fontRef = fontRef
+    }
+
+    method startTransparency()
+    {
+        curZ       = 0
+        curZOffset = -0.00001
+        discard newCommand(CommandId.StartTransparency, true)
+    }
+
+    method stopTransparency()
+    {
+        curZOffset = 0.0
+        discard newCommand(CommandId.StopTransparency, true)
     }
 }

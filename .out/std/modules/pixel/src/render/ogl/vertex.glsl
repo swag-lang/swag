@@ -1,6 +1,6 @@
 #version 330 core
 
-layout(location = 0) in vec2 vertexPosition;
+layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec2 uv1;
 layout(location = 2) in vec4 vertexColor;
 layout(location = 3) in vec4 aa0;
@@ -88,7 +88,7 @@ void transformAA()
 
 void main()
 {
-    gl_Position = mvp * mdl * vec4(vertexPosition, 0, 1);
+    gl_Position = mvp * mdl * vec4(vertexPosition, 1);
 
     // source is rgba, and we need bgra
     vcolor = vertexColor.zyxw;

@@ -319,11 +319,29 @@ func displayPage3()
     cdc.fillRect(0, 0, 1000, 1000, Argb.Red)
     cdc.resetClippingRegion()
 
-    cdc.drawCircle(500, 500, 400, Argb.Red, 1)
-    var lp: LinePath
-    lp.start(50, 800)
-    lp.bezierTo(800, 50, 250, 50)
-    cdc.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
+    {
+        cdc.drawCircle(500, 500, 400, Argb.Red, 1)
+    }
+
+    {
+        var lp1: LinePath
+        lp1.start(800, 800)
+        lp1.bezierTo(150, 150, 250, 50)
+
+        cdc.startTransparency()
+        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
+        cdc.stopTransparency()
+    }
+
+    {
+        var lp: LinePath
+        lp.start(50, 800)
+        lp.bezierTo(800, 50, 250, 50)
+
+        cdc.startTransparency()
+        cdc.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
+        cdc.stopTransparency()
+    }
 
     cdc.end()
     renderer.resetTransform()
@@ -522,6 +540,7 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cStencilBits = 8
     pfd.cColorBits   = 32
+    pfd.cDepthBits   = 32
 
     assume
     {

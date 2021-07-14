@@ -442,8 +442,8 @@ impl RenderOgl
 
         // Vertex buffer layout
         var offset: const *void = null
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
-        offset += @sizeof(Vector2)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector2) + @sizeof(f32)
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector2)
         glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
@@ -555,6 +555,9 @@ impl RenderOgl
         modelMatrix.m[1, 0] = tr.m21
         modelMatrix.m[1, 1] = tr.m22
 
+        // z
+        modelMatrix.m[2, 2] = 1
+
         // translation
         modelMatrix.m[3, 0] = tr.m31
         modelMatrix.m[3, 1] = tr.m32
@@ -663,6 +666,7 @@ impl RenderOgl
         glDisable(GL_DEPTH_TEST)
         glClearStencil(0)
         glStencilMask(0xFF)
+        glDepthMask(GL_FALSE)
 
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
@@ -671,6 +675,7 @@ impl RenderOgl
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
+        transparencyMode := false
         visit cmd: dc.commandBuffer
         {
             switch cmd.id
@@ -714,9 +719,36 @@ impl RenderOgl
             case ResetClippingRect:
                 glDisable(GL_SCISSOR_TEST)
 
+            case StartTransparency:
+                glEnable(GL_DEPTH_TEST)
+                glDepthMask(GL_TRUE)
+                glClear(GL_DEPTH_BUFFER_BIT)
+                transparencyMode = true
+
+            case StopTransparency:
+                glDisable(GL_DEPTH_TEST)
+                transparencyMode = false
+
             case DrawTriangles:
                 params := &cmd.params.drawTriangles
-                glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+                if !transparencyMode
+                {
+                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+                }
+                else
+                {
+                    // First only write to the depth buffer. Each triangle should have
+                    // a different Z value to avoid overwritting each others
+                    glDepthMask(GL_TRUE)
+                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
+                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
+                    // Then write to the color buffer by using the Z buffer
+                    glDepthMask(GL_FALSE)
+                    glDepthFunc(GL_LEQUAL)
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+                }
 
             case UpdateFont:
                 font := cmd.params.font.fontRef
