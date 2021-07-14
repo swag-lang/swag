@@ -994,16 +994,16 @@ impl Transform
 
     method deleteFromAEL(e: *Edge)
     {
-        AelPrev := e.prevInAEL
-        AelNext := e.nextInAEL
-        if !AelPrev and !AelNext and (e != activeEdges)
+        aelPrev := e.prevInAEL
+        aelNext := e.nextInAEL
+        if !aelPrev and !aelNext and e != activeEdges
             return
-        if AelPrev
-            AelPrev.nextInAEL = AelNext
+        if aelPrev
+            aelPrev.nextInAEL = aelNext
         else
-            activeEdges = AelNext
-        if AelNext
-            AelNext.prevInAEL = AelPrev
+            activeEdges = aelNext
+        if aelNext
+            aelNext.prevInAEL = aelPrev
         e.nextInAEL = null
         e.prevInAEL = null
     }
@@ -1029,7 +1029,8 @@ impl Transform
         sortedEdges = null
 
         var botY, topY: CInt
-        if !popScanbeam(&botY) return
+        if !popScanbeam(&botY)
+            return
 
         insertLocalMinimaIntoAEL(botY)
         while popScanbeam(&topY) or localMinimaPending()
@@ -1042,27 +1043,30 @@ impl Transform
             insertLocalMinimaIntoAEL(botY)
         }
 
-        //fix orientations ...
+        // Fix orientations
         visit outRec: polyOuts
         {
-            if !outRec.pts or outRec.isOpen continue
+            if !outRec.pts or outRec.isOpen
+                continue
             if (outRec.isHole ^ reverseOutput) == (area(outRec.pts) > 0)
                 reversePolyPtLinks(outRec.pts)
         }
 
-        if joinList.count joinCommonEdges()
+        if joinList.count
+            joinCommonEdges()
 
-        //unfortunately fixupOutPolygon() must be done after joinCommonEdges()
         visit outRec: polyOuts
         {
-            if !outRec.pts continue
+            if !outRec.pts
+                continue
             if outRec.isOpen
                 fixupOutPolyline(outRec)
             else
                 fixupOutPolygon(outRec)
         }
 
-        if strictSimple doSimplePolygons()
+        if strictSimple
+            doSimplePolygons()
 
         clearJoins()
         clearGhostJoins()
@@ -1100,7 +1104,8 @@ impl Transform
                         {
                             outrec2.isHole = !outrec.isHole
                             outrec2.firstLeft = outrec
-                            if usingPolyTree fixupFirstLefts2(outrec2, outrec)
+                            if usingPolyTree
+                                fixupFirstLefts2(outrec2, outrec)
                         }
                         else if poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
@@ -1108,13 +1113,15 @@ impl Transform
                             outrec.isHole = !outrec2.isHole
                             outrec2.firstLeft = outrec.firstLeft
                             outrec.firstLeft = outrec2
-                            if usingPolyTree fixupFirstLefts2(outrec, outrec2)
+                            if usingPolyTree
+                                fixupFirstLefts2(outrec, outrec2)
                         }
                         else
                         {
                             outrec2.isHole = outrec.isHole
                             outrec2.firstLeft = outrec.firstLeft
-                            if usingPolyTree fixupFirstLefts1(outrec, outrec2)
+                            if usingPolyTree
+                                fixupFirstLefts1(outrec, outrec2)
                         }
 
                         op2 = op
@@ -1124,7 +1131,8 @@ impl Transform
                 }
 
                 op = op.next
-                if op == outrec.pts break
+                if op == outrec.pts
+                    break
             }
         }
     }
