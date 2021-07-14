@@ -139,7 +139,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, bool safety)
 {
     auto node     = context->node;
     auto typeInfo = node->typeInfo;
@@ -210,7 +210,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
+    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo, safety));
     return true;
 }
 

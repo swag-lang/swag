@@ -321,7 +321,7 @@ struct ByteCodeGenJob : public Job
     static bool emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, uint32_t sizeOf);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety = true);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
-    static bool emitStructDeRef(ByteCodeGenContext* context);
+    static bool emitStructDeRef(ByteCodeGenContext* context, bool safety = true);
     static bool emitPointerRef(ByteCodeGenContext* context);
     static bool emitArrayRef(ByteCodeGenContext* context);
     static bool emitStringRef(ByteCodeGenContext* context);
