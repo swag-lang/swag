@@ -1,7 +1,7 @@
 #global public
 #global namespace Atomic
 
-#[Swag.inline, Swag.Discardable]
+#[Swag.Inline, Swag.Discardable]
 {
     func add(addr: *s8,  value: s8)->s8   => @atomadd(addr, value)
     func add(addr: *s16, value: s16)->s16 => @atomadd(addr, value)

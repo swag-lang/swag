@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func(T) min(x, y: T) => x < y ? x : y
 
 //#[Swag.PrintBc]

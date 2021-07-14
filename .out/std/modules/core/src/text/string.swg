@@ -21,13 +21,13 @@ struct String
 
 impl String
 {
-    #[inline]
+    #[Inline]
     func opCount(using const self)->uint
     {
         return length
     }
 
-    #[inline]
+    #[Inline]
     func opData(using const self)->const *u8
     {
         return buffer
@@ -444,14 +444,14 @@ impl String
     }
 
     // Returns a string type
-    #[Swag.inline]
+    #[Swag.Inline]
     func toString(using const self)->string
     {
         return @mkstring(buffer, length)
     }
 
     // Returns a slice type
-    #[Swag.inline]
+    #[Swag.Inline]
     func toSlice(using self)->[..] u8
     {
         return @mkslice(buffer, length)

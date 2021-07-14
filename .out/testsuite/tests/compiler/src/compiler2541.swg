@@ -1,6 +1,6 @@
 using Swag
 
-#[inline]
+#[Inline]
 func toto()->s32 throw
 {
     throw "coucou"

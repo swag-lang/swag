@@ -1,6 +1,6 @@
 func toto(x: s32)
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func titi(x: s32)->s32
     {
         return x

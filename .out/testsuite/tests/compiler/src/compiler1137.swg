@@ -1,6 +1,6 @@
 var b: s32
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()
 {
 	b := 666

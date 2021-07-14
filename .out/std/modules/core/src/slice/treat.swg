@@ -2,7 +2,7 @@
 #global namespace Slice
 
 // Transform the content of a slice with a given lambda
-#[Swag.inline]
+#[Swag.Inline]
 func(T) modifyInPlace(values: [..] T, cb: func(*T))
 {
     loop i: values

@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.inline]
+#[Swag.Inline]
 func swap(x, y: *s32)
 {
     tmp := dref x

@@ -1,9 +1,9 @@
-#[Swag.inline]
+#[Swag.Inline]
 func(T) toto() #selectif true
 {
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func(T) toto() #selectif false
 {
 }

@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func swap(x, y: *A)
 {
     tmp :=,moveraw dref x

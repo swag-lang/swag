@@ -60,7 +60,7 @@ impl Vector2
     }
 
     // Set content
-    #[Swag.inline]
+    #[Swag.Inline]
     func set(using self, x, y: f32)
     {
         self.x = #scopefct.x

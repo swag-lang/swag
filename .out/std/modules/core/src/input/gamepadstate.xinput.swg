@@ -73,7 +73,7 @@ impl GamePadState
         position[RightTrigger].y = bRightTrigger / 255.0'f32
 
         // Simulate pressed with,move
-        #[Swag.inline]
+        #[Swag.Inline]
         func getToler(using self, btn: GamePadButton)->f32
         {
             const SmallToler = 0.7'f32

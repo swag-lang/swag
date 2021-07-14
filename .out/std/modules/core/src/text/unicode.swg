@@ -2,7 +2,7 @@
 
 #global namespace Unicode
 
-#[Swag.inline, Swag.ConstExpr]
+#[Swag.Inline, Swag.ConstExpr]
 public
 {
     func isLatin1(c: rune)  => c <= 0xFF

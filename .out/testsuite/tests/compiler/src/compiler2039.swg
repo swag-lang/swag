@@ -10,7 +10,7 @@ public impl Argb2039
         return @{666,555}
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func toto2039()
     {
         var a = 0

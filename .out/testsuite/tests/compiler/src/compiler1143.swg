@@ -1,10 +1,10 @@
-#[Swag.inline]
+#[Swag.Inline]
 func toto1()->s32
 {
 	return 1
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->s32
 {
 	return toto1() + 2

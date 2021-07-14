@@ -17,7 +17,7 @@ public func toto2682(v: AA)
     @assert(v.x == 2)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 public func toto12682()
 {
     toto2682(2's64)

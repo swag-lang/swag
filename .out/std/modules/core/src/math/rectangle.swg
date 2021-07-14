@@ -21,42 +21,42 @@ impl Rectangle
     }
 
     // horizontal center coordinate (x + width / 2)
-    #[Swag.inline]
+    #[Swag.Inline]
     func horzCenter(using const self)->f32
     {
         return x + (width * 0.5)
     }
 
     // vertical center coordinate (y + height / 2)
-    #[Swag.inline]
+    #[Swag.Inline]
     func vertCenter(using const self)->f32
     {
         return y + (height * 0.5)
     }
 
     // right coordinate (x + width)
-    #[Swag.inline]
+    #[Swag.Inline]
     func right(using const self)->f32
     {
         return x + width
     }
 
     // right coordinate (x + width)
-    #[Swag.inline]
+    #[Swag.Inline]
     func setRight(using self, value: f32)
     {
         width = value - x
     }
 
     // bottom coordinate (y + height)
-    #[Swag.inline]
+    #[Swag.Inline]
     func bottom(using const self)->f32
     {
         return y + height
     }
 
     // bottom coordinate (y + height)
-    #[Swag.inline]
+    #[Swag.Inline]
     func setBottom(using self, value: f32)
     {
         height = value - y

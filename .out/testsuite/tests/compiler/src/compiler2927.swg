@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.inline]
+#[Swag.Inline]
 public func toto2927()
 {
     cpt := 0

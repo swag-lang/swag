@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func toto(v: u32) => v
 }
 

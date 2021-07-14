@@ -1,37 +1,37 @@
 #global namespace Hash
 #global #[Swag.Safety("overflow", false)]
 
-#[Swag.inline]
+#[Swag.Inline]
 private func f1(x, y, z: u32)->u32
 {
     return (x & y) | (~x & z)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func f2(x, y, z: u32)->u32
 {
     return (x & z) | (y & ~z)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func f3(x, y, z: u32)->u32
 {
     return x ^ (y ^ z)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func f4(x, y, z: u32)->u32
 {
     return y ^ (x | ~z)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func f5(x, n: u32)->u32
 {
     return (x << n) | (x >> (32 - n))
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func ff1(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f1(b, c, d) + x + ac
@@ -39,7 +39,7 @@ private func ff1(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func ff2(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f2(b, c, d) + x + ac
@@ -47,7 +47,7 @@ private func ff2(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func ff3(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f3(b, c, d) + x + ac
@@ -55,7 +55,7 @@ private func ff3(a: *u32, b, c, d, x, s, ac: u32)
     dref a += b
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 private func ff4(a: *u32, b, c, d, x, s, ac: u32)
 {
     dref a += f4(b, c, d) + x + ac

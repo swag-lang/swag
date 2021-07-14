@@ -1,7 +1,7 @@
 #global public
 #global namespace Math
 
-#[Swag.ConstExpr, Swag.inline]
+#[Swag.ConstExpr, Swag.Inline]
 {
     func(T) clamp(x, low, up: T) => @max(@min(x, up), low)
     func(T) min(x, y, z: T)->T   => @min(@min(x, y), z)
@@ -9,7 +9,7 @@
 }
 
 // Convert a big endian integer to current arch native format
-#[Swag.ConstExpr, Swag.inline]
+#[Swag.ConstExpr, Swag.Inline]
 func(T) bigEndianToNative(x: T)->T
 {
 #if BIG_ENDIAN
@@ -19,7 +19,7 @@ func(T) bigEndianToNative(x: T)->T
 }
 
 // Convert a little endian integer to current arch native format
-#[Swag.ConstExpr, Swag.inline]
+#[Swag.ConstExpr, Swag.Inline]
 func(T) littleEndianToNative(x: T)->T
 {
 #if BIG_ENDIAN

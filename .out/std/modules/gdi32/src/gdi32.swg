@@ -74,7 +74,7 @@ namespace gdi32priv
     }
 }
 
-#[inline]
+#[Inline]
 {
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
     {

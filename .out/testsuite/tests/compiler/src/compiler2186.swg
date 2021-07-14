@@ -6,7 +6,7 @@ struct ST
     x: u32 = 10
 }
 
-//#[Swag.inline]
+//#[Swag.Inline]
 func toto()->retval
 {
     var res: retval = ?

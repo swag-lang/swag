@@ -1,6 +1,6 @@
 using Swag
 
-#[inline]
+#[Inline]
 func assert(expr: u32)
 {
     if expr
@@ -9,7 +9,7 @@ func assert(expr: u32)
 }
 
 
-#[inline]
+#[Inline]
 func isPowerOf2(x: u32)
 {
     assert(x)

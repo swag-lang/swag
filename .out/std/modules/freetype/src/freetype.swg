@@ -425,7 +425,7 @@ namespace FreeTypePriv
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 {
     func FT_Init_FreeType(alibrary: *FT_Library) throw
     {

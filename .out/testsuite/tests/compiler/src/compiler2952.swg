@@ -5,7 +5,7 @@ struct V2
 
 impl V2
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func set(using self, x, y: f32)
     {
         self.x = #scopefct.x
@@ -13,7 +13,7 @@ impl V2
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func test(cx, cy: f32)
 {
     var v: V2

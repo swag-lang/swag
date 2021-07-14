@@ -13,7 +13,7 @@ attr PrintBc()
 attr compiler()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr inline()
+attr Inline()
 
 #[AttrUsage(AttributeUsage.Function)]
 attr macro()

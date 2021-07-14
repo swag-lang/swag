@@ -260,7 +260,7 @@ impl Painter
         }
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     protected func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin, "begin() not called before")

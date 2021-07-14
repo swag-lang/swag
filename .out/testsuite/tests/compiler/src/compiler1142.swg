@@ -1,6 +1,6 @@
 var g: bool = false
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->s32
 {
 	if(g)

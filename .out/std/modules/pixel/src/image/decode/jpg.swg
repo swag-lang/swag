@@ -210,7 +210,7 @@ const Zag: [64] u32 = @[
     55, 62, 63,
 ]
 
-#[inline, Safety("overflow", false)]
+#[Inline, Safety("overflow", false)]
 {
     func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
     func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))

@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func right(using self)->s64
     {
         return x

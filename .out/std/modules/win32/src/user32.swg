@@ -435,7 +435,7 @@ namespace user32priv
     }
 }
 
-#[inline]
+#[Inline]
 {
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {

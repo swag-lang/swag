@@ -3,7 +3,7 @@ struct A
     x: s32
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func round(val: s32)->s32
 {
     return val * val

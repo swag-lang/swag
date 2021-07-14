@@ -1,5 +1,5 @@
 /// right coordinate (x + width)
-#[Swag.inline]
+#[Swag.Inline]
 func rightXXX()
 {
 }

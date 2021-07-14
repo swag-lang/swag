@@ -2,7 +2,7 @@
 #global namespace Latin1
 using Swag
 
-#[inline, ConstExpr]
+#[Inline, ConstExpr]
 {
     func isAscii(c: u8)         => c <= 0x7F
     func isDigit(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Digit)
@@ -21,7 +21,7 @@ using Swag
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
 
-#[inline, ConstExpr]
+#[Inline, ConstExpr]
 {
     private func isLowerUtf8(c: u8)->bool
     {

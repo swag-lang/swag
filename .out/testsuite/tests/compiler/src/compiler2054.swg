@@ -1,10 +1,10 @@
-#[Swag.inline]
+#[Swag.Inline]
 func clamp(x: s32)->s32
 {
     return x
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto(x: s32)->s32
 {
     return clamp(x)

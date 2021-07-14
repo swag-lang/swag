@@ -2,7 +2,7 @@
 
 var G: s32 = 666
 
-//#[Swag.inline]
+//#[Swag.Inline]
 //#[Swag.PrintBc]
 func toto(a:s32 = G)
 {

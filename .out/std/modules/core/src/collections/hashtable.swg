@@ -64,7 +64,7 @@ impl HashTable
         }
     }
 
-    #[inline]
+    #[Inline]
     func hashKey(key: K)->u32
     {
         hashVal := Hash.hash32(key)

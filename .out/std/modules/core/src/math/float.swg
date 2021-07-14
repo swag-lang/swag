@@ -26,7 +26,7 @@ struct(T) Const
 alias ConstF32 = Const'f32
 alias ConstF64 = Const'f64
 
-#[Swag.ConstExpr, Swag.inline]
+#[Swag.ConstExpr, Swag.Inline]
 {
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
@@ -44,7 +44,7 @@ alias ConstF64 = Const'f64
     func isEqualEpsilon(x, y: f64, eps = ConstF64.Epsilon) => abs(x - y) < eps
 }
 
-#[Swag.ConstExpr, Swag.inline]
+#[Swag.ConstExpr, Swag.Inline]
 {
     func min(x, y: f32)   => @min(x, y)
     func min(x, y: f64)   => @min(x, y)

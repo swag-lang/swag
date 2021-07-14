@@ -5,7 +5,7 @@
 
 impl A
 {
-    #[Swag.property, Swag.inline]
+    #[Swag.property, Swag.Inline]
     func right(using self, v: s64)
     {
         x = v

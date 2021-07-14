@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 public func Compiler1960()
 {
     if #hastag("toto")

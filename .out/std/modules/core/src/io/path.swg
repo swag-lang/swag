@@ -7,7 +7,7 @@ const AltDirectorySeparatorChar = "\\"'u8
 const VolumeSeparatorChar       = ":"'u8
 
 // Returns true if the given character is a directory separator
-#[inline, ConstExpr]
+#[Inline, ConstExpr]
 func isDirectorySeparator(c: u8)->bool
 {
     return c == DirectorySeparatorChar or c == AltDirectorySeparatorChar

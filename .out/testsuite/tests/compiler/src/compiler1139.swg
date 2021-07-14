@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->s32 => 666
 
 //#[Swag.PrintBc]

@@ -415,7 +415,7 @@ namespace Win32Priv
     }
 }
 
-#[inline]
+#[Inline]
 {
     func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD) throw
     {

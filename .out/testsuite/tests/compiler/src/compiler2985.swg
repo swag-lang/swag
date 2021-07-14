@@ -14,7 +14,7 @@ enum CommandId
 
 var G = 0
 
-#[Swag.inline]
+#[Swag.Inline]
 func test()
 {
     v := CommandId.StartClippingRegion

@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func consumeBits(width: u8)
 {
     var codeBuffer: u32 = 1

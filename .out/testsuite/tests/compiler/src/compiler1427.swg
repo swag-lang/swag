@@ -7,7 +7,7 @@ struct A
 
 impl A
 {
-    #[inline]
+    #[Inline]
     func right(self)->s64
     {
         return self.x + self.x

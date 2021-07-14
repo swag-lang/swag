@@ -56,7 +56,7 @@ const FixedDist: [32]u8 = @[
 	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 ]
 
-#[Swag.inline]
+#[Swag.Inline]
 func reverse16(n: u16, bits: u8)->u16
 {
     r := Math.reverse(n)

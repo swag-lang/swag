@@ -5,19 +5,19 @@ struct AA
 
 impl AA
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func opAffect(using self, x: s32)
     {
         vv = x
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func tata(using self)
     {
         vv = 666
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func titi()->AA
     {
         var result: retval = 5

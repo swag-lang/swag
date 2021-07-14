@@ -6,7 +6,7 @@ struct AA
 
 impl AA
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func titi(using self)->{a: s32, b: s32}
     {
         _a := x / 10

@@ -13,7 +13,7 @@ impl AA
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->AA
 {
     return AA{};

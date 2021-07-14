@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func titi()->{a: f32, b: string}
 {
     return @{666, "yes"}

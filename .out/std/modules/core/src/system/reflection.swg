@@ -4,7 +4,7 @@ using Swag
 
 #[ConstExpr]
 {
-    #[inline]
+    #[Inline]
     {
         func isInteger(t: typeinfo)     => t.flags & .Integer
         func isFloat(t: typeinfo)       => t.flags & .Float

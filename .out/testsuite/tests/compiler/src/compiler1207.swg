@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func opEquals(self, _v: u32) => self.v == _v
 }
 

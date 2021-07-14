@@ -10,7 +10,7 @@ public impl V2962
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 public func titi2962()
 {
     var v: V2962

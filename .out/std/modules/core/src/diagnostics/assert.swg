@@ -7,7 +7,7 @@ func breakPanic(message: string, loc = #callerlocation)
     @panic(message, loc)
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
     #if ASSERT

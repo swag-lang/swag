@@ -20,22 +20,22 @@ struct Color
 
 impl Color
 {
-    #[Complete, inline, ConstExpr]
+    #[Complete, Inline, ConstExpr]
     func opAffect(self, argb: u32)    = self.argb = argb
-    #[Complete, inline, Implicit, ConstExpr]
+    #[Complete, Inline, Implicit, ConstExpr]
     func opAffect(self, argb: Argb)   = self.argb = cast(u32) argb
-    #[Complete, inline, ConstExpr]
+    #[Complete, Inline, ConstExpr]
     func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
 
-    #[inline]
+    #[Inline]
     func opEquals(self, argb: u32)   => self.argb == argb
-    #[inline]
+    #[Inline]
     func opEquals(self, argb: Argb)  => self.argb == cast(u32) argb
-    #[inline]
+    #[Inline]
     func opEquals(self, other: Self) => self.argb == other.argb
 
     // Set all components
-    #[inline]
+    #[Inline]
     func setArgb(self, a, r, g, b: u8)
     {
         self.a = a
@@ -45,7 +45,7 @@ impl Color
     }
 
     // Set all components with floats in the range [0 1]
-    #[inline]
+    #[Inline]
     func setArgbf(self, a, r, g, b: f32)
     {
         self.a = acast (Math.clamp(a, 0, 1) * 255)
@@ -56,7 +56,7 @@ impl Color
 
     // Just set r, g and b components.
     // Alpha will be Opaque
-    #[inline]
+    #[Inline]
     func setRgb(self, r, g, b: u8)
     {
         self.a = 255
@@ -67,7 +67,7 @@ impl Color
 
     // Set r,g,b with floats in the range [0 1]
     // Alpha will be Opaque
-    #[inline]
+    #[Inline]
     func setRgbf(self, r, g, b: f32)
     {
         self.a = 255
@@ -77,7 +77,7 @@ impl Color
     }
 
     // Retreive all components as floating point values between 0 and 1
-    #[inline]
+    #[Inline]
     func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
     {
         var result: retval = ?
@@ -89,7 +89,7 @@ impl Color
     }
 
     // Retreive all components as floating point values between 0 and 1
-    #[inline]
+    #[Inline]
     func toRgbf(const self) -> {r: f32, g: f32, b: f32}
     {
         var result: retval = ?
@@ -100,7 +100,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromRgb(r, g, b: u8)->Color
     {
         var result: retval = ?
@@ -109,7 +109,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromRgbf(r, g, b: f32)->Color
     {
         var result: retval = ?
@@ -118,7 +118,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromArgb(a, r, g, b: u8)->Color
     {
         var result: retval = ?
@@ -127,7 +127,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromArgb(argb: Argb)->Color
     {
         var result: retval = argb
@@ -135,7 +135,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromArgb(alpha: u8, argb: Argb)->Color
     {
         var result: retval = argb
@@ -144,7 +144,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromArgb(argb: u32)->Color
     {
         var result: retval = argb
@@ -152,7 +152,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromArgbf(a, r, g, b: f32)->Color
     {
         var result: retval = ?
@@ -161,7 +161,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[inline]
+    #[Inline]
     func fromHsl(h, s, l: f32)->Color
     {
         var result: retval = ?

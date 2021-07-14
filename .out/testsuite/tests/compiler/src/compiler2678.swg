@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     func from(x: s32)->A
     {
         return @{x}

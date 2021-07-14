@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func tototata()
 {
     x := "a"'rune

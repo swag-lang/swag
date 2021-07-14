@@ -1,20 +1,20 @@
 var G = 0
 
-#[Swag.inline]
+#[Swag.Inline]
 func titi() throw
 {
     defer G += 1
     throw "titi"
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func tata() throw
 {
     defer G += 2
     try titi()
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto() throw
 {
     defer G += 4

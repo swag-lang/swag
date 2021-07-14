@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func res() => 666
 
 #[Swag.macro]

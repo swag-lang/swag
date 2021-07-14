@@ -1,7 +1,7 @@
 #global namespace Hash
 #global #[Swag.Safety("overflow", false)]
 
-#[Swag.inline]
+#[Swag.Inline]
 {
     func rotLeft(a, b: u32)  => ((a << b) | (a >> (32 - b)))
     func rotRight(a, b: u32) => ((a >> b) | (a << (32 - b)))

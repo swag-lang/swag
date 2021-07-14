@@ -27,7 +27,7 @@ impl Image
         return result
     }
 
-    #[inline]
+    #[Inline]
     private func free(using self)
     {
         Memory.free(pixels, size, allocator)
@@ -178,7 +178,7 @@ impl Image
     }
 
     // Copy one pixel, depending on bpp
-    #[Swag.inline]
+    #[Swag.Inline]
     func(BPP: u8) copyPixel(pixDst, pixSrc: *u8)
     {
         #if BPP == 24

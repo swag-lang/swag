@@ -5,7 +5,7 @@ struct AA
     x, y = 555
 }
 
-#[inline]
+#[Inline]
 func toto()->[2] AA throw
 {
     throw "coucou"

@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func toto(x, y: s64)
 {
 	@assert(x + y == 10)

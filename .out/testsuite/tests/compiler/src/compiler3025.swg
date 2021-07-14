@@ -10,7 +10,7 @@ struct BB
 
 impl BB
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     method opIndex(idx: uint)->*AA
     {
         return &aa;

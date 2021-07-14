@@ -19,7 +19,7 @@ func tata()->s32 throw
     return 0
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->s32 throw
 {
     return try tata()

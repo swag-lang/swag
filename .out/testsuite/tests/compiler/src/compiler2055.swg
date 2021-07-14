@@ -1,8 +1,8 @@
-#[Swag.inline]
+#[Swag.Inline]
 //#[Swag.PrintBc]
 func(T) clamp(x, low, up: T) => x < low ? low : (x > up ? up : x)
 
-#[Swag.inline]
+#[Swag.Inline]
 //#[Swag.PrintBc]
 func toto(r: f32)
 {

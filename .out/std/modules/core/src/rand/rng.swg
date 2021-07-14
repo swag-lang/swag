@@ -14,38 +14,38 @@ impl Rng
         rng.seedU32(Time.nowMicroseconds())
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func seedU32(using self, value: u32)
     {
         return rng.seedU32(value)
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextS32(using self)->s32
     {
         return bitcast(s32) rng.nextU32()
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextS64(using self)->s64
     {
         return bitcast(s64) nextU64()
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextU32(using self)->u32
     {
         return rng.nextU32()
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextU64(using self)->u64
     {
         return (cast(u64) rng.nextU32() << 32) | rng.nextU32()
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextF32(using self)->f32
     {
         v := rng.nextU32()
@@ -54,7 +54,7 @@ impl Rng
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[Swag.inline]
+    #[Swag.Inline]
     func nextF64(using self)->f64
     {
         v := nextU64()

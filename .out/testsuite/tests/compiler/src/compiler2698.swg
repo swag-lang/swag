@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.inline]
+#[Swag.Inline]
 func titi()
 {
     toto()

@@ -25,7 +25,7 @@ impl LinePathList
         }
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     method count() => paths.count
 
     // Remove all internal line paths

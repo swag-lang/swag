@@ -289,7 +289,7 @@ public impl LinePath
     // Convert the path to a list of points
     func flatten(using self, quality: PaintQuality)
     {
-        #[Swag.inline]
+        #[Swag.Inline]
         func roundVal(x: f32) => x//0.4 + Math.round(x)
 
         // Already done ?

@@ -15,7 +15,7 @@ impl CStr
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func cstr(x: string)->CStr
 {
     var tmp: CStr

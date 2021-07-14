@@ -1,4 +1,4 @@
-/*#[Swag.compiler, Swag.inline]
+/*#[Swag.compiler, Swag.Inline]
 func set()
 {
     @assert(@isbytecode())

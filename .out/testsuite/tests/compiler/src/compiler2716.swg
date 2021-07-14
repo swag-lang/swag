@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    #[Swag.inline]
+    #[Swag.Inline]
     #[Swag.Implicit]
     func opCast(using self)->s64 => 666
 }

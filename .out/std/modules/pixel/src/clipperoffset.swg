@@ -168,7 +168,7 @@ impl Offset
         return -a * 0.5
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func orientation(poly: ClipperPath)->bool
     {
         return area(poly) >= 0
@@ -202,7 +202,7 @@ impl Offset
         return result
     }
 
-    #[Swag.inline]
+    #[Swag.Inline]
     func cround(val: f64) => cast(CInt) Math.round(val)
 
     method doOffset(delta: f64)

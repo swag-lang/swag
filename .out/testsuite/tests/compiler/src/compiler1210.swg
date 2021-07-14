@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func lerp(x, y, factor: f32)->f32 => ((1 - factor) * x) + (factor * y)
 
 //#[Swag.PrintBc]

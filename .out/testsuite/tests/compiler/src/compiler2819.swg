@@ -1,7 +1,7 @@
 #global namespace Hash
 #global #[Swag.Safety("", false)]
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()
 {
 

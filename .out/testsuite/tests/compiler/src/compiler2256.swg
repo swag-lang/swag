@@ -11,7 +11,7 @@ impl B
     }
 }
 
-#[Swag.inline]
+#[Swag.Inline]
 func toto()->[1] B
 {
     var result: [1] B

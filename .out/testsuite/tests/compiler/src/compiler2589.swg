@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 public func toto2589()
 {
     x := 0

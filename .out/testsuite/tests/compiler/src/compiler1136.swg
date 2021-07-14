@@ -1,4 +1,4 @@
-#[Swag.inline]
+#[Swag.Inline]
 func toto()
 {
 	b := 666

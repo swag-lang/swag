@@ -21,7 +21,7 @@ namespace oglpriv
     }
 }
 
-#[inline]
+#[Inline]
 {
     func wglCreateContext(hDc: HDC)->HGLRC throw
     {
