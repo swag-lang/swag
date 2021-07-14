@@ -1,11 +1,11 @@
 using Swag
 namespace A
 {
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
 	attr toto();
 	namespace B
 	{
-        #[attributeUsage(AttributeUsage.GlobalVariable)]
+        #[AttrUsage(AttributeUsage.GlobalVariable)]
 		attr toto1();
 	}
 }

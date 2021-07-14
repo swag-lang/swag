@@ -55,9 +55,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         if (oneAttribute->token.text == "complete" && kind == AstNodeKind::Switch)
             return true;
-        if (oneAttribute->token.text == "attributeUsage" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == "AttrUsage" && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == "attributeMulti" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == "AttrMulti" && kind == AstNodeKind::AttrDecl)
             return true;
         if (oneAttribute->token.text == "global" && isLocalVar)
             return true;
@@ -186,11 +186,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeInfo->attributes.hasAttribute("Swag.attributeMulti"))
+            if (!typeInfo->attributes.hasAttribute("Swag.AttrMulti"))
             {
                 if (result && result->isHere.contains(typeInfo))
                 {
-                    SWAG_ASSERT(context->sourceFile->name != "md5.swg");
                     Diagnostic diag{forNode, forNode->token, format(Msg0591, child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, child->token, Msg0592, DiagnosticLevel::Note};
                     return context->report(diag, &note);
@@ -200,13 +199,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                if (curAttr->attributes.getValue("Swag.attributeUsage", "usage", value))
+                if (curAttr->attributes.getValue("Swag.AttrUsage", "usage", value))
                 {
                     auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage = value.reg.u32;
                 }
 
-                if (curAttr->attributes.hasAttribute("Swag.attributeMulti"))
+                if (curAttr->attributes.hasAttribute("Swag.AttrMulti"))
                 {
                     auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage |= AttributeUsage::Multi;

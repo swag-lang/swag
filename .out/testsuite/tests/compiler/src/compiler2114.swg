@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.Function)]
+#[AttrUsage(AttributeUsage.Function)]
 public attr myAttr()
 
 #[myAttr]

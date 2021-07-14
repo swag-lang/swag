@@ -1,5 +1,5 @@
 using Swag
-#[attributeUsage(AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.StructVariable)]
 attr T();
 
 struct TOTO

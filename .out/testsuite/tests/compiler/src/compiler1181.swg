@@ -1,5 +1,5 @@
 using Swag
-#[attributeUsage(AttributeUsage.EnumValue)]
+#[AttrUsage(AttributeUsage.EnumValue)]
 attr T();
 
 enum TITI

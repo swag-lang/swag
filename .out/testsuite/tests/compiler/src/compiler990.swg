@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.StructVariable)]
 attr NC1();
 
 struct Point

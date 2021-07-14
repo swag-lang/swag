@@ -1,6 +1,6 @@
 using Core, Swag, StrConv
 
-#[attributeUsage(AttributeUsage.Function)]
+#[AttrUsage(AttributeUsage.Function)]
 attr extension()
 
 struct OneFunc

@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.Enum)]
+#[AttrUsage(AttributeUsage.Enum)]
 attr NC1(x: string);
 
 #[NC1("toto")]

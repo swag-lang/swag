@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeMulti]
+#[AttrMulti]
 attr NC();
 
 #[NC, NC]

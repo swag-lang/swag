@@ -14,7 +14,7 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 {
     bool first = true;
     bufferSwg.addIndent(indent);
-    bufferSwg.addString("#[attributeUsage(");
+    bufferSwg.addString("#[AttrUsage(");
 
 #define ADD_ATTRUSAGE(__f, __n)                         \
     if (typeFunc->attributeUsage & (int) __f)           \

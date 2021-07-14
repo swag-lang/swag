@@ -20,50 +20,50 @@ namespace Swag
     // #########################################################
 
     // Hardcoded usage
-    attr attributeUsage(usage: AttributeUsage)
-    attr attributeMulti()
+    attr AttrUsage(usage: AttributeUsage)
+    attr AttrMulti()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct)]
     attr constexpr()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
     attr printbc()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable|AttributeUsage.Constant)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable|AttributeUsage.Constant)]
     attr compiler()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr inline()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr macro()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr mixin()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr test()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr implicit()
 
     // Hardcoded also for switch
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr complete()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr noreturn()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr foreign(module: string, function: string = "");
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[AttrUsage(AttributeUsage.Function)]
     attr callback()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Variable)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]
     attr discardable()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
     attr deprecated(msg: string = null)
 
     // Hardcoded for type alias
@@ -75,34 +75,34 @@ namespace Swag
     // Hardcoded for struct and variables
     attr align(value: u8)
 
-    #[attributeUsage(AttributeUsage.GlobalVariable)]
+    #[AttrUsage(AttributeUsage.GlobalVariable)]
     attr tls()
 
-    #[attributeUsage(AttributeUsage.Struct)]
+    #[AttrUsage(AttributeUsage.Struct)]
     attr pack(value: u8)
 
-    #[attributeUsage(AttributeUsage.Struct)]
+    #[AttrUsage(AttributeUsage.Struct)]
     attr nocopy()
 
-    #[attributeUsage(AttributeUsage.Struct)]
+    #[AttrUsage(AttributeUsage.Struct)]
     attr opaque()
 
-    #[attributeUsage(AttributeUsage.StructVariable)]
+    #[AttrUsage(AttributeUsage.StructVariable)]
     attr offset(name: string)
 
-    #[attributeUsage(AttributeUsage.Enum)]
+    #[AttrUsage(AttributeUsage.Enum)]
     attr enumflags()
 
-    #[attributeUsage(AttributeUsage.Enum)]
+    #[AttrUsage(AttributeUsage.Enum)]
     attr enumindex()
 
-    #[attributeUsage(AttributeUsage.All)]
+    #[AttrUsage(AttributeUsage.All)]
     attr safety(what: string, value: bool)
 
-    #[attributeUsage(AttributeUsage.All)]
+    #[AttrUsage(AttributeUsage.All)]
     attr selectif(value: bool)
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.File)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr optim(what: string, value: bool)
 
     // #########################################################

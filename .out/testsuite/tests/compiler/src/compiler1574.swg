@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.Function | AttributeUsage.Struct | AttributeUsage.Enum)]
+#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct | AttributeUsage.Enum)]
 attr NC();
 
 #[NC]

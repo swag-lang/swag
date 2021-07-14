@@ -1,5 +1,5 @@
 using Swag
-#[attributeUsage(AttributeUsage.Struct)]
+#[AttrUsage(AttributeUsage.Struct)]
 attr PR(x: s32);
 
 #[PR(666)]

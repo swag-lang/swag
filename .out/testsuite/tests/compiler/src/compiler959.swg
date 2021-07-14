@@ -1,4 +1,4 @@
-#[Swag.attributeUsage(Swag.AttributeUsage.StructVariable)]
+#[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
 attr PR(x: s32);
 
 struct toto

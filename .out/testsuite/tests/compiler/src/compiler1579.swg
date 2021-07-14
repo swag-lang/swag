@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeMulti]
+#[AttrMulti]
 attr NC(x: string = "totoAAA");
 
 #[NC, NC("XXX")]

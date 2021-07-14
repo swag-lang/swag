@@ -11,7 +11,7 @@ attr attributeB(x, y: s32, z: string);
 attr attributeBA(x: s32, y: string = "string");
 
 // You can define a usage before the attribute definition to restric its use
-#[attributeUsage(AttributeUsage.Function)]
+#[AttrUsage(AttributeUsage.Function)]
 attr attributeC();
 
 // To use an attribute, syntax is #[attribute, attribute...]
@@ -21,7 +21,7 @@ func function1()
 }
 
 // You can declare multiple usages
-#[attributeUsage(AttributeUsage.Function | AttributeUsage.Struct)]
+#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]
 attr attributeD(x: s32);
 
 #[attributeD(6)]

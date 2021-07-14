@@ -1,4 +1,4 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.All)]
+#[AttrUsage(AttributeUsage.All)]
 attr MyAttribute();

@@ -1,6 +1,6 @@
 #global testerror;
 
-#[attributeUsage(AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.StructVariable)]
 attr toto();
 
 #[toto]

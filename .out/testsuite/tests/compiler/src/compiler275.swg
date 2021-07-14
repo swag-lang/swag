@@ -1,6 +1,6 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.Function)]
+#[AttrUsage(AttributeUsage.Function)]
 attr toto(v: string);
 
 #[toto("6")]

@@ -2,9 +2,9 @@
 #global testerror
 using Swag
 
-#[attributeUsage(AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.StructVariable)]
 attr toto();
-#[attributeUsage(AttributeUsage.Function)]
+#[AttrUsage(AttributeUsage.Function)]
 attr toto1();
 
 #[toto1]

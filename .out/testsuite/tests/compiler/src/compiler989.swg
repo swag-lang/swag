@@ -1,10 +1,10 @@
 using Swag
 
-#[attributeUsage(AttributeUsage.Struct)]
+#[AttrUsage(AttributeUsage.Struct)]
 attr NC();
-#[attributeUsage(AttributeUsage.Struct)]
+#[AttrUsage(AttributeUsage.Struct)]
 attr NC0();
-#[attributeUsage(AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.StructVariable)]
 attr NC1();
 
 #[NC, NC0]
