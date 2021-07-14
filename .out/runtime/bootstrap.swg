@@ -82,7 +82,7 @@ namespace Swag
     attr pack(value: u8)
 
     #[AttrUsage(AttributeUsage.Struct)]
-    attr nocopy()
+    attr NoCopy()
 
     #[AttrUsage(AttributeUsage.Struct)]
     attr opaque()

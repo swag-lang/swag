@@ -3,7 +3,7 @@
 #global namespace Sync
 using Win32
 
-#[Swag.nocopy]
+#[Swag.NoCopy]
 struct Event
 {
     handle: HANDLE

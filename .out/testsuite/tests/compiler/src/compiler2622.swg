@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.nocopy]
+#[Swag.NoCopy]
 struct AA
 {
 }

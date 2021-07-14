@@ -3,7 +3,7 @@
 
 using Core
 
-#[Swag.nocopy]
+#[Swag.NoCopy]
 struct AA
 {
 }

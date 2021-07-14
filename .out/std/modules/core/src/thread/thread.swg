@@ -12,7 +12,7 @@ enum ThreadPriority
     Highest
 }
 
-#[Swag.nocopy]
+#[Swag.NoCopy]
 struct Thread
 {
     userLambda: func(Thread)

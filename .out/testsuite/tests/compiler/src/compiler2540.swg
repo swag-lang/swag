@@ -1,4 +1,4 @@
-#[Swag.nocopy]
+#[Swag.NoCopy]
 struct AA
 {
 }
