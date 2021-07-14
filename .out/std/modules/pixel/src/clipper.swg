@@ -222,7 +222,7 @@ impl Transform
         if highI < 2 return
 
         edges  := Memory.new'Edge(cast(uint) highI + 1)
-        IsFlat := true
+        isFlat := true
 
         // 1. Basic (first) edge initialization ...
         edges[1].curr = pg.buffer[1]
@@ -238,12 +238,10 @@ impl Transform
 
         eStart := &edges[0]
 
-        //2. Remove duplicate vertices, and (when closed) collinear edges ...
+        // 2. Remove duplicate vertices, and (when closed) collinear edges ...
         e, eLoopStop := eStart
-
         loop
         {
-            //nb: allows matching start and end points when not Closed ...
             if e.curr == e.next.curr
             {
                 if e == e.next break
@@ -253,13 +251,14 @@ impl Transform
                 continue
             }
 
-            //only two vertices
             if e.prev == e.next
                 break
-            else if slopesEqual(e.prev.curr, e.curr, e.next.curr) and
-                    (!preserveCollinear or !pt2IsBetweenPt1AndPt3(e.prev.curr, e.curr, e.next.curr))
+
+            if slopesEqual(e.prev.curr, e.curr, e.next.curr) and
+               (!preserveCollinear or !pt2IsBetweenPt1AndPt3(e.prev.curr, e.curr, e.next.curr))
             {
-                if e == eStart eStart = e.next
+                if e == eStart
+                    eStart = e.next
                 e = removeEdge(e)
                 e = e.prev
                 eLoopStop = e
@@ -274,36 +273,36 @@ impl Transform
         if e.prev == e.next
             return
 
-        //3. Do second stage of edge initialization ...
+        // 3. Do second stage of edge initialization ...
         e = eStart
         loop
         {
             initEdge2(e, polyType)
             e = e.next
-            if IsFlat and e.curr.y != eStart.curr.y IsFlat = false
-            if e == eStart break
+            if isFlat and e.curr.y != eStart.curr.y
+                isFlat = false
+            if e == eStart
+                break
         }
 
-        //4. Finally, add edge bounds to LocalMinima list ...
-        if IsFlat
+        // 4. Finally, add edge bounds to LocalMinima list ...
+        if isFlat
             return
 
-        edgeList.add(edges);
+        edgeList.add(edges)
+        if e.prev.bot == e.prev.top
+            e = e.next
+
         var leftBoundIsForward: bool
-        var EMin: *Edge
-
-        //workaround to avoid an endless loop in the while loop below when
-        //open paths have matching start and end points ...
-        if e.prev.bot == e.prev.top e = e.next
-
+        var eMin: *Edge
         loop
         {
             e = findNextLocMin(e)
-            if e == EMin break
-            else if !EMin EMin = e
+            if e == eMin
+                break
+            else if !eMin
+                eMin = e
 
-            //e and e.prev now share a local minima (left aligned if horizontal).
-            //Compare their slopes to find which starts which bound ...
             var locMin: LocalMinimum
             locMin.y = e.bot.y
             if e.dx < e.prev.dx
@@ -326,17 +325,20 @@ impl Transform
             locMin.rightBound.windDelta = -locMin.leftBound.windDelta
 
             e = processBound(locMin.leftBound, leftBoundIsForward)
-            if e.outIdx == Skip e = processBound(e, leftBoundIsForward)
+            if e.outIdx == Skip
+                e = processBound(e, leftBoundIsForward)
 
-            E2 := processBound(locMin.rightBound, !leftBoundIsForward)
-            if E2.outIdx == Skip E2 = processBound(E2, !leftBoundIsForward)
+            e2 := processBound(locMin.rightBound, !leftBoundIsForward)
+            if e2.outIdx == Skip
+                e2 = processBound(e2, !leftBoundIsForward)
 
             if locMin.leftBound.outIdx == Skip
                 locMin.leftBound = null
             else if locMin.rightBound.outIdx == Skip
                 locMin.rightBound = null
             minimaList.add(locMin)
-            if !leftBoundIsForward e = E2
+            if !leftBoundIsForward
+                e = e2
         }
     }
 
