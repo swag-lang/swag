@@ -1,6 +1,6 @@
 #global public
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum LogFlags
 {
     Prefix

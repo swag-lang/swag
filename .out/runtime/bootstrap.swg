@@ -91,10 +91,10 @@ namespace Swag
     attr offset(name: string)
 
     #[AttrUsage(AttributeUsage.Enum)]
-    attr enumflags()
+    attr EnumFlags()
 
     #[AttrUsage(AttributeUsage.Enum)]
-    attr enumindex()
+    attr EnumIndex()
 
     #[AttrUsage(AttributeUsage.All)]
     attr safety(what: string, value: bool)
@@ -229,7 +229,7 @@ namespace Swag
         maxLeak:      uint
     }
 
-    #[Swag.enumflags]
+    #[Swag.EnumFlags]
     enum ContextFlags: u64
     {
         None     = 0x00000000_00000000
@@ -262,7 +262,7 @@ namespace Swag
     // Type reflection
     // #########################################################
 
-    #[enumflags]
+    #[EnumFlags]
     enum TypeCmpFlags
     {
         Strict = 0
@@ -314,7 +314,7 @@ namespace Swag
         Any
     }
 
-    #[Swag.enumflags]
+    #[Swag.EnumFlags]
     enum TypeInfoFlags: u16
     {
         None        = 0x0000
@@ -519,7 +519,7 @@ namespace Swag
         SemanticFunc
 	}
 
-    #[enumflags]
+    #[EnumFlags]
     enum CompilerMsgMask : u64
     {
         PassAfterSemantic =     1 << cast(u32) CompilerMsgKind.PassAfterSemantic

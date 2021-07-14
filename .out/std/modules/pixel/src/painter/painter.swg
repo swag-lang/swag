@@ -29,7 +29,7 @@ enum CommandId
     UpdateFont
 }
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum PaintParams
 {
     Normal

@@ -8,7 +8,7 @@ enum SeekOrigin
     End
 }
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum FileAccess
 {
     Read
@@ -26,7 +26,7 @@ enum FileMode
     Truncate
 }
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum FileShare
 {
     None

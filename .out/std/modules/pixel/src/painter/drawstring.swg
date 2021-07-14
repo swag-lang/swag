@@ -22,7 +22,7 @@ enum UnderlineStyle
     Strikeout
 }
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum StringFormatFlags
 {
     Default

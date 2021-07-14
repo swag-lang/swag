@@ -65,10 +65,10 @@ attr nocopy()
 attr offset(name: string)
 
 #[AttrUsage(AttributeUsage.Enum)]
-attr enumflags()
+attr EnumFlags()
 
 #[AttrUsage(AttributeUsage.Enum)]
-attr enumindex()
+attr EnumIndex()
 
 #[AttrUsage(AttributeUsage.All)]
 attr safety(what: string, value: bool)

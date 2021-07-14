@@ -2,7 +2,7 @@
 #global public
 #global namespace Latin1
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum CharAttribute
 {
     None

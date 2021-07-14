@@ -11,7 +11,7 @@ struct Test1
 enum Enum           { Red; Green; Blue; }
 enum Enum2: string  { StrRed = "StrRed"; StrGreen = "StrGreen"; StrBlue = "StrBlue"; }
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum EnumFlags      { A; B; C; }
 
 struct Test2

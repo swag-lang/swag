@@ -1,4 +1,4 @@
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum TITI
 {
 	F1

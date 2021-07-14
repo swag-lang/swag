@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    #[Swag.enumflags]
+    #[Swag.EnumFlags]
     public enum ChannelMode
     {
         Red

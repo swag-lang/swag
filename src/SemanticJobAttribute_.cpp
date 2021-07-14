@@ -221,9 +221,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_TEST_FUNC;
             else if (child->token.text == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-            else if (child->token.text == "enumflags")
+            else if (child->token.text == "EnumFlags")
                 flags |= ATTRIBUTE_ENUM_FLAGS;
-            else if (child->token.text == "enumindex")
+            else if (child->token.text == "EnumIndex")
                 flags |= ATTRIBUTE_ENUM_INDEX;
             else if (child->token.text == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;

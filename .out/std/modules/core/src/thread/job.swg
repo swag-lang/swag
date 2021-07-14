@@ -1,7 +1,7 @@
 #global namespace Jobs
 using Threading, Swag
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 public enum JobState
 {
     Zero        = 0x00000000

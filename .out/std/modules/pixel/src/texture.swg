@@ -20,7 +20,7 @@ enum UVMode
     Tile
 }
 
-#[Swag.enumindex]
+#[Swag.EnumIndex]
 enum HatchStyle
 {
     Dot

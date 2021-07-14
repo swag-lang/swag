@@ -57,7 +57,7 @@ enum InterlaceMethod : u8
 	Adam7 = 1
 }
 
-#[enumflags]
+#[EnumFlags]
 enum ColorType: u8
 {
     Paletted = 1

@@ -133,10 +133,10 @@
         @assert(Value.C == 2)
     }
 
-    // Enum can be a set of flags with the #[Swag.enumflags] attribute
+    // Enum can be a set of flags with the #[Swag.EnumFlags] attribute
     // Type should be u8, u16, u32 or u64
     {
-        #[Swag.enumflags]
+        #[Swag.EnumFlags]
         enum MyFlags: u8
         {
             A
@@ -226,7 +226,7 @@
     }
 
     {
-        #[Swag.enumflags]
+        #[Swag.EnumFlags]
         enum Values { A; B; }
         x := Values.A | Values.B
         @assert((x & .A) and (x & .B))

@@ -1,7 +1,7 @@
 #global namespace Input
 
 // Enumerates gamepad buttons
-#[Swag.enumindex]
+#[Swag.EnumIndex]
 public enum GamePadButton
 {
     // A button

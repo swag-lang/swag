@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[Swag.enumflags]
+#[Swag.EnumFlags]
 enum TOTO : string
 {
 	F1

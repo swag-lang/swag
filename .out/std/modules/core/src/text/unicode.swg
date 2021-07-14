@@ -207,7 +207,7 @@ struct CaseRange
     delta:  [3] s32
 }
 
-#[Swag.enumindex]
+#[Swag.EnumIndex]
 enum WantedCase
 {
 	UpperCase
