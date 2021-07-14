@@ -1,10 +1,10 @@
 #global testerror
 using Swag
 
-#[compiler]
+#[Compiler]
 var G = 0
 
-//#[compiler]
+//#[Compiler]
 func toto()
 {
     G = 1

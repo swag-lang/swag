@@ -1,7 +1,7 @@
 #global testerror;
 using Swag;
 
-#[compiler]
+#[Compiler]
 func main ()
 {
 }

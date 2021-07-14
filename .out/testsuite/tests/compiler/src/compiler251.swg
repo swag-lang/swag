@@ -2,13 +2,13 @@
 ;
 using Swag;
 
-#[compiler]
+#[Compiler]
 #test
 {
 	@assert(true);
 }
 
-#[compiler]
+#[Compiler]
 #test
 {
 	@assert(true);

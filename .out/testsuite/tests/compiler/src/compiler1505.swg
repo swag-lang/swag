@@ -1,4 +1,4 @@
-#[Swag.compiler]
+#[Swag.Compiler]
 func set(x: string)
 {
     @assert(x == "inside function set")

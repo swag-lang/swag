@@ -2,7 +2,7 @@ using Swag
 
 var cpt = 0's64
 
-#[compiler]
+#[Compiler]
 func testInline(type: const* TypeInfoFunc)
 {
     visit i: type.attributes

@@ -8,7 +8,7 @@ private
     var g_mapKeyToVKey: [256] u8 = ?
     var g_mapVKeyToKey: [256] u8 = ?
 
-    #[compiler]
+    #[Compiler]
     func setupArray(key: Input.Key, vkey: u8)
     {
         g_mapKeyToVKey[key] = vkey

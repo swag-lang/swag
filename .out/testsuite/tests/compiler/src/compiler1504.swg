@@ -1,6 +1,6 @@
 var X: u32 = ?
 
-#[Swag.compiler]
+#[Swag.Compiler]
 func set()
 {
     X = 6

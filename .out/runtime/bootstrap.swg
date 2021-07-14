@@ -30,7 +30,7 @@ namespace Swag
     attr PrintBc()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable|AttributeUsage.Constant)]
-    attr compiler()
+    attr Compiler()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr Inline()

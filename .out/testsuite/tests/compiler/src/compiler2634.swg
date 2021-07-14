@@ -1,9 +1,9 @@
 using Swag
 
-#[compiler]
+#[Compiler]
 var G = 0
 
-#[compiler]
+#[Compiler]
 func toto()
 {
     loop 10 G += 1

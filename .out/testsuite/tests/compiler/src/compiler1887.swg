@@ -1,4 +1,4 @@
-//#[Swag.compiler]
+//#[Swag.Compiler]
 func(T) checker()
 {
     //@print(v)
