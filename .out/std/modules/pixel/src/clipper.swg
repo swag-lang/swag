@@ -2529,14 +2529,13 @@ impl Transform
     func outRec1RightOfOutRec2(o1, outRec2: *OutRec)->bool
     {
         outRec1 := o1
-        loop
+        while outRec1
         {
             outRec1 = outRec1.firstLeft
             if outRec1 == outRec2
                 return true
-            if !outRec1
-                break
         }
+
         return false
     }
 
@@ -2549,14 +2548,16 @@ impl Transform
     {
         op := op1
         startOp := op
-        if !op return 0
+        if !op
+            return 0
 
         a := 0'f64
         loop
         {
             a += cast(f64) (op.prev.pt.x + op.pt.x) * cast(f64) (op.prev.pt.y - op.pt.y)
             op = op.next
-            if op == startOp break
+            if op == startOp
+                break
         }
 
         return a * 0.5
@@ -2565,24 +2566,27 @@ impl Transform
     func firstIsBottomPt(btmPt1, btmPt2: *OutPt)->bool
     {
         p := btmPt1.prev
-        while (p.pt == btmPt1.pt) and (p != btmPt1) p = p.prev
+        while (p.pt == btmPt1.pt) and (p != btmPt1)
+            p = p.prev
         dx1p := Math.abs(getDx(btmPt1.pt, p.pt))
         p = btmPt1.next
-        while (p.pt == btmPt1.pt) and (p != btmPt1) p = p.next
+        while (p.pt == btmPt1.pt) and (p != btmPt1)
+            p = p.next
         dx1n := Math.abs(getDx(btmPt1.pt, p.pt))
 
         p = btmPt2.prev
-        while (p.pt == btmPt2.pt) and (p != btmPt2) p = p.prev
+        while (p.pt == btmPt2.pt) and (p != btmPt2)
+            p = p.prev
         dx2p := Math.abs(getDx(btmPt2.pt, p.pt))
         p = btmPt2.next
-        while (p.pt == btmPt2.pt) and (p != btmPt2) p = p.next
+        while (p.pt == btmPt2.pt) and (p != btmPt2)
+            p = p.next
         dx2n := Math.abs(getDx(btmPt2.pt, p.pt))
 
         if Math.max(dx1p, dx1n) == Math.max(dx2p, dx2n) and
            Math.min(dx1p, dx1n) == Math.min(dx2p, dx2n)
             return area(btmPt1) > 0
-        else
-            return (dx1p >= dx2p and dx1p >= dx2n) or (dx1n >= dx2p and dx1n >= dx2n)
+        return (dx1p >= dx2p and dx1p >= dx2n) or (dx1n >= dx2p and dx1n >= dx2n)
     }
 
     func getBottomPt(pp1: *OutPt)->*OutPt
@@ -2606,9 +2610,11 @@ impl Transform
                 }
                 else
                 {
-                    if p.next != pp and p.prev != pp dups = p
+                    if p.next != pp and p.prev != pp
+                        dups = p
                 }
             }
+
             p = p.next
         }
 
@@ -2616,7 +2622,8 @@ impl Transform
         {
             while dups != p
             {
-                if !firstIsBottomPt(p, dups) pp = dups
+                if !firstIsBottomPt(p, dups)
+                    pp = dups
                 dups = dups.next
                 while dups.pt != pp.pt
                     dups = dups.next
@@ -2634,34 +2641,42 @@ impl Transform
             outRec2.bottomPt = getBottomPt(outRec2.pts)
         outPt1 := outRec1.bottomPt
         outPt2 := outRec2.bottomPt
-        if outPt1.pt.y > outPt2.pt.y return outRec1
-        if outPt1.pt.y < outPt2.pt.y return outRec2
-        if outPt1.pt.x < outPt2.pt.x return outRec1
-        if outPt1.pt.x > outPt2.pt.x return outRec2
-        if outPt1.next == outPt1 return outRec2
-        if outPt2.next == outPt2 return outRec1
-        if firstIsBottomPt(outPt1, outPt2) return outRec1
+        if outPt1.pt.y > outPt2.pt.y
+            return outRec1
+        if outPt1.pt.y < outPt2.pt.y
+            return outRec2
+        if outPt1.pt.x < outPt2.pt.x
+            return outRec1
+        if outPt1.pt.x > outPt2.pt.x
+            return outRec2
+        if outPt1.next == outPt1
+            return outRec2
+        if outPt2.next == outPt2
+            return outRec1
+        if firstIsBottomPt(outPt1, outPt2)
+            return outRec1
         return outRec2
     }
 
     func reversePolyPtLinks(pp: *OutPt)
     {
-        if !pp return
-        var pp1, pp2: *OutPt
-        pp1 = pp
+        if !pp
+            return
+
+        pp1 := pp
         loop
         {
-            pp2 = pp1.next
+            pp2 := pp1.next
             pp1.next = pp1.prev
             pp1.prev = pp2
             pp1 = pp2
-            if pp1 == pp break
+            if pp1 == pp
+                break
         }
     }
 
     method appendPolygon(e1, e2: *Edge)
     {
-        //get the start and ends of both output polygons ...
         outRec1 := polyOuts[e1.outIdx]
         outRec2 := polyOuts[e2.outIdx]
 
@@ -2673,15 +2688,11 @@ impl Transform
         else
             holeStateRec = getLowermostRec(outRec1, outRec2)
 
-        //get the start and ends of both output polygons and
-        //join e2 poly onto e1 poly and delete pointers to e2 ...
-
         p1_lft := outRec1.pts
-        p1_rt := p1_lft.prev
+        p1_rt  := p1_lft.prev
         p2_lft := outRec2.pts
-        p2_rt := p2_lft.prev
+        p2_rt  := p2_lft.prev
 
-        //join e2 poly onto e1 poly and delete pointers to e2 ...
         if e1.side == .Left
         {
             if e2.side == .Left
@@ -2733,8 +2744,8 @@ impl Transform
         outRec2.bottomPt = null
         outRec2.firstLeft = outRec1
 
-        OKIdx := e1.outIdx
-        ObsoleteIdx := e2.outIdx
+        okIdx := e1.outIdx
+        obsoleteIdx := e2.outIdx
 
         e1.outIdx = Unassigned
         e2.outIdx = Unassigned
@@ -2742,9 +2753,9 @@ impl Transform
         e := activeEdges
         while e
         {
-            if e.outIdx == ObsoleteIdx
+            if e.outIdx == obsoleteIdx
             {
-                e.outIdx = OKIdx
+                e.outIdx = okIdx
                 e.side = e1.side
                 break
             }
@@ -2790,8 +2801,6 @@ impl Transform
         e1Contributing := e1.outIdx >= 0
         e2Contributing := e2.outIdx >= 0
 
-        //update winding counts...
-        //assumes that e1 will be to the right of e2 ABOVE the intersection
         if e1.polyType == e2.polyType
         {
             if isEvenOddFillType(e1)
@@ -2852,14 +2861,14 @@ impl Transform
         {
         case Positive:   e1Wc = e1.windCnt
         case Negative:   e1Wc = -e1.windCnt
-        default:            e1Wc = Math.abs(e1.windCnt)
+        default:         e1Wc = Math.abs(e1.windCnt)
         }
 
         switch e2FillType
         {
         case Positive:   e2Wc = e2.windCnt
         case Negative:   e2Wc = -e2.windCnt
-        default:            e2Wc = Math.abs(e2.windCnt)
+        default:         e2Wc = Math.abs(e2.windCnt)
         }
 
         if e1Contributing and e2Contributing
@@ -2901,14 +2910,14 @@ impl Transform
             {
             case Positive:   e1Wc2 = e1.windCnt2
             case Negative:   e1Wc2 = -e1.windCnt2
-            default:            e1Wc2 = Math.abs(e1.windCnt2)
+            default:         e1Wc2 = Math.abs(e1.windCnt2)
             }
 
             switch e2FillType2
             {
             case Positive:   e2Wc2 = e2.windCnt2
             case Negative:   e2Wc2 = -e2.windCnt2
-            default:            e2Wc2 = Math.abs(e2.windCnt2)
+            default:         e2Wc2 = Math.abs(e2.windCnt2)
             }
 
             if e1.polyType != e2.polyType
