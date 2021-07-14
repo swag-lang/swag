@@ -79,7 +79,7 @@ namespace Swag
     attr Tls()
 
     #[AttrUsage(AttributeUsage.Struct)]
-    attr pack(value: u8)
+    attr Pack(value: u8)
 
     #[AttrUsage(AttributeUsage.Struct)]
     attr NoCopy()

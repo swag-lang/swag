@@ -10,7 +10,7 @@ const FILL_BI_RLE8         = 1
 const FILL_BI_RLE4         = 2
 const FILL_BI_BITFIELDS    = 3
 
-#[Swag.pack(1)]
+#[Swag.Pack(1)]
 struct Header
 {
     biSize:             u32
@@ -26,7 +26,7 @@ struct Header
     biClrImportant:     u32
 }
 
-#[Swag.pack(1)]
+#[Swag.Pack(1)]
 struct CoreHeader
 {
     bcSize:     u32
@@ -36,7 +36,7 @@ struct CoreHeader
     bcBitCount: u16
 }
 
-#[Swag.pack(1)]
+#[Swag.Pack(1)]
 struct FileHeader
 {
     bfType:         u16

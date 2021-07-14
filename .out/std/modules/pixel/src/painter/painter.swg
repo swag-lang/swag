@@ -1,7 +1,7 @@
 #global public
 using Core, Ogl, Core.Drawing, Core.Math
 
-#[Swag.pack(1)]
+#[Swag.Pack(1)]
 struct VertexLayout
 {
     pos:    Vector2

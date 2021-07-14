@@ -324,10 +324,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 curAttr->attributes.getValue("Swag.SelectIf", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
-            else if (child->token.text == "pack")
+            else if (child->token.text == "Pack")
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.pack", "value", attrValue);
+                curAttr->attributes.getValue("Swag.Pack", "value", attrValue);
                 SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format(Msg0595, attrValue.reg.u8)}));
             }
             else if (child->token.text == "align")

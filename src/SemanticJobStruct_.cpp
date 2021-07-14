@@ -575,7 +575,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     ComputedValue value;
     if (node->structFlags & STRUCTFLAG_UNION)
         node->packing = 0;
-    else if (typeInfo->attributes.getValue("Swag.pack", "value", value))
+    else if (typeInfo->attributes.getValue("Swag.Pack", "value", value))
         node->packing = value.reg.u8;
 
     // Check 'opaque' attribute

@@ -1,4 +1,4 @@
-#[Swag.pack(0)]
+#[Swag.Pack(0)]
 struct Union
 {
 	x: s32
