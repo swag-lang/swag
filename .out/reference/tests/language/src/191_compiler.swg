@@ -44,7 +44,7 @@ attr callback()
 attr Discardable()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
-attr deprecated(msg: string = null)
+attr Deprecated(msg: string = null)
 
 // Hardcoded for type alias
 attr strict()
