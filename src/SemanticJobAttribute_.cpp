@@ -223,7 +223,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_ENUM_FLAGS;
             else if (child->token.text == "EnumIndex")
                 flags |= ATTRIBUTE_ENUM_INDEX;
-            else if (child->token.text == "foreign")
+            else if (child->token.text == "Foreign")
                 flags |= ATTRIBUTE_FOREIGN;
             else if (child->token.text == "Inline")
                 flags |= ATTRIBUTE_INLINE;

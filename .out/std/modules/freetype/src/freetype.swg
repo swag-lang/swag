@@ -399,7 +399,7 @@ var Errors: [0xFF] string = ?
     Errors[0xBA] = "Font glyphs corrupted or missing fields"
 }
 
-#[Swag.foreign("freetype")]
+#[Swag.Foreign("freetype")]
 {
     func FT_Done_Face(face: FT_Face);
     func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt;
@@ -409,7 +409,7 @@ var Errors: [0xFF] string = ?
 
 namespace FreeTypePriv
 {
-    #[Swag.foreign("freetype")]
+    #[Swag.Foreign("freetype")]
     {
         func FT_Init_FreeType(alibrary: *FT_Library)->FT_Error;
         func FT_Done_FreeType(alibrary: FT_Library)->FT_Error;

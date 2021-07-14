@@ -2,7 +2,7 @@
 {
     alias HANDLE = *void
 
-    #[Swag.foreign("kernel32")]
+    #[Swag.Foreign("kernel32")]
     func GetStdHandle(nStdHandle: u32)->HANDLE;
     #test
     {

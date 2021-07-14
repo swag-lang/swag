@@ -1,6 +1,6 @@
 #global if #os == "windows"
 
-#[Swag.foreign("kernel32")]
+#[Swag.Foreign("kernel32")]
 {
     func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;

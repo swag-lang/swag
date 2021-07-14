@@ -55,7 +55,7 @@ namespace Swag
     attr NoReturn()
 
     #[AttrUsage(AttributeUsage.Function)]
-    attr foreign(module: string, function: string = "");
+    attr Foreign(module: string, function: string = "");
 
     #[AttrUsage(AttributeUsage.Function)]
     attr Callback()

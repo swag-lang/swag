@@ -9,7 +9,7 @@ alias LPOVERLAPPED= *DWORD
 const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
 const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
 
-#[Swag.foreign("kernel32")]
+#[Swag.Foreign("kernel32")]
 {
 	func GetStdHandle(nStdHandle: DWORD)->HANDLE;
 	func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->s32;

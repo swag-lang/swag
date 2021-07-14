@@ -677,7 +677,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addIndent(indent);
 
             // Remape special functions to their generated equivalent
-            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
+            bufferSwg.addStringFormat("#[Foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
             bufferSwg.addEol();
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);

@@ -308,12 +308,12 @@ struct PROCESS_INFORMATION
     dwThreadId:     DWORD
 }
 
-#[foreign("kernel32"), Discardable]
+#[Foreign("kernel32"), Discardable]
 {
     func SwitchToThread()->BOOL;
 }
 
-#[foreign("kernel32")]
+#[Foreign("kernel32")]
 {
     func GetLastError()->DWORD;
     func FormatMessageA(dwFlags : DWORD, lpSource : LPCVOID, dwMessageId : DWORD, dwLanguageId : DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD;
@@ -367,7 +367,7 @@ struct PROCESS_INFORMATION
 
 namespace Win32Priv
 {
-    #[foreign("kernel32")]
+    #[Foreign("kernel32")]
     {
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;

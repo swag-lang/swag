@@ -386,7 +386,7 @@ struct PAINTSTRUCT
     rgbReserved:    [32] BYTE
 }
 
-#[foreign("user32")]
+#[Foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
     func GetKeyboardState(lpKeystate: *u8)->BOOL;
@@ -406,7 +406,7 @@ struct PAINTSTRUCT
     func GetDC(hWnd: HWND)->HDC;
 }
 
-#[foreign("user32"), Discardable]
+#[Foreign("user32"), Discardable]
 {
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
@@ -423,7 +423,7 @@ struct PAINTSTRUCT
 
 namespace user32priv
 {
-    #[foreign("user32")]
+    #[Foreign("user32")]
     {
         func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
         func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM;

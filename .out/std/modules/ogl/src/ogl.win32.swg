@@ -6,14 +6,14 @@ using Swag, Win32
 alias HGLRC = const *void
 alias getExtensionAddress = wglGetProcAddress
 
-#[foreign("opengl32")]
+#[Foreign("opengl32")]
 {
     func wglGetProcAddress(arg1: LPCSTR)->const *void;
 }
 
 namespace oglpriv
 {
-    #[foreign("opengl32")]
+    #[Foreign("opengl32")]
     {
         func wglCreateContext(hDc: HDC)->HGLRC;
         func wglDeleteContext(hRc: HGLRC)->BOOL;

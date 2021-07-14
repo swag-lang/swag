@@ -3,7 +3,7 @@ using tests_foreign
 
 using Swag
 
-#[Swag.foreign("kernel32")]
+#[Swag.Foreign("kernel32")]
 {
     func GetModuleHandleA(lpModuleName: const *u8)->const *void;
     func GetProcAddress(hModule: const *void, lpProcName: const *u8)->const *void;

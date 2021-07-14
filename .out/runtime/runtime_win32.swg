@@ -14,7 +14,7 @@ private
     const IDTRYAGAIN  = 10
     const IDCONTINUE  = 11
 
-    #[Swag.foreign("kernel32")]
+    #[Swag.Foreign("kernel32")]
     {
         func GetStdHandle(nStdHandle: u32)->HANDLE;
         func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
@@ -28,7 +28,7 @@ private
         func TlsGetValue(dwTlsIndex: u32)->*void;
     }
 
-    #[Swag.foreign("user32")]
+    #[Swag.Foreign("user32")]
     {
         func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
     }
