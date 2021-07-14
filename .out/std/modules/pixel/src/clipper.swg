@@ -656,18 +656,17 @@ impl Transform
 
     method deleteFromSEL(e: *Edge)
     {
-        SelPrev := e.prevInSEL
-        SelNext := e.nextInSEL
-        if !SelPrev and !SelNext and e != sortedEdges
+        selPrev := e.prevInSEL
+        selNext := e.nextInSEL
+        if !selPrev and !selNext and e != sortedEdges
             return
-        if SelPrev
-            SelPrev.nextInSEL = SelNext
+        if selPrev
+            selPrev.nextInSEL = selNext
         else
-            sortedEdges = SelNext
-        if SelNext
-            SelNext.prevInSEL = SelPrev
-        e.nextInSEL = null
-        e.prevInSEL = null
+            sortedEdges = selNext
+        if selNext
+            selNext.prevInSEL = selPrev
+        e.nextInSEL, e.prevInSEL = null
     }
 
     method popEdgeFromSEL(edge: **Edge)->bool
@@ -685,19 +684,19 @@ impl Transform
             processHorizontal(horzEdge)
     }
 
-    func getHorzDirection(HorzEdge: *Edge, Dir: *Direction, left, right: *CInt)
+    func getHorzDirection(horzEdge: *Edge, dir: *Direction, left, right: *CInt)
     {
-        if HorzEdge.bot.x < HorzEdge.top.x
+        if horzEdge.bot.x < horzEdge.top.x
         {
-            dref left = HorzEdge.bot.x
-            dref right = HorzEdge.top.x
-            dref Dir = .LeftToRight
+            dref left = horzEdge.bot.x
+            dref right = horzEdge.top.x
+            dref dir = .LeftToRight
         }
         else
         {
-            dref left = HorzEdge.top.x
-            dref right = HorzEdge.bot.x
-            dref Dir = .RightToLeft
+            dref left = horzEdge.top.x
+            dref right = horzEdge.bot.x
+            dref dir = .RightToLeft
         }
     }
 
@@ -707,8 +706,7 @@ impl Transform
             return e.next
         else if (e.prev.top == e.top) and !e.prev.nextInLML
             return e.prev
-        else
-            return null
+        return null
     }
 
     func getNextInAEL(e: *Edge, dir: Direction)->*Edge
@@ -745,9 +743,10 @@ impl Transform
         getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
 
         eLastHorz := horzEdge
-        var eMaxPair: *Edge
         while eLastHorz.nextInLML and isHorizontal(eLastHorz.nextInLML)
             eLastHorz = eLastHorz.nextInLML
+
+        var eMaxPair: *Edge
         if !eLastHorz.nextInLML
             eMaxPair = getMaximaPair(eLastHorz)
 
@@ -775,7 +774,7 @@ impl Transform
         var op1: *OutPt
         loop
         {
-            IsLastHorz := (horzEdge == eLastHorz)
+            isLastHorz := (horzEdge == eLastHorz)
             e := getNextInAEL(horzEdge, dir)
             while e
             {
@@ -825,7 +824,7 @@ impl Transform
                     addGhostJoin(op1, horzEdge.bot)
                 }
 
-                if e == eMaxPair and IsLastHorz
+                if e == eMaxPair and isLastHorz
                 {
                     if horzEdge.outIdx >= 0
                         addLocalMaxPoly(horzEdge, eMaxPair, horzEdge.top)
@@ -850,9 +849,11 @@ impl Transform
                 e = eNext
             }
 
-            if !horzEdge.nextInLML or !isHorizontal(horzEdge.nextInLML) break
+            if !horzEdge.nextInLML or !isHorizontal(horzEdge.nextInLML)
+                break
             updateEdgeIntoAEL(&horzEdge)
-            if horzEdge.outIdx >= 0 addOutPt(horzEdge, horzEdge.bot)
+            if horzEdge.outIdx >= 0
+                addOutPt(horzEdge, horzEdge.bot)
             getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
         }
 
@@ -881,7 +882,8 @@ impl Transform
             {
                 op1 = addOutPt(horzEdge, horzEdge.top)
                 updateEdgeIntoAEL(&horzEdge)
-                if horzEdge.windDelta == 0 return
+                if horzEdge.windDelta == 0
+                    return
                 ePrev := horzEdge.prevInAEL
                 eNext := horzEdge.nextInAEL
                 if ePrev and ePrev.curr.x == horzEdge.bot.x and
@@ -904,7 +906,8 @@ impl Transform
         }
         else
         {
-            if horzEdge.outIdx >= 0 addOutPt(horzEdge, horzEdge.top)
+            if horzEdge.outIdx >= 0
+                addOutPt(horzEdge, horzEdge.top)
             deleteFromAEL(horzEdge)
         }
     }
@@ -913,20 +916,24 @@ impl Transform
     {
         e := dref ed
         e.nextInLML.outIdx = e.outIdx
-        AelPrev := e.prevInAEL
-        AelNext := e.nextInAEL
-        if AelPrev AelPrev.nextInAEL = e.nextInLML
-        else activeEdges = e.nextInLML
-        if AelNext AelNext.prevInAEL = e.nextInLML
+        aelPrev := e.prevInAEL
+        aelNext := e.nextInAEL
+        if aelPrev
+            aelPrev.nextInAEL = e.nextInLML
+        else
+            activeEdges = e.nextInLML
+        if aelNext
+            aelNext.prevInAEL = e.nextInLML
         e.nextInLML.side = e.side
         e.nextInLML.windDelta = e.windDelta
         e.nextInLML.windCnt = e.windCnt
         e.nextInLML.windCnt2 = e.windCnt2
         e = e.nextInLML
         e.curr = e.bot
-        e.prevInAEL = AelPrev
-        e.nextInAEL = AelNext
-        if !isHorizontal(e) insertScanbeam(e.top.y)
+        e.prevInAEL = aelPrev
+        e.nextInAEL = aelNext
+        if !isHorizontal(e)
+            insertScanbeam(e.top.y)
         dref ed = e
     }
 
@@ -938,9 +945,11 @@ impl Transform
         if edge1.nextInAEL == edge2
         {
             next := edge2.nextInAEL;
-            if next next.prevInAEL = edge1
+            if next
+                next.prevInAEL = edge1
             prev := edge1.prevInAEL
-            if prev prev.nextInAEL = edge2
+            if prev
+                prev.nextInAEL = edge2
             edge2.prevInAEL = prev
             edge2.nextInAEL = edge1
             edge1.prevInAEL = edge2
@@ -949,9 +958,11 @@ impl Transform
         else if edge2.nextInAEL == edge1
         {
             next := edge1.nextInAEL;
-            if next next.prevInAEL = edge2
+            if next
+                next.prevInAEL = edge2
             prev := edge2.prevInAEL
-            if prev prev.nextInAEL = edge1
+            if prev
+                prev.nextInAEL = edge1
             edge1.prevInAEL = prev
             edge1.nextInAEL = edge2
             edge2.prevInAEL = edge1
@@ -962,17 +973,23 @@ impl Transform
             next := edge1.nextInAEL
             prev := edge1.prevInAEL
             edge1.nextInAEL = edge2.nextInAEL
-            if edge1.nextInAEL edge1.nextInAEL.prevInAEL = edge1
+            if edge1.nextInAEL
+                edge1.nextInAEL.prevInAEL = edge1
             edge1.prevInAEL = edge2.prevInAEL
-            if edge1.prevInAEL edge1.prevInAEL.nextInAEL = edge1
+            if edge1.prevInAEL
+                edge1.prevInAEL.nextInAEL = edge1
             edge2.nextInAEL = next
-            if edge2.nextInAEL edge2.nextInAEL.prevInAEL = edge2
+            if edge2.nextInAEL
+                edge2.nextInAEL.prevInAEL = edge2
             edge2.prevInAEL = prev
-            if edge2.prevInAEL edge2.prevInAEL.nextInAEL = edge2
+            if edge2.prevInAEL
+                edge2.prevInAEL.nextInAEL = edge2
         }
 
-        if !edge1.prevInAEL activeEdges = edge1
-        else if !edge2.prevInAEL activeEdges = edge2
+        if !edge1.prevInAEL
+            activeEdges = edge1
+        else if !edge2.prevInAEL
+            activeEdges = edge2
     }
 
     method deleteFromAEL(e: *Edge)
