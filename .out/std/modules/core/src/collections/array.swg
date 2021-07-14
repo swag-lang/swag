@@ -11,12 +11,13 @@ struct(T) Array
 
 impl Array
 {
-    #[Swag.Inline]
+    #[Inline]
     func opCount(using self)->uint
     {
         return count
     }
 
+    #[Inline]
     func opData(using self)->const *T
     {
         return buffer
@@ -63,7 +64,7 @@ impl Array
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
-    #[Swag.Inline]
+    #[Inline]
     func opIndex(using self, index: uint)->*T
         #selectif Reflection.isStruct(T)
     {
@@ -71,7 +72,7 @@ impl Array
         return buffer + index
     }
 
-    #[Swag.Inline]
+    #[Inline]
     func opIndex(using self, index: uint)->T
         #selectif !Reflection.isStruct(T)
     {
@@ -187,6 +188,7 @@ impl Array
     method isEmpty() => count == 0
 
     // Returns a slice
+    #[Inline]
     method toSlice()->[..] T
     {
         return @mkslice(buffer, count)
