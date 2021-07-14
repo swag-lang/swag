@@ -1,5 +1,4 @@
-// The original code has been modified for swag
-// http://www.angusj.com
+// The original code from the Clipper library (http://www.angusj.com) has been modified for swag
 
 /*******************************************************************************
 *                                                                              *
@@ -447,40 +446,47 @@ impl Transform
         }
     }
 
+    #[Swag.Inline]
     func isHorizontal(e: *Edge)->bool
     {
         return e.dx == HorizontalVal
     }
 
-    func findNextLocMin(edge: *Edge)->*Edge
-    {
-        E := edge
-        loop
-        {
-            while E.bot != E.prev.bot or E.curr == E.top E = E.next
-            if !isHorizontal(E) and !isHorizontal(E.prev) break
-            while isHorizontal(E.prev) E = E.prev
-            E2 := E;
-            while isHorizontal(E) E = E.next
-            if E.top.y == E.prev.bot.y continue
-            if E2.prev.bot.x < E.bot.x E = E2
-            break
-        }
-
-        return E
-    }
-
+    #[Swag.Inline]
     func reverseHorizontal(e: *Edge)
     {
         swap(&e.top.x, &e.bot.x)
     }
 
+    func findNextLocMin(edge: *Edge)->*Edge
+    {
+        e := edge
+        loop
+        {
+            while e.bot != e.prev.bot or e.curr == e.top
+                e = e.next
+            if !isHorizontal(e) and !isHorizontal(e.prev)
+                break
+            while isHorizontal(e.prev)
+                e = e.prev
+            e2 := e
+            while isHorizontal(e)
+                e = e.next
+            if e.top.y == e.prev.bot.y
+                continue
+            if e2.prev.bot.x < e.bot.x e = e2
+                break
+        }
+
+        return e
+    }
+
     method processBound(edge: *Edge, nextIsForward: bool)->*Edge
     {
         E := edge
-        var Result: *Edge = E
-        var Horz: *Edge
+        Result := E
 
+        var Horz: *Edge
         if E.outIdx == Skip
         {
             if nextIsForward
