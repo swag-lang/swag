@@ -2057,7 +2057,7 @@ impl Transform
             else
             {
                 b2 = edge2.bot.y - (edge2.bot.x / edge2.dx)
-                ip.y = round(ip.x / edge2.dx + b2)
+                ip.y = cround(ip.x / edge2.dx + b2)
             }
         }
         else if edge2.dx == 0
@@ -2068,7 +2068,7 @@ impl Transform
             else
             {
                 b1 = edge1.bot.y - (edge1.bot.x / edge1.dx)
-                ip.y = round(ip.x / edge1.dx + b1)
+                ip.y = cround(ip.x / edge1.dx + b1)
             }
         }
         else
@@ -2076,11 +2076,11 @@ impl Transform
             b1 = edge1.bot.x - edge1.bot.y * edge1.dx
             b2 = edge2.bot.x - edge2.bot.y * edge2.dx
             q := (b2-b1) / (edge1.dx - edge2.dx)
-            ip.y = round(q)
+            ip.y = cround(q)
             if Math.abs(edge1.dx) < Math.abs(edge2.dx)
-                ip.x = round(edge1.dx * q + b1)
+                ip.x = cround(edge1.dx * q + b1)
             else
-                ip.x = round(edge2.dx * q + b2)
+                ip.x = cround(edge2.dx * q + b2)
         }
 
         if ip.y < edge1.top.y or ip.y < edge2.top.y
@@ -2114,16 +2114,15 @@ impl Transform
         return true
     }
 
-    func round(val: f64)->CInt
+    #[Swag.Inline]
+    func cround(val: f64)->CInt
     {
-        if val < 0
-            return cast(CInt) (val - 0.5)
-        return cast(CInt) (val + 0.5)
+        return cast(CInt) Math.round(val)
     }
 
     func topX(edge: *Edge, currentY: CInt)->CInt
     {
-        return currentY == edge.top.y ? edge.top.x : edge.bot.x + round(edge.dx * (currentY - edge.bot.y))
+        return currentY == edge.top.y ? edge.top.x : edge.bot.x + cround(edge.dx * (currentY - edge.bot.y))
     }
 
     func e2InsertsBeforeE1(e1, e2: *Edge)->bool
@@ -2157,11 +2156,13 @@ impl Transform
         }
         else
         {
-            if !startEdge startEdge = activeEdges
+            if !startEdge
+                startEdge = activeEdges
             while startEdge.nextInAEL and !e2InsertsBeforeE1(startEdge.nextInAEL, edge)
                 startEdge = startEdge.nextInAEL
             edge.nextInAEL = startEdge.nextInAEL
-            if startEdge.nextInAEL startEdge.nextInAEL.prevInAEL = edge
+            if startEdge.nextInAEL
+                startEdge.nextInAEL.prevInAEL = edge
             edge.prevInAEL = startEdge
             startEdge.nextInAEL = edge
         }
@@ -2210,15 +2211,15 @@ impl Transform
         {
             if edge.windDelta == 0
             {
-                Inside := true
+                inside := true
                 e2 := e.prevInAEL
                 while e2
                 {
                     if e2.polyType == e.polyType and e2.windDelta != 0
-                        Inside = !Inside
+                        inside = !inside
                     e2 = e2.prevInAEL
                 }
-                edge.windCnt = (Inside ? 0 : 1)
+                edge.windCnt = inside ? 0 : 1
             }
             else
                 edge.windCnt = edge.windDelta
@@ -2341,7 +2342,7 @@ impl Transform
             }
             else
             {
-                switch(pft2)
+                switch pft2
                 {
                 case EvenOdd, NonZero:
                     return edge.windCnt2 != 0
@@ -2386,8 +2387,10 @@ impl Transform
         {
             if e2.outIdx >= 0 and e2.windDelta != 0
             {
-                if !eTmp eTmp = e2
-                else if eTmp.outIdx == e2.outIdx eTmp = null
+                if !eTmp
+                    eTmp = e2
+                else if eTmp.outIdx == e2.outIdx
+                    eTmp = null
             }
 
             e2 = e2.prevInAEL
@@ -2427,9 +2430,11 @@ impl Transform
             outRec := polyOuts[e.outIdx]
             op := outRec.pts
 
-            ToFront := (e.side == .Left)
-            if ToFront and (pt == op.pt) return op
-            if !ToFront and (pt == op.prev.pt) return op.prev
+            toFront := (e.side == .Left)
+            if toFront and (pt == op.pt)
+                return op
+            if !toFront and (pt == op.prev.pt)
+                return op.prev
 
             newOp := Memory.new'OutPt()
             newOp.idx = outRec.idx
@@ -2438,7 +2443,7 @@ impl Transform
             newOp.prev = op.prev
             newOp.prev.next = newOp;
             op.prev = newOp
-            if ToFront outRec.pts = newOp
+            if toFront outRec.pts = newOp
             return newOp
         }
     }
@@ -2514,8 +2519,10 @@ impl Transform
         seg1b := s1b
         seg2a := s2a
         seg2b := s2b
-        if seg1a > seg1b swap(&seg1a, &seg1b)
-        if seg2a > seg2b swap(&seg2a, &seg2b)
+        if seg1a > seg1b
+            swap(&seg1a, &seg1b)
+        if seg2a > seg2b
+            swap(&seg2a, &seg2b)
         return (seg1a < seg2b) and (seg2a < seg1b)
     }
 
@@ -2525,8 +2532,10 @@ impl Transform
         loop
         {
             outRec1 = outRec1.firstLeft
-            if outRec1 == outRec2 return true
-            if !outRec1 break
+            if outRec1 == outRec2
+                return true
+            if !outRec1
+                break
         }
         return false
     }
