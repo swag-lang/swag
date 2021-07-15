@@ -2527,7 +2527,13 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             auto symbol = scope->symTable.find(node->token.text, crc);
             if (symbol)
+            {
                 dependentSymbols.insert({symbol, scope});
+
+                // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
+                if (oneTry == 0 && scope == identifierRef->startScope)
+                    break;
+            }
         }
 
         if (!dependentSymbols.empty())
@@ -3364,6 +3370,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         scopeHierarchyVars.clear();
         dependentSymbols.clear();
     }
+
+    if (context->sourceFile->name == "compiler3028.swg")
+        context = context; // @remove
 
     if (dependentSymbols.empty())
     {
