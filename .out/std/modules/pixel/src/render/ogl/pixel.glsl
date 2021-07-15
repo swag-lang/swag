@@ -63,51 +63,6 @@ float computeAlphaEdgesAA()
     return min(norm, computeAlphaAA(vaa5));
 }
 
-vec3 energy_distribution(vec4 previous, vec4 current, vec4 next)
-{
-    float primary   = 32/100.0;
-    float secondary = 25/100.0;
-    float tertiary  = 9/100.0;
-
-    // Energy distribution as explained on:
-    // http://www.grc.com/freeandclear.htm
-    //
-    //  .. v..
-    // RGB RGB RGB
-    // previous.g + previous.b + current.r + current.g + current.b
-    //
-    //   . .v. .
-    // RGB RGB RGB
-    // previous.b + current.r + current.g + current.b + next.r
-    //
-    //     ..v ..
-    // RGB RGB RGB
-    // current.r + current.g + current.b + next.r + next.g
-
-    float r =
-        tertiary  * previous.g +
-        secondary * previous.b +
-        primary   * current.r  +
-        secondary * current.g  +
-        tertiary  * current.b;
-
-    float g =
-        tertiary  * previous.b +
-        secondary * current.r +
-        primary   * current.g  +
-        secondary * current.b  +
-        tertiary  * next.r;
-
-    float b =
-        tertiary  * current.r +
-        secondary * current.g +
-        primary   * current.b +
-        secondary * next.r    +
-        tertiary  * next.g;
-
-    return vec3(r,g,b);
-}
-
 void main()
 {
     color = vcolor * texture(inTexture0, vuv0);
