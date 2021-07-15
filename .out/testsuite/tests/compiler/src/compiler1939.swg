@@ -1,3 +1,4 @@
+#global testerror
 struct B
 {
     xxx: s32

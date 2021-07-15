@@ -51,8 +51,7 @@ TODO
 ****************************************
 -------------------------------------
 sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
--------------------------------------
-a := 0 dans une method dont la struct a une variable a; ne gen pas d'erreur car pas référencée
+oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
 -------------------------------------
 comme examples et std partagent .out, ca merde avec les debug infos des fichiers publiques qui sont regénérés
 quand on compile /examples (et differents) du coup test_std a été compilé avec des lignes differentes

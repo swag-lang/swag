@@ -201,7 +201,7 @@ struct SemanticJob : public Job
     static bool     isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
     static void     symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
     static bool     cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
-    static bool     matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck = false);
+    static bool     matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck = false, bool forGhosting = false);
     static bool     checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool     checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
     static bool     checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
@@ -304,6 +304,7 @@ struct SemanticJob : public Job
     static bool         fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool         fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool         resolveIdentifier(SemanticContext* context);
+    static bool         resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
     static TypeInfo*    findTypeInContext(SemanticContext* context, AstNode* node);
     static bool         findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
@@ -484,6 +485,7 @@ struct SemanticJob : public Job
     VectorNative<OneTryMatch*>     cacheFreeTryMatch;
     SemanticContext                context;
     Concat                         tmpConcat;
+    AstIdentifierRef*              tmpIdRef;
 
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;

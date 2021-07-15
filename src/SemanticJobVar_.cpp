@@ -368,6 +368,29 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
+    // Ghosting check
+    // We simulate a reference to the local variable, in the same context, to raise an error
+    // if ambiguous. That way we have a direct error at the declaration, even if the variable
+    // is not used later
+    if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL)
+    {
+        if (!context->job->tmpIdRef)
+        {
+            context->job->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, node->token.text, nullptr, nullptr);
+            context->job->tmpIdRef->flags |= AST_SILENT_CHECK;
+        }
+
+        auto idRef     = context->job->tmpIdRef;
+        idRef->parent  = node->parent;
+        auto id        = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        id->token.text = node->token.text;
+        id->inheritOwners(node);
+        id->inheritTokenLocation(node->token);
+        SWAG_CHECK(resolveIdentifier(context, id, true));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
     // :opAffectConstExpr
     if (node->extension &&
         node->extension->resolvedUserOpSymbolOverload &&

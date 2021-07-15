@@ -1,8 +1,9 @@
+#global testerror
 #run
 {
-	var a = 1;
+	var a = 1
 	if(true)
 	{
-		var a: bool = true;
+		var a: bool = true
 	}
 }

@@ -1839,7 +1839,7 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
     return false;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck, bool forGhosting)
 {
     auto  job              = context->job;
     auto& matches          = job->cacheMatches;
@@ -2168,12 +2168,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             node = context->node;
 
         auto                      symbol = overloads[0]->overload->symbol;
-        Diagnostic                diag{node, node->token, format(Msg0116, symbol->name.c_str())};
+        auto                      msg    = forGhosting ? Msg0121 : Msg0116;
+        Diagnostic                diag{node, node->token, format(msg, symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
             auto overload     = match->symbolOverload;
-            auto couldBe      = "could be: " + overload->typeInfo->getDisplayName();
+            auto couldBe      = format("could be: %s of type '%s'", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
             auto note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->printSource = false;
 
@@ -3292,7 +3293,12 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto  node               = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    return resolveIdentifier(context, node, false);
+}
+
+bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting)
+{
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
@@ -3333,7 +3339,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Compute dependencies if not already done
-    if (node->semanticState == AstNodeResolveState::ProcessingChilds)
+    if (node->semanticState == AstNodeResolveState::ProcessingChilds || forGhosting)
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
@@ -3494,7 +3500,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             listTryMatch.push_back(tryMatch);
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, false, forGhosting));
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -3507,6 +3513,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (job->cacheMatches.empty())
         return false;
+    if (forGhosting)
+        return true;
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
