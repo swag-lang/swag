@@ -28,8 +28,8 @@ enum CommandId
     ResetClippingRegion
     SetClippingRegionMode
     UpdateFont
-    StartTransparency
-    StopTransparency
+    StartNoOverlap
+    StopNoOverlap
 }
 
 #[Swag.EnumFlags]
@@ -283,6 +283,26 @@ impl Painter
         return ptr
     }
 
+    protected func updateFont(using self, fontRef: *Font)
+    {
+        if !fontRef.dirty return
+        cmd := newCommand(CommandId.UpdateFont, false)
+        cmd.params.font.fontRef = fontRef
+    }
+
+    protected method startNoOverlapMode()
+    {
+        curZ       = 0
+        curZOffset = -0.00001
+        discard newCommand(CommandId.StartNoOverlap, true)
+    }
+
+    protected method stopNoOverlapMode()
+    {
+        curZOffset = 0.0
+        discard newCommand(CommandId.StopNoOverlap, true)
+    }
+
     // Call this before drawing
     func begin(using self)
     {
@@ -408,25 +428,5 @@ impl Painter
     func resetClippingRegion(using self)
     {
         discard newCommand(CommandId.ResetClippingRegion, true)
-    }
-
-    func updateFont(using self, fontRef: *Font)
-    {
-        if !fontRef.dirty return
-        cmd := newCommand(CommandId.UpdateFont, false)
-        cmd.params.font.fontRef = fontRef
-    }
-
-    method startTransparency()
-    {
-        curZ       = 0
-        curZOffset = -0.00001
-        discard newCommand(CommandId.StartTransparency, true)
-    }
-
-    method stopTransparency()
-    {
-        curZOffset = 0.0
-        discard newCommand(CommandId.StopTransparency, true)
     }
 }

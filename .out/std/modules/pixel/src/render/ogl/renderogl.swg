@@ -719,13 +719,13 @@ impl RenderOgl
             case ResetClippingRect:
                 glDisable(GL_SCISSOR_TEST)
 
-            case StartTransparency:
+            case StartNoOverlap:
                 glEnable(GL_DEPTH_TEST)
                 glDepthMask(GL_TRUE)
                 glClear(GL_DEPTH_BUFFER_BIT)
                 transparencyMode = true
 
-            case StopTransparency:
+            case StopNoOverlap:
                 glDisable(GL_DEPTH_TEST)
                 glDepthMask(GL_FALSE)
                 transparencyMode = false

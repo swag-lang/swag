@@ -324,23 +324,21 @@ func displayPage3()
     }
 
     {
+        cdc.drawRoundRect(500, 500, 200, 200, 10, 10, Color.fromArgb(0x51, Argb.Blue), 15)
+    }
+
+    {
         var lp1: LinePath
         lp1.start(800, 800)
         lp1.bezierTo(150, 150, 250, 50)
-
-        cdc.startTransparency()
         cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
-        cdc.stopTransparency()
     }
 
     {
         var lp: LinePath
         lp.start(50, 800)
         lp.bezierTo(800, 50, 250, 50)
-
-        cdc.startTransparency()
         cdc.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
-        cdc.stopTransparency()
     }
 
     cdc.end()

@@ -634,7 +634,19 @@ impl Painter
         setTexture0(path.bvMin, path.bvMax, pen.brush)
         resetTexture1()
 
+        alpha := false
+        if pen.brush.color.argb & 0xFF000000
+            alpha = true
+        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
+            alpha = true
+
+        if alpha
+            startNoOverlapMode()
+
         drawPath(&cxt)
+
+        if alpha
+            stopNoOverlapMode()
     }
 
     // Draw the line path
