@@ -197,7 +197,10 @@ namespace Ast
             if (nodeFunc->genericParameters)
                 SWAG_CHECK(output(context, concat, nodeFunc->genericParameters));
             concat.addString(nodeFunc->token.text);
-            SWAG_CHECK(output(context, concat, nodeFunc->parameters));
+            if (!nodeFunc->parameters)
+                CONCAT_FIXED_STR(concat, "()");
+            else
+                SWAG_CHECK(output(context, concat, nodeFunc->parameters));
             if (nodeFunc->returnType)
                 SWAG_CHECK(output(context, concat, nodeFunc->returnType));
             concat.addEolIndent(context.indent);
