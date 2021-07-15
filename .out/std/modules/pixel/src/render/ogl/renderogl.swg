@@ -727,6 +727,7 @@ impl RenderOgl
 
             case StopTransparency:
                 glDisable(GL_DEPTH_TEST)
+                glDepthMask(GL_FALSE)
                 transparencyMode = false
 
             case DrawTriangles:
