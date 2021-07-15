@@ -1,7 +1,7 @@
 using Core, Ogl, Core.Math
 
-const VertexShaderAA = #load("vertex.glsl")
-const PixelShaderAA  = #load("pixel.glsl")
+const VertexShaderAA = #load("shader_aa_vertex.glsl")
+const PixelShaderAA  = #load("shader_aa_pixel.glsl")
 
 impl RenderOgl
 {
