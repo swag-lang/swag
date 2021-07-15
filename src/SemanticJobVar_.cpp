@@ -383,6 +383,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         auto idRef     = context->job->tmpIdRef;
         idRef->parent  = node->parent;
         auto id        = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        id->sourceFile = context->sourceFile;
         id->token.text = node->token.text;
         id->inheritOwners(node);
         id->inheritTokenLocation(node->token);

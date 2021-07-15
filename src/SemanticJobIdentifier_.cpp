@@ -2167,32 +2167,51 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (!node)
             node = context->node;
 
-        auto                      symbol = overloads[0]->overload->symbol;
-        auto                      msg    = forGhosting ? Msg0121 : Msg0116;
-        Diagnostic                diag{node, node->token, format(msg, symbol->name.c_str())};
-        vector<const Diagnostic*> notes;
-        for (auto match : matches)
+        auto symbol = overloads[0]->overload->symbol;
+        if (forGhosting)
         {
-            auto overload     = match->symbolOverload;
-            auto couldBe      = format("could be: %s of type '%s'", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
-            auto note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
-            note->printSource = false;
-
-            if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
+            Diagnostic  diag{node, node->token, format(Msg0886, symbol->name.c_str())};
+            Diagnostic* note = nullptr;
+            for (auto match : matches)
             {
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                note->remarks.push_back(Ast::computeGenericParametersReplacement(typeFunc->genericParameters));
-            }
-            else if (overload->typeInfo->kind == TypeInfoKind::Struct)
-            {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-                note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
+                if (match->symbolOverload->node != node)
+                {
+                    note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Msg0884, DiagnosticLevel::Note};
+                    break;
+                }
             }
 
-            notes.push_back(note);
+            SWAG_ASSERT(note);
+            context->report(diag, note);
+        }
+        else
+        {
+            Diagnostic                diag{node, node->token, format(Msg0116, symbol->name.c_str())};
+            vector<const Diagnostic*> notes;
+            for (auto match : matches)
+            {
+                auto overload     = match->symbolOverload;
+                auto couldBe      = format("could be: %s of type '%s'", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
+                auto note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                note->printSource = false;
+
+                if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                {
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                    note->remarks.push_back(Ast::computeGenericParametersReplacement(typeFunc->genericParameters));
+                }
+                else if (overload->typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+                    note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
+                }
+
+                notes.push_back(note);
+            }
+
+            context->report(diag, notes);
         }
 
-        context->report(diag, notes);
         return false;
     }
 
