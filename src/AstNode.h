@@ -719,6 +719,7 @@ struct AstTypeExpression : public AstNode
     AstNode*  identifier;
     TypeInfo* literalType;
     AstNode*  relId;
+    AstNode*  strRelId;
     AstNode*  ptrRelIds[MAX_PTR_COUNT];
 
     uint16_t typeFlags;
@@ -727,6 +728,7 @@ struct AstTypeExpression : public AstNode
     uint8_t  ptrCount;
     uint8_t  arrayDim;
     uint8_t  relValue;
+    uint8_t  strRelValue;
 };
 
 struct AstTypeLambda : public AstNode

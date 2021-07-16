@@ -199,6 +199,28 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
+    if (typeInfo->isNative(NativeTypeKind::String))
+    {
+        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
+        {
+            if (typeInfo->relative)
+                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+            else
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+        }
+        else
+        {
+            if (typeInfo->relative)
+                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+            else
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+        }
+
+        return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::TypeSet)
     {
         auto r2 = reserveRegisterRC(context);
@@ -234,20 +256,6 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     case NativeTypeKind::UInt:
     case NativeTypeKind::F64:
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
-        return true;
-    case NativeTypeKind::String:
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
-        {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
-        }
-        else
-        {
-            auto r2 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-            freeRegisterRC(context, r2);
-        }
         return true;
     case NativeTypeKind::Any:
     {

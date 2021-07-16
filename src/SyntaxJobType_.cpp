@@ -397,8 +397,17 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::NativeType)
     {
+        auto tt     = token.literalType;
         node->token = move(token);
         SWAG_CHECK(tokenizer.getToken(token));
+
+        // Relative strings
+        if (token.id == TokenId::SymTilde)
+        {
+            SWAG_VERIFY(tt == LiteralType::TT_STRING, error(token, Msg0779));
+            SWAG_CHECK(doRelativePointer(node, &node->strRelId, &node->strRelValue));
+        }
+
         return true;
     }
 

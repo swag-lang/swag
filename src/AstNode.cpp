@@ -1045,10 +1045,12 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         newNode->ptrRelIds[i] = findChildRef(ptrRelIds[i], newNode);
     }
 
-    newNode->arrayDim  = arrayDim;
-    newNode->typeFlags = typeFlags;
-    newNode->relValue  = relValue;
-    newNode->relId     = findChildRef(relId, newNode);
+    newNode->arrayDim    = arrayDim;
+    newNode->typeFlags   = typeFlags;
+    newNode->relValue    = relValue;
+    newNode->relId       = findChildRef(relId, newNode);
+    newNode->strRelValue = strRelValue;
+    newNode->strRelId    = findChildRef(strRelId, newNode);
 
     return newNode;
 }

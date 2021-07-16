@@ -202,6 +202,19 @@ bool SemanticJob::resolveType(SemanticContext* context)
             typeNode->literalType = TypeManager::literalTypeToType(typeNode->token);
         typeNode->typeInfo = typeNode->literalType;
 
+        // Relative pointer
+        if (typeNode->typeInfo->isNative(NativeTypeKind::String))
+        {
+            auto rel = typeNode->strRelValue;
+            SWAG_CHECK(getRelativeSize(context, typeNode->strRelId, rel));
+            if (rel)
+            {
+                typeNode->typeInfo           = typeNode->typeInfo->clone();
+                typeNode->typeInfo->relative = rel;
+                typeNode->typeInfo->flags |= TYPEINFO_RELATIVE;
+            }
+        }
+
         // Typed variadic ?
         if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
         {

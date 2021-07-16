@@ -410,6 +410,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst->c.u64 = resolved->storageIndex;
             }
         }
+        else if (typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            return context->report({node, Msg0321});
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
@@ -419,10 +423,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst        = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[1]);
             inst->b.u64 = resolved->computedValue.storageOffset + 8;
             inst->c.u64 = resolved->storageIndex + 1;
-        }
-        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
-        {
-            return internalError(context, "function arguments relative pointers are not supported yet");
         }
         else
         {
@@ -499,15 +499,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
+        else if (typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            return context->report({node, Msg0320});
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             emitGetFromSeg(context, resolved->computedValue.storageSegment, node->resultRegisterRC[0], resolved->computedValue.storageOffset);
             emitGetFromSeg(context, resolved->computedValue.storageSegment, node->resultRegisterRC[1], resolved->computedValue.storageOffset + 8);
-        }
-        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
-        {
-            return internalError(context, "global variables relative pointers are not supported yet");
         }
         else
         {
@@ -594,7 +594,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
             SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo->relative));
         }
-        else if (typeInfo->kind == TypeInfoKind::Slice && typeInfo->flags & TYPEINFO_RELATIVE)
+        else if ((typeInfo->kind == TypeInfoKind::Slice || typeInfo->isNative(NativeTypeKind::String)) && typeInfo->flags & TYPEINFO_RELATIVE)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;

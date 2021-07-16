@@ -313,6 +313,17 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
             return true;
         }
 
+        if (typeInfo->isNative(NativeTypeKind::String))
+        {
+            transformResultToLinear2(context, r0);
+            auto r1 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, r0[0]);
+            SWAG_CHECK(emitUnwrapRelativePointer(context, r0[0], typeInfo->relative));
+            emitInstruction(context, ByteCodeOp::DeRef64, r0[1], r1)->c.u64 = 8;
+            freeRegisterRC(context, r1);
+            return true;
+        }
+
         return internalError(context, "emitTypeDeRef, unknown relative type");
     }
 
