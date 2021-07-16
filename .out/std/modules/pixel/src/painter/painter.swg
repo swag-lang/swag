@@ -299,6 +299,7 @@ impl Painter
 
     protected method stopNoOverlapMode()
     {
+        curZ       = 0
         curZOffset = 0.0
         discard newCommand(CommandId.StopNoOverlap, true)
     }
