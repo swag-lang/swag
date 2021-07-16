@@ -635,7 +635,7 @@ impl Painter
         resetTexture1()
 
         alpha := false
-        if pen.brush.color.argb & 0xFF000000
+        if pen.brush.color.argb & 0xFF000000 != 0xFF000000
             alpha = true
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
             alpha = true

@@ -292,8 +292,8 @@ impl Painter
 
     protected method startNoOverlapMode()
     {
-        curZ       = 0
-        curZOffset = -0.00001
+        curZ       = -1
+        curZOffset = 0.00001
         discard newCommand(CommandId.StartNoOverlap, true)
     }
 

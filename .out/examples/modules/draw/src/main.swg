@@ -21,7 +21,7 @@ var fontFam:    FontFamily
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 3
+var g_page:         s32 = 0
 const MaxPages = 5
 
 func dataPath()->String
@@ -57,37 +57,40 @@ func displayPage0()
     cdc.paintParams |= g_modeAA ? .Antialiased : .Default
     cdc.paintQuality = g_paintQuality
 
-    cdc.resetTransform()
-    cdc.translateTransform(50, 50)
-    pen.brush.color = Argb.Black
-    pen.beginCapStyle = .None
-    pen.endCapStyle = .None
-    cdc.drawLine(0, 0, 0, 150, pen)
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(50, 50)
+        pen.brush.color = Argb.Black
+        pen.beginCapStyle = .None
+        pen.endCapStyle = .None
+        cdc.drawLine(0, 0, 0, 150, pen)
 
-    pen.beginCapStyle = .Square
-    pen.endCapStyle = .Square
-    cdc.drawLine(100, 0, 150, 150, pen)
+        pen.beginCapStyle = .Square
+        pen.endCapStyle = .Square
+        cdc.drawLine(100, 0, 150, 150, pen)
 
-    pen.beginCapStyle = .Round
-    pen.endCapStyle = .Round
-    cdc.drawLine(200, 0, 250, 150, pen)
+        pen.beginCapStyle = .Round
+        pen.endCapStyle = .Round
+        cdc.drawLine(200, 0, 250, 150, pen)
 
-    pen.beginCapStyle = .ArrowAnchor
-    pen.endCapStyle = .ArrowAnchor
-    pen.dashBeginCapStyle = .Round
-    pen.dashEndCapStyle = .Round
-    cdc.drawLine(300, 0, 350, 150, pen)
+        pen.beginCapStyle = .ArrowAnchor
+        pen.endCapStyle = .ArrowAnchor
+        pen.dashBeginCapStyle = .Round
+        pen.dashEndCapStyle = .Round
+        cdc.drawLine(300, 0, 350, 150, pen)
 
-    pen.beginCapStyle = .SquareAnchor
-    pen.endCapStyle = .SquareAnchor
-    pen.dashBeginCapStyle = .Triangle
-    pen.dashEndCapStyle = .Triangle
-    cdc.drawLine(400, 0, 450, 150, pen)
+        pen.beginCapStyle = .SquareAnchor
+        pen.endCapStyle = .SquareAnchor
+        pen.dashBeginCapStyle = .Triangle
+        pen.dashEndCapStyle = .Triangle
+        pen.brush.color = Color.fromArgb(0x5f, Argb.Black)
+        cdc.drawLine(400, 0, 450, 150, pen)
+    }
 
-    pen.dashBeginCapStyle = .Round
-    pen.dashEndCapStyle = .Round
     cdc.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
+    pen.dashBeginCapStyle = .Round
+    pen.dashEndCapStyle = .Round
     cdc.resetTransform()
     cdc.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
