@@ -167,10 +167,15 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
             if (typeInfo->relative)
+            {
                 emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            }
             else
+            {
                 emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            }
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -190,10 +195,15 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         else
         {
             if (typeInfo->relative)
+            {
                 emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            }
             else
+            {
                 emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            }
         }
 
         return true;
@@ -204,18 +214,28 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
             if (typeInfo->relative)
+            {
                 emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            }
             else
+            {
                 emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+            }
         }
         else
         {
             if (typeInfo->relative)
+            {
                 emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            }
             else
+            {
                 emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+            }
         }
 
         return true;
