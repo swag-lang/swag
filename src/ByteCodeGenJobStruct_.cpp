@@ -624,7 +624,7 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
 
             freeRegisterRC(&cxt, r0);
         }
-        else if (typeVar->kind == TypeInfoKind::Slice)
+        else if (typeVar->kind == TypeInfoKind::Slice || typeVar->isNative(NativeTypeKind::String))
         {
             emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
             emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);

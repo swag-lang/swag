@@ -1078,7 +1078,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto segType = child->concreteTypeInfoSegment;
                 SWAG_ASSERT(segType);
                 ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) segType->address(child->concreteTypeInfoStorage);
-                auto                       offsetRef = segType->offset((uint8_t*) RELATIVE_PTR(&typeRef->pointedType));
+                auto                       offsetRef = segType->offset((uint8_t*) RELATIVE_PTR64(&typeRef->pointedType));
                 emitMakeSegPointer(context, segType, r0, offsetRef);
             }
             else

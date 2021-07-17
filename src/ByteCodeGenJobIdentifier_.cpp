@@ -412,7 +412,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->flags & TYPEINFO_RELATIVE)
         {
-            return context->report({node, Msg0321});
+            return internalError(context, "reference to function arguments relative pointers are not supported");
         }
         else if (typeInfo->numRegisters() == 2)
         {
@@ -501,7 +501,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->flags & TYPEINFO_RELATIVE)
         {
-            return context->report({node, Msg0320});
+            return internalError(context, "reference to global variables relative pointers are not supported");
         }
         else if (typeInfo->numRegisters() == 2)
         {

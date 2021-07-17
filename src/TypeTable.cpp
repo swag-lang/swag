@@ -65,22 +65,71 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     return true;
 }
 
+bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
+{
+    if (str.empty())
+    {
+        result->buffer = nullptr;
+        result->count = 0;
+        return true;
+    }
+
+    auto sourceFile = context->sourceFile;
+    auto module = sourceFile->module;
+    auto segment = getSegmentStorage(module, cflags);
+
+    auto offset = segment->addStringNoLock(str);
+    segment->addInitPtr(offsetInBuffer, offset);
+    result->buffer = segment->addressNoLock(offset);
+    SWAG_ASSERT(result->buffer);
+    result->count = str.length();
+    return true;
+}
+
+// :RelativeString
+/*bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
+{
+    if (str.empty())
+    {
+        result->buffer = nullptr;
+        result->count  = 0;
+        return true;
+    }
+
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getSegmentStorage(module, cflags);
+
+    auto offset = segment->addStringNoLock(str);
+    auto addr   = segment->addressNoLock(offset);
+
+    // Offset for bytecode run
+    result->buffer = (void*) ((int64_t) addr - (int64_t) result);
+
+    // Offset for native
+    int64_t offsetNative = offset - offsetInBuffer;
+    segment->addPatchPtr((int64_t*) result, offsetNative);
+
+    result->count = str.length();
+    return true;
+}*/
+
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, uint32_t cflags, uint32_t& storageArray)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
     auto segment    = getSegmentStorage(module, cflags);
 
-    storageArray                     = segment->reserveNoLock(sizeOf);
-    ConcreteTypeInfoParam* addrArray = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
+    storageArray = segment->reserveNoLock(sizeOf);
+    auto addr    = segment->addressNoLock(storageArray);
 
     // Offset for bytecode run
-    *result = (int64_t) addrArray - (int64_t) result;
+    *result = (int64_t) addr - (int64_t) result;
 
     // Offset for native
     int64_t offsetNative = storageArray - OFFSETOFR(result);
     segment->addPatchPtr(result, offsetNative);
-    return addrArray;
+    return addr;
 }
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_t offset, int64_t* result, uint32_t cflags, uint32_t& storageArray)
@@ -89,16 +138,16 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_
     auto module     = sourceFile->module;
     auto segment    = getSegmentStorage(module, cflags);
 
-    storageArray                     = segment->reserveNoLock(sizeOf);
-    ConcreteTypeInfoParam* addrArray = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
+    storageArray = segment->reserveNoLock(sizeOf);
+    auto addr    = segment->addressNoLock(storageArray);
 
     // Offset for bytecode run
-    *result = (int64_t) addrArray - (int64_t) result;
+    *result = (int64_t) addr - (int64_t) result;
 
     // Offset for native
     int64_t offsetNative = storageArray - offset;
     segment->addPatchPtr(result, offsetNative);
-    return addrArray;
+    return addr;
 }
 
 bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
@@ -226,27 +275,6 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         ptrStorageAttributes += sizeof(SwagSlice);
     }
 
-    return true;
-}
-
-bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
-{
-    if (str.empty())
-    {
-        result->buffer = nullptr;
-        result->count  = 0;
-        return true;
-    }
-
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
-
-    auto offset = segment->addStringNoLock(str);
-    segment->addInitPtr(offsetInBuffer, offset);
-    result->buffer = segment->addressNoLock(offset);
-    SWAG_ASSERT(result->buffer);
-    result->count = str.length();
     return true;
 }
 

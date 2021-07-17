@@ -3183,7 +3183,7 @@ static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
     if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
         return type1;
     auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-    return concreteAlias(RELATIVE_PTR(&typeAlias->rawType));
+    return concreteAlias(RELATIVE_PTR64(&typeAlias->rawType));
 }
 
 bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2)
@@ -3200,5 +3200,10 @@ bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const Concr
     if (type1->name.count != type2->name.count)
         return false;
 
-    return !memcmp((void*) type1->name.buffer, (void*) type2->name.buffer, type1->name.count);
+    // :RelativeString
+    //auto buf1 = RELATIVE_PTR64(&type1->name.buffer);
+    //auto buf2 = RELATIVE_PTR64(&type1->name.buffer);
+    auto buf1 = type1->name.buffer;
+    auto buf2 = type2->name.buffer;
+    return !memcmp(buf1, buf2, type1->name.count);
 }
