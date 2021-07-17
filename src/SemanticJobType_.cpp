@@ -202,7 +202,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             typeNode->literalType = TypeManager::literalTypeToType(typeNode->token);
         typeNode->typeInfo = typeNode->literalType;
 
-        // Relative pointer
+        // Relative string
         if (typeNode->typeInfo->isNative(NativeTypeKind::String))
         {
             auto rel = typeNode->strRelValue;
@@ -212,6 +212,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 typeNode->typeInfo           = typeNode->typeInfo->clone();
                 typeNode->typeInfo->relative = rel;
                 typeNode->typeInfo->flags |= TYPEINFO_RELATIVE;
+                typeNode->typeInfo->forceComputeName();
             }
         }
 
@@ -415,7 +416,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
         if (typeNode->typeFlags & TYPEFLAG_ISCONST)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
-        ptrSlice->computeName();
         typeNode->typeInfo = ptrSlice;
 
         // Relative pointer
@@ -423,6 +423,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
         SWAG_CHECK(getRelativeSize(context, typeNode->relId, ptrSlice->relative));
         if (ptrSlice->relative)
             ptrSlice->flags |= TYPEINFO_RELATIVE;
+
+        ptrSlice->computeName();
     }
 
     typeNode->computedValue.reg.pointer = (uint8_t*) typeNode->typeInfo;

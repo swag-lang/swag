@@ -97,7 +97,13 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
     switch (nameType)
     {
     case COMPUTE_NAME:
-        resName = name;
+        if (kind == TypeInfoKind::Native && nativeType == NativeTypeKind::String && relative)
+        {
+            resName = "string";
+            resName += format("~%u", relative * 8);
+        }
+        else
+            resName = name;
         break;
 
     case COMPUTE_DISPLAY_NAME:

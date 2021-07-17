@@ -174,7 +174,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += "const ";
     resName += "*";
     if (relative)
-        resName += format("~%u ", relative);
+        resName += format("~%u ", relative * 8);
 
     if (!pointedType) // "null"
         return;
@@ -281,9 +281,9 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += "const ";
     resName += "[..]";
     if (relative)
-        resName += format("~%u", relative);
-    resName += " ";
+        resName += format("~%u", relative * 8);
 
+    resName += " ";
     resName += pointedType->computeWhateverName(nameType);
 }
 
