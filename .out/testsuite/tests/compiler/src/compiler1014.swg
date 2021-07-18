@@ -1,4 +1,4 @@
-
+#global skip // no more relative pointers (18 july 2021)
 using Swag
 
 func toto(x: s32, y: bool)->s32 => x

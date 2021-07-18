@@ -1647,28 +1647,6 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doReloc(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstReloc>(this, AstNodeKind::Reloc, sourceFile, parent);
-
-    node->semanticFct = SemanticJob::resolveReloc;
-    SWAG_CHECK(eatToken());
-
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression1));
-    SWAG_CHECK(eatToken(TokenId::SymComma));
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression2));
-
-    if (token.id == TokenId::SymComma)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    return true;
-}
-
 bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
 {
     auto rangeNode         = Ast::newNode<AstRange>(this, AstNodeKind::Range, sourceFile, parent, 2);

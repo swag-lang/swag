@@ -325,18 +325,6 @@ namespace Ast
             }
             concat.addChar(')');
             break;
-        case AstNodeKind::Reloc:
-            CONCAT_FIXED_STR(concat, "@reloc(");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, ", ");
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            if (node->childs.size() == 3)
-            {
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs.back()));
-            }
-            concat.addChar(')');
-            break;
 
         case AstNodeKind::Break:
         {

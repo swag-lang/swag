@@ -23,35 +23,6 @@ bool SemanticJob::resolveMove(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkRelativePointerOverflow(SemanticContext* context, TypeInfo* typeInfo, AstNode* right)
-{
-    if (typeInfo->kind != TypeInfoKind::Pointer)
-        return true;
-    if (!(typeInfo->flags & TYPEINFO_RELATIVE))
-        return true;
-    if (!(right->flags & AST_VALUE_COMPUTED))
-        return true;
-
-    ComputedValue& value = right->computedValue;
-    switch (typeInfo->sizeOf)
-    {
-    case 1:
-        SWAG_VERIFY(value.reg.s64 >= INT8_MIN && value.reg.s64 <= INT8_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
-        break;
-    case 2:
-        SWAG_VERIFY(value.reg.s64 >= INT16_MIN && value.reg.s64 <= INT16_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
-        break;
-    case 4:
-        SWAG_VERIFY(value.reg.s64 >= INT32_MIN && value.reg.s64 <= INT32_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
-        break;
-    case 8:
-        SWAG_VERIFY(value.reg.s64 >= INT64_MIN && value.reg.s64 <= INT64_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
-        break;
-    }
-
-    return true;
-}
-
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
     auto node    = context->node;
@@ -357,7 +328,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
-            SWAG_CHECK(checkRelativePointerOverflow(context, leftTypeInfo, right));
             break;
         }
 

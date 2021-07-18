@@ -545,7 +545,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (storageSegment)
         {
             auto ptr = storageSegment->address(storageOffset);
-            if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, typePtr->finalType->relative, ptr))
+            if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                 arrayNode->setFlagsValueIsComputed();
         }
 
@@ -568,7 +568,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->pointedType->sizeOf;
-                if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, typePtr->pointedType->relative, ptr))
+                if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
         }
@@ -749,30 +749,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveReloc(SemanticContext* context)
-{
-    auto node                = CastAst<AstReloc>(context->node, AstNodeKind::Reloc);
-    auto expression1TypeInfo = TypeManager::concreteType(node->expression1->typeInfo);
-    auto expression2TypeInfo = TypeManager::concreteType(node->expression2->typeInfo);
-
-    SWAG_VERIFY(expression1TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression1, format(Msg0495, node->token.text.c_str(), expression1TypeInfo->getDisplayName().c_str())}));
-    SWAG_VERIFY(expression2TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression2, format(Msg0496, node->token.text.c_str(), expression2TypeInfo->getDisplayName().c_str())}));
-    auto ptrType1 = CastTypeInfo<TypeInfoPointer>(expression1TypeInfo, TypeInfoKind::Pointer);
-    auto ptrType2 = CastTypeInfo<TypeInfoPointer>(expression2TypeInfo, TypeInfoKind::Pointer);
-    SWAG_VERIFY(ptrType1->pointedType == ptrType2->pointedType, context->report({node->expression2, format(Msg0497, node->token.text.c_str(), expression1TypeInfo->getDisplayName().c_str(), expression2TypeInfo->getDisplayName().c_str())}));
-
-    if (node->count)
-    {
-        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format(Msg0498, node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
-    }
-
-    node->byteCodeFct = ByteCodeGenJob::emitReloc;
-    return true;
-}
-
-bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, uint8_t relative, void* ptr)
+bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr)
 {
     if (kind != TypeInfoKind::Native)
         return false;
@@ -780,17 +757,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     switch (nativeKind)
     {
     case NativeTypeKind::String:
-        if (relative)
-        {
-            SWAG_ASSERT(relative == 8);
-            ptr                      = RELATIVE_PTR64(ptr);
-            node->computedValue.text = (const char*) ptr;
-        }
-        else
-        {
-            node->computedValue.text = *(const char**) ptr;
-        }
-
+        node->computedValue.text = *(const char**) ptr;
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr.typeInfoString;
         break;
@@ -864,9 +831,9 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         ConcreteTypeInfo* anyTypeInfo = (ConcreteTypeInfo*) ppt[1];
         if (anyTypeInfo->kind == TypeInfoKind::Native)
         {
-            ConcreteTypeInfoNative* anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
-            node->typeInfo                    = nullptr;
-            return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, 0, anyValue);
+            auto anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
+            node->typeInfo = nullptr;
+            return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
         }
 
         return false;
@@ -889,12 +856,11 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
-        auto relPtr                        = (uint8_t*) RELATIVE_PTR64(ptr);
-        node->computedValue.storageOffset  = segment->offset(relPtr);
+        node->computedValue.storageOffset  = segment->offset(*(uint8_t**) ptr);
         node->computedValue.storageSegment = segment;
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
-    else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, concreteType->relative, ptr))
+    else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
     {
         return false;
     }

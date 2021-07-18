@@ -1039,18 +1039,10 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->ptrCount    = ptrCount;
 
     for (int i = 0; i < ptrCount; i++)
-    {
         newNode->ptrFlags[i]  = ptrFlags[i];
-        newNode->ptrRel[i]    = ptrRel[i];
-        newNode->ptrRelIds[i] = findChildRef(ptrRelIds[i], newNode);
-    }
 
     newNode->arrayDim    = arrayDim;
     newNode->typeFlags   = typeFlags;
-    newNode->relValue    = relValue;
-    newNode->relId       = findChildRef(relId, newNode);
-    newNode->strRelValue = strRelValue;
-    newNode->strRelId    = findChildRef(strRelId, newNode);
 
     return newNode;
 }

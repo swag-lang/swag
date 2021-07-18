@@ -26,39 +26,39 @@ static const int COMPUTE_SCOPED_NAME        = 1;
 static const int COMPUTE_SCOPED_NAME_EXPORT = 2;
 static const int COMPUTE_DISPLAY_NAME       = 3;
 
-static const uint64_t TYPEINFO_SELF                         = 0x00000000'00000001;
-static const uint64_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000000'00000002;
-static const uint64_t TYPEINFO_INTEGER                      = 0x00000000'00000004;
-static const uint64_t TYPEINFO_FLOAT                        = 0x00000000'00000008;
-static const uint64_t TYPEINFO_UNSIGNED                     = 0x00000000'00000010;
-static const uint64_t TYPEINFO_CONST                        = 0x00000000'00000020;
-static const uint64_t TYPEINFO_AUTO_NAME                    = 0x00000000'00000040;
-static const uint64_t TYPEINFO_VARIADIC                     = 0x00000000'00000080;
-static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES       = 0x00000000'00000100;
-static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED     = 0x00000000'00000200;
-static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY          = 0x00000000'00000400;
-static const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE          = 0x00000000'00000800;
-static const uint64_t TYPEINFO_STRUCT_NO_DROP               = 0x00000000'00001000;
-static const uint64_t TYPEINFO_GENERIC                      = 0x00000000'00002000;
-static const uint64_t TYPEINFO_RETURN_BY_COPY               = 0x00000000'00004000;
-static const uint64_t TYPEINFO_UNTYPED_INTEGER              = 0x00000000'00008000;
-static const uint64_t TYPEINFO_UNTYPED_FLOAT                = 0x00000000'00010000;
-static const uint64_t TYPEINFO_DEFINED_VALUE                = 0x00000000'00020000;
-static const uint64_t TYPEINFO_AUTO_CAST                    = 0x00000000'00040000;
-static const uint64_t TYPEINFO_TYPED_VARIADIC               = 0x00000000'00080000;
-static const uint64_t TYPEINFO_STRUCT_TYPEINFO              = 0x00000000'00100000;
-static const uint64_t TYPEINFO_STRUCT_IS_TUPLE              = 0x00000000'00200000;
-static const uint64_t TYPEINFO_ENUM_FLAGS                   = 0x00000000'00400000;
-static const uint64_t TYPEINFO_SPREAD                       = 0x00000000'00800000;
-static const uint64_t TYPEINFO_UNDEFINED                    = 0x00000000'01000000;
-static const uint64_t TYPEINFO_ENUM_INDEX                   = 0x00000000'02000000;
-static const uint64_t TYPEINFO_STRICT                       = 0x00000000'04000000;
-static const uint64_t TYPEINFO_FAKE_ALIAS                   = 0x00000000'08000000;
-static const uint64_t TYPEINFO_HAS_USING                    = 0x00000000'10000000;
-static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'20000000;
-static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
-static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'80000000;
-static const uint64_t TYPEINFO_CAN_THROW                    = 0x00000001'00000000;
+static const uint64_t TYPEINFO_SELF                     = 0x00000000'00000001;
+static const uint64_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000000'00000002;
+static const uint64_t TYPEINFO_INTEGER                  = 0x00000000'00000004;
+static const uint64_t TYPEINFO_FLOAT                    = 0x00000000'00000008;
+static const uint64_t TYPEINFO_UNSIGNED                 = 0x00000000'00000010;
+static const uint64_t TYPEINFO_CONST                    = 0x00000000'00000020;
+static const uint64_t TYPEINFO_AUTO_NAME                = 0x00000000'00000040;
+static const uint64_t TYPEINFO_VARIADIC                 = 0x00000000'00000080;
+static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000000'00000100;
+static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000000'00000200;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000000'00000400;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000000'00000800;
+static const uint64_t TYPEINFO_STRUCT_NO_DROP           = 0x00000000'00001000;
+static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00002000;
+static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00004000;
+static const uint64_t TYPEINFO_UNTYPED_INTEGER          = 0x00000000'00008000;
+static const uint64_t TYPEINFO_UNTYPED_FLOAT            = 0x00000000'00010000;
+static const uint64_t TYPEINFO_DEFINED_VALUE            = 0x00000000'00020000;
+static const uint64_t TYPEINFO_AUTO_CAST                = 0x00000000'00040000;
+static const uint64_t TYPEINFO_TYPED_VARIADIC           = 0x00000000'00080000;
+static const uint64_t TYPEINFO_STRUCT_TYPEINFO          = 0x00000000'00100000;
+static const uint64_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00000000'00200000;
+static const uint64_t TYPEINFO_ENUM_FLAGS               = 0x00000000'00400000;
+static const uint64_t TYPEINFO_SPREAD                   = 0x00000000'00800000;
+static const uint64_t TYPEINFO_UNDEFINED                = 0x00000000'01000000;
+static const uint64_t TYPEINFO_ENUM_INDEX               = 0x00000000'02000000;
+static const uint64_t TYPEINFO_STRICT                   = 0x00000000'04000000;
+static const uint64_t TYPEINFO_FAKE_ALIAS               = 0x00000000'08000000;
+static const uint64_t TYPEINFO_HAS_USING                = 0x00000000'10000000;
+//static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'20000000;
+//static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
+static const uint64_t TYPEINFO_STRUCT_NO_COPY = 0x00000000'80000000;
+static const uint64_t TYPEINFO_CAN_THROW      = 0x00000001'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
@@ -96,7 +96,6 @@ struct TypeInfo
     bool isPointerToTypeInfo();
     bool isInitializerList();
     bool isArrayOfStruct();
-    bool isArrayOfRelative();
     bool isMethod();
 
     // clang-format off
@@ -107,7 +106,6 @@ struct TypeInfo
     bool isNativeIntegerOrRune()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Rune); }
     bool isNativeFloat()                    { return (flags & TYPEINFO_FLOAT); }
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
-    bool isRelative()                       { return (flags & TYPEINFO_RELATIVE); }
     // clang-format on
 
     void setConst()
@@ -138,7 +136,6 @@ struct TypeInfo
         nativeType = from->nativeType;
         flags      = from->flags;
         sizeOf     = from->sizeOf;
-        relative   = from->relative;
     }
 
     virtual TypeInfo* clone() = 0;
@@ -174,7 +171,6 @@ struct TypeInfo
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
-    uint8_t        relative   = 0;
 };
 
 struct TypeInfoNative : public TypeInfo

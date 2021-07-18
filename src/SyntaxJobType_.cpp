@@ -191,37 +191,6 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     return true;
 }
 
-bool SyntaxJob::doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t* value)
-{
-    SWAG_CHECK(eatToken(TokenId::SymTilde));
-    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, error(token, Msg0335));
-    if (token.id == TokenId::LiteralNumber)
-    {
-
-        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, error(token, Msg0336));
-        switch (token.literalValue.u64)
-        {
-        case 0:
-        case 8:
-        case 16:
-        case 32:
-        case 64:
-            break;
-        default:
-            return error(token, format(Msg0015, token.literalValue.u64));
-        }
-
-        *value = token.literalValue.u8 >> 3;
-        SWAG_CHECK(eatToken());
-    }
-    else
-    {
-        SWAG_CHECK(doIdentifierRef(parent, identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_PARAMS));
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // Code
@@ -338,10 +307,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-
-        // Relative slice
-        if (token.id == TokenId::SymTilde && node->typeFlags & TYPEFLAG_ISSLICE)
-            SWAG_CHECK(doRelativePointer(node, &node->relId, &node->relValue));
     }
 
     // Const after array
@@ -362,10 +327,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             SWAG_CHECK(tokenizer.getToken(token));
             isPtrConst = false;
-
-            // Relative syntax
-            if (token.id == TokenId::SymTilde)
-                SWAG_CHECK(doRelativePointer(node, &node->ptrRelIds[node->ptrCount], &node->ptrRel[node->ptrCount]));
 
             if (token.id == TokenId::KwdConst)
             {
@@ -397,17 +358,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::NativeType)
     {
-        auto tt     = token.literalType;
         node->token = move(token);
         SWAG_CHECK(tokenizer.getToken(token));
-
-        // Relative strings
-        if (token.id == TokenId::SymTilde)
-        {
-            SWAG_VERIFY(tt == LiteralType::TT_STRING, error(token, Msg0779));
-            SWAG_CHECK(doRelativePointer(node, &node->strRelId, &node->strRelValue));
-        }
-
         return true;
     }
 

@@ -419,8 +419,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
-    SWAG_VERIFY(!typeNode->typeInfo->isArrayOfRelative(), context->report({typeNode, format(Msg0752)}));
-
     // If the function returns a reference, then transform it to a normal return type if
     // this is not a reference to a "by copy" type
     // const &u32 => u32 etc...

@@ -97,13 +97,7 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
     switch (nameType)
     {
     case COMPUTE_NAME:
-        if (kind == TypeInfoKind::Native && nativeType == NativeTypeKind::String && relative)
-        {
-            resName = "string";
-            resName += format("~%u", relative * 8);
-        }
-        else
-            resName = name;
+        resName = name;
         break;
 
     case COMPUTE_DISPLAY_NAME:
@@ -285,14 +279,6 @@ bool TypeInfo::isArrayOfStruct()
         return false;
     auto ptr = (TypeInfoArray*) this;
     return ptr->finalType->kind == TypeInfoKind::Struct;
-}
-
-bool TypeInfo::isArrayOfRelative()
-{
-    if (kind != TypeInfoKind::Array)
-        return false;
-    auto ptr = (TypeInfoArray*) this;
-    return ptr->finalType->isRelative();
 }
 
 bool TypeInfo::isMethod()

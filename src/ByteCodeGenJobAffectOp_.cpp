@@ -8,46 +8,6 @@
 bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-    auto finalType = typeArray->finalType;
-
-    // Copy of relative types
-    if (finalType->flags & TYPEINFO_RELATIVE)
-    {
-        RegisterList rloop   = reserveRegisterRC(context);
-        RegisterList toReg   = reserveRegisterRC(context);
-        RegisterList fromReg = reserveRegisterRC(context);
-        RegisterList rtmp    = reserveRegisterRC(context);
-
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, toReg, dstReg);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, fromReg, srcReg);
-
-        auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, rloop);
-        inst->b.u64   = typeArray->totalCount;
-        auto seekJump = context->bc->numInstructions;
-
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rtmp, fromReg);
-        SWAG_CHECK(emitUnwrapRelativePointer(context, rtmp, finalType->relative));
-        SWAG_CHECK(emitWrapRelativePointer(context, toReg, rtmp, finalType->relative, finalType));
-
-        ensureCanBeChangedRC(context, toReg);
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, toReg, 0, toReg);
-        inst->b.u64 = finalType->sizeOf;
-        inst->flags |= BCI_IMM_B;
-        ensureCanBeChangedRC(context, fromReg);
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
-        inst->b.u64 = finalType->sizeOf;
-        inst->flags |= BCI_IMM_B;
-
-        emitInstruction(context, ByteCodeOp::DecrementRA64, rloop);
-        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, rloop)->b.s32 = seekJump - context->bc->numInstructions - 1;
-
-        freeRegisterRC(context, rtmp);
-        freeRegisterRC(context, rloop);
-        freeRegisterRC(context, toReg);
-        freeRegisterRC(context, fromReg);
-        return true;
-    }
-
     if (typeArray->finalType->kind != TypeInfoKind::Struct)
     {
         emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
@@ -133,10 +93,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        if (typeInfo->flags & TYPEINFO_RELATIVE)
-            SWAG_CHECK(emitWrapRelativePointer(context, r0, r1, typeInfo->relative, fromTypeInfo));
-        else
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 
@@ -166,23 +123,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            if (typeInfo->relative)
-            {
-                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
-            }
-            else
-            {
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
-            }
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
-            if (typeInfo->relative)
-                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
-            else
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             auto r2        = reserveRegisterRC(context);
@@ -194,16 +140,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
-            if (typeInfo->relative)
-            {
-                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-            }
-            else
-            {
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-            }
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -213,29 +151,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            if (typeInfo->relative)
-            {
-                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
-            }
-            else
-            {
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
-            }
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
         else
         {
-            if (typeInfo->relative)
-            {
-                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-            }
-            else
-            {
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-            }
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
         }
 
         return true;
@@ -341,30 +263,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-
-        if (leftTypeInfo->flags & TYPEINFO_RELATIVE)
-        {
-            switch (leftTypeInfo->sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
-                break;
-            }
-        }
-        else
-        {
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
-        }
-
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
         return true;
     }
 
@@ -422,30 +321,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-
-        if (leftTypeInfo->flags & TYPEINFO_RELATIVE)
-        {
-            switch (leftTypeInfo->sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
-                break;
-            }
-        }
-        else
-        {
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
-        }
-
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
         return true;
     }
 

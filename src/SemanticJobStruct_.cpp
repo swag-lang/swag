@@ -666,16 +666,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
             structFlags |= TYPEINFO_STRUCT_NO_COPY;
-        if (varDecl->typeInfo->flags & TYPEINFO_RELATIVE)
-            structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
-        if (varDecl->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) varDecl->typeInfo)->finalType->flags & TYPEINFO_RELATIVE)
-            structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
 
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
             structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
 
             if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -707,8 +702,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (varTypeArray->pointedType->kind == TypeInfoKind::Struct)
             {
                 structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
-
                 if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
             }
@@ -891,7 +884,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
-    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_NO_COPY);
 
     // Register symbol with its type

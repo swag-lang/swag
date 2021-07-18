@@ -228,19 +228,13 @@ enum class TypeInfoFlags : uint16_t
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct ConcreteRelativeSlice
-{
-    int64_t  buffer;
-    uint64_t count;
-};
-
 struct ConcreteTypeInfo
 {
     SwagSlice    name;
     SwagSlice    flatName;
     uint64_t     sizeOf;
-    TypeInfoKind kind;
     uint16_t     flags;
+    TypeInfoKind kind;
 };
 
 struct ConcreteAny
@@ -263,76 +257,76 @@ struct ConcreteAttributeParameter
 
 struct ConcreteAttribute
 {
-    SwagSlice             name;
-    ConcreteRelativeSlice params;
+    SwagSlice name;
+    SwagSlice params;
 };
 
 struct ConcreteTypeInfoPointer
 {
     ConcreteTypeInfo base;
-    int64_t          pointedType;
+    void*            pointedType;
 };
 
 struct ConcreteTypeInfoReference
 {
     ConcreteTypeInfo base;
-    int64_t          pointedType;
+    void*            pointedType;
 };
 
 struct ConcreteTypeInfoAlias
 {
     ConcreteTypeInfo base;
-    int64_t          rawType;
+    void*            rawType;
 };
 
 struct ConcreteTypeInfoParam
 {
-    SwagSlice             name;
-    int64_t               pointedType;
-    void*                 value;
-    ConcreteRelativeSlice attributes;
-    uint32_t              offsetOf;
-    uint32_t              padding;
+    SwagSlice name;
+    void*     pointedType;
+    void*     value;
+    SwagSlice attributes;
+    uint32_t  offsetOf;
+    uint32_t  padding;
 };
 
 struct ConcreteTypeInfoStruct
 {
-    ConcreteTypeInfo      base;
-    void*                 opInit;
-    void*                 opDrop;
-    void*                 opReloc;
-    void*                 opPostCopy;
-    void*                 opPostMove;
-    SwagSlice             structName;
-    ConcreteRelativeSlice generics;
-    ConcreteRelativeSlice fields;
-    ConcreteRelativeSlice methods;
-    ConcreteRelativeSlice interfaces;
-    ConcreteRelativeSlice attributes;
+    ConcreteTypeInfo base;
+    void*            opInit;
+    void*            opDrop;
+    void*            opReloc;
+    void*            opPostCopy;
+    void*            opPostMove;
+    SwagSlice        structName;
+    SwagSlice        generics;
+    SwagSlice        fields;
+    SwagSlice        methods;
+    SwagSlice        interfaces;
+    SwagSlice        attributes;
 };
 
 struct ConcreteTypeInfoFunc
 {
-    ConcreteTypeInfo      base;
-    ConcreteRelativeSlice generics;
-    ConcreteRelativeSlice parameters;
-    int64_t               returnType;
-    ConcreteRelativeSlice attributes;
+    ConcreteTypeInfo base;
+    SwagSlice        generics;
+    SwagSlice        parameters;
+    void*            returnType;
+    SwagSlice        attributes;
 };
 
 struct ConcreteTypeInfoEnum
 {
-    ConcreteTypeInfo      base;
-    ConcreteRelativeSlice values;
-    int64_t               rawType;
-    ConcreteRelativeSlice attributes;
+    ConcreteTypeInfo base;
+    SwagSlice        values;
+    void*            rawType;
+    SwagSlice        attributes;
 };
 
 struct ConcreteTypeInfoArray
 {
     ConcreteTypeInfo base;
-    int64_t          pointedType;
-    int64_t          finalType;
+    void*            pointedType;
+    void*            finalType;
     uint64_t         count;
     uint64_t         totalCount;
 };
@@ -340,19 +334,19 @@ struct ConcreteTypeInfoArray
 struct ConcreteTypeInfoSlice
 {
     ConcreteTypeInfo base;
-    int64_t          pointedType;
+    void*            pointedType;
 };
 
 struct ConcreteTypeInfoVariadic
 {
     ConcreteTypeInfo base;
-    int64_t          rawType;
+    void*            rawType;
 };
 
 struct ConcreteTypeInfoGeneric
 {
     ConcreteTypeInfo base;
-    int64_t          rawType;
+    void*            rawType;
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

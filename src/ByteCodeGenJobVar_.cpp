@@ -108,9 +108,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(resolved->flags & OVERLOAD_CAN_CHANGE) && resolved->registers.size() == 0)
         {
-            if (resolved->typeInfo->numRegisters() == 1 &&
-                !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY) &&
-                !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
+            if (resolved->typeInfo->numRegisters() == 1 && !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
             {
                 resolved->flags |= OVERLOAD_REGISTER;
                 resolved->registers         = reserveRegisterRC(context);

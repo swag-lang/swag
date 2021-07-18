@@ -205,7 +205,7 @@ bool TypeTableJob::computeStruct()
     // This pass is used to store the address of each function of the interface in the 'value' field of the ConcreteTypeInfoParam.
     if (concreteType->interfaces.count && !(cflags & CONCRETE_FOR_COMPILER))
     {
-        ConcreteTypeInfoParam* addrArray = (ConcreteTypeInfoParam*) RELATIVE_PTR64(&concreteType->interfaces.buffer);
+        auto addrArray = (ConcreteTypeInfoParam*) concreteType->interfaces.buffer;
         for (int param = 0; param < concreteType->interfaces.count; param++)
             addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
     }

@@ -202,20 +202,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
             typeNode->literalType = TypeManager::literalTypeToType(typeNode->token);
         typeNode->typeInfo = typeNode->literalType;
 
-        // Relative string
-        if (typeNode->typeInfo->isNative(NativeTypeKind::String))
-        {
-            auto rel = typeNode->strRelValue;
-            SWAG_CHECK(getRelativeSize(context, typeNode->strRelId, rel));
-            if (rel)
-            {
-                typeNode->typeInfo           = typeNode->typeInfo->clone();
-                typeNode->typeInfo->relative = rel;
-                typeNode->typeInfo->flags |= TYPEINFO_RELATIVE;
-                typeNode->typeInfo->forceComputeName();
-            }
-        }
-
         // Typed variadic ?
         if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
         {
@@ -297,15 +283,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrPointer1->flags |= TYPEINFO_SELF;
             if (typeNode->typeFlags & TYPEFLAG_USING)
                 ptrPointer1->flags |= TYPEINFO_HAS_USING;
-
-            // Relative pointer
-            ptrPointer1->relative = typeNode->ptrRel[i];
-            SWAG_CHECK(getRelativeSize(context, typeNode->ptrRelIds[i], ptrPointer1->relative));
-            if (ptrPointer1->relative)
-            {
-                ptrPointer1->flags |= TYPEINFO_RELATIVE;
-                ptrPointer1->sizeOf = ptrPointer1->relative;
-            }
 
             ptrPointer1->forceComputeName();
 
@@ -417,13 +394,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         typeNode->typeInfo = ptrSlice;
-
-        // Relative pointer
-        ptrSlice->relative = typeNode->relValue;
-        SWAG_CHECK(getRelativeSize(context, typeNode->relId, ptrSlice->relative));
-        if (ptrSlice->relative)
-            ptrSlice->flags |= TYPEINFO_RELATIVE;
-
         ptrSlice->computeName();
     }
 

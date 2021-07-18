@@ -24,7 +24,6 @@ func @seterr(err: string);
 @drop()
 @postmove()
 @postcopy()
-@reloc()
 @sizeof()
 @alignof()
 @offsetof()

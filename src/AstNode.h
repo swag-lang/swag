@@ -152,7 +152,6 @@ enum class AstNodeKind : uint8_t
     Drop,
     PostCopy,
     PostMove,
-    Reloc,
     Try,
     Catch,
     Assume,
@@ -718,17 +717,11 @@ struct AstTypeExpression : public AstNode
 
     AstNode*  identifier;
     TypeInfo* literalType;
-    AstNode*  relId;
-    AstNode*  strRelId;
-    AstNode*  ptrRelIds[MAX_PTR_COUNT];
 
     uint16_t typeFlags;
     uint8_t  ptrFlags[MAX_PTR_COUNT];
-    uint8_t  ptrRel[MAX_PTR_COUNT];
     uint8_t  ptrCount;
     uint8_t  arrayDim;
-    uint8_t  relValue;
-    uint8_t  strRelValue;
 };
 
 struct AstTypeLambda : public AstNode

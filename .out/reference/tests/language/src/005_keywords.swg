@@ -125,7 +125,6 @@
 @offsetof
 @postcopy
 @postmove
-@reloc
 @sizeof
 @spread
 @stringof

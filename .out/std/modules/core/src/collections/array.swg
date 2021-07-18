@@ -167,7 +167,6 @@ impl Array
         // in place
         if buffer and newBuffer != buffer
         {
-            @reloc(newBuffer, buffer, count)
             #if Reflection.hasPostMove(@typeof(T))
             {
                 @postmove(newBuffer, count)

@@ -174,7 +174,7 @@ struct SemanticJob : public Job
     static void     collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
     static bool     collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool     setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    static bool     derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, uint8_t relative, void* ptr);
+    static bool     derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool     derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* segment);
     static bool     derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment);
     static bool     makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
@@ -383,7 +383,6 @@ struct SemanticJob : public Job
     static bool         resolveCase(SemanticContext* context);
     static bool         resolveLoop(SemanticContext* context);
     static bool         resolveVisit(SemanticContext* context);
-    static bool         checkRelativePointerOverflow(SemanticContext* context, TypeInfo* typeInfo, AstNode* right);
     static bool         resolveAffect(SemanticContext* context);
     static bool         resolveMove(SemanticContext* context);
     static bool         checkCanTakeAddress(SemanticContext* context, AstNode* node);
@@ -402,7 +401,6 @@ struct SemanticJob : public Job
     static bool         resolveNullConditionalOp(SemanticContext* context);
     static bool         resolveInit(SemanticContext* context);
     static bool         resolveDropCopyMove(SemanticContext* context);
-    static bool         resolveReloc(SemanticContext* context);
     static bool         resolveTupleUnpackBefore(SemanticContext* context);
 
     AstNode* backToSemError();

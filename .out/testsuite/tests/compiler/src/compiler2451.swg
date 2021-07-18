@@ -1,3 +1,4 @@
+#global skip // no more relative pointers (18 july 2021)
 struct A
 {
     x: s32 = 666

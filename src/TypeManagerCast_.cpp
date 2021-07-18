@@ -1897,8 +1897,6 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto childJ  = child->childs[j];
                 auto oldType = childJ->typeInfo;
-                if (toTypeStruct->fields[j]->typeInfo->isRelative() || childJ->typeInfo->isRelative())
-                    return context->report({child, format(Msg0198)});
                 SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -1937,8 +1935,6 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 SemanticJob::computeExpressionListTupleType(context, child);
         }
 
-        if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
-            return context->report({child, format(Msg0198)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         if (child)
         {
@@ -3183,7 +3179,7 @@ static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
     if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
         return type1;
     auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-    return concreteAlias(RELATIVE_PTR64(&typeAlias->rawType));
+    return concreteAlias((ConcreteTypeInfo *) typeAlias->rawType);
 }
 
 bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2)

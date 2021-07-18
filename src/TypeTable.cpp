@@ -38,7 +38,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     return true;
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, void** result, TypeInfo* typeInfo, uint32_t cflags)
 {
     if (!typeInfo)
     {
@@ -56,11 +56,10 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
 
     // Offset for bytecode run
     auto ptr = segment->addressNoLock(tmpStorageOffset);
-    *result  = (int64_t) ptr - (int64_t) result;
+    *result  = ptr;
 
     // Offset for native
-    int64_t offsetNative = tmpStorageOffset - OFFSETOFR(result);
-    segment->addPatchPtr(result, offsetNative);
+    segment->addInitPtr(OFFSETOFR(result), tmpStorageOffset);
 
     return true;
 }
@@ -70,13 +69,13 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
     if (str.empty())
     {
         result->buffer = nullptr;
-        result->count = 0;
+        result->count  = 0;
         return true;
     }
 
     auto sourceFile = context->sourceFile;
-    auto module = sourceFile->module;
-    auto segment = getSegmentStorage(module, cflags);
+    auto module     = sourceFile->module;
+    auto segment    = getSegmentStorage(module, cflags);
 
     auto offset = segment->addStringNoLock(str);
     segment->addInitPtr(offsetInBuffer, offset);
@@ -86,7 +85,7 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
     return true;
 }
 
-void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, uint32_t cflags, uint32_t& storageArray)
+void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, uint32_t storageOffset, void** result, uint32_t cflags, uint32_t& storageArray)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -96,15 +95,14 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* c
     auto addr    = segment->addressNoLock(storageArray);
 
     // Offset for bytecode run
-    *result = (int64_t) addr - (int64_t) result;
+    *result = addr;
 
     // Offset for native
-    int64_t offsetNative = storageArray - OFFSETOFR(result);
-    segment->addPatchPtr(result, offsetNative);
+    segment->addInitPtr(OFFSETOFR(result), storageArray);
     return addr;
 }
 
-void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_t offset, int64_t* result, uint32_t cflags, uint32_t& storageArray)
+void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_t storageOffset, void** result, uint32_t cflags, uint32_t& storageArray)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -114,11 +112,10 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_
     auto addr    = segment->addressNoLock(storageArray);
 
     // Offset for bytecode run
-    *result = (int64_t) addr - (int64_t) result;
+    *result = addr;
 
     // Offset for native
-    int64_t offsetNative = storageArray - offset;
-    segment->addPatchPtr(result, offsetNative);
+    segment->addInitPtr(storageOffset, storageArray);
     return addr;
 }
 
@@ -190,12 +187,12 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteRelativeSlice* result, uint32_t cflags)
+bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, void* concreteTypeInfoValue, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
 {
     if (attributes.empty())
         return true;
 
-    result->buffer = 0;
+    result->buffer = nullptr;
     result->count  = attributes.size();
     if (!result->count)
         return true;
@@ -214,8 +211,8 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         ptrStorageAttributes += sizeof(SwagSlice);
 
         // Slice to all parameters
-        auto ptrParamsAttribute    = (ConcreteRelativeSlice*) ptrStorageAttributes;
-        ptrParamsAttribute->buffer = 0;
+        auto ptrParamsAttribute    = (SwagSlice*) ptrStorageAttributes;
+        ptrParamsAttribute->buffer = nullptr;
         ptrParamsAttribute->count  = one.parameters.size();
 
         // Parameters

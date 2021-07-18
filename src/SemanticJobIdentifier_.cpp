@@ -1052,8 +1052,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report({identifier, identifier->token, Msg0100});
         if (identifier->token.text == "opDrop")
             return context->report({identifier, identifier->token, Msg0101});
-        if (identifier->token.text == "opReloc")
-            return context->report({identifier, identifier->token, Msg0102});
         if (identifier->token.text == "opPostCopy")
             return context->report({identifier, identifier->token, Msg0103});
         if (identifier->token.text == "opPostMove")
@@ -3370,9 +3368,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         scopeHierarchyVars.clear();
         dependentSymbols.clear();
     }
-
-    if (context->sourceFile->name == "compiler3028.swg")
-        context = context; // @remove
 
     if (dependentSymbols.empty())
     {
