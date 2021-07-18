@@ -86,34 +86,6 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
     return true;
 }
 
-// :RelativeString
-/*bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
-{
-    if (str.empty())
-    {
-        result->buffer = nullptr;
-        result->count  = 0;
-        return true;
-    }
-
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
-
-    auto offset = segment->addStringNoLock(str);
-    auto addr   = segment->addressNoLock(offset);
-
-    // Offset for bytecode run
-    result->buffer = (void*) ((int64_t) addr - (int64_t) result);
-
-    // Offset for native
-    int64_t offsetNative = offset - offsetInBuffer;
-    segment->addPatchPtr((int64_t*) result, offsetNative);
-
-    result->count = str.length();
-    return true;
-}*/
-
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, uint32_t cflags, uint32_t& storageArray)
 {
     auto sourceFile = context->sourceFile;

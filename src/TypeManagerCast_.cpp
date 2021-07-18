@@ -3199,11 +3199,5 @@ bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const Concr
         return false;
     if (type1->name.count != type2->name.count)
         return false;
-
-    // :RelativeString
-    //auto buf1 = RELATIVE_PTR64(&type1->name.buffer);
-    //auto buf2 = RELATIVE_PTR64(&type1->name.buffer);
-    auto buf1 = type1->name.buffer;
-    auto buf2 = type2->name.buffer;
-    return !memcmp(buf1, buf2, type1->name.count);
+    return !memcmp(type1->name.buffer, type2->name.buffer, type1->name.count);
 }
