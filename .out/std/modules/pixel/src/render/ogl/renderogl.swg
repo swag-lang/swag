@@ -692,7 +692,6 @@ impl RenderOgl
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case StartClippingRegion:
-                params := &cmd.clippingRegion
                 glEnable(GL_STENCIL_TEST)
                 glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
                 glStencilFunc(GL_ALWAYS, 1, 0xFF)
