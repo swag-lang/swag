@@ -526,12 +526,11 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     auto typeInfo  = allocType<TypeInfoList>();
     typeInfo->kind = TypeInfoKind::TypeListArray;
     SWAG_ASSERT(node->childs.size());
-    typeInfo->name = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
-        SWAG_CHECK(checkIsConcrete(context, child));
+        SWAG_CHECK(checkIsConcreteOrType(context, child));
         auto typeParam      = allocType<TypeInfoParam>();
         typeParam->typeInfo = child->typeInfo;
         typeInfo->subTypes.push_back(typeParam);
@@ -542,6 +541,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
             node->flags &= ~AST_R_VALUE;
     }
 
+    typeInfo->forceComputeName();
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct                  = ByteCodeGenJob::emitExpressionList;

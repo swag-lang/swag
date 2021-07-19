@@ -166,6 +166,13 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         return true;
     }
 
+    if (typeInfo->isPointerToTypeInfo())
+    {
+        seg->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
+        *(void**) ptrDest = value->storageSegment->address(value->storageOffset);
+        return true;
+    }
+
     switch (typeInfo->sizeOf)
     {
     case 1:

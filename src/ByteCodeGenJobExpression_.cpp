@@ -247,7 +247,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     else
     {
         // Be sure it has been collected to the constant segment. Usually, this is done after casting, because
-        // be could need to change the values before the collect. If it's not done yet, that means that the cast
+        // we could need to change the values before the collect. If it's not done yet, that means that the cast
         // did not take place (when passing to a varargs for example).
         if (!(node->doneFlags & AST_DONE_EXPRLIST_CST))
         {
