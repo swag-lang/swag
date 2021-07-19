@@ -370,7 +370,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
+        {
             needDrop = true;
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0911, typeStructVar->getDisplayName().c_str())}));
+        }
     }
 
     if (!needDrop)
@@ -496,7 +499,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+        {
             needPostMove = true;
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0910, typeStructVar->getDisplayName().c_str())}));
+        }
     }
 
     if (!needPostMove)
@@ -621,7 +627,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
+        {
             needPostCopy = true;
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0909, typeStructVar->getDisplayName().c_str())}));
+        }
     }
 
     if (!needPostCopy)

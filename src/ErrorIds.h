@@ -96,7 +96,7 @@
 #define Msg0099 "invalid aliased identifiers because function '%s' is not a macro or a mixin"
 #define Msg0100 "cannot reference 'opInit' special function (use '@init' instead)"
 #define Msg0101 "cannot reference 'opDrop' special function (use '@drop' instead)"
-//#define Msg0102 "cannot reference 'opReloc' special function (use '@reloc' instead)"
+//#define Msg0102 "struct '%s' contains"
 #define Msg0103 "cannot reference 'opPostCopy' special function (use '@postcopy' instead)"
 #define Msg0104 "cannot reference 'opPostMove' special function (use '@postmove' instead)"
 #define Msg0105 "cannot call empty function '%s'"
@@ -780,6 +780,9 @@
 #define Msg0906 "initialization value cannot be evaluated at compile time because 'opAffect' is not 'Swag.ConstExpr'"
 #define Msg0907 "cannot cast from type '%s' to pointer type; only type 'uint' is accepted"
 #define Msg0908 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
+#define Msg0909 "type '%s' cannot be used in an union because it contains 'opPostCopy' (or one of its members does)"
+#define Msg0910 "type '%s' cannot be used in an union because it contains 'opPostMove' (or one of its members does)"
+#define Msg0911 "type '%s' cannot be used in an union because it contains 'opDrop' (or one of its members does)"
 
 #define Hnt0000 "this divisor expression is zero"
 #define Hnt0001 "this '@sqrt' is called with a negative value"
