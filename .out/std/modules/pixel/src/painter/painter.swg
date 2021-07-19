@@ -63,6 +63,7 @@ struct Command
         clippingRect:   struct{rect: Rectangle; }
         clippingRegion: struct{mode: ClippingMode = ?; }
         font:           struct{fontRef: *Font; }
+        texture1:       struct{texture: Texture; }
 
         texture0: struct
                 {
@@ -72,10 +73,6 @@ struct Command
                     hatch:              HatchStyle = ?
                     uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
-                    texture:            Texture
-                }
-        texture1: struct
-                {
                     texture:            Texture
                 }
     }
