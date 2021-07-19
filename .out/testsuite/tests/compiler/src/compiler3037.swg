@@ -8,7 +8,6 @@ impl BB
 {
     method opDrop()
     {
-        @print("toto")
     }
 }
 

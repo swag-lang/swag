@@ -370,10 +370,9 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-        {
             needDrop = true;
+        if (typeStructVar->opDrop || typeStructVar->opUserDropFct || typeStructVar->flags & TYPEINFO_HAD_DROP)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0911, typeStructVar->getDisplayName().c_str())}));
-        }
     }
 
     if (!needDrop)
@@ -438,7 +437,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     {
         typeInfoStruct->opDrop        = nullptr;
         typeInfoStruct->opUserDropFct = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP | TYPEINFO_HAD_DROP;
         return true;
     }
 
@@ -499,10 +498,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-        {
             needPostMove = true;
+        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct || typeStructVar->flags & TYPEINFO_HAD_POST_MOVE)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0910, typeStructVar->getDisplayName().c_str())}));
-        }
     }
 
     if (!needPostMove)
@@ -566,7 +564,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
     {
         typeInfoStruct->opPostMove = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE | TYPEINFO_HAD_POST_MOVE;
         return true;
     }
 
@@ -627,10 +625,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (context->result == ContextResult::Pending)
             return true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-        {
             needPostCopy = true;
+        if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct || typeStructVar->flags & TYPEINFO_HAD_POST_COPY)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0909, typeStructVar->getDisplayName().c_str())}));
-        }
     }
 
     if (!needPostCopy)
@@ -694,7 +691,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
     {
         typeInfoStruct->opPostCopy = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_HAD_POST_COPY;
         return true;
     }
 

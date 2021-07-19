@@ -59,6 +59,9 @@ static const uint64_t TYPEINFO_HAS_USING                = 0x00000000'10000000;
 //static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
 static const uint64_t TYPEINFO_STRUCT_NO_COPY = 0x00000000'80000000;
 static const uint64_t TYPEINFO_CAN_THROW      = 0x00000001'00000000;
+static const uint64_t TYPEINFO_HAD_DROP       = 0x00000002'00000000;
+static const uint64_t TYPEINFO_HAD_POST_COPY  = 0x00000004'00000000;
+static const uint64_t TYPEINFO_HAD_POST_MOVE  = 0x00000008'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
