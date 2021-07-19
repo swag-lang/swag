@@ -174,8 +174,17 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     }
 
     result->flags |= flags;
-    result->computedValue.storageOffset  = storageOffset;
-    result->computedValue.storageSegment = storageSegment;
+    if (computedValue && typeInfo->isPointerToTypeInfo())
+    {
+        SWAG_ASSERT(result->computedValue.storageOffset != UINT32_MAX);
+        SWAG_ASSERT(result->computedValue.storageSegment != nullptr);
+    }
+    else
+    {
+        result->computedValue.storageOffset  = storageOffset;
+        result->computedValue.storageSegment = storageSegment;
+    }
+
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolOverload = result;
 
