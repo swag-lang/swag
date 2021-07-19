@@ -55,7 +55,7 @@ enum ClippingMode
 struct Command
 {
     id: CommandId = ?
-    params: union
+    using params: union
     {
         clear:          struct{color: Color; }
         drawTriangles:  struct{start: u32; count: u32; }
@@ -155,7 +155,7 @@ impl Painter
         }
 
         cmd := newCommand(CommandId.BindTexture0, true)
-        params := &cmd.params.texture0
+        params := &cmd.texture0
 
         params.boundRect.x = bvMin.x
         params.boundRect.y = bvMin.y
@@ -193,7 +193,7 @@ impl Painter
         if lastTexture1Handle == texture.handle
             return
         cmd := newCommand(CommandId.BindTexture1, true)
-        params := &cmd.params.texture1
+        params := &cmd.texture1
         params.texture = texture
         lastTexture1Handle = texture.handle
     }
@@ -211,8 +211,8 @@ impl Painter
         if !cmd
         {
             cmd = newCommand(CommandId.DrawTriangles)
-            cmd.params.drawTriangles.start = cast(u32) vertexBuffer.count
-            cmd.params.drawTriangles.count = 0
+            cmd.drawTriangles.start = cast(u32) vertexBuffer.count
+            cmd.drawTriangles.count = 0
         }
 
         return cmd
@@ -221,7 +221,7 @@ impl Painter
     protected func pushTriangle(using self, p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
-        cmd.params.drawTriangles.count += 3
+        cmd.drawTriangles.count += 3
 
         curZ += curZOffset
 
@@ -238,7 +238,7 @@ impl Painter
     protected func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
-        cmd.params.drawTriangles.count += 3
+        cmd.drawTriangles.count += 3
 
         curZ += curZOffset
 
@@ -287,7 +287,7 @@ impl Painter
     {
         if !fontRef.dirty return
         cmd := newCommand(CommandId.UpdateFont, false)
-        cmd.params.font.fontRef = fontRef
+        cmd.font.fontRef = fontRef
     }
 
     protected method startNoOverlapMode()
@@ -330,7 +330,7 @@ impl Painter
     func clear(using self, color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
-        cmd.params.clear.color = color
+        cmd.clear.color = color
     }
 
     // Set the paint position
@@ -380,7 +380,7 @@ impl Painter
         transform = tr
 
         cmd := newCommand(CommandId.Transform, true)
-        cmd.params.transform.tr = tr
+        cmd.transform.tr = tr
     }
 
     // Set the texture interpolation mode
@@ -395,7 +395,7 @@ impl Painter
         clippingRect = @{x, y, width, height}
         clippingRectOn = true
         cmd := newCommand(CommandId.SetClippingRect, true)
-        cmd.params.clippingRect.rect = clippingRect
+        cmd.clippingRect.rect = clippingRect
     }
 
     // Reset the current clipping rectangle
@@ -409,14 +409,14 @@ impl Painter
     func startClippingRegion(using self, mode = ClippingMode.Set)
     {
         cmd := newCommand(CommandId.StartClippingRegion, true)
-        cmd.params.clippingRegion.mode = mode
+        cmd.clippingRegion.mode = mode
     }
 
     // Start painting in the clipping buffer
     func setClippingRegionMode(using self, mode: ClippingMode)
     {
         cmd := newCommand(CommandId.SetClippingRegionMode, true)
-        cmd.params.clippingRegion.mode = mode
+        cmd.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.

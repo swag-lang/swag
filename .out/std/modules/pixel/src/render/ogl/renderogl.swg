@@ -681,25 +681,25 @@ impl RenderOgl
             switch cmd.id
             {
             case Clear:
-                params := &cmd.params.clear
+                params := &cmd.clear
                 (r, g, b) := params.color.toRgbf()
                 glClearColor(r, g, b, 0)
                 glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
             case Transform:
-                params := &cmd.params.transform
+                params := &cmd.transform
                 buidModelMatrix(params.tr)
                 glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case StartClippingRegion:
-                params := &cmd.params.clippingRegion
+                params := &cmd.clippingRegion
                 glEnable(GL_STENCIL_TEST)
                 glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
                 glStencilFunc(GL_ALWAYS, 1, 0xFF)
                 fallthrough
 
             case SetClippingRegionMode:
-                params := &cmd.params.clippingRegion
+                params := &cmd.clippingRegion
                 mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
                 glStencilOp(mode, mode, mode)
 
@@ -712,7 +712,7 @@ impl RenderOgl
                 glDisable(GL_STENCIL_TEST)
 
             case SetClippingRect:
-                params := &cmd.params.clippingRect
+                params := &cmd.clippingRect
                 glEnable(GL_SCISSOR_TEST)
                 glScissor(cast(GLint) params.rect.x, cast(GLint) (self.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
@@ -731,7 +731,7 @@ impl RenderOgl
                 transparencyMode = false
 
             case DrawTriangles:
-                params := &cmd.params.drawTriangles
+                params := &cmd.drawTriangles
                 if !transparencyMode
                 {
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
@@ -752,7 +752,7 @@ impl RenderOgl
                 }
 
             case UpdateFont:
-                font := cmd.params.font.fontRef
+                font := cmd.font.fontRef
                 font.dirty = false
                 visit *atlas: font.atlases
                 {
@@ -778,7 +778,7 @@ impl RenderOgl
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
             case BindTexture0:
-                params := &cmd.params.texture0
+                params := &cmd.texture0
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
                 glUniform4fv(textureRect, 1, &params.textureRect.x)
                 glUniform1f(uvmode, cast(GLfloat) params.uvMode)
@@ -818,7 +818,7 @@ impl RenderOgl
                 }
 
             case BindTexture1:
-                params := &cmd.params.texture1
+                params := &cmd.texture1
                 glActiveTexture(GL_TEXTURE1)
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
