@@ -762,6 +762,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         node->computedValue.storageSegment = &module->typeSegment;
         if (module->typeSegment.tryOffset(value, node->computedValue.storageOffset))
         {
+            node->flags |= AST_VALUE_IS_TYPEINFO;
             node->setFlagsValueIsComputed();
             return true;
         }
@@ -769,6 +770,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         node->computedValue.storageSegment = &module->compilerSegment;
         if (module->compilerSegment.tryOffset(value, node->computedValue.storageOffset))
         {
+            node->flags |= AST_VALUE_IS_TYPEINFO;
             node->setFlagsValueIsComputed();
             return true;
         }
