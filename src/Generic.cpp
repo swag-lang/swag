@@ -62,8 +62,8 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         if (doNode)
         {
             auto nodeParam           = nodeGenericParameters[i];
-            nodeParam->kind          = AstNodeKind::ConstDecl;
             nodeParam->computedValue = param->value;
+            nodeParam->kind          = AstNodeKind::ConstDecl;
             nodeParam->setFlagsValueIsComputed();
             nodeParam->flags |= AST_FROM_GENERIC;
         }
@@ -316,7 +316,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->fromGeneric = genericStructType;
 
-    // Replace generic types and values in the struct generic parameters
+    // Replace generic types in the struct generic parameters
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
     newType->forceComputeName();
@@ -335,7 +335,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->typeInfo     = newType;
     structNode->ownerGeneric = context->node;
 
-    // Replace generic types and values in the struct generic parameters
+    // Replace generic values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
     auto structJob = end(context, context->job, sourceSymbol, structNode, true);
