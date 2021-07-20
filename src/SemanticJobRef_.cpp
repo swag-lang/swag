@@ -565,8 +565,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_CHECK(boundCheck(context, arrayNode->access, arrayNode->array->computedValue.reg.u32));
-                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset);
+                auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
+                SWAG_ASSERT(computedValue.storageOffset != UINT32_MAX);
+                SWAG_ASSERT(computedValue.storageSegment != nullptr);
+                auto ptr = computedValue.storageSegment->address(computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->pointedType->sizeOf;
                 if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
