@@ -50,6 +50,7 @@ struct DataSegment
     void     alignNoLock(uint32_t alignOf);
     uint32_t reserveNoLock(uint32_t size, uint32_t alignOf);
     uint32_t reserveNoLock(uint32_t size);
+    bool     tryOffset(uint8_t* location, uint32_t& offset);
     uint32_t offset(uint8_t* location);
     uint8_t* address(uint32_t location);
     uint8_t* addressNoLock(uint32_t location);

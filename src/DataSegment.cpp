@@ -151,25 +151,32 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     return result;
 }
 
-uint32_t DataSegment::offset(uint8_t* location)
+bool DataSegment::tryOffset(uint8_t* location, uint32_t& offset)
 {
     shared_lock lock(mutex);
 
-    uint32_t offset = 0;
+    offset = 0;
     for (int i = 0; i < buckets.size(); i++)
     {
         auto bucket = &buckets[i];
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
             offset += (uint32_t)(location - bucket->buffer);
-            return offset;
+            return true;
         }
 
         offset += bucket->count;
     }
 
-    SWAG_ASSERT(false);
-    return 0;
+    return false;
+}
+
+uint32_t DataSegment::offset(uint8_t* location)
+{
+    uint32_t offset;
+    if (!tryOffset(location, offset))
+        SWAG_ASSERT(false);
+    return offset;
 }
 
 uint8_t* DataSegment::address(uint32_t location)
