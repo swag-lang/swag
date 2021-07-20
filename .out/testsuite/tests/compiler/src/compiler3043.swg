@@ -15,4 +15,7 @@ struct(T: const [..] typeinfo) AA
 #test
 {
     var v: AA'(@[s32, bool])
+    @assert(@sizeof(v.buffer) == 4)
+    var v1: AA'(@[s32, bool, f64])
+    @assert(@sizeof(v1.buffer) == 8)
 }

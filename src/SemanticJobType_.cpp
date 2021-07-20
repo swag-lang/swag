@@ -160,6 +160,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Array with predefined dimensions, we evaluate all dimensions as const
     if (typeNode->arrayDim && typeNode->arrayDim != UINT8_MAX)
     {
+        // If generic, do not evaluate. No type for now
+        if (typeNode->ownerStructScope && typeNode->ownerStructScope->owner->typeInfo->flags & TYPEINFO_GENERIC)
+        {
+            typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
+            return true;
+        }
+
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
         {
             auto child = typeNode->childs[i];
@@ -355,13 +362,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
             for (int i = typeNode->arrayDim - 1; i >= 0; i--)
             {
                 auto child = typeNode->childs[i];
-
-                // Size can be a generic identifier, so set as undefined for now
-                if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
-                {
-                    typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
-                    continue;
-                }
 
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, Msg0021}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format(Msg0022, child->typeInfo->getDisplayName().c_str())}));
