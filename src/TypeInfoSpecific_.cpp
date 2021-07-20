@@ -298,6 +298,21 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
     return pointedType->isSame(castedFrom->pointedType, isSameFlags);
 }
 
+void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
+{
+    if (kind == TypeInfoKind::TypeListArray)
+    {
+        if (flags & TYPEINFO_CONST)
+            resName += "const ";
+        resName += format("[%u] ", subTypes.size());
+        if (!subTypes.empty())
+        {
+            subTypes[0]->typeInfo->computeWhateverName(nameType);
+            resName += subTypes[0]->typeInfo->name;
+        }
+    }
+}
+
 Utf8 TypeInfoList::computeTupleName(JobContext* context)
 {
     Utf8 structName = context->sourceFile->scopePrivate->name + "_tuple_";
