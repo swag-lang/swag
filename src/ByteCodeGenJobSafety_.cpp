@@ -492,55 +492,6 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, uint32_t r0, int offsetSize)
-{
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF))
-        return;
-
-    PushICFlags ic(context, BCI_SAFETY);
-
-    auto re = reserveRegisterRC(context);
-
-    int64_t minValue = 0, maxValue = 0;
-    switch (offsetSize)
-    {
-    case 1:
-        minValue = INT8_MIN;
-        maxValue = INT8_MAX;
-        break;
-    case 2:
-        minValue = INT16_MIN;
-        maxValue = INT16_MAX;
-        break;
-    case 4:
-        minValue = INT32_MIN;
-        maxValue = INT32_MAX;
-        break;
-    case 8:
-        minValue = INT64_MIN;
-        maxValue = INT64_MAX;
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    auto inst = emitInstruction(context, ByteCodeOp::TestNotZero64, re, r0);
-    emitAssert(context, re, Msg0224);
-
-    inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, r0, 0, re);
-    inst->flags |= BCI_IMM_B;
-    inst->b.s64 = minValue;
-    emitAssert(context, re, Msg0225);
-
-    inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, 0, re);
-    inst->flags |= BCI_IMM_B;
-    inst->b.s64 = maxValue;
-    emitAssert(context, re, Msg0225);
-
-    freeRegisterRC(context, re);
-}
-
 void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
