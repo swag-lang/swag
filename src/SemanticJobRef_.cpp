@@ -555,8 +555,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
-        arrayNode->typeInfo = typePtr->pointedType;
+        auto typeSlice      = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        arrayNode->typeInfo = typeSlice->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
         // Try to dereference as a constant if we can
@@ -569,8 +569,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(computedValue.storageSegment != nullptr);
                 auto ptr = computedValue.storageSegment->address(computedValue.storageOffset);
-                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->pointedType->sizeOf;
-                if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, ptr))
+                ptr += arrayNode->access->computedValue.reg.u64 * typeSlice->pointedType->sizeOf;
+                if (derefConstantValue(context, arrayNode, typeSlice->pointedType->kind, typeSlice->pointedType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
         }
