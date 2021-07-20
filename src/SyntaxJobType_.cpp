@@ -352,7 +352,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         auto typeNode = CastAst<AstIntrinsicProp>(node->identifier->childs.front(), AstNodeKind::IntrinsicProp);
-        typeNode->specFlags |= AST_SPEC_INTRINSIC_TYPEOFASTYPE;
+        typeNode->specFlags |= AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE;
         return true;
     }
 

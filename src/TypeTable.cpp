@@ -418,6 +418,11 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     mapType.storageOffset = storageOffset;
     storedMap[typeName]   = mapType;
 
+    {
+        unique_lock lk(lockReverse);
+        concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
+    }
+
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
     typePtr->pointedType = typeStruct;
@@ -606,4 +611,13 @@ void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
     storedMap.erase(it);
     for (auto it1 : job->patchMethods)
         segment->addPatchMethod(it1.first, it1.second);
+}
+
+TypeInfo* TypeTable::getRealType(ConcreteTypeInfo* concreteType)
+{
+    shared_lock lk(lockReverse);
+    auto        it = concreteTypesReverse.find(concreteType);
+    if (it == concreteTypesReverse.end())
+        return nullptr;
+    return it->second;
 }

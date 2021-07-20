@@ -452,9 +452,21 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    // A @typeof as a type in a declaration
-    if (node->specFlags & AST_SPEC_INTRINSIC_TYPEOFASTYPE)
+    // A @typeof/@kindof as a type in a declaration
+    if (node->specFlags & AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE)
     {
+        // @kindof on a typeinfo will give back the original compiler type
+        if (node->token.id == TokenId::IntrinsicKindOf &&
+            typeInfo->isPointerToTypeInfo() &&
+            expr->computedValue.storageOffset != UINT32_MAX &&
+            expr->computedValue.storageSegment != nullptr)
+        {
+            auto addr        = expr->computedValue.storageSegment->address(expr->computedValue.storageOffset);
+            auto newTypeInfo = context->sourceFile->module->typeTable.getRealType((ConcreteTypeInfo*) addr);
+            if (newTypeInfo)
+                typeInfo = newTypeInfo;
+        }
+
         node->typeInfo = typeInfo;
     }
 

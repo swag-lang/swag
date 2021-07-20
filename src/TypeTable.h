@@ -35,6 +35,7 @@ struct TypeTable
     void         tableJobDone(TypeTableJob* job, DataSegment* segment);
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     DataSegment* getSegmentStorage(Module* module, uint32_t flags);
+    TypeInfo*    getRealType(ConcreteTypeInfo*);
 
     struct MapType
     {
@@ -44,13 +45,14 @@ struct TypeTable
         uint32_t          storageOffset;
     };
 
-    using mapType = map<Utf8, MapType>;
-    mapType concreteTypes;
-    mapType concreteTypesCompiler;
+    map<Utf8, MapType> concreteTypes;
+    map<Utf8, MapType> concreteTypesCompiler;
 
-    using mapTypeJob = map<Utf8, TypeTableJob*>;
-    mapTypeJob concreteTypesJob;
-    mapTypeJob concreteTypesJobCompiler;
+    shared_mutex                      lockReverse;
+    map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
+
+    map<Utf8, TypeTableJob*> concreteTypesJob;
+    map<Utf8, TypeTableJob*> concreteTypesJobCompiler;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
