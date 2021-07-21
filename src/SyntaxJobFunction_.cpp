@@ -336,6 +336,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Msg0555));
             SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
         }
 

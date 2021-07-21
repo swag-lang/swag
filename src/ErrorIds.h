@@ -508,7 +508,7 @@
 #define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
 #define Msg0553 "here is the definition of the tuple"
 #define Msg0554 "fatal error: some problems have been found in compiler runtime !!!"
-//#define Msg0555 "fatal error: mismatch types for command line value of '--tag:%s' (requested type is '%s', but value type is '%s')"
+#define Msg0555 "unsupported tuple type in generic parameters"
 #define Msg0556 "module '%s' cannot be found in that workspace"
 #define Msg0557 "dependency module '%s' cannot be found in that workspace"
 #define Msg0558 "llvm backend cannot create target '%s'"
