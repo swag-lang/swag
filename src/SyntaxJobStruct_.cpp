@@ -437,7 +437,6 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
 
     // A user alias
     case TokenId::KwdAlias:
-        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, Msg0450}));
         SWAG_CHECK(doAlias(parent, result));
         break;
 
@@ -445,7 +444,6 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     case TokenId::KwdUsing:
     {
         SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, Msg0451}));
-        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, Msg0452}));
         SWAG_CHECK(eatToken());
 
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
@@ -469,20 +467,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
 
     // A normal declaration
     default:
-        if (structType == SyntaxStructType::TypeSet)
-        {
-            auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
-            structNode->semanticFct = SemanticJob::resolveStruct;
-            SWAG_CHECK(doStructContent(structNode, SyntaxStructType::Tuple));
-            structNode->typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-            if (result)
-                *result = structNode;
-        }
-        else
-        {
-            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
-        }
-
+        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
         break;
     }
 

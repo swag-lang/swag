@@ -263,7 +263,6 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
 
     // Inherit alternative scopes.
-    // This is necessary for typeset for example, when we have var x: TypeSet = Toto{}.
     if (identifier->parent->extension)
     {
         varNode->allocateExtension();

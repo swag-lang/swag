@@ -34,7 +34,6 @@ enum class SyntaxStructType
 {
     Struct,
     Interface,
-    TypeSet,
     Tuple
 };
 
