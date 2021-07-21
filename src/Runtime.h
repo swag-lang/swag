@@ -182,7 +182,6 @@ enum class TypeInfoKind : uint8_t
     NameAlias,
     Code,
     Interface,
-    TypeSet,
     Count,
 };
 

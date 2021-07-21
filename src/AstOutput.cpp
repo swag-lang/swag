@@ -226,9 +226,8 @@ namespace Ast
 
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
-        case AstNodeKind::TypeSet:
         {
-            auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl, AstNodeKind::TypeSet);
+            auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
             switch (node->kind)
             {
             case AstNodeKind::StructDecl:
@@ -236,9 +235,6 @@ namespace Ast
                 break;
             case AstNodeKind::InterfaceDecl:
                 CONCAT_FIXED_STR(concat, "interface ");
-                break;
-            case AstNodeKind::TypeSet:
-                CONCAT_FIXED_STR(concat, "typeset ");
                 break;
             }
             concat.addString(nodeStruct->token.text);
@@ -723,8 +719,7 @@ namespace Ast
                 {
                     if (!node->ownerMainNode ||
                         (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
-                         node->ownerMainNode->kind != AstNodeKind::InterfaceDecl &&
-                         node->ownerMainNode->kind != AstNodeKind::TypeSet))
+                         node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
                         CONCAT_FIXED_STR(concat, "var ");
                 }
 

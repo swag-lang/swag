@@ -149,7 +149,6 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::FuncDecl:
                 case AstNodeKind::StructDecl:
                 case AstNodeKind::InterfaceDecl:
-                case AstNodeKind::TypeSet:
                 {
                     // A sub thing can be waiting for the owner function to be resolved.
                     // We inform the parent function that we have seen the sub thing, and that

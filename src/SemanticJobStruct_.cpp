@@ -358,7 +358,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum && typeInfo->kind != TypeInfoKind::TypeSet)
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
     {
         Diagnostic diag{node->identifier, format(Msg0662, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
@@ -373,12 +373,6 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     case TypeInfoKind::Struct:
     {
         auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
-        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
-        break;
-    }
-    case TypeInfoKind::TypeSet:
-    {
-        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::TypeSet);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
@@ -509,10 +503,6 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     case AstNodeKind::InterfaceDecl:
         symbolKind     = SymbolKind::Interface;
         typeInfo->kind = TypeInfoKind::Interface;
-        break;
-    case AstNodeKind::TypeSet:
-        symbolKind     = SymbolKind::TypeSet;
-        typeInfo->kind = TypeInfoKind::TypeSet;
         break;
     default:
         SWAG_ASSERT(false);
@@ -1051,83 +1041,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
-
-    return true;
-}
-
-bool SemanticJob::resolveTypeSet(SemanticContext* context)
-{
-    auto node    = CastAst<AstStruct>(context->node, AstNodeKind::TypeSet);
-    auto typeSet = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
-    auto job     = context->job;
-
-    typeSet->declNode   = node;
-    typeSet->name       = node->token.text;
-    typeSet->structName = node->token.text;
-    typeSet->sizeOf     = 2 * sizeof(Register);
-
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
-    if (node->flags & AST_STRUCT_COMPOUND)
-    {
-        job->tmpNodes.clear();
-        flattenStructChilds(context, node->content, job->tmpNodes);
-    }
-
-    // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (!node->ownerScope->isGlobal())
-            return context->report({node, node->token, format(Msg0685, node->token.text.c_str())});
-
-        if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicTypeSet(node);
-    }
-
-    uint32_t storageIndex = 0;
-    for (int i = 0; i < childs.size(); i++)
-    {
-        auto child = childs[i];
-        if (child->kind != AstNodeKind::StructDecl)
-            continue;
-
-        TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC))
-        {
-            typeParam             = allocType<TypeInfoParam>();
-            typeParam->namedParam = child->token.text;
-            typeParam->name       = child->typeInfo->name;
-            typeParam->sizeOf     = 0;
-            typeParam->declNode   = child;
-            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
-            typeSet->fields.push_back(typeParam);
-        }
-
-        typeParam           = typeSet->fields[storageIndex];
-        typeParam->typeInfo = child->typeInfo;
-        typeParam->declNode = child;
-        typeParam->index    = storageIndex;
-
-        if (!(node->flags & AST_IS_GENERIC))
-        {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0686, child->typeInfo->getDisplayName().c_str())}));
-        }
-
-        if (typeParam->attributes.hasAttribute("Swag.Offset"))
-        {
-            auto attr = typeParam->attributes.getAttribute("Swag.Offset");
-            SWAG_ASSERT(attr);
-            return context->report({attr->node, Msg0687});
-        }
-
-        storageIndex++;
-    }
-
-    SWAG_VERIFY(!typeSet->fields.empty(), context->report({node, node->token, format(Msg0688, node->token.text.c_str())}));
-
-    // Register symbol with its type
-    node->typeInfo               = typeSet;
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeSet);
-    SWAG_CHECK(node->resolvedSymbolOverload);
 
     return true;
 }

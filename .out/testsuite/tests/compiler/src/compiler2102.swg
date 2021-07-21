@@ -1,3 +1,4 @@
+#global skip // remove typeset from language the 21 july 2021
 var G: s32
 
 typeset AA

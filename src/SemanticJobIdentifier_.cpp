@@ -106,7 +106,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto subType     = TypeManager::concreteReferenceType(typePointer->pointedType);
-        if (subType->kind == TypeInfoKind::Struct || subType->kind == TypeInfoKind::Interface || subType->kind == TypeInfoKind::TypeSet)
+        if (subType->kind == TypeInfoKind::Struct || subType->kind == TypeInfoKind::Interface)
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
@@ -120,7 +120,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::Interface:
     case TypeInfoKind::Struct:
-    case TypeInfoKind::TypeSet:
         identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind)->scope;
         node->typeInfo            = typeInfo;
         break;
@@ -553,12 +552,6 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
         typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
         break;
     }
-    case AstNodeKind::TypeSet:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
-        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
-        break;
-    }
     case AstNodeKind::EnumValue:
     {
         auto enumVal = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
@@ -808,7 +801,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Struct:
     case SymbolKind::Interface:
-    case SymbolKind::TypeSet:
         if (!(overload->flags & OVERLOAD_IMPL))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
@@ -1868,7 +1860,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             if (symbolKind != SymbolKind::Attribute &&
                 symbolKind != SymbolKind::Function &&
                 symbolKind != SymbolKind::Struct &&
-                symbolKind != SymbolKind::TypeSet &&
                 symbolKind != SymbolKind::Interface &&
                 overload->typeInfo->kind != TypeInfoKind::Lambda)
             {
@@ -1928,12 +1919,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
-            typeInfo->match(oneOverload.symMatchContext);
-        }
-        else if (rawTypeInfo->kind == TypeInfoKind::TypeSet)
-        {
-            forStruct     = true;
-            auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::TypeSet);
             typeInfo->match(oneOverload.symMatchContext);
         }
         else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
@@ -2406,7 +2391,6 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
                 switch (cType->kind)
                 {
                 case TypeInfoKind::Enum:
-                case TypeInfoKind::TypeSet:
                     return cType;
                 }
             }
@@ -2475,13 +2459,6 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     scopeHierarchy.push_back(typeEnum->scope);
                     break;
                 }
-                case TypeInfoKind::TypeSet:
-                    auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::TypeSet);
-                    identifierRef->startScope = typeStruct->scope;
-                    scopeHierarchy.clear();
-                    scopeHierarchy.push_back(typeStruct->scope);
-                    scopeHierarchy.push_back(identifierRef->ownerScope);
-                    break;
                 }
             }
             else
@@ -2599,7 +2576,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     if (!displayName.empty())
                     {
                         diag = new Diagnostic{node, node->token, format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
-                        if (typeRef && (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::TypeSet || typeRef->kind == TypeInfoKind::Interface))
+                        if (typeRef && (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::Interface))
                         {
                             auto note = new Diagnostic{identifierRef->startScope->owner, identifierRef->startScope->owner->token, format(Msg0018, displayName.c_str()), DiagnosticLevel::Note};
                             notes.push_back(note);
@@ -2707,7 +2684,6 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         if (identifierRef->resolvedSymbolName)
         {
             if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
-                identifierRef->resolvedSymbolName->kind == SymbolKind::TypeSet ||
                 identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
@@ -2961,17 +2937,6 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
             {
                 auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
                 if (typeEnum->scope == matches[i]->scope)
-                {
-                    matches.clear();
-                    matches.push_back(oneMatch);
-                    return true;
-                }
-                break;
-            }
-            case TypeInfoKind::TypeSet:
-            {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeContext, TypeInfoKind::TypeSet);
-                if (typeStruct->scope == matches[i]->scope)
                 {
                     matches.clear();
                     matches.push_back(oneMatch);
@@ -3283,7 +3248,6 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->kind != SymbolKind::GenericType &&
             oneSymbol->kind != SymbolKind::Struct &&
             oneSymbol->kind != SymbolKind::Enum &&
-            oneSymbol->kind != SymbolKind::TypeSet &&
             (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
@@ -3395,7 +3359,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             continue;
 
         bool newToWait = true;
-        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet)
+        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface)
         {
             bool canIncomplete = false;
 

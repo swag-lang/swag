@@ -897,8 +897,6 @@ Utf8 TypeInfoStruct::getDisplayName()
         return "tuple";
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return format("interface %s", name.c_str());
-    if (declNode && declNode->kind == AstNodeKind::TypeSet)
-        return format("typeset %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
         return format("union %s", name.c_str());
     if (displayName.empty())

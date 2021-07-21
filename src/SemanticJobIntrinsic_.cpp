@@ -406,7 +406,6 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 
     // Will be runtime for an 'any' type, or a typeset
     if (expr->typeInfo->isNative(NativeTypeKind::Any) ||
-        expr->typeInfo->kind == TypeInfoKind::TypeSet ||
         expr->typeInfo->kind == TypeInfoKind::Interface)
     {
         SWAG_CHECK(checkIsConcrete(context, expr));

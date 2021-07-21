@@ -80,8 +80,6 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         return;
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
-    if (typeInfoStruct->declNode->kind == AstNodeKind::TypeSet)
-        return;
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
@@ -103,7 +101,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Array)
         typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::TypeSet && typeInfo->kind != TypeInfoKind::Interface)
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Interface)
         return;
     if (!typeInfo->declNode)
         return;

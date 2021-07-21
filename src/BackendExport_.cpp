@@ -49,7 +49,6 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Struct:
-    case TypeInfoKind::TypeSet:
     case TypeInfoKind::Interface:
     {
         auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
@@ -427,8 +426,6 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(bufferSwg, "interface");
-    else if (node->kind == AstNodeKind::TypeSet)
-        CONCAT_FIXED_STR(bufferSwg, "typeset");
     else
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
@@ -627,16 +624,6 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
             SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node, indent));
-        }
-    }
-
-    if (!publicSet->publicTypeSet.empty())
-    {
-        for (auto one : publicSet->publicTypeSet)
-        {
-            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::TypeSet);
-            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
-            SWAG_CHECK(emitPublicStructSwg(typeStruct, node, indent));
         }
     }
 

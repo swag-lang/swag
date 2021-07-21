@@ -2008,59 +2008,6 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
-{
-    if (toType == fromType)
-        return true;
-    if (toType->isSame(fromType, ISSAME_CAST))
-        return true;
-
-    if (toType->kind == TypeInfoKind::TypeSet)
-    {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::TypeSet);
-        for (auto p : typeStruct->fields)
-        {
-            if (p->typeInfo == fromType)
-            {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo          = fromType;
-                    fromNode->typeInfo                = toType;
-                    auto  module                      = context->sourceFile->module;
-                    auto& typeTable                   = module->typeTable;
-                    fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
-                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
-                }
-
-                return true;
-            }
-        }
-    }
-    else if (fromType->kind == TypeInfoKind::TypeSet)
-    {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::TypeSet);
-        for (auto p : typeStruct->fields)
-        {
-            if (p->typeInfo == toType)
-            {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo          = fromType;
-                    fromNode->typeInfo                = toType;
-                    auto  module                      = context->sourceFile->module;
-                    auto& typeTable                   = module->typeTable;
-                    fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
-                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
-                }
-
-                return true;
-            }
-        }
-    }
-
-    return castError(context, toType, fromType, fromNode, castFlags);
-}
-
 bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     if (toType->isNative(NativeTypeKind::Any))
@@ -2326,7 +2273,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Struct/Interface/Typeset to pointer
-    if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface || fromType->kind == TypeInfoKind::TypeSet)
+    if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface)
     {
         if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst() || (castFlags & CASTFLAG_UFCS))
         {
@@ -3088,8 +3035,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Everything can be casted to or from type 'any'
     if (toType->isNative(NativeTypeKind::Any) || fromType->isNative(NativeTypeKind::Any))
         return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
-    if (toType->kind == TypeInfoKind::TypeSet || fromType->kind == TypeInfoKind::TypeSet)
-        return castToFromTypeSet(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic
     if (fromType->kind == TypeInfoKind::TypedVariadic)

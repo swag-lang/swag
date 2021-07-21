@@ -21,10 +21,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         scopeKind = ScopeKind::Enum;
         SWAG_CHECK(tokenizer.getToken(token));
         break;
-    case TokenId::KwdTypeSet:
-        scopeKind = ScopeKind::TypeSet;
-        SWAG_CHECK(tokenizer.getToken(token));
-        break;
     }
 
     // Identifier
@@ -41,7 +37,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (token.id == TokenId::KwdFor)
     {
         SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, Msg0438}));
-        SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, Msg0439}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension();
@@ -81,8 +76,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             hint = format(Hnt0019, implNode->token.text.c_str());
         else if (newScope->kind == ScopeKind::Struct)
             hint = format(Hnt0020, implNode->token.text.c_str());
-        else if (newScope->kind == ScopeKind::TypeSet)
-            hint = format(Hnt0021, implNode->token.text.c_str());
         PushErrHint errh(hint);
         Diagnostic  diag{implNode, format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
         Diagnostic  note{newScope->owner, newScope->owner->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
@@ -184,12 +177,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->kind        = AstNodeKind::InterfaceDecl;
         structNode->semanticFct = SemanticJob::resolveInterface;
     }
-    else if (token.id == TokenId::KwdTypeSet)
-    {
-        structType              = SyntaxStructType::TypeSet;
-        structNode->kind        = AstNodeKind::TypeSet;
-        structNode->semanticFct = SemanticJob::resolveTypeSet;
-    }
     else if (token.id == TokenId::KwdUnion)
     {
         structNode->structFlags |= STRUCTFLAG_UNION;
@@ -233,9 +220,8 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        scopeKind = structType == SyntaxStructType::TypeSet ? ScopeKind::TypeSet : ScopeKind::Struct;
-        newScope              = Ast::newScope(structNode, structNode->token.text, scopeKind, currentScope, true);
-        if (newScope->kind != scopeKind)
+        newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, currentScope, true);
+        if (newScope->kind != ScopeKind::Struct)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
             Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
@@ -271,9 +257,6 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         {
         case SyntaxStructType::Interface:
             symbolKind = SymbolKind::Interface;
-            break;
-        case SyntaxStructType::TypeSet:
-            symbolKind = SymbolKind::TypeSet;
             break;
         }
 
@@ -448,7 +431,6 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-    case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent, result));
         break;

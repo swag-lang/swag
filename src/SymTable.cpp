@@ -142,7 +142,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         symbol->kind == SymbolKind::Variable ||
         symbol->kind == SymbolKind::Struct ||
         symbol->kind == SymbolKind::Interface ||
-        symbol->kind == SymbolKind::TypeSet ||
         symbol->kind == SymbolKind::Function)
     {
         for (auto resolved : symbol->overloads)
@@ -341,7 +340,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
 
     // Overloads are not allowed on certain types
     bool canOverload = false;
-    if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct || kind == SymbolKind::Interface || kind == SymbolKind::TypeSet)
+    if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct || kind == SymbolKind::Interface)
         canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
@@ -477,8 +476,6 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a struct";
     case SymbolKind::Interface:
         return "an interface";
-    case SymbolKind::TypeSet:
-        return "a typeset";
     case SymbolKind::GenericType:
         return "a generic type";
     case SymbolKind::PlaceHolder:
@@ -512,8 +509,6 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "struct";
     case SymbolKind::Interface:
         return "interface";
-    case SymbolKind::TypeSet:
-        return "typeset";
     case SymbolKind::GenericType:
         return "generic type";
     case SymbolKind::PlaceHolder:

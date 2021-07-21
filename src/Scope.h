@@ -17,7 +17,6 @@ enum class ScopeKind
     File,
     Namespace,
     Enum,
-    TypeSet,
     Struct,
     Impl,
     Function,
@@ -50,7 +49,6 @@ struct ScopePublicSet
     set<AstNode*> publicInlinedFunc;
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
-    set<AstNode*> publicTypeSet;
     set<AstNode*> publicEnum;
     set<AstNode*> publicConst;
     set<AstNode*> publicNodes;
@@ -69,7 +67,6 @@ struct Scope
     void               addPublicInlinedFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);
-    void               addPublicTypeSet(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
     void               addPublicNode(AstNode* node);
@@ -96,7 +93,7 @@ struct Scope
     {
         if (isGlobal() || kind == ScopeKind::Impl)
             return true;
-        if (kind == ScopeKind::Struct || kind == ScopeKind::Enum || kind == ScopeKind::TypeSet)
+        if (kind == ScopeKind::Struct || kind == ScopeKind::Enum)
             return !parentScope || parentScope->isGlobal() || parentScope->kind == ScopeKind::Impl;
         return false;
     }

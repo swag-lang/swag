@@ -220,22 +220,10 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         }
     }
 
-    // Same for a typeset
-    if (node->typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        // :AutoScope
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
-        for (auto switchCase : switchNode->cases)
-        {
-            switchCase->allocateExtension();
-            switchCase->extension->alternativeScopes.push_back(typeStruct->scope);
-        }
-    }
-
     // Automatic convert to 'kindOf'
-    // This has no sens to do a switch on a 'typeset' or an 'any'. So instead of raising an error,
+    // This has no sens to do a switch on an 'any'. So instead of raising an error,
     // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
-    if (node->typeInfo->isNative(NativeTypeKind::Any) || node->typeInfo->kind == TypeInfoKind::TypeSet)
+    if (node->typeInfo->isNative(NativeTypeKind::Any))
     {
         switchNode->beforeAutoCastType = node->typeInfo;
         node->byteCodeFct              = ByteCodeGenJob::emitImplicitKindOf;
@@ -335,10 +323,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         auto back = node->cases.back();
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Msg0616}));
 
-        // For typeset, we need to test 'beforeAutoCastType', because the type of the switch is now to @kindof(originalType)
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
             return context->report({node, node->token, format(Msg0617, node->typeInfo->getDisplayName().c_str())});
-        if (node->beforeAutoCastType && node->beforeAutoCastType->kind != TypeInfoKind::TypeSet)
+        if (node->beforeAutoCastType)
             return context->report({node, node->token, format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
@@ -371,27 +358,6 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
-                    }
-                }
-            }
-        }
-        else if (node->beforeAutoCastType && node->beforeAutoCastType->kind == TypeInfoKind::TypeSet)
-        {
-            auto typeSet = CastTypeInfo<TypeInfoStruct>(node->beforeAutoCastType, TypeInfoKind::TypeSet);
-            if (val64.size() != typeSet->fields.size())
-            {
-                for (auto one : typeSet->fields)
-                {
-                    uint32_t offset;
-                    auto&    typeTable = node->sourceFile->module->typeTable;
-                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, one->typeInfo, nullptr, &offset, CONCRETE_SHOULD_WAIT));
-                    if (context->result != ContextResult::Done)
-                        return true;
-                    if (val64.find(offset) == val64.end())
-                    {
-                        Diagnostic diag{node, node->token, format(Msg0620, typeSet->name.c_str(), one->namedParam.c_str())};
-                        Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
-                        return context->report(diag, &note);
                     }
                 }
             }

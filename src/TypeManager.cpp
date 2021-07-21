@@ -528,7 +528,6 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     }
     else if (typeInfo->kind == TypeInfoKind::Slice ||
              typeInfo->kind == TypeInfoKind::Interface ||
-             typeInfo->kind == TypeInfoKind::TypeSet ||
              typeInfo->kind == TypeInfoKind::Reference ||
              typeInfo->isNative(NativeTypeKind::Any) ||
              typeInfo->isNative(NativeTypeKind::String))

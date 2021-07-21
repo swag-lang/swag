@@ -129,19 +129,5 @@
         case string: break
         default:     @assert(false)
         }
-
-        // Same for a typeset
-        typeset TypeSet
-        {
-            Bool{bool}
-            S32{s32}
-        }
-
-        var y: TypeSet = Bool{true}
-        switch y
-        {
-        case Bool: break
-        case S32:  @assert(false)
-        }
     }
 }

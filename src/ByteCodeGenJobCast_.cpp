@@ -776,7 +776,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     // Cast from any to something real
     auto node = context->node;
-    if (fromTypeInfo->isNative(NativeTypeKind::Any) || fromTypeInfo->kind == TypeInfoKind::TypeSet)
+    if (fromTypeInfo->isNative(NativeTypeKind::Any))
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
@@ -860,7 +860,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
             fromTypeInfo->kind == TypeInfoKind::Interface ||
-            fromTypeInfo->kind == TypeInfoKind::TypeSet ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->kind == TypeInfoKind::Reference ||
             fromTypeInfo->kind == TypeInfoKind::Lambda ||
@@ -894,14 +893,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToInterface(context, exprNode, typeInfo, fromTypeInfo));
-        exprNode->castedTypeInfo = nullptr;
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
-        SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
     }

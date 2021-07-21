@@ -145,8 +145,6 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a struct";
     case TypeInfoKind::Interface:
         return "an interface";
-    case TypeInfoKind::TypeSet:
-        return "a typeset";
     case TypeInfoKind::Generic:
         return "a generic type";
     case TypeInfoKind::Alias:
@@ -189,8 +187,6 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "struct";
     case TypeInfoKind::Interface:
         return "interface";
-    case TypeInfoKind::TypeSet:
-        return "typeset";
     case TypeInfoKind::Generic:
         return "generic type";
     case TypeInfoKind::Alias:

@@ -240,7 +240,6 @@ Utf8 AstNode::getArticleKindName(AstNode* node)
     case AstNodeKind::Namespace:
     case AstNodeKind::FuncDeclParam:
     case AstNodeKind::StructDecl:
-    case AstNodeKind::TypeSet:
         return "a " + result;
     case AstNodeKind::Alias:
     case AstNodeKind::EnumDecl:
@@ -273,8 +272,6 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::FuncDecl:
     case AstNodeKind::FuncDeclType:
         return "function";
-    case AstNodeKind::TypeSet:
-        return "typeset";
     case AstNodeKind::AttrDecl:
         return "attribute declaration";
     case AstNodeKind::EnumDecl:
@@ -689,14 +686,6 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         case AstNodeKind::StructDecl:
         {
             symKind           = SymbolKind::Struct;
-            auto nodeStruct   = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
-            auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
-            typeStruct->scope = nodeStruct->scope;
-            break;
-        }
-        case AstNodeKind::TypeSet:
-        {
-            symKind           = SymbolKind::TypeSet;
             auto nodeStruct   = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
             typeStruct->scope = nodeStruct->scope;

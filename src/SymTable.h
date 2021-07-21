@@ -67,7 +67,6 @@ enum class SymbolKind
     Struct,
     Interface,
     GenericType,
-    TypeSet,
     Label,
     PlaceHolder,
 };

@@ -163,15 +163,6 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        auto r2 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-        freeRegisterRC(context, r2);
-        return true;
-    }
-
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
 

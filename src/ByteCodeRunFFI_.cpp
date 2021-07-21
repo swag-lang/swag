@@ -80,7 +80,6 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         typeInfo->kind == TypeInfoKind::Variadic ||
         typeInfo->kind == TypeInfoKind::TypedVariadic ||
         typeInfo->kind == TypeInfoKind::Interface ||
-        typeInfo->kind == TypeInfoKind::TypeSet ||
         typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isNative(NativeTypeKind::String))
@@ -182,8 +181,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             sp++;
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface ||
-                 typeParam->kind == TypeInfoKind::TypeSet)
+                 typeParam->kind == TypeInfoKind::Interface)
         {
             context->ffiArgsValues.push_back(&sp->pointer); // Value
             sp++;
@@ -232,7 +230,6 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         // Special return
         if (returnType->kind == TypeInfoKind::Slice ||
             returnType->kind == TypeInfoKind::Interface ||
-            returnType->kind == TypeInfoKind::TypeSet ||
             returnType->isNative(NativeTypeKind::Any) ||
             returnType->isNative(NativeTypeKind::String))
         {

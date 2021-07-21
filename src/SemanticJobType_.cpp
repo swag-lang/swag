@@ -219,7 +219,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::TypeAlias &&
                     symName->kind != SymbolKind::GenericType &&
                     symName->kind != SymbolKind::Struct &&
-                    symName->kind != SymbolKind::TypeSet &&
                     symName->kind != SymbolKind::Interface)
                 {
                     Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
@@ -431,9 +430,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
-    if (typeResolved->kind == TypeInfoKind::Struct ||
-        typeResolved->kind == TypeInfoKind::TypeSet ||
-        typeResolved->kind == TypeInfoKind::Interface)
+    if (typeResolved->kind == TypeInfoKind::Struct || typeResolved->kind == TypeInfoKind::Interface)
     {
         node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
         SWAG_CHECK(resolveTypeAliasBefore(context));

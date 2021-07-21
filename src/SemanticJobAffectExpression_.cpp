@@ -154,7 +154,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::TypeListArray &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
             leftTypeInfo->kind != TypeInfoKind::Interface &&
-            leftTypeInfo->kind != TypeInfoKind::TypeSet &&
             leftTypeInfo->kind != TypeInfoKind::Array &&
             leftTypeInfo->kind != TypeInfoKind::Alias &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
@@ -168,7 +167,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::TypeListArray &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::Interface &&
-            rightTypeInfo->kind != TypeInfoKind::TypeSet &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Alias)
             return context->report({right, format(Msg0572, rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});

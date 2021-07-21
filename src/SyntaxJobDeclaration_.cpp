@@ -480,7 +480,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-    case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
     {
         AstNode* subDecl;
@@ -560,7 +559,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-    case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent, result));
         break;

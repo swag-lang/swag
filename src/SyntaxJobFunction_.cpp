@@ -162,9 +162,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, Msg0406));
 
-        // For an enum or a typeset, 'self' is replaced with the type itself, not a pointer to the type like
-        // for a struct
-        if (paramNode->ownerStructScope->kind == ScopeKind::Enum || paramNode->ownerStructScope->kind == ScopeKind::TypeSet)
+        // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
+        if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= TYPEFLAG_ISSELF;

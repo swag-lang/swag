@@ -159,7 +159,6 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     }
 
     case TypeInfoKind::Struct:
-    case TypeInfoKind::TypeSet:
     case TypeInfoKind::Interface:
     {
         unique_lock lk(childType->mutex); // race condition with 'name'
@@ -339,25 +338,6 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
             varDecl->assignment->allocateExtension();
             varDecl->assignment->extension->alternativeScopes.push_front(typeEnum->scope);
-        }
-    }
-
-    // :AutoScope
-    // Same for typeset
-    else if (typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        auto typeSet = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::TypeSet);
-        varDecl->assignment->allocateExtension();
-        varDecl->assignment->extension->alternativeScopes.push_front(typeSet->scope);
-    }
-    else if (typeInfo->kind == TypeInfoKind::Array)
-    {
-        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArr->finalType->kind == TypeInfoKind::TypeSet)
-        {
-            auto typeSet = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::TypeSet);
-            varDecl->assignment->allocateExtension();
-            varDecl->assignment->extension->alternativeScopes.push_front(typeSet->scope);
         }
     }
 
@@ -597,7 +577,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (!node->assignment &&
         !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
         !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
-        (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::TypeSet || node->typeInfo->kind == TypeInfoKind::Interface) &&
+        (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::Interface) &&
         !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
         return &module->bssSegment;
 
@@ -652,9 +632,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         return context->report({node, Msg0159});
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
-                                     node->ownerMainNode->kind != AstNodeKind::TypeSet &&
-                                     node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
+        if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl && node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
         {
             if (node->ownerScope->isGlobalOrImpl())
             {

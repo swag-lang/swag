@@ -27,10 +27,9 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::TypeSet, context->report({node, node->token, Msg0690}));
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, node->token, Msg0691}));
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, format(Msg0692, typeInfoVar->name.c_str())}));
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         {
             regNode->allocateExtension();
             regNode->extension->alternativeScopes.push_back(typeStruct->scope);
