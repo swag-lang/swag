@@ -180,8 +180,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     else
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
-    SWAG_CHECK(eatSemiCol("'#compiler' expression"));
-
+    SWAG_CHECK(eatSemiCol("'#assert' expression"));
     return true;
 }
 

@@ -435,7 +435,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // Get the contextual structure call if it exists
     if (context->node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->identifierRef->resolvedSymbolOverload)
         {
             auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
@@ -506,6 +506,12 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newFunc->allocateExtension();
         newFunc->extension->alternativeScopes.push_back(contextualStruct->scope);
+    }
+
+    if (node->ownerFct && node->ownerFct->extension && node->ownerFct->extension->alternativeScopes.size())
+    {
+        newFunc->allocateExtension();
+        newFunc->extension->alternativeScopes.append(node->ownerFct->extension->alternativeScopes);
     }
 
     // Generate and initialize a new type if the type is still generic
