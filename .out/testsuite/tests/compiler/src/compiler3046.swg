@@ -41,8 +41,13 @@ impl AA
 
 #test
 {
-    var v: AA'(@[s32, bool])
+    var v: AA'(@[s32, string])
+
     v.set's32(666)
     x := v.get's32()
     @assert(x == 666)
+
+    v.set'string("titi")
+    x1 := v.get'string()
+    @assert(x1 == "titi")
 }
