@@ -64,7 +64,6 @@ using Swag
     func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != null
 
     func hasDrop(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.HasDrop) ? true : false
-    func hasReloc(type: typeinfo)->bool    => (type.flags & TypeInfoFlags.HasReloc) ? true : false
     func hasPostMove(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
     func hasPostCopy(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
     func canCopy(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.CanCopy) ? true : false

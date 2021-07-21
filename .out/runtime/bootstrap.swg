@@ -322,12 +322,11 @@ namespace Swag
         Integer     = 0x0002
         Float       = 0x0004
         Unsigned    = 0x0008
-        HasReloc    = 0x0010
-        HasPostCopy = 0x0020
-        HasPostMove = 0x0040
-        HasDrop     = 0x0080
-        Strict      = 0x0100
-        CanCopy     = 0x0200
+        HasPostCopy = 0x0010
+        HasPostMove = 0x0020
+        HasDrop     = 0x0040
+        Strict      = 0x0080
+        CanCopy     = 0x0100
     }
 
     struct TypeInfo
@@ -390,7 +389,6 @@ namespace Swag
         using base: 	TypeInfo
         opInit:         func(*void)
         opDrop:         func(*void)
-        opReloc:        func(*void, *void)
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
         structName:	    string

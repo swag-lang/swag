@@ -742,14 +742,6 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     // Shallow copy
     emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
-    // Reloc
-    if (typeInfoStruct->opReloc || typeInfoStruct->opUserRelocFct)
-    {
-        PushICFlags sf(context, BCI_POST_COPYMOVE);
-        emitInstruction(context, ByteCodeOp::PushRAParam2, r1, r0);
-        emitOpCallUser(context, typeInfoStruct->opUserRelocFct, typeInfoStruct->opReloc, false, 0, 2);
-    }
-
     // A copy
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
     if (mustCopy)

@@ -22,8 +22,6 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
-    if (realType->opReloc || realType->opUserRelocFct)
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasReloc;
 
     // Special functions lambdas
     concreteType->opInit = nullptr;
@@ -37,19 +35,6 @@ bool TypeTableJob::computeStruct()
         }
         else
             segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
-    }
-
-    concreteType->opReloc = nullptr;
-    if (realType->opReloc || (realType->opUserRelocFct && realType->opUserRelocFct->isForeign()))
-    {
-        concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, realType->opUserRelocFct, realType->opReloc);
-        if (!realType->opReloc)
-        {
-            realType->opUserRelocFct->computeFullNameForeign(false);
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opUserRelocFct->fullnameForeign, DataSegment::RelocType::Foreign);
-        }
-        else
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opReloc->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opDrop = nullptr;

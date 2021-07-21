@@ -731,8 +731,6 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opUserInitFct     = opUserInitFct;
     newType->opDrop            = opDrop;
     newType->opUserDropFct     = opUserDropFct;
-    newType->opReloc           = opReloc;
-    newType->opUserRelocFct    = opUserRelocFct;
     newType->opPostCopy        = opPostCopy;
     newType->opUserPostCopyFct = opUserPostCopyFct;
     newType->opPostMove        = opPostMove;
@@ -890,7 +888,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 bool TypeInfoStruct::canRawCopy()
 {
-    return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct && !opReloc && !opUserRelocFct;
+    return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }
 
 Utf8 TypeInfoStruct::getDisplayName()

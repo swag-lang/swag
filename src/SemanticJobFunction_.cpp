@@ -565,13 +565,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeStruct->opUserDropFct = funcNode;
             SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
-        else if (funcNode->token.text == "opReloc")
-        {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
-            typeStruct->opUserRelocFct = funcNode;
-        }
         else if (funcNode->token.text == "opPostCopy")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);

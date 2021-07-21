@@ -548,8 +548,6 @@ struct TypeInfoStruct : public TypeInfo
     AstFuncDecl*    opUserInitFct     = nullptr;
     ByteCode*       opDrop            = nullptr;
     AstFuncDecl*    opUserDropFct     = nullptr;
-    ByteCode*       opReloc           = nullptr;
-    AstFuncDecl*    opUserRelocFct    = nullptr;
     ByteCode*       opPostCopy        = nullptr;
     AstFuncDecl*    opUserPostCopyFct = nullptr;
     ByteCode*       opPostMove        = nullptr;
