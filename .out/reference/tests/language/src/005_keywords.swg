@@ -160,7 +160,6 @@ struct
 throw
 true
 try
-typeset
 union
 using
 var
