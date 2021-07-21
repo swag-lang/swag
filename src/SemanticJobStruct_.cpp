@@ -435,7 +435,7 @@ bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
 bool SemanticJob::preResolveStructContent(SemanticContext* context)
 {
     auto node = (AstStruct*) context->node->parent;
-    SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl || node->kind == AstNodeKind::TypeSet);
+    SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
 
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));

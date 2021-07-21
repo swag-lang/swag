@@ -499,17 +499,6 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
                 SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
                 bufferSwg.addEol();
             }
-
-            // Typeset content
-            else
-            {
-                SWAG_ASSERT(p->declNode->kind == AstNodeKind::StructDecl);
-                SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
-                bufferSwg.addIndent(indent + 1);
-                bufferSwg.addString(p->namedParam);
-                emitTypeTuple(p->typeInfo, indent);
-                bufferSwg.addEol();
-            }
         }
 
         for (auto p : typeStruct->consts)
