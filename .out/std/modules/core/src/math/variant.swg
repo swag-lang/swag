@@ -40,7 +40,7 @@ impl Variant
 
     method opPostMove()
     {
-        //#if orFlags() & .HasPostMove
+        #if orFlags() & .HasPostMove
         {
             if type and Reflection.hasPostMove(type)
             {
@@ -52,7 +52,7 @@ impl Variant
 
     method drop()
     {
-        //#if orFlags() & .HasDrop
+        #if orFlags() & .HasDrop
         {
             if type and Reflection.hasDrop(type)
             {

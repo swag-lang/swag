@@ -231,7 +231,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeArray->pointedType);
                         }
-                        else
+                        else if (callTypeInfo->kind != TypeInfoKind::TypeListArray)
                         {
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(callTypeInfo);

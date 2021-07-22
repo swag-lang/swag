@@ -2069,7 +2069,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     {
         if (justCheck)
             return true;
-
         SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
     }
@@ -3349,6 +3348,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     {
         auto        symbol = p.first;
         scoped_lock lkn(symbol->mutex);
+                
         if (!symbol->cptOverloads)
             continue;
 
