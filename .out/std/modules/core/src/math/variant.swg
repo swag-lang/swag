@@ -9,6 +9,15 @@ struct(T: const [..] typeinfo) Variant
 
 impl Variant
 {
+    #[Swag.ConstExpr]
+    func orFlags()->Swag.TypeInfoFlags
+    {
+        var res: Swag.TypeInfoFlags = None
+        visit p: T
+            res |= p.flags
+        return res
+    }
+
     method opDrop()
     {
         drop()
@@ -16,10 +25,13 @@ impl Variant
 
     method opPostCopy()
     {
-        if type and Reflection.hasPostCopy(type)
+        #if orFlags() & cast(u16) .HasPostCopy
         {
-            typeStruct := cast(const *Swag.TypeInfoStruct) type
-            typeStruct.opPostCopy(buffer)
+            if type and Reflection.hasPostCopy(type)
+            {
+                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                typeStruct.opPostCopy(buffer)
+            }
         }
     }
 
