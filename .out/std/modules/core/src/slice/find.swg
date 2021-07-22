@@ -52,6 +52,7 @@ func(T) findLinear(values: const [..] T, value: T) -> {index: uint, success: boo
 }
 
 // Returns true if the given slice contains the 'value'
+#[Swag.ConstExpr]
 func(T) contains(values: const [..] T, value: T)->bool
 {
     visit v: values
