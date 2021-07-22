@@ -1,8 +1,8 @@
 BYTECODE_OP(Nop, 0, "")
 BYTECODE_OP(PushBP, 0, "")
 BYTECODE_OP(PopBP, 0, "")
-BYTECODE_OP(PushRR, 0, "")
-BYTECODE_OP(PopRR, 0, "")
+BYTECODE_OP(PushRR, 0, "push &result")
+BYTECODE_OP(PopRR, 0, "pop &result")
 BYTECODE_OP(DebugNop, 0, "")
 
 BYTECODE_OP(IncSPPostCall, OPFLAG_READ_VAL32_A, "popstack _rau32_")
@@ -174,7 +174,7 @@ BYTECODE_OP(Add64byVB64, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B | 
 BYTECODE_OP(CopyRCtoRR, OPFLAG_READ_A | OPFLAG_IMM_A, "result = _rau64_")
 BYTECODE_OP(CopyRCtoRR2, OPFLAG_READ_A | OPFLAG_READ_B, "result = _ra_, _rb_")
 BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "&result = _ra_")
-BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A, "")
+BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A, "_ra_ = &result")
 BYTECODE_OP(CopyRTtoRC, OPFLAG_WRITE_A, "_ra_ = result")
 BYTECODE_OP(CopyRTtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = result")
 

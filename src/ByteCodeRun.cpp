@@ -1186,7 +1186,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto popR = context->returnRegOnRet.back();
         context->returnRegOnRet.pop_back();
         if (popR != UINT32_MAX)
+        {
             context->registersRC[context->curRC]->buffer[popR].u64 = context->registersRR[0].u64;
+
+            // Restore RR register to its previous value
+            context->registersRR[0].u64 = context->returnRegOnRetRR.back();
+            context->returnRegOnRetRR.pop_back();
+        }
 
         break;
     }

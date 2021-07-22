@@ -120,6 +120,8 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
 
     context->popParamsOnRet.push_back(popParamsOnRet);
     context->returnRegOnRet.push_back(returnReg);
+    if (returnReg != UINT8_MAX)
+        context->returnRegOnRetRR.push_back(context->registersRR[0].u64);
 }
 
 void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)

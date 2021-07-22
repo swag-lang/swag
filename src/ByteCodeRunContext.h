@@ -72,6 +72,7 @@ struct ByteCodeRunContext : public JobContext
     vector<VectorNative<Register>*> registersRC;
     vector<uint32_t>                popParamsOnRet;
     vector<uint32_t>                returnRegOnRet;
+    vector<uint64_t>                returnRegOnRetRR;
 
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;

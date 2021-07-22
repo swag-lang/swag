@@ -156,7 +156,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     // Value
     if (realType->flags & TYPEINFO_DEFINED_VALUE)
     {
-        if (realType->typeInfo->kind == TypeInfoKind::Array)
+        if (realType->typeInfo->kind == TypeInfoKind::Array || realType->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
             concreteType->value = module->constantSegment.address(realType->value.storageOffset);
             segment->addInitPtr(OFFSETOF(concreteType->value), realType->value.storageOffset, SegmentKind::Constant);
