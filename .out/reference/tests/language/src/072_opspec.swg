@@ -20,7 +20,7 @@ impl Struct
     // Called after a raw copy operation from one value to another
     func opPostCopy(using self) {}
 
-    // Called after a,move semantic operation from one value to another
+    // Called after a move semantic operation from one value to another
     func opPostMove(using self) {}
 
     // Get value by slice [low..up]

@@ -11,7 +11,7 @@
         @assert(a == true)
     }
 
-    // 'any' is in fact a pointer to the value, and a 'const *Swag.TypeInfo'
+    // 'any' is in fact a pointer to the value, and a 'typeinfo'
     {
         var a: any = 6
         ptr := cast(const *s32) @dataof(a)

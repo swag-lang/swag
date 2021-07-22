@@ -74,13 +74,13 @@
             }
         }
 
-        a := 0
+        a := 1
         myMacro()
         {
             a += 2
         }
 
-        @assert(a == 2)
+        @assert(a == 3)
     }
 
     // You can extend the language with macros, without using pointers to functions

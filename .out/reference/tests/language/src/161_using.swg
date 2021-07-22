@@ -27,6 +27,7 @@
 
         func setOne(using point: *Point)
         {
+            // Here there's no need to specify 'point'
             x, y = 1
         }
 

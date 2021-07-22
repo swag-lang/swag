@@ -1,4 +1,4 @@
-// #test is a special function than can be used in the 'tests' folder of the workspace.
+// #test is a special function than can be used in the 'tests/' folder of the workspace.
 // They will be executed only if swag is run in test mode.
 #test
 {

@@ -120,7 +120,7 @@
         }
     }
 
-    // When used on a 'typeset' or 'any' variable, switch is done on the
+    // When used on an 'any' variable, switch is done on the
     // underlying variable type
     {
         var x: any = "value"

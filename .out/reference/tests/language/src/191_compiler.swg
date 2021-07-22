@@ -10,22 +10,22 @@ attr ConstExpr()
 attr PrintBc()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]
-attr compiler()
+attr Compiler()
 
 #[AttrUsage(AttributeUsage.Function)]
 attr Inline()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr macro()
+attr Macro()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr mixin()
+attr Mixin()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr test()
+attr Test()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr implicit()
+attr Implicit()
 
 // Hardcoded also for switch
 #[AttrUsage(AttributeUsage.Function)]
@@ -35,10 +35,10 @@ attr Complete()
 attr NoReturn()
 
 #[AttrUsage(AttributeUsage.Function)]
-attr foreign(module: string, function: string = "");
+attr Foreign(module: string, function: string = "");
 
 #[AttrUsage(AttributeUsage.Function)]
-attr callback()
+attr Callback()
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]
 attr Discardable()
@@ -50,19 +50,19 @@ attr Deprecated(msg: string = null)
 attr Strict()
 
 // Hardcoded for local variables
-attr global()
+attr Global()
 
 // Hardcoded for struct and variables
-attr align(value: u8)
+attr Align(value: u8)
 
 #[AttrUsage(AttributeUsage.Struct)]
-attr pack(value: u8)
+attr Pack(value: u8)
 
 #[AttrUsage(AttributeUsage.Struct)]
 attr NoCopy()
 
 #[AttrUsage(AttributeUsage.StructVariable)]
-attr offset(name: string)
+attr Offset(name: string)
 
 #[AttrUsage(AttributeUsage.Enum)]
 attr EnumFlags()
@@ -74,7 +74,7 @@ attr EnumIndex()
 attr Safety(what: string, value: bool)
 
 #[AttrUsage(AttributeUsage.All)]
-attr selectif(value: bool)
+attr SelectIf(value: bool)
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
-attr optim(what: string, value: bool)
+attr Optim(what: string, value: bool)

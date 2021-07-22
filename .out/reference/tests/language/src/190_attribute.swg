@@ -10,7 +10,7 @@ attr AttributeB(x, y: s32, z: string);
 // Attributes can have default values
 attr AttributeBA(x: s32, y: string = "string");
 
-// You can define a usage before the attribute definition to restric its use
+// You can define a usage before the attribute definition to restric its usage
 #[AttrUsage(AttributeUsage.Function)]
 attr AttributeC();
 
