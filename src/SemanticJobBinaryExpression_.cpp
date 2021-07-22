@@ -778,6 +778,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
+    if (context->sourceFile->name == "compiler3049.swg")
+        context = context;
+
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     if (context->result == ContextResult::Pending)
         return true;

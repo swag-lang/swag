@@ -374,8 +374,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     // Transform result to a literal value
     else if (node->resultRegisterRC.size())
     {
-        node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
-        if (node->typeInfo->isNative(NativeTypeKind::String))
+        auto realType  = TypeManager::concreteReferenceType(node->typeInfo);
+        node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
+
+        if (realType->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
             const char* pz  = (const char*) runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
@@ -385,34 +387,34 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
             memcpy(node->computedValue.text.buffer, pz, len);
             node->computedValue.text.buffer[len] = 0;
         }
-        else if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        else if (realType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             bool ok = false;
-            if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            if (realType->kind == TypeInfoKind::Struct && realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
                 ok = true;
-            if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+            if (realType->kind == TypeInfoKind::Struct && realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
                 ok = true;
-            if (node->typeInfo->kind == TypeInfoKind::Array)
+            if (realType->kind == TypeInfoKind::Array)
                 ok = true;
 
             if (!ok)
             {
-                if (node->typeInfo->kind == TypeInfoKind::Struct && !(node->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
-                    return callerContext->report({node, format(Msg0281, node->typeInfo->getDisplayName().c_str())});
-                return callerContext->report({node, format(Msg0280, node->typeInfo->getDisplayName().c_str())});
+                if (realType->kind == TypeInfoKind::Struct && !(realType->flags & TYPEINFO_STRUCT_IS_TUPLE))
+                    return callerContext->report({node, format(Msg0281, realType->getDisplayName().c_str())});
+                return callerContext->report({node, format(Msg0280, realType->getDisplayName().c_str())});
             }
 
             auto storageSegment                = &sourceFile->module->constantSegment;
-            auto offsetStorage                 = storageSegment->reserve(node->typeInfo->sizeOf);
+            auto offsetStorage                 = storageSegment->reserve(realType->sizeOf);
             node->computedValue.storageOffset  = offsetStorage;
             node->computedValue.storageSegment = storageSegment;
             auto addrDst                       = storageSegment->address(offsetStorage);
             auto addrSrc                       = runContext.registersRR[0].pointer;
-            memcpy(addrDst, (const void*) addrSrc, node->typeInfo->sizeOf);
+            memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
         }
         else
         {
-            switch (node->typeInfo->sizeOf)
+            switch (realType->sizeOf)
             {
             case 1:
                 node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;

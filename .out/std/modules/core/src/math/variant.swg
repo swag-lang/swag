@@ -9,6 +9,9 @@ struct(T: const [..] typeinfo) Variant
 
 impl Variant
 {
+    // Make an union of flags of all types
+    // That way, no need to compile a call to 'opDrop' if none of the types has a drop.
+    // Same for 'opPostCopy' and 'opPostMove'.
     #[Swag.ConstExpr]
     func orFlags()->Swag.TypeInfoFlags
     {
@@ -25,7 +28,7 @@ impl Variant
 
     method opPostCopy()
     {
-        #if orFlags() & cast(u16) .HasPostCopy
+        #if orFlags() & .HasPostCopy
         {
             if type and Reflection.hasPostCopy(type)
             {
@@ -37,19 +40,25 @@ impl Variant
 
     method opPostMove()
     {
-        if type and Reflection.hasPostMove(type)
+        //#if orFlags() & .HasPostMove
         {
-            typeStruct := cast(const *Swag.TypeInfoStruct) type
-            typeStruct.opPostMove(buffer)
+            if type and Reflection.hasPostMove(type)
+            {
+                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                typeStruct.opPostMove(buffer)
+            }
         }
     }
 
     method drop()
     {
-        if type and Reflection.hasDrop(type)
+        //#if orFlags() & .HasDrop
         {
-            typeStruct := cast(const *Swag.TypeInfoStruct) type
-            typeStruct.opDrop(buffer)
+            if type and Reflection.hasDrop(type)
+            {
+                typeStruct := cast(const *Swag.TypeInfoStruct) type
+                typeStruct.opDrop(buffer)
+            }
         }
     }
 

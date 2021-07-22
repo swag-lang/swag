@@ -1,4 +1,4 @@
-/*#[Swag.ConstExpr]
+#[Swag.ConstExpr]
 func orFlags()->Swag.TypeInfoFlags
 {
     var res: Swag.TypeInfoFlags = None
@@ -8,4 +8,3 @@ func orFlags()->Swag.TypeInfoFlags
 #if orFlags() & .None
 {
 }
-*/
