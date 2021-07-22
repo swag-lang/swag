@@ -78,7 +78,8 @@
         #assert(array[3] == 4)
     }
 
-    // The type of the first literal value will be used for all other members
+    // If type is not specified, the type of the first literal value will be used
+    // for all other members
     {
         arr := @[1'f64, 2, 3, 4]
         @assert(@countof(arr) == 4)

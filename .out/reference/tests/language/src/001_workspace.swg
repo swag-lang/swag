@@ -17,9 +17,12 @@ modulename/     the folder name of the module is used to create output files
 src/            contains the source code
 public/         a generated folder that will contain all the exports needed by other modules to use that one
 
-A module contains, at its root, a file named "module.swg". This is a special file that can be used to configure the module. It is mandatory.
+A module contains, at its root, a file named "module.swg".
+This is a special file that can be used to configure the module. It is mandatory.
 
-To compile a workspace, type 'swag build -w:<workspacename>'. You can omit the workspace name if you call swag from the workspace folder. This will compile 'modules/' and 'examples/'.
+To compile a workspace, type 'swag build -w:<workspacename>'.
+You can omit the workspace name if you call swag directly from the workspace folder.
+This will compile all modules in 'modules/' and 'examples/'.
 
 To also compile and run the '/tests' folders, type 'swag test -w:<workspacename>'.
 
