@@ -2642,9 +2642,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 if (symbol->kind == SymbolKind::Function)
                 {
                     // Be sure we have a missing parameter in order to try ufcs
-                    auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                    auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
-                    if (numParams < typeFunc->parameters.size())
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                    if (canTryUfcs(context, typeFunc, node->callParameters, dependentVar))
                     {
                         identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                         identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
@@ -2657,6 +2656,38 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
     *result = dependentVar;
     return true;
+}
+
+bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode)
+{
+    auto numParams = parameters ? parameters->childs.size() : 0;
+
+    if (!ufcsNode || typeFunc->parameters.size() == 0)
+        return false;
+
+    // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
+    // This can happen if we have already changed the ast, but the nodes are reavaluated later
+    // (because of an inline for example)
+    if (ufcsNode->flags & AST_NO_BYTECODE)
+        return false;
+
+    if (numParams < typeFunc->parameters.size())
+        return true;
+
+    // In case of variadic functions, make ufcs if the first parameter is correct
+    if (typeFunc->flags & TYPEINFO_VARIADIC)
+    {
+        bool cmp = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+        if (cmp)
+            return true;
+    }
+
+    // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
+    // right number of arguments (not sure all of thoses tests are bullet proof)
+    if (typeFunc->kind == TypeInfoKind::Lambda)
+        return false;
+
+    return false;
 }
 
 bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
@@ -2685,39 +2716,9 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
-
-                // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
-                // This can happen if we have already changed the ast, but the nodes are reavaluated later
-                // (because of an inline for example)
-                if (identifierRef->previousResolvedNode->flags & AST_NO_BYTECODE)
-                    return true;
-
-                auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
-
-                if (typeFunc->parameters.size())
-                {
-                    // If we have missing parameters, we will try ufcs
-                    if (numParams < typeFunc->parameters.size())
-                        *ufcsFirstParam = identifierRef->previousResolvedNode;
-
-                    // In case of variadic functions, make ufcs if the first parameter is correct
-                    else if (typeFunc->flags & TYPEINFO_VARIADIC)
-                    {
-                        bool cmp = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, identifierRef->previousResolvedNode->typeInfo, nullptr, identifierRef->previousResolvedNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
-                        if (cmp)
-                            *ufcsFirstParam = identifierRef->previousResolvedNode;
-                    }
-
-                    // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
-                    // right number of arguments (not sure all of thoses tests are bullet proof)
-                    else
-                    {
-                        if (overload->typeInfo->kind != TypeInfoKind::Lambda)
-                            *ufcsFirstParam = identifierRef->previousResolvedNode;
-                    }
-                }
-
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                if (canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode))
+                    *ufcsFirstParam = identifierRef->previousResolvedNode;
                 SWAG_VERIFY(node->callParameters, context->report({node, Msg0119}));
             }
         }
