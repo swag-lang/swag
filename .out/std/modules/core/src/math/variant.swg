@@ -37,6 +37,13 @@ impl Variant
         return dref cast(*TN) buffer == other
     }
 
+    method(TN) opCmp(other: TN)->s32
+        #checkif checkValidType(T, TN)
+    {
+        Debug.assert(type == TN, "requested type does not match the variant current type")
+        return dref cast(*TN) buffer <=> other
+    }
+
     method opPostCopy()
     {
         #if AllFlags & .HasPostCopy
@@ -61,6 +68,7 @@ impl Variant
         }
     }
 
+    // Drop the variant content (if necessary)
     method drop()
     {
         #if AllFlags & .HasDrop
@@ -69,6 +77,7 @@ impl Variant
             {
                 typeStruct := cast(const *Swag.TypeInfoStruct) type
                 typeStruct.opDrop(buffer)
+                type = null
             }
         }
     }
