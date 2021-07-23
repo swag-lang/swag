@@ -2643,7 +2643,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 {
                     // Be sure we have a missing parameter in order to try ufcs
                     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                    if (canTryUfcs(context, typeFunc, node->callParameters, dependentVar))
+                    if (canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false))
                     {
                         identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                         identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
@@ -2658,7 +2658,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode)
+bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
 {
     auto numParams = parameters ? parameters->childs.size() : 0;
 
@@ -2671,14 +2671,20 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     if (ufcsNode->flags & AST_NO_BYTECODE)
         return false;
 
+    // Compare first function parameter with ufcsNode type.
+    bool cmpFirstParam = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+
+    // In case ufcsNode is not explicit (using var), then be sure that first parameter type matches.
+    if (!nodeIsExplicit && !cmpFirstParam)
+        return false;
+
     if (numParams < typeFunc->parameters.size())
         return true;
 
     // In case of variadic functions, make ufcs if the first parameter is correct
     if (typeFunc->flags & TYPEINFO_VARIADIC)
     {
-        bool cmp = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
-        if (cmp)
+        if (cmpFirstParam)
             return true;
     }
 
@@ -2717,7 +2723,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                if (canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode))
+                if (canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true))
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
                 SWAG_VERIFY(node->callParameters, context->report({node, Msg0119}));
             }

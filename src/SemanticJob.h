@@ -299,7 +299,7 @@ struct SemanticJob : public Job
     static bool         resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result);
-    static bool         canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode);
+    static bool         canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
     static bool         getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
     static bool         appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
     static bool         fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
