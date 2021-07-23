@@ -2643,7 +2643,10 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 {
                     // Be sure we have a missing parameter in order to try ufcs
                     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                    if (canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false))
+                    bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                    if (canTry)
                     {
                         identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                         identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
@@ -2660,8 +2663,6 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
 bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
 {
-    auto numParams = parameters ? parameters->childs.size() : 0;
-
     if (!ufcsNode || typeFunc->parameters.size() == 0)
         return false;
 
@@ -2672,12 +2673,18 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
         return false;
 
     // Compare first function parameter with ufcsNode type.
-    bool cmpFirstParam = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+    bool cmpFirstParam = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, /*CASTFLAG_AUTO_OPCAST |*/ CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+    if (context->result == ContextResult::Pending)
+        return false;
 
     // In case ufcsNode is not explicit (using var), then be sure that first parameter type matches.
     if (!nodeIsExplicit && !cmpFirstParam)
         return false;
 
+    //if (!cmpFirstParam)
+        //return false;
+
+    auto numParams = parameters ? parameters->childs.size() : 0;
     if (numParams < typeFunc->parameters.size())
         return true;
 
@@ -2723,35 +2730,14 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                if (canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true))
+                bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
+                if (context->result == ContextResult::Pending)
+                    return true;
+                if (canTry)
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
                 SWAG_VERIFY(node->callParameters, context->report({node, Msg0119}));
             }
         }
-    }
-
-    // We want to force the ufcs
-    if (!*ufcsFirstParam && (node->flags & AST_FORCE_UFCS))
-    {
-        if (identifierRef->startScope)
-        {
-            auto typeRef = TypeManager::concreteReference(identifierRef->typeInfo);
-            if (typeRef)
-            {
-                if (typeRef->kind == TypeInfoKind::Pointer)
-                    typeRef = ((TypeInfoPointer*) typeRef)->pointedType;
-                if (typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    return context->report({node, node->token, format(Msg0120, node->token.text.c_str())});
-            }
-
-            auto displayName = identifierRef->startScope->getFullName();
-            if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
-                displayName = identifierRef->typeInfo->name;
-            if (!displayName.empty())
-                return context->report({node, node->token, format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
-        }
-
-        return context->report({node, node->token, format(Msg0122, node->token.text.c_str())});
     }
 
     if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
@@ -3464,10 +3450,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             // Is there a using variable associated with the symbol to solve ?
             AstNode* dependentVar = nullptr;
             SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
+            if (context->result == ContextResult::Pending)
+                return true;
 
             // Get the ufcs first parameter if we can
             AstNode* ufcsFirstParam = nullptr;
             SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
+            if (context->result == ContextResult::Pending)
+                return true;
+            if ((node->flags & AST_FORCE_UFCS) && !ufcsFirstParam)
+                continue;
 
             // If the last parameter of a function is of type 'code', and the last call parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
@@ -3496,6 +3488,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             listTryMatch.push_back(tryMatch);
         }
 
+        if (listTryMatch.empty())
+        {
+            job->cacheMatches.clear();
+            break;
+        }
+
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, false, forGhosting));
         if (context->result == ContextResult::Pending)
             return true;
@@ -3504,11 +3502,39 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         // means that we need to restart everything...
         if (context->result != ContextResult::NewChilds)
             break;
+
         context->result = ContextResult::Done;
     }
 
     if (job->cacheMatches.empty())
+    {
+        // We want to force the ufcs
+        if (node->flags & AST_FORCE_UFCS)
+        {
+            if (identifierRef->startScope)
+            {
+                auto typeRef = TypeManager::concreteReference(identifierRef->typeInfo);
+                if (typeRef)
+                {
+                    if (typeRef->kind == TypeInfoKind::Pointer)
+                        typeRef = ((TypeInfoPointer*) typeRef)->pointedType;
+                    if (typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                        return context->report({node, node->token, format(Msg0120, node->token.text.c_str())});
+                }
+
+                auto displayName = identifierRef->startScope->getFullName();
+                if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
+                    displayName = identifierRef->typeInfo->name;
+                if (!displayName.empty())
+                    return context->report({node, node->token, format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+            }
+
+            return context->report({node, node->token, format(Msg0122, node->token.text.c_str())});
+        }
+
         return false;
+    }
+
     if (forGhosting)
         return true;
 

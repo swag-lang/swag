@@ -86,7 +86,7 @@ func swapParams(what: string)->String
         #if LOG Console.print("type: '%'\n", type)
 
         // Pointer
-        if(type.lastRune() == "*"'rune)
+        if type.lastRune() == "*"'rune
         {
             idxType = type.length - 2
             while Latin1.isSpace(type[idxType]) idxType -= 1
