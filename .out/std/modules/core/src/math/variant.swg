@@ -30,6 +30,13 @@ impl Variant
         set'TN(other)
     }
 
+    method(TN) opEquals(other: TN)->bool
+        #checkif checkValidType(T, TN)
+    {
+        Debug.assert(type == TN, "requested type does not match the variant current type")
+        return dref cast(*TN) buffer == other
+    }
+
     method opPostCopy()
     {
         #if AllFlags & .HasPostCopy
