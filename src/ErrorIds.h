@@ -122,6 +122,7 @@
 #define Msg0126 "here is '%s'"
 #define Msg0127 "identifier '%s' has call parameters, but is %s and not a function"
 #define Msg0128 "during '#selectif' validation of function call"
+#define Msg0129 "during '#checkif' validation of function call"
 #define Msg0130 "invalid generic parameters, identifier '%s' is %s and not a function or a structure"
 #define Msg0131 "when solving affectation"
 #define Msg0132 "invalid reference to private scope"

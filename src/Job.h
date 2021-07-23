@@ -54,6 +54,7 @@ struct JobContext
         Generic,
         Inline,
         SelectIf,
+        CheckIf,
         Node,
     };
 

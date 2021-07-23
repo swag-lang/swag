@@ -184,6 +184,10 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             kindName    = Msg0128;
             kindArticle = "to ";
             break;
+        case JobContext::ExpansionType::CheckIf:
+            kindName    = Msg0129;
+            kindArticle = "to ";
+            break;
         case JobContext::ExpansionType::Node:
             kindName    = Msg0134;
             kindArticle = "";

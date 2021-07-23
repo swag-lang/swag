@@ -638,7 +638,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         if (!node->childs.empty())
         {
             auto resolved = node->childs.front()->resolvedSymbolOverload;
-            locNode       = resolved->node;
+            if (resolved)
+                locNode = resolved->node;
         }
 
         ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue.storageOffset, &node->computedValue.storageSegment);

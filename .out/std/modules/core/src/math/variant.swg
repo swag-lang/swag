@@ -11,6 +11,15 @@ struct(T: const [..] typeinfo) Variant
 
 impl Variant
 {
+    #[Swag.ConstExpr]
+    func checkValidType(t: const [..] typeinfo, tn: typeinfo)->bool
+    {
+        if Slice.contains(t, tn)
+            return true
+        @errormsg(Format.toString("type '%' is not part of the variant", tn.name), #location(tn))
+        return false
+    }
+
     method opDrop()
     {
         drop()
@@ -18,7 +27,6 @@ impl Variant
 
     method(TN) opAffect(other: TN)
     {
-        #assert(Slice.contains(T, @typeof(TN)), "type '" ~@stringof(TN)~ "' is not part of the variant")
         set'TN(other)
     }
 
@@ -60,10 +68,8 @@ impl Variant
 
     // Set the variant value
     method(TN) set(value: TN)
+        #checkif checkValidType(T, TN)
     {
-        // Be sure type is supported
-        #assert(Slice.contains(T, @typeof(TN)), "type '" ~@stringof(TN)~ "' is not part of the variant")
-
         // Drop previous value if necessary
         drop()
 
@@ -74,9 +80,8 @@ impl Variant
     // Get the variant value of the given type
     // Will assert if the current type does not match
     method(TN) get()->TN
+        #checkif checkValidType(T, TN)
     {
-        // Be sure type is supported
-        #assert(Slice.contains(T, @typeof(TN)), "type '" ~@stringof(TN)~ "' is not part of the variant")
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer
     }
