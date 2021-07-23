@@ -26,6 +26,12 @@ impl Variant
         drop()
     }
 
+    method(TN) opAffect(other: TN)
+    {
+        #assert(Slice.contains(T, @typeof(TN)), "type '" ~@stringof(TN)~ "' is not part of the variant")
+        set'TN(other)
+    }
+
     method opPostCopy()
     {
         #if orFlags() & .HasPostCopy
