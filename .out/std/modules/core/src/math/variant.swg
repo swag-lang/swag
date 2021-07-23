@@ -5,6 +5,8 @@ struct(T: const [..] typeinfo) Variant
 {
     type:   typeinfo
     buffer: [Reflection.maxSizeOf(T)] u8
+
+    const AllFlags = Reflection.orFlags(T)
 }
 
 impl Variant
@@ -22,7 +24,7 @@ impl Variant
 
     method opPostCopy()
     {
-        #if Reflection.orFlags(T) & .HasPostCopy
+        #if AllFlags & .HasPostCopy
         {
             if type and Reflection.hasPostCopy(type)
             {
@@ -34,7 +36,7 @@ impl Variant
 
     method opPostMove()
     {
-        #if Reflection.orFlags(T) & .HasPostMove
+        #if AllFlags & .HasPostMove
         {
             if type and Reflection.hasPostMove(type)
             {
@@ -46,7 +48,7 @@ impl Variant
 
     method drop()
     {
-        #if Reflection.orFlags(T) & .HasDrop
+        #if AllFlags & .HasDrop
         {
             if type and Reflection.hasDrop(type)
             {
