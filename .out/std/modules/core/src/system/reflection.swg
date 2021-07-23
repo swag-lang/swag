@@ -203,4 +203,13 @@ using Swag
             res = @max(res, p.sizeof)
         return res
     }
+
+    // Make an union of flags of all types
+    func orFlags(v: const [..] typeinfo)->Swag.TypeInfoFlags
+    {
+        var res: Swag.TypeInfoFlags = None
+        visit p: v
+            res |= p.flags
+        return res
+    }
 }
