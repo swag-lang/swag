@@ -100,10 +100,6 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, format(Msg0074, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Msg0075}));
     }
-    else
-    {
-        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.empty(), context->report({node, node->token, format(Msg0076, name.c_str())}));
-    }
 
     // Check each function
     if (isOpVisit)

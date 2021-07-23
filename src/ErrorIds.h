@@ -72,7 +72,7 @@
 #define Msg0073 "invalid number of generic parameters for special function '%s'"
 #define Msg0074 "invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)"
 #define Msg0075 "'opVisit' should have the 'Swag.Macro' attribute"
-#define Msg0076 "special function '%s' cannot be generic"
+//#define Msg0076 "special function '%s' cannot be generic"
 #define Msg0077 "invalid parameter '2' for special function '%s' (cannot be of type '%s')"
 #define Msg0078 "function '%s' does not match a special function/operator overload"
 #define Msg0079 "cannot find special function '%s' in '%s'"
