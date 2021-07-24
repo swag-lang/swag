@@ -1114,7 +1114,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::IntrinsicSetErr:
-        SWAG_CHECK(doIdentifierRef(nullptr, result));
+        SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
     case TokenId::SymLeftParen:
     case TokenId::Identifier:
@@ -1125,17 +1125,17 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
 
     case TokenId::KwdTry:
     case TokenId::KwdAssume:
-        SWAG_CHECK(doTryAssume(nullptr, result));
+        SWAG_CHECK(doTryAssume(parent, result));
         return true;
     case TokenId::KwdThrow:
-        SWAG_CHECK(doThrow(nullptr, result));
+        SWAG_CHECK(doThrow(parent, result));
         return true;
     case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(nullptr, result));
+        SWAG_CHECK(doCatch(parent, result));
         return true;
 
     case TokenId::KwdDeRef:
-        SWAG_CHECK(doDeRef(nullptr, result));
+        SWAG_CHECK(doDeRef(parent, result));
         return true;
 
     default:

@@ -97,7 +97,8 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             AstNode* paramExpression;
 
             inFunCall = true;
-            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &paramExpression));
+            SWAG_CHECK(doExpression(param, EXPR_FLAG_NONE, &paramExpression));
+            Ast::removeFromParent(paramExpression);
             inFunCall = false;
 
             // Name

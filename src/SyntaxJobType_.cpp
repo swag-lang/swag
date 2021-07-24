@@ -128,7 +128,10 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     // :SubDeclParent
     auto newParent = parent;
     while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    {
         newParent = newParent->parent;
+        SWAG_ASSERT(newParent);
+    }
 
     // Add struct type and scope
     Scope* rootScope;

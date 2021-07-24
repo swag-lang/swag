@@ -451,6 +451,13 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
 
 bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
+    for (auto child : node->childs)
+    {
+        SWAG_CHECK(checkIsConcreteOrType(context, child));
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     auto typeInfo    = allocType<TypeInfoList>();
     typeInfo->kind   = TypeInfoKind::TypeListTuple;
     typeInfo->name   = "{";
@@ -460,8 +467,6 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
-        SWAG_CHECK(checkIsConcrete(context, child));
-
         if (!typeInfo->subTypes.empty())
             typeInfo->name += ", ";
 
@@ -523,6 +528,13 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
+    for (auto child : node->childs)
+    {
+        SWAG_CHECK(checkIsConcreteOrType(context, child));
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     auto typeInfo  = allocType<TypeInfoList>();
     typeInfo->kind = TypeInfoKind::TypeListArray;
     SWAG_ASSERT(node->childs.size());
@@ -530,7 +542,6 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
-        SWAG_CHECK(checkIsConcreteOrType(context, child));
         auto typeParam      = allocType<TypeInfoParam>();
         typeParam->typeInfo = child->typeInfo;
         typeInfo->subTypes.push_back(typeParam);
