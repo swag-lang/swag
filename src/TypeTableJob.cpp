@@ -22,6 +22,8 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+    if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
 
     // Special functions lambdas
     concreteType->opInit = nullptr;

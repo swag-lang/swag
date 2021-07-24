@@ -229,15 +229,15 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     type2 := concreteAlias(typeB)
 
     // Fine to convert from concrete to ref, or the other way
-    if cmpFlags & TypeCmpFlags.CastAny
+    if cmpFlags & .CastAny
     {
-        if type1.kind == TypeInfoKind.Reference and type2.kind != TypeInfoKind.Reference
+        if type1.kind == .Reference and type2.kind != .Reference
         {
             ref := cast(const *TypeInfoReference) type1
             return @typecmp(ref.pointedType, type2, cmpFlags)
         }
 
-        if type1.kind != TypeInfoKind.Reference and type2.kind == TypeInfoKind.Reference
+        if type1.kind != .Reference and type2.kind == .Reference
         {
             ref := cast(const *TypeInfoReference) type2
             return @typecmp(type1, ref.pointedType, cmpFlags)
@@ -246,6 +246,25 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
     if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags)
         return false
+
+    // For tuples, we compare field by field
+    if type1.flags & .Tuple
+    {
+        type1S := cast(const *TypeInfoStruct) type1
+        type2S := cast(const *TypeInfoStruct) type2
+        loop i: type1S.fields
+        {
+            field1 := type1S.fields[i]
+            field2 := type2S.fields[i]
+            if field1.name != field2.name
+                return false
+            if !@typecmp(field1.pointedType, field2.pointedType, cmpFlags)
+                return false
+        }
+
+        return true
+    }
+
     return @strcmp(type1.name, type2.name)
 }
 

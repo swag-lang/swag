@@ -220,6 +220,7 @@ enum class TypeInfoFlags : uint16_t
     HasDrop     = 0x0040,
     Strict      = 0x0080,
     CanCopy     = 0x0100,
+    Tuple       = 0x0200,
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
