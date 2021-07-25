@@ -74,7 +74,7 @@ inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return sourceFile->getChar(offset);
 }
 
-bool Tokenizer::doCComment(Token& token)
+bool Tokenizer::doMultiLineComment(Token& token)
 {
     int countEmb = 1;
     while (true)
@@ -171,7 +171,7 @@ bool Tokenizer::getToken(Token& token)
         {
             auto nc = getCharNoSeek(offset);
 
-            // C++ comment //
+            // Line comment
             if (nc == '/')
             {
                 treatChar(c, offset);
@@ -182,22 +182,23 @@ bool Tokenizer::getToken(Token& token)
                 continue;
             }
 
-            // C comment /*
+            // Multiline comment
             if (nc == '*')
             {
                 treatChar(c, offset);
-                SWAG_CHECK(doCComment(token));
+                SWAG_CHECK(doMultiLineComment(token));
                 continue;
             }
         }
 
-        // Identifier
+        // Compîler
         ///////////////////////////////////////////
-        if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
+        if (c == '#')
         {
             token.text = c;
             auto nc    = getCharNoSeek(offset);
-            if (c == '#' && nc == '[')
+
+            if (nc == '[')
             {
                 treatChar(nc, offset);
                 token.text += nc;
@@ -206,8 +207,26 @@ bool Tokenizer::getToken(Token& token)
                 return true;
             }
 
-            // Raw string literal
-            if (c == '@' && nc == '"')
+            doIdentifier(token, nc, offset);
+            token.endLocation = location;
+
+            if (token.id == TokenId::Identifier)
+            {
+                sourceFile->report({sourceFile, token, format(Msg0140, token.text.c_str())});
+                return false;
+            }
+
+            return true;
+        }
+
+        // Intrinsic
+        ///////////////////////////////////////////
+        if (c == '@')
+        {
+            token.text = c;
+            auto nc    = getCharNoSeek(offset);
+
+            if (nc == '"')
             {
                 treatChar(nc, offset);
                 token.text.clear();
@@ -215,19 +234,19 @@ bool Tokenizer::getToken(Token& token)
                 return true;
             }
 
-            if (c == '@' && nc == '[')
+            if (nc == '[')
             {
                 token.id = TokenId::SymLiteralBracket;
                 return true;
             }
 
-            if (c == '@' && nc == '{')
+            if (nc == '{')
             {
                 token.id = TokenId::SymLiteralCurly;
                 return true;
             }
 
-            if (c == '@' && nc == '(')
+            if (nc == '(')
             {
                 token.id = TokenId::SymLiteralParen;
                 return true;
@@ -244,11 +263,18 @@ bool Tokenizer::getToken(Token& token)
                 return false;
             }
 
-            if (token.id == TokenId::Identifier && token.text[0] == '#')
-            {
-                sourceFile->report({sourceFile, token, format(Msg0140, token.text.c_str())});
-                return false;
-            }
+            return true;
+        }
+
+        // Identifier
+        ///////////////////////////////////////////
+        if (SWAG_IS_ALPHA(c) || c == '_')
+        {
+            token.text = c;
+
+            auto nc = getCharNoSeek(offset);
+            doIdentifier(token, nc, offset);
+            token.endLocation = location;
 
             return true;
         }

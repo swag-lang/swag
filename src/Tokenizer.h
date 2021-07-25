@@ -64,7 +64,7 @@ struct Tokenizer
     void     processChar(uint32_t c);
     void     treatChar(uint32_t c, unsigned offset);
 
-    bool doCComment(Token& token);
+    bool doMultiLineComment(Token& token);
     void doIdentifier(Token& token, uint32_t c, unsigned offset);
     bool doNumberLiteral(uint32_t c, Token& token);
     bool doHexLiteral(Token& token);
