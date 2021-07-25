@@ -74,7 +74,7 @@ inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return sourceFile->getChar(offset);
 }
 
-bool Tokenizer::eatCComment(Token& token)
+bool Tokenizer::doCComment(Token& token)
 {
     int countEmb = 1;
     while (true)
@@ -178,7 +178,7 @@ bool Tokenizer::getToken(Token& token)
             if (nc == '*')
             {
                 treatChar(c, offset);
-                SWAG_CHECK(eatCComment(token));
+                SWAG_CHECK(doCComment(token));
                 continue;
             }
         }
@@ -224,7 +224,7 @@ bool Tokenizer::getToken(Token& token)
                 return true;
             }
 
-            getIdentifier(token, nc, offset);
+            doIdentifier(token, nc, offset);
             token.endLocation = location;
 
             if (token.text == "@")

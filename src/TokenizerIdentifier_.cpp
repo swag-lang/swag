@@ -18,7 +18,7 @@ void Tokenizer::relaxIdentifier(Token& token)
     }
 }
 
-void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
+void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {

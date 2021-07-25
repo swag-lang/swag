@@ -56,23 +56,23 @@ struct Tokenizer
 {
     void setFile(SourceFile* file);
     bool getToken(Token& token);
+    bool error(Token& token, const Utf8& msg);
+    void postProcessRawString(Utf8& text);
 
     uint32_t getChar();
     uint32_t getCharNoSeek(unsigned& offset);
     void     processChar(uint32_t c);
     void     treatChar(uint32_t c, unsigned offset);
 
-    bool eatCComment(Token& token);
-    void getIdentifier(Token& token, uint32_t c, unsigned offset);
+    bool doCComment(Token& token);
+    void doIdentifier(Token& token, uint32_t c, unsigned offset);
     bool doNumberLiteral(uint32_t c, Token& token);
     bool doHexLiteral(Token& token);
     bool doBinLiteral(Token& token);
     bool doIntFloatLiteral(uint32_t c, Token& token);
     bool doIntLiteral(uint32_t c, Token& token);
     bool doFloatLiteral(uint32_t c, Token& token);
-    bool error(Token& token, const Utf8& msg);
     bool doSymbol(uint32_t c, Token& token);
-    void postProcessRawString(Utf8& text);
     bool doStringLiteral(Token& token, bool raw);
 
     static void relaxIdentifier(Token& token);
