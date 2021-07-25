@@ -1,47 +1,18 @@
-#ifndef PCH_H
-#define PCH_H
+#pragma once
 
-// LLVM stuff
-// Before the rest, or it does not compile (yeahhh)
-#pragma warning(push, 0)
-#pragma warning(disable : 4996)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4702)
-#include "llvm/ADT/APFloat.h"
-#include "llvm/ADT/STLExtras.h"
-#include "llvm/IR/BasicBlock.h"
-#include "llvm/IR/Constants.h"
-#include "llvm/IR/DerivedTypes.h"
-#include "llvm/IR/Function.h"
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/DIBuilder.h"
-#include "llvm/IR/LLVMContext.h"
-#include "llvm/IR/Module.h"
-#include "llvm/IR/Type.h"
-#include "llvm/IR/Verifier.h"
-#include "llvm/IR/LegacyPassManager.h"
-#include "llvm/IR/PassManager.h"
-#include "llvm/Transforms/IPO/PassManagerBuilder.h"
-#include "llvm/Transforms/IPO.h"
-#include "llvm/Support/FileSystem.h"
-#include "llvm/Support/Host.h"
-#include "llvm/Support/raw_ostream.h"
-#include "llvm/Support/TargetRegistry.h"
-#include "llvm/Support/TargetSelect.h"
-#include "llvm/Target/TargetMachine.h"
-#include "llvm/Target/TargetOptions.h"
-#include "llvm/Transforms/InstCombine/InstCombine.h"
-#include "llvm/Transforms/Scalar.h"
-#include "llvm/Transforms/Scalar/GVN.h"
-#include "llvm/Transforms/Utils.h"
-#include "llvm/Analysis/TargetLibraryInfo.h"
-#include "llvm/Analysis/TargetTransformInfo.h"
-
-#ifdef _WIN32
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+////////////////////////////
+#include "LLVMInc.h"
+
+////////////////////////////
+
+#ifdef _WIN32
 #include "windows.h"
 #endif
+
+////////////////////////////
 
 #include <vector>
 #include <deque>
@@ -59,20 +30,16 @@
 #include <string>
 #include <shared_mutex>
 #include <unordered_set>
-#pragma warning(pop)
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
-#pragma warning(disable : 4100)
 
-
-////////// CONFIG //////////
+////////////////////////////
 
 #define FFI_BUILDING
 #ifdef SWAG_DEV_MODE
 #define SWAG_CHECK_MEMORY
 #define SWAG_HAS_ASSERT
 #endif
-////////////////////////////
 
-#endif
+////////////////////////////

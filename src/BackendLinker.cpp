@@ -3,7 +3,6 @@
 #include "Backend.h"
 #include "OS.h"
 #include "Module.h"
-#include "lld/Common/Driver.h"
 
 namespace BackendLinker
 {

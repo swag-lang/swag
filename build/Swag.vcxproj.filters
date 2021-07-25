@@ -770,6 +770,9 @@
     <ClInclude Include="..\src\Math.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\LLVMInc.h">
+      <Filter>Backend\LLVM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
