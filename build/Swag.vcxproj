@@ -225,7 +225,6 @@
     <ClInclude Include="../src/Scope.h" />
     <ClInclude Include="../src/Scoped.h" />
     <ClInclude Include="../src/SourceLocation.h" />
-    <ClInclude Include="../src/SpinLock.h" />
     <ClInclude Include="../src/SwagScope.h" />
     <ClInclude Include="../src/Timer.h" />
     <ClInclude Include="../src/TokenIds.h" />

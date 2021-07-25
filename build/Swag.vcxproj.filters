@@ -629,9 +629,6 @@
     <ClInclude Include="../src/TypeTable.h">
       <Filter>Semantic\Type</Filter>
     </ClInclude>
-    <ClInclude Include="../src/SpinLock.h">
-      <Filter>Main\Threading</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BackendX64.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
