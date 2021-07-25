@@ -25,9 +25,6 @@
     <ClCompile Include="../src/SyntaxJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Workspace.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Ast.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -41,12 +38,6 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/pch.cpp" />
-    <ClCompile Include="../src/SourceFile.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Concat.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ModuleOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -57,9 +48,6 @@
       <Filter>ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="../src/CommandLineParser.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Module.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/Scope.cpp">
@@ -224,9 +212,6 @@
     <ClCompile Include="../src/AstOutput.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/File.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -290,9 +275,6 @@
     <ClCompile Include="../src/ffi/types.c">
       <Filter>ByteCode\FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../src/CompilerItf.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
@@ -346,9 +328,6 @@
     </ClCompile>
     <ClCompile Include="../src/BackendX64SaveObjJob.cpp">
       <Filter>Backend\X64</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Context.cpp">
-      <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeStack.cpp">
       <Filter>ByteCode</Filter>
@@ -404,15 +383,6 @@
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp">
       <Filter>Main\CfgManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Workspace_clean_.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_watch_.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_new_.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_loop_.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
@@ -424,9 +394,6 @@
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_swap_.cpp">
       <Filter>ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_script_.cpp">
-      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
@@ -470,6 +437,39 @@
     <ClCompile Include="../src/Utf8.cpp">
       <Filter>Main\Core</Filter>
     </ClCompile>
+    <ClCompile Include="../src/Concat.cpp">
+      <Filter>Main\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Context.cpp">
+      <Filter>Backend\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/CompilerItf.cpp">
+      <Filter>Backend\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Workspace_watch_.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Workspace.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Workspace_clean_.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Workspace_new_.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Workspace_script_.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Module.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/File.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/SourceFile.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -496,14 +496,8 @@
     <ClInclude Include="../src/Diagnostic.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Register.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Workspace.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Ast.h">
       <Filter>Lexer</Filter>
@@ -521,14 +515,8 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/pch.h" />
-    <ClInclude Include="../src/SourceFile.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Scope.h">
       <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Concat.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleOutputJob.h">
       <Filter>Backend</Filter>
@@ -543,9 +531,6 @@
       <Filter>ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="../src/CommandLineParser.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Module.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeGenJob.h">
@@ -572,9 +557,6 @@
     <ClInclude Include="../src/AstFlags.h">
       <Filter>Lexer</Filter>
     </ClInclude>
-    <ClInclude Include="../src/RegisterList.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/OutputFile.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -594,12 +576,6 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/Os.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Scoped.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/File.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Allocator.h">
@@ -640,9 +616,6 @@
     </ClInclude>
     <ClInclude Include="../src/ffi/ffitarget.h">
       <Filter>ByteCode\FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CompilerItf.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTableJob.h">
       <Filter>Semantic\Type</Filter>
@@ -692,17 +665,11 @@
     <ClInclude Include="../src/BackendX64SaveObjJob.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Context.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="../src/ByteCodeStack.h">
       <Filter>ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
       <Filter>ByteCode\Optimize</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Runtime.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizerJob.h">
       <Filter>ByteCode\Optimize</Filter>
@@ -721,9 +688,6 @@
     </ClInclude>
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h">
       <Filter>Main\CfgManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Math.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorIds.h">
       <Filter>Main</Filter>
@@ -768,6 +732,42 @@
       <Filter>Main\Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/Pool.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Concat.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Runtime.h">
+      <Filter>Backend\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Context.h">
+      <Filter>Backend\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/CompilerItf.h">
+      <Filter>Backend\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Workspace.h">
+      <Filter>Main\Wmf</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Module.h">
+      <Filter>Main\Wmf</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/File.h">
+      <Filter>Main\Wmf</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/SourceFile.h">
+      <Filter>Main\Wmf</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Register.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/RegisterList.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Scoped.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -819,6 +819,12 @@
     </Filter>
     <Filter Include="Main\Core">
       <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\Runtime">
+      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Wmf">
+      <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
