@@ -110,7 +110,10 @@ bool SourceFile::load()
 uint32_t SourceFile::getChar(unsigned& offset)
 {
     if (curBuffer >= endBuffer)
+    {
+        offset = 0;
         return 0;
+    }
 
     char c = *curBuffer;
 
