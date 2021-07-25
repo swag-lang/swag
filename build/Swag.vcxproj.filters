@@ -7,9 +7,6 @@
     <ClCompile Include="../src/ThreadManager.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="../src/DependentJobs.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Job.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
@@ -19,28 +16,13 @@
     <ClCompile Include="../src/Global.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Tokenizer.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Log.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/LanguageSpec.cpp">
-      <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="../src/Diagnostic.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TokenizerNumberLiteral_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/TokenizerSymbol_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/TokenizerStringLiteral_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="../src/Utf8.cpp">
@@ -88,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="../src/ByteCodeGenJob.cpp">
       <Filter>ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/TokenizerIdentifier_.cpp">
-      <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="../src/SemanticJobDeclaration_.cpp">
       <Filter>Semantic</Filter>
@@ -247,15 +226,6 @@
     </ClCompile>
     <ClCompile Include="../src/AstOutput.cpp">
       <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/EnumerateModuleJob.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleBuildJob.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/CopyFileJob.cpp">
-      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/File.cpp">
       <Filter>Main</Filter>
@@ -422,9 +392,6 @@
     <ClCompile Include="../src/ByteCodeOptimizer_reduce_.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/LoadFileJob.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
@@ -473,6 +440,39 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_np_.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="../src/TokenizerSymbol_.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/TokenizerStringLiteral_.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/TokenizerNumberLiteral_.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/TokenizerIdentifier_.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Tokenizer.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/LanguageSpec.cpp">
+      <Filter>Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/CopyFileJob.cpp">
+      <Filter>Main\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/DependentJobs.cpp">
+      <Filter>Main\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/EnumerateModuleJob.cpp">
+      <Filter>Main\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/LoadFileJob.cpp">
+      <Filter>Main\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleBuildJob.cpp">
+      <Filter>Main\Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -484,9 +484,6 @@
     <ClInclude Include="../src/Global.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Tokenizer.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="../src/CommandLine.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -495,9 +492,6 @@
     </ClInclude>
     <ClInclude Include="../src/Stats.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/LanguageSpec.h">
-      <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="../src/Pool.h">
       <Filter>Main</Filter>
@@ -605,9 +599,6 @@
     <ClInclude Include="../src/Assert.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../src/DependentJobs.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BuildParameters.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -615,12 +606,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Scoped.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/EnumerateModuleJob.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleBuildJob.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/File.h">
@@ -716,17 +701,11 @@
     <ClInclude Include="../src/SourceLocation.h">
       <Filter>Lexer</Filter>
     </ClInclude>
-    <ClInclude Include="../src/TokenIds.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BackendLLVMFunctionMacros_.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64FunctionMacros_.h">
       <Filter>Backend\X64</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CopyFileJob.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleSaveExportJob.h">
       <Filter>Backend</Filter>
@@ -745,9 +724,6 @@
     </ClInclude>
     <ClInclude Include="../src/Runtime.h">
       <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/LoadFileJob.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizerJob.h">
       <Filter>ByteCode\Optimize</Filter>
@@ -770,14 +746,38 @@
     <ClInclude Include="..\src\Math.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\HashTable.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ErrorIds.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\RaceCondition.h">
       <Filter>Main\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Tokenizer.h">
+      <Filter>Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/TokenIds.h">
+      <Filter>Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/LanguageSpec.h">
+      <Filter>Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\HashTable.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/CopyFileJob.h">
+      <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/DependentJobs.h">
+      <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/EnumerateModuleJob.h">
+      <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/LoadFileJob.h">
+      <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleBuildJob.h">
+      <Filter>Main\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -819,6 +819,12 @@
     </Filter>
     <Filter Include="ByteCode\FFI">
       <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tokenizer">
+      <UniqueIdentifier>{6e271899-858e-4671-8537-9246b9a196ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Jobs">
+      <UniqueIdentifier>{1bc332e2-b846-4939-bd77-130255d62a18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
