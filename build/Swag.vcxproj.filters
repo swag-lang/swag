@@ -653,9 +653,6 @@
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h">
       <Filter>Main\CfgManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ErrorIds.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\RaceCondition.h">
       <Filter>Main\Threading</Filter>
     </ClInclude>
@@ -763,6 +760,9 @@
     </ClInclude>
     <ClInclude Include="../src/Os.h">
       <Filter>Main\Os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ErrorIds.h">
+      <Filter>Main\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
