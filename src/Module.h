@@ -2,7 +2,6 @@
 #include "ByteCodeRunContext.h"
 #include "ByteCodeRun.h"
 #include "Pool.h"
-#include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
 #include "DataSegment.h"

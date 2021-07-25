@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
 #include "RaceCondition.h"

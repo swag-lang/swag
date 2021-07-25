@@ -542,9 +542,6 @@
     <ClInclude Include="../src/ByteCodeOpList.h">
       <Filter>ByteCode</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BuildPass.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Version.h">
       <Filter>Main</Filter>
     </ClInclude>

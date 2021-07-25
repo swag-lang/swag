@@ -2,8 +2,8 @@
 #include "Pool.h"
 #include "Utf8.h"
 #include "SourceLocation.h"
-#include "BuildPass.h"
 #include "File.h"
+#include "CommandLine.h"
 struct Module;
 struct AstNode;
 struct Diagnostic;

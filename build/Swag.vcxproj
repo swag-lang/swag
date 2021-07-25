@@ -180,7 +180,6 @@
     <ClInclude Include="../src/BackendX64SaveObjJob.h" />
     <ClInclude Include="../src/BackendX64Inst.h" />
     <ClInclude Include="../src/BuildParameters.h" />
-    <ClInclude Include="../src/BuildPass.h" />
     <ClInclude Include="../src/ByteCode.h" />
     <ClInclude Include="../src/ByteCodeGenJob.h" />
     <ClInclude Include="../src/ByteCodeOptContext.h" />

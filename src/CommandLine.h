@@ -1,7 +1,15 @@
 #pragma once
-#include "BuildPass.h"
 #include "Utf8.h"
 #include "BuildParameters.h"
+
+enum class BuildPass
+{
+    Lexer,
+    Syntax,
+    Semantic,
+    Backend,
+    Full,
+};
 
 struct CommandLine
 {
