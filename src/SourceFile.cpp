@@ -13,19 +13,6 @@
 
 const auto BUF_SIZE = 2048;
 
-SourceFile::SourceFile()
-{
-    cleanCache();
-}
-
-void SourceFile::cleanCache()
-{
-    bufferSize    = 0;
-    bufferCurSeek = 0;
-    fileSeek      = 0;
-    doneLoading   = false;
-}
-
 bool SourceFile::checkFormat()
 {
     // Read header
@@ -63,36 +50,6 @@ bool SourceFile::checkFormat()
     return true;
 }
 
-void SourceFile::seekTo(long seek)
-{
-    fseek(fileHandle, seek, SEEK_SET);
-}
-
-long SourceFile::readTo()
-{
-    if (!buffer)
-        buffer = new char[BUF_SIZE];
-    return (long) fread(buffer, 1, BUF_SIZE, fileHandle);
-}
-
-void SourceFile::loadRequest()
-{
-    buffer[0] = 0;
-
-    LoadRequest req;
-    req.seek       = fileSeek;
-    req.loadedSize = 0;
-    load(&req);
-
-    bufferSize  = req.loadedSize;
-    doneLoading = req.loadedSize != BUF_SIZE ? true : false;
-    totalRead += req.loadedSize;
-    fileSeek += bufferSize;
-
-    if (doneLoading)
-        close();
-}
-
 void SourceFile::setExternalBuffer(char* buf, uint32_t size)
 {
     buffer        = buf;
@@ -101,97 +58,93 @@ void SourceFile::setExternalBuffer(char* buf, uint32_t size)
     isExternal    = true;
 }
 
-char SourceFile::loadAndGetPrivateChar()
+bool SourceFile::load()
 {
-    // Done
     if (isExternal)
+        return true;
+    if (buffer)
+        return true;
+
+    Timer read(&g_Stats.readFilesTime);
+    read.start();
+
+    // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+    FILE* handle = nullptr;
+    fopen_s(&handle, path.c_str(), "rbN");
+    if (!handle)
     {
-        doneLoading = true;
-        return 0;
+        g_Log.errorOS(format("error opening source file '%s'", path.c_str()));
+        return false;
     }
 
-    if (doneLoading)
+    // Get file length
+    fseek(handle, 0, SEEK_END);
+    bufferSize = ftell(handle);
+    fseek(handle, 0, SEEK_SET);
+
+    // Read content
+    buffer                 = new char[bufferSize + 4];
+    buffer[bufferSize]     = 0;
+    buffer[bufferSize + 1] = 0;
+    buffer[bufferSize + 2] = 0;
+    buffer[bufferSize + 3] = 0;
+
+    if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
-        close();
-        return 0;
+        delete[] buffer;
+        fclose(handle);
+        g_Log.errorOS(format("error reading source file '%s'", path.c_str()));
+        return false;
     }
 
-    // Read one chunk of file
-    {
-        Timer read(&g_Stats.readFilesTime);
-        read.start();
-        if (!openedOnce)
-        {
-            if (!openRead())
-                return 0;
-            bufferSize = readTo();
-            if (!checkFormat())
-                return false;
-            fileSeek = BUF_SIZE;
-        }
-        else
-        {
-            loadRequest();
-            bufferCurSeek = 0;
-        }
-        read.stop();
-    }
+    fclose(handle);
 
-    // Be sure there's something in the current buffer
-    if (bufferCurSeek >= bufferSize)
-    {
-        if (!isExternal)
-            delete buffer;
-        close();
-        return 0;
-    }
+    if (!checkFormat())
+        return false;
 
-    return buffer[bufferCurSeek++];
-}
+    read.stop();
 
-char SourceFile::getPrivateChar()
-{
-    if (bufferCurSeek >= bufferSize)
-        return loadAndGetPrivateChar();
-    return buffer[bufferCurSeek++];
+    return true;
 }
 
 uint32_t SourceFile::getChar(unsigned& offset)
 {
-    char c = bufferCurSeek >= bufferSize ? loadAndGetPrivateChar() : buffer[bufferCurSeek++];
-    offset = 1;
-    if ((c & 0x80) == 0)
-        return c;
-    return getCharExtended(c, offset);
-}
+    if (bufferCurSeek >= bufferSize)
+        return 0;
 
-uint32_t SourceFile::getCharExtended(char c, unsigned& offset)
-{
+    char c = buffer[bufferCurSeek++];
+
+    if ((c & 0x80) == 0)
+    {
+        offset = 1;
+        return c;
+    }
+
     uint32_t wc;
     if ((c & 0xE0) == 0xC0)
     {
         wc = (c & 0x1F) << 6;
-        wc |= (getPrivateChar() & 0x3F);
-        offset += 1;
+        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        offset = 2;
         return wc;
     }
 
     if ((c & 0xF0) == 0xE0)
     {
         wc = (c & 0xF) << 12;
-        wc |= (getPrivateChar() & 0x3F) << 6;
-        wc |= (getPrivateChar() & 0x3F);
-        offset += 2;
+        wc |= (buffer[bufferCurSeek++] & 0x3F) << 6;
+        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        offset = 3;
         return wc;
     }
 
     if ((c & 0xF8) == 0xF0)
     {
         wc = (c & 0x7) << 18;
-        wc |= (getPrivateChar() & 0x3F) << 12;
-        wc |= (getPrivateChar() & 0x3F) << 6;
-        wc |= (getPrivateChar() & 0x3F);
-        offset += 3;
+        wc |= (buffer[bufferCurSeek++] & 0x3F) << 12;
+        wc |= (buffer[bufferCurSeek++] & 0x3F) << 6;
+        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        offset = 4;
         return wc;
     }
 
@@ -202,6 +155,7 @@ uint32_t SourceFile::getCharExtended(char c, unsigned& offset)
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
+        offset = 1;
         return wc;
     }
 
@@ -213,9 +167,11 @@ uint32_t SourceFile::getCharExtended(char c, unsigned& offset)
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
+        offset = 1;
         return wc;
     }
 
+    offset = 1;
     return '?';
 }
 
@@ -241,8 +197,6 @@ Utf8 SourceFile::getLine(long lineNo)
     }
     else
     {
-        close();
-
         // Put all lines in a cache, the first time
         // This is slow, but this is ok, as getLine is not called in normal situations
         if (allLines.empty())
@@ -263,24 +217,6 @@ Utf8 SourceFile::getLine(long lineNo)
     if (lineNo >= allLines.size())
         return "";
     return allLines[lineNo];
-}
-
-void SourceFile::load(LoadRequest* request)
-{
-    request->loadedSize = 0;
-    if (openRead())
-    {
-        seekTo(request->seek);
-        request->loadedSize = readTo();
-    }
-
-    // Stored in a static to avoid polling the function (there's a potential crt lock there)
-    static int maxStdIo = 0;
-    if (maxStdIo == 0)
-        maxStdIo = _getmaxstdio();
-
-    if (g_Stats.maxOpenFiles > maxStdIo / 2)
-        close();
 }
 
 void SourceFile::computePrivateScopeName()

@@ -2,7 +2,6 @@
 #include "Pool.h"
 #include "Utf8.h"
 #include "SourceLocation.h"
-#include "File.h"
 #include "CommandLine.h"
 struct Module;
 struct AstNode;
@@ -11,32 +10,22 @@ struct Scope;
 struct Token;
 struct AstAttrUse;
 
-struct LoadRequest
+struct SourceFile
 {
-    long seek       = 0;
-    long loadedSize = 0;
-};
-
-struct SourceFile : public File
-{
-    SourceFile();
-
+    bool     load();
+    char     getPrivateChar();
     uint32_t getChar(unsigned& offset);
-    uint32_t getCharExtended(char c, unsigned& offset);
     Utf8     getLine(long lineNo);
-    bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
-    void     load(LoadRequest* request);
 
-    void cleanCache();
-    void seekTo(long seek);
-    long readTo();
-    void loadRequest();
-    char loadAndGetPrivateChar();
-    char getPrivateChar();
+    bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
+
     bool checkFormat();
     void setExternalBuffer(char* buf, uint32_t size);
     void computePrivateScopeName();
+
+    Utf8   name;
+    string path;
 
     vector<string> allLines;
     int            getLineOffset = 0;
@@ -73,7 +62,6 @@ struct SourceFile : public File
     long         bufferCurSeek = 0;
     long         bufferSize    = 0;
     int          totalRead     = 0;
-    bool         doneLoading   = false;
     bool         formatDone    = false;
     bool         fromTests     = false;
     bool         isCfgFile     = false;

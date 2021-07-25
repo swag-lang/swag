@@ -1,16 +1,13 @@
 #include "pch.h"
 #include "ModuleCfgManager.h"
 #include "Workspace.h"
-#include "Context.h"
-#include "Ast.h"
-#include "Timer.h"
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
 #include "FetchModuleJobFileSystem.h"
 #include "Diagnostic.h"
-#include "SourceFile.h"
 #include "ErrorIds.h"
+#include "File.h"
 
 ModuleCfgManager g_ModuleCfgMgr;
 

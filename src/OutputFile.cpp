@@ -9,7 +9,6 @@ bool OutputFile::openWrite()
 {
     if (winHandle != INVALID_HANDLE_VALUE)
         return true;
-    SWAG_ASSERT(!openedOnce);
 
     winHandle = ::CreateFileA(path.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, NULL);
     if (winHandle == INVALID_HANDLE_VALUE)
@@ -18,7 +17,6 @@ bool OutputFile::openWrite()
         return false;
     }
 
-    openedOnce = true;
     return true;
 }
 

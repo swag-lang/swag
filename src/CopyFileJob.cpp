@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Module.h"
+#include "File.h"
 #include "CopyFileJob.h"
 #include "OS.h"
 

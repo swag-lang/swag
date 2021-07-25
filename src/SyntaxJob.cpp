@@ -281,6 +281,9 @@ JobResult SyntaxJob::execute()
     context.sourceFile = sourceFile;
     g_Stats.numFiles++;
 
+    if(!sourceFile->load())
+        return JobResult::ReleaseJob;
+
     tokenizer.setFile(sourceFile);
 
     module = sourceFile->module;

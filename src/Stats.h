@@ -10,8 +10,6 @@ struct Stats
     atomic<int> runFunctions       = 0;
     atomic<int> numInstructions    = 0;
     atomic<int> totalOptimsBC      = 0;
-    atomic<int> maxOpenFiles       = 0;
-    atomic<int> numOpenFiles       = 0;
     atomic<int> totalConcreteTypes = 0;
     atomic<int> skippedModules     = 0;
     atomic<int> numInitPtr         = 0;
