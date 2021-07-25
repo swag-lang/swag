@@ -8,12 +8,6 @@
 
 ////////////////////////////
 
-#ifdef _WIN32
-#include "windows.h"
-#endif
-
-////////////////////////////
-
 #include <vector>
 #include <deque>
 #include <map>
@@ -30,6 +24,9 @@
 #include <string>
 #include <shared_mutex>
 #include <unordered_set>
+#include <fcntl.h>
+#include <io.h>
+#include <comdef.h>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

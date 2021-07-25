@@ -1,7 +1,6 @@
 #include "pch.h"
 #ifdef _WIN32
-#include <fcntl.h>
-#include <io.h>
+#include <windows.h>
 #include "Os.h"
 #include "Global.h"
 #include "Log.h"

@@ -1,6 +1,5 @@
 #include "pch.h"
 #ifdef _WIN32
-#include <comdef.h>
 #include <windows.h>
 #include "Log.h"
 #include "Backend.h"
