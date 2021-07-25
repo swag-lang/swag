@@ -10,6 +10,7 @@
 #include "Context.h"
 #include "Ast.h"
 #include "ErrorIds.h"
+#include "File.h"
 
 const auto BUF_SIZE = 2048;
 
@@ -70,12 +71,8 @@ bool SourceFile::load()
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
-    fopen_s(&handle, path.c_str(), "rbN");
-    if (!handle)
-    {
-        g_Log.errorOS(format("error opening source file '%s'", path.c_str()));
+    if(!openFile(&handle, path.c_str(), "rbN"))
         return false;
-    }
 
     // Get file length
     fseek(handle, 0, SEEK_END);
@@ -92,12 +89,12 @@ bool SourceFile::load()
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
         delete[] buffer;
-        fclose(handle);
+        closeFile(&handle);
         g_Log.errorOS(format("error reading source file '%s'", path.c_str()));
         return false;
     }
 
-    fclose(handle);
+    closeFile(&handle);
 
     if (!checkFormat())
         return false;

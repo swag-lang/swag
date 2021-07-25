@@ -136,8 +136,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
-    File::openFile(&fsrc, remotePath.c_str(), "rbN");
-    if (!fsrc)
+    if (!openFile(&fsrc, remotePath.c_str(), "rbN"))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0509, remotePath.c_str())});
 
     // Remove source configuration file
@@ -150,10 +149,9 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     static int cacheNum = 0;
     cfgFileName         = format("module%u.swg", cacheNum++).c_str();
     destPath += cfgFileName;
-    File::openFile(&fdest, destPath.c_str(), "wbN");
-    if (!fdest)
+    if (!openFile(&fdest, destPath.c_str(), "wbN"))
     {
-        File::closeFile(&fsrc);
+        closeFile(&fsrc);
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0510, SWAG_CFG_FILE, dep->name.c_str())});
     }
 
@@ -168,8 +166,8 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
             break;
     }
 
-    File::closeFile(&fsrc);
-    File::closeFile(&fdest);
+    closeFile(&fsrc);
+    closeFile(&fdest);
     return true;
 }
 

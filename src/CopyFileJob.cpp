@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Module.h"
 #include "File.h"
 #include "CopyFileJob.h"
 #include "OS.h"
@@ -19,12 +18,10 @@ JobResult CopyFileJob::execute()
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    File::openFile(&fsrc, sourcePath.c_str(), "rbN");
-    File::openFile(&fdest, destPath.c_str(), "wbN");
-    if (!fsrc || !fdest)
+    if (!openFile(&fsrc, sourcePath.c_str(), "rbN") || !openFile(&fdest, destPath.c_str(), "wbN"))
     {
-        File::closeFile(&fsrc);
-        File::closeFile(&fdest);
+        closeFile(&fsrc);
+        closeFile(&fdest);
         return JobResult::ReleaseJob;
     }
 
@@ -38,8 +35,8 @@ JobResult CopyFileJob::execute()
             break;
     }
 
-    File::closeFile(&fsrc);
-    File::closeFile(&fdest);
+    closeFile(&fsrc);
+    closeFile(&fdest);
 
     return JobResult::ReleaseJob;
 }
