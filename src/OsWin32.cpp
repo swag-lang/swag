@@ -8,8 +8,6 @@
 #include "Utf8.h"
 #include "BuildParameters.h"
 #include "Workspace.h"
-#include "Profile.h"
-#include "ProfileWin32.h"
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
@@ -27,16 +25,6 @@ namespace OS
             _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
             _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
         }
-
-#ifdef SWAG_HAS_PROFILE
-        for (int i = 0; i < MAX_PROFILE_STACK; i++)
-        {
-            Utf8                   name = format("%d", i);
-            VectorNative<uint16_t> uni16;
-            name.toUni16(uni16);
-            g_Profile[i] = new Concurrency::diagnostic::marker_series((LPCTSTR) uni16.buffer);
-        }
-#endif
     }
 
     void consoleSetup()
@@ -143,7 +131,6 @@ namespace OS
         ::ZeroMemory(&pi, sizeof(pi));
 
         {
-            SWAG_PROFILE(PRF_LOAD, format("create process %s", cmdline.c_str()));
             if (!::CreateProcessA(nullptr,
                                   (LPSTR) cmdline.c_str(),
                                   nullptr,
@@ -359,7 +346,6 @@ namespace OS
         ::ZeroMemory(&pi, sizeof(pi));
 
         {
-            SWAG_PROFILE(PRF_LOAD, format("create process %s", cmdline.c_str()));
             if (!::CreateProcessA(nullptr,
                                   (LPSTR) cmdline.c_str(),
                                   nullptr,

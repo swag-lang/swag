@@ -338,9 +338,6 @@
     <ClCompile Include="../src/ModulePrepOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ProfileWin32.cpp">
-      <Filter>Main\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="../src/SemanticJobIntrinsic_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -491,9 +488,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Stats.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Pool.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Job.h">
@@ -683,12 +677,6 @@
     <ClInclude Include="../src/ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="../src/ProfileWin32.h">
-      <Filter>Main\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Profile.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/SourceLocation.h">
       <Filter>Lexer</Filter>
     </ClInclude>
@@ -777,6 +765,9 @@
       <Filter>Main\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\HashTable.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Pool.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,6 @@
 #include "Workspace.h"
 #include "Context.h"
 #include "Ast.h"
-#include "Profile.h"
 #include "Timer.h"
 #include "Module.h"
 
@@ -31,7 +30,6 @@ void ModuleManager::resetFailedModule(const Utf8& moduleName)
 
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 {
-    SWAG_PROFILE(PRF_LOAD, format("load module %s", name.c_str()));
     if (isModuleLoaded(name))
         return true;
     if (isModuleFailedLoaded(name))

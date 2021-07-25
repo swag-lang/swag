@@ -265,6 +265,38 @@ Utf8 SourceFile::getLine(long lineNo)
     return allLines[lineNo];
 }
 
+void SourceFile::load(LoadRequest* request)
+{
+    request->loadedSize = 0;
+    if (openRead())
+    {
+        seekTo(request->seek);
+        request->loadedSize = readTo();
+    }
+
+    // Stored in a static to avoid polling the function (there's a potential crt lock there)
+    static int maxStdIo = 0;
+    if (maxStdIo == 0)
+        maxStdIo = _getmaxstdio();
+
+    if (g_Stats.maxOpenFiles > maxStdIo / 2)
+        close();
+}
+
+void SourceFile::computePrivateScopeName()
+{
+    unique_lock lk(mutex);
+    if (!scopeName.empty())
+        return;
+    scopeName = "__" + name;
+
+    char* pz = strrchr(scopeName.buffer, '.');
+    SWAG_ASSERT(pz);
+    *pz             = 0;
+    scopeName.count = (int) (pz - scopeName.c_str());
+    Ast::normalizeIdentifierName(scopeName);
+}
+
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0 && !diag.exceptionError)
@@ -422,36 +454,4 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
         notes.push_back(note1);
 
     return report(diag, notes);
-}
-
-void SourceFile::load(LoadRequest* request)
-{
-    request->loadedSize = 0;
-    if (openRead())
-    {
-        seekTo(request->seek);
-        request->loadedSize = readTo();
-    }
-
-    // Stored in a static to avoid polling the function (there's a potential crt lock there)
-    static int maxStdIo = 0;
-    if (maxStdIo == 0)
-        maxStdIo = _getmaxstdio();
-
-    if (g_Stats.maxOpenFiles > maxStdIo / 2)
-        close();
-}
-
-void SourceFile::computePrivateScopeName()
-{
-    unique_lock lk(mutex);
-    if (!scopeName.empty())
-        return;
-    scopeName = "__" + name;
-
-    char* pz = strrchr(scopeName.buffer, '.');
-    SWAG_ASSERT(pz);
-    *pz             = 0;
-    scopeName.count = (int) (pz - scopeName.c_str());
-    Ast::normalizeIdentifierName(scopeName);
 }

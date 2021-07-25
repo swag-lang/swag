@@ -37,9 +37,12 @@
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Analysis/TargetTransformInfo.h"
 
+#ifdef _WIN32
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include "windows.h"
+#endif
+
 #include <vector>
 #include <deque>
 #include <map>
@@ -62,12 +65,10 @@ using namespace std;
 namespace fs = std::experimental::filesystem;
 #pragma warning(disable : 4100)
 
-extern void* Memcpy(void* destination, const void* source, size_t size);
 
 ////////// CONFIG //////////
 
 #define FFI_BUILDING
-//#define SWAG_HAS_PROFILE
 #ifdef SWAG_DEV_MODE
 #define SWAG_CHECK_MEMORY
 #define SWAG_HAS_ASSERT

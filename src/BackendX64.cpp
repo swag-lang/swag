@@ -3,7 +3,6 @@
 #include "BackendX64Inst.h"
 #include "BackendLinker.h"
 #include "Module.h"
-#include "Profile.h"
 #include "BackendX64SaveObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -839,8 +838,6 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
 
 bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 {
-    SWAG_PROFILE(PRF_SAVE, format("saveObjFile %s", module->name.c_str()));
-
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];

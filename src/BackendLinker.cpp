@@ -3,7 +3,6 @@
 #include "Backend.h"
 #include "OS.h"
 #include "Module.h"
-#include "Profile.h"
 #include "lld/Common/Driver.h"
 
 namespace BackendLinker
@@ -156,8 +155,6 @@ namespace BackendLinker
 
     bool link_process(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
-        SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
-
         vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, true);
 
@@ -210,8 +207,6 @@ namespace BackendLinker
         static mutex oo;
         if (!oo.try_lock())
             return link_process(buildParameters, module, objectFiles);
-
-        SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
         vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, false);

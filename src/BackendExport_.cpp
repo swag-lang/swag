@@ -5,7 +5,6 @@
 #include "TypeManager.h"
 #include "Os.h"
 #include "Module.h"
-#include "Profile.h"
 #include "ModuleSaveExportJob.h"
 #include "AstNode.h"
 #include "ByteCode.h"
@@ -856,7 +855,6 @@ bool Backend::setupExportFile(bool force)
 
 JobResult Backend::generateExportFile(Job* ownerJob)
 {
-    SWAG_PROFILE(PRF_OUT, format("generateExportFile %s", module->name.c_str()));
     if (passExport == BackendPreCompilePass::Init)
     {
         passExport = BackendPreCompilePass::GenerateObj;
@@ -899,7 +897,6 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    SWAG_PROFILE(PRF_SAVE, format("saveExportFile %s", module->name.c_str()));
     auto result = bufferSwg.flush(true, AFFINITY_ALL ^ AFFINITY_IO);
     if (!result)
         return false;

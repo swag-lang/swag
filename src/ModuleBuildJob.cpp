@@ -8,7 +8,6 @@
 #include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
-#include "Profile.h"
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
 #include "ModuleManager.h"
@@ -365,8 +364,6 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-
-        SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
 
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRunByteCode, this);
 

@@ -3,7 +3,6 @@
 #include "Workspace.h"
 #include "Context.h"
 #include "Ast.h"
-#include "Profile.h"
 #include "Timer.h"
 #include "Module.h"
 #include "ThreadManager.h"

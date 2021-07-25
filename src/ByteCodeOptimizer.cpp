@@ -2,7 +2,6 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
-#include "Profile.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
@@ -283,8 +282,6 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     done = false;
     if (module->numErrors)
         return false;
-
-    SWAG_PROFILE(PRF_OPT, format("optim BC %s", module->name.c_str()));
 
     // Determin if we need to restart the whole optim pass because something has been done
     if (module->optimPass == 1)
