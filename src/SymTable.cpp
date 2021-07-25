@@ -12,7 +12,7 @@
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
     shared_lock lk(mutex);
-    return findNoLock(name);
+    return findNoLock(name, crc);
 }
 
 SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
