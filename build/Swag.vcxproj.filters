@@ -25,9 +25,6 @@
     <ClCompile Include="../src/SyntaxJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Utf8.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Workspace.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -473,6 +470,9 @@
     <ClCompile Include="../src/ModuleBuildJob.cpp">
       <Filter>Main\Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="../src/Utf8.cpp">
+      <Filter>Main\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -507,9 +507,6 @@
     </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Utf8.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Workspace.h">
       <Filter>Main</Filter>
@@ -617,9 +614,6 @@
     <ClInclude Include="../src/ModuleManager.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="../src/VectorNative.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BackendLLVM.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
@@ -640,9 +634,6 @@
     </ClInclude>
     <ClInclude Include="../src/ComWin32.hpp">
       <Filter>Main\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Timer.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi.h">
       <Filter>ByteCode\FFI</Filter>
@@ -761,9 +752,6 @@
     <ClInclude Include="../src/LanguageSpec.h">
       <Filter>Tokenizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\HashTable.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/CopyFileJob.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
@@ -778,6 +766,18 @@
     </ClInclude>
     <ClInclude Include="../src/ModuleBuildJob.h">
       <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Utf8.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/VectorNative.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Timer.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\HashTable.h">
+      <Filter>Main\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -825,6 +825,9 @@
     </Filter>
     <Filter Include="Main\Jobs">
       <UniqueIdentifier>{1bc332e2-b846-4939-bd77-130255d62a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Core">
+      <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
