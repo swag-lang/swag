@@ -24,8 +24,7 @@ bool SourceFile::checkFormat()
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
-        bufferCurSeek = 3;
-        headerSize    = 3;
+        curBuffer += 3;
         return true;
     }
 
@@ -53,10 +52,11 @@ bool SourceFile::checkFormat()
 
 void SourceFile::setExternalBuffer(char* buf, uint32_t size)
 {
-    buffer        = buf;
-    bufferCurSeek = 0;
-    bufferSize    = size;
-    isExternal    = true;
+    buffer     = buf;
+    curBuffer  = buf;
+    endBuffer  = buf + size;
+    bufferSize = size;
+    isExternal = true;
 }
 
 bool SourceFile::load()
@@ -98,6 +98,9 @@ bool SourceFile::load()
     closeFile(&handle);
     read.stop();
 
+    curBuffer = buffer;
+    endBuffer = buffer + bufferSize;
+
     if (!checkFormat())
         return false;
 
@@ -106,10 +109,10 @@ bool SourceFile::load()
 
 uint32_t SourceFile::getChar(unsigned& offset)
 {
-    if (bufferCurSeek >= bufferSize)
+    if (curBuffer >= endBuffer)
         return 0;
 
-    char c = buffer[bufferCurSeek++];
+    char c = *curBuffer++;
 
     if ((c & 0x80) == 0)
     {
@@ -121,7 +124,7 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xE0) == 0xC0)
     {
         wc = (c & 0x1F) << 6;
-        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        wc |= (*curBuffer++ & 0x3F);
         offset = 2;
         return wc;
     }
@@ -129,8 +132,8 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xF0) == 0xE0)
     {
         wc = (c & 0xF) << 12;
-        wc |= (buffer[bufferCurSeek++] & 0x3F) << 6;
-        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        wc |= (*curBuffer++ & 0x3F) << 6;
+        wc |= (*curBuffer++ & 0x3F);
         offset = 3;
         return wc;
     }
@@ -138,9 +141,9 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xF8) == 0xF0)
     {
         wc = (c & 0x7) << 18;
-        wc |= (buffer[bufferCurSeek++] & 0x3F) << 12;
-        wc |= (buffer[bufferCurSeek++] & 0x3F) << 6;
-        wc |= (buffer[bufferCurSeek++] & 0x3F);
+        wc |= (*curBuffer++ & 0x3F) << 12;
+        wc |= (*curBuffer++ & 0x3F) << 6;
+        wc |= (*curBuffer++ & 0x3F);
         offset = 4;
         return wc;
     }

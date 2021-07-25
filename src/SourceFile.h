@@ -24,8 +24,9 @@ struct SourceFile
     void setExternalBuffer(char* buf, uint32_t size);
     void computePrivateScopeName();
 
-    Utf8   name;
-    string path;
+    shared_mutex mutex;
+    Utf8         name;
+    string       path;
 
     vector<string> allLines;
     int            getLineOffset = 0;
@@ -52,20 +53,18 @@ struct SourceFile
     bool        isRuntimeFile        = false;
     bool        isScriptFile         = false;
 
-    char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;
     AstNode* sourceNode   = nullptr;
     Module*  imported     = nullptr;
 
-    int          headerSize    = 0;
-    long         fileSeek      = 0;
-    long         bufferCurSeek = 0;
-    long         bufferSize    = 0;
-    int          totalRead     = 0;
-    bool         formatDone    = false;
-    bool         fromTests     = false;
-    bool         isCfgFile     = false;
-    bool         isGenerated   = false;
-    bool         forceExport   = false;
-    shared_mutex mutex;
+    char* buffer    = nullptr;
+    char* curBuffer = nullptr;
+    char* endBuffer = nullptr;
+
+    long bufferSize = 0;
+
+    bool fromTests   = false;
+    bool isCfgFile   = false;
+    bool isGenerated = false;
+    bool forceExport = false;
 };
