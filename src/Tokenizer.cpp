@@ -131,14 +131,18 @@ bool Tokenizer::getToken(Token& token)
     forceLastTokenIsEOL = false;
     lastTokenIsBlank    = false;
 
+    token.literalType = LiteralType::TT_MAX;
+
     unsigned offset;
     while (true)
     {
         token.startLocation = location;
-        token.literalType   = LiteralType::TT_MAX;
         token.text.clear();
 
         auto c = getChar();
+
+        // End of file
+        ///////////////////////////////////////////
         if (c == 0)
         {
             token.id = TokenId::EndOfFile;
@@ -146,12 +150,15 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Blank
+        ///////////////////////////////////////////
         if (SWAG_IS_EOL(c))
         {
             lastTokenIsEOL = true;
             continue;
         }
 
+        // End of line
+        ///////////////////////////////////////////
         if (SWAG_IS_BLANK(c))
         {
             lastTokenIsBlank = true;
@@ -159,6 +166,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Comments
+        ///////////////////////////////////////////
         if (c == '/')
         {
             auto nc = getCharNoSeek(offset);
@@ -184,6 +192,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Identifier
+        ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {
             token.text = c;
@@ -245,6 +254,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Number literal
+        ///////////////////////////////////////////
         if (SWAG_IS_DIGIT(c))
         {
             SWAG_CHECK(doNumberLiteral(c, token));
@@ -252,6 +262,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // String literal
+        ///////////////////////////////////////////
         if (c == '"')
         {
             SWAG_CHECK(doStringLiteral(token, false));
@@ -259,6 +270,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Symbols
+        ///////////////////////////////////////////
         if (doSymbol(c, token))
         {
             token.endLocation = location;
@@ -266,6 +278,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Unknown character
+        ///////////////////////////////////////////
         token.endLocation = location;
         token.text        = c;
         token.id          = TokenId::Invalid;
