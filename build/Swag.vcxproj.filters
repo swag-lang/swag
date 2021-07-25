@@ -10,16 +10,7 @@
     <ClCompile Include="../src/Job.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Swag.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Global.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Log.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Diagnostic.cpp">
+    <ClCompile Include="..\src\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp">
@@ -137,9 +128,6 @@
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Stats.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/SyntaxJobBlock_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -191,14 +179,8 @@
     <ClCompile Include="../src/SwagScope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/DataSegment.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCodeGenJobCompareOp_.cpp">
       <Filter>ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Assert.cpp">
-      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/Attribute.cpp">
       <Filter>Semantic</Filter>
@@ -249,10 +231,10 @@
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendSetupWin32.cpp">
-      <Filter>Main\Win32</Filter>
+      <Filter>Main\Os</Filter>
     </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
-      <Filter>Main\Win32</Filter>
+      <Filter>Main\Os</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleRunJob.cpp">
       <Filter>Backend</Filter>
@@ -368,9 +350,6 @@
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Allocator.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/BackendX64Dbg_.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
@@ -470,6 +449,27 @@
     <ClCompile Include="../src/SourceFile.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
+    <ClCompile Include="../src/DataSegment.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Allocator.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Assert.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Diagnostic.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Global.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Log.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Stats.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -478,23 +478,11 @@
     <ClInclude Include="../src/ThreadManager.h">
       <Filter>Main\Threading</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Global.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/CommandLine.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Log.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Stats.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Job.h">
       <Filter>Main\Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Diagnostic.h">
-      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Lexer</Filter>
@@ -563,18 +551,6 @@
     <ClInclude Include="../src/SwagScope.h">
       <Filter>Semantic</Filter>
     </ClInclude>
-    <ClInclude Include="../src/DataSegment.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Assert.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Os.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Allocator.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/ModuleManager.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -597,7 +573,7 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ComWin32.hpp">
-      <Filter>Main\Win32</Filter>
+      <Filter>Main\Os</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi.h">
       <Filter>ByteCode\FFI</Filter>
@@ -764,6 +740,30 @@
     <ClInclude Include="..\src\BackendParameters.h">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="../src/DataSegment.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Allocator.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Assert.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Diagnostic.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Global.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Log.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Stats.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Os.h">
+      <Filter>Main\Os</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -793,9 +793,6 @@
     <Filter Include="Semantic\Type">
       <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Win32">
-      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main\Threading">
       <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
     </Filter>
@@ -819,6 +816,12 @@
     </Filter>
     <Filter Include="Main\Wmf">
       <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Global">
+      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Os">
+      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

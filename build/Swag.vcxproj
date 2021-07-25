@@ -412,7 +412,7 @@
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />
-    <ClCompile Include="../src/Swag.cpp" />
+    <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="../src/ThreadManager.cpp" />
     <ClCompile Include="../src/Tokenizer.cpp" />
     <ClCompile Include="../src/TokenizerStringLiteral_.cpp" />
