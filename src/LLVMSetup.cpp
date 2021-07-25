@@ -1,6 +1,5 @@
 #include "pch.h"
 
-//#pragma comment(lib, "LLVM-C.lib")
 #pragma comment(lib, "LLVMAArch64AsmParser.lib")
 #pragma comment(lib, "LLVMAArch64CodeGen.lib")
 #pragma comment(lib, "LLVMAArch64Desc.lib")
