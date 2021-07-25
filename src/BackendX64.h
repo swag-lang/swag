@@ -1,7 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "Backend.h"
-#include "BuildParameters.h"
+#include "BackendParameters.h"
 #include "DataSegment.h"
 
 struct Module;

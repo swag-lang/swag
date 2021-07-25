@@ -761,8 +761,8 @@
     <ClInclude Include="..\src\LLVMInc.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BuildParameters.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="..\src\BackendParameters.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

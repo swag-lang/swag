@@ -5,7 +5,7 @@
 #include "Global.h"
 #include "Log.h"
 #include "Utf8.h"
-#include "BuildParameters.h"
+#include "BackendParameters.h"
 #include "Workspace.h"
 #include "Module.h"
 #include "Diagnostic.h"

@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Concat.h"
-#include "BuildParameters.h"
+#include "BackendParameters.h"
 struct Module;
 struct Backend;
 struct ByteCode;

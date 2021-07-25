@@ -1,6 +1,6 @@
 #pragma once
 #include "Pool.h"
-#include "BuildParameters.h"
+#include "BackendParameters.h"
 #include "TypeTable.h"
 #include "RaceCondition.h"
 struct SourceFile;

@@ -1,7 +1,7 @@
 #pragma once
 #include "OutputFile.h"
 #include "Ast.h"
-#include "BuildParameters.h"
+#include "BackendParameters.h"
 struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
