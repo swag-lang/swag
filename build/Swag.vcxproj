@@ -186,7 +186,6 @@
     <ClInclude Include="../src/ByteCodeOptimizer.h" />
     <ClInclude Include="../src/ByteCodeOptimizerJob.h" />
     <ClInclude Include="../src/CompilerItf.h" />
-    <ClInclude Include="../src/Limit.h" />
     <ClInclude Include="../src/LLVMSetup.h" />
     <ClInclude Include="../src/LoadFileJob.h" />
     <ClInclude Include="../src/ModuleManager.h" />

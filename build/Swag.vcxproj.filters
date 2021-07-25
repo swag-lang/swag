@@ -569,9 +569,6 @@
     <ClInclude Include="../src/Assert.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BuildParameters.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Os.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -671,9 +668,6 @@
     <ClInclude Include="../src/ByteCodeOptContext.h">
       <Filter>ByteCode\Optimize</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Limit.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BackendLinker.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -766,6 +760,9 @@
     </ClInclude>
     <ClInclude Include="..\src\LLVMInc.h">
       <Filter>Backend\LLVM</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/BuildParameters.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

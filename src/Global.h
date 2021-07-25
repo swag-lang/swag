@@ -1,7 +1,6 @@
 #pragma once
 #include "Utf8.h"
 #include "Assert.h"
-#include "Limit.h"
 
 struct Global
 {
