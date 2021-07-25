@@ -240,14 +240,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     c = getCharNoSeek(offset);
 
     // Do this because of the slicing operator number..number. We do not want the '..' to be eaten
-    bool hasDot = false;
-    if (c == '.')
-    {
-        unsigned offset1;
-        auto     c1 = getChar(offset1, false, false);
-        if (c == '.' && c1 != '.')
-            hasDot = true;
-    }
+    bool hasDot = (c == '.') && sourceFile->curBuffer[1] != '.';
 
     // If there's a dot, then this is a floating point number
     if (hasDot)

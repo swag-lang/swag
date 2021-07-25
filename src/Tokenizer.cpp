@@ -26,102 +26,52 @@ const uint32_t g_TokenFlags[] =
 #include "TokenIds.h"
 };
 
+bool Tokenizer::isSymbol(TokenId id)
+{
+    return g_TokenFlags[(int) id] & TOKEN_SYM;
+}
+
+bool Tokenizer::isLiteral(TokenId id)
+{
+    return g_TokenFlags[(int) id] & TOKEN_LITERAL;
+}
+
 void Tokenizer::setFile(SourceFile* file)
 {
     location.column = 0;
     location.line   = 0;
-    endReached      = false;
-    cacheChar[0]    = 0;
-    cacheChar[1]    = 0;
     sourceFile      = file;
 }
 
-inline void Tokenizer::treatChar(uint32_t c, unsigned offset)
+inline void Tokenizer::processChar(uint32_t c)
 {
-    if (!c)
-        return;
-
-    if (cacheChar[0])
-    {
-        cacheChar[0]       = cacheChar[1];
-        cacheCharOffset[0] = cacheCharOffset[1];
-        cacheChar[1]       = 0;
-        cacheCharOffset[1] = 0;
-    }
-
     location.column++;
 
-    // End of line
     if (c == '\n')
     {
-        if (g_CommandLine.stats)
-            g_Stats.numLines++;
+        g_Stats.numLines++;
         location.column = 0;
         location.line++;
     }
 }
 
+inline void Tokenizer::treatChar(uint32_t c, unsigned offset)
+{
+    processChar(c);
+    sourceFile->curBuffer += offset;
+}
+
 inline uint32_t Tokenizer::getChar()
 {
     unsigned offset;
-    return getChar(offset, true);
+    auto     c = sourceFile->getChar(offset);
+    treatChar(c, offset);
+    return c;
 }
 
 inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 {
-    return getChar(offset, false);
-}
-
-inline uint32_t Tokenizer::getChar(unsigned& offset, bool seekMove, bool useCache)
-{
-    if (endReached)
-        return 0;
-
-    // One character is already there, no need to read
-    uint32_t c = 0;
-    offset     = 1;
-    if (useCache && cacheChar[0])
-    {
-        c      = cacheChar[0];
-        offset = cacheCharOffset[0];
-    }
-    else
-    {
-        c = sourceFile->getChar(offset);
-    }
-
-    if (!c)
-    {
-        if (!endReached)
-        {
-            endReached = true;
-            if (g_CommandLine.stats)
-                g_Stats.numLines++;
-        }
-
-        return 0;
-    }
-
-    if (seekMove)
-    {
-        treatChar(c, offset);
-    }
-    else if (useCache || !cacheChar[0])
-    {
-        cacheChar[0]       = c;
-        cacheCharOffset[0] = offset;
-    }
-    else if (!cacheChar[1])
-    {
-        cacheChar[1]       = c;
-        cacheCharOffset[1] = offset;
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-
-    return c;
+    return sourceFile->getChar(offset);
 }
 
 bool Tokenizer::eatCComment(Token& token)
@@ -325,14 +275,4 @@ bool Tokenizer::getToken(Token& token)
     }
 
     return true;
-}
-
-bool Tokenizer::isSymbol(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_SYM;
-}
-
-bool Tokenizer::isLiteral(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_LITERAL;
 }

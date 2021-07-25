@@ -112,7 +112,7 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if (curBuffer >= endBuffer)
         return 0;
 
-    char c = *curBuffer++;
+    char c = *curBuffer;
 
     if ((c & 0x80) == 0)
     {
@@ -124,7 +124,7 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xE0) == 0xC0)
     {
         wc = (c & 0x1F) << 6;
-        wc |= (*curBuffer++ & 0x3F);
+        wc |= (curBuffer[1] & 0x3F);
         offset = 2;
         return wc;
     }
@@ -132,8 +132,8 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xF0) == 0xE0)
     {
         wc = (c & 0xF) << 12;
-        wc |= (*curBuffer++ & 0x3F) << 6;
-        wc |= (*curBuffer++ & 0x3F);
+        wc |= (curBuffer[1] & 0x3F) << 6;
+        wc |= (curBuffer[2] & 0x3F);
         offset = 3;
         return wc;
     }
@@ -141,9 +141,9 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if ((c & 0xF8) == 0xF0)
     {
         wc = (c & 0x7) << 18;
-        wc |= (*curBuffer++ & 0x3F) << 12;
-        wc |= (*curBuffer++ & 0x3F) << 6;
-        wc |= (*curBuffer++ & 0x3F);
+        wc |= (curBuffer[1] & 0x3F) << 12;
+        wc |= (curBuffer[2] & 0x3F) << 6;
+        wc |= (curBuffer[3] & 0x3F);
         offset = 4;
         return wc;
     }
