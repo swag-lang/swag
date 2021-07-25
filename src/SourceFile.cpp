@@ -71,7 +71,7 @@ bool SourceFile::load()
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
-    if(!openFile(&handle, path.c_str(), "rbN"))
+    if (!openFile(&handle, path.c_str(), "rbN"))
         return false;
 
     // Get file length
@@ -89,17 +89,17 @@ bool SourceFile::load()
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
         delete[] buffer;
+        buffer = nullptr;
         closeFile(&handle);
         g_Log.errorOS(format("error reading source file '%s'", path.c_str()));
         return false;
     }
 
     closeFile(&handle);
+    read.stop();
 
     if (!checkFormat())
         return false;
-
-    read.stop();
 
     return true;
 }
