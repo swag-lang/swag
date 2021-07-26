@@ -26,7 +26,6 @@ struct CommandLine
     string workspacePath;
     string cachePath;
     string moduleName;
-    string fileFilter;
     string testFilter;
 
     // Test

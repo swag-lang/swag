@@ -34,8 +34,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
 
-    addArg("bu", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, "will only compile files that match the filter");
-    addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only test files that match the filter");
+    addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
 
     addArg("bu", "--dbgcatch", nullptr, CommandLineType::Bool, &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
     addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");

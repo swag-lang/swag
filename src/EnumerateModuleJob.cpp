@@ -59,7 +59,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
             }
             else
             {
-                if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
+                if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
                 {
                     auto pz = strrchr(cFileName, '.');
                     if (pz && !_strcmpi(pz, ".swg"))

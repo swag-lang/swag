@@ -95,7 +95,7 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
         // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
         // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
         // So now its the highest bit.
-        SWAG_ASSERT(!isByteCodeLambda(funcPtr));
+        SWAG_ASSERT(!ByteCode::isByteCodeLambda(funcPtr));
 
         return ByteCode::doForeignLambda(funcPtr);
     }
