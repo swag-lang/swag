@@ -168,6 +168,13 @@ struct ByteCode
     void markLabels();
     bool isDoingNothing();
 
+    static void* doForeignLambda(void* ptr);
+    static bool  isForeignLambda(void* ptr);
+    static void* undoForeignLambda(void* ptr);
+    static void* doByteCodeLambda(void* ptr);
+    static void* undoByteCodeLambda(void* ptr);
+    static bool  isByteCodeLambda(void* ptr);
+
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);
     void              printInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);

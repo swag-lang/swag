@@ -107,7 +107,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
+    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->callName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);

@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Timer.h"
 #include "Module.h"
+#include "ByteCode.h"
 
 ModuleManager g_ModuleMgr;
 
@@ -125,7 +126,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     {
         auto fnPtr = getFnPointer(moduleName.text, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
-        *patchAddress = doForeignLambda(fnPtr);
+        *patchAddress = ByteCode::doForeignLambda(fnPtr);
     }
     else
     {
@@ -155,7 +156,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
         if (!fnPtr)
             return false;
 
-        *one.patchAddress = doForeignLambda(fnPtr);
+        *one.patchAddress = ByteCode::doForeignLambda(fnPtr);
     }
 
     return true;

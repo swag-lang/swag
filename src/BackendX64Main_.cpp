@@ -64,7 +64,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;
     SWAG_ASSERT(g_defaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
+    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]

@@ -13,7 +13,7 @@ thread_local ByteCodeRunContext g_runContext;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
-    ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(byteCodePtr);
+    ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
 
     VectorNative<Register*> returnRegisters;
@@ -191,7 +191,7 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
     SWAG_ASSERT(cbIndex != UINT32_MAX);
 
     void*             result   = nullptr;
-    ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(g_callbackArr[cbIndex].bytecode);
+    ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_callbackArr[cbIndex].bytecode);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 

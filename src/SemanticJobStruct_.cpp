@@ -283,7 +283,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
         else
         {
-            *ptrITable = doByteCodeLambda(funcChild->extension->bc);
+            *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
             module->constantSegment.addInitPtrFunc(offset, funcChild->extension->bc->callName(), DataSegment::RelocType::Local);
         }
 
@@ -342,10 +342,10 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
         Diagnostic diag{node,
                         node->token,
                         Utf8::format(Msg0661,
-                               node->token.text.c_str(),
-                               scopeImpl->parentScope->getFullName().c_str(),
-                               node->token.text.c_str(),
-                               scope->parentScope->getFullName().c_str())};
+                                     node->token.text.c_str(),
+                                     scopeImpl->parentScope->getFullName().c_str(),
+                                     node->token.text.c_str(),
+                                     scope->parentScope->getFullName().c_str())};
         return context->report(diag, &note);
     }
 

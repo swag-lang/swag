@@ -537,3 +537,45 @@ bool ByteCode::isDoingNothing()
 
     return false;
 }
+
+void* ByteCode::doForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    u |= SWAG_LAMBDA_FOREIGN_MARKER;
+    return (void*) u;
+}
+
+void* ByteCode::undoForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    SWAG_ASSERT(u & SWAG_LAMBDA_FOREIGN_MARKER);
+    u ^= SWAG_LAMBDA_FOREIGN_MARKER;
+    return (void*) u;
+}
+
+bool ByteCode::isForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    return u & SWAG_LAMBDA_FOREIGN_MARKER;
+}
+
+void* ByteCode::doByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    u |= SWAG_LAMBDA_BC_MARKER;
+    return (void*) u;
+}
+
+void* ByteCode::undoByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    SWAG_ASSERT(u & SWAG_LAMBDA_BC_MARKER);
+    u ^= SWAG_LAMBDA_BC_MARKER;
+    return (void*) u;
+}
+
+bool ByteCode::isByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    return u & SWAG_LAMBDA_BC_MARKER;
+}
