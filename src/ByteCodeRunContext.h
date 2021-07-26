@@ -118,3 +118,5 @@ struct ByteCodeRunContext : public JobContext
     ByteCodeInstruction* debugCxtIp            = nullptr;
     uint8_t*             debugCxtBp            = nullptr;
 };
+
+extern bool g_Exiting;

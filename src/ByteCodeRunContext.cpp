@@ -3,9 +3,11 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 
+extern bool g_Exiting;
+
 ByteCodeRunContext::~ByteCodeRunContext()
 {
-    if (g_Global.exiting)
+    if (g_Exiting)
         return;
 
     ::free(registersRR);

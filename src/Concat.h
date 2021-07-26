@@ -1,7 +1,8 @@
 #pragma once
 #pragma once
 #include "Pool.h"
-#include "Global.h"
+#include "Assert.h"
+#include "Utf8.h"
 
 struct ConcatBucket
 {

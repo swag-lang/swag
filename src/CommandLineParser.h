@@ -1,6 +1,5 @@
 #pragma once
 #include "Utf8.h"
-#include "Global.h"
 struct CommandLine;
 
 enum CommandLineType

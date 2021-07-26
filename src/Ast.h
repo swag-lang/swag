@@ -134,3 +134,5 @@ inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKin
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3));
     return casted;
 }
+
+extern atomic<int> g_UniqueID;

@@ -6,6 +6,8 @@
 #include "TypeManager.h"
 #include "Module.h"
 
+atomic<int> g_UniqueID;
+
 namespace Ast
 {
     Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)

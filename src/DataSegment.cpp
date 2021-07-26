@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Global.h"
 #include "DataSegment.h"
 #include "Log.h"
 #include "SourceFile.h"

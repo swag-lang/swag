@@ -2,7 +2,6 @@
 #ifdef _WIN32
 #include <windows.h>
 #include "Os.h"
-#include "Global.h"
 #include "Log.h"
 #include "Utf8.h"
 #include "BackendParameters.h"

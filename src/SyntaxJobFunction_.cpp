@@ -395,7 +395,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (funcForCompiler)
     {
         funcNode->flags |= AST_SPECIAL_COMPILER_FUNC;
-        int id = g_Global.uniqueID.fetch_add(1);
+        int id = g_UniqueID.fetch_add(1);
         switch (typeFuncId)
         {
         case TokenId::CompilerFuncTest:
@@ -658,7 +658,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     funcNode->flags |= AST_GENERATED;
     if (result)
         *result = funcNode;
-    int id               = g_Global.uniqueID.fetch_add(1);
+    int id               = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + to_string(id);
 
     auto typeInfo      = allocType<TypeInfoFuncAttr>();

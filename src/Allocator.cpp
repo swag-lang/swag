@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Allocator.h"
 #include "CommandLine.h"
-#include "Global.h"
 
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;

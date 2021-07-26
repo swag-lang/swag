@@ -579,7 +579,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    int id = g_Global.uniqueID.fetch_add(1);
+    int id = g_UniqueID.fetch_add(1);
 
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)

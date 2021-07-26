@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Global.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"

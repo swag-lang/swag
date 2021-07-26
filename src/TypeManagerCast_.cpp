@@ -2812,7 +2812,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         parentForRef = fromNode->parent;
 
     // Declare a variable
-    auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
+    auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), fromNode->parent);
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure this will always work.

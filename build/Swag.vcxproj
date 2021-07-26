@@ -208,7 +208,6 @@
     <ClInclude Include="../src/ffi/ffi_common.h" />
     <ClInclude Include="../src/File.h" />
     <ClInclude Include="../src/Generic.h" />
-    <ClInclude Include="../src/Global.h" />
     <ClInclude Include="../src/ModuleBuildJob.h" />
     <ClInclude Include="../src/ModuleExportJob.h" />
     <ClInclude Include="../src/ModulePrepOutputJob.h" />
@@ -348,7 +347,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/Generic.cpp" />
-    <ClCompile Include="../src/Global.cpp" />
     <ClCompile Include="../src/JobThread.cpp" />
     <ClCompile Include="../src/LanguageSpec.cpp" />
     <ClCompile Include="../src/Module.cpp" />

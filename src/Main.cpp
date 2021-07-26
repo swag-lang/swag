@@ -5,6 +5,8 @@
 #include "Os.h"
 #include "ErrorIds.h"
 
+bool g_Exiting = false;
+
 void printExamples()
 {
     g_Log.message("\n");
@@ -318,8 +320,8 @@ int main(int argc, const char* argv[])
     g_Stats.print();
 
     // To avoid freeing some stuff, and have a fast exit
-    g_Global.exiting = true;
-
+    g_Exiting = true;
     OS::exit(g_Workspace.numErrors > 0 ? -1 : 0);
+
     return 0;
 }

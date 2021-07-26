@@ -1350,7 +1350,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // We also want to replace the name of the function (and the reference to it) in case
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
-        int  id      = g_Global.uniqueID.fetch_add(1);
+        int  id      = g_UniqueID.fetch_add(1);
         Utf8 newName = "__cmpfunc" + to_string(id);
 
         auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);

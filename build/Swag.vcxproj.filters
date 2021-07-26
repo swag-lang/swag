@@ -461,9 +461,6 @@
     <ClCompile Include="../src/Diagnostic.cpp">
       <Filter>Main\Global</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Global.cpp">
-      <Filter>Main\Global</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Log.cpp">
       <Filter>Main\Global</Filter>
     </ClCompile>
@@ -747,9 +744,6 @@
       <Filter>Main\Global</Filter>
     </ClInclude>
     <ClInclude Include="../src/Diagnostic.h">
-      <Filter>Main\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Global.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
     <ClInclude Include="../src/Log.h">
