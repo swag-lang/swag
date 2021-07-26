@@ -58,6 +58,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 
     while (true)
     {
+        startTokenName = sourceFile->curBuffer;
         while (true)
         {
             auto c = getCharNoSeek(offset);
@@ -83,37 +84,36 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!raw && c == '\\')
             {
                 token.literalType = LiteralType::TT_ESCAPE_STRING;
-                token.text += c;
                 treatChar(c, offset);
                 c = getCharNoSeek(offset);
                 if (c)
-                {
-                    token.text += c;
                     treatChar(c, offset);
-                }
-
                 token.endLocation = location;
                 continue;
             }
-
-            treatChar(c, offset);
 
             // End marker
             if (c == '"')
             {
                 if (!raw)
+                {
+                    appendTokenName(token);
+                    treatChar(c, offset);
                     break;
-                auto nc = getCharNoSeek(offset);
+                }
+
+                auto nc = sourceFile->curBuffer[1];
                 if (nc == '@')
                 {
-                    treatChar(nc, offset);
+                    appendTokenName(token);
+                    sourceFile->curBuffer += 2;
                     postProcessRawString(token.text);
                     break;
                 }
             }
 
+            treatChar(c, offset);
             token.endLocation = location;
-            token.text += c;
         }
 
         auto c = getCharNoSeek(offset);
