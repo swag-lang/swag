@@ -1,4 +1,5 @@
 #pragma once
+
 extern void swag_assert(const char* expr, const char* file, int line);
 
 #ifdef SWAG_HAS_ASSERT
@@ -14,3 +15,19 @@ extern void swag_assert(const char* expr, const char* file, int line);
     {                       \
     }
 #endif
+
+#define SWAG_CHECK(__expr) \
+    do                     \
+    {                      \
+        if (!(__expr))     \
+            return false;  \
+    } while (0)
+#define SWAG_VERIFY(__expr, __err) \
+    do                             \
+    {                              \
+        if (!(__expr))             \
+        {                          \
+            __err;                 \
+            return false;          \
+        }                          \
+    } while (0)

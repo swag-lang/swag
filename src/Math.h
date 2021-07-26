@@ -3,6 +3,13 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+inline bool isPowerOfTwo(size_t v)
+{
+    if (!v)
+        return false;
+    return (v & (v - 1)) == 0;
+}
+
 inline bool addOverflow(AstNode* node, int8_t x, int8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))

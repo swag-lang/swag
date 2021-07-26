@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Math.h"
 
 void SemanticJob::propagateAttributes(AstNode* child)
 {

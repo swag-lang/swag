@@ -1,5 +1,6 @@
 #pragma once
 #include "Register.h"
+#include "Math.h"
 #include "ByteCode.h"
 
 #define regOffset(__r) __r * sizeof(Register)
