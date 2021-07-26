@@ -756,24 +756,13 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     // Dereferencing a type descriptor. Convert it to a literal.
     if (typeInfo->isPointerToTypeInfo())
     {
-        auto module = context->sourceFile->module;
-        auto value  = *(uint8_t**) ptr;
-
-        node->computedValue.storageSegment = &module->constantSegment;
-        if (module->constantSegment.tryOffset(value, node->computedValue.storageOffset))
-        {
-            node->flags |= AST_VALUE_IS_TYPEINFO;
-            node->setFlagsValueIsComputed();
-            return true;
-        }
-
-        node->computedValue.storageSegment = &module->compilerSegment;
-        if (module->compilerSegment.tryOffset(value, node->computedValue.storageOffset))
-        {
-            node->flags |= AST_VALUE_IS_TYPEINFO;
-            node->setFlagsValueIsComputed();
-            return true;
-        }
+        auto value                         = *(uint8_t**) ptr;
+        auto constSegment                  = getConstantSegFromContext(node);
+        node->computedValue.storageSegment = constSegment;
+        node->computedValue.storageOffset  = constSegment->offset(value);
+        node->flags |= AST_VALUE_IS_TYPEINFO;
+        node->setFlagsValueIsComputed();
+        return true;
     }
 
     return derefConstantValue(context, node, typeInfo->kind, typeInfo->nativeType, ptr);

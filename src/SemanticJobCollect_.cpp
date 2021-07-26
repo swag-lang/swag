@@ -212,7 +212,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
             auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue.storageSegment);
             SWAG_ASSERT(varType->computedValue.storageOffset != 0xFFFFFFFF);
-            auto srcAddr = varType->computedValue.storageSegment->addressNoLock(varType->computedValue.storageOffset);
+            auto srcAddr = varType->computedValue.storageSegment->address(segment, varType->computedValue.storageOffset);
             memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
 

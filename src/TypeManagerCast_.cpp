@@ -2952,8 +2952,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
-
-                auto module   = context->sourceFile->module;
                 auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && !(exprList->doneFlags & AST_DONE_EXPRLIST_CST))
                 {
@@ -2962,7 +2960,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                     // Test sizeof because @{} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)
                     {
-                        exprList->computedValue.storageSegment = &module->constantSegment;
+                        auto constSegment                      = SemanticJob::getConstantSegFromContext(exprList);
+                        exprList->computedValue.storageSegment = constSegment;
                         SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue.storageOffset, exprList->computedValue.storageSegment, nullptr, fromNode->typeInfo, exprList));
                     }
                 }
