@@ -11,7 +11,6 @@ bool TypeTableJob::computeStruct()
 {
     auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-    auto segment      = typeTable->getSegmentStorage(module, cflags);
 
     // Flags
     if (realType->flags & TYPEINFO_STRUCT_NO_COPY)

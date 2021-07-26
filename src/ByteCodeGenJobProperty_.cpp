@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "ErrorIds.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
@@ -63,10 +64,10 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];
     SWAG_ASSERT(childItf->concreteTypeInfoStorage != UINT32_MAX);
-    SWAG_ASSERT(childItf->concreteTypeInfoSegment);
 
-    auto r0 = reserveRegisterRC(context);
-    emitMakeSegPointer(context, childItf->concreteTypeInfoSegment, r0, childItf->concreteTypeInfoStorage);
+    auto constSegment = SemanticJob::getConstantSegFromContext(childItf);
+    auto r0           = reserveRegisterRC(context);
+    emitMakeSegPointer(context, constSegment, r0, childItf->concreteTypeInfoStorage);
 
     // Copy object pointer to first result register
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);

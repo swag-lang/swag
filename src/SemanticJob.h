@@ -164,7 +164,7 @@ struct SemanticJob : public Job
     static SymbolName*  hasUserOp(SemanticContext* context, const char* name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
     static uint32_t     alignOf(AstVarDecl* node);
-    static DataSegment* getConstantSegFromContext(AstNode* node);
+    static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
 
     static void     enterState(AstNode* node);
     static void     propagateAttributes(AstNode* child);
@@ -218,7 +218,7 @@ struct SemanticJob : public Job
     static AstNode* convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType);
     static bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
     static bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
-    static bool     collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
+    static bool     collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* segment);
     static void     disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
     static bool         resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);

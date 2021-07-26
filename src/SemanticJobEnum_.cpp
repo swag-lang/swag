@@ -149,8 +149,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            auto module    = context->sourceFile->module;
-            storageSegment = &module->constantSegment;
+            storageSegment = getConstantSegFromContext(assignNode);
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             enumNode->computedValue.storageOffset  = storageOffset;
@@ -161,8 +160,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            auto module    = context->sourceFile->module;
-            storageSegment = &module->constantSegment;
+            storageSegment = getConstantSegFromContext(assignNode);
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);

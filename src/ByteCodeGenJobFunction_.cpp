@@ -1073,17 +1073,17 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
             // and not a reference to a type
+            auto constSegment = SemanticJob::getConstantSegFromContext(child);
             if (typeParam->kind == TypeInfoKind::Reference)
             {
-                auto segType = child->concreteTypeInfoSegment;
-                SWAG_ASSERT(segType);
-                auto typeRef   = (ConcreteTypeInfoReference*) segType->address(child->concreteTypeInfoStorage);
-                auto offsetRef = segType->offset((uint8_t*) typeRef->pointedType);
-                emitMakeSegPointer(context, segType, r0, offsetRef);
+                SWAG_ASSERT(constSegment);
+                auto typeRef   = (ConcreteTypeInfoReference*) constSegment->address(child->concreteTypeInfoStorage);
+                auto offsetRef = constSegment->offset((uint8_t*) typeRef->pointedType);
+                emitMakeSegPointer(context, constSegment, r0, offsetRef);
             }
             else
             {
-                emitMakeSegPointer(context, child->concreteTypeInfoSegment, r0, child->concreteTypeInfoStorage);
+                emitMakeSegPointer(context, constSegment, r0, child->concreteTypeInfoStorage);
             }
 
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);

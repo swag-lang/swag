@@ -2026,11 +2026,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                     toNode->ownerFct->stackSize = max(toNode->ownerFct->stackSize, toNode->ownerScope->startStackSize);
                 }
 
-                toNode->castedTypeInfo            = toType;
-                toNode->typeInfo                  = fromType;
-                auto  module                      = context->sourceFile->module;
-                auto& typeTable                   = module->typeTable;
-                fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
+                toNode->castedTypeInfo = toType;
+                toNode->typeInfo       = fromType;
+                auto  module           = context->sourceFile->module;
+                auto& typeTable        = module->typeTable;
                 SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, nullptr, &toNode->concreteTypeInfoStorage, CONCRETE_ZERO));
             }
 
@@ -2049,11 +2048,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo          = fromType;
-            fromNode->typeInfo                = toType;
-            auto  module                      = context->sourceFile->module;
-            auto& typeTable                   = module->typeTable;
-            fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toType;
+            auto  module             = context->sourceFile->module;
+            auto& typeTable          = module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
         }
     }
@@ -2071,11 +2069,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo          = fromType;
-            fromNode->typeInfo                = toType;
-            auto  module                      = context->sourceFile->module;
-            auto& typeTable                   = module->typeTable;
-            fromNode->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toType;
+            auto  module             = context->sourceFile->module;
+            auto& typeTable          = module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
         }
     }
@@ -3124,7 +3121,7 @@ static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
     if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
         return type1;
     auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-    return concreteAlias((ConcreteTypeInfo *) typeAlias->rawType);
+    return concreteAlias((ConcreteTypeInfo*) typeAlias->rawType);
 }
 
 bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2)

@@ -416,7 +416,6 @@ struct AstNode
     ByteCodeFct         byteCodeFct;
     SourceFile*         sourceFile;
     Extension*          extension;
-    DataSegment*        concreteTypeInfoSegment;
 
     uint64_t flags;
     uint64_t attributeFlags;

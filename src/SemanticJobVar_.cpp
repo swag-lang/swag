@@ -15,8 +15,10 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
 
-DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node)
+DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCompiler)
 {
+    if (forceCompiler)
+        return &node->sourceFile->module->compilerSegment;
     return &node->sourceFile->module->constantSegment;
 }
 

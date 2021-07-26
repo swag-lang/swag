@@ -5,6 +5,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "SourceFile.h"
+#include "SemanticJob.h"
 #include "Module.h"
 #include "Ast.h"
 
@@ -54,7 +55,8 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     // This is the type part.
     // Get concrete typeinfo from constant segment
-    emitMakeSegPointer(context, exprNode->concreteTypeInfoSegment, r0[1], exprNode->concreteTypeInfoStorage);
+    auto constSegment = SemanticJob::getConstantSegFromContext(exprNode);
+    emitMakeSegPointer(context, constSegment, r0[1], exprNode->concreteTypeInfoStorage);
 
     exprNode->resultRegisterRC      = r0;
     context->node->resultRegisterRC = r0;

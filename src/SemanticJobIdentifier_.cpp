@@ -344,10 +344,9 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
         if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
         {
-            auto  module                      = sourceFile->module;
-            auto& typeTable                   = module->typeTable;
-            auto  concreteType                = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
-            nodeCall->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_ZERO);
+            auto  module       = sourceFile->module;
+            auto& typeTable    = module->typeTable;
+            auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nullptr, &nodeCall->concreteTypeInfoStorage, CONCRETE_ZERO));
         }
     }
@@ -611,7 +610,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
+        auto constSegment = getConstantSegFromContext(parent->previousResolvedNode);
+        if (derefLiteralStruct(context, parent, overload, constSegment))
         {
             parent->previousResolvedNode = context->node;
             return true;
@@ -626,7 +626,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
+        auto constSegment = getConstantSegFromContext(parent->previousResolvedNode);
+        if (derefLiteralStruct(context, parent, overload, constSegment))
         {
             parent->previousResolvedNode       = context->node;
             identifier->resolvedSymbolName     = overload->symbol;
@@ -1009,9 +1010,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 return context->report({prev,
                                         Utf8::format(Msg0097,
-                                               AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(),
-                                               prev->token.text.c_str(),
-                                               identifier->token.text.c_str())});
+                                                     AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(),
+                                                     prev->token.text.c_str(),
+                                                     identifier->token.text.c_str())});
             }
         }
 
@@ -1429,11 +1430,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Utf8::format(Msg0047,
-                                     badParamIdx,
-                                     refNiceName.c_str(),
-                                     bi.badGenMatch.c_str(),
-                                     bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                     bi.badSignatureGivenType->getDisplayName().c_str())};
+                                           badParamIdx,
+                                           refNiceName.c_str(),
+                                           bi.badGenMatch.c_str(),
+                                           bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                           bi.badSignatureGivenType->getDisplayName().c_str())};
         diag->hint = explicitCastHint;
         note       = new Diagnostic{overload->node, overload->node->token, Utf8::format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
@@ -1449,20 +1450,20 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(Msg0050,
-                                         badParamIdx,
-                                         refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                         typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
-                                         bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               badParamIdx,
+                                               refNiceName.c_str(),
+                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                               typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
+                                               bi.badSignatureGivenType->getDisplayName().c_str())};
         }
         else
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(Msg0053,
-                                         badParamIdx,
-                                         refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                         bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               badParamIdx,
+                                               refNiceName.c_str(),
+                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                               bi.badSignatureGivenType->getDisplayName().c_str())};
         }
 
         diag->hint = explicitCastHint;
@@ -1482,8 +1483,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(Msg0054,
-                                         badParamIdx,
-                                         refNiceName.c_str())};
+                                               badParamIdx,
+                                               refNiceName.c_str())};
             note = new Diagnostic{overload->node, overload->node->token, Utf8::format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
@@ -1492,8 +1493,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(Msg0057,
-                                         badParamIdx,
-                                         refNiceName.c_str())};
+                                               badParamIdx,
+                                               refNiceName.c_str())};
             note = new Diagnostic{overload->node, overload->node->token, Utf8::format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
@@ -1502,10 +1503,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(Msg0070,
-                                         badParamIdx,
-                                         refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                         bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               badParamIdx,
+                                               refNiceName.c_str(),
+                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                               bi.badSignatureGivenType->getDisplayName().c_str())};
 
             diag->hint = explicitCastHint;
             note       = new Diagnostic{overload->node, overload->node->token, Utf8::format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};

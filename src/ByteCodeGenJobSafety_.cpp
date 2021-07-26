@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "ErrorIds.h"
+#include "SemanticJob.h"
 
 thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 
@@ -538,8 +539,9 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
     PushICFlags ic(context, BCI_SAFETY);
 
-    auto r0 = reserveRegisterRC(context);
-    emitMakeSegPointer(context, exprNode->concreteTypeInfoSegment, r0, exprNode->concreteTypeInfoStorage);
+    auto r0           = reserveRegisterRC(context);
+    auto constSegment = SemanticJob::getConstantSegFromContext(exprNode);
+    emitMakeSegPointer(context, constSegment, r0, exprNode->concreteTypeInfoStorage);
 
     RegisterList result = reserveRegisterRC(context);
     auto         inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, result);

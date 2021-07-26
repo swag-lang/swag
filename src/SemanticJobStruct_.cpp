@@ -83,8 +83,7 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
         return true;
 
     // Make a concrete type for the given struct
-    auto& typeTable               = module->typeTable;
-    back->concreteTypeInfoSegment = typeTable.getSegmentStorage(module, CONCRETE_SHOULD_WAIT);
+    auto& typeTable = module->typeTable;
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
@@ -93,15 +92,14 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
     SWAG_ASSERT(typeParamItf);
 
-    auto itable = (void**) sourceFile->module->constantSegment.address(typeParamItf->offset);
+    auto constSegment = getConstantSegFromContext(back);
+    SWAG_ASSERT(typeParamItf->offset);
+    auto itable = (void**) constSegment->address(typeParamItf->offset);
 
     // Move back to concrete type, and initialize it
     itable--;
-    auto segType = back->concreteTypeInfoSegment;
-    SWAG_ASSERT(segType);
-    *itable = segType->address(back->concreteTypeInfoStorage);
-    SWAG_ASSERT(typeParamItf->offset);
-    module->constantSegment.addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, segType->kind);
+    *itable = constSegment->address(back->concreteTypeInfoStorage);
+    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, constSegment->kind);
 
     return true;
 }
@@ -258,9 +256,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         return context->report(diag, notes);
 
     // Construct itable in the constant segment
-    auto     module       = context->job->sourceFile->module;
-    uint32_t itableOffset = module->constantSegment.reserve((numFctInterface + 1) * sizeof(void*), sizeof(void*));
-    void**   ptrITable    = (void**) module->constantSegment.address(itableOffset);
+    auto     constSegment = getConstantSegFromContext(node);
+    uint32_t itableOffset = constSegment->reserve((numFctInterface + 1) * sizeof(void*), sizeof(void*));
+    void**   ptrITable    = (void**) constSegment->address(itableOffset);
     auto     offset       = itableOffset;
 
     // The first value will be the concrete type to the corresponding struct, filled in resolveImplForType
@@ -275,16 +273,16 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             funcChild->computeFullNameForeign(true);
 
             // Need to patch the segment at runtime, init, with the real address of the function
-            module->constantSegment.addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
+            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;
-            g_ModuleMgr.addPatchFuncAddress((void**) module->constantSegment.address(offset), funcChild);
+            g_ModuleMgr.addPatchFuncAddress((void**) constSegment->address(offset), funcChild);
         }
         else
         {
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
-            module->constantSegment.addInitPtrFunc(offset, funcChild->extension->bc->callName(), DataSegment::RelocType::Local);
+            constSegment->addInitPtrFunc(offset, funcChild->extension->bc->callName(), DataSegment::RelocType::Local);
         }
 
         ptrITable++;
@@ -671,8 +669,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
                 {
                     varDecl->type->flags |= AST_VALUE_COMPUTED;
-                    varDecl->type->computedValue.storageSegment = &sourceFile->module->constantSegment;
-                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, varDecl->type->computedValue.storageSegment));
+                    auto constSegment                           = getConstantSegFromContext(varDecl);
+                    varDecl->type->computedValue.storageSegment = constSegment;
+                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, constSegment));
                 }
             }
 

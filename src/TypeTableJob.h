@@ -13,6 +13,7 @@ struct TypeTableJob : public Job
     TypeTable*                           typeTable             = nullptr;
     ConcreteTypeInfo*                    concreteTypeInfoValue = nullptr;
     TypeInfo*                            typeInfo              = nullptr;
+    DataSegment*                         segment               = nullptr;
     uint32_t                             storageOffset         = 0;
     uint32_t                             cflags                = 0;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;

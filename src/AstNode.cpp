@@ -413,7 +413,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     castOffset              = from->castOffset;
     stackOffset             = from->stackOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
-    concreteTypeInfoSegment = from->concreteTypeInfoSegment;
 
     attributeFlags = from->attributeFlags;
     specFlags      = from->specFlags;
@@ -1028,10 +1027,10 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->ptrCount    = ptrCount;
 
     for (int i = 0; i < ptrCount; i++)
-        newNode->ptrFlags[i]  = ptrFlags[i];
+        newNode->ptrFlags[i] = ptrFlags[i];
 
-    newNode->arrayDim    = arrayDim;
-    newNode->typeFlags   = typeFlags;
+    newNode->arrayDim  = arrayDim;
+    newNode->typeFlags = typeFlags;
 
     return newNode;
 }

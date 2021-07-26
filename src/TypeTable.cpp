@@ -9,11 +9,9 @@
 #include "ByteCode.h"
 #include "ErrorIds.h"
 
-DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
+DataSegment* TypeTable::getSegmentStorage(JobContext* context, uint32_t flags)
 {
-    if (flags & CONCRETE_FOR_COMPILER)
-        return &module->compilerSegment;
-    return &module->constantSegment;
+    return SemanticJob::getConstantSegFromContext(context->node, flags & CONCRETE_FOR_COMPILER);
 }
 
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, uint32_t cflags)
@@ -24,9 +22,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
@@ -46,9 +42,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
@@ -73,9 +67,7 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
         return true;
     }
 
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     auto offset = segment->addStringNoLock(str);
     segment->addInitPtr(offsetInBuffer, offset);
@@ -87,9 +79,7 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, uint32_t storageOffset, void** result, uint32_t cflags, uint32_t& storageArray)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     storageArray = segment->reserveNoLock(sizeOf);
     auto addr    = segment->addressNoLock(storageArray);
@@ -104,9 +94,7 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* c
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_t storageOffset, void** result, uint32_t cflags, uint32_t& storageArray)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     storageArray = segment->reserveNoLock(sizeOf);
     auto addr    = segment->addressNoLock(storageArray);
@@ -122,8 +110,7 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_
 bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment    = getSegmentStorage(context, cflags);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -142,8 +129,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
 bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment    = getSegmentStorage(context, cflags);
 
     ConcreteTypeInfoParam* concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
 
@@ -265,9 +251,7 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment = getSegmentStorage(context, cflags);
 
     unique_lock lk(segment->mutex);
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, cflags));
@@ -335,7 +319,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getSegmentStorage(module, cflags);
+    auto segment    = getSegmentStorage(context, cflags);
 
     auto&           swagScope  = g_Workspace.swagScope;
     TypeInfoStruct* typeStruct = nullptr;
@@ -482,6 +466,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
         job->cflags                = cflags & ~CONCRETE_SHOULD_WAIT;
+        job->segment               = segment;
         job->typeName              = typeName;
         job->nodes.push_back(context->node);
         storedMapJob[typeName] = job;

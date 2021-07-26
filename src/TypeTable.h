@@ -34,7 +34,7 @@ struct TypeTable
 
     void         tableJobDone(TypeTableJob* job, DataSegment* segment);
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
-    DataSegment* getSegmentStorage(Module* module, uint32_t flags);
+    DataSegment* getSegmentStorage(JobContext* context, uint32_t flags);
     TypeInfo*    getRealType(ConcreteTypeInfo*);
 
     struct MapType

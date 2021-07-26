@@ -402,7 +402,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
                 return callerContext->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
             }
 
-            auto storageSegment                = &sourceFile->module->constantSegment;
+            auto storageSegment                = SemanticJob::getConstantSegFromContext(node);
             auto offsetStorage                 = storageSegment->reserve(realType->sizeOf);
             node->computedValue.storageOffset  = offsetStorage;
             node->computedValue.storageSegment = storageSegment;
@@ -476,6 +476,7 @@ bool Module::flushCompilerMessages(JobContext* context)
         {
             uint32_t storageOffset;
             context->sourceFile = files.front();
+            context->node       = context->sourceFile->astRoot;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, nullptr, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
             if (context->result != ContextResult::Done)
                 return true;
