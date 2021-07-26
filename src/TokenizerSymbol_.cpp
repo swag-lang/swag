@@ -46,15 +46,12 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     case '@':
         token.id = TokenId::SymAt;
         return true;
-
     case '?':
         token.id = TokenId::SymQuestion;
-        c        = getCharNoSeek(offset);
         return true;
 
     case '.':
-        token.id = TokenId::SymDot;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '.')
         {
             treatChar(c, offset);
@@ -72,41 +69,53 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 treatChar(c, offset);
             }
         }
+        else
+        {
+            token.id = TokenId::SymDot;
+        }
         return true;
 
     case ':':
-        token.id = TokenId::SymColon;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymColonEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymColon;
+        }
         return true;
 
     case '!':
-        token.id = TokenId::SymExclam;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymExclamEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymExclam;
+        }
         return true;
 
     case '~':
-        token.id = TokenId::SymTilde;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymTildeEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymTilde;
+        }
         return true;
 
     case '=':
-        token.id = TokenId::SymEqual;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymEqualEqual;
@@ -117,11 +126,14 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymEqualGreater;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymEqual;
+        }
         return true;
 
     case '-':
-        token.id = TokenId::SymMinus;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymMinusEqual;
@@ -132,41 +144,53 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymMinusGreat;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymMinus;
+        }
         return true;
 
     case '+':
-        token.id = TokenId::SymPlus;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymPlusEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymPlus;
+        }
         return true;
 
     case '*':
-        token.id = TokenId::SymAsterisk;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymAsteriskEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymAsterisk;
+        }
         return true;
 
     case '/':
-        token.id = TokenId::SymSlash;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymSlashEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymSlash;
+        }
         return true;
 
     case '&':
-        token.id = TokenId::SymAmpersand;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymAmpersandEqual;
@@ -177,11 +201,14 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymAmpersandAmpersand;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymAmpersand;
+        }
         return true;
 
     case '|':
-        token.id = TokenId::SymVertical;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymVerticalEqual;
@@ -192,31 +219,40 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymVerticalVertical;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymVertical;
+        }
         return true;
 
     case '^':
-        token.id = TokenId::SymCircumflex;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymCircumflexEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymCircumflex;
+        }
         return true;
 
     case '%':
-        token.id = TokenId::SymPercent;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymPercentEqual;
             treatChar(c, offset);
         }
+        else
+        {
+            token.id = TokenId::SymPercent;
+        }
         return true;
 
     case '<':
-        token.id = TokenId::SymLower;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymLowerEqual;
@@ -239,11 +275,14 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 treatChar(c, offset);
             }
         }
+        else
+        {
+            token.id = TokenId::SymLower;
+        }
         return true;
 
     case '>':
-        token.id = TokenId::SymGreater;
-        c        = getCharNoSeek(offset);
+        c = getCharNoSeek(offset);
         if (c == '=')
         {
             token.id = TokenId::SymGreaterEqual;
@@ -259,6 +298,10 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 token.id = TokenId::SymGreaterGreaterEqual;
                 treatChar(c, offset);
             }
+        }
+        else
+        {
+            token.id = TokenId::SymGreater;
         }
         return true;
     }
