@@ -14,7 +14,6 @@ bool Tokenizer::doBinLiteral(Token& token)
     auto     c = getCharNoSeek(offset);
     while (c == '0' || c == '1' || SWAG_IS_NUMSEP(c))
     {
-        token.text += c;
         treatChar(c, offset);
 
         // Digit separator
@@ -73,7 +72,6 @@ bool Tokenizer::doHexLiteral(Token& token)
     auto     c = getCharNoSeek(offset);
     while (SWAG_IS_ALPHAHEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
-        token.text += c;
         treatChar(c, offset);
 
         // Digit separator
@@ -138,10 +136,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
-        {
-            token.text += c;
             treatChar(c, offset);
-        }
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -185,10 +180,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
-        {
-            token.text += c;
             treatChar(c, offset);
-        }
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -245,7 +237,6 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     if (hasDot)
     {
         token.literalType = LiteralType::TT_UNTYPED_FLOAT;
-        token.text += c;
         treatChar(c, offset);
 
         // Fraction part
@@ -254,10 +245,8 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenFrac, Msg0155));
         if (SWAG_IS_DIGIT(c))
         {
-            tokenFrac.text = c;
             treatChar(c, offset);
             SWAG_CHECK(doFloatLiteral(c, tokenFrac));
-            token.text += tokenFrac.text;
             c = getCharNoSeek(offset);
         }
     }
@@ -266,7 +255,6 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     if (c == 'e' || c == 'E')
     {
         token.literalType = LiteralType::TT_UNTYPED_FLOAT;
-        token.text += c;
         treatChar(c, offset);
         tokenExponent.startLocation = location;
 
@@ -275,14 +263,12 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
 
         if (c == '-')
         {
-            token.text += c;
             minus = true;
             treatChar(c, offset);
             c = getCharNoSeek(offset);
         }
         else if (c == '+')
         {
-            token.text += c;
             minus = false;
             treatChar(c, offset);
             c = getCharNoSeek(offset);
@@ -291,10 +277,8 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
         tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenExponent, Msg0156));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, Msg0466));
-        token.text += c;
         treatChar(c, offset);
         SWAG_CHECK(doIntLiteral(c, tokenExponent));
-        token.text += tokenExponent.text;
         c = getCharNoSeek(offset);
 
         if (minus)
@@ -304,7 +288,12 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
-        token.literalValue.f64 = atof(token.text.c_str());
+        auto cpt = (unsigned)(sourceFile->curBuffer - startTokenName);
+        auto ptr = startTokenName + cpt;
+        auto sc = *ptr;
+        *ptr = 0;
+        token.literalValue.f64 = atof(startTokenName);
+        *ptr = sc;
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
@@ -323,7 +312,6 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
 
 bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
 {
-    token.text = c;
     if (c == '0')
     {
         unsigned offset;
@@ -333,9 +321,9 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
         if (c == 'x' || c == 'X')
         {
             treatChar(c, offset);
-            token.text += c;
             SWAG_CHECK(doHexLiteral(token));
             token.endLocation = location;
+            appendTokenName(token);
             return true;
         }
 
@@ -343,9 +331,9 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
         if (c == 'b' || c == 'B')
         {
             treatChar(c, offset);
-            token.text += c;
             SWAG_CHECK(doBinLiteral(token));
             token.endLocation = location;
+            appendTokenName(token);
             return true;
         }
 
@@ -360,6 +348,7 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
 
     SWAG_CHECK(doIntFloatLiteral(c, token));
     token.endLocation = location;
+    appendTokenName(token);
 
     return true;
 }

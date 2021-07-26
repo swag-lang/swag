@@ -355,7 +355,6 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(!afterGlobal, error(token, Msg0369));
-
     SWAG_CHECK(eatToken());
 
     /////////////////////////////////

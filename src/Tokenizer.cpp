@@ -151,6 +151,7 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (c == 0)
         {
+            sourceFile->releaseBuffer();
             token.id = TokenId::EndOfFile;
             return true;
         }
