@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Tokenizer.h"
-#include "Stats.h"
-#include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
@@ -79,6 +77,13 @@ inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return sourceFile->getChar(offset);
 }
 
+bool Tokenizer::error(Token& token, const Utf8& msg)
+{
+    token.endLocation = location;
+    sourceFile->report({sourceFile, token, msg});
+    return false;
+}
+
 bool Tokenizer::doMultiLineComment(Token& token)
 {
     int countEmb = 1;
@@ -90,9 +95,9 @@ bool Tokenizer::doMultiLineComment(Token& token)
 
         if (!nc)
         {
-            token.endLocation = token.startLocation;
-            token.endLocation.column += 2;
-            sourceFile->report({sourceFile, token, Msg0080});
+            location = token.startLocation;
+            location.column += 2;
+            error(token, Msg0080);
             return false;
         }
 
@@ -121,13 +126,6 @@ bool Tokenizer::doMultiLineComment(Token& token)
             }
         }
     }
-}
-
-bool Tokenizer::error(Token& token, const Utf8& msg)
-{
-    token.endLocation = location;
-    sourceFile->report({sourceFile, token, msg});
-    return false;
 }
 
 bool Tokenizer::getToken(Token& token)
@@ -218,7 +216,7 @@ bool Tokenizer::getToken(Token& token)
 
             if (token.id == TokenId::Identifier)
             {
-                sourceFile->report({sourceFile, token, Utf8::format(Msg0140, token.text.c_str())});
+                error(token, Utf8::format(Msg0140, token.text.c_str()));
                 return false;
             }
 
@@ -265,8 +263,7 @@ bool Tokenizer::getToken(Token& token)
             if (!token.text.count)
             {
                 token.startLocation = location;
-                token.endLocation   = location;
-                sourceFile->report({sourceFile, token, Utf8::format(Msg0141, nc)});
+                error(token, Utf8::format(Msg0141, nc));
                 return false;
             }
 
@@ -310,11 +307,9 @@ bool Tokenizer::getToken(Token& token)
 
         // Unknown character
         ///////////////////////////////////////////
-        token.endLocation = location;
-        token.text        = c;
-        token.id          = TokenId::Invalid;
-        token.endLocation = location;
-        sourceFile->report({sourceFile, token, Utf8::format(Msg0081, token.text.c_str())});
+        token.text = c;
+        token.id   = TokenId::Invalid;
+        error(token, Utf8::format(Msg0081, token.text.c_str()));
         return false;
     }
 

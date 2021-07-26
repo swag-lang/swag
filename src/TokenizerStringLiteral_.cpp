@@ -67,16 +67,15 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!raw && SWAG_IS_EOL(c))
             {
                 token.startLocation = location;
-                token.endLocation   = token.startLocation;
-                sourceFile->report({sourceFile, token, Msg0905});
+                error(token, Msg0905);
                 return false;
             }
 
             // End of file
             if (!c)
             {
-                token.endLocation = token.startLocation;
-                sourceFile->report({sourceFile, token, Msg0905});
+                location = token.startLocation;
+                error(token, Msg0905);
                 return false;
             }
 

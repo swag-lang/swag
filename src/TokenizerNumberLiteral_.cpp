@@ -6,12 +6,12 @@
 
 bool Tokenizer::doBinLiteral(Token& token)
 {
-    token.literalValue.u64 = 0;
-    int rank               = 0;
-
+    int      rank      = 0;
     bool     acceptSep = true;
     unsigned offset;
-    auto     c = getCharNoSeek(offset);
+
+    token.literalValue.u64 = 0;
+    auto c                 = getCharNoSeek(offset);
     while (c == '0' || c == '1' || SWAG_IS_NUMSEP(c))
     {
         treatChar(c, offset);
@@ -64,12 +64,12 @@ bool Tokenizer::doBinLiteral(Token& token)
 
 bool Tokenizer::doHexLiteral(Token& token)
 {
-    token.literalValue.u64 = 0;
-    int rank               = 0;
-
+    int      rank      = 0;
     bool     acceptSep = true;
     unsigned offset;
-    auto     c = getCharNoSeek(offset);
+
+    token.literalValue.u64 = 0;
+    auto c                 = getCharNoSeek(offset);
     while (SWAG_IS_ALPHAHEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         treatChar(c, offset);
@@ -127,12 +127,12 @@ bool Tokenizer::doHexLiteral(Token& token)
 
 bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
 {
-    token.literalValue.f64 = 0;
-    int    rank            = 0;
-    double fractPart       = 0.1;
-
+    int      rank      = 0;
+    double   fractPart = 0.1;
     bool     acceptSep = true;
     unsigned offset    = 0;
+
+    token.literalValue.f64 = 0;
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
@@ -172,11 +172,11 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
 
 bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
 {
-    token.literalValue.u64 = 0;
-    int rank               = 0;
-
+    int      rank      = 0;
     bool     acceptSep = true;
     unsigned offset    = 0;
+
+    token.literalValue.u64 = 0;
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
@@ -219,11 +219,11 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     unsigned offset = 1;
     Token    tokenFrac;
     Token    tokenExponent;
+
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
-
-    token.literalType = LiteralType::TT_S32;
-    token.id          = TokenId::LiteralNumber;
+    token.literalType              = LiteralType::TT_S32;
+    token.id                       = TokenId::LiteralNumber;
 
     // Integer part
     SWAG_CHECK(doIntLiteral(c, token));
@@ -288,12 +288,12 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
-        auto cpt = (unsigned)(sourceFile->curBuffer - startTokenName);
-        auto ptr = startTokenName + cpt;
-        auto sc = *ptr;
-        *ptr = 0;
+        auto cpt               = (unsigned) (sourceFile->curBuffer - startTokenName);
+        auto ptr               = startTokenName + cpt;
+        auto sc                = *ptr;
+        *ptr                   = 0;
         token.literalValue.f64 = atof(startTokenName);
-        *ptr = sc;
+        *ptr                   = sc;
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
