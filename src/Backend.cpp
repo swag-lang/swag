@@ -16,7 +16,7 @@ bool Backend::generateOutput(const BuildParameters& backendParameters)
     return true;
 }
 
-BackendFunctionBodyJob* Backend::newFunctionJob()
+BackendFunctionBodyJobBase* Backend::newFunctionJob()
 {
     SWAG_ASSERT(false);
     return nullptr;

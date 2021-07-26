@@ -1,8 +1,8 @@
 #pragma once
 #include "Job.h"
-#include "BackendFunctionBodyJob.h"
+#include "BackendFunctionBodyJobBase.h"
 
-struct BackendX64FunctionBodyJob : public BackendFunctionBodyJob
+struct BackendX64FunctionBodyJob : public BackendFunctionBodyJobBase
 {
     JobResult execute() override;
 

@@ -310,7 +310,7 @@ struct BackendX64 : public Backend
     void                    alignConcat(Concat& concat, uint32_t align);
     JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    generateOutput(const BuildParameters& backendParameters) override;
-    BackendFunctionBodyJob* newFunctionJob() override;
+    BackendFunctionBodyJobBase* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
     void     setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack);

@@ -13,7 +13,7 @@
 #define UWOP_ALLOC_LARGE 1
 #define UWOP_ALLOC_SMALL 2
 
-BackendFunctionBodyJob* BackendX64::newFunctionJob()
+BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
 {
     return g_Allocator.alloc<BackendX64FunctionBodyJob>();
 }

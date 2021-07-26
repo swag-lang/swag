@@ -6,9 +6,9 @@ struct Module;
 struct Backend;
 struct ByteCode;
 
-struct BackendFunctionBodyJob : public Job
+struct BackendFunctionBodyJobBase : public Job
 {
-    BackendFunctionBodyJob()
+    BackendFunctionBodyJobBase()
     {
         affinity = AFFINITY_ALL ^ AFFINITY_BACKEND_FCTBODY;
     }

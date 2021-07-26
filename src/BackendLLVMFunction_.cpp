@@ -122,7 +122,7 @@ inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>
 #define TO_PTR_NATIVE(__value, __kind) toPtrNative(context, builder, __value, __kind)
 #define TO_PTR_PTR_NATIVE(__value, __kind) toPtrPtrNative(context, builder, __value, __kind)
 
-BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
+BackendFunctionBodyJobBase* BackendLLVM::newFunctionJob()
 {
     return g_Allocator.alloc<BackendLLVMFunctionBodyJob>();
 }

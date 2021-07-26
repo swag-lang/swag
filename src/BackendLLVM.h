@@ -120,7 +120,7 @@ struct BackendLLVM : public Backend
 
     JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    generateOutput(const BuildParameters& backendParameters) override;
-    BackendFunctionBodyJob* newFunctionJob() override;
+    BackendFunctionBodyJobBase* newFunctionJob() override;
 
     bool                createRuntime(const BuildParameters& buildParameters);
     llvm::Value*        getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits);

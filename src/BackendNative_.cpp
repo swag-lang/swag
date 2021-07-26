@@ -4,10 +4,10 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "AstNode.h"
-#include "BackendFunctionBodyJob.h"
+#include "BackendFunctionBodyJobBase.h"
 #include "Module.h"
 
-void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end)
+void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end)
 {
     for (int i = start; i < end; i++)
     {
@@ -60,7 +60,7 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     int end   = 0;
     getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
 
-    BackendFunctionBodyJob* job = newFunctionJob();
+    BackendFunctionBodyJobBase* job = newFunctionJob();
     job->module                 = moduleToGen;
     job->dependentJob           = ownerJob;
     job->buildParameters        = buildParameters;

@@ -168,7 +168,7 @@
     <ClInclude Include="../src/AstNode.h" />
     <ClInclude Include="../src/Attribute.h" />
     <ClInclude Include="../src/Backend.h" />
-    <ClInclude Include="../src/BackendFunctionBodyJob.h" />
+    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h" />
     <ClInclude Include="../src/BackendLLVMDbg.h" />
     <ClInclude Include="../src/BackendLLVMFunctionBodyJob.h" />
     <ClInclude Include="../src/BackendLLVMFunctionMacros_.h" />

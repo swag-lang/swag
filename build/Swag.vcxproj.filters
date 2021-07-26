@@ -563,7 +563,7 @@
     <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendFunctionBodyJob.h">
+    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleRunJob.h">
