@@ -32,7 +32,6 @@ namespace OS
     extern bool     touchFile(const fs::path& path);
     extern string   getTemporaryFolder();
 
-    extern bool     watch(function<void(const string&)> cb);
     extern uint64_t timerNow();
     extern double   timerToSeconds(uint64_t timer);
 

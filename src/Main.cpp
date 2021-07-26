@@ -30,7 +30,6 @@ int main(int argc, const char* argv[])
     if (command != "build" &&
         command != "run" &&
         command != "test" &&
-        command != "watch" &&
         command != "new" &&
         command != "clean" &&
         command != "list" &&
@@ -110,10 +109,6 @@ int main(int argc, const char* argv[])
         g_CommandLine.computeDep = true;
         g_CommandLine.fetchDep   = true;
         g_Workspace.build();
-    }
-    else if (command == "watch")
-    {
-        g_Workspace.watchCommand();
     }
     else if (command == "clean")
     {

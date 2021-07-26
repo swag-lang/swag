@@ -51,9 +51,6 @@ struct CommandLineArgument
             if (p == "all" || p == "cl")
                 cmds.insert("clean");
 
-            if (p == "all" || p == "wa")
-                cmds.insert("watch");
-
             if (p == "all" || p == "ne")
                 cmds.insert("new");
 

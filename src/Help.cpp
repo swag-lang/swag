@@ -151,15 +151,6 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }
-
-    ////////////////////////////////////////////////////////
-    if (cmd == "watch")
-    {
-        printExamples();
-        g_Log.message("swag watch --workspace:c:/myWorkspace\n");
-        g_Log.message("\n");
-        cmdParser.logArguments(cmd);
-    }
 }
 
 void help(CommandLineParser& cmdParser)
@@ -178,7 +169,6 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("        test         build and test the specified workspace\n");
     g_Log.message("        clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
     g_Log.message("        new          creates a new workspace/module/script file\n");
-    g_Log.message("        watch        spy workspace and check it at each file change (never ends)\n");
     g_Log.message("        get          synchronize dependencies\n");
     g_Log.message("        list         list all modules and their dependencies\n");
     g_Log.message("        script       build and run a script file\n");

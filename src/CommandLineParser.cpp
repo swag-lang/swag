@@ -18,7 +18,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
     addArg("bu", "--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
-    addArg("bu ne wa cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
+    addArg("bu ne cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "script file name");
 
