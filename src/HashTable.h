@@ -17,15 +17,21 @@ struct HashTable
 
     const V* find(const Utf8& key)
     {
-        if (!firstLetter[key.buffer[0]])
+        return find(key.buffer, key.count, 0);
+    }
+
+    const V* find(const char* key, int keyLen, uint32_t crc)
+    {
+        if (!firstLetter[key[0]])
             return nullptr;
 
-        auto crc = key.hash();
+        if (!crc)
+            crc = Utf8::hash(key, keyLen);
 
         uint32_t idx = crc % allocated;
         while (buffer[idx].hash)
         {
-            if (buffer[idx].hash == crc && buffer[idx].keyLen == key.count && !strncmp(buffer[idx].key, key.buffer, key.count))
+            if (buffer[idx].hash == crc && buffer[idx].keyLen == keyLen && !strncmp(buffer[idx].key, key, keyLen))
                 return &buffer[idx].value;
             idx = (idx + 1) % allocated;
         }
