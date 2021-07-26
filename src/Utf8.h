@@ -1,7 +1,14 @@
 #pragma once
 #include "Assert.h"
 #include "VectorNative.h"
-#define UTF8_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
+
+#define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
+#define SWAG_IS_ALPHAHEX(__c) ((__c >= 'a' && __c <= 'f') || (__c >= 'A' && __c <= 'F'))
+#define SWAG_IS_HEX(__c) (SWAG_IS_ALPHAHEX(__c) || SWAG_IS_DIGIT(__c))
+#define SWAG_IS_ALPHA(__c) ((__c >= 'a' && __c <= 'z') || (__c >= 'A' && __c <= 'Z'))
+#define SWAG_IS_NUMSEP(__c) (__c == '_')
+#define SWAG_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
+#define SWAG_IS_EOL(__c) (__c == '\n')
 
 struct Utf8
 {
@@ -72,3 +79,11 @@ struct Utf8
     static uint32_t    hash(const char* buffer, int count);
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
 };
+
+extern Utf8     format(const char* format, ...);
+extern string   normalizePath(const fs::path& path);
+extern void     tokenize(const char* str, char c, vector<Utf8>& tokens);
+extern void     tokenizeBlanks(const char* str, vector<Utf8>& tokens);
+extern Utf8     toStringF64(double v);
+extern Utf8     toNiceSize(size_t size);
+extern uint32_t fuzzyCompare(const Utf8& str1, const Utf8& str2);
