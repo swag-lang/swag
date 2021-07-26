@@ -122,67 +122,9 @@ uint32_t SourceFile::getChar(unsigned& offset)
         return 0;
     }
 
-    char c = *curBuffer;
-
-    if ((c & 0x80) == 0)
-    {
-        offset = 1;
-        return c;
-    }
-
     uint32_t wc;
-    if ((c & 0xE0) == 0xC0)
-    {
-        wc = (c & 0x1F) << 6;
-        wc |= (curBuffer[1] & 0x3F);
-        offset = 2;
-        return wc;
-    }
-
-    if ((c & 0xF0) == 0xE0)
-    {
-        wc = (c & 0xF) << 12;
-        wc |= (curBuffer[1] & 0x3F) << 6;
-        wc |= (curBuffer[2] & 0x3F);
-        offset = 3;
-        return wc;
-    }
-
-    if ((c & 0xF8) == 0xF0)
-    {
-        wc = (c & 0x7) << 18;
-        wc |= (curBuffer[1] & 0x3F) << 12;
-        wc |= (curBuffer[2] & 0x3F) << 6;
-        wc |= (curBuffer[3] & 0x3F);
-        offset = 4;
-        return wc;
-    }
-
-    if ((c & 0xFC) == 0xF8)
-    {
-        wc = (c & 0x3) << 24;
-        wc |= (c & 0x3F) << 18;
-        wc |= (c & 0x3F) << 12;
-        wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
-        offset = 1;
-        return wc;
-    }
-
-    if ((c & 0xFE) == 0xFC)
-    {
-        wc = (c & 0x1) << 30;
-        wc |= (c & 0x3F) << 24;
-        wc |= (c & 0x3F) << 18;
-        wc |= (c & 0x3F) << 12;
-        wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
-        offset = 1;
-        return wc;
-    }
-
-    offset = 1;
-    return '?';
+    Utf8::decodeUtf8(curBuffer, wc, offset);
+    return wc;
 }
 
 Utf8 SourceFile::getLine(long lineNo)
