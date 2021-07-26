@@ -202,13 +202,12 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (c == '#')
         {
-            token.text = c;
-            auto nc    = getCharNoSeek(offset);
+            auto nc = getCharNoSeek(offset);
 
             if (nc == '[')
             {
+                token.text = "#[";
                 treatChar(nc, offset);
-                token.text += nc;
                 token.endLocation = location;
                 token.id          = TokenId::SymAttrStart;
                 return true;
@@ -230,39 +229,40 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            token.text = c;
-            auto nc    = getCharNoSeek(offset);
+            auto nc = getCharNoSeek(offset);
 
             if (nc == '"')
             {
                 treatChar(nc, offset);
-                token.text.clear();
                 SWAG_CHECK(doStringLiteral(token, true));
                 return true;
             }
 
             if (nc == '[')
             {
-                token.id = TokenId::SymLiteralBracket;
+                token.text = "@[";
+                token.id   = TokenId::SymLiteralBracket;
                 return true;
             }
 
             if (nc == '{')
             {
-                token.id = TokenId::SymLiteralCurly;
+                token.text = "@{";
+                token.id   = TokenId::SymLiteralCurly;
                 return true;
             }
 
             if (nc == '(')
             {
-                token.id = TokenId::SymLiteralParen;
+                token.text = "@(";
+                token.id   = TokenId::SymLiteralParen;
                 return true;
             }
 
             doIdentifier(token, nc, offset);
             token.endLocation = location;
 
-            if (token.text == "@")
+            if (!token.text.count)
             {
                 token.startLocation = location;
                 token.endLocation   = location;
@@ -277,12 +277,9 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_')
         {
-            token.text = c;
-
             auto nc = getCharNoSeek(offset);
             doIdentifier(token, nc, offset);
             token.endLocation = location;
-
             return true;
         }
 
