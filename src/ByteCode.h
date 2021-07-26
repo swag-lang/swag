@@ -1,7 +1,6 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
-#include "SourceLocation.h"
 #include "Register.h"
 #include "Assert.h"
 #include "VectorNative.h"
@@ -13,6 +12,7 @@ struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 struct ByteCode;
+struct SourceLocation;
 
 static const uint16_t BCI_JUMP_DEST     = 0x0001;
 static const uint16_t BCI_DEBUG         = 0x0002;

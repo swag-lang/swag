@@ -1,7 +1,6 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
-#include "SourceLocation.h"
 #include "CommandLine.h"
 struct Module;
 struct AstNode;

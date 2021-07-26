@@ -13,6 +13,7 @@ struct ByteCodeInstruction;
 struct SwagCompilerSourceLocation;
 struct JobContext;
 struct ConcreteCompilerMessage;
+struct SourceLocation;
 
 struct StackValue
 {

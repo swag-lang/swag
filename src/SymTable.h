@@ -3,7 +3,6 @@
 #include "Pool.h"
 #include "Register.h"
 #include "RegisterList.h"
-#include "SourceLocation.h"
 struct Scope;
 struct SourceFile;
 struct Token;

@@ -1,6 +1,5 @@
 #pragma once
 #include "Register.h"
-#include "SourceLocation.h"
 struct SourceFile;
 struct TypeInfo;
 enum class Intrisic;
@@ -40,6 +39,12 @@ enum class LiteralType : uint8_t
     TT_UINT,
     TT_INT,
     TT_MAX,
+};
+
+struct SourceLocation
+{
+    uint32_t line;
+    uint32_t column;
 };
 
 struct Token

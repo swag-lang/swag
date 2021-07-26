@@ -614,9 +614,6 @@
     <ClInclude Include="../src/ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="../src/SourceLocation.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="../src/BackendLLVMFunctionMacros_.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
