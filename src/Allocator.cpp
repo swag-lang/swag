@@ -6,16 +6,15 @@ const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 
 thread_local Allocator g_Allocator;
-
-atomic<int> g_CompilerAllocTh = 0;
-mutex       g_allocatorMutex;
-Allocator*  g_sharedAllocator = nullptr;
+atomic<int>            g_CompilerAllocTh = 0;
+mutex                  g_AllocatorMutex;
+Allocator*             g_SharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
-    t           = Allocator::alignSize((int) t + sizeof(uint64_t));
-    uint64_t* p = (uint64_t*) g_Allocator.alloc(t);
-    *p          = (uint64_t) t;
+    t      = Allocator::alignSize((int) t + sizeof(uint64_t));
+    auto p = (uint64_t*) g_Allocator.alloc(t);
+    *p     = (uint64_t) t;
     return p + 1;
 }
 
@@ -23,7 +22,7 @@ void operator delete(void* addr)
 {
     if (!addr)
         return;
-    uint64_t* p = (uint64_t*) addr;
+    auto p = (uint64_t*) addr;
     p--;
     return g_Allocator.free(p, *p);
 }
@@ -252,18 +251,18 @@ Allocator::Allocator()
     if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
         shared = true;
-        unique_lock lk(g_allocatorMutex);
-        if (g_sharedAllocator)
+        unique_lock lk(g_AllocatorMutex);
+        if (g_SharedAllocator)
         {
-            impl = g_sharedAllocator->impl;
+            impl = g_SharedAllocator->impl;
             SWAG_ASSERT(impl);
         }
         else
         {
-            g_sharedAllocator       = (Allocator*) malloc(sizeof(Allocator));
-            g_sharedAllocator->impl = &g_sharedAllocator->_impl;
-            memset(g_sharedAllocator->impl, 0, sizeof(AllocatorImpl));
-            impl = &g_sharedAllocator->_impl;
+            g_SharedAllocator       = (Allocator*) malloc(sizeof(Allocator));
+            g_SharedAllocator->impl = &g_SharedAllocator->_impl;
+            memset(g_SharedAllocator->impl, 0, sizeof(AllocatorImpl));
+            impl = &g_SharedAllocator->_impl;
         }
     }
 }
@@ -281,7 +280,7 @@ size_t Allocator::alignSize(size_t size)
 void* Allocator::alloc(size_t size)
 {
     if (shared)
-        g_allocatorMutex.lock();
+        g_AllocatorMutex.lock();
 
 #ifdef SWAG_CHECK_MEMORY
     auto userSize = size;
@@ -298,7 +297,7 @@ void* Allocator::alloc(size_t size)
 #endif
 
     if (shared)
-        g_allocatorMutex.unlock();
+        g_AllocatorMutex.unlock();
     return result;
 }
 
@@ -308,7 +307,7 @@ void Allocator::free(void* ptr, size_t size)
         return;
 
     if (shared)
-        g_allocatorMutex.lock();
+        g_AllocatorMutex.lock();
 
     uint8_t* addr = (uint8_t*) ptr;
 #ifdef SWAG_CHECK_MEMORY
@@ -322,5 +321,5 @@ void Allocator::free(void* ptr, size_t size)
     impl->free(addr, size);
 
     if (shared)
-        g_allocatorMutex.unlock();
+        g_AllocatorMutex.unlock();
 }
