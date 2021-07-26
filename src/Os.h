@@ -1,6 +1,4 @@
 #pragma once
-enum class LogColor;
-enum class BackendOutputType;
 #include "Log.h"
 
 struct BuildParameters;
@@ -23,10 +21,11 @@ namespace OS
     extern void errorBox(const char* expr, const char* title);
     extern void assertBox(const char* expr, const char* file, int line);
 
-    extern void     visitFiles(const char* folder, function<void(const char*)> user);
-    extern void     visitFolders(const char* folder, function<void(const char*)> user, const char* match = "*");
-    extern void     visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
-    extern void     visitFilesRec(const char* folder, function<void(const char*)> user);
+    extern void visitFiles(const char* folder, function<void(const char*)> user);
+    extern void visitFolders(const char* folder, function<void(const char*)> user, const char* match = "*");
+    extern void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
+    extern void visitFilesRec(const char* folder, function<void(const char*)> user);
+
     extern uint64_t getFileWriteTime(const char* fileName);
     extern bool     getSwagFolder(string& folder);
     extern void     setSwagFolder(const string& folder);
