@@ -34,9 +34,9 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
 
 void ByteCodeGenJob::sortRegistersRC(ByteCodeGenContext* context)
 {
-    if (!context->bc->dirtyRegistersRC)
+    if (!context->bc->isDirtyRegistersRC)
         return;
-    context->bc->dirtyRegistersRC = false;
+    context->bc->isDirtyRegistersRC = false;
     if (context->bc->availableRegistersRC.size() <= 1)
         return;
     sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b) { return a > b; });
@@ -50,7 +50,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 #endif
 
     context->bc->availableRegistersRC.push_back(rc);
-    context->bc->dirtyRegistersRC = true;
+    context->bc->isDirtyRegistersRC = true;
 }
 
 uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
@@ -243,7 +243,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
-    SWAG_ASSERT(!bc->running);
+    SWAG_ASSERT(!bc->isRunning);
 
     if (bc->numInstructions == bc->maxInstructions)
     {
@@ -597,7 +597,7 @@ JobResult ByteCodeGenJob::execute()
         {
             emitInstruction(&context, ByteCodeOp::End);
 
-            if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->compilerGenerated)
+            if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->isCompilerGenerated)
             {
                 if (g_CommandLine.stats)
                     g_Stats.numInstructions += context.bc->numInstructions;

@@ -40,7 +40,7 @@ AstNode* AstNode::inSimpleReturn()
 
 bool AstNode::isSpecialFunctionGenerated()
 {
-    if (!extension || !extension->bc || !extension->bc->compilerGenerated)
+    if (!extension || !extension->bc || !extension->bc->isCompilerGenerated)
         return false;
     return true;
 }

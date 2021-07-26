@@ -125,7 +125,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opInit";
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
-    opInit->compilerGenerated     = true;
+    opInit->isCompilerGenerated     = true;
     typeInfoStruct->opInit        = opInit;
 
     // Export generated function if necessary
@@ -388,7 +388,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opDropGenerated";
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
-    opDrop->compilerGenerated     = true;
+    opDrop->isCompilerGenerated     = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -516,7 +516,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostMoveGenerated";
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
-    opPostMove->compilerGenerated     = true;
+    opPostMove->isCompilerGenerated     = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -643,7 +643,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostCopyGenerated";
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
-    opPostCopy->compilerGenerated     = true;
+    opPostCopy->isCompilerGenerated     = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))

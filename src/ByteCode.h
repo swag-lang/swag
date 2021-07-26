@@ -136,10 +136,10 @@ struct ByteCode
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
 
-    bool compilerGenerated = false;
-    bool addedToList       = false;
-    bool dirtyRegistersRC  = false;
+    bool isCompilerGenerated = false;
+    bool isAddedToList       = false;
+    bool isDirtyRegistersRC  = false;
 
-    atomic<bool> running;
+    atomic<bool> isRunning;
     atomic<bool> isEmpty;
 };
