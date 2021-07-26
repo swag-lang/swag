@@ -80,7 +80,8 @@ bool SourceFile::load()
     fseek(handle, 0, SEEK_SET);
 
     // Read content
-    buffer                 = new char[bufferSize + 4];
+    allocBufferSize        = (unsigned) g_Allocator.alignSize(bufferSize + 4);
+    buffer                 = (char*) g_Allocator.alloc(allocBufferSize);
     buffer[bufferSize]     = 0;
     buffer[bufferSize + 1] = 0;
     buffer[bufferSize + 2] = 0;
@@ -112,6 +113,12 @@ uint32_t SourceFile::getChar(unsigned& offset)
     if (curBuffer >= endBuffer)
     {
         offset = 0;
+        if (!isExternal && buffer && !isBootstrapFile && !isRuntimeFile)
+        {
+            g_Allocator.free(buffer, allocBufferSize);
+            buffer = nullptr;
+        }
+
         return 0;
     }
 

@@ -61,7 +61,8 @@ struct SourceFile
     char* curBuffer = nullptr;
     char* endBuffer = nullptr;
 
-    long bufferSize = 0;
+    long bufferSize      = 0;
+    long allocBufferSize = 0;
 
     bool fromTests   = false;
     bool isCfgFile   = false;
