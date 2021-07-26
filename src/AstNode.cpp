@@ -405,13 +405,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
         extension->collectTypeInfo              = from->extension->collectTypeInfo;
         extension->exportNode                   = from->extension->exportNode;
+        extension->castOffset                   = from->extension->castOffset;
+        extension->stackOffset                  = from->extension->stackOffset;
     }
 
     computedValue           = from->computedValue;
     token.text              = from->token.text;
     sourceFile              = from->sourceFile;
-    castOffset              = from->castOffset;
-    stackOffset             = from->stackOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 
     attributeFlags = from->attributeFlags;

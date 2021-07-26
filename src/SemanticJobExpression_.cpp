@@ -484,8 +484,8 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
 
         typeInfo->name += typeParam->typeInfo->name;
 
-        if (child->castOffset)
-            typeInfo->sizeOf += child->castOffset;
+        if (child->extension && child->extension->castOffset)
+            typeInfo->sizeOf += child->extension->castOffset;
         else
             typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 

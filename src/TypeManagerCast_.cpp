@@ -1910,11 +1910,12 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
                 // We use castOffset to store the offset between one field and one other, in order to collect later at
                 // the right position
-                childJ->castOffset = 0;
+                childJ->allocateExtension();
+                childJ->extension->castOffset = 0;
                 if (j)
                 {
-                    child->childs[j - 1]->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
-                    if (child->childs[j - 1]->castOffset != child->childs[j - 1]->typeInfo->sizeOf)
+                    child->childs[j - 1]->extension->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
+                    if (child->childs[j - 1]->extension->castOffset != child->childs[j - 1]->typeInfo->sizeOf)
                         hasChanged = true;
                 }
 
@@ -1922,8 +1923,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 // (because struct sizeof is aligned too, and padding can be added at the end)
                 if (j == count - 1)
                 {
-                    childJ->castOffset = toTypeStruct->sizeOf - toTypeStruct->fields[j]->offset;
-                    if (childJ->castOffset != childJ->typeInfo->sizeOf)
+                    childJ->extension->castOffset = toTypeStruct->sizeOf - toTypeStruct->fields[j]->offset;
+                    if (childJ->extension->castOffset != childJ->typeInfo->sizeOf)
                         hasChanged = true;
                 }
             }
@@ -2021,7 +2022,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 // See ByteCodeGenJob::emitCastToNativeAny
                 if (toNode->ownerFct && toType->numRegisters() > 1)
                 {
-                    toNode->stackOffset = toNode->ownerScope->startStackSize;
+                    toNode->allocateExtension();
+                    toNode->extension->stackOffset = toNode->ownerScope->startStackSize;
                     toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
                     toNode->ownerFct->stackSize = max(toNode->ownerFct->stackSize, toNode->ownerScope->startStackSize);
                 }
@@ -2043,7 +2045,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
-                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->allocateExtension();
+                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
@@ -2064,7 +2067,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
-                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->allocateExtension();
+                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
@@ -2108,9 +2112,10 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 fromNode->semFlags |= AST_SEM_DEREF_USING;
             fromNode->semFlags |= AST_SEM_USING;
 
-            fromNode->castOffset     = field->offset;
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
+            fromNode->allocateExtension();
+            fromNode->extension->castOffset = field->offset;
+            fromNode->castedTypeInfo        = fromNode->typeInfo;
+            fromNode->typeInfo              = toType;
         }
 
         done = field;
@@ -2350,7 +2355,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             // See ByteCodeGenJob::emitCastToInterface
             if (fromNode->ownerFct)
             {
-                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->allocateExtension();
+                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
@@ -2454,7 +2460,8 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct)
             {
-                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->allocateExtension();
+                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }

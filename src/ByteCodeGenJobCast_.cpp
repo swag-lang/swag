@@ -29,9 +29,9 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         // In other words, CopyRBAddrToRA2 is satanic, but don't know how to do that in another way for now.
         if (exprNode->ownerFct)
         {
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->stackOffset, exprNode->resultRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->stackOffset + 8, exprNode->resultRegisterRC[1]);
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->stackOffset);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extension->stackOffset, exprNode->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extension->stackOffset + 8, exprNode->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->extension->stackOffset);
         }
         else
         {
@@ -111,9 +111,9 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
         // See ByteCodeGenJob::emitCastToNativeAny
         if (node->ownerFct)
         {
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->stackOffset, node->additionalRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->stackOffset + 8, node->additionalRegisterRC[1]);
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0, node->stackOffset);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->extension->stackOffset, node->additionalRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->extension->stackOffset + 8, node->additionalRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0, node->extension->stackOffset);
         }
         else
         {
@@ -819,11 +819,11 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
 
-        if (exprNode->castOffset)
+        if (exprNode->extension && exprNode->extension->castOffset)
         {
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             SWAG_ASSERT(exprNode->castOffset != 0xFFFFFFFF);
-            inst->b.u64 = exprNode->castOffset;
+            inst->b.u64 = exprNode->extension->castOffset;
             inst->flags |= BCI_IMM_B;
         }
 
