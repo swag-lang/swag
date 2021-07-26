@@ -307,6 +307,7 @@ bool Tokenizer::getToken(Token& token)
         if (doSymbol(c, token))
         {
             token.endLocation = location;
+            setTokenName(token);
             return true;
         }
 
