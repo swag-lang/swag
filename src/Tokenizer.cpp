@@ -36,6 +36,12 @@ bool Tokenizer::isLiteral(TokenId id)
     return g_TokenFlags[(int) id] & TOKEN_LITERAL;
 }
 
+void Tokenizer::setTokenName(Token& token)
+{
+    token.text.clear();
+    token.text.append(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
+}
+
 void Tokenizer::setFile(SourceFile* file)
 {
     location.column = 0;
@@ -136,6 +142,7 @@ bool Tokenizer::getToken(Token& token)
     unsigned offset;
     while (true)
     {
+        startTokenName      = sourceFile->curBuffer;
         token.startLocation = location;
         token.text.clear();
 

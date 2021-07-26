@@ -424,18 +424,6 @@ void Utf8::append(char c)
     count++;
 }
 
-void Utf8::appendTmpChar(char c)
-{
-    if (count + 2 > allocated)
-        reserve(count + 2);
-    buffer[count++] = c;
-}
-
-void Utf8::setTrailingZero()
-{
-    buffer[count] = 0;
-}
-
 void Utf8::append(uint32_t utf)
 {
     if (utf <= 0x7F)

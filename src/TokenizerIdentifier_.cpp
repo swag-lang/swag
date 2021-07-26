@@ -21,16 +21,11 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
-        // Faster version for ascii. Will probably be inlined, and does not append a '0' for each character
-        if (c <= 0x7f)
-            token.text.appendTmpChar((char) c);
-        else
-            token.text += c;
         treatChar(c, offset);
         c = getCharNoSeek(offset);
     }
 
-    token.text.setTrailingZero();
+    setTokenName(token);
 
     auto crc = token.text.hash();
     auto it  = g_LangSpec.keywords.find(token.text.buffer, token.text.count, crc);
