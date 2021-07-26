@@ -353,10 +353,12 @@ struct AstNode
 
     bool isConstant0();
     bool isConstant1();
+    bool isParentOf(AstNode* child);
+    bool isSelectIfParam(SymbolOverload* overload);
+    bool isSameStackFrame(SymbolOverload* overload);
+    bool isSpecialFunctionName();
+    bool isSpecialFunctionGenerated();
 
-    bool             isParentOf(AstNode* child);
-    bool             isSelectIfParam(SymbolOverload* overload);
-    bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
     void             inheritLocationFromChilds();
     static Utf8      getArticleKindName(AstNode* node);
@@ -373,8 +375,6 @@ struct AstNode
     void             swap2Childs();
     bool             hasSpecialFuncCall();
     AstNode*         inSimpleReturn();
-    bool             isSpecialFunctionName();
-    bool             isSpecialFunctionGenerated();
 
     struct Extension
     {
@@ -407,15 +407,19 @@ struct AstNode
     Scope*              ownerStructScope;
     AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
-    TypeInfo*           typeInfo;
-    TypeInfo*           castedTypeInfo;
-    SymbolName*         resolvedSymbolName;
-    SymbolOverload*     resolvedSymbolOverload;
-    AstNode*            parent;
-    SemanticFct         semanticFct;
-    ByteCodeFct         byteCodeFct;
-    SourceFile*         sourceFile;
-    Extension*          extension;
+
+    TypeInfo* typeInfo;
+    TypeInfo* castedTypeInfo;
+
+    SymbolName*     resolvedSymbolName;
+    SymbolOverload* resolvedSymbolOverload;
+
+    AstNode*    parent;
+    SourceFile* sourceFile;
+    Extension*  extension;
+
+    SemanticFct semanticFct;
+    ByteCodeFct byteCodeFct;
 
     uint64_t flags;
     uint64_t attributeFlags;
