@@ -4,9 +4,8 @@
 
 struct Global
 {
-    atomic<int> uniqueID        = 0;
-    atomic<int> compilerAllocTh = 0;
-    bool        exiting         = false;
+    atomic<int> uniqueID = 0;
+    bool        exiting  = false;
 };
 
 extern struct Global g_Global;

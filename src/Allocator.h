@@ -73,4 +73,5 @@ struct Allocator
     bool           shared = false;
 };
 
+extern atomic<int>            g_CompilerAllocTh;
 extern thread_local Allocator g_Allocator;

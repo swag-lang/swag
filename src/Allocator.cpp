@@ -8,8 +8,9 @@ const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 
 thread_local Allocator g_Allocator;
 
-mutex      g_allocatorMutex;
-Allocator* g_sharedAllocator = nullptr;
+atomic<int> g_CompilerAllocTh = 0;
+mutex       g_allocatorMutex;
+Allocator*  g_sharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
@@ -249,7 +250,7 @@ Allocator::Allocator()
 
     // Allocator created by the tls of a user bytecode thread. In that can, we use
     // the same shared AllocatorImpl
-    if (g_Global.compilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
+    if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
         shared = true;
         unique_lock lk(g_allocatorMutex);
