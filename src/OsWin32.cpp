@@ -941,16 +941,6 @@ namespace OS
         return _InterlockedCompareExchange64(addr, replaceWith, compareTo);
     }
 
-    int32_t memcmp(const void* dst, const void* src, size_t size)
-    {
-        auto len = RtlCompareMemory(dst, src, size);
-        if (len == size)
-            return 0;
-        auto p1 = (const int8_t*) dst;
-        auto p2 = (const int8_t*) src;
-        return p1[len] - p2[len];
-    }
-
     uint8_t bitcountnz(uint8_t value)
     {
         return (uint8_t) __popcnt16(value);
