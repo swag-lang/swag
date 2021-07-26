@@ -175,6 +175,16 @@ uint32_t DataSegment::offset(uint8_t* location)
     return offset;
 }
 
+uint8_t* DataSegment::address(DataSegment* lockedSegment, uint32_t location)
+{
+    if (lockedSegment != this)
+        mutex.lock();
+    auto result = addressNoLock(location);
+    if (lockedSegment != this)
+        mutex.unlock();
+    return result;
+}
+
 uint8_t* DataSegment::address(uint32_t location)
 {
     shared_lock lock(mutex);
@@ -272,6 +282,16 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     }
 
     return storageOffset;
+}
+
+uint32_t DataSegment::addString(DataSegment* lockedSeg, const Utf8& str)
+{
+    if (lockedSeg != this)
+        mutex.lock();
+    auto result = addStringNoLock(str);
+    if (lockedSeg != this)
+        mutex.unlock();
+    return result;
 }
 
 uint32_t DataSegment::addStringNoLock(const Utf8& str)

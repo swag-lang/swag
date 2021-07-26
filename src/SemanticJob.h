@@ -189,11 +189,11 @@ struct SemanticJob : public Job
     static void     resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool     setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool     executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
-    static bool     reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool     storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool     reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* segment, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool     storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* segment, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool     collectLiteralsToSegmentNoLock(JobContext* context, uint32_t baseOffset, uint32_t& offset, AstNode* node, DataSegment* segment);
-    static bool     reserveAndStoreToSegmentNoLock(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool     storeToSegmentNoLock(JobContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool     reserveAndStoreToSegmentNoLock(JobContext* context, uint32_t& storageOffset, DataSegment* segment, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool     storeToSegmentNoLock(JobContext* context, uint32_t storageOffset, DataSegment* segment, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool     collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t offsetStruct, AstNode* node, DataSegment* segment);
     static void     setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void     getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
