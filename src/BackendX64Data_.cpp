@@ -30,9 +30,6 @@ bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataS
         case SegmentKind::Constant:
             sym = pp.symCSIndex;
             break;
-        case SegmentKind::Type:
-            sym = pp.symTSIndex;
-            break;
         case SegmentKind::Tls:
             sym = pp.symTLSIndex;
             break;

@@ -247,7 +247,6 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Reloc functions
     emitPatchForeignPointers(buildParameters, &module->constantSegment, pp.symCSIndex);
-    emitPatchForeignPointers(buildParameters, &module->typeSegment, pp.symTSIndex);
     emitPatchForeignPointers(buildParameters, &module->tlsSegment, pp.symTLSIndex);
 
     // Call to #init functions

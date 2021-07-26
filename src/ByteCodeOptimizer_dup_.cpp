@@ -303,7 +303,6 @@ bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
     optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeMutableSegPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeTypeSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::GetFromStackParam64);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate32);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate64);

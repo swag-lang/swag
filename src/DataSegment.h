@@ -18,7 +18,6 @@ enum class SegmentKind
     Me,
     Data,
     Constant,
-    Type,
     Tls,
     Compiler,
     Bss,

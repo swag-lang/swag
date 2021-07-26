@@ -25,7 +25,6 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     mutableSegment.setup(SegmentKind::Data, this);
     constantSegment.setup(SegmentKind::Constant, this);
     bssSegment.setup(SegmentKind::Bss, this);
-    typeSegment.setup(SegmentKind::Type, this);
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
 
@@ -237,7 +236,6 @@ void Module::release()
     constantSegment.release();
     compilerSegment.release();
     mutableSegment.release();
-    typeSegment.release();
     bssSegment.release();
     tlsSegment.release();
 }

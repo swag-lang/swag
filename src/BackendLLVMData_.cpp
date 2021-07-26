@@ -31,8 +31,6 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
             pp.bssSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__bs");
         else if (dataSegment == &module->mutableSegment)
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ms");
-        else if (dataSegment == &module->typeSegment)
-            pp.typeSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ts");
         else if (dataSegment == &module->tlsSegment)
             pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__tls");
         else
@@ -73,8 +71,6 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
             if (pp.dbg)
                 pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.mutableSeg);
         }
-        else if (dataSegment == &module->typeSegment)
-            pp.typeSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ts");
         else if (dataSegment == &module->tlsSegment)
         {
             pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__tls");
@@ -116,10 +112,6 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
         name = "initConstantSeg";
         gVar = pp.constantSeg;
         break;
-    case SegmentKind::Type:
-        name = "initTypeSeg";
-        gVar = pp.typeSeg;
-        break;
     case SegmentKind::Tls:
         name = "initTlsSeg";
         gVar = pp.tlsSeg;
@@ -143,14 +135,6 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-        else if (fromSegment == SegmentKind::Type)
-        {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.typeSeg), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }

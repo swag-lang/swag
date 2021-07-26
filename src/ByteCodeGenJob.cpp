@@ -216,8 +216,6 @@ ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* cont
         return emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, r0, offset);
     case SegmentKind::Constant:
         return emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0, offset);
-    case SegmentKind::Type:
-        return emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0, offset);
     default:
         SWAG_ASSERT(false);
     }

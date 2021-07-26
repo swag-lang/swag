@@ -209,7 +209,6 @@ BYTECODE_OP(MakeCompilerSegPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ 
 BYTECODE_OP(MakeBssSegPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .bss + _rbu32_")
 BYTECODE_OP(MakeMutableSegPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .data + _rbu32_")
 BYTECODE_OP(MakeConstantSegPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .rdata + _rbu32_")
-BYTECODE_OP(MakeTypeSegPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .type + _rbu32_")
 
 BYTECODE_OP(BinOpModuloS32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = _ras32_ % _rbs32_")
 BYTECODE_OP(BinOpModuloS64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = _ras64_ % _rbs64_")

@@ -11,7 +11,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     int       precompileIndex = buildParameters.precompileIndex;
     auto&     pp              = *perThread[ct][precompileIndex];
     auto&     concat          = pp.concat;
-    const int NUM_SECTIONS_0  = 13;
+    const int NUM_SECTIONS_0  = 12;
     const int NUM_SECTIONS_X  = 7;
 
     // Coff header
@@ -188,20 +188,6 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addU16(0);                                         // .NumberOfLinenumbers
         pp.patchMSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
-        // type section
-        /////////////////////////////////////////////
-        pp.sectionIndexTS = secIndex++;
-        concat.addString(".data\0\0\0", 8);                       // .Name
-        concat.addU32(0);                                         // .VirtualSize
-        concat.addU32(0);                                         // .VirtualAddress
-        pp.patchTSCount                   = concat.addU32Addr(0); // .SizeOfRawData
-        pp.patchTSOffset                  = concat.addU32Addr(0); // .PointerToRawData
-        pp.patchTSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-        concat.addU32(0);                                         // .PointerToLinenumbers
-        pp.patchTSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-        concat.addU16(0);                                         // .NumberOfLinenumbers
-        pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
-
         // tls section
         /////////////////////////////////////////////
         pp.sectionIndexTLS = secIndex++;
@@ -237,7 +223,6 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
         pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
-        pp.symTSIndex  = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
         pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
         pp.symCOIndex  = getOrAddSymbol(pp, Utf8::format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
         pp.symXDIndex  = getOrAddSymbol(pp, Utf8::format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
@@ -290,7 +275,6 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
         pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
         pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
-        pp.symTSIndex  = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
         pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Extern)->index;
         pp.symCOIndex  = getOrAddSymbol(pp, Utf8::format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
         pp.symXDIndex  = getOrAddSymbol(pp, Utf8::format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
@@ -367,9 +351,8 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         {
             buildRelocSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
             buildRelocSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
-            buildRelocSegment(buildParameters, &module->typeSegment, pp.relocTableTSSection, SegmentKind::Type);
             buildRelocSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
-            module->typeSegment.applyPatchPtr();
+            module->constantSegment.applyPatchPtr();
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitOS(buildParameters);
@@ -410,7 +393,6 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.globalSegment.align(16);
         module->constantSegment.align(16);
         module->mutableSegment.align(16);
-        module->typeSegment.align(16);
 
         // Segments
         uint32_t ssOffset = concat.totalCount();
@@ -425,8 +407,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
             uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
             uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
-            uint32_t tsOffset  = msOffset + module->mutableSegment.totalCount;
-            uint32_t tlsOffset = tsOffset + module->typeSegment.totalCount;
+            uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
 
             // We do not use concat to avoid dummy copies. We will save the segments as they are
             if (pp.globalSegment.totalCount)
@@ -445,12 +426,6 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             {
                 *pp.patchMSCount  = module->mutableSegment.totalCount;
                 *pp.patchMSOffset = msOffset;
-            }
-
-            if (module->typeSegment.totalCount)
-            {
-                *pp.patchTSCount  = module->typeSegment.totalCount;
-                *pp.patchTSOffset = tsOffset;
             }
 
             if (module->tlsSegment.totalCount)
@@ -477,13 +452,6 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             {
                 *pp.patchMSSectionRelocTableOffset = msRelocOffset;
                 emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
-            }
-
-            uint32_t tsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
-            if (!pp.relocTableTSSection.table.empty())
-            {
-                *pp.patchTSSectionRelocTableOffset = tsRelocOffset;
-                emitRelocationTable(pp.postConcat, pp.relocTableTSSection, pp.patchTSSectionFlags, pp.patchTSSectionRelocTableCount);
             }
 
             uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
@@ -911,18 +879,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         }
         SWAG_ASSERT(subTotal == *pp.patchMSCount || *pp.patchMSCount == 0);
         SWAG_ASSERT(subTotal == module->mutableSegment.totalCount);
-
-        // The type segment
-        SWAG_ASSERT(totalCount == *pp.patchTSOffset || *pp.patchTSOffset == 0);
-        subTotal = 0;
-        for (auto oneB : module->typeSegment.buckets)
-        {
-            totalCount += oneB.count;
-            subTotal += oneB.count;
-            destFile.save(oneB.buffer, oneB.count, affinity);
-        }
-        SWAG_ASSERT(subTotal == *pp.patchTSCount || *pp.patchTSCount == 0);
-        SWAG_ASSERT(subTotal == module->typeSegment.totalCount);
 
         // The tls segment
         SWAG_ASSERT(totalCount == *pp.patchTLSOffset || *pp.patchTLSOffset == 0);

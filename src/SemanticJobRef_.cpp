@@ -759,8 +759,8 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         auto module = context->sourceFile->module;
         auto value  = *(uint8_t**) ptr;
 
-        node->computedValue.storageSegment = &module->typeSegment;
-        if (module->typeSegment.tryOffset(value, node->computedValue.storageOffset))
+        node->computedValue.storageSegment = &module->constantSegment;
+        if (module->constantSegment.tryOffset(value, node->computedValue.storageOffset))
         {
             node->flags |= AST_VALUE_IS_TYPEINFO;
             node->setFlagsValueIsComputed();

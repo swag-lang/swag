@@ -204,7 +204,6 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);
-        emitDataSegment(buildParameters, &module->typeSegment);
         emitDataSegment(buildParameters, &module->constantSegment);
         emitDataSegment(buildParameters, &module->tlsSegment);
     }
@@ -225,7 +224,6 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         {
             emitInitSeg(buildParameters, &module->mutableSegment, SegmentKind::Data);
             emitInitSeg(buildParameters, &module->constantSegment, SegmentKind::Constant);
-            emitInitSeg(buildParameters, &module->typeSegment, SegmentKind::Type);
             emitInitSeg(buildParameters, &module->tlsSegment, SegmentKind::Tls);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);

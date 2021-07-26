@@ -1731,15 +1731,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
-    case ByteCodeOp::MakeTypeSegPointer:
-    {
-        auto module = context->sourceFile->module;
-        auto offset = ip->b.u32;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->typeSegment.address(offset));
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
-        break;
-    }
     case ByteCodeOp::MakeCompilerSegPointer:
     {
         auto module = context->sourceFile->module;

@@ -212,10 +212,6 @@ struct X64PerThread
     uint16_t* patchMSSectionRelocTableCount  = nullptr;
     uint32_t* patchMSSectionFlags            = nullptr;
 
-    uint32_t* patchTSSectionRelocTableOffset = nullptr;
-    uint16_t* patchTSSectionRelocTableCount  = nullptr;
-    uint32_t* patchTSSectionFlags            = nullptr;
-
     uint32_t* patchTLSSectionRelocTableOffset = nullptr;
     uint16_t* patchTLSSectionRelocTableCount  = nullptr;
     uint32_t* patchTLSSectionFlags            = nullptr;
@@ -236,8 +232,6 @@ struct X64PerThread
     uint32_t* patchGSCount    = nullptr;
     uint32_t* patchMSOffset   = nullptr;
     uint32_t* patchMSCount    = nullptr;
-    uint32_t* patchTSOffset   = nullptr;
-    uint32_t* patchTSCount    = nullptr;
     uint32_t* patchDRCount    = nullptr;
     uint32_t* patchDROffset   = nullptr;
     uint32_t* patchPDCount    = nullptr;
@@ -255,7 +249,6 @@ struct X64PerThread
     uint32_t symBSIndex  = 0;
     uint32_t symMSIndex  = 0;
     uint32_t symCSIndex  = 0;
-    uint32_t symTSIndex  = 0;
     uint32_t symTLSIndex = 0;
     uint32_t symXDIndex  = 0;
 

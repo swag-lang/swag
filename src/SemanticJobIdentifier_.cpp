@@ -611,7 +611,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->typeSegment))
+        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
         {
             parent->previousResolvedNode = context->node;
             return true;

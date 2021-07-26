@@ -13,7 +13,7 @@ DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
         return &module->compilerSegment;
-    return &module->typeSegment;
+    return &module->constantSegment;
 }
 
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, uint32_t cflags)
@@ -160,19 +160,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
         {
             SWAG_ASSERT(realType->value.storageOffset != UINT32_MAX);
             SWAG_ASSERT(realType->value.storageSegment);
-            SWAG_ASSERT(segment->kind != SegmentKind::Constant);
-
-            // :DeadLockCstType
-            // This is ugly... but this is to avoid a deadlock, because in that case, we first have locked 'segment', then
-            // we lock 'realType->value.storageSegment' by calling 'address'. 
-            // So we lock the type segment first, then the constant segment.
-            // But when we are collecting datas, we can lock in the exact opposite order => Dead lock.
-            // As we do not need the type segment to be locked just for taking the address in the constant segment, unlock here,
-            // and relock just after
-            segment->mutex.unlock();
-            concreteType->value = realType->value.storageSegment->address(realType->value.storageOffset);
-            segment->mutex.lock();
-
+            concreteType->value = realType->value.storageSegment->addressNoLock(realType->value.storageOffset);
             segment->addInitPtr(OFFSETOF(concreteType->value), realType->value.storageOffset, SegmentKind::Constant);
         }
         else if (realType->typeInfo->kind == TypeInfoKind::Slice)
@@ -186,14 +174,8 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
 
             auto offsetSlice = segment->reserveNoLock(2 * sizeof(uint64_t));
             auto ptrSlice    = (uint64_t*) segment->addressNoLock(offsetSlice);
-
-            // :DeadLockCstType
-            // This is ugly too. See above.
-            segment->mutex.unlock();
-            ptrSlice[0] = (uint64_t) realType->value.storageSegment->address(offsetContent);
-            segment->mutex.lock();
-
-            ptrSlice[1] = count;
+            ptrSlice[0]      = (uint64_t) realType->value.storageSegment->addressNoLock(offsetContent);
+            ptrSlice[1]      = count;
 
             concreteType->value = ptrSlice;
             segment->addInitPtr(offsetSlice, offsetContent, SegmentKind::Constant);

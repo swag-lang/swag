@@ -86,7 +86,6 @@ JobResult ModuleBuildJob::execute()
             module->constantSegment.initFrom(&rtMod->constantSegment);
             module->mutableSegment.initFrom(&rtMod->mutableSegment);
             module->bssSegment.initFrom(&rtMod->bssSegment);
-            module->typeSegment.initFrom(&rtMod->typeSegment);
             module->buildParameters.foreignLibs.insert(rtMod->buildParameters.foreignLibs.begin(), rtMod->buildParameters.foreignLibs.end());
         }
 
@@ -347,7 +346,7 @@ JobResult ModuleBuildJob::execute()
         // Now we can patch all methods pointers in type definitions
         module->mutableSegment.doPatchMethods(&context);
         module->tlsSegment.doPatchMethods(&context);
-        module->typeSegment.doPatchMethods(&context);
+        module->constantSegment.doPatchMethods(&context);
 
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)

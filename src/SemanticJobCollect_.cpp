@@ -104,9 +104,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         *(void**) ptrDest = ptrStorage;
         auto segType      = assignment->concreteTypeInfoSegment;
         SWAG_ASSERT(segType);
-
-        // :DeadLockCstType
-        *(void**) (ptrDest + sizeof(void*)) = segType->address(assignment->concreteTypeInfoStorage);
+        *(void**) (ptrDest + sizeof(void*)) = segType->addressNoLock(assignment->concreteTypeInfoStorage);
 
         seg->addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
         seg->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, segType->kind);
@@ -171,9 +169,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
     if (typeInfo->isPointerToTypeInfo())
     {
         seg->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
-
-        // :DeadLockCstType
-        *(void**) ptrDest = value->storageSegment->address(value->storageOffset);
+        *(void**) ptrDest = value->storageSegment->addressNoLock(value->storageOffset);
         return true;
     }
 

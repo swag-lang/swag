@@ -133,7 +133,6 @@ struct Module
     ByteCode*         getRuntimeFct(const char* fctName);
 
     DataSegment mutableSegment;
-    DataSegment typeSegment;
     DataSegment constantSegment;
     DataSegment bssSegment;
     DataSegment compilerSegment;

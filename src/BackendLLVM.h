@@ -23,7 +23,6 @@ struct LLVMPerThread
     llvm::GlobalVariable* bssSeg               = nullptr;
     llvm::GlobalVariable* mutableSeg           = nullptr;
     llvm::GlobalVariable* constantSeg          = nullptr;
-    llvm::GlobalVariable* typeSeg              = nullptr;
     llvm::GlobalVariable* tlsSeg               = nullptr;
     llvm::GlobalVariable* mainContext          = nullptr;
     llvm::GlobalVariable* defaultAllocTable    = nullptr;

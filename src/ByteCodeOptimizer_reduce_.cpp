@@ -2246,7 +2246,6 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
             case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeTypeSegPointer:
             case ByteCodeOp::MakeMutableSegPointer:
             case ByteCodeOp::MakeBssSegPointer:
             case ByteCodeOp::MakeCompilerSegPointer:
