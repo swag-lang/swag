@@ -5,11 +5,3 @@
 #include "Backend.h"
 
 Global g_Global;
-
-void Global::setup()
-{
-    g_TypeMgr.setup();
-    g_LangSpec.setup();
-    Backend::setup();
-}
-

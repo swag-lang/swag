@@ -4,7 +4,6 @@
 
 struct Global
 {
-    void        setup();
     atomic<int> uniqueID        = 0;
     atomic<int> compilerAllocTh = 0;
     bool        exiting         = false;

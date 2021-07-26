@@ -799,7 +799,9 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    g_Global.setup();
+    g_TypeMgr.setup();
+    g_LangSpec.setup();
+    Backend::setup();
 
     // [devmode] stuff
 #ifdef SWAG_DEV_MODE
