@@ -139,7 +139,7 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
             SWAG_CHECK(error(token, Utf8::format(Msg0330, g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -155,7 +155,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     }
 
     if (token.id == TokenId::SymSemiColon)
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -243,7 +243,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     }
 
     ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
@@ -281,7 +281,7 @@ JobResult SyntaxJob::execute()
     context.sourceFile = sourceFile;
     g_Stats.numFiles++;
 
-    if(!sourceFile->load())
+    if (!sourceFile->load())
         return JobResult::ReleaseJob;
 
     tokenizer.setFile(sourceFile);
@@ -353,7 +353,7 @@ JobResult SyntaxJob::execute()
         currentScope = parentScope;
     sourceFile->astRoot->ownerScope = currentScope;
 
-    bool ok = tokenizer.getToken(token);
+    bool ok = eatToken();
     while (true)
     {
         // If there's an error, then we must stop at syntax pass
@@ -369,7 +369,7 @@ JobResult SyntaxJob::execute()
 
         // Ask for lexer only
         if (sourceFile->buildPass < BuildPass::Syntax)
-            ok = tokenizer.getToken(token);
+            ok = eatToken();
         else
             ok = doTopLevelInstruction(sourceFile->astRoot);
     }

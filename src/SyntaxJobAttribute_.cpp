@@ -14,7 +14,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     if (result)
         *result = attrNode;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0355, token.text.c_str())));
 
     attrNode->inheritTokenName(token);
@@ -31,7 +31,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     // Parameters
     {
         Scoped scoped(this, newScope);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
@@ -51,7 +51,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         attr = ATTRIBUTE_PRIVATE;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Msg0348));
         newScope = Ast::newPrivateScope(parent, parent->sourceFile, currentScope);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         break;
 
     case TokenId::KwdPublic:
@@ -69,7 +69,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
             while (newScope->flags & SCOPE_PRIVATE)
                 newScope = newScope->parentScope;
         }
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         break;
 
     default:
@@ -145,7 +145,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
     while (token.id == TokenId::SymAttrStart)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         while (token.id == TokenId::Identifier)
         {
             AstNode* params;

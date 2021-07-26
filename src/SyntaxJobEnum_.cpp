@@ -17,7 +17,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         *result = enumNode;
     enumNode->semanticFct = SemanticJob::resolveEnum;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0396, token.text.c_str())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
@@ -57,7 +57,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     }
 
     // Raw type
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
     typeNode->semanticFct = SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
@@ -136,7 +136,7 @@ bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
     currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));

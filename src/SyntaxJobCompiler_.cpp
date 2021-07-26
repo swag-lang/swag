@@ -14,7 +14,7 @@ bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
@@ -42,7 +42,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0878));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
     node->boolExpression->allocateExtension();
@@ -70,7 +70,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
             SWAG_CHECK(doCompilerIf(block));
         else
         {
-            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(eatToken());
             SWAG_CHECK(doStatementFor(block, nullptr, kind));
         }
     }
@@ -86,7 +86,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerMixin;
     node->token       = move(token);
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     // Code identifier
     SWAG_CHECK(doIdentifierRef(node));
@@ -126,7 +126,7 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
     node->scope   = newScope;
 
@@ -143,7 +143,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::resolveCompilerInline;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
     node->scope   = newScope;
 
@@ -164,7 +164,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     node->token                        = move(token);
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
@@ -356,7 +356,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(!afterGlobal, error(token, Msg0369));
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     /////////////////////////////////
     if (token.text == "export")
@@ -390,7 +390,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             *result = node;
         node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Msg0371));
 
         AstNode* literal;
@@ -410,7 +410,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             *result = node;
         node->flags |= AST_GLOBAL_NODE;
 
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0879));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension();
@@ -451,7 +451,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (token.text == "testpass")
     {
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         if (token.text == "lexer")
         {
             if (g_CommandLine.test)
@@ -687,7 +687,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, Msg0379}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
@@ -741,7 +741,7 @@ bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
     SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, Msg0384}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPlaceHolder, sourceFile, parent);
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, Msg0385}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);

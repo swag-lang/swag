@@ -11,7 +11,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     else
         kind = AstNodeKind::VarDecl;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(doVarDecl(parent, result, kind));
     return true;
 }

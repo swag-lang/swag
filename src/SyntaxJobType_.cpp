@@ -11,13 +11,13 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveUsing;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0333, token.text.c_str())));
     node->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(node));
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
@@ -265,7 +265,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         isConst    = true;
         isPtrConst = true;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
     }
 
     // Else this is a type expression
@@ -282,7 +282,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         isPtrConst = false;
 
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         while (true)
         {
             // Size of array can be nothing
@@ -296,7 +296,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::SymDotDot)
             {
                 node->typeFlags |= TYPEFLAG_ISSLICE;
-                SWAG_CHECK(tokenizer.getToken(token));
+                SWAG_CHECK(eatToken());
                 break;
             }
 
@@ -306,7 +306,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
             if (token.id != TokenId::SymComma)
                 break;
-            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(eatToken());
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
@@ -316,7 +316,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (token.id == TokenId::KwdConst)
     {
         isPtrConst = true;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Msg0339));
     }
 
@@ -328,18 +328,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
                 return error(token, Utf8::format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
-            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(eatToken());
             isPtrConst = false;
 
             if (token.id == TokenId::KwdConst)
             {
-                SWAG_CHECK(tokenizer.getToken(token));
+                SWAG_CHECK(eatToken());
                 SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, error(token, Msg0341));
 
                 // Pointer to a const reference
                 if (token.id == TokenId::SymAmpersand)
                 {
-                    SWAG_CHECK(tokenizer.getToken(token));
+                    SWAG_CHECK(eatToken());
                     node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_REF | AstTypeExpression::PTR_CONST;
                 }
 
@@ -362,7 +362,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (token.id == TokenId::NativeType)
     {
         node->token = move(token);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         return true;
     }
 
@@ -401,7 +401,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
@@ -417,7 +417,7 @@ bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'bitcast'"));
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
@@ -433,7 +433,7 @@ bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;
 }

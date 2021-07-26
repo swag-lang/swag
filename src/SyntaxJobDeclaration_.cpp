@@ -11,7 +11,7 @@
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     while (true)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
@@ -70,7 +70,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 {
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
@@ -137,7 +137,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymDot)
             break;
         SWAG_CHECK(eatToken(TokenId::SymDot));
@@ -334,7 +334,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
         break;
     case TokenId::SymSemiColon:
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         break;
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent, result));
@@ -510,14 +510,14 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
         *result = labelNode;
     labelNode->semanticFct = SemanticJob::resolveLabel;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, Msg0394));
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0395, token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 
     ScopedBreakable scoped(this, labelNode);
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }
@@ -534,7 +534,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doGlobalCurlyStatement(parent, result));
         break;
     case TokenId::SymSemiColon:
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         break;
     case TokenId::KwdVar:
     case TokenId::KwdConst:

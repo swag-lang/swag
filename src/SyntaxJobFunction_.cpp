@@ -191,14 +191,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     {
         // Multiple declaration
         VectorNative<AstVarDecl*> otherVariables;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         while (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0408, token.text.c_str())));
 
             AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
-            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(eatToken());
             otherVariables.push_back(otherVarNode);
         }
 
@@ -218,7 +218,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
                 auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                 paramNode->type                = newTypeExpression;
                 newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
-                SWAG_CHECK(tokenizer.getToken(token));
+                SWAG_CHECK(eatToken());
             }
             else
             {
@@ -232,7 +232,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
                     auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                     paramNode->type                = newTypeExpression;
                     newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
-                    SWAG_CHECK(tokenizer.getToken(token));
+                    SWAG_CHECK(eatToken());
                     Ast::addChildBack(paramNode->type, typeExpression);
                 }
                 else
@@ -376,7 +376,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (typeFuncId == TokenId::Invalid)
     {
         typeFuncId = token.id;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
     }
 
     if (typeFuncId == TokenId::CompilerFuncTest ||
@@ -516,7 +516,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, isMethod));
     }
 
@@ -642,7 +642,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
         *result = node;
 
     // Return value
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (tokenizer.lastTokenIsEOL)
         return true;
     if (token.id != TokenId::SymSemiColon)
@@ -672,7 +672,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType));
     }
 

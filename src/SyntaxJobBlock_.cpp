@@ -12,7 +12,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, Msg0863));
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
@@ -20,7 +20,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::KwdElse)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
     }
 
@@ -34,7 +34,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     {
         ScopedBreakable scoped(this, node);
@@ -54,7 +54,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         *result = switchNode;
 
     // switch can have no expression
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
         SWAG_CHECK(doExpression(switchNode, EXPR_FLAG_NONE, &switchNode->expression));
@@ -81,7 +81,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = SemanticJob::resolveCase;
         auto previousToken    = token;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         if (isDefault)
             defaultCase = caseNode;
         else
@@ -157,7 +157,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     ScopedBreakable scopedBreakable(this, node);
 
@@ -195,15 +195,15 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         *result = node;
 
     // Eat visit keyword
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     // Extra name on the special function
     if (token.id == TokenId::SymLeftParen)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Msg0870));
         node->extraNameToken = move(token);
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
@@ -211,7 +211,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     {
         node->wantPointerToken = move(token);
         node->specFlags        = AST_SPEC_VISIT_WANTPOINTER;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
     }
 
     // Variable to visit
@@ -282,7 +282,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         *result = node;
     newScope->owner = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     ScopedBreakable scopedBreakable(this, node);
 
@@ -348,7 +348,7 @@ bool SyntaxJob::doGetErr(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveGetErr;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -358,7 +358,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveIndex;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -368,7 +368,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveBreak;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (tokenizer.lastTokenIsEOL)
         return true;
 
@@ -388,7 +388,7 @@ bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveFallThrough;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -398,7 +398,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveContinue;
     if (result)
         *result = node;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     if (tokenizer.lastTokenIsEOL)
         return true;
 

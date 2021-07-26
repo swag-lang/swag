@@ -26,7 +26,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     if (token.id == TokenId::SymBackTick)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         backTick = true;
         if (token.id == TokenId::SymQuestion)
             return error(token, Utf8::format(Msg0835, token.text.c_str()));
@@ -48,7 +48,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     if (backTick)
         identifier->flags |= AST_IDENTIFIER_BACKTICK;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     SWAG_CHECK(checkIsValidUserName(identifier));
 

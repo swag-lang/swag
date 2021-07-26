@@ -14,12 +14,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         *result = implNode;
 
     auto scopeKind = ScopeKind::Struct;
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     switch (token.id)
     {
     case TokenId::KwdEnum:
         scopeKind = ScopeKind::Enum;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         break;
     }
 
@@ -157,7 +157,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, Msg0880));
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     return true;
 }
@@ -182,7 +182,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->structFlags |= STRUCTFLAG_UNION;
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     // Generic arguments
     if (token.id == TokenId::SymLeftParen)
@@ -278,7 +278,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         });
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
 
     // Content of struct
     {
@@ -365,7 +365,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, error(token, Utf8::format(Msg0449, token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
             break;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
