@@ -9,7 +9,6 @@ struct Module;
 namespace OS
 {
     extern void     setup();
-    extern void     consoleSetup();
     extern void     consoleSetColor(LogColor color);
     extern bool     doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
     extern void     doRunProcess(const Utf8& cmdline, const string& currentDirectory);

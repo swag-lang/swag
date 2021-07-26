@@ -4,11 +4,6 @@
 
 Log g_Log;
 
-void Log::setup()
-{
-    OS::consoleSetup();
-}
-
 void Log::setDefaultColor()
 {
     OS::consoleSetColor(LogColor::Default);

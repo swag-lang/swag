@@ -195,7 +195,6 @@ void help(CommandLineParser& cmdParser)
 int main(int argc, const char* argv[])
 {
     OS::setup();
-    g_Log.setup();
 
     // Arguments
     CommandLineParser cmdParser;

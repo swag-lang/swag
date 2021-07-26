@@ -34,7 +34,6 @@ static const int CENTER_COLUMN = 24;
 
 struct Log
 {
-    void setup();
     void setColor(LogColor color);
     void setDefaultColor();
 

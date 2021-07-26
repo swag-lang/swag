@@ -23,10 +23,8 @@ namespace OS
             _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
             _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
         }
-    }
 
-    void consoleSetup()
-    {
+        // Log
         consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleOutputCP(65001);
 
@@ -37,7 +35,7 @@ namespace OS
 
     void consoleSetColor(LogColor color)
     {
-        WORD attributes{};
+        WORD attributes = 0;
         switch (color)
         {
         case LogColor::Black:
