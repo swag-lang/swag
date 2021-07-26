@@ -231,8 +231,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(format(Msg0174, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
-                Diagnostic  diag{fromNode, format(Msg0175, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
+                PushErrHint errh(Utf8::format(Msg0174, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
+                Diagnostic  diag{fromNode, Utf8::format(Msg0175, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
                 context->report(diag);
                 done = true;
             }
@@ -241,7 +241,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Cast from struct to interface
         if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, format(Msg0176, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            context->report({fromNode, Utf8::format(Msg0176, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
             done = true;
         }
 
@@ -251,17 +251,17 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
             PushErrHint errh(Hnt0005);
-            return context->report({fromNode, format(Msg0907, fromType->getDisplayName().c_str())});
+            return context->report({fromNode, Utf8::format(Msg0907, fromType->getDisplayName().c_str())});
         }
 
         if (castFlags & CASTFLAG_CONST_ERR)
         {
             PushErrHint errh(Hnt0022);
-            return context->report({fromNode, format(Msg0418, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            return context->report({fromNode, Utf8::format(Msg0418, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
         }
 
         // General cast error
-        return context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        return context->report({fromNode, Utf8::format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
     }
 
     return false;
@@ -576,7 +576,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0178, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0178, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -599,7 +599,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0179, fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0179, fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -693,7 +693,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0180, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0180, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -716,7 +716,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0181, fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0181, fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -810,7 +810,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0182, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0182, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -833,7 +833,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.u64 > UINT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0183, fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0183, fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -918,7 +918,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0185, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0185, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1028,7 +1028,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0185, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0185, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1137,7 +1137,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0186, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0186, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1236,7 +1236,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0187, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0187, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1325,7 +1325,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0188, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0188, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1404,7 +1404,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT64_MIN || fromNode->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0189, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0189, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1479,7 +1479,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT64_MIN || fromNode->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0189, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0189, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1521,7 +1521,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0191, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0191, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1578,7 +1578,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0192, fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0192, fromNode->computedValue.reg.u64)});
                     return false;
                 }
             }
@@ -1607,7 +1607,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpD != fromNode->computedValue.reg.f64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0193, fromNode->computedValue.reg.f64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0193, fromNode->computedValue.reg.f64)});
                     return false;
                 }
             }
@@ -1651,7 +1651,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0194, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0194, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1708,7 +1708,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0195, fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, Utf8::format(Msg0195, fromNode->computedValue.reg.u64)});
                     return false;
                 }
             }
@@ -1888,9 +1888,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, format(Msg0196, toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, Utf8::format(Msg0196, toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({child, format(Msg0197, toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, Utf8::format(Msg0197, toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -2100,7 +2100,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             // Ambiguous ! Two fields with a 'using' on the same struct
             if (done)
             {
-                Diagnostic diag{fromNode, fromNode->token, format(Msg0200, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                Diagnostic diag{fromNode, fromNode->token, Utf8::format(Msg0200, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
                 Diagnostic note1{done->declNode, Msg0201, DiagnosticLevel::Note};
                 Diagnostic note2{field->declNode, Msg0202, DiagnosticLevel::Note};
                 return context->report(diag, &note1, &note2);
@@ -2416,9 +2416,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, format(Msg0203, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Utf8::format(Msg0203, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, format(Msg0204, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Utf8::format(Msg0204, toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;
@@ -2812,7 +2812,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         parentForRef = fromNode->parent;
 
     // Declare a variable
-    auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
+    auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure this will always work.
@@ -2870,7 +2870,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // For a tuple initialization, every parameters must be covered
     if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && countParams != typeStruct->fields.size())
-        return context->report({identifier, format(Msg0205, typeStruct->fields.size(), countParams)});
+        return context->report({identifier, Utf8::format(Msg0205, typeStruct->fields.size(), countParams)});
 
     // Add the 2 nodes to the semantic
     auto b = context->job->nodes.back();

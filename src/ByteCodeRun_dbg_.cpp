@@ -10,8 +10,8 @@ static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t 
 {
     auto registersRC = context->registersRC[curRC]->buffer;
     Utf8 str;
-    str += read ? format("(%u)", reg) : format("[%u]", reg);
-    str += format(" = %016llx\n", registersRC[reg].u64);
+    str += read ? Utf8::format("(%u)", reg) : Utf8::format("[%u]", reg);
+    str += Utf8::format(" = %016llx\n", registersRC[reg].u64);
     g_Log.setColor(LogColor::Gray);
     g_Log.print(str);
 }
@@ -29,7 +29,7 @@ static void printContext(ByteCodeRunContext* context)
     if (bc->sourceFile)
     {
         if (bc->node)
-            g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+            g_Log.messageHeaderDot("bytecode location", Utf8::format("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
         else
             g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
     }
@@ -37,7 +37,7 @@ static void printContext(ByteCodeRunContext* context)
     if (ipNode)
     {
         if (ipNode->sourceFile)
-            g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+            g_Log.messageHeaderDot("instruction location", Utf8::format("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
 
         if (ipNode->ownerFct)
         {
@@ -46,7 +46,7 @@ static void printContext(ByteCodeRunContext* context)
         }
     }
 
-    g_Log.messageHeaderDot("stack level", format("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
+    g_Log.messageHeaderDot("stack level", Utf8::format("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
 
     g_Log.eol();
     g_Log.lock();
@@ -57,29 +57,29 @@ static void printFullRegister(Register& regP)
     auto col = LogColor::Magenta;
 
     // clang-format off
-    g_Log.printColor("s8  ", col); g_Log.printColor(format("%d ", regP.s8));
-    g_Log.printColor("u8 ", col); g_Log.printColor(format("%u ", regP.u8));
-    g_Log.printColor("x8 ", col); g_Log.printColor(format("%02x ", regP.u8));
+    g_Log.printColor("s8  ", col); g_Log.printColor(Utf8::format("%d ", regP.s8));
+    g_Log.printColor("u8 ", col); g_Log.printColor(Utf8::format("%u ", regP.u8));
+    g_Log.printColor("x8 ", col); g_Log.printColor(Utf8::format("%02x ", regP.u8));
     g_Log.eol();
 
-    g_Log.printColor("s16 ", col); g_Log.printColor(format("%d ", regP.s16));
-    g_Log.printColor("u16 ", col); g_Log.printColor(format("%u ", regP.u16));
-    g_Log.printColor("x16 ", col); g_Log.printColor(format("%04x ", regP.u16));
+    g_Log.printColor("s16 ", col); g_Log.printColor(Utf8::format("%d ", regP.s16));
+    g_Log.printColor("u16 ", col); g_Log.printColor(Utf8::format("%u ", regP.u16));
+    g_Log.printColor("x16 ", col); g_Log.printColor(Utf8::format("%04x ", regP.u16));
     g_Log.eol();
 
-    g_Log.printColor("s32 ", col); g_Log.printColor(format("%d ", regP.s32));
-    g_Log.printColor("u32 ", col); g_Log.printColor(format("%u ", regP.u32));
-    g_Log.printColor("x32 ", col); g_Log.printColor(format("%08x ", regP.u32));
+    g_Log.printColor("s32 ", col); g_Log.printColor(Utf8::format("%d ", regP.s32));
+    g_Log.printColor("u32 ", col); g_Log.printColor(Utf8::format("%u ", regP.u32));
+    g_Log.printColor("x32 ", col); g_Log.printColor(Utf8::format("%08x ", regP.u32));
     g_Log.eol();
 
-    g_Log.printColor("s64 ", col); g_Log.printColor(format("%lld ", regP.s64));
-    g_Log.printColor("u64 ", col); g_Log.printColor(format("%llu ", regP.u64));
-    g_Log.printColor("x64 ", col); g_Log.printColor(format("%016llx ", regP.u64));
+    g_Log.printColor("s64 ", col); g_Log.printColor(Utf8::format("%lld ", regP.s64));
+    g_Log.printColor("u64 ", col); g_Log.printColor(Utf8::format("%llu ", regP.u64));
+    g_Log.printColor("x64 ", col); g_Log.printColor(Utf8::format("%016llx ", regP.u64));
     g_Log.eol();
     
-    g_Log.printColor("f32 ", col); g_Log.printColor(format("%lf", regP.f32));
+    g_Log.printColor("f32 ", col); g_Log.printColor(Utf8::format("%lf", regP.f32));
     g_Log.eol();
-    g_Log.printColor("f64 ", col); g_Log.printColor(format("%lf", regP.f64));
+    g_Log.printColor("f64 ", col); g_Log.printColor(Utf8::format("%lf", regP.f64));
     g_Log.eol();
     // clang-format on
 }
@@ -149,7 +149,7 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
 {
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        str += format("0x%016llx", *(void**) addr);
+        str += Utf8::format("0x%016llx", *(void**) addr);
         return;
     }
 
@@ -158,43 +158,43 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            str += format("%s", *(bool*) addr ? "true" : "false");
+            str += Utf8::format("%s", *(bool*) addr ? "true" : "false");
             return;
 
         case NativeTypeKind::S8:
-            str += format("%d", *(int8_t*) addr);
+            str += Utf8::format("%d", *(int8_t*) addr);
             return;
         case NativeTypeKind::S16:
-            str += format("%d", *(int16_t*) addr);
+            str += Utf8::format("%d", *(int16_t*) addr);
             return;
         case NativeTypeKind::S32:
-            str += format("%d", *(int32_t*) addr);
+            str += Utf8::format("%d", *(int32_t*) addr);
             return;
         case NativeTypeKind::Int:
         case NativeTypeKind::S64:
-            str += format("%lld", *(int64_t*) addr);
+            str += Utf8::format("%lld", *(int64_t*) addr);
             return;
 
         case NativeTypeKind::U8:
-            str += format("%u", *(uint8_t*) addr);
+            str += Utf8::format("%u", *(uint8_t*) addr);
             return;
         case NativeTypeKind::U16:
-            str += format("%u", *(uint16_t*) addr);
+            str += Utf8::format("%u", *(uint16_t*) addr);
             return;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            str += format("%u", *(uint32_t*) addr);
+            str += Utf8::format("%u", *(uint32_t*) addr);
             return;
         case NativeTypeKind::UInt:
         case NativeTypeKind::U64:
-            str += format("%llu", *(uint64_t*) addr);
+            str += Utf8::format("%llu", *(uint64_t*) addr);
             return;
 
         case NativeTypeKind::F32:
-            str += format("%f", *(float*) addr);
+            str += Utf8::format("%f", *(float*) addr);
             return;
         case NativeTypeKind::F64:
-            str += format("%lf", *(double*) addr);
+            str += Utf8::format("%lf", *(double*) addr);
             return;
         }
     }
@@ -286,7 +286,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             vector<Utf8> cmds;
             if (!line.empty())
             {
-                tokenize(line, ' ', cmds);
+                Utf8::tokenize(line, ' ', cmds);
                 for (auto& c : cmds)
                     c.trim();
                 cmd = cmds[0];
@@ -343,7 +343,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                             continue;
 
                         Utf8 str;
-                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
+                        str = Utf8::format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
                         appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
                         g_Log.printColor(str);
                         g_Log.eol();
@@ -367,7 +367,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         if (!over)
                             continue;
                         Utf8 str;
-                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
+                        str = Utf8::format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
                         appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
                         g_Log.printColor(str);
                         g_Log.eol();
@@ -476,7 +476,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.setColor(LogColor::Gray);
                 int regN = atoi(cmds[1].c_str());
                 if (regN >= context->registersRC[context->debugCxtRc]->size())
-                    g_Log.print(format("invalid register number, maximum value is '%u'\n", (uint32_t) context->registersRC[context->debugCxtRc]->size()));
+                    g_Log.print(Utf8::format("invalid register number, maximum value is '%u'\n", (uint32_t) context->registersRC[context->debugCxtRc]->size()));
                 else
                 {
                     auto& regP = context->registersRC[context->debugCxtRc]->buffer[regN];

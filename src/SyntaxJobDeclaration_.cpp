@@ -100,7 +100,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::SymSemiColon:
             return error(token, Msg0390);
         default:
-            return error(token, format(Msg0391, token.text.c_str()));
+            return error(token, Utf8::format(Msg0391, token.text.c_str()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
@@ -127,7 +127,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             else if (symbol->kind != SymbolKind::Namespace)
             {
                 auto       firstOverload = &symbol->defaultOverload;
-                Utf8       msg           = format(Msg0886, symbol->name.c_str());
+                Utf8       msg           = Utf8::format(Msg0886, symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Msg0884;
                 Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
@@ -512,7 +512,7 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, Msg0394));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0395, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0395, token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 

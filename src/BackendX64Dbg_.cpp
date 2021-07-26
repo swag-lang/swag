@@ -242,7 +242,7 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     concat.addU16(0);
 
     // Compiler version
-    Utf8 version = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    Utf8 version = Utf8::format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
     alignConcat(concat, 4);
     *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
@@ -584,7 +584,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
     tr1.LF_Structure.fieldList   = tr0.index;
     if (typeInfo->kind == TypeInfoKind::Slice)
-        tr1.name = format("[..] %s", pointedType->name.c_str()); // debugger dosen't like 'const' before a slice name
+        tr1.name = Utf8::format("[..] %s", pointedType->name.c_str()); // debugger dosen't like 'const' before a slice name
     else
         tr1.name = typeInfo->name;
 

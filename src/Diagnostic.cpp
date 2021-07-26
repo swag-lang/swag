@@ -17,11 +17,11 @@ void Diagnostic::printSourceLine(int headerSize) const
 
     SWAG_ASSERT(sourceFile);
     fs::path path = sourceFile->path;
-    g_Log.print(normalizePath(path).c_str());
+    g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
-        g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+        g_Log.print(Utf8::format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else if (hasLocation)
-        g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
+        g_Log.print(Utf8::format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
     else
         g_Log.print(": ");
 }
@@ -67,9 +67,9 @@ void Diagnostic::report(bool verboseMode) const
     {
         g_Log.setColor(stackColor);
         if (currentStackLevel)
-            g_Log.print(format("callstack:[%03u]: ", stackLevel));
+            g_Log.print(Utf8::format("callstack:[%03u]: ", stackLevel));
         else
-            g_Log.print(format("callstack:%03u: ", stackLevel));
+            g_Log.print(Utf8::format("callstack:%03u: ", stackLevel));
         break;
     }
     case DiagnosticLevel::CallStackInlined:

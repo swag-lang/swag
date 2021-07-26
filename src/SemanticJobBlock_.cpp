@@ -157,8 +157,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, fct->token, format(Msg0748, fct->getDisplayName().c_str())});
-                return context->report({fct, fct->token, format(Msg0606, fct->getDisplayName().c_str())});
+                    return context->report({fct, fct->token, Utf8::format(Msg0748, fct->getDisplayName().c_str())});
+                return context->report({fct, fct->token, Utf8::format(Msg0606, fct->getDisplayName().c_str())});
             }
         }
     }
@@ -268,7 +268,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        return context->report({node->expression, format(Msg0609, typeSwitch->getDisplayName().c_str())});
+        return context->report({node->expression, Utf8::format(Msg0609, typeSwitch->getDisplayName().c_str())});
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Msg0610}));
@@ -286,7 +286,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 if (typeExpr->isNative(NativeTypeKind::String))
                 {
                     if (valText.find(expr->computedValue.text) != valText.end())
-                        return context->report({expr, format(Msg0611, expr->computedValue.text.c_str())});
+                        return context->report({expr, Utf8::format(Msg0611, expr->computedValue.text.c_str())});
                     valText.insert(expr->computedValue.text);
                 }
                 else
@@ -298,12 +298,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     if (val64.find(value) != val64.end())
                     {
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, format(Msg0611, expr->token.text.c_str())});
+                            return context->report({expr, Utf8::format(Msg0611, expr->token.text.c_str())});
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
-                            return context->report({expr, format(Msg0612, expr->token.text.c_str())});
+                            return context->report({expr, Utf8::format(Msg0612, expr->token.text.c_str())});
                         if (typeExpr->flags & TYPEINFO_INTEGER)
-                            return context->report({expr, format(Msg0613, expr->computedValue.reg.u64)});
-                        return context->report({expr, format(Msg0614, expr->computedValue.reg.f64)});
+                            return context->report({expr, Utf8::format(Msg0613, expr->computedValue.reg.u64)});
+                        return context->report({expr, Utf8::format(Msg0614, expr->computedValue.reg.f64)});
                     }
 
                     val64.insert(expr->computedValue.reg.u64);
@@ -324,9 +324,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Msg0616}));
 
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report({node, node->token, format(Msg0617, node->typeInfo->getDisplayName().c_str())});
+            return context->report({node, node->token, Utf8::format(Msg0617, node->typeInfo->getDisplayName().c_str())});
         if (node->beforeAutoCastType)
-            return context->report({node, node->token, format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
+            return context->report({node, node->token, Utf8::format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -339,7 +339,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (valText.find(one->value.text) == valText.end())
                         {
-                            Diagnostic diag{node, node->token, format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
@@ -354,7 +354,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (val64.find(one->value.reg.u64) == val64.end())
                         {
-                            Diagnostic diag{node, node->token, format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
@@ -529,7 +529,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             identifierRef = Ast::newIdentifierRef(sourceFile, node);
         }
 
-        auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
+        auto identifier        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
         identifier->aliasNames = node->aliasNames;
         identifier->inheritTokenLocation(node->token);
 
@@ -563,8 +563,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format(Msg0625, typeInfo->getDisplayName().c_str())}));
-    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], format(Msg0626, node->aliasNames.size())}));
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Utf8::format(Msg0625, typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], Utf8::format(Msg0626, node->aliasNames.size())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;
@@ -587,19 +587,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = (TypeInfoArray*) typeInfo;
         auto pointedType = typeArray->finalType;
 
-        content += format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
-        content += format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
-        content += format("loop __count%u { ", id);
+        content += Utf8::format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
+        content += Utf8::format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
+        content += Utf8::format("loop __count%u { ", id);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+            content += Utf8::format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
-            content += format("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += Utf8::format("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
         }
         else
-            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += format("var %s = @index; ", alias1Name.c_str());
+            content += Utf8::format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
 
@@ -612,31 +612,31 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         else
             pointedType = ((TypeInfoArray*) typeInfo)->pointedType;
 
-        content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += format("loop %s { ", (const char*) concat.firstBucket->datas);
+        content += Utf8::format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += Utf8::format("loop %s { ", (const char*) concat.firstBucket->datas);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+            content += Utf8::format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
-            content += format("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += Utf8::format("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
         }
         else
-            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += format("var %s = @index; ", alias1Name.c_str());
+            content += Utf8::format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
 
     // String
     else if (typeInfo->isNative(NativeTypeKind::String))
     {
-        content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += format("loop %s { ", (const char*) concat.firstBucket->datas);
+        content += Utf8::format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += Utf8::format("loop %s { ", (const char*) concat.firstBucket->datas);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+            content += Utf8::format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
-            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += format("var %s = @index; ", alias1Name.c_str());
+            content += Utf8::format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
 
@@ -644,9 +644,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0627}));
-        content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
-        content += format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
-        content += format("var %s = @index; ", alias1Name.c_str());
+        content += Utf8::format("{ loop %s { ", (const char*) concat.firstBucket->datas);
+        content += Utf8::format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
+        content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
 
@@ -655,17 +655,17 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0636}));
-        content += format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += format("loop %d { ", typeEnum->values.size());
-        content += format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
-        content += format("var %s = @index; ", alias1Name.c_str());
+        content += Utf8::format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += Utf8::format("loop %d { ", typeEnum->values.size());
+        content += Utf8::format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
+        content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
 
     else
     {
         PushErrHint errh(Msg0628);
-        return context->report({node->expression, format(Msg0629, typeInfo->getDisplayName().c_str())});
+        return context->report({node->expression, Utf8::format(Msg0629, typeInfo->getDisplayName().c_str())});
     }
 
     SyntaxJob syntaxJob;
@@ -739,7 +739,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
-        SWAG_VERIFY(breakable, context->report({node, format(Msg0631, node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, Utf8::format(Msg0631, node->label.c_str())}));
         node->ownerBreakable = breakable;
     }
 
@@ -790,7 +790,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report({node, format(Msg0631, node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, Utf8::format(Msg0631, node->label.c_str())}));
         node->ownerBreakable = lastBreakable;
     }
 
@@ -814,7 +814,7 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         {
             if (check->token.text == node->token.text)
             {
-                Diagnostic diag(node, node->token, format(Msg0639, node->token.text.c_str()));
+                Diagnostic diag(node, node->token, Utf8::format(Msg0639, node->token.text.c_str()));
                 Diagnostic note(check, check->token, Msg0884, DiagnosticLevel::Note);
                 context->report(diag, &note);
             }

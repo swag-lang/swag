@@ -48,7 +48,7 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
                 file->name = filename;
                 file->path = publicPath + "/";
                 file->path += filename;
-                file->path     = normalizePath(file->path);
+                file->path     = Utf8::normalizePath(file->path);
                 file->imported = depModule;
                 files.push_back(file);
             }
@@ -110,7 +110,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace.getModuleByName(dep->name);
             if (!depModule)
             {
-                module->error(format(Msg0499, dep->name.c_str()));
+                module->error(Utf8::format(Msg0499, dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
@@ -384,7 +384,7 @@ JobResult ModuleBuildJob::execute()
         if (callInitDrop)
         {
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
+                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
             for (auto func : module->byteCodeInitFunc)
             {
@@ -401,7 +401,7 @@ JobResult ModuleBuildJob::execute()
         if (!module->byteCodeRunFunc.empty())
         {
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
+                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
             // A #run pass cannot modify a bss variable
             module->bssCannotChange = true;
@@ -426,7 +426,7 @@ JobResult ModuleBuildJob::execute()
             if (!module->byteCodeTestFunc.empty())
             {
                 if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Test", format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Test", Utf8::format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                 // Modified global variables during test will be restored after
                 module->saveBssValues     = true;
@@ -465,7 +465,7 @@ JobResult ModuleBuildJob::execute()
         if (callInitDrop)
         {
             if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
+                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
             for (auto func : module->byteCodeDropFunc)
             {
@@ -496,7 +496,7 @@ JobResult ModuleBuildJob::execute()
                     {
                         auto nb             = file->numTestErrors.load();
                         file->numTestErrors = 0;
-                        file->report({file, format(Msg0500, nb, file->numErrors)});
+                        file->report({file, Utf8::format(Msg0500, nb, file->numErrors)});
                     }
                 }
 
@@ -506,7 +506,7 @@ JobResult ModuleBuildJob::execute()
                     {
                         auto nb               = file->numTestWarnings.load();
                         file->numTestWarnings = 0;
-                        file->report({file, format(Msg0501, nb, file->numWarnings)});
+                        file->report({file, Utf8::format(Msg0501, nb, file->numWarnings)});
                     }
                 }
             }

@@ -27,7 +27,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format(Msg0056, Backend::GetOsName()));
+        module->error(Utf8::format(Msg0056, Backend::GetOsName()));
         return false;
     }
 }
@@ -49,7 +49,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format(Msg0056, Backend::GetOsName()));
+        module->error(Utf8::format(Msg0056, Backend::GetOsName()));
         return false;
     }
 
@@ -125,13 +125,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-        auto initFunc = format("%s_globalInit", nameDown.c_str());
+        auto initFunc = Utf8::format("%s_globalInit", nameDown.c_str());
         emitCall(pp, initFunc);
     }
 
     // Call to global init of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    auto thisInit = format("%s_globalInit", module->nameDown.c_str());
+    auto thisInit = Utf8::format("%s_globalInit", module->nameDown.c_str());
     emitCall(pp, thisInit);
 
     // Call to test functions
@@ -153,7 +153,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
+    auto thisDrop = Utf8::format("%s_globalDrop", module->nameDown.c_str());
     emitCall(pp, thisDrop);
 
     // Call to global drop of all dependencies
@@ -164,7 +164,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto funcDrop = format("%s_globalDrop", nameDown.c_str());
+        auto funcDrop = Utf8::format("%s_globalDrop", nameDown.c_str());
         emitCall(pp, funcDrop);
     }
 
@@ -221,11 +221,11 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     alignConcat(concat, 16);
     auto startAddress = concat.totalCount();
 
-    auto thisInit        = format("%s_globalInit", module->nameDown.c_str());
+    auto thisInit        = Utf8::format("%s_globalInit", module->nameDown.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
-    pp.directives += format("/EXPORT:%s ", thisInit.c_str());
+    pp.directives += Utf8::format("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
@@ -277,11 +277,11 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     alignConcat(concat, 16);
     auto startAddress = concat.totalCount();
 
-    auto thisDrop        = format("%s_globalDrop", module->nameDown.c_str());
+    auto thisDrop        = Utf8::format("%s_globalDrop", module->nameDown.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
-    pp.directives += format("/EXPORT:%s ", thisDrop.c_str());
+    pp.directives += Utf8::format("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);

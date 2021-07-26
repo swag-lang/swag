@@ -340,7 +340,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
     {
         PushErrHint errh(Msg0261);
-        return error(arrayNode, format(Msg0262, token.text.c_str()));
+        return error(arrayNode, Utf8::format(Msg0262, token.text.c_str()));
     }
 
     {
@@ -569,10 +569,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, format(Msg0266, forNode.text.c_str()));
+                return error(token, Utf8::format(Msg0266, forNode.text.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, format(Msg0265, token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Utf8::format(Msg0265, token.text.c_str())));
             mdfFlags |= MODIFIER_SAFE;
             SWAG_CHECK(eatToken());
             continue;
@@ -588,10 +588,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, format(Msg0266, forNode.text.c_str()));
+                return error(token, Utf8::format(Msg0266, forNode.text.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, format(Msg0265, token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Utf8::format(Msg0265, token.text.c_str())));
             mdfFlags |= MODIFIER_SMALL;
             SWAG_CHECK(eatToken());
             continue;
@@ -605,10 +605,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, format(Msg0266, forNode.text.c_str()));
+                return error(token, Utf8::format(Msg0266, forNode.text.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, format(Msg0265, token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, Utf8::format(Msg0265, token.text.c_str())));
             mdfFlags |= MODIFIER_NOLEFTDROP;
             SWAG_CHECK(eatToken());
             continue;
@@ -622,10 +622,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, format(Msg0266, forNode.text.c_str()));
+                return error(token, Utf8::format(Msg0266, forNode.text.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, format(Msg0265, token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Utf8::format(Msg0265, token.text.c_str())));
             mdfFlags |= MODIFIER_MOVE;
             SWAG_CHECK(eatToken());
             continue;
@@ -639,16 +639,16 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, format(Msg0266, forNode.text.c_str()));
+                return error(token, Utf8::format(Msg0266, forNode.text.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, format(Msg0265, token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, Utf8::format(Msg0265, token.text.c_str())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NORIGHTDROP;
             SWAG_CHECK(eatToken());
             continue;
         }
 
-        return error(token, format(Msg0264, token.text.c_str()));
+        return error(token, Utf8::format(Msg0264, token.text.c_str()));
     }
 
     return true;
@@ -962,7 +962,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightSquare)
-        return error(token, format(Msg0270));
+        return error(token, Utf8::format(Msg0270));
     if (result)
         *result = initNode;
 
@@ -1154,7 +1154,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return error(node->token, format(Msg0272, node->token.text.c_str()));
+            return error(node->token, Utf8::format(Msg0272, node->token.text.c_str()));
     }
 
     return true;
@@ -1169,9 +1169,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, format(Msg0273, identifier->token.text.c_str()));
+            return error(identifier->genericParameters, Utf8::format(Msg0273, identifier->token.text.c_str()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, format(Msg0274, identifier->token.text.c_str()));
+            return error(identifier->callParameters, Utf8::format(Msg0274, identifier->token.text.c_str()));
     }
 
     if (node->token.text[0] != '@')
@@ -1190,14 +1190,14 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));
+                    return error(node->token, Utf8::format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 32)
-                return error(node->token, format(Msg0277, num));
+                return error(node->token, Utf8::format(Msg0277, num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -1205,7 +1205,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return error(node->token, format(Msg0278, node->token.text.c_str()));
+    return error(node->token, Utf8::format(Msg0278, node->token.text.c_str()));
 }
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
@@ -1277,7 +1277,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode->token, format(Msg0279, Scope::getArticleKindName(currentScope->kind))));
+        SWAG_VERIFY(acceptDeref, error(leftNode->token, Utf8::format(Msg0279, Scope::getArticleKindName(currentScope->kind))));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         if (result)
@@ -1285,7 +1285,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
         // Generate an expression of the form "var __tmp_0 = assignment"
         ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
-        auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
+        auto           tmpVarName = Utf8::format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
 
@@ -1338,7 +1338,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
+            identifier          = Ast::newIdentifierRef(sourceFile, Utf8::format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);
             varNode->assignment->flags |= AST_TUPLE_UNPACK;
@@ -1494,7 +1494,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             // dealing with a tuple...
             if (assignment->kind == AstNodeKind::ExpressionList)
             {
-                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, format(Msg0282, leftNode->childs.size(), assignment->childs.size())));
+                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, Utf8::format(Msg0282, leftNode->childs.size(), assignment->childs.size())));
                 while (!leftNode->childs.empty())
                 {
                     auto child             = leftNode->childs.front();
@@ -1514,7 +1514,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             else
             {
                 // Generate an expression of the form "var __tmp_0 = assignment"
-                auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
+                auto        tmpVarName = Utf8::format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
                 AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
                 varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
                 Ast::addChildBack(varNode, assignment);
@@ -1548,7 +1548,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     Ast::removeFromParent(child);
                     Ast::addChildBack(affectNode, child);
                     forceTakeAddress(child);
-                    auto idRef = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
+                    auto idRef = Ast::newIdentifierRef(sourceFile, Utf8::format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
 
                     // Force a move between the generated temporary variable and the real var
                     idRef->flags |= AST_FORCE_MOVE;

@@ -212,7 +212,7 @@ bool Tokenizer::getToken(Token& token)
 
             if (token.id == TokenId::Identifier)
             {
-                sourceFile->report({sourceFile, token, format(Msg0140, token.text.c_str())});
+                sourceFile->report({sourceFile, token, Utf8::format(Msg0140, token.text.c_str())});
                 return false;
             }
 
@@ -259,7 +259,7 @@ bool Tokenizer::getToken(Token& token)
             {
                 token.startLocation = location;
                 token.endLocation   = location;
-                sourceFile->report({sourceFile, token, format(Msg0141, nc)});
+                sourceFile->report({sourceFile, token, Utf8::format(Msg0141, nc)});
                 return false;
             }
 
@@ -309,7 +309,7 @@ bool Tokenizer::getToken(Token& token)
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = location;
-        sourceFile->report({sourceFile, token, format(Msg0081, token.text.c_str())});
+        sourceFile->report({sourceFile, token, Utf8::format(Msg0081, token.text.c_str())});
         return false;
     }
 

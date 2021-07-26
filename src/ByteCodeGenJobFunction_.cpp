@@ -850,7 +850,7 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     *storageSegment = seg;
 
     auto sourceFile = node->sourceFile;
-    auto str        = Utf8(normalizePath(sourceFile->path));
+    auto str        = Utf8(Utf8::normalizePath(sourceFile->path));
     auto offset     = seg->reserve(sizeof(SwagCompilerSourceLocation), sizeof(void*));
     auto loc        = (SwagCompilerSourceLocation*) seg->address(offset);
     auto offsetName = seg->addString(str);
@@ -942,7 +942,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && !callNode->ownerTryCatchAssume)
-        return context->report({callNode, callNode->token, format(Msg0534, funcNode->token.text.c_str())});
+        return context->report({callNode, callNode->token, Utf8::format(Msg0534, funcNode->token.text.c_str())});
 
     if (!raiseErrors)
     {
@@ -950,7 +950,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            return context->report({parent, format(Msg0535, parent->token.text.c_str())});
+            return context->report({parent, Utf8::format(Msg0535, parent->token.text.c_str())});
         }
     }
 
@@ -1485,7 +1485,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine.stackSize)
-            context->sourceFile->report({funcNode, funcNode->token, format(Msg0536, toNiceSize(g_CommandLine.stackSize).c_str())});
+            context->sourceFile->report({funcNode, funcNode->token, Utf8::format(Msg0536, Utf8::toNiceSize(g_CommandLine.stackSize).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

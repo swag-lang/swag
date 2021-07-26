@@ -78,12 +78,11 @@ struct Utf8
 
     static uint32_t    hash(const char* buffer, int count);
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
+    static Utf8        format(const char* format, ...);
+    static string      normalizePath(const fs::path& path);
+    static void        tokenize(const char* str, char c, vector<Utf8>& tokens);
+    static void        tokenizeBlanks(const char* str, vector<Utf8>& tokens);
+    static Utf8        toStringF64(double v);
+    static Utf8        toNiceSize(size_t size);
+    static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
 };
-
-extern Utf8     format(const char* format, ...);
-extern string   normalizePath(const fs::path& path);
-extern void     tokenize(const char* str, char c, vector<Utf8>& tokens);
-extern void     tokenizeBlanks(const char* str, vector<Utf8>& tokens);
-extern Utf8     toStringF64(double v);
-extern Utf8     toNiceSize(size_t size);
-extern uint32_t fuzzyCompare(const Utf8& str1, const Utf8& str2);

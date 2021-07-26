@@ -19,7 +19,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0396, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0396, token.text.c_str())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -31,9 +31,9 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (newScope->kind != ScopeKind::Enum)
         {
             auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            PushErrHint errh(format(Hnt0019, implNode->token.text.c_str()));
-            Diagnostic  diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
-            Diagnostic  note{enumNode, enumNode->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
+            PushErrHint errh(Utf8::format(Hnt0019, implNode->token.text.c_str()));
+            Diagnostic  diag{implNode->identifier, implNode->identifier->token, Utf8::format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic  note{enumNode, enumNode->token, Utf8::format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 
@@ -67,7 +67,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, format(Msg0399, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Utf8::format(Msg0399, token.text.c_str())));
 
     // Content of enum
     Scoped         scoped(this, newScope);

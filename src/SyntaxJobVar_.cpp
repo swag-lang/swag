@@ -25,7 +25,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         Ast::removeFromParent(leftNode);
 
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
-        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, format(Msg0455, token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, Utf8::format(Msg0455, token.text.c_str())));
 
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)

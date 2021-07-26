@@ -287,7 +287,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         }
         else
         {
-            return internalError(context, format("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayName().c_str()).c_str());
+            return internalError(context, Utf8::format("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayName().c_str()).c_str());
         }
     }
 
@@ -446,7 +446,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else
     {
-        return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->getDisplayName().c_str()).c_str());
+        return internalError(context, Utf8::format("emitLiteral, unsupported type '%s'", typeInfo->getDisplayName().c_str()).c_str());
     }
 
     return true;

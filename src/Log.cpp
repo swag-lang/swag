@@ -152,7 +152,7 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
     }
 
     // Pass name
-    g_Log.print(format("[%s]", passName.c_str()));
+    g_Log.print(Utf8::format("[%s]", passName.c_str()));
     int len = passName.length();
     while (len < 20)
     {
@@ -161,7 +161,7 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
     }
 
     // Module name
-    g_Log.print(format("%s ", moduleName.c_str()));
+    g_Log.print(Utf8::format("%s ", moduleName.c_str()));
     len = moduleName.length();
     while (len < 30)
     {
@@ -171,7 +171,7 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
 
     // Time
     if (time != -1)
-        g_Log.print(format("%.3fs", OS::timerToSeconds(time)));
+        g_Log.print(Utf8::format("%.3fs", OS::timerToSeconds(time)));
 
     g_Log.eol();
     setDefaultColor();

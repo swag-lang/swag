@@ -121,7 +121,7 @@ namespace Ast
 
         if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListArray)
         {
-            result = format("%u", value.storageOffset);
+            result = Utf8::format("%u", value.storageOffset);
             return result;
         }
 
@@ -131,44 +131,44 @@ namespace Ast
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:
-            result = format("%u", reg.u8);
+            result = Utf8::format("%u", reg.u8);
             break;
         case NativeTypeKind::U16:
-            result = format("%u", reg.u16);
+            result = Utf8::format("%u", reg.u16);
             break;
         case NativeTypeKind::U32:
-            result = format("%u", reg.u32);
+            result = Utf8::format("%u", reg.u32);
             break;
         case NativeTypeKind::Rune:
             if (reg.ch < 32)
-                result += format("\\x%02x", reg.ch);
+                result += Utf8::format("\\x%02x", reg.ch);
             else if (reg.ch > 127 && reg.ch <= 255)
-                result += format("\\x%02x", reg.ch);
+                result += Utf8::format("\\x%02x", reg.ch);
             else
                 result += reg.ch;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            result = format("%llu", reg.u64);
+            result = Utf8::format("%llu", reg.u64);
             break;
         case NativeTypeKind::S8:
-            result = format("%d", reg.s8);
+            result = Utf8::format("%d", reg.s8);
             break;
         case NativeTypeKind::S16:
-            result = format("%d", reg.s16);
+            result = Utf8::format("%d", reg.s16);
             break;
         case NativeTypeKind::S32:
-            result = format("%d", reg.s32);
+            result = Utf8::format("%d", reg.s32);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            result = format("%lld", reg.s64);
+            result = Utf8::format("%lld", reg.s64);
             break;
         case NativeTypeKind::F32:
-            result = toStringF64(reg.f32);
+            result = Utf8::toStringF64(reg.f32);
             break;
         case NativeTypeKind::F64:
-            result = toStringF64(reg.f64);
+            result = Utf8::toStringF64(reg.f64);
             break;
         case NativeTypeKind::Bool:
             result = reg.b ? "true" : "false";
@@ -178,9 +178,9 @@ namespace Ast
             for (auto c : value.text)
             {
                 if (c < 32)
-                    result += format("\\x%02x", c);
+                    result += Utf8::format("\\x%02x", c);
                 else if (c > 127)
-                    result += format("\\x%02x", c);
+                    result += Utf8::format("\\x%02x", c);
                 else
                     result += c;
             }
@@ -466,7 +466,7 @@ namespace Ast
             node->inheritTokenLocation(syntaxJob->token);
 
         vector<Utf8> subNames;
-        tokenize(name.c_str(), '.', subNames);
+        Utf8::tokenize(name.c_str(), '.', subNames);
         SWAG_ASSERT(subNames.size());
         node->childs.reserve((int) subNames.size());
 

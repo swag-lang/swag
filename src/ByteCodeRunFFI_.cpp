@@ -45,7 +45,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
             SWAG_ASSERT(false);
 #endif
-            Diagnostic diag{nodeFunc, format(Msg0257, moduleName.text.c_str(), funcName.c_str(), g_ModuleMgr.loadModuleError.c_str())};
+            Diagnostic diag{nodeFunc, Utf8::format(Msg0257, moduleName.text.c_str(), funcName.c_str(), g_ModuleMgr.loadModuleError.c_str())};
             diag.printSource = false;
             context->report(diag);
             return nullptr;
@@ -64,7 +64,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
         SWAG_ASSERT(false);
 #endif
-        context->report({format(Msg0258, funcName.c_str())});
+        context->report({Utf8::format(Msg0258, funcName.c_str())});
         return nullptr;
     }
 
@@ -167,7 +167,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         if (!context->ffiArgs.back())
         {
             context->hasError = true;
-            context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
+            context->errorMsg = Utf8::format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
 
@@ -212,7 +212,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
                 break;
             default:
                 context->hasError = true;
-                context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
+                context->errorMsg = Utf8::format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
                 return;
             }
 
@@ -249,7 +249,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             if (!typeResult)
             {
                 context->hasError = true;
-                context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
+                context->errorMsg = Utf8::format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
                 return;
             }
         }
@@ -278,7 +278,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             break;
         default:
             context->hasError = true;
-            context->errorMsg = format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
+            context->errorMsg = Utf8::format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
             return;
         }
     }

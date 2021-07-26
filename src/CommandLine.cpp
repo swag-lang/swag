@@ -11,7 +11,7 @@ bool CommandLine::check()
     stackSize = (uint32_t) Allocator::alignSize(stackSize);
     if (stackSize < SWAG_LIMIT_MIN_STACK || stackSize > SWAG_LIMIT_MAX_STACK)
     {
-        g_Log.error(format(Msg0519, toNiceSize(stackSize).c_str(), toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        g_Log.error(Utf8::format(Msg0519, Utf8::toNiceSize(stackSize).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
@@ -24,25 +24,25 @@ bool CommandLine::check()
     {
         if (abi != BackendAbi::Msvc)
         {
-            g_Log.error(format(Msg0520, Backend::GetAbiName()));
+            g_Log.error(Utf8::format(Msg0520, Backend::GetAbiName()));
             return false;
         }
 
         if (vendor != BackendVendor::Pc)
         {
-            g_Log.error(format(Msg0521, Backend::GetVendorName()));
+            g_Log.error(Utf8::format(Msg0521, Backend::GetVendorName()));
             return false;
         }
 
         if (os != BackendOs::Windows)
         {
-            g_Log.error(format(Msg0522, Backend::GetOsName()));
+            g_Log.error(Utf8::format(Msg0522, Backend::GetOsName()));
             return false;
         }
 
         if (arch != BackendArch::X86_64)
         {
-            g_Log.error(format(Msg0523, Backend::GetArchName()));
+            g_Log.error(Utf8::format(Msg0523, Backend::GetArchName()));
             return false;
         }
     }
@@ -70,7 +70,7 @@ bool CommandLine::check()
         }
         else if (p.extension().string() != ".swgs")
         {
-            g_Log.error(format(Msg0319, p.extension().string().c_str()));
+            g_Log.error(Utf8::format(Msg0319, p.extension().string().c_str()));
             return false;
         }
     }

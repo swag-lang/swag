@@ -186,7 +186,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = Utf8::format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension();
 
         pp.context = new llvm::LLVMContext();
@@ -306,7 +306,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    string targetTriple = format("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    string targetTriple = Utf8::format("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
 
     // Setup target
     modu.setTargetTriple(targetTriple);
@@ -314,7 +314,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(format(Msg0558, targetTriple.c_str()));
+        g_Log.error(Utf8::format(Msg0558, targetTriple.c_str()));
         return false;
     }
 

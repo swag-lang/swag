@@ -257,12 +257,12 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
     else
     {
-        resName += format("[%d", count);
+        resName += Utf8::format("[%d", count);
         auto pType = pointedType;
         while (pType->kind == TypeInfoKind::Array)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
-            resName += format(",%d", subType->count);
+            resName += Utf8::format(",%d", subType->count);
             pType = subType->pointedType;
         }
 
@@ -304,7 +304,7 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
     {
         if (flags & TYPEINFO_CONST)
             resName += "const ";
-        resName += format("[%u] ", subTypes.size());
+        resName += Utf8::format("[%u] ", subTypes.size());
         if (!subTypes.empty())
         {
             subTypes[0]->typeInfo->computeWhateverName(nameType);
@@ -896,12 +896,12 @@ Utf8 TypeInfoStruct::getDisplayName()
     if (flags & TYPEINFO_STRUCT_IS_TUPLE)
         return "tuple";
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
-        return format("interface %s", name.c_str());
+        return Utf8::format("interface %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
-        return format("union %s", name.c_str());
+        return Utf8::format("union %s", name.c_str());
     if (displayName.empty())
-        return format("struct %s", name.c_str());
-    return format("struct %s", displayName.c_str());
+        return Utf8::format("struct %s", name.c_str());
+    return Utf8::format("struct %s", displayName.c_str());
 }
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)

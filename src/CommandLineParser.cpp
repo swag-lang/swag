@@ -94,7 +94,7 @@ static void getArgValue(CommandLineArgument* oneArg, string& value, string& defa
     {
         value = oneArg->param;
         vector<Utf8> tokens;
-        tokenize(oneArg->param, '|', tokens);
+        Utf8::tokenize(oneArg->param, '|', tokens);
         defaultValue = tokens[*(int*) oneArg->buffer];
         break;
     }
@@ -254,7 +254,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             it = shortNameArgs.find(command);
             if (it == shortNameArgs.end())
             {
-                g_Log.error(format(Msg0720, command.c_str()));
+                g_Log.error(Utf8::format(Msg0720, command.c_str()));
                 result = false;
                 continue;
             }
@@ -265,7 +265,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))
         {
-            g_Log.error(format(Msg0720, command.c_str()));
+            g_Log.error(Utf8::format(Msg0720, command.c_str()));
             result = false;
             continue;
         }
@@ -275,7 +275,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         case CommandLineType::EnumInt:
         {
             vector<Utf8> tokens;
-            tokenize(arg->param, '|', tokens);
+            Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
             for (auto one : tokens)
@@ -291,7 +291,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(format(Msg0722, it->first.c_str(), arg->param));
+                g_Log.error(Utf8::format(Msg0722, it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -301,7 +301,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         case CommandLineType::EnumString:
         {
             vector<Utf8> tokens;
-            tokenize(arg->param, '|', tokens);
+            Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
             for (auto one : tokens)
@@ -317,7 +317,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(format(Msg0722, it->first.c_str(), arg->param));
+                g_Log.error(Utf8::format(Msg0722, it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -331,7 +331,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 *(bool*) arg->buffer = false;
             else
             {
-                g_Log.error(format(Msg0724, it->first.c_str(), argument.c_str()));
+                g_Log.error(Utf8::format(Msg0724, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -341,7 +341,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(format(Msg0725, it->first.c_str(), argument.c_str()));
+                g_Log.error(Utf8::format(Msg0725, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -354,7 +354,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(format(Msg0725, it->first.c_str(), argument.c_str()));
+                g_Log.error(Utf8::format(Msg0725, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -382,9 +382,9 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             if (!thisIsAnInt)
             {
                 if (argument.empty())
-                    g_Log.error(format(Msg0727, it->first.c_str()));
+                    g_Log.error(Utf8::format(Msg0727, it->first.c_str()));
                 else
-                    g_Log.error(format(Msg0728, it->first.c_str(), argument.c_str()));
+                    g_Log.error(Utf8::format(Msg0728, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -427,7 +427,7 @@ string CommandLineParser::buildString(bool full)
                 result += oneArg->longName + ":";
 
                 vector<Utf8> tokens;
-                tokenize(oneArg->param, '|', tokens);
+                Utf8::tokenize(oneArg->param, '|', tokens);
                 int idx = *(int*) oneArg->buffer;
                 result += tokens[idx];
                 result += " ";

@@ -14,7 +14,7 @@ void printExamples()
 
 void printVersion()
 {
-    g_Log.message(format("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.message(Utf8::format("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 }
 
 void help(CommandLineParser& cmdParser, const string& cmd)
@@ -39,7 +39,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         if (folder.empty())
             g_Log.message("Current folder is NOT DEFINED");
         else
-            g_Log.message(format("Current folder is '%s'", folder.c_str()));
+            g_Log.message(Utf8::format("Current folder is '%s'", folder.c_str()));
     }
 
     ////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ int main(int argc, const char* argv[])
         command != "script" &&
         command != "env")
     {
-        g_Log.error(format(Msg0000, argv[1]));
+        g_Log.error(Utf8::format(Msg0000, argv[1]));
         OS::exit(-1);
     }
 
@@ -302,7 +302,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "version")
     {
-        g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+        g_Log.message(Utf8::format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
     else if (command == "env")
     {

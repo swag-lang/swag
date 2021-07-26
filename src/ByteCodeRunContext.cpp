@@ -64,5 +64,5 @@ void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 void ByteCodeRunContext::stackOverflow()
 {
     hasError = true;
-    errorMsg = format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", toNiceSize(stackSize).c_str());
+    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(stackSize).c_str());
 }

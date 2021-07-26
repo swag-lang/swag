@@ -88,13 +88,13 @@ namespace OS
 
             if (g_CommandLine.verbosePath)
             {
-                g_Log.verbose(format("windows sdk path is '%s'\n", winSdkPath.c_str()));
-                g_Log.verbose(format("windows sdk version is '%s'\n", winSdkVersion.c_str()));
+                g_Log.verbose(Utf8::format("windows sdk path is '%s'\n", winSdkPath.c_str()));
+                g_Log.verbose(Utf8::format("windows sdk version is '%s'\n", winSdkVersion.c_str()));
             }
 
             const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
-            g_CommandLine.libPaths.push_back(format(R"(%slib\%s\um\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
-            g_CommandLine.libPaths.push_back(format(R"(%slib\%s\ucrt\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+            g_CommandLine.libPaths.push_back(Utf8::format(R"(%slib\%s\um\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+            g_CommandLine.libPaths.push_back(Utf8::format(R"(%slib\%s\ucrt\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
         }
     }
 } // namespace OS

@@ -117,7 +117,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            g_Log.error(format(Msg0045, cmdline.c_str()));
+            g_Log.error(Utf8::format(Msg0045, cmdline.c_str()));
             return false;
         }
 
@@ -141,7 +141,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.errorOS(format(Msg0046, cmdline.c_str()));
+                g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
                 return false;
             }
         }
@@ -168,7 +168,7 @@ namespace OS
 
                 // Process result
                 vector<Utf8> lines;
-                tokenize(strout.c_str(), '\n', lines);
+                Utf8::tokenize(strout.c_str(), '\n', lines);
                 for (auto oneLine : lines)
                 {
                     if (oneLine.back() == '\r')
@@ -201,7 +201,7 @@ namespace OS
 
                             // Extract file and location
                             vector<Utf8> tokens;
-                            tokenize(oneLine, ':', tokens);
+                            Utf8::tokenize(oneLine, ':', tokens);
                             for (auto& t : tokens)
                                 t.trim();
                             if (tokens.size() <= 2)
@@ -356,7 +356,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.errorOS(format(Msg0046, cmdline.c_str()));
+                g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
                 return;
             }
         }
@@ -654,11 +654,11 @@ namespace OS
         LONG lRes = RegSetKeyValueA(HKEY_CURRENT_USER, "Environment", "SWAG_FOLDER", REG_SZ, folder.c_str(), (DWORD) folder.size() + 1);
         if (lRes != ERROR_SUCCESS)
         {
-            g_Log.error(format(Msg0048, folder.c_str()));
+            g_Log.error(Utf8::format(Msg0048, folder.c_str()));
             OS::exit(-1);
         }
 
-        g_Log.message(format("'SWAG_FOLDER' has been changed to '%s'\n", folder.c_str()));
+        g_Log.message(Utf8::format("'SWAG_FOLDER' has been changed to '%s'\n", folder.c_str()));
 
         // PATH
         HKEY hKey;
@@ -687,7 +687,7 @@ namespace OS
             if (lRes != ERROR_SUCCESS)
             {
                 RegCloseKey(hKey);
-                g_Log.error(format(Msg0051, folder.c_str()));
+                g_Log.error(Utf8::format(Msg0051, folder.c_str()));
                 OS::exit(-1);
             }
 
@@ -735,7 +735,7 @@ namespace OS
                 OS::exit(-1);
             }
 
-            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            g_Log.verbose(Utf8::format("watching folder '%s'", p.path().string().c_str()));
             allHandles.push_back(dwChangeHandle);
             allModules.push_back(p.path().string());
         }
@@ -751,7 +751,7 @@ namespace OS
                 OS::exit(-1);
             }
 
-            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            g_Log.verbose(Utf8::format("watching folder '%s'", p.path().string().c_str()));
             allHandles.push_back(dwChangeHandle);
             allModules.push_back(p.path().string());
         }
@@ -767,7 +767,7 @@ namespace OS
                 OS::exit(-1);
             }
 
-            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            g_Log.verbose(Utf8::format("watching folder '%s'", p.path().string().c_str()));
             allHandles.push_back(dwChangeHandle);
             allModules.push_back(p.path().string());
         }
@@ -775,7 +775,7 @@ namespace OS
         // Start watching
         while (TRUE)
         {
-            g_Log.message(format("Watching for file changes"));
+            g_Log.message(Utf8::format("Watching for file changes"));
             auto dwWaitStatus = WaitForMultipleObjects((DWORD) allHandles.size(), &allHandles[0], FALSE, INFINITE);
             int  numModule    = dwWaitStatus - WAIT_OBJECT_0;
 

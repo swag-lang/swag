@@ -13,13 +13,13 @@ JobResult FetchModuleJobFileSystem::execute()
 {
     auto dep = module->fetchDep;
 
-    auto depName = format("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
+    auto depName = Utf8::format("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
     g_Log.messageHeaderCentered("Copying", depName.c_str());
 
     // Collect list of source files
     set<string> srcFiles;
     OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
-        auto n = normalizePath(fileName + dep->resolvedLocation.length());
+        auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
 
         // Do not collect public folder
         if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
@@ -34,7 +34,7 @@ JobResult FetchModuleJobFileSystem::execute()
     // Collect list of dest files if they exist, in order to remove old ones
     vector<string> dstFiles;
     OS::visitFilesRec(destPath.c_str(), [&](const char* fileName) {
-        auto n = normalizePath(fileName + destPath.length());
+        auto n = Utf8::normalizePath(fileName + destPath.length());
 
         // Do not collect public folder
         if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
@@ -51,7 +51,7 @@ JobResult FetchModuleJobFileSystem::execute()
             auto n = destPath + f;
             if (!fs::remove(n))
             {
-                g_Log.errorOS(format(Msg0603, n.c_str()));
+                g_Log.errorOS(Utf8::format(Msg0603, n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -66,7 +66,7 @@ JobResult FetchModuleJobFileSystem::execute()
         auto folder = destFileName.parent_path();
         if (!fs::exists(folder) && !fs::create_directories(folder))
         {
-            g_Log.errorOS(format(Msg0604, folder.c_str()));
+            g_Log.errorOS(Utf8::format(Msg0604, folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

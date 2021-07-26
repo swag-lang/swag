@@ -30,7 +30,7 @@ struct CommandLineArgument
         , help{help}
     {
         vector<Utf8> all;
-        tokenize(commands, ' ', all);
+        Utf8::tokenize(commands, ' ', all);
 
         for (auto& p : all)
         {

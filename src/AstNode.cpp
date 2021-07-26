@@ -296,7 +296,7 @@ Utf8 AstNode::getKindName(AstNode* node)
         return "intrinsic";
     }
 
-    return format("<%d>", node->kind);
+    return Utf8::format("<%d>", node->kind);
 }
 
 AstNode* AstNode::clone(CloneContext& context)
@@ -563,14 +563,14 @@ Utf8 AstFuncDecl::getDisplayName()
         return "'#compiler' block";
 
     if (flags & AST_SPECIAL_COMPILER_FUNC)
-        return format("'%s' block", token.text.c_str());
+        return Utf8::format("'%s' block", token.text.c_str());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return format("mixin '%s'", token.text.c_str());
+        return Utf8::format("mixin '%s'", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return format("macro '%s'", token.text.c_str());
+        return Utf8::format("macro '%s'", token.text.c_str());
 
-    return format("function '%s'", token.text.c_str());
+    return Utf8::format("function '%s'", token.text.c_str());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
@@ -712,7 +712,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             auto sym = subFuncScope->symTable.find(subDecl->token.text);
             if (sym)
             {
-                Diagnostic diag{subDecl, subDecl->token, format(Msg0346, subDecl->token.text.c_str())};
+                Diagnostic diag{subDecl, subDecl->token, Utf8::format(Msg0346, subDecl->token.text.c_str())};
                 return context->report(diag);
             }
         }

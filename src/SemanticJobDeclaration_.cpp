@@ -12,7 +12,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, format(Msg0689, Scope::getNakedKindName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Utf8::format(Msg0689, Scope::getNakedKindName(node->ownerScope->kind))}));
 
     typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
@@ -28,7 +28,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, node->token, Msg0691}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, format(Msg0692, typeInfoVar->name.c_str())}));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, Utf8::format(Msg0692, typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         {
             regNode->allocateExtension();
@@ -38,7 +38,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     }
     else
     {
-        return context->report({node, format(Msg0692, typeInfoVar->name.c_str())});
+        return context->report({node, Utf8::format(Msg0692, typeInfoVar->name.c_str())});
     }
 
     return true;
@@ -88,7 +88,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         break;
     }
     default:
-        return job->error(context, format(Msg0695, TypeInfo::getNakedKindName(typeResolved)));
+        return job->error(context, Utf8::format(Msg0695, TypeInfo::getNakedKindName(typeResolved)));
     }
 
     return true;

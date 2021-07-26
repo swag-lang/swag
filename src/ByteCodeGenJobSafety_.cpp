@@ -21,59 +21,59 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         {
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = format(Msg0207, fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0207, fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = format(Msg0208, fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0208, fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::IFPlus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0209, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0209, toType->name.c_str());
             break;
         case SafetyMsg::IFMinus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0210, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0210, toType->name.c_str());
             break;
         case SafetyMsg::IFMul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0211, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0211, toType->name.c_str());
             break;
         case SafetyMsg::IFPlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0212, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0212, toType->name.c_str());
             break;
         case SafetyMsg::IFMinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0213, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0213, toType->name.c_str());
             break;
         case SafetyMsg::IFMulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0214, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0214, toType->name.c_str());
             break;
         case SafetyMsg::ShiftLeftOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0215, toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Utf8::format(Msg0215, toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftRightOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0216, toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Utf8::format(Msg0216, toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftLeftOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0217, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0217, toType->name.c_str());
             break;
         case SafetyMsg::ShiftRightOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0218, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0218, toType->name.c_str());
             break;
         case SafetyMsg::NegAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0219, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0219, toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0220, toType->name.c_str());
+            typedMsg[m][i][j] = Utf8::format(Msg0220, toType->name.c_str());
             break;
         }
     }

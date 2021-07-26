@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, context->node->token, format(Msg0206, overload->symbol->name.c_str())});
+        return context->report({context->node, context->node->token, Utf8::format(Msg0206, overload->symbol->name.c_str())});
     return true;
 }
 
@@ -621,7 +621,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, Utf8::format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
 
         // If previous node was a pointer index, then no need to check for a null pointer, it has already been done
         bool safety = true;
@@ -665,7 +665,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, internalError(context, format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(resolved->registers.size() > 0, internalError(context, Utf8::format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)

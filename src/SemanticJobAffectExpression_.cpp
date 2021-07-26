@@ -51,7 +51,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
-            hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
+            hint = Utf8::format(Hnt0011, left->typeInfo->getDisplayName().c_str());
         else if (left->kind == AstNodeKind::IdentifierRef)
         {
             for (int i = left->childs.count - 1; i >= 0; i--)
@@ -59,7 +59,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (left->childs[i]->typeInfo && left->childs[i]->typeInfo->isConst())
                 {
                     left = left->childs[i];
-                    hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
+                    hint = Utf8::format(Hnt0011, left->typeInfo->getDisplayName().c_str());
                     break;
                 }
             }
@@ -98,7 +98,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
     {
-        return context->report({node, format(Msg0570, node->token.text.c_str())});
+        return context->report({node, Utf8::format(Msg0570, node->token.text.c_str())});
     }
 
     // Is this an array like affectation ?
@@ -157,7 +157,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Array &&
             leftTypeInfo->kind != TypeInfoKind::Alias &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
-            return context->report({left, format(Msg0571, TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, Utf8::format(Msg0571, TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Reference &&
@@ -169,7 +169,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Interface &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Alias)
-            return context->report({right, format(Msg0572, rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, Utf8::format(Msg0572, rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)
         {
@@ -189,7 +189,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     if (!hasUserOp(context, "opIndexAffect", left))
                     {
-                        Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Utf8::format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
@@ -215,7 +215,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
                     if (!hasUserOp(context, "opAffect", left))
                     {
-                        Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Utf8::format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
@@ -324,7 +324,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             break;
         }

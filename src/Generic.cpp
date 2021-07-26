@@ -49,13 +49,13 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
             if (param->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
                 auto symbol = match.symbolName;
-                return context->report({context->node, format(Msg0037, SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                return context->report({context->node, Utf8::format(Msg0037, SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
             }
 
             if (param->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
             {
                 auto symbol = match.symbolName;
-                return context->report({context->node, format(Msg0038, SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                return context->report({context->node, Utf8::format(Msg0038, SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
             }
         }
 
@@ -285,7 +285,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format(Msg0039, node->token.text.c_str())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, Utf8::format(Msg0039, node->token.text.c_str())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -309,7 +309,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, format(Msg0040, node->token.text.c_str())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, Utf8::format(Msg0040, node->token.text.c_str())}));
 
     // Make a new type
     auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
@@ -462,9 +462,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (!parent)
         {
             if (contextualNode)
-                return context->report({contextualNode, contextualNode->token, format(Msg0041, node->token.text.c_str())});
+                return context->report({contextualNode, contextualNode->token, Utf8::format(Msg0041, node->token.text.c_str())});
             else
-                return context->report({node, node->token, format(Msg0042, node->token.text.c_str())});
+                return context->report({node, node->token, Utf8::format(Msg0042, node->token.text.c_str())});
         }
     }
 
@@ -562,7 +562,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     {
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
-                            return context->report({node, format(Msg0043, node->typeInfo->getDisplayName().c_str())});
+                            return context->report({node, Utf8::format(Msg0043, node->typeInfo->getDisplayName().c_str())});
 
                         auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                         cloneContext.parent = child;
@@ -581,5 +581,5 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
         }
     }
 
-    return context->report({node, format(Msg0043, node->typeInfo->getDisplayName().c_str())});
+    return context->report({node, Utf8::format(Msg0043, node->typeInfo->getDisplayName().c_str())});
 }

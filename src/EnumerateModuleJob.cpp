@@ -18,7 +18,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<Source
     file->name        = fileName;
     fs::path pathFile = dirName.c_str();
     pathFile.append(fileName);
-    file->path      = normalizePath(pathFile);
+    file->path      = Utf8::normalizePath(pathFile);
     file->writeTime = writeTime;
 
     // If we have only one core, then we will sort files in alphabetical order to always

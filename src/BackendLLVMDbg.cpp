@@ -22,7 +22,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     mainFile         = dbgBuilder->createFile("<stdin>", "c:/");
     fs::path expPath = m->bufferSwg.path;
     exportFile       = dbgBuilder->createFile(m->bufferSwg.name.c_str(), expPath.parent_path().string().c_str());
-    Utf8 compiler    = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    Utf8 compiler    = Utf8::format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
                                                 compiler.c_str(),
@@ -184,7 +184,7 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointed
 
     auto fileScope = file->getScope();
     auto noFlag    = llvm::DINode::DIFlags::FlagZero;
-    auto name      = format("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
+    auto name      = Utf8::format("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
     auto result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     auto realType = getPointerToType(pointedType, file);

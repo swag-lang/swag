@@ -346,7 +346,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     if (!(cflags & CONCRETE_FOR_COMPILER))
     {
         if (g_CommandLine.verboseConcreteTypes)
-            g_Log.verbose(format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
+            g_Log.verbose(Utf8::format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
         g_Stats.totalConcreteTypes++;
     }
 
@@ -401,7 +401,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         typeStruct = swagScope.regTypeInfoAlias;
         break;
     default:
-        context->report({node, format(Msg0537, typeInfo->getDisplayName().c_str())});
+        context->report({node, Utf8::format(Msg0537, typeInfo->getDisplayName().c_str())});
         return false;
     }
 

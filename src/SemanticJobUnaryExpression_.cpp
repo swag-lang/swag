@@ -23,9 +23,9 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        return context->report({child, child->token, format(Msg0827, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, Utf8::format(Msg0827, typeInfo->getDisplayName().c_str())});
     default:
-        return context->report({child, child->token, format(Msg0828, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, Utf8::format(Msg0828, typeInfo->getDisplayName().c_str())});
     }
 
     if (child->flags & AST_VALUE_COMPUTED && !(child->doneFlags & AST_DONE_NEG_EATEN))
@@ -34,17 +34,17 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
         {
         case NativeTypeKind::S8:
             if (child->computedValue.reg.s8 <= INT8_MIN)
-                return context->report({child, format(Msg0829, child->computedValue.reg.s8, -child->computedValue.reg.s8)});
+                return context->report({child, Utf8::format(Msg0829, child->computedValue.reg.s8, -child->computedValue.reg.s8)});
             child->computedValue.reg.s64 = -child->computedValue.reg.s8;
             break;
         case NativeTypeKind::S16:
             if (child->computedValue.reg.s16 <= INT16_MIN)
-                return context->report({child, format(Msg0830, child->computedValue.reg.s16, -child->computedValue.reg.s16)});
+                return context->report({child, Utf8::format(Msg0830, child->computedValue.reg.s16, -child->computedValue.reg.s16)});
             child->computedValue.reg.s64 = -child->computedValue.reg.s16;
             break;
         case NativeTypeKind::S32:
             if (child->computedValue.reg.s32 <= INT32_MIN)
-                return context->report({child, format(Msg0831, child->computedValue.reg.s32, -child->computedValue.reg.s32)});
+                return context->report({child, Utf8::format(Msg0831, child->computedValue.reg.s32, -child->computedValue.reg.s32)});
             child->computedValue.reg.s64 = -child->computedValue.reg.s32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
@@ -55,7 +55,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (child->computedValue.reg.s64 <= INT64_MIN)
-                return context->report({child, format(Msg0832, child->computedValue.reg.s64, -child->computedValue.reg.s64)});
+                return context->report({child, Utf8::format(Msg0832, child->computedValue.reg.s64, -child->computedValue.reg.s64)});
             child->computedValue.reg.s64 = -child->computedValue.reg.s64;
             break;
 
@@ -139,7 +139,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({child, child->token, format(Msg0833, typeInfo->getDisplayName().c_str())});
+        return context->report({child, child->token, Utf8::format(Msg0833, typeInfo->getDisplayName().c_str())});
     }
 
     if (child->flags & AST_VALUE_COMPUTED)

@@ -69,7 +69,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format(Msg0034, Backend::GetOsName()));
+        module->error(Utf8::format(Msg0034, Backend::GetOsName()));
         return false;
     }
 }
@@ -92,7 +92,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format(Msg0034, Backend::GetOsName()));
+        module->error(Utf8::format(Msg0034, Backend::GetOsName()));
         return false;
     }
 
@@ -171,14 +171,14 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
+        auto funcInit = modu.getOrInsertFunction(Utf8::format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global init of this module
     {
         auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
+        auto funcInit = modu.getOrInsertFunction(Utf8::format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
@@ -206,7 +206,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", module->nameDown.c_str()).c_str(), funcTypeVoid);
+    auto funcDrop = modu.getOrInsertFunction(Utf8::format("%s_globalDrop", module->nameDown.c_str()).c_str(), funcTypeVoid);
     builder.CreateCall(funcDrop);
 
     // Call to global drop of all dependencies
@@ -217,7 +217,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
+        funcDrop = modu.getOrInsertFunction(Utf8::format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);
     }
 
@@ -240,7 +240,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
     fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
@@ -290,7 +290,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto  modu    = pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
     fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);

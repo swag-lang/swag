@@ -92,7 +92,7 @@ bool SourceFile::load()
         delete[] buffer;
         buffer = nullptr;
         closeFile(&handle);
-        g_Log.errorOS(format("error reading source file '%s'", path.c_str()));
+        g_Log.errorOS(Utf8::format("error reading source file '%s'", path.c_str()));
         return false;
     }
 

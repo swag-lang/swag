@@ -79,7 +79,7 @@ Utf8 ByteCode::callName()
         callName = node->getScopedName();
     else
         callName = name;
-    callName += format("_%lX", (uint64_t) this);
+    callName += Utf8::format("_%lX", (uint64_t) this);
     return callName;
 }
 
@@ -107,7 +107,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     if (g_CommandLine.maxRecurse && context->curRC == (int) g_CommandLine.maxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = format("call level limit reached (maximum level is '--max-recurse:%d')", g_CommandLine.maxRecurse);
+        context->errorMsg = Utf8::format("call level limit reached (maximum level is '--max-recurse:%d')", g_CommandLine.maxRecurse);
         return;
     }
 
@@ -160,7 +160,7 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
             g_Log.print(s);
 
         g_Log.setColor(LogColor::Gray);
-        g_Log.print(format("  (%s:%d)", file->name.c_str(), location->line + 1));
+        g_Log.print(Utf8::format("  (%s:%d)", file->name.c_str(), location->line + 1));
 
         g_Log.eol();
     }
@@ -173,71 +173,71 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 
     if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
     {
-        str.replace("_rau8_", format("%u", ip->a.u8));
-        str.replace("_rau16_", format("%u", ip->a.u16));
-        str.replace("_rau32_", format("%u", ip->a.u32));
-        str.replace("_rau64_", format("%llu", ip->a.u64));
-        str.replace("_ras8_", format("%d", ip->a.s8));
-        str.replace("_ras16_", format("%d", ip->a.s16));
-        str.replace("_ras32_", format("%d", ip->a.s32));
-        str.replace("_ras64_", format("%lld", ip->a.s64));
-        str.replace("_raf32_", format("%f", ip->a.f32));
-        str.replace("_raf64_", format("%lf", ip->a.f64));
-        str.replace("_rax32_", format("0x%x", ip->a.u32));
-        str.replace("_rax64_", format("0x%llx", ip->a.u64));
+        str.replace("_rau8_", Utf8::format("%u", ip->a.u8));
+        str.replace("_rau16_", Utf8::format("%u", ip->a.u16));
+        str.replace("_rau32_", Utf8::format("%u", ip->a.u32));
+        str.replace("_rau64_", Utf8::format("%llu", ip->a.u64));
+        str.replace("_ras8_", Utf8::format("%d", ip->a.s8));
+        str.replace("_ras16_", Utf8::format("%d", ip->a.s16));
+        str.replace("_ras32_", Utf8::format("%d", ip->a.s32));
+        str.replace("_ras64_", Utf8::format("%lld", ip->a.s64));
+        str.replace("_raf32_", Utf8::format("%f", ip->a.f32));
+        str.replace("_raf64_", Utf8::format("%lf", ip->a.f64));
+        str.replace("_rax32_", Utf8::format("0x%x", ip->a.u32));
+        str.replace("_rax64_", Utf8::format("0x%llx", ip->a.u64));
     }
 
     if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
     {
-        str.replace("_rbu8_", format("%u", ip->b.u8));
-        str.replace("_rbu16_", format("%u", ip->b.u16));
-        str.replace("_rbu32_", format("%u", ip->b.u32));
-        str.replace("_rbu64_", format("%llu", ip->b.u64));
-        str.replace("_rbs8_", format("%d", ip->b.s8));
-        str.replace("_rbs16_", format("%d", ip->b.s16));
-        str.replace("_rbs32_", format("%d", ip->b.s32));
-        str.replace("_rbs64_", format("%lld", ip->b.s64));
-        str.replace("_rbf32_", format("%f", ip->b.f32));
-        str.replace("_rbf64_", format("%lf", ip->b.f64));
-        str.replace("_rbx32_", format("0x%x", ip->b.u32));
-        str.replace("_rbx64_", format("0x%llx", ip->b.u64));
+        str.replace("_rbu8_", Utf8::format("%u", ip->b.u8));
+        str.replace("_rbu16_", Utf8::format("%u", ip->b.u16));
+        str.replace("_rbu32_", Utf8::format("%u", ip->b.u32));
+        str.replace("_rbu64_", Utf8::format("%llu", ip->b.u64));
+        str.replace("_rbs8_", Utf8::format("%d", ip->b.s8));
+        str.replace("_rbs16_", Utf8::format("%d", ip->b.s16));
+        str.replace("_rbs32_", Utf8::format("%d", ip->b.s32));
+        str.replace("_rbs64_", Utf8::format("%lld", ip->b.s64));
+        str.replace("_rbf32_", Utf8::format("%f", ip->b.f32));
+        str.replace("_rbf64_", Utf8::format("%lf", ip->b.f64));
+        str.replace("_rbx32_", Utf8::format("0x%x", ip->b.u32));
+        str.replace("_rbx64_", Utf8::format("0x%llx", ip->b.u64));
     }
 
     if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
     {
-        str.replace("_rcu8_", format("%u", ip->c.u8));
-        str.replace("_rcu16_", format("%u", ip->c.u16));
-        str.replace("_rcu32_", format("%u", ip->c.u32));
-        str.replace("_rcu64_", format("%llu", ip->c.u32));
-        str.replace("_rcs8_", format("%d", ip->c.s8));
-        str.replace("_rcs16_", format("%d", ip->c.s16));
-        str.replace("_rcs32_", format("%d", ip->c.s32));
-        str.replace("_rcs64_", format("%lld", ip->c.s64));
-        str.replace("_rcf32_", format("%f", ip->c.f32));
-        str.replace("_rcf64_", format("%lf", ip->c.f64));
-        str.replace("_rcx32_", format("0x%x", ip->c.u32));
-        str.replace("_rcx64_", format("0x%llx", ip->c.u64));
+        str.replace("_rcu8_", Utf8::format("%u", ip->c.u8));
+        str.replace("_rcu16_", Utf8::format("%u", ip->c.u16));
+        str.replace("_rcu32_", Utf8::format("%u", ip->c.u32));
+        str.replace("_rcu64_", Utf8::format("%llu", ip->c.u32));
+        str.replace("_rcs8_", Utf8::format("%d", ip->c.s8));
+        str.replace("_rcs16_", Utf8::format("%d", ip->c.s16));
+        str.replace("_rcs32_", Utf8::format("%d", ip->c.s32));
+        str.replace("_rcs64_", Utf8::format("%lld", ip->c.s64));
+        str.replace("_rcf32_", Utf8::format("%f", ip->c.f32));
+        str.replace("_rcf64_", Utf8::format("%lf", ip->c.f64));
+        str.replace("_rcx32_", Utf8::format("0x%x", ip->c.u32));
+        str.replace("_rcx64_", Utf8::format("0x%llx", ip->c.u64));
     }
 
     if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
     {
-        str.replace("_rdu8_", format("%u", ip->d.u8));
-        str.replace("_rdu16_", format("%u", ip->d.u16));
-        str.replace("_rdu32_", format("%u", ip->d.u32));
-        str.replace("_rdu64_", format("%llu", ip->d.u32));
-        str.replace("_rds8_", format("%d", ip->d.s8));
-        str.replace("_rds16_", format("%d", ip->d.s16));
-        str.replace("_rds32_", format("%d", ip->d.s32));
-        str.replace("_rds64_", format("%lld", ip->d.s64));
-        str.replace("_rdf32_", format("%f", ip->d.f32));
-        str.replace("_rdf64_", format("%lf", ip->d.f64));
-        str.replace("_rdx32_", format("0x%x", ip->d.u32));
-        str.replace("_rdx64_", format("0x%llx", ip->d.u64));
+        str.replace("_rdu8_", Utf8::format("%u", ip->d.u8));
+        str.replace("_rdu16_", Utf8::format("%u", ip->d.u16));
+        str.replace("_rdu32_", Utf8::format("%u", ip->d.u32));
+        str.replace("_rdu64_", Utf8::format("%llu", ip->d.u32));
+        str.replace("_rds8_", Utf8::format("%d", ip->d.s8));
+        str.replace("_rds16_", Utf8::format("%d", ip->d.s16));
+        str.replace("_rds32_", Utf8::format("%d", ip->d.s32));
+        str.replace("_rds64_", Utf8::format("%lld", ip->d.s64));
+        str.replace("_rdf32_", Utf8::format("%f", ip->d.f32));
+        str.replace("_rdf64_", Utf8::format("%lf", ip->d.f64));
+        str.replace("_rdx32_", Utf8::format("0x%x", ip->d.u32));
+        str.replace("_rdx64_", Utf8::format("0x%llx", ip->d.u64));
     }
 
     if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
-        auto ra = format("r%u", ip->a.u32);
+        auto ra = Utf8::format("r%u", ip->a.u32);
         str.replace("_ra_", ra);
         str.replace("_rau8_", ra);
         str.replace("_rau16_", ra);
@@ -253,7 +253,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
-        auto rb = format("r%u", ip->b.u32);
+        auto rb = Utf8::format("r%u", ip->b.u32);
         str.replace("_rb_", rb);
         str.replace("_rbu8_", rb);
         str.replace("_rbu16_", rb);
@@ -269,7 +269,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
-        auto rc = format("r%u", ip->c.u32);
+        auto rc = Utf8::format("r%u", ip->c.u32);
         str.replace("_rc_", rc);
         str.replace("_rcu8_", rc);
         str.replace("_rcu16_", rc);
@@ -285,7 +285,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
-        auto rd = format("r%u", ip->d.u32);
+        auto rd = Utf8::format("r%u", ip->d.u32);
         str.replace("_rd_", rd);
         str.replace("_rdu8_", rd);
         str.replace("_rdu16_", rd);
@@ -328,11 +328,11 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 void ByteCode::printInstructionReg(const char* header, const Register& reg, bool regW, bool regR, bool regImm)
 {
     if (regW)
-        g_Log.print(format("%s[%u] ", header, reg.u32));
+        g_Log.print(Utf8::format("%s[%u] ", header, reg.u32));
     if (regR && !regImm)
-        g_Log.print(format("%s(%u) ", header, reg.u32));
+        g_Log.print(Utf8::format("%s(%u) ", header, reg.u32));
     if (regImm)
-        g_Log.print(format("%s{0x%llX} ", header, reg.u64));
+        g_Log.print(Utf8::format("%s{0x%llX} ", header, reg.u64));
 }
 
 void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)

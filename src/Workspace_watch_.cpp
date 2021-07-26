@@ -8,7 +8,7 @@ bool Workspace::watchCommand()
     setup();
 
     if (g_CommandLine.verbose)
-        g_Log.verbose(format("=> watching workspace '%s'", workspacePath.string().c_str()));
+        g_Log.verbose(Utf8::format("=> watching workspace '%s'", workspacePath.string().c_str()));
 
     CommandLineParser cmdParser;
     cmdParser.setup(&g_CommandLine);
@@ -16,7 +16,7 @@ bool Workspace::watchCommand()
 
     OS::watch([&](const string& moduleName) {
         uint32_t errors = 0;
-        OS::doProcess(nullptr, format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
+        OS::doProcess(nullptr, Utf8::format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
     });
 
     return true;

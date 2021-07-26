@@ -10,7 +10,7 @@ bool openFile(FILE** fileHandle, const char* path, const char* mode)
     fopen_s(fileHandle, path, mode);
     if (*fileHandle == nullptr)
     {
-        g_Log.errorOS(format(Msg0502, path));
+        g_Log.errorOS(Utf8::format(Msg0502, path));
         return false;
     }
 

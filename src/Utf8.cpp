@@ -618,7 +618,7 @@ uint32_t Utf8::hash(const char* buffer, int count)
     return hash;
 }
 
-Utf8 format(const char* format, ...)
+Utf8 Utf8::format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -633,7 +633,7 @@ Utf8 format(const char* format, ...)
     return move(vec);
 }
 
-void tokenize(const char* str, char c, vector<Utf8>& tokens)
+void Utf8::tokenize(const char* str, char c, vector<Utf8>& tokens)
 {
     tokens.clear();
 
@@ -653,7 +653,7 @@ void tokenize(const char* str, char c, vector<Utf8>& tokens)
     }
 }
 
-void tokenizeBlanks(const char* str, vector<Utf8>& tokens)
+void Utf8::tokenizeBlanks(const char* str, vector<Utf8>& tokens)
 {
     tokens.clear();
 
@@ -678,7 +678,7 @@ void tokenizeBlanks(const char* str, vector<Utf8>& tokens)
     }
 }
 
-string normalizePath(const fs::path& path)
+string Utf8::normalizePath(const fs::path& path)
 {
     string str;
     auto   source      = path.string();
@@ -710,9 +710,9 @@ string normalizePath(const fs::path& path)
     return str;
 }
 
-Utf8 toStringF64(double v)
+Utf8 Utf8::toStringF64(double v)
 {
-    Utf8 s = format("%.35lf", v);
+    Utf8 s = Utf8::format("%.35lf", v);
     while (s.buffer[s.count - 1] == '0')
     {
         s.buffer[s.count - 1] = 0;
@@ -723,18 +723,18 @@ Utf8 toStringF64(double v)
     return s;
 }
 
-Utf8 toNiceSize(size_t size)
+Utf8 Utf8::toNiceSize(size_t size)
 {
     if (size < 1024)
-        return format("%u bytes", size);
+        return Utf8::format("%u bytes", size);
     if (size < 1024 * 1024)
-        return format("%.1f Kb", size / 1024.0f);
+        return Utf8::format("%.1f Kb", size / 1024.0f);
     if (size < 1024 * 1024 * 1024)
-        return format("%.1f Mb", size / (1024.0f * 1024.0f));
-    return format("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
+        return Utf8::format("%.1f Mb", size / (1024.0f * 1024.0f));
+    return Utf8::format("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
 }
 
-uint32_t fuzzyCompare(const Utf8& str1, const Utf8& str2)
+uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 {
     int32_t  i, j, diagonal;
     uint32_t cost = 0;

@@ -30,7 +30,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-        return context->report({id->childs.back(), format(Msg0290, id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
+        return context->report({id->childs.back(), Utf8::format(Msg0290, id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
 
     auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
@@ -115,8 +115,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Interface)
     {
-        Diagnostic diag{node->identifier, format(Msg0646, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifier, Utf8::format(Msg0646, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -124,8 +124,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     typeInfo = node->identifierFor->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
-        Diagnostic diag{node->identifierFor, format(Msg0648, node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifierFor, Utf8::format(Msg0648, node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -208,8 +208,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
         if (!symbolName)
         {
-            Diagnostic diag{child, child->token, format(Msg0650, child->token.text.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, format(Msg0651, typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{child, child->token, Utf8::format(Msg0650, child->token.text.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, Utf8::format(Msg0651, typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -218,17 +218,17 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
-            Diagnostic diag{child, child->token, format(Msg0652, child->token.text.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic diag{child, child->token, Utf8::format(Msg0652, child->token.text.c_str(), typeBaseInterface->name.c_str())};
             Diagnostic note{symbolName->declNode, symbolName->declNode->token, Msg0653, DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         // First parameter in the impl block must be a pointer to the struct
-        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format(Msg0654, child->token.text.c_str())}));
+        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, Utf8::format(Msg0654, child->token.text.c_str())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format(Msg0655, firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, Utf8::format(Msg0655, firstParamType->getDisplayName().c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format(Msg0655, firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Utf8::format(Msg0655, firstParamType->getDisplayName().c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -243,14 +243,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // Be sure every functions of the interface has been covered
-    Diagnostic                diag{node, node->token, format(Msg0657, typeBaseInterface->name.c_str())};
+    Diagnostic                diag{node, node->token, Utf8::format(Msg0657, typeBaseInterface->name.c_str())};
     vector<const Diagnostic*> notes;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
         if (mapItIdxToFunc[idx] == nullptr)
         {
             auto missingNode = typeInterface->fields[idx];
-            notes.push_back(new Diagnostic({missingNode->declNode, missingNode->declNode->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
+            notes.push_back(new Diagnostic({missingNode->declNode, missingNode->declNode->token, Utf8::format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
     }
 
@@ -326,22 +326,22 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
         {
-            Diagnostic diag{node->identifier, format(Msg0659, node->identifier->token.text.c_str())};
+            Diagnostic diag{node->identifier, Utf8::format(Msg0659, node->identifier->token.text.c_str())};
             return context->report(diag, &note);
         }
 
         if ((scope->flags & SCOPE_PRIVATE) && !(scopeImpl->flags & SCOPE_PRIVATE))
         {
-            Diagnostic diag{node->identifier, format(Msg0660, node->identifier->token.text.c_str())};
+            Diagnostic diag{node->identifier, Utf8::format(Msg0660, node->identifier->token.text.c_str())};
             return context->report(diag, &note);
         }
 
         Diagnostic diag{node,
                         node->token,
-                        format(Msg0661,
+                        Utf8::format(Msg0661,
                                node->token.text.c_str(),
                                scopeImpl->parentScope->getFullName().c_str(),
                                node->token.text.c_str(),
@@ -360,8 +360,8 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
     {
-        Diagnostic diag{node->identifier, format(Msg0662, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifier, Utf8::format(Msg0662, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -615,7 +615,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
             return context->report({child, Msg0668});
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report({child, format(Msg0669, child->typeInfo->getDisplayName().c_str())});
+            return context->report({child, Utf8::format(Msg0669, child->typeInfo->getDisplayName().c_str())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_STRUCT_REGISTERED))
@@ -729,8 +729,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (varDecl->type)
                     child = varDecl->type;
                 if (!node->genericParameters)
-                    return context->report({child, format(Msg0671, child->typeInfo->getDisplayName().c_str(), node->token.text.c_str())});
-                return context->report({child, format(Msg0672, node->token.text.c_str(), child->typeInfo->getDisplayName().c_str())});
+                    return context->report({child, Utf8::format(Msg0671, child->typeInfo->getDisplayName().c_str(), node->token.text.c_str())});
+                return context->report({child, Utf8::format(Msg0672, node->token.text.c_str(), child->typeInfo->getDisplayName().c_str())});
             }
         }
 
@@ -755,7 +755,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             {
                 auto attr = typeParam->attributes.getAttribute("Swag.Offset");
                 SWAG_ASSERT(attr);
-                return context->report({attr->node, format(Msg0673, forceOffset.text.c_str())});
+                return context->report({attr->node, Utf8::format(Msg0673, forceOffset.text.c_str())});
             }
         }
 
@@ -793,13 +793,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // User cannot name its variables itemX
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
-                return context->report({child, format(Msg0674, child->token.text.c_str())});
+                return context->report({child, Utf8::format(Msg0674, child->token.text.c_str())});
             }
 
             if (!hasItemName)
             {
                 auto  overload = child->resolvedSymbolOverload;
-                Utf8  name     = format("item%u", storageIndexField);
+                Utf8  name     = Utf8::format("item%u", storageIndexField);
                 auto& symTable = node->scope->symTable;
                 symTable.addSymbolTypeInfo(context,
                                            child,
@@ -860,7 +860,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         if (!node->ownerScope->isGlobalOrImpl())
-            return context->report({node, node->token, format(Msg0675, node->token.text.c_str())});
+            return context->report({node, node->token, Utf8::format(Msg0675, node->token.text.c_str())});
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicStruct(node);
     }
@@ -955,13 +955,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format(Msg0676, child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, Utf8::format(Msg0676, child->typeInfo->getDisplayName().c_str())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format(Msg0677, child->token.text.c_str())}));
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, Utf8::format(Msg0677, child->token.text.c_str())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format(Msg0679, firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Utf8::format(Msg0679, firstParamType->getDisplayName().c_str())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format(Msg0679, firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Utf8::format(Msg0679, firstParamType->getDisplayName().c_str())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -973,7 +973,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Utf8::format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("Swag.Offset"))
@@ -999,7 +999,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, format(Msg0683, node->token.text.c_str())}));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, Utf8::format(Msg0683, node->token.text.c_str())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable
@@ -1027,7 +1027,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal())
-            return context->report({node, node->token, format(Msg0684, node->token.text.c_str())});
+            return context->report({node, node->token, Utf8::format(Msg0684, node->token.text.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicInterface(node);

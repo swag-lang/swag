@@ -13,7 +13,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0333, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0333, token.text.c_str())));
     node->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(node));
 
@@ -122,7 +122,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 
     // Name
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
-    name += format("%d", token.startLocation);
+    name += Utf8::format("%d", token.startLocation);
     structNode->token.text = move(name);
 
     // :SubDeclParent
@@ -326,7 +326,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         while (token.id == TokenId::SymAsterisk)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
-                return error(token, format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
+                return error(token, Utf8::format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             SWAG_CHECK(tokenizer.getToken(token));
             isPtrConst = false;
@@ -391,7 +391,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
-    return error(token, format(Msg0343, token.text.c_str()));
+    return error(token, Utf8::format(Msg0343, token.text.c_str()));
 }
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)

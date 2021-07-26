@@ -59,7 +59,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        auto errorStr = format("more than one module with name '%s' is present in the workspace (path is '%s')", moduleName.c_str(), moduleFolder.c_str());
+        auto errorStr = Utf8::format("more than one module with name '%s' is present in the workspace (path is '%s')", moduleName.c_str(), moduleFolder.c_str());
         g_Log.error(errorStr);
         OS::exit(-1);
     }
@@ -77,7 +77,7 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
     file->isCfgFile   = true;
     fs::path pathFile = dirName.c_str();
     pathFile.append(fileName.c_str());
-    file->path = normalizePath(pathFile);
+    file->path = Utf8::normalizePath(pathFile);
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
@@ -103,7 +103,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
         if (!fs::exists(cfgName))
         {
-            g_Log.error(format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
+            g_Log.error(Utf8::format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
             g_Workspace.numErrors++;
             return;
         }
@@ -131,13 +131,13 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // No cfg file, we are done, and this is ok, we have found a module without
     // a specific configuration file. This is legit.
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0508, SWAG_CFG_FILE, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0508, SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     if (!openFile(&fsrc, remotePath.c_str(), "rbN"))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0509, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0509, remotePath.c_str())});
 
     // Remove source configuration file
     FILE* fdest    = nullptr;
@@ -147,12 +147,12 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
 
     // Generate a unique name for the configuration file
     static int cacheNum = 0;
-    cfgFileName         = format("module%u.swg", cacheNum++).c_str();
+    cfgFileName         = Utf8::format("module%u.swg", cacheNum++).c_str();
     destPath += cfgFileName;
     if (!openFile(&fdest, destPath.c_str(), "wbN"))
     {
         closeFile(&fsrc);
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0510, SWAG_CFG_FILE, dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0510, SWAG_CFG_FILE, dep->name.c_str())});
     }
 
     // Copy content
@@ -182,9 +182,9 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath += dep->name;
     remotePath = fs::absolute(remotePath.c_str()).string();
     remotePath = fs::canonical(remotePath).string();
-    remotePath = normalizePath(fs::path(remotePath.c_str()));
+    remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0511, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0511, remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -199,9 +199,9 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath += dep->name;
     remotePath = fs::absolute(remotePath.c_str()).string();
     remotePath = fs::canonical(remotePath).string();
-    remotePath = normalizePath(fs::path(remotePath.c_str()));
+    remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0511, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0511, remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -210,10 +210,10 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
     if (dep->location.empty())
-        return dep->node->sourceFile->report({dep->node, dep->node->token, format(Msg0513, dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->node->token, Utf8::format(Msg0513, dep->name.c_str())});
 
     vector<Utf8> tokens;
-    tokenize(dep->location.c_str(), '@', tokens);
+    Utf8::tokenize(dep->location.c_str(), '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)
@@ -223,7 +223,7 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
 
     // Check mode
     if (tokens[0] != "swag" && tokens[0] != "disk")
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0515, tokens[0].c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0515, tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();
@@ -325,7 +325,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::VERSION_LOWER:
         {
-            Diagnostic diag{dep->node, format(Msg0516, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            Diagnostic diag{dep->node, Utf8::format(Msg0516, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
             Diagnostic note{cfgModule->fetchDep->node, Msg0517, DiagnosticLevel::Note};
             dep->node->sourceFile->report(diag, &note);
             return false;
@@ -395,7 +395,7 @@ bool ModuleCfgManager::execute()
         file->name         = fs::path(g_CommandLine.scriptName.c_str()).filename().string().c_str();
         file->isCfgFile    = true;
         file->isScriptFile = true;
-        file->path         = normalizePath(g_CommandLine.scriptName);
+        file->path         = Utf8::normalizePath(g_CommandLine.scriptName);
         registerCfgFile(file);
     }
 
@@ -459,7 +459,7 @@ bool ModuleCfgManager::execute()
             file->module      = cfgModule;
             fs::path pathFile = cfgFilePath.c_str();
             pathFile.append(cfgFileName.c_str());
-            file->path = normalizePath(pathFile);
+            file->path = Utf8::normalizePath(pathFile);
 
             parseCfgFile(cfgModule);
         }
@@ -482,7 +482,7 @@ bool ModuleCfgManager::execute()
             auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
             {
-                Diagnostic diag{dep->node, format(Msg0518, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Diagnostic diag{dep->node, Utf8::format(Msg0518, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
                 dep->node->sourceFile->report(diag);
                 ok = false;
             }
@@ -507,13 +507,13 @@ bool ModuleCfgManager::execute()
             auto module = m.second;
             Utf8 msg;
             if (module->fetchDep)
-                msg += format("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
+                msg += Utf8::format("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
             else
-                msg += format("%d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+                msg += Utf8::format("%d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (module->fetchDep && module->fetchDep->fetchKind == DependencyFetchKind::Swag)
                 msg += " [swag]";
             else if (module->mustFetchDep)
-                msg += format(" => version %d.%d.%d is available", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+                msg += Utf8::format(" => version %d.%d.%d is available", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             g_Log.messageHeaderDot(module->name, msg);
         }
     }

@@ -30,7 +30,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             hint = Hnt0003;
         }
 
-        Diagnostic  diag{node, format(Msg0013, name.c_str(), node->resolvedSymbolName->name.c_str())};
+        Diagnostic  diag{node, Utf8::format(Msg0013, name.c_str(), node->resolvedSymbolName->name.c_str())};
         Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -221,13 +221,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, symOver->node->token, format(Msg0018, symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, Utf8::format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic note{symOver->node, symOver->node->token, Utf8::format(Msg0018, symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
                         {
-                            Diagnostic note1{format(Note014, symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
+                            Diagnostic note1{Utf8::format(Note014, symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
                             return context->report(Hnt0024, diag, &note1, &note);
                         }
                         else
@@ -335,7 +335,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, Msg0021}));
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
-                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, format(Msg0022, child->typeInfo->getDisplayName().c_str())}));
+                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Utf8::format(Msg0022, child->typeInfo->getDisplayName().c_str())}));
                 SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, Msg0023}));
 
@@ -397,8 +397,8 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
-                Diagnostic diag(back, back->token, format(Msg0025, back->token.text.c_str()));
-                Diagnostic note(overload->node, overload->node->token, format(Msg0018, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(back, back->token, Utf8::format(Msg0025, back->token.text.c_str()));
+                Diagnostic note(overload->node, overload->node->token, Utf8::format(Msg0018, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
 
@@ -472,7 +472,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, back->token, format(Msg0030, SymTable::getArticleKindName(symbol->kind))});
+        return context->report({back, back->token, Utf8::format(Msg0030, SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);
@@ -592,13 +592,13 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({typeNode, format(Msg0031, typeInfo->getDisplayName().c_str())});
+        return context->report({typeNode, Utf8::format(Msg0031, typeInfo->getDisplayName().c_str())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({exprNode, format(Msg0032, exprTypeInfo->getDisplayName().c_str())});
+        return context->report({exprNode, Utf8::format(Msg0032, exprTypeInfo->getDisplayName().c_str())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format(Msg0033, typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Utf8::format(Msg0033, typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

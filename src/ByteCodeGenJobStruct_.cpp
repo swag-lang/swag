@@ -372,7 +372,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct || typeStructVar->flags & TYPEINFO_HAD_DROP)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0911, typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(Msg0911, typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needDrop)
@@ -500,7 +500,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct || typeStructVar->flags & TYPEINFO_HAD_POST_MOVE)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0910, typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(Msg0910, typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needPostMove)
@@ -627,7 +627,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct || typeStructVar->flags & TYPEINFO_HAD_POST_COPY)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, format(Msg0909, typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(Msg0909, typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needPostCopy)
@@ -747,7 +747,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     if (mustCopy)
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
-            return context->report({context->node, format(Msg0231, typeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Utf8::format(Msg0231, typeInfo->getDisplayName().c_str())});
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)

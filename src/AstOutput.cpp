@@ -889,7 +889,7 @@ namespace Ast
                         (symbol->kind == SymbolKind::Alias) ||
                         (symbol->kind == SymbolKind::TypeAlias))
                     {
-                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format(Msg0316, identifier->token.text.c_str())}));
+                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, Utf8::format(Msg0316, identifier->token.text.c_str())}));
                     }
                 }
             }

@@ -27,7 +27,7 @@ namespace BackendLinker
             if (strstr(ptr, "\n"))
             {
                 vector<Utf8> subNames;
-                tokenize(errMsg.c_str(), '\n', subNames);
+                Utf8::tokenize(errMsg.c_str(), '\n', subNames);
 
                 g_Log.lock();
                 for (auto& l : subNames)
@@ -79,7 +79,7 @@ namespace BackendLinker
 
         for (const auto& oneLibPath : libPaths)
         {
-            auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
+            auto normalizedLibPath = Utf8::normalizePath(fs::path(oneLibPath.c_str()));
             if (forCmdLine)
                 arguments.push_back("/LIBPATH:\"" + normalizedLibPath + "\"");
             else
@@ -99,7 +99,7 @@ namespace BackendLinker
         {
             auto libName  = dep->name + Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
             auto fullName = g_Workspace.targetPath.string();
-            fullName      = normalizePath(fs::path(fullName.c_str()));
+            fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
             fullName += libName;
 
@@ -121,7 +121,7 @@ namespace BackendLinker
             arguments.push_back("/MACHINE:X64");
 
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
-            arguments.push_back(format("/STACK:%d,%d", g_CommandLine.stackSize, g_CommandLine.stackSize));
+            arguments.push_back(Utf8::format("/STACK:%d,%d", g_CommandLine.stackSize, g_CommandLine.stackSize));
 
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments.push_back("/DEBUG");
@@ -162,7 +162,7 @@ namespace BackendLinker
         for (auto& file : objectFiles)
         {
             auto path              = targetPath + "/" + file.c_str();
-            auto normalizedLibPath = normalizePath(fs::path(path.c_str()));
+            auto normalizedLibPath = Utf8::normalizePath(fs::path(path.c_str()));
             linkArguments.push_back(normalizedLibPath);
         }
 
@@ -215,7 +215,7 @@ namespace BackendLinker
         for (auto& file : objectFiles)
         {
             auto path              = targetPath + "/" + file.c_str();
-            auto normalizedLibPath = normalizePath(fs::path(path.c_str()));
+            auto normalizedLibPath = Utf8::normalizePath(fs::path(path.c_str()));
             linkArguments.push_back(normalizedLibPath);
         }
 

@@ -37,9 +37,9 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report({node, format(Msg0785, SWAG_LIMIT_CB_MAX_PARAMS)});
+        return context->report({node, Utf8::format(Msg0785, SWAG_LIMIT_CB_MAX_PARAMS)});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({node, format(Msg0786, typeFunc->returnType->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0786, typeFunc->returnType->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoPVoid;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -53,11 +53,11 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, format(Msg0787, name)});
+        return context->report({first, Utf8::format(Msg0787, name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, format(Msg0788, name)});
+        return context->report({first, Utf8::format(Msg0788, name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
@@ -91,14 +91,14 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            return context->report({node, format(Msg0791, ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(Msg0791, ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, format(Msg0792, second->typeInfo->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0792, second->typeInfo->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -197,7 +197,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, format(Msg0797, typeInfo->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0797, typeInfo->getDisplayName().c_str())});
     }
 
     return true;
@@ -309,7 +309,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, format(Msg0801, typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, Utf8::format(Msg0801, typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -318,20 +318,20 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 {
                 case NativeTypeKind::S8:
                     if (node->computedValue.reg.s8 < 0)
-                        return context->report({expression, format(Msg0802, node->computedValue.reg.s8)});
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (node->computedValue.reg.s16 < 0)
-                        return context->report({expression, format(Msg0802, node->computedValue.reg.s16)});
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (node->computedValue.reg.s32 < 0)
-                        return context->report({expression, format(Msg0802, node->computedValue.reg.s32)});
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
                     if (node->computedValue.reg.s64 < 0)
-                        return context->report({expression, format(Msg0805, node->computedValue.reg.s64)});
+                        return context->report({expression, Utf8::format(Msg0805, node->computedValue.reg.s64)});
                     break;
                 }
             }
@@ -382,7 +382,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, format(Msg0807, typeInfo->getDisplayName().c_str())});
+        return context->report({expr, Utf8::format(Msg0807, typeInfo->getDisplayName().c_str())});
     }
 
     auto typeVar     = allocType<TypeInfoVariadic>();

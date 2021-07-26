@@ -196,7 +196,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 kindName    = Msg0131;
                 kindArticle = "to ";
                 first       = first->childs.front();
-                hint        = format(Hnt0011, first->typeInfo->getDisplayName().c_str());
+                hint        = Utf8::format(Hnt0011, first->typeInfo->getDisplayName().c_str());
             }
             else if (first->kind == AstNodeKind::Return)
             {
@@ -204,7 +204,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 if (returnNode->resolvedFuncDecl)
                 {
                     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
-                    hint          = format(Hnt0012, returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
+                    hint          = Utf8::format(Hnt0012, returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
                 }
             }
 
@@ -217,13 +217,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
         if (!name.empty())
         {
-            auto note  = new Diagnostic{first, first->token, format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+            auto note  = new Diagnostic{first, first->token, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
             note->hint = hint;
             notes.push_back(note);
         }
         else
         {
-            auto note  = new Diagnostic{first, first->token, format(Note003, kindName), DiagnosticLevel::Note};
+            auto note  = new Diagnostic{first, first->token, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
             note->hint = hint;
             notes.push_back(note);
         }
