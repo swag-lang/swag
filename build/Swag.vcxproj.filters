@@ -467,6 +467,9 @@
     <ClCompile Include="../src/Stats.cpp">
       <Filter>Main\Global</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Help.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
