@@ -130,12 +130,6 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             continue;
         }
 
-        if (raw && c == '`')
-        {
-            treatChar(c, offset);
-            continue;
-        }
-
         break;
     }
 
