@@ -30,6 +30,9 @@ static const uint32_t OPFLAG_IMM_B         = 0x00200000;
 static const uint32_t OPFLAG_IMM_C         = 0x00400000;
 static const uint32_t OPFLAG_IMM_D         = 0x00800000;
 static const uint32_t OPFLAG_UNPURE        = 0x01000000;
+static const uint32_t OPFLAG_IS_JUMP       = 0x02000000;
+static const uint32_t OPFLAG_IS_MEMCPY     = 0x04000000;
+static const uint32_t OPFLAG_IS_COPY_RBRA  = 0x08000000;
 
 enum class ByteCodeOp : uint16_t
 {

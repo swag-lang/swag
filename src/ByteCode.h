@@ -26,8 +26,7 @@ static const uint16_t BCI_START_STMT    = 0x0200;
 static const uint16_t BCI_POST_COPYMOVE = 0x0400;
 static const uint16_t BCI_UNPURE        = 0x0800;
 static const uint16_t BCI_TRYCATCH      = 0x1000;
-// Depends on instruction
-static const uint16_t BCI_SHIFT_SMALL = 0x8000;
+static const uint16_t BCI_SHIFT_SMALL   = 0x8000;
 
 struct ByteCodeInstruction
 {
@@ -43,21 +42,7 @@ struct ByteCodeInstruction
 
 struct ByteCode
 {
-    inline static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst)
-    {
-        switch (inst->op)
-        {
-        case ByteCodeOp::CopyRBtoRA8:
-        case ByteCodeOp::CopyRBtoRA16:
-        case ByteCodeOp::CopyRBtoRA32:
-        case ByteCodeOp::CopyRBtoRA64:
-            return true;
-        }
-
-        return false;
-    }
-
-    inline static uint32_t isSetZeroAtPointer(ByteCodeInstruction* inst, uint32_t& offset)
+    static uint32_t getSetZeroAtPointerSize(ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)
         {
@@ -81,7 +66,7 @@ struct ByteCode
         return 0;
     }
 
-    inline static uint32_t isSetZeroStack(ByteCodeInstruction* inst, uint32_t& offset)
+    static uint32_t getSetZeroStackSize(ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)
         {
@@ -105,61 +90,11 @@ struct ByteCode
         return 0;
     }
 
-    inline static bool isMemCpy(ByteCodeInstruction* inst)
-    {
-        return inst->op == ByteCodeOp::MemCpy8 ||
-               inst->op == ByteCodeOp::MemCpy16 ||
-               inst->op == ByteCodeOp::MemCpy32 ||
-               inst->op == ByteCodeOp::MemCpy64 ||
-               inst->op == ByteCodeOp::MemCpyX;
-    }
-
-    inline static bool isJump(ByteCodeInstruction* inst)
-    {
-        return inst->op == ByteCodeOp::Jump ||
-               inst->op == ByteCodeOp::JumpIfTrue ||
-               inst->op == ByteCodeOp::JumpIfFalse ||
-               inst->op == ByteCodeOp::JumpIfNotZero8 ||
-               inst->op == ByteCodeOp::JumpIfNotZero16 ||
-               inst->op == ByteCodeOp::JumpIfNotZero32 ||
-               inst->op == ByteCodeOp::JumpIfNotZero64 ||
-               inst->op == ByteCodeOp::JumpIfZero8 ||
-               inst->op == ByteCodeOp::JumpIfZero16 ||
-               inst->op == ByteCodeOp::JumpIfZero32 ||
-               inst->op == ByteCodeOp::JumpIfZero64 ||
-               inst->op == ByteCodeOp::JumpIfLowerU32 ||
-               inst->op == ByteCodeOp::JumpIfLowerU64 ||
-               inst->op == ByteCodeOp::JumpIfLowerS32 ||
-               inst->op == ByteCodeOp::JumpIfLowerS64 ||
-               inst->op == ByteCodeOp::JumpIfLowerF32 ||
-               inst->op == ByteCodeOp::JumpIfLowerF64 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqU32 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqU64 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqS32 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqS64 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqF32 ||
-               inst->op == ByteCodeOp::JumpIfLowerEqF64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterU32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterU64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterS32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterS64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterF32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterF64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqU32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqU64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqS32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqS64 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqF32 ||
-               inst->op == ByteCodeOp::JumpIfGreaterEqF64 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual8 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual16 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual32 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual64 ||
-               inst->op == ByteCodeOp::JumpIfEqual8 ||
-               inst->op == ByteCodeOp::JumpIfEqual16 ||
-               inst->op == ByteCodeOp::JumpIfEqual32 ||
-               inst->op == ByteCodeOp::JumpIfEqual64;
-    }
+    // clang-format off
+    static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst) { return g_ByteCodeOpFlags[(int)inst->op] & OPFLAG_IS_COPY_RBRA; }
+    static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpFlags[(int) inst->op] & OPFLAG_IS_MEMCPY; }
+    static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpFlags[(int) inst->op] & OPFLAG_IS_JUMP; }
+    // clang-format on
 
     void addCallStack(ByteCodeRunContext* context);
     void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
@@ -184,7 +119,6 @@ struct ByteCode
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
     VectorNative<uint32_t>            availableRegistersRC;
-    bool                              dirtyRegistersRC = false;
     VectorNative<pair<void*, size_t>> autoFree;
 
     Utf8                   name;
@@ -202,8 +136,10 @@ struct ByteCode
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
 
-    bool         compilerGenerated = false;
-    bool         addedToList       = false;
+    bool compilerGenerated = false;
+    bool addedToList       = false;
+    bool dirtyRegistersRC  = false;
+
     atomic<bool> running;
     atomic<bool> isEmpty;
 };

@@ -672,8 +672,8 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
     if (!(ip[1].flags & BCI_START_STMT))
     {
         uint32_t offset0, offset1;
-        auto     size0 = ByteCode::isSetZeroStack(ip, offset0);
-        auto     size1 = ByteCode::isSetZeroStack(ip + 1, offset1);
+        auto     size0 = ByteCode::getSetZeroStackSize(ip, offset0);
+        auto     size1 = ByteCode::getSetZeroStackSize(ip + 1, offset1);
         if (size0 && size1 && offset0 + size0 == offset1)
         {
             auto totalSize = size0 + size1;
@@ -703,8 +703,8 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
     if (!(ip[1].flags & BCI_START_STMT))
     {
         uint32_t offset0, offset1;
-        auto     size0 = ByteCode::isSetZeroAtPointer(ip, offset0);
-        auto     size1 = ByteCode::isSetZeroAtPointer(ip + 1, offset1);
+        auto     size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
+        auto     size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
         if (size0 && size1 && offset0 + size0 == offset1)
         {
             auto totalSize = size0 + size1;
