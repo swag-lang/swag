@@ -30,9 +30,12 @@ Utf8 format(const char* format, ...)
 
 void tokenize(const char* str, char c, vector<Utf8>& tokens)
 {
-    auto pz = str;
-
     tokens.clear();
+
+    auto pz = str;
+    if (!pz)
+        return;
+
     while (*pz)
     {
         Utf8 one;
@@ -47,9 +50,12 @@ void tokenize(const char* str, char c, vector<Utf8>& tokens)
 
 void tokenizeBlanks(const char* str, vector<Utf8>& tokens)
 {
-    auto pz = str;
-
     tokens.clear();
+
+    auto pz = str;
+    if (!pz)
+        return;
+
     while (*pz)
     {
         Utf8 one;

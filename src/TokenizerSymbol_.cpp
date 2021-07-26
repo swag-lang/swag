@@ -5,6 +5,7 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
 {
     unsigned offset;
 
+    token.text.reserve(8);
     token.text.buffer[0] = (uint8_t) c;
     token.text.buffer[1] = 0;
     token.text.count     = 1;

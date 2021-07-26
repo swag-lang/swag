@@ -4,47 +4,78 @@
 #include "Runtime.h"
 #include "CommandLine.h"
 
-uint32_t Utf8::hash(const char* buffer, int count)
+Utf8::Utf8()
 {
-    uint32_t hash = 0;
-
-    auto s = buffer;
-    while (count > 4)
-    {
-        hash += *(uint32_t*) s;
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-        s += 4;
-        count -= 4;
-    }
-
-    while (count--)
-    {
-        hash += *s++;
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-    }
-
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-
-    return hash;
 }
 
-uint32_t Utf8::hash() const
+Utf8::~Utf8()
 {
-    return hash(buffer, count);
+    g_Allocator.free(buffer, allocated);
+}
+
+void Utf8::reset()
+{
+    g_Allocator.free(buffer, allocated);
+    buffer    = nullptr;
+    count     = 0;
+    allocated = 0;
+}
+
+Utf8::Utf8(const char* from)
+{
+    int len = from ? (int) strlen(from) : 0;
+    if (!len)
+        return;
+
+    reserve(len + 1);
+    memcpy(buffer, from, len + 1);
+    count = len;
+}
+
+Utf8::Utf8(const char* from, uint32_t len)
+{
+    if (!len)
+        return;
+
+    reserve(len + 1);
+    memcpy(buffer, from, len + 1);
+    count = len;
+}
+
+Utf8::Utf8(const string& from)
+{
+    int len = (int) from.length();
+    if (!len)
+        return;
+
+    reserve(len + 1);
+    memcpy(buffer, from.c_str(), len + 1);
+    count = len;
+}
+
+Utf8::Utf8(const Utf8& from)
+{
+    int len = from.count;
+    if (!len)
+        return;
+
+    reserve(len + 1);
+    memcpy(buffer, from.buffer, len + 1);
+    count = len;
+}
+
+Utf8::Utf8(Utf8&& from)
+{
+    count       = from.count;
+    allocated   = from.allocated;
+    buffer      = from.buffer;
+    from.buffer = nullptr;
+    from.reset();
 }
 
 void Utf8::reserve(int newSize)
 {
     if (newSize <= allocated)
-        return;
-
-    // No need to to something, because we are sure to have at least UTF8_SMALL_SIZE
-    // available room
-    if (newSize <= UTF8_SMALL_SIZE)
         return;
 
     auto lastAllocated = allocated;
@@ -57,140 +88,21 @@ void Utf8::reserve(int newSize)
     if (g_CommandLine.stats)
         g_Stats.memUtf8 += allocated;
 
-    if (lastAllocated != UTF8_SMALL_SIZE)
-    {
-        g_Allocator.free(buffer, lastAllocated);
-        if (g_CommandLine.stats)
-            g_Stats.memUtf8 -= lastAllocated;
-    }
+    g_Allocator.free(buffer, lastAllocated);
+    if (g_CommandLine.stats)
+        g_Stats.memUtf8 -= lastAllocated;
 
     buffer = newBuffer;
-}
-
-Utf8::Utf8()
-{
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-}
-
-Utf8::~Utf8()
-{
-    if (allocated > UTF8_SMALL_SIZE)
-        g_Allocator.free(buffer, allocated);
-}
-
-void Utf8::reset()
-{
-    if (allocated > UTF8_SMALL_SIZE)
-        g_Allocator.free(buffer, allocated);
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-}
-
-Utf8::Utf8(const char* from)
-{
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-
-    int len = from ? (int) strlen(from) : 0;
-    if (!len)
-        return;
-
-    reserve(len + 1);
-    memcpy(buffer, from, len + 1);
-    count = len;
-}
-
-Utf8::Utf8(const char* from, uint32_t len)
-{
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-
-    if (!len)
-        return;
-
-    reserve(len + 1);
-    memcpy(buffer, from, len + 1);
-    count = len;
-}
-
-Utf8::Utf8(const string& from)
-{
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-
-    int len = (int) from.length();
-    if (!len)
-        return;
-
-    reserve(len + 1);
-    memcpy(buffer, from.c_str(), len + 1);
-    count = len;
-}
-
-Utf8::Utf8(const Utf8& from)
-{
-    buffer    = padding;
-    count     = 0;
-    allocated = UTF8_SMALL_SIZE;
-    buffer[0] = 0;
-
-    int len = from.count;
-    if (!len)
-        return;
-
-    reserve(len + 1);
-    memcpy(buffer, from.buffer, len + 1);
-    count = len;
-}
-
-Utf8::Utf8(Utf8&& from)
-{
-    count     = from.count;
-    allocated = from.allocated;
-
-    if (from.allocated == UTF8_SMALL_SIZE)
-    {
-        static_assert(UTF8_SMALL_SIZE == 8);
-        buffer              = padding;
-        *(uint64_t*) buffer = *(uint64_t*) from.buffer;
-    }
-    else
-    {
-        buffer      = from.buffer;
-        from.buffer = nullptr;
-        from.reset();
-    }
 }
 
 void Utf8::operator=(Utf8&& from)
 {
     reset();
-    count     = from.count;
-    allocated = from.allocated;
-
-    if (from.allocated == UTF8_SMALL_SIZE)
-    {
-        static_assert(UTF8_SMALL_SIZE == 8);
-        buffer              = padding;
-        *(uint64_t*) buffer = *(uint64_t*) from.buffer;
-    }
-    else
-    {
-        buffer      = from.buffer;
-        from.buffer = nullptr;
-        from.reset();
-    }
+    count       = from.count;
+    allocated   = from.allocated;
+    buffer      = from.buffer;
+    from.buffer = nullptr;
+    from.reset();
 }
 
 bool Utf8::empty() const
@@ -660,4 +572,37 @@ void Utf8::replace(const char* src, const char* dst)
             pos += lenins;
         }
     } while (pos != -1);
+}
+
+uint32_t Utf8::hash(const char* buffer, int count)
+{
+    uint32_t hash = 0;
+
+    auto s = buffer;
+    while (count > 4)
+    {
+        hash += *(uint32_t*) s;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+        s += 4;
+        count -= 4;
+    }
+
+    while (count--)
+    {
+        hash += *s++;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+
+    return hash;
+}
+
+uint32_t Utf8::hash() const
+{
+    return hash(buffer, count);
 }
