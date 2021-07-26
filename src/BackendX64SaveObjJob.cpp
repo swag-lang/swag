@@ -5,8 +5,6 @@
 #include "BackendX64.h"
 #include "Timer.h"
 
-thread_local Pool<BackendX64SaveObjJob> g_Pool_backendX64SaveObjJob;
-
 JobResult BackendX64SaveObjJob::execute()
 {
     Timer timer0{&g_Stats.prepOutputTimeJob};

@@ -950,7 +950,7 @@ bool Module::compileString(const Utf8& text)
     if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
-    auto job          = g_Pool_semanticJob.alloc();
+    auto job          = g_Allocator.alloc<SemanticJob>();
     job->sourceFile   = files[0];
     job->module       = this;
     job->dependentJob = runContext.callerContext->baseJob;

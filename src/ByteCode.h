@@ -1,5 +1,4 @@
 #pragma once
-#include "Pool.h"
 #include "Utf8.h"
 #include "Register.h"
 #include "Assert.h"

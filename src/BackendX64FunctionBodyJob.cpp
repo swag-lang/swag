@@ -8,8 +8,6 @@
 #include "Module.h"
 #include "Timer.h"
 
-thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
-
 JobResult BackendX64FunctionBodyJob::execute()
 {
     Timer timer0{&g_Stats.prepOutputTimeJob};

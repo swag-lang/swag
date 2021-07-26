@@ -1,5 +1,4 @@
 #pragma once
-#include "Pool.h"
 #include "DependentJobs.h"
 #include "VectorNative.h"
 #include "Utf8.h"
@@ -76,9 +75,13 @@ enum class JobResult
     KeepJobAlive,
 };
 
-struct Job : public PoolElem
+struct Job
 {
     virtual JobResult execute() = 0;
+
+    virtual void release()
+    {
+    }
 
     void addDependentJob(Job* job);
     void waitForSymbolNoLock(SymbolName* symbol);
@@ -111,29 +114,4 @@ struct Job : public PoolElem
 
     uint8_t flags    = 0;
     uint8_t affinity = AFFINITY_ALL;
-
-    void reset() override
-    {
-        dependentJobs.clear();
-        dependentNodes.clear();
-        nodes.clear();
-        jobsToAdd.clear();
-        originalNode        = nullptr;
-        waitingSymbolSolved = nullptr;
-        waitingId           = nullptr;
-        waitingIdNode       = nullptr;
-        waitingIdType       = nullptr;
-        sourceFile          = nullptr;
-        module              = nullptr;
-        dependentJob        = nullptr;
-        baseContext         = nullptr;
-        wakeUpBy            = nullptr;
-        flags               = 0;
-        waitingJobIndex     = -1;
-        waitOnJobs          = 0;
-    }
-
-    void release() override
-    {
-    }
 };

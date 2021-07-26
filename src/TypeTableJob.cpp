@@ -5,8 +5,6 @@
 #include "ByteCode.h"
 #include "Ast.h"
 
-thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
-
 bool TypeTableJob::computeStruct()
 {
     auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;

@@ -6,8 +6,6 @@
 #include "Timer.h"
 #include "Backend.h"
 
-thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
-
 JobResult ModuleRunJob::execute()
 {
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName;

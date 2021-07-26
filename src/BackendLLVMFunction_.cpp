@@ -124,7 +124,7 @@ inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
 {
-    return g_Pool_backendLLVMFunctionBodyJob.alloc();
+    return g_Allocator.alloc<BackendLLVMFunctionBodyJob>();
 }
 
 llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)

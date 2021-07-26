@@ -13,13 +13,6 @@ struct BackendFunctionBodyJob : public Job
         affinity = AFFINITY_ALL ^ AFFINITY_BACKEND_FCTBODY;
     }
 
-    void reset() override
-    {
-        Job::reset();
-        backend = nullptr;
-        byteCodeFunc.clear();
-    }
-
     BuildParameters         buildParameters;
     VectorNative<ByteCode*> byteCodeFunc;
     Backend*                backend = nullptr;

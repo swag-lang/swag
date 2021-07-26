@@ -6,8 +6,6 @@
 #include "Module.h"
 #include "Timer.h"
 
-thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
-
 JobResult BackendLLVMFunctionBodyJob::execute()
 {
     Timer timer0{&g_Stats.prepOutputTimeJob};

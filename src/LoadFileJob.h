@@ -16,4 +16,3 @@ struct LoadFileJob : public Job
     uint32_t sizeBuffer = 0;
 };
 
-extern thread_local Pool<LoadFileJob> g_Pool_loadFileJob;

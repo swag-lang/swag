@@ -233,7 +233,6 @@
     <ClInclude Include="../src/LanguageSpec.h" />
     <ClInclude Include="../src/Log.h" />
     <ClInclude Include="../src/pch.h" />
-    <ClInclude Include="../src/Pool.h" />
     <ClInclude Include="../src/SemanticJob.h" />
     <ClInclude Include="../src/SymTable.h" />
     <ClInclude Include="../src/SyntaxJob.h" />

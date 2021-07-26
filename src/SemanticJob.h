@@ -151,6 +151,11 @@ struct SemanticJob : public Job
 
     JobResult execute() override;
 
+    void release() override
+    {
+        g_Allocator.free<SemanticJob>(this);
+    }
+
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         internalError(JobContext* context, const char* msg, AstNode* node = nullptr);
@@ -483,34 +488,10 @@ struct SemanticJob : public Job
     VectorNative<OneTryMatch*>     cacheFreeTryMatch;
     SemanticContext                context;
     Concat                         tmpConcat;
-    AstIdentifierRef*              tmpIdRef;
+    AstIdentifierRef*              tmpIdRef = nullptr;
 
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;
-    SymbolOverload*   bestOverload;
-    bool              canSpawn;
-
-    void reset() override
-    {
-        Job::reset();
-        tmpNodes.clear();
-        cacheDependentSymbols.clear();
-        cacheScopeHierarchy.clear();
-        cacheScopeHierarchyVars.clear();
-        cacheToAddSymbols.clear();
-        scopesToProcess.clear();
-        context.reset();
-        clearTryMatch();
-        clearMatch();
-        clearGenericMatch();
-        canSpawn = false;
-    }
-
-    void release() override
-    {
-        extern thread_local Pool<SemanticJob> g_Pool_semanticJob;
-        g_Pool_semanticJob.release(this);
-    }
+    SymbolOverload*   bestOverload = nullptr;
+    bool              canSpawn     = false;
 };
-
-extern thread_local Pool<SemanticJob> g_Pool_semanticJob;

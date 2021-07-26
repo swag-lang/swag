@@ -1,6 +1,4 @@
 #pragma once
-#pragma once
-#include "Pool.h"
 #include "Utf8.h"
 #include "Log.h"
 #include "Register.h"

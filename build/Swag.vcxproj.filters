@@ -686,9 +686,6 @@
     <ClInclude Include="..\src\HashTable.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Pool.h">
-      <Filter>Main\Core</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Concat.h">
       <Filter>Main\Core</Filter>
     </ClInclude>

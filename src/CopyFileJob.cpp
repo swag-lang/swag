@@ -3,8 +3,6 @@
 #include "CopyFileJob.h"
 #include "OS.h"
 
-thread_local Pool<CopyFileJob> g_Pool_copyFileJob;
-
 JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination

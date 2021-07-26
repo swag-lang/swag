@@ -481,7 +481,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(Msg0223, back->computedValue.text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
-        auto newJob                        = g_Pool_loadFileJob.alloc();
+        auto newJob                        = g_Allocator.alloc<LoadFileJob>();
         auto storageSegment                = getConstantSegFromContext(node);
         node->computedValue.storageOffset  = storageSegment->reserve(stat_buf.st_size);
         node->computedValue.storageSegment = storageSegment;

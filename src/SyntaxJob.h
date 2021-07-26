@@ -60,6 +60,11 @@ struct SyntaxContext : public JobContext
 
 struct SyntaxJob : public Job
 {
+    void release() override
+    {
+        g_Allocator.free<SyntaxJob>(this);
+    }
+
     JobResult execute() override;
     bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
@@ -202,32 +207,4 @@ struct SyntaxJob : public Job
     bool                moduleSpecified        = false;
     bool                inFunCall              = false;
     bool                afterGlobal            = false;
-
-    void reset() override
-    {
-        Job::reset();
-        context.reset();
-        sourceFile             = nullptr;
-        currentScope           = nullptr;
-        currentFct             = nullptr;
-        currentBreakable       = nullptr;
-        currentStructScope     = nullptr;
-        currentCompilerIfBlock = nullptr;
-        currentMainNode        = nullptr;
-        currentInline          = nullptr;
-        currentTryCatchAssume  = nullptr;
-        currentTokenLocation   = nullptr;
-        currentFlags           = 0;
-        moduleSpecified        = false;
-        inFunCall              = false;
-        afterGlobal            = false;
-    }
-
-    void release() override
-    {
-        extern thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
-        g_Pool_syntaxJob.release(this);
-    }
 };
-
-extern thread_local Pool<SyntaxJob> g_Pool_syntaxJob;

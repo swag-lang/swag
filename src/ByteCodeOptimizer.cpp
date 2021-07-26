@@ -304,7 +304,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         int startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
-            auto newJob          = g_Pool_byteCodeOptimizerJob.alloc();
+            auto newJob          = g_Allocator.alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->startIndex   = startIndex;
             newJob->endIndex     = min(startIndex + count, (int) module->byteCodeFunc.size());

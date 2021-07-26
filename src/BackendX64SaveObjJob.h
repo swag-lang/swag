@@ -15,4 +15,3 @@ struct BackendX64SaveObjJob : public Job
     ModulePrepOutputJob* prepJob;
 };
 
-extern thread_local Pool<BackendX64SaveObjJob> g_Pool_backendX64SaveObjJob;

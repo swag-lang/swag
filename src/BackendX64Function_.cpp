@@ -15,7 +15,7 @@
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
-    return g_Pool_backendX64FunctionBodyJob.alloc();
+    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
 }
 
 uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)

@@ -893,7 +893,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         SWAG_ASSERT(!node->extension || !node->extension->byteCodeJob);
         node->allocateExtension();
         auto extension                       = node->extension;
-        extension->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+        extension->byteCodeJob               = g_Allocator.alloc<ByteCodeGenJob>();
         extension->byteCodeJob->sourceFile   = sourceFile;
         extension->byteCodeJob->module       = sourceFile->module;
         extension->byteCodeJob->dependentJob = context->job->dependentJob;

@@ -10,8 +10,6 @@
 #include "Workspace.h"
 #include "ErrorIds.h"
 
-thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
-
 bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 {
     if (!expr)

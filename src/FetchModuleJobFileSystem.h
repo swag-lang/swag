@@ -12,4 +12,3 @@ struct FetchModuleJobFileSystem : public Job
     JobResult execute() override;
 };
 
-extern thread_local Pool<FetchModuleJobFileSystem> g_Pool_moduleFetchJobFileSystem;

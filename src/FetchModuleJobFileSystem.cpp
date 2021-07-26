@@ -7,8 +7,6 @@
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 
-thread_local Pool<FetchModuleJobFileSystem> g_Pool_moduleFetchJobFileSystem;
-
 JobResult FetchModuleJobFileSystem::execute()
 {
     auto dep = module->fetchDep;
@@ -70,7 +68,7 @@ JobResult FetchModuleJobFileSystem::execute()
             return JobResult::ReleaseJob;
         }
 
-        auto job        = g_Pool_copyFileJob.alloc();
+        auto job        = g_Allocator.alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = srcFileName.string();
         job->destPath   = destFileName.string();

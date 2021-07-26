@@ -466,7 +466,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = g_Pool_backendX64SaveObjJob.alloc();
+        auto job          = g_Allocator.alloc<BackendX64SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputJob*) ownerJob;

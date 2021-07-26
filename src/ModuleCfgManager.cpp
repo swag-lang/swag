@@ -21,10 +21,10 @@ Module* ModuleCfgManager::getCfgModule(const Utf8& name)
 
 void ModuleCfgManager::parseCfgFile(Module* cfgModule)
 {
-    auto buildJob    = g_Pool_moduleBuildJob.alloc();
+    auto buildJob    = g_Allocator.alloc<ModuleBuildJob>();
     buildJob->module = cfgModule;
 
-    auto syntaxJob        = g_Pool_syntaxJob.alloc();
+    auto syntaxJob        = g_Allocator.alloc<SyntaxJob>();
     syntaxJob->sourceFile = cfgModule->files.front();
     syntaxJob->addDependentJob(buildJob);
 
@@ -535,7 +535,7 @@ bool ModuleCfgManager::execute()
             {
             case DependencyFetchKind::Disk:
             case DependencyFetchKind::Swag:
-                fetchJob = g_Pool_moduleFetchJobFileSystem.alloc();
+                fetchJob = g_Allocator.alloc<FetchModuleJobFileSystem>();
                 break;
             }
 

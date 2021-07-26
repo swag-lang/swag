@@ -1,6 +1,5 @@
 #pragma once
 #include "DependentJobs.h"
-#include "Pool.h"
 #include "Register.h"
 #include "RegisterList.h"
 struct Scope;

@@ -14,8 +14,6 @@
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 
-thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
-
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
     auto depModule = dep->module;
@@ -60,7 +58,7 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     {
         module->addFile(one);
 
-        auto syntaxJob          = g_Pool_syntaxJob.alloc();
+        auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
         syntaxJob->sourceFile   = one;
         syntaxJob->module       = module;
         syntaxJob->dependentJob = this;
@@ -164,7 +162,7 @@ JobResult ModuleBuildJob::execute()
 
             for (auto file : module->files)
             {
-                auto job          = g_Pool_syntaxJob.alloc();
+                auto job          = g_Allocator.alloc<SyntaxJob>();
                 job->sourceFile   = file;
                 job->module       = module;
                 job->dependentJob = this;
@@ -185,7 +183,7 @@ JobResult ModuleBuildJob::execute()
         // run them in case the error has not been triggered during the syntax pass
         for (auto errorMd : module->errorModules)
         {
-            auto job       = g_Pool_moduleBuildJob.alloc();
+            auto job       = g_Allocator.alloc<ModuleBuildJob>();
             job->module    = errorMd;
             job->fromError = true;
             g_ThreadMgr.addJob(job);
@@ -238,7 +236,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
+        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
@@ -266,7 +264,7 @@ JobResult ModuleBuildJob::execute()
 
         // This is a dummy job, in case the user code does not trigger new jobs during the
         // CompilerMsgKind::PassAfterSemantic pass
-        auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
+        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
         semanticJob->module       = nullptr;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
@@ -537,7 +535,7 @@ JobResult ModuleBuildJob::execute()
                 if (g_CommandLine.output)
                 {
                     module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
-                    auto outputJob          = g_Pool_moduleOutputJob.alloc();
+                    auto outputJob          = g_Allocator.alloc<ModuleOutputJob>();
                     outputJob->module       = module;
                     outputJob->dependentJob = this;
                     jobsToAdd.push_back(outputJob);
@@ -570,7 +568,7 @@ JobResult ModuleBuildJob::execute()
         // Run test executable
         if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
         {
-            auto job                            = g_Pool_moduleRunJob.alloc();
+            auto job                            = g_Allocator.alloc<ModuleRunJob>();
             job->module                         = module;
             job->dependentJob                   = this;
             job->buildParameters                = module->buildParameters;
@@ -582,7 +580,7 @@ JobResult ModuleBuildJob::execute()
         // Run command
         if (g_CommandLine.run && module->kind != ModuleKind::Test)
         {
-            auto job                         = g_Pool_moduleRunJob.alloc();
+            auto job                         = g_Allocator.alloc<ModuleRunJob>();
             job->module                      = module;
             job->dependentJob                = this;
             job->buildParameters             = module->buildParameters;
@@ -640,7 +638,7 @@ void ModuleBuildJob::publishFilesToPublic()
     // Add all #public files
     for (auto one : module->exportSourceFiles)
     {
-        auto job          = g_Pool_copyFileJob.alloc();
+        auto job          = g_Allocator.alloc<CopyFileJob>();
         job->module       = module;
         job->sourcePath   = one->path;
         job->destPath     = publicPath + "/" + one->name;
@@ -659,7 +657,7 @@ void ModuleBuildJob::publishFilesToTarget()
     // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
     // current target is
     OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-        auto job          = g_Pool_copyFileJob.alloc();
+        auto job          = g_Allocator.alloc<CopyFileJob>();
         job->module       = module;
         job->sourcePath   = publishPath + "/" + cFileName;
         job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
@@ -676,7 +674,7 @@ void ModuleBuildJob::publishFilesToTarget()
     if (fs::exists(osArchPath))
     {
         OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
-            auto job          = g_Pool_copyFileJob.alloc();
+            auto job          = g_Allocator.alloc<CopyFileJob>();
             job->module       = module;
             job->sourcePath   = osArchPath + "/" + cFileName;
             job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;

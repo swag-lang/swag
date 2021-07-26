@@ -1,7 +1,6 @@
 #pragma once
 #include "ByteCodeRunContext.h"
 #include "ByteCodeRun.h"
-#include "Pool.h"
 #include "BackendParameters.h"
 #include "TypeTable.h"
 #include "DataSegment.h"

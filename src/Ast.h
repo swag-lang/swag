@@ -1,5 +1,4 @@
 #pragma once
-#include "Pool.h"
 #include "AstNode.h"
 #include "Allocator.h"
 #include "SourceFile.h"

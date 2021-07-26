@@ -17,4 +17,3 @@ struct ModuleGenOutputJob : public Job
     mutex*              mutexDone = nullptr;
 };
 
-extern thread_local Pool<ModuleGenOutputJob> g_Pool_moduleGenOutputJob;

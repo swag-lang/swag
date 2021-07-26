@@ -6,8 +6,6 @@
 #include "ThreadManager.h"
 #include "Module.h"
 
-thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
-
 JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
@@ -17,7 +15,7 @@ JobResult ModuleOutputJob::execute()
         // Generate .swg file with public definitions
         if (g_CommandLine.output)
         {
-            auto exportJob          = g_Pool_moduleExportJob.alloc();
+            auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
@@ -63,7 +61,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputJob>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -75,7 +73,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->canGenerateLegit())
             {
-                auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputJob>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -129,7 +127,7 @@ JobResult ModuleOutputJob::execute()
         // Compile a specific version, to test it
         if (module->mustGenerateTestExe())
         {
-            auto compileJob                            = g_Pool_moduleGenOutputJob.alloc();
+            auto compileJob                            = g_Allocator.alloc<ModuleGenOutputJob>();
             compileJob->module                         = module;
             compileJob->dependentJob                   = this;
             compileJob->buildParameters                = module->buildParameters;
@@ -142,7 +140,7 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (module->canGenerateLegit())
         {
-            auto compileJob             = g_Pool_moduleGenOutputJob.alloc();
+            auto compileJob             = g_Allocator.alloc<ModuleGenOutputJob>();
             compileJob->module          = module;
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;

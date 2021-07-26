@@ -19,4 +19,3 @@ struct TypeTableJob : public Job
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 };
 
-extern thread_local Pool<TypeTableJob> g_Pool_typeTableJob;

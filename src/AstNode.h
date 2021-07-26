@@ -1,6 +1,5 @@
 #pragma once
 #include "DependentJobs.h"
-#include "Pool.h"
 #include "Utf8.h"
 #include "Tokenizer.h"
 #include "SyntaxJob.h"

@@ -671,7 +671,7 @@ void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
     node->flags &= ~AST_NO_SEMANTIC;
     if (node->doneFlags & AST_DONE_FILE_JOB_PASS)
     {
-        auto job          = g_Pool_semanticJob.alloc();
+        auto job          = g_Allocator.alloc<SemanticJob>();
         job->sourceFile   = context->sourceFile;
         job->module       = context->sourceFile->module;
         job->dependentJob = context->baseJob->dependentJob;
@@ -957,8 +957,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             Diagnostic note{funcNode,
                             funcNode->token,
                             Utf8::format(Note011,
-                                   node->ownerInline->func->getDisplayName().c_str(),
-                                   funcNode->getDisplayName().c_str()),
+                                         node->ownerInline->func->getDisplayName().c_str(),
+                                         funcNode->getDisplayName().c_str()),
                             DiagnosticLevel::Note};
             return context->report(diag, &note);
         }

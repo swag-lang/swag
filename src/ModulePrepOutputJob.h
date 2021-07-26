@@ -10,4 +10,3 @@ struct ModulePrepOutputJob : public Job
     BuildParameters buildParameters;
 };
 
-extern thread_local Pool<ModulePrepOutputJob> g_Pool_modulePrepOutputJob;

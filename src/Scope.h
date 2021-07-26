@@ -1,6 +1,5 @@
 #pragma once
 #include "Utf8.h"
-#include "Pool.h"
 #include "RegisterList.h"
 #include "DependentJobs.h"
 #include "SymTable.h"

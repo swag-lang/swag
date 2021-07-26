@@ -9,8 +9,6 @@
 #include "Context.h"
 #include "ErrorIds.h"
 
-thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
-
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
 {
     if (!node)
@@ -425,7 +423,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         auto extension = node->extension;
         if (!extension->byteCodeJob)
         {
-            extension->byteCodeJob             = g_Pool_byteCodeGenJob.alloc();
+            extension->byteCodeJob             = g_Allocator.alloc<ByteCodeGenJob>();
             extension->byteCodeJob->sourceFile = sourceFile;
             extension->byteCodeJob->module     = sourceFile->module;
             if (flags & ASKBC_WAIT_DONE)

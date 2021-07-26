@@ -8,9 +8,7 @@ struct BackendX64FunctionBodyJob : public BackendFunctionBodyJob
 
     void release() override
     {
-        extern thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
-        g_Pool_backendX64FunctionBodyJob.release(this);
+        g_Allocator.free<BackendX64FunctionBodyJob>(this);
     }
 };
 
-extern thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;

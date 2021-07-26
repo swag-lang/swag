@@ -44,4 +44,3 @@ struct ModuleBuildJob : public Job
     Timer           timerRun;
 };
 
-extern thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;

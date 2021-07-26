@@ -1,5 +1,4 @@
 #pragma once
-#include "Pool.h"
 #include "Utf8.h"
 #include "CommandLine.h"
 struct Module;
@@ -12,7 +11,6 @@ struct AstAttrUse;
 struct SourceFile
 {
     bool     load();
-    char     getPrivateChar();
     uint32_t getChar(unsigned& offset);
     Utf8     getLine(long lineNo);
 

@@ -180,6 +180,11 @@ struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
 
+    void release() override
+    {
+        g_Allocator.free<ByteCodeGenJob>(this);
+    }
+
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
     static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
@@ -187,7 +192,7 @@ struct ByteCodeGenJob : public Job
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
-    static void                 computeSourceLocation(JobContext* context, AstNode* node, uint32_t *storageOffset, DataSegment **storageSegment);
+    static void                 computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
     static bool canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr);
@@ -412,23 +417,4 @@ struct ByteCodeGenJob : public Job
     AstNode*               allParamsTmp = nullptr;
     Pass                   pass         = Pass::Generate;
     VectorNative<AstNode*> dependentNodesTmp;
-
-    void reset() override
-    {
-        Job::reset();
-        context.reset();
-        collectChilds.clear();
-        collectScopes.clear();
-        allParamsTmp = nullptr;
-        pass         = Pass::Generate;
-        dependentNodesTmp.clear();
-    }
-
-    void release() override
-    {
-        extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
-        g_Pool_byteCodeGenJob.release(this);
-    }
 };
-
-extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

@@ -6,8 +6,6 @@
 #include "Module.h"
 #include "Timer.h"
 
-thread_local Pool<ByteCodeOptimizerJob> g_Pool_byteCodeOptimizerJob;
-
 ByteCodeOptimizerJob::ByteCodeOptimizerJob()
 {
     passes.push_back(ByteCodeOptimizer::optimizePassNullPointer);

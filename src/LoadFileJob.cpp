@@ -2,8 +2,6 @@
 #include "File.h"
 #include "LoadFileJob.h"
 
-thread_local Pool<LoadFileJob> g_Pool_loadFileJob;
-
 JobResult LoadFileJob::execute()
 {
     FILE* fsrc = nullptr;

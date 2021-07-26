@@ -885,7 +885,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     if (passExport == BackendPreCompilePass::GenerateObj)
     {
         passExport        = BackendPreCompilePass::Release;
-        auto job          = g_Pool_moduleSaveExportJob.alloc();
+        auto job          = g_Allocator.alloc<ModuleSaveExportJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         ownerJob->jobsToAdd.push_back(job);

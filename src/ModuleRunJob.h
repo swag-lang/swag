@@ -10,4 +10,3 @@ struct ModuleRunJob : public Job
     BuildParameters buildParameters;
 };
 
-extern thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;

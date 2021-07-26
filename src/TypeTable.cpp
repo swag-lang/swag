@@ -458,7 +458,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        auto job                   = g_Pool_typeTableJob.alloc();
+        auto job                   = g_Allocator.alloc<TypeTableJob>();
         job->module                = module;
         job->typeTable             = this;
         job->sourceFile            = sourceFile;

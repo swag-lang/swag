@@ -3014,7 +3014,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                         // It's safe to create a job with the content as it has been fully evaluated.
                         // It's NOT safe for the function itself as the job that deals with it can be
                         // still running
-                        auto job          = g_Pool_semanticJob.alloc();
+                        auto job          = g_Allocator.alloc<SemanticJob>();
                         job->sourceFile   = context->sourceFile;
                         job->module       = context->sourceFile->module;
                         job->dependentJob = context->job->dependentJob;

@@ -636,7 +636,7 @@ bool Workspace::buildTarget()
 
         for (auto f : bootstrapModule->files)
         {
-            auto job        = g_Pool_syntaxJob.alloc();
+            auto job        = g_Allocator.alloc<SyntaxJob>();
             job->sourceFile = f;
             g_ThreadMgr.addJob(job);
         }
@@ -649,7 +649,7 @@ bool Workspace::buildTarget()
             return false;
         }
 
-        auto job    = g_Pool_moduleSemanticJob.alloc();
+        auto job    = g_Allocator.alloc<ModuleSemanticJob>();
         job->module = bootstrapModule;
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
@@ -681,7 +681,7 @@ bool Workspace::buildTarget()
 
         for (auto f : runtimeModule->files)
         {
-            auto job        = g_Pool_syntaxJob.alloc();
+            auto job        = g_Allocator.alloc<SyntaxJob>();
             job->sourceFile = f;
             g_ThreadMgr.addJob(job);
         }
@@ -697,7 +697,7 @@ bool Workspace::buildTarget()
         runtimeModule->constantSegment.initFrom(&bootstrapModule->constantSegment);
         runtimeModule->mutableSegment.initFrom(&bootstrapModule->mutableSegment);
 
-        auto job    = g_Pool_moduleSemanticJob.alloc();
+        auto job    = g_Allocator.alloc<ModuleSemanticJob>();
         job->module = runtimeModule;
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
@@ -786,7 +786,7 @@ bool Workspace::buildTarget()
     {
         if (module == bootstrapModule)
             continue;
-        auto job    = g_Pool_moduleBuildJob.alloc();
+        auto job    = g_Allocator.alloc<ModuleBuildJob>();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }

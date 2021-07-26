@@ -8,9 +8,6 @@ struct BackendLLVMFunctionBodyJob : public BackendFunctionBodyJob
 
     void release() override
     {
-        extern thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
-        g_Pool_backendLLVMFunctionBodyJob.release(this);
+        g_Allocator.free<BackendLLVMFunctionBodyJob>(this);
     }
 };
-
-extern thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;

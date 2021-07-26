@@ -51,7 +51,7 @@ struct Allocator
     void free(void* ptr)
     {
         ((T*) ptr)->~T();
-        free(ptr, sizeof(T));
+        free(ptr, alignSize(sizeof(T)));
     }
 
     template<typename T>
