@@ -58,7 +58,7 @@ struct Tokenizer
     bool getToken(Token& token);
     bool error(Token& token, const Utf8& msg);
     void postProcessRawString(Utf8& text);
-    void setTokenName(Token& token);
+    void appendTokenName(Token& token);
 
     uint32_t getChar();
     uint32_t getCharNoSeek(unsigned& offset);

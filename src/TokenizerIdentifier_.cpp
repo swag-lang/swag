@@ -25,7 +25,7 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
         c = getCharNoSeek(offset);
     }
 
-    setTokenName(token);
+    appendTokenName(token);
 
     auto crc = token.text.hash();
     auto it  = g_LangSpec.keywords.find(token.text.buffer, token.text.count, crc);

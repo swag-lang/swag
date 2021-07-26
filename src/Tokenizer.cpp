@@ -36,9 +36,8 @@ bool Tokenizer::isLiteral(TokenId id)
     return g_TokenFlags[(int) id] & TOKEN_LITERAL;
 }
 
-void Tokenizer::setTokenName(Token& token)
+void Tokenizer::appendTokenName(Token& token)
 {
-    token.text.clear();
     token.text.append(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
 }
 
@@ -142,9 +141,9 @@ bool Tokenizer::getToken(Token& token)
     unsigned offset;
     while (true)
     {
+        token.text.clear();
         startTokenName      = sourceFile->curBuffer;
         token.startLocation = location;
-        token.text.clear();
 
         auto c = getChar();
 
@@ -304,7 +303,7 @@ bool Tokenizer::getToken(Token& token)
         if (doSymbol(c, token))
         {
             token.endLocation = location;
-            setTokenName(token);
+            appendTokenName(token);
             return true;
         }
 
