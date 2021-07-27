@@ -110,6 +110,12 @@ struct LanguageSpec
     Utf8 name_move;
     Utf8 name_moveraw;
 
+    Utf8 name_nullptr;
+    Utf8 name_boundcheck;
+    Utf8 name_overflow;
+    Utf8 name_math;
+    Utf8 name_castany;
+    Utf8 name_bytecode;
     Utf8 name_usage;
     Utf8 name_what;
     Utf8 name_value;

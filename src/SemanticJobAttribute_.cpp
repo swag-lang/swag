@@ -239,15 +239,15 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == "nullptr")
+                    if (w == g_LangSpec.name_nullptr)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
-                    else if (w == "boundcheck")
+                    else if (w == g_LangSpec.name_boundcheck)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
-                    else if (w == "overflow")
+                    else if (w == g_LangSpec.name_overflow)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
-                    else if (w == "math")
+                    else if (w == g_LangSpec.name_math)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
-                    else if (w == "castany")
+                    else if (w == g_LangSpec.name_castany)
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                     else
                         return context->report({child, Utf8::format(Msg0593, w.c_str())});
@@ -273,9 +273,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == "bytecode")
+                    if (w == g_LangSpec.name_bytecode)
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
-                    else if (w == "backend")
+                    else if (w == g_LangSpec.name_backend)
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     else
                         return context->report({child, Utf8::format(Msg0594, w.c_str())});

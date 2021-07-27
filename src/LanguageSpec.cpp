@@ -97,12 +97,18 @@ void LanguageSpec::setupNames()
     name_move    = "move";
     name_moveraw = "moveraw";
 
-    name_usage = "usage";
-    name_what    = "what";
-    name_value   = "value";
-    name_disk    = "disk";
-    name_atalias = "@alias";
-    name_retval  = "retval";
+    name_nullptr    = "nullptr";
+    name_boundcheck = "boundcheck";
+    name_overflow   = "overflow";
+    name_math       = "math";
+    name_castany    = "castany";
+    name_bytecode   = "bytecode";
+    name_usage      = "usage";
+    name_what       = "what";
+    name_value      = "value";
+    name_disk       = "disk";
+    name_atalias    = "@alias";
+    name_retval     = "retval";
 }
 
 void LanguageSpec::setupKeywords()
