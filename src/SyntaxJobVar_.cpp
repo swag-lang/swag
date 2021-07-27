@@ -39,7 +39,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
         if (token.id == TokenId::SymEqual)
         {
-            auto saveToken = token;
+            auto saveToken = move(token);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
             Ast::removeFromParent(assign);

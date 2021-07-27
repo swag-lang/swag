@@ -142,7 +142,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     }
 
     currentScope   = oldScope;
-    auto openCurly = token;
+    auto openCurly = move(token);
 
     if (forGlobal)
     {
@@ -177,7 +177,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    auto openCurly = token;
+    auto openCurly = move(token);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
@@ -195,7 +195,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         *result = node;
 
     bool isGlobal  = currentScope->isGlobalOrImpl();
-    auto openCurly = token;
+    auto openCurly = move(token);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
