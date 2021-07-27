@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "SymTable.h"
 #include "Diagnostic.h"
-#include "SourceFile.h"
-#include "TypeInfo.h"
 #include "SymTable.h"
-#include "Allocator.h"
 #include "Ast.h"
 #include "Module.h"
 #include "ErrorIds.h"
@@ -21,12 +18,6 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
     if (symbol && symbol->cptOverloadsInit == 0)
         return nullptr;
     return symbol;
-}
-
-uint32_t SymTable::getNumSymbols()
-{
-    shared_lock lk(mutex);
-    return mapNames.count;
 }
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)

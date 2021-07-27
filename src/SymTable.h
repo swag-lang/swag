@@ -39,18 +39,6 @@ static const uint32_t OVERLOAD_CAN_CHANGE         = 0x00080000;
 static const uint32_t OVERLOAD_USED               = 0x00100000;
 static const uint32_t OVERLOAD_VAR_TLS            = 0x00200000;
 
-struct SymbolOverload
-{
-    ComputedValue computedValue;
-    RegisterList  registers;
-    TypeInfo*     typeInfo       = nullptr;
-    AstNode*      node           = nullptr;
-    SymbolName*   symbol         = nullptr;
-    uint64_t      attributeFlags = 0;
-    uint32_t      flags          = 0;
-    uint32_t      storageIndex   = 0;
-};
-
 enum class SymbolKind
 {
     Invalid,
@@ -67,6 +55,18 @@ enum class SymbolKind
     GenericType,
     Label,
     PlaceHolder,
+};
+
+struct SymbolOverload
+{
+    ComputedValue computedValue;
+    RegisterList  registers;
+    TypeInfo*     typeInfo       = nullptr;
+    AstNode*      node           = nullptr;
+    SymbolName*   symbol         = nullptr;
+    uint64_t      attributeFlags = 0;
+    uint32_t      flags          = 0;
+    uint32_t      storageIndex   = 0;
 };
 
 struct SymbolName
@@ -96,19 +96,19 @@ struct SymbolName
 
 struct SymTableHash
 {
+    SymbolName* find(const Utf8& str, uint32_t crc = 0);
+    void        addElem(SymbolName* data, uint32_t crc = 0);
+    void        add(SymbolName* data);
+
     struct Entry
     {
         SymbolName* symbolName;
         uint32_t    hash;
     };
 
-    Entry*   buffer;
+    Entry*   buffer    = nullptr;
     uint32_t allocated = 0;
-    uint32_t count;
-
-    SymbolName* find(const Utf8& str, uint32_t crc = 0);
-    void        addElem(SymbolName* data, uint32_t crc = 0);
-    void        add(SymbolName* data);
+    uint32_t count     = 0;
 };
 
 struct StructToDrop
@@ -121,28 +121,27 @@ struct StructToDrop
 
 struct SymTable
 {
-    uint32_t        getNumSymbols();
     SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
-    bool            checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
     bool            acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol);
+    bool            checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8& name, uint32_t crc = 0);
     SymbolName*     findNoLock(const Utf8& name, uint32_t crc = 0);
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
+    bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
-    bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
+    shared_mutex               mutex;
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;
-    shared_mutex               mutex;
 
-    Scope* scope;
+    Scope* scope = nullptr;
 };
