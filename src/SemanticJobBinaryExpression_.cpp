@@ -110,14 +110,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
             node->setPassThrough();
             Ast::removeFromParent(left);
-            Ast::releaseNode(left);
         }
         // something + 0 => something
         else if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
     }
 
@@ -225,7 +223,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
     }
 
@@ -319,14 +316,12 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         {
             node->setPassThrough();
             Ast::removeFromParent(left);
-            Ast::releaseNode(left);
         }
         // something * 1 => something
         else if (right->isConstant1())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
     }
 
@@ -556,14 +551,12 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         {
             node->setPassThrough();
             Ast::removeFromParent(left);
-            Ast::releaseNode(left);
         }
         // something | 0 => something
         else if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
         // something | 0xff (type) => 0xff (type)
         else if (right->flags & AST_VALUE_COMPUTED)
@@ -679,7 +672,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);
-                Ast::releaseNode(right);
             }
         }
 
@@ -693,7 +685,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
-                Ast::releaseNode(left);
             }
         }
     }
@@ -1028,7 +1019,6 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
         // 0 << something => 0
         else if (left->isConstant0())
@@ -1157,7 +1147,6 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
-            Ast::releaseNode(right);
         }
         // 0 >> something => 0
         else if (left->isConstant0())
@@ -1312,14 +1301,12 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
-                Ast::releaseNode(left);
             }
             // something && true => something
             else if (right->isConstantTrue())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);
-                Ast::releaseNode(right);
             }
         }
     }
@@ -1345,14 +1332,12 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
-                Ast::releaseNode(left);
             }
             // something || false => something
             else if (right->isConstantFalse())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);
-                Ast::releaseNode(right);
             }
         }
     }

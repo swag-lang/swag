@@ -1538,7 +1538,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     {
                         idx++;
                         Ast::removeFromParent(child);
-                        Ast::releaseNode(child);
                         continue;
                     }
 
