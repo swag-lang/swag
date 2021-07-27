@@ -203,6 +203,7 @@ Utf8 operator+(const char* str1, const Utf8& str2)
 
 bool operator==(const Utf8& str1, const char* str2)
 {
+    //printf("%s\n", str2);
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;
@@ -211,10 +212,7 @@ bool operator==(const Utf8& str1, const char* str2)
 
 bool operator!=(const Utf8& str1, const char* str2)
 {
-    SWAG_ASSERT(str2);
-    if (str1.count == 0)
-        return true;
-    return strcmp(str1.buffer, str2) != 0;
+    return !(str1 == str2);
 }
 
 bool operator==(const Utf8& str1, const Utf8& str2)
@@ -228,11 +226,7 @@ bool operator==(const Utf8& str1, const Utf8& str2)
 
 bool operator!=(const Utf8& str1, const Utf8& str2)
 {
-    if (str1.count != str2.count)
-        return true;
-    if (str1.count == 0)
-        return false;
-    return strcmp(str1.buffer, str2.buffer) != 0;
+    return !(str1 == str2);
 }
 
 void Utf8::operator=(uint32_t c)

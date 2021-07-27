@@ -6,6 +6,14 @@ LanguageSpec g_LangSpec;
 
 void LanguageSpec::setup()
 {
+    name_self                = "self";
+    name_opInitGenerated     = "opInitGenerated";
+    name_opDropGenerated     = "opDropGenerated";
+    name_opRelocGenerated    = "opRelocGenerated";
+    name_opPostCopyGenerated = "opPostCopyGenerated";
+    name_opPostMoveGenerated = "opPostMoveGenerated";
+    name_SystemAllocator     = "SystemAllocator";
+
     keywords.add("#global", TokenId::CompilerGlobal);
     keywords.add("#assert", TokenId::CompilerAssert);
     keywords.add("#semerror", TokenId::CompilerSemError);

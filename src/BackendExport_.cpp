@@ -8,6 +8,7 @@
 #include "ModuleSaveExportJob.h"
 #include "AstNode.h"
 #include "ByteCode.h"
+#include "LanguageSpec.h"
 
 bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 {
@@ -226,13 +227,14 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
             AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
 
             // Name
-            if (varDecl->token.text == "self" && p->typeInfo->isConst())
+            bool isSelf = varDecl->token.text == g_LangSpec.name_self;
+            if (isSelf && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
             bufferSwg.addString(varDecl->token.text);
 
             // Type
-            if (varDecl->token.text != "self")
+            if (!isSelf)
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
                 emitType(p->typeInfo, indent);
@@ -300,12 +302,13 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
             if (p->flags & AST_DECL_USING)
                 CONCAT_FIXED_STR(bufferSwg, "using ");
 
-            if (p->token.text == "self" && p->typeInfo->isConst())
+            bool isSelf = p->token.text == g_LangSpec.name_self;
+            if (isSelf && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
             bufferSwg.addString(p->token.text);
 
-            if (p->token.text != "self")
+            if (!isSelf)
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
                 emitType(p->typeInfo, indent);
@@ -657,27 +660,27 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
 
-            if (node->token.text == "opInitGenerated")
+            if (node->token.text == g_LangSpec.name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opInit(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == "opDropGenerated")
+            else if (node->token.text == g_LangSpec.name_opDropGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opDrop(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == "opRelocGenerated")
+            else if (node->token.text == g_LangSpec.name_opRelocGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opReloc(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == "opPostCopyGenerated")
+            else if (node->token.text == g_LangSpec.name_opPostCopyGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opPostCopy(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == "opPostMoveGenerated")
+            else if (node->token.text == g_LangSpec.name_opPostMoveGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opPostMove(using self);");
                 bufferSwg.addEol();
