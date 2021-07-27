@@ -37,6 +37,14 @@ struct LanguageSpec
     Utf8 name_SelectIf;
     Utf8 name_Pack;
 
+    Utf8 name_Swag_AttrUsage;
+    Utf8 name_Swag_AttrMulti;
+    Utf8 name_Swag_Align;
+    Utf8 name_Swag_Safety;
+    Utf8 name_Swag_Optim;
+    Utf8 name_Swag_SelectIf;
+    Utf8 name_Swag_Pack;
+
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;
     Utf8 name_opRelocGenerated;
@@ -102,6 +110,9 @@ struct LanguageSpec
     Utf8 name_move;
     Utf8 name_moveraw;
 
+    Utf8 name_usage;
+    Utf8 name_what;
+    Utf8 name_value;
     Utf8 name_disk;
     Utf8 name_atalias;
     Utf8 name_retval;

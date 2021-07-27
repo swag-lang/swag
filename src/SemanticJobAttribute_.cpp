@@ -186,7 +186,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeInfo->attributes.hasAttribute("Swag.AttrMulti"))
+            if (!typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_AttrMulti))
             {
                 if (result && result->isHere.contains(typeInfo))
                 {
@@ -199,13 +199,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                if (curAttr->attributes.getValue("Swag.AttrUsage", "usage", value))
+                if (curAttr->attributes.getValue(g_LangSpec.name_Swag_AttrUsage, g_LangSpec.name_usage, value))
                 {
                     auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage = value.reg.u32;
                 }
 
-                if (curAttr->attributes.hasAttribute("Swag.AttrMulti"))
+                if (curAttr->attributes.hasAttribute(g_LangSpec.name_Swag_AttrMulti))
                 {
                     auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage |= AttributeUsage::Multi;
@@ -220,12 +220,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("Swag.Safety", "what", attrWhat);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_what, attrWhat);
                 attrWhat.text.trim();
                 Utf8::tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.Safety", "value", attrValue);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_value, attrValue);
 
                 if (attrWhat.text.empty())
                 {
@@ -257,12 +257,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
-                curAttr->attributes.getValue("Swag.Optim", "what", attrWhat);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_what, attrWhat);
                 attrWhat.text.trim();
                 Utf8::tokenize(attrWhat.text, '|', what);
 
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.Optim", "value", attrValue);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_value, attrValue);
 
                 if (attrWhat.text.empty())
                 {
@@ -284,19 +284,19 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec.name_SelectIf)
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.SelectIf", "value", attrValue);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_SelectIf, g_LangSpec.name_value, attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
             else if (child->token.text == g_LangSpec.name_Pack)
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.Pack", "value", attrValue);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value, attrValue);
                 SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, Utf8::format(Msg0595, attrValue.reg.u8)}));
             }
             else if (child->token.text == g_LangSpec.name_Align)
             {
                 ComputedValue attrValue;
-                curAttr->attributes.getValue("Swag.Align", "value", attrValue);
+                curAttr->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, attrValue);
                 SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, Utf8::format(Msg0596, attrValue.reg.u8)}));
             }
 
