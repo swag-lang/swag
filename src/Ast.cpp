@@ -514,23 +514,31 @@ namespace Ast
         if (syntaxJob && !syntaxJob->currentTokenLocation)
             node->inheritTokenLocation(syntaxJob->token);
 
-        vector<Utf8> subNames;
-        Utf8::tokenize(name.c_str(), '.', subNames);
-        SWAG_ASSERT(subNames.size());
-        node->childs.reserve((int) subNames.size());
-
-        for (int i = 0; i < subNames.size(); i++)
+        Utf8 str;
+        auto pz = name.buffer;
+        while (*pz)
         {
+            auto pzStart = pz;
+            while (*pz && *pz != '.')
+                pz++;
+
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
-            id->token.text  = subNames[i];
-            id->token.id    = TokenId::Identifier;
+            str.buffer      = pzStart;
+            str.count       = (int) (pz - pzStart);
+            id->token.text  = str;
+
+            id->token.id = TokenId::Identifier;
             if (syntaxJob && !syntaxJob->currentTokenLocation)
                 id->inheritTokenLocation(syntaxJob->token);
             id->identifierRef = node;
             id->inheritOwners(node);
+
+            if (*pz)
+                pz++;
         }
 
+        str.buffer = nullptr; // to avoid free on destruction
         return node;
     }
 

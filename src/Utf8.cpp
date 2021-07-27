@@ -396,7 +396,7 @@ void Utf8::append(const char* txt, int len)
         return;
     SWAG_ASSERT(txt);
     reserve(count + len + 1);
-    memcpy(buffer + count, txt, len + 1);
+    memcpy(buffer + count, txt, len);
     count += len;
     buffer[count] = 0;
 }
@@ -409,8 +409,9 @@ void Utf8::append(const char* txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    memcpy(buffer + count, txt, len + 1);
+    memcpy(buffer + count, txt, len);
     count += len;
+    buffer[count] = 0;
 }
 
 void Utf8::append(const Utf8& txt)
@@ -419,16 +420,17 @@ void Utf8::append(const Utf8& txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    memcpy(buffer + count, txt.buffer, len + 1);
+    memcpy(buffer + count, txt.buffer, len);
     count += len;
+    buffer[count] = 0;
 }
 
 void Utf8::append(char c)
 {
     reserve(count + 2);
-    buffer[count]     = c;
-    buffer[count + 1] = 0;
+    buffer[count] = c;
     count++;
+    buffer[count] = 0;
 }
 
 void Utf8::append(uint32_t utf)
