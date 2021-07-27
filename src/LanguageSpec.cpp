@@ -29,13 +29,17 @@ void LanguageSpec::setupNames()
     name_Strict    = "Strict";
     name_PrintBc   = "PrintBc";
 
-    name_Swag_AttrUsage = "Swag.AttrUsage";
-    name_Swag_AttrMulti = "Swag.AttrMulti";
-    name_Swag_Align     = "Swag.Align";
-    name_Swag_Safety    = "Swag.Safety";
-    name_Swag_Optim     = "Swag.Optim";
-    name_Swag_SelectIf  = "Swag.SelectIf";
-    name_Swag_Pack      = "Swag.Pack";
+    name_Swag_AttrUsage  = "Swag.AttrUsage";
+    name_Swag_AttrMulti  = "Swag.AttrMulti";
+    name_Swag_Align      = "Swag.Align";
+    name_Swag_Safety     = "Swag.Safety";
+    name_Swag_Optim      = "Swag.Optim";
+    name_Swag_SelectIf   = "Swag.SelectIf";
+    name_Swag_Pack       = "Swag.Pack";
+    name_Swag_Foreign    = "Swag.Foreign";
+    name_Swag_Deprecated = "Swag.Deprecated";
+    name_Swag_Opaque     = "Swag.Opaque";
+    name_Swag_Offset     = "Swag.Offset";
 
     name_opBinary      = "opBinary";
     name_opUnary       = "opUnary";
@@ -97,6 +101,10 @@ void LanguageSpec::setupNames()
     name_move    = "move";
     name_moveraw = "moveraw";
 
+    name_name       = "name";
+    name_msg        = "msg";
+    name_module     = "module";
+    name_function   = "function";
     name_nullptr    = "nullptr";
     name_boundcheck = "boundcheck";
     name_overflow   = "overflow";

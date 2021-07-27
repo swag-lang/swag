@@ -530,31 +530,31 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     case AstNodeKind::FuncDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
         break;
     }
     case AstNodeKind::StructDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        typeInfo->attributes.getValue("Swag.deprecated", "msg", v);
+        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
         break;
     }
     case AstNodeKind::EnumValue:
     {
-        auto enumVal = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        enumVal->attributes.getValue("Swag.deprecated", "msg", v);
+        auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
+        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
         break;
     }
     }

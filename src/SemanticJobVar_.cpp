@@ -6,11 +6,12 @@
 #include "TypeManager.h"
 #include "Generic.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 uint32_t SemanticJob::alignOf(AstVarDecl* node)
 {
     ComputedValue value;
-    if (node->attributes.getValue("Swag.Align", "value", value))
+    if (node->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, value))
         return value.reg.u8;
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }

@@ -6,6 +6,7 @@
 #include "Diagnostic.h"
 #include "ByteCode.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 void AstNode::swap2Childs()
 {
@@ -582,7 +583,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     if (!forExport)
     {
         ComputedValue value;
-        if (typeFunc->attributes.getValue("Swag.Foreign", "function", value) && !value.text.empty())
+        if (typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, value) && !value.text.empty())
             fullnameForeign = value.text;
         else
             fullnameForeign = token.text;

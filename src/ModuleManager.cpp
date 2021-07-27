@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "LanguageSpec.h"
 
 ModuleManager g_ModuleMgr;
 
@@ -118,7 +119,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
 
     ComputedValue moduleName;
-    typeFunc->attributes.getValue("Swag.Foreign", "module", moduleName);
+    typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_module, moduleName);
     SWAG_ASSERT(!moduleName.text.empty());
 
     // Apply patch now, because module is already loaded

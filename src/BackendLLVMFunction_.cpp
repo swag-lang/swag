@@ -9,6 +9,7 @@
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "LanguageSpec.h"
 
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                                                \
     if (module->mustEmitSafetyOF(ip->node))                                                                                         \
@@ -3948,7 +3949,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
                 ComputedValue foreignValue;
-                typeFuncNode->attributes.getValue("Swag.Foreign", "function", foreignValue);
+                typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue);
                 SWAG_ASSERT(!foreignValue.text.empty());
 
                 llvm::FunctionType* T;
@@ -5042,7 +5043,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     // Get function name
     ComputedValue foreignValue;
     Utf8          funcName;
-    if (typeFuncBC->attributes.getValue("Swag.Foreign", "function", foreignValue) && !foreignValue.text.empty())
+    if (typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue) && !foreignValue.text.empty())
         funcName = foreignValue.text;
     else
         funcName = nodeFunc->token.text;

@@ -44,6 +44,10 @@ struct LanguageSpec
     Utf8 name_Swag_Optim;
     Utf8 name_Swag_SelectIf;
     Utf8 name_Swag_Pack;
+    Utf8 name_Swag_Foreign;
+    Utf8 name_Swag_Deprecated;
+    Utf8 name_Swag_Opaque;
+    Utf8 name_Swag_Offset;
 
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;
@@ -110,6 +114,10 @@ struct LanguageSpec
     Utf8 name_move;
     Utf8 name_moveraw;
 
+    Utf8 name_name;
+    Utf8 name_msg;
+    Utf8 name_module;
+    Utf8 name_function;
     Utf8 name_nullptr;
     Utf8 name_boundcheck;
     Utf8 name_overflow;

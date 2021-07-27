@@ -9,6 +9,7 @@
 #include "ByteCode.h"
 #include "ModuleManager.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -563,7 +564,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     ComputedValue value;
     if (node->structFlags & STRUCTFLAG_UNION)
         node->packing = 0;
-    else if (typeInfo->attributes.getValue("Swag.Pack", "value", value))
+    else if (typeInfo->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value, value))
         node->packing = value.reg.u8;
 
     // Check 'opaque' attribute
@@ -738,7 +739,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Attribute 'Swag.offset' can be used to force the storage offset of the member
         ComputedValue forceOffset;
         bool          relocated = false;
-        if (typeParam && typeParam->attributes.getValue("Swag.Offset", "name", forceOffset))
+        if (typeParam && typeParam->attributes.getValue(g_LangSpec.name_Swag_Offset, g_LangSpec.name_name, forceOffset))
         {
             for (auto p : typeInfo->fields)
             {
@@ -752,7 +753,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!relocated)
             {
-                auto attr = typeParam->attributes.getAttribute("Swag.Offset");
+                auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
                 SWAG_ASSERT(attr);
                 return context->report({attr->node, Utf8::format(Msg0673, forceOffset.text.c_str())});
             }
@@ -829,7 +830,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // User specific alignment
     ComputedValue userAlignOf;
-    auto          hasUserAlignOf = typeInfo->attributes.getValue("Swag.Align", "value", userAlignOf);
+    auto          hasUserAlignOf = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, userAlignOf);
     if (hasUserAlignOf)
         typeInfo->alignOf = userAlignOf.reg.u8;
     else if (node->packing)
@@ -839,12 +840,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // An opaque struct will be exported as an array of bytes.
     // We need to be sure that alignement will be respected, so we force "Swag.Align" attribute
     // if not already present.
-    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute("Swag.Opaque"))
+    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_Opaque))
     {
         OneAttribute       ot;
         AttributeParameter otp;
-        ot.name           = "Swag.Align";
-        otp.name          = "value";
+        ot.name           = g_LangSpec.name_Swag_Align;
+        otp.name          = g_LangSpec.name_value;
         otp.typeInfo      = g_TypeMgr.typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
         ot.parameters.push_back(otp);
