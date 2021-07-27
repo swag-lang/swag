@@ -2809,16 +2809,17 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias &&
             TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
+            auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)
             {
                 Diagnostic diag{node, node->token, Utf8::format(Msg0125, node->token.text.c_str(), symbol->overloads[0]->typeInfo->getDisplayName().c_str())};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{node, node->token, Utf8::format(Msg0127, node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
         }
@@ -2871,8 +2872,9 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         symbolKind != SymbolKind::Interface &&
         symbolKind != SymbolKind::TypeAlias)
     {
+        auto       firstNode = symbol->nodes.front();
         Diagnostic diag{callParameters, callParameters->token, Utf8::format(Msg0130, node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
-        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Utf8::format(Msg0126, node->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 

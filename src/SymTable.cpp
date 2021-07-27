@@ -39,10 +39,9 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         symbol = g_Allocator.alloc<SymbolName>();
         if (g_CommandLine.stats)
             g_Stats.memSymName += sizeof(SymbolName);
-        symbol->name                 = *aliasName;
-        symbol->kind                 = kind;
-        symbol->defaultOverload.node = node;
-        symbol->ownerTable           = this;
+        symbol->name       = *aliasName;
+        symbol->kind       = kind;
+        symbol->ownerTable = this;
         mapNames.add(symbol);
     }
     else if (symbol->kind == SymbolKind::PlaceHolder)
@@ -318,11 +317,10 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = Utf8::format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+        Utf8       msg = Utf8::format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};
         Utf8       note = Msg0884;
-        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
@@ -361,11 +359,10 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // Overloads are not allowed on certain types
     if (!canOverload && checkSameName)
     {
-        auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = Utf8::format(Msg0886, symbol->name.c_str());
+        Utf8       msg = Utf8::format(Msg0886, symbol->name.c_str());
         Diagnostic diag{node, token, msg};
         Utf8       note = Msg0884;
-        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }

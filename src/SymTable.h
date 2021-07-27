@@ -80,7 +80,6 @@ struct SymbolName
     shared_mutex                  mutex;
     VectorNative<SymbolOverload*> overloads;
     Utf8                          name;
-    SymbolOverload                defaultOverload;
     DependentJobs                 dependentJobs;
     VectorNative<AstNode*>        nodes;
 

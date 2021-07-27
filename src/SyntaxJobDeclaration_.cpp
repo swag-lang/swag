@@ -123,11 +123,10 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                auto       firstOverload = &symbol->defaultOverload;
-                Utf8       msg           = Utf8::format(Msg0886, symbol->name.c_str());
+                Utf8       msg = Utf8::format(Msg0886, symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Msg0884;
-                Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+                Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }
             else
