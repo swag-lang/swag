@@ -128,8 +128,12 @@ struct LanguageSpec
     Utf8 name_what;
     Utf8 name_value;
     Utf8 name_disk;
-    Utf8 name_atalias;
     Utf8 name_retval;
+
+    Utf8 name_atalias;
+    Utf8 name_atdrop;
+    Utf8 name_atpostCopy;
+    Utf8 name_atpostMove;
 };
 
 extern LanguageSpec g_LangSpec;

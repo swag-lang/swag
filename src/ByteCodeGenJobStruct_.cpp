@@ -9,6 +9,7 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "SemanticJob.h"
+#include "LanguageSpec.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {
@@ -79,7 +80,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opInit");
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opInit);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -125,7 +126,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opInit";
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
-    opInit->isCompilerGenerated     = true;
+    opInit->isCompilerGenerated   = true;
     typeInfoStruct->opInit        = opInit;
 
     // Export generated function if necessary
@@ -134,7 +135,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opInit->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = "opInitGenerated";
+        funcNode->token.text = g_LangSpec.name_opInitGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserInitFct)
             typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
@@ -331,7 +332,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opDrop");
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opDrop);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -388,7 +389,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opDropGenerated";
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
-    opDrop->isCompilerGenerated     = true;
+    opDrop->isCompilerGenerated   = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -396,7 +397,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opDrop->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = "opDropGenerated";
+        funcNode->token.text = g_LangSpec.name_opDropGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserDropFct)
             typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
@@ -459,7 +460,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opPostMove");
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostMove);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -516,7 +517,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostMoveGenerated";
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
-    opPostMove->isCompilerGenerated     = true;
+    opPostMove->isCompilerGenerated   = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -524,7 +525,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opPostMove->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = "opPostMoveGenerated";
+        funcNode->token.text = g_LangSpec.name_opPostMoveGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostMoveFct)
             typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
@@ -586,7 +587,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opPostCopy");
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostCopy);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -643,7 +644,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostCopyGenerated";
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
-    opPostCopy->isCompilerGenerated     = true;
+    opPostCopy->isCompilerGenerated   = true;
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -651,7 +652,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opPostCopy->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = "opPostCopyGenerated";
+        funcNode->token.text = g_LangSpec.name_opPostCopyGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostCopyFct)
             typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;

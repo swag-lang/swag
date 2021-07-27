@@ -115,8 +115,12 @@ void LanguageSpec::setupNames()
     name_what       = "what";
     name_value      = "value";
     name_disk       = "disk";
-    name_atalias    = "@alias";
     name_retval     = "retval";
+    
+    name_atalias    = "@alias";   
+    name_atdrop = "@drop";
+    name_atpostCopy = "@postCopy";
+    name_atpostMove = "@postMove";
 }
 
 void LanguageSpec::setupKeywords()

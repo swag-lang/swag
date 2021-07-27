@@ -1619,14 +1619,14 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::IntrinsicDrop:
-        node->token.text = Utf8("@drop");
+        node->token.text = g_LangSpec.name_atdrop;
         break;
     case TokenId::IntrinsicPostCopy:
-        node->token.text = Utf8("@postCopy");
+        node->token.text = g_LangSpec.name_atpostCopy;
         node->kind       = AstNodeKind::PostCopy;
         break;
     case TokenId::IntrinsicPostMove:
-        node->token.text = Utf8("@postMove");
+        node->token.text = g_LangSpec.name_atpostMove;
         node->kind       = AstNodeKind::PostMove;
         break;
     }

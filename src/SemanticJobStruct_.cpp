@@ -13,13 +13,13 @@
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
-    waitUserOp(context, "opPostCopy", node);
+    waitUserOp(context, g_LangSpec.name_opPostCopy, node);
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, "opPostMove", node);
+    waitUserOp(context, g_LangSpec.name_opPostMove, node);
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, "opDrop", node);
+    waitUserOp(context, g_LangSpec.name_opDrop, node);
     if (context->result == ContextResult::Pending)
         return true;
     return true;
