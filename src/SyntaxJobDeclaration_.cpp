@@ -106,11 +106,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-        {
-            auto t = token.text;
-            t.makeUpper();
-            SWAG_VERIFY(t != "SWAG", error(token, Msg0392));
-        }
+            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec.name_Swag), error(token, Msg0392));
 
         // Add/Get namespace
         {

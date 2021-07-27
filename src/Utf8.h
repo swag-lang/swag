@@ -27,6 +27,7 @@ struct Utf8
     uint32_t    hash() const;
     void        reset();
     void        reserve(int newSize);
+    void        resize(int newSize);
     bool        empty() const;
     int         length() const;
     const char* c_str() const;
@@ -37,23 +38,21 @@ struct Utf8
     void        append(const Utf8& txt);
     void        append(char c);
     void        append(uint32_t utf);
-    void        appendTmpChar(char c);
-    void        setTrailingZero();
     const char* begin() const;
     const char* end() const;
-                operator const char*();
     char        back() const;
     void        makeUpper();
     void        replaceAll(char src, char dst);
     void        trimLeft();
     void        trimRight();
     void        trim();
-    void        resize(int newSize);
     void        pop_back();
     int         find(const char* str, int startpos = 0) const;
     void        remove(int index, int len);
     void        insert(int index, const char* str);
+    bool        compareNoCase(const Utf8& txt1);
 
+                operator const char*();
     void        operator=(const char* txt);
     friend bool operator<(const Utf8& txt1, const Utf8& txt2);
     void        operator+=(const Utf8& txt);

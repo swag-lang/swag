@@ -273,6 +273,13 @@ void Utf8::makeUpper()
     }
 }
 
+bool Utf8::compareNoCase(const Utf8& txt1)
+{
+    if (count != txt1.count)
+        return false;
+    return _strcmpi(buffer, txt1.buffer) == 0;
+}
+
 void Utf8::replaceAll(char src, char dst)
 {
     for (int i = 0; i < count; i++)
