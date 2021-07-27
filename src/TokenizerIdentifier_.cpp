@@ -30,13 +30,16 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
     auto crc = token.text.hash();
     auto it  = g_LangSpec.keywords.find(token.text.buffer, token.text.count, crc);
     if (it)
-        token.id = *it;
+        token.id = (*it).first;
     else
         token.id = TokenId::Identifier;
 
     // Special keywords, replace with literal, except in 'docMode'
     switch (token.id)
     {
+    case TokenId::NativeType:
+        token.literalType = (*it).second;
+        return;
     case TokenId::KwdTrue:
         token.id             = TokenId::LiteralNumber;
         token.literalType    = LiteralType::TT_BOOL;
@@ -86,12 +89,5 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
         token.text = "?";
 #endif
         return;
-    case TokenId::NativeType:
-    {
-        auto result = g_LangSpec.nativeTypes.find(token.text.buffer, token.text.count, crc);
-        SWAG_ASSERT(result);
-        token.literalType = *result;
-        return;
-    }
     }
 }

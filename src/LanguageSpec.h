@@ -11,8 +11,8 @@ struct LanguageSpec
     void   setup();
     string tokenToName(TokenId id);
 
-    HashTable<TokenId, 4096>    keywords;
-    HashTable<LiteralType, 256> nativeTypes;
+    HashTable<pair<TokenId, LiteralType>, 4096> keywords;
+    HashTable<LiteralType, 256>                 nativeTypes;
 
     Utf8 name_Swag;
     Utf8 name_self;
