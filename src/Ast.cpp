@@ -12,26 +12,26 @@ namespace Ast
 {
     void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
-        node->kind = kind;
-        node->parent = parent;
+        node->kind       = kind;
+        node->parent     = parent;
         node->sourceFile = sourceFile;
         if (allocChilds)
             node->childs.reserve(allocChilds);
 
         if (job)
         {
-            node->token.id = job->token.id;
+            node->token.id   = job->token.id;
             node->token.text = job->token.text;
 
             if (job->currentTokenLocation)
             {
                 node->token.startLocation = job->currentTokenLocation->startLocation;
-                node->token.endLocation = job->currentTokenLocation->endLocation;
+                node->token.endLocation   = job->currentTokenLocation->endLocation;
             }
             else
             {
                 node->token.startLocation = job->token.startLocation;
-                node->token.endLocation = job->token.endLocation;
+                node->token.endLocation   = job->token.endLocation;
             }
 
             node->inheritOwnersAndFlags(job);
@@ -51,7 +51,7 @@ namespace Ast
             node->flags |= parent->flags & AST_IN_MIXIN;
 
             parent->lock();
-            node->childParentIdx = (uint32_t)parent->childs.size();
+            node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
             parent->unlock();
         }

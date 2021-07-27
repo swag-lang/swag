@@ -16,47 +16,47 @@ namespace Ast
         bool forExport = false;
     };
 
-    extern void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
-    extern void releaseNode(AstNode* node);
-    extern void removeFromParent(AstNode* child);
-    extern void insertChild(AstNode* parent, AstNode* child, uint32_t index);
-    extern void addChildBack(AstNode* parent, AstNode* child);
-    extern void addChildFront(AstNode* parent, AstNode* child);
-    extern int  findChildIndex(AstNode* parent, AstNode* child);
+    void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
+    void releaseNode(AstNode* node);
+    void removeFromParent(AstNode* child);
+    void insertChild(AstNode* parent, AstNode* child, uint32_t index);
+    void addChildBack(AstNode* parent, AstNode* child);
+    void addChildFront(AstNode* parent, AstNode* child);
+    int  findChildIndex(AstNode* parent, AstNode* child);
 
-    extern void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
-    extern void     setForceConstType(AstNode* node);
-    extern Utf8     enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
-    extern Utf8     literalToString(TypeInfo* typeInfo, const ComputedValue& value);
-    extern void     normalizeIdentifierName(Utf8& name);
-    extern AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
-    extern AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
-    extern Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
+    void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
+    void     setForceConstType(AstNode* node);
+    Utf8     enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
+    Utf8     literalToString(TypeInfo* typeInfo, const ComputedValue& value);
+    void     normalizeIdentifierName(Utf8& name);
+    AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
+    AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
+    Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
 
-    extern Scope*             newPrivateScope(AstNode* owner, SourceFile* file, Scope* parentScope);
-    extern Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
-    extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
-    extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
+    Scope*             newPrivateScope(AstNode* owner, SourceFile* file, Scope* parentScope);
+    Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
+    AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
+    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
 
-    extern bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes);
-    extern bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    extern bool output(OutputContext& context, Concat& concat, AstNode* node);
+    bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes);
+    bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    bool output(OutputContext& context, Concat& concat, AstNode* node);
 
     template<typename T>
     T* newNode()
     {
         auto node = g_Allocator.alloc0<T>();
         if (g_CommandLine.stats)
-            g_Stats.memNodes += sizeof(T);
+            g_Stats.memNodes += Allocator::alignSize(sizeof(T));
         return node;
     }
 
