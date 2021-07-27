@@ -534,11 +534,10 @@ void SymbolName::addDependentJobNoLock(Job* job)
     dependentJobs.add(job);
 }
 
-const Utf8& SymbolName::getFullName()
+Utf8 SymbolName::getFullName()
 {
     unique_lock lk(mutex);
-    if (!fullName.empty())
-        return fullName;
+    Utf8        fullName;
     Scope::makeFullName(fullName, ownerTable->scope->getFullName(), name);
     return fullName;
 }

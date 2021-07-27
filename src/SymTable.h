@@ -75,14 +75,14 @@ struct SymbolName
     SymbolOverload* findOverload(TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
-    const Utf8&     getFullName();
+    Utf8            getFullName();
 
     shared_mutex                  mutex;
     VectorNative<SymbolOverload*> overloads;
-    Utf8                          fullName;
     Utf8                          name;
     SymbolOverload                defaultOverload;
     DependentJobs                 dependentJobs;
+    VectorNative<AstNode*>        nodes;
 
     SymTable* ownerTable = nullptr;
 
@@ -90,8 +90,6 @@ struct SymbolName
     uint32_t   cptOverloads     = 0;
     uint32_t   cptOverloadsInit = 0;
     uint32_t   cptIfBlock       = 0;
-
-    VectorNative<AstNode*> nodes;
 };
 
 struct SymTableHash
