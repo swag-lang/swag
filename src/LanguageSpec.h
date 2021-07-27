@@ -8,16 +8,23 @@ struct TypeInfoNative;
 
 struct LanguageSpec
 {
-    void   setup();
+    void setup();
+    void setupNames();
+    void setupKeywords();
+    void setupAttributesFlags();
+    void setupNativeTypes();
+
     string tokenToName(TokenId id);
 
     HashTable<pair<TokenId, LiteralType>, 4096> keywords;
     HashTable<LiteralType, 256>                 nativeTypes;
+    HashTable<uint64_t, 256>                    attributesFlags;
 
+    Utf8 name_swag;
     Utf8 name_Swag;
     Utf8 name_self;
     Utf8 name_Self;
-    Utf8 name_SystemAllocator;
+
     Utf8 name_Complete;
     Utf8 name_AttrUsage;
     Utf8 name_AttrMulti;
@@ -25,6 +32,11 @@ struct LanguageSpec
     Utf8 name_Strict;
     Utf8 name_PrintBc;
     Utf8 name_Align;
+    Utf8 name_Safety;
+    Utf8 name_Optim;
+    Utf8 name_SelectIf;
+    Utf8 name_Pack;
+
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;
     Utf8 name_opRelocGenerated;
@@ -47,6 +59,7 @@ struct LanguageSpec
     Utf8 name_opIndex;
     Utf8 name_opIndexAffect;
     Utf8 name_opInit;
+
     Utf8 name_TypeInfo;
     Utf8 name_TypeInfoNative;
     Utf8 name_TypeInfoPointer;
@@ -60,8 +73,13 @@ struct LanguageSpec
     Utf8 name_TypeInfoSlice;
     Utf8 name_TypeInfoGeneric;
     Utf8 name_TypeInfoAlias;
+
     Utf8 name_CompilerSourceLocation;
+    Utf8 name_SystemAllocator;
     Utf8 name_BuildCfg;
+    Utf8 name_AttributeUsage;
+    Utf8 name_Swag_CompilerMsgMask;
+
     Utf8 name_export;
     Utf8 name_generated;
     Utf8 name_foreignlib;
@@ -77,16 +95,15 @@ struct LanguageSpec
     Utf8 name_testwarnings;
     Utf8 name_location;
     Utf8 name_version;
-    Utf8 name_AttributeUsage;
-    Utf8 name_swag;
-    Utf8 name_disk;
-    Utf8 name_atalias;
+
     Utf8 name_safe;
     Utf8 name_small;
     Utf8 name_nodrop;
     Utf8 name_move;
     Utf8 name_moveraw;
-    Utf8 name_Swag_CompilerMsgMask;
+
+    Utf8 name_disk;
+    Utf8 name_atalias;
     Utf8 name_retval;
 };
 

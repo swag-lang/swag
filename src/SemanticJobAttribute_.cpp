@@ -213,49 +213,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Predefined attributes will mark some flags (to speed up detection)
-            if (child->token.text == "ConstExpr")
-                flags |= ATTRIBUTE_CONSTEXPR;
-            else if (child->token.text == "PrintBc")
-                flags |= ATTRIBUTE_PRINT_BC;
-            else if (child->token.text == "Test")
-                flags |= ATTRIBUTE_TEST_FUNC;
-            else if (child->token.text == "Compiler")
-                flags |= ATTRIBUTE_COMPILER;
-            else if (child->token.text == "EnumFlags")
-                flags |= ATTRIBUTE_ENUM_FLAGS;
-            else if (child->token.text == "EnumIndex")
-                flags |= ATTRIBUTE_ENUM_INDEX;
-            else if (child->token.text == "Foreign")
-                flags |= ATTRIBUTE_FOREIGN;
-            else if (child->token.text == "Inline")
-                flags |= ATTRIBUTE_INLINE;
-            else if (child->token.text == "Macro")
-                flags |= ATTRIBUTE_MACRO;
-            else if (child->token.text == "Mixin")
-                flags |= ATTRIBUTE_MIXIN;
-            else if (child->token.text == "Complete")
-                flags |= ATTRIBUTE_COMPLETE;
-            else if (child->token.text == "Implicit")
-                flags |= ATTRIBUTE_IMPLICIT;
-            else if (child->token.text == "NoReturn")
-                flags |= ATTRIBUTE_NO_RETURN;
-            else if (child->token.text == "Discardable")
-                flags |= ATTRIBUTE_DISCARDABLE;
-            else if (child->token.text == "Deprecated")
-                flags |= ATTRIBUTE_DEPRECATED;
-            else if (child->token.text == "Global")
-                flags |= ATTRIBUTE_GLOBAL;
-            else if (child->token.text == "Tls")
-                flags |= ATTRIBUTE_TLS;
-            else if (child->token.text == "Strict")
-                flags |= ATTRIBUTE_STRICT;
-            else if (child->token.text == "Callback")
-                flags |= ATTRIBUTE_CALLBACK;
-            else if (child->token.text == "NoCopy")
-                flags |= ATTRIBUTE_NO_COPY;
-            else if (child->token.text == "Opaque")
-                flags |= ATTRIBUTE_OPAQUE;
-            else if (child->token.text == "Safety")
+            auto it = g_LangSpec.attributesFlags.find(child->token.text);
+            if (it)
+                flags |= *it;
+            else if (child->token.text == g_LangSpec.name_Safety)
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
@@ -292,7 +253,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({child, Utf8::format(Msg0593, w.c_str())});
                 }
             }
-            else if (child->token.text == "Optim")
+            else if (child->token.text == g_LangSpec.name_Optim)
             {
                 ComputedValue attrWhat;
                 vector<Utf8>  what;
@@ -320,19 +281,19 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({child, Utf8::format(Msg0594, w.c_str())});
                 }
             }
-            else if (child->token.text == "SelectIf")
+            else if (child->token.text == g_LangSpec.name_SelectIf)
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("Swag.SelectIf", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
-            else if (child->token.text == "Pack")
+            else if (child->token.text == g_LangSpec.name_Pack)
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("Swag.Pack", "value", attrValue);
                 SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, Utf8::format(Msg0595, attrValue.reg.u8)}));
             }
-            else if (child->token.text == "Align")
+            else if (child->token.text == g_LangSpec.name_Align)
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("Swag.Align", "value", attrValue);

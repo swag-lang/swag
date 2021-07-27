@@ -4,83 +4,98 @@
 
 LanguageSpec g_LangSpec;
 
-void LanguageSpec::setup()
+void LanguageSpec::setupNames()
 {
-    name_Swag                   = "Swag";
-    name_self                   = "self";
-    name_Self                   = "Self";
-    name_opInitGenerated        = "opInitGenerated";
-    name_opDropGenerated        = "opDropGenerated";
-    name_opRelocGenerated       = "opRelocGenerated";
-    name_opPostCopyGenerated    = "opPostCopyGenerated";
-    name_opPostMoveGenerated    = "opPostMoveGenerated";
+    name_swag = "swag";
+    name_Swag = "Swag";
+    name_self = "self";
+    name_Self = "Self";
+
+    name_opInitGenerated     = "opInitGenerated";
+    name_opDropGenerated     = "opDropGenerated";
+    name_opRelocGenerated    = "opRelocGenerated";
+    name_opPostCopyGenerated = "opPostCopyGenerated";
+    name_opPostMoveGenerated = "opPostMoveGenerated";
+
+    name_Safety    = "Safety";
+    name_Optim     = "Optim";
+    name_SelectIf  = "SelectIf";
+    name_Pack      = "Pack";
+    name_Align     = "Align";
+    name_Complete  = "Complete";
+    name_AttrUsage = "AttrUsage";
+    name_AttrMulti = "AttrMulti";
+    name_Global    = "Global";
+    name_Strict    = "Strict";
+    name_PrintBc   = "PrintBc";
+
+    name_opBinary      = "opBinary";
+    name_opUnary       = "opUnary";
+    name_opAssign      = "opAssign";
+    name_opIndexAssign = "opIndexAssign";
+    name_opCast        = "opCast";
+    name_opEquals      = "opEquals";
+    name_opCmp         = "opCmp";
+    name_opPostCopy    = "opPostCopy";
+    name_opPostMove    = "opPostMove";
+    name_opDrop        = "opDrop";
+    name_opCount       = "opCount";
+    name_opData        = "opData";
+    name_opAffect      = "opAffect";
+    name_opSlice       = "opSlice";
+    name_opIndex       = "opIndex";
+    name_opIndexAffect = "opIndexAffect";
+    name_opInit        = "opInit";
+
+    name_TypeInfo          = "TypeInfo";
+    name_TypeInfoNative    = "TypeInfoNative";
+    name_TypeInfoPointer   = "TypeInfoPointer";
+    name_TypeInfoReference = "TypeInfoReference";
+    name_TypeInfoStruct    = "TypeInfoStruct";
+    name_TypeInfoParam     = "TypeInfoParam";
+    name_TypeInfoFunc      = "TypeInfoFunc";
+    name_TypeInfoEnum      = "TypeInfoEnum";
+    name_TypeInfoVariadic  = "TypeInfoVariadic";
+    name_TypeInfoArray     = "TypeInfoArray";
+    name_TypeInfoSlice     = "TypeInfoSlice";
+    name_TypeInfoGeneric   = "TypeInfoGeneric";
+    name_TypeInfoAlias     = "TypeInfoAlias";
+
     name_SystemAllocator        = "SystemAllocator";
-    name_Complete               = "Complete";
-    name_AttrUsage              = "AttrUsage";
-    name_AttrMulti              = "AttrMulti";
-    name_Global                 = "Global";
-    name_Strict                 = "Strict";
-    name_PrintBc                = "PrintBc";
-    name_Align                  = "Align";
-    name_opBinary               = "opBinary";
-    name_opUnary                = "opUnary";
-    name_opAssign               = "opAssign";
-    name_opIndexAssign          = "opIndexAssign";
-    name_opCast                 = "opCast";
-    name_opEquals               = "opEquals";
-    name_opCmp                  = "opCmp";
-    name_opPostCopy             = "opPostCopy";
-    name_opPostMove             = "opPostMove";
-    name_opDrop                 = "opDrop";
-    name_opCount                = "opCount";
-    name_opData                 = "opData";
-    name_opAffect               = "opAffect";
-    name_opSlice                = "opSlice";
-    name_opIndex                = "opIndex";
-    name_opIndexAffect          = "opIndexAffect";
-    name_opInit                 = "opInit";
-    name_TypeInfo               = "TypeInfo";
-    name_TypeInfoNative         = "TypeInfoNative";
-    name_TypeInfoPointer        = "TypeInfoPointer";
-    name_TypeInfoReference      = "TypeInfoReference";
-    name_TypeInfoStruct         = "TypeInfoStruct";
-    name_TypeInfoParam          = "TypeInfoParam";
-    name_TypeInfoFunc           = "TypeInfoFunc";
-    name_TypeInfoEnum           = "TypeInfoEnum";
-    name_TypeInfoVariadic       = "TypeInfoVariadic";
-    name_TypeInfoArray          = "TypeInfoArray";
-    name_TypeInfoSlice          = "TypeInfoSlice";
-    name_TypeInfoGeneric        = "TypeInfoGeneric";
-    name_TypeInfoAlias          = "TypeInfoAlias";
     name_CompilerSourceLocation = "CompilerSourceLocation";
     name_BuildCfg               = "BuildCfg";
-    name_export                 = "export";
-    name_generated              = "generated";
-    name_foreignlib             = "foreignlib";
-    name_skip                   = "skip";
-    name_testpass               = "testpass";
-    name_lexer                  = "lexer";
-    name_syntax                 = "syntax";
-    name_semantic               = "semantic";
-    name_backend                = "backend";
-    name_testerror              = "testerror";
-    name_testerrors             = "testerrors";
-    name_testwarning            = "testwarning";
-    name_testwarnings           = "testwarnings";
-    name_location               = "location";
-    name_version                = "version";
     name_AttributeUsage         = "AttributeUsage";
-    name_swag                   = "swag";
-    name_disk                   = "disk";
-    name_atalias                = "@alias";
-    name_safe                   = "safe";
-    name_small                  = "small";
-    name_nodrop                 = "nodrop";
-    name_move                   = "move";
-    name_moveraw                = "moveraw";
     name_Swag_CompilerMsgMask   = "Swag.CompilerMsgMask";
-    name_retval                 = "retval";
 
+    name_export       = "export";
+    name_generated    = "generated";
+    name_foreignlib   = "foreignlib";
+    name_skip         = "skip";
+    name_testpass     = "testpass";
+    name_lexer        = "lexer";
+    name_syntax       = "syntax";
+    name_semantic     = "semantic";
+    name_backend      = "backend";
+    name_testerror    = "testerror";
+    name_testerrors   = "testerrors";
+    name_testwarning  = "testwarning";
+    name_testwarnings = "testwarnings";
+    name_location     = "location";
+    name_version      = "version";
+
+    name_safe    = "safe";
+    name_small   = "small";
+    name_nodrop  = "nodrop";
+    name_move    = "move";
+    name_moveraw = "moveraw";
+
+    name_disk    = "disk";
+    name_atalias = "@alias";
+    name_retval  = "retval";
+}
+
+void LanguageSpec::setupKeywords()
+{
     keywords.add("#global", {TokenId::CompilerGlobal, LiteralType::TT_MAX});
     keywords.add("#assert", {TokenId::CompilerAssert, LiteralType::TT_MAX});
     keywords.add("#semerror", {TokenId::CompilerSemError, LiteralType::TT_MAX});
@@ -271,7 +286,35 @@ void LanguageSpec::setup()
     keywords.add("any", {TokenId::NativeType, LiteralType::TT_ANY});
     keywords.add("void", {TokenId::NativeType, LiteralType::TT_VOID});
     keywords.add("typeinfo", {TokenId::NativeType, LiteralType::TT_TYPE});
+}
 
+void LanguageSpec::setupAttributesFlags()
+{
+    attributesFlags.add("ConstExpr", ATTRIBUTE_CONSTEXPR);
+    attributesFlags.add("PrintBc", ATTRIBUTE_PRINT_BC);
+    attributesFlags.add("Test", ATTRIBUTE_TEST_FUNC);
+    attributesFlags.add("Compiler", ATTRIBUTE_COMPILER);
+    attributesFlags.add("EnumFlags", ATTRIBUTE_ENUM_FLAGS);
+    attributesFlags.add("EnumIndex", ATTRIBUTE_ENUM_INDEX);
+    attributesFlags.add("Foreign", ATTRIBUTE_FOREIGN);
+    attributesFlags.add("Inline", ATTRIBUTE_INLINE);
+    attributesFlags.add("Macro", ATTRIBUTE_MACRO);
+    attributesFlags.add("Mixin", ATTRIBUTE_MIXIN);
+    attributesFlags.add("Complete", ATTRIBUTE_COMPLETE);
+    attributesFlags.add("Implicit", ATTRIBUTE_IMPLICIT);
+    attributesFlags.add("NoReturn", ATTRIBUTE_NO_RETURN);
+    attributesFlags.add("Discardable", ATTRIBUTE_DISCARDABLE);
+    attributesFlags.add("Deprecated", ATTRIBUTE_DEPRECATED);
+    attributesFlags.add("Global", ATTRIBUTE_GLOBAL);
+    attributesFlags.add("Tls", ATTRIBUTE_TLS);
+    attributesFlags.add("Strict", ATTRIBUTE_STRICT);
+    attributesFlags.add("Callback", ATTRIBUTE_CALLBACK);
+    attributesFlags.add("NoCopy", ATTRIBUTE_NO_COPY);
+    attributesFlags.add("Opaque", ATTRIBUTE_OPAQUE);
+}
+
+void LanguageSpec::setupNativeTypes()
+{
     nativeTypes.add("uint", LiteralType::TT_UINT);
     nativeTypes.add("int", LiteralType::TT_INT);
     nativeTypes.add("u64", LiteralType::TT_U64);
@@ -290,6 +333,14 @@ void LanguageSpec::setup()
     nativeTypes.add("any", LiteralType::TT_ANY);
     nativeTypes.add("void", LiteralType::TT_VOID);
     nativeTypes.add("typeinfo", LiteralType::TT_TYPE);
+}
+
+void LanguageSpec::setup()
+{
+    setupNames();
+    setupKeywords();
+    setupAttributesFlags();
+    setupNativeTypes();
 }
 
 string LanguageSpec::tokenToName(TokenId id)
