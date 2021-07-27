@@ -10,6 +10,53 @@ atomic<int> g_UniqueID;
 
 namespace Ast
 {
+    void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
+    {
+        node->kind = kind;
+        node->parent = parent;
+        node->sourceFile = sourceFile;
+        if (allocChilds)
+            node->childs.reserve(allocChilds);
+
+        if (job)
+        {
+            node->token.id = job->token.id;
+            node->token.text = job->token.text;
+
+            if (job->currentTokenLocation)
+            {
+                node->token.startLocation = job->currentTokenLocation->startLocation;
+                node->token.endLocation = job->currentTokenLocation->endLocation;
+            }
+            else
+            {
+                node->token.startLocation = job->token.startLocation;
+                node->token.endLocation = job->token.endLocation;
+            }
+
+            node->inheritOwnersAndFlags(job);
+        }
+        else
+        {
+            if (parent)
+                node->inheritTokenLocation(parent->token);
+            node->inheritOwners(parent);
+        }
+
+        if (parent)
+        {
+            // Some flags are inherited from the parent, whatever...
+            node->flags |= parent->flags & AST_NO_BACKEND;
+            node->flags |= parent->flags & AST_RUN_BLOCK;
+            node->flags |= parent->flags & AST_IN_MIXIN;
+
+            parent->lock();
+            node->childParentIdx = (uint32_t)parent->childs.size();
+            parent->childs.push_back(node);
+            parent->unlock();
+        }
+    }
+
     Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
