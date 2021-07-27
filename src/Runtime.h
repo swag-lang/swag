@@ -1,9 +1,23 @@
 #pragma once
 #include "Attribute.h"
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match bootstrap.swg
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+static const uint64_t ATTRIBUTE_SAFETY_NULLPTR_ON     = 0x0000100000000000;
+static const uint64_t ATTRIBUTE_SAFETY_BOUNDCHECK_ON  = 0x0000200000000000;
+static const uint64_t ATTRIBUTE_SAFETY_OVERFLOW_ON    = 0x0000400000000000;
+static const uint64_t ATTRIBUTE_SAFETY_MATH_ON        = 0x0000800000000000;
+static const uint64_t ATTRIBUTE_SAFETY_CASTANY_ON     = 0x0001000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_NULLPTR_OFF    = 0x0010000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_BOUNDCHECK_OFF = 0x0020000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_OVERFLOW_OFF   = 0x0040000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_MATH_OFF       = 0x0080000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_CASTANY_OFF    = 0x0100000000000000;
+static const uint64_t ATTRIBUTE_SAFETY_MASK_ON        = ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_CASTANY_ON;
+static const uint64_t ATTRIBUTE_SAFETY_MASK_OFF       = ATTRIBUTE_SAFETY_NULLPTR_OFF | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF | ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_SAFETY_MATH_OFF | ATTRIBUTE_SAFETY_CASTANY_OFF;
+static const uint64_t ATTRIBUTE_SAFETY_MASK           = ATTRIBUTE_SAFETY_MASK_ON | ATTRIBUTE_SAFETY_MASK_OFF;
 
 enum AttributeUsage
 {
@@ -21,10 +35,6 @@ enum AttributeUsage
     // Flags
     Multi = 0x80000000,
 };
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
-// SHOULD MATCH EVERY BACKENDS
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class ContextFlags : uint64_t
 {
@@ -95,10 +105,6 @@ typedef struct SwagProcessInfos
     SwagMakeCallback makeCallback;
 } SwagProcessInfos;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 struct BuildCfgBackendLLVM
 {
     uint32_t minFunctionPerFile = 256;
@@ -154,10 +160,6 @@ struct BuildCfg
     BuildCfgBackendLLVM backendLLVM;
     BuildCfgBackendX64  backendX64;
 };
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class TypeInfoKind : uint8_t
 {
@@ -222,10 +224,6 @@ enum class TypeInfoFlags : uint16_t
     CanCopy     = 0x0100,
     Tuple       = 0x0200,
 };
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct ConcreteTypeInfo
 {
@@ -347,10 +345,6 @@ struct ConcreteTypeInfoGeneric
     void*            rawType;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 enum class CompilerMsgKind
 {
     PassAfterSemantic,
@@ -370,10 +364,6 @@ enum class CompilerMsgKindMask : uint64_t
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 struct ConcreteCompilerMessage
 {
     SwagSlice         moduleName;
@@ -385,10 +375,6 @@ struct ConcreteCompilerMessage
 static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
 static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x4000000000000000;
 static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 const uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
 const uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
