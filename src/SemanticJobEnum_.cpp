@@ -137,6 +137,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     auto         rawTypeInfo    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
+    enumNode->allocateComputedValue();
 
     if (assignNode)
     {
@@ -150,25 +151,25 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            storageSegment = getConstantSegFromContext(assignNode);
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
-            enumNode->computedValue.storageOffset  = storageOffset;
-            enumNode->computedValue.storageSegment = storageSegment;
+            storageSegment = getConstantSegFromContext(assignNode);
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, assignNode->computedValue, assignNode->typeInfo, assignNode));
+            enumNode->computedValue->storageOffset  = storageOffset;
+            enumNode->computedValue->storageSegment = storageSegment;
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
-            storageSegment = getConstantSegFromContext(assignNode);
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
+            storageSegment = getConstantSegFromContext(assignNode);
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, assignNode->computedValue, assignNode->typeInfo, assignNode));
             auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
             // :SliceLiteral
-            enumNode->computedValue.reg.u64        = typeList->subTypes.size();
-            enumNode->computedValue.storageOffset  = storageOffset;
-            enumNode->computedValue.storageSegment = storageSegment;
+            enumNode->computedValue->reg.u64        = typeList->subTypes.size();
+            enumNode->computedValue->storageOffset  = storageOffset;
+            enumNode->computedValue->storageSegment = storageSegment;
         }
         else
         {
@@ -221,75 +222,75 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             switch (rawType->nativeType)
             {
             case NativeTypeKind::U8:
-                if (enumNode->computedValue.reg.u8 == UINT8_MAX)
+                if (enumNode->computedValue->reg.u8 == UINT8_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0708, valNode->token.text.c_str())});
-                if (isFlags && enumNode->computedValue.reg.u8)
+                if (isFlags && enumNode->computedValue->reg.u8)
                 {
-                    auto n = enumNode->computedValue.reg.u8;
+                    auto n = enumNode->computedValue->reg.u8;
                     SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, Utf8::format(Msg0709, valNode->token.text.c_str())}));
-                    enumNode->computedValue.reg.u8 <<= 1;
+                    enumNode->computedValue->reg.u8 <<= 1;
                 }
                 else
-                    enumNode->computedValue.reg.u8++;
+                    enumNode->computedValue->reg.u8++;
                 break;
             case NativeTypeKind::U16:
-                if (enumNode->computedValue.reg.u16 == UINT16_MAX)
+                if (enumNode->computedValue->reg.u16 == UINT16_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0710, valNode->token.text.c_str())});
-                if (isFlags && enumNode->computedValue.reg.u16)
+                if (isFlags && enumNode->computedValue->reg.u16)
                 {
-                    auto n = enumNode->computedValue.reg.u16;
+                    auto n = enumNode->computedValue->reg.u16;
                     SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, Utf8::format(Msg0709, valNode->token.text.c_str())}));
-                    enumNode->computedValue.reg.u16 <<= 1;
+                    enumNode->computedValue->reg.u16 <<= 1;
                 }
                 else
-                    enumNode->computedValue.reg.u16++;
+                    enumNode->computedValue->reg.u16++;
                 break;
             case NativeTypeKind::U32:
-                if (enumNode->computedValue.reg.u32 == UINT32_MAX)
+                if (enumNode->computedValue->reg.u32 == UINT32_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0712, valNode->token.text.c_str())});
-                if (isFlags && enumNode->computedValue.reg.u32)
+                if (isFlags && enumNode->computedValue->reg.u32)
                 {
-                    auto n = enumNode->computedValue.reg.u32;
+                    auto n = enumNode->computedValue->reg.u32;
                     SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, Utf8::format(Msg0709, valNode->token.text.c_str())}));
-                    enumNode->computedValue.reg.u32 <<= 1;
+                    enumNode->computedValue->reg.u32 <<= 1;
                 }
                 else
-                    enumNode->computedValue.reg.u32++;
+                    enumNode->computedValue->reg.u32++;
                 break;
             case NativeTypeKind::U64:
             case NativeTypeKind::UInt:
-                if (enumNode->computedValue.reg.u64 == UINT64_MAX)
+                if (enumNode->computedValue->reg.u64 == UINT64_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0714, valNode->token.text.c_str())});
-                if (isFlags && enumNode->computedValue.reg.u64)
+                if (isFlags && enumNode->computedValue->reg.u64)
                 {
-                    auto n = enumNode->computedValue.reg.u64;
+                    auto n = enumNode->computedValue->reg.u64;
                     SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, Utf8::format(Msg0709, valNode->token.text.c_str())}));
-                    enumNode->computedValue.reg.u64 <<= 1;
+                    enumNode->computedValue->reg.u64 <<= 1;
                 }
                 else
-                    enumNode->computedValue.reg.u64++;
+                    enumNode->computedValue->reg.u64++;
                 break;
 
             case NativeTypeKind::S8:
-                if (enumNode->computedValue.reg.s8 <= INT8_MIN || enumNode->computedValue.reg.s8 >= INT8_MAX)
+                if (enumNode->computedValue->reg.s8 <= INT8_MIN || enumNode->computedValue->reg.s8 >= INT8_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0716, valNode->token.text.c_str())});
-                enumNode->computedValue.reg.s8++;
+                enumNode->computedValue->reg.s8++;
                 break;
             case NativeTypeKind::S16:
-                if (enumNode->computedValue.reg.s16 <= INT16_MIN || enumNode->computedValue.reg.s16 >= INT16_MAX)
+                if (enumNode->computedValue->reg.s16 <= INT16_MIN || enumNode->computedValue->reg.s16 >= INT16_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0717, valNode->token.text.c_str())});
-                enumNode->computedValue.reg.s16++;
+                enumNode->computedValue->reg.s16++;
                 break;
             case NativeTypeKind::S32:
-                if (enumNode->computedValue.reg.s32 <= INT32_MIN || enumNode->computedValue.reg.s32 >= INT32_MAX)
+                if (enumNode->computedValue->reg.s32 <= INT32_MIN || enumNode->computedValue->reg.s32 >= INT32_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0718, valNode->token.text.c_str())});
-                enumNode->computedValue.reg.s32++;
+                enumNode->computedValue->reg.s32++;
                 break;
             case NativeTypeKind::S64:
             case NativeTypeKind::Int:
-                if (enumNode->computedValue.reg.s64 <= INT64_MIN || enumNode->computedValue.reg.s64 >= INT64_MAX)
+                if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
                     return context->report({valNode, valNode->token, Utf8::format(Msg0719, valNode->token.text.c_str())});
-                enumNode->computedValue.reg.s64++;
+                enumNode->computedValue->reg.s64++;
                 break;
             }
         }
@@ -300,7 +301,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                                                            valNode,
                                                            valNode->typeInfo,
                                                            SymbolKind::EnumValue,
-                                                           &enumNode->computedValue,
+                                                           enumNode->computedValue,
                                                            0,
                                                            nullptr,
                                                            storageOffset,
@@ -311,7 +312,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     typeParam->flags |= TYPEINFO_DEFINED_VALUE;
     typeParam->namedParam = valNode->token.text;
     typeParam->typeInfo   = rawTypeInfo;
-    typeParam->value      = enumNode->computedValue;
+    typeParam->value      = *enumNode->computedValue;
     typeParam->index      = (uint32_t) typeEnum->values.size();
     typeParam->declNode   = valNode;
     SWAG_CHECK(collectAttributes(context, valNode, &typeParam->attributes));

@@ -298,9 +298,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
-    AstNode* genericParameters = nullptr;
-    AstNode  parameters;
-    AstNode  literal;
+    AstNode*      genericParameters = nullptr;
+    AstNode       parameters;
+    AstNode       literal;
+    ComputedValue cValue;
     parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;
     parameters.inheritTokenLocation(left->token);
@@ -309,12 +310,13 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     literal.sourceFile = left->sourceFile;
     literal.inheritTokenLocation(left->token);
     literal.inheritOwners(left);
+    literal.computedValue = &cValue;
 
     if (opConst || opType)
     {
-        literal.kind               = AstNodeKind::Literal;
-        literal.computedValue.text = opConst ? opConst : "";
-        literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
+        literal.kind                = AstNodeKind::Literal;
+        literal.computedValue->text = opConst ? opConst : "";
+        literal.typeInfo            = opType ? opType : g_TypeMgr.typeInfoString;
         literal.flags |= AST_VALUE_COMPUTED;
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
@@ -377,7 +379,8 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
         if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            node->computedValue.storageOffset = node->ownerScope->startStackSize;
+            node->allocateComputedValue();
+            node->computedValue->storageOffset = node->ownerScope->startStackSize;
             node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
             node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         }

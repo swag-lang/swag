@@ -196,9 +196,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
             auto varType = varDecl->type;
-            SWAG_ASSERT(varType->computedValue.storageSegment);
-            SWAG_ASSERT(varType->computedValue.storageOffset != 0xFFFFFFFF);
-            emitMakeSegPointer(&cxt, varType->computedValue.storageSegment, 1, varType->computedValue.storageOffset);
+            SWAG_ASSERT(varType->computedValue->storageSegment);
+            SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
+            emitMakeSegPointer(&cxt, varType->computedValue->storageSegment, 1, varType->computedValue->storageOffset);
             emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             continue;
         }
@@ -209,18 +209,18 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             if (typeVar->kind == TypeInfoKind::Array)
             {
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
-                SWAG_ASSERT(exprList->computedValue.storageSegment);
-                SWAG_ASSERT(exprList->computedValue.storageOffset != 0xFFFFFFFF);
-                emitMakeSegPointer(&cxt, exprList->computedValue.storageSegment, 1, exprList->computedValue.storageOffset);
+                SWAG_ASSERT(exprList->computedValue->storageSegment);
+                SWAG_ASSERT(exprList->computedValue->storageOffset != 0xFFFFFFFF);
+                emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, 1, exprList->computedValue->storageOffset);
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
             else if (typeVar->isNative(NativeTypeKind::String))
             {
                 auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
-                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue.text);
+                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, 1, storageOffset);
-                emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue.text.length();
+                emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
@@ -229,19 +229,19 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u8;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u8;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
                     break;
                 case 2:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u16;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u16;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
                     break;
                 case 4:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u32;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u32;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
                     break;
                 case 8:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue.reg.u64;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue->reg.u64;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
@@ -775,7 +775,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         {
             if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
             {
-                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->computedValue.storageOffset)
+                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->computedValue->storageOffset)
                 {
                     mustReinit        = false;
                     toDrop.typeStruct = nullptr;

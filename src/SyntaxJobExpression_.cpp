@@ -348,11 +348,11 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
         SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
     }
 
-    auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
-    literal->computedValue.reg.u64 = 0;
-    literal->token.literalType     = LiteralType::TT_S32;
+    auto literal = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->setFlagsValueIsComputed();
-    literal->semanticFct = SemanticJob::resolveLiteral;
+    literal->computedValue->reg.u64 = 0;
+    literal->token.literalType      = LiteralType::TT_S32;
+    literal->semanticFct            = SemanticJob::resolveLiteral;
     literal->inheritTokenLocation(savedToken);
     arrayNode->access = literal;
 

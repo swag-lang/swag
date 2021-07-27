@@ -18,7 +18,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
         node->boolExpression->flags |= AST_NO_BYTECODE;
-        if (node->boolExpression->computedValue.reg.b)
+        if (node->boolExpression->computedValue->reg.b)
         {
             if (node->elseBlock)
                 node->elseBlock->flags |= AST_NO_BYTECODE;
@@ -51,7 +51,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     // Do not evaluate while if it's constant and false
     if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
-        if (!node->boolExpression->computedValue.reg.b)
+        if (!node->boolExpression->computedValue->reg.b)
         {
             node->boolExpression->flags |= AST_NO_BYTECODE;
             node->block->flags |= AST_NO_BYTECODE;
@@ -83,7 +83,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     if (func->returnType && func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
     {
         node->flags |= AST_TRANSIENT;
-        node->computedValue.storageOffset = node->ownerScope->startStackSize;
+        node->allocateComputedValue();
+        node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += func->returnType->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
@@ -120,11 +121,11 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                                                callParam,
                                                funcParam->typeInfo,
                                                SymbolKind::Variable,
-                                               &callParam->computedValue,
+                                               callParam->computedValue,
                                                OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
                                                nullptr,
-                                               callParam->computedValue.storageOffset,
-                                               callParam->computedValue.storageSegment,
+                                               callParam->computedValue->storageOffset,
+                                               callParam->computedValue->storageSegment,
                                                &funcParam->token.text);
                     isConstant = true;
                     break;
@@ -229,7 +230,8 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         node->byteCodeFct              = ByteCodeGenJob::emitImplicitKindOf;
         auto& typeTable                = node->sourceFile->module->typeTable;
         SWAG_CHECK(checkIsConcrete(context, node));
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
+        node->allocateComputedValue();
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, &node->typeInfo, &node->computedValue->reg.u32, CONCRETE_SHOULD_WAIT));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -285,15 +287,15 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isNative(NativeTypeKind::String))
                 {
-                    if (valText.find(expr->computedValue.text) != valText.end())
-                        return context->report({expr, Utf8::format(Msg0611, expr->computedValue.text.c_str())});
-                    valText.insert(expr->computedValue.text);
+                    if (valText.find(expr->computedValue->text) != valText.end())
+                        return context->report({expr, Utf8::format(Msg0611, expr->computedValue->text.c_str())});
+                    valText.insert(expr->computedValue->text);
                 }
                 else
                 {
-                    auto value = expr->computedValue.reg.u64;
+                    auto value = expr->computedValue->reg.u64;
                     if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                        value = expr->computedValue.storageOffset;
+                        value = expr->computedValue->storageOffset;
 
                     if (val64.find(value) != val64.end())
                     {
@@ -302,11 +304,11 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
                             return context->report({expr, Utf8::format(Msg0612, expr->token.text.c_str())});
                         if (typeExpr->flags & TYPEINFO_INTEGER)
-                            return context->report({expr, Utf8::format(Msg0613, expr->computedValue.reg.u64)});
-                        return context->report({expr, Utf8::format(Msg0614, expr->computedValue.reg.f64)});
+                            return context->report({expr, Utf8::format(Msg0613, expr->computedValue->reg.u64)});
+                        return context->report({expr, Utf8::format(Msg0614, expr->computedValue->reg.f64)});
                     }
 
-                    val64.insert(expr->computedValue.reg.u64);
+                    val64.insert(expr->computedValue->reg.u64);
                 }
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
@@ -470,7 +472,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             // Do not evaluate loop if it's constant and 0
             if (module->mustOptimizeBC(node) && (node->expression->flags & AST_VALUE_COMPUTED))
             {
-                if (!node->expression->computedValue.reg.u64)
+                if (!node->expression->computedValue->reg.u64)
                 {
                     node->expression->flags |= AST_NO_BYTECODE;
                     node->block->flags |= AST_NO_BYTECODE;
@@ -536,9 +538,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         // Generic parameters
         identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);
         identifier->genericParameters->flags |= AST_NO_BYTECODE;
-        auto child                 = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
-        child->typeInfo            = g_TypeMgr.typeInfoBool;
-        child->computedValue.reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
+        auto child      = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
+        child->typeInfo = g_TypeMgr.typeInfoBool;
+        child->allocateComputedValue();
+        child->computedValue->reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
         child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
 
         // Call with arguments

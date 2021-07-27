@@ -218,18 +218,18 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     SWAG_VERIFY(typeInfo, context->report({expr, Msg0798}));
     SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, Msg0798}));
 
-    if (expr->flags & AST_VALUE_IS_TYPEINFO)
-        node->computedValue.text = typeInfo->name;
-    else if (typeInfo->isNative(NativeTypeKind::String))
-        node->computedValue.text = expr->computedValue.text;
-    else if (typeInfo->kind == TypeInfoKind::Native)
-        node->computedValue.text = Ast::literalToString(typeInfo, expr->computedValue);
-    else if (typeInfo->kind == TypeInfoKind::Enum)
-        node->computedValue.text = Ast::enumToString(typeInfo, expr->computedValue.text, expr->computedValue.reg);
-    else
-        node->computedValue.text = typeInfo->name;
-
     node->setFlagsValueIsComputed();
+    if (expr->flags & AST_VALUE_IS_TYPEINFO)
+        node->computedValue->text = typeInfo->name;
+    else if (typeInfo->isNative(NativeTypeKind::String))
+        node->computedValue->text = expr->computedValue->text;
+    else if (typeInfo->kind == TypeInfoKind::Native)
+        node->computedValue->text = Ast::literalToString(typeInfo, *expr->computedValue);
+    else if (typeInfo->kind == TypeInfoKind::Enum)
+        node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
+    else
+        node->computedValue->text = typeInfo->name;
+
     node->typeInfo = g_TypeMgr.typeInfoString;
     return true;
 }
@@ -239,10 +239,10 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     auto typeInfo = expression->typeInfo;
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
-        auto typeEnum               = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        node->computedValue.reg.u64 = typeEnum->values.size();
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         node->setFlagsValueIsComputed();
-        node->typeInfo = g_TypeMgr.typeInfoUInt;
+        node->computedValue->reg.u64 = typeEnum->values.size();
+        node->typeInfo               = g_TypeMgr.typeInfoUInt;
         return true;
     }
 
@@ -253,7 +253,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         if (node->flags & AST_VALUE_COMPUTED)
         {
             node->setFlagsValueIsComputed();
-            node->computedValue.reg.u64 = node->computedValue.text.length();
+            node->computedValue->reg.u64 = node->computedValue->text.length();
         }
         else
         {
@@ -263,9 +263,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         node->setFlagsValueIsComputed();
-        auto typeArray              = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        node->computedValue.reg.u64 = typeArray->count;
-        node->typeInfo              = g_TypeMgr.typeInfoUInt;
+        auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        node->computedValue->reg.u64 = typeArray->count;
+        node->typeInfo               = g_TypeMgr.typeInfoUInt;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
@@ -273,8 +273,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         // Slice literal. This can happen for enum values
         if (node->flags & AST_VALUE_COMPUTED)
         {
-            node->computedValue.reg.u64 = node->computedValue.reg.u64;
-            node->typeInfo              = g_TypeMgr.typeInfoUInt;
+            node->computedValue->reg.u64 = node->computedValue->reg.u64;
+            node->typeInfo               = g_TypeMgr.typeInfoUInt;
         }
         else
         {
@@ -286,8 +286,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     {
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
-        node->computedValue.reg.u64 = typeList->subTypes.size();
-        node->typeInfo              = g_TypeMgr.typeInfoUInt;
+        node->computedValue->reg.u64 = typeList->subTypes.size();
+        node->typeInfo               = g_TypeMgr.typeInfoUInt;
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
@@ -316,21 +316,21 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 switch (typeInfo->nativeType)
                 {
                 case NativeTypeKind::S8:
-                    if (node->computedValue.reg.s8 < 0)
-                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s8)});
+                    if (node->computedValue->reg.s8 < 0)
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue->reg.s8)});
                     break;
                 case NativeTypeKind::S16:
-                    if (node->computedValue.reg.s16 < 0)
-                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s16)});
+                    if (node->computedValue->reg.s16 < 0)
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue->reg.s16)});
                     break;
                 case NativeTypeKind::S32:
-                    if (node->computedValue.reg.s32 < 0)
-                        return context->report({expression, Utf8::format(Msg0802, node->computedValue.reg.s32)});
+                    if (node->computedValue->reg.s32 < 0)
+                        return context->report({expression, Utf8::format(Msg0802, node->computedValue->reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
-                    if (node->computedValue.reg.s64 < 0)
-                        return context->report({expression, Utf8::format(Msg0805, node->computedValue.reg.s64)});
+                    if (node->computedValue->reg.s64 < 0)
+                        return context->report({expression, Utf8::format(Msg0805, node->computedValue->reg.s64)});
                     break;
                 }
             }
@@ -407,7 +407,8 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->kind == TypeInfoKind::Interface)
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
+        node->allocateComputedValue();
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue->reg.u32, CONCRETE_SHOULD_WAIT));
         if (context->result != ContextResult::Done)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
@@ -455,10 +456,11 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
         // @kindof on a typeinfo will give back the original compiler type
         if (node->token.id == TokenId::IntrinsicKindOf &&
             typeInfo->isPointerToTypeInfo() &&
-            expr->computedValue.storageOffset != UINT32_MAX &&
-            expr->computedValue.storageSegment != nullptr)
+            expr->computedValue &&
+            expr->computedValue->storageOffset != UINT32_MAX &&
+            expr->computedValue->storageSegment != nullptr)
         {
-            auto addr        = expr->computedValue.storageSegment->address(expr->computedValue.storageOffset);
+            auto addr        = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
             auto newTypeInfo = context->sourceFile->module->typeTable.getRealType((ConcreteTypeInfo*) addr);
             if (newTypeInfo)
                 typeInfo = newTypeInfo;
@@ -527,8 +529,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             break;
         }
 
-        node->computedValue.reg.b = (expr->flags & AST_VALUE_COMPUTED);
         node->setFlagsValueIsComputed();
+        node->computedValue->reg.b = (expr->flags & AST_VALUE_COMPUTED);
         break;
     }
 
@@ -537,9 +539,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0798}));
         SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Msg0812}));
-        node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->setFlagsValueIsComputed();
-        if (node->computedValue.reg.u64 > 0xFFFFFFFF)
+        node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
+        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
             node->typeInfo = g_TypeMgr.typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr.typeInfoUntypedInt;
@@ -551,9 +553,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0798}));
         SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Msg0814}));
-        node->computedValue.reg.u64 = TypeManager::alignOf(expr->typeInfo);
         node->setFlagsValueIsComputed();
-        if (node->computedValue.reg.u64 > 0xFFFFFFFF)
+        node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
+        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
             node->typeInfo = g_TypeMgr.typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr.typeInfoUntypedInt;
@@ -564,9 +566,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, Msg0798}));
-        node->computedValue.reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
         node->setFlagsValueIsComputed();
-        if (node->computedValue.reg.u64 > 0xFFFFFFFF)
+        node->computedValue->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
+        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
             node->typeInfo = g_TypeMgr.typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr.typeInfoUntypedInt;

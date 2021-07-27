@@ -362,10 +362,11 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)
     {
-        auto offsetStorage                = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
-        node->computedValue.storageOffset = offsetStorage;
-        auto addrDst                      = sourceFile->module->compilerSegment.address(offsetStorage);
-        auto addrSrc                      = runContext.bp;
+        auto offsetStorage = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
+        node->allocateComputedValue();
+        node->computedValue->storageOffset = offsetStorage;
+        auto addrDst                       = sourceFile->module->compilerSegment.address(offsetStorage);
+        auto addrSrc                       = runContext.bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
     }
 
@@ -374,16 +375,17 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     {
         auto realType  = TypeManager::concreteReferenceType(node->typeInfo);
         node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
+        node->setFlagsValueIsComputed();
 
         if (realType->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
             const char* pz  = (const char*) runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
             uint32_t    len = runContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u32;
-            node->computedValue.text.reserve(len + 1);
-            node->computedValue.text.count = len;
-            memcpy(node->computedValue.text.buffer, pz, len);
-            node->computedValue.text.buffer[len] = 0;
+            node->computedValue->text.reserve(len + 1);
+            node->computedValue->text.count = len;
+            memcpy(node->computedValue->text.buffer, pz, len);
+            node->computedValue->text.buffer[len] = 0;
         }
         else if (realType->flags & TYPEINFO_RETURN_BY_COPY)
         {
@@ -402,12 +404,12 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
                 return callerContext->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
             }
 
-            auto storageSegment                = SemanticJob::getConstantSegFromContext(node);
-            auto offsetStorage                 = storageSegment->reserve(realType->sizeOf);
-            node->computedValue.storageOffset  = offsetStorage;
-            node->computedValue.storageSegment = storageSegment;
-            auto addrDst                       = storageSegment->address(offsetStorage);
-            auto addrSrc                       = runContext.registersRR[0].pointer;
+            auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
+            auto offsetStorage                  = storageSegment->reserve(realType->sizeOf);
+            node->computedValue->storageOffset  = offsetStorage;
+            node->computedValue->storageSegment = storageSegment;
+            auto addrDst                        = storageSegment->address(offsetStorage);
+            auto addrSrc                        = runContext.registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
         }
         else
@@ -415,21 +417,19 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
             switch (realType->sizeOf)
             {
             case 1:
-                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
+                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
                 break;
             case 2:
-                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
+                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
                 break;
             case 4:
-                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
+                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
                 break;
             default:
-                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
                 break;
             }
         }
-
-        node->setFlagsValueIsComputed();
     }
 
     // Free auto allocated memory
@@ -534,7 +534,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     SWAG_ASSERT(funcDecl->parameters->flags & AST_VALUE_COMPUTED);
 
     // Register the function in all the corresponding buckets
-    auto filter = funcDecl->parameters->computedValue.reg.u64;
+    auto filter = funcDecl->parameters->computedValue->reg.u64;
     for (uint32_t i = 0; i < 64; i++)
     {
         if (filter & ((uint64_t) 1 << i))

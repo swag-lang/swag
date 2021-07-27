@@ -336,11 +336,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, Msg0021}));
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
                 SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Utf8::format(Msg0022, child->typeInfo->getDisplayName().c_str())}));
-                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue->reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, Msg0023}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
-                ptrArray->count = (uint32_t) child->computedValue.reg.u32;
+                ptrArray->count = (uint32_t) child->computedValue->reg.u32;
                 totalCount *= ptrArray->count;
                 SWAG_CHECK(checkSizeOverflow(context, "array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 ptrArray->totalCount  = totalCount;
@@ -368,7 +368,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrSlice->computeName();
     }
 
-    typeNode->computedValue.reg.pointer = (uint8_t*) typeNode->typeInfo;
+    typeNode->allocateComputedValue();
+    typeNode->computedValue->reg.pointer = (uint8_t*) typeNode->typeInfo;
     if (!(typeNode->flags & AST_HAS_STRUCT_PARAMETERS))
         typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
 
@@ -644,8 +645,9 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     auto  module     = sourceFile->module;
     auto& typeTable  = module->typeTable;
 
-    node->computedValue.storageSegment = typeTable.getSegmentStorage(context, CONCRETE_SHOULD_WAIT | flags);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, resultTypeInfo, &node->computedValue.storageOffset, CONCRETE_SHOULD_WAIT | flags));
+    node->allocateComputedValue();
+    node->computedValue->storageSegment = typeTable.getSegmentStorage(context, CONCRETE_SHOULD_WAIT | flags);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, resultTypeInfo, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT | flags));
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();

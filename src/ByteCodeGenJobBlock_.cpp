@@ -33,8 +33,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-        inst->b.u64 = node->computedValue.storageOffset;
-        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue.storageOffset);
+        inst->b.u64 = node->computedValue->storageOffset;
+        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue->storageOffset);
     }
 
     AstNode* allParams     = nullptr;

@@ -408,7 +408,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         // If request segment is compiler, then nothing to do, the value is already stored there
         if (storageSegment->kind == SegmentKind::Compiler)
         {
-            overload->computedValue.storageOffset = node->computedValue.storageOffset;
+            overload->computedValue.storageOffset = node->computedValue->storageOffset;
         }
 
         // Copy value from compiler segment to real requested segment
@@ -417,11 +417,11 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
             auto storageOffset                    = storageSegment->reserve(node->typeInfo->sizeOf);
             overload->computedValue.storageOffset = storageOffset;
             auto addr                             = storageSegment->address(storageOffset);
-            auto addrSrc                          = module->compilerSegment.address(node->computedValue.storageOffset);
+            auto addrSrc                          = module->compilerSegment.address(node->computedValue->storageOffset);
             memcpy(addr, addrSrc, node->typeInfo->sizeOf);
         }
 
-        node->computedValue.storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
+        node->computedValue->storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
 
         // Will remove the incomplete flag, and finish the resolve
         node->ownerScope->symTable.addSymbolTypeInfo(context,
@@ -958,36 +958,41 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
                 {
-                    storageOffset  = node->assignment->computedValue.storageOffset;
-                    storageSegment = node->assignment->computedValue.storageSegment;
+                    storageOffset  = node->assignment->computedValue->storageOffset;
+                    storageSegment = node->assignment->computedValue->storageSegment;
                 }
                 else if (node->flags & AST_VALUE_COMPUTED)
                 {
-                    storageOffset  = node->computedValue.storageOffset;
-                    storageSegment = node->computedValue.storageSegment;
+                    storageOffset  = node->computedValue->storageOffset;
+                    storageSegment = node->computedValue->storageSegment;
                 }
                 else
+                {
+                    node->allocateComputedValue();
                     SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
+                }
             }
             else if (typeInfo->kind == TypeInfoKind::Slice)
             {
                 if (!(node->flags & AST_VALUE_COMPUTED))
                 {
-                    SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-                    auto typeList                                  = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                    node->assignment->computedValue.reg.u64        = typeList->subTypes.size();
-                    node->assignment->computedValue.storageOffset  = storageOffset;
-                    node->assignment->computedValue.storageSegment = storageSegment;
                     node->assignment->setFlagsValueIsComputed();
+                    SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, storageSegment, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+
+                    auto typeList                                   = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                    node->assignment->computedValue->reg.u64        = typeList->subTypes.size();
+                    node->assignment->computedValue->storageOffset  = storageOffset;
+                    node->assignment->computedValue->storageSegment = storageSegment;
                 }
                 else
                 {
-                    storageOffset  = node->computedValue.storageOffset;
-                    storageSegment = node->computedValue.storageSegment;
+                    storageOffset  = node->computedValue->storageOffset;
+                    storageSegment = node->computedValue->storageSegment;
                 }
             }
 
             node->inheritComputedValue(node->assignment);
+            SWAG_ASSERT(node->computedValue);
             module->addGlobalVar(node, GlobalVarKind::Constant);
         }
     }
@@ -1132,7 +1137,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                  node,
                                                                  node->typeInfo,
                                                                  genericType ? SymbolKind::GenericType : SymbolKind::Variable,
-                                                                 isCompilerConstant ? &node->computedValue : nullptr,
+                                                                 isCompilerConstant ? node->computedValue : nullptr,
                                                                  symbolFlags,
                                                                  nullptr,
                                                                  storageOffset,

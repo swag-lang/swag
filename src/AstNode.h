@@ -314,8 +314,15 @@ struct AstNode
         return (flags & AST_VALUE_COMPUTED);
     }
 
+    void allocateComputedValue()
+    {
+        if (!computedValue)
+            computedValue = g_Allocator.alloc<ComputedValue>();
+    }
+
     void setFlagsValueIsComputed()
     {
+        allocateComputedValue();
         flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
     }
 
@@ -327,18 +334,19 @@ struct AstNode
         if (flags & AST_VALUE_COMPUTED)
         {
             flags |= AST_CONST_EXPR | AST_R_VALUE;
-            computedValue = move(from->computedValue);
+            SWAG_ASSERT(from->computedValue);
+            computedValue = from->computedValue;
         }
     }
 
     bool isConstantTrue()
     {
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b;
+        return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
     }
 
     bool isConstantFalse()
     {
-        return (flags & AST_VALUE_COMPUTED) && !computedValue.reg.b;
+        return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
     }
 
     bool forceTakeAddress()
@@ -397,7 +405,7 @@ struct AstNode
     shared_mutex           mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
-    ComputedValue          computedValue;
+    ComputedValue*         computedValue;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;

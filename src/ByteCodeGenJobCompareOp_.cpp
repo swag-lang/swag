@@ -23,15 +23,15 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
         orderIsDefined = true;
 
         bool swap = false;
-        if (typeInfo->isNativeIntegerSigned() && low->computedValue.reg.s64 > up->computedValue.reg.s64)
+        if (typeInfo->isNativeIntegerSigned() && low->computedValue->reg.s64 > up->computedValue->reg.s64)
             swap = true;
-        else if (typeInfo->isNativeInteger() && low->computedValue.reg.u64 > up->computedValue.reg.u64)
+        else if (typeInfo->isNativeInteger() && low->computedValue->reg.u64 > up->computedValue->reg.u64)
             swap = true;
-        else if (typeInfo->isNative(NativeTypeKind::F32) && low->computedValue.reg.f32 > up->computedValue.reg.f32)
+        else if (typeInfo->isNative(NativeTypeKind::F32) && low->computedValue->reg.f32 > up->computedValue->reg.f32)
             swap = true;
-        else if (typeInfo->isNative(NativeTypeKind::F64) && low->computedValue.reg.f64 > up->computedValue.reg.f64)
+        else if (typeInfo->isNative(NativeTypeKind::F64) && low->computedValue->reg.f64 > up->computedValue->reg.f64)
             swap = true;
-        else if (typeInfo->isNative(NativeTypeKind::Rune) && low->computedValue.reg.u32 > up->computedValue.reg.u32)
+        else if (typeInfo->isNative(NativeTypeKind::Rune) && low->computedValue->reg.u32 > up->computedValue->reg.u32)
             swap = true;
 
         if (swap)

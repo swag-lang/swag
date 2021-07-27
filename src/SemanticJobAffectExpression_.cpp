@@ -258,7 +258,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             if (node->sourceFile->module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
+                if (right->computedValue->reg.u32 >= left->typeInfo->sizeOf * 8)
                 {
                     if (tokenId == TokenId::SymLowerLowerEqual)
                     {

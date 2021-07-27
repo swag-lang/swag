@@ -168,14 +168,15 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
 
         if (varDecl->assignment)
         {
-            auto& value = varDecl->assignment->computedValue;
+            auto value = varDecl->assignment->computedValue;
             if (typeInfo->isNative(NativeTypeKind::String))
             {
+                SWAG_ASSERT(value);
                 Register* storedV  = (Register*) ptrDest;
-                storedV[0].pointer = (uint8_t*) value.text.c_str();
-                storedV[1].u64     = value.text.length();
+                storedV[0].pointer = (uint8_t*) value->text.c_str();
+                storedV[1].u64     = value->text.length();
                 auto constSegment  = SemanticJob::getConstantSegFromContext(varDecl->assignment, segment->kind == SegmentKind::Compiler);
-                auto strOffset     = constSegment->addString(segment, value.text);
+                auto strOffset     = constSegment->addString(segment, value->text);
                 segment->addInitPtr(offsetStruct + field->offset, strOffset, constSegment->kind);
             }
             else
@@ -183,16 +184,16 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 switch (typeInfo->sizeOf)
                 {
                 case 1:
-                    *(uint8_t*) ptrDest = value.reg.u8;
+                    *(uint8_t*) ptrDest = value ? value->reg.u8 : 0;
                     break;
                 case 2:
-                    *(uint16_t*) ptrDest = value.reg.u16;
+                    *(uint16_t*) ptrDest = value ? value->reg.u16 : 0;
                     break;
                 case 4:
-                    *(uint32_t*) ptrDest = value.reg.u32;
+                    *(uint32_t*) ptrDest = value ? value->reg.u32 : 0;
                     break;
                 case 8:
-                    *(uint64_t*) ptrDest = value.reg.u64;
+                    *(uint64_t*) ptrDest = value ? value->reg.u64 : 0;
                     break;
                 default:
                     return internalError(context, "collectStructLiterals, invalid native type sizeof");
@@ -210,9 +211,9 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
             auto varType = varDecl->type;
-            SWAG_ASSERT(varType->computedValue.storageSegment);
-            SWAG_ASSERT(varType->computedValue.storageOffset != 0xFFFFFFFF);
-            auto srcAddr = varType->computedValue.storageSegment->address(segment, varType->computedValue.storageOffset);
+            SWAG_ASSERT(varType->computedValue->storageSegment);
+            SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
+            auto srcAddr = varType->computedValue->storageSegment->address(segment, varType->computedValue->storageOffset);
             memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
 
@@ -246,7 +247,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
             assignment = child->childs.front();
         }
 
-        SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, typeInfo, assignment));
+        SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, child->computedValue, typeInfo, assignment));
 
         // castOffset can store the padding between one field and one other, in case we collect for a struct
         if (child->extension && child->extension->castOffset)
@@ -260,10 +261,21 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
 
 bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* segment)
 {
-    auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
     auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
         return true;
+
+    ComputedValue* value;
+    if (node->assignment)
+    {
+        node->assignment->allocateComputedValue();
+        value = node->assignment->computedValue;
+    }
+    else
+    {
+        node->allocateComputedValue();
+        value = node->computedValue;
+    }
 
     // Already computed in the constant segment for an array
     if (typeInfo->kind == TypeInfoKind::Array)

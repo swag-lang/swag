@@ -400,11 +400,11 @@ static bool valueEqualsTo(const ComputedValue& value, AstNode* node)
     // Types
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        if (value.reg.u64 == node->computedValue.reg.u64)
+        if (value.reg.u64 == node->computedValue->reg.u64)
             return true;
 
         auto typeInfo1 = (TypeInfo*) value.reg.u64;
-        auto typeInfo2 = (TypeInfo*) node->computedValue.reg.u64;
+        auto typeInfo2 = (TypeInfo*) node->computedValue->reg.u64;
         if (!typeInfo1 || !typeInfo2)
             return false;
 
@@ -414,21 +414,22 @@ static bool valueEqualsTo(const ComputedValue& value, AstNode* node)
 
     if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        if (value.storageSegment != node->computedValue.storageSegment)
+        if (value.storageSegment != node->computedValue->storageSegment)
             return false;
-        if (value.storageOffset == UINT32_MAX && node->computedValue.storageOffset != UINT32_MAX)
+        if (value.storageOffset == UINT32_MAX && node->computedValue->storageOffset != UINT32_MAX)
             return false;
-        if (value.storageOffset != UINT32_MAX && node->computedValue.storageOffset == UINT32_MAX)
+        if (value.storageOffset != UINT32_MAX && node->computedValue->storageOffset == UINT32_MAX)
             return false;
-        if (value.storageOffset == node->computedValue.storageOffset)
+        if (value.storageOffset == node->computedValue->storageOffset)
             return true;
 
         void* addr1 = value.storageSegment->address(value.storageOffset);
-        void* addr2 = node->computedValue.storageSegment->address(node->computedValue.storageOffset);
+        void* addr2 = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
         return memcmp(addr1, addr2, node->typeInfo->sizeOf) == 0;
     }
 
-    return value == node->computedValue;
+    node->allocateComputedValue();
+    return value == *node->computedValue;
 }
 
 static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
@@ -577,12 +578,13 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     {
                         uint32_t     storageOffset  = UINT32_MAX;
                         DataSegment* storageSegment = SemanticJob::getConstantSegFromContext(firstChild);
-                        SemanticJob::reserveAndStoreToSegment(context.semContext, storageOffset, storageSegment, &firstChild->computedValue, firstChild->typeInfo, firstChild);
-                        auto typeList                            = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
-                        firstChild->computedValue.reg.u64        = typeList->subTypes.size();
-                        firstChild->computedValue.storageOffset  = storageOffset;
-                        firstChild->computedValue.storageSegment = storageSegment;
                         firstChild->setFlagsValueIsComputed();
+                        SemanticJob::reserveAndStoreToSegment(context.semContext, storageOffset, storageSegment, firstChild->computedValue, firstChild->typeInfo, firstChild);
+
+                        auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
+                        firstChild->computedValue->reg.u64        = typeList->subTypes.size();
+                        firstChild->computedValue->storageOffset  = storageOffset;
+                        firstChild->computedValue->storageSegment = storageSegment;
                         callParameter->inheritComputedValue(firstChild);
                     }
                 }

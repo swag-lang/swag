@@ -670,9 +670,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
                 {
                     varDecl->type->flags |= AST_VALUE_COMPUTED;
-                    auto constSegment                           = getConstantSegFromContext(varDecl);
-                    varDecl->type->computedValue.storageSegment = constSegment;
-                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue.storageOffset, varDecl, constSegment));
+                    auto constSegment                            = getConstantSegFromContext(varDecl);
+                    varDecl->type->computedValue->storageSegment = constSegment;
+                    SWAG_CHECK(collectAssignment(context, varDecl->type->computedValue->storageOffset, varDecl, constSegment));
                 }
             }
 
@@ -709,13 +709,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (typeParam)
-                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+                    typeParam->value.reg = varDecl->assignment->computedValue->reg;
             }
-            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
+            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue->reg.u64)
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (typeParam)
-                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+                    typeParam->value.reg = varDecl->assignment->computedValue->reg;
             }
 
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;

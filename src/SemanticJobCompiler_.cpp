@@ -100,11 +100,11 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 
     SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, Msg0798}));
 
-    if (!expression->computedValue.text.empty())
+    if (!expression->computedValue->text.empty())
     {
         SyntaxJob syntaxJob;
         node->childs.clear();
-        syntaxJob.constructEmbedded(expression->computedValue.text, node, expression, node->embeddedKind, true);
+        syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, node->embeddedKind, true);
 
         job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)
@@ -136,12 +136,12 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
     node->flags |= AST_NO_BYTECODE;
 
-    if (!expr->computedValue.reg.b)
+    if (!expr->computedValue->reg.b)
     {
         if (node->childs.size() > 1)
         {
             auto msg = node->childs[1];
-            context->report({node, node->token, Utf8::format("%s", msg->computedValue.text.c_str())});
+            context->report({node, node->token, Utf8::format("%s", msg->computedValue->text.c_str())});
         }
         else
             context->report({node, node->token, Msg0238});
@@ -289,45 +289,45 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            g_Log.print(expr->computedValue.reg.b ? "true" : "false");
+            g_Log.print(expr->computedValue->reg.b ? "true" : "false");
             break;
         case NativeTypeKind::S8:
-            g_Log.print(to_string(expr->computedValue.reg.s8));
+            g_Log.print(to_string(expr->computedValue->reg.s8));
             break;
         case NativeTypeKind::S16:
-            g_Log.print(to_string(expr->computedValue.reg.s16));
+            g_Log.print(to_string(expr->computedValue->reg.s16));
             break;
         case NativeTypeKind::S32:
-            g_Log.print(to_string(expr->computedValue.reg.s32));
+            g_Log.print(to_string(expr->computedValue->reg.s32));
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            g_Log.print(to_string(expr->computedValue.reg.s64));
+            g_Log.print(to_string(expr->computedValue->reg.s64));
             break;
         case NativeTypeKind::U8:
-            g_Log.print(to_string(expr->computedValue.reg.u8));
+            g_Log.print(to_string(expr->computedValue->reg.u8));
             break;
         case NativeTypeKind::U16:
-            g_Log.print(to_string(expr->computedValue.reg.u16));
+            g_Log.print(to_string(expr->computedValue->reg.u16));
             break;
         case NativeTypeKind::U32:
-            g_Log.print(to_string(expr->computedValue.reg.u32));
+            g_Log.print(to_string(expr->computedValue->reg.u32));
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            g_Log.print(to_string(expr->computedValue.reg.u64));
+            g_Log.print(to_string(expr->computedValue->reg.u64));
             break;
         case NativeTypeKind::F32:
-            g_Log.print(to_string(expr->computedValue.reg.f32));
+            g_Log.print(to_string(expr->computedValue->reg.f32));
             break;
         case NativeTypeKind::F64:
-            g_Log.print(to_string(expr->computedValue.reg.f64));
+            g_Log.print(to_string(expr->computedValue->reg.f64));
             break;
         case NativeTypeKind::Rune:
-            g_Log.print(to_string(expr->computedValue.reg.ch));
+            g_Log.print(to_string(expr->computedValue->reg.ch));
             break;
         case NativeTypeKind::String:
-            g_Log.print(expr->computedValue.text);
+            g_Log.print(expr->computedValue->text);
             break;
         default:
             g_Log.print(Utf8::format("<%s>", typeInfo->getDisplayName().c_str()));
@@ -418,7 +418,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
     AstCompilerIfBlock* validatedNode = nullptr;
-    if (node->boolExpression->computedValue.reg.b)
+    if (node->boolExpression->computedValue->reg.b)
     {
         validatedNode = node->ifBlock;
         if (node->elseBlock)
@@ -449,12 +449,13 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
 
     SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, Msg0242}));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, Utf8::format(Msg0243, back->typeInfo->getDisplayName().c_str())}));
+    node->setFlagsValueIsComputed();
 
     if (!(node->doneFlags & AST_DONE_LOAD))
     {
         node->doneFlags |= AST_DONE_LOAD;
 
-        auto filename = back->computedValue.text;
+        auto filename = back->computedValue->text;
         Utf8 fullFileName;
 
         // Search first in the same folder as the source file
@@ -478,15 +479,15 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
 
         struct stat stat_buf;
         int         rc = stat(fullFileName, &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(Msg0223, back->computedValue.text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(Msg0223, back->computedValue->text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
-        auto newJob                        = g_Allocator.alloc<LoadFileJob>();
-        auto storageSegment                = getConstantSegFromContext(node);
-        node->computedValue.storageOffset  = storageSegment->reserve(stat_buf.st_size);
-        node->computedValue.storageSegment = storageSegment;
-        newJob->destBuffer                 = storageSegment->address(node->computedValue.storageOffset);
-        newJob->sizeBuffer                 = stat_buf.st_size;
+        auto newJob                         = g_Allocator.alloc<LoadFileJob>();
+        auto storageSegment                 = getConstantSegFromContext(node);
+        node->computedValue->storageOffset  = storageSegment->reserve(stat_buf.st_size);
+        node->computedValue->storageSegment = storageSegment;
+        newJob->destBuffer                  = storageSegment->address(node->computedValue->storageOffset);
+        newJob->sizeBuffer                  = stat_buf.st_size;
 
         newJob->module       = module;
         newJob->sourcePath   = fullFileName;
@@ -508,16 +509,15 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         return true;
     }
 
-    node->setFlagsValueIsComputed();
     return true;
 }
 
 bool SemanticJob::resolveCompilerDefined(SemanticContext* context)
 {
-    auto node                 = context->node;
-    node->computedValue.reg.b = node->childs.back()->resolvedSymbolOverload != nullptr;
-    node->typeInfo            = g_TypeMgr.typeInfoBool;
+    auto node = context->node;
     node->setFlagsValueIsComputed();
+    node->computedValue->reg.b = node->childs.back()->resolvedSymbolOverload != nullptr;
+    node->typeInfo             = g_TypeMgr.typeInfoBool;
     return true;
 }
 
@@ -549,27 +549,27 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::CompilerBuildCfg:
-        node->computedValue.text = g_CommandLine.buildCfg;
-        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
+        node->computedValue->text = g_CommandLine.buildCfg;
+        node->typeInfo            = g_TypeMgr.typeInfoString;
         return true;
 
     case TokenId::CompilerArch:
-        node->computedValue.text = Backend::GetArchName();
-        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
+        node->computedValue->text = Backend::GetArchName();
+        node->typeInfo            = g_TypeMgr.typeInfoString;
         return true;
 
     case TokenId::CompilerOs:
-        node->computedValue.text = Backend::GetOsName();
-        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
+        node->computedValue->text = Backend::GetOsName();
+        node->typeInfo            = g_TypeMgr.typeInfoString;
         return true;
 
     case TokenId::CompilerAbi:
-        node->computedValue.text = Backend::GetAbiName();
-        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
+        node->computedValue->text = Backend::GetAbiName();
+        node->typeInfo            = g_TypeMgr.typeInfoString;
         return true;
 
     case TokenId::CompilerHasTag:
@@ -580,10 +580,10 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             return true;
         SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, Msg0248}));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(Msg0249, front->typeInfo->getDisplayName().c_str())}));
-        auto tag                  = g_Workspace.hasTag(front->computedValue.text);
-        node->typeInfo            = g_TypeMgr.typeInfoBool;
-        node->computedValue.reg.b = tag ? true : false;
+        auto tag       = g_Workspace.hasTag(front->computedValue->text);
+        node->typeInfo = g_TypeMgr.typeInfoBool;
         node->setFlagsValueIsComputed();
+        node->computedValue->reg.b = tag ? true : false;
         return true;
     }
 
@@ -606,7 +606,9 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
         node->typeInfo = typeNode->typeInfo;
-        auto tag       = g_Workspace.hasTag(nameNode->computedValue.text);
+        node->setFlagsValueIsComputed();
+
+        auto tag = g_Workspace.hasTag(nameNode->computedValue->text);
         if (tag)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
@@ -618,15 +620,14 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
                 return context->report(diag, &note);
             }
 
-            node->typeInfo      = tag->type;
-            node->computedValue = tag->value;
+            node->typeInfo       = tag->type;
+            *node->computedValue = tag->value;
         }
         else
         {
             node->computedValue = defaultVal->computedValue;
         }
 
-        node->setFlagsValueIsComputed();
         return true;
     }
 
@@ -642,8 +643,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
                 locNode = resolved->node;
         }
 
-        ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue.storageOffset, &node->computedValue.storageSegment);
         node->setFlagsValueIsComputed();
+        ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
     }
@@ -663,7 +664,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->ownerFct, context->report({node, Msg0256}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
-        node->computedValue.text = node->ownerFct->getNameForUserCompiler();
+        node->computedValue->text = node->ownerFct->getNameForUserCompiler();
         return true;
     }
 

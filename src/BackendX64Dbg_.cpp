@@ -923,19 +923,19 @@ void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node
         {
         case 1:
             concat.addU16(LF_CHAR);
-            concat.addU8(node->computedValue.reg.u8);
+            concat.addU8(node->computedValue->reg.u8);
             break;
         case 2:
             concat.addU16(LF_USHORT);
-            concat.addU16(node->computedValue.reg.u16);
+            concat.addU16(node->computedValue->reg.u16);
             break;
         case 4:
             concat.addU16(LF_ULONG);
-            concat.addU32(node->computedValue.reg.u32);
+            concat.addU32(node->computedValue->reg.u32);
             break;
         case 8:
             concat.addU16(LF_QUADWORD);
-            concat.addU64(node->computedValue.reg.u64);
+            concat.addU64(node->computedValue->reg.u64);
             break;
         }
 

@@ -45,11 +45,12 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        node->computedValue = node->resolvedSymbolOverload->computedValue;
+        node->allocateComputedValue();
+        *node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
 
         // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
-        if (!node->computedValue.storageSegment || node->computedValue.storageOffset == 0xFFFFFFFF)
+        if (!node->computedValue->storageSegment || node->computedValue->storageOffset == 0xFFFFFFFF)
             node->flags &= ~AST_L_VALUE;
     }
 
@@ -180,7 +181,7 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
             // Remove assert(true)
             SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
             auto param = identifier->callParameters->childs.front();
-            if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue.reg.b)
+            if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue->reg.b)
                 identifier->flags |= AST_NO_BYTECODE;
         }
         break;
@@ -653,7 +654,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->computedValue.storageOffset);
-                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
+                ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                 if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
                 {
                     parent->previousResolvedNode       = context->node;
@@ -797,7 +798,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         SWAG_CHECK(setupIdentifierRef(context, identifier, TypeManager::concreteType(identifier->typeInfo)));
         identifier->setFlagsValueIsComputed();
         identifier->flags |= AST_R_VALUE;
-        identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
+        *identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
         break;
 
     case SymbolKind::Struct:
@@ -897,8 +898,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (overload->node->flags & AST_VALUE_IS_TYPEINFO)
                 identifier->flags |= AST_VALUE_IS_TYPEINFO;
-            identifier->computedValue = overload->computedValue;
             identifier->setFlagsValueIsComputed();
+            *identifier->computedValue = overload->computedValue;
 
             // If constant is inside an expression, everything before should be constant too.
             // Otherwise that means that we reference a constant threw a variable
@@ -982,7 +983,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 identifier->flags |= AST_TRANSIENT;
-                identifier->computedValue.storageOffset = identifier->ownerScope->startStackSize;
+                identifier->allocateComputedValue();
+                identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
                 identifier->ownerScope->startStackSize += returnType->sizeOf;
                 identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
             }
@@ -1211,7 +1213,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             identifier->flags |= AST_TRANSIENT;
-            identifier->computedValue.storageOffset = identifier->ownerScope->startStackSize;
+            identifier->allocateComputedValue();
+            identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
             identifier->ownerScope->startStackSize += returnType->sizeOf;
             if (identifier->ownerFct)
                 identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
@@ -2994,7 +2997,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 }
 
                 // Result
-                if (!expr->computedValue.reg.b)
+                if (!expr->computedValue->reg.b)
                 {
                     matches[i]->remove                              = true;
                     matches[i]->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;

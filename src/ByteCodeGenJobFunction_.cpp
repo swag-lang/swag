@@ -1021,14 +1021,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store in RR0 the address of the stack to store the result
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64            = node->computedValue.storageOffset;
+            inst->b.u64            = node->computedValue->storageOffset;
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
             if (node->resolvedSymbolOverload)
                 node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
 
-            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue.storageOffset);
+            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
 
             if (node->flags & AST_DISCARD)
                 freeRegisterRC(context, node->resultRegisterRC);

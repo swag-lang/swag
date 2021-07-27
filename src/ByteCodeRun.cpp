@@ -814,8 +814,8 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         switch (solved->typeInfo->nativeType)
         {
         case NativeTypeKind::String:
-            registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue.text.c_str();
-            registersRC[ip->b.u32].u64     = child->computedValue.text.length();
+            registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue->text.c_str();
+            registersRC[ip->b.u32].u64     = child->computedValue->text.length();
             return;
 
         case NativeTypeKind::S8:
@@ -832,7 +832,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         case NativeTypeKind::Bool:
         case NativeTypeKind::F32:
         case NativeTypeKind::F64:
-            registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
+            registersRC[ip->a.u32].u64 = child->computedValue->reg.u64;
             return;
         }
     }

@@ -18,21 +18,21 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
-        SWAG_ASSERT(left->computedValue.storageOffset != 0xFFFFFFFF);
-        SWAG_ASSERT(right->computedValue.storageOffset != 0xFFFFFFFF);
-        SWAG_ASSERT(left->computedValue.storageSegment);
-        SWAG_ASSERT(right->computedValue.storageSegment);
+        SWAG_ASSERT(left->computedValue->storageOffset != 0xFFFFFFFF);
+        SWAG_ASSERT(right->computedValue->storageOffset != 0xFFFFFFFF);
+        SWAG_ASSERT(left->computedValue->storageSegment);
+        SWAG_ASSERT(right->computedValue->storageSegment);
 
-        if (left->computedValue.storageOffset == right->computedValue.storageOffset &&
-            left->computedValue.storageSegment == right->computedValue.storageSegment)
+        if (left->computedValue->storageOffset == right->computedValue->storageOffset &&
+            left->computedValue->storageSegment == right->computedValue->storageSegment)
         {
-            node->computedValue.reg.b = true;
+            node->computedValue->reg.b = true;
         }
         else
         {
-            auto ptr1                 = (ConcreteTypeInfo*) left->computedValue.storageSegment->address(left->computedValue.storageOffset);
-            auto ptr2                 = (ConcreteTypeInfo*) right->computedValue.storageSegment->address(right->computedValue.storageOffset);
-            node->computedValue.reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
+            auto ptr1                  = (ConcreteTypeInfo*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+            auto ptr2                  = (ConcreteTypeInfo*) right->computedValue->storageSegment->address(right->computedValue->storageOffset);
+            node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
         }
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -41,35 +41,35 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b == right->computedValue->reg.b;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.b = left->computedValue.reg.f32 == right->computedValue.reg.f32;
+            node->computedValue->reg.b = left->computedValue->reg.f32 == right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
+            node->computedValue->reg.b = left->computedValue->reg.f64 == right->computedValue->reg.f64;
             break;
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            node->computedValue.reg.b = left->computedValue.reg.u8 == right->computedValue.reg.u8;
+            node->computedValue->reg.b = left->computedValue->reg.u8 == right->computedValue->reg.u8;
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            node->computedValue.reg.b = left->computedValue.reg.u16 == right->computedValue.reg.u16;
+            node->computedValue->reg.b = left->computedValue->reg.u16 == right->computedValue->reg.u16;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.b = left->computedValue.reg.u32 == right->computedValue.reg.u32;
+            node->computedValue->reg.b = left->computedValue->reg.u32 == right->computedValue->reg.u32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
+            node->computedValue->reg.b = left->computedValue->reg.u64 == right->computedValue->reg.u64;
             break;
         case NativeTypeKind::String:
-            node->computedValue.reg.b = left->computedValue.text == right->computedValue.text;
+            node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
             break;
 
         default:
@@ -99,40 +99,40 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.b, right->computedValue.reg.b);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.b, right->computedValue->reg.b);
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.f32, right->computedValue.reg.f32);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f32, right->computedValue->reg.f32);
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.f64, right->computedValue.reg.f64);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f64, right->computedValue->reg.f64);
             break;
         case NativeTypeKind::S8:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s8, right->computedValue.reg.s8);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s8, right->computedValue->reg.s8);
             break;
         case NativeTypeKind::S16:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s16, right->computedValue.reg.s16);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s16, right->computedValue->reg.s16);
             break;
         case NativeTypeKind::S32:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s32, right->computedValue.reg.s32);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s32, right->computedValue->reg.s32);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s64, right->computedValue.reg.s64);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s64, right->computedValue->reg.s64);
             break;
         case NativeTypeKind::U8:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u8, right->computedValue.reg.u8);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u8, right->computedValue->reg.u8);
             break;
         case NativeTypeKind::U16:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u16, right->computedValue.reg.u16);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u16, right->computedValue->reg.u16);
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u32, right->computedValue.reg.u32);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u32, right->computedValue->reg.u32);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u64, right->computedValue.reg.u64);
+            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u64, right->computedValue->reg.u64);
             break;
 
         default:
@@ -159,40 +159,40 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b < right->computedValue->reg.b;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.b = left->computedValue.reg.f32 < right->computedValue.reg.f32;
+            node->computedValue->reg.b = left->computedValue->reg.f32 < right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
+            node->computedValue->reg.b = left->computedValue->reg.f64 < right->computedValue->reg.f64;
             break;
         case NativeTypeKind::S8:
-            node->computedValue.reg.b = left->computedValue.reg.s8 < right->computedValue.reg.s8;
+            node->computedValue->reg.b = left->computedValue->reg.s8 < right->computedValue->reg.s8;
             break;
         case NativeTypeKind::S16:
-            node->computedValue.reg.b = left->computedValue.reg.s16 < right->computedValue.reg.s16;
+            node->computedValue->reg.b = left->computedValue->reg.s16 < right->computedValue->reg.s16;
             break;
         case NativeTypeKind::S32:
-            node->computedValue.reg.b = left->computedValue.reg.s32 < right->computedValue.reg.s32;
+            node->computedValue->reg.b = left->computedValue->reg.s32 < right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.b = left->computedValue.reg.s64 < right->computedValue.reg.s64;
+            node->computedValue->reg.b = left->computedValue->reg.s64 < right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
-            node->computedValue.reg.b = left->computedValue.reg.u8 < right->computedValue.reg.u8;
+            node->computedValue->reg.b = left->computedValue->reg.u8 < right->computedValue->reg.u8;
             break;
         case NativeTypeKind::U16:
-            node->computedValue.reg.b = left->computedValue.reg.u16 < right->computedValue.reg.u16;
+            node->computedValue->reg.b = left->computedValue->reg.u16 < right->computedValue->reg.u16;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.b = left->computedValue.reg.u32 < right->computedValue.reg.u32;
+            node->computedValue->reg.b = left->computedValue->reg.u32 < right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.b = left->computedValue.reg.u64 < right->computedValue.reg.u64;
+            node->computedValue->reg.b = left->computedValue->reg.u64 < right->computedValue->reg.u64;
             break;
 
         default:
@@ -219,40 +219,40 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b > right->computedValue->reg.b;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.b = left->computedValue.reg.f32 > right->computedValue.reg.f32;
+            node->computedValue->reg.b = left->computedValue->reg.f32 > right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
+            node->computedValue->reg.b = left->computedValue->reg.f64 > right->computedValue->reg.f64;
             break;
         case NativeTypeKind::S8:
-            node->computedValue.reg.b = left->computedValue.reg.s8 > right->computedValue.reg.s8;
+            node->computedValue->reg.b = left->computedValue->reg.s8 > right->computedValue->reg.s8;
             break;
         case NativeTypeKind::S16:
-            node->computedValue.reg.b = left->computedValue.reg.s16 > right->computedValue.reg.s16;
+            node->computedValue->reg.b = left->computedValue->reg.s16 > right->computedValue->reg.s16;
             break;
         case NativeTypeKind::S32:
-            node->computedValue.reg.b = left->computedValue.reg.s32 > right->computedValue.reg.s32;
+            node->computedValue->reg.b = left->computedValue->reg.s32 > right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.b = left->computedValue.reg.s64 > right->computedValue.reg.s64;
+            node->computedValue->reg.b = left->computedValue->reg.s64 > right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
-            node->computedValue.reg.b = left->computedValue.reg.u8 > right->computedValue.reg.u8;
+            node->computedValue->reg.b = left->computedValue->reg.u8 > right->computedValue->reg.u8;
             break;
         case NativeTypeKind::U16:
-            node->computedValue.reg.b = left->computedValue.reg.u16 > right->computedValue.reg.u16;
+            node->computedValue->reg.b = left->computedValue->reg.u16 > right->computedValue->reg.u16;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.b = left->computedValue.reg.u32 > right->computedValue.reg.u32;
+            node->computedValue->reg.b = left->computedValue->reg.u32 > right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.b = left->computedValue.reg.u64 > right->computedValue.reg.u64;
+            node->computedValue->reg.b = left->computedValue->reg.u64 > right->computedValue->reg.u64;
             break;
 
         default:
@@ -378,7 +378,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         break;
     case TokenId::SymExclamEqual:
         SWAG_CHECK(resolveCompOpEqual(context, left, right));
-        node->computedValue.reg.b = !node->computedValue.reg.b;
+        if (node->computedValue)
+            node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     case TokenId::SymLower:
         SWAG_CHECK(resolveCompOpLower(context, left, right));
@@ -391,11 +392,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         break;
     case TokenId::SymLowerEqual:
         SWAG_CHECK(resolveCompOpGreater(context, left, right));
-        node->computedValue.reg.b = !node->computedValue.reg.b;
+        if (node->computedValue)
+            node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     case TokenId::SymGreaterEqual:
         SWAG_CHECK(resolveCompOpLower(context, left, right));
-        node->computedValue.reg.b = !node->computedValue.reg.b;
+        if (node->computedValue)
+            node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     default:
         return internalError(context, "resolveCompareExpression, token not supported");

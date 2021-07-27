@@ -403,7 +403,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
                 AttributeParameter attrParam;
                 attrParam.name     = param->resolvedParameter->namedParam;
                 attrParam.typeInfo = param->resolvedParameter->typeInfo;
-                attrParam.value    = param->computedValue;
+                attrParam.value    = *param->computedValue;
                 oneAttribute.parameters.emplace_back(move(attrParam));
             }
         }
@@ -419,7 +419,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             AttributeParameter attrParam;
             attrParam.name     = param->token.text;
             attrParam.typeInfo = param->typeInfo;
-            attrParam.value    = param->assignment->computedValue;
+            attrParam.value    = *param->assignment->computedValue;
             oneAttribute.parameters.emplace_back(move(attrParam));
         }
 

@@ -16,7 +16,7 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
     if (!SWAG_IS_HEX(c))
     {
         auto loc = node->token.startLocation;
-        loc.column += (uint32_t)(pz - node->computedValue.text.c_str());
+        loc.column += (uint32_t)(pz - node->computedValue->text.c_str());
         if (c == '"')
             return context->report({node->sourceFile, loc, Utf8::format("not enough hexadecimal digit, %s", errMsg)});
         else
@@ -40,10 +40,10 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
 
     auto loc = node->token.startLocation;
     Utf8 result;
-    auto len = node->computedValue.text.length();
+    auto len = node->computedValue->text.length();
     result.reserve(len);
 
-    auto start = node->computedValue.text.c_str();
+    auto start = node->computedValue->text.c_str();
     auto pz    = start;
     while (pz - start < len)
     {
@@ -135,7 +135,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         return context->report({node->sourceFile, loc, Utf8::format("unrecognized character escape sequence '%c'", c)});
     }
 
-    node->computedValue.text = result;
+    node->computedValue->text = result;
     return true;
 }
 
@@ -366,10 +366,10 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     auto   node  = context->node;
     Token& token = node->token;
 
-    node->typeInfo           = TypeManager::literalTypeToType(node->token);
-    node->computedValue.reg  = node->token.literalValue;
-    node->computedValue.text = node->token.text;
+    node->typeInfo = TypeManager::literalTypeToType(node->token);
     node->setFlagsValueIsComputed();
+    node->computedValue->reg  = node->token.literalValue;
+    node->computedValue->text = node->token.text;
     node->flags |= AST_R_VALUE;
 
     processLiteralString(context);
@@ -379,7 +379,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     {
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && token.literalType == LiteralType::TT_UNTYPED_FLOAT)
-            node->computedValue.reg.f32 = (float) token.literalValue.f64;
+            node->computedValue->reg.f32 = (float) token.literalValue.f64;
         return true;
     }
 
@@ -424,7 +424,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         }
     }
 
-    auto errMsg = checkLiteralType(node->computedValue, token, suffix->typeInfo, negApplied);
+    auto errMsg = checkLiteralType(*node->computedValue, token, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
     node->typeInfo = suffix->typeInfo;
@@ -516,7 +516,8 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     // Otherwise the tuple will come from the constant segment.
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
-        node->computedValue.storageOffset = node->ownerScope->startStackSize;
+        node->allocateComputedValue();
+        node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
@@ -563,7 +564,8 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     // Otherwise the array will come from the constant segment.
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
-        node->computedValue.storageOffset = node->ownerScope->startStackSize;
+        node->allocateComputedValue();
+        node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
@@ -633,7 +635,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     {
         node->childs.clear();
 
-        if (expression->computedValue.reg.b)
+        if (expression->computedValue->reg.b)
         {
             node->inheritComputedValue(ifTrue);
             node->typeInfo = ifTrue->typeInfo;
@@ -687,16 +689,16 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
             switch (typeInfo->sizeOf)
             {
             case 1:
-                notNull = expression->computedValue.reg.u8 != 0;
+                notNull = expression->computedValue->reg.u8 != 0;
                 break;
             case 2:
-                notNull = expression->computedValue.reg.u16 != 0;
+                notNull = expression->computedValue->reg.u16 != 0;
                 break;
             case 4:
-                notNull = expression->computedValue.reg.u32 != 0;
+                notNull = expression->computedValue->reg.u32 != 0;
                 break;
             case 8:
-                notNull = expression->computedValue.reg.u64 != 0;
+                notNull = expression->computedValue->reg.u64 != 0;
                 break;
             }
         }

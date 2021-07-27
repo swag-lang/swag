@@ -71,33 +71,33 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (addOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
+            if (addOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS32)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 + right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (addOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
+            if (addOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS64)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 + right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (addOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
+            if (addOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU32)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 + right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 + right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (addOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
+            if (addOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU64)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 + right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.f32 = left->computedValue.reg.f32 + right->computedValue.reg.f32;
+            node->computedValue->reg.f32 = left->computedValue->reg.f32 + right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.f64 = left->computedValue.reg.f64 + right->computedValue.reg.f64;
+            node->computedValue->reg.f64 = left->computedValue->reg.f64 + right->computedValue->reg.f64;
             break;
         default:
             return internalError(context, "resolveBinaryOpPlus, type not supported");
@@ -186,33 +186,33 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (subOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
+            if (subOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS32)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 - right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (subOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
+            if (subOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS64)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 - right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (subOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
+            if (subOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU32)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 - right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 - right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (subOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
+            if (subOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU64)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 - right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.f32 = left->computedValue.reg.f32 - right->computedValue.reg.f32;
+            node->computedValue->reg.f32 = left->computedValue->reg.f32 - right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.f64 = left->computedValue.reg.f64 - right->computedValue.reg.f64;
+            node->computedValue->reg.f64 = left->computedValue->reg.f64 - right->computedValue->reg.f64;
             break;
         default:
             return internalError(context, "resolveBinaryOpMinus, type not supported");
@@ -274,33 +274,33 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (mulOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
+            if (mulOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS32)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 * right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 * right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (mulOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
+            if (mulOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS64)});
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 * right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (mulOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
+            if (mulOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU32)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 * right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 * right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (mulOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
+            if (mulOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU64)});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 * right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
-            node->computedValue.reg.f32 = left->computedValue.reg.f32 * right->computedValue.reg.f32;
+            node->computedValue->reg.f32 = left->computedValue->reg.f32 * right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            node->computedValue.reg.f64 = left->computedValue.reg.f64 * right->computedValue.reg.f64;
+            node->computedValue->reg.f64 = left->computedValue->reg.f64 * right->computedValue->reg.f64;
             break;
         default:
             return internalError(context, "resolveBinaryOpMul, type not supported");
@@ -312,7 +312,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         if (left->isConstant0() || right->isConstant0())
         {
             node->setFlagsValueIsComputed();
-            node->computedValue.reg.s64 = 0;
+            node->computedValue->reg.s64 = 0;
         }
         // 1 * something => something
         else if (left->isConstant1())
@@ -372,37 +372,37 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (right->computedValue.reg.s32 == 0)
+            if (right->computedValue->reg.s32 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 / right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 / right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (right->computedValue.reg.s64 == 0)
+            if (right->computedValue->reg.s64 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 / right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (right->computedValue.reg.u32 == 0)
+            if (right->computedValue->reg.u32 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 / right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 / right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (right->computedValue.reg.u64 == 0)
+            if (right->computedValue->reg.u64 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 / right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 / right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
-            if (right->computedValue.reg.f32 == 0)
+            if (right->computedValue->reg.f32 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.f32 = left->computedValue.reg.f32 / right->computedValue.reg.f32;
+            node->computedValue->reg.f32 = left->computedValue->reg.f32 / right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
-            if (right->computedValue.reg.f64 == 0)
+            if (right->computedValue->reg.f64 == 0)
                 return context->report(Hnt0000, {right, Msg0150});
-            node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
+            node->computedValue->reg.f64 = left->computedValue->reg.f64 / right->computedValue->reg.f64;
             break;
         default:
             return internalError(context, "resolveBinaryOpDiv, type not supported");
@@ -452,27 +452,27 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (right->computedValue.reg.s32 == 0)
+            if (right->computedValue->reg.s32 == 0)
                 return context->report({right, Msg0150});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 % right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 % right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (right->computedValue.reg.s64 == 0)
+            if (right->computedValue->reg.s64 == 0)
                 return context->report({right, Msg0150});
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 % right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (right->computedValue.reg.u32 == 0)
+            if (right->computedValue->reg.u32 == 0)
                 return context->report({right, Msg0150});
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 % right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 % right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (right->computedValue.reg.u64 == 0)
+            if (right->computedValue->reg.u64 == 0)
                 return context->report({right, Msg0150});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 % right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
             break;
         default:
             return internalError(context, "resolveBinaryOpModulo, type not supported");
@@ -523,27 +523,27 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b || right->computedValue->reg.b;
             break;
 
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            node->computedValue.reg.u64 = left->computedValue.reg.u8 | right->computedValue.reg.u8;
+            node->computedValue->reg.u64 = left->computedValue->reg.u8 | right->computedValue->reg.u8;
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            node->computedValue.reg.u64 = left->computedValue.reg.u16 | right->computedValue.reg.u16;
+            node->computedValue->reg.u64 = left->computedValue->reg.u16 | right->computedValue->reg.u16;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 | right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 | right->computedValue->reg.u32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 | right->computedValue->reg.u64;
             break;
         default:
             return internalError(context, "resolveBitmaskOr, type not supported");
@@ -568,25 +568,25 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         // something | 0xff (type) => 0xff (type)
         else if (right->flags & AST_VALUE_COMPUTED)
         {
-            if ((leftTypeInfo->sizeOf == 1 && right->computedValue.reg.u8 == 0xFF) ||
-                (leftTypeInfo->sizeOf == 2 && right->computedValue.reg.u16 == 0xFFFF) ||
-                (leftTypeInfo->sizeOf == 4 && right->computedValue.reg.u32 == 0xFFFFFFFF) ||
-                (leftTypeInfo->sizeOf == 8 && right->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            if ((leftTypeInfo->sizeOf == 1 && right->computedValue->reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && right->computedValue->reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && right->computedValue->reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && right->computedValue->reg.u64 == 0xFFFFFFFFFFFFFFFF))
             {
                 node->setFlagsValueIsComputed();
-                node->computedValue.reg.u64 = 0xFFFFFFFFFFFFFFFF;
+                node->computedValue->reg.u64 = 0xFFFFFFFFFFFFFFFF;
             }
         }
         // 0xff (type) | something => 0xff (type)
         else if (left->flags & AST_VALUE_COMPUTED)
         {
-            if ((leftTypeInfo->sizeOf == 1 && left->computedValue.reg.u8 == 0xFF) ||
-                (leftTypeInfo->sizeOf == 2 && left->computedValue.reg.u16 == 0xFFFF) ||
-                (leftTypeInfo->sizeOf == 4 && left->computedValue.reg.u32 == 0xFFFFFFFF) ||
-                (leftTypeInfo->sizeOf == 8 && left->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            if ((leftTypeInfo->sizeOf == 1 && left->computedValue->reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && left->computedValue->reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && left->computedValue->reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && left->computedValue->reg.u64 == 0xFFFFFFFFFFFFFFFF))
             {
                 node->setFlagsValueIsComputed();
-                node->computedValue.reg.u64 = 0xFFFFFFFFFFFFFFFF;
+                node->computedValue->reg.u64 = 0xFFFFFFFFFFFFFFFF;
             }
         }
     }
@@ -633,27 +633,27 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b && right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b && right->computedValue->reg.b;
             break;
 
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            node->computedValue.reg.u64 = left->computedValue.reg.u8 & right->computedValue.reg.u8;
+            node->computedValue->reg.u64 = left->computedValue->reg.u8 & right->computedValue->reg.u8;
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            node->computedValue.reg.u64 = left->computedValue.reg.u16 & right->computedValue.reg.u16;
+            node->computedValue->reg.u64 = left->computedValue->reg.u16 & right->computedValue->reg.u16;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 & right->computedValue.reg.u32;
+            node->computedValue->reg.u64 = left->computedValue->reg.u32 & right->computedValue->reg.u32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
+            node->computedValue->reg.u64 = left->computedValue->reg.u64 & right->computedValue->reg.u64;
             break;
         default:
             return internalError(context, "resolveBitmaskAnd, type not supported");
@@ -666,16 +666,16 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         if (left->isConstant0() || right->isConstant0())
         {
             node->setFlagsValueIsComputed();
-            node->computedValue.reg.s64 = 0;
+            node->computedValue->reg.s64 = 0;
         }
 
         // something & 0xFF (type) => something
         else if (right->flags & AST_VALUE_COMPUTED)
         {
-            if ((leftTypeInfo->sizeOf == 1 && right->computedValue.reg.u8 == 0xFF) ||
-                (leftTypeInfo->sizeOf == 2 && right->computedValue.reg.u16 == 0xFFFF) ||
-                (leftTypeInfo->sizeOf == 4 && right->computedValue.reg.u32 == 0xFFFFFFFF) ||
-                (leftTypeInfo->sizeOf == 8 && right->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            if ((leftTypeInfo->sizeOf == 1 && right->computedValue->reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && right->computedValue->reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && right->computedValue->reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && right->computedValue->reg.u64 == 0xFFFFFFFFFFFFFFFF))
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);
@@ -686,10 +686,10 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         // 0xFF (type) & something => something
         else if (left->flags & AST_VALUE_COMPUTED)
         {
-            if ((leftTypeInfo->sizeOf == 1 && left->computedValue.reg.u8 == 0xFF) ||
-                (leftTypeInfo->sizeOf == 2 && left->computedValue.reg.u16 == 0xFFFF) ||
-                (leftTypeInfo->sizeOf == 4 && left->computedValue.reg.u32 == 0xFFFFFFFF) ||
-                (leftTypeInfo->sizeOf == 8 && left->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            if ((leftTypeInfo->sizeOf == 1 && left->computedValue->reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && left->computedValue->reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && left->computedValue->reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && left->computedValue->reg.u64 == 0xFFFFFFFFFFFFFFFF))
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
@@ -706,11 +706,11 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     auto node = context->node;
     SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, Msg0798}));
     SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, Msg0798}));
-    left->computedValue.text  = Ast::literalToString(left->typeInfo, left->computedValue);
-    right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue);
-    node->computedValue.text  = left->computedValue.text + right->computedValue.text.c_str();
-    node->typeInfo            = g_TypeMgr.typeInfoString;
+    left->computedValue->text  = Ast::literalToString(left->typeInfo, *left->computedValue);
+    right->computedValue->text = Ast::literalToString(right->typeInfo, *right->computedValue);
     node->setFlagsValueIsComputed();
+    node->computedValue->text = left->computedValue->text + right->computedValue->text.c_str();
+    node->typeInfo            = g_TypeMgr.typeInfoString;
     return true;
 }
 
@@ -748,18 +748,18 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            node->computedValue.reg.u8 = left->computedValue.reg.u8 ^ right->computedValue.reg.u8;
+            node->computedValue->reg.u8 = left->computedValue->reg.u8 ^ right->computedValue->reg.u8;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
+            node->computedValue->reg.s64 = left->computedValue->reg.s32 ^ right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
+            node->computedValue->reg.s64 = left->computedValue->reg.s64 ^ right->computedValue->reg.s64;
             break;
         default:
             return internalError(context, "resolveXor, type not supported");
@@ -934,86 +934,86 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 8, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 8)
+                if (right->computedValue->reg.u32 >= 8)
                     return context->report({right, msg});
-                if ((node->computedValue.reg.s8 & 0x80) != (left->computedValue.reg.s8 & 0x80))
+                if ((node->computedValue->reg.s8 & 0x80) != (left->computedValue->reg.s8 & 0x80))
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S16:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 16, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 16)
+                if (right->computedValue->reg.u32 >= 16)
                     return context->report({right, msg});
-                if ((node->computedValue.reg.s16 & 0x8000) != (left->computedValue.reg.s16 & 0x8000))
+                if ((node->computedValue->reg.s16 & 0x8000) != (left->computedValue->reg.s16 & 0x8000))
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S32:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 32)
+                if (right->computedValue->reg.u32 >= 32)
                     return context->report({right, msg});
-                if ((node->computedValue.reg.s32 & 0x80000000) != (left->computedValue.reg.s32 & 0x80000000))
+                if ((node->computedValue->reg.s32 & 0x80000000) != (left->computedValue->reg.s32 & 0x80000000))
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 64)
+                if (right->computedValue->reg.u32 >= 64)
                     return context->report({right, msg});
-                if ((node->computedValue.reg.s64 & 0x80000000'00000000) != (left->computedValue.reg.s64 & 0x80000000'00000000))
+                if ((node->computedValue->reg.s64 & 0x80000000'00000000) != (left->computedValue->reg.s64 & 0x80000000'00000000))
                     return context->report({node, msg1});
             }
             break;
 
         case NativeTypeKind::U8:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 8, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 8)
+                if (right->computedValue->reg.u32 >= 8)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u8 >> right->computedValue.reg.u32 != left->computedValue.reg.u8)
+                if (node->computedValue->reg.u8 >> right->computedValue->reg.u32 != left->computedValue->reg.u8)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U16:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 16, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 16)
+                if (right->computedValue->reg.u32 >= 16)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u16 >> right->computedValue.reg.u32 != left->computedValue.reg.u16)
+                if (node->computedValue->reg.u16 >> right->computedValue->reg.u32 != left->computedValue->reg.u16)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 32)
+                if (right->computedValue->reg.u32 >= 32)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                if (node->computedValue->reg.u32 >> right->computedValue->reg.u32 != left->computedValue->reg.u32)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, isSmall);
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 64)
+                if (right->computedValue->reg.u32 >= 64)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u64 >> right->computedValue.reg.u32 != left->computedValue.reg.u64)
+                if (node->computedValue->reg.u64 >> right->computedValue->reg.u32 != left->computedValue->reg.u64)
                     return context->report({node, msg1});
             }
             break;
@@ -1034,7 +1034,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         else if (left->isConstant0())
         {
             node->setFlagsValueIsComputed();
-            node->computedValue.reg.s64 = 0;
+            node->computedValue->reg.s64 = 0;
         }
     }
 
@@ -1071,78 +1071,78 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 8, true, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 8)
+                if (right->computedValue->reg.u32 >= 8)
                     return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S16:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 16, true, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 16)
+                if (right->computedValue->reg.u32 >= 16)
                     return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S32:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, true, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 32)
+                if (right->computedValue->reg.u32 >= 32)
                     return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, true, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 64)
+                if (right->computedValue->reg.u32 >= 64)
                     return context->report({right, msg});
             }
             break;
 
         case NativeTypeKind::U8:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 8, false, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 8)
+                if (right->computedValue->reg.u32 >= 8)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u8 << right->computedValue.reg.u32 != left->computedValue.reg.u8)
+                if (node->computedValue->reg.u8 << right->computedValue->reg.u32 != left->computedValue->reg.u8)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U16:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 16, false, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 16)
+                if (right->computedValue->reg.u32 >= 16)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u16 << right->computedValue.reg.u32 != left->computedValue.reg.u16)
+                if (node->computedValue->reg.u16 << right->computedValue->reg.u32 != left->computedValue->reg.u16)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, false, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 32)
+                if (right->computedValue->reg.u32 >= 32)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                if (node->computedValue->reg.u32 << right->computedValue->reg.u32 != left->computedValue->reg.u32)
                     return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, false, isSmall);
+            ByteCodeRun::executeShiftRight(context, &node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
-                if (right->computedValue.reg.u32 >= 64)
+                if (right->computedValue->reg.u32 >= 64)
                     return context->report({right, msg});
-                if (node->computedValue.reg.u64 << right->computedValue.reg.u32 != left->computedValue.reg.u64)
+                if (node->computedValue->reg.u64 << right->computedValue->reg.u32 != left->computedValue->reg.u64)
                     return context->report({node, msg1});
             }
             break;
@@ -1163,7 +1163,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         else if (left->isConstant0())
         {
             node->setFlagsValueIsComputed();
-            node->computedValue.reg.s64 = 0;
+            node->computedValue->reg.s64 = 0;
         }
     }
 
@@ -1281,10 +1281,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         switch (node->token.id)
         {
         case TokenId::KwdAnd:
-            node->computedValue.reg.b = left->computedValue.reg.b && right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b && right->computedValue->reg.b;
             break;
         case TokenId::KwdOr:
-            node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
+            node->computedValue->reg.b = left->computedValue->reg.b || right->computedValue->reg.b;
             break;
         default:
             return internalError(context, "resolveBoolExpression, token not supported");
@@ -1298,14 +1298,14 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             // false && something => false
             if (left->isConstantFalse())
             {
-                node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
+                node->computedValue->reg.b = false;
             }
             // something && false => false
             else if (right->isConstantFalse())
             {
-                node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
+                node->computedValue->reg.b = false;
             }
             // true && something => something
             else if (left->isConstantTrue())
@@ -1331,14 +1331,14 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             // true || something => true
             if (left->isConstantTrue())
             {
-                node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
+                node->computedValue->reg.b = true;
             }
             // something || true => true
             else if (right->isConstantTrue())
             {
-                node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
+                node->computedValue->reg.b = true;
             }
             // false || something => something
             else if (left->isConstantFalse())

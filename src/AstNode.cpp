@@ -89,13 +89,13 @@ bool AstNode::isConstant0()
     switch (typeInfo->sizeOf)
     {
     case 1:
-        return computedValue.reg.u8 == 0;
+        return computedValue->reg.u8 == 0;
     case 2:
-        return computedValue.reg.u16 == 0;
+        return computedValue->reg.u16 == 0;
     case 4:
-        return computedValue.reg.u32 == 0;
+        return computedValue->reg.u32 == 0;
     case 8:
-        return computedValue.reg.u64 == 0;
+        return computedValue->reg.u64 == 0;
     }
 
     return false;
@@ -113,23 +113,23 @@ bool AstNode::isConstant1()
     {
     case NativeTypeKind::U8:
     case NativeTypeKind::S8:
-        return computedValue.reg.u8 == 1;
+        return computedValue->reg.u8 == 1;
     case NativeTypeKind::U16:
     case NativeTypeKind::S16:
-        return computedValue.reg.u16 == 1;
+        return computedValue->reg.u16 == 1;
     case NativeTypeKind::U32:
     case NativeTypeKind::S32:
     case NativeTypeKind::Rune:
-        return computedValue.reg.u32 == 1;
+        return computedValue->reg.u32 == 1;
     case NativeTypeKind::U64:
     case NativeTypeKind::S64:
     case NativeTypeKind::UInt:
     case NativeTypeKind::Int:
-        return computedValue.reg.u64 == 1;
+        return computedValue->reg.u64 == 1;
     case NativeTypeKind::F32:
-        return computedValue.reg.f32 == 1;
+        return computedValue->reg.f32 == 1;
     case NativeTypeKind::F64:
-        return computedValue.reg.f64 == 1;
+        return computedValue->reg.f64 == 1;
     }
 
     return false;
