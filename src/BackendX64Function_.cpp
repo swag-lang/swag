@@ -3911,9 +3911,6 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     concat.addU8(0xFF); // call
     concat.addU8(0x15);
 
-    if (funcName == "Argb2039.extract")
-        funcName = funcName;
-
     // Dll imported function name will have "__imp_" before (imported mangled name)
     CoffRelocation reloc;
     reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;

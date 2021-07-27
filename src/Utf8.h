@@ -62,6 +62,7 @@ struct Utf8
     char        operator[](int index) const;
     friend Utf8 operator+(const Utf8& str1, const char* str2);
     friend Utf8 operator+(const char* str1, const Utf8& str2);
+    friend bool operator==(const Utf8& str1, char c);
     friend bool operator==(const Utf8& str1, const char* str2);
     friend bool operator!=(const Utf8& str1, const char* str2);
     friend bool operator==(const Utf8& str1, const Utf8& str2);

@@ -194,6 +194,13 @@ Utf8 operator+(const Utf8& str1, const char* str2)
     return move(result);
 }
 
+bool operator==(const Utf8& str1, char c)
+{
+    if (str1.count != 1)
+        return false;
+    return str1.buffer[0] == c;
+}
+
 Utf8 operator+(const char* str1, const Utf8& str2)
 {
     Utf8 result{str1};
@@ -203,7 +210,6 @@ Utf8 operator+(const char* str1, const Utf8& str2)
 
 bool operator==(const Utf8& str1, const char* str2)
 {
-    //printf("%s\n", str2);
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;

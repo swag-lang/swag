@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 {
@@ -62,7 +63,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
                 SWAG_CHECK(eatToken());
             }
 
-            if (token.text == "self")
+            if (token.text == g_LangSpec.name_self)
             {
                 SWAG_VERIFY(currentStructScope, error(token, Msg0334));
                 SWAG_CHECK(eatToken());

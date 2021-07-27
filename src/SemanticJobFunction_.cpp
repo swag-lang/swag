@@ -8,7 +8,7 @@
 #include "ThreadManager.h"
 #include "Os.h"
 #include "ErrorIds.h"
-#include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -406,7 +406,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Msg0750}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == "Swag.CompilerMsgMask", context->report({parameters, Msg0750}));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec.name_Swag_CompilerMsgMask, context->report({parameters, Msg0750}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
@@ -441,8 +441,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == "opAffect", context->report({funcNode, funcNode->token, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == "opAffect" || funcNode->token.text == "opCast", context->report({funcNode, funcNode->token, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec.name_opAffect, context->report({funcNode, funcNode->token, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec.name_opAffect || funcNode->token.text == g_LangSpec.name_opCast, context->report({funcNode, funcNode->token, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Utf8::format(Msg0755, funcNode->token.text.c_str())}));
 
     // implicit attribute cannot be used on a generic function
@@ -549,14 +549,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
-        if (funcNode->token.text == "opInit")
+        if (funcNode->token.text == g_LangSpec.name_opInit)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
         }
-        else if (funcNode->token.text == "opDrop")
+        else if (funcNode->token.text == g_LangSpec.name_opDrop)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -564,7 +564,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeStruct->opUserDropFct = funcNode;
             SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
-        else if (funcNode->token.text == "opPostCopy")
+        else if (funcNode->token.text == g_LangSpec.name_opPostCopy)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -572,7 +572,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeStruct->opUserPostCopyFct = funcNode;
             SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->token, Utf8::format(Msg0765, typeStruct->name.c_str())}));
         }
-        else if (funcNode->token.text == "opPostMove")
+        else if (funcNode->token.text == g_LangSpec.name_opPostMove)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);

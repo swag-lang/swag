@@ -8,6 +8,7 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -358,7 +359,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
         {
             auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
-            if (overload->symbol->name == "opAffect")
+            if (overload->symbol->name == g_LangSpec.name_opAffect)
             {
                 nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;
@@ -1040,13 +1041,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        if (identifier->token.text == "opInit")
+        if (identifier->token.text == g_LangSpec.name_opInit)
             return context->report({identifier, identifier->token, Msg0100});
-        if (identifier->token.text == "opDrop")
+        if (identifier->token.text == g_LangSpec.name_opDrop)
             return context->report({identifier, identifier->token, Msg0101});
-        if (identifier->token.text == "opPostCopy")
+        if (identifier->token.text == g_LangSpec.name_opPostCopy)
             return context->report({identifier, identifier->token, Msg0103});
-        if (identifier->token.text == "opPostMove")
+        if (identifier->token.text == g_LangSpec.name_opPostMove)
             return context->report({identifier, identifier->token, Msg0104});
 
         // Be sure this is not a 'forward' decl
@@ -2408,7 +2409,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
-    if (node->token.text == "retval")
+    if (node->token.text == g_LangSpec.name_retval)
     {
         // Be sure this is correct
         SWAG_CHECK(resolveRetVal(context));

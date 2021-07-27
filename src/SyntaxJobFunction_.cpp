@@ -7,6 +7,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
@@ -149,14 +150,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     paramNode->token.text = move(token.text);
 
     // 'self'
-    if (token.id == TokenId::KwdConst || paramNode->token.text == "self")
+    if (token.id == TokenId::KwdConst || paramNode->token.text == g_LangSpec.name_self)
     {
         bool isConst = false;
         if (token.id == TokenId::KwdConst)
         {
             isConst = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", error(token, Msg0405));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec.name_self, error(token, Msg0405));
             paramNode->token.text = "self";
         }
 

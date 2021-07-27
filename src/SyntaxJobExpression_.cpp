@@ -553,7 +553,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
     while (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
-        if (token.text == "safe")
+        if (token.text == g_LangSpec.name_safe)
         {
             switch (opId)
             {
@@ -578,7 +578,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == "small")
+        if (token.text == g_LangSpec.name_small)
         {
             switch (opId)
             {
@@ -597,7 +597,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == "nodrop")
+        if (token.text == g_LangSpec.name_nodrop)
         {
             switch (opId)
             {
@@ -614,7 +614,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == "move")
+        if (token.text == g_LangSpec.name_move)
         {
             switch (opId)
             {
@@ -631,7 +631,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == "moveraw")
+        if (token.text == g_LangSpec.name_moveraw)
         {
             switch (opId)
             {
@@ -1182,7 +1182,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         if (node->token.text.find("@alias") == 0)
         {
-            if (node->token.text == "@alias")
+            if (node->token.text == g_LangSpec.name_atalias)
                 return error(node->token, Msg0275);
 
             const char* pz  = node->token.text.c_str() + 6;
@@ -1316,7 +1316,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         {
             // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            if (child->childs.front()->token.text == "?")
+            if (child->childs.front()->token.text == '?')
             {
                 idx++;
                 continue;
@@ -1534,7 +1534,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     auto child = leftNode->childs.front();
 
                     // Ignore field if '?', otherwise check that this is a valid variable name
-                    if (child->childs.front()->token.text == "?")
+                    if (child->childs.front()->token.text == '?')
                     {
                         idx++;
                         Ast::removeFromParent(child);

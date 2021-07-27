@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Math.h"
+#include "LanguageSpec.h"
 
 void SemanticJob::propagateAttributes(AstNode* child)
 {
@@ -54,19 +55,19 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
     {
-        if (oneAttribute->token.text == "Complete" && kind == AstNodeKind::Switch)
+        if (oneAttribute->token.text == g_LangSpec.name_Complete && kind == AstNodeKind::Switch)
             return true;
-        if (oneAttribute->token.text == "AttrUsage" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == g_LangSpec.name_AttrUsage && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == "AttrMulti" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == g_LangSpec.name_AttrMulti && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == "Global" && isLocalVar)
+        if (oneAttribute->token.text == g_LangSpec.name_Global && isLocalVar)
             return true;
-        if (oneAttribute->token.text == "Strict" && kind == AstNodeKind::Alias)
+        if (oneAttribute->token.text == g_LangSpec.name_Strict && kind == AstNodeKind::Alias)
             return true;
-        if (oneAttribute->token.text == "PrintBc" && kind == AstNodeKind::CompilerAst)
+        if (oneAttribute->token.text == g_LangSpec.name_PrintBc && kind == AstNodeKind::CompilerAst)
             return true;
-        if (oneAttribute->token.text == "Align" && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
+        if (oneAttribute->token.text == g_LangSpec.name_Align && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
             return true;
     }
 

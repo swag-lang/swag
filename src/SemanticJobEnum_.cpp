@@ -9,6 +9,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
@@ -63,7 +64,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     // Hardcoded swag enums
     if (context->sourceFile->isBootstrapFile)
     {
-        if (enumNode->token.text == "AttributeUsage")
+        if (enumNode->token.text == g_LangSpec.name_AttributeUsage)
             enumNode->attributeFlags |= ATTRIBUTE_ENUM_FLAGS;
     }
 

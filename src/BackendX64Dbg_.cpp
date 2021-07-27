@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
+#include "LanguageSpec.h"
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
@@ -1112,7 +1113,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                     // Codeview seems to need this pointer to be named "this"...
                     // So add it
-                    if (typeFunc->isMethod() && child->token.text == "self")
+                    if (typeFunc->isMethod() && child->token.text == g_LangSpec.name_self)
                     {
                         //////////
                         dbgStartRecord(pp, concat, S_LOCAL);

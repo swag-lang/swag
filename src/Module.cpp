@@ -685,7 +685,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
                 break;
             }
 
-            if (splits[i] == "?")
+            if (splits[i] == '?')
             {
                 *setVer = -1;
                 continue;
