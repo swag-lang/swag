@@ -976,9 +976,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Utf8::format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute("Swag.Offset"))
+        if (typeParam->attributes.hasAttribute(g_LangSpec.name_Swag_Offset))
         {
-            auto attr = typeParam->attributes.getAttribute("Swag.Offset");
+            auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0682});
         }
