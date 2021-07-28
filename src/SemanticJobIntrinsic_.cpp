@@ -411,7 +411,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(node);
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->reg.u32, CONCRETE_SHOULD_WAIT, &node->typeInfo));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;

@@ -232,7 +232,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, node));
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(context->node);
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->reg.u32, CONCRETE_SHOULD_WAIT, &node->typeInfo));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
     }
