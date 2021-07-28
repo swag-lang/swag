@@ -88,10 +88,9 @@ struct ByteCodeRunContext : public JobContext
     static const int     MAX_ALLOC_RR = 2;
     Register*            registersRR  = nullptr;
 
-    uint32_t stackSize = 0;
-    int32_t  curRC     = -1;
-    int32_t  firstRC   = -1;
-    bool     hasError  = false;
+    int32_t curRC    = -1;
+    int32_t firstRC  = -1;
+    bool    hasError = false;
 
     enum class DebugStepMode
     {

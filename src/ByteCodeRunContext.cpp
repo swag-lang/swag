@@ -16,38 +16,36 @@ ByteCodeRunContext::~ByteCodeRunContext()
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 {
-    auto stackS = max(g_CommandLine.stackSize, 1024);
-
     if (!registersRR)
     {
         registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
+        if (g_CommandLine.stats)
+            g_Stats.memBcStack += Allocator::alignSize(MAX_ALLOC_RR * sizeof(Register));
 #ifdef SWAG_DEV_MODE
         memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
 #endif
-        if (g_CommandLine.stats)
-            g_Stats.memBcStack += MAX_ALLOC_RR * sizeof(Register);
     }
 
-    if (stackSize < stackS)
+    if (!stack)
     {
-        stackSize = stackS;
-        stack     = (uint8_t*) realloc(stack, stackS);
+        stack = (uint8_t*) malloc(g_CommandLine.stackSize);
         if (g_CommandLine.stats)
-            g_Stats.memBcStack += stackS;
+            g_Stats.memBcStack += g_CommandLine.stackSize;
 #ifdef SWAG_DEV_MODE
-        memset(stack, 0xFE, stackS);
+        memset(stack, 0xFE, g_CommandLine.stackSize);
 #endif
     }
 
-    bp = stack + stackSize;
-    sp = bp;
+    SWAG_ASSERT(node->extension->bc);
+    SWAG_ASSERT(node->extension->bc->out);
 
     sourceFile = sf;
     node       = nd;
-    bc         = node->extension->bc;
-    SWAG_ASSERT(bc);
+
+    bp = stack + g_CommandLine.stackSize;
+    sp = bp;
+    bc = node->extension->bc;
     ip = bc->out;
-    SWAG_ASSERT(ip);
 
     curRC    = -1;
     firstRC  = -1;
@@ -66,5 +64,5 @@ void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 void ByteCodeRunContext::stackOverflow()
 {
     hasError = true;
-    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(stackSize).c_str());
+    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(g_CommandLine.stackSize).c_str());
 }

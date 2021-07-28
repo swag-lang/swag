@@ -1168,7 +1168,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (ip->a.u32)
             context->incSP(ip->a.u32);
-        if (context->sp == context->stack + context->stackSize)
+        if (context->sp == context->stack + g_CommandLine.stackSize)
             return false;
         context->bc->leaveByteCode(context);
         context->ip = context->pop<ByteCodeInstruction*>();
