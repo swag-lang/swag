@@ -10,17 +10,15 @@ ByteCodeRunContext::~ByteCodeRunContext()
     if (g_Exiting)
         return;
 
-    ::free(registersRR);
-    ::free(stack);
+    g_Allocator.free(registersRR, MAX_ALLOC_RR * sizeof(Register));
+    g_Allocator.free(stack, g_CommandLine.stackSize);
 }
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 {
     if (!registersRR)
     {
-        registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
-        if (g_CommandLine.stats)
-            g_Stats.memBcStack += Allocator::alignSize(MAX_ALLOC_RR * sizeof(Register));
+        registersRR = (Register*) g_Allocator.alloc(MAX_ALLOC_RR * sizeof(Register));
 #ifdef SWAG_DEV_MODE
         memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
 #endif
@@ -28,7 +26,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 
     if (!stack)
     {
-        stack = (uint8_t*) malloc(g_CommandLine.stackSize);
+        stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSize);
         if (g_CommandLine.stats)
             g_Stats.memBcStack += g_CommandLine.stackSize;
 #ifdef SWAG_DEV_MODE
