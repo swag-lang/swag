@@ -242,7 +242,7 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
     return true;
 }
 
-bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* storageSegment)
+bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node)
 {
     auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
@@ -287,14 +287,19 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
         {
             // Do not initialize variable with type arguments, then again with an initialization
+            auto assign   = node->assignment;
+            auto overload = assign->resolvedSymbolOverload;
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                return context->report({node->assignment, Msg0645});
+                return context->report({assign, Msg0645});
 
             // Copy from a constant
-            SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
+            SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
             storageOffset = storageSegment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
             auto addrDst  = storageSegment->address(storageOffset);
-            auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->computedValue.storageOffset);
+            SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
+            SWAG_ASSERT(overload->computedValue.storageSegment);
+            SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
+            auto addrSrc = overload->computedValue.storageSegment->address(overload->computedValue.storageOffset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
         }
         else

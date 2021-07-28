@@ -969,7 +969,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 else
                 {
                     node->allocateComputedValue();
-                    SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
+                    SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
                 }
             }
             else if (typeInfo->kind == TypeInfoKind::Slice)
@@ -1025,7 +1025,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else
         {
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, storageSegment));
+            SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
         }
 
         // Register variable for debug

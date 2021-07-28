@@ -216,7 +216,7 @@ struct SemanticJob : public Job
     static AstNode* convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType);
     static bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
     static bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
-    static bool     collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* segment);
+    static bool     collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node);
     static void     disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
     static bool         resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
