@@ -34,11 +34,11 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 #endif
     }
 
-    SWAG_ASSERT(node->extension->bc);
-    SWAG_ASSERT(node->extension->bc->out);
-
     sourceFile = sf;
     node       = nd;
+
+    SWAG_ASSERT(node->extension->bc);
+    SWAG_ASSERT(node->extension->bc->out);
 
     bp = stack + g_CommandLine.stackSize;
     sp = bp;
