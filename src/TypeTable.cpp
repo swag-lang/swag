@@ -16,7 +16,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    uint32_t  tmpStorageOffset;
+    uint32_t tmpStorageOffset;
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, cflags));
     *result = (ConcreteTypeInfo*) storageSegment->addressNoLock(tmpStorageOffset);
 
@@ -33,7 +33,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    uint32_t  tmpStorageOffset;
+    uint32_t tmpStorageOffset;
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, cflags));
 
     // Offset for bytecode run
@@ -256,8 +256,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     SWAG_ASSERT(!typeName.empty());
 
     // Already computed ?
-    auto& storedMap    = cflags & CONCRETE_FOR_COMPILER ? concreteTypesCompiler : concreteTypes;
-    auto& storedMapJob = cflags & CONCRETE_FOR_COMPILER ? concreteTypesJobCompiler : concreteTypesJob;
+    auto& storedMap    = storageSegment->kind == SegmentKind::Compiler ? concreteTypesCompiler : concreteTypes;
+    auto& storedMapJob = storageSegment->kind == SegmentKind::Compiler ? concreteTypesJobCompiler : concreteTypesJob;
     if (typeInfo->kind != TypeInfoKind::Param)
     {
         auto it = storedMap.find(typeName);

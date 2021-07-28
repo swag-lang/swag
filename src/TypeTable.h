@@ -14,8 +14,7 @@ struct Module;
 struct TypeTableJob;
 
 static uint32_t CONCRETE_SHOULD_WAIT    = 0x00000001;
-static uint32_t CONCRETE_FOR_COMPILER   = 0x00000002;
-static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000004;
+static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000002;
 
 struct TypeTable
 {

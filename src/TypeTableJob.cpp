@@ -143,12 +143,9 @@ bool TypeTableJob::computeStruct()
 
                 // 'value' will contain a pointer to the lambda.
                 // Register it for later patches
-                if (!(cflags & CONCRETE_FOR_COMPILER))
-                {
-                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
-                    AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
-                    patchMethods.push_back({funcNode, fieldOffset});
-                }
+                uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+                AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                patchMethods.push_back({funcNode, fieldOffset});
 
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
@@ -169,12 +166,9 @@ bool TypeTableJob::computeStruct()
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for swag_runtime_interfaceof
                 // Not needed if we are computing a compiler type
-                if (!(cflags & CONCRETE_FOR_COMPILER))
-                {
-                    uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
-                    uint32_t valueOffset = storageArray + fieldOffset;
-                    storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
-                }
+                uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
+                uint32_t valueOffset = storageArray + fieldOffset;
+                storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
 
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
@@ -187,7 +181,7 @@ bool TypeTableJob::computeStruct()
     // lock the constant storageSegment, and then can lock the type storageSegment for the 'any' type)
     //
     // This pass is used to store the address of each function of the interface in the 'value' field of the ConcreteTypeInfoParam.
-    if (concreteType->interfaces.count && !(cflags & CONCRETE_FOR_COMPILER))
+    if (concreteType->interfaces.count)
     {
         auto addrArray = (ConcreteTypeInfoParam*) concreteType->interfaces.buffer;
         for (int param = 0; param < concreteType->interfaces.count; param++)
