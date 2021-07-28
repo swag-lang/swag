@@ -6,7 +6,7 @@
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
-    addArg("all", "--stats", nullptr, CommandLineType::Bool, &cmdLine->stats, nullptr, "display statistics at the end");
+    addArg("all", "--stats", nullptr, CommandLineType::EnumInt, &cmdLine->statsWhat, "none|all|count|memory|time", "display statistics at the end");
     addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
 
     addArg("all", "--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");

@@ -19,6 +19,10 @@ bool CommandLine::check()
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verbosePass || verboseConcreteTypes)
         verbose = true;
 
+    // Stats
+    if (statsWhat != StatsWhat::None)
+        stats = true;
+
     // Check special backend X64
     if (backendType == BackendType::X64)
     {

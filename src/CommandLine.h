@@ -11,6 +11,15 @@ enum class BuildPass
     Full,
 };
 
+enum class StatsWhat
+{
+    None,
+    All,
+    Count,
+    Memory,
+    Time,
+};
+
 struct CommandLine
 {
     // Compiler
@@ -45,18 +54,19 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
-    bool silent                = false;
-    bool stats                 = false;
-    bool verbose               = false;
-    bool verboseCmdLine        = false;
-    bool verbosePath           = false;
-    bool verboseLink           = false;
-    bool verboseTestErrors     = false;
-    bool verbosePass           = false;
-    bool verboseConcreteTypes  = false;
-    bool verboseBackendCommand = false;
-    bool errorSourceOut        = true;
-    bool errorNoteOut          = true;
+    StatsWhat statsWhat             = StatsWhat::None;
+    bool      stats                 = false;
+    bool      silent                = false;
+    bool      verbose               = false;
+    bool      verboseCmdLine        = false;
+    bool      verbosePath           = false;
+    bool      verboseLink           = false;
+    bool      verboseTestErrors     = false;
+    bool      verbosePass           = false;
+    bool      verboseConcreteTypes  = false;
+    bool      verboseBackendCommand = false;
+    bool      errorSourceOut        = true;
+    bool      errorNoteOut          = true;
 
     // Output
     string buildCfg           = "fast-debug";
