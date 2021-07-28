@@ -579,7 +579,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         uint32_t     storageOffset  = UINT32_MAX;
                         DataSegment* storageSegment = SemanticJob::getConstantSegFromContext(firstChild);
                         firstChild->setFlagsValueIsComputed();
-                        SemanticJob::reserveAndStoreToSegment(context.semContext, storageOffset, storageSegment, firstChild->computedValue, firstChild->typeInfo, firstChild);
+                        SemanticJob::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
 
                         auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
                         firstChild->computedValue->reg.u64        = typeList->subTypes.size();

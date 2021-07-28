@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             node->doneFlags |= AST_DONE_EXPRLIST_CST;
             node->allocateComputedValue();
             node->computedValue->storageSegment = SemanticJob::getConstantSegFromContext(node);
-            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue->storageOffset, node->computedValue->storageSegment, nullptr, typeList, node));
+            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));
         }
 
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->resultRegisterRC[0], node->computedValue->storageOffset);

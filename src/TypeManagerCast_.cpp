@@ -2986,7 +2986,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                         auto constSegment = SemanticJob::getConstantSegFromContext(exprList);
                         exprList->allocateComputedValue();
                         exprList->computedValue->storageSegment = constSegment;
-                        SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue->storageOffset, exprList->computedValue->storageSegment, nullptr, fromNode->typeInfo, exprList));
+                        SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo, exprList));
                     }
                 }
             }
