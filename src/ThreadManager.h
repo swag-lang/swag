@@ -10,16 +10,15 @@ struct ThreadManager
     void init();
     void addJob(Job* job);
     void addJobNoLock(Job* job);
+    Job* getJob();
     Job* getJob(JobThread* thread);
-    Job* getJob(uint32_t affinity, VectorNative<Job*>& queue);
+    Job* getJob(VectorNative<Job*>& queue);
     bool doneWithJobs();
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
-    void participate(mutex& lock, uint32_t affinity);
-    bool participate(uint32_t affinity);
-
-    Job* getJob(uint32_t affinity = AFFINITY_ALL);
+    void participate(mutex& lock);
+    bool participate();
 
     VectorNative<Job*>       queueJobsIO;
     VectorNative<Job*>       queueJobs;

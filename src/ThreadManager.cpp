@@ -237,7 +237,7 @@ void ThreadManager::waitEndJobs()
 {
     if (g_CommandLine.numCores == 1)
     {
-        while (participate(AFFINITY_ALL))
+        while (participate())
             ;
     }
     else
@@ -252,15 +252,15 @@ void ThreadManager::waitEndJobs()
     }
 }
 
-Job* ThreadManager::getJob(uint32_t affinity)
+Job* ThreadManager::getJob()
 {
     unique_lock lk(mutexAdd);
     Job*        job;
 
     // If no IO is running, then we can take one in priority
-    if (!currentJobsIO && (affinity & AFFINITY_IO))
+    if (!currentJobsIO)
     {
-        job = getJob(affinity, queueJobsIO);
+        job = getJob(queueJobsIO);
         if (job)
         {
             currentJobsIO++;
@@ -269,22 +269,19 @@ Job* ThreadManager::getJob(uint32_t affinity)
     }
 
     // Else we take a normal job if we can
-    job = getJob(affinity, queueJobs);
+    job = getJob(queueJobs);
     if (job)
         return job;
 
     // Otherwise, then IO, as there's nothing left
-    if (affinity & AFFINITY_IO)
-    {
-        job = getJob(affinity, queueJobsIO);
-        if (job)
-            currentJobsIO++;
-    }
+    job = getJob(queueJobsIO);
+    if (job)
+        currentJobsIO++;
 
     return job;
 }
 
-Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
+Job* ThreadManager::getJob(VectorNative<Job*>& queue)
 {
     if (queue.empty())
         return nullptr;
@@ -298,9 +295,6 @@ Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
         jobPickIndex = (int) queue.size() - 1;
 
     job = queue[jobPickIndex];
-    if (!(job->affinity & affinity))
-        return nullptr;
-
     queue.erase(jobPickIndex);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
@@ -314,7 +308,7 @@ Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
 
 Job* ThreadManager::getJob(JobThread* thread)
 {
-    auto job = getJob(AFFINITY_ALL);
+    auto job = getJob();
     if (job)
         return job;
 
@@ -326,23 +320,22 @@ Job* ThreadManager::getJob(JobThread* thread)
     return nullptr;
 }
 
-void ThreadManager::participate(mutex& lock, uint32_t affinity)
+void ThreadManager::participate(mutex& lock)
 {
     while (true)
     {
         if (lock.try_lock())
             return;
-
-        auto job = getJob(affinity);
+        auto job = getJob();
         if (!job)
             continue;
         g_ThreadMgr.executeOneJob(job);
     }
 }
 
-bool ThreadManager::participate(uint32_t affinity)
+bool ThreadManager::participate()
 {
-    auto job = getJob(affinity);
+    auto job = getJob();
     if (!job)
         return false;
     g_ThreadMgr.executeOneJob(job);

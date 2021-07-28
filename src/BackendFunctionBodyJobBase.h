@@ -8,11 +8,6 @@ struct ByteCode;
 
 struct BackendFunctionBodyJobBase : public Job
 {
-    BackendFunctionBodyJobBase()
-    {
-        affinity = AFFINITY_ALL ^ AFFINITY_BACKEND_FCTBODY;
-    }
-
     BuildParameters         buildParameters;
     VectorNative<ByteCode*> byteCodeFunc;
     Backend*                backend = nullptr;

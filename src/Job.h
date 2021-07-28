@@ -10,11 +10,6 @@ struct Module;
 struct Diagnostic;
 struct TypeInfo;
 
-static const uint8_t AFFINITY_BACKEND_FCTBODY = 0x01;
-static const uint8_t AFFINITY_IO              = 0x02;
-static const uint8_t AFFINITY_NONE            = 0x00;
-static const uint8_t AFFINITY_ALL             = 0xFF;
-
 static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
 static const uint8_t JOB_IS_IN_THREAD   = 0x02;
 static const uint8_t JOB_IS_PENDING     = 0x04;
@@ -111,6 +106,5 @@ struct Job
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;
 
-    uint8_t flags    = 0;
-    uint8_t affinity = AFFINITY_ALL;
+    uint8_t flags = 0;
 };

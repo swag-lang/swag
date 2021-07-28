@@ -900,7 +900,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    auto result = bufferSwg.flush(true, AFFINITY_ALL ^ AFFINITY_IO);
+    auto result = bufferSwg.flush(true);
     if (!result)
         return false;
     timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());

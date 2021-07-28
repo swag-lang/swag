@@ -27,12 +27,12 @@ void OutputFile::close()
     winHandle = INVALID_HANDLE_VALUE;
 }
 
-bool OutputFile::flush(bool last, uint8_t pendingAffinity)
+bool OutputFile::flush(bool last)
 {
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        save(bucket->datas, bucketCount(bucket), pendingAffinity);
+        save(bucket->datas, bucketCount(bucket));
         bucket = bucket->nextBucket;
     }
 
@@ -43,7 +43,7 @@ bool OutputFile::flush(bool last, uint8_t pendingAffinity)
     return true;
 }
 
-bool OutputFile::save(void* buffer, uint32_t count, uint8_t pendingAffinity)
+bool OutputFile::save(void* buffer, uint32_t count)
 {
     if (!count)
         return true;
@@ -70,8 +70,7 @@ bool OutputFile::save(void* buffer, uint32_t count, uint8_t pendingAffinity)
         DWORD written = 0;
         while (!GetOverlappedResult(winHandle, over, &written, false))
         {
-            if (pendingAffinity)
-                g_ThreadMgr.participate(pendingAffinity);
+            g_ThreadMgr.participate();
         }
     }
 
