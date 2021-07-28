@@ -57,7 +57,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
         }
 
 #ifdef SWAG_DEV_MODE
-        memset(stack, 0xFE, g_CommandLine.stackSize);
+        memset(stack, 0xFE, g_CommandLine.stackSizeBC);
 #endif
     }
 
