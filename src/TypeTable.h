@@ -20,6 +20,7 @@ static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000004;
 struct TypeTable
 {
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment** storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
+    bool makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cFlags, TypeInfo** ptrTypeInfo = nullptr);
 
     bool  makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);
     bool  makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, TypeInfo* typeInfo, uint32_t cFlags);
@@ -29,7 +30,6 @@ struct TypeTable
     bool  makeConcreteAny(JobContext* context, struct ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags);
     bool  makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags);
     bool  makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer);
-    bool  makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cFlags);
 
     void      tableJobDone(TypeTableJob* job, DataSegment* segment);
     Utf8&     getTypeName(TypeInfo* typeInfo, bool forceNoScope);

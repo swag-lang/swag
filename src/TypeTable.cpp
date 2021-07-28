@@ -16,9 +16,8 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, storageSegment, &tmpStorageOffset, cflags));
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, cflags));
     *result = (ConcreteTypeInfo*) storageSegment->addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the type segment, so we need to register it for backend setup
@@ -34,9 +33,8 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
         return true;
     }
 
-    TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, storageSegment, &tmpStorageOffset, cflags));
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, cflags));
 
     // Offset for bytecode run
     auto ptr = storageSegment->addressNoLock(tmpStorageOffset);
@@ -233,11 +231,11 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Da
 {
     *storageSegment = SemanticJob::getConstantSegFromContext(context->node, cflags & CONCRETE_FOR_COMPILER);
     unique_lock lk((*storageSegment)->mutex);
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, *storageSegment, storageOffset, cflags));
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, *storageSegment, storageOffset, cflags, ptrTypeInfo));
     return true;
 }
 
-bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags)
+bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     switch (typeInfo->kind)
     {
