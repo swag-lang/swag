@@ -646,8 +646,7 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     auto& typeTable  = module->typeTable;
 
     node->allocateComputedValue();
-    node->computedValue->storageSegment = typeTable.getSegmentStorage(context, CONCRETE_SHOULD_WAIT | flags);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, resultTypeInfo, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT | flags));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, resultTypeInfo, &node->computedValue->storageSegment, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT | flags));
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();
