@@ -165,27 +165,14 @@ bool TypeTableJob::computeStruct()
 
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for swag_runtime_interfaceof
-                // Not needed if we are computing a compiler type
                 uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
                 uint32_t valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
+                addrArray[param].value = module->constantSegment.address(storageSegment, realType->interfaces[param]->offset);
 
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
         }
-    }
-
-    // Second pass on interfaces.
-    // We do not want that pass to occur while locking the type storageSegment, because this pass will lock also the constant storageSegment
-    // (by calling constantSegment.address), and this can create a dead lock with SemanticJob::storeToSegmentNoLock (which first
-    // lock the constant storageSegment, and then can lock the type storageSegment for the 'any' type)
-    //
-    // This pass is used to store the address of each function of the interface in the 'value' field of the ConcreteTypeInfoParam.
-    if (concreteType->interfaces.count)
-    {
-        auto addrArray = (ConcreteTypeInfoParam*) concreteType->interfaces.buffer;
-        for (int param = 0; param < concreteType->interfaces.count; param++)
-            addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
     }
 
     // Job is done, remove it from the map
