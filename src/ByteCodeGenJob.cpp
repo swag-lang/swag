@@ -356,9 +356,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (!node)
         return;
 
-    auto sourceFile = node->sourceFile;
-
     unique_lock lk(node->mutex);
+    auto        sourceFile = node->sourceFile;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
@@ -474,11 +473,16 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     }
 }
 
+void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
+{
+    unique_lock lk(node->mutex);
+    node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+    node->extension->byteCodeJob = nullptr;
+}
+
 JobResult ByteCodeGenJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
-    if (sourceFile->module->numErrors)
-        return JobResult::ReleaseJob;
 
     if (!originalNode)
     {
@@ -488,6 +492,13 @@ JobResult ByteCodeGenJob::execute()
 
     SWAG_ASSERT(originalNode->extension);
     SWAG_ASSERT(originalNode->extension->byteCodeJob);
+
+    if (sourceFile->module->numErrors)
+    {
+        releaseByteCodeJob(originalNode);
+        return JobResult::ReleaseJob;
+    }
+
     baseContext        = &context;
     context.job        = this;
     context.sourceFile = sourceFile;
@@ -515,7 +526,10 @@ JobResult ByteCodeGenJob::execute()
         while (!nodes.empty())
         {
             if (sourceFile->numErrors)
+            {
+                releaseByteCodeJob(originalNode);
                 return JobResult::ReleaseJob;
+            }
 
             auto node      = nodes.back();
             context.node   = node;
@@ -525,7 +539,11 @@ JobResult ByteCodeGenJob::execute()
             {
             case AstNodeResolveState::Enter:
                 if (node->extension && node->extension->byteCodeBeforeFct && !node->extension->byteCodeBeforeFct(&context))
+                {
+                    releaseByteCodeJob(originalNode);
                     return JobResult::ReleaseJob;
+                }
+
                 if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
                 if (context.result == ContextResult::NewChilds)
@@ -555,9 +573,17 @@ JobResult ByteCodeGenJob::execute()
                     {
                         context.node = node;
                         if (!emitLiteral(&context))
+                        {
+                            releaseByteCodeJob(originalNode);
                             return JobResult::ReleaseJob;
+                        }
+
                         if (!emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
+                        {
+                            releaseByteCodeJob(originalNode);
                             return JobResult::ReleaseJob;
+                        }
+
                         // To be sure that cast is treated once
                         node->castedTypeInfo = nullptr;
                         SWAG_ASSERT(context.result == ContextResult::Done);
@@ -565,7 +591,11 @@ JobResult ByteCodeGenJob::execute()
                     else if (node->byteCodeFct)
                     {
                         if (!node->byteCodeFct(&context))
+                        {
+                            releaseByteCodeJob(originalNode);
                             return JobResult::ReleaseJob;
+                        }
+
                         if (context.result == ContextResult::Pending)
                             return JobResult::KeepJobAlive;
                         if (context.result == ContextResult::NewChilds)
@@ -581,7 +611,11 @@ JobResult ByteCodeGenJob::execute()
                     if (node->extension && node->extension->byteCodeAfterFct)
                     {
                         if (!node->extension->byteCodeAfterFct(&context))
+                        {
+                            releaseByteCodeJob(originalNode);
                             return JobResult::ReleaseJob;
+                        }
+
                         if (context.result == ContextResult::Pending)
                             return JobResult::KeepJobAlive;
                         if (context.result == ContextResult::NewChilds)
@@ -725,11 +759,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Inform dependencies that everything is done
-    {
-        unique_lock lk(originalNode->mutex);
-        originalNode->semFlags |= AST_SEM_BYTECODE_RESOLVED;
-        originalNode->extension->byteCodeJob = nullptr;
-    }
+    releaseByteCodeJob(originalNode);
 
     // Register function in compiler list, now that we are done
     if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)

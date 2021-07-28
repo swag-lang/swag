@@ -307,6 +307,12 @@ void Module::removeFile(SourceFile* file)
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
+    // In case bytecode generation has raised an error
+    if (node->sourceFile->numErrors)
+        return false;
+    if (node->sourceFile->module->numErrors)
+        return false;
+
     // Only one run at a time !
     g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
 
