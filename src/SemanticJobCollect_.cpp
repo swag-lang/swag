@@ -5,27 +5,27 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* segment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    unique_lock lk(segment->mutex);
-    return reserveAndStoreToSegmentNoLock(context, segment, storageOffset, value, typeInfo, assignment);
+    unique_lock lk(storageSegment->mutex);
+    return reserveAndStoreToSegmentNoLock(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
-bool SemanticJob::storeToSegment(SemanticContext* context, DataSegment* segment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+bool SemanticJob::storeToSegment(SemanticContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    unique_lock lk(segment->mutex);
-    return storeToSegmentNoLock(context, segment, storageOffset, value, typeInfo, assignment);
+    unique_lock lk(storageSegment->mutex);
+    return storeToSegmentNoLock(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
-bool SemanticJob::reserveAndStoreToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+bool SemanticJob::reserveAndStoreToSegmentNoLock(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    storageOffset = segment->reserveNoLock(typeInfo);
-    return storeToSegmentNoLock(context, segment, storageOffset, value, typeInfo, assignment);
+    storageOffset = storageSegment->reserveNoLock(typeInfo);
+    return storeToSegmentNoLock(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
-bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    uint8_t* ptrDest = segment->addressNoLock(storageOffset);
+    uint8_t* ptrDest = storageSegment->addressNoLock(storageOffset);
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -33,9 +33,9 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
         {
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-            auto constSeg                          = getConstantSegFromContext(context->node, segment->kind == SegmentKind::Compiler);
-            auto offset                            = constSeg->addString(segment, value->text);
-            segment->addInitPtr(storageOffset, offset, constSeg->kind);
+            auto constSeg                          = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+            auto offset                            = constSeg->addString(storageSegment, value->text);
+            storageSegment->addInitPtr(storageOffset, offset, constSeg->kind);
         }
 
         return true;
@@ -46,28 +46,28 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
         if (!assignment->castedTypeInfo)
             return internalError(context, "storeToSegment, cannot resolve any");
 
-        // Store value in constant segment
-        auto constSegment = SemanticJob::getConstantSegFromContext(context->node, segment->kind == SegmentKind::Compiler);
+        // Store value in constant storageSegment
+        auto constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
 
         uint32_t storageOffsetValue;
-        if (segment != constSegment)
+        if (storageSegment != constSegment)
             constSegment->mutex.lock();
         SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
-        if (segment != constSegment)
+        if (storageSegment != constSegment)
             constSegment->mutex.unlock();
 
         // Then reference that value and the concrete type info
         // Pointer to the value
-        auto ptrStorage   = constSegment->address(segment, storageOffsetValue);
+        auto ptrStorage   = constSegment->address(storageSegment, storageOffsetValue);
         *(void**) ptrDest = ptrStorage;
-        segment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
+        storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
         // :AnyTypeSegment
         SWAG_ASSERT(assignment->extension);
         SWAG_ASSERT(assignment->extension->anyTypeSegment);
         constSegment                        = assignment->extension->anyTypeSegment;
-        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(segment, assignment->extension->anyTypeOffset);
-        segment->addInitPtr(storageOffset + 8, assignment->extension->anyTypeOffset, constSegment->kind);
+        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(storageSegment, assignment->extension->anyTypeOffset);
+        storageSegment->addInitPtr(storageOffset + 8, assignment->extension->anyTypeOffset, constSegment->kind);
         return true;
     }
 
@@ -78,20 +78,20 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
             SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Msg0798}));
             SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
 
-            // Store value in constant segment
+            // Store value in constant storageSegment
             uint32_t storageOffsetValue;
-            auto     constSegment = getConstantSegFromContext(assignment, segment->kind == SegmentKind::Compiler);
-            if (segment != constSegment)
+            auto     constSegment = getConstantSegFromContext(assignment, storageSegment->kind == SegmentKind::Compiler);
+            if (storageSegment != constSegment)
                 constSegment->mutex.lock();
             SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, constSegment, storageOffsetValue, value, assignment->typeInfo, assignment));
-            if (segment != constSegment)
+            if (storageSegment != constSegment)
                 constSegment->mutex.unlock();
 
             // Then setup the pointer to that data, and the data count
-            auto ptrStorage                        = constSegment->address(segment, storageOffsetValue);
+            auto ptrStorage                        = constSegment->address(storageSegment, storageOffsetValue);
             *(void**) ptrDest                      = ptrStorage;
             *(uint64_t*) (ptrDest + sizeof(void*)) = assignment->childs.size();
-            segment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
+            storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
         }
 
         return true;
@@ -101,7 +101,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
         auto offset = storageOffset;
-        auto result = collectLiteralsToSegmentNoLock(context, segment, storageOffset, offset, assignment);
+        auto result = collectLiteralsToSegmentNoLock(context, storageSegment, storageOffset, offset, assignment);
         SWAG_CHECK(result);
         return true;
     }
@@ -110,7 +110,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
         auto offset = storageOffset;
-        auto result = collectLiteralsToSegmentNoLock(context, segment, storageOffset, offset, assignment);
+        auto result = collectLiteralsToSegmentNoLock(context, storageSegment, storageOffset, offset, assignment);
         SWAG_CHECK(result);
         return true;
     }
@@ -118,7 +118,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto result     = collectStructLiteralsNoLock(context, segment, storageOffset, typeStruct->declNode);
+        auto result     = collectStructLiteralsNoLock(context, storageSegment, storageOffset, typeStruct->declNode);
         SWAG_CHECK(result);
         return true;
     }
@@ -127,13 +127,13 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     {
         *(uint64_t*) ptrDest = 0;
         auto funcDecl        = CastAst<AstFuncDecl>(typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
-        segment->addPatchMethod(funcDecl, storageOffset);
+        storageSegment->addPatchMethod(funcDecl, storageOffset);
         return true;
     }
 
     if (typeInfo->isPointerToTypeInfo())
     {
-        segment->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
+        storageSegment->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
         *(void**) ptrDest = value->storageSegment->addressNoLock(value->storageOffset);
         return true;
     }
@@ -157,7 +157,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     return true;
 }
 
-bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* segment, uint32_t offsetStruct, AstNode* node)
+bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
@@ -165,7 +165,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
     auto cptField = 0;
     for (auto field : typeStruct->fields)
     {
-        auto ptrDest  = segment->addressNoLock(offsetStruct + field->offset);
+        auto ptrDest  = storageSegment->addressNoLock(offsetStruct + field->offset);
         auto child    = field->declNode;
         auto varDecl  = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeInfo = TypeManager::concreteType(varDecl->typeInfo);
@@ -179,9 +179,9 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
                 Register* storedV  = (Register*) ptrDest;
                 storedV[0].pointer = (uint8_t*) value->text.c_str();
                 storedV[1].u64     = value->text.length();
-                auto constSegment  = SemanticJob::getConstantSegFromContext(varDecl->assignment, segment->kind == SegmentKind::Compiler);
-                auto strOffset     = constSegment->addString(segment, value->text);
-                segment->addInitPtr(offsetStruct + field->offset, strOffset, constSegment->kind);
+                auto constSegment  = SemanticJob::getConstantSegFromContext(varDecl->assignment, storageSegment->kind == SegmentKind::Compiler);
+                auto strOffset     = constSegment->addString(storageSegment, value->text);
+                storageSegment->addInitPtr(offsetStruct + field->offset, strOffset, constSegment->kind);
             }
             else
             {
@@ -209,7 +209,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiteralsNoLock(context, segment, offsetStruct + field->offset, typeSub->declNode));
+            SWAG_CHECK(collectStructLiteralsNoLock(context, storageSegment, offsetStruct + field->offset, typeSub->declNode));
         }
 
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
@@ -217,7 +217,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
             auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue->storageSegment);
             SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
-            auto srcAddr = varType->computedValue->storageSegment->address(segment, varType->computedValue->storageOffset);
+            auto srcAddr = varType->computedValue->storageSegment->address(storageSegment, varType->computedValue->storageOffset);
             memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
 
@@ -227,7 +227,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
     return true;
 }
 
-bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t baseOffset, uint32_t& offset, AstNode* node)
+bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node)
 {
     for (auto child : node->childs)
     {
@@ -251,7 +251,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, DataSegmen
             assignment = child->childs.front();
         }
 
-        SWAG_CHECK(storeToSegmentNoLock(context, segment, offset, child->computedValue, typeInfo, assignment));
+        SWAG_CHECK(storeToSegmentNoLock(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
 
         // castOffset can store the padding between one field and one other, in case we collect for a struct
         if (child->extension && child->extension->castOffset)
@@ -263,7 +263,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, DataSegmen
     return true;
 }
 
-bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* segment)
+bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* storageSegment)
 {
     auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
@@ -281,7 +281,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         value = node->computedValue;
     }
 
-    // Already computed in the constant segment for an array
+    // Already computed in the constant storageSegment for an array
     if (typeInfo->kind == TypeInfoKind::Array)
     {
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
@@ -289,12 +289,12 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             SWAG_ASSERT(value->storageOffset != UINT32_MAX);
             SWAG_ASSERT(value->storageSegment != nullptr);
 
-            if (segment == &node->sourceFile->module->constantSegment)
+            if (storageSegment == &node->sourceFile->module->constantSegment)
                 storageOffset = value->storageOffset;
             else
             {
-                storageOffset = segment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
-                auto addrDst  = segment->address(storageOffset);
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
+                auto addrDst  = storageSegment->address(storageOffset);
                 auto addrSrc  = value->storageSegment->address(value->storageOffset);
                 memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             }
@@ -313,22 +313,22 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 
             // Copy from a constant
             SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
-            storageOffset = segment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
-            auto addrDst  = segment->address(storageOffset);
+            storageOffset = storageSegment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
+            auto addrDst  = storageSegment->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->computedValue.storageOffset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
         }
         else
         {
             // First collect values from the structure default init
-            SWAG_CHECK(reserveAndStoreToSegment(context, segment, storageOffset, value, typeInfo, nullptr));
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
 
             // Then collect values from the type parameters
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-                SWAG_CHECK(storeToSegment(context, segment, storageOffset, value, typeInfo, identifier->callParameters));
+                SWAG_CHECK(storeToSegment(context, storageSegment, storageOffset, value, typeInfo, identifier->callParameters));
             }
 
             SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
@@ -336,7 +336,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
     }
     else
     {
-        SWAG_CHECK(reserveAndStoreToSegment(context, segment, storageOffset, value, typeInfo, node->assignment));
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, node->assignment));
     }
 
     return true;
