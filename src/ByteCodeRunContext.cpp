@@ -51,9 +51,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
         }
         else
         {
-            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSize);
+            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSizeBC);
             if (g_CommandLine.stats)
-                g_Stats.memBcStack += g_CommandLine.stackSize;
+                g_Stats.memBcStack += g_CommandLine.stackSizeBC;
         }
 
 #ifdef SWAG_DEV_MODE
@@ -67,7 +67,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     SWAG_ASSERT(node->extension->bc);
     SWAG_ASSERT(node->extension->bc->out);
 
-    bp = stack + g_CommandLine.stackSize;
+    bp = stack + g_CommandLine.stackSizeBC;
     sp = bp;
     bc = node->extension->bc;
     ip = bc->out;
@@ -89,5 +89,5 @@ void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 void ByteCodeRunContext::stackOverflow()
 {
     hasError = true;
-    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(g_CommandLine.stackSize).c_str());
+    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str());
 }

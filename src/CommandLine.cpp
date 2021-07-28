@@ -8,10 +8,17 @@ CommandLine g_CommandLine;
 bool CommandLine::check()
 {
     // Stack
-    stackSize = (uint32_t) Allocator::alignSize(stackSize);
-    if (stackSize < SWAG_LIMIT_MIN_STACK || stackSize > SWAG_LIMIT_MAX_STACK)
+    stackSizeRT = (uint32_t) Allocator::alignSize(stackSizeRT);
+    if (stackSizeRT < SWAG_LIMIT_MIN_STACK || stackSizeRT > SWAG_LIMIT_MAX_STACK)
     {
-        g_Log.error(Utf8::format(Msg0519, Utf8::toNiceSize(stackSize).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        g_Log.error(Utf8::format(Msg0519, Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        return false;
+    }
+
+    stackSizeBC = (uint32_t) Allocator::alignSize(stackSizeBC);
+    if (stackSizeBC < SWAG_LIMIT_MIN_STACK || stackSizeBC > SWAG_LIMIT_MAX_STACK)
+    {
+        g_Log.error(Utf8::format(Msg0519, Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 

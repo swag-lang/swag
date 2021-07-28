@@ -86,8 +86,9 @@ struct CommandLine
     set<string>  tags;
     vector<Utf8> libPaths;
 
-    uint32_t stackSize  = 1024 * 1024;
-    uint32_t maxRecurse = 16 * 1024;
+    uint32_t stackSizeRT = 1024 * 1024;
+    uint32_t stackSizeBC = 512 * 1024;
+    uint32_t maxRecurse  = 16 * 1024;
 
     // Backend
     BackendType backendType = BackendType::X64;

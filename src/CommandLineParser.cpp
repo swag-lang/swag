@@ -58,7 +58,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("bu", "--max-recurse", nullptr, CommandLineType::Int, &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
-    addArg("bu", "--stack-size", nullptr, CommandLineType::Int, &cmdLine->stackSize, nullptr, "set the stack size for bytecode and backend");
+    addArg("bu", "--stack-size-rt", nullptr, CommandLineType::Int, &cmdLine->stackSizeRT, nullptr, "set the stack size for backend");
+    addArg("bu", "--stack-size-bc", nullptr, CommandLineType::Int, &cmdLine->stackSizeBC, nullptr, "set the stack size for bytecode");
 
     addArg("bu", "--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "llvm|x64", "the type of backend to use");
     addArg("bu cl", "--script", nullptr, CommandLineType::Bool, &cmdLine->scriptMode, nullptr, "run full bytecode");
