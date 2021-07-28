@@ -30,10 +30,10 @@ bool TypeTableJob::computeStruct()
         if (!realType->opInit)
         {
             realType->opUserInitFct->computeFullNameForeign(false);
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opDrop = nullptr;
@@ -43,10 +43,10 @@ bool TypeTableJob::computeStruct()
         if (!realType->opDrop)
         {
             realType->opUserDropFct->computeFullNameForeign(false);
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostCopy = nullptr;
@@ -56,10 +56,10 @@ bool TypeTableJob::computeStruct()
         if (!realType->opPostCopy)
         {
             realType->opUserPostCopyFct->computeFullNameForeign(false);
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostMove = nullptr;
@@ -69,18 +69,18 @@ bool TypeTableJob::computeStruct()
         if (!realType->opPostMove)
         {
             realType->opUserPostMoveFct->computeFullNameForeign(false);
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
-    // First and main pass, by locking only the type segment
+    // First and main pass, by locking only the type storageSegment
     {
-        unique_lock lk1(segment->mutex);
+        unique_lock lk1(storageSegment->mutex);
 
         // Simple structure name, without generics
-        SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, segment, OFFSETOF(concreteType->structName)));
+        SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
 
         // Update methods with types if generic
         if (!realType->replaceTypes.empty())
@@ -97,7 +97,7 @@ bool TypeTableJob::computeStruct()
             }
         }
 
-        SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, segment, storageOffset, &concreteType->attributes, cflags));
+        SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
         // Generics
         concreteType->generics.buffer = 0;
@@ -106,10 +106,10 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->generics.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, segment, storageOffset, &concreteType->generics.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
             for (int param = 0; param < concreteType->generics.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, segment, storageArray, realType->genericParameters[param], cflags));
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
         }
@@ -121,10 +121,10 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->fields.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, segment, storageOffset, &concreteType->fields.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
             for (int param = 0; param < concreteType->fields.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, segment, storageArray, realType->fields[param], cflags));
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
         }
@@ -136,10 +136,10 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->methods.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, segment, storageOffset, &concreteType->methods.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
             for (int param = 0; param < concreteType->methods.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, segment, storageArray, realType->methods[param], cflags));
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
                 // 'value' will contain a pointer to the lambda.
                 // Register it for later patches
@@ -161,10 +161,10 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->interfaces.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, segment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
             for (int param = 0; param < concreteType->interfaces.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, segment, storageArray, realType->interfaces[param], cflags));
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for swag_runtime_interfaceof
@@ -173,7 +173,7 @@ bool TypeTableJob::computeStruct()
                 {
                     uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
                     uint32_t valueOffset = storageArray + fieldOffset;
-                    segment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
+                    storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
                 }
 
                 storageArray += sizeof(ConcreteTypeInfoParam);
@@ -182,9 +182,9 @@ bool TypeTableJob::computeStruct()
     }
 
     // Second pass on interfaces.
-    // We do not want that pass to occur while locking the type segment, because this pass will lock also the constant segment
+    // We do not want that pass to occur while locking the type storageSegment, because this pass will lock also the constant storageSegment
     // (by calling constantSegment.address), and this can create a dead lock with SemanticJob::storeToSegmentNoLock (which first
-    // lock the constant segment, and then can lock the type segment for the 'any' type)
+    // lock the constant storageSegment, and then can lock the type storageSegment for the 'any' type)
     //
     // This pass is used to store the address of each function of the interface in the 'value' field of the ConcreteTypeInfoParam.
     if (concreteType->interfaces.count && !(cflags & CONCRETE_FOR_COMPILER))
@@ -196,8 +196,8 @@ bool TypeTableJob::computeStruct()
 
     // Job is done, remove it from the map
     {
-        unique_lock lk1(segment->mutex);
-        typeTable->tableJobDone(this, segment);
+        unique_lock lk1(storageSegment->mutex);
+        typeTable->tableJobDone(this, storageSegment);
     }
 
     return true;
