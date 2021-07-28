@@ -2039,7 +2039,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
                 // :AnyTypeSegment
                 toNode->allocateExtension();
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, nullptr, &toNode->extension->anyTypeSegment, &toNode->extension->anyTypeOffset, CONCRETE_ZERO));
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->extension->anyTypeSegment, &toNode->extension->anyTypeOffset));
             }
 
             return true;
@@ -2065,7 +2065,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             // :AnyTypeSegment
             fromNode->allocateExtension();
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset, CONCRETE_ZERO));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset));
         }
     }
     else if (fromType->isNative(NativeTypeKind::Any))
@@ -2090,7 +2090,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             // :AnyTypeSegment
             fromNode->allocateExtension();
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset, CONCRETE_ZERO));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset));
         }
     }
 

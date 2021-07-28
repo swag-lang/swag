@@ -86,7 +86,7 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     // Make a concrete type for the given struct
     auto& typeTable = module->typeTable;
     back->allocateComputedValue();
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->computedValue->storageSegment, &back->computedValue->storageOffset, CONCRETE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, &back->computedValue->storageSegment, &back->computedValue->storageOffset, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
