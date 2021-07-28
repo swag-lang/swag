@@ -227,11 +227,10 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
     return typeInfo->scopedName;
 }
 
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment** storageSegment, uint32_t* storageOffset, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    *storageSegment = SemanticJob::getConstantSegFromContext(context->node, cflags & CONCRETE_FOR_COMPILER);
-    unique_lock lk((*storageSegment)->mutex);
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, *storageSegment, storageOffset, cflags, ptrTypeInfo));
+    unique_lock lk(storageSegment->mutex);
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, storageOffset, cflags, ptrTypeInfo));
     return true;
 }
 

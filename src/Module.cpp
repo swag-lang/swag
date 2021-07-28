@@ -475,11 +475,11 @@ bool Module::flushCompilerMessages(JobContext* context)
 
         if (msg.kind == CompilerMsgKind::SemanticFunc)
         {
-            DataSegment* storageSegment;
-            uint32_t     storageOffset;
-            context->sourceFile = files.front();
-            context->node       = context->sourceFile->astRoot;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, &storageSegment, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
+            context->sourceFile     = files.front();
+            context->node           = context->sourceFile->astRoot;
+            auto     storageSegment = &context->sourceFile->module->compilerSegment;
+            uint32_t storageOffset;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
             if (context->result != ContextResult::Done)
                 return true;
             msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);

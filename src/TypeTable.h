@@ -19,7 +19,7 @@ static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000004;
 
 struct TypeTable
 {
-    bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment** storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
+    bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cFlags, TypeInfo** ptrTypeInfo = nullptr);
 
     bool  makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);

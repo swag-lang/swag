@@ -350,7 +350,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             auto& typeTable    = module->typeTable;
             auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
             nodeCall->allocateComputedValue();
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, &nodeCall->computedValue->storageSegment, &nodeCall->computedValue->storageOffset));
+            nodeCall->computedValue->storageSegment = getConstantSegFromContext(nodeCall);
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment, &nodeCall->computedValue->storageOffset));
         }
     }
 
