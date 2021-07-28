@@ -144,11 +144,6 @@ static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
 
 struct SemanticJob : public Job
 {
-    SemanticJob()
-    {
-        affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
-    }
-
     JobResult execute() override;
 
     void release() override

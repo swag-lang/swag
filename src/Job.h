@@ -11,8 +11,7 @@ struct Diagnostic;
 struct TypeInfo;
 
 static const uint8_t AFFINITY_BACKEND_FCTBODY = 0x01;
-static const uint8_t AFFINITY_EXECBC          = 0x02;
-static const uint8_t AFFINITY_IO              = 0x04;
+static const uint8_t AFFINITY_IO              = 0x02;
 static const uint8_t AFFINITY_NONE            = 0x00;
 static const uint8_t AFFINITY_ALL             = 0xFF;
 

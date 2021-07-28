@@ -168,7 +168,6 @@ struct Module
     VectorNative<ByteCode*> byteCodeRunFunc;
     VectorNative<ByteCode*> byteCodePrintBC;
     ByteCodeRun             runner;
-    mutex                   mutexExecuteNode;
 
     atomic<int> numCompilerFunctions;
     ByteCode*   byteCodeMainFunc = nullptr;

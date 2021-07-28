@@ -2,7 +2,6 @@
 #include "OutputFile.h"
 #include "ThreadManager.h"
 #include "Log.h"
-#include "Os.h"
 #include "ErrorIds.h"
 
 bool OutputFile::openWrite()
@@ -51,7 +50,7 @@ bool OutputFile::save(void* buffer, uint32_t count, uint8_t pendingAffinity)
     if (!openWrite())
         return false;
 
-    OVERLAPPED* over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
+    auto over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
     memset(over, 0, sizeof(OVERLAPPED));
     over->Offset = seekSave;
     overlappeds.push_back(over);

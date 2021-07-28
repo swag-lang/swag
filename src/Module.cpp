@@ -313,9 +313,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     if (node->sourceFile->module->numErrors)
         return false;
 
-    // Only one run at a time !
-    g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
-
     SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_GENERATED);
     SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_RESOLVED);
     SWAG_ASSERT(node->extension && node->extension->bc);
@@ -328,9 +325,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
     g_byteCodeStack.clear();
-    bool result = executeNodeNoLock(sourceFile, node, callerContext);
-    mutexExecuteNode.unlock();
-    return result;
+    return executeNodeNoLock(sourceFile, node, callerContext);
 }
 
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)

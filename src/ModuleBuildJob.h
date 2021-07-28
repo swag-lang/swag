@@ -29,7 +29,6 @@ struct ModuleBuildJob : public Job
         : timerSemanticModule{&g_Stats.semanticModuleTime}
         , timerRun{&g_Stats.runTime}
     {
-        affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
 
     bool      loadDependency(ModuleDependency* dep);
@@ -43,4 +42,3 @@ struct ModuleBuildJob : public Job
     Timer           timerSemanticModule;
     Timer           timerRun;
 };
-
