@@ -75,11 +75,6 @@ void DataSegment::initFrom(DataSegment* other)
         storedValues64[it.first] = it.second;
 }
 
-uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)
-{
-    return reserveNoLock(typeInfo->sizeOf, TypeManager::alignOf(typeInfo));
-}
-
 void DataSegment::align(uint32_t alignOf)
 {
     unique_lock lock(mutex);
