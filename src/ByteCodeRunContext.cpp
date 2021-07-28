@@ -5,13 +5,29 @@
 
 extern bool g_Exiting;
 
+static mutex g_FreeStackMutex;
+static void* g_FirstFreeStack = nullptr;
+
 ByteCodeRunContext::~ByteCodeRunContext()
 {
     if (g_Exiting)
         return;
+    releaseStack();
+}
 
-    g_Allocator.free(registersRR, MAX_ALLOC_RR * sizeof(Register));
-    g_Allocator.free(stack, g_CommandLine.stackSize);
+void ByteCodeRunContext::releaseStack()
+{
+    if (stack)
+    {
+        g_Allocator.free(registersRR, MAX_ALLOC_RR * sizeof(Register));
+        registersRR = nullptr;
+
+        // To avoid wasting memory, we recycle bytecode stacks
+        unique_lock lk(g_FreeStackMutex);
+        *(void**) stack  = g_FirstFreeStack;
+        g_FirstFreeStack = stack;
+        stack            = nullptr;
+    }
 }
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
@@ -26,9 +42,20 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 
     if (!stack)
     {
-        stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSize);
-        if (g_CommandLine.stats)
-            g_Stats.memBcStack += g_CommandLine.stackSize;
+        // To avoid wasting memory, we recycle bytecode stacks
+        unique_lock lk(g_FreeStackMutex);
+        if (g_FirstFreeStack)
+        {
+            stack            = (uint8_t*) g_FirstFreeStack;
+            g_FirstFreeStack = *(void**) g_FirstFreeStack;
+        }
+        else
+        {
+            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSize);
+            if (g_CommandLine.stats)
+                g_Stats.memBcStack += g_CommandLine.stackSize;
+        }
+
 #ifdef SWAG_DEV_MODE
         memset(stack, 0xFE, g_CommandLine.stackSize);
 #endif

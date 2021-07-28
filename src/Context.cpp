@@ -31,10 +31,15 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     auto saveNode       = g_RunContext.node;
     auto saveSourceFile = g_RunContext.sourceFile;
 
-    auto node   = bc->node;
-    auto module = node->sourceFile->module;
+    auto node           = bc->node;
+    auto module         = node->sourceFile->module;
+    bool stackAllocated = false;
+
     if (!g_RunContext.stack)
+    {
         g_RunContext.setup(node->sourceFile, node);
+        stackAllocated = true;
+    }
     else
     {
         g_RunContext.sourceFile = node->sourceFile;
@@ -99,6 +104,9 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         auto r = returnRegisters[i];
         *r     = g_RunContext.registersRR[i];
     }
+
+    if (stackAllocated)
+        g_RunContext.releaseStack();
 }
 
 static void byteCodeRun(void* byteCodePtr, ...)

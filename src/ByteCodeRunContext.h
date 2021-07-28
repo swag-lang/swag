@@ -24,6 +24,8 @@ struct StackValue
 struct ByteCodeRunContext : public JobContext
 {
     ~ByteCodeRunContext();
+
+    void releaseStack();
     void setup(SourceFile* sf, AstNode* node);
     void error(const Utf8& msg, SwagCompilerSourceLocation* loc = nullptr);
     void addCallStack();
@@ -88,9 +90,9 @@ struct ByteCodeRunContext : public JobContext
     static const int     MAX_ALLOC_RR = 2;
     Register*            registersRR  = nullptr;
 
-    int32_t curRC    = -1;
-    int32_t firstRC  = -1;
-    bool    hasError = false;
+    int  curRC    = -1;
+    int  firstRC  = -1;
+    bool hasError = false;
 
     enum class DebugStepMode
     {
