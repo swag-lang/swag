@@ -85,7 +85,9 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
 
     // Make a concrete type for the given struct
     auto& typeTable = module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    back->allocateComputedValue();
+    back->computedValue->storageSegment = getConstantSegFromContext(back);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->computedValue->storageOffset, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -93,14 +95,14 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
     SWAG_ASSERT(typeParamItf);
 
-    auto constSegment = getConstantSegFromContext(back);
+    auto constSegment = back->computedValue->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
     auto itable = (void**) constSegment->address(typeParamItf->offset);
 
     // Move back to concrete type, and initialize it
     itable--;
-    *itable = constSegment->address(back->concreteTypeInfoStorage);
-    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, constSegment->kind);
+    *itable = constSegment->address(back->computedValue->storageOffset);
+    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue->storageOffset, constSegment->kind);
 
     return true;
 }

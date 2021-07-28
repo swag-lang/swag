@@ -2036,7 +2036,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->typeInfo       = fromType;
                 auto  module           = context->sourceFile->module;
                 auto& typeTable        = module->typeTable;
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, nullptr, &toNode->concreteTypeInfoStorage, CONCRETE_ZERO));
+
+                // :AnyTypeSegment
+                toNode->allocateExtension();
+                toNode->extension->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, nullptr, &toNode->extension->anyTypeOffset, CONCRETE_ZERO));
             }
 
             return true;
@@ -2059,7 +2063,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
             auto& typeTable          = module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
+
+            // :AnyTypeSegment
+            fromNode->allocateExtension();
+            fromNode->extension->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->extension->anyTypeOffset, CONCRETE_ZERO));
         }
     }
     else if (fromType->isNative(NativeTypeKind::Any))
@@ -2081,7 +2089,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
             auto& typeTable          = module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
+
+            // :AnyTypeSegment
+            fromNode->allocateExtension();
+            fromNode->extension->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, nullptr, &fromNode->extension->anyTypeOffset, CONCRETE_ZERO));
         }
     }
 

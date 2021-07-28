@@ -539,9 +539,12 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
     PushICFlags ic(context, BCI_SAFETY);
 
-    auto r0           = reserveRegisterRC(context);
-    auto constSegment = SemanticJob::getConstantSegFromContext(exprNode);
-    emitMakeSegPointer(context, constSegment, r0, exprNode->concreteTypeInfoStorage);
+    auto r0 = reserveRegisterRC(context);
+
+    // :AnyTypeSegment
+    SWAG_ASSERT(exprNode->extension);
+    SWAG_ASSERT(exprNode->extension->anyTypeSegment);
+    emitMakeSegPointer(context, exprNode->extension->anyTypeSegment, r0, exprNode->extension->anyTypeOffset);
 
     RegisterList result = reserveRegisterRC(context);
     auto         inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, result);

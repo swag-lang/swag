@@ -119,7 +119,9 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, first));
 
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, nullptr, &third->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    third->allocateComputedValue();
+    third->computedValue->storageSegment = getConstantSegFromContext(third);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, nullptr, &third->computedValue->storageOffset, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 

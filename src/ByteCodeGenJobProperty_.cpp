@@ -63,11 +63,13 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];
-    SWAG_ASSERT(childItf->concreteTypeInfoStorage != UINT32_MAX);
+    SWAG_ASSERT(childItf->computedValue);
+    SWAG_ASSERT(childItf->computedValue->storageSegment);
+    SWAG_ASSERT(childItf->computedValue->storageOffset != UINT32_MAX);
 
-    auto constSegment = SemanticJob::getConstantSegFromContext(childItf);
+    auto constSegment = childItf->computedValue->storageSegment;
     auto r0           = reserveRegisterRC(context);
-    emitMakeSegPointer(context, constSegment, r0, childItf->concreteTypeInfoStorage);
+    emitMakeSegPointer(context, constSegment, r0, childItf->computedValue->storageOffset);
 
     // Copy object pointer to first result register
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);

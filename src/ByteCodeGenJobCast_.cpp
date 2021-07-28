@@ -54,9 +54,10 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     }
 
     // This is the type part.
-    // Get concrete typeinfo from constant segment
-    auto constSegment = SemanticJob::getConstantSegFromContext(exprNode);
-    emitMakeSegPointer(context, constSegment, r0[1], exprNode->concreteTypeInfoStorage);
+    // :AnyTypeSegment
+    SWAG_ASSERT(exprNode->extension);
+    SWAG_ASSERT(exprNode->extension->anyTypeSegment);
+    emitMakeSegPointer(context, exprNode->extension->anyTypeSegment, r0[1], exprNode->extension->anyTypeOffset);
 
     exprNode->resultRegisterRC      = r0;
     context->node->resultRegisterRC = r0;

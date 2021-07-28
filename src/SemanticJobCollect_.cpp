@@ -58,12 +58,17 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
             constSegment->mutex.unlock();
 
         // Then reference that value and the concrete type info
-        auto ptrStorage                     = constSegment->address(segment, storageOffsetValue);
-        *(void**) ptrDest                   = ptrStorage;
-        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(segment, assignment->concreteTypeInfoStorage);
-
+        // Pointer to the value
+        auto ptrStorage   = constSegment->address(segment, storageOffsetValue);
+        *(void**) ptrDest = ptrStorage;
         segment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
-        segment->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, constSegment->kind);
+
+        // :AnyTypeSegment
+        SWAG_ASSERT(assignment->extension);
+        SWAG_ASSERT(assignment->extension->anyTypeSegment);
+        constSegment                        = assignment->extension->anyTypeSegment;
+        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(segment, assignment->extension->anyTypeOffset);
+        segment->addInitPtr(storageOffset + 8, assignment->extension->anyTypeOffset, constSegment->kind);
         return true;
     }
 

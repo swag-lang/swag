@@ -408,12 +408,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->exportNode                   = from->extension->exportNode;
         extension->castOffset                   = from->extension->castOffset;
         extension->stackOffset                  = from->extension->stackOffset;
+        extension->anyTypeSegment               = from->extension->anyTypeSegment;
+        extension->anyTypeOffset                = from->extension->anyTypeOffset;
     }
 
-    computedValue           = from->computedValue;
-    token.text              = from->token.text;
-    sourceFile              = from->sourceFile;
-    concreteTypeInfoStorage = from->concreteTypeInfoStorage;
+    computedValue = from->computedValue;
+    token.text    = from->token.text;
+    sourceFile    = from->sourceFile;
 
     attributeFlags = from->attributeFlags;
     specFlags      = from->specFlags;

@@ -400,6 +400,8 @@ struct AstNode
         AstNode*                       exportNode;
         uint32_t                       castOffset;
         uint32_t                       stackOffset;
+        DataSegment*                   anyTypeSegment;
+        uint32_t                       anyTypeOffset;
     };
 
     shared_mutex           mutex;
@@ -439,9 +441,7 @@ struct AstNode
     uint32_t doneFlags;
     uint32_t semFlags;
 
-    uint32_t concreteTypeInfoStorage;
-    uint32_t childParentIdx;
-
+    uint32_t            childParentIdx;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
     AstNodeKind         kind;
