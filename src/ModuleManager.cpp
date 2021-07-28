@@ -91,7 +91,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (ptr)
     {
         typedef void (*funcCall)(void*);
-        ((funcCall) ptr)(&g_processInfos);
+        ((funcCall) ptr)(&g_ProcessInfos);
     }
 
     if (!applyPatches(name, h))

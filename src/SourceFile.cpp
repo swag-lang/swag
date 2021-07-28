@@ -300,7 +300,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         // Callstack
         if (g_byteCodeStack.currentContext)
             g_byteCodeStack.currentContext->canCatchError = true;
-        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
             g_byteCodeStack.log();
 
@@ -324,7 +324,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     if (errorLevel == DiagnosticLevel::Error)
     {
-        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
         {
             OS::errorBox("[Developer Mode]", "Error raised !");

@@ -322,7 +322,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     SWAG_ASSERT(node->extension->bc->out);
 
     // Setup flags before running
-    auto cxt = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+    auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
     SWAG_ASSERT(cxt);
     cxt->flags = getDefaultContextFlags(this);
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
@@ -336,29 +336,29 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
     // Global setup
-    runContext.callerContext = callerContext;
-    runContext.setup(sourceFile, node);
+    g_RunContext.callerContext = callerContext;
+    g_RunContext.setup(sourceFile, node);
 
-    node->extension->bc->enterByteCode(&runContext);
+    node->extension->bc->enterByteCode(&g_RunContext);
     auto module = sourceFile->module;
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
     // generated for expression (just for functions)
     if (node->ownerScope)
     {
-        runContext.decSP(node->ownerScope->startStackSize);
+        g_RunContext.decSP(node->ownerScope->startStackSize);
 
         // :opAffectConstExpr
         // Reserve room on the stack to store the result
         if (node->semFlags & AST_SEM_EXEC_RET_STACK)
-            runContext.decSP(node->typeInfo->sizeOf);
+            g_RunContext.decSP(node->typeInfo->sizeOf);
 
-        runContext.bp = runContext.sp;
+        g_RunContext.bp = g_RunContext.sp;
     }
 
-    bool result = module->runner.run(&runContext);
+    bool result = module->runner.run(&g_RunContext);
 
-    node->extension->bc->leaveByteCode(&runContext, false);
+    node->extension->bc->leaveByteCode(&g_RunContext, false);
     g_byteCodeStack.clear();
 
     if (!result)
@@ -372,7 +372,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         node->allocateComputedValue();
         node->computedValue->storageOffset = offsetStorage;
         auto addrDst                       = sourceFile->module->compilerSegment.address(offsetStorage);
-        auto addrSrc                       = runContext.bp;
+        auto addrSrc                       = g_RunContext.bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
     }
 
@@ -386,8 +386,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         if (realType->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-            const char* pz  = (const char*) runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
-            uint32_t    len = runContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u32;
+            const char* pz  = (const char*) g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
+            uint32_t    len = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u32;
             node->computedValue->text.reserve(len + 1);
             node->computedValue->text.count = len;
             memcpy(node->computedValue->text.buffer, pz, len);
@@ -415,7 +415,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
             auto addrDst                        = storageSegment->address(offsetStorage);
-            auto addrSrc                        = runContext.registersRR[0].pointer;
+            auto addrSrc                        = g_RunContext.registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
         }
         else
@@ -423,16 +423,16 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
             switch (realType->sizeOf)
             {
             case 1:
-                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
+                node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
                 break;
             case 2:
-                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
+                node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
                 break;
             case 4:
-                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
+                node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
                 break;
             default:
-                node->computedValue->reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+                node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
                 break;
             }
         }
@@ -517,7 +517,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (not multi threaded)
-    runContext.currentCompilerMessage = msg;
+    g_RunContext.currentCompilerMessage = msg;
 
     JobContext context;
     context.baseJob = dependentJob;
@@ -528,7 +528,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
-    runContext.currentCompilerMessage = nullptr;
+    g_RunContext.currentCompilerMessage = nullptr;
     return true;
 }
 
@@ -945,21 +945,21 @@ bool Module::compileString(const Utf8& text)
     if (text.empty())
         return true;
 
-    SWAG_ASSERT(runContext.callerContext->baseJob);
-    SWAG_ASSERT(runContext.ip);
-    SWAG_ASSERT(runContext.ip->node);
-    SWAG_ASSERT(runContext.ip->node->sourceFile);
+    SWAG_ASSERT(g_RunContext.callerContext->baseJob);
+    SWAG_ASSERT(g_RunContext.ip);
+    SWAG_ASSERT(g_RunContext.ip->node);
+    SWAG_ASSERT(g_RunContext.ip->node->sourceFile);
 
-    auto      sourceFile = runContext.ip->node->sourceFile;
+    auto      sourceFile = g_RunContext.ip->node->sourceFile;
     AstNode*  parent     = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
-    if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
+    if (!syntaxJob.constructEmbedded(text, parent, g_RunContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job          = g_Allocator.alloc<SemanticJob>();
     job->sourceFile   = files[0];
     job->module       = this;
-    job->dependentJob = runContext.callerContext->baseJob;
+    job->dependentJob = g_RunContext.callerContext->baseJob;
     job->nodes.push_back(parent);
     g_ThreadMgr.addJob(job);
     return true;

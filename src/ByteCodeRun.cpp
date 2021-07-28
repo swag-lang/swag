@@ -2211,13 +2211,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::InternalInitStackTrace:
     {
-        auto cxt        = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        auto cxt        = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         cxt->traceIndex = 0;
         break;
     }
     case ByteCodeOp::InternalStackTrace:
     {
-        auto cxt = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (cxt->traceIndex == MAX_TRACE)
             break;
         cxt->trace[cxt->traceIndex] = (SwagCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
@@ -2247,18 +2247,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         module->tlsSegment.makeLinear(); // be sure init segment is not divided in chunks
         context->push(module->tlsSegment.address(0));
         context->push((uint64_t) module->tlsSegment.totalCount);
-        context->push(g_tlsThreadLocalId);
+        context->push(g_TlsThreadLocalId);
         localCall(context, bc, 3, ip->a.u32);
         break;
     }
     case ByteCodeOp::IntrinsicGetContext:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) OS::tlsGetValue(g_tlsContextId);
+        registersRC[ip->a.u32].pointer = (uint8_t*) OS::tlsGetValue(g_TlsContextId);
         break;
     }
     case ByteCodeOp::IntrinsicSetContext:
     {
-        OS::tlsSetValue(g_tlsContextId, (void*) registersRC[ip->a.u32].pointer);
+        OS::tlsSetValue(g_TlsContextId, (void*) registersRC[ip->a.u32].pointer);
         break;
     }
 
@@ -2272,7 +2272,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicGetErr:
     {
-        auto cxt = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (!cxt->errorMsgLen)
         {
             registersRC[ip->a.u32].pointer = nullptr;

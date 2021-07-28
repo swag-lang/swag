@@ -5,11 +5,11 @@
 #include "Backend.h"
 #include "ByteCodeStack.h"
 
-uint64_t                        g_tlsContextId     = 0;
-uint64_t                        g_tlsThreadLocalId = 0;
-SwagContext                     g_defaultContext   = {0};
-SwagProcessInfos                g_processInfos     = {0};
-thread_local ByteCodeRunContext g_runContext;
+uint64_t                        g_TlsContextId     = 0;
+uint64_t                        g_TlsThreadLocalId = 0;
+SwagContext                     g_DefaultContext   = {0};
+SwagProcessInfos                g_ProcessInfos     = {0};
+thread_local ByteCodeRunContext g_RunContext;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
@@ -26,17 +26,17 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         returnRegisters.push_back(r);
     }
 
-    auto saveNode       = g_runContext.node;
-    auto saveSourceFile = g_runContext.sourceFile;
+    auto saveNode       = g_RunContext.node;
+    auto saveSourceFile = g_RunContext.sourceFile;
 
     auto node   = bc->node;
     auto module = node->sourceFile->module;
-    if (!g_runContext.stack)
-        g_runContext.setup(node->sourceFile, node);
+    if (!g_RunContext.stack)
+        g_RunContext.setup(node->sourceFile, node);
     else
     {
-        g_runContext.sourceFile = node->sourceFile;
-        g_runContext.node       = node;
+        g_RunContext.sourceFile = node->sourceFile;
+        g_RunContext.node       = node;
     }
 
     // Parameters
@@ -64,38 +64,38 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         }
     }
 
-    auto saveSp      = g_runContext.sp;
-    auto saveFirstRC = g_runContext.firstRC;
+    auto saveSp      = g_RunContext.sp;
+    auto saveFirstRC = g_RunContext.firstRC;
 
     while (!paramRegisters.empty())
     {
         auto r = paramRegisters.back();
         paramRegisters.pop_back();
-        g_runContext.push(r->pointer);
+        g_RunContext.push(r->pointer);
     }
 
     // Simulate a LocalCall
-    g_runContext.push(g_runContext.bp);
-    g_runContext.push(g_runContext.bc);
-    g_runContext.push(g_runContext.ip);
-    g_runContext.bc      = bc;
-    g_runContext.ip      = bc->out;
-    g_runContext.bp      = g_runContext.sp;
-    g_runContext.firstRC = g_runContext.curRC;
-    g_runContext.bc->enterByteCode(&g_runContext);
+    g_RunContext.push(g_RunContext.bp);
+    g_RunContext.push(g_RunContext.bc);
+    g_RunContext.push(g_RunContext.ip);
+    g_RunContext.bc      = bc;
+    g_RunContext.ip      = bc->out;
+    g_RunContext.bp      = g_RunContext.sp;
+    g_RunContext.firstRC = g_RunContext.curRC;
+    g_RunContext.bc->enterByteCode(&g_RunContext);
 
-    module->runner.run(&g_runContext);
+    module->runner.run(&g_RunContext);
 
-    g_runContext.sp         = saveSp;
-    g_runContext.node       = saveNode;
-    g_runContext.sourceFile = saveSourceFile;
-    g_runContext.firstRC    = saveFirstRC;
+    g_RunContext.sp         = saveSp;
+    g_RunContext.node       = saveNode;
+    g_RunContext.sourceFile = saveSourceFile;
+    g_RunContext.firstRC    = saveFirstRC;
 
     // Get result
     for (int i = 0; i < returnRegisters.size(); i++)
     {
         auto r = returnRegisters[i];
-        *r     = g_runContext.registersRR[i];
+        *r     = g_RunContext.registersRR[i];
     }
 }
 
@@ -226,16 +226,16 @@ void* makeCallback(void* lambda)
 
 void initDefaultContext()
 {
-    g_tlsContextId     = OS::tlsAlloc();
-    g_tlsThreadLocalId = OS::tlsAlloc();
-    OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
+    g_TlsContextId     = OS::tlsAlloc();
+    g_TlsThreadLocalId = OS::tlsAlloc();
+    OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
 
-    g_processInfos.arguments.buffer = g_CommandLine.userArgumentsSlice.first;
-    g_processInfos.arguments.count  = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-    g_processInfos.contextTlsId     = g_tlsContextId;
-    g_processInfos.defaultContext   = &g_defaultContext;
-    g_processInfos.byteCodeRun      = byteCodeRun;
-    g_processInfos.makeCallback     = makeCallback;
+    g_ProcessInfos.arguments.buffer = g_CommandLine.userArgumentsSlice.first;
+    g_ProcessInfos.arguments.count  = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+    g_ProcessInfos.contextTlsId     = g_TlsContextId;
+    g_ProcessInfos.defaultContext   = &g_DefaultContext;
+    g_ProcessInfos.byteCodeRun      = byteCodeRun;
+    g_ProcessInfos.makeCallback     = makeCallback;
 }
 
 uint64_t getDefaultContextFlags(Module* module)

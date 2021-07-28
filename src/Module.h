@@ -167,7 +167,6 @@ struct Module
     VectorNative<ByteCode*> byteCodeDropFunc;
     VectorNative<ByteCode*> byteCodeRunFunc;
     VectorNative<ByteCode*> byteCodePrintBC;
-    ByteCodeRunContext      runContext;
     ByteCodeRun             runner;
     mutex                   mutexExecuteNode;
 

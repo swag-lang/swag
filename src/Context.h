@@ -1,30 +1,32 @@
 #pragma once
 #include "Os.h"
 #include "Runtime.h"
+#include "ByteCodeRunContext.h"
 union Register;
 struct ByteCode;
 struct Module;
 
-extern uint64_t         g_tlsThreadLocalId;
-extern uint64_t         g_tlsContextId;
-extern SwagContext      g_defaultContext;
-extern SwagProcessInfos g_processInfos;
+extern uint64_t                        g_TlsThreadLocalId;
+extern uint64_t                        g_TlsContextId;
+extern SwagContext                     g_DefaultContext;
+extern SwagProcessInfos                g_ProcessInfos;
+extern thread_local ByteCodeRunContext g_RunContext;
 
-extern void     initDefaultContext();
-extern uint64_t getDefaultContextFlags(Module* module);
-extern void*    makeCallback(void* lambda);
+void     initDefaultContext();
+uint64_t getDefaultContextFlags(Module* module);
+void*    makeCallback(void* lambda);
 
 struct PushSwagContext
 {
     PushSwagContext()
     {
-        copy = g_defaultContext;
-        OS::tlsSetValue(g_tlsContextId, &copy);
+        copy = g_DefaultContext;
+        OS::tlsSetValue(g_TlsContextId, &copy);
     }
 
     ~PushSwagContext()
     {
-        OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
+        OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
     }
 
     SwagContext copy;

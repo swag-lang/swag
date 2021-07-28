@@ -3,10 +3,11 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "ThreadManager.h"
+#include "Context.h"
 
 void* getMessage(Module* module)
 {
-    return (void*) module->runContext.currentCompilerMessage;
+    return (void*) g_RunContext.currentCompilerMessage;
 }
 
 void* getBuildCfg(Module* module)

@@ -519,8 +519,8 @@ JobResult ByteCodeGenJob::execute()
             auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
             SWAG_ASSERT(itable);
             SWAG_ASSERT(((void**) itable)[0]);
-            g_defaultContext.allocator.data   = nullptr;
-            g_defaultContext.allocator.itable = (void*) itable;
+            g_DefaultContext.allocator.data   = nullptr;
+            g_DefaultContext.allocator.itable = (void*) itable;
         }
 
         while (!nodes.empty())
