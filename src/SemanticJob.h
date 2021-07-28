@@ -194,7 +194,7 @@ struct SemanticJob : public Job
     static bool     collectLiteralsToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
     static bool     reserveAndStoreToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool     storeToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool     collectStructLiteralsNoLock(JobContext* context, DataSegment* segment, SourceFile* sourceFile, uint32_t offsetStruct, AstNode* node);
+    static bool     collectStructLiteralsNoLock(JobContext* context, DataSegment* segment, uint32_t offsetStruct, AstNode* node);
     static void     setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void     getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void     symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);

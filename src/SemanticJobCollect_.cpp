@@ -25,8 +25,7 @@ bool SemanticJob::reserveAndStoreToSegmentNoLock(JobContext* context, DataSegmen
 
 bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    auto     sourceFile = context->sourceFile;
-    uint8_t* ptrDest    = segment->addressNoLock(storageOffset);
+    uint8_t* ptrDest = segment->addressNoLock(storageOffset);
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -119,7 +118,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto result     = collectStructLiteralsNoLock(context, segment, sourceFile, storageOffset, typeStruct->declNode);
+        auto result     = collectStructLiteralsNoLock(context, segment, storageOffset, typeStruct->declNode);
         SWAG_CHECK(result);
         return true;
     }
@@ -158,7 +157,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, DataSegment* segment
     return true;
 }
 
-bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* segment, SourceFile* sourceFile, uint32_t offsetStruct, AstNode* node)
+bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* segment, uint32_t offsetStruct, AstNode* node)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
@@ -210,7 +209,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, DataSegment* 
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiteralsNoLock(context, segment, sourceFile, offsetStruct + field->offset, typeSub->declNode));
+            SWAG_CHECK(collectStructLiteralsNoLock(context, segment, offsetStruct + field->offset, typeSub->declNode));
         }
 
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
