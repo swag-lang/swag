@@ -268,7 +268,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             SWAG_ASSERT(value->storageOffset != UINT32_MAX);
             SWAG_ASSERT(value->storageSegment != nullptr);
 
-            if (storageSegment == &node->sourceFile->module->constantSegment)
+            if (storageSegment->kind == SegmentKind::Constant)
                 storageOffset = value->storageOffset;
             else
             {
