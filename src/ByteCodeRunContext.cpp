@@ -2,6 +2,7 @@
 #include "ByteCodeRunContext.h"
 #include "ByteCode.h"
 #include "AstNode.h"
+#include "ErrorIds.h"
 
 extern bool g_Exiting;
 
@@ -89,5 +90,5 @@ void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 void ByteCodeRunContext::stackOverflow()
 {
     hasError = true;
-    errorMsg = Utf8::format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str());
+    errorMsg = Utf8::format(Msg0015, Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str());
 }

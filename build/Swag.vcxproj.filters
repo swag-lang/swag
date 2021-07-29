@@ -416,7 +416,7 @@
     <ClCompile Include="../src/ByteCodeRunContext.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRun_dbg_.cpp">
+    <ClCompile Include="..\src\ByteCodeRunDbg_.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRun.cpp">

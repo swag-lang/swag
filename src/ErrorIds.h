@@ -12,7 +12,7 @@
 #define Msg0012 "cannot reference a type expression"
 #define Msg0013 "%s '%s' cannot be referenced in that context because it's not an rvalue"
 #define Msg0014 "fatal error: not enough memory !"
-#define Msg0015
+#define Msg0015 "bytecode stack overflow (maximum stack size is '--stack-size:%s')"
 #define Msg0016 "not enough parameters for %s"
 #define Msg0017 "invalid type declaration, symbol '%s' is not a type (it's %s)"
 #define Msg0018 "here is the definition of '%s'"

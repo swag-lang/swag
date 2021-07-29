@@ -25,10 +25,10 @@ struct ByteCodeRunContext : public JobContext
 {
     ~ByteCodeRunContext();
 
-    void releaseStack();
     void setup(SourceFile* sf, AstNode* node);
     void error(const Utf8& msg, SwagCompilerSourceLocation* loc = nullptr);
-    void addCallStack();
+    void releaseStack();
+    void stackOverflow();
 
     template<typename T>
     inline T pop()
@@ -37,8 +37,6 @@ struct ByteCodeRunContext : public JobContext
         sp += sizeof(T);
         return popResult;
     }
-
-    void stackOverflow();
 
     template<typename T>
     inline void push(const T& value)
@@ -94,6 +92,10 @@ struct ByteCodeRunContext : public JobContext
     int  firstRC  = -1;
     bool hasError = false;
 
+    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
+    Job*                           currentCompilerJob     = nullptr;
+
+    // Debugger
     enum class DebugStepMode
     {
         None,
@@ -102,10 +104,6 @@ struct ByteCodeRunContext : public JobContext
         FinishedFunction,
     };
 
-    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
-    Job*                           currentCompilerJob     = nullptr;
-
-    // Debugger
     bool                 debugEntry            = false;
     bool                 debugOn               = false;
     uint32_t             debugLastCurRC        = 0;
