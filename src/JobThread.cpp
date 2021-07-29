@@ -2,10 +2,6 @@
 #include "JobThread.h"
 #include "ThreadManager.h"
 #include "Context.h"
-#include "Job.h"
-#include "SourceFile.h"
-#include "AstNode.h"
-#include "Diagnostic.h"
 
 JobThread::JobThread(int rank)
 {

@@ -10,8 +10,10 @@ struct JobThread
     void notifyJob();
     void waitForANewJob();
 
-    thread*            thread     = nullptr;
-    bool               requestEnd = false;
     mutex              mutexNotify;
     condition_variable condVar;
+
+    thread* thread = nullptr;
+
+    bool requestEnd = false;
 };

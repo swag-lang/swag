@@ -16,8 +16,9 @@ struct RaceCondition
     void lock(Instance* _instance, bool read);
     void unlock();
 
-    bool      read = false;
     Instance* myInstance;
+
+    bool read = false;
 };
 
 #ifdef SWAG_HAS_ASSERT
