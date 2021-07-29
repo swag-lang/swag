@@ -69,7 +69,6 @@ struct DataSegment
         ByteCode
     };
 
-    uint32_t addString(DataSegment* lockedSeg, const Utf8& str);
     uint32_t addString(const Utf8& str);
     uint32_t addStringNoLock(const Utf8& str);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);

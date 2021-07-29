@@ -272,16 +272,6 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     return storageOffset;
 }
 
-uint32_t DataSegment::addString(DataSegment* lockedSeg, const Utf8& str)
-{
-    if (lockedSeg != this)
-        mutex.lock();
-    auto result = addStringNoLock(str);
-    if (lockedSeg != this)
-        mutex.unlock();
-    return result;
-}
-
 uint32_t DataSegment::addStringNoLock(const Utf8& str)
 {
     SWAG_RACE_CONDITION_WRITE(raceC);
@@ -295,6 +285,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str)
     auto offset = reserveNoLock(strLen);
     auto addr   = addressNoLock(offset);
     memcpy(addr, str.c_str(), strLen);
+    SWAG_ASSERT(addr[strLen - 1] == 0);
     mapString[str] = offset;
 
     return offset;
