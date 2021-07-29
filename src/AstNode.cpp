@@ -541,12 +541,16 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild)
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 {
-    kind  = from->kind;
+    kind = from->kind;
+
     flags = from->flags;
     flags &= ~AST_IS_GENERIC;
     flags |= context.forceFlags;
     flags &= ~context.removeFlags;
+
+    // Copy some specific flags
     doneFlags |= from->doneFlags & AST_DONE_INLINED;
+    semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;
