@@ -3369,7 +3369,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
                 canIncomplete = true;
 
             // If identifier is in a pointer type expression, can incomplete resolve
-            if (!node->ownerMainNode && node->parent->parent->kind == AstNodeKind::TypeExpression)
+            if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression)
             {
                 auto typeExprNode = CastAst<AstTypeExpression>(node->parent->parent, AstNodeKind::TypeExpression);
                 if (typeExprNode->ptrCount)
