@@ -2109,7 +2109,17 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
         return true;
 
-    //SWAG_ASSERT(!(fromStruct->declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE));
+    // We cannot visit fields of an incomplete struct.
+    // So we must wait...
+    {
+        shared_lock lk(fromStruct->declNode->resolvedSymbolName->mutex);
+        if (fromStruct->declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+        {
+            SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+            context->job->waitForSymbolNoLock(fromStruct->declNode->resolvedSymbolName);
+            return true;
+        }
+    }
 
     TypeInfoParam* done = nullptr;
     for (auto field : fromStruct->fields)
@@ -2180,7 +2190,7 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
         auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Struct);
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
-        if (ok)
+        if (ok || context->result == ContextResult::Pending)
             return true;
     }
 
@@ -2191,7 +2201,7 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
         auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Struct);
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
-        if (ok)
+        if (ok || context->result == ContextResult::Pending)
             return true;
     }
 
@@ -2212,7 +2222,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
             bool ok         = false;
             SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
-            if (ok)
+            if (ok || context->result == ContextResult::Pending)
                 return true;
         }
     }
@@ -2223,7 +2233,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
-        if (ok)
+        if (ok || context->result == ContextResult::Pending)
             return true;
     }
 

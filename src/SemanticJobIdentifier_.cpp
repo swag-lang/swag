@@ -1920,6 +1920,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
             typeInfo->match(oneOverload.symMatchContext);
+            if (context->result == ContextResult::Pending)
+                return true;
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Interface)
         {
