@@ -276,7 +276,14 @@ Allocator::Allocator()
         }
         else
         {
-            g_SharedAllocator       = (Allocator*) malloc(sizeof(Allocator));
+            g_SharedAllocator = (Allocator*) malloc(sizeof(Allocator));
+            if (!g_SharedAllocator)
+            {
+                g_Log.error(Msg0014);
+                OS::exit(-1);
+                return;
+            }
+
             g_SharedAllocator->impl = &g_SharedAllocator->_impl;
             memset(g_SharedAllocator->impl, 0, sizeof(AllocatorImpl));
             impl = &g_SharedAllocator->_impl;
