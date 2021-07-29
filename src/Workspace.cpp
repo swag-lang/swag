@@ -807,9 +807,8 @@ bool Workspace::build()
     g_Log.setColor(LogColor::DarkBlue);
     g_Log.print("[devmode] is activated\n");
     g_Log.setDefaultColor();
-#endif
 
-    // Dev mode randomize/seed
+    // randomize/seed
     if (g_CommandLine.randomize)
     {
         if (!g_CommandLine.randSeed)
@@ -826,6 +825,7 @@ bool Workspace::build()
         g_Log.print(Utf8::format("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
         g_Log.setDefaultColor();
     }
+#endif
 
     // User arguments that can be retrieved with '@args'
     pair<void*, void*> oneArg;

@@ -286,15 +286,13 @@ Job* ThreadManager::getJob(VectorNative<Job*>& queue)
     if (queue.empty())
         return nullptr;
 
-    Job* job;
-    int  jobPickIndex = -1;
-
+    auto jobPickIndex = (int) queue.size() - 1;
+#ifdef SWAG_DEV_MODE
     if (g_CommandLine.randomize)
         jobPickIndex = rand() % queue.count;
-    else
-        jobPickIndex = (int) queue.size() - 1;
+#endif
 
-    job = queue[jobPickIndex];
+    auto job = queue[jobPickIndex];
     queue.erase(jobPickIndex);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);

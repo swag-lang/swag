@@ -37,8 +37,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
 
     addArg("bu", "--dbgcatch", nullptr, CommandLineType::Bool, &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
-    addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");
-    addArg("bu", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "swag compiler developer mode, set seed for randomize behavior");
+#ifdef SWAG_DEV_MODE
+    addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
+    addArg("bu", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
+#endif
 
     addArg("bu cl", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|fast-debug|release are predefined)");
     addArg("bu cl", "--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "force the build configuration to (not) have debug informations");
