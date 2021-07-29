@@ -12,22 +12,22 @@ struct ByteCodeOptimizer
 {
     inline static bool hasRefToRegA(ByteCodeInstruction* inst, uint32_t reg)
     {
-        return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpFlags[(int) inst->op] & (OPFLAG_READ_A | OPFLAG_WRITE_A);
+        return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_A | OPFLAG_WRITE_A);
     }
 
     inline static bool hasRefToRegB(ByteCodeInstruction* inst, uint32_t reg)
     {
-        return inst->b.u32 == reg && !(inst->flags & BCI_IMM_B) && g_ByteCodeOpFlags[(int) inst->op] & (OPFLAG_READ_B | OPFLAG_WRITE_B);
+        return inst->b.u32 == reg && !(inst->flags & BCI_IMM_B) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_B | OPFLAG_WRITE_B);
     }
 
     inline static bool hasRefToRegC(ByteCodeInstruction* inst, uint32_t reg)
     {
-        return inst->c.u32 == reg && !(inst->flags & BCI_IMM_C) && g_ByteCodeOpFlags[(int) inst->op] & (OPFLAG_READ_C | OPFLAG_WRITE_C);
+        return inst->c.u32 == reg && !(inst->flags & BCI_IMM_C) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_C | OPFLAG_WRITE_C);
     }
 
     inline static bool hasRefToRegD(ByteCodeInstruction* inst, uint32_t reg)
     {
-        return inst->d.u32 == reg && !(inst->flags & BCI_IMM_D) && g_ByteCodeOpFlags[(int) inst->op] & (OPFLAG_READ_D | OPFLAG_WRITE_D);
+        return inst->d.u32 == reg && !(inst->flags & BCI_IMM_D) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D);
     }
 
     inline static bool hasRefToReg(ByteCodeInstruction* inst, uint32_t reg)

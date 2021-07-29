@@ -126,7 +126,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNod
 
 void ByteCodeOptimizer::replaceRegister(ByteCodeOptContext* context, ByteCodeInstruction* from, uint32_t srcReg, uint32_t dstReg)
 {
-    auto flags = g_ByteCodeOpFlags[(int) from->op];
+    auto flags = g_ByteCodeOpDesc[(int) from->op].flags;
     if (flags & OPFLAG_WRITE_A && from->a.u32 == srcReg)
         from->a.u32 = dstReg;
     if (flags & OPFLAG_WRITE_B && from->b.u32 == srcReg)
@@ -147,7 +147,7 @@ void ByteCodeOptimizer::replaceRegister(ByteCodeOptContext* context, ByteCodeIns
 
         while (true)
         {
-            flags = g_ByteCodeOpFlags[(int) ip->op];
+            flags = g_ByteCodeOpDesc[(int) ip->op].flags;
             if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A) && ip->a.u32 == srcReg)
                 ip->a.u32 = dstReg;
             if (flags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B) && ip->b.u32 == srcReg)
@@ -196,7 +196,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop || (ip->flags & BCI_UNPURE))
         return;
-    auto flags = g_ByteCodeOpFlags[(int) ip->op];
+    auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
     if (flags & OPFLAG_UNPURE)
         return;
 

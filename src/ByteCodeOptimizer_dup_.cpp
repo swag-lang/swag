@@ -21,7 +21,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.clear();
         }
 
-        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         // CopyRBRA X, X
         if (ip->op == op && ip->a.u32 == ip->b.u32)
@@ -245,7 +245,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
         if (ip->flags & BCI_START_STMT || isJumpBlock(ip))
             mapRA.clear();
 
-        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         if (ip->op == op)
         {

@@ -8,7 +8,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, 0x00000001, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         auto ip    = parseCxt.curIp;
-        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         uint32_t regScan = UINT32_MAX;
         if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
@@ -30,7 +30,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             if (ip1 == ip)
                 return;
 
-            auto flags1 = g_ByteCodeOpFlags[(int) ip1->op];
+            auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
             if ((flags1 & OPFLAG_READ_A) && !(ip1->flags & BCI_IMM_A))
             {
                 if (ip1->a.u32 == regScan)

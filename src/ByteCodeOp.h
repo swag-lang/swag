@@ -40,6 +40,12 @@ enum class ByteCodeOp : uint16_t
 #include "ByteCodeOpList.h"
 };
 
-extern const char* g_ByteCodeOpNames[];
-extern int         g_ByteCodeOpNamesLen[];
-extern uint32_t    g_ByteCodeOpFlags[];
+struct ByteCodeOpDesc
+{
+    const char* name;
+    int         nameLen;
+    uint32_t    flags;
+    const char* display;
+};
+
+extern ByteCodeOpDesc g_ByteCodeOpDesc[];

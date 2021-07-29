@@ -28,7 +28,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
                 }
 
-                auto flags = g_ByteCodeOpFlags[(int) ipScan->op];
+                auto flags = g_ByteCodeOpDesc[(int) ipScan->op].flags;
 
                 if (ipScan->op == ByteCodeOp::MakeStackPointer)
                 {

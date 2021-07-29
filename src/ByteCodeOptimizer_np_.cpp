@@ -79,7 +79,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             if (ip1 == ip || ip1 == ip + 1)
                 return;
 
-            auto flags1 = g_ByteCodeOpFlags[(int) ip1->op];
+            auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
 
             // Incrmenting the tested pointer is fine. The safety check after on the same pointer could be removed...
             if (ip1->op == ByteCodeOp::IncPointer64 && ip1->a.u32 == paramNPReg && ip1->c.u32 == paramNPReg)

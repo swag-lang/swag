@@ -6,26 +6,8 @@
 #include "TypeManager.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) #__op,
-const char* g_ByteCodeOpNames[] = {
-#include "ByteCodeOpList.h"
-};
-
-#undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) (int) strlen(#__op),
-int g_ByteCodeOpNamesLen[] = {
-#include "ByteCodeOpList.h"
-};
-
-#undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) __flags,
-uint32_t g_ByteCodeOpFlags[] = {
-#include "ByteCodeOpList.h"
-};
-
-#undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) __dis,
-const char* g_ByteCodeOpDisplay[] = {
+#define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},
+ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
 
@@ -165,8 +147,8 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
 void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 {
-    Utf8 str   = g_ByteCodeOpDisplay[(int) ip->op];
-    auto flags = g_ByteCodeOpFlags[(int) ip->op];
+    Utf8 str   = g_ByteCodeOpDesc[(int) ip->op].display;
+    auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
     if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
     {
@@ -358,15 +340,15 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 
     // Instruction
     g_Log.setColor(LogColor::White);
-    int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
+    int len = (int) strlen(g_ByteCodeOpDesc[(int) ip->op].name);
     while (len++ < ALIGN_OPCODE)
         g_Log.print(" ");
-    g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
+    g_Log.print(g_ByteCodeOpDesc[(int) ip->op].name);
     g_Log.print("   ");
 
     // Parameters
     g_Log.setColor(LogColor::Gray);
-    auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
+    auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
     printInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
     printInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
     printInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);

@@ -2163,7 +2163,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
             setNop(context, ip);
 
-        auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
+        auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         // Copy a constant value (from segment) to the stack
         if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
@@ -2261,7 +2261,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
                 break;
             }
             default:
-                //printf("%s\n", g_ByteCodeOpNames[(int) ip->op]);
+                //printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
                 break;
             }
         }

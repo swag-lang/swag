@@ -91,9 +91,9 @@ struct ByteCode
     }
 
     // clang-format off
-    static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst) { return g_ByteCodeOpFlags[(int)inst->op] & OPFLAG_IS_COPY_RBRA; }
-    static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpFlags[(int) inst->op] & OPFLAG_IS_MEMCPY; }
-    static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpFlags[(int) inst->op] & OPFLAG_IS_JUMP; }
+    static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_COPY_RBRA; }
+    static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_MEMCPY; }
+    static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
     // clang-format on
 
     void addCallStack(ByteCodeRunContext* context);

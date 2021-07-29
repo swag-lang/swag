@@ -27,7 +27,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (ip->flags & BCI_START_STMT)
             memset(regs.buffer, 0, maxReg * sizeof(void*));
 
-        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         switch (ip->op)
         {
@@ -110,7 +110,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 ip->op                        = ByteCodeOp::SetImmediate64;
                 regs[ip->b.u32]               = nullptr;
                 ip->b.u64                     = regsRW[ip->b.u32];
-                flags                         = g_ByteCodeOpFlags[(int) ip->op];
+                flags                         = g_ByteCodeOpDesc[(int) ip->op].flags;
             }
         }
 
