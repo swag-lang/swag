@@ -150,24 +150,6 @@ struct ScopedSelfStruct
     Scope*     savedStruct;
 };
 
-struct ScopedMainNode
-{
-    ScopedMainNode(SyntaxJob* job, AstNode* mainNode)
-    {
-        savedJob             = job;
-        savedMainNode        = job->currentMainNode;
-        job->currentMainNode = mainNode;
-    }
-
-    ~ScopedMainNode()
-    {
-        savedJob->currentMainNode = savedMainNode;
-    }
-
-    SyntaxJob* savedJob;
-    AstNode*   savedMainNode;
-};
-
 struct ScopedLocation
 {
     ScopedLocation(SyntaxJob* job, Token* token)

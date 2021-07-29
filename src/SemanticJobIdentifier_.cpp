@@ -3366,7 +3366,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
             // If a structure is referencing itself, we will match the incomplete symbol for now
             // We can also do an incomplete match with the identifier of an Impl block
-            if (node->ownerMainNode || (node->flags & AST_CAN_MATCH_INCOMPLETE))
+            if ((node->flags & AST_STRUCT_MEMBER) || (node->flags & AST_CAN_MATCH_INCOMPLETE))
                 canIncomplete = true;
 
             // If identifier is in a pointer type expression, can incomplete resolve

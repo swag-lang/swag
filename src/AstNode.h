@@ -172,7 +172,6 @@ struct CloneContext
     Scope*              parentScope            = nullptr;
     Scope*              ownerStructScope       = nullptr;
     Scope*              alternativeScope       = nullptr;
-    AstNode*            ownerMainNode          = nullptr;
     AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
     Token*              forceLocation          = nullptr;
     uint64_t            forceFlags             = 0;
@@ -273,7 +272,6 @@ struct AstNode
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
     AstTryCatchAssume*  ownerTryCatchAssume;
-    AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
 
     TypeInfo* typeInfo;

@@ -109,7 +109,6 @@ void AstNode::inheritOwners(AstNode* op)
     if (!op)
         return;
     ownerStructScope     = op->ownerStructScope;
-    ownerMainNode        = op->ownerMainNode;
     ownerScope           = op->ownerScope;
     ownerFct             = op->ownerFct;
     ownerBreakable       = op->ownerBreakable;
@@ -120,7 +119,6 @@ void AstNode::inheritOwners(AstNode* op)
 void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
 {
     ownerStructScope     = job->currentStructScope;
-    ownerMainNode        = job->currentMainNode;
     ownerScope           = job->currentScope;
     ownerFct             = job->currentFct;
     ownerBreakable       = job->currentBreakable;
@@ -434,7 +432,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::VarDecl:
         if (node->ownerScope && node->ownerScope->isGlobal())
             return "global variable";
-        if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
+        if (node->flags & AST_STRUCT_MEMBER)
             return "struct member";
         if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             return "function parameter";
@@ -551,7 +549,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & AST_DONE_INLINED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
-    ownerMainNode        = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
     ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable       = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
     ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
@@ -1277,7 +1274,6 @@ AstNode* AstStruct::clone(CloneContext& context)
     cloneContext.parent           = newNode;
     cloneContext.parentScope      = Ast::newScope(newNode, newNode->token.text, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
-    cloneContext.ownerMainNode    = newNode;
 
     newNode->scope = cloneContext.parentScope;
     newNode->allocateExtension();
@@ -1309,8 +1305,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
     SWAG_ASSERT(cloneContext.ownerStructScope); // Should be setup in generic instantiation
-    cloneContext.ownerMainNode = newNode;
-    newNode->scope             = cloneContext.parentScope;
+    newNode->scope = cloneContext.parentScope;
 
     for (auto c : childs)
     {
@@ -1357,7 +1352,6 @@ AstNode* AstEnum::clone(CloneContext& context)
     cloneContext.parent           = newNode;
     cloneContext.parentScope      = Ast::newScope(newNode, newNode->token.text, ScopeKind::Enum, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
-    cloneContext.ownerMainNode    = newNode;
     newNode->cloneChilds(cloneContext, this);
     context.propageResult(cloneContext);
 

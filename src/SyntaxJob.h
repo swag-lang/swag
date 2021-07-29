@@ -201,7 +201,6 @@ struct SyntaxJob : public Job
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
     Token*              currentTokenLocation   = nullptr;
-    AstNode*            currentMainNode        = nullptr;
     AstInline*          currentInline          = nullptr;
     uint64_t            currentFlags           = 0;
     bool                moduleSpecified        = false;
