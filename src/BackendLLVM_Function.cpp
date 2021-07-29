@@ -2,7 +2,7 @@
 #include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
 #include "BackendLLVMFunctionBodyJob.h"
-#include "BackendLLVMFunctionMacros.h"
+#include "BackendLLVM_Macros.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "ByteCodeOp.h"

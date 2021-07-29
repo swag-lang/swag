@@ -171,12 +171,12 @@
     <ClInclude Include="..\src\BackendFunctionBodyJobBase.h" />
     <ClInclude Include="../src/BackendLLVMDbg.h" />
     <ClInclude Include="../src/BackendLLVMFunctionBodyJob.h" />
-    <ClInclude Include="..\src\BackendLLVMFunctionMacros.h" />
+    <ClInclude Include="..\src\BackendLLVM_Macros.h" />
     <ClInclude Include="../src/BackendLinker.h" />
     <ClInclude Include="../src/BackendLLVM.h" />
     <ClInclude Include="../src/BackendX64.h" />
     <ClInclude Include="../src/BackendX64FunctionBodyJob.h" />
-    <ClInclude Include="..\src\BackendX64FunctionMacros.h" />
+    <ClInclude Include="..\src\BackendX64_Macros.h" />
     <ClInclude Include="../src/BackendX64SaveObjJob.h" />
     <ClInclude Include="../src/BackendX64Inst.h" />
     <ClInclude Include="..\src\BackendParameters.h" />
@@ -270,7 +270,7 @@
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Function.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Main.cpp" />
-    <ClCompile Include="../src/BackendNative_.cpp" />
+    <ClCompile Include="..\src\Backend_Native.cpp" />
     <ClCompile Include="../src/BackendSetupWin32.cpp" />
     <ClCompile Include="../src/BackendLinker.cpp" />
     <ClCompile Include="../src/BackendLLVM.cpp" />

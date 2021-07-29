@@ -29,9 +29,6 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/pch.cpp" />
-    <ClCompile Include="../src/ModuleOutputJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCode.cpp">
       <Filter>ByteCode</Filter>
     </ClCompile>
@@ -167,7 +164,7 @@
     <ClCompile Include="..\src\Backend_Export.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendNative_.cpp">
+    <ClCompile Include="..\src\Backend_Native.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/LLVMSetup.cpp">
@@ -181,9 +178,6 @@
     </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
       <Filter>Main\Os</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleRunJob.cpp">
-      <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/closures.c">
       <Filter>ByteCode\FFI</Filter>
@@ -236,20 +230,8 @@
     <ClCompile Include="..\src\BackendX64_Main.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ModuleExportJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleGenOutputJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModulePrepOutputJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Intrinsic.cpp">
       <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleSaveExportJob.cpp">
-      <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendX64SaveObjJob.cpp">
       <Filter>Backend\X64</Filter>
@@ -470,6 +452,24 @@
     <ClCompile Include="..\src\ByteCode_Print_.cpp">
       <Filter>ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="../src/ModuleExportJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleGenOutputJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleOutputJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModulePrepOutputJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleRunJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleSaveExportJob.cpp">
+      <Filter>Backend\Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -505,9 +505,6 @@
     <ClInclude Include="../src/pch.h" />
     <ClInclude Include="../src/Scope.h">
       <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleOutputJob.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCode.h">
       <Filter>ByteCode</Filter>
@@ -554,12 +551,6 @@
     <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleRunJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="../src/ComWin32.hpp">
       <Filter>Main\Os</Filter>
     </ClInclude>
@@ -596,23 +587,11 @@
     <ClInclude Include="../src/BackendX64Inst.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
-    <ClInclude Include="../src/ModuleExportJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleGenOutputJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModulePrepOutputJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BackendLLVMFunctionMacros.h">
+    <ClInclude Include="..\src\BackendLLVM_Macros.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendX64FunctionMacros.h">
+    <ClInclude Include="..\src\BackendX64_Macros.h">
       <Filter>Backend\X64</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleSaveExportJob.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64SaveObjJob.h">
       <Filter>Backend\X64</Filter>
@@ -755,6 +734,27 @@
     <ClInclude Include="../src/ByteCodeGenJob.h">
       <Filter>ByteCode\Gen</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleExportJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleGenOutputJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleOutputJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModulePrepOutputJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleRunJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleSaveExportJob.h">
+      <Filter>Backend\Jobs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -819,6 +819,9 @@
     </Filter>
     <Filter Include="ByteCode\Gen">
       <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\Jobs">
+      <UniqueIdentifier>{13554295-d672-43d2-958d-d5133618d28a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
