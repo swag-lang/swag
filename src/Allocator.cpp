@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Allocator.h"
 #include "CommandLine.h"
+#include "Os.h"
+#include "Log.h"
+#include "ErrorIds.h"
 
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
@@ -197,11 +200,25 @@ void* AllocatorImpl::alloc(size_t size)
             }
         }
 
-        lastBucket            = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
+        lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
+        if (!lastBucket)
+        {
+            g_Log.error(Msg0014);
+            OS::exit(-1);
+            return nullptr;
+        }
+
         lastBucket->maxUsed   = 0;
         lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);
         lastBucket->data      = (uint8_t*) malloc(lastBucket->allocated);
-        currentData           = lastBucket->data;
+        if (!lastBucket->data)
+        {
+            g_Log.error(Msg0014);
+            OS::exit(-1);
+            return nullptr;
+        }
+
+        currentData = lastBucket->data;
 
         g_Stats.allocatorMemory += sizeof(AllocatorBucket);
         g_Stats.allocatorMemory += lastBucket->allocated;
