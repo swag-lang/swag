@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 #include "Version.h"
-#include "Timer.h"
 
 void Tokenizer::relaxIdentifier(Token& token)
 {
