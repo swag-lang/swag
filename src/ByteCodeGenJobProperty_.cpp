@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     auto constSegment = childItf->computedValue->storageSegment;
     auto r0           = reserveRegisterRC(context);
-    emitMakeSegPointer(context, constSegment, r0, childItf->computedValue->storageOffset);
+    emitMakeSegPointer(context, constSegment, childItf->computedValue->storageOffset, r0);
 
     // Copy object pointer to first result register
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);

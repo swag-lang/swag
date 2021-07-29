@@ -881,7 +881,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             uint32_t     storageOffset;
             DataSegment* storageSegment;
             computeSourceLocation(context, node, &storageOffset, &storageSegment);
-            emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
+            emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
             break;
         }
         case TokenId::CompilerCallerFunction:
@@ -891,7 +891,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto        storageSegment = SemanticJob::getConstantSegFromContext(context->node);
             auto        storageOffset  = storageSegment->addString(str);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
-            emitMakeSegPointer(context, storageSegment, regList[0], storageOffset);
+            emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
             break;
         }
@@ -1082,11 +1082,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 SWAG_ASSERT(constSegment);
                 auto typeRef   = (ConcreteTypeInfoReference*) constSegment->address(child->computedValue->storageOffset);
                 auto offsetRef = constSegment->offset((uint8_t*) typeRef->pointedType);
-                emitMakeSegPointer(context, constSegment, r0, offsetRef);
+                emitMakeSegPointer(context, constSegment, offsetRef, r0);
             }
             else
             {
-                emitMakeSegPointer(context, constSegment, r0, child->computedValue->storageOffset);
+                emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset, r0);
             }
 
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);

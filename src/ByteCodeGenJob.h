@@ -186,8 +186,8 @@ struct ByteCodeGenJob : public Job
     }
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
-    static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
-    static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset);
+    static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
+    static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);

@@ -57,7 +57,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     // :AnyTypeSegment
     SWAG_ASSERT(exprNode->extension);
     SWAG_ASSERT(exprNode->extension->anyTypeSegment);
-    emitMakeSegPointer(context, exprNode->extension->anyTypeSegment, r0[1], exprNode->extension->anyTypeOffset);
+    emitMakeSegPointer(context, exprNode->extension->anyTypeSegment, exprNode->extension->anyTypeOffset, r0[1]);
 
     exprNode->resultRegisterRC      = r0;
     context->node->resultRegisterRC = r0;
@@ -98,7 +98,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
     // :ItfIsConstantSeg
     SWAG_ASSERT(itf->offset != UINT32_MAX);
-    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->resultRegisterRC[1], itf->offset);
+    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, itf->offset, exprNode->resultRegisterRC[1]);
 
     // We need to emit a pointer, so we emit a pointer to the interface that is stored in the 2 contiguous registers
     if (fromPointer)

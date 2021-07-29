@@ -202,19 +202,19 @@ bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
     return true;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset)
+ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
 {
-    SWAG_ASSERT(seg);
-    switch (seg->kind)
+    SWAG_ASSERT(storageSegment);
+    switch (storageSegment->kind)
     {
     case SegmentKind::Data:
-        return emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, r0, offset);
+        return emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, r0, storageOffset);
     case SegmentKind::Bss:
-        return emitInstruction(context, ByteCodeOp::MakeBssSegPointer, r0, offset);
+        return emitInstruction(context, ByteCodeOp::MakeBssSegPointer, r0, storageOffset);
     case SegmentKind::Compiler:
-        return emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, r0, offset);
+        return emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, r0, storageOffset);
     case SegmentKind::Constant:
-        return emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0, offset);
+        return emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0, storageOffset);
     default:
         SWAG_ASSERT(false);
     }
@@ -222,17 +222,17 @@ ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* cont
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context, DataSegment* seg, uint32_t r0, uint32_t offset)
+ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
 {
-    SWAG_ASSERT(seg);
-    switch (seg->kind)
+    SWAG_ASSERT(storageSegment);
+    switch (storageSegment->kind)
     {
     case SegmentKind::Data:
-        return emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, r0, offset);
+        return emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, r0, storageOffset);
     case SegmentKind::Bss:
-        return emitInstruction(context, ByteCodeOp::GetFromBssSeg64, r0, offset);
+        return emitInstruction(context, ByteCodeOp::GetFromBssSeg64, r0, storageOffset);
     case SegmentKind::Compiler:
-        return emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, r0, offset);
+        return emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, r0, storageOffset);
     default:
         SWAG_ASSERT(false);
     }

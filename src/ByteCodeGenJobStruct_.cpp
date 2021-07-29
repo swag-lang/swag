@@ -198,7 +198,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue->storageSegment);
             SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
-            emitMakeSegPointer(&cxt, varType->computedValue->storageSegment, 1, varType->computedValue->storageOffset);
+            emitMakeSegPointer(&cxt, varType->computedValue->storageSegment, varType->computedValue->storageOffset, 1);
             emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             continue;
         }
@@ -211,7 +211,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 SWAG_ASSERT(exprList->computedValue->storageSegment);
                 SWAG_ASSERT(exprList->computedValue->storageOffset != 0xFFFFFFFF);
-                emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, 1, exprList->computedValue->storageOffset);
+                emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
             else if (typeVar->isNative(NativeTypeKind::String))
@@ -219,7 +219,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
                 auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
-                emitMakeSegPointer(&cxt, storageSegment, 1, storageOffset);
+                emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
