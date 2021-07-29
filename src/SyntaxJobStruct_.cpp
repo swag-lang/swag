@@ -283,6 +283,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     {
         Scoped         scoped(this, newScope);
         ScopedStruct   scopedStruct(this, newScope);
+        ScopedFlags    scopedFlags(this, AST_STRUCT_MEMBER);
         ScopedMainNode scopedMainNode(this, structNode);
 
         auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
