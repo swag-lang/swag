@@ -41,61 +41,61 @@
     <ClCompile Include="../src/Scope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobDeclaration_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Declaration.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobType_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Type.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobUnaryExpression_.cpp">
+    <ClCompile Include="..\src\SemanticJob_UnaryExpression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobVar_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Var.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobIdentifier_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Identifier.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobEnum_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Enum.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobCompiler_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Compiler.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobBinaryExpression_.cpp">
+    <ClCompile Include="..\src\SemanticJob_BinaryExpression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobAttribute_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobIdentifier_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Identifier.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobFunction_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Function.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobExpression_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Expression.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobEnum_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Enum.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobDeclaration_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Declaration.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobCompiler_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Compiler.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobAttribute_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Attribute.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobType_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Type.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobVar_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Var.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobExpression_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Expression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/AstNode.cpp">
@@ -104,34 +104,34 @@
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobBlock_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Block.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobBlock_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Block.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobAffectExpression_.cpp">
+    <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/OutputFile.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJobStruct_.cpp">
+    <ClCompile Include="..\src\SyntaxJob_Struct.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobStruct_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Struct.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobRef_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Ref.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/Generic.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobCompareExpression_.cpp">
+    <ClCompile Include="..\src\SemanticJob_CompareExpression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobOp_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Op.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/SwagScope.cpp">
@@ -146,25 +146,25 @@
     <ClCompile Include="../src/AstOutput.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobFunction_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Function.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLLVM.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMMain_.cpp">
+    <ClCompile Include="..\src\BackendLLVM_Main.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMData_.cpp">
+    <ClCompile Include="..\src\BackendLLVM_Data.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMFunction_.cpp">
+    <ClCompile Include="..\src\BackendLLVM_Function.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendExport_.cpp">
+    <ClCompile Include="..\src\Backend_Export.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendNative_.cpp">
@@ -224,16 +224,16 @@
     <ClCompile Include="../src/BackendX64.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64Data_.cpp">
+    <ClCompile Include="..\src\BackendX64_Data.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64Function_.cpp">
+    <ClCompile Include="..\src\BackendX64_Function.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendX64FunctionBodyJob.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64Main_.cpp">
+    <ClCompile Include="..\src\BackendX64_Main.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleExportJob.cpp">
@@ -245,7 +245,7 @@
     <ClCompile Include="../src/ModulePrepOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobIntrinsic_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Intrinsic.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleSaveExportJob.cpp">
@@ -257,40 +257,40 @@
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_const_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_deadcode_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_deadstore_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_dup_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_emptyfct_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_EmptyFct.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_imm_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_jumps_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SemanticJobCollect_.cpp">
+    <ClCompile Include="..\src\SemanticJob_Collect.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_retcopy_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer_reduce_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64Dbg_.cpp">
+    <ClCompile Include="..\src\BackendX64_Dbg.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLinker.cpp">
@@ -302,31 +302,31 @@
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp">
       <Filter>Main\CfgManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_loop_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_err_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_swap_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_np_.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Np.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TokenizerSymbol_.cpp">
+    <ClCompile Include="..\src\Tokenizer_Symbol.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TokenizerStringLiteral_.cpp">
+    <ClCompile Include="..\src\Tokenizer_StringLiteral.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TokenizerNumberLiteral_.cpp">
+    <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TokenizerIdentifier_.cpp">
+    <ClCompile Include="..\src\Tokenizer_Identifier.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
     <ClCompile Include="../src/Tokenizer.cpp">
@@ -365,13 +365,13 @@
     <ClCompile Include="../src/Workspace.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Workspace_clean_.cpp">
+    <ClCompile Include="..\src\Workspace_Clean.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Workspace_new_.cpp">
+    <ClCompile Include="..\src\Workspace_New.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Workspace_script_.cpp">
+    <ClCompile Include="..\src\Workspace_Script.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/Module.cpp">
@@ -410,13 +410,13 @@
     <ClCompile Include="../src/ByteCodeStack.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeRunFFI_.cpp">
+    <ClCompile Include="..\src\ByteCodeRun_FFI.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRunContext.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRunDbg_.cpp">
+    <ClCompile Include="..\src\ByteCodeRun_Dbg.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRun.cpp">
@@ -425,49 +425,49 @@
     <ClCompile Include="../src/ByteCodeGenJob.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobAffectOp_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_AffectOp.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobBinaryOp_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_BinaryOp.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobBlock_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Block.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobCast_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Cast.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobCompareOp_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_CompareOp.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobExpression_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Expression.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobFunction_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Function.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobIdentifier_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Identifier.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobProperty_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Property.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobRef_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Ref.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobSafety_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobStruct_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Struct.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobUnaryOp_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_UnaryOp.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJobVar_.cpp">
+    <ClCompile Include="..\src\ByteCodeGenJob_Var.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodePrint_.cpp">
+    <ClCompile Include="..\src\ByteCode_Print_.cpp">
       <Filter>ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
@@ -605,10 +605,10 @@
     <ClInclude Include="../src/ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendLLVMFunctionMacros_.h">
+    <ClInclude Include="..\src\BackendLLVMFunctionMacros.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendX64FunctionMacros_.h">
+    <ClInclude Include="..\src\BackendX64FunctionMacros.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleSaveExportJob.h">
