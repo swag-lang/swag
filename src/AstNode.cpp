@@ -412,9 +412,14 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->anyTypeOffset                = from->extension->anyTypeOffset;
     }
 
-    computedValue = from->computedValue;
-    token.text    = from->token.text;
-    sourceFile    = from->sourceFile;
+    if (from->computedValue)
+    {
+        computedValue  = g_Allocator.alloc<ComputedValue>();
+        *computedValue = *from->computedValue;
+    }
+
+    token.text = from->token.text;
+    sourceFile = from->sourceFile;
 
     attributeFlags = from->attributeFlags;
     specFlags      = from->specFlags;
