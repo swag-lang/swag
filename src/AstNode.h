@@ -264,12 +264,12 @@ struct AstNode
     ComputedValue*         computedValue;
 
     Scope*              ownerScope;
+    Scope*              ownerStructScope;
     AstBreakable*       ownerBreakable;
     AstAttrUse*         ownerAttrUse;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
     AstTryCatchAssume*  ownerTryCatchAssume;
-    Scope*              ownerStructScope;
     AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
 
