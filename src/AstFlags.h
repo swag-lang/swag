@@ -128,3 +128,4 @@ static const uint8_t AST_SPEC_VISIT_WANTPOINTER        = 0x01;
 static const uint8_t AST_SPEC_ATTRUSE_GLOBAL           = 0x01;
 static const uint8_t AST_SPEC_VARDECL_CONSTASSIGN      = 0x01;
 static const uint8_t AST_SPEC_DECLPARAM_GENERATED_SELF = 0x01;
+static const uint8_t AST_SPEC_STRUCTDECL_HAS_USING     = 0x01;

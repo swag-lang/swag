@@ -2104,6 +2104,13 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 {
     ok = false;
 
+    // No need to parse all fields if there's none with a 'using'
+    auto structNode = CastAst<AstStruct>(fromStruct->declNode, AstNodeKind::StructDecl);
+    if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
+        return true;
+
+    //SWAG_ASSERT(!(fromStruct->declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE));
+
     TypeInfoParam* done = nullptr;
     for (auto field : fromStruct->fields)
     {

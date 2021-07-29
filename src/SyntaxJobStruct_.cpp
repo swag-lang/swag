@@ -445,8 +445,11 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, Msg0451}));
         SWAG_CHECK(eatToken());
 
+        auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        structNode->specFlags |= AST_SPEC_STRUCTDECL_HAS_USING;
+
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        structNode->flags |= AST_STRUCT_COMPOUND;
         if (result)
             *result = stmt;
 
