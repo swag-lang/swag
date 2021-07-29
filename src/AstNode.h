@@ -252,10 +252,11 @@ struct AstNode
         TypeInfo*                      collectTypeInfo;
         AstNode*                       alternativeNode;
         AstNode*                       exportNode;
-        uint32_t                       castOffset;
-        uint32_t                       stackOffset;
         DataSegment*                   anyTypeSegment;
-        uint32_t                       anyTypeOffset;
+
+        uint32_t castOffset;
+        uint32_t stackOffset;
+        uint32_t anyTypeOffset;
     };
 
     shared_mutex           mutex;
