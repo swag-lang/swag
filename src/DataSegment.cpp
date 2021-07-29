@@ -6,8 +6,6 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 
-static const uint32_t BUCKET_SIZE = 16 * 1024;
-
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
     kind = _kind;
@@ -116,7 +114,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     else
     {
         DataSegmentHeader bucket;
-        bucket.size   = max(size, BUCKET_SIZE);
+        bucket.size = max(size, granularity);
+        granularity *= 2;
         bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
         bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
         if (g_CommandLine.stats)

@@ -55,6 +55,7 @@ struct DataSegment
 
     VectorNative<DataSegmentHeader> buckets;
     shared_mutex                    mutex;
+    uint32_t                        granularity = 16 * 1024;
 
     struct CacheValue
     {
