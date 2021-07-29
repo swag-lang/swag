@@ -2598,7 +2598,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             return context->report(*diag, notes);
         }
 
-        node->flags |= AST_FORCE_UFCS;
+        node->semFlags |= AST_SEM_FORCE_UFCS;
     }
 
     return true;
@@ -3365,6 +3365,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             bool canIncomplete = false;
 
             // If a structure is referencing itself, we will match the incomplete symbol for now
+            // We can also do an incomplete match with the identifier of an Impl block
             if (node->ownerMainNode || (node->flags & AST_CAN_MATCH_INCOMPLETE))
                 canIncomplete = true;
 
@@ -3464,7 +3465,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
             if (context->result == ContextResult::Pending)
                 return true;
-            if ((node->flags & AST_FORCE_UFCS) && !ufcsFirstParam)
+            if ((node->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
                 continue;
 
             // If the last parameter of a function is of type 'code', and the last call parameter is not,
@@ -3515,7 +3516,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (job->cacheMatches.empty())
     {
         // We want to force the ufcs
-        if (node->flags & AST_FORCE_UFCS)
+        if (node->semFlags & AST_SEM_FORCE_UFCS)
         {
             if (identifierRef->startScope)
             {
