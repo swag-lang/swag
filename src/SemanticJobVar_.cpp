@@ -451,7 +451,6 @@ bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
         if (node->flags & AST_STRUCT_MEMBER)
             isGeneric = node->findParent(AstNodeKind::StructDecl)->flags & AST_IS_GENERIC;
 
-        //bool isGeneric = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
         if (isGeneric)
         {
             node->assignment->typeInfo = g_TypeMgr.typeInfoS32;

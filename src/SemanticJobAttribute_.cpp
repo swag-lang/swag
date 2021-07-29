@@ -48,7 +48,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return true;
 
     bool isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
-    bool isStructVar = kind == AstNodeKind::VarDecl && checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl;
+    bool isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
     bool isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
 
     // Check specific hard coded attributes
