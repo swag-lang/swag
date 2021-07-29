@@ -228,6 +228,7 @@ struct AstNode
     static Utf8 getKindName(AstNode* node);
     AstNode*    findChildRef(AstNode* ref, AstNode* fromChild);
     AstNode*    findChildRefRec(AstNode* ref, AstNode* fromChild);
+    AstNode*    findParent(AstNodeKind parentKind);
     Utf8        getScopedName();
     void        setOwnerAttrUse(AstAttrUse* attrUse);
     void        allocateExtension();

@@ -69,8 +69,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Utf8::format(Msg0399, token.text.c_str())));
 
     // Content of enum
-    Scoped         scoped(this, newScope);
-    ScopedMainNode scopedMainNode(this, enumNode);
+    Scoped scoped(this, newScope);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
         SWAG_CHECK(doEnumContent(enumNode));

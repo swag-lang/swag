@@ -490,6 +490,14 @@ AstNode* AstNode::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstNode::findParent(AstNodeKind parentKind)
+{
+    auto find = parent;
+    while (find && find->kind != parentKind)
+        find = find->parent;
+    return find;
+}
+
 AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
 {
     if (!ref)

@@ -126,8 +126,8 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
 {
     auto valNode  = CastAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
-    auto enumNode = valNode->ownerMainNode;
-    SWAG_ASSERT(enumNode && enumNode->kind == AstNodeKind::EnumDecl);
+    auto enumNode = valNode->findParent(AstNodeKind::EnumDecl);
+    SWAG_ASSERT(enumNode);
 
     auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->flags & TYPEINFO_GENERIC)
