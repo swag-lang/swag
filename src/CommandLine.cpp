@@ -2,6 +2,7 @@
 #include "CommandLine.h"
 #include "Backend.h"
 #include "ErrorIds.h"
+#include "Log.h"
 
 CommandLine g_CommandLine;
 

@@ -1,6 +1,4 @@
 #pragma once
-#include "Log.h"
-#include "VectorNative.h"
 
 struct RegisterList
 {

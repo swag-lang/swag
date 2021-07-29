@@ -42,10 +42,11 @@ struct Timer
         }
     }
 
-    bool              started = false;
     atomic<uint64_t>  internal;
+    atomic<uint64_t>* destValue;
     uint64_t          elapsed    = 0;
     uint64_t          timeBefore = 0;
     uint64_t          timeAfter  = 0;
-    atomic<uint64_t>* destValue;
+
+    bool started = false;
 };

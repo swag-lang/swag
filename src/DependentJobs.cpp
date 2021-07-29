@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DependentJobs.h"
 #include "ThreadManager.h"
-#include "CommandLine.h"
 
 void DependentJobs::add(Job* job)
 {

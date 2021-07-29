@@ -1,5 +1,4 @@
 #pragma once
-#include "Assert.h"
 #include "VectorNative.h"
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Utf8.h"
-#include "Allocator.h"
-#include "Runtime.h"
 #include "CommandLine.h"
 
 Utf8::Utf8()

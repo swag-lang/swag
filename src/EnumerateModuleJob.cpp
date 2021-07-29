@@ -2,12 +2,6 @@
 #include "EnumerateModuleJob.h"
 #include "Workspace.h"
 #include "Os.h"
-#include "ThreadManager.h"
-#include "SourceFile.h"
-#include "SyntaxJob.h"
-#include "Stats.h"
-#include "Allocator.h"
-#include "Scope.h"
 #include "Module.h"
 #include "ModuleCfgManager.h"
 
