@@ -113,18 +113,18 @@ static void byteCodeRun(void* byteCodePtr, ...)
 {
     va_list valist;
     va_start(valist, byteCodePtr);
-    g_byteCodeStack.push({nullptr, nullptr});
+    g_ByteCodeStack.push({nullptr, nullptr});
     byteCodeRun(false, byteCodePtr, valist);
-    g_byteCodeStack.pop();
+    g_ByteCodeStack.pop();
 }
 
 static void byteCodeRunCB(void* byteCodePtr, ...)
 {
     va_list valist;
     va_start(valist, byteCodePtr);
-    g_byteCodeStack.push({nullptr, nullptr});
+    g_ByteCodeStack.push({nullptr, nullptr});
     byteCodeRun(true, byteCodePtr, valist);
-    g_byteCodeStack.pop();
+    g_ByteCodeStack.pop();
 }
 
 // Callback stuff. This is tricky !

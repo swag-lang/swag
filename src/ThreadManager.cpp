@@ -4,6 +4,7 @@
 #include "Context.h"
 #include "Module.h"
 #include "AstNode.h"
+#include "ByteCodeStack.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -199,7 +200,7 @@ static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
 {
 #ifdef SWAG_DEV_MODE
-    g_byteCodeStack.reportError("exception during job execution !");
+    g_ByteCodeStack.reportError("exception during job execution !");
     OS::errorBox("[Developer Mode]", "Exception raised !");
     return EXCEPTION_CONTINUE_EXECUTION;
 #else

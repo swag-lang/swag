@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
-#include "ByteCodeOp.h"
 #include "Ast.h"
-#include "SourceFile.h"
 #include "ByteCodeStack.h"
-#include "ByteCodeRunContext.h"
 #include "Module.h"
 #include "TypeManager.h"
 
@@ -99,7 +96,7 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
     stackStep.bc = context->bc;
     stackStep.ip = context->ip - 1;
     stackStep.bp = context->bp;
-    g_byteCodeStack.push(stackStep);
+    g_ByteCodeStack.push(stackStep);
 }
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnReg)
@@ -127,7 +124,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
 void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
 {
     if (popCallStack)
-        g_byteCodeStack.pop();
+        g_ByteCodeStack.pop();
     context->curRC--;
 }
 

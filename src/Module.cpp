@@ -324,7 +324,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     cxt->flags = getDefaultContextFlags(this);
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
-    g_byteCodeStack.clear();
+    g_ByteCodeStack.clear();
     return executeNodeNoLock(sourceFile, node, callerContext);
 }
 
@@ -354,7 +354,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     bool result = module->runner.run(&g_RunContext);
 
     node->extension->bc->leaveByteCode(&g_RunContext, false);
-    g_byteCodeStack.clear();
+    g_ByteCodeStack.clear();
 
     if (!result)
         return false;

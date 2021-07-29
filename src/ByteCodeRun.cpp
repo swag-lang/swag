@@ -1265,7 +1265,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         context->bc->addCallStack(context);
         ffiCall(context, ip);
-        g_byteCodeStack.pop();
+        g_ByteCodeStack.pop();
         break;
     }
 
@@ -3531,9 +3531,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
                 if (firstSrcFile->numTestErrors || firstSrcFile->numTestWarnings)
                 {
                     runContext->ip--;
-                    g_byteCodeStack.currentContext = runContext;
+                    g_ByteCodeStack.currentContext = runContext;
                     firstSrcFile->report(diag, notes);
-                    g_byteCodeStack.currentContext = nullptr;
+                    g_ByteCodeStack.currentContext = nullptr;
                     runContext->ip++;
                     return EXCEPTION_EXECUTE_HANDLER;
                 }
@@ -3541,15 +3541,15 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         }
 
         SourceFile* sourceFile;
-        if (g_byteCodeStack.steps.size())
-            sourceFile = g_byteCodeStack.steps[0].bc->sourceFile;
+        if (g_ByteCodeStack.steps.size())
+            sourceFile = g_ByteCodeStack.steps[0].bc->sourceFile;
         else
             sourceFile = runContext->bc->sourceFile;
 
         runContext->ip--;
-        g_byteCodeStack.currentContext = runContext;
+        g_ByteCodeStack.currentContext = runContext;
         sourceFile->report(diag, notes);
-        g_byteCodeStack.currentContext = nullptr;
+        g_ByteCodeStack.currentContext = nullptr;
         runContext->ip++;
         return EXCEPTION_EXECUTE_HANDLER;
     }
@@ -3565,9 +3565,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     Diagnostic note1{Msg0436, DiagnosticLevel::Note};
     Diagnostic note2{Note009, DiagnosticLevel::Note};
     diag.exceptionError            = true;
-    g_byteCodeStack.currentContext = runContext;
+    g_ByteCodeStack.currentContext = runContext;
     runContext->bc->sourceFile->report(diag, &note1, &note2);
-    g_byteCodeStack.currentContext = nullptr;
+    g_ByteCodeStack.currentContext = nullptr;
     runContext->ip++;
 #ifdef SWAG_DEV_MODE
     return EXCEPTION_CONTINUE_EXECUTION;
@@ -3599,7 +3599,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
                 continue;
             }
 
-            g_byteCodeStack.clear();
+            g_ByteCodeStack.clear();
             return false;
         }
     }

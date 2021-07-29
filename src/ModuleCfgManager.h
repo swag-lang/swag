@@ -1,9 +1,8 @@
 #pragma once
-#include "Utf8.h"
-
 struct SourceFile;
 struct Module;
 struct ModuleDependency;
+struct Utf8;
 
 enum class CompareVersionResult
 {
