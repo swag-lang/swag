@@ -128,7 +128,7 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
 #ifdef SWAG_DEV_MODE
-    memset(result, 0xCC, size);
+    memset(result, 0xAA, size);
 #endif
     freeBucketsCpt[bucket]--;
 
@@ -168,7 +168,7 @@ void* AllocatorImpl::alloc(size_t size)
     if (result)
     {
 #ifdef SWAG_DEV_MODE
-        memset(result, 0xCC, size);
+        memset(result, 0xAA, size);
 #endif
         return result;
     }
@@ -226,6 +226,9 @@ void* AllocatorImpl::alloc(size_t size)
     }
 
     auto returnData = currentData;
+#ifdef SWAG_DEV_MODE
+    memset(currentData, 0xAA, size);
+#endif
     currentData += size;
     lastBucket->maxUsed += size;
     g_Stats.wastedMemory -= size;
