@@ -4,6 +4,7 @@
 #include "ByteCodeStack.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},
@@ -86,7 +87,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     if (g_CommandLine.maxRecurse && context->curRC == (int) g_CommandLine.maxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = Utf8::format("call level limit reached (maximum level is '--max-recurse:%d')", g_CommandLine.maxRecurse);
+        context->errorMsg = Utf8::format(Msg0076, g_CommandLine.maxRecurse);
         return;
     }
 
