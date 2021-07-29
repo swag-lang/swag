@@ -55,7 +55,7 @@ struct DataSegment
 
     VectorNative<DataSegmentHeader> buckets;
     shared_mutex                    mutex;
-    uint32_t                        granularity = 16 * 1024;
+    uint32_t                        granularity = 0;
 
     struct CacheValue
     {
@@ -87,7 +87,7 @@ struct DataSegment
 
     shared_mutex                         mutexPatchMethod;
     shared_mutex                         mutexPtr;
-    map<Utf8, CacheValue>                mapString;
+    map<Utf8, CacheValue>                storedStrings;
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
     vector<SegmentPatchPtrRef>           patchPtr;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;

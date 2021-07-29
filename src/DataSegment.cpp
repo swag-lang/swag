@@ -8,7 +8,17 @@
 
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
-    kind = _kind;
+    kind   = _kind;
+    module = _module;
+
+    // :DefaultSizeBuckets
+    if (_module->kind == ModuleKind::BootStrap)
+        granularity = 4 * 1024;
+    else if (_module->kind == ModuleKind::Runtime)
+        granularity = 16 * 1024;
+    else
+        granularity = 4 * 1024;
+
     switch (kind)
     {
     case SegmentKind::Compiler:
@@ -33,13 +43,15 @@ void DataSegment::setup(SegmentKind _kind, Module* _module)
         name = "string segment";
         break;
     }
-    module = _module;
 }
 
 void DataSegment::initFrom(DataSegment* other)
 {
     if (other->totalCount)
     {
+        // :DefaultSizeBuckets
+        // If this assert, then we must increase the default granularity size in setup()
+        SWAG_ASSERT(other->buckets.size() == 1);
         reserve(other->totalCount);
         memcpy(buckets[0].buffer, other->buckets[0].buffer, other->totalCount);
     }
@@ -51,9 +63,10 @@ void DataSegment::initFrom(DataSegment* other)
     for (auto& it : other->initFuncPtr)
         addInitPtrFunc(it.first, it.second.first, it.second.second);
 
-    for (auto& it : other->mapString)
-        mapString[it.first] = it.second;
-
+    // This maps contain direct pointer to the original buffer
+    // This is fine, as original buffers are persistent.
+    for (auto& it : other->storedStrings)
+        storedStrings[it.first] = it.second;
     for (auto& it : other->storedValues8)
         storedValues8[it.first] = it.second;
     for (auto& it : other->storedValues16)
@@ -299,8 +312,8 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
-    auto it = mapString.find(str);
-    if (it != mapString.end())
+    auto it = storedStrings.find(str);
+    if (it != storedStrings.end())
     {
         if (resultPtr)
             *resultPtr = it->second.addr;
@@ -314,7 +327,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
         *resultPtr = addr;
     memcpy(addr, str.c_str(), strLen);
     SWAG_ASSERT(addr[strLen - 1] == 0);
-    mapString[str] = {offset, addr};
+    storedStrings[str] = {offset, addr};
 
     return offset;
 }
