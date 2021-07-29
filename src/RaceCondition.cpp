@@ -1,4 +1,5 @@
 #include "pch.h"
+#ifdef SWAG_HAS_ASSERT
 #include "RaceCondition.h"
 #include "Assert.h"
 
@@ -37,3 +38,5 @@ void RaceCondition::unlock()
         myInstance->countWrite--;
     }
 }
+
+#endif
