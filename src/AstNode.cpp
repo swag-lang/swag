@@ -498,6 +498,14 @@ AstNode* AstNode::findParent(AstNodeKind parentKind)
     return find;
 }
 
+AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2)
+{
+    auto find = parent;
+    while (find && find->kind != parentKind1 && find->kind != parentKind2)
+        find = find->parent;
+    return find;
+}
+
 AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
 {
     if (!ref)

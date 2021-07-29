@@ -674,7 +674,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     bool genericType = !node->type && !node->assignment;
-    bool isGeneric   = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
+    bool isGeneric   = false;
+    if (node->flags & AST_STRUCT_MEMBER)
+    {
+        auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        SWAG_ASSERT(p);
+        isGeneric = p->flags & AST_IS_GENERIC;
+    }
 
     // Value
     if (node->assignment &&
