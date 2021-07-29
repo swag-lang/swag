@@ -48,6 +48,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     if (backTick)
         identifier->specFlags |= AST_SPEC_IDENTIFIER_BACKTICK;
+    if (contextualNoInline)
+        identifier->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(checkIsValidUserName(identifier));

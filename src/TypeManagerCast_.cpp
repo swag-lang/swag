@@ -2896,7 +2896,9 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         cloneContext.parent = oneParam;
         oneParam->inheritTokenLocation(oneChild->token);
         oneChild->clone(cloneContext);
-        oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC | AST_NO_INLINE;
+        oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
+        if (oneChild->kind == AstNodeKind::Identifier)
+            oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
         if (oneChild->flags & AST_IS_NAMED)
             oneParam->namedParam = oneChild->token.text;
 

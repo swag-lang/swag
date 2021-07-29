@@ -114,6 +114,24 @@ struct ScopedFlags
     uint64_t   savedFlags;
 };
 
+struct ScopedContextual
+{
+    ScopedContextual(SyntaxJob* job, uint32_t* counter)
+    {
+        savedJob     = job;
+        savedCounter = counter;
+        (*savedCounter)++;
+    }
+
+    ~ScopedContextual()
+    {
+        (*savedCounter)--;
+    }
+
+    SyntaxJob* savedJob;
+    uint32_t*  savedCounter;
+};
+
 struct ScopedStruct
 {
     ScopedStruct(SyntaxJob* job, Scope* structScope)

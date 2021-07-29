@@ -203,6 +203,7 @@ struct SyntaxJob : public Job
     Token*              currentTokenLocation   = nullptr;
     AstInline*          currentInline          = nullptr;
     uint64_t            currentFlags           = 0;
+    uint32_t            contextualNoInline     = 0;
     bool                moduleSpecified        = false;
     bool                inFunCall              = false;
     bool                afterGlobal            = false;
