@@ -949,3 +949,9 @@ struct AstRange : public AstNode
     AstNode* expressionLow;
     AstNode* expressionUp;
 };
+
+struct AstMakePointerLambda : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+    AstNode* lambda;
+};

@@ -347,7 +347,8 @@ namespace Ast
 
         case AstNodeKind::MakePointerLambda:
         {
-            outputLambdaExpression(context, concat, node->ownerMainNode);
+            auto lambdaNode = CastAst<AstMakePointerLambda>(node, AstNodeKind::MakePointerLambda);
+            outputLambdaExpression(context, concat, lambdaNode->lambda);
             break;
         }
 

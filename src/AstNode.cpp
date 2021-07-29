@@ -1426,3 +1426,11 @@ AstNode* AstRange::clone(CloneContext& context)
     newNode->expressionUp  = findChildRef(expressionUp, newNode);
     return newNode;
 }
+
+AstNode* AstMakePointerLambda::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstMakePointerLambda>();
+    newNode->copyFrom(context, this);
+    newNode->lambda = lambda;
+    return newNode;
+}
