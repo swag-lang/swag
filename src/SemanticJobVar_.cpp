@@ -633,18 +633,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Check attributes
     if (node->attributeFlags & ATTRIBUTE_TLS && node->attributeFlags & ATTRIBUTE_COMPILER)
         return context->report({node, Msg0159});
+
+    // Register public global constant
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl && node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
-        {
-            if (node->ownerScope->isGlobalOrImpl())
-            {
-                if (node->type || node->assignment)
-                {
-                    node->ownerScope->addPublicConst(node);
-                }
-            }
-        }
+        if (node->ownerScope->isGlobalOrImpl() && (node->type || node->assignment))
+            node->ownerScope->addPublicConst(node);
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)
