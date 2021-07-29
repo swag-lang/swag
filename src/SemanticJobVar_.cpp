@@ -414,11 +414,11 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         // Copy value from compiler segment to real requested segment
         else
         {
-            auto storageOffset                    = storageSegment->reserve(node->typeInfo->sizeOf);
+            uint8_t* addrDest;
+            auto     storageOffset                = storageSegment->reserve(node->typeInfo->sizeOf, &addrDest);
             overload->computedValue.storageOffset = storageOffset;
-            auto addr                             = storageSegment->address(storageOffset);
             auto addrSrc                          = module->compilerSegment.address(node->computedValue->storageOffset);
-            memcpy(addr, addrSrc, node->typeInfo->sizeOf);
+            memcpy(addrDest, addrSrc, node->typeInfo->sizeOf);
         }
 
         node->computedValue->storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
