@@ -713,17 +713,11 @@ namespace Ast
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
             if (varDecl->flags & AST_DECL_USING)
                 CONCAT_FIXED_STR(concat, "using ");
+            if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam)
+                CONCAT_FIXED_STR(concat, "var ");
 
             if (varDecl->type)
             {
-                if (node->kind != AstNodeKind::FuncDeclParam)
-                {
-                    if (!node->ownerMainNode ||
-                        (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
-                         node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
-                        CONCAT_FIXED_STR(concat, "var ");
-                }
-
                 if (!varDecl->publicName.empty())
                     concat.addString(varDecl->publicName);
                 else
