@@ -104,23 +104,26 @@ struct Diagnostic
     void printSourceLine(int headerSize) const;
     void report(bool verboseMode = false) const;
 
-    SourceFile*     sourceFile = nullptr;
-    AstNode*        sourceNode = nullptr;
     SourceLocation  startLocation;
     SourceLocation  endLocation;
     Utf8            textMsg;
     vector<Utf8>    remarks;
     Utf8            hint;
     DiagnosticLevel errorLevel;
-    bool            currentStackLevel     = false;
-    uint32_t        stackLevel            = 0;
-    bool            hasFile               = false;
-    bool            hasLocation           = false;
-    bool            hasRangeLocation      = false;
-    bool            printSource           = false;
-    bool            showRange             = true;
-    bool            showMultipleCodeLines = true;
-    bool            exceptionError        = false;
+
+    SourceFile* sourceFile = nullptr;
+    AstNode*    sourceNode = nullptr;
+
+    uint32_t stackLevel = 0;
+
+    bool currentStackLevel     = false;
+    bool hasFile               = false;
+    bool hasLocation           = false;
+    bool hasRangeLocation      = false;
+    bool printSource           = false;
+    bool showRange             = true;
+    bool showMultipleCodeLines = true;
+    bool exceptionError        = false;
 };
 
 extern thread_local Utf8 g_ErrorHint;
