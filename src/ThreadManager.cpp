@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "ThreadManager.h"
 #include "JobThread.h"
-#include "Stats.h"
-#include "Job.h"
 #include "Context.h"
-#include "ByteCodeStack.h"
-#include "SymTable.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "AstNode.h"
 

@@ -25,7 +25,7 @@ namespace OS
         }
 
         // Log
-        consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
+        consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleOutputCP(65001);
 
         CONSOLE_SCREEN_BUFFER_INFO info;
@@ -89,7 +89,7 @@ namespace OS
         }
 
         WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
-        ::SetConsoleTextAttribute(consoleHandle, attributes | back);
+        SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
     bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
@@ -104,39 +104,39 @@ namespace OS
         DWORD               exit;
         UINT                errmode;
 
-        errmode = ::GetErrorMode();
-        ::SetErrorMode(SEM_FAILCRITICALERRORS);
+        errmode = GetErrorMode();
+        SetErrorMode(SEM_FAILCRITICALERRORS);
 
         // Create a pipe to receive compiler results
-        ::ZeroMemory(&saAttr, sizeof(saAttr));
+        ZeroMemory(&saAttr, sizeof(saAttr));
         saAttr.nLength              = sizeof(SECURITY_ATTRIBUTES);
         saAttr.bInheritHandle       = TRUE;
         saAttr.lpSecurityDescriptor = nullptr;
-        if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
+        if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
             g_Log.error(Utf8::format(Msg0045, cmdline.c_str()));
             return false;
         }
 
         // Create process
-        ::ZeroMemory(&si, sizeof(si));
+        ZeroMemory(&si, sizeof(si));
         si.cb         = sizeof(si);
         si.hStdError  = hChildStdoutWr;
         si.hStdOutput = hChildStdoutWr;
         si.dwFlags    = STARTF_USESTDHANDLES;
-        ::ZeroMemory(&pi, sizeof(pi));
+        ZeroMemory(&pi, sizeof(pi));
 
         {
-            if (!::CreateProcessA(nullptr,
-                                  (LPSTR) cmdline.c_str(),
-                                  nullptr,
-                                  nullptr,
-                                  TRUE,
-                                  CREATE_NO_WINDOW,
-                                  nullptr,
-                                  currentDirectory.c_str(),
-                                  &si,
-                                  &pi))
+            if (!CreateProcessA(nullptr,
+                                (LPSTR) cmdline.c_str(),
+                                nullptr,
+                                nullptr,
+                                TRUE,
+                                CREATE_NO_WINDOW,
+                                nullptr,
+                                currentDirectory.c_str(),
+                                &si,
+                                &pi))
             {
                 g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
                 return false;
@@ -148,17 +148,17 @@ namespace OS
         chBuf[0] = 0;
         while (1)
         {
-            ::PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
+            PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
             if (dwRead)
             {
                 // Read compiler results
                 strout.clear();
-                if (::ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
+                if (ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
                 {
                     strout.append(chBuf, dwRead);
                     while (dwRead == 4096)
                     {
-                        if (::ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
+                        if (ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
                             strout.append(chBuf, dwRead);
                     }
                 }
@@ -275,7 +275,7 @@ namespace OS
                 continue;
             }
 
-            ::GetExitCodeProcess(pi.hProcess, &exit);
+            GetExitCodeProcess(pi.hProcess, &exit);
             if (exit != STILL_ACTIVE)
             {
                 switch (exit)
@@ -311,12 +311,11 @@ namespace OS
         }
 
         // Close process and thread handles
-        ::CloseHandle(hChildStdoutWr);
-        ::CloseHandle(pi.hProcess);
-        ::CloseHandle(pi.hThread);
+        CloseHandle(hChildStdoutWr);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
 
-        ::SetErrorMode(errmode);
-
+        SetErrorMode(errmode);
         return ok;
     }
 
@@ -327,31 +326,31 @@ namespace OS
         SECURITY_ATTRIBUTES saAttr;
         UINT                errmode;
 
-        errmode = ::GetErrorMode();
-        ::SetErrorMode(SEM_FAILCRITICALERRORS);
+        errmode = GetErrorMode();
+        SetErrorMode(SEM_FAILCRITICALERRORS);
 
-        ::ZeroMemory(&saAttr, sizeof(saAttr));
+        ZeroMemory(&saAttr, sizeof(saAttr));
         saAttr.nLength              = sizeof(SECURITY_ATTRIBUTES);
         saAttr.bInheritHandle       = TRUE;
         saAttr.lpSecurityDescriptor = nullptr;
 
         // Create process
-        ::ZeroMemory(&si, sizeof(si));
+        ZeroMemory(&si, sizeof(si));
         si.cb = sizeof(si);
 
-        ::ZeroMemory(&pi, sizeof(pi));
+        ZeroMemory(&pi, sizeof(pi));
 
         {
-            if (!::CreateProcessA(nullptr,
-                                  (LPSTR) cmdline.c_str(),
-                                  nullptr,
-                                  nullptr,
-                                  TRUE,
-                                  0,
-                                  nullptr,
-                                  currentDirectory.c_str(),
-                                  &si,
-                                  &pi))
+            if (!CreateProcessA(nullptr,
+                                (LPSTR) cmdline.c_str(),
+                                nullptr,
+                                nullptr,
+                                TRUE,
+                                0,
+                                nullptr,
+                                currentDirectory.c_str(),
+                                &si,
+                                &pi))
             {
                 g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
                 return;
@@ -362,16 +361,16 @@ namespace OS
         WaitForSingleObject(pi.hProcess, INFINITE);
 
         // Close process and thread handles
-        ::CloseHandle(pi.hProcess);
-        ::CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
 
-        ::SetErrorMode(errmode);
+        SetErrorMode(errmode);
     }
 
     Utf8 getLastErrorAsString()
     {
         // Get the error message, if any.
-        DWORD errorMessageID = ::GetLastError();
+        DWORD errorMessageID = GetLastError();
         if (errorMessageID == 0)
             return std::string(); // No error message has been recorded
 
@@ -409,7 +408,7 @@ namespace OS
 
     void* getProcAddress(void* handle, const char* name)
     {
-        return ::GetProcAddress((HMODULE) handle, name);
+        return GetProcAddress((HMODULE) handle, name);
     }
 
     uint64_t getFileWriteTime(const char* fileName)
@@ -435,7 +434,7 @@ namespace OS
         WIN32_FIND_DATAA findfile;
         string           searchPath = folder;
         searchPath += "/*";
-        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -443,9 +442,9 @@ namespace OS
                 if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                     continue;
                 user(findfile.cFileName);
-            } while (::FindNextFileA(h, &findfile));
+            } while (FindNextFileA(h, &findfile));
 
-            ::FindClose(h);
+            FindClose(h);
         }
     }
 
@@ -455,7 +454,7 @@ namespace OS
         string           searchPath = folder;
         searchPath += "/";
         searchPath += match;
-        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -465,9 +464,9 @@ namespace OS
                 if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                     continue;
                 user(findfile.cFileName);
-            } while (::FindNextFileA(h, &findfile));
+            } while (FindNextFileA(h, &findfile));
 
-            ::FindClose(h);
+            FindClose(h);
         }
     }
 
@@ -476,7 +475,7 @@ namespace OS
         WIN32_FIND_DATAA findfile;
         string           searchPath = folder;
         searchPath += "/*";
-        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -493,9 +492,9 @@ namespace OS
                 bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
                 user(writeTime, findfile.cFileName, isFolder);
 
-            } while (::FindNextFileA(h, &findfile));
+            } while (FindNextFileA(h, &findfile));
 
-            ::FindClose(h);
+            FindClose(h);
         }
     }
 
@@ -506,7 +505,7 @@ namespace OS
         searchPath += "/*";
 
         auto   path = string(folder);
-        HANDLE h    = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        HANDLE h    = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -526,9 +525,9 @@ namespace OS
                     user(path.c_str());
                 }
 
-            } while (::FindNextFileA(h, &findfile));
+            } while (FindNextFileA(h, &findfile));
 
-            ::FindClose(h);
+            FindClose(h);
         }
     }
 
@@ -567,7 +566,7 @@ namespace OS
 
     void setThreadName(thread* thread, const char* threadName)
     {
-        DWORD threadId = ::GetThreadId(static_cast<HANDLE>(thread->native_handle()));
+        DWORD threadId = GetThreadId(static_cast<HANDLE>(thread->native_handle()));
         setThreadName(threadId, threadName);
     }
 
@@ -588,12 +587,12 @@ namespace OS
 
     void errorBox(const char* title, const char* expr)
     {
-        ::MessageBoxA(NULL, expr, title, MB_OK | MB_ICONERROR);
+        MessageBoxA(NULL, expr, title, MB_OK | MB_ICONERROR);
     }
 
     void exit(int code)
     {
-        ::ExitProcess(code);
+        ExitProcess(code);
     }
 
     void assertBox(const char* expr, const char* file, int line)
@@ -617,7 +616,7 @@ namespace OS
         strcat_s(msg, expr);
         strcat_s(msg, "\n");
 
-        auto result = ::MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
+        auto result = MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
         switch (result)
         {
         case IDCANCEL:
