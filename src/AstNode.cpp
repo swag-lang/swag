@@ -8,6 +8,177 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
+void AstNode::lock()
+{
+    mutex.lock();
+}
+
+void AstNode::unlock()
+{
+    mutex.unlock();
+}
+
+void AstNode::inheritOrFlag(uint64_t flag)
+{
+    for (auto child : childs)
+        flags |= child->flags & flag;
+}
+
+void AstNode::inheritOrFlag(AstNode* op, uint64_t flag)
+{
+    if (!op)
+        return;
+    flags |= op->flags & flag;
+}
+
+void AstNode::inheritAndFlag1(uint64_t flag)
+{
+    inheritAndFlag1(this, flag);
+}
+
+void AstNode::inheritAndFlag2(uint64_t flag1, uint64_t flag2)
+{
+    inheritAndFlag2(this, flag1, flag2);
+}
+
+void AstNode::inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3)
+{
+    inheritAndFlag3(this, flag1, flag2, flag3);
+}
+
+void AstNode::inheritAndFlag1(AstNode* who, uint64_t flag)
+{
+    for (auto child : who->childs)
+    {
+        if (!(child->flags & flag))
+            return;
+    }
+
+    flags |= flag;
+}
+
+void AstNode::inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2)
+{
+    flags |= flag1;
+    flags |= flag2;
+
+    for (auto child : who->childs)
+    {
+        if (!(child->flags & flag1))
+            flags &= ~flag1;
+        if (!(child->flags & flag2))
+            flags &= ~flag2;
+        if (!(flags & (flag1 | flag2)))
+            return;
+    }
+}
+
+void AstNode::inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3)
+{
+    flags |= flag1;
+    flags |= flag2;
+    flags |= flag3;
+
+    for (auto child : who->childs)
+    {
+        if (!(child->flags & flag1))
+            flags &= ~flag1;
+        if (!(child->flags & flag2))
+            flags &= ~flag2;
+        if (!(child->flags & flag3))
+            flags &= ~flag3;
+        if (!(flags & (flag1 | flag2 | flag3)))
+            return;
+    }
+}
+
+void AstNode::inheritTokenName(Token& tkn)
+{
+    SWAG_ASSERT(!tkn.text.empty());
+    token.text = move(tkn.text);
+}
+
+void AstNode::inheritTokenLocation(Token& tkn)
+{
+    token.startLocation = tkn.startLocation;
+    token.endLocation   = tkn.endLocation;
+}
+
+void AstNode::inheritOwners(AstNode* op)
+{
+    if (!op)
+        return;
+    ownerStructScope     = op->ownerStructScope;
+    ownerMainNode        = op->ownerMainNode;
+    ownerScope           = op->ownerScope;
+    ownerFct             = op->ownerFct;
+    ownerBreakable       = op->ownerBreakable;
+    ownerInline          = op->ownerInline;
+    ownerCompilerIfBlock = op->ownerCompilerIfBlock;
+}
+
+void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
+{
+    ownerStructScope     = job->currentStructScope;
+    ownerMainNode        = job->currentMainNode;
+    ownerScope           = job->currentScope;
+    ownerFct             = job->currentFct;
+    ownerBreakable       = job->currentBreakable;
+    ownerCompilerIfBlock = job->currentCompilerIfBlock;
+    ownerInline          = job->currentInline;
+    ownerTryCatchAssume  = job->currentTryCatchAssume;
+    flags |= job->currentFlags;
+}
+
+bool AstNode::hasComputedValue()
+{
+    return (flags & AST_VALUE_COMPUTED);
+}
+
+void AstNode::allocateComputedValue()
+{
+    if (!computedValue)
+        computedValue = g_Allocator.alloc<ComputedValue>();
+}
+
+void AstNode::setFlagsValueIsComputed()
+{
+    allocateComputedValue();
+    flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
+}
+
+void AstNode::inheritComputedValue(AstNode* from)
+{
+    if (!from)
+        return;
+    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
+    if (flags & AST_VALUE_COMPUTED)
+    {
+        flags |= AST_CONST_EXPR | AST_R_VALUE;
+        SWAG_ASSERT(from->computedValue);
+        computedValue = from->computedValue;
+    }
+}
+
+bool AstNode::isConstantTrue()
+{
+    return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
+}
+
+bool AstNode::isConstantFalse()
+{
+    return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
+}
+
+bool AstNode::forceTakeAddress()
+{
+    if ((flags & AST_TAKE_ADDRESS) && !(semFlags & AST_SEM_FORCE_NO_TAKE_ADDRESS))
+        return true;
+    if (semFlags & AST_SEM_FORCE_TAKE_ADDRESS)
+        return true;
+    return false;
+}
+
 void AstNode::swap2Childs()
 {
     SWAG_ASSERT(childs.size() == 2);
