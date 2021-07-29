@@ -408,6 +408,7 @@
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />
+    <ClCompile Include="..\src\ByteCodePrint_.cpp" />
     <ClCompile Include="..\src\Help.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="../src/ThreadManager.cpp" />

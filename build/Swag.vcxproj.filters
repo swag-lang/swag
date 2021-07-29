@@ -467,6 +467,9 @@
     <ClCompile Include="../src/ByteCodeGenJobVar_.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodePrint_.cpp">
+      <Filter>ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
