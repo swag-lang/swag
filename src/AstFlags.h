@@ -42,7 +42,7 @@ static const uint64_t AST_IN_ATOMIC_EXPR             = 0x00000080'00000000;
 static const uint64_t AST_HAS_SELECT_IF              = 0x00000100'00000000;
 static const uint64_t AST_AUTO_NAME                  = 0x00000200'00000000;
 static const uint64_t AST_SIDE_EFFECTS               = 0x00000400'00000000;
-static const uint64_t AST_IDENTIFIER_BACKTICK        = 0x00000800'00000000;
+static const uint64_t AST_CALL_FOR_STRUCT            = 0x00000800'00000000;
 static const uint64_t AST_FROM_UFCS                  = 0x00001000'00000000;
 static const uint64_t AST_TO_UFCS                    = 0x00002000'00000000;
 static const uint64_t AST_NO_INLINE                  = 0x00004000'00000000;
@@ -61,7 +61,6 @@ static const uint64_t AST_EMPTY_FCT                  = 0x04000000'00000000;
 static const uint64_t AST_CAN_MATCH_INCOMPLETE       = 0x08000000'00000000;
 static const uint64_t AST_GENERATED_GENERIC_PARAM    = 0x10000000'00000000;
 static const uint64_t AST_TUPLE_UNPACK               = 0x20000000'00000000;
-static const uint64_t AST_CALL_FOR_STRUCT            = 0x40000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
@@ -115,6 +114,7 @@ static const uint64_t AST_SEM_FORCE_UFCS             = 0x00400000;
 static const uint64_t AST_SEM_STRUCT_REGISTERED      = 0x00800000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
+static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_LOW        = 0x01;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_UP         = 0x02;
 static const uint8_t AST_SPEC_OP_SAFE                  = 0x01;

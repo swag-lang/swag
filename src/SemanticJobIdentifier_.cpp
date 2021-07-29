@@ -725,7 +725,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     Ast::addChildFront(idRef, idNode);
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
-                        idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
+                        idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
                 }
             }
             else
@@ -742,7 +742,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 while (newParent->parent != idRef)
                     newParent = newParent->parent;
 
-                idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
+                idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
             }
@@ -2442,7 +2442,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             uint32_t collectFlags = COLLECT_ALL;
 
             // Pass through the first inline if there's a back tick before the name
-            if (node->flags & AST_IDENTIFIER_BACKTICK)
+            if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
                 collectFlags = COLLECT_BACKTICK;
 
             startScope = node->ownerScope;

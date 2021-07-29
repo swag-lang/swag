@@ -161,9 +161,6 @@ namespace Ast
         if (node->flags & AST_GENERATED)
             return true;
 
-        if (node->flags & AST_IDENTIFIER_BACKTICK)
-            concat.addChar('`');
-
         switch (node->kind)
         {
         case AstNodeKind::FuncDeclType:
@@ -861,6 +858,8 @@ namespace Ast
         }
 
         case AstNodeKind::Identifier:
+            if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
+                concat.addChar('`');
         case AstNodeKind::FuncCall:
         {
             auto identifier = static_cast<AstIdentifier*>(node);

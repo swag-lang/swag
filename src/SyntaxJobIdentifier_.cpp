@@ -47,7 +47,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         identifier->semanticFct = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     if (backTick)
-        identifier->flags |= AST_IDENTIFIER_BACKTICK;
+        identifier->specFlags |= AST_SPEC_IDENTIFIER_BACKTICK;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(checkIsValidUserName(identifier));
