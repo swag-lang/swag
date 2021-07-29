@@ -41,11 +41,11 @@ struct DataSegment
 {
     void     setup(SegmentKind kind, Module* module);
     void     initFrom(DataSegment* other);
-    uint32_t reserve(uint32_t size, uint32_t alignOf = 1);
     void     align(uint32_t alignOf);
     void     alignNoLock(uint32_t alignOf);
-    uint32_t reserveNoLock(uint32_t size, uint32_t alignOf);
-    uint32_t reserveNoLock(uint32_t size);
+    uint32_t reserve(uint32_t size, uint8_t** resultPtr = nullptr, uint32_t alignOf = 1);
+    uint32_t reserveNoLock(uint32_t size, uint32_t alignOf, uint8_t** resultPtr = nullptr);
+    uint32_t reserveNoLock(uint32_t size, uint8_t** resultPtr = nullptr);
     uint32_t offset(uint8_t* location);
     uint8_t* address(DataSegment* lockedSegment, uint32_t location);
     uint8_t* address(uint32_t location);
@@ -56,11 +56,17 @@ struct DataSegment
     VectorNative<DataSegmentHeader> buckets;
     shared_mutex                    mutex;
 
-    uint32_t                addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue);
-    map<uint8_t, uint32_t>  storedValues8;
-    map<uint16_t, uint32_t> storedValues16;
-    map<uint32_t, uint32_t> storedValues32;
-    map<uint64_t, uint32_t> storedValues64;
+    struct CacheValue
+    {
+        uint32_t offset;
+        uint8_t* addr;
+    };
+
+    uint32_t                  addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr = nullptr);
+    map<uint8_t, CacheValue>  storedValues8;
+    map<uint16_t, CacheValue> storedValues16;
+    map<uint32_t, CacheValue> storedValues32;
+    map<uint64_t, CacheValue> storedValues64;
 
     enum class RelocType
     {
@@ -69,8 +75,8 @@ struct DataSegment
         ByteCode
     };
 
-    uint32_t addString(const Utf8& str);
-    uint32_t addStringNoLock(const Utf8& str);
+    uint32_t addString(const Utf8& str, uint8_t** resultPtr = nullptr);
+    uint32_t addStringNoLock(const Utf8& str, uint8_t** resultPtr = nullptr);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
     void     addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
     void     addPatchPtr(int64_t* addr, int64_t value);
@@ -80,7 +86,7 @@ struct DataSegment
 
     shared_mutex                         mutexPatchMethod;
     shared_mutex                         mutexPtr;
-    map<Utf8, uint32_t>                  mapString;
+    map<Utf8, CacheValue>                mapString;
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
     vector<SegmentPatchPtrRef>           patchPtr;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;

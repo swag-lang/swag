@@ -38,12 +38,6 @@ void DataSegment::setup(SegmentKind _kind, Module* _module)
     module = _module;
 }
 
-uint32_t DataSegment::reserve(uint32_t size, uint32_t alignOf)
-{
-    scoped_lock lock(mutex);
-    return reserveNoLock(size, alignOf);
-}
-
 void DataSegment::initFrom(DataSegment* other)
 {
     if (other->totalCount)
@@ -92,13 +86,19 @@ void DataSegment::alignNoLock(uint32_t alignOf)
     }
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
+uint32_t DataSegment::reserve(uint32_t size, uint8_t** resultPtr, uint32_t alignOf)
 {
-    alignNoLock(alignOf);
-    return reserveNoLock(size);
+    scoped_lock lock(mutex);
+    return reserveNoLock(size, alignOf, resultPtr);
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size)
+uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf, uint8_t** resultPtr)
+{
+    alignNoLock(alignOf);
+    return reserveNoLock(size, resultPtr);
+}
+
+uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
 {
     SWAG_RACE_CONDITION_WRITE(raceC);
 
@@ -109,6 +109,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
 
     if (last && last->count + size <= last->size)
     {
+        if (resultPtr)
+            *resultPtr = last->buffer + last->count;
         last->count += size;
     }
     else
@@ -122,6 +124,9 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         memset(bucket.buffer, 0, bucket.size);
         bucket.count = size;
         buckets.push_back(bucket);
+        last = &buckets.back();
+        if (resultPtr)
+            *resultPtr = last->buffer;
     }
 
     // Check that we do not overflow maximum size
@@ -193,7 +198,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue)
+uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
 {
     SWAG_RACE_CONDITION_WRITE(raceC);
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
@@ -201,11 +206,13 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
-        auto stringOffset     = addStringNoLock(computedValue.text);
-        auto storageOffset    = reserveNoLock(2 * sizeof(uint64_t));
-        auto addr             = addressNoLock(storageOffset);
-        ((uint64_t*) addr)[0] = (uint64_t) computedValue.text.c_str();
-        ((uint64_t*) addr)[1] = (uint32_t) computedValue.text.length();
+        auto     stringOffset = addStringNoLock(computedValue.text);
+        uint8_t* addr;
+        auto     storageOffset = reserveNoLock(2 * sizeof(uint64_t), &addr);
+        ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.c_str();
+        ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.length();
+        if (resultPtr)
+            *resultPtr = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
@@ -216,7 +223,11 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     {
         auto it = storedValues8.find(computedValue.reg.u8);
         if (it != storedValues8.end())
-            return it->second;
+        {
+            if (resultPtr)
+                *resultPtr = it->second.addr;
+            return it->second.offset;
+        }
         break;
     }
 
@@ -224,7 +235,11 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     {
         auto it = storedValues16.find(computedValue.reg.u16);
         if (it != storedValues16.end())
-            return it->second;
+        {
+            if (resultPtr)
+                *resultPtr = it->second.addr;
+            return it->second.offset;
+        }
         break;
     }
 
@@ -232,66 +247,83 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     {
         auto it = storedValues32.find(computedValue.reg.u32);
         if (it != storedValues32.end())
-            return it->second;
+        {
+            if (resultPtr)
+                *resultPtr = it->second.addr;
+            return it->second.offset;
+        }
         break;
     }
     case 8:
     {
         auto it = storedValues64.find(computedValue.reg.u64);
         if (it != storedValues64.end())
-            return it->second;
+        {
+            if (resultPtr)
+                *resultPtr = it->second.addr;
+            return it->second.offset;
+        }
         break;
     }
     }
 
-    auto storageOffset = reserveNoLock(typeInfo->sizeOf);
-    auto addr          = addressNoLock(storageOffset);
+    uint8_t* addr;
+    auto     storageOffset = reserveNoLock(typeInfo->sizeOf, &addr);
+    if (resultPtr)
+        *resultPtr = addr;
+
     switch (typeInfo->sizeOf)
     {
     case 1:
         *(uint8_t*) addr                    = computedValue.reg.u8;
-        storedValues8[computedValue.reg.u8] = storageOffset;
+        storedValues8[computedValue.reg.u8] = {storageOffset, addr};
         break;
     case 2:
         *(uint16_t*) addr                     = computedValue.reg.u16;
-        storedValues16[computedValue.reg.u16] = storageOffset;
+        storedValues16[computedValue.reg.u16] = {storageOffset, addr};
         break;
     case 4:
         *(uint32_t*) addr                     = computedValue.reg.u32;
-        storedValues32[computedValue.reg.u32] = storageOffset;
+        storedValues32[computedValue.reg.u32] = {storageOffset, addr};
         break;
     case 8:
         *(uint64_t*) addr                     = computedValue.reg.u64;
-        storedValues64[computedValue.reg.u64] = storageOffset;
+        storedValues64[computedValue.reg.u64] = {storageOffset, addr};
         break;
     }
 
     return storageOffset;
 }
 
-uint32_t DataSegment::addStringNoLock(const Utf8& str)
+uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
 {
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
     auto it = mapString.find(str);
     if (it != mapString.end())
-        return it->second;
+    {
+        if (resultPtr)
+            *resultPtr = it->second.addr;
+        return it->second.offset;
+    }
 
-    auto strLen = (uint32_t) str.length() + 1;
-    auto offset = reserveNoLock(strLen);
-    auto addr   = addressNoLock(offset);
+    auto     strLen = (uint32_t) str.length() + 1;
+    uint8_t* addr;
+    auto     offset = reserveNoLock(strLen, &addr);
+    if (resultPtr)
+        *resultPtr = addr;
     memcpy(addr, str.c_str(), strLen);
     SWAG_ASSERT(addr[strLen - 1] == 0);
-    mapString[str] = offset;
+    mapString[str] = {offset, addr};
 
     return offset;
 }
 
-uint32_t DataSegment::addString(const Utf8& str)
+uint32_t DataSegment::addString(const Utf8& str, uint8_t** resultPtr)
 {
     scoped_lock lk(mutex);
-    return addStringNoLock(str);
+    return addStringNoLock(str, resultPtr);
 }
 
 void DataSegment::addPatchPtr(int64_t* addr, int64_t value)

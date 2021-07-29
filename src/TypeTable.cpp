@@ -55,9 +55,8 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
         return true;
     }
 
-    auto offset = storageSegment->addStringNoLock(str);
+    auto offset = storageSegment->addStringNoLock(str, (uint8_t**) &result->buffer);
     storageSegment->addInitPtr(offsetInBuffer, offset);
-    result->buffer = storageSegment->addressNoLock(offset);
     SWAG_ASSERT(result->buffer);
     result->count = str.length();
     return true;
@@ -65,8 +64,8 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
-    storageArray = storageSegment->reserveNoLock(sizeOf);
-    auto addr    = storageSegment->addressNoLock(storageArray);
+    uint8_t* addr;
+    storageArray = storageSegment->reserveNoLock(sizeOf, &addr);
 
     // Offset for bytecode run
     *result = addr;
@@ -78,8 +77,8 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* c
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
-    storageArray = storageSegment->reserveNoLock(sizeOf);
-    auto addr    = storageSegment->addressNoLock(storageArray);
+    uint8_t* addr;
+    storageArray = storageSegment->reserveNoLock(sizeOf, &addr);
 
     // Offset for bytecode run
     *result = addr;
@@ -94,8 +93,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSe
     auto sourceFile = context->sourceFile;
     if (typeInfo->kind == TypeInfoKind::Native)
     {
-        auto storageOffsetValue = storageSegment->addComputedValueNoLock(sourceFile, typeInfo, computedValue);
-        ptrAny->value           = storageSegment->addressNoLock(storageOffsetValue);
+        auto storageOffsetValue = storageSegment->addComputedValueNoLock(sourceFile, typeInfo, computedValue, (uint8_t**) &ptrAny->value);
         storageSegment->addInitPtr(storageOffset, storageOffsetValue);
     }
     else
@@ -136,10 +134,10 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
             auto count         = realType->value.reg.u64;
             auto offsetContent = realType->value.storageOffset;
 
-            auto offsetSlice = storageSegment->reserveNoLock(2 * sizeof(uint64_t));
-            auto ptrSlice    = (uint64_t*) storageSegment->addressNoLock(offsetSlice);
-            ptrSlice[0]      = (uint64_t) realType->value.storageSegment->addressNoLock(offsetContent);
-            ptrSlice[1]      = count;
+            uint64_t* ptrSlice;
+            auto      offsetSlice = storageSegment->reserveNoLock(2 * sizeof(uint64_t), (uint8_t**) &ptrSlice);
+            ptrSlice[0]           = (uint64_t) realType->value.storageSegment->addressNoLock(offsetContent);
+            ptrSlice[1]           = count;
 
             concreteType->value = ptrSlice;
             storageSegment->addInitPtr(offsetSlice, offsetContent, SegmentKind::Constant);
@@ -147,8 +145,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
         }
         else
         {
-            auto storageOffsetValue = storageSegment->addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
-            concreteType->value     = storageSegment->addressNoLock(storageOffsetValue);
+            auto storageOffsetValue = storageSegment->addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value, (uint8_t**) &concreteType->value);
             storageSegment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
         }
     }

@@ -7,7 +7,7 @@
 
 bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    storageOffset = storageSegment->reserve(typeInfo->sizeOf, TypeManager::alignOf(typeInfo));
+    storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr, TypeManager::alignOf(typeInfo));
     return storeToSegment(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
@@ -272,8 +272,8 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
                 storageOffset = value->storageOffset;
             else
             {
-                storageOffset = storageSegment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
-                auto addrDst  = storageSegment->address(storageOffset);
+                uint8_t* addrDst;
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, SemanticJob::alignOf(node));
                 auto addrSrc  = value->storageSegment->address(value->storageOffset);
                 memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             }
@@ -294,8 +294,8 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
 
             // Copy from a constant
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
-            storageOffset = storageSegment->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
-            auto addrDst  = storageSegment->address(storageOffset);
+            uint8_t* addrDst;
+            storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, SemanticJob::alignOf(node));
             SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
             SWAG_ASSERT(overload->computedValue.storageSegment);
             SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);

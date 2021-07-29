@@ -260,8 +260,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Construct itable in the constant segment
     auto     constSegment = getConstantSegFromContext(node);
-    uint32_t itableOffset = constSegment->reserve((numFctInterface + 1) * sizeof(void*), sizeof(void*));
-    void**   ptrITable    = (void**) constSegment->address(itableOffset);
+    void**   ptrITable;
+    uint32_t itableOffset = constSegment->reserve((numFctInterface + 1) * sizeof(void*), (uint8_t**) &ptrITable, sizeof(void*));
     auto     offset       = itableOffset;
 
     // The first value will be the concrete type to the corresponding struct, filled in resolveImplForType

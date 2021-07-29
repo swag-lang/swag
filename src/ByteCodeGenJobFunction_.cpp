@@ -849,12 +849,12 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     auto seg        = SemanticJob::getConstantSegFromContext(context->node);
     *storageSegment = seg;
 
-    auto sourceFile = node->sourceFile;
-    auto str        = Utf8(Utf8::normalizePath(sourceFile->path));
-    auto offset     = seg->reserve(sizeof(SwagCompilerSourceLocation), sizeof(void*));
-    auto loc        = (SwagCompilerSourceLocation*) seg->address(offset);
-    auto offsetName = seg->addString(str);
-    auto addrName   = seg->address(offsetName);
+    auto                        sourceFile = node->sourceFile;
+    auto                        str        = Utf8(Utf8::normalizePath(sourceFile->path));
+    SwagCompilerSourceLocation* loc;
+    auto                        offset = seg->reserve(sizeof(SwagCompilerSourceLocation), (uint8_t**) &loc, sizeof(void*));
+    uint8_t*                    addrName;
+    auto                        offsetName = seg->addString(str, &addrName);
     seg->addInitPtr(offset, offsetName);
     loc->fileName.buffer = addrName;
     loc->fileName.count  = str.length();
