@@ -290,9 +290,6 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
-      <Filter>ByteCode\Optimize</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>

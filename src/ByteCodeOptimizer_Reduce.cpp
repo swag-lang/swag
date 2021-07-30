@@ -5,6 +5,38 @@
 #include "Log.h"
 #include "AstNode.h"
 
+void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip->op == ByteCodeOp::Ret || ip[1].op == ByteCodeOp::Ret || ip[2].op == ByteCodeOp::Ret)
+        return;
+    if (ip->op == ByteCodeOp::Nop || ip[1].op == ByteCodeOp::Nop || ip[2].op == ByteCodeOp::Nop)
+        return;
+    if (ByteCode::isJump(ip) || ByteCode::isJump(ip + 1) || ByteCode::isJump(ip + 2))
+        return;
+    if (ip->flags & BCI_START_STMT || ip[1].flags & BCI_START_STMT || ip[2].flags & BCI_START_STMT)
+        return;
+
+    if (ip->op == ByteCodeOp::MakeStackPointer &&
+        ip[1].op != ByteCodeOp::IncPointer64 &&
+        ip[1].op != ip->op &&
+        !hasRefToReg(ip + 1, ip->a.u32))
+    {
+        swap(ip[0], ip[1]);
+        context->passHasDoneSomething = true;
+    }
+
+    if (ip->op == ByteCodeOp::IncPointer64 &&
+        ip[1].op != ip->op &&
+        ip[1].op != ByteCodeOp::MakeStackPointer &&
+        ip->flags & BCI_IMM_B &&
+        !hasRefToReg(ip + 1, ip->a.u32) &&
+        !hasRefToReg(ip + 1, ip->c.u32))
+    {
+        swap(ip[0], ip[1]);
+        context->passHasDoneSomething = true;
+    }
+}
+
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     // Clear stack followed by a setstack
@@ -2259,9 +2291,6 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
                 ip[1].a.u32 = s;
                 break;
             }
-            default:
-                //printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
-                break;
             }
         }
 
@@ -2271,6 +2300,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceNoOp(context, ip);
         reduceCmpJump(context, ip);
         reducex2(context, ip);
+        reduceSwap(context, ip);
     }
 
     return true;
