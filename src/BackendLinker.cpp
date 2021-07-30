@@ -3,6 +3,7 @@
 #include "Backend.h"
 #include "OS.h"
 #include "Module.h"
+#include "ThreadManager.h"
 
 namespace BackendLinker
 {
@@ -152,61 +153,8 @@ namespace BackendLinker
         }
     }
 
-    bool link_process(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
-    {
-        vector<Utf8> linkArguments;
-        getArguments(buildParameters, module, linkArguments, true);
-
-        // Add all object files
-        auto targetPath = Backend::getCacheFolder(buildParameters);
-        for (auto& file : objectFiles)
-        {
-            auto path              = targetPath + "/" + file.c_str();
-            auto normalizedLibPath = Utf8::normalizePath(fs::path(path.c_str()));
-            linkArguments.push_back(normalizedLibPath);
-        }
-
-        string linkArgumentsFlat;
-        for (auto& arg : linkArguments)
-        {
-            linkArgumentsFlat += arg;
-            linkArgumentsFlat += " ";
-        }
-
-        auto     linkerPath = g_CommandLine.exePath.parent_path().string();
-        bool     verbose    = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
-        uint32_t numErrors  = 0;
-        auto     cmdLine    = "\"" + linkerPath + "/lld-link.exe" + "\" " + linkArgumentsFlat;
-
-        if (g_CommandLine.verboseLink)
-            g_Log.verbose(cmdLine);
-
-        auto result = OS::doProcess(module, cmdLine, linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
-
-#ifdef SWAG_DEV_MODE
-        if (!result)
-            OS::errorBox("[Developer Mode]", "Error raised !");
-#endif
-
-        if (!result)
-        {
-            g_Workspace.numErrors += numErrors;
-            module->numErrors += numErrors;
-        }
-
-        return result;
-    }
-
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
-        // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
-        // So to avoid waiting for a link to be finished before launching another one,
-        // if a current static link is running, then we launch a process 'lld-link.exe' to avoid the wait.
-        // It's worth paying the price of launching a process instead of blocking.
-        static mutex oo;
-        if (!oo.try_lock())
-            return link_process(buildParameters, module, objectFiles);
-
         vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, false);
 
@@ -243,6 +191,11 @@ namespace BackendLinker
         MyOStream diag_stderr;
         diag_stdout.module = module;
         diag_stderr.module = module;
+
+        // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
+        static mutex oo;
+        while (!oo.try_lock())
+            g_ThreadMgr.tryExecuteJob();
 
         auto objFileType = Backend::getObjType(g_CommandLine.os);
         bool result      = true;

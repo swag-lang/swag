@@ -54,7 +54,7 @@ bool OutputFileWin32::save(void* buffer, uint32_t count)
         DWORD written = 0;
         while (!GetOverlappedResult(winHandle, over, &written, false))
         {
-            g_ThreadMgr.tryExecuteJob();
+            //g_ThreadMgr.tryExecuteJob();
         }
     }
 
