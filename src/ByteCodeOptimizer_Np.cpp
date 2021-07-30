@@ -16,7 +16,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_IMM_A) &&
             ip[0].a.u32 == ip[1].a.u32)
         {
-            ip[1].op                      = ByteCodeOp::Jump;
+            SET_OP(ip + 1, ByteCodeOp::Jump);
             context->passHasDoneSomething = true;
             return;
         }
@@ -27,7 +27,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             !(ip[2].flags & BCI_IMM_A) &&
             ip[0].a.u32 == ip[2].a.u32)
         {
-            ip[2].op                      = ByteCodeOp::Jump;
+            SET_OP(ip + 2, ByteCodeOp::Jump);
             context->passHasDoneSomething = true;
             return;
         }
@@ -40,7 +40,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             (ip[0].flags & BCI_IMM_B) &&
             ip[0].b.u32)
         {
-            ip[1].op                      = ByteCodeOp::Jump;
+            SET_OP(ip + 1, ByteCodeOp::Jump);
             context->passHasDoneSomething = true;
             return;
         }
@@ -102,7 +102,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
                 !(ip1[0].flags & BCI_IMM_A) &&
                 ip1[0].a.u32 == paramNPReg)
             {
-                ip1[0].op                     = ByteCodeOp::Jump;
+                SET_OP(ip1, ByteCodeOp::Jump);
                 context->passHasDoneSomething = true;
             }
 
@@ -114,7 +114,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
                 ip1[0].a.u32 == ip1[1].a.u32 &&
                 ip1[0].c.u32 == paramNPIdx)
             {
-                ip1[1].op                     = ByteCodeOp::Jump;
+                SET_OP(ip1 + 1, ByteCodeOp::Jump);
                 context->passHasDoneSomething = true;
             }
         });

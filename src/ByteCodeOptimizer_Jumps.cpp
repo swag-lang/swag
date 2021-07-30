@@ -43,7 +43,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 auto destIp1 = destIp + destIp->b.s32 + 1;
                 if (destIp1 == ip + 1)
                 {
-                    ip->op    = ByteCodeOp::JumpIfNotZero64;
+                    SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
                     ip->a.u32 = destIp->a.u32;
                     ip->b.s32 += 1;
                     context->passHasDoneSomething = true;
@@ -140,7 +140,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             ip[1].op == ByteCodeOp::Jump &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            ip->op    = ByteCodeOp::JumpIfTrue;
+            SET_OP(ip, ByteCodeOp::JumpIfTrue);
             ip->b.s32 = ip[1].b.s32 + 1;
             setNop(context, ip + 1);
         }
@@ -150,7 +150,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             ip[1].op == ByteCodeOp::Jump &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            ip->op    = ByteCodeOp::JumpIfFalse;
+            SET_OP(ip, ByteCodeOp::JumpIfFalse);
             ip->b.s32 = ip[1].b.s32 + 1;
             setNop(context, ip + 1);
         }
@@ -160,9 +160,13 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 #define OPT_JMPAC(__op, __val)            \
     context->passHasDoneSomething = true; \
     if (ip->a.__val __op ip->c.__val)     \
-        ip->op = ByteCodeOp::Jump;        \
+    {                                     \
+        SET_OP(ip, ByteCodeOp::Jump);     \
+    }                                     \
     else                                  \
-        setNop(context, ip);
+    {                                     \
+        setNop(context, ip);              \
+    }
 
             switch (ip->op)
             {

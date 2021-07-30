@@ -98,3 +98,19 @@ struct ByteCodeOptimizer
 
     static bool optimize(Job* job, Module* module, bool& done);
 };
+
+#ifdef SWAG_DEV_MODE
+#define SET_OP(__ip, __op)             \
+    do                                 \
+    {                                  \
+        (__ip)->op         = __op;     \
+        (__ip)->sourceFile = __FILE__; \
+        (__ip)->sourceLine = __LINE__; \
+    } while (0);
+#else
+#define SET_OP(__ip, __op) \
+    do                     \
+    {                      \
+        (__ip)->op = __op; \
+    } while (0);
+#endif

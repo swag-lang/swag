@@ -26,7 +26,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     else
     {
         SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRC);
-        ipOrg->op = ByteCodeOp::CopyRRtoRC;
+        SET_OP(ipOrg, ByteCodeOp::CopyRRtoRC);
     }
 
     // Is there a corresponding drop in the scope ?
