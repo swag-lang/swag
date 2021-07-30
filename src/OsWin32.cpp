@@ -1,16 +1,10 @@
 #include "pch.h"
 #ifdef _WIN32
-#include <windows.h>
-#include "Os.h"
-#include "Log.h"
-#include "Utf8.h"
-#include "BackendParameters.h"
 #include "Workspace.h"
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "OutputFileWin32.h"
-#include "Allocator.h"
 
 namespace OS
 {
