@@ -284,13 +284,10 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp">
-      <Filter>ByteCode\Optimize</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Np.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_NullPointer.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Symbol.cpp">
