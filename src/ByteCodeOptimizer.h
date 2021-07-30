@@ -10,51 +10,33 @@ struct Job;
 
 struct ByteCodeOptimizer
 {
-    inline static bool hasRefToRegA(ByteCodeInstruction* inst, uint32_t reg)
-    {
-        return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_A | OPFLAG_WRITE_A);
-    }
-
-    inline static bool hasRefToRegB(ByteCodeInstruction* inst, uint32_t reg)
-    {
-        return inst->b.u32 == reg && !(inst->flags & BCI_IMM_B) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_B | OPFLAG_WRITE_B);
-    }
-
-    inline static bool hasRefToRegC(ByteCodeInstruction* inst, uint32_t reg)
-    {
-        return inst->c.u32 == reg && !(inst->flags & BCI_IMM_C) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_C | OPFLAG_WRITE_C);
-    }
-
-    inline static bool hasRefToRegD(ByteCodeInstruction* inst, uint32_t reg)
-    {
-        return inst->d.u32 == reg && !(inst->flags & BCI_IMM_D) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D);
-    }
-
-    inline static bool hasRefToReg(ByteCodeInstruction* inst, uint32_t reg)
-    {
-        return hasRefToRegA(inst, reg) || hasRefToRegB(inst, reg) || hasRefToRegC(inst, reg) || hasRefToRegD(inst, reg);
-    }
+    // clang-format off
+    inline static bool hasRefToRegA(ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_A | OPFLAG_WRITE_A); }
+    inline static bool hasRefToRegB(ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !(inst->flags & BCI_IMM_B) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_B | OPFLAG_WRITE_B); }
+    inline static bool hasRefToRegC(ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !(inst->flags & BCI_IMM_C) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_C | OPFLAG_WRITE_C); }
+    inline static bool hasRefToRegD(ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !(inst->flags & BCI_IMM_D) && g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D); }
+    inline static bool hasRefToReg(ByteCodeInstruction* inst, uint32_t reg)  { return hasRefToRegA(inst, reg) || hasRefToRegB(inst, reg) || hasRefToRegC(inst, reg) || hasRefToRegD(inst, reg); }
+    // clang-format on
 
     inline static bool isJumpBlock(ByteCodeInstruction* inst)
     {
         if (!ByteCode::isJump(inst))
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
+        if (inst[1].op != ByteCodeOp::InternalPanic || inst->b.s32 != 1)
+            return true;
+        switch (inst->op)
+        {
+        case ByteCodeOp::JumpIfNotZero8:
+        case ByteCodeOp::JumpIfNotZero16:
+        case ByteCodeOp::JumpIfNotZero32:
+        case ByteCodeOp::JumpIfNotZero64:
+        case ByteCodeOp::JumpIfZero8:
+        case ByteCodeOp::JumpIfZero16:
+        case ByteCodeOp::JumpIfZero32:
+        case ByteCodeOp::JumpIfZero64:
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
-        if (inst->op == ByteCodeOp::JumpIfZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
-            return false;
+        }
+
         return true;
     }
 
