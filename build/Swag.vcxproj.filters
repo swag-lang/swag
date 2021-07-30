@@ -461,6 +461,12 @@
     <ClCompile Include="..\src\OutputFileWin32.cpp">
       <Filter>Main\Os</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
+      <Filter>ByteCode\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp">
+      <Filter>ByteCode\Run</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

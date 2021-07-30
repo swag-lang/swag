@@ -85,8 +85,8 @@
 #define Msg0086 "variable '%s' has only been used to find function '%s'; use scope '%s' instead"
 #define Msg0087 "only calls to 'Swag.Mixin' functions can be done at global scope ('%s' is %s)"
 #define Msg0088 "function '%s' is not declared with the 'Swag.Mixin' attribute, and this is mandatory for a function call at global scope"
-#define Msg0089
-#define Msg0090
+#define Msg0089 "'%s' cannot be evaluated at compile time"
+#define Msg0090 "cannot evaluate function parameter at compile time (type is '%s')"
 #define Msg0091 "cannot reference 'Swag.Compiler' %s '%s' from runtime %s"
 #define Msg0092 "unused return value of lambda '%s'"
 #define Msg0093 "identifier '%s' cannot be found in tuple"
@@ -98,7 +98,7 @@
 #define Msg0099 "invalid aliased identifiers because function '%s' is not a macro or a mixin"
 #define Msg0100 "cannot reference 'opInit' special function (use '@init' instead)"
 #define Msg0101 "cannot reference 'opDrop' special function (use '@drop' instead)"
-#define Msg0102
+#define Msg0102 "evaluation of a function parameter of type '%s' is not supported at compile time"
 #define Msg0103 "cannot reference 'opPostCopy' special function (use '@postcopy' instead)"
 #define Msg0104 "cannot reference 'opPostMove' special function (use '@postmove' instead)"
 #define Msg0105 "cannot call empty function '%s'"

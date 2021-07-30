@@ -356,6 +356,8 @@
     <ClCompile Include="../src/ModuleSemanticJob.cpp" />
     <ClCompile Include="../src/ModuleRunJob.cpp" />
     <ClCompile Include="../src/OsWin32.cpp" />
+    <ClCompile Include="..\src\ByteCodeRun_Math.cpp" />
+    <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />

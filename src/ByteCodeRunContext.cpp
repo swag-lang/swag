@@ -56,10 +56,6 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
             if (g_CommandLine.stats)
                 g_Stats.memBcStack += g_CommandLine.stackSizeBC;
         }
-
-#ifdef SWAG_DEV_MODE
-        memset(stack, 0xFE, g_CommandLine.stackSizeBC);
-#endif
     }
 
     sourceFile = sf;
