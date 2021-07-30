@@ -38,6 +38,10 @@ struct ByteCodeInstruction
     SourceLocation* location;
     ByteCodeOp      op;
     uint16_t        flags;
+#ifdef SWAG_DEV_MODE
+    const char* sourceFile;
+    int         sourceLine;
+#endif
 };
 
 struct ByteCode

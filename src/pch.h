@@ -27,6 +27,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include <comdef.h>
+#include <source_location>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

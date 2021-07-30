@@ -68,11 +68,6 @@ struct Log
         cout << message;
     }
 
-    void print(const wchar_t* message)
-    {
-        cout << message;
-    }
-
     void print(const Utf8& message)
     {
         if (countLength)

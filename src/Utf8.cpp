@@ -774,3 +774,15 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 
     return cost; // (s1len + s2len - cost) / (float)(s1len + s2len);
 }
+
+Utf8 Utf8::truncateDisplay(const char* str, int maxLen)
+{
+    Utf8 result;
+    int  cpt = 0;
+    auto pz  = str;
+    while (pz && *pz && cpt++ < maxLen)
+        result += *pz++;
+    if (*pz)
+        result += "...";
+    return result;
+}

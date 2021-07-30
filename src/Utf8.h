@@ -84,4 +84,5 @@ struct Utf8
     static Utf8        toStringF64(double v);
     static Utf8        toNiceSize(size_t size);
     static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
+    static Utf8        truncateDisplay(const char* str, int maxLen);
 };

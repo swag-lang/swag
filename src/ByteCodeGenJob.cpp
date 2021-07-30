@@ -240,7 +240,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
+ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const std::source_location location)
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
@@ -274,6 +274,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     if (context->tryCatchScope)
         ins.flags |= BCI_TRYCATCH;
     ins.node = context->forceNode ? context->forceNode : node;
+#ifdef SWAG_DEV_MODE
+    ins.sourceFile = location.file_name();
+    ins.sourceLine = location.line();
+#endif
 
     if (context->noLocation)
         ins.location = nullptr;

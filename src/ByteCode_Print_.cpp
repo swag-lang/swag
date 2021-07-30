@@ -213,7 +213,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     static const int ALIGN_FLAGS1 = 65;
     static const int ALIGN_FLAGS2 = 70;
     static const int ALIGN_PRETTY = 80;
-
+    static const int ALIGN_SOURCE = 125;
+    
     static const wchar_t* bcNum = L"%08d";
     int                   i     = (int) (ip - out);
 
@@ -273,21 +274,25 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.setColor(LogColor::Gray);
     g_Log.print(" ");
 
+    // Jump offset
     if (ByteCode::isJump(ip))
+    {
         wprintf(bcNum, ip->b.s32 + i + 1);
+        g_Log.length += 8;
+    }
 
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
-            g_Log.print((const char*) ip->d.pointer);
+            g_Log.print(Utf8::truncateDisplay((const char*) ip->d.pointer, 30));
         break;
 
     case ByteCodeOp::MakeLambda:
     {
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
-        g_Log.print(funcNode->sourceFile->name);
+        g_Log.print(Utf8::truncateDisplay(funcNode->sourceFile->name, 30));
         g_Log.print("/");
         g_Log.print(funcNode->token.text);
         break;
@@ -296,7 +301,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     case ByteCodeOp::ForeignCall:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        g_Log.print(funcNode->token.text);
+        g_Log.print(Utf8::truncateDisplay(funcNode->token.text, 30));
         break;
     }
 
@@ -310,6 +315,18 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         break;
     }
     }
+
+#ifdef SWAG_DEV_MODE
+    g_Log.setColor(LogColor::Magenta);
+    while (g_Log.length < ALIGN_SOURCE)
+        g_Log.print(" ");
+    if (ip->sourceFile)
+    {
+        Utf8 sf = Utf8::normalizePath(ip->sourceFile);
+        auto pz = strrchr(sf.buffer, '/');
+        g_Log.print(Utf8::format("%s:%d", pz ? pz + 1 : sf.c_str(), ip->sourceLine));
+    }
+#endif
 
     g_Log.setCountLength(false);
     g_Log.eol();

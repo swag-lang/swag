@@ -1,4 +1,4 @@
-//#[Swag.PrintBc]
+#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
     var x: [2] s32
