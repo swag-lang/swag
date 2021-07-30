@@ -285,64 +285,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     if (ByteCode::isJump(&ins))
         bc->numJumps++;
 
-    switch (op)
-    {
-    case ByteCodeOp::IntrinsicS8x1:
-    case ByteCodeOp::IntrinsicS16x1:
-    case ByteCodeOp::IntrinsicS32x1:
-    case ByteCodeOp::IntrinsicS64x1:
-    case ByteCodeOp::IntrinsicF32x1:
-    case ByteCodeOp::IntrinsicF64x1:
-    case ByteCodeOp::IntrinsicCStrLen:
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
-        break;
-
-    case ByteCodeOp::IntrinsicS8x2:
-    case ByteCodeOp::IntrinsicS16x2:
-    case ByteCodeOp::IntrinsicS32x2:
-    case ByteCodeOp::IntrinsicS64x2:
-    case ByteCodeOp::IntrinsicU8x2:
-    case ByteCodeOp::IntrinsicU16x2:
-    case ByteCodeOp::IntrinsicU32x2:
-    case ByteCodeOp::IntrinsicU64x2:
-    case ByteCodeOp::IntrinsicF32x2:
-    case ByteCodeOp::IntrinsicF64x2:
-    case ByteCodeOp::IntrinsicInterfaceOf:
-    case ByteCodeOp::IntrinsicErrorMsg:
-    case ByteCodeOp::IntrinsicPanic:
-    case ByteCodeOp::IntrinsicAtomicAddS8:
-    case ByteCodeOp::IntrinsicAtomicAddS16:
-    case ByteCodeOp::IntrinsicAtomicAddS32:
-    case ByteCodeOp::IntrinsicAtomicAddS64:
-    case ByteCodeOp::IntrinsicAtomicAndS8:
-    case ByteCodeOp::IntrinsicAtomicAndS16:
-    case ByteCodeOp::IntrinsicAtomicAndS32:
-    case ByteCodeOp::IntrinsicAtomicAndS64:
-    case ByteCodeOp::IntrinsicAtomicOrS8:
-    case ByteCodeOp::IntrinsicAtomicOrS16:
-    case ByteCodeOp::IntrinsicAtomicOrS32:
-    case ByteCodeOp::IntrinsicAtomicOrS64:
-    case ByteCodeOp::IntrinsicAtomicXorS8:
-    case ByteCodeOp::IntrinsicAtomicXorS16:
-    case ByteCodeOp::IntrinsicAtomicXorS32:
-    case ByteCodeOp::IntrinsicAtomicXorS64:
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
-        break;
-
-    case ByteCodeOp::IntrinsicTypeCmp:
-    case ByteCodeOp::IntrinsicMemCmp:
-    case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
-    case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
-    case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
-    case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
-        break;
-    case ByteCodeOp::InternalPanic:
-    case ByteCodeOp::IntrinsicStrCmp:
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
-        break;
-    }
-
+    // Some operations, like IntrinsicTypeCmp for example, are in fact call to runtime functions.
+    // We must be sure that we have enough room on the stack to store the parameters (x64 backend).
+    context->bc->maxCallParams = max(context->bc->maxCallParams, g_ByteCodeOpDesc[(int) op].numCallParams);
     return &ins;
 }
 

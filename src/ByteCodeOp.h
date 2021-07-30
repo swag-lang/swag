@@ -36,7 +36,7 @@ static const uint32_t OPFLAG_IS_COPY_RBRA  = 0x08000000;
 
 enum class ByteCodeOp : uint16_t
 {
-#define BYTECODE_OP(__op, __flags, __dis) __op,
+#define BYTECODE_OP(__op, __flags, __dis, __nump) __op,
 #include "ByteCodeOpList.h"
 };
 
@@ -46,6 +46,7 @@ struct ByteCodeOpDesc
     int         nameLen;
     uint32_t    flags;
     const char* display;
+    uint32_t    numCallParams;
 };
 
 extern ByteCodeOpDesc g_ByteCodeOpDesc[];

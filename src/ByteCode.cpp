@@ -7,7 +7,7 @@
 #include "ErrorIds.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},
+#define BYTECODE_OP(__op, __flags, __dis, __nump) {#__op, (int) strlen(#__op), __flags, __dis, __nump},
 ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
