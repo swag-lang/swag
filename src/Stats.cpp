@@ -14,9 +14,6 @@ void Stats::print()
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("swag version", Utf8::format("%u.%u.%u", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.print("\n");
-
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Count)
     {
         g_Log.messageHeaderDot("workers", Utf8::format("%u", numWorkers));
