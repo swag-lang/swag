@@ -11,7 +11,6 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassNullPointer);
     passes.push_back(ByteCodeOptimizer::optimizePassErr);
     passes.push_back(ByteCodeOptimizer::optimizePassJumps);
-    passes.push_back(ByteCodeOptimizer::optimizePassEmptyFct);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadCode);
     passes.push_back(ByteCodeOptimizer::optimizePassImmediate);
     passes.push_back(ByteCodeOptimizer::optimizePassConst);

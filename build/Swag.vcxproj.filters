@@ -251,9 +251,6 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_EmptyFct.cpp">
-      <Filter>ByteCode\Optimize</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
