@@ -53,7 +53,6 @@ bool OutputFile::save(void* buffer, uint32_t count)
     auto over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
     memset(over, 0, sizeof(OVERLAPPED));
     over->Offset = seekSave;
-    overlappeds.push_back(over);
 
     auto result = ::WriteFile(winHandle, buffer, count, NULL, over);
     seekSave += count;
@@ -70,7 +69,7 @@ bool OutputFile::save(void* buffer, uint32_t count)
         DWORD written = 0;
         while (!GetOverlappedResult(winHandle, over, &written, false))
         {
-            g_ThreadMgr.participate();
+            g_ThreadMgr.tryExecuteJob();
         }
     }
 

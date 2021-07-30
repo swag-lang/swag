@@ -10,9 +10,8 @@ struct OutputFile : public Concat
     bool openWrite();
     void close();
 
-    Utf8                 name;
-    string               path;
-    vector<LPOVERLAPPED> overlappeds;
-    HANDLE               winHandle = INVALID_HANDLE_VALUE;
-    int                  seekSave  = 0;
+    Utf8   name;
+    string path;
+    HANDLE winHandle = INVALID_HANDLE_VALUE;
+    int    seekSave  = 0;
 };

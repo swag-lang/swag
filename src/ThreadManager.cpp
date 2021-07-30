@@ -231,20 +231,20 @@ bool ThreadManager::doneWithJobs()
 
 void ThreadManager::waitEndJobs()
 {
+    // If one core only, do the jobs right now, in order
     if (g_CommandLine.numCores == 1)
     {
-        while (participate())
-            ;
+        while (tryExecuteJob()) {}
+        return;
     }
-    else
+
+    // Else wait for all jobs to be done in other threads
+    while (true)
     {
-        while (true)
-        {
-            unique_lock lk(mutexDone);
-            if (doneWithJobs())
-                break;
-            condVarDone.wait(lk);
-        }
+        unique_lock lk(mutexDone);
+        if (doneWithJobs())
+            break;
+        condVarDone.wait(lk);
     }
 }
 
@@ -314,24 +314,11 @@ Job* ThreadManager::getJob(JobThread* thread)
     return nullptr;
 }
 
-void ThreadManager::participate(mutex& lock)
-{
-    while (true)
-    {
-        if (lock.try_lock())
-            return;
-        auto job = getJob();
-        if (!job)
-            continue;
-        g_ThreadMgr.executeOneJob(job);
-    }
-}
-
-bool ThreadManager::participate()
+bool ThreadManager::tryExecuteJob()
 {
     auto job = getJob();
     if (!job)
         return false;
-    g_ThreadMgr.executeOneJob(job);
+    executeOneJob(job);
     return true;
 }

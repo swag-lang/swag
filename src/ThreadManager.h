@@ -17,8 +17,7 @@ struct ThreadManager
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
-    void participate(mutex& lock);
-    bool participate();
+    bool tryExecuteJob();
 
     VectorNative<Job*>       queueJobsIO;
     VectorNative<Job*>       queueJobs;
