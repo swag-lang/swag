@@ -351,7 +351,7 @@ void Concat::addS32Str8(int value)
     }
 }
 
-bool Concat::flush(const string& path)
+bool Concat::flushToFile(const string& path)
 {
     OutputFile outputFile;
 

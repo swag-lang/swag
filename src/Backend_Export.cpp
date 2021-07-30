@@ -900,7 +900,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    auto result = bufferSwg.flush(exportFilePath);
+    auto result = bufferSwg.flushToFile(exportFilePath);
     if (!result)
         return false;
     timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());

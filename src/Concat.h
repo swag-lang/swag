@@ -55,7 +55,7 @@ struct Concat
     void addU32Str(uint32_t value);
     void addS32Str8(int value);
 
-    bool flush(const string& path);
+    bool flushToFile(const string& path);
 
     uint8_t* getSeekPtr()
     {
