@@ -87,6 +87,8 @@ struct ByteCodeOptimizer
     static bool optimizePassDupCopyRBRA(ByteCodeOptContext* context);
     static bool optimizePassDupCopy(ByteCodeOptContext* context);
 
+    static void reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);

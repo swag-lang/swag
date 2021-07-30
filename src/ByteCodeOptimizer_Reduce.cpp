@@ -5,6 +5,112 @@
 #include "Log.h"
 #include "AstNode.h"
 
+void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    // Copy a constant value (from segment) to the stack
+    if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
+        ip[1].op == ByteCodeOp::MakeStackPointer &&
+        ByteCode::isMemCpy(ip + 2) &&
+        ip->a.u32 == ip[2].b.u32 &&
+        ip[1].a.u32 == ip[2].a.u32)
+    {
+        switch (ip[2].op)
+        {
+        case ByteCodeOp::MemCpy8:
+        {
+            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer8);
+            ip[1].a.u64 = ip[1].b.u64;
+            ip[1].b.u64 = *(uint8_t*) ptr;
+            ip[1].flags |= BCI_IMM_B;
+            setNop(context, ip + 2);
+            break;
+        }
+        case ByteCodeOp::MemCpy16:
+        {
+            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer16);
+            ip[1].a.u64 = ip[1].b.u64;
+            ip[1].b.u64 = *(uint16_t*) ptr;
+            ip[1].flags |= BCI_IMM_B;
+            setNop(context, ip + 2);
+            break;
+        }
+        case ByteCodeOp::MemCpy32:
+        {
+            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer32);
+            ip[1].a.u64 = ip[1].b.u64;
+            ip[1].b.u64 = *(uint32_t*) ptr;
+            ip[1].flags |= BCI_IMM_B;
+            setNop(context, ip + 2);
+            break;
+        }
+        case ByteCodeOp::MemCpy64:
+        {
+            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
+            ip[1].a.u64 = ip[1].b.u64;
+            ip[1].b.u64 = *(uint64_t*) ptr;
+            ip[1].flags |= BCI_IMM_B;
+            setNop(context, ip + 2);
+            break;
+        }
+        }
+    }
+}
+
+void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
+
+    // A = something followed by B = A
+    // make B = something, this gives the opportunity to remove one of them
+    if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+        (opFlags & OPFLAG_WRITE_A) &&
+        !(opFlags & OPFLAG_READ_A) &&
+        (!(opFlags & OPFLAG_READ_B) || ip->flags & BCI_IMM_B || ip->b.u32 != ip->a.u32) &&
+        (!(opFlags & OPFLAG_READ_C) || ip->flags & BCI_IMM_C || ip->c.u32 != ip->a.u32) &&
+        (!(opFlags & OPFLAG_READ_D) || ip->flags & BCI_IMM_D || ip->d.u32 != ip->a.u32) &&
+        ip->a.u32 == ip[1].b.u32 &&
+        !(ip[0].flags & BCI_IMM_A) &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        // List can be extended, as long as the instruction does not have side effects when called twice
+        switch (ip->op)
+        {
+        case ByteCodeOp::CopyRBtoRA64:
+        case ByteCodeOp::CopyRTtoRC:
+        case ByteCodeOp::MakeStackPointer:
+        case ByteCodeOp::GetFromStack8:
+        case ByteCodeOp::GetFromStack16:
+        case ByteCodeOp::GetFromStack32:
+        case ByteCodeOp::GetFromStack64:
+        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::NegBool:
+        case ByteCodeOp::CastBool8:
+        case ByteCodeOp::CastBool16:
+        case ByteCodeOp::CastBool32:
+        case ByteCodeOp::CastBool64:
+        case ByteCodeOp::MakeConstantSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
+        case ByteCodeOp::MakeBssSegPointer:
+        case ByteCodeOp::MakeCompilerSegPointer:
+        case ByteCodeOp::MakeLambda:
+        case ByteCodeOp::DeRef8:
+        case ByteCodeOp::DeRef16:
+        case ByteCodeOp::DeRef32:
+        case ByteCodeOp::DeRef64:
+        {
+            auto s      = ip[1].a.u32;
+            ip[1]       = ip[0];
+            ip[1].a.u32 = s;
+            break;
+        }
+        }
+    }
+}
+
 void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op == ByteCodeOp::Ret || ip[1].op == ByteCodeOp::Ret || ip[2].op == ByteCodeOp::Ret)
@@ -578,6 +684,10 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    // Remove unecessary DebugNop
+    if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
+        setNop(context, ip);
+
     // Useless pop/push
     if (ip[0].op == ByteCodeOp::InternalPushErr &&
         ip[1].op == ByteCodeOp::InternalPopErr)
@@ -2191,109 +2301,8 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
-            setNop(context, ip);
-
-        auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
-
-        // Copy a constant value (from segment) to the stack
-        if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
-            ip[1].op == ByteCodeOp::MakeStackPointer &&
-            ByteCode::isMemCpy(ip + 2) &&
-            ip->a.u32 == ip[2].b.u32 &&
-            ip[1].a.u32 == ip[2].a.u32)
-        {
-            switch (ip[2].op)
-            {
-            case ByteCodeOp::MemCpy8:
-            {
-                auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-                SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer8);
-                ip[1].a.u64 = ip[1].b.u64;
-                ip[1].b.u64 = *(uint8_t*) ptr;
-                ip[1].flags |= BCI_IMM_B;
-                setNop(context, ip + 2);
-                break;
-            }
-            case ByteCodeOp::MemCpy16:
-            {
-                auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-                SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer16);
-                ip[1].a.u64 = ip[1].b.u64;
-                ip[1].b.u64 = *(uint16_t*) ptr;
-                ip[1].flags |= BCI_IMM_B;
-                setNop(context, ip + 2);
-                break;
-            }
-            case ByteCodeOp::MemCpy32:
-            {
-                auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-                SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer32);
-                ip[1].a.u64 = ip[1].b.u64;
-                ip[1].b.u64 = *(uint32_t*) ptr;
-                ip[1].flags |= BCI_IMM_B;
-                setNop(context, ip + 2);
-                break;
-            }
-            case ByteCodeOp::MemCpy64:
-            {
-                auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-                SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
-                ip[1].a.u64 = ip[1].b.u64;
-                ip[1].b.u64 = *(uint64_t*) ptr;
-                ip[1].flags |= BCI_IMM_B;
-                setNop(context, ip + 2);
-                break;
-            }
-            }
-        }
-
-        // A = something followed by B = A
-        // make B = something, this gives the opportunity to remove one of them
-        if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
-            (opFlags & OPFLAG_WRITE_A) &&
-            !(opFlags & OPFLAG_READ_A) &&
-            (!(opFlags & OPFLAG_READ_B) || ip->flags & BCI_IMM_B || ip->b.u32 != ip->a.u32) &&
-            (!(opFlags & OPFLAG_READ_C) || ip->flags & BCI_IMM_C || ip->c.u32 != ip->a.u32) &&
-            (!(opFlags & OPFLAG_READ_D) || ip->flags & BCI_IMM_D || ip->d.u32 != ip->a.u32) &&
-            ip->a.u32 == ip[1].b.u32 &&
-            !(ip[0].flags & BCI_IMM_A) &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            // List can be extended, as long as the instruction does not have side effects when called twice
-            switch (ip->op)
-            {
-            case ByteCodeOp::CopyRBtoRA64:
-            case ByteCodeOp::CopyRTtoRC:
-            case ByteCodeOp::MakeStackPointer:
-            case ByteCodeOp::GetFromStack8:
-            case ByteCodeOp::GetFromStack16:
-            case ByteCodeOp::GetFromStack32:
-            case ByteCodeOp::GetFromStack64:
-            case ByteCodeOp::GetFromStackParam64:
-            case ByteCodeOp::NegBool:
-            case ByteCodeOp::CastBool8:
-            case ByteCodeOp::CastBool16:
-            case ByteCodeOp::CastBool32:
-            case ByteCodeOp::CastBool64:
-            case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeMutableSegPointer:
-            case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeCompilerSegPointer:
-            case ByteCodeOp::MakeLambda:
-            case ByteCodeOp::DeRef8:
-            case ByteCodeOp::DeRef16:
-            case ByteCodeOp::DeRef32:
-            case ByteCodeOp::DeRef64:
-            {
-                auto s      = ip[1].a.u32;
-                ip[1]       = ip[0];
-                ip[1].a.u32 = s;
-                break;
-            }
-            }
-        }
-
+        reduceAppend(context, ip);
+        reduceMemcpy(context, ip);
         reduceStack(context, ip);
         reduceIncPtr(context, ip);
         reduceSetAt(context, ip);
