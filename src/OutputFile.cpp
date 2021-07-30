@@ -4,11 +4,12 @@
 #include "Log.h"
 #include "ErrorIds.h"
 
-bool OutputFile::openWrite()
+bool OutputFile::openWrite(const string& path)
 {
     if (winHandle != INVALID_HANDLE_VALUE)
         return true;
 
+    filePath  = path;
     winHandle = ::CreateFileA(path.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, NULL);
     if (winHandle == INVALID_HANDLE_VALUE)
     {
@@ -27,28 +28,10 @@ void OutputFile::close()
     winHandle = INVALID_HANDLE_VALUE;
 }
 
-bool OutputFile::flush(bool last)
-{
-    auto bucket = firstBucket;
-    while (bucket != lastBucket->nextBucket)
-    {
-        save(bucket->datas, bucketCount(bucket));
-        bucket = bucket->nextBucket;
-    }
-
-    if (last)
-        close();
-
-    clear();
-    return true;
-}
-
 bool OutputFile::save(void* buffer, uint32_t count)
 {
     if (!count)
         return true;
-    if (!openWrite())
-        return false;
 
     auto over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
     memset(over, 0, sizeof(OVERLAPPED));
@@ -62,7 +45,7 @@ bool OutputFile::save(void* buffer, uint32_t count)
         auto err = GetLastError();
         if (err != ERROR_IO_PENDING)
         {
-            g_Log.errorOS(Utf8::format(Msg0525, path.c_str()));
+            g_Log.errorOS(Utf8::format(Msg0525, filePath.c_str()));
             return false;
         }
 

@@ -543,7 +543,7 @@ JobResult ModuleBuildJob::execute()
                 }
                 else if (module->backend->mustCompile)
                 {
-                    OS::touchFile(module->backend->bufferSwg.path);
+                    OS::touchFile(module->backend->exportFilePath);
                 }
             }
         }
@@ -618,7 +618,7 @@ void ModuleBuildJob::publishFilesToPublic()
 
     OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
         // Keep the generated file untouched !
-        if (module->backend->bufferSwg.name == filename)
+        if (module->backend->exportFileName == filename)
             return;
 
         // If this is still a #public file, then do nothing. The job will erase it

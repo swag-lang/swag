@@ -832,7 +832,7 @@ void Backend::emitDependencies()
 
 bool Backend::setupExportFile(bool force)
 {
-    if (!bufferSwg.path.empty())
+    if (!exportFilePath.empty())
         return true;
 
     Utf8 publicPath = g_Workspace.getPublicPath(module, true);
@@ -843,13 +843,13 @@ bool Backend::setupExportFile(bool force)
     publicPath.append(exportName.c_str());
     if (force)
     {
-        bufferSwg.name = exportName;
-        bufferSwg.path = publicPath;
+        exportFileName = exportName;
+        exportFilePath = publicPath;
     }
     else if (fs::exists(publicPath.c_str()))
     {
-        bufferSwg.name = exportName;
-        bufferSwg.path = publicPath;
+        exportFileName = exportName;
+        exportFilePath = publicPath;
         timeExportFile = OS::getFileWriteTime(publicPath.c_str());
     }
 
@@ -900,10 +900,10 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    auto result = bufferSwg.flush(true);
+    auto result = bufferSwg.flush(exportFilePath);
     if (!result)
         return false;
-    timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());
+    timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());
     SWAG_ASSERT(timeExportFile);
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;

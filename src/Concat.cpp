@@ -3,6 +3,7 @@
 #include "Allocator.h"
 #include "Runtime.h"
 #include "CommandLine.h"
+#include "OutputFile.h"
 
 void Concat::init(int size)
 {
@@ -348,4 +349,23 @@ void Concat::addS32Str8(int value)
             *pz = (char) ('0' + id);
         }
     }
+}
+
+bool Concat::flush(const string& path)
+{
+    OutputFile outputFile;
+
+    if (!outputFile.openWrite(path))
+        return false;
+
+    auto bucket = firstBucket;
+    while (bucket != lastBucket->nextBucket)
+    {
+        outputFile.save(bucket->datas, bucketCount(bucket));
+        bucket = bucket->nextBucket;
+    }
+
+    outputFile.close();
+    clear();
+    return true;
 }

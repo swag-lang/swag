@@ -1177,7 +1177,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             auto   checkSymIndex = 0;
             string name;
             if (f.wrapper)
-                name = bufferSwg.path;
+                name = exportFilePath;
             else
                 name = sourceFile->path;
             auto it = mapFileNames.find(name);

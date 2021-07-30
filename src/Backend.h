@@ -1,5 +1,5 @@
 #pragma once
-#include "OutputFile.h"
+#include "Concat.h"
 #include "Ast.h"
 #include "BackendParameters.h"
 struct Module;
@@ -36,8 +36,8 @@ struct Backend
     {
     }
 
-    virtual JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob);
-    virtual bool                    generateOutput(const BuildParameters& backendParameters);
+    virtual JobResult                   prepareOutput(const BuildParameters& buildParameters, Job* ownerJob);
+    virtual bool                        generateOutput(const BuildParameters& backendParameters);
     virtual BackendFunctionBodyJobBase* newFunctionJob();
 
     void setMustCompile();
@@ -66,7 +66,9 @@ struct Backend
     bool emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
     bool emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
 
-    OutputFile bufferSwg;
+    Concat bufferSwg;
+    string exportFileName;
+    string exportFilePath;
 
     Module*               module               = nullptr;
     uint64_t              timeExportFile       = 0;

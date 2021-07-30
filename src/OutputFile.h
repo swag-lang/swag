@@ -1,17 +1,14 @@
 #pragma once
-#include "Concat.h"
 #include "File.h"
 struct Job;
 
-struct OutputFile : public Concat
+struct OutputFile
 {
-    bool flush(bool lastOne);
+    bool openWrite(const string& path);
     bool save(void* buffer, uint32_t count);
-    bool openWrite();
     void close();
 
-    Utf8   name;
-    string path;
+    string filePath;
     HANDLE winHandle = INVALID_HANDLE_VALUE;
     int    seekSave  = 0;
 };

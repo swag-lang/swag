@@ -3,6 +3,7 @@
 #include "BackendX64Inst.h"
 #include "BackendLinker.h"
 #include "Module.h"
+#include "OutputFile.h"
 #include "BackendX64SaveObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -814,8 +815,10 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     auto path       = targetPath + "/" + pp.filename;
     auto filename   = path;
 
+    Concat     concat;
     OutputFile destFile;
-    destFile.path = filename;
+    if (!destFile.openWrite(filename))
+        return false;
 
     // Output the full concat buffer
     uint32_t totalCount = 0;
