@@ -192,7 +192,13 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
+    if (!context->bc->numJumps)
+        return;
+
     context->jumps.clear();
+    context->jumps.reserve(context->bc->numJumps);
+    context->bc->numJumps = 0;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         ip->flags &= ~BCI_START_STMT;
@@ -201,6 +207,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     }
 
     // Mark all instructions which are a jump destination
+    context->bc->numJumps = (uint32_t) context->jumps.size();
     for (auto jump : context->jumps)
         jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
 }
