@@ -1,10 +1,12 @@
 #include "pch.h"
-#include "OutputFile.h"
+#ifdef _WIN32
+#include "OutputFileWin32.h"
+#include "Os.h"
 #include "ThreadManager.h"
 #include "Log.h"
 #include "ErrorIds.h"
 
-bool OutputFile::openWrite(const string& path)
+bool OutputFileWin32::openWrite(const string& path)
 {
     if (winHandle != INVALID_HANDLE_VALUE)
         return true;
@@ -20,7 +22,7 @@ bool OutputFile::openWrite(const string& path)
     return true;
 }
 
-void OutputFile::close()
+void OutputFileWin32::close()
 {
     if (winHandle == INVALID_HANDLE_VALUE)
         return;
@@ -28,7 +30,7 @@ void OutputFile::close()
     winHandle = INVALID_HANDLE_VALUE;
 }
 
-bool OutputFile::save(void* buffer, uint32_t count)
+bool OutputFileWin32::save(void* buffer, uint32_t count)
 {
     if (!count)
         return true;
@@ -36,9 +38,9 @@ bool OutputFile::save(void* buffer, uint32_t count)
     auto over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
     memset(over, 0, sizeof(OVERLAPPED));
     over->Offset = seekSave;
+    seekSave += count;
 
     auto result = ::WriteFile(winHandle, buffer, count, NULL, over);
-    seekSave += count;
 
     if (!result)
     {
@@ -58,3 +60,5 @@ bool OutputFile::save(void* buffer, uint32_t count)
 
     return true;
 }
+
+#endif

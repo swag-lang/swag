@@ -110,9 +110,6 @@
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/OutputFile.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Struct.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -461,6 +458,9 @@
     <ClCompile Include="../src/ModuleSaveExportJob.cpp">
       <Filter>Backend\Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\OutputFileWin32.cpp">
+      <Filter>Main\Os</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -520,9 +520,6 @@
     </ClInclude>
     <ClInclude Include="../src/AstFlags.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/OutputFile.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/Generic.h">
       <Filter>Semantic</Filter>
@@ -745,6 +742,9 @@
     </ClInclude>
     <ClInclude Include="../src/ModuleSaveExportJob.h">
       <Filter>Backend\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\OutputFileWin32.h">
+      <Filter>Main\Os</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

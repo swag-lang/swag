@@ -216,7 +216,7 @@
     <ClInclude Include="../src/Os.h" />
     <ClInclude Include="../src/ModuleGenOutputJob.h" />
     <ClInclude Include="../src/ModuleOutputJob.h" />
-    <ClInclude Include="../src/OutputFile.h" />
+    <ClInclude Include="..\src\OutputFileWin32.h" />
     <ClInclude Include="../src/RegisterList.h" />
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
@@ -356,7 +356,7 @@
     <ClCompile Include="../src/ModuleSemanticJob.cpp" />
     <ClCompile Include="../src/ModuleRunJob.cpp" />
     <ClCompile Include="../src/OsWin32.cpp" />
-    <ClCompile Include="../src/OutputFile.cpp" />
+    <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp" />

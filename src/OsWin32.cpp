@@ -9,6 +9,8 @@
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "OutputFileWin32.h"
+#include "Allocator.h"
 
 namespace OS
 {
@@ -628,6 +630,17 @@ namespace OS
         case IDCONTINUE:
             break;
         }
+    }
+
+    OutputFile* newOutputFile()
+    {
+        auto result = g_Allocator.alloc<OutputFileWin32>();
+        return result;
+    }
+
+    void freeOutputFile(OutputFile* file)
+    {
+        g_Allocator.free<OutputFileWin32>(file);
     }
 
     bool getSwagFolder(string& folder)

@@ -3,7 +3,8 @@
 #include "Allocator.h"
 #include "Runtime.h"
 #include "CommandLine.h"
-#include "OutputFile.h"
+#include "File.h"
+#include "Os.h"
 
 void Concat::init(int size)
 {
@@ -353,19 +354,21 @@ void Concat::addS32Str8(int value)
 
 bool Concat::flushToFile(const string& path)
 {
-    OutputFile outputFile;
+    auto* outputFile = OS::newOutputFile();
 
-    if (!outputFile.openWrite(path))
+    if (!outputFile->openWrite(path))
         return false;
 
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        outputFile.save(bucket->datas, bucketCount(bucket));
+        outputFile->save(bucket->datas, bucketCount(bucket));
         bucket = bucket->nextBucket;
     }
 
-    outputFile.close();
+    outputFile->close();
+    OS::freeOutputFile(outputFile);
+
     clear();
     return true;
 }
