@@ -2,9 +2,7 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
-#include "Stats.h"
 #include "Module.h"
-#include "Os.h"
 #include "Timer.h"
 #include "ByteCodeStack.h"
 #include "Context.h"
@@ -89,7 +87,7 @@ bool SourceFile::load()
 
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
-        delete[] buffer;
+        g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);
         g_Log.errorOS(Utf8::format("error reading source file '%s'", path.c_str()));
