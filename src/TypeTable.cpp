@@ -8,9 +8,15 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
+TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
+{
+    return mapPerSegment[segment->kind == SegmentKind::Compiler ? 1 : 0];
+}
+
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    scoped_lock lk(mutex);
+    auto&       mapPerSeg = getMapPerSeg(storageSegment);
+    scoped_lock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
 
@@ -35,14 +41,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     auto& typeName = getTypeName(typeInfo, cflags & CONCRETE_FORCE_NO_SCOPE);
     SWAG_ASSERT(!typeName.empty());
 
-    auto& storedMap    = storageSegment->kind == SegmentKind::Compiler ? concreteTypesCompiler : concreteTypes;
-    auto& storedMapJob = storageSegment->kind == SegmentKind::Compiler ? concreteTypesJobCompiler : concreteTypesJob;
-
+    auto& mapPerSeg = getMapPerSeg(storageSegment);
     if (typeInfo->kind != TypeInfoKind::Param)
     {
         // Already computed ?
-        auto it = storedMap.find(typeName);
-        if (it != storedMap.end())
+        auto it = mapPerSeg.concreteTypes.find(typeName);
+        if (it != mapPerSeg.concreteTypes.end())
         {
             if (ptrTypeInfo)
                 *ptrTypeInfo = it->second.newRealType;
@@ -55,8 +59,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
             {
                 if (context->baseJob->baseContext->result != ContextResult::Pending)
                 {
-                    auto itJob = storedMapJob.find(typeName);
-                    if (itJob != storedMapJob.end())
+                    auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
+                    if (itJob != mapPerSeg.concreteTypesJob.end())
                     {
                         itJob->second->addDependentJob(context->baseJob);
                         context->baseJob->setPending(nullptr, "CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
@@ -165,8 +169,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     if (result)
         *result = mapType.concreteType;
 
-    storedMap[typeName]                         = mapType;
-    concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
+    mapPerSeg.concreteTypes[typeName]                     = mapType;
+    mapPerSeg.concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
@@ -226,7 +230,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         job->cflags                = cflags & ~CONCRETE_SHOULD_WAIT;
         job->typeName              = typeName;
         job->nodes.push_back(context->node);
-        storedMapJob[typeName] = job;
+        mapPerSeg.concreteTypesJob[typeName] = job;
 
         if (cflags & CONCRETE_SHOULD_WAIT)
         {
@@ -530,16 +534,6 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
     return true;
 }
 
-void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
-{
-    auto& storedMapJob = segment->kind == SegmentKind::Compiler ? concreteTypesJobCompiler : concreteTypesJob;
-    auto  it           = storedMapJob.find(job->typeName);
-    SWAG_ASSERT(it != storedMapJob.end());
-    storedMapJob.erase(it);
-    for (auto it1 : job->patchMethods)
-        segment->addPatchMethod(it1.first, it1.second);
-}
-
 Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
 {
     if (forceNoScope)
@@ -551,11 +545,22 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
     return typeInfo->scopedName;
 }
 
-TypeInfo* TypeTable::getRealType(ConcreteTypeInfo* concreteType)
+void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
 {
-    shared_lock lk(mutex);
-    auto        it = concreteTypesReverse.find(concreteType);
-    if (it == concreteTypesReverse.end())
+    auto& mapPerSeg = getMapPerSeg(segment);
+    auto  it        = mapPerSeg.concreteTypesJob.find(job->typeName);
+    SWAG_ASSERT(it != mapPerSeg.concreteTypesJob.end());
+    mapPerSeg.concreteTypesJob.erase(it);
+    for (auto it1 : job->patchMethods)
+        segment->addPatchMethod(it1.first, it1.second);
+}
+
+TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
+{
+    auto&       mapPerSeg = getMapPerSeg(segment);
+    shared_lock lk(mapPerSeg.mutex);
+    auto        it = mapPerSeg.concreteTypesReverse.find(concreteType);
+    if (it == mapPerSeg.concreteTypesReverse.end())
         return nullptr;
     return it->second;
 }

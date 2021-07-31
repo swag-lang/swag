@@ -463,8 +463,9 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
             expr->computedValue->storageOffset != UINT32_MAX &&
             expr->computedValue->storageSegment != nullptr)
         {
-            auto addr        = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
-            auto newTypeInfo = context->sourceFile->module->typeTable.getRealType((ConcreteTypeInfo*) addr);
+            auto storageSegment = expr->computedValue->storageSegment;
+            auto addr           = storageSegment->address(expr->computedValue->storageOffset);
+            auto newTypeInfo    = context->sourceFile->module->typeTable.getRealType(storageSegment, (ConcreteTypeInfo*) addr);
             if (newTypeInfo)
                 typeInfo = newTypeInfo;
         }

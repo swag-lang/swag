@@ -75,7 +75,8 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
-    scoped_lock lk(typeTable->mutex);
+    auto&       mapPerSeg = typeTable->getMapPerSeg(storageSegment);
+    scoped_lock lk(mapPerSeg.mutex);
 
     // Simple structure name, without generics
     SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));

@@ -18,6 +18,22 @@ static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000002;
 
 struct TypeTable
 {
+    struct MapType
+    {
+        TypeInfo*         realType;
+        TypeInfo*         newRealType;
+        ConcreteTypeInfo* concreteType;
+        uint32_t          storageOffset;
+    };
+
+    struct MapPerSeg
+    {
+        shared_mutex                      mutex;
+        map<Utf8, MapType>                concreteTypes;
+        map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
+        map<Utf8, TypeTableJob*>          concreteTypesJob;
+    };
+
     bool  makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool  makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool  makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);
@@ -28,26 +44,12 @@ struct TypeTable
     bool  makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags);
     bool  makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer);
 
-    void      tableJobDone(TypeTableJob* job, DataSegment* segment);
-    Utf8&     getTypeName(TypeInfo* typeInfo, bool forceNoScope);
-    TypeInfo* getRealType(ConcreteTypeInfo*);
+    MapPerSeg& getMapPerSeg(DataSegment* segment);
+    Utf8&      getTypeName(TypeInfo* typeInfo, bool forceNoScope);
+    void       tableJobDone(TypeTableJob* job, DataSegment* segment);
+    TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
 
-    struct MapType
-    {
-        TypeInfo*         realType;
-        TypeInfo*         newRealType;
-        ConcreteTypeInfo* concreteType;
-        uint32_t          storageOffset;
-    };
-
-    map<Utf8, MapType> concreteTypes;
-    map<Utf8, MapType> concreteTypesCompiler;
-
-    shared_mutex                      mutex;
-    map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
-
-    map<Utf8, TypeTableJob*> concreteTypesJob;
-    map<Utf8, TypeTableJob*> concreteTypesJobCompiler;
+    MapPerSeg mapPerSegment[2];
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
