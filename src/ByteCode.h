@@ -143,6 +143,7 @@ struct ByteCode
     bool isCompilerGenerated = false;
     bool isAddedToList       = false;
     bool isDirtyRegistersRC  = false;
+    bool hasFunctionCalls    = false;
 
     atomic<bool> isRunning;
     atomic<bool> isEmpty;

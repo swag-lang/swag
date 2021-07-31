@@ -33,12 +33,17 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     }
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
+    // In case there's a foreign call somewhere...
     auto module = sourceFile->module;
-    if (!module->WaitForDependenciesDone(context->job))
+    if (node->extension->bc->hasFunctionCalls)
     {
-        context->expansionNode.pop_back();
-        context->result = ContextResult::Pending;
-        return true;
+        if (!module->WaitForDependenciesDone(context->job))
+        {
+            SWAG_ASSERT(node->extension->bc->hasFunctionCalls);
+            context->expansionNode.pop_back();
+            context->result = ContextResult::Pending;
+            return true;
+        }
     }
 
     SWAG_CHECK(module->executeNode(sourceFile, node, context));
