@@ -85,6 +85,8 @@ JobResult ModuleBuildJob::execute()
             module->mutableSegment.initFrom(&rtMod->mutableSegment);
             module->bssSegment.initFrom(&rtMod->bssSegment);
             module->buildParameters.foreignLibs.insert(rtMod->buildParameters.foreignLibs.begin(), rtMod->buildParameters.foreignLibs.end());
+            module->typeTable.registerBasicTypes(&module->constantSegment);
+            module->typeTable.registerBasicTypes(&module->compilerSegment);
         }
 
         if (fromError)

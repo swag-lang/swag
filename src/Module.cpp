@@ -479,7 +479,7 @@ bool Module::flushCompilerMessages(JobContext* context)
             context->node           = context->sourceFile->astRoot;
             auto     storageSegment = &context->sourceFile->module->compilerSegment;
             uint32_t storageOffset;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, CONCRETE_SHOULD_WAIT));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, MAKE_CONCRETE_SHOULD_WAIT));
             if (context->result != ContextResult::Done)
                 return true;
             msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);

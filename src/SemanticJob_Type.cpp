@@ -647,7 +647,7 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
 
     node->allocateComputedValue();
     node->computedValue->storageSegment = getConstantSegFromContext(node);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, CONCRETE_SHOULD_WAIT | flags, resultTypeInfo));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, MAKE_CONCRETE_SHOULD_WAIT | flags, resultTypeInfo));
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();
