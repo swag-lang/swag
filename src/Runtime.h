@@ -236,8 +236,8 @@ struct ConcreteTypeInfo
 
 struct ConcreteAny
 {
-    void* value;
-    void* type;
+    void*             value;
+    ConcreteTypeInfo* type;
 };
 
 struct ConcreteTypeInfoNative
@@ -260,30 +260,30 @@ struct ConcreteAttribute
 
 struct ConcreteTypeInfoPointer
 {
-    ConcreteTypeInfo base;
-    void*            pointedType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
 };
 
 struct ConcreteTypeInfoReference
 {
-    ConcreteTypeInfo base;
-    void*            pointedType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
 };
 
 struct ConcreteTypeInfoAlias
 {
-    ConcreteTypeInfo base;
-    void*            rawType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* rawType;
 };
 
 struct ConcreteTypeInfoParam
 {
-    SwagSlice name;
-    void*     pointedType;
-    void*     value;
-    SwagSlice attributes;
-    uint32_t  offsetOf;
-    uint32_t  padding;
+    SwagSlice         name;
+    ConcreteTypeInfo* pointedType;
+    void*             value;
+    SwagSlice         attributes;
+    uint32_t          offsetOf;
+    uint32_t          padding;
 };
 
 struct ConcreteTypeInfoStruct
@@ -303,46 +303,46 @@ struct ConcreteTypeInfoStruct
 
 struct ConcreteTypeInfoFunc
 {
-    ConcreteTypeInfo base;
-    SwagSlice        generics;
-    SwagSlice        parameters;
-    void*            returnType;
-    SwagSlice        attributes;
+    ConcreteTypeInfo  base;
+    SwagSlice         generics;
+    SwagSlice         parameters;
+    ConcreteTypeInfo* returnType;
+    SwagSlice         attributes;
 };
 
 struct ConcreteTypeInfoEnum
 {
-    ConcreteTypeInfo base;
-    SwagSlice        values;
-    void*            rawType;
-    SwagSlice        attributes;
+    ConcreteTypeInfo  base;
+    SwagSlice         values;
+    ConcreteTypeInfo* rawType;
+    SwagSlice         attributes;
 };
 
 struct ConcreteTypeInfoArray
 {
-    ConcreteTypeInfo base;
-    void*            pointedType;
-    void*            finalType;
-    uint64_t         count;
-    uint64_t         totalCount;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo* finalType;
+    uint64_t          count;
+    uint64_t          totalCount;
 };
 
 struct ConcreteTypeInfoSlice
 {
-    ConcreteTypeInfo base;
-    void*            pointedType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
 };
 
 struct ConcreteTypeInfoVariadic
 {
-    ConcreteTypeInfo base;
-    void*            rawType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* rawType;
 };
 
 struct ConcreteTypeInfoGeneric
 {
-    ConcreteTypeInfo base;
-    void*            rawType;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* rawType;
 };
 
 enum class CompilerMsgKind
