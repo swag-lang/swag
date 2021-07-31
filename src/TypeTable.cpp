@@ -343,23 +343,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     return true;
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, uint32_t cflags)
-{
-    if (!typeInfo)
-    {
-        *result = nullptr;
-        return true;
-    }
-
-    uint32_t tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, cflags));
-    *result = (ConcreteTypeInfo*) storageSegment->address(tmpStorageOffset);
-
-    // We have a pointer in the type segment, so we need to register it for backend setup
-    storageSegment->addInitPtr(concreteTypeInfoValue ? OFFSETOF(*result) : storageOffset, tmpStorageOffset);
-    return true;
-}
-
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, TypeInfo* typeInfo, uint32_t cflags)
 {
     if (!typeInfo)
@@ -435,7 +418,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSe
         ptrAny->value = nullptr;
 
     // Type of the value
-    SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, storageSegment, storageOffset + sizeof(void*), &ptrAny->type, typeInfo, cflags));
+    SWAG_CHECK(makeConcreteSubTypeInfo(context, ptrAny, storageSegment, storageOffset, &ptrAny->type, typeInfo, cflags));
     return true;
 }
 

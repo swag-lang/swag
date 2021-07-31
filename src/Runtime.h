@@ -236,8 +236,8 @@ struct ConcreteTypeInfo
 
 struct ConcreteAny
 {
-    void*             value;
-    ConcreteTypeInfo* type;
+    void* value;
+    void* type;
 };
 
 struct ConcreteTypeInfoNative
