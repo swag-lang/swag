@@ -271,7 +271,7 @@ Allocator::Allocator()
     if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
         shared = true;
-        unique_lock lk(g_AllocatorMutex);
+        scoped_lock lk(g_AllocatorMutex);
         if (g_SharedAllocator)
         {
             impl = g_SharedAllocator->impl;

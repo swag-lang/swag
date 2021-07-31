@@ -49,12 +49,12 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     if (structDecl->scope != node->structScope)
     {
         auto        typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
-        unique_lock lk1(typeStruct->mutex);
+        scoped_lock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfaces++;
         node->sourceFile->module->decImplForToSolve(typeStruct);
 
-        unique_lock lk2(node->structScope->parentScope->mutex);
-        unique_lock lk3(node->structScope->mutex);
+        scoped_lock lk2(node->structScope->parentScope->mutex);
+        scoped_lock lk3(node->structScope->mutex);
 
         node->structScope->parentScope->removeChildNoLock(node->structScope);
         for (auto s : node->structScope->childScopes)
@@ -161,7 +161,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     // Register interface in the structure
     TypeInfoParam* typeParamItf = nullptr;
     {
-        unique_lock lk(typeStruct->mutex);
+        scoped_lock lk(typeStruct->mutex);
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
@@ -302,8 +302,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
 void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 {
-    unique_lock lk(typeInfoStruct->mutex);
-    unique_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
@@ -313,8 +313,8 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 
 void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
 {
-    unique_lock lk(typeInfoStruct->mutex);
-    unique_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    scoped_lock lk(typeInfoStruct->mutex);
+    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
     typeInfoStruct->cptRemainingMethods--;

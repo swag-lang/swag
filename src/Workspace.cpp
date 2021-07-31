@@ -87,7 +87,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     Module* module = nullptr;
 
     {
-        unique_lock lk(mutexModules);
+        scoped_lock lk(mutexModules);
 
         auto it = mapModulesNames.find(moduleName);
         if (it != mapModulesNames.end())

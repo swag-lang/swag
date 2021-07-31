@@ -173,7 +173,7 @@ Utf8 SourceFile::getLine(long lineNo)
 
 void SourceFile::computePrivateScopeName()
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     if (!scopeName.empty())
         return;
     scopeName = "__" + name;

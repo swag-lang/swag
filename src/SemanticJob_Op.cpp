@@ -330,7 +330,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         job->clearTryMatch();
 
         {
-            unique_lock lk(symbol->mutex);
+            scoped_lock lk(symbol->mutex);
             for (auto overload : symbol->overloads)
             {
                 auto t               = job->getTryMatch();

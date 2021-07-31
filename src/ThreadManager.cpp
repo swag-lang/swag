@@ -32,7 +32,7 @@ void ThreadManager::init()
 
 void ThreadManager::addJob(Job* job)
 {
-    unique_lock lk(mutexAdd);
+    scoped_lock lk(mutexAdd);
     addJobNoLock(job);
 }
 
@@ -89,7 +89,7 @@ void ThreadManager::addJobNoLock(Job* job)
 
 void ThreadManager::jobHasEnded(Job* job, JobResult result)
 {
-    unique_lock lk(mutexAdd);
+    scoped_lock lk(mutexAdd);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
@@ -165,7 +165,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // Is this the last job ?
-    unique_lock lk1(mutexDone);
+    scoped_lock lk1(mutexDone);
     if (doneWithJobs())
         condVarDone.notify_all();
 }
@@ -250,7 +250,7 @@ void ThreadManager::waitEndJobs()
 
 Job* ThreadManager::getJob()
 {
-    unique_lock lk(mutexAdd);
+    scoped_lock lk(mutexAdd);
     Job*        job;
 
     // If no IO is running, then we can take one in priority

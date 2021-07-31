@@ -61,7 +61,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
         if (h == NULL)
         {
-            unique_lock lk(mutexLoaded);
+            scoped_lock lk(mutexLoaded);
             failedLoadedModules.insert(name);
             if (g_CommandLine.verbosePass)
                 g_Log.verbose(Utf8::format("   load module '%s': FAIL\n", name.c_str()), false);
@@ -75,7 +75,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed);
     }
 
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
 
     // In case it is now loaded, after the lock
     if (isModuleLoaded(name))
@@ -97,7 +97,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (!applyPatches(name, h))
         return false;
 
-    unique_lock lk1(mutexLoaded);
+    scoped_lock lk1(mutexLoaded);
     loadedModules[name] = h;
     return true;
 }
@@ -114,7 +114,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 
 void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
 {
-    unique_lock lk(mutexPatch);
+    scoped_lock lk(mutexPatch);
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -145,7 +145,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
 
 bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 {
-    unique_lock lk(mutexPatch);
+    scoped_lock lk(mutexPatch);
 
     auto it = patchOffsets.find(moduleName);
     if (it == patchOffsets.end())

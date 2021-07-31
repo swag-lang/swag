@@ -79,7 +79,7 @@ void DataSegment::initFrom(DataSegment* other)
 
 void DataSegment::align(uint32_t alignOf)
 {
-    unique_lock lock(mutex);
+    scoped_lock lock(mutex);
     alignNoLock(alignOf);
 }
 
@@ -357,13 +357,13 @@ void DataSegment::applyPatchPtr()
 
 void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
 {
-    unique_lock lk(mutexPatchMethod);
+    scoped_lock lk(mutexPatchMethod);
     patchMethods.push_back({funcDecl, storageOffset});
 }
 
 void DataSegment::doPatchMethods(JobContext* context)
 {
-    unique_lock lk(mutexPatchMethod);
+    scoped_lock lk(mutexPatchMethod);
     for (auto it : patchMethods)
     {
         auto      funcNode  = it.first;
@@ -473,7 +473,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
 
 void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     auto        it = savedValues.find(address);
     if (it != savedValues.end())
         return;
@@ -508,7 +508,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 
 void DataSegment::restoreAllValues()
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     for (auto& one : savedValues)
     {
         if (one.second.ptr == nullptr)
@@ -547,7 +547,7 @@ void DataSegment::release()
 
 void DataSegment::makeLinear()
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     if (buckets.size() == 1)
         return;
 

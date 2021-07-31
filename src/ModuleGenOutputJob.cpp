@@ -16,7 +16,7 @@ JobResult ModuleGenOutputJob::execute()
     // Notify we are done
     if (mutexDone)
     {
-        unique_lock lk(*mutexDone);
+        scoped_lock lk(*mutexDone);
         condVar->notify_all();
     }
 

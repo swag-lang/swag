@@ -181,7 +181,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             pz++;
         }
 
-        unique_lock lk(modl->mutexGeneratedFile);
+        scoped_lock lk(modl->mutexGeneratedFile);
 
         if (!modl->handleGeneratedFile)
         {

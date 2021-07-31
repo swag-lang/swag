@@ -17,7 +17,7 @@
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
-    unique_lock lk(mutexFile);
+    scoped_lock lk(mutexFile);
     if (setupDone)
         return;
     setupDone = true;
@@ -442,7 +442,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
 
 void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
 {
-    unique_lock lk(mutexByteCodeCompiler);
+    scoped_lock lk(mutexByteCodeCompiler);
 
     // Cannot decide yet if there's a corresponding #compiler for that message, so push it
     if (numCompilerFunctions > 0)
@@ -503,7 +503,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    unique_lock lk(mutexByteCodeCompiler);
+    scoped_lock lk(mutexByteCodeCompiler);
     int         index = (int) msg->kind;
     if (byteCodeCompiler[index].empty())
         return true;
@@ -720,7 +720,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
 void Module::setHasBeenBuilt(uint32_t buildResult)
 {
-    unique_lock lk(mutexDependency);
+    scoped_lock lk(mutexDependency);
     if (hasBeenBuilt == buildResult)
         return;
     hasBeenBuilt |= buildResult;
@@ -800,7 +800,7 @@ void Module::printUserMessage(const BuildParameters& bp)
 
 void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
 {
-    unique_lock lk(mutexGlobalVars);
+    scoped_lock lk(mutexGlobalVars);
     switch (varKind)
     {
     case GlobalVarKind::Mutable:
@@ -881,7 +881,7 @@ bool Module::WaitForDependenciesDone(Job* job)
         if (depModule->numErrors)
             continue;
 
-        unique_lock lk(depModule->mutexDependency);
+        scoped_lock lk(depModule->mutexDependency);
         if (depModule->hasBeenBuilt != BUILDRES_FULL)
         {
             depModule->dependentJobs.add(job);
@@ -1000,7 +1000,7 @@ ByteCode* Module::getRuntimeFct(const char* fctName)
 
 void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
 {
-    unique_lock lk(mutexFile);
+    scoped_lock lk(mutexFile);
 
     auto it = implForToSolve.find(structName);
     if (it == implForToSolve.end())
@@ -1014,7 +1014,7 @@ void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
 
 bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
 {
-    unique_lock lk(mutexFile);
+    scoped_lock lk(mutexFile);
 
     if (typeStruct->declNode && typeStruct->declNode->flags & AST_FROM_GENERIC)
         return false;
@@ -1030,7 +1030,7 @@ bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
 
 void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
 {
-    unique_lock lk(mutexFile);
+    scoped_lock lk(mutexFile);
 
     auto it = implForToSolve.find(typeStruct->structName);
     SWAG_ASSERT(it != implForToSolve.end());

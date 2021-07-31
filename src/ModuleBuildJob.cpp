@@ -117,7 +117,7 @@ JobResult ModuleBuildJob::execute()
                 return JobResult::ReleaseJob;
 
             // If this module is not done, wait for it
-            unique_lock lk1(depModule->mutexDependency);
+            scoped_lock lk1(depModule->mutexDependency);
             if ((depModule->hasBeenBuilt & BUILDRES_EXPORT) == 0)
             {
                 depModule->dependentJobs.add(this);

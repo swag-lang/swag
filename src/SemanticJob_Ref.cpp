@@ -689,7 +689,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
                 auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
-                    unique_lock lk(symbol->mutex);
+                    scoped_lock lk(symbol->mutex);
                     for (auto overload : symbol->overloads)
                     {
                         auto t               = job->getTryMatch();

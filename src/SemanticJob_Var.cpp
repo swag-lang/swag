@@ -155,7 +155,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
 
     case TypeInfoKind::Enum:
     {
-        unique_lock lk(childType->mutex); // race condition with 'name'
+        scoped_lock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         break;
@@ -164,7 +164,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        unique_lock lk(childType->mutex); // race condition with 'name'
+        scoped_lock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         break;
     }

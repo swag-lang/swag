@@ -496,7 +496,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeParam->declNode   = funcNode;
         funcNode->methodParam = typeParam;
 
-        unique_lock lk(typeStruct->mutex);
+        scoped_lock lk(typeStruct->mutex);
         typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
         if (funcNode->ownerCompilerIfBlock)

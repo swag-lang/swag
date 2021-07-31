@@ -693,7 +693,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
     {
         for (auto f : funcNode->subDecls)
         {
-            unique_lock lk(f->mutex);
+            scoped_lock lk(f->mutex);
 
             // Disabled by #if block
             if (f->semFlags & AST_SEM_DISABLED)
@@ -702,7 +702,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
 
             if (f->ownerCompilerIfBlock && f->ownerCompilerIfBlock->ownerFct == funcNode)
             {
-                unique_lock lk1(f->ownerCompilerIfBlock->mutex);
+                scoped_lock lk1(f->ownerCompilerIfBlock->mutex);
                 f->ownerCompilerIfBlock->subDecls.push_back(f);
             }
             else

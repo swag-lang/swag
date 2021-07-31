@@ -68,7 +68,7 @@ const Utf8& Scope::getFullName()
     if (flags & SCOPE_PRIVATE)
         return name;
 
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
 
     if (!fullname.empty())
         return fullname;
@@ -115,7 +115,7 @@ void Scope::setHasExports()
 
 void Scope::addPublicFunc(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicFunc.insert(node);
     setHasExports();
@@ -123,7 +123,7 @@ void Scope::addPublicFunc(AstNode* node)
 
 void Scope::addPublicAttribute(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicAttr.insert(node);
     setHasExports();
@@ -131,7 +131,7 @@ void Scope::addPublicAttribute(AstNode* node)
 
 void Scope::addPublicInlinedFunc(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicInlinedFunc.insert(node);
     setHasExports();
@@ -139,7 +139,7 @@ void Scope::addPublicInlinedFunc(AstNode* node)
 
 void Scope::addPublicStruct(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicStruct.insert(node);
     setHasExports();
@@ -147,7 +147,7 @@ void Scope::addPublicStruct(AstNode* node)
 
 void Scope::addPublicInterface(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicInterface.insert(node);
     setHasExports();
@@ -155,7 +155,7 @@ void Scope::addPublicInterface(AstNode* node)
 
 void Scope::addPublicEnum(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicEnum.insert(node);
     setHasExports();
@@ -163,7 +163,7 @@ void Scope::addPublicEnum(AstNode* node)
 
 void Scope::addPublicConst(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicConst.insert(node);
     setHasExports();
@@ -171,7 +171,7 @@ void Scope::addPublicConst(AstNode* node)
 
 void Scope::addPublicNode(AstNode* node)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     allocPublicSet();
     publicSet->publicNodes.insert(node);
     setHasExports();
@@ -179,7 +179,7 @@ void Scope::addPublicNode(AstNode* node)
 
 bool Scope::isParentOf(Scope* child)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     while (child)
     {
         if (child == this)
@@ -234,7 +234,7 @@ bool Scope::isSameOrParentOf(Scope* child)
 
 Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
 
     // Do not create a scope if a scope with the same name already exists
     if (matchName)

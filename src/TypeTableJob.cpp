@@ -77,7 +77,7 @@ bool TypeTableJob::computeStruct()
 
     // First and main pass, by locking only the type storageSegment
     {
-        unique_lock lk1(storageSegment->mutex);
+        scoped_lock lk1(storageSegment->mutex);
 
         // Simple structure name, without generics
         SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
@@ -177,7 +177,7 @@ bool TypeTableJob::computeStruct()
 
     // Job is done, remove it from the map
     {
-        unique_lock lk1(storageSegment->mutex);
+        scoped_lock lk1(storageSegment->mutex);
         typeTable->tableJobDone(this, storageSegment);
     }
 

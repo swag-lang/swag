@@ -152,7 +152,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
 void SemanticJob::sortParameters(AstNode* allParams)
 {
-    unique_lock lk(allParams->mutex);
+    scoped_lock lk(allParams->mutex);
 
     if (!allParams || !(allParams->flags & AST_MUST_SORT_CHILDS))
         return;
@@ -874,7 +874,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             auto parentStructNode = identifier->identifierRef->startScope->owner;
             SWAG_ASSERT(parentStructNode->resolvedSymbolName);
-            unique_lock lk(parentStructNode->resolvedSymbolName->mutex);
+            scoped_lock lk(parentStructNode->resolvedSymbolName->mutex);
             if (parentStructNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
             {
                 context->job->waitForSymbolNoLock(parentStructNode->resolvedSymbolName);
@@ -2238,7 +2238,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     auto&       matches           = job->cacheMatches;
     auto        symbol            = firstMatch.symbolName;
     auto        genericParameters = firstMatch.genericParameters;
-    unique_lock lk(symbol->mutex);
+    scoped_lock lk(symbol->mutex);
 
     // If we are inside a generic function (not instantiated), then we are done, we
     // cannot instantiate (can occure when evaluating function body of an incomplete short lammbda
@@ -3426,7 +3426,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         for (auto& p : dependentSymbols)
         {
             auto        symbol = p.first;
-            unique_lock lk(symbol->mutex);
+            scoped_lock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
                 OneOverload t;

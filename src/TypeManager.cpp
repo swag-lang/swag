@@ -475,7 +475,7 @@ TypeInfo* TypeManager::literalTypeToType(const Token& token)
 
 TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 {
-    unique_lock lk(typeInfo->mutex);
+    scoped_lock lk(typeInfo->mutex);
     if (typeInfo->isConst())
         return typeInfo;
 

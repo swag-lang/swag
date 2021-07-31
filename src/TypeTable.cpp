@@ -226,7 +226,7 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    unique_lock lk(storageSegment->mutex);
+    scoped_lock lk(storageSegment->mutex);
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, storageSegment, storageOffset, cflags, ptrTypeInfo));
     return true;
 }
@@ -379,7 +379,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     storedMap[typeName]   = mapType;
 
     {
-        unique_lock lk(lockReverse);
+        scoped_lock lk(lockReverse);
         concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
     }
 

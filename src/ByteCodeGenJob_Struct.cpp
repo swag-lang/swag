@@ -156,7 +156,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
-            unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
         return true;
@@ -171,7 +171,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
-            unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
         return true;
@@ -310,7 +310,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -429,7 +429,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -557,7 +557,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -684,7 +684,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 

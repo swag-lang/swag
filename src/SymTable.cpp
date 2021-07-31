@@ -22,7 +22,7 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     return registerSymbolNameNoLock(context, node, kind, aliasName);
 }
 
@@ -61,7 +61,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 
     if (!wasPlaceHolder)
     {
-        unique_lock lock(symbol->mutex);
+        scoped_lock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
         {
             symbol->cptOverloads++;
@@ -83,7 +83,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             DataSegment*   storageSegment,
                                             Utf8*          aliasName)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->isGenerated)
         flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
@@ -122,7 +122,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (resultName)
         *resultName = symbol;
 
-    unique_lock     lock(symbol->mutex);
+    scoped_lock     lock(symbol->mutex);
     SymbolOverload* result = nullptr;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolName = symbol;
@@ -522,7 +522,7 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 
 void SymbolName::addDependentJob(Job* job)
 {
-    unique_lock lk(mutex);
+    scoped_lock lk(mutex);
     dependentJobs.add(job);
 }
 
