@@ -8,16 +8,6 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-void AstNode::lock()
-{
-    mutex.lock();
-}
-
-void AstNode::unlock()
-{
-    mutex.unlock();
-}
-
 void AstNode::inheritOrFlag(uint64_t flag)
 {
     for (auto child : childs)

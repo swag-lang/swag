@@ -79,7 +79,7 @@ void DataSegment::initFrom(DataSegment* other)
 
 void DataSegment::align(uint32_t alignOf)
 {
-    scoped_lock lock(mutex);
+    scoped_lock lk(mutex);
     alignNoLock(alignOf);
 }
 
@@ -99,7 +99,7 @@ void DataSegment::alignNoLock(uint32_t alignOf)
 
 uint32_t DataSegment::reserve(uint32_t size, uint8_t** resultPtr, uint32_t alignOf)
 {
-    scoped_lock lock(mutex);
+    scoped_lock lk(mutex);
     return reserveNoLock(size, alignOf, resultPtr);
 }
 

@@ -186,9 +186,6 @@ struct CloneContext
 
 struct AstNode
 {
-    void lock();
-    void unlock();
-
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);

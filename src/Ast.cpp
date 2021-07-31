@@ -50,10 +50,9 @@ namespace Ast
             node->flags |= parent->flags & AST_RUN_BLOCK;
             node->flags |= parent->flags & AST_IN_MIXIN;
 
-            parent->lock();
+            scoped_lock lk(parent->mutex);
             node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
-            parent->unlock();
         }
     }
 
