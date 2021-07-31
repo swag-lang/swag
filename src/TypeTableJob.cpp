@@ -75,111 +75,104 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
-    // First and main pass, by locking only the type storageSegment
+    scoped_lock lk(typeTable->mutex);
+
+    // Simple structure name, without generics
+    SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
+
+    // Update methods with types if generic
+    if (!realType->replaceTypes.empty())
     {
-        scoped_lock lk1(storageSegment->mutex);
-
-        // Simple structure name, without generics
-        SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
-
-        // Update methods with types if generic
-        if (!realType->replaceTypes.empty())
+        for (auto method : realType->methods)
         {
-            for (auto method : realType->methods)
-            {
-                method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
-            }
-
-            // Update field  with types if generic
-            for (auto field : realType->fields)
-            {
-                field->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, field->typeInfo);
-            }
+            method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
         }
 
-        SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
-
-        // Generics
-        concreteType->generics.buffer = 0;
-        concreteType->generics.count  = realType->genericParameters.size();
-        if (concreteType->generics.count)
+        // Update field  with types if generic
+        for (auto field : realType->fields)
         {
-            uint32_t count = (uint32_t) concreteType->generics.count;
-            uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
-            for (int param = 0; param < concreteType->generics.count; param++)
-            {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
-                storageArray += sizeof(ConcreteTypeInfoParam);
-            }
-        }
-
-        // Fields
-        concreteType->fields.buffer = 0;
-        concreteType->fields.count  = realType->fields.size();
-        if (concreteType->fields.count)
-        {
-            uint32_t count = (uint32_t) concreteType->fields.count;
-            uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
-            for (int param = 0; param < concreteType->fields.count; param++)
-            {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
-                storageArray += sizeof(ConcreteTypeInfoParam);
-            }
-        }
-
-        // Methods
-        concreteType->methods.buffer = 0;
-        concreteType->methods.count  = realType->methods.size();
-        if (concreteType->methods.count)
-        {
-            uint32_t count = (uint32_t) concreteType->methods.count;
-            uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
-            for (int param = 0; param < concreteType->methods.count; param++)
-            {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
-
-                // 'value' will contain a pointer to the lambda.
-                // Register it for later patches
-                uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
-                AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
-                patchMethods.push_back({funcNode, fieldOffset});
-
-                storageArray += sizeof(ConcreteTypeInfoParam);
-            }
-        }
-
-        // Interfaces
-        concreteType->interfaces.buffer = 0;
-        concreteType->interfaces.count  = realType->interfaces.size();
-        if (concreteType->interfaces.count)
-        {
-            uint32_t count = (uint32_t) concreteType->interfaces.count;
-            uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
-            for (int param = 0; param < concreteType->interfaces.count; param++)
-            {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
-
-                // :ItfIsConstantSeg
-                // Compute the storage of the interface for swag_runtime_interfaceof
-                uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
-                uint32_t valueOffset = storageArray + fieldOffset;
-                storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
-                addrArray[param].value = module->constantSegment.address(storageSegment, realType->interfaces[param]->offset);
-
-                storageArray += sizeof(ConcreteTypeInfoParam);
-            }
+            field->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, field->typeInfo);
         }
     }
 
-    // Job is done, remove it from the map
+    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+
+    // Generics
+    concreteType->generics.buffer = 0;
+    concreteType->generics.count  = realType->genericParameters.size();
+    if (concreteType->generics.count)
     {
-        scoped_lock lk1(storageSegment->mutex);
-        typeTable->tableJobDone(this, storageSegment);
+        uint32_t count = (uint32_t) concreteType->generics.count;
+        uint32_t storageArray;
+        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        for (int param = 0; param < concreteType->generics.count; param++)
+        {
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+            storageArray += sizeof(ConcreteTypeInfoParam);
+        }
     }
+
+    // Fields
+    concreteType->fields.buffer = 0;
+    concreteType->fields.count  = realType->fields.size();
+    if (concreteType->fields.count)
+    {
+        uint32_t count = (uint32_t) concreteType->fields.count;
+        uint32_t storageArray;
+        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+        for (int param = 0; param < concreteType->fields.count; param++)
+        {
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+            storageArray += sizeof(ConcreteTypeInfoParam);
+        }
+    }
+
+    // Methods
+    concreteType->methods.buffer = 0;
+    concreteType->methods.count  = realType->methods.size();
+    if (concreteType->methods.count)
+    {
+        uint32_t count = (uint32_t) concreteType->methods.count;
+        uint32_t storageArray;
+        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+        for (int param = 0; param < concreteType->methods.count; param++)
+        {
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+
+            // 'value' will contain a pointer to the lambda.
+            // Register it for later patches
+            uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+            AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+            patchMethods.push_back({funcNode, fieldOffset});
+
+            storageArray += sizeof(ConcreteTypeInfoParam);
+        }
+    }
+
+    // Interfaces
+    concreteType->interfaces.buffer = 0;
+    concreteType->interfaces.count  = realType->interfaces.size();
+    if (concreteType->interfaces.count)
+    {
+        uint32_t count = (uint32_t) concreteType->interfaces.count;
+        uint32_t storageArray;
+        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+        for (int param = 0; param < concreteType->interfaces.count; param++)
+        {
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+
+            // :ItfIsConstantSeg
+            // Compute the storage of the interface for swag_runtime_interfaceof
+            uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
+            uint32_t valueOffset = storageArray + fieldOffset;
+            storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
+            addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
+
+            storageArray += sizeof(ConcreteTypeInfoParam);
+        }
+    }
+
+    typeTable->tableJobDone(this, storageSegment);
 
     return true;
 }

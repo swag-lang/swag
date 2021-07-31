@@ -29,6 +29,7 @@ void DataSegment::setup(SegmentKind _kind, Module* _module)
         break;
     case SegmentKind::Data:
         name = "data segment";
+        name = "data segment";
         break;
     case SegmentKind::Bss:
         name = "bss segment";
@@ -210,17 +211,16 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
+uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
 {
-    SWAG_RACE_CONDITION_WRITE(raceC);
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
-        auto     stringOffset = addStringNoLock(computedValue.text);
+        auto     stringOffset = addString(computedValue.text);
         uint8_t* addr;
-        auto     storageOffset = reserveNoLock(2 * sizeof(uint64_t), &addr);
+        auto     storageOffset = reserve(2 * sizeof(uint64_t), &addr);
         ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.c_str();
         ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.length();
         if (resultPtr)
@@ -229,6 +229,7 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
         return storageOffset;
     }
 
+    scoped_lock lk(mutex);
     switch (typeInfo->sizeOf)
     {
     case 1:

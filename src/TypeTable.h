@@ -18,9 +18,8 @@ static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000002;
 
 struct TypeTable
 {
-    bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
-    bool makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cFlags, TypeInfo** ptrTypeInfo = nullptr);
-
+    bool  makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
+    bool  makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool  makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);
     bool  makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, TypeInfo* typeInfo, uint32_t cFlags);
     bool  makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, uint32_t cFlags);
@@ -45,7 +44,7 @@ struct TypeTable
     map<Utf8, MapType> concreteTypes;
     map<Utf8, MapType> concreteTypesCompiler;
 
-    shared_mutex                      lockReverse;
+    shared_mutex                      mutex;
     map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
 
     map<Utf8, TypeTableJob*> concreteTypesJob;

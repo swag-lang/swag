@@ -63,7 +63,7 @@ struct DataSegment
         uint8_t* addr;
     };
 
-    uint32_t                  addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr = nullptr);
+    uint32_t                  addComputedValue(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr = nullptr);
     map<uint8_t, CacheValue>  storedValues8;
     map<uint16_t, CacheValue> storedValues16;
     map<uint32_t, CacheValue> storedValues32;
