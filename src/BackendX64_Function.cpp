@@ -3551,7 +3551,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
-                emitCall(pp, "powf");
+                emitCall(pp, g_LangSpec.name_powf);
                 break;
             case TokenId::IntrinsicMin:
                 concat.addString4("\xF3\x0F\x5D\xC1"); // minss xmm0, xmm1
@@ -3560,7 +3560,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, "atan2f");
+                emitCall(pp, g_LangSpec.name_atan2f);
                 break;
             default:
                 ok = false;
@@ -3577,7 +3577,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
-                emitCall(pp, "pow");
+                emitCall(pp, g_LangSpec.name_pow);
                 break;
             case TokenId::IntrinsicMin:
                 concat.addString4("\xF2\x0F\x5D\xC1"); // minss xmm0, xmm1
@@ -3586,7 +3586,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, "atan2");
+                emitCall(pp, g_LangSpec.name_atan2);
                 break;
             default:
                 ok = false;
@@ -3606,52 +3606,52 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\x51\xC0"); // sqrtps xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
-                emitCall(pp, "sinf");
+                emitCall(pp, g_LangSpec.name_sinf);
                 break;
             case TokenId::IntrinsicCos:
-                emitCall(pp, "cosf");
+                emitCall(pp, g_LangSpec.name_cosf);
                 break;
             case TokenId::IntrinsicTan:
-                emitCall(pp, "tanf");
+                emitCall(pp, g_LangSpec.name_tanf);
                 break;
             case TokenId::IntrinsicSinh:
-                emitCall(pp, "sinhf");
+                emitCall(pp, g_LangSpec.name_sinhf);
                 break;
             case TokenId::IntrinsicCosh:
-                emitCall(pp, "coshf");
+                emitCall(pp, g_LangSpec.name_coshf);
                 break;
             case TokenId::IntrinsicTanh:
-                emitCall(pp, "tanhf");
+                emitCall(pp, g_LangSpec.name_tanhf);
                 break;
             case TokenId::IntrinsicASin:
-                emitCall(pp, "asinf");
+                emitCall(pp, g_LangSpec.name_asinf);
                 break;
             case TokenId::IntrinsicACos:
-                emitCall(pp, "acosf");
+                emitCall(pp, g_LangSpec.name_acosf);
                 break;
             case TokenId::IntrinsicATan:
-                emitCall(pp, "atanf");
+                emitCall(pp, g_LangSpec.name_atanf);
                 break;
             case TokenId::IntrinsicLog:
-                emitCall(pp, "logf");
+                emitCall(pp, g_LangSpec.name_logf);
                 break;
             case TokenId::IntrinsicLog2:
-                emitCall(pp, "log2f");
+                emitCall(pp, g_LangSpec.name_log2f);
                 break;
             case TokenId::IntrinsicLog10:
-                emitCall(pp, "log10f");
+                emitCall(pp, g_LangSpec.name_log10f);
                 break;
             case TokenId::IntrinsicFloor:
-                emitCall(pp, "floorf");
+                emitCall(pp, g_LangSpec.name_floorf);
                 break;
             case TokenId::IntrinsicCeil:
-                emitCall(pp, "ceilf");
+                emitCall(pp, g_LangSpec.name_ceilf);
                 break;
             case TokenId::IntrinsicTrunc:
-                emitCall(pp, "truncf");
+                emitCall(pp, g_LangSpec.name_truncf);
                 break;
             case TokenId::IntrinsicRound:
-                emitCall(pp, "roundf");
+                emitCall(pp, g_LangSpec.name_roundf);
                 break;
             case TokenId::IntrinsicAbs:
                 BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF, RAX);
@@ -3659,10 +3659,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
                 break;
             case TokenId::IntrinsicExp:
-                emitCall(pp, "expf");
+                emitCall(pp, g_LangSpec.name_expf);
                 break;
             case TokenId::IntrinsicExp2:
-                emitCall(pp, "exp2f");
+                emitCall(pp, g_LangSpec.name_exp2f);
                 break;
             default:
                 ok = false;
@@ -3683,55 +3683,55 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\x51\xC0"); // sqrtpd xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
-                emitCall(pp, "sin");
+                emitCall(pp, g_LangSpec.name_sin);
                 break;
             case TokenId::IntrinsicCos:
-                emitCall(pp, "cos");
+                emitCall(pp, g_LangSpec.name_cos);
                 break;
             case TokenId::IntrinsicTan:
-                emitCall(pp, "tan");
+                emitCall(pp, g_LangSpec.name_tan);
                 break;
             case TokenId::IntrinsicSinh:
-                emitCall(pp, "sinh");
+                emitCall(pp, g_LangSpec.name_sinh);
                 break;
             case TokenId::IntrinsicCosh:
-                emitCall(pp, "cosh");
+                emitCall(pp, g_LangSpec.name_cosh);
                 break;
             case TokenId::IntrinsicTanh:
-                emitCall(pp, "tanh");
+                emitCall(pp, g_LangSpec.name_tanh);
                 break;
             case TokenId::IntrinsicASin:
-                emitCall(pp, "asin");
+                emitCall(pp, g_LangSpec.name_asin);
                 break;
             case TokenId::IntrinsicACos:
-                emitCall(pp, "acos");
+                emitCall(pp, g_LangSpec.name_acos);
                 break;
             case TokenId::IntrinsicATan:
-                emitCall(pp, "atan");
+                emitCall(pp, g_LangSpec.name_atan);
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, "atan2");
+                emitCall(pp, g_LangSpec.name_atan2);
                 break;
             case TokenId::IntrinsicLog:
-                emitCall(pp, "log");
+                emitCall(pp, g_LangSpec.name_log);
                 break;
             case TokenId::IntrinsicLog2:
-                emitCall(pp, "log2");
+                emitCall(pp, g_LangSpec.name_log2);
                 break;
             case TokenId::IntrinsicLog10:
-                emitCall(pp, "log10");
+                emitCall(pp, g_LangSpec.name_log10);
                 break;
             case TokenId::IntrinsicFloor:
-                emitCall(pp, "floor");
+                emitCall(pp, g_LangSpec.name_floor);
                 break;
             case TokenId::IntrinsicCeil:
-                emitCall(pp, "ceil");
+                emitCall(pp, g_LangSpec.name_ceil);
                 break;
             case TokenId::IntrinsicTrunc:
-                emitCall(pp, "trunc");
+                emitCall(pp, g_LangSpec.name_trunc);
                 break;
             case TokenId::IntrinsicRound:
-                emitCall(pp, "round");
+                emitCall(pp, g_LangSpec.name_round);
                 break;
             case TokenId::IntrinsicAbs:
                 BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF'FFFFFFFF, RAX);
@@ -3739,10 +3739,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
                 break;
             case TokenId::IntrinsicExp:
-                emitCall(pp, "exp");
+                emitCall(pp, g_LangSpec.name_exp);
                 break;
             case TokenId::IntrinsicExp2:
-                emitCall(pp, "exp2");
+                emitCall(pp, g_LangSpec.name_exp2);
                 break;
             default:
                 ok = false;

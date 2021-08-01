@@ -152,6 +152,47 @@ void LanguageSpec::setupNames()
     name_atinterfaceof = "@interfaceof";
     name_atstrcmp      = "@strcmp";
     name_attypecmp     = "@typecmp";
+
+    name_powf   = "powf";
+    name_atan2f = "atan2f";
+    name_pow    = "pow";
+    name_atan2  = "atan2";
+    name_sinf   = "sinf";
+    name_cosf   = "cosf";
+    name_tanf   = "tanf";
+    name_sinhf  = "sinhf";
+    name_coshf  = "coshf";
+    name_tanhf  = "tanhf";
+    name_asinf  = "asinf";
+    name_acosf  = "acosf";
+    name_atanf  = "atanf";
+    name_logf   = "logf";
+    name_log2f  = "log2f";
+    name_log10f = "log10f";
+    name_floorf = "floorf";
+    name_ceilf  = "ceilf";
+    name_truncf = "truncf";
+    name_roundf = "roundf";
+    name_expf   = "expf";
+    name_exp2f  = "exp2f";
+    name_sin    = "sin";
+    name_cos    = "cos";
+    name_tan    = "tan";
+    name_sinh   = "sinh";
+    name_cosh   = "cosh";
+    name_tanh   = "tanh";
+    name_asin   = "asin";
+    name_acos   = "acos";
+    name_atan   = "atan";
+    name_log    = "log";
+    name_log2   = "log2";
+    name_log10  = "log10";
+    name_floor  = "floor";
+    name_ceil   = "ceil";
+    name_trunc  = "trunc";
+    name_round  = "round";
+    name_exp    = "exp";
+    name_exp2   = "exp2";
 }
 
 void LanguageSpec::setupKeywords()
