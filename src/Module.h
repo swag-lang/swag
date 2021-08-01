@@ -145,7 +145,7 @@ struct Module
 
     string path;
     Utf8   name;
-    Utf8   nameDown;
+    Utf8   nameNormalized;
     Utf8   remoteLocationDep;
 
     BuildCfg        buildCfg;

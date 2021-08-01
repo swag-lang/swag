@@ -178,7 +178,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global init of this module
     {
         auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-        auto funcInit = modu.getOrInsertFunction(Utf8::format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
+        auto funcInit = modu.getOrInsertFunction(Utf8::format("%s_globalInit", module->nameNormalized.c_str()).c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
@@ -206,7 +206,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto funcDrop = modu.getOrInsertFunction(Utf8::format("%s_globalDrop", module->nameDown.c_str()).c_str(), funcTypeVoid);
+    auto funcDrop = modu.getOrInsertFunction(Utf8::format("%s_globalDrop", module->nameNormalized.c_str()).c_str(), funcTypeVoid);
     builder.CreateCall(funcDrop);
 
     // Call to global drop of all dependencies
@@ -240,7 +240,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalInit", module->nameNormalized.c_str()).c_str(), modu);
     fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
@@ -289,7 +289,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto  modu    = pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Utf8::format("%s_globalDrop", module->nameNormalized.c_str()).c_str(), modu);
     fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);

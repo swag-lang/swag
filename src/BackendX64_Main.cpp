@@ -131,7 +131,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     // Call to global init of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    auto thisInit = Utf8::format("%s_globalInit", module->nameDown.c_str());
+    auto thisInit = Utf8::format("%s_globalInit", module->nameNormalized.c_str());
     emitCall(pp, thisInit);
 
     // Call to test functions
@@ -153,7 +153,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto thisDrop = Utf8::format("%s_globalDrop", module->nameDown.c_str());
+    auto thisDrop = Utf8::format("%s_globalDrop", module->nameNormalized.c_str());
     emitCall(pp, thisDrop);
 
     // Call to global drop of all dependencies
@@ -221,7 +221,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     alignConcat(concat, 16);
     auto startAddress = concat.totalCount();
 
-    auto thisInit        = Utf8::format("%s_globalInit", module->nameDown.c_str());
+    auto thisInit        = Utf8::format("%s_globalInit", module->nameNormalized.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
@@ -276,7 +276,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     alignConcat(concat, 16);
     auto startAddress = concat.totalCount();
 
-    auto thisDrop        = Utf8::format("%s_globalDrop", module->nameDown.c_str());
+    auto thisDrop        = Utf8::format("%s_globalDrop", module->nameNormalized.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
