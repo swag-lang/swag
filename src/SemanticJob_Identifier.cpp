@@ -2952,20 +2952,21 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
 bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
+    scoped_lock lk(funcDecl->mutex);
+
     // Be sure block has been solved
+    if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
     {
-        scoped_lock lk(funcDecl->mutex);
-        if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
-        {
-            funcDecl->dependentJobs.add(context->job);
-            context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
-            return true;
-        }
+        funcDecl->dependentJobs.add(context->job);
+        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
+        return true;
     }
 
     // Execute #selectif/#checkif block
     auto expr = funcDecl->selectIf->childs.back();
 
+    // #checkif is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
+    // #selectif is evaluated once, so keep it.
     if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
         expr->flags &= ~AST_VALUE_COMPUTED;
 
@@ -2999,32 +3000,26 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
 
     if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
     {
-        scoped_lock lk(funcDecl->mutex);
+        funcDecl->content->flags &= ~AST_NO_SEMANTIC;
 
-        // Do it again, after the lock, in case another thread did it before us
-        if (funcDecl->content->flags & AST_NO_SEMANTIC)
-        {
-            funcDecl->content->flags &= ~AST_NO_SEMANTIC;
+        // Need to restart semantic on instantiated function and on its content,
+        // because the #selectif has passed
+        // It's safe to create a job with the content as it has been fully evaluated.
+        // It's NOT safe for the function itself as the job that deals with it can be
+        // still running
+        auto job          = g_Allocator.alloc<SemanticJob>();
+        job->sourceFile   = context->sourceFile;
+        job->module       = context->sourceFile->module;
+        job->dependentJob = context->job->dependentJob;
+        job->nodes.push_back(funcDecl->content);
 
-            // Need to restart semantic on instantiated function and on its content,
-            // because the #selectif has passed
-            // It's safe to create a job with the content as it has been fully evaluated.
-            // It's NOT safe for the function itself as the job that deals with it can be
-            // still running
-            auto job          = g_Allocator.alloc<SemanticJob>();
-            job->sourceFile   = context->sourceFile;
-            job->module       = context->sourceFile->module;
-            job->dependentJob = context->job->dependentJob;
-            job->nodes.push_back(funcDecl->content);
+        // To avoid a race condition with the job that is currently dealing with the funcDecl,
+        // we will reevaluate it with a semanticAfterFct trick
+        funcDecl->content->allocateExtension();
+        SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
+        funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
 
-            // To avoid a race condition with the job that is currently dealing with the funcDecl,
-            // we will reevaluate it with a semanticAfterFct trick
-            funcDecl->content->allocateExtension();
-            SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-            funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
-
-            g_ThreadMgr.addJob(job);
-        }
+        g_ThreadMgr.addJob(job);
     }
 
     return true;
