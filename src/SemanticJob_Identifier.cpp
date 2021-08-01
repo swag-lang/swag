@@ -2950,6 +2950,86 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
     return true;
 }
 
+bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+{
+    // Be sure block has been solved
+    {
+        scoped_lock lk(funcDecl->mutex);
+        if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
+        {
+            funcDecl->dependentJobs.add(context->job);
+            context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
+            return true;
+        }
+    }
+
+    // Execute #selectif/#checkif block
+    auto expr = funcDecl->selectIf->childs.back();
+
+    if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
+        expr->flags &= ~AST_VALUE_COMPUTED;
+
+    if (!(expr->flags & AST_VALUE_COMPUTED))
+    {
+        auto node                   = context->node;
+        context->selectIfParameters = oneMatch->oneOverload->callParameters;
+        if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
+            context->expansionNode.push_back({node, JobContext::ExpansionType::CheckIf});
+        else
+            context->expansionNode.push_back({node, JobContext::ExpansionType::SelectIf});
+
+        auto result = executeNode(context, expr, true);
+
+        context->selectIfParameters = nullptr;
+        context->expansionNode.pop_back();
+
+        if (!result)
+            return false;
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    // Result
+    if (!expr->computedValue->reg.b)
+    {
+        oneMatch->remove                              = true;
+        oneMatch->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
+        return true;
+    }
+
+    if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
+    {
+        scoped_lock lk(funcDecl->mutex);
+
+        // Do it again, after the lock, in case another thread did it before us
+        if (funcDecl->content->flags & AST_NO_SEMANTIC)
+        {
+            funcDecl->content->flags &= ~AST_NO_SEMANTIC;
+
+            // Need to restart semantic on instantiated function and on its content,
+            // because the #selectif has passed
+            // It's safe to create a job with the content as it has been fully evaluated.
+            // It's NOT safe for the function itself as the job that deals with it can be
+            // still running
+            auto job          = g_Allocator.alloc<SemanticJob>();
+            job->sourceFile   = context->sourceFile;
+            job->module       = context->sourceFile->module;
+            job->dependentJob = context->job->dependentJob;
+            job->nodes.push_back(funcDecl->content);
+
+            // To avoid a race condition with the job that is currently dealing with the funcDecl,
+            // we will reevaluate it with a semanticAfterFct trick
+            funcDecl->content->allocateExtension();
+            SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
+            funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+
+            g_ThreadMgr.addJob(job);
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     auto node = context->node;
@@ -2958,7 +3038,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto over    = matches[i]->symbolOverload;
         auto overSym = over->symbol;
 
-        // Take care of #selectif
+        // Take care of #selectif/#checkif
         if (overSym->kind == SymbolKind::Function &&
             !(context->node->flags & AST_IN_SELECTIF) &&
             !(context->node->attributeFlags & ATTRIBUTE_SELECTIF_OFF))
@@ -2966,79 +3046,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
             {
-                // Be sure selectIf block has been solved
-                {
-                    scoped_lock lk(funcDecl->mutex);
-                    if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
-                    {
-                        funcDecl->dependentJobs.add(context->job);
-                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
-                        return true;
-                    }
-                }
-
-                // Execute #selectif block
-                auto expr = funcDecl->selectIf->childs.back();
-
-                if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-                    expr->flags &= ~AST_VALUE_COMPUTED;
-
-                if (!(expr->flags & AST_VALUE_COMPUTED))
-                {
-                    context->selectIfParameters = matches[i]->oneOverload->callParameters;
-                    if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-                        context->expansionNode.push_back({node, JobContext::ExpansionType::CheckIf});
-                    else
-                        context->expansionNode.push_back({node, JobContext::ExpansionType::SelectIf});
-
-                    auto result = executeNode(context, expr, true);
-
-                    context->selectIfParameters = nullptr;
-                    context->expansionNode.pop_back();
-
-                    if (!result)
-                        return false;
-                    if (context->result != ContextResult::Done)
-                        return true;
-                }
-
-                // Result
-                if (!expr->computedValue->reg.b)
-                {
-                    matches[i]->remove                              = true;
-                    matches[i]->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
+                SWAG_CHECK(solveSelectIf(context, matches[i], funcDecl));
+                if (context->result != ContextResult::Done)
+                    return true;
+                if (matches[i]->remove)
                     continue;
-                }
-
-                if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
-                {
-                    scoped_lock lk(funcDecl->mutex);
-
-                    // Do it again, after the lock, in case another thread did it before us
-                    if (funcDecl->content->flags & AST_NO_SEMANTIC)
-                    {
-                        funcDecl->content->flags &= ~AST_NO_SEMANTIC;
-
-                        // Need to restart semantic on instantiated function and on its content,
-                        // because the #selectif has passed
-                        // It's safe to create a job with the content as it has been fully evaluated.
-                        // It's NOT safe for the function itself as the job that deals with it can be
-                        // still running
-                        auto job          = g_Allocator.alloc<SemanticJob>();
-                        job->sourceFile   = context->sourceFile;
-                        job->module       = context->sourceFile->module;
-                        job->dependentJob = context->job->dependentJob;
-                        job->nodes.push_back(funcDecl->content);
-
-                        // To avoid a race condition with the job that is currently dealing with the funcDecl,
-                        // we will reevaluate it with a semanticAfterFct trick
-                        funcDecl->content->allocateExtension();
-                        SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-                        funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
-
-                        g_ThreadMgr.addJob(job);
-                    }
-                }
             }
         }
 

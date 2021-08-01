@@ -324,6 +324,7 @@ struct SemanticJob : public Job
     static bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool         filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches);
     static bool         filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
+    static bool         solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     static bool         filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool         filterSymbols(SemanticContext* context, AstIdentifier* node);
     static bool         preResolveGeneratedStruct(SemanticContext* context);
