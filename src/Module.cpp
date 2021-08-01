@@ -22,11 +22,9 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
 
-    name   = moduleName;
-    nameUp = name;
-    nameUp.replaceAll('.', '_');
-    nameDown = nameUp;
-    nameUp.makeUpper();
+    name     = moduleName;
+    nameDown = name;
+    nameDown.replaceAll('.', '_');
     path = modulePath.c_str();
 
     scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
