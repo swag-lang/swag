@@ -625,6 +625,45 @@ void Workspace::checkPendingJobs()
         errorPendingJobs(pendingJobs);
 }
 
+bool Workspace::buildRTModule(Module* module)
+{
+    for (auto f : module->files)
+    {
+        auto job        = g_Allocator.alloc<SyntaxJob>();
+        job->sourceFile = f;
+        g_ThreadMgr.addJob(job);
+    }
+
+    g_ThreadMgr.waitEndJobs();
+
+    if (module->numErrors)
+    {
+        g_Log.error(module->kind == ModuleKind::BootStrap ? Msg0552 : Msg0554);
+        return false;
+    }
+
+    auto job    = g_Allocator.alloc<ModuleSemanticJob>();
+    job->module = module;
+    g_ThreadMgr.addJob(job);
+    g_ThreadMgr.waitEndJobs();
+    checkPendingJobs();
+
+    ByteCodeOptimizerJob opt;
+    opt.module     = module;
+    opt.startIndex = 0;
+    opt.endIndex   = (int) module->byteCodeFunc.size();
+    opt.optimize(false);
+
+    // Errors !!!
+    if (module->numErrors)
+    {
+        g_Log.error(module->kind == ModuleKind::BootStrap ? Msg0552 : Msg0554);
+        return false;
+    }
+
+    return true;
+}
+
 bool Workspace::buildTarget()
 {
     // Bootstrap module semantic pass
@@ -632,41 +671,7 @@ bool Workspace::buildTarget()
     {
         Timer timer(&g_Stats.bootstrapTime);
         timer.start();
-
-        for (auto f : bootstrapModule->files)
-        {
-            auto job        = g_Allocator.alloc<SyntaxJob>();
-            job->sourceFile = f;
-            g_ThreadMgr.addJob(job);
-        }
-
-        g_ThreadMgr.waitEndJobs();
-
-        if (bootstrapModule->numErrors)
-        {
-            g_Log.error(Msg0552);
-            return false;
-        }
-
-        auto job    = g_Allocator.alloc<ModuleSemanticJob>();
-        job->module = bootstrapModule;
-        g_ThreadMgr.addJob(job);
-        g_ThreadMgr.waitEndJobs();
-        checkPendingJobs();
-
-        ByteCodeOptimizerJob opt;
-        opt.module     = bootstrapModule;
-        opt.startIndex = 0;
-        opt.endIndex   = (int) bootstrapModule->byteCodeFunc.size();
-        opt.optimize(false);
-
-        // Errors !!!
-        if (bootstrapModule->numErrors)
-        {
-            g_Log.error(Msg0552);
-            return false;
-        }
-
+        SWAG_CHECK(buildRTModule(bootstrapModule));
         timer.stop();
     }
 
@@ -675,44 +680,7 @@ bool Workspace::buildTarget()
     {
         Timer timer(&g_Stats.runtimeTime);
         timer.start();
-
-        for (auto f : runtimeModule->files)
-        {
-            auto job        = g_Allocator.alloc<SyntaxJob>();
-            job->sourceFile = f;
-            g_ThreadMgr.addJob(job);
-        }
-
-        g_ThreadMgr.waitEndJobs();
-
-        if (runtimeModule->numErrors)
-        {
-            g_Log.error(Msg0554);
-            return false;
-        }
-
-        runtimeModule->constantSegment.initFrom(&bootstrapModule->constantSegment);
-        runtimeModule->mutableSegment.initFrom(&bootstrapModule->mutableSegment);
-
-        auto job    = g_Allocator.alloc<ModuleSemanticJob>();
-        job->module = runtimeModule;
-        g_ThreadMgr.addJob(job);
-        g_ThreadMgr.waitEndJobs();
-        checkPendingJobs();
-
-        ByteCodeOptimizerJob opt;
-        opt.module     = runtimeModule;
-        opt.startIndex = 0;
-        opt.endIndex   = (int) runtimeModule->byteCodeFunc.size();
-        opt.optimize(false);
-
-        // Errors !!!
-        if (runtimeModule->numErrors)
-        {
-            g_Log.error(Msg0554);
-            return false;
-        }
-
+        SWAG_CHECK(buildRTModule(runtimeModule));
         timer.stop();
     }
 

@@ -41,6 +41,7 @@ struct Workspace
 {
     void    errorPendingJobs(vector<PendingJob>& pendingJobs);
     void    checkPendingJobs();
+    bool    buildRTModule(Module* module);
     bool    buildTarget();
     bool    build();
     Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind);
