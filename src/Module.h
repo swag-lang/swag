@@ -204,12 +204,12 @@ struct Module
     VectorNative<AstNode*> globalVarsConstant;
     void                   addGlobalVar(AstNode* node, GlobalVarKind varKind);
 
-    struct forSolve
+    struct ForSolve
     {
         uint32_t      count;
         DependentJobs dependentJobs;
     };
-    map<Utf8, forSolve> implForToSolve;
+    map<Utf8, ForSolve> implForToSolve;
     void                addImplForToSolve(const Utf8& structName, uint32_t count = 1);
     bool                waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
     void                decImplForToSolve(TypeInfoStruct* typeStruct);
