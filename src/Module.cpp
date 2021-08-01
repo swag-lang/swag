@@ -848,7 +848,7 @@ bool Module::hasBytecodeToRun()
     return runByteCode;
 }
 
-bool Module::WaitForDependenciesDone(Job* job)
+bool Module::waitForDependenciesDone(Job* job)
 {
     if (dependenciesDone)
         return true;

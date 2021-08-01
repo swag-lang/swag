@@ -91,7 +91,7 @@ JobResult ModuleOutputJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (!module->WaitForDependenciesDone(this))
+        if (!module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
         pass = ModuleOutputJobPass::GenOutput;
     }

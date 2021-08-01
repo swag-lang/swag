@@ -77,27 +77,29 @@ struct Module
     void        setup(const Utf8& moduleName, const Utf8& modulePath);
     void        release();
     void        allocateBackend();
-    void        addExportSourceFile(SourceFile* file);
-    void        addFileNoLock(SourceFile* file);
-    void        addFile(SourceFile* file);
-    void        removeFile(SourceFile* file);
-    bool        error(const Utf8& msg);
-    bool        internalError(const Utf8& msg);
-    bool        internalError(AstNode* node, Token& token, const Utf8& msg);
-    bool        mustOptimizeBC(AstNode* node);
-    bool        mustOptimizeBK(AstNode* node);
-    bool        mustEmitSafetyOF(AstNode* node);
-    bool        mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff);
-    bool        mustGenerateTestExe();
-    bool        canGenerateLegit();
-    SourceFile* findFile(const Utf8& fileName);
-    void        addErrorModule(Module* module);
 
-    bool              executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
-    bool              executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
-    void              printUserMessage(const BuildParameters& bp);
-    TypeInfoFuncAttr* getRuntimeTypeFct(const char* fctName);
-    ByteCode*         getRuntimeFct(const char* fctName);
+    void        addExportSourceFile(SourceFile* file);
+    void        addFile(SourceFile* file);
+    void        addFileNoLock(SourceFile* file);
+    void        addErrorModule(Module* module);
+    void        removeFile(SourceFile* file);
+    SourceFile* findFile(const Utf8& fileName);
+
+    bool error(const Utf8& msg);
+    bool internalError(const Utf8& msg);
+    bool internalError(AstNode* node, Token& token, const Utf8& msg);
+    void printUserMessage(const BuildParameters& bp);
+    void printBC();
+
+    bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
+    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
+    bool compileString(const Utf8& str);
+    bool hasBytecodeToRun();
+
+    bool mustOptimizeBC(AstNode* node);
+    bool mustOptimizeBK(AstNode* node);
+    bool mustEmitSafetyOF(AstNode* node);
+    bool mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff);
 
     void setBuildPass(BuildPass buildP);
 
@@ -105,24 +107,26 @@ struct Module
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     void postCompilerMessage(ConcreteCompilerMessage& msg);
     bool flushCompilerMessages(JobContext* context);
-    void addCompilerFunc(ByteCode* bc);
-    void addByteCodeFunc(ByteCode* bc);
-    bool hasBytecodeToRun();
-    bool WaitForDependenciesDone(Job* job);
-    void printBC();
-    bool compileString(const Utf8& str);
+
+    void              addCompilerFunc(ByteCode* bc);
+    void              addByteCodeFunc(ByteCode* bc);
+    void              addGlobalVar(AstNode* node, GlobalVarKind varKind);
+    void              addForeignLib(const Utf8& text);
+    TypeInfoFuncAttr* getRuntimeTypeFct(const char* fctName);
+    ByteCode*         getRuntimeFct(const char* fctName);
+
+    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
+    bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
+    bool waitForDependenciesDone(Job* job);
 
-    void     addForeignLib(const Utf8& text);
-    bool     addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
-    bool     removeDependency(AstNode* importNode);
-    void     setHasBeenBuilt(uint32_t buildResult);
-    uint32_t getHasBeenBuilt();
     bool     areAllFilesExported();
     bool     mustOutputSomething();
-
-    void addGlobalVar(AstNode* node, GlobalVarKind varKind);
+    bool     mustGenerateTestExe();
+    bool     canGenerateLegit();
+    void     setHasBeenBuilt(uint32_t buildResult);
+    uint32_t getHasBeenBuilt();
 
     void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
     bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);

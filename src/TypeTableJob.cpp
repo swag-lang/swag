@@ -205,7 +205,7 @@ JobResult TypeTableJob::execute()
     // We also wait for dependencies, because we need to know the foreign address of special
     // functions that will be stored in the struct type.
     // And we cannot retrieve thoses addresses before the dlls have been generated.
-    if (!sourceFile->module->WaitForDependenciesDone(this))
+    if (!sourceFile->module->waitForDependenciesDone(this))
         return JobResult::KeepJobAlive;
 
     computeStruct();

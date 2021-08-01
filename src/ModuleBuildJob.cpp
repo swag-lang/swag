@@ -292,7 +292,7 @@ JobResult ModuleBuildJob::execute()
         // have to load the dlls
         if (module->hasBytecodeToRun())
         {
-            if (!module->WaitForDependenciesDone(this))
+            if (!module->waitForDependenciesDone(this))
                 return JobResult::KeepJobAlive;
         }
 

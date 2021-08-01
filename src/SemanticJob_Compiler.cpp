@@ -37,7 +37,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     auto module = sourceFile->module;
     if (node->extension->bc->hasFunctionCalls)
     {
-        if (!module->WaitForDependenciesDone(context->job))
+        if (!module->waitForDependenciesDone(context->job))
         {
             SWAG_ASSERT(node->extension->bc->hasFunctionCalls);
             context->expansionNode.pop_back();
