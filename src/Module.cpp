@@ -291,6 +291,23 @@ void Module::removeFile(SourceFile* file)
         exportSourceFiles.erase(it1);
 }
 
+void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
+{
+    scoped_lock lk(mutexGlobalVars);
+    switch (varKind)
+    {
+    case GlobalVarKind::Mutable:
+        globalVarsMutable.push_back(node);
+        break;
+    case GlobalVarKind::Bss:
+        globalVarsBss.push_back(node);
+        break;
+    case GlobalVarKind::Constant:
+        globalVarsConstant.push_back(node);
+        break;
+    }
+}
+
 void Module::addCompilerFunc(ByteCode* bc)
 {
     auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
@@ -309,23 +326,6 @@ void Module::addCompilerFunc(ByteCode* bc)
             numCompilerFunctions--;
             byteCodeCompiler[i].push_back(bc);
         }
-    }
-}
-
-void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
-{
-    scoped_lock lk(mutexGlobalVars);
-    switch (varKind)
-    {
-    case GlobalVarKind::Mutable:
-        globalVarsMutable.push_back(node);
-        break;
-    case GlobalVarKind::Bss:
-        globalVarsBss.push_back(node);
-        break;
-    case GlobalVarKind::Constant:
-        globalVarsConstant.push_back(node);
-        break;
     }
 }
 
