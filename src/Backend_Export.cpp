@@ -45,7 +45,7 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 
 bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
 {
-    SymbolAttributes* attr = nullptr;
+    AttributeList* attr = nullptr;
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Struct:

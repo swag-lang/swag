@@ -149,14 +149,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result)
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
 {
     auto attrUse = forNode->ownerAttrUse;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result, AstAttrUse* attrUse)
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse)
 {
     if (!attrUse)
         attrUse = forNode->sourceFile->astAttrUse;

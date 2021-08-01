@@ -23,7 +23,7 @@ namespace Ast
             indent--;
     }
 
-    bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes)
+    bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
     {
         auto attr = &attributes;
         if (attr && !attr->empty())

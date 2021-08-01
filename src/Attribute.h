@@ -61,11 +61,8 @@ struct OneAttribute
     AstNode*                   node = nullptr;
 };
 
-struct SymbolAttributes
+struct AttributeList
 {
-    VectorNative<TypeInfoFuncAttr*> isHere;
-    vector<OneAttribute>            attributes;
-
     OneAttribute* getAttribute(const Utf8& fullName);
     bool          getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value);
     bool          hasAttribute(const Utf8& fullName);
@@ -85,4 +82,7 @@ struct SymbolAttributes
     {
         return (uint32_t) attributes.size();
     }
+
+    VectorNative<TypeInfoFuncAttr*> isHere;
+    vector<OneAttribute>            attributes;
 };

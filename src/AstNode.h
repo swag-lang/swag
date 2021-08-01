@@ -304,7 +304,7 @@ struct AstVarDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    SymbolAttributes attributes;
+    AttributeList attributes;
     Utf8             publicName;
 
     AstNode* type;
@@ -375,7 +375,7 @@ struct AstAttrUse : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     AstNode*         content;
-    SymbolAttributes attributes;
+    AttributeList attributes;
 };
 
 struct AstFuncCallParams : public AstNode
@@ -650,7 +650,7 @@ struct AstEnum : public AstNode
 struct AstEnumValue : public AstNode
 {
     AstNode*         clone(CloneContext& context) override;
-    SymbolAttributes attributes;
+    AttributeList attributes;
 };
 
 struct AstImpl : public AstNode

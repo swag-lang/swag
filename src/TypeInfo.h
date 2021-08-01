@@ -231,7 +231,7 @@ struct TypeInfoParam : public TypeInfo
 
     Utf8             namedParam;
     ComputedValue    value;
-    SymbolAttributes attributes;
+    AttributeList attributes;
 
     TypeInfo* typeInfo = nullptr;
 
@@ -250,7 +250,7 @@ struct TypeInfoEnum : public TypeInfo
     TypeInfo* clone() override;
 
     VectorNative<TypeInfoParam*> values;
-    SymbolAttributes             attributes;
+    AttributeList             attributes;
 
     Scope*    scope   = nullptr;
     TypeInfo* rawType = nullptr;
@@ -376,7 +376,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
-    SymbolAttributes             attributes;
+    AttributeList             attributes;
     map<Utf8, TypeInfo*>         replaceTypes;
 
     TypeInfo* returnType = nullptr;
@@ -535,7 +535,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     map<Utf8, TypeInfo*>         replaceTypes;
-    SymbolAttributes             attributes;
+    AttributeList             attributes;
     Utf8                         structName;
     shared_mutex                 mutexGen;
 

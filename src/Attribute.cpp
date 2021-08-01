@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Attribute.h"
 
-OneAttribute* SymbolAttributes::getAttribute(const Utf8& fullName)
+OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
 {
     for (auto& it : attributes)
     {
@@ -12,7 +12,7 @@ OneAttribute* SymbolAttributes::getAttribute(const Utf8& fullName)
     return nullptr;
 }
 
-bool SymbolAttributes::getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value)
+bool AttributeList::getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value)
 {
     for (auto& it : attributes)
     {
@@ -34,7 +34,7 @@ bool SymbolAttributes::getValue(const Utf8& fullName, const Utf8& parameter, Com
     return false;
 }
 
-bool SymbolAttributes::hasAttribute(const Utf8& fullName)
+bool AttributeList::hasAttribute(const Utf8& fullName)
 {
     for (auto& it : attributes)
     {

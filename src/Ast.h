@@ -46,7 +46,7 @@ namespace Ast
     AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
 
-    bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes);
+    bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool output(OutputContext& context, Concat& concat, AstNode* node);
 
