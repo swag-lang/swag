@@ -306,10 +306,9 @@ struct BackendX64 : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
-    bool                    createRuntime(const BuildParameters& buildParameters);
-    void                    alignConcat(Concat& concat, uint32_t align);
-    JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                    generateOutput(const BuildParameters& backendParameters) override;
+    bool                        createRuntime(const BuildParameters& buildParameters);
+    JobResult                   prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool                        generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJobBase* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);

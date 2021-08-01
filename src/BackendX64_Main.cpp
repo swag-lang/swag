@@ -16,7 +16,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 16);
+    concat.align(16);
 
     if (g_CommandLine.os == BackendOs::Windows)
     {
@@ -40,7 +40,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 16);
+    concat.align(16);
     auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
@@ -219,7 +219,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 16);
+    concat.align(16);
     auto startAddress = concat.totalCount();
 
     auto thisInit        = Utf8::format("%s_globalInit", module->nameNormalized.c_str());
@@ -274,7 +274,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 16);
+    concat.align(16);
     auto startAddress = concat.totalCount();
 
     auto thisDrop        = Utf8::format("%s_globalDrop", module->nameNormalized.c_str());

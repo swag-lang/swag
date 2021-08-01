@@ -56,6 +56,12 @@ void Concat::release()
     totalCountBytes = 0;
 }
 
+void Concat::align(uint32_t align)
+{
+    while (totalCount() % align)
+        addU8(0);
+}
+
 bool Concat::hasEnoughSpace(uint32_t numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);

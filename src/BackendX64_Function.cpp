@@ -125,7 +125,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& concat          = pp.concat;
     bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
-    alignConcat(concat, 16);
+    concat.align(16);
     uint32_t startAddress = concat.totalCount();
 
     node->computeFullNameForeign(true);
@@ -652,7 +652,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bool  ok              = true;
     bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
-    alignConcat(concat, 16);
+    concat.align(16);
     uint32_t startAddress = concat.totalCount();
 
     pp.labels.clear();

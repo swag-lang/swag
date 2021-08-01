@@ -245,7 +245,7 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     // Compiler version
     Utf8 version = Utf8::format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
-    alignConcat(concat, 4);
+    concat.align(4);
     *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
 
     *patchSCount = concat.totalCount() - patchSOffset;
@@ -263,7 +263,7 @@ void BackendX64::dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat, bool align)
 {
     if (align)
-        alignConcat(concat, 4);
+        concat.align(4);
     SWAG_ASSERT(pp.dbgRecordIdx);
     pp.dbgRecordIdx--;
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
@@ -1356,7 +1356,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     auto  beforeCount     = concat.totalCount();
 
     // .debug$S
-    alignConcat(concat, 16);
+    concat.align(16);
     *pp.patchDBGSOffset = concat.totalCount();
     concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
@@ -1370,7 +1370,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
     // .debug$T
-    alignConcat(concat, 16);
+    concat.align(16);
     *pp.patchDBGTOffset = concat.totalCount();
     concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
@@ -1380,7 +1380,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     // Reloc table .debug$S
     if (!pp.relocTableDBGSSection.table.empty())
     {
-        alignConcat(concat, 16);
+        concat.align(16);
         *pp.patchDBGSSectionRelocTableOffset = concat.totalCount();
         emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
