@@ -10,9 +10,9 @@
 
 uint32_t SemanticJob::alignOf(AstVarDecl* node)
 {
-    ComputedValue value;
-    if (node->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, value))
-        return value.reg.u8;
+    auto value = node->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
+    if(value)
+        return value->reg.u8;
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
 

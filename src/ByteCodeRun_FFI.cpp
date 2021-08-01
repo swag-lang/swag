@@ -23,11 +23,10 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
-    ComputedValue moduleName;
-    typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_module, moduleName);
-    SWAG_ASSERT(!moduleName.text.empty());
+    auto moduleName = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_module);
+    SWAG_ASSERT(moduleName && !moduleName->text.empty());
 
-    if (!g_ModuleMgr.loadModule(moduleName.text))
+    if (!g_ModuleMgr.loadModule(moduleName->text))
     {
         // Perhaps the module is dependent on another module, so we need to be sure that our dependencies are
         // all loaded : load all, from last to first (dependencies are added in reverse order, latest first)
@@ -36,25 +35,25 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
             g_ModuleMgr.loadModule(dep->name);
 
         // Then try again
-        g_ModuleMgr.resetFailedModule(moduleName.text);
-        if (!g_ModuleMgr.loadModule(moduleName.text))
+        g_ModuleMgr.resetFailedModule(moduleName->text);
+        if (!g_ModuleMgr.loadModule(moduleName->text))
         {
 #ifdef SWAG_DEV_MODE
             SWAG_ASSERT(false);
 #endif
-            Diagnostic diag{nodeFunc, Utf8::format(Msg0257, moduleName.text.c_str(), funcName.c_str(), g_ModuleMgr.loadModuleError.c_str())};
+            Diagnostic diag{nodeFunc, Utf8::format(Msg0257, moduleName->text.c_str(), funcName.c_str(), g_ModuleMgr.loadModuleError.c_str())};
             diag.printSource = false;
             context->report(diag);
             return nullptr;
         }
     }
 
-    ComputedValue foreignValue;
-    void*         fn = nullptr;
-    if (typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue) && !foreignValue.text.empty())
-        fn = g_ModuleMgr.getFnPointer(moduleName.text, foreignValue.text);
+    void* fn           = nullptr;
+    auto  foreignValue = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    if (foreignValue && !foreignValue->text.empty())
+        fn = g_ModuleMgr.getFnPointer(moduleName->text, foreignValue->text);
     else
-        fn = g_ModuleMgr.getFnPointer(moduleName.text, funcName);
+        fn = g_ModuleMgr.getFnPointer(moduleName->text, funcName);
 
     if (!fn)
     {

@@ -527,50 +527,50 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
         return;
     auto symbol = identifier->resolvedSymbolOverload->symbol;
 
-    ComputedValue v;
+    const ComputedValue* v = nullptr;
     switch (node->kind)
     {
     case AstNodeKind::FuncDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
+        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
+        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
         break;
     }
     case AstNodeKind::StructDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
+        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
+        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
         break;
     }
     case AstNodeKind::EnumValue:
     {
         auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg, v);
+        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
         break;
     }
     }
 
     Diagnostic diag({identifier, Utf8::format(Msg0083, SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning});
     Diagnostic note1({node, node->token, Msg0084, DiagnosticLevel::Note});
-    if (v.text.empty())
+    if (v && v->text.empty())
     {
         context->report(diag, &note1);
     }
     else
     {
-        Diagnostic note2({v.text, DiagnosticLevel::Note});
+        Diagnostic note2({v->text, DiagnosticLevel::Note});
         context->report(diag, &note1, &note2);
     }
 }

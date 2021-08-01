@@ -3948,13 +3948,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
-                ComputedValue foreignValue;
-                typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue);
-                SWAG_ASSERT(!foreignValue.text.empty());
+                auto foreignValue = typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+                SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
 
                 llvm::FunctionType* T;
                 SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
-                auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
+                auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue->text.c_str(), T).getCallee();
 
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
                 builder.CreateStore(TO_PTR_I8(F), r0);
@@ -5041,10 +5040,10 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Get function name
-    ComputedValue foreignValue;
-    Utf8          funcName;
-    if (typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue) && !foreignValue.text.empty())
-        funcName = foreignValue.text;
+    Utf8 funcName;
+    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    if (foreignValue && !foreignValue->text.empty())
+        funcName = foreignValue->text;
     else
         funcName = nodeFunc->token.text;
 

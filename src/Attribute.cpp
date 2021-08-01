@@ -12,7 +12,7 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
     return nullptr;
 }
 
-bool AttributeList::getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value)
+const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& parameter)
 {
     for (auto& it : allAttributes)
     {
@@ -22,16 +22,15 @@ bool AttributeList::getValue(const Utf8& fullName, const Utf8& parameter, Comput
             {
                 if (param.name == parameter)
                 {
-                    value = param.value;
-                    return true;
+                    return &param.value;
                 }
             }
 
-            return false;
+            return nullptr;
         }
     }
 
-    return false;
+    return nullptr;
 }
 
 bool AttributeList::hasAttribute(const Utf8& fullName)

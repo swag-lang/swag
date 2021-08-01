@@ -766,9 +766,9 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
     if (!forExport)
     {
-        ComputedValue value;
-        if (typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, value) && !value.text.empty())
-            fullnameForeign = value.text;
+        auto value = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+        if (value && !value->text.empty())
+            fullnameForeign = value->text;
         else
             fullnameForeign = token.text;
         return;

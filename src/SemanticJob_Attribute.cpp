@@ -167,9 +167,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     if (result && !result->empty())
         return true;
 
-    auto&         flags   = forNode->attributeFlags;
-    auto          curAttr = attrUse;
-    ComputedValue value;
+    auto& flags   = forNode->attributeFlags;
+    auto  curAttr = attrUse;
     while (curAttr)
     {
         // Inherit flags
@@ -199,10 +198,11 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                if (curAttr->attributes.getValue(g_LangSpec.name_Swag_AttrUsage, g_LangSpec.name_usage, value))
+                auto value = curAttr->attributes.getValue(g_LangSpec.name_Swag_AttrUsage, g_LangSpec.name_usage);
+                if (value)
                 {
                     auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-                    typeAttr->attributeUsage = value.reg.u32;
+                    typeAttr->attributeUsage = value->reg.u32;
                 }
 
                 if (curAttr->attributes.hasAttribute(g_LangSpec.name_Swag_AttrMulti))
@@ -218,86 +218,88 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= *it;
             else if (child->token.text == g_LangSpec.name_Safety)
             {
-                ComputedValue attrWhat;
-                vector<Utf8>  what;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_what, attrWhat);
-                attrWhat.text.trim();
-                Utf8::tokenize(attrWhat.text, '|', what);
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_what);
+                SWAG_ASSERT(attrWhat);
+                auto text = attrWhat->text;
+                text.trim();
+                vector<Utf8> what;
+                Utf8::tokenize(text, '|', what);
 
-                ComputedValue attrValue;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_value, attrValue);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_value);
+                SWAG_ASSERT(attrValue);
 
-                if (attrWhat.text.empty())
+                if (text.empty())
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                 }
 
                 for (auto& w : what)
                 {
                     w.trim();
                     if (w == g_LangSpec.name_nullptr)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
                     else if (w == g_LangSpec.name_boundcheck)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
                     else if (w == g_LangSpec.name_overflow)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     else if (w == g_LangSpec.name_math)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
                     else if (w == g_LangSpec.name_castany)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                     else
                         return context->report({child, Utf8::format(Msg0593, w.c_str())});
                 }
             }
             else if (child->token.text == g_LangSpec.name_Optim)
             {
-                ComputedValue attrWhat;
-                vector<Utf8>  what;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_what, attrWhat);
-                attrWhat.text.trim();
-                Utf8::tokenize(attrWhat.text, '|', what);
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_what);
+                SWAG_ASSERT(attrWhat);
+                auto text = attrWhat->text;
+                text.trim();
+                vector<Utf8> what;
+                Utf8::tokenize(text, '|', what);
 
-                ComputedValue attrValue;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_value, attrValue);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_value);
+                SWAG_ASSERT(attrValue);
 
-                if (attrWhat.text.empty())
+                if (text.empty())
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                 }
 
                 for (auto& w : what)
                 {
                     w.trim();
                     if (w == g_LangSpec.name_bytecode)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
                     else if (w == g_LangSpec.name_backend)
-                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
+                        flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     else
                         return context->report({child, Utf8::format(Msg0594, w.c_str())});
                 }
             }
             else if (child->token.text == g_LangSpec.name_SelectIf)
             {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_SelectIf, g_LangSpec.name_value, attrValue);
-                flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_SelectIf, g_LangSpec.name_value);
+                SWAG_ASSERT(attrValue);
+                flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
             else if (child->token.text == g_LangSpec.name_Pack)
             {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value, attrValue);
-                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, Utf8::format(Msg0595, attrValue.reg.u8)}));
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value);
+                SWAG_ASSERT(attrValue);
+                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(Msg0595, attrValue->reg.u8)}));
             }
             else if (child->token.text == g_LangSpec.name_Align)
             {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, Utf8::format(Msg0596, attrValue.reg.u8)}));
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
+                SWAG_ASSERT(attrValue);
+                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(Msg0596, attrValue->reg.u8)}));
             }
 
             // Append attributes

@@ -2873,10 +2873,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
                 TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-                ComputedValue     foreignValue;
-                typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue);
-                SWAG_ASSERT(!foreignValue.text.empty());
-                name = foreignValue.text;
+                auto              foreignValue = typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+                SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
+                name = foreignValue->text;
             }
             else if (funcNode->attributeFlags & ATTRIBUTE_CALLBACK)
             {
@@ -3896,10 +3895,10 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Get function name
-    ComputedValue foreignValue;
-    Utf8          funcName;
-    if (typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function, foreignValue) && !foreignValue.text.empty())
-        funcName = foreignValue.text;
+    Utf8 funcName;
+    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    if (foreignValue && !foreignValue->text.empty())
+        funcName = foreignValue->text;
     else
         funcName = nodeFunc->token.text;
 

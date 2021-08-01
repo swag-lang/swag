@@ -563,11 +563,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode == node);
 
     // Structure packing
-    ComputedValue value;
     if (node->structFlags & STRUCTFLAG_UNION)
         node->packing = 0;
-    else if (typeInfo->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value, value))
-        node->packing = value.reg.u8;
+    else
+    {
+        auto value = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value);
+        if (value)
+            node->packing = value->reg.u8;
+    }
 
     // Check 'opaque' attribute
     if (!sourceFile->isGenerated)
@@ -739,25 +742,28 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         auto realStorageOffset = storageOffset;
 
         // Attribute 'Swag.offset' can be used to force the storage offset of the member
-        ComputedValue forceOffset;
-        bool          relocated = false;
-        if (typeParam && typeParam->attributes.getValue(g_LangSpec.name_Swag_Offset, g_LangSpec.name_name, forceOffset))
+        bool relocated = false;
+        if (typeParam)
         {
-            for (auto p : typeInfo->fields)
+            auto forceOffset = typeParam->attributes.getValue(g_LangSpec.name_Swag_Offset, g_LangSpec.name_name);
+            if (forceOffset)
             {
-                if (p->namedParam == forceOffset.text)
+                for (auto p : typeInfo->fields)
                 {
-                    realStorageOffset = p->offset;
-                    relocated         = true;
-                    break;
+                    if (p->namedParam == forceOffset->text)
+                    {
+                        realStorageOffset = p->offset;
+                        relocated         = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!relocated)
-            {
-                auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
-                SWAG_ASSERT(attr);
-                return context->report({attr->node, Utf8::format(Msg0673, forceOffset.text.c_str())});
+                if (!relocated)
+                {
+                    auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
+                    SWAG_ASSERT(attr);
+                    return context->report({attr->node, Utf8::format(Msg0673, forceOffset->text.c_str())});
+                }
             }
         }
 
@@ -831,10 +837,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // User specific alignment
-    ComputedValue userAlignOf;
-    auto          hasUserAlignOf = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value, userAlignOf);
-    if (hasUserAlignOf)
-        typeInfo->alignOf = userAlignOf.reg.u8;
+    auto userAlignOf = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
+    if (userAlignOf)
+        typeInfo->alignOf = userAlignOf->reg.u8;
     else if (node->packing)
         typeInfo->alignOf = min(typeInfo->alignOf, node->packing);
     typeInfo->alignOf = max(1, typeInfo->alignOf);
@@ -842,7 +847,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // An opaque struct will be exported as an array of bytes.
     // We need to be sure that alignement will be respected, so we force "Swag.Align" attribute
     // if not already present.
-    if (!hasUserAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_Opaque))
+    if (!userAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_Opaque))
     {
         OneAttribute       ot;
         AttributeParameter otp;
