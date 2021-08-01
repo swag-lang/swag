@@ -64,7 +64,6 @@ struct CommandLine
     bool      verbosePath           = false;
     bool      verboseLink           = false;
     bool      verboseTestErrors     = false;
-    bool      verbosePass           = false;
     bool      verboseConcreteTypes  = false;
     bool      verboseBackendCommand = false;
     bool      errorSourceOut        = true;

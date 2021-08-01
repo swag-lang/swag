@@ -42,7 +42,6 @@ struct Log
     void message(const Utf8& message);
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".", bool mustLock = true);
-    void verbosePass(LogPassType type, const Utf8& message, const Utf8& moduleName, uint64_t time = -1);
     void verbose(const Utf8& message, bool forceEol = true);
 
     void lock()

@@ -27,13 +27,6 @@ JobResult ModuleOutputJob::execute()
     {
         pass = ModuleOutputJobPass::WaitForDependencies;
 
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbose)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "PrepareOutput", module->name);
-        }
-
         // Compute the number of sub modules (i.e the number of output temporary files)
         int minPerFile = 1024;
         int maxPerFile = 1024;
@@ -93,13 +86,6 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::WaitForDependencies)
     {
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbose)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name);
-        }
-
         if (module->buildPass < BuildPass::Full)
             return JobResult::ReleaseJob;
         if (module->numErrors)
@@ -112,13 +98,6 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::GenOutput)
     {
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbose)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "GenOutput", module->name);
-        }
-
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -156,13 +135,6 @@ JobResult ModuleOutputJob::execute()
         }
 
         return JobResult::KeepJobAlive;
-    }
-
-    // Timing...
-    if (g_CommandLine.stats || g_CommandLine.verbose)
-    {
-        if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name);
     }
 
     return JobResult::ReleaseJob;

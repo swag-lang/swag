@@ -42,10 +42,6 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     path += name.c_str();
     path += ".dll";
 
-    Timer loadLibTimer;
-    if (g_CommandLine.verbosePass)
-        loadLibTimer.start();
-
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
@@ -63,16 +59,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         {
             scoped_lock lk(mutexLoaded);
             failedLoadedModules.insert(name);
-            if (g_CommandLine.verbosePass)
-                g_Log.verbose(Utf8::format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
         }
-    }
-
-    if (g_CommandLine.verbosePass)
-    {
-        loadLibTimer.stop();
-        g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed);
     }
 
     scoped_lock lk(mutex);

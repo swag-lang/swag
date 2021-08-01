@@ -375,9 +375,6 @@ bool ModuleCfgManager::execute()
     Timer timer(&g_Stats.cfgTime);
     timer.start();
 
-    g_Log.verbosePass(LogPassType::Title, "ConfigManager", "");
-    g_Log.verbosePass(LogPassType::PassBegin, "ConfigManager", "");
-
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     // In this pass, only the #dependencies block will be evaluated
     if (!g_CommandLine.scriptCommand)
@@ -550,6 +547,5 @@ bool ModuleCfgManager::execute()
     }
 
     timer.stop();
-    g_Log.verbosePass(LogPassType::PassEnd, "ConfigManager", "", g_Stats.cfgTime.load());
     return ok;
 }

@@ -199,8 +199,6 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
             pp.dbg->setup(this, pp.module);
         }
 
-        g_Log.verbosePass(LogPassType::Info, "LLVM precompile", pp.filename);
-
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);

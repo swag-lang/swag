@@ -12,7 +12,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all", "--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
     addArg("bu", "--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
-    addArg("bu", "--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes");
     addArg("bu", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("te", "--verbose-testerrors", nullptr, CommandLineType::Bool, &cmdLine->verboseTestErrors, nullptr, "log errors during test");
     addArg("bu", "--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");

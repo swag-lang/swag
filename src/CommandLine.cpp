@@ -24,7 +24,7 @@ bool CommandLine::check()
     }
 
     // Force verbose
-    if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verbosePass || verboseConcreteTypes)
+    if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes)
         verbose = true;
 
     // Stats

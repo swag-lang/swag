@@ -632,7 +632,6 @@ bool Workspace::buildTarget()
     {
         Timer timer(&g_Stats.bootstrapTime);
         timer.start();
-        g_Log.verbosePass(LogPassType::PassBegin, "Bootstrap", "");
 
         for (auto f : bootstrapModule->files)
         {
@@ -669,7 +668,6 @@ bool Workspace::buildTarget()
         }
 
         timer.stop();
-        g_Log.verbosePass(LogPassType::PassEnd, "Bootstrap", "", g_Stats.bootstrapTime);
     }
 
     // Runtime module semantic pass
@@ -677,7 +675,6 @@ bool Workspace::buildTarget()
     {
         Timer timer(&g_Stats.runtimeTime);
         timer.start();
-        g_Log.verbosePass(LogPassType::PassBegin, "Runtime", "");
 
         for (auto f : runtimeModule->files)
         {
@@ -717,7 +714,6 @@ bool Workspace::buildTarget()
         }
 
         timer.stop();
-        g_Log.verbosePass(LogPassType::PassEnd, "Runtime", "", g_Stats.runtimeTime);
     }
 
     // Config pass (compute/fetch dependencies...
@@ -732,16 +728,9 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    g_Log.verbosePass(LogPassType::Title, "Touch Module Files", "");
-    g_Log.verbosePass(LogPassType::PassBegin, "Touch", "");
-
-    {
-        auto enumJob = new EnumerateModuleJob;
-        g_ThreadMgr.addJob(enumJob);
-        g_ThreadMgr.waitEndJobs();
-    }
-
-    g_Log.verbosePass(LogPassType::PassEnd, "Touch", "", g_Stats.syntaxTime.load());
+    auto enumJob = g_Allocator.alloc<EnumerateModuleJob>();
+    g_ThreadMgr.addJob(enumJob);
+    g_ThreadMgr.waitEndJobs();
 
     // Filter modules to build
     //////////////////////////////////////////////////
@@ -777,8 +766,6 @@ bool Workspace::buildTarget()
             }
         }
     }
-
-    g_Log.verbosePass(LogPassType::Title, "Build", "");
 
     // Build modules
     //////////////////////////////////////////////////

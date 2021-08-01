@@ -20,8 +20,6 @@ JobResult ModuleRunJob::execute()
         g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
     else
         g_Log.messageHeaderCentered("Running backend", module->name.c_str());
-    if (g_CommandLine.verboseBackendCommand)
-        g_Log.verbosePass(LogPassType::Info, "Test", path.string());
 
     if (buildParameters.compileType == BackendCompileType::Test)
     {

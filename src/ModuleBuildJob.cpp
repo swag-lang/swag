@@ -158,9 +158,7 @@ JobResult ModuleBuildJob::execute()
         else
         {
             pass = ModuleBuildPass::Publish;
-
             timerSyntax.start();
-            g_Log.verbosePass(LogPassType::PassBegin, "Syntax", module->name);
 
             for (auto file : module->files)
             {
@@ -192,8 +190,6 @@ JobResult ModuleBuildJob::execute()
         }
 
         timerSyntax.stop();
-        if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-            g_Log.verbosePass(LogPassType::PassEnd, "Syntax", module->name, timerSyntax.elapsed);
 
         pass = ModuleBuildPass::IncludeSwg;
         if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
@@ -227,13 +223,8 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::SemanticModule)
     {
         pass = ModuleBuildPass::AfterSemantic;
-
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "SemanticModule", module->name);
+        if (g_CommandLine.stats)
             timerSemanticModule.start();
-        }
 
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -288,15 +279,8 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
-            if (timerSemanticModule.started)
-            {
-                timerSemanticModule.stop();
-                if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed);
-            }
-        }
+        if (g_CommandLine.stats && timerSemanticModule.started)
+            timerSemanticModule.stop();
 
         pass = ModuleBuildPass::WaitForDependenciesEffective;
     }
@@ -313,13 +297,6 @@ JobResult ModuleBuildJob::execute()
         }
 
         pass = ModuleBuildPass::OptimizeBc;
-
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "OptimizeBc", module->name);
-        }
     }
 
     //////////////////////////////////////////////////
@@ -330,13 +307,6 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
         if (!done)
             return JobResult::KeepJobAlive;
-
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name);
-        }
 
         module->printBC();
 
@@ -349,7 +319,7 @@ JobResult ModuleBuildJob::execute()
         module->constantSegment.doPatchMethods(&context);
 
         // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
+        if (g_CommandLine.stats)
             timerRun.start();
 
         if (!module->hasBytecodeToRun())
@@ -382,9 +352,6 @@ JobResult ModuleBuildJob::execute()
         callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests;
         if (callInitDrop)
         {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
-
             for (auto func : module->byteCodeInitFunc)
             {
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
@@ -399,9 +366,6 @@ JobResult ModuleBuildJob::execute()
         // #run functions are always executed
         if (!module->byteCodeRunFunc.empty())
         {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
-
             // A #run pass cannot modify a bss variable
             module->bssCannotChange = true;
 
@@ -424,9 +388,6 @@ JobResult ModuleBuildJob::execute()
         {
             if (!module->byteCodeTestFunc.empty())
             {
-                if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Test", Utf8::format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
                 // Modified global variables during test will be restored after
                 module->saveBssValues     = true;
                 module->saveMutableValues = true;
@@ -463,9 +424,6 @@ JobResult ModuleBuildJob::execute()
         // #drop functions
         if (callInitDrop)
         {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::Info, "Exec", Utf8::format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
-
             for (auto func : module->byteCodeDropFunc)
             {
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
@@ -512,12 +470,8 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
+        if (g_CommandLine.stats)
             timerRun.stop();
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "Output", module->name);
-        }
 
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -556,14 +510,6 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::RunNative)
     {
         pass = ModuleBuildPass::Done;
-
-        // Timing...
-        if (g_CommandLine.stats || g_CommandLine.verbosePass)
-        {
-            if (!module->numTestErrors && !module->numTestWarnings && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name);
-        }
-
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
