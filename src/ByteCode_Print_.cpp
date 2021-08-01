@@ -352,7 +352,7 @@ void ByteCode::print(ByteCodeInstruction* curIp)
         g_Log.print(name.c_str());
     }
 
-    auto callt = callType();
+    auto callt = getCallType();
     if (callt)
     {
         g_Log.print(" ");

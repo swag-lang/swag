@@ -727,7 +727,7 @@ JobResult ByteCodeGenJob::execute()
     {
         scoped_lock lk(sourceFile->module->mutexFile);
         SWAG_ASSERT(context.bc->typeInfoFunc);
-        sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc;
+        sourceFile->module->mapRuntimeFcts[context.bc->getCallName()] = context.bc;
     }
 
     // Be sure that every used registers have been released

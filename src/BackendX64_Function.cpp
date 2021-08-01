@@ -286,7 +286,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
-    emitCall(pp, bc->callName());
+    emitCall(pp, bc->getCallName());
 
     // Return
     if (returnByCopy)
@@ -648,7 +648,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
-    auto  typeFunc        = bc->callType();
+    auto  typeFunc        = bc->getCallType();
     bool  ok              = true;
     bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
@@ -660,7 +660,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Symbol
-    auto symbolFuncIndex  = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex  = getOrAddSymbol(pp, bc->getCallName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
     coffFct->startAddress = startAddress;
     if (debug)
@@ -2886,7 +2886,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
                 auto funcBC = (ByteCode*) ip->c.pointer;
                 SWAG_ASSERT(funcBC);
-                name = funcBC->callName();
+                name = funcBC->getCallName();
             }
 
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
@@ -3036,7 +3036,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
-            emitCall(pp, funcBC->callName());
+            emitCall(pp, funcBC->getCallName());
             pushRAParams.clear();
             pushRVParams.clear();
             break;

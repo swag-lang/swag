@@ -570,7 +570,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
     }
 
-    auto fcc = modu.getFunction(bc->callName().c_str());
+    auto fcc = modu.getFunction(bc->getCallName().c_str());
     builder.CreateCall(fcc, {args.begin(), args.end()});
 
     // Return
@@ -675,12 +675,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
-    auto  typeFunc        = bc->callType();
+    auto  typeFunc        = bc->getCallType();
     bool  ok              = true;
 
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
-    llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
+    llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->getCallName().c_str(), funcType).getCallee();
     setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
@@ -3298,7 +3298,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicErrorMsg:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            localCall(buildParameters, allocR, allocT, bcF->callName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, allocR, allocT, bcF->getCallName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicPanic:
@@ -3985,7 +3985,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
                 auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
-                auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
+                auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->getCallName().c_str(), T).getCallee();
                 builder.CreateStore(TO_PTR_I8(F), r0);
             }
             break;
@@ -4120,7 +4120,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
             getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-            builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
+            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});
             pushRAParams.clear();
             pushRVParams.clear();
             break;

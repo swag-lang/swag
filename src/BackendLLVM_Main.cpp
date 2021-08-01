@@ -110,7 +110,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    auto allocFct = modu.getOrInsertFunction(bcAlloc->callName().c_str(), pp.allocatorTy);
+    auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
     //mainContext.allocator.itable = &defaultAllocTable
@@ -194,7 +194,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
 
-            auto fcc = modu.getOrInsertFunction(bc->callName().c_str(), funcTypeVoid);
+            auto fcc = modu.getOrInsertFunction(bc->getCallName().c_str(), funcTypeVoid);
             builder.CreateCall(fcc);
         }
     }
@@ -202,7 +202,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        auto fncMain = modu.getOrInsertFunction(module->byteCodeMainFunc->callName().c_str(), funcTypeVoid);
+        auto fncMain = modu.getOrInsertFunction(module->byteCodeMainFunc->getCallName().c_str(), funcTypeVoid);
         builder.CreateCall(fncMain);
     }
 
@@ -271,7 +271,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->callName().c_str(), fctType);
+        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
         builder.CreateCall(func, {fct->getArg(0)});
     }
 
@@ -302,7 +302,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
+        auto func = modu->getOrInsertFunction(bc->getCallName().c_str(), fctType);
         builder.CreateCall(func);
     }
 

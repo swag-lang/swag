@@ -42,8 +42,12 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     *location = ip->location;
 }
 
-Utf8 ByteCode::callName()
+const Utf8& ByteCode::getCallName()
 {
+    scoped_lock lk(mutexCallName);
+    if (!callName.empty())
+        return callName;
+
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
@@ -51,10 +55,12 @@ Utf8 ByteCode::callName()
     {
         SWAG_ASSERT(node->resolvedSymbolName);
         if (node->resolvedSymbolName->cptOverloadsInit == 1)
-            return name;
+        {
+            callName = name;
+            return callName;
+        }
     }
 
-    Utf8 callName;
     if (name.empty())
         callName = node->getScopedName();
     else
@@ -63,7 +69,7 @@ Utf8 ByteCode::callName()
     return callName;
 }
 
-TypeInfoFuncAttr* ByteCode::callType()
+TypeInfoFuncAttr* ByteCode::getCallType()
 {
     if (node && node->typeInfo->kind == TypeInfoKind::FuncAttr)
         return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -128,7 +134,7 @@ void ByteCode::markLabels()
 
 bool ByteCode::isDoingNothing()
 {
-    if (callType()->returnType != g_TypeMgr.typeInfoVoid)
+    if (getCallType()->returnType != g_TypeMgr.typeInfoVoid)
         return false;
 
     if (numInstructions == 2)

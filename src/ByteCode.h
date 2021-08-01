@@ -118,14 +118,16 @@ struct ByteCode
     void              printInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
-    Utf8              callName();
-    TypeInfoFuncAttr* callType();
+    const Utf8&       getCallName();
+    TypeInfoFuncAttr* getCallType();
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;
 
+    mutex                  mutexCallName;
     Utf8                   name;
+    Utf8                   callName;
     VectorNative<AstNode*> localVars;
 
     ByteCodeInstruction* out          = nullptr;

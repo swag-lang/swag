@@ -33,7 +33,7 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opDrop = nullptr;
@@ -46,7 +46,7 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostCopy = nullptr;
@@ -59,7 +59,7 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostMove = nullptr;
@@ -72,7 +72,7 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
     }
 
     auto&       mapPerSeg = typeTable->getMapPerSeg(storageSegment);
