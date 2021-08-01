@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "Module.h"
-#include "ByteCodeRun.h"
 #include "Workspace.h"
-#include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeStack.h"
-#include "Diagnostic.h"
 #include "TypeManager.h"
 #include "BackendLLVM.h"
 #include "BackendX64.h"
@@ -18,9 +15,6 @@
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
     scoped_lock lk(mutexFile);
-    if (setupDone)
-        return;
-    setupDone = true;
 
     mutableSegment.setup(SegmentKind::Data, this);
     constantSegment.setup(SegmentKind::Constant, this);

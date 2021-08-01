@@ -93,56 +93,13 @@ struct Module
     SourceFile* findFile(const Utf8& fileName);
     void        addErrorModule(Module* module);
 
-    string                    path;
-    Utf8                      name;
-    Utf8                      nameDown;
-    Utf8                      nameUp;
-    ModuleKind                kind;
-    atomic<int>               numErrors      = 0;
-    atomic<int>               numWarnings    = 0;
-    atomic<int>               criticalErrors = 0;
-    shared_mutex              mutexFile;
-    shared_mutex              mutexCompilerPass;
-    VectorNative<SourceFile*> files;
-    VectorNative<Module*>     errorModules;
-    set<SourceFile*>          exportSourceFiles;
-    set<SourceFile*>          importedSourceFiles;
-    map<Utf8, ByteCode*>      mapRuntimeFcts;
-    BuildCfg                  buildCfg;
-    BuildParameters           buildParameters;
-    AstNode*                  astRoot   = nullptr;
-    Scope*                    scopeRoot = nullptr;
-    Backend*                  backend   = nullptr;
-    mutex                     mutexGeneratedFile;
-    FILE*                     handleGeneratedFile     = nullptr;
-    uint32_t                  countLinesGeneratedFile = 0;
-    uint64_t                  moreRecentSourceFile    = 0;
-    bool                      addedToBuild            = false;
-    bool                      saveBssValues           = false;
-    bool                      saveMutableValues       = false;
-    bool                      bssCannotChange         = false;
-    bool                      isSwag                  = false;
-    bool                      firstGenerated          = true;
-    bool                      isLocalToWorkspace      = false;
-
     bool              executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool              executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     void              printUserMessage(const BuildParameters& bp);
     TypeInfoFuncAttr* getRuntimeTypeFct(const char* fctName);
     ByteCode*         getRuntimeFct(const char* fctName);
 
-    DataSegment mutableSegment;
-    DataSegment constantSegment;
-    DataSegment bssSegment;
-    DataSegment compilerSegment;
-    DataSegment tlsSegment;
-
     void setBuildPass(BuildPass buildP);
-
-    shared_mutex mutexBuildPass;
-    BuildPass    buildPass = BuildPass::Full;
-
-    vector<ConcreteCompilerMessage> compilerMessages;
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
@@ -157,32 +114,6 @@ struct Module
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
 
-    DependentJobs           dependentJobs;
-    shared_mutex            mutexByteCode;
-    shared_mutex            mutexByteCodeCompiler;
-    VectorNative<ByteCode*> byteCodeCompiler[64];
-    VectorNative<ByteCode*> byteCodeFunc;
-    VectorNative<ByteCode*> byteCodeTestFunc;
-    VectorNative<ByteCode*> byteCodeInitFunc;
-    VectorNative<ByteCode*> byteCodeDropFunc;
-    VectorNative<ByteCode*> byteCodeRunFunc;
-    VectorNative<ByteCode*> byteCodePrintBC;
-    ByteCodeRun             runner;
-
-    atomic<int> numCompilerFunctions;
-    ByteCode*   byteCodeMainFunc = nullptr;
-    AstNode*    mainIsDefined    = nullptr;
-    atomic<int> numTestErrors    = 0;
-    atomic<int> numTestWarnings  = 0;
-    bool        setupDone        = false;
-    bool        dependenciesDone = false;
-
-    bool              mustFetchDep = false;
-    bool              wasAddedDep  = false;
-    ModuleDependency* fetchDep     = nullptr;
-    Utf8              remoteLocationDep;
-    BuildCfg          localCfgDep;
-
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool     removeDependency(AstNode* importNode);
@@ -191,29 +122,96 @@ struct Module
     bool     areAllFilesExported();
     bool     mustOutputSomething();
 
-    shared_mutex                    mutexDependency;
-    VectorNative<ModuleDependency*> moduleDependencies;
-    uint32_t                        hasBeenBuilt = BUILDRES_NONE;
+    void addGlobalVar(AstNode* node, GlobalVarKind varKind);
 
-    TypeTable typeTable;
-    void*     compilerItf[2];
+    void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
+    bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
+    void decImplForToSolve(TypeInfoStruct* typeStruct);
 
-    shared_mutex           mutexGlobalVars;
-    VectorNative<AstNode*> globalVarsBss;
-    VectorNative<AstNode*> globalVarsMutable;
-    VectorNative<AstNode*> globalVarsConstant;
-    void                   addGlobalVar(AstNode* node, GlobalVarKind varKind);
-
-    struct ForSolve
+    struct ForToSolve
     {
         uint32_t      count;
         DependentJobs dependentJobs;
     };
-    map<Utf8, ForSolve> implForToSolve;
-    void                addImplForToSolve(const Utf8& structName, uint32_t count = 1);
-    bool                waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
-    void                decImplForToSolve(TypeInfoStruct* typeStruct);
 
-    atomic<int> optimNeedRestart;
-    int         optimPass = 0;
+    shared_mutex mutexDependency;
+    shared_mutex mutexGlobalVars;
+    shared_mutex mutexFile;
+    shared_mutex mutexCompilerPass;
+    shared_mutex mutexByteCode;
+    shared_mutex mutexByteCodeCompiler;
+    shared_mutex mutexBuildPass;
+    mutex        mutexGeneratedFile;
+
+    string path;
+    Utf8   name;
+    Utf8   nameDown;
+    Utf8   nameUp;
+    Utf8   remoteLocationDep;
+
+    BuildCfg        buildCfg;
+    BuildCfg        localCfgDep;
+    BuildParameters buildParameters;
+    TypeTable       typeTable;
+    DataSegment     mutableSegment;
+    DataSegment     constantSegment;
+    DataSegment     bssSegment;
+    DataSegment     compilerSegment;
+    DataSegment     tlsSegment;
+    DependentJobs   dependentJobs;
+    ByteCodeRun     runner;
+
+    vector<ConcreteCompilerMessage> compilerMessages;
+    VectorNative<SourceFile*>       files;
+    VectorNative<Module*>           errorModules;
+    VectorNative<ByteCode*>         byteCodeCompiler[64];
+    VectorNative<ByteCode*>         byteCodeFunc;
+    VectorNative<ByteCode*>         byteCodeTestFunc;
+    VectorNative<ByteCode*>         byteCodeInitFunc;
+    VectorNative<ByteCode*>         byteCodeDropFunc;
+    VectorNative<ByteCode*>         byteCodeRunFunc;
+    VectorNative<ByteCode*>         byteCodePrintBC;
+    VectorNative<ModuleDependency*> moduleDependencies;
+    VectorNative<AstNode*>          globalVarsBss;
+    VectorNative<AstNode*>          globalVarsMutable;
+    VectorNative<AstNode*>          globalVarsConstant;
+    set<SourceFile*>                exportSourceFiles;
+    set<SourceFile*>                importedSourceFiles;
+    map<Utf8, ByteCode*>            mapRuntimeFcts;
+    map<Utf8, ForToSolve>           implForToSolve;
+
+    AstNode*          astRoot             = nullptr;
+    Scope*            scopeRoot           = nullptr;
+    Backend*          backend             = nullptr;
+    FILE*             handleGeneratedFile = nullptr;
+    ByteCode*         byteCodeMainFunc    = nullptr;
+    AstNode*          mainIsDefined       = nullptr;
+    ModuleDependency* fetchDep            = nullptr;
+    void*             compilerItf[2];
+
+    uint64_t moreRecentSourceFile = 0;
+
+    BuildPass   buildPass = BuildPass::Full;
+    ModuleKind  kind;
+    uint32_t    countLinesGeneratedFile = 0;
+    uint32_t    hasBeenBuilt            = BUILDRES_NONE;
+    atomic<int> numTestErrors           = 0;
+    atomic<int> numTestWarnings         = 0;
+    atomic<int> optimNeedRestart        = 0;
+    atomic<int> numCompilerFunctions    = 0;
+    atomic<int> numErrors               = 0;
+    atomic<int> numWarnings             = 0;
+    atomic<int> criticalErrors          = 0;
+    int         optimPass               = 0;
+
+    bool addedToBuild       = false;
+    bool saveBssValues      = false;
+    bool saveMutableValues  = false;
+    bool bssCannotChange    = false;
+    bool isSwag             = false;
+    bool firstGenerated     = true;
+    bool isLocalToWorkspace = false;
+    bool dependenciesDone   = false;
+    bool mustFetchDep       = false;
+    bool wasAddedDep        = false;
 };
