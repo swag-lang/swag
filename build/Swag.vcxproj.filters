@@ -470,6 +470,9 @@
     <ClCompile Include="..\src\Workspace_Build.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Module_Run.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
