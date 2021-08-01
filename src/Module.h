@@ -150,16 +150,17 @@ struct Module
     BuildCfg        buildCfg;
     BuildCfg        localCfgDep;
     BuildParameters buildParameters;
-    TypeTable       typeTable;
-    DataSegment     mutableSegment;
-    DataSegment     constantSegment;
-    DataSegment     bssSegment;
-    DataSegment     compilerSegment;
-    DataSegment     tlsSegment;
-    DependentJobs   dependentJobs;
-    ByteCodeRun     runner;
 
-    vector<ConcreteCompilerMessage> compilerMessages;
+    DataSegment mutableSegment;
+    DataSegment constantSegment;
+    DataSegment bssSegment;
+    DataSegment compilerSegment;
+    DataSegment tlsSegment;
+
+    TypeTable     typeTable;
+    ByteCodeRun   runner;
+    DependentJobs dependentJobs;
+
     VectorNative<SourceFile*>       files;
     VectorNative<Module*>           errorModules;
     VectorNative<ByteCode*>         byteCodeCompiler[64];
@@ -173,8 +174,8 @@ struct Module
     VectorNative<AstNode*>          globalVarsBss;
     VectorNative<AstNode*>          globalVarsMutable;
     VectorNative<AstNode*>          globalVarsConstant;
+    vector<ConcreteCompilerMessage> compilerMessages;
     set<SourceFile*>                exportSourceFiles;
-    set<SourceFile*>                importedSourceFiles;
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;
 
@@ -189,8 +190,8 @@ struct Module
 
     uint64_t moreRecentSourceFile = 0;
 
-    BuildPass   buildPass = BuildPass::Full;
     ModuleKind  kind;
+    BuildPass   buildPass               = BuildPass::Full;
     uint32_t    countLinesGeneratedFile = 0;
     uint32_t    hasBeenBuilt            = BUILDRES_NONE;
     atomic<int> numTestErrors           = 0;

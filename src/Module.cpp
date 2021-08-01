@@ -257,9 +257,6 @@ void Module::addFileNoLock(SourceFile* file)
     // If the file is flagged as '#global export', register it
     if (file->forceExport)
         exportSourceFiles.insert(file);
-
-    if (file->imported)
-        importedSourceFiles.insert(file);
 }
 
 void Module::addErrorModule(Module* module)
