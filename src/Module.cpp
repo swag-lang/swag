@@ -236,6 +236,12 @@ void Module::addExportSourceFile(SourceFile* file)
     exportSourceFiles.insert(file);
 }
 
+void Module::addErrorModule(Module* module)
+{
+    scoped_lock lk(mutexFile);
+    errorModules.push_back(module);
+}
+
 void Module::addFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
@@ -262,12 +268,6 @@ void Module::addFileNoLock(SourceFile* file)
     // If the file is flagged as '#global export', register it
     if (file->forceExport)
         exportSourceFiles.insert(file);
-}
-
-void Module::addErrorModule(Module* module)
-{
-    scoped_lock lk(mutexFile);
-    errorModules.push_back(module);
 }
 
 void Module::removeFile(SourceFile* file)
@@ -309,6 +309,23 @@ void Module::addCompilerFunc(ByteCode* bc)
             numCompilerFunctions--;
             byteCodeCompiler[i].push_back(bc);
         }
+    }
+}
+
+void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
+{
+    scoped_lock lk(mutexGlobalVars);
+    switch (varKind)
+    {
+    case GlobalVarKind::Mutable:
+        globalVarsMutable.push_back(node);
+        break;
+    case GlobalVarKind::Bss:
+        globalVarsBss.push_back(node);
+        break;
+    case GlobalVarKind::Constant:
+        globalVarsConstant.push_back(node);
+        break;
     }
 }
 
@@ -359,32 +376,10 @@ void Module::addByteCodeFunc(ByteCode* bc)
     }
 }
 
-void Module::setBuildPass(BuildPass buildP)
-{
-    scoped_lock lk(mutexBuildPass);
-    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
-    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
-}
-
 void Module::addForeignLib(const Utf8& text)
 {
     scoped_lock lk(mutexDependency);
     buildParameters.foreignLibs.insert(text);
-}
-
-bool Module::removeDependency(AstNode* importNode)
-{
-    scoped_lock lk(mutexDependency);
-    for (int i = 0; i < moduleDependencies.size(); i++)
-    {
-        if (moduleDependencies[i]->node == importNode)
-        {
-            moduleDependencies.erase(i);
-            return true;
-        }
-    }
-
-    return true;
 }
 
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
@@ -481,6 +476,76 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     return true;
 }
 
+bool Module::removeDependency(AstNode* importNode)
+{
+    scoped_lock lk(mutexDependency);
+    for (int i = 0; i < moduleDependencies.size(); i++)
+    {
+        if (moduleDependencies[i]->node == importNode)
+        {
+            moduleDependencies.erase(i);
+            return true;
+        }
+    }
+
+    return true;
+}
+
+bool Module::hasDependencyTo(Module* module)
+{
+    for (auto dep : moduleDependencies)
+    {
+        if (dep->module == module)
+            return true;
+        if (dep->module->hasDependencyTo(module))
+            return true;
+    }
+
+    return false;
+}
+
+bool Module::waitForDependenciesDone(Job* job)
+{
+    if (dependenciesDone)
+        return true;
+
+    for (auto& dep : moduleDependencies)
+    {
+        auto depModule = dep->module;
+        SWAG_ASSERT(depModule);
+
+        if (depModule->numErrors)
+            continue;
+
+        scoped_lock lk(depModule->mutexDependency);
+        if (depModule->hasBeenBuilt != BUILDRES_FULL)
+        {
+            depModule->dependentJobs.add(job);
+            return false;
+        }
+
+        g_ModuleMgr.loadModule(depModule->name);
+    }
+
+    dependenciesDone = true;
+    return true;
+}
+
+void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result)
+{
+    result = moduleDependencies;
+    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2) {
+        return n2->module->hasDependencyTo(n1->module);
+    });
+}
+
+void Module::setBuildPass(BuildPass buildP)
+{
+    scoped_lock lk(mutexBuildPass);
+    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
+    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
+}
+
 void Module::setHasBeenBuilt(uint32_t buildResult)
 {
     scoped_lock lk(mutexDependency);
@@ -552,21 +617,10 @@ void Module::printUserMessage(const BuildParameters& bp)
     }
 }
 
-void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
+void Module::printBC()
 {
-    scoped_lock lk(mutexGlobalVars);
-    switch (varKind)
-    {
-    case GlobalVarKind::Mutable:
-        globalVarsMutable.push_back(node);
-        break;
-    case GlobalVarKind::Bss:
-        globalVarsBss.push_back(node);
-        break;
-    case GlobalVarKind::Constant:
-        globalVarsConstant.push_back(node);
-        break;
-    }
+    for (auto bc : byteCodePrintBC)
+        bc->print();
 }
 
 bool Module::mustEmitSafetyOF(AstNode* node)
@@ -622,33 +676,6 @@ bool Module::hasBytecodeToRun()
     return runByteCode;
 }
 
-bool Module::waitForDependenciesDone(Job* job)
-{
-    if (dependenciesDone)
-        return true;
-
-    for (auto& dep : moduleDependencies)
-    {
-        auto depModule = dep->module;
-        SWAG_ASSERT(depModule);
-
-        if (depModule->numErrors)
-            continue;
-
-        scoped_lock lk(depModule->mutexDependency);
-        if (depModule->hasBeenBuilt != BUILDRES_FULL)
-        {
-            depModule->dependentJobs.add(job);
-            return false;
-        }
-
-        g_ModuleMgr.loadModule(depModule->name);
-    }
-
-    dependenciesDone = true;
-    return true;
-}
-
 bool Module::areAllFilesExported()
 {
     return buildCfg.backendKind == BuildCfgBackendKind::Export;
@@ -684,12 +711,6 @@ bool Module::mustOutputSomething()
     return mustOutput;
 }
 
-void Module::printBC()
-{
-    for (auto bc : byteCodePrintBC)
-        bc->print();
-}
-
 bool Module::compileString(const Utf8& text)
 {
     if (text.empty())
@@ -713,27 +734,6 @@ bool Module::compileString(const Utf8& text)
     job->nodes.push_back(parent);
     g_ThreadMgr.addJob(job);
     return true;
-}
-
-bool Module::hasDependencyTo(Module* module)
-{
-    for (auto dep : moduleDependencies)
-    {
-        if (dep->module == module)
-            return true;
-        if (dep->module->hasDependencyTo(module))
-            return true;
-    }
-
-    return false;
-}
-
-void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result)
-{
-    result = moduleDependencies;
-    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2) {
-        return n2->module->hasDependencyTo(n1->module);
-    });
 }
 
 TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)

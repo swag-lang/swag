@@ -26,13 +26,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     cxt->flags = getDefaultContextFlags(this);
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
-    g_ByteCodeStack.clear();
-    return executeNodeNoLock(sourceFile, node, callerContext);
-}
-
-bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
-{
     // Global setup
+    g_ByteCodeStack.clear();
     g_RunContext.callerContext = callerContext;
     g_RunContext.setup(sourceFile, node);
 

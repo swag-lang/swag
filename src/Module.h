@@ -92,7 +92,6 @@ struct Module
     void printBC();
 
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
-    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool compileString(const Utf8& str);
     bool hasBytecodeToRun();
 
