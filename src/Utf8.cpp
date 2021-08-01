@@ -266,9 +266,7 @@ char Utf8::back() const
 void Utf8::makeUpper()
 {
     for (int i = 0; i < count; i++)
-    {
         buffer[i] = (char) toupper(buffer[i]);
-    }
 }
 
 bool Utf8::compareNoCase(const Utf8& txt1)
