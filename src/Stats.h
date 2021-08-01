@@ -13,6 +13,7 @@ struct Stats
     atomic<int> totalConcreteTypes = 0;
     atomic<int> skippedModules     = 0;
     atomic<int> numInitPtr         = 0;
+    atomic<int> numInitFuncPtr     = 0;
 
     atomic<uint64_t> readFilesTime             = 0;
     atomic<uint64_t> totalTime                 = 0;

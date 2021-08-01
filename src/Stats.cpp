@@ -34,8 +34,11 @@ void Stats::print()
         float pc = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
         g_Log.messageHeaderDot("kicked", Utf8::format("%d %.1f%%", totalOptimsBC.load(), pc));
         g_Log.messageHeaderDot("total", Utf8::format("%u", numInstructions.load() - totalOptimsBC.load()));
+        g_Log.print("\n");
+
         g_Log.messageHeaderDot("concrete types", Utf8::format("%u", totalConcreteTypes.load()));
         g_Log.messageHeaderDot("init ptr", Utf8::format("%u", numInitPtr.load()));
+        g_Log.messageHeaderDot("init func ptr", Utf8::format("%u", numInitFuncPtr.load()));
         g_Log.print("\n");
     }
 

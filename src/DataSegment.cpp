@@ -401,6 +401,8 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     ref.srcOffset   = srcOffset;
     ref.fromSegment = seg;
 
+    scoped_lock lk(mutexPtr);
+
 #ifdef SWAG_DEV_MODE
     // We must have at least one pointer difference with all other offsets, otherwise we will
     // have a weird memory overwrite
@@ -408,9 +410,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
         SWAG_ASSERT(abs((int) initPtr[i].patchOffset - (int) patchOffset) >= 8);
 #endif
 
-    scoped_lock lk(mutexPtr);
     initPtr.push_back(ref);
-
     if (g_CommandLine.stats)
         g_Stats.numInitPtr++;
 }
@@ -421,7 +421,10 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocTyp
         return;
 
     scoped_lock lk(mutexPtr);
+
     initFuncPtr[offset] = {funcName, relocType};
+    if (g_CommandLine.stats)
+        g_Stats.numInitFuncPtr++;
 }
 
 bool DataSegment::readU64(Seek& seek, uint64_t& result)
