@@ -467,6 +467,9 @@
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp">
       <Filter>ByteCode\Run</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Workspace_Build.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

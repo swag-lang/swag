@@ -436,6 +436,7 @@
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp" />
     <ClCompile Include="..\src\RaceCondition.cpp" />
+    <ClCompile Include="..\src\Workspace_Build.cpp" />
     <ClCompile Include="..\src\Workspace_Clean.cpp" />
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
