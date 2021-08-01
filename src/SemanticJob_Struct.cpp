@@ -851,7 +851,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         otp.typeInfo      = g_TypeMgr.typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
         ot.parameters.push_back(otp);
-        typeInfo->attributes.attributes.push_back(ot);
+        typeInfo->attributes.emplace(ot);
     }
 
     // Align structure size

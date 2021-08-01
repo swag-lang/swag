@@ -3,7 +3,7 @@
 
 OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
 {
-    for (auto& it : attributes)
+    for (auto& it : allAttributes)
     {
         if (it.name == fullName)
             return &it;
@@ -14,7 +14,7 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
 
 bool AttributeList::getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value)
 {
-    for (auto& it : attributes)
+    for (auto& it : allAttributes)
     {
         if (it.name == fullName)
         {
@@ -36,11 +36,22 @@ bool AttributeList::getValue(const Utf8& fullName, const Utf8& parameter, Comput
 
 bool AttributeList::hasAttribute(const Utf8& fullName)
 {
-    for (auto& it : attributes)
+    for (auto& it : allAttributes)
     {
         if (it.name == fullName)
             return true;
     }
 
     return false;
+}
+
+void AttributeList::emplace(OneAttribute& other)
+{
+    allAttributes.emplace_back(move(other));
+}
+
+void AttributeList::add(AttributeList& other)
+{
+    for (auto& p : other.allAttributes)
+        allAttributes.push_back(p);
 }

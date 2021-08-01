@@ -307,10 +307,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
         // Merge the result
         if (result)
-        {
-            for (auto& oneAttr : curAttr->attributes.attributes)
-                result->attributes.push_back(oneAttr);
-        }
+            result->add(curAttr->attributes);
 
         if (!(curAttr->specFlags & AST_SPEC_ATTRUSE_GLOBAL) && !curAttr->ownerAttrUse)
             curAttr = forNode->sourceFile->astAttrUse;
@@ -423,7 +420,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             oneAttribute.parameters.emplace_back(move(attrParam));
         }
 
-        node->attributes.attributes.emplace_back(move(oneAttribute));
+        node->attributes.emplace(oneAttribute);
     }
 
     SWAG_CHECK(collectAttributes(context, node, nullptr, node));

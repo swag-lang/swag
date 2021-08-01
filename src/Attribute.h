@@ -66,23 +66,25 @@ struct AttributeList
     OneAttribute* getAttribute(const Utf8& fullName);
     bool          getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value);
     bool          hasAttribute(const Utf8& fullName);
+    void          emplace(OneAttribute& other);
+    void          add(AttributeList& other);
 
     void reset()
     {
         isHere.clear();
-        attributes.clear();
+        allAttributes.clear();
     }
 
     bool empty() const
     {
-        return attributes.empty();
+        return allAttributes.empty();
     }
 
     uint32_t size() const
     {
-        return (uint32_t) attributes.size();
+        return (uint32_t) allAttributes.size();
     }
 
     VectorNative<TypeInfoFuncAttr*> isHere;
-    vector<OneAttribute>            attributes;
+    vector<OneAttribute>            allAttributes;
 };

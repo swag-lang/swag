@@ -539,7 +539,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
     auto     ptrStorageAttributes = (uint8_t*) makeConcreteSlice(context, count * sizeof(ConcreteAttribute), concreteTypeInfoValue, storageSegment, storageOffset, &result->buffer, storageOffsetAttributes);
 
     uint32_t curOffsetAttributes = storageOffsetAttributes;
-    for (auto& one : attributes.attributes)
+    for (auto& one : attributes.allAttributes)
     {
         // Name of the attribute
         auto ptrString = (SwagSlice*) ptrStorageAttributes;

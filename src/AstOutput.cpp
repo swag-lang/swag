@@ -31,9 +31,9 @@ namespace Ast
             concat.addIndent(context.indent);
             CONCAT_FIXED_STR(concat, "#[");
 
-            for (int j = 0; j < attr->attributes.size(); j++)
+            for (int j = 0; j < attr->allAttributes.size(); j++)
             {
-                auto& one = attr->attributes[j];
+                auto& one = attr->allAttributes[j];
                 if (j)
                     CONCAT_FIXED_STR(concat, ", ");
 
