@@ -88,7 +88,7 @@ struct Module
     bool error(const Utf8& msg);
     bool internalError(const Utf8& msg);
     bool internalError(AstNode* node, Token& token, const Utf8& msg);
-    void printUserMessage(const BuildParameters& bp);
+    void printStartBuilding(const BuildParameters& bp);
     void printBC();
 
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);

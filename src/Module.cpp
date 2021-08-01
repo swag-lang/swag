@@ -600,7 +600,7 @@ bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
     return node->sourceFile->report({node, node->token, msg1});
 }
 
-void Module::printUserMessage(const BuildParameters& bp)
+void Module::printStartBuilding(const BuildParameters& bp)
 {
     if (!backend->mustCompile)
     {
