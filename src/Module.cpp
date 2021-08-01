@@ -736,7 +736,7 @@ bool Module::compileString(const Utf8& text)
     return true;
 }
 
-TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)
+TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
     shared_lock lk(mutexFile);
     auto        it = mapRuntimeFcts.find(fctName);
@@ -744,7 +744,7 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)
     return it->second->typeInfoFunc;
 }
 
-ByteCode* Module::getRuntimeFct(const char* fctName)
+ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 {
     shared_lock lk(mutexFile);
     auto        it = mapRuntimeFcts.find(fctName);

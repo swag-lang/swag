@@ -20,6 +20,30 @@ struct LanguageSpec
     HashTable<LiteralType, 256>                 nativeTypes;
     HashTable<uint64_t, 256>                    attributesFlags;
 
+    Utf8 name__setupRuntime;
+    Utf8 name__panic;
+    Utf8 name__clearerr;
+    Utf8 name__pusherr;
+    Utf8 name__poperr;
+    Utf8 name__geterr;
+    Utf8 name__tlsAlloc;
+    Utf8 name__tlsGetValue;
+    Utf8 name__tlsSetValue;
+    Utf8 name__tlsGetPtr;
+    Utf8 name__initStackTrace;
+    Utf8 name__stackTrace;
+    Utf8 name__loaddll;
+    Utf8 name__exit;
+
+    Utf8 name_memcpy;
+    Utf8 name_memset;
+    Utf8 name_memmove;
+    Utf8 name_memcmp;
+    Utf8 name_strlen;
+    Utf8 name_malloc;
+    Utf8 name_realloc;
+    Utf8 name_free;
+
     Utf8 name_swag;
     Utf8 name_Swag;
     Utf8 name_self;
@@ -134,6 +158,13 @@ struct LanguageSpec
     Utf8 name_atdrop;
     Utf8 name_atpostCopy;
     Utf8 name_atpostMove;
+    Utf8 name_atargs;
+    Utf8 name_atseterr;
+    Utf8 name_atpanic;
+    Utf8 name_aterrormsg;
+    Utf8 name_atinterfaceof;
+    Utf8 name_atstrcmp;
+    Utf8 name_attypecmp;
 };
 
 extern LanguageSpec g_LangSpec;

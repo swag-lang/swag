@@ -111,8 +111,8 @@ struct Module
     void              addByteCodeFunc(ByteCode* bc);
     void              addGlobalVar(AstNode* node, GlobalVarKind varKind);
     void              addForeignLib(const Utf8& text);
-    TypeInfoFuncAttr* getRuntimeTypeFct(const char* fctName);
-    ByteCode*         getRuntimeFct(const char* fctName);
+    TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
+    ByteCode*         getRuntimeFct(const Utf8& fctName);
 
     bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool removeDependency(AstNode* importNode);

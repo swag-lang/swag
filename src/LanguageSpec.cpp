@@ -6,6 +6,30 @@ LanguageSpec g_LangSpec;
 
 void LanguageSpec::setupNames()
 {
+    name__setupRuntime   = "__setupRuntime";
+    name__panic          = "__panic";
+    name__clearerr       = "__clearerr";
+    name__pusherr        = "__pusherr";
+    name__poperr         = "__poperr";
+    name__geterr         = "__geterr";
+    name__tlsAlloc       = "__tlsAlloc";
+    name__tlsGetValue    = "__tlsGetValue";
+    name__tlsSetValue    = "__tlsSetValue";
+    name__tlsGetPtr      = "__tlsGetPtr";
+    name__initStackTrace = "__initStackTrace";
+    name__stackTrace     = "__stackTrace";
+    name__loaddll        = "__loaddll";
+    name__exit           = "__exit";
+
+    name_memcpy  = "memcpy";
+    name_memset  = "memset";
+    name_memmove = "memmove";
+    name_memcmp  = "memcmp";
+    name_strlen  = "strlen";
+    name_malloc  = "malloc";
+    name_realloc = "realloc";
+    name_free    = "free";
+
     name_swag = "swag";
     name_Swag = "Swag";
     name_self = "self";
@@ -116,11 +140,18 @@ void LanguageSpec::setupNames()
     name_value      = "value";
     name_disk       = "disk";
     name_retval     = "retval";
-    
-    name_atalias    = "@alias";   
-    name_atdrop = "@drop";
-    name_atpostCopy = "@postCopy";
-    name_atpostMove = "@postMove";
+
+    name_atalias       = "@alias";
+    name_atdrop        = "@drop";
+    name_atpostCopy    = "@postCopy";
+    name_atpostMove    = "@postMove";
+    name_atargs        = "@args";
+    name_atseterr      = "@seterr";
+    name_atpanic       = "@panic";
+    name_aterrormsg    = "@errormsg";
+    name_atinterfaceof = "@interfaceof";
+    name_atstrcmp      = "@strcmp";
+    name_attypecmp     = "@typecmp";
 }
 
 void LanguageSpec::setupKeywords()

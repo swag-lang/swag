@@ -13,6 +13,7 @@
 #include "ModuleManager.h"
 #include "ThreadManager.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
@@ -340,7 +341,7 @@ JobResult ModuleBuildJob::execute()
         PushSwagContext cxt;
 
         // Setup runtime
-        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct("__setupRuntime");
+        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec.name__setupRuntime);
         SWAG_ASSERT(setupFct);
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
         if (module->criticalErrors)

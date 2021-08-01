@@ -635,7 +635,7 @@ void BackendX64::emitInternalPanic(const BuildParameters& buildParameters, AstNo
     else
         BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
-    emitCall(pp, "__panic");
+    emitCall(pp, g_LangSpec.name__panic);
 }
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -1830,7 +1830,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "@strcmp");
+            emitCall(pp, g_LangSpec.name_atstrcmp);
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
             SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
@@ -1842,7 +1842,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "@typecmp");
+            emitCall(pp, g_LangSpec.name_attypecmp);
             break;
 
         case ByteCodeOp::TestNotZero8:
@@ -2240,7 +2240,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u64, RCX);
                 BackendX64Inst::emit_Clear64(pp, RDX);
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, R8);
-                emitCall(pp, "memset");
+                emitCall(pp, g_LangSpec.name_memset);
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -2249,7 +2249,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_imul64_RAX(pp, ip->c.u64);
             BackendX64Inst::emit_Copy64(pp, RAX, R8);
-            emitCall(pp, "memset");
+            emitCall(pp, g_LangSpec.name_memset);
             break;
 
         case ByteCodeOp::SetZeroStack8:
@@ -2276,7 +2276,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RCX, RDI);
                 BackendX64Inst::emit_Clear64(pp, RDX);
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
-                emitCall(pp, "memset");
+                emitCall(pp, g_LangSpec.name_memset);
             }
             break;
         }
@@ -2548,67 +2548,67 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, R8);
-            emitCall(pp, "memcpy");
+            emitCall(pp, g_LangSpec.name_memcpy);
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, "memcpy");
+            emitCall(pp, g_LangSpec.name_memcpy);
             break;
 
         case ByteCodeOp::IntrinsicMemMove:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, "memmove");
+            emitCall(pp, g_LangSpec.name_memmove);
             break;
 
         case ByteCodeOp::IntrinsicMemSet:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, "memset");
+            emitCall(pp, g_LangSpec.name_memset);
             break;
 
         case ByteCodeOp::IntrinsicMemCmp:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), R8, RDI);
-            emitCall(pp, "memcmp");
+            emitCall(pp, g_LangSpec.name_memcmp);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicCStrLen:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, "strlen");
+            emitCall(pp, g_LangSpec.name_strlen);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicAlloc:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, "malloc");
+            emitCall(pp, g_LangSpec.name_malloc);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicRealloc:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-            emitCall(pp, "realloc");
+            emitCall(pp, g_LangSpec.name_realloc);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicFree:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, "free");
+            emitCall(pp, g_LangSpec.name_free);
             break;
 
         case ByteCodeOp::InternalInitStackTrace:
-            emitCall(pp, "__initStackTrace");
+            emitCall(pp, g_LangSpec.name__initStackTrace);
             break;
         case ByteCodeOp::InternalStackTrace:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RSP);
-            emitCall(pp, "__stackTrace");
+            emitCall(pp, g_LangSpec.name__stackTrace);
             break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(buildParameters, ip->node, (const char*) ip->d.pointer);
@@ -2623,7 +2623,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__tlsGetPtr");
+            emitCall(pp, g_LangSpec.name__tlsGetPtr);
             break;
 
         case ByteCodeOp::IntrinsicGetContext:
@@ -2631,14 +2631,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__tlsGetValue");
+            emitCall(pp, g_LangSpec.name__tlsGetValue);
             break;
         case ByteCodeOp::IntrinsicSetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, "__tlsSetValue");
+            emitCall(pp, g_LangSpec.name__tlsSetValue);
             break;
 
         case ByteCodeOp::IntrinsicArguments:
@@ -2646,7 +2646,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, "@args");
+            emitCall(pp, g_LangSpec.name_atargs);
             break;
 
         case ByteCodeOp::IntrinsicCompiler:
@@ -2667,7 +2667,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, "@errormsg");
+            emitCall(pp, g_LangSpec.name_aterrormsg);
             break;
         case ByteCodeOp::IntrinsicPanic:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
@@ -2677,7 +2677,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, "@panic");
+            emitCall(pp, g_LangSpec.name_atpanic);
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
@@ -2687,7 +2687,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "@interfaceof");
+            emitCall(pp, g_LangSpec.name_atinterfaceof);
             break;
 
         case ByteCodeOp::CopyRCtoRR:
@@ -3760,7 +3760,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, "__geterr");
+            emitCall(pp, g_LangSpec.name__geterr);
             break;
         }
 
@@ -3770,18 +3770,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, "@seterr");
+            emitCall(pp, g_LangSpec.name_atseterr);
             break;
         }
 
         case ByteCodeOp::InternalClearErr:
-            emitCall(pp, "__clearerr");
+            emitCall(pp, g_LangSpec.name__clearerr);
             break;
         case ByteCodeOp::InternalPushErr:
-            emitCall(pp, "__pusherr");
+            emitCall(pp, g_LangSpec.name__pusherr);
             break;
         case ByteCodeOp::InternalPopErr:
-            emitCall(pp, "__poperr");
+            emitCall(pp, g_LangSpec.name__poperr);
             break;
 
         default:
