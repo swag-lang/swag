@@ -790,12 +790,14 @@ bool Workspace::build()
     Backend::setup();
 
     // [devmode] stuff
-#ifdef SWAG_DEV_MODE
-    g_Log.setColor(LogColor::DarkBlue);
-    g_Log.print("[devmode] is activated\n");
-    g_Log.setDefaultColor();
+#if defined SWAG_DEBUG
+    g_Log.messageHeaderCentered("Compiler", "[debug|devmode]", LogColor::DarkBlue, LogColor::DarkBlue);
+#elif defined SWAG_DEV_MODE
+    g_Log.messageHeaderCentered("Compiler", "[devmode]", LogColor::DarkBlue, LogColor::DarkBlue);
+#endif
 
-    // randomize/seed
+    // [devmode] randomize/seed
+#ifdef SWAG_DEV_MODE
     if (g_CommandLine.randomize)
     {
         if (!g_CommandLine.randSeed)
