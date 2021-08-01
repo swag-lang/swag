@@ -2759,8 +2759,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
 bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
 {
-    auto symbol = overload->symbol;
-    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
+    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
         node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
 
@@ -2862,13 +2861,13 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 
 bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
 {
-    auto symbol            = overload->symbol;
-    auto symbolKind        = symbol->kind;
-    auto callParameters    = node->callParameters;
     auto genericParameters = node->genericParameters;
-
     if (!genericParameters)
         return true;
+
+    auto symbol         = overload->symbol;
+    auto symbolKind     = symbol->kind;
+    auto callParameters = node->callParameters;
 
     node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
     if (symbolKind != SymbolKind::Function &&
@@ -2926,7 +2925,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
     for (int i = 0; i < matches.size(); i++)
     {
         auto oneMatch    = matches[i];
-        auto over        = matches[i]->symbolOverload;
+        auto over        = oneMatch->symbolOverload;
         auto typeContext = findTypeInContext(context, over->node);
         if (typeContext)
         {
@@ -2935,7 +2934,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
             case TypeInfoKind::Enum:
             {
                 auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
-                if (typeEnum->scope == matches[i]->scope)
+                if (typeEnum->scope == oneMatch->scope)
                 {
                     matches.clear();
                     matches.push_back(oneMatch);
@@ -3027,11 +3026,13 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
 
 bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
-    auto node = context->node;
-    for (int i = 0; i < matches.size(); i++)
+    auto node         = context->node;
+    auto countMatches = matches.size();
+    for (int i = 0; i < countMatches; i++)
     {
-        auto over    = matches[i]->symbolOverload;
-        auto overSym = over->symbol;
+        auto curMatch = matches[i];
+        auto over     = curMatch->symbolOverload;
+        auto overSym  = over->symbol;
 
         // Take care of #selectif/#checkif
         if (overSym->kind == SymbolKind::Function &&
@@ -3041,22 +3042,22 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
             {
-                SWAG_CHECK(solveSelectIf(context, matches[i], funcDecl));
+                SWAG_CHECK(solveSelectIf(context, curMatch, funcDecl));
                 if (context->result != ContextResult::Done)
                     return true;
-                if (matches[i]->remove)
+                if (curMatch->remove)
                     continue;
             }
         }
 
-        if (matches.size() == 1)
+        if (countMatches == 1)
             return true;
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
-        if (strstr(overSym->name.c_str(), "@alias") == overSym->name.c_str())
+        if (overSym->name[0] == '@' && strstr(overSym->name.c_str(), "@alias") == overSym->name.c_str())
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (i != j)
                     matches[j]->remove = true;
@@ -3068,12 +3069,12 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a non empty function
         if (over->node->flags & AST_EMPTY_FCT)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->symbolOverload->node->flags & AST_EMPTY_FCT) &&
-                    matches[j]->symbolOverload->symbol == matches[i]->symbolOverload->symbol)
+                    matches[j]->symbolOverload->symbol == curMatch->symbolOverload->symbol)
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3082,11 +3083,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a local var/parameter versus a function
         if (over->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3096,12 +3097,12 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !(newOverloadType->flags & TYPEINFO_GENERIC))
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3110,11 +3111,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a non IMPL symbol
         if (over->flags & OVERLOAD_IMPL)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL))
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3123,11 +3124,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to a user generic parameters, instead of a copy one
         if (over->node->flags & AST_GENERATED_GENERIC_PARAM)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3136,11 +3137,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Priority to the same stack frame
         if (!node->isSameStackFrame(over))
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (node->isSameStackFrame(matches[j]->symbolOverload))
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
@@ -3151,11 +3152,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         {
             if (!node->ownerInline->scope->isParentOf(over->node->ownerScope))
             {
-                for (int j = 0; j < matches.size(); j++)
+                for (int j = 0; j < countMatches; j++)
                 {
                     if (node->ownerInline->scope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
                     {
-                        matches[i]->remove = true;
+                        curMatch->remove = true;
                         break;
                     }
                 }
@@ -3163,32 +3164,32 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Priority to not a namespace (??)
-        if (matches[i]->symbolOverload->symbol->kind == SymbolKind::Namespace)
+        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Namespace)
         {
-            for (int j = 0; j < matches.size(); j++)
+            for (int j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
                 {
-                    matches[i]->remove = true;
+                    curMatch->remove = true;
                     break;
                 }
             }
         }
 
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
-        if (!matches[i]->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (!curMatch->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF)
             {
-                for (int j = 0; j < matches.size(); j++)
+                for (int j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (typeFunc1->parameters.empty() || !(typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
                         {
-                            matches[i]->remove = true;
+                            curMatch->remove = true;
                             break;
                         }
                     }
@@ -3197,19 +3198,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // If we did match with ufcs, then priority to a match that starts with 'self'
-        if (matches[i]->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (curMatch->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !(typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
             {
-                for (int j = 0; j < matches.size(); j++)
+                for (int j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
                         {
-                            matches[i]->remove = true;
+                            curMatch->remove = true;
                             break;
                         }
                     }
