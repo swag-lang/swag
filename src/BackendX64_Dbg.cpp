@@ -1174,27 +1174,27 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(endAddress - dbgLines[0].byteOffset); // Code size
 
             // Compute file name index in the checksum table
-            auto   checkSymIndex = 0;
-            string name;
+            auto    checkSymIndex = 0;
+            string* name          = nullptr;
             if (f.wrapper)
-                name = exportFilePath;
+                name = &exportFilePath;
             else
-                name = sourceFile->path;
-            auto it = mapFileNames.find(name);
+                name = &sourceFile->path;
+            auto it = mapFileNames.find(*name);
             if (it == mapFileNames.end())
             {
                 checkSymIndex = (uint32_t) arrFileNames.size();
                 arrFileNames.push_back((uint32_t) stringTable.length());
-                mapFileNames[name] = checkSymIndex;
+                mapFileNames[*name] = checkSymIndex;
 
                 // Normalize path name
-                for (auto& c : name)
+                for (auto& c : *name)
                 {
                     if (c == '/')
                         c = '\\';
                 }
 
-                stringTable += name;
+                stringTable += *name;
                 stringTable.append((char) 0);
             }
             else
