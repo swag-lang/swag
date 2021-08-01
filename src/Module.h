@@ -135,12 +135,11 @@ struct Module
     };
 
     shared_mutex mutexDependency;
-    shared_mutex mutexGlobalVars;
     shared_mutex mutexFile;
-    shared_mutex mutexCompilerPass;
     shared_mutex mutexByteCode;
-    shared_mutex mutexByteCodeCompiler;
-    shared_mutex mutexBuildPass;
+    mutex        mutexGlobalVars;
+    mutex        mutexByteCodeCompiler;
+    mutex        mutexBuildPass;
     mutex        mutexGeneratedFile;
 
     string path;
