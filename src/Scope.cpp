@@ -211,6 +211,7 @@ void Scope::removeChildNoLock(Scope* child)
     childScopes[child->indexInParent]                = childScopes.back();
     childScopes[child->indexInParent]->indexInParent = child->indexInParent;
     child->indexInParent                             = UINT32_MAX;
+    childScopes.count--;
 
     if (child->flags & SCOPE_ROOT_PRIVATE)
     {
