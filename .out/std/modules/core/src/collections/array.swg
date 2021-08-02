@@ -368,7 +368,7 @@ impl Array
 
         if index == count
         {
-            @drop(&buffer[count])
+            @drop(buffer + count)
             return
         }
 
@@ -398,7 +398,7 @@ impl Array
     method removeBack()
     {
         Debug.assert(count > 0)
-        @drop(&buffer[count - 1])
+        @drop(buffer + count - 1)
         count -= 1
     }
 
