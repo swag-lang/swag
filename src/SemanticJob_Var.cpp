@@ -16,20 +16,6 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
 
-DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCompiler)
-{
-    auto module = node->sourceFile->module;
-
-    if (forceCompiler)
-        return &module->compilerSegment;
-    if (node->flags & AST_NO_BACKEND)
-        return &module->compilerSegment;
-    if (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_COMPILER)
-        return &module->compilerSegment;
-
-    return &module->constantSegment;
-}
-
 // Will be called after solving the initial var affect, but before tuple unpacking
 bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 {
@@ -572,7 +558,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (node->attributeFlags & ATTRIBUTE_TLS)
         return &module->tlsSegment;
 
-    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+    if (isCompilerContext(node))
         return &module->compilerSegment;
 
     if (node->kind == AstNodeKind::ConstDecl)

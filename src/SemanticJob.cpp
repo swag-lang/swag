@@ -42,6 +42,28 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
     return context->report({node, node->token, Utf8::format(Msg0005, node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
 }
 
+bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
+{
+    context->report({context->node, context->node->token, msg});
+    return false;
+}
+
+AstNode* SemanticJob::backToSemError()
+{
+    for (int i = (int) nodes.size() - 1; i >= 0; i--)
+    {
+        auto node = nodes[i];
+        if (node->kind == AstNodeKind::CompilerSemError)
+        {
+            while (nodes.size() != i + 1)
+                nodes.pop_back();
+            return node;
+        }
+    }
+
+    return nullptr;
+}
+
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
     auto job          = g_Allocator.alloc<SemanticJob>();
@@ -54,10 +76,23 @@ SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstN
     return job;
 }
 
-bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
+bool SemanticJob::isCompilerContext(AstNode* node)
 {
-    context->report({context->node, context->node->token, msg});
+    if (node->flags & AST_NO_BACKEND)
+        return true;
+    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        return true;
+    if (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_COMPILER)
+        return true;
     return false;
+}
+
+DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCompiler)
+{
+    auto module = node->sourceFile->module;
+    if (forceCompiler || isCompilerContext(node))
+        return &module->compilerSegment;
+    return &module->constantSegment;
 }
 
 void SemanticJob::enterState(AstNode* node)
@@ -293,20 +328,4 @@ JobResult SemanticJob::execute()
     }
 
     return JobResult::ReleaseJob;
-}
-
-AstNode* SemanticJob::backToSemError()
-{
-    for (int i = (int) nodes.size() - 1; i >= 0; i--)
-    {
-        auto node = nodes[i];
-        if (node->kind == AstNodeKind::CompilerSemError)
-        {
-            while (nodes.size() != i + 1)
-                nodes.pop_back();
-            return node;
-        }
-    }
-
-    return nullptr;
 }

@@ -427,7 +427,7 @@
 #define Msg0428 "'@log' called with invalid value '%.3f'"
 #define Msg0429
 #define Msg0430
-#define Msg0431 "variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with '?' if this is intended"
+#define Msg0431 "runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with '?' if this is intended"
 #define Msg0432 "[compiler internal] unknown bytecode instruction '%s'"
 #define Msg0433
 #define Msg0434 "bytecode execution, "

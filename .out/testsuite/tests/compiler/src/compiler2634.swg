@@ -6,7 +6,8 @@ var G = 0
 #[Compiler]
 func toto()
 {
-    loop 10 G += 1
+    loop 10
+        G += 1
 }
 
 #run

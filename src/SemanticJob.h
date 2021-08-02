@@ -164,6 +164,7 @@ struct SemanticJob : public Job
     static SymbolName*  hasUserOp(SemanticContext* context, const char* name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
     static uint32_t     alignOf(AstVarDecl* node);
+    static bool         isCompilerContext(AstNode* node);
     static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
 
     static void     enterState(AstNode* node);
