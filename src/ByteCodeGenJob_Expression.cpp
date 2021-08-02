@@ -417,21 +417,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue->text.length();
     }
-    else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->kind == TypeInfoKind::Array)
-    {
-        auto overload  = node->resolvedSymbolOverload;
-        auto typeArray = CastTypeInfo<TypeInfoArray>(node->castedTypeInfo, TypeInfoKind::Array);
-        reserveLinearRegisterRC2(context, regList);
-        SWAG_ASSERT(overload);
-        SWAG_ASSERT(overload->computedValue.storageSegment);
-        SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
-        emitMakeSegPointer(context, overload->computedValue.storageSegment, overload->computedValue.storageOffset, regList[0]);
-        emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
-    }
-
-    // :SliceLiteral
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
+        // :SliceLiteral
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->computedValue);
         SWAG_ASSERT(node->computedValue->storageSegment);
