@@ -95,7 +95,7 @@ func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint
 // Allocate and initialize the given type
 func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
-    userHint := hint orelse @typeof(T).name
+    userHint := hint orelse @stringof(T)
     ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
     @init(ptr)
     return ptr
@@ -106,7 +106,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 {
     if !ptr
         return
-    userHint := hint orelse @typeof(T).name
+    userHint := hint orelse @stringof(T)
     @drop(ptr)
     free(ptr, @sizeof(T), allocator, userHint, loc)
 }
@@ -116,7 +116,7 @@ func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 {
     Debug.assert(num > 0)
 
-    userHint := hint orelse @typeof(T).name
+    userHint := hint orelse @stringof(T)
     ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
@@ -129,7 +129,7 @@ func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = 
         return
     Debug.assert(num > 0)
 
-    userHint := hint orelse @typeof(T).name
+    userHint := hint orelse @stringof(T)
     @drop(ptr, num)
     free(ptr, @sizeof(T) * num, allocator, userHint, loc)
 }

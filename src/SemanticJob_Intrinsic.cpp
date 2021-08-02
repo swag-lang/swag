@@ -206,22 +206,12 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
 
 bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
 {
-    auto node = context->node;
-    auto expr = node->childs.front();
-
-    if (!(expr->flags & AST_VALUE_COMPUTED))
-    {
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, nullptr, MAKE_CONCRETE_FORCE_NO_SCOPE));
-        if (context->result != ContextResult::Done)
-            return true;
-    }
-
+    auto node     = context->node;
+    auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
-    SWAG_VERIFY(typeInfo, context->report({expr, Msg0798}));
-    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, Msg0798}));
 
     node->setFlagsValueIsComputed();
-    if (expr->flags & AST_VALUE_IS_TYPEINFO)
+    if (!expr->computedValue)
         node->computedValue->text = typeInfo->name;
     else if (typeInfo->isNative(NativeTypeKind::String))
         node->computedValue->text = expr->computedValue->text;
