@@ -19,9 +19,12 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
 DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCompiler)
 {
     auto module = node->sourceFile->module;
+
     if (forceCompiler)
         return &module->compilerSegment;
     if (node->flags & AST_NO_BACKEND)
+        return &module->compilerSegment;
+    if (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_COMPILER)
         return &module->compilerSegment;
 
     return &module->constantSegment;

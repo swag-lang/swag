@@ -440,6 +440,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Check attributes
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
+    if (funcNode->ownerFct)
+        funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
 
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec.name_opAffect, context->report({funcNode, funcNode->token, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec.name_opAffect || funcNode->token.text == g_LangSpec.name_opCast, context->report({funcNode, funcNode->token, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
