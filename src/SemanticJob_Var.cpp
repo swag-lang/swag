@@ -18,12 +18,13 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
 
 DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCompiler)
 {
+    auto module = node->sourceFile->module;
     if (forceCompiler)
-        return &node->sourceFile->module->compilerSegment;
-    //if (node->flags & AST_NO_BACKEND)
-    //    return &node->sourceFile->module->compilerSegment;
+        return &module->compilerSegment;
+    if (node->flags & AST_NO_BACKEND)
+        return &module->compilerSegment;
 
-    return &node->sourceFile->module->constantSegment;
+    return &module->constantSegment;
 }
 
 // Will be called after solving the initial var affect, but before tuple unpacking

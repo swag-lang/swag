@@ -544,7 +544,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (storageSegment)
         {
             auto ptr = storageSegment->address(storageOffset);
-            if (derefConstantValue(context, arrayNode, typePtr->finalType, ptr))
+            if (derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
                 arrayNode->setFlagsValueIsComputed();
         }
 
@@ -569,7 +569,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(computedValue.storageSegment != nullptr);
                 auto ptr = computedValue.storageSegment->address(computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue->reg.u64 * typeSlice->pointedType->sizeOf;
-                if (derefConstantValue(context, arrayNode, typeSlice->pointedType, ptr))
+                if (derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
         }
@@ -750,16 +750,15 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, void* ptr)
+bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr)
 {
     // Dereferencing a type descriptor. Convert it to a literal.
     if (typeInfo->isPointerToTypeInfo())
     {
-        auto value        = *(uint8_t**) ptr;
-        auto constSegment = getConstantSegFromContext(node);
+        auto value = *(uint8_t**) ptr;
         node->setFlagsValueIsComputed();
-        node->computedValue->storageSegment = constSegment;
-        node->computedValue->storageOffset  = constSegment->offset(value);
+        node->computedValue->storageSegment = storageSegment;
+        node->computedValue->storageOffset  = storageSegment->offset(value);
         node->flags |= AST_VALUE_IS_TYPEINFO;
         return true;
     }
@@ -865,7 +864,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* segment)
+bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment)
 {
     auto node = context->node;
 
@@ -876,8 +875,8 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
         node->allocateComputedValue();
-        node->computedValue->storageOffset  = segment->offset(*(uint8_t**) ptr);
-        node->computedValue->storageSegment = segment;
+        node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
+        node->computedValue->storageSegment = storageSegment;
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
     else if (concreteType->kind == TypeInfoKind::Slice)
@@ -886,8 +885,8 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
         auto ptrSlice  = (SwagSlice*) ptr;
         node->allocateComputedValue();
-        node->computedValue->storageOffset  = segment->offset((uint8_t*) ptrSlice->buffer);
-        node->computedValue->storageSegment = segment;
+        node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptrSlice->buffer);
+        node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.u64        = ptrSlice->count;
         auto typeArray                      = allocType<TypeInfoArray>();
         typeArray->count                    = (uint32_t)((SwagSlice*) ptr)->count;
@@ -896,7 +895,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         typeArray->computeName();
         node->typeInfo = typeArray;
     }
-    else if (!derefConstantValue(context, node, concreteType, ptr))
+    else if (!derefConstantValue(context, node, concreteType, storageSegment, ptr))
     {
         return false;
     }
