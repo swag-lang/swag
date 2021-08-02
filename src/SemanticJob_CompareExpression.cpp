@@ -7,6 +7,7 @@
 #include "TypeTable.h"
 #include "Runtime.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -78,7 +79,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpCommutative(context, "opEquals", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opEquals, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -141,7 +142,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoS32;
     }
 
@@ -201,7 +202,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -261,7 +262,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 

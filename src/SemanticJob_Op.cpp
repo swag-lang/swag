@@ -199,7 +199,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     return true;
 }
 
-bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
+bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
@@ -232,17 +232,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const char*
     return resolveUserOp(context, name, opConst, opType, right, left, false);
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck)
-{
-    VectorNative<AstNode*> params;
-    SWAG_ASSERT(left);
-    params.push_back(left);
-    if (right)
-        params.push_back(right);
-    return resolveUserOp(context, name, opConst, opType, left, params, justCheck);
-}
-
-SymbolName* SemanticJob::hasUserOp(const char* name, TypeInfoStruct* leftStruct)
+SymbolName* SemanticJob::hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct)
 {
     // In case of a generic instance, symbols are defined in the original generic structure scope, not
     // in the instance
@@ -251,7 +241,7 @@ SymbolName* SemanticJob::hasUserOp(const char* name, TypeInfoStruct* leftStruct)
     return leftStruct->scope->symTable.find(name);
 }
 
-SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
+SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
 {
     auto leftType = TypeManager::concreteReferenceType(left->typeInfo);
     if (leftType->kind == TypeInfoKind::Array)
@@ -260,7 +250,7 @@ SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, A
     return hasUserOp(name, leftStruct);
 }
 
-SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const char* name, AstNode* left)
+SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
 {
     auto symbol = hasUserOp(context, name, left);
     if (!symbol)
@@ -273,7 +263,17 @@ SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const char* name, 
     return symbol;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck)
+{
+    VectorNative<AstNode*> params;
+    SWAG_ASSERT(left);
+    params.push_back(left);
+    if (right)
+        params.push_back(right);
+    return resolveUserOp(context, name, opConst, opType, left, params, justCheck);
+}
+
+bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
 {
     auto symbol = waitUserOp(context, name, left);
 
@@ -283,7 +283,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
             return false;
 
         auto leftType = TypeManager::concreteType(left->typeInfo);
-        return context->report({left->parent, Utf8::format(Msg0079, name, leftType->getDisplayName().c_str())});
+        return context->report({left->parent, Utf8::format(Msg0079, name.c_str(), leftType->getDisplayName().c_str())});
     }
 
     if (context->result != ContextResult::Done)

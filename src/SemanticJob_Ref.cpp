@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
 {
@@ -205,21 +206,21 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 
         // Resolve call
         auto typeInfo = node->array->typeInfo;
-        if (!hasUserOp(context, "opSlice", node->array))
+        if (!hasUserOp(context, g_LangSpec.name_opSlice, node->array))
         {
             if (node->array->token.text.empty())
             {
-                Utf8 msg = Utf8::format("cannot slice because special function 'opSlice' cannot be found in type '%s'", typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(Msg0320, typeInfo->getDisplayName().c_str());
                 return context->report({node->array, msg});
             }
             else
             {
-                Utf8 msg = Utf8::format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(Msg0321, node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
                 return context->report({node->array, msg});
             }
         }
 
-        SWAG_CHECK(resolveUserOp(context, "opSlice", nullptr, nullptr, node->array, node->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node->array, node->structFlatParams, false));
     }
     else
     {
@@ -619,21 +620,21 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
         // Resolve call
         auto typeInfo = arrayNode->array->typeInfo;
-        if (!hasUserOp(context, "opIndex", arrayNode->array))
+        if (!hasUserOp(context, g_LangSpec.name_opIndex, arrayNode->array))
         {
             if (arrayNode->array->token.text.empty())
             {
-                Utf8 msg = Utf8::format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(Msg0226, typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
             else
             {
-                Utf8 msg = Utf8::format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(Msg0227, arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
         }
 
-        SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
         break;
     }
 

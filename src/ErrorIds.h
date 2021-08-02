@@ -220,10 +220,10 @@
 #define Msg0221 "[safety] division by zero"
 #define Msg0222 "[safety] index out of range"
 #define Msg0223 "cannot open #load file '%s'"
-#define Msg0224
-#define Msg0225
-#define Msg0226
-#define Msg0227
+#define Msg0224 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
+#define Msg0225 "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'"
+#define Msg0226 "cannot access by index because special function 'opIndex' cannot be found in type '%s'"
+#define Msg0227 "cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'"
 #define Msg0228 "[safety] invalid dynamic cast"
 #define Msg0229 "[safety] bad slicing, lower bound is greater than upper bound"
 #define Msg0230 "[safety] bad slicing, upper bound is out of range"
@@ -316,8 +316,8 @@
 #define Msg0317 "[compiler internal] Ast::output, unknown node"
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
-#define Msg0320
-#define Msg0321
+#define Msg0320 "cannot slice because special function 'opSlice' cannot be found in type '%s'"
+#define Msg0321 "cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'"
 #define Msg0322 "fatal error: invalid value for '--tag:%s' (%s)"
 #define Msg0323 "found 'else' without a corresponding 'if'"
 #define Msg0324 "found '#else' without a corresponding '#if'"
@@ -328,7 +328,7 @@
 #define Msg0329 "missing '%s' %s"
 #define Msg0330 "expected '%s' instead of '%s' %s"
 #define Msg0331 "line break or ';' is expected before '%s' to close the %s"
-#define Msg0332
+#define Msg0332 "cannot use operator 'orelse' on type '%s'"
 #define Msg0333 "expected an alias name, found '%s'"
 #define Msg0334 "'self' can only be used inside a struct or 'impl' block"
 #define Msg0335

@@ -5,6 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveMove(SemanticContext* context)
 {
@@ -187,13 +188,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
-                    if (!hasUserOp(context, "opIndexAffect", left))
+                    if (!hasUserOp(context, g_LangSpec.name_opIndexAffect, left))
                     {
-                        Utf8 msg = Utf8::format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Utf8::format(Msg0225, leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
-                    SWAG_CHECK(resolveUserOp(context, "opIndexAffect", nullptr, nullptr, left, arrayNode->structFlatParams, false));
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams, false));
                 }
             }
             else
@@ -213,13 +214,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
                         return context->report({node, Msg0574});
 
-                    if (!hasUserOp(context, "opAffect", left))
+                    if (!hasUserOp(context, g_LangSpec.name_opAffect, left))
                     {
-                        Utf8 msg = Utf8::format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Utf8::format(Msg0224, leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
-                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, left, right, false));
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAffect, nullptr, nullptr, left, right, false));
                 }
             }
 
@@ -237,9 +238,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAssign, op, nullptr, left, right, false));
             break;
         }
 
@@ -289,9 +290,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             else if (tokenId == TokenId::SymCircumflexEqual)
                 op = "^=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAssign, op, nullptr, left, right, false));
             break;
         }
 
@@ -313,9 +314,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAssign, op, nullptr, left, right, false));
             break;
         }
 
@@ -344,9 +345,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         else if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAssign, "/=", nullptr, left, right, false));
             break;
         }
 
@@ -367,9 +368,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAssign, op, nullptr, left, right, false));
             break;
         }
 

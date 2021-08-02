@@ -781,13 +781,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, ISSAME_CAST))
             {
-                if (!hasUserOp(context, "opAffect", node->type))
+                if (!hasUserOp(context, g_LangSpec.name_opAffect, node->type))
                 {
                     Utf8 msg = Utf8::format(Msg0908, leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
                     return context->report({node, msg});
                 }
 
-                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opAffect, nullptr, nullptr, node->type, node->assignment, false));
                 if (context->result == ContextResult::Pending)
                     return true;
 

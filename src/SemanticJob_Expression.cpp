@@ -718,7 +718,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, expression, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opData, nullptr, nullptr, expression, nullptr, false));
             if (context->result == ContextResult::Pending)
                 return true;
         }
@@ -730,7 +730,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !(typeInfo->flags & TYPEINFO_FLOAT) &&
                  typeInfo->kind != TypeInfoKind::Lambda)
         {
-            return context->report({expression, Utf8::format("cannot use operator '??' on type '%s'", typeInfo->getDisplayName().c_str())});
+            return context->report({expression, Utf8::format(Msg0332, typeInfo->getDisplayName().c_str())});
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));

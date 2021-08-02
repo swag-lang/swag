@@ -5,6 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -388,10 +389,10 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
                 if (typeInfo->kind == TypeInfoKind::Struct)
                 {
-                    SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
                     if (context->result != ContextResult::Done)
                         return true;
-                    SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
                     if (context->result != ContextResult::Done)
                         return true;
                 }
@@ -420,7 +421,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
                 if (typeInfo->kind == TypeInfoKind::Struct)
                 {
-                    SWAG_CHECK(resolveUserOpCommutative(context, "opEquals", nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec.name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
                     if (context->result != ContextResult::Done)
                         return true;
                 }

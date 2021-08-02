@@ -160,9 +160,9 @@ struct SemanticJob : public Job
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseMethodCount(TypeInfoStruct* typeInfoStruct);
-    static SymbolName*  hasUserOp(const char* name, TypeInfoStruct* leftStruct);
-    static SymbolName*  hasUserOp(SemanticContext* context, const char* name, AstNode* left);
-    static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
+    static SymbolName*  hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct);
+    static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
+    static SymbolName*  waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
     static uint32_t     alignOf(AstVarDecl* node);
     static bool         isCompilerContext(AstNode* node);
     static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
@@ -290,9 +290,9 @@ struct SemanticJob : public Job
     static bool         resolveCompilerDefined(SemanticContext* context);
     static bool         resolveCompilerScopeFct(SemanticContext* context);
     static bool         resolveCompilerLoad(SemanticContext* context);
-    static bool         resolveUserOpCommutative(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
-    static bool         resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck);
-    static bool         resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck);
+    static bool         resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
+    static bool         resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck);
+    static bool         resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck);
     static bool         resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool         resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);
