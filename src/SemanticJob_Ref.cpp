@@ -208,16 +208,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfo = node->array->typeInfo;
         if (!hasUserOp(context, g_LangSpec.name_opSlice, node->array))
         {
-            if (node->array->token.text.empty())
-            {
-                Utf8 msg = Utf8::format(Msg0320, typeInfo->getDisplayName().c_str());
-                return context->report({node->array, msg});
-            }
-            else
-            {
-                Utf8 msg = Utf8::format(Msg0321, node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
-                return context->report({node->array, msg});
-            }
+            Utf8 msg = Utf8::format(Msg0320, node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+            return context->report({node->array, msg});
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node->array, node->structFlatParams, false));

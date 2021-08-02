@@ -316,8 +316,8 @@
 #define Msg0317 "[compiler internal] Ast::output, unknown node"
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
-#define Msg0320 "cannot slice because special function 'opSlice' cannot be found in type '%s'"
-#define Msg0321 "cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'"
+#define Msg0320 "cannot slice '%s' because special function 'opSlice' cannot be found in type '%s'"
+#define Msg0321
 #define Msg0322 "fatal error: invalid value for '--tag:%s' (%s)"
 #define Msg0323 "found 'else' without a corresponding 'if'"
 #define Msg0324 "found '#else' without a corresponding '#if'"
