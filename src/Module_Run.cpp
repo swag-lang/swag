@@ -58,7 +58,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
 
         if (!ok)
         {
-            if (realType->kind == TypeInfoKind::Struct && !(realType->flags & TYPEINFO_STRUCT_IS_TUPLE))
+            if (realType->kind == TypeInfoKind::Struct)
                 return callerContext->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
             return callerContext->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
         }
