@@ -880,6 +880,22 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->storageSegment = segment;
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
+    else if (concreteType->kind == TypeInfoKind::Slice)
+    {
+        // Convert slice to a static constant array
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+        auto ptrSlice  = (SwagSlice*) ptr;
+        node->allocateComputedValue();
+        node->computedValue->storageOffset  = segment->offset((uint8_t*) ptrSlice->buffer);
+        node->computedValue->storageSegment = segment;
+        node->computedValue->reg.u64        = ptrSlice->count;
+        auto typeArray                      = allocType<TypeInfoArray>();
+        typeArray->count                    = (uint32_t)((SwagSlice*) ptr)->count;
+        typeArray->pointedType              = typeSlice->pointedType;
+        typeArray->finalType                = typeSlice->pointedType;
+        typeArray->computeName();
+        node->typeInfo = typeArray;
+    }
     else if (!derefConstantValue(context, node, concreteType, ptr))
     {
         return false;
