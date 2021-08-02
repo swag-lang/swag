@@ -306,8 +306,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        if (typeName == "Pixel.Font")
-            int a = 0; // @remove
         SWAG_CHECK(makeConcreteStruct(context, typeName, concreteTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
         break;
     }
