@@ -59,7 +59,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Enum))
     {
         TypeInfo* result = nullptr;
-        SWAG_CHECK(resolveTypeAsExpression(context, node, &result, MAKE_CONCRETE_SIMPLE));
+        SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
         if (context->result != ContextResult::Done)
             return true;
         node->typeInfo = result;

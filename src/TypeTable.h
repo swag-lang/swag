@@ -16,7 +16,6 @@ struct TypeTableJob;
 static uint32_t MAKE_CONCRETE_SHOULD_WAIT    = 0x00000001;
 static uint32_t MAKE_CONCRETE_FORCE_NO_SCOPE = 0x00000002;
 static uint32_t MAKE_CONCRETE_NATIVE         = 0x00000004;
-static uint32_t MAKE_CONCRETE_SIMPLE         = 0x00000008;
 
 struct TypeTable
 {
@@ -26,7 +25,6 @@ struct TypeTable
         TypeInfo*         newRealType;
         ConcreteTypeInfo* concreteType;
         uint32_t          storageOffset;
-        bool              isSimple;
     };
 
     struct MapPerSeg

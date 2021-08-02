@@ -66,9 +66,6 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     mapPerSeg.concreteTypesJob[typeName] = job;
     g_Stats.totalConcreteStructTypes++;
 
-    if (context && g_CommandLine.verboseConcreteTypes)
-        g_Log.verbose(Utf8::format("STRUCT %s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
-
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
     {
         SWAG_ASSERT(context->result == ContextResult::Done || !strcmp(context->baseJob->waitingId, "MAKE_CONCRETE_SHOULD_WAIT"));
@@ -137,34 +134,18 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
             *storage = it->second.storageOffset;
 
             // The registered type is the full version, so exit, and wait for the job to complete if necessary
-            if (!it->second.isSimple)
+            if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
             {
-                if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+                SWAG_ASSERT(context);
+                if (context->baseJob->baseContext->result != ContextResult::Pending)
                 {
-                    SWAG_ASSERT(context);
-                    if (context->baseJob->baseContext->result != ContextResult::Pending)
+                    auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
+                    if (itJob != mapPerSeg.concreteTypesJob.end())
                     {
-                        auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
-                        if (itJob != mapPerSeg.concreteTypesJob.end())
-                        {
-                            itJob->second->addDependentJob(context->baseJob);
-                            context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
-                        }
+                        itJob->second->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
                     }
                 }
-            }
-
-            // The registered type is the simple one, and we ask for the simple one, so we are done
-            else if (cflags & MAKE_CONCRETE_SIMPLE)
-            {
-                return true;
-            }
-
-            // We need to convert the simple type to the complete one
-            else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
-            {
-                it->second.isSimple = false;
-                SWAG_CHECK(makeConcreteStruct(context, typeName, it->second.concreteType, typeInfo, storageSegment, it->second.storageOffset, cflags));
             }
 
             return true;
@@ -265,7 +246,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     mapType.newRealType   = typePtr;
     mapType.concreteType  = concreteTypeInfoValue;
     mapType.storageOffset = storageOffset;
-    mapType.isSimple      = cflags & MAKE_CONCRETE_SIMPLE;
     if (result)
         *result = mapType.concreteType;
 
@@ -326,8 +306,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        if (cflags & MAKE_CONCRETE_SIMPLE)
-            break;
         SWAG_CHECK(makeConcreteStruct(context, typeName, concreteTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
         break;
     }

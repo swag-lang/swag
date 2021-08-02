@@ -2093,7 +2093,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // :AnyTypeSegment
             fromNode->allocateExtension();
             fromNode->extension->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset, MAKE_CONCRETE_SIMPLE));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, fromNode->extension->anyTypeSegment, &fromNode->extension->anyTypeOffset));
         }
     }
 
