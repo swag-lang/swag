@@ -905,15 +905,27 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     return true;
 }
 
-bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment)
+bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
 {
-    uint32_t storageOffset = UINT32_MAX;
-    auto     prevNode      = parent->previousResolvedNode;
+    DataSegment* storageSegment;
+    uint32_t     storageOffset = UINT32_MAX;
+
+    auto prevNode = parent->previousResolvedNode;
     if (prevNode->resolvedSymbolOverload)
-        storageOffset = prevNode->resolvedSymbolOverload->computedValue.storageOffset;
+    {
+        storageOffset  = prevNode->resolvedSymbolOverload->computedValue.storageOffset;
+        storageSegment = prevNode->resolvedSymbolOverload->computedValue.storageSegment;
+    }
     else
-        storageOffset = prevNode->computedValue->storageOffset;
+    {
+        SWAG_ASSERT(prevNode->computedValue);
+        storageOffset  = prevNode->computedValue->storageOffset;
+        storageSegment = prevNode->computedValue->storageSegment;
+    }
+
+    SWAG_ASSERT(storageSegment);
     SWAG_ASSERT(storageOffset != UINT32_MAX);
-    SWAG_CHECK(derefLiteralStruct(context, segment->address(storageOffset), overload, segment));
+
+    SWAG_CHECK(derefLiteralStruct(context, storageSegment->address(storageOffset), overload, storageSegment));
     return true;
 }

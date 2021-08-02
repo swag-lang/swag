@@ -11,7 +11,7 @@
 uint32_t SemanticJob::alignOf(AstVarDecl* node)
 {
     auto value = node->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
-    if(value)
+    if (value)
         return value->reg.u8;
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
@@ -20,6 +20,9 @@ DataSegment* SemanticJob::getConstantSegFromContext(AstNode* node, bool forceCom
 {
     if (forceCompiler)
         return &node->sourceFile->module->compilerSegment;
+    //if (node->flags & AST_NO_BACKEND)
+    //    return &node->sourceFile->module->compilerSegment;
+
     return &node->sourceFile->module->constantSegment;
 }
 

@@ -614,8 +614,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
         symbol->kind == SymbolKind::Variable)
     {
-        auto constSegment = getConstantSegFromContext(parent->previousResolvedNode);
-        if (derefLiteralStruct(context, parent, overload, constSegment))
+        if (derefLiteralStruct(context, parent, overload))
         {
             parent->previousResolvedNode = context->node;
             return true;
@@ -630,8 +629,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
         symbol->kind == SymbolKind::Variable)
     {
-        auto constSegment = getConstantSegFromContext(parent->previousResolvedNode);
-        if (derefLiteralStruct(context, parent, overload, constSegment))
+        if (derefLiteralStruct(context, parent, overload))
         {
             parent->previousResolvedNode       = context->node;
             identifier->resolvedSymbolName     = overload->symbol;

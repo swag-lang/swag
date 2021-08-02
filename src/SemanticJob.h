@@ -177,7 +177,7 @@ struct SemanticJob : public Job
     static bool     derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, void* ptr);
     static bool     derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool     derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* segment);
-    static bool     derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment);
+    static bool     derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool     makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool     makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static void     sortParameters(AstNode* allParams);
