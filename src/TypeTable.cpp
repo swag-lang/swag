@@ -64,6 +64,10 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.concreteTypesJob[typeName] = job;
+    g_Stats.totalConcreteStructTypes++;
+
+    if (context && g_CommandLine.verboseConcreteTypes)
+        g_Log.verbose(Utf8::format("STRUCT %s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
     {
@@ -128,23 +132,39 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         {
             if (ptrTypeInfo)
                 *ptrTypeInfo = it->second.newRealType;
-            *storage = it->second.storageOffset;
             if (result)
                 *result = it->second.concreteType;
+            *storage = it->second.storageOffset;
 
-            // Type register is the full version, so exit, wait for the jop to complete if necessary
-            if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+            // The registered type is the full version, so exit, and wait for the job to complete if necessary
+            if (!it->second.isSimple)
             {
-                SWAG_ASSERT(context);
-                if (context->baseJob->baseContext->result != ContextResult::Pending)
+                if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
                 {
-                    auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
-                    if (itJob != mapPerSeg.concreteTypesJob.end())
+                    SWAG_ASSERT(context);
+                    if (context->baseJob->baseContext->result != ContextResult::Pending)
                     {
-                        itJob->second->addDependentJob(context->baseJob);
-                        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
+                        auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
+                        if (itJob != mapPerSeg.concreteTypesJob.end())
+                        {
+                            itJob->second->addDependentJob(context->baseJob);
+                            context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
+                        }
                     }
                 }
+            }
+
+            // The registered type is the simple one, and we ask for the simple one, so we are done
+            else if (cflags & MAKE_CONCRETE_SIMPLE)
+            {
+                return true;
+            }
+
+            // We need to convert the simple type to the complete one
+            else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
+            {
+                it->second.isSimple = false;
+                SWAG_CHECK(makeConcreteStruct(context, typeName, it->second.concreteType, typeInfo, storageSegment, it->second.storageOffset, cflags));
             }
 
             return true;
@@ -153,7 +173,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
 
     if (storageSegment->kind != SegmentKind::Compiler)
     {
-        if (g_CommandLine.verboseConcreteTypes && context)
+        if (context && g_CommandLine.verboseConcreteTypes)
             g_Log.verbose(Utf8::format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
         g_Stats.totalConcreteTypes++;
     }
@@ -245,6 +265,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     mapType.newRealType   = typePtr;
     mapType.concreteType  = concreteTypeInfoValue;
     mapType.storageOffset = storageOffset;
+    mapType.isSimple      = cflags & MAKE_CONCRETE_SIMPLE;
     if (result)
         *result = mapType.concreteType;
 
@@ -305,6 +326,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
+        if (cflags & MAKE_CONCRETE_SIMPLE)
+            break;
         SWAG_CHECK(makeConcreteStruct(context, typeName, concreteTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
         break;
     }

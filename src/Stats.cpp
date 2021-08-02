@@ -37,6 +37,7 @@ void Stats::print()
         g_Log.print("\n");
 
         g_Log.messageHeaderDot("concrete types", Utf8::format("%u", totalConcreteTypes.load()));
+        g_Log.messageHeaderDot("concrete struct types", Utf8::format("%u", totalConcreteStructTypes.load()));
         g_Log.messageHeaderDot("init ptr", Utf8::format("%u", numInitPtr.load()));
         g_Log.messageHeaderDot("init func ptr", Utf8::format("%u", numInitFuncPtr.load()));
         g_Log.print("\n");
