@@ -48,6 +48,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
             if (!ok)
             {
+                context->expansionNode.pop_back();
                 if (realType->kind == TypeInfoKind::Struct)
                     return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
                 return context->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
