@@ -12,23 +12,23 @@ struct(T) Array
 impl Array
 {
     #[Inline]
-    func opCount(using self)->uint
+    method opCount()->uint
     {
         return count
     }
 
     #[Inline]
-    func opData(using self)->const *T
+    method opData()->const *T
     {
         return buffer
     }
 
-    func opDrop(using self)
+    method opDrop()
     {
         free()
     }
 
-    func opPostCopy(using self)
+    method opPostCopy()
     {
         if buffer == null
             return
@@ -48,24 +48,24 @@ impl Array
         }
     }
 
-    func opCast(using self)->[..] T
+    method opCast()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
-    func opCast(using self)->const [..] T
+    method opCast()->const [..] T
     {
         return @mkslice(buffer, count)
     }
 
-    func opSlice(using self, lower, upper: uint)->[..] T
+    method opSlice(lower, upper: uint)->[..] T
     {
         Debug.assert(lower <= upper and lower < count and upper < count)
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
     #[Inline]
-    func opIndex(using self, index: uint)->*T
+    method opIndex(index: uint)->*T
         #selectif Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
@@ -73,28 +73,28 @@ impl Array
     }
 
     #[Inline]
-    func opIndex(using self, index: uint)->T
+    method opIndex(index: uint)->T
         #selectif !Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
         return buffer[index]
     }
 
-    func opIndexAffect(using self, index: uint, value: T)
+    method opIndexAffect(index: uint, value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index < count, "index out of range")
         buffer[index] = value
     }
 
-    func(op: string) opIndexAssign(using self, index: uint, value: T)
+    method(op: string) opIndexAssign(index: uint, value: T)
     {
         Debug.assert(index < count, "index out of range")
         #ast "buffer[index] " ~op~ " value"
     }
 
     // Initializes an Array that contains values copied from the specified array
-    func opAffect(using self, arr: const [..] T)
+    method opAffect(arr: const [..] T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         clear()

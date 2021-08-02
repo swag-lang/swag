@@ -23,13 +23,13 @@ struct(K, V) HashTable
 
 impl HashTable
 {
-    func opDrop(using self)
+    method opDrop()
     {
         free()
     }
 
     #[Macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    method(ptr: bool) opVisit(stmt: code)
     {
         if !count
             return
@@ -73,7 +73,7 @@ impl HashTable
         return hashVal
     }
 
-    func free(using self)
+    method free()
     {
         if !table
             return
@@ -94,7 +94,7 @@ impl HashTable
         Memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
     }
 
-    func grow(using self)
+    method grow()
     {
         // We need to trigger the growing of the table is there's not enough room
         if capacity != 0 and capacity - (count + deleted) > capacity / 4
@@ -105,7 +105,7 @@ impl HashTable
     }
 
     // Reserve 'newCapacity' elements in the table.
-    func reserve(using self, newCapacity: uint)
+    method reserve(newCapacity: uint)
     {
         reqCapacity := Math.max(newCapacity, 32)
         if(reqCapacity <= capacity)
@@ -138,7 +138,7 @@ impl HashTable
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
-    func add(using self, key: K, value: V)
+    method add(key: K, value: V)
         #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
@@ -167,7 +167,7 @@ impl HashTable
     }
 
     // Remove the given key if it exists
-    func remove(using self, key: K)
+    method remove(key: K)
     {
         hashVal := hashKey(key)
         index := hashVal % capacity
@@ -187,7 +187,7 @@ impl HashTable
     }
 
     // Returns true if the table contains the given key
-    func contains(using self, key: K)->bool
+    method contains(key: K)->bool
     {
         if !table return false
 
@@ -206,7 +206,7 @@ impl HashTable
 
     // Find the given key, and returns the corresponding entry.
     // Returns null if the key is not there.
-    func find(using self, key: K)->const *HashTableEntry
+    method find(key: K)->const *HashTableEntry
     {
         if !table return null
 
@@ -224,7 +224,7 @@ impl HashTable
     }
 
     // Remove all elements
-    func clear(using self)
+    method clear()
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
         // Drop the key and the value if necessary
