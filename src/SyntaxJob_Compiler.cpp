@@ -43,12 +43,17 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     if (result)
         *result = node;
 
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0878));
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-    node->boolExpression->allocateExtension();
-    node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
+    // Expression
+    {
+        ScopedFlags scopedFlags(this, AST_NO_BACKEND);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0878));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
+        node->boolExpression->allocateExtension();
+        node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
+    }
 
+    // Block
     {
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
@@ -59,6 +64,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         SWAG_CHECK(doStatementFor(block, nullptr, kind));
     }
 
+    // Else block
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
     {
         auto block      = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
@@ -218,7 +224,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("'#selectif' expression"));
+        SWAG_CHECK(eatSemiCol("'#selectif/#checkif' expression"));
     }
 
     return true;
