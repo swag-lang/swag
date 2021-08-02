@@ -11,7 +11,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
+bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
@@ -90,7 +90,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         return true;
 
     auto expression = context->node->childs.front();
-    SWAG_CHECK(executeNode(context, expression, false));
+    SWAG_CHECK(executeExpression(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -123,7 +123,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Utf8::format(Msg0234, expression->typeInfo->getDisplayName().c_str())}));
 
-    SWAG_CHECK(executeNode(context, expression, true));
+    SWAG_CHECK(executeExpression(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -159,7 +159,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(executeNode(context, expr, true));
+    SWAG_CHECK(executeExpression(context, expr, true));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -307,7 +307,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         return true;
 
     auto expr = context->node->childs[0];
-    SWAG_CHECK(executeNode(context, expr, true));
+    SWAG_CHECK(executeExpression(context, expr, true));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -441,7 +441,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
-    SWAG_CHECK(executeNode(context, node->boolExpression, true));
+    SWAG_CHECK(executeExpression(context, node->boolExpression, true));
     if (context->result == ContextResult::Pending)
         return true;
 
