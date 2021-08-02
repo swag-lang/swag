@@ -32,6 +32,29 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
         return true;
     }
 
+    // Be sure we can deal with the type at compile time
+    if (!(node->semFlags & AST_SEM_EXEC_RET_STACK))
+    {
+        auto realType = TypeManager::concreteReferenceType(node->typeInfo);
+        if (realType->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            bool ok = false;
+            if (realType->kind == TypeInfoKind::Struct && realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                ok = true;
+            else if (realType->kind == TypeInfoKind::Struct && realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+                ok = true;
+            else if (realType->kind == TypeInfoKind::Array)
+                ok = true;
+
+            if (!ok)
+            {
+                if (realType->kind == TypeInfoKind::Struct)
+                    return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
+                return context->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
+            }
+        }
+    }
+
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     // In case there's a foreign call somewhere...
     auto module = sourceFile->module;
