@@ -464,7 +464,8 @@ impl StrConv.IConvert for Array
         bufArr := buffer
         loop count
         {
-            if !first buf.addBytes(",")
+            if !first
+                buf.addBytes(",")
             first = false
             v := @mkany(bufArr, T)
             StrConv.convertAny(buf, v, strFormat)
