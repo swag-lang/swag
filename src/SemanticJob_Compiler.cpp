@@ -48,7 +48,6 @@ bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, boo
                 if (context->result == ContextResult::Pending)
                     return true;
                 return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
-                break;
 
             case TypeInfoKind::Array:
                 break;
