@@ -41,17 +41,18 @@ void LanguageSpec::setupNames()
     name_opPostCopyGenerated = "opPostCopyGenerated";
     name_opPostMoveGenerated = "opPostMoveGenerated";
 
-    name_Safety    = "Safety";
-    name_Optim     = "Optim";
-    name_SelectIf  = "SelectIf";
-    name_Pack      = "Pack";
-    name_Align     = "Align";
-    name_Complete  = "Complete";
-    name_AttrUsage = "AttrUsage";
-    name_AttrMulti = "AttrMulti";
-    name_Global    = "Global";
-    name_Strict    = "Strict";
-    name_PrintBc   = "PrintBc";
+    name_Safety     = "Safety";
+    name_Optim      = "Optim";
+    name_SelectIf   = "SelectIf";
+    name_Pack       = "Pack";
+    name_Align      = "Align";
+    name_Complete   = "Complete";
+    name_AttrUsage  = "AttrUsage";
+    name_AttrMulti  = "AttrMulti";
+    name_Global     = "Global";
+    name_Strict     = "Strict";
+    name_PrintBc    = "PrintBc";
+    name_ExportType = "ExportType";
 
     name_Swag_AttrUsage  = "Swag.AttrUsage";
     name_Swag_AttrMulti  = "Swag.AttrMulti";
@@ -64,6 +65,7 @@ void LanguageSpec::setupNames()
     name_Swag_Deprecated = "Swag.Deprecated";
     name_Swag_Opaque     = "Swag.Opaque";
     name_Swag_Offset     = "Swag.Offset";
+    name_Swag_ExportType = "Swag.ExportType";
 
     name_opBinary      = "opBinary";
     name_opUnary       = "opUnary";
@@ -140,6 +142,11 @@ void LanguageSpec::setupNames()
     name_value      = "value";
     name_disk       = "disk";
     name_retval     = "retval";
+    name_all        = "all";
+    name_op         = "op";
+    name_fields     = "fields";
+    name_methods    = "methods";
+    name_parameters = "parameters";
 
     name_atalias       = "@alias";
     name_atdrop        = "@drop";

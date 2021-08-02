@@ -105,6 +105,9 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr Optim(what: string, value: bool)
 
+    #[AttrUsage(AttributeUsage.Struct)]
+    attr ExportType(what: string)
+
     // #########################################################
     // Constants
     // #########################################################

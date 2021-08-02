@@ -81,6 +81,9 @@ bool TypeTableJob::computeStruct()
     // Simple structure name, without generics
     SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
 
+    // Struct attributes
+    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+
     // Update methods with types if generic
     if (!realType->replaceTypes.empty())
     {
@@ -96,9 +99,7 @@ bool TypeTableJob::computeStruct()
         }
     }
 
-    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
-
-    // Generics
+    // Generic types
     concreteType->generics.buffer = 0;
     concreteType->generics.count  = realType->genericParameters.size();
     if (concreteType->generics.count)

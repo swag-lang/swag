@@ -595,7 +595,7 @@
 #define Msg0596 "'Swag.Align' value should be a power of two ('%d' provided)"
 #define Msg0597 "invalid attribute usage"
 #define Msg0598 "invalid attribute '%s'"
-#define Msg0599
+#define Msg0599 "'Swag.ExportType' invalid value '%s'"
 #define Msg0600 "attribute '%s' does not have the 'File' usage, and cannot be used with '#global'"
 #define Msg0601
 #define Msg0602 "attribute parameter cannot be evaluated at compile time"

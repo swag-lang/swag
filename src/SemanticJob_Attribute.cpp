@@ -216,6 +216,32 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             auto it = g_LangSpec.attributesFlags.find(child->token.text);
             if (it)
                 flags |= *it;
+            else if (child->token.text == g_LangSpec.name_ExportType)
+            {
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_ExportType, g_LangSpec.name_what);
+                SWAG_ASSERT(attrWhat);
+                auto text = attrWhat->text;
+                text.trim();
+                vector<Utf8> what;
+                Utf8::tokenize(text, '|', what);
+
+                for (auto& w : what)
+                {
+                    w.trim();
+                    if (w == g_LangSpec.name_all)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_ALL;
+                    else if (w == g_LangSpec.name_op)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_OP;
+                    else if (w == g_LangSpec.name_fields)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_FIELDS;
+                    else if (w == g_LangSpec.name_methods)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
+                    else if (w == g_LangSpec.name_parameters)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_PARAMETERS;
+                    else
+                        return context->report({child, Utf8::format(Msg0599, w.c_str())});
+                }
+            }
             else if (child->token.text == g_LangSpec.name_Safety)
             {
                 auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_what);
