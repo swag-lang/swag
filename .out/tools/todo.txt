@@ -1,3 +1,9 @@
+@mkinterface et type qui n'export pas
+@countof compile time #assert(@countof(@typeof(T).fields), "type has no field (or does not export them)")
+
+
+
+
 ****************************************
 LANGUAGE
 ****************************************

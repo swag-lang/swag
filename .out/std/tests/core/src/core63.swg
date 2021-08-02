@@ -1,5 +1,6 @@
 using Core.Reflection
 
+#[Swag.ExportType("methods")]
 struct X
 {
 

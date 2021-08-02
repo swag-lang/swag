@@ -3,6 +3,7 @@ using Swag
 #[AttrUsage(AttributeUsage.Function)]
 attr Command();
 
+#[Swag.ExportType("methods")]
 struct A
 {
 

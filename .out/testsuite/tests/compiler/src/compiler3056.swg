@@ -1,4 +1,4 @@
-#[Swag.ExportType("all")]
+#[Swag.ExportType("methods")]
 struct Toto
 {
     x: s32

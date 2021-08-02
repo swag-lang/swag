@@ -1,3 +1,4 @@
+#[Swag.ExportType("methods")]
 struct AA
 {
 

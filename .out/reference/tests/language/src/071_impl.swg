@@ -1,4 +1,6 @@
 // 'impl' is used to declare some stuff in the scope of a struct/enum
+
+#[Swag.ExportType("methods")]
 struct MyStruct
 {
     x: s32 = 5

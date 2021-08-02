@@ -9,6 +9,7 @@ bool TypeTableJob::computeStruct()
 {
     auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+    auto attributes   = realType->declNode ? realType->declNode->attributeFlags : 0;
 
     // Flags
     if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
@@ -23,7 +24,11 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
 
     // Special functions lambdas
-    concreteType->opInit = nullptr;
+    concreteType->opInit     = nullptr;
+    concreteType->opDrop     = nullptr;
+    concreteType->opPostCopy = nullptr;
+    concreteType->opPostMove = nullptr;
+
     if (realType->opInit || (realType->opUserInitFct && realType->opUserInitFct->isForeign()))
     {
         concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
@@ -36,7 +41,6 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
     }
 
-    concreteType->opDrop = nullptr;
     if (realType->opDrop || (realType->opUserDropFct && realType->opUserDropFct->isForeign()))
     {
         concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
@@ -49,7 +53,6 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
     }
 
-    concreteType->opPostCopy = nullptr;
     if (realType->opPostCopy || (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign()))
     {
         concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
@@ -62,7 +65,6 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
     }
 
-    concreteType->opPostMove = nullptr;
     if (realType->opPostMove || (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign()))
     {
         concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
@@ -84,18 +86,21 @@ bool TypeTableJob::computeStruct()
     // Struct attributes
     SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
-    // Update methods with types if generic
     if (!realType->replaceTypes.empty())
     {
-        for (auto method : realType->methods)
-        {
-            method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
-        }
-
-        // Update field  with types if generic
+        // Update fields with types if generic
         for (auto field : realType->fields)
         {
             field->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, field->typeInfo);
+        }
+
+        // Update methods with types if generic
+        if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
+        {
+            for (auto method : realType->methods)
+            {
+                method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
+            }
         }
     }
 
@@ -131,23 +136,27 @@ bool TypeTableJob::computeStruct()
 
     // Methods
     concreteType->methods.buffer = 0;
-    concreteType->methods.count  = realType->methods.size();
-    if (concreteType->methods.count)
+    concreteType->methods.count  = 0;
+    if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
     {
-        uint32_t count = (uint32_t) concreteType->methods.count;
-        uint32_t storageArray;
-        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
-        for (int param = 0; param < concreteType->methods.count; param++)
+        concreteType->methods.count = realType->methods.size();
+        if (concreteType->methods.count)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+            uint32_t count = (uint32_t) concreteType->methods.count;
+            uint32_t storageArray;
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+            for (int param = 0; param < concreteType->methods.count; param++)
+            {
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
-            // 'value' will contain a pointer to the lambda.
-            // Register it for later patches
-            uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
-            AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
-            patchMethods.push_back({funcNode, fieldOffset});
+                // 'value' will contain a pointer to the lambda.
+                // Register it for later patches
+                uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+                AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                patchMethods.push_back({funcNode, fieldOffset});
 
-            storageArray += sizeof(ConcreteTypeInfoParam);
+                storageArray += sizeof(ConcreteTypeInfoParam);
+            }
         }
     }
 
@@ -164,7 +173,7 @@ bool TypeTableJob::computeStruct()
             SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
             // :ItfIsConstantSeg
-            // Compute the storage of the interface for swag_runtime_interfaceof
+            // Compute the storage of the interface for @interfaceof
             uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
             uint32_t valueOffset = storageArray + fieldOffset;
             storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);

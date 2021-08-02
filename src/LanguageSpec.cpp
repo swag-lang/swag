@@ -142,11 +142,7 @@ void LanguageSpec::setupNames()
     name_value      = "value";
     name_disk       = "disk";
     name_retval     = "retval";
-    name_all        = "all";
-    name_op         = "op";
-    name_fields     = "fields";
-    name_methods    = "methods";
-    name_parameters = "parameters";
+    name_methods    = "methods";    
 
     name_atalias       = "@alias";
     name_atdrop        = "@drop";

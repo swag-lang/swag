@@ -372,6 +372,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 {
     auto typeStruct  = allocType<TypeInfoStruct>();
     typeStruct->name = typeList->computeTupleName(context);
+    typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE;
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (int idx = 0; idx < typeList->subTypes.size(); idx++)

@@ -228,16 +228,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec.name_all)
-                        flags |= ATTRIBUTE_EXPORT_TYPE_ALL;
-                    else if (w == g_LangSpec.name_op)
-                        flags |= ATTRIBUTE_EXPORT_TYPE_OP;
-                    else if (w == g_LangSpec.name_fields)
-                        flags |= ATTRIBUTE_EXPORT_TYPE_FIELDS;
-                    else if (w == g_LangSpec.name_methods)
+                    if (w == g_LangSpec.name_methods)
                         flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
-                    else if (w == g_LangSpec.name_parameters)
-                        flags |= ATTRIBUTE_EXPORT_TYPE_PARAMETERS;
                     else
                         return context->report({child, Utf8::format(Msg0599, w.c_str())});
                 }

@@ -69,6 +69,7 @@ public func tcf_toto9(a, b, c, d, e, f: s32)->string
     return "toto"
 }
 
+#[Swag.ExportType("methods")]
 public struct tcf_Point
 {
     x, y, z: s32
