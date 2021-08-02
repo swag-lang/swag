@@ -7,59 +7,8 @@
 #include "SemanticJob.h"
 #include "ErrorIds.h"
 
-bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
+bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
-    // In case bytecode generation has raised an error
-    if (node->sourceFile->numErrors)
-        return false;
-    if (node->sourceFile->module->numErrors)
-        return false;
-
-    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_GENERATED);
-    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_RESOLVED);
-    SWAG_ASSERT(node->extension && node->extension->bc);
-    SWAG_ASSERT(node->extension->bc->out);
-
-    // Setup flags before running
-    auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-    SWAG_ASSERT(cxt);
-    cxt->flags = getDefaultContextFlags(this);
-    cxt->flags |= (uint64_t) ContextFlags::ByteCode;
-
-    // Global setup
-    g_ByteCodeStack.clear();
-    g_RunContext.callerContext = callerContext;
-    g_RunContext.setup(sourceFile, node);
-
-    node->extension->bc->enterByteCode(&g_RunContext);
-    auto module = sourceFile->module;
-
-    // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
-    // generated for expression (just for functions)
-    if (node->ownerScope)
-    {
-        g_RunContext.decSP(node->ownerScope->startStackSize);
-
-        // :opAffectConstExpr
-        // Reserve room on the stack to store the result
-        if (node->semFlags & AST_SEM_EXEC_RET_STACK)
-            g_RunContext.decSP(node->typeInfo->sizeOf);
-
-        g_RunContext.bp = g_RunContext.sp;
-    }
-
-    bool result = module->runner.run(&g_RunContext);
-
-    node->extension->bc->leaveByteCode(&g_RunContext, false);
-    g_ByteCodeStack.clear();
-
-    if (!result)
-        return false;
-
-    // Free auto allocated memory
-    for (auto ptr : node->extension->bc->autoFree)
-        g_Allocator.free(ptr.first, ptr.second);
-
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)
@@ -137,6 +86,64 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         }
     }
 
+    return true;
+}
+
+bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
+{
+    // In case bytecode generation has raised an error
+    if (node->sourceFile->numErrors)
+        return false;
+    if (node->sourceFile->module->numErrors)
+        return false;
+
+    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_GENERATED);
+    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_RESOLVED);
+    SWAG_ASSERT(node->extension && node->extension->bc);
+    SWAG_ASSERT(node->extension->bc->out);
+
+    // Setup flags before running
+    auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+    SWAG_ASSERT(cxt);
+    cxt->flags = getDefaultContextFlags(this);
+    cxt->flags |= (uint64_t) ContextFlags::ByteCode;
+
+    // Global setup
+    g_ByteCodeStack.clear();
+    g_RunContext.callerContext = callerContext;
+    g_RunContext.setup(sourceFile, node);
+
+    node->extension->bc->enterByteCode(&g_RunContext);
+    auto module = sourceFile->module;
+
+    // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
+    // generated for expression (just for functions)
+    if (node->ownerScope)
+    {
+        g_RunContext.decSP(node->ownerScope->startStackSize);
+
+        // :opAffectConstExpr
+        // Reserve room on the stack to store the result
+        if (node->semFlags & AST_SEM_EXEC_RET_STACK)
+            g_RunContext.decSP(node->typeInfo->sizeOf);
+
+        g_RunContext.bp = g_RunContext.sp;
+    }
+
+    bool result = module->runner.run(&g_RunContext);
+
+    node->extension->bc->leaveByteCode(&g_RunContext, false);
+    g_ByteCodeStack.clear();
+
+    if (!result)
+        return false;
+
+    // Free auto allocated memory
+    for (auto ptr : node->extension->bc->autoFree)
+        g_Allocator.free(ptr.first, ptr.second);
+
+    // Get result
+    SWAG_CHECK(computeExecuteResult(sourceFile, node, callerContext));
     return true;
 }
 

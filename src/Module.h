@@ -91,6 +91,7 @@ struct Module
     void printStartBuilding(const BuildParameters& bp);
     void printBC();
 
+    bool computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool compileString(const Utf8& str);
     bool hasBytecodeToRun();
