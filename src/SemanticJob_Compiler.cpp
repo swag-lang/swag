@@ -38,19 +38,17 @@ bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, boo
         auto realType = TypeManager::concreteReferenceType(node->typeInfo);
         if (realType->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            bool ok = false;
-            if (realType->kind == TypeInfoKind::Struct && realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                ok = true;
-            else if (realType->kind == TypeInfoKind::Struct && realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
-                ok = true;
-            else if (realType->kind == TypeInfoKind::Array)
-                ok = true;
-
-            if (!ok)
+            if (realType->kind == TypeInfoKind::Struct)
+            {
+                if (!(realType->flags & TYPEINFO_STRUCT_IS_TUPLE) && !(realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                {
+                    context->expansionNode.pop_back();
+                    return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
+                }
+            }
+            else if (realType->kind != TypeInfoKind::Array)
             {
                 context->expansionNode.pop_back();
-                if (realType->kind == TypeInfoKind::Struct)
-                    return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
                 return context->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
             }
         }
