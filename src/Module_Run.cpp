@@ -56,20 +56,27 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     if (!result)
         return false;
 
+    // Free auto allocated memory
+    for (auto ptr : node->extension->bc->autoFree)
+        g_Allocator.free(ptr.first, ptr.second);
+
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)
     {
-        auto offsetStorage = sourceFile->module->compilerSegment.reserve(node->typeInfo->sizeOf);
+        auto storageSegment = &sourceFile->module->compilerSegment;
+        auto storageOffset  = storageSegment->reserve(node->typeInfo->sizeOf);
         node->allocateComputedValue();
-        node->computedValue->storageOffset = offsetStorage;
-        auto addrDst                       = sourceFile->module->compilerSegment.address(offsetStorage);
-        auto addrSrc                       = g_RunContext.bp;
+        node->computedValue->storageSegment = storageSegment;
+        node->computedValue->storageOffset  = storageOffset;
+        auto addrDst                        = storageSegment->address(storageOffset);
+        auto addrSrc                        = g_RunContext.bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+        return true;
     }
 
     // Transform result to a literal value
-    else if (node->resultRegisterRC.size())
+    if (node->resultRegisterRC.size())
     {
         auto realType  = TypeManager::concreteReferenceType(node->typeInfo);
         node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
@@ -129,10 +136,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             }
         }
     }
-
-    // Free auto allocated memory
-    for (auto ptr : node->extension->bc->autoFree)
-        g_Allocator.free(ptr.first, ptr.second);
 
     return true;
 }
