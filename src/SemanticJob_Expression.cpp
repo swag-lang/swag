@@ -581,8 +581,8 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
         node->typeInfo->kind != TypeInfoKind::Slice)
     {
         SWAG_CHECK(checkIsConcrete(context, node));
-        SWAG_CHECK(executeExpression(context, node, true));
-        if (context->result == ContextResult::Pending)
+        SWAG_CHECK(executeCompilerNode(context, node, true));
+        if (context->result != ContextResult::Done)
             return true;
     }
 

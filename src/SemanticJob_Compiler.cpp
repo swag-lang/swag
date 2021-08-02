@@ -11,7 +11,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, bool onlyconstExpr)
+bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
@@ -26,7 +26,7 @@ bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, boo
     // Request to generate the corresponding bytecode
     context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
     ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
     {
         context->expansionNode.pop_back();
         return true;
@@ -45,7 +45,7 @@ bool SemanticJob::executeExpression(SemanticContext* context, AstNode* node, boo
                     break;
                 context->expansionNode.pop_back();
                 context->job->waitForAllStructMethods(realType);
-                if (context->result == ContextResult::Pending)
+                if (context->result != ContextResult::Done)
                     return true;
                 return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
 
@@ -93,7 +93,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         return true;
 
     auto expression = context->node->childs.front();
-    SWAG_CHECK(executeExpression(context, expression, false));
+    SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -126,7 +126,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Utf8::format(Msg0234, expression->typeInfo->getDisplayName().c_str())}));
 
-    SWAG_CHECK(executeExpression(context, expression, true));
+    SWAG_CHECK(executeCompilerNode(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -162,8 +162,8 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(executeExpression(context, expr, true));
-    if (context->result == ContextResult::Pending)
+    SWAG_CHECK(executeCompilerNode(context, expr, true));
+    if (context->result != ContextResult::Done)
         return true;
 
     node->flags |= AST_NO_BYTECODE;
@@ -310,8 +310,8 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         return true;
 
     auto expr = context->node->childs[0];
-    SWAG_CHECK(executeExpression(context, expr, true));
-    if (context->result == ContextResult::Pending)
+    SWAG_CHECK(executeCompilerNode(context, expr, true));
+    if (context->result != ContextResult::Done)
         return true;
 
     g_Log.lock();
@@ -444,8 +444,8 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
-    SWAG_CHECK(executeExpression(context, node->boolExpression, true));
-    if (context->result == ContextResult::Pending)
+    SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
+    if (context->result != ContextResult::Done)
         return true;
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
