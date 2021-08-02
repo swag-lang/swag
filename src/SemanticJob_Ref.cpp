@@ -911,21 +911,12 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef*
     uint32_t     storageOffset = UINT32_MAX;
 
     auto prevNode = parent->previousResolvedNode;
-    if (prevNode->resolvedSymbolOverload)
-    {
-        storageOffset  = prevNode->resolvedSymbolOverload->computedValue.storageOffset;
-        storageSegment = prevNode->resolvedSymbolOverload->computedValue.storageSegment;
-    }
-    else
-    {
-        SWAG_ASSERT(prevNode->computedValue);
-        storageOffset  = prevNode->computedValue->storageOffset;
-        storageSegment = prevNode->computedValue->storageSegment;
-    }
-
-    SWAG_ASSERT(storageSegment);
-    SWAG_ASSERT(storageOffset != UINT32_MAX);
-
+    SWAG_ASSERT(prevNode->computedValue);
+    SWAG_ASSERT(prevNode->computedValue->storageSegment);
+    SWAG_ASSERT(prevNode->computedValue->storageOffset != UINT32_MAX);
+    storageOffset  = prevNode->computedValue->storageOffset;
+    storageSegment = prevNode->computedValue->storageSegment;
     SWAG_CHECK(derefLiteralStruct(context, storageSegment->address(storageOffset), overload, storageSegment));
+
     return true;
 }
