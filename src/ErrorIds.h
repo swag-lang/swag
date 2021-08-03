@@ -317,7 +317,7 @@
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
 #define Msg0320 "cannot slice '%s' because special function 'opSlice' cannot be found in type '%s'"
-#define Msg0321
+#define Msg0321 "cannot evaluate tuple value at compile time because one of its members is not 'Swag.ConstExpr'"
 #define Msg0322 "fatal error: invalid value for '--tag:%s' (%s)"
 #define Msg0323 "found 'else' without a corresponding 'if'"
 #define Msg0324 "found '#else' without a corresponding '#if'"

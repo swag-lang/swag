@@ -582,6 +582,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
     }
 
+    // Be default, a tuple is 'constexpr'
+    // If one of the childs is not, then the attribute will be removed
+    if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        node->attributeFlags |= ATTRIBUTE_CONSTEXPR;
+
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
     uint32_t storageIndexConst = 0;
@@ -660,6 +665,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
             structFlags |= TYPEINFO_STRUCT_NO_COPY;
+
+        // Remove attribute constexpr if necessary
+        if (child->typeInfo->kind == TypeInfoKind::Struct && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+            node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
 
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)

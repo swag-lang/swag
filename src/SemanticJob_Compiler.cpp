@@ -42,8 +42,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             {
             case TypeInfoKind::Struct:
             {
-                if ((realType->flags & TYPEINFO_STRUCT_IS_TUPLE) || (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
                     break;
+
+                if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                    return context->report({node, Utf8::format(Msg0321, realType->getDisplayName().c_str())});
 
                 // It is possible to convert a complex struct to a constant static array of values if the struct
                 // implements 'opCount' and 'opSlice'
