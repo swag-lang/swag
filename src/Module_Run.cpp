@@ -49,11 +49,11 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     // Static array
     if (realType->kind == TypeInfoKind::Array)
     {
-        auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
-        auto offsetStorage                  = storageSegment->reserve(realType->sizeOf);
+        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+        uint8_t* addrDst                    = nullptr;
+        auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrDst                        = storageSegment->address(offsetStorage);
         auto addrSrc                        = g_RunContext.registersRR[0].pointer;
         memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
         return true;
@@ -62,13 +62,14 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     // Struct return
     if (realType->kind == TypeInfoKind::Struct)
     {
-        if ((realType->flags & TYPEINFO_STRUCT_IS_TUPLE) || (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        // If struct is makred as constexpr, then we can raw copy the slice content
+        if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         {
-            auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
-            auto offsetStorage                  = storageSegment->reserve(realType->sizeOf);
+            auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+            uint8_t* addrDst                    = nullptr;
+            auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
-            auto addrDst                        = storageSegment->address(offsetStorage);
             auto addrSrc                        = g_RunContext.registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
             return true;
@@ -105,11 +106,11 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
 
         // Copy the content of the slice to the storage segment
-        auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
-        auto offsetStorage                  = storageSegment->reserve(sizeSlice);
+        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+        uint8_t* addrDst                    = nullptr;
+        auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrDst                        = storageSegment->address(offsetStorage);
         auto addrSrc                        = g_RunContext.registersRR[0].pointer;
         memcpy(addrDst, (const void*) addrSrc, sizeSlice);
 
@@ -145,19 +146,17 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         {
         case 1:
             node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
-            break;
+            return true;
         case 2:
             node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
-            break;
+            return true;
         case 4:
             node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
-            break;
+            return true;
         case 8:
             node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
-            break;
+            return true;
         }
-
-        return true;
     }
 
     return callerContext->report({node, Utf8::format(Msg0058, realType->getDisplayName().c_str())});
