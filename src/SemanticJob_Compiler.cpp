@@ -781,6 +781,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     }
 
     default:
-        return internalError(context, "resolveCompilerFunction, unknown token");
+        return context->internalError( "resolveCompilerFunction, unknown token");
     }
 }

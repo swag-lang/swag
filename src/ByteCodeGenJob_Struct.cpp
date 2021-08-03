@@ -245,7 +245,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
-                    return internalError(context, "generateStructInit, invalid native type sizeof", varDecl);
+                    return context->internalError( "generateStructInit, invalid native type sizeof", varDecl);
                 }
             }
 

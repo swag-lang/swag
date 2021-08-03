@@ -252,7 +252,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         break;
     default:
-        return internalError(context, "emitTypeDeRef, size not supported");
+        return context->internalError( "emitTypeDeRef, size not supported");
     }
 
     return true;
@@ -444,7 +444,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
     else
     {
-        return internalError(context, "emitPointerDeRef, type not supported");
+        return context->internalError( "emitPointerDeRef, type not supported");
     }
 
     return true;
@@ -520,7 +520,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
             return true;
         }
 
-        return internalError(context, "emitMakeArrayPointerSlicing, type not supported");
+        return context->internalError( "emitMakeArrayPointerSlicing, type not supported");
     }
 
     uint64_t sizeOf = 1;
@@ -533,7 +533,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     else if (typeVar->kind == TypeInfoKind::Pointer)
         sizeOf = CastTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
     else
-        return internalError(context, "emitMakeArrayPointerSlicing, type not supported");
+        return context->internalError( "emitMakeArrayPointerSlicing, type not supported");
 
     emitSafetyArrayPointerSlicing(context, node);
 

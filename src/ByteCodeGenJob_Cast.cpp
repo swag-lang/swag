@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     }
     else
     {
-        return internalError(context, "emitCastToInterface, invalid type");
+        return context->internalError( "emitCastToInterface, invalid type");
     }
 
     auto itf = fromTypeStruct->hasInterface(toTypeItf);
@@ -144,7 +144,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     else
     {
         if (typeInfo->kind != TypeInfoKind::Native)
-            return internalError(context, "emitCast, expression type not native", exprNode);
+            return context->internalError( "emitCast, expression type not native", exprNode);
 
         switch (typeInfo->nativeType)
         {
@@ -174,7 +174,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
             break;
         default:
             context->node = exprNode;
-            internalError(context, "emitCastToNativeBool, invalid source type");
+            context->internalError( "emitCastToNativeBool, invalid source type");
             break;
         }
     }
@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
 bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -212,7 +212,7 @@ bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* ex
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeU8, invalid source type");
+        context->internalError( "emitCastToNativeU8, invalid source type");
         break;
     }
 
@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* ex
 bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -252,7 +252,7 @@ bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS16, invalid source type");
+        context->internalError( "emitCastToNativeS16, invalid source type");
         break;
     }
 
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -296,7 +296,7 @@ bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS32, invalid source type");
+        context->internalError( "emitCastToNativeS32, invalid source type");
         break;
     }
 
@@ -309,7 +309,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
         return true;
 
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -347,7 +347,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeU64, invalid source type");
+        context->internalError( "emitCastToNativeU64, invalid source type");
         break;
     }
 
@@ -356,7 +356,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -381,7 +381,7 @@ bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* ex
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS8, invalid source type");
+        context->internalError( "emitCastToNativeS8, invalid source type");
         break;
     }
 
@@ -391,7 +391,7 @@ bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* ex
 bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -421,7 +421,7 @@ bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS16, invalid source type");
+        context->internalError( "emitCastToNativeS16, invalid source type");
         break;
     }
 
@@ -431,7 +431,7 @@ bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS32, invalid source type");
+        context->internalError( "emitCastToNativeS32, invalid source type");
         break;
     }
 
@@ -475,7 +475,7 @@ bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -514,7 +514,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeS64, invalid source type");
+        context->internalError( "emitCastToNativeS64, invalid source type");
         break;
     }
 
@@ -524,7 +524,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -563,7 +563,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeF32, invalid source type");
+        context->internalError( "emitCastToNativeF32, invalid source type");
         break;
     }
 
@@ -573,7 +573,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
+        return context->internalError( "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -612,7 +612,7 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastToNativeF64, invalid source type");
+        context->internalError( "emitCastToNativeF64, invalid source type");
         break;
     }
 
@@ -665,7 +665,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    internalError(context, "emitCastToNativeString, invalid type");
+    context->internalError( "emitCastToNativeString, invalid type");
     return false;
 }
 
@@ -718,7 +718,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     }
     else
     {
-        return internalError(context, "emitCastToSlice, invalid expression type", exprNode);
+        return context->internalError( "emitCastToSlice, invalid expression type", exprNode);
     }
 
     return true;
@@ -901,7 +901,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     }
 
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, cast type not native");
+        return context->internalError( "emitCast, cast type not native");
 
     emitSafetyCast(context, typeInfo, fromTypeInfo, exprNode);
     ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
@@ -951,7 +951,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
         break;
     default:
-        return internalError(context, "emitCast, invalid cast type");
+        return context->internalError( "emitCast, invalid cast type");
     }
 
     node->resultRegisterRC   = exprNode->resultRegisterRC;

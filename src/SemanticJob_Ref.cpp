@@ -706,7 +706,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         }
         else
         {
-            return internalError(context, "resolveInit, invalid type");
+            return context->internalError( "resolveInit, invalid type");
         }
     }
 

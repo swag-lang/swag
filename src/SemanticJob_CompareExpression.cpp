@@ -402,7 +402,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     default:
-        return internalError(context, "resolveCompareExpression, token not supported");
+        return context->internalError( "resolveCompareExpression, token not supported");
     }
 
     return true;

@@ -10,14 +10,6 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
-{
-    if (!node)
-        node = context->node;
-    context->sourceFile->report({node, Utf8::format(Msg0058, msg)});
-    return false;
-}
-
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();

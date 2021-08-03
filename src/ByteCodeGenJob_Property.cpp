@@ -104,7 +104,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     }
     else
     {
-        return internalError(context, "emitIntrinsicSpread, type not supported");
+        return context->internalError( "emitIntrinsicSpread, type not supported");
     }
 
     return true;
@@ -186,7 +186,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return internalError(context, "emitCountProperty, type not supported");
+    return context->internalError( "emitCountProperty, type not supported");
 }
 
 bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
@@ -216,5 +216,5 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return internalError(context, "emitDataProperty, type not supported");
+    return context->internalError( "emitDataProperty, type not supported");
 }

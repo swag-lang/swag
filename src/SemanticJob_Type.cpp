@@ -203,7 +203,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // Otherwise, this is strange, we should have a type
-    SWAG_VERIFY(typeNode->typeInfo, internalError(context, "resolveType, null type !"));
+    SWAG_VERIFY(typeNode->typeInfo, context->internalError( "resolveType, null type !"));
 
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier)

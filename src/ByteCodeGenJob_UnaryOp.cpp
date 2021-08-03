@@ -9,7 +9,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
 {
     auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitUnaryOpMinus, type not native");
+        return context->internalError( "emitUnaryOpMinus, type not native");
 
     emitSafetyNeg(context, r0, typeInfoExpr);
     switch (typeInfo->nativeType)
@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
         emitInstruction(context, ByteCodeOp::NegF64, r0);
         return true;
     default:
-        return internalError(context, "emitUnaryOpMinus, type not supported");
+        return context->internalError( "emitUnaryOpMinus, type not supported");
     }
 }
 
@@ -38,7 +38,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
 {
     auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitUnaryOpInvert, type not native");
+        return context->internalError( "emitUnaryOpInvert, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
         emitInstruction(context, ByteCodeOp::InvertU64, r0);
         return true;
     default:
-        return internalError(context, "emitUnaryOpInvert, type not supported");
+        return context->internalError( "emitUnaryOpInvert, type not supported");
     }
 }
 
@@ -109,7 +109,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 break;
 
             default:
-                return internalError(context, "emitUnaryOp, invalid token op");
+                return context->internalError( "emitUnaryOp, invalid token op");
             }
 
             node->doneFlags |= AST_DONE_EMIT_OP;

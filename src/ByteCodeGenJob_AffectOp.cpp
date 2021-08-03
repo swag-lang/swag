@@ -164,7 +164,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     }
 
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectEqual, type not native");
+        return context->internalError( "emitAffectEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -199,7 +199,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
     default:
-        return internalError(context, "emitAffectEqual, type not supported");
+        return context->internalError( "emitAffectEqual, type not supported");
     }
 }
 
@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
             return true;
         default:
-            return internalError(context, "emitAffectPlusEqual, type not supported");
+            return context->internalError( "emitAffectPlusEqual, type not supported");
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
@@ -258,7 +258,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         return true;
     }
 
-    return internalError(context, "emitAffectPlusEqual, type invalid");
+    return context->internalError( "emitAffectPlusEqual, type invalid");
 }
 
 bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -303,7 +303,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqF64, r0, r1);
             return true;
         default:
-            return internalError(context, "emitAffectMinusEqual, type not supported");
+            return context->internalError( "emitAffectMinusEqual, type not supported");
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
@@ -316,7 +316,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         return true;
     }
 
-    return internalError(context, "emitAffectMinusEqual, type invalid");
+    return context->internalError( "emitAffectMinusEqual, type invalid");
 }
 
 bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -324,7 +324,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectMulEqual, type not native");
+        return context->internalError( "emitAffectMulEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -362,7 +362,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpMulEqF64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectMulEqual, type not supported");
+        return context->internalError( "emitAffectMulEqual, type not supported");
     }
 }
 
@@ -371,7 +371,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectAndEqual, type not native");
+        return context->internalError( "emitAffectAndEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -396,7 +396,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpAndEqS64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectAndEqual, type not supported");
+        return context->internalError( "emitAffectAndEqual, type not supported");
     }
 }
 
@@ -405,7 +405,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectOrEqual, type not native");
+        return context->internalError( "emitAffectOrEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -430,7 +430,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
         emitInstruction(context, ByteCodeOp::AffectOpOrEqS64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectOrEqual, type not supported");
+        return context->internalError( "emitAffectOrEqual, type not supported");
     }
 }
 
@@ -439,7 +439,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectXorEqual, type not native");
+        return context->internalError( "emitAffectXorEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -464,7 +464,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectXorEqual, type not supported");
+        return context->internalError( "emitAffectXorEqual, type not supported");
     }
 }
 
@@ -473,7 +473,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectShiftLeftEqual, type not native");
+        return context->internalError( "emitAffectShiftLeftEqual, type not native");
 
     emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
 
@@ -513,7 +513,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
-        return internalError(context, "emitAffectShiftLeftEqual, type not supported");
+        return context->internalError( "emitAffectShiftLeftEqual, type not supported");
     }
 }
 
@@ -522,7 +522,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectShiftRightEqual, type not native");
+        return context->internalError( "emitAffectShiftRightEqual, type not native");
 
     emitSafetyRightShiftEq(context, r0, r1, typeInfo);
 
@@ -562,7 +562,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
-        return internalError(context, "emitAffectShiftRightEqual, type not supported");
+        return context->internalError( "emitAffectShiftRightEqual, type not supported");
     }
 }
 
@@ -571,7 +571,7 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectPercentEqual, type not native");
+        return context->internalError( "emitAffectPercentEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -611,7 +611,7 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
         emitInstruction(context, ByteCodeOp::AffectOpModuloEqU64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectPercentEqual, type not supported");
+        return context->internalError( "emitAffectPercentEqual, type not supported");
     }
 }
 
@@ -620,7 +620,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectDivEqual, type not native");
+        return context->internalError( "emitAffectDivEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -668,7 +668,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpDivEqF64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectDivEqual, type not supported");
+        return context->internalError( "emitAffectDivEqual, type not supported");
     }
 }
 
@@ -756,7 +756,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         SWAG_CHECK(emitAffectPercentEqual(context, r0, r1));
         break;
     default:
-        return internalError(context, "emitAffect, invalid token op");
+        return context->internalError( "emitAffect, invalid token op");
     }
 
     freeRegisterRC(context, r0);

@@ -31,6 +31,7 @@ struct JobContext
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     bool checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue);
+    bool internalError(const char* msg, AstNode* specNode = nullptr);
 
     void reset()
     {

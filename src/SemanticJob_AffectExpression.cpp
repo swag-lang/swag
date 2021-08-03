@@ -384,7 +384,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     default:
-        return internalError(context, "resolveAffect, invalid token");
+        return context->internalError( "resolveAffect, invalid token");
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitAffect;

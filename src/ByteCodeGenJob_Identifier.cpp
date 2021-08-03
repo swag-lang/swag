@@ -171,7 +171,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         }
         else
         {
-            internalError(context, "emitTry, unsupported return type");
+            context->internalError( "emitTry, unsupported return type");
         }
     }
 
@@ -319,7 +319,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto resolved   = node->resolvedSymbolOverload;
     auto typeInfo   = TypeManager::concreteReference(resolved->typeInfo);
     typeInfo        = TypeManager::concreteType(typeInfo);
-    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, internalError(context, "emitIdentifier, type is generic"));
+    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, context->internalError( "emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)
@@ -621,7 +621,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, Utf8::format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError( Utf8::format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
 
         // If previous node was a pointer index, then no need to check for a null pointer, it has already been done
         bool safety = true;
@@ -665,7 +665,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, internalError(context, Utf8::format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError( Utf8::format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
@@ -676,5 +676,5 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    return internalError(context, "emitIdentifier");
+    return context->internalError( "emitIdentifier");
 }

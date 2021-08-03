@@ -248,3 +248,11 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
         return true;
     return report({node, Utf8::format(Msg0505, typeOverflow, maxValue)});
 }
+
+bool JobContext::internalError(const char* msg, AstNode* specNode)
+{
+    if (!specNode)
+        specNode = node;
+    sourceFile->report({specNode, Utf8::format(Msg0058, msg)});
+    return false;
+}

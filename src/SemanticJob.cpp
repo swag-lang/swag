@@ -8,14 +8,6 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::internalError(JobContext* context, const char* msg, AstNode* node)
-{
-    if (!node)
-        node = context->node;
-    context->report({node, node->token, Utf8::format(Msg0503, msg)});
-    return false;
-}
-
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
 {
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)

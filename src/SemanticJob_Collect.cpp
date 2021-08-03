@@ -32,7 +32,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
         if (!assignment->castedTypeInfo)
-            return internalError(context, "storeToSegment, cannot resolve any");
+            return context->internalError( "storeToSegment, cannot resolve any");
 
         // Store value in constant storageSegment
         auto     constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
@@ -179,7 +179,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
                     *(uint64_t*) ptrDest = value ? value->reg.u64 : 0;
                     break;
                 default:
-                    return internalError(context, "collectStructLiterals, invalid native type sizeof");
+                    return context->internalError( "collectStructLiterals, invalid native type sizeof");
                 }
 
                 SWAG_ASSERT(typeInfo->sizeOf);
