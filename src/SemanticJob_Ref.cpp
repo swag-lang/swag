@@ -890,6 +890,14 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         typeArray->computeName();
         node->typeInfo = typeArray;
     }
+    else if (concreteType->kind == TypeInfoKind::Struct)
+    {
+        node->allocateComputedValue();
+        node->computedValue->storageOffset  = storageSegment->offset(ptr);
+        node->computedValue->storageSegment = storageSegment;
+        node->typeInfo                      = concreteType;
+        setupIdentifierRef(context, node, concreteType);
+    }
     else if (!derefConstantValue(context, node, concreteType, storageSegment, ptr))
     {
         return false;
