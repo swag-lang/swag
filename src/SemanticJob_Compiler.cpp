@@ -60,9 +60,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
 
                 VectorNative<AstNode*> params;
-                SymbolOverload*        opCount = nullptr;
-                SymbolOverload*        opSlice = nullptr;
 
+                // opCount
                 params.push_back(node);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opCount, nullptr, nullptr, node, params, false));
                 if (context->result != ContextResult::Done)
@@ -71,15 +70,16 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
                 }
 
-                opCount = context->node->extension->resolvedUserOpSymbolOverload;
-                SWAG_ASSERT(opCount);
-                ByteCodeGenJob::askForByteCode(context->job, opCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                execParams.specReturnOpCount = context->node->extension->resolvedUserOpSymbolOverload;
+                SWAG_ASSERT(execParams.specReturnOpCount);
+                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 if (context->result != ContextResult::Done)
                 {
                     context->expansionNode.pop_back();
                     return true;
                 }
 
+                // opSlice
                 AstNode tmpNode;
                 memset(&tmpNode, 0, sizeof(AstNode));
                 tmpNode.typeInfo = g_TypeMgr.typeInfoUInt;
@@ -92,17 +92,37 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
                 }
 
-                opSlice = context->node->extension->resolvedUserOpSymbolOverload;
-                SWAG_ASSERT(opSlice);
-                ByteCodeGenJob::askForByteCode(context->job, opSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                execParams.specReturnOpSlice = context->node->extension->resolvedUserOpSymbolOverload;
+                SWAG_ASSERT(execParams.specReturnOpSlice);
+                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 if (context->result != ContextResult::Done)
                 {
                     context->expansionNode.pop_back();
                     return true;
                 }
 
-                execParams.specReturnOpCount = opCount;
-                execParams.specReturnOpSlice = opSlice;
+                // opDrop
+                if (hasUserOp(g_LangSpec.name_opDrop, (TypeInfoStruct*) realType))
+                {
+                    params.clear();
+                    params.push_back(node);
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opDrop, nullptr, nullptr, node, params, false));
+                    if (context->result != ContextResult::Done)
+                    {
+                        context->expansionNode.pop_back();
+                        return true;
+                    }
+
+                    execParams.specReturnOpDrop = context->node->extension->resolvedUserOpSymbolOverload;
+                    SWAG_ASSERT(execParams.specReturnOpDrop);
+                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    if (context->result != ContextResult::Done)
+                    {
+                        context->expansionNode.pop_back();
+                        return true;
+                    }
+                }
+
                 break;
             }
 
@@ -569,7 +589,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         struct stat stat_buf;
         int         rc = stat(fullFileName, &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(Msg0223, back->computedValue->text.c_str())}));
-        SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
+        SWAG_CHECK(context->checkSizeOverflow("'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto newJob                         = g_Allocator.alloc<LoadFileJob>();
         auto storageSegment                 = getConstantSegFromContext(node);

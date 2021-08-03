@@ -241,3 +241,10 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     SWAG_ASSERT(sourceFile);
     return sourceFile->report(diag, copyNotes);
 }
+
+bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)
+{
+    if (value <= maxValue)
+        return true;
+    return report({node, Utf8::format(Msg0505, typeOverflow, maxValue)});
+}

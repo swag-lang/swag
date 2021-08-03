@@ -336,13 +336,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, Msg0021}));
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
                 SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Utf8::format(Msg0022, child->typeInfo->getDisplayName().c_str())}));
-                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue->reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_CHECK(context->checkSizeOverflow("array", child->computedValue->reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, Msg0023}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = (uint32_t) child->computedValue->reg.u32;
                 totalCount *= ptrArray->count;
-                SWAG_CHECK(checkSizeOverflow(context, "array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 ptrArray->totalCount  = totalCount;
                 ptrArray->pointedType = typeNode->typeInfo;
                 ptrArray->finalType   = rawType;

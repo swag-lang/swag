@@ -71,6 +71,7 @@ struct ExecuteNodeParams
     VectorNative<uint64_t> callParams;
     SymbolOverload*        specReturnOpCount = nullptr;
     SymbolOverload*        specReturnOpSlice = nullptr;
+    SymbolOverload*        specReturnOpDrop  = nullptr;
 };
 
 static const uint32_t BUILDRES_NONE     = 0x00000000;

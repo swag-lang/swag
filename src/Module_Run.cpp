@@ -78,40 +78,41 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         // Convert struct to static array
         ExecuteNodeParams opParams;
 
-        // Make a copy of the returned struct, as we will lose the room later
+        // Make a copy of the returned struct, as we will lose the memory
         auto selfSize = Allocator::alignSize(realType->sizeOf);
         auto self     = g_Allocator.alloc(selfSize);
         memcpy(self, (void*) g_RunContext.registersRR[0].pointer, realType->sizeOf);
 
         // Get number of elements by calling 'opCount'
-        auto symCount = params->specReturnOpCount;
-        SWAG_ASSERT(symCount);
+        SWAG_ASSERT(params->specReturnOpCount);
         opParams.callParams.push_back((uint64_t) self);
-        SWAG_CHECK(executeNode(sourceFile, symCount->node, callerContext, &opParams));
+        SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
         auto count = g_RunContext.registersRR[0].u64;
         if (!count)
             return callerContext->report({node, Utf8::format(Msg0161, realType->getDisplayName().c_str())});
 
         // Get the slice by calling 'opSlice'
-        auto symSlice = params->specReturnOpSlice;
-        SWAG_ASSERT(symSlice);
+        SWAG_ASSERT(params->specReturnOpSlice);
         opParams.callParams.clear();
         opParams.callParams.push_back(count - 1);
         opParams.callParams.push_back(0);
         opParams.callParams.push_back((uint64_t) self);
-        SWAG_CHECK(executeNode(sourceFile, symSlice->node, callerContext, &opParams));
-        if (!g_RunContext.registersRR[1].u64)
+        SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
+        if (!g_RunContext.registersRR[0].u64 || !g_RunContext.registersRR[1].u64)
             return callerContext->report({node, Utf8::format(Msg0162, realType->getDisplayName().c_str())});
 
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(params->specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
+        auto sizeSlice = (uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+        SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
+
         // Copy the content of the slice to the storage segment
-        auto typeSlice                      = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(symSlice->typeInfo), TypeInfoKind::Slice);
         auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
-        auto offsetStorage                  = storageSegment->reserve((uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf);
+        auto offsetStorage                  = storageSegment->reserve(sizeSlice);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
         auto addrDst                        = storageSegment->address(offsetStorage);
         auto addrSrc                        = g_RunContext.registersRR[0].pointer;
-        memcpy(addrDst, (const void*) addrSrc, g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf);
+        memcpy(addrDst, (const void*) addrSrc, sizeSlice);
 
         // Then transform the returned type to a static array
         auto typeArray         = allocType<TypeInfoArray>();
@@ -120,8 +121,16 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         typeArray->finalType   = typeSlice->pointedType;
         typeArray->count       = g_RunContext.registersRR[1].u32;
         typeArray->totalCount  = g_RunContext.registersRR[1].u32;
-        typeArray->sizeOf      = typeArray->count * typeSlice->pointedType->sizeOf;
+        typeArray->sizeOf      = sizeSlice;
         typeArray->computeName();
+
+        // Call opDrop on the original struct if defined
+        if (params->specReturnOpDrop)
+        {
+            opParams.callParams.clear();
+            opParams.callParams.push_back((uint64_t) self);
+            SWAG_CHECK(executeNode(sourceFile, params->specReturnOpDrop->node, callerContext, &opParams));
+        }
 
         g_Allocator.free(self, selfSize);
         return true;

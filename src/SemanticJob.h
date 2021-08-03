@@ -155,7 +155,6 @@ struct SemanticJob : public Job
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         internalError(JobContext* context, const char* msg, AstNode* node = nullptr);
     static bool         checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo);
-    static bool         checkSizeOverflow(SemanticContext* context, const char* typeOverflow, uint64_t value, uint64_t maxValue);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
