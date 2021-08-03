@@ -17,6 +17,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         return true;
 
     auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
     if (onlyconstExpr)
     {
         SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, Msg0798}));
@@ -104,6 +105,20 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
                 }
 
+                // Is the type of the slice supported ?
+                auto typeSlice        = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
+                auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
+                bool ok               = false;
+                if (typeSliceContent->isNative(NativeTypeKind::String) ||
+                    typeSliceContent->isNative(NativeTypeKind::Bool) ||
+                    typeSliceContent->isNativeIntegerOrRune() ||
+                    typeSliceContent->isNativeFloat())
+                    ok = true;
+                if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    ok = true;
+                if (!ok)
+                    return context->report({node, Utf8::format(Msg0059, typeSliceContent->getDisplayName().c_str())});
+
                 // opDrop
                 if (hasUserOp(g_LangSpec.name_opDrop, (TypeInfoStruct*) realType))
                 {
@@ -141,7 +156,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     // In case there's a foreign call somewhere...
-    auto module = sourceFile->module;
     if (node->extension->bc->hasFunctionCalls)
     {
         if (!module->waitForDependenciesDone(context->job))
@@ -781,6 +795,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     }
 
     default:
-        return context->internalError( "resolveCompilerFunction, unknown token");
+        return context->internalError("resolveCompilerFunction, unknown token");
     }
 }

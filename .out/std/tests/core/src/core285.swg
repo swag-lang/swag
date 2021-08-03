@@ -1,5 +1,6 @@
 using Core
 
+#[Swag.ConstExpr]
 struct AA
 {
     x, y: s32
