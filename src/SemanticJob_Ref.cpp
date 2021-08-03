@@ -883,8 +883,10 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->reg.u64        = ptrSlice->count;
         auto typeArray                      = allocType<TypeInfoArray>();
         typeArray->count                    = (uint32_t)((SwagSlice*) ptr)->count;
+        typeArray->totalCount               = typeArray->count;
         typeArray->pointedType              = typeSlice->pointedType;
         typeArray->finalType                = typeSlice->pointedType;
+        typeArray->sizeOf                   = typeArray->totalCount * typeArray->pointedType->sizeOf;
         typeArray->computeName();
         node->typeInfo = typeArray;
     }

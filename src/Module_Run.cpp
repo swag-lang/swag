@@ -6,8 +6,10 @@
 #include "Context.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
-bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
+#pragma optimize("", off)
+bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
@@ -45,8 +47,8 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         return true;
     }
 
-    // Complexe return (by copy)
-    if (realType->flags & TYPEINFO_RETURN_BY_COPY)
+    // Static array
+    if (realType->kind == TypeInfoKind::Array)
     {
         auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
         auto offsetStorage                  = storageSegment->reserve(realType->sizeOf);
@@ -55,6 +57,73 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         auto addrDst                        = storageSegment->address(offsetStorage);
         auto addrSrc                        = g_RunContext.registersRR[0].pointer;
         memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+        return true;
+    }
+
+    // Struct return
+    if (realType->kind == TypeInfoKind::Struct)
+    {
+        if ((realType->flags & TYPEINFO_STRUCT_IS_TUPLE) || (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        {
+            auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
+            auto offsetStorage                  = storageSegment->reserve(realType->sizeOf);
+            node->computedValue->storageOffset  = offsetStorage;
+            node->computedValue->storageSegment = storageSegment;
+            auto addrDst                        = storageSegment->address(offsetStorage);
+            auto addrSrc                        = g_RunContext.registersRR[0].pointer;
+            memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+            return true;
+        }
+
+        // Convert struct to static array
+        ExecuteNodeParams opParams;
+
+        // Make a copy of the returned struct, as we will lose the room later
+        auto selfSize = Allocator::alignSize(realType->sizeOf);
+        auto self     = g_Allocator.alloc(selfSize);
+        memcpy(self, (void*) g_RunContext.registersRR[0].pointer, realType->sizeOf);
+
+        // Get number of elements by calling 'opCount'
+        auto symCount = params->specReturnOpCount;
+        SWAG_ASSERT(symCount);
+        opParams.callParams.push_back((uint64_t) self);
+        SWAG_CHECK(executeNode(sourceFile, symCount->node, callerContext, &opParams));
+        auto count = g_RunContext.registersRR[0].u64;
+        if (!count)
+            return callerContext->report({node, Utf8::format(Msg0161, realType->getDisplayName().c_str())});
+
+        // Get the slice by calling 'opSlice'
+        auto symSlice = params->specReturnOpSlice;
+        SWAG_ASSERT(symSlice);
+        opParams.callParams.clear();
+        opParams.callParams.push_back(count - 1);
+        opParams.callParams.push_back(0);
+        opParams.callParams.push_back((uint64_t) self);
+        SWAG_CHECK(executeNode(sourceFile, symSlice->node, callerContext, &opParams));
+        if (!g_RunContext.registersRR[1].u64)
+            return callerContext->report({node, Utf8::format(Msg0162, realType->getDisplayName().c_str())});
+
+        // Copy the content of the slice to the storage segment
+        auto typeSlice                      = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(symSlice->typeInfo), TypeInfoKind::Slice);
+        auto storageSegment                 = SemanticJob::getConstantSegFromContext(node);
+        auto offsetStorage                  = storageSegment->reserve((uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf);
+        node->computedValue->storageOffset  = offsetStorage;
+        node->computedValue->storageSegment = storageSegment;
+        auto addrDst                        = storageSegment->address(offsetStorage);
+        auto addrSrc                        = g_RunContext.registersRR[0].pointer;
+        memcpy(addrDst, (const void*) addrSrc, g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf);
+
+        // Then transform the returned type to a static array
+        auto typeArray         = allocType<TypeInfoArray>();
+        node->typeInfo         = typeArray;
+        typeArray->pointedType = typeSlice->pointedType;
+        typeArray->finalType   = typeSlice->pointedType;
+        typeArray->count       = g_RunContext.registersRR[1].u32;
+        typeArray->totalCount  = g_RunContext.registersRR[1].u32;
+        typeArray->sizeOf      = typeArray->count * typeSlice->pointedType->sizeOf;
+        typeArray->computeName();
+
+        g_Allocator.free(self, selfSize);
         return true;
     }
 
@@ -78,7 +147,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     return true;
 }
 
-bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
+bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
     // In case bytecode generation has raised an error
     if (node->sourceFile->numErrors)
@@ -102,8 +171,18 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_RunContext.callerContext = callerContext;
     g_RunContext.setup(sourceFile, node);
 
-    node->extension->bc->enterByteCode(&g_RunContext);
+    // Params ?
     auto module = sourceFile->module;
+    if (params && !params->callParams.empty())
+    {
+        for (auto r : params->callParams)
+            g_RunContext.push(r);
+        module->runner.localCall(&g_RunContext, node->extension->bc, (uint32_t) params->callParams.size());
+    }
+    else
+    {
+        node->extension->bc->enterByteCode(&g_RunContext);
+    }
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
     // generated for expression (just for functions)
@@ -132,7 +211,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         g_Allocator.free(ptr.first, ptr.second);
 
     // Get result
-    SWAG_CHECK(computeExecuteResult(sourceFile, node, callerContext));
+    SWAG_CHECK(computeExecuteResult(sourceFile, node, callerContext, params));
     return true;
 }
 

@@ -2848,10 +2848,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
     {
         __try
         {
-            runContext->bc->isRunning = true;
-            auto res                  = module->runner.runLoop(runContext);
-            runContext->bc->isRunning = false;
-            return res;
+            return module->runner.runLoop(runContext);
         }
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {

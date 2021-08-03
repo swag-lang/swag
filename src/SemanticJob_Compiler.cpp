@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Ast.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Module.h"
@@ -8,8 +7,8 @@
 #include "LoadFileJob.h"
 #include "ByteCode.h"
 #include "Backend.h"
-#include "Os.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -33,6 +32,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     }
 
     // Be sure we can deal with the type at compile time
+    ExecuteNodeParams execParams;
     if (!(node->semFlags & AST_SEM_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteReferenceType(node->typeInfo);
@@ -41,13 +41,70 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             switch (realType->kind)
             {
             case TypeInfoKind::Struct:
+            {
                 if ((realType->flags & TYPEINFO_STRUCT_IS_TUPLE) || (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     break;
-                context->expansionNode.pop_back();
+
+                // It is possible to convert a complex struct to a constant static array of values if the struct
+                // implements 'opCount' and 'opSlice'
                 context->job->waitForAllStructMethods(realType);
                 if (context->result != ContextResult::Done)
+                {
+                    context->expansionNode.pop_back();
                     return true;
-                return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
+                }
+
+                auto symCount = hasUserOp(g_LangSpec.name_opCount, (TypeInfoStruct*) realType);
+                auto symSlice = hasUserOp(g_LangSpec.name_opSlice, (TypeInfoStruct*) realType);
+                if (!symCount || !symSlice)
+                    return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
+
+                VectorNative<AstNode*> params;
+                SymbolOverload*        opCount = nullptr;
+                SymbolOverload*        opSlice = nullptr;
+
+                params.push_back(node);
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opCount, nullptr, nullptr, node, params, false));
+                if (context->result != ContextResult::Done)
+                {
+                    context->expansionNode.pop_back();
+                    return true;
+                }
+
+                opCount = context->node->extension->resolvedUserOpSymbolOverload;
+                SWAG_ASSERT(opCount);
+                ByteCodeGenJob::askForByteCode(context->job, opCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                if (context->result != ContextResult::Done)
+                {
+                    context->expansionNode.pop_back();
+                    return true;
+                }
+
+                AstNode tmpNode;
+                memset(&tmpNode, 0, sizeof(AstNode));
+                tmpNode.typeInfo = g_TypeMgr.typeInfoUInt;
+                params.push_back(&tmpNode);
+                params.push_back(&tmpNode);
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node, params, false));
+                if (context->result != ContextResult::Done)
+                {
+                    context->expansionNode.pop_back();
+                    return true;
+                }
+
+                opSlice = context->node->extension->resolvedUserOpSymbolOverload;
+                SWAG_ASSERT(opSlice);
+                ByteCodeGenJob::askForByteCode(context->job, opSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                if (context->result != ContextResult::Done)
+                {
+                    context->expansionNode.pop_back();
+                    return true;
+                }
+
+                execParams.specReturnOpCount = opCount;
+                execParams.specReturnOpSlice = opSlice;
+                break;
+            }
 
             case TypeInfoKind::Array:
                 break;
@@ -73,7 +130,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         }
     }
 
-    SWAG_CHECK(module->executeNode(sourceFile, node, context));
+    SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
     context->expansionNode.pop_back();
     return true;
 }

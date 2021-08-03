@@ -50,6 +50,10 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+constexpr function qui return un slice dont le contenu est pas géré
+-------------------------------------
+constexpr function qui renvoie une struct compliquée (array), appeler opDrop à la fin
+-------------------------------------
 sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
 oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
 -------------------------------------

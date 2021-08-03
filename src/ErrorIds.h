@@ -117,7 +117,7 @@
 #define Msg0118 "during inline expansion"
 #define Msg0119 "missing function call parameters"
 #define Msg0120 "field name '%s' cannot be found in tuple"
-#define Msg0121
+#define Msg0121 
 #define Msg0122 "unknown identifier '%s'"
 #define Msg0123 "invalid lambda call, cannot reference structure member '%s'"
 #define Msg0124 "invalid lambda call, '%s' is not a variable"
@@ -157,8 +157,8 @@
 #define Msg0158 "here is a previous declaration"
 #define Msg0159 "'Swag.Tls' and 'Swag.Compiler' attributes are exclusive"
 #define Msg0160 "cannot assign a function pointer to a constant"
-#define Msg0161
-#define Msg0162
+#define Msg0161 "cannot transform type '%s' to a constant array because 'opCount' returns '0'"
+#define Msg0162 "cannot transform type '%s' to a constant array because 'opSlice' returns an empty slice"
 #define Msg0163 "operator '|' not allowed on type '%s'"
 #define Msg0164 "operator '&' not allowed on type '%s'"
 #define Msg0165 "fatal error: cannot find 'SWAG_FOLDER' in the environment; you must run 'swag env' first at the Swag.exe location to register its path"

@@ -147,6 +147,5 @@ struct ByteCode
     bool isDirtyRegistersRC  = false;
     bool hasFunctionCalls    = false;
 
-    atomic<bool> isRunning;
     atomic<bool> isEmpty;
 };

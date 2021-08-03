@@ -1,4 +1,4 @@
-/*using Core
+using Core
 
 func toto()->Array's32
 {
@@ -10,4 +10,12 @@ func toto()->Array's32
     return result
 }
 
-const X = #run toto()*/
+const X = #run toto()
+#test
+{
+    @assert(@countof(X) == 4)
+    @assert(X[0] == 1)
+    @assert(X[1] == 2)
+    @assert(X[2] == 3)
+    @assert(X[3] == 4)
+}

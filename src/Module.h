@@ -66,6 +66,13 @@ enum class ModuleKind
     Script,
 };
 
+struct ExecuteNodeParams
+{
+    VectorNative<uint64_t> callParams;
+    SymbolOverload*        specReturnOpCount = nullptr;
+    SymbolOverload*        specReturnOpSlice = nullptr;
+};
+
 static const uint32_t BUILDRES_NONE     = 0x00000000;
 static const uint32_t BUILDRES_EXPORT   = 0x00000001;
 static const uint32_t BUILDRES_COMPILER = 0x00000002;
@@ -91,8 +98,8 @@ struct Module
     void printStartBuilding(const BuildParameters& bp);
     void printBC();
 
-    bool computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
-    bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
+    bool computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
+    bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
     bool compileString(const Utf8& str);
     bool hasBytecodeToRun();
 
