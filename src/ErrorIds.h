@@ -54,7 +54,7 @@
 #define Msg0055 "failed to update watcher service !"
 #define Msg0056 "x64 backend unsupported os '%s'"
 #define Msg0057 "bad generic parameter '%d' for %s (value expected, type provided)"
-#define Msg0058 
+#define Msg0058 "cannot convert type '%s' to a constant expression"
 #define Msg0059 
 #define Msg0060 
 #define Msg0061 "invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)"

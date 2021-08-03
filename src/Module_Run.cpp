@@ -8,7 +8,6 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-#pragma optimize("", off)
 bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
     // :opAffectConstExpr
@@ -137,23 +136,31 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     }
 
     // Default
-    switch (realType->sizeOf)
+    if (realType->flags & TYPEINFO_INTEGER ||
+        realType->flags & TYPEINFO_FLOAT ||
+        realType->isNative(NativeTypeKind::Bool) ||
+        realType->isNative(NativeTypeKind::Rune))
     {
-    case 1:
-        node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
-        break;
-    case 2:
-        node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
-        break;
-    case 4:
-        node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
-        break;
-    default:
-        node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
-        break;
+        switch (realType->sizeOf)
+        {
+        case 1:
+            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
+            break;
+        case 2:
+            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
+            break;
+        case 4:
+            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
+            break;
+        case 8:
+            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+            break;
+        }
+
+        return true;
     }
 
-    return true;
+    return callerContext->report({node, Utf8::format(Msg0058, realType->getDisplayName().c_str())});
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
