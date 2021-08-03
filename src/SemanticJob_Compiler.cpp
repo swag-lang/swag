@@ -64,6 +64,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
 
                 VectorNative<AstNode*> params;
+                SWAG_ASSERT(!context->node->extension || !context->node->extension->resolvedUserOpSymbolOverload);
 
                 // opCount
                 params.push_back(node);
@@ -74,8 +75,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
                 }
 
-                execParams.specReturnOpCount = context->node->extension->resolvedUserOpSymbolOverload;
+                auto extension                          = context->node->extension;
+                execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
+                extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
+
                 ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 if (context->result != ContextResult::Done)
                 {
@@ -96,8 +100,10 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
                 }
 
-                execParams.specReturnOpSlice = context->node->extension->resolvedUserOpSymbolOverload;
+                execParams.specReturnOpSlice            = extension->resolvedUserOpSymbolOverload;
+                extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
+
                 ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 if (context->result != ContextResult::Done)
                 {
@@ -131,8 +137,10 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                         return true;
                     }
 
-                    execParams.specReturnOpDrop = context->node->extension->resolvedUserOpSymbolOverload;
+                    execParams.specReturnOpDrop             = extension->resolvedUserOpSymbolOverload;
+                    extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
+
                     ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     if (context->result != ContextResult::Done)
                     {
