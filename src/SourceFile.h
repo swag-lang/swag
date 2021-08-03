@@ -16,6 +16,7 @@ struct SourceFile
 
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
+    bool internalError(AstNode* node, const char* msg);
 
     void releaseBuffer();
     bool checkFormat();

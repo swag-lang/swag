@@ -2690,7 +2690,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     default:
         if (ip->op < ByteCodeOp::End)
-            context->error(Utf8::format(Msg0432, g_ByteCodeOpDesc[(int) ip->op].name));
+            context->internalError(Utf8::format("unknown bytecode instruction '%s'", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
         break;
     }
 

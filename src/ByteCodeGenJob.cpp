@@ -728,10 +728,10 @@ JobResult ByteCodeGenJob::execute()
         !context.bc->node->sourceFile->numTestErrors)
     {
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
-            context.sourceFile->report({context.bc->node, context.bc->node->token, Utf8::format(Msg0059, context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' does not release all registers !", context.bc->node->token.text.c_str()));
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
         {
-            context.sourceFile->report({context.bc->node, context.bc->node->token, Utf8::format(Msg0060, context.bc->node->token.text.c_str())});
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' releases too many registers !", context.bc->node->token.text.c_str()));
             if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 context.bc->print();
         }

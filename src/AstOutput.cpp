@@ -681,7 +681,7 @@ namespace Ast
                 CONCAT_FIXED_STR(concat, ")");
                 break;
             default:
-                return node->sourceFile->report({node, node->token, Msg0315});
+                return node->sourceFile->internalError(node, "Ast::output, unknown compiler function");
             }
             break;
         }
@@ -1204,7 +1204,7 @@ namespace Ast
             break;
 
         default:
-            return node->sourceFile->report({node, node->token, Msg0317});
+            return node->sourceFile->internalError(node, "Ast::output, unknown node");
         }
 
         return true;

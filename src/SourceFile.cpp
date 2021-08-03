@@ -343,3 +343,9 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
 
     return report(diag, notes);
 }
+
+bool SourceFile::internalError(AstNode* node, const char* msg)
+{
+    report({node, Utf8::format("[compiler internal] %s", msg)});
+    return false;
+}

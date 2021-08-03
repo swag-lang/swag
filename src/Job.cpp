@@ -253,6 +253,5 @@ bool JobContext::internalError(const char* msg, AstNode* specNode)
 {
     if (!specNode)
         specNode = node;
-    sourceFile->report({specNode, Utf8::format(Msg0058, msg)});
-    return false;
+    return sourceFile->internalError(specNode, msg);
 }

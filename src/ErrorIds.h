@@ -54,9 +54,9 @@
 #define Msg0055 "failed to update watcher service !"
 #define Msg0056 "x64 backend unsupported os '%s'"
 #define Msg0057 "bad generic parameter '%d' for %s (value expected, type provided)"
-#define Msg0058 "[compiler internal] %s"
-#define Msg0059 "[compiler internal] function '%s' does not release all registers; this is fine, but should be reported !"
-#define Msg0060 "[compiler internal] function '%s' releases too many registers !"
+#define Msg0058 
+#define Msg0059 
+#define Msg0060 
 #define Msg0061 "invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)"
 #define Msg0062 "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)"
 #define Msg0063 "missing return type for special function '%s'"
@@ -117,7 +117,7 @@
 #define Msg0118 "during inline expansion"
 #define Msg0119 "missing function call parameters"
 #define Msg0120 "field name '%s' cannot be found in tuple"
-#define Msg0121 
+#define Msg0121
 #define Msg0122 "unknown identifier '%s'"
 #define Msg0123 "invalid lambda call, cannot reference structure member '%s'"
 #define Msg0124 "invalid lambda call, '%s' is not a variable"
@@ -298,7 +298,7 @@
 #define Msg0299 "non mutable variable should be initialized"
 #define Msg0300 "reference should be initialized"
 #define Msg0301 "affect not allowed from an array"
-#define Msg0302 "[compiler internal] 'impl for' struct mismatch"
+#define Msg0302
 #define Msg0303 "missing initialization expression to deduce size of array"
 #define Msg0304 "invalid initialization expression for an array"
 #define Msg0305 "constant should be explicitly initialized"
@@ -311,9 +311,9 @@
 #define Msg0312 "cannot create variable because type '%s' is generic"
 #define Msg0313 "global variable cannot be declared as 'public'"
 #define Msg0314 "invalid file format, should be ascii, utf-8 or utf-8-bom"
-#define Msg0315 "[compiler internal] Ast::output, unknown compiler function"
+#define Msg0315
 #define Msg0316 "identifier '%s' should be public"
-#define Msg0317 "[compiler internal] Ast::output, unknown node"
+#define Msg0317
 #define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
 #define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
 #define Msg0320 "cannot slice '%s' because special function 'opSlice' cannot be found in type '%s'"
@@ -428,7 +428,7 @@
 #define Msg0429
 #define Msg0430
 #define Msg0431 "runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with '?' if this is intended"
-#define Msg0432 "[compiler internal] unknown bytecode instruction '%s'"
+#define Msg0432
 #define Msg0433
 #define Msg0434 "bytecode execution, "
 #define Msg0435 "exception during compile time execution !"
@@ -499,7 +499,7 @@
 #define Msg0500 "missing '%d' test errors (%d raised)"
 #define Msg0501 "missing '%d' test warnings (%d raised)"
 #define Msg0502 "cannot open file '%s'"
-#define Msg0503 "[compiler internal] semantic failed (%s)"
+#define Msg0503 
 #define Msg0504 "operation '%s' not allowed, left type is '%s' and right type is '%s'"
 #define Msg0505 "%s overflow, maximum size is 0x%I64x bytes"
 #define Msg0506
