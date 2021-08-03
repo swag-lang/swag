@@ -26,11 +26,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     // Request to generate the corresponding bytecode
     context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
     ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+    context->expansionNode.pop_back();
     if (context->result != ContextResult::Done)
-    {
-        context->expansionNode.pop_back();
         return true;
-    }
 
     // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
@@ -53,10 +51,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 // implements 'opCount' and 'opSlice'
                 context->job->waitForAllStructMethods(realType);
                 if (context->result != ContextResult::Done)
-                {
-                    context->expansionNode.pop_back();
                     return true;
-                }
 
                 auto symCount = hasUserOp(g_LangSpec.name_opCount, (TypeInfoStruct*) realType);
                 auto symSlice = hasUserOp(g_LangSpec.name_opSlice, (TypeInfoStruct*) realType);
@@ -70,22 +65,18 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 params.push_back(node);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opCount, nullptr, nullptr, node, params, false));
                 if (context->result != ContextResult::Done)
-                {
-                    context->expansionNode.pop_back();
                     return true;
-                }
 
                 auto extension                          = context->node->extension;
                 execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
+                context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
                 ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                context->expansionNode.pop_back();
                 if (context->result != ContextResult::Done)
-                {
-                    context->expansionNode.pop_back();
                     return true;
-                }
 
                 // opSlice
                 AstNode tmpNode;
@@ -95,21 +86,17 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 params.push_back(&tmpNode);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node, params, false));
                 if (context->result != ContextResult::Done)
-                {
-                    context->expansionNode.pop_back();
                     return true;
-                }
 
                 execParams.specReturnOpSlice            = extension->resolvedUserOpSymbolOverload;
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
+                context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
                 ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                context->expansionNode.pop_back();
                 if (context->result != ContextResult::Done)
-                {
-                    context->expansionNode.pop_back();
                     return true;
-                }
 
                 // Is the type of the slice supported ?
                 auto typeSlice        = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
@@ -132,21 +119,17 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     params.push_back(node);
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opDrop, nullptr, nullptr, node, params, false));
                     if (context->result != ContextResult::Done)
-                    {
-                        context->expansionNode.pop_back();
                         return true;
-                    }
 
                     execParams.specReturnOpDrop             = extension->resolvedUserOpSymbolOverload;
                     extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
+                    context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
                     ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    context->expansionNode.pop_back();
                     if (context->result != ContextResult::Done)
-                    {
-                        context->expansionNode.pop_back();
                         return true;
-                    }
                 }
 
                 break;
@@ -156,7 +139,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 break;
 
             default:
-                context->expansionNode.pop_back();
                 return context->report({node, Utf8::format(Msg0280, realType->getDisplayName().c_str())});
             }
         }
@@ -169,12 +151,12 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         if (!module->waitForDependenciesDone(context->job))
         {
             SWAG_ASSERT(node->extension->bc->hasFunctionCalls);
-            context->expansionNode.pop_back();
             context->result = ContextResult::Pending;
             return true;
         }
     }
 
+    context->expansionNode.push_back({node, JobContext::ExpansionType::Node});
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
     context->expansionNode.pop_back();
     return true;
