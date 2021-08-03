@@ -311,7 +311,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
         {
             auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-            if (typeAlias->flags & TYPEINFO_STRICT && !(flags & CONCRETE_FORCEALIAS))
+            if (typeAlias->isStrict() && !(flags & CONCRETE_FORCEALIAS))
                 return typeAlias;
             return concreteType(typeAlias->rawType, flags);
         }

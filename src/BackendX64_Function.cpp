@@ -39,25 +39,25 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
         switch (calleeIndex)
         {
         case 0:
-            if (typeParam->flags & TYPEINFO_FLOAT)
+            if (typeParam->isNativeFloat())
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM0, RDI);
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RCX, RDI);
             break;
         case 1:
-            if (typeParam->flags & TYPEINFO_FLOAT)
+            if (typeParam->isNativeFloat())
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM1, RDI);
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RDX, RDI);
             break;
         case 2:
-            if (typeParam->flags & TYPEINFO_FLOAT)
+            if (typeParam->isNativeFloat())
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM2, RDI);
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R8, RDI);
             break;
         case 3:
-            if (typeParam->flags & TYPEINFO_FLOAT)
+            if (typeParam->isNativeFloat())
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM3, RDI);
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R9, RDI);
@@ -4032,7 +4032,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         // This is a normal parameter, which can be float or integer
         else
         {
-            if (type->flags & TYPEINFO_FLOAT)
+            if (type->isNativeFloat())
                 BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), regf4[i], RDI);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), reg4[i], RDI);

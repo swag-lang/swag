@@ -183,7 +183,7 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
     }
 
     // Check if we lose bits
-    if (typeInfo->isNativeUnsignedOrChar())
+    if (typeInfo->isNativeIntegerUnsignedOrRune())
     {
         switch (typeInfo->sizeOf)
         {
@@ -294,7 +294,7 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
         }
     }
 
-    if (typeInfo->isNativeUnsignedOrChar())
+    if (typeInfo->isNativeIntegerUnsignedOrRune())
     {
         switch (typeInfo->sizeOf)
         {

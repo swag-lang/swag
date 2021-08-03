@@ -22,7 +22,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     auto msg1 = ByteCodeGenJob::safetyMsg(SafetyMsg::CastNeg, toType, fromType);
 
     // Negative value to unsigned type
-    if (fromType->isNativeIntegerSigned() && toType->isNativeUnsignedOrChar() && fromNode->computedValue->reg.s64 < 0)
+    if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue->reg.s64 < 0)
         return context->report({fromNode ? fromNode : context->node, msg1});
 
     switch (toType->nativeType)
