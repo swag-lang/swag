@@ -122,6 +122,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         typeArray->totalCount  = g_RunContext.registersRR[1].u32;
         typeArray->sizeOf      = sizeSlice;
         typeArray->computeName();
+        typeArray->setConst();
 
         // Call opDrop on the original struct if defined
         if (params->specReturnOpDrop)
