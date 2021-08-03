@@ -98,7 +98,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
 
     // Normal c enum, integer only
     auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-    if (typeInfoEnum->rawType->flags & TYPEINFO_INTEGER)
+    if (typeInfoEnum->rawType->isNativeInteger())
     {
         auto                          scope = file->getScope();
         VectorNative<llvm::Metadata*> subscripts;

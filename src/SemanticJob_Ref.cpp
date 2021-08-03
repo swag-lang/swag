@@ -318,7 +318,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     }
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
-    if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+    if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, Utf8::format(Msg0485, arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     switch (arrayType->kind)
@@ -485,7 +485,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
-    if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+    if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, Utf8::format(Msg0485, arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     // Do not set resolvedSymbolOverload !
@@ -651,7 +651,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, Utf8::format(Msg0490, countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(Msg0490, countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
@@ -735,7 +735,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, Utf8::format(Msg0498, node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(Msg0498, node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 

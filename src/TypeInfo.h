@@ -103,10 +103,12 @@ struct TypeInfo
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
     bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
     bool isNativeUnsignedOrChar()           { return (flags & TYPEINFO_UNSIGNED) || isNative(NativeTypeKind::Rune); }
+    bool isNativeIntegerUnsigned()          { return (flags & TYPEINFO_UNSIGNED); }
     bool isNativeIntegerSigned()            { return !(flags & TYPEINFO_UNSIGNED); }
     bool isNativeIntegerOrRune()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Rune); }
     bool isNativeFloat()                    { return (flags & TYPEINFO_FLOAT); }
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
+    bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     // clang-format on
 
     void setConst()
@@ -229,8 +231,8 @@ struct TypeInfoParam : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    Utf8             namedParam;
-    ComputedValue    value;
+    Utf8          namedParam;
+    ComputedValue value;
     AttributeList attributes;
 
     TypeInfo* typeInfo = nullptr;
@@ -250,7 +252,7 @@ struct TypeInfoEnum : public TypeInfo
     TypeInfo* clone() override;
 
     VectorNative<TypeInfoParam*> values;
-    AttributeList             attributes;
+    AttributeList                attributes;
 
     Scope*    scope   = nullptr;
     TypeInfo* rawType = nullptr;
@@ -376,7 +378,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
-    AttributeList             attributes;
+    AttributeList                attributes;
     map<Utf8, TypeInfo*>         replaceTypes;
 
     TypeInfo* returnType = nullptr;
@@ -535,7 +537,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     map<Utf8, TypeInfo*>         replaceTypes;
-    AttributeList             attributes;
+    AttributeList                attributes;
     Utf8                         structName;
     shared_mutex                 mutexGen;
 

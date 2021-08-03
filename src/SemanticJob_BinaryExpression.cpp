@@ -30,7 +30,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         node->typeInfo = leftTypeInfo;
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
@@ -39,7 +39,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         node->typeInfo = rightTypeInfo;
         SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, Msg0144}));
-        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_INTEGER, context->report({left, Utf8::format(Msg0579, leftTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Utf8::format(Msg0579, leftTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
         return true;
     }
@@ -152,7 +152,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
         // Pointer arithmetic
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }

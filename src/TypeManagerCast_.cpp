@@ -2650,7 +2650,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 
     SWAG_ASSERT(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER);
     auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
-    if (rightTypeInfo->flags & TYPEINFO_INTEGER)
+    if (rightTypeInfo->isNativeInteger())
     {
         if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
         {

@@ -814,7 +814,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 
         // List of values
-        if (typeEnum->rawType->flags & TYPEINFO_INTEGER)
+        if (typeEnum->rawType->isNativeInteger())
         {
             DbgTypeRecord tr0;
             tr0.kind = LF_FIELDLIST;

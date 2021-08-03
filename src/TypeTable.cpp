@@ -227,14 +227,15 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     concreteTypeInfoValue->flags = (uint16_t) TypeInfoFlags::None;
     if (typeInfo->isPointerToTypeInfo())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::TypeInfoPtr;
-    if (typeInfo->flags & TYPEINFO_INTEGER)
+    if (typeInfo->isNativeInteger())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Integer;
-    if (typeInfo->flags & TYPEINFO_FLOAT)
+    if (typeInfo->isNativeFloat())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Float;
-    if (typeInfo->flags & TYPEINFO_UNSIGNED)
+    if (typeInfo->isNativeIntegerUnsigned())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
-    if (typeInfo->flags & TYPEINFO_STRICT)
+    if (typeInfo->isStrict())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
+
     // True by default, will be removed by struct if necessary
     concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;
 

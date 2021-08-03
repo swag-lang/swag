@@ -301,7 +301,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, Utf8::format(Msg0801, typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Utf8::format(Msg0801, typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))

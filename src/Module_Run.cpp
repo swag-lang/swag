@@ -136,10 +136,9 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     }
 
     // Default
-    if (realType->flags & TYPEINFO_INTEGER ||
-        realType->flags & TYPEINFO_FLOAT ||
-        realType->isNative(NativeTypeKind::Bool) ||
-        realType->isNative(NativeTypeKind::Rune))
+    if (realType->isNativeIntegerOrRune() ||
+        realType->isNativeFloat() ||
+        realType->isNative(NativeTypeKind::Bool))
     {
         switch (realType->sizeOf)
         {

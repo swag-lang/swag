@@ -80,7 +80,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     {
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (!(concreteType->flags & TYPEINFO_INTEGER) || !(concreteType->flags & TYPEINFO_UNSIGNED))
+        if (!(concreteType->isNativeInteger()) || concreteType->isNativeIntegerSigned())
             return context->report({typeNode->childs[0], Utf8::format(Msg0697, rawTypeInfo->getDisplayName().c_str())});
     }
 
@@ -88,7 +88,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     {
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (!(concreteType->flags & TYPEINFO_INTEGER))
+        if (!(concreteType->isNativeInteger()))
             return context->report({typeNode->childs[0], Utf8::format(Msg0698, rawTypeInfo->getDisplayName().c_str())});
     }
 

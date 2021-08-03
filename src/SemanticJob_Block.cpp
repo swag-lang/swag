@@ -305,7 +305,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                             return context->report({expr, Utf8::format(Msg0611, expr->token.text.c_str())});
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
                             return context->report({expr, Utf8::format(Msg0612, expr->token.text.c_str())});
-                        if (typeExpr->flags & TYPEINFO_INTEGER)
+                        if (typeExpr->isNativeInteger())
                             return context->report({expr, Utf8::format(Msg0613, expr->computedValue->reg.u64)});
                         return context->report({expr, Utf8::format(Msg0614, expr->computedValue->reg.f64)});
                     }
@@ -724,7 +724,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     if (ownerBreakable->kind == AstNodeKind::Loop)
     {
         auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
-        if (loopNode->expression && loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
+        if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
             node->typeInfo = loopNode->expression->typeInfo;
     }
 

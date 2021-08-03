@@ -684,7 +684,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (expression->flags & AST_VALUE_COMPUTED)
     {
         bool notNull = true;
-        if ((typeInfo->flags & TYPEINFO_INTEGER) || (typeInfo->flags & TYPEINFO_FLOAT) || typeInfo->isNative(NativeTypeKind::Rune))
+        if (typeInfo->isNativeIntegerOrRune() || typeInfo->isNativeFloat())
         {
             switch (typeInfo->sizeOf)
             {
@@ -726,8 +726,8 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !typeInfo->isNative(NativeTypeKind::Rune) &&
                  typeInfo->kind != TypeInfoKind::Pointer &&
                  typeInfo->kind != TypeInfoKind::Interface &&
-                 !(typeInfo->flags & TYPEINFO_INTEGER) &&
-                 !(typeInfo->flags & TYPEINFO_FLOAT) &&
+                 !(typeInfo->isNativeInteger()) &&
+                 !(typeInfo->isNativeFloat()) &&
                  typeInfo->kind != TypeInfoKind::Lambda)
         {
             return context->report({expression, Utf8::format(Msg0332, typeInfo->getDisplayName().c_str())});
