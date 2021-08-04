@@ -59,13 +59,25 @@ void DataSegment::initFrom(DataSegment* other)
 
     initPtr.clear();
     initFuncPtr.clear();
+
+    // We need pointers to be in the right segment, not the original one, because sometimes
+    // we have to find back the offset from the pointer.
+    // :BackPtrOffset
     for (auto& it : other->initPtr)
+    {
+        SWAG_ASSERT(it.fromSegment == SegmentKind::Me || it.fromSegment == kind);
+        auto patchAddr      = address(it.patchOffset);
+        auto fromAddr       = address(it.fromOffset);
+        *(void**) patchAddr = fromAddr;
         addInitPtr(it.patchOffset, it.fromOffset, it.fromSegment);
+    }
+
     for (auto& it : other->initFuncPtr)
         addInitPtrFunc(it.first, it.second.first, it.second.second);
 
-    // This maps contain direct pointer to the original buffer
-    // This is fine, as original buffers are persistent.
+    // This maps contain direct pointer to the original buffers from bootstrap/runtime.
+    // This is fine, as original buffers are persistent, and byte code will use them.
+    // For runtime, offset are conserved, so this is fine too...
     for (auto& it : other->storedStrings)
         storedStrings[it.first] = it.second;
     for (auto& it : other->storedValues8)

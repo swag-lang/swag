@@ -15,7 +15,6 @@ struct TypeTableJob;
 
 static uint32_t MAKE_CONCRETE_SHOULD_WAIT    = 0x00000001;
 static uint32_t MAKE_CONCRETE_FORCE_NO_SCOPE = 0x00000002;
-static uint32_t MAKE_CONCRETE_NATIVE         = 0x00000004;
 
 struct TypeTable
 {
@@ -33,7 +32,6 @@ struct TypeTable
         map<Utf8, MapType>                concreteTypes;
         map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
         map<Utf8, TypeTableJob*>          concreteTypesJob;
-        vector<pair<TypeInfo*, MapType*>> nativeConcreteTypes;
     };
 
     bool  makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
@@ -47,8 +45,6 @@ struct TypeTable
     bool  makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer);
     bool  makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
 
-    MapType*   getBasicType(DataSegment* segment, TypeInfo* typeInfo);
-    void       registerBasicTypes(DataSegment* segment);
     MapPerSeg& getMapPerSeg(DataSegment* segment);
     Utf8&      getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     void       tableJobDone(TypeTableJob* job, DataSegment* segment);

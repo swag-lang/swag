@@ -867,6 +867,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
+        // :BackPtrOffset
         node->allocateComputedValue();
         node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
         node->computedValue->storageSegment = storageSegment;

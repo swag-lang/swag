@@ -142,11 +142,26 @@ void Module::initFrom(Module* other)
     constantSegment.initFrom(&other->constantSegment);
     mutableSegment.initFrom(&other->mutableSegment);
     bssSegment.initFrom(&other->bssSegment);
+    compilerSegment.initFrom(&other->compilerSegment);
+    tlsSegment.initFrom(&other->tlsSegment);
 
     buildParameters.foreignLibs.insert(other->buildParameters.foreignLibs.begin(), other->buildParameters.foreignLibs.end());
 
-    typeTable.registerBasicTypes(&constantSegment);
-    typeTable.registerBasicTypes(&compilerSegment);
+    typeTable.mapPerSegment[0].concreteTypes = other->typeTable.mapPerSegment[0].concreteTypes;
+    for (auto& it : typeTable.mapPerSegment[0].concreteTypes)
+    {
+        it.second.concreteType = (ConcreteTypeInfo*) constantSegment.address(it.second.storageOffset);
+
+        typeTable.mapPerSegment[0].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+    }
+
+    typeTable.mapPerSegment[1].concreteTypes = other->typeTable.mapPerSegment[1].concreteTypes;
+    for (auto& it : typeTable.mapPerSegment[1].concreteTypes)
+    {
+        it.second.concreteType = (ConcreteTypeInfo*) compilerSegment.address(it.second.storageOffset);
+
+        typeTable.mapPerSegment[1].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+    }
 }
 
 bool Module::mustGenerateTestExe()

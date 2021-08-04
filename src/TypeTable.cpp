@@ -13,34 +13,9 @@ TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
     return mapPerSegment[segment->kind == SegmentKind::Compiler ? 1 : 0];
 }
 
-TypeTable::MapType* TypeTable::getBasicType(DataSegment* segment, TypeInfo* typeInfo)
-{
-    if (typeInfo->kind == TypeInfoKind::Native)
-    {
-        auto& mapPerSeg = getMapPerSeg(segment);
-        for (auto& it : mapPerSeg.nativeConcreteTypes)
-            if (it.first == typeInfo)
-                return it.second;
-    }
-
-    return nullptr;
-}
-
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    auto& mapPerSeg = getMapPerSeg(storageSegment);
-
-    // Is this a simple basic type ?
-    // Do it before the lock, to avoid locking for nothing
-    auto mapType = getBasicType(storageSegment, typeInfo);
-    if (mapType)
-    {
-        *storage = mapType->storageOffset;
-        if (ptrTypeInfo)
-            *ptrTypeInfo = mapType->newRealType;
-        return true;
-    }
-
+    auto&       mapPerSeg = getMapPerSeg(storageSegment);
     scoped_lock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
@@ -88,19 +63,6 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    // Is this a simple basic type ?
-    // Do it before the lock, to avoid locking for nothing
-    auto mapTypePtr = getBasicType(storageSegment, typeInfo);
-    if (mapTypePtr)
-    {
-        *storage = mapTypePtr->storageOffset;
-        if (ptrTypeInfo)
-            *ptrTypeInfo = mapTypePtr->newRealType;
-        if (result)
-            *result = mapTypePtr->concreteType;
-        return true;
-    }
-
     switch (typeInfo->kind)
     {
     case TypeInfoKind::TypeListArray:
@@ -252,13 +214,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
 
     mapPerSeg.concreteTypes[typeName]                     = mapType;
     mapPerSeg.concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
-
-    if (cflags & MAKE_CONCRETE_NATIVE)
-    {
-        auto mapTypeAddr = g_Allocator.alloc<MapType>();
-        *mapTypeAddr     = mapType;
-        mapPerSeg.nativeConcreteTypes.push_back({typeInfo, mapTypeAddr});
-    }
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
@@ -622,31 +577,4 @@ TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concret
     if (it == mapPerSeg.concreteTypesReverse.end())
         return nullptr;
     return it->second;
-}
-
-void TypeTable::registerBasicTypes(DataSegment* segment)
-{
-    uint32_t offset;
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoS8, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoS16, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoS32, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoS64, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoInt, segment, &offset, MAKE_CONCRETE_NATIVE);
-
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoU8, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoU16, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoU32, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoU64, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoUInt, segment, &offset, MAKE_CONCRETE_NATIVE);
-
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoF32, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoF64, segment, &offset, MAKE_CONCRETE_NATIVE);
-
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoAny, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoBool, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoCode, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoString, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoRune, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoVariadic, segment, &offset, MAKE_CONCRETE_NATIVE);
-    makeConcreteTypeInfo(nullptr, g_TypeMgr.typeInfoVoid, segment, &offset, MAKE_CONCRETE_NATIVE);
 }
