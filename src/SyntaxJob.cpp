@@ -301,7 +301,7 @@ JobResult SyntaxJob::execute()
     }
     else if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
     {
-        npName.append((const char*) sourceFile->module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
+        npName.append((const char*) module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
         if (npName.empty())
             npName = module->name;
     }
@@ -357,7 +357,7 @@ JobResult SyntaxJob::execute()
         if (!ok)
         {
             sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
-            sourceFile->module->setBuildPass(sourceFile->buildPass);
+            module->setBuildPass(sourceFile->buildPass);
             return JobResult::ReleaseJob;
         }
 
