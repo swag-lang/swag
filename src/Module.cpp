@@ -687,8 +687,7 @@ bool Module::mustOutputSomething()
     // do not generate an executable that has been run in script mode
     if (byteCodeMainFunc && g_CommandLine.scriptMode)
         mustOutput = false;
-    // bootstrap
-    else if (name.empty())
+    else if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
         mustOutput = false;
     else if (buildPass < BuildPass::Backend)
         mustOutput = false;

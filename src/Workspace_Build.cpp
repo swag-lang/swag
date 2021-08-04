@@ -131,7 +131,7 @@ void Workspace::addBootstrap()
     // for all modules
     bootstrapModule       = g_Allocator.alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
-    bootstrapModule->setup("", "");
+    bootstrapModule->setup("bootstrap", "");
     modules.push_back(bootstrapModule);
 
     auto     file         = g_Allocator.alloc<SourceFile>();
@@ -160,7 +160,7 @@ void Workspace::addRuntime()
     // for all modules
     runtimeModule       = g_Allocator.alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
-    runtimeModule->setup("", "");
+    runtimeModule->setup("runtime", "");
     modules.push_back(runtimeModule);
 
     addRuntimeFile("runtime.swg");

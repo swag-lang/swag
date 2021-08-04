@@ -299,11 +299,11 @@ JobResult SyntaxJob::execute()
         if (npName.empty())
             npName = sourceFile->imported->name;
     }
-    else
+    else if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
     {
-        npName.append((const char*) sourceFile->module->buildCfg.moduleNamespace.buffer, (int) sourceFile->module->buildCfg.moduleNamespace.count);
+        npName.append((const char*) sourceFile->module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
         if (npName.empty())
-            npName = sourceFile->module->name;
+            npName = module->name;
     }
 
     if (!npName.empty())
