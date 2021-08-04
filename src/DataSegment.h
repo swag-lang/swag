@@ -9,13 +9,6 @@ struct Utf8;
 struct AstFuncDecl;
 struct JobContext;
 
-struct DataSegmentHeader
-{
-    uint8_t* buffer;
-    uint32_t count;
-    uint32_t size;
-};
-
 enum class SegmentKind
 {
     Me,
@@ -28,21 +21,28 @@ enum class SegmentKind
     String,
 };
 
-struct SegmentInitPtrRef
-{
-    uint32_t    patchOffset;
-    uint32_t    srcOffset;
-    SegmentKind fromSegment;
-};
-
-struct SegmentPatchPtrRef
-{
-    int64_t* addr;
-    int64_t  value;
-};
-
 struct DataSegment
 {
+    struct Bucket
+    {
+        uint8_t* buffer;
+        uint32_t count;
+        uint32_t size;
+    };
+
+    struct InitPtrRef
+    {
+        uint32_t    patchOffset;
+        uint32_t    srcOffset;
+        SegmentKind fromSegment;
+    };
+
+    struct PatchPtrRef
+    {
+        int64_t* addr;
+        int64_t  value;
+    };
+
     struct CacheValue
     {
         uint32_t offset;
@@ -101,7 +101,7 @@ struct DataSegment
     shared_mutex mutexPatchMethod;
     shared_mutex mutexPtr;
 
-    VectorNative<DataSegmentHeader> buckets;
+    VectorNative<Bucket> buckets;
 
     map<Utf8, CacheValue>     storedStrings;
     map<uint8_t, CacheValue>  storedValues8;
@@ -109,10 +109,10 @@ struct DataSegment
     map<uint32_t, CacheValue> storedValues32;
     map<uint64_t, CacheValue> storedValues64;
 
-    VectorNative<SegmentInitPtrRef>      initPtr;
+    VectorNative<InitPtrRef>             initPtr;
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
     map<void*, SaveValue>                savedValues;
-    vector<SegmentPatchPtrRef>           patchPtr;
+    vector<PatchPtrRef>                  patchPtr;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     const char* name   = nullptr;

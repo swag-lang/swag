@@ -115,7 +115,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     SWAG_ASSERT(size);
-    DataSegmentHeader* last = nullptr;
+    Bucket* last = nullptr;
     if (buckets.size())
         last = &buckets.back();
 
@@ -127,7 +127,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     }
     else
     {
-        DataSegmentHeader bucket;
+        Bucket bucket;
         bucket.size = max(size, granularity);
         granularity *= 2;
         bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
@@ -344,7 +344,7 @@ void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
     if (kind == SegmentKind::Compiler)
         return;
 
-    SegmentPatchPtrRef st;
+    PatchPtrRef st;
     st.addr  = addr;
     st.value = value;
     patchPtr.push_back(st);
@@ -396,7 +396,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     if (kind == SegmentKind::Compiler)
         return;
 
-    SegmentInitPtrRef ref;
+    InitPtrRef ref;
     ref.patchOffset = patchOffset;
     ref.srcOffset   = srcOffset;
     ref.fromSegment = seg;
@@ -555,7 +555,7 @@ void DataSegment::makeLinear()
     if (buckets.size() == 1)
         return;
 
-    DataSegmentHeader h;
+    Bucket h;
 
     h.count  = (uint32_t) g_Allocator.alignSize(totalCount);
     h.size   = h.count;
