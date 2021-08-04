@@ -453,25 +453,3 @@ impl Array
         return result
     }
 }
-
-impl StrConv.IConvert for Array
-{
-    method convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
-    {
-        buf.addBytes("[")
-
-        first := true
-        bufArr := buffer
-        loop count
-        {
-            if !first
-                buf.addBytes(",")
-            first = false
-            v := @mkany(bufArr, T)
-            StrConv.convertAny(buf, v, strFormat)
-            bufArr += 1
-        }
-
-        buf.addBytes("]")
-    }
-}

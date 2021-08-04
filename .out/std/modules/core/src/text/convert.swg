@@ -263,9 +263,35 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
 func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    kindof := @kindof(value)
+    kindof := cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
     ptr := @dataof(value)
+
+    // Core.Array
+    if Utf8.startsWith(kindof.name, "Core.Array'")
+    {
+        typeContent := kindof.generics[0].pointedType
+
+        // Trick to get the struct content
+        // This rely on the fact that the Array struct layout is the same whatever
+        // the underlying type is
+        addrArr := cast(const *Array'u8) ptr
+        bufArr := addrArr.buffer
+
+        buf.addBytes("[")
+        first := true
+        loop addrArr.count
+        {
+            if !first
+                buf.addBytes(",")
+            first = false
+            v := @mkany(bufArr, typeContent)
+            StrConv.convertAny(buf, v, strFormat)
+            bufArr += typeContent.sizeof
+        }
+        buf.addBytes("]")
+        return
+    }
 
     // A structure with an implementation of IConvert
     itf := @mkinterface(ptr, kindof, IConvert)
