@@ -80,17 +80,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Init)
     {
         if (module != g_Workspace.bootstrapModule && module != g_Workspace.runtimeModule)
-        {
-            auto rtMod = g_Workspace.runtimeModule;
-            module->constantSegment.initFrom(&rtMod->constantSegment);
-            module->mutableSegment.initFrom(&rtMod->mutableSegment);
-            module->bssSegment.initFrom(&rtMod->bssSegment);
-            module->buildParameters.foreignLibs.insert(rtMod->buildParameters.foreignLibs.begin(), rtMod->buildParameters.foreignLibs.end());
-
-            module->typeTable.registerBasicTypes(&module->constantSegment);
-            module->typeTable.registerBasicTypes(&module->compilerSegment);
-        }
-
+            module->initFrom(g_Workspace.runtimeModule);
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;
         else if (module->kind == ModuleKind::Config)

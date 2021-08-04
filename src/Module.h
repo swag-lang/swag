@@ -85,6 +85,7 @@ struct Module
     void        setup(const Utf8& moduleName, const Utf8& modulePath);
     void        release();
     void        allocateBackend();
+    void        initFrom(Module* other);
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);

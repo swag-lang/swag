@@ -137,6 +137,16 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
     return true;
 }
 
+void Module::initFrom(Module* other)
+{
+    constantSegment.initFrom(&other->constantSegment);
+    mutableSegment.initFrom(&other->mutableSegment);
+    bssSegment.initFrom(&other->bssSegment);
+    buildParameters.foreignLibs.insert(other->buildParameters.foreignLibs.begin(), other->buildParameters.foreignLibs.end());
+    typeTable.registerBasicTypes(&constantSegment);
+    typeTable.registerBasicTypes(&compilerSegment);
+}
+
 bool Module::mustGenerateTestExe()
 {
     if (!g_CommandLine.test)
