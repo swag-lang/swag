@@ -311,9 +311,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 
     // Do it field by field
     buf.addBytes("{")
-
-    type := cast(const *TypeInfoStruct) kindof
-    visit field: type.fields
+    visit field: kindof.fields
     {
         if(@index != 0)
             buf.addBytes(", ")
@@ -322,7 +320,6 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
         val := @mkany(ptr + field.offset, field.pointedType)
         convertAny(buf, val, strFormat)
     }
-
     buf.addBytes("}")
 }
 
