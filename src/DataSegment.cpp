@@ -308,6 +308,12 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     return storageOffset;
 }
 
+uint32_t DataSegment::addString(const Utf8& str, uint8_t** resultPtr)
+{
+    scoped_lock lk(mutex);
+    return addStringNoLock(str, resultPtr);
+}
+
 uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
 {
     SWAG_RACE_CONDITION_WRITE(raceC);
@@ -331,12 +337,6 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     storedStrings[str] = {offset, addr};
 
     return offset;
-}
-
-uint32_t DataSegment::addString(const Utf8& str, uint8_t** resultPtr)
-{
-    scoped_lock lk(mutex);
-    return addStringNoLock(str, resultPtr);
 }
 
 void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
