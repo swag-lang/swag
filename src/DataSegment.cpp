@@ -65,7 +65,11 @@ void DataSegment::initFrom(DataSegment* other)
     // :BackPtrOffset
     for (auto& it : other->initPtr)
     {
+        // If this asserts, then this means that the bootstrap/runtime makes cross references between
+        // segments. The update will have to be changed in that case, because here we will have to
+        // get the address from another segment.
         SWAG_ASSERT(it.fromSegment == SegmentKind::Me || it.fromSegment == kind);
+
         auto patchAddr      = address(it.patchOffset);
         auto fromAddr       = address(it.fromOffset);
         *(void**) patchAddr = fromAddr;

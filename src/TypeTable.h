@@ -49,6 +49,7 @@ struct TypeTable
     Utf8&      getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     void       tableJobDone(TypeTableJob* job, DataSegment* segment);
     TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
+    void       initFrom(Module* module, TypeTable* other);
 
     MapPerSeg mapPerSegment[2];
 };

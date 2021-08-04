@@ -147,21 +147,7 @@ void Module::initFrom(Module* other)
 
     buildParameters.foreignLibs.insert(other->buildParameters.foreignLibs.begin(), other->buildParameters.foreignLibs.end());
 
-    typeTable.mapPerSegment[0].concreteTypes = other->typeTable.mapPerSegment[0].concreteTypes;
-    for (auto& it : typeTable.mapPerSegment[0].concreteTypes)
-    {
-        it.second.concreteType = (ConcreteTypeInfo*) constantSegment.address(it.second.storageOffset);
-
-        typeTable.mapPerSegment[0].concreteTypesReverse[it.second.concreteType] = it.second.realType;
-    }
-
-    typeTable.mapPerSegment[1].concreteTypes = other->typeTable.mapPerSegment[1].concreteTypes;
-    for (auto& it : typeTable.mapPerSegment[1].concreteTypes)
-    {
-        it.second.concreteType = (ConcreteTypeInfo*) compilerSegment.address(it.second.storageOffset);
-
-        typeTable.mapPerSegment[1].concreteTypesReverse[it.second.concreteType] = it.second.realType;
-    }
+    typeTable.initFrom(this, &other->typeTable);
 }
 
 bool Module::mustGenerateTestExe()

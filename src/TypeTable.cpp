@@ -578,3 +578,20 @@ TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concret
         return nullptr;
     return it->second;
 }
+
+void TypeTable::initFrom(Module* module, TypeTable* other)
+{
+    mapPerSegment[0].concreteTypes = other->mapPerSegment[0].concreteTypes;
+    for (auto& it : mapPerSegment[0].concreteTypes)
+    {
+        it.second.concreteType                                        = (ConcreteTypeInfo*) module->constantSegment.address(it.second.storageOffset);
+        mapPerSegment[0].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+    }
+
+    mapPerSegment[1].concreteTypes = other->mapPerSegment[1].concreteTypes;
+    for (auto& it : mapPerSegment[1].concreteTypes)
+    {
+        it.second.concreteType                                        = (ConcreteTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
+        mapPerSegment[1].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+    }
+}
