@@ -133,8 +133,10 @@ impl Array
             {
                 #if `ptr
                     var @alias0 = `scan
+                #elif Reflection.isStruct(T)
+                    var @alias0 = cast(const *T) `scan
                 #else
-                    var @alias0 = Reflection.isStruct(T) ? cast(const *T) `scan : `scan[0]
+                    var @alias0 = `scan[0]
                 var @alias1 = @index
                 #mixin `stmt
             }
