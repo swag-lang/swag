@@ -267,6 +267,14 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
     ptr := @dataof(value)
 
+    // Core.String
+    if kindof.name == "Core.String"
+    {
+        ptrStr := cast(const *String) ptr
+        buf.addBytes(@mkslice(ptrStr.buffer, ptrStr.length))
+        return
+    }
+
     // Core.Array
     if Utf8.startsWith(kindof.name, "Core.Array'")
     {
