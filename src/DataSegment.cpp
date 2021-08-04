@@ -60,7 +60,7 @@ void DataSegment::initFrom(DataSegment* other)
     initPtr.clear();
     initFuncPtr.clear();
     for (auto& it : other->initPtr)
-        addInitPtr(it.patchOffset, it.srcOffset, it.fromSegment);
+        addInitPtr(it.patchOffset, it.fromOffset, it.fromSegment);
     for (auto& it : other->initFuncPtr)
         addInitPtrFunc(it.first, it.second.first, it.second.second);
 
@@ -398,7 +398,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
 
     InitPtrRef ref;
     ref.patchOffset = patchOffset;
-    ref.srcOffset   = srcOffset;
+    ref.fromOffset  = srcOffset;
     ref.fromSegment = seg;
 
     scoped_lock lk(mutexPtr);

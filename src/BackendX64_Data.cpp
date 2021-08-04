@@ -39,7 +39,7 @@ bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataS
             break;
         }
 
-        *(uint64_t*) dataSegment->address(k.patchOffset) = k.srcOffset;
+        *(uint64_t*) dataSegment->address(k.patchOffset) = k.fromOffset;
 
         reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym;

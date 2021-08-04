@@ -33,7 +33,7 @@ struct DataSegment
     struct InitPtrRef
     {
         uint32_t    patchOffset;
-        uint32_t    srcOffset;
+        uint32_t    fromOffset;
         SegmentKind fromSegment;
     };
 

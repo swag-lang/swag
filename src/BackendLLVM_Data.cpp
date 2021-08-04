@@ -134,7 +134,7 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
         {
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt64(k.srcOffset));
+            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt64(k.fromOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }
