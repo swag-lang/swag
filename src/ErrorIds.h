@@ -56,7 +56,7 @@
 #define Msg0057 "bad generic parameter '%d' for %s (value expected, type provided)"
 #define Msg0058 "cannot convert type '%s' to a constant expression"
 #define Msg0059 "cannot convert slice of type '%s' to a constant expression"
-#define Msg0060 
+#define Msg0060 "cannot reference a compiler constant at runtime"
 #define Msg0061 "invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)"
 #define Msg0062 "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)"
 #define Msg0063 "missing return type for special function '%s'"

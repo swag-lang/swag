@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "File.h"
 #include "Os.h"
+#include "Workspace.h"
 #include "BackendX64SaveObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -338,6 +339,11 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
     if (pp.pass == BackendPreCompilePass::End)
     {
+        if (g_Workspace.bootstrapModule->numErrors || g_Workspace.runtimeModule->numErrors)
+            module->numErrors++;
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
         pp.pass = BackendPreCompilePass::GenerateObj;
 
         // Specific functions in the main file

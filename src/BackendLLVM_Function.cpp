@@ -10,6 +10,8 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "LanguageSpec.h"
+#include "ErrorIds.h"
+#include "Diagnostic.h"
 
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                                                \
     if (module->mustEmitSafetyOF(ip->node))                                                                                         \
@@ -1193,6 +1195,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
+        case ByteCodeOp::MakeCompilerSegPointer:
+            return ip->node->sourceFile->report({ip->node, Msg0060});
 
         case ByteCodeOp::MakeStackPointer:
         {

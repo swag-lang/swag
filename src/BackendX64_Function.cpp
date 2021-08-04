@@ -7,8 +7,10 @@
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"
+#include "ErrorIds.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 
 #define UWOP_PUSH_NONVOL 0
 #define UWOP_ALLOC_LARGE 1
@@ -2464,6 +2466,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->b.u32);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+        case ByteCodeOp::MakeCompilerSegPointer:
+            return ip->node->sourceFile->report({ip->node, Msg0060});
 
         case ByteCodeOp::IncPointer64:
             if (ip->flags & BCI_IMM_B)
