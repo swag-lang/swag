@@ -501,6 +501,8 @@ bool Workspace::buildTarget()
     {
         Timer timer(&g_Stats.runtimeTime);
         timer.start();
+        runtimeModule->constantSegment.initFrom(&bootstrapModule->constantSegment);
+        runtimeModule->mutableSegment.initFrom(&bootstrapModule->mutableSegment);
         SWAG_CHECK(buildRTModule(runtimeModule));
         timer.stop();
     }
