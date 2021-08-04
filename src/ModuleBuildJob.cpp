@@ -79,7 +79,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Init)
     {
-        if (module != g_Workspace.bootstrapModule && module != g_Workspace.runtimeModule)
+        if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
             module->initFrom(g_Workspace.runtimeModule);
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;

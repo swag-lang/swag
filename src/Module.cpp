@@ -142,7 +142,9 @@ void Module::initFrom(Module* other)
     constantSegment.initFrom(&other->constantSegment);
     mutableSegment.initFrom(&other->mutableSegment);
     bssSegment.initFrom(&other->bssSegment);
+
     buildParameters.foreignLibs.insert(other->buildParameters.foreignLibs.begin(), other->buildParameters.foreignLibs.end());
+
     typeTable.registerBasicTypes(&constantSegment);
     typeTable.registerBasicTypes(&compilerSegment);
 }
