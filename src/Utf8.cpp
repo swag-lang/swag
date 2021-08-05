@@ -93,16 +93,6 @@ void Utf8::reserve(int newSize)
     buffer = newBuffer;
 }
 
-void Utf8::operator=(Utf8&& from)
-{
-    reset();
-    count       = from.count;
-    allocated   = from.allocated;
-    buffer      = from.buffer;
-    from.buffer = nullptr;
-    from.reset();
-}
-
 bool Utf8::empty() const
 {
     return count == 0;
@@ -145,25 +135,14 @@ void Utf8::operator=(const char* txt)
     append(txt);
 }
 
-bool operator<(const Utf8& txt1, const Utf8& txt2)
+void Utf8::operator=(Utf8&& from)
 {
-    if (txt1.buffer == txt2.buffer)
-        return false;
-    if (txt1.count < txt2.count)
-        return true;
-    if (txt1.count > txt2.count)
-        return false;
-    return strncmp(txt1.buffer, txt2.buffer, txt1.count) < 0;
-}
-
-void Utf8::operator+=(const Utf8& txt)
-{
-    append(txt);
-}
-
-void Utf8::operator+=(const char* txt)
-{
-    append(txt);
+    reset();
+    count       = from.count;
+    allocated   = from.allocated;
+    buffer      = from.buffer;
+    from.buffer = nullptr;
+    from.reset();
 }
 
 void Utf8::operator=(const Utf8& other)
@@ -174,74 +153,39 @@ void Utf8::operator=(const Utf8& other)
     append(other);
 }
 
-Utf8::operator const char*()
-{
-    return buffer;
-}
-
-char Utf8::operator[](int index) const
-{
-    SWAG_ASSERT(index <= count);
-    return index == count ? 0 : buffer[index];
-}
-
-Utf8 operator+(const Utf8& str1, const char* str2)
-{
-    Utf8 result{str1};
-    result.append(str2);
-    return move(result);
-}
-
-bool operator==(const Utf8& str1, char c)
-{
-    if (str1.count != 1)
-        return false;
-    return str1.buffer[0] == c;
-}
-
-Utf8 operator+(const char* str1, const Utf8& str2)
-{
-    Utf8 result{str1};
-    result.append(str2);
-    return move(result);
-}
-
-bool operator==(const Utf8& str1, const char* str2)
-{
-    SWAG_ASSERT(str2);
-    if (str1.count == 0)
-        return false;
-    return !strcmp(str1.buffer, str2);
-}
-
-bool operator!=(const Utf8& str1, const char* str2)
-{
-    return !(str1 == str2);
-}
-
-bool operator==(const Utf8& str1, const Utf8& str2)
-{
-    if (str1.count != str2.count)
-        return false;
-    if (str1.count == 0)
-        return true;
-    return !strcmp(str1.buffer, str2.buffer);
-}
-
-bool operator!=(const Utf8& str1, const Utf8& str2)
-{
-    return !(str1 == str2);
-}
-
 void Utf8::operator=(uint32_t c)
 {
     clear();
     append(c);
 }
 
+Utf8 operator+(const Utf8& str1, const char* str2)
+{
+    Utf8 result{str1};
+    result.append(str2);
+    return result;
+}
+
+Utf8 operator+(const char* str1, const Utf8& str2)
+{
+    Utf8 result{str1};
+    result.append(str2);
+    return result;
+}
+
 void Utf8::operator+=(char c)
 {
     append(c);
+}
+
+void Utf8::operator+=(const Utf8& txt)
+{
+    append(txt);
+}
+
+void Utf8::operator+=(const char* txt)
+{
+    append(txt);
 }
 
 void Utf8::operator+=(uint32_t c)
@@ -255,6 +199,62 @@ void Utf8::operator+=(uint32_t c)
     }
     else
         append(c);
+}
+
+Utf8::operator const char*()
+{
+    return buffer;
+}
+
+char Utf8::operator[](int index) const
+{
+    SWAG_ASSERT(index <= count);
+    return index == count ? 0 : buffer[index];
+}
+
+bool operator<(const Utf8& txt1, const Utf8& txt2)
+{
+    if (txt1.buffer == txt2.buffer)
+        return false;
+    if (txt1.count < txt2.count)
+        return true;
+    if (txt1.count > txt2.count)
+        return false;
+    return strncmp(txt1.buffer, txt2.buffer, txt1.count) < 0;
+}
+
+bool operator==(const Utf8& str1, char c)
+{
+    if (str1.count != 1)
+        return false;
+    return str1.buffer[0] == c;
+}
+
+bool operator==(const Utf8& str1, const char* str2)
+{
+    SWAG_ASSERT(str2);
+    if (str1.count == 0)
+        return false;
+    return !strcmp(str1.buffer, str2);
+}
+
+bool operator==(const Utf8& str1, const Utf8& str2)
+{
+    if (str1.count != str2.count)
+        return false;
+    if (str1.count == 0)
+        return true;
+    return !strcmp(str1.buffer, str2.buffer);
+}
+
+bool operator!=(const Utf8& str1, const char* str2)
+{
+    return !(str1 == str2);
+}
+
+bool operator!=(const Utf8& str1, const Utf8& str2)
+{
+    return !(str1 == str2);
 }
 
 char Utf8::back() const
