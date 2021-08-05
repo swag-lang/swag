@@ -11,12 +11,6 @@ const char* g_TokenNames[] =
 #include "TokenIds.h"
 };
 
-const uint32_t TOKEN_SYM       = 0x00000001;
-const uint32_t TOKEN_INTRINSIC = 0x00000002;
-const uint32_t TOKEN_KWD       = 0x00000004;
-const uint32_t TOKEN_COMPILER  = 0x00000008;
-const uint32_t TOKEN_LITERAL   = 0x00000010;
-
 const uint32_t g_TokenFlags[] =
     {
 #undef DEFINE_TOKEN_ID

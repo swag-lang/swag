@@ -364,9 +364,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (result)
         *result = funcNode;
 
-    bool funcForCompiler = false;
-    bool isIntrinsic     = false;
-
     bool isMethod = token.id == TokenId::KwdMethod;
     if (isMethod)
     {
@@ -379,17 +376,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         SWAG_CHECK(eatToken());
     }
 
-    if (typeFuncId == TokenId::CompilerFuncTest ||
-        typeFuncId == TokenId::CompilerFuncInit ||
-        typeFuncId == TokenId::CompilerFuncDrop ||
-        typeFuncId == TokenId::CompilerFuncMain ||
-        typeFuncId == TokenId::CompilerFuncCompiler ||
-        typeFuncId == TokenId::CompilerAst ||
-        typeFuncId == TokenId::CompilerSelectIf ||
-        typeFuncId == TokenId::CompilerCheckIf ||
-        typeFuncId == TokenId::CompilerGeneratedRun ||
-        typeFuncId == TokenId::CompilerRun)
-        funcForCompiler = true;
+    bool isIntrinsic     = false;
+    auto funcForCompiler = (g_TokenFlags[(int) typeFuncId] & TOKEN_COMPILER_FUNC);
 
     // Name
     if (funcForCompiler)

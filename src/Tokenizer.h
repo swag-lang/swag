@@ -10,7 +10,12 @@ enum class TokenId : uint16_t
 #include "TokenIds.h"
 };
 
-extern const char* g_TokenNames[];
+static const uint32_t TOKEN_SYM           = 0x00000001;
+static const uint32_t TOKEN_INTRINSIC     = 0x00000002;
+static const uint32_t TOKEN_KWD           = 0x00000004;
+static const uint32_t TOKEN_COMPILER      = 0x00000008;
+static const uint32_t TOKEN_LITERAL       = 0x00000010;
+static const uint32_t TOKEN_COMPILER_FUNC = 0x00000020;
 
 enum class LiteralType : uint8_t
 {
@@ -92,3 +97,6 @@ struct Tokenizer
     bool           lastTokenIsEOL      = false;
     bool           lastTokenIsBlank    = false;
 };
+
+extern const char*    g_TokenNames[];
+extern const uint32_t g_TokenFlags[];
