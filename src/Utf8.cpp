@@ -129,14 +129,6 @@ const char* Utf8::end() const
     return buffer + count;
 }
 
-void Utf8::setView(const Utf8& other)
-{
-    SWAG_ASSERT(!buffer);
-    buffer    = other.buffer;
-    count     = other.count;
-    allocated = 0;
-}
-
 void Utf8::operator=(const char* txt)
 {
     clear();
