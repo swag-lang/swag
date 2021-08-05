@@ -150,8 +150,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     {
         if (!module->waitForDependenciesDone(context->job))
         {
-            SWAG_ASSERT(node->extension->bc->hasFunctionCalls);
-            context->result = ContextResult::Pending;
+            context->job->waitingId = "WAIT_DEP_DONE_EXEC";
+            context->result         = ContextResult::Pending;
             return true;
         }
     }
