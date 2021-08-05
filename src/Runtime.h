@@ -107,14 +107,14 @@ typedef struct SwagProcessInfos
 
 struct BuildCfgBackendLLVM
 {
-    uint32_t minFunctionPerFile = 256;
+    uint32_t minFunctionPerFile = 128;
     uint32_t maxFunctionPerFile = 1024;
     bool     outputIR           = false; // Write a 'file.ir' text file just next to the output file
 };
 
 struct BuildCfgBackendX64
 {
-    uint32_t minFunctionPerFile = 256;
+    uint32_t minFunctionPerFile = 128;
     uint32_t maxFunctionPerFile = 1024;
 };
 

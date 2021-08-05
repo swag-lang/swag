@@ -5,21 +5,8 @@
 template<typename T>
 struct VectorNative
 {
-    int count     = 0;
-    int allocated = 0;
-    T*  buffer    = nullptr;
-
-    size_t capacity() const
-    {
-        return allocated;
-    }
-
-    size_t size() const
-    {
-        return count;
-    }
-
     VectorNative() = default;
+
     VectorNative(const VectorNative& other)
     {
         allocated = 0;
@@ -30,35 +17,10 @@ struct VectorNative
         memcpy(buffer, other.buffer, count * sizeof(T));
     }
 
-    void operator=(const vector<T>& other)
+    ~VectorNative()
     {
-        count = (int) other.size();
-        if (allocated < count)
-            reserve(count, false);
-        memcpy(buffer, &other[0], count * sizeof(T));
-    }
-
-    void operator=(const VectorNative& other)
-    {
-        count = (int) other.size();
-        if (allocated < count)
-            reserve(count, false);
-        memcpy(buffer, other.buffer, count * sizeof(T));
-    }
-
-    const T& operator[](int index) const
-    {
-        return buffer[index];
-    }
-
-    void operator=(VectorNative&& other)
-    {
-        count     = other.count;
-        allocated = other.allocated;
-        buffer    = other.buffer;
-
-        other.count = other.allocated = 0;
-        other.buffer                  = nullptr;
+        if (buffer)
+            g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
     }
 
     void reserve(int newcapacity, bool copy = true)
@@ -77,12 +39,6 @@ struct VectorNative
         if (buffer)
             g_Allocator.free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
         buffer = newPtr;
-    }
-
-    ~VectorNative()
-    {
-        if (buffer)
-            g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
     }
 
     T* reserve_back()
@@ -179,13 +135,6 @@ struct VectorNative
         return buffer[0];
     }
 
-    T& operator[](int index)
-    {
-        SWAG_ASSERT(buffer && count);
-        SWAG_ASSERT(index < count);
-        return buffer[index];
-    }
-
     void erase(int index, int num = 1)
     {
         if (index != count - num)
@@ -225,4 +174,56 @@ struct VectorNative
         if (!contains(value))
             push_back(value);
     }
+
+    size_t capacity() const
+    {
+        return allocated;
+    }
+
+    size_t size() const
+    {
+        return count;
+    }
+
+    void operator=(const vector<T>& other)
+    {
+        count = (int) other.size();
+        if (allocated < count)
+            reserve(count, false);
+        memcpy(buffer, &other[0], count * sizeof(T));
+    }
+
+    void operator=(const VectorNative& other)
+    {
+        count = (int) other.size();
+        if (allocated < count)
+            reserve(count, false);
+        memcpy(buffer, other.buffer, count * sizeof(T));
+    }
+
+    void operator=(VectorNative&& other)
+    {
+        count     = other.count;
+        allocated = other.allocated;
+        buffer    = other.buffer;
+
+        other.count = other.allocated = 0;
+        other.buffer                  = nullptr;
+    }
+
+    const T& operator[](int index) const
+    {
+        return buffer[index];
+    }
+
+    T& operator[](int index)
+    {
+        SWAG_ASSERT(buffer && count);
+        SWAG_ASSERT(index < count);
+        return buffer[index];
+    }
+
+    T*  buffer    = nullptr;
+    int count     = 0;
+    int allocated = 0;
 };
