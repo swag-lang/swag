@@ -22,6 +22,7 @@ struct Utf8
     Utf8(const Utf8& from);
     Utf8(Utf8&& from);
     ~Utf8();
+    void setView(const Utf8& other);
 
     uint32_t    hash() const;
     void        reset();

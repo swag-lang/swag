@@ -330,7 +330,7 @@ void* Allocator::alloc(size_t size)
 
 void Allocator::free(void* ptr, size_t size)
 {
-    if (!ptr)
+    if (!ptr || !size)
         return;
 
     if (shared)
