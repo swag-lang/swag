@@ -153,7 +153,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                         // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
                         // yet the type of parameters)
-                        if (callTypeInfo->declNode && (callTypeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+                        if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
                             canReg = false;
 
                         if (canReg)

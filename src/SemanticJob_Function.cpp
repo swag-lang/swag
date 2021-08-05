@@ -502,7 +502,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // It will be done in the same way as parameters
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->flags & AST_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
+        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
         {
             typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
             funcNode->flags &= ~AST_SHORT_LAMBDA;
@@ -585,7 +585,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // If this is a lambda waiting for a match to know the types of its parameters, need to wait
     // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
-    if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
+    if (funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING)
     {
         if (!(funcNode->flags & AST_IS_GENERIC))
         {

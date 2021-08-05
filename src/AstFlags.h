@@ -55,11 +55,10 @@ static const uint64_t AST_NO_LEFT_DROP               = 0x00100000'00000000;
 static const uint64_t AST_NO_RIGHT_DROP              = 0x00200000'00000000;
 static const uint64_t AST_SILENT_CHECK               = 0x00400000'00000000;
 static const uint64_t AST_IS_NAMED                   = 0x00800000'00000000;
-static const uint64_t AST_PENDING_LAMBDA_TYPING      = 0x01000000'00000000;
-static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x02000000'00000000;
-static const uint64_t AST_EMPTY_FCT                  = 0x04000000'00000000;
-static const uint64_t AST_CAN_MATCH_INCOMPLETE       = 0x08000000'00000000;
-static const uint64_t AST_GENERATED_GENERIC_PARAM    = 0x10000000'00000000;
+static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x01000000'00000000;
+static const uint64_t AST_EMPTY_FCT                  = 0x02000000'00000000;
+static const uint64_t AST_CAN_MATCH_INCOMPLETE       = 0x04000000'00000000;
+static const uint64_t AST_GENERATED_GENERIC_PARAM    = 0x08000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
@@ -111,6 +110,7 @@ static const uint32_t AST_SEM_TUPLE_CONVERT          = 0x00100000;
 static const uint32_t AST_SEM_EXEC_RET_STACK         = 0x00200000;
 static const uint64_t AST_SEM_FORCE_UFCS             = 0x00400000;
 static const uint64_t AST_SEM_STRUCT_REGISTERED      = 0x00800000;
+static const uint64_t AST_SEM_PENDING_LAMBDA_TYPING  = 0x01000000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;

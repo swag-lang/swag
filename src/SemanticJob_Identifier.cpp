@@ -243,7 +243,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
 
     // Wake up semantic lambda job
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
-    funcDecl->flags &= ~AST_PENDING_LAMBDA_TYPING;
+    funcDecl->semFlags &= ~AST_SEM_PENDING_LAMBDA_TYPING;
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
@@ -331,7 +331,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+        if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
         uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
