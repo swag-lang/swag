@@ -2,7 +2,6 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"

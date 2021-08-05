@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "Scoped.h"

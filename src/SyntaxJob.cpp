@@ -6,7 +6,6 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "Timer.h"
-#include "SemanticJob.h"
 #include "Workspace.h"
 #include "ErrorIds.h"
 

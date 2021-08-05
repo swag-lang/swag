@@ -4,7 +4,6 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "Module.h"
-#include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 

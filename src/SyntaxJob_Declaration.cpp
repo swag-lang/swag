@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "Diagnostic.h"
 #include "Scoped.h"
-#include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "Workspace.h"

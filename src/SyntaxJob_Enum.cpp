@@ -1,13 +1,7 @@
 #include "pch.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "Scoped.h"
-#include "SymTable.h"
-#include "TypeInfo.h"
 #include "SemanticJob.h"
-#include "LanguageSpec.h"
 #include "ErrorIds.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
