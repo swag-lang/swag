@@ -296,6 +296,8 @@ Job* ThreadManager::getJob(VectorNative<Job*>& queue)
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
 
+    job->waitingId = nullptr;
+
     jobsInThreads++;
     return job;
 }

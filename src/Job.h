@@ -96,14 +96,14 @@ struct Job
 
     AstNode*    originalNode        = nullptr;
     SymbolName* waitingSymbolSolved = nullptr;
-    const char* waitingId           = nullptr;
-    AstNode*    waitingIdNode       = nullptr;
-    TypeInfo*   waitingIdType       = nullptr;
     SourceFile* sourceFile          = nullptr;
     Module*     module              = nullptr;
     Job*        dependentJob        = nullptr;
     Job*        wakeUpBy            = nullptr;
     JobContext* baseContext         = nullptr;
+    const char* waitingId           = nullptr;
+    AstNode*    waitingIdNode       = nullptr;
+    TypeInfo*   waitingIdType       = nullptr;
 
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;

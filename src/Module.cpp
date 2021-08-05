@@ -533,6 +533,7 @@ bool Module::waitForDependenciesDone(Job* job)
         scoped_lock lk(depModule->mutexDependency);
         if (depModule->hasBeenBuilt != BUILDRES_FULL)
         {
+            job->waitingId = "WAIT_DEP_DONE";
             depModule->dependentJobs.add(job);
             return false;
         }
