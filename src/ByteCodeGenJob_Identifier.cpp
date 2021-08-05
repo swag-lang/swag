@@ -253,7 +253,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
         return emitAssume(context);
 
-    auto tryNode = CastAst<AstTryCatchAssume>(node->ownerTryCatchAssume, AstNodeKind::Try);
+    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->ownerTryCatchAssume, AstNodeKind::Try);
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
         RegisterList r0;
@@ -280,7 +280,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->extension->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);

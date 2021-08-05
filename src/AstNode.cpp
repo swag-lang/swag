@@ -114,7 +114,17 @@ void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
     ownerBreakable       = job->currentBreakable;
     ownerCompilerIfBlock = job->currentCompilerIfBlock;
     ownerInline          = job->currentInline;
-    ownerTryCatchAssume  = job->currentTryCatchAssume;
+
+    if (job->currentTryCatchAssume)
+    {
+        allocateExtension();
+        extension->ownerTryCatchAssume = job->currentTryCatchAssume;
+    }
+    else if (extension)
+    {
+        extension->ownerTryCatchAssume = nullptr;
+    }
+
     flags |= job->currentFlags;
 }
 
@@ -548,7 +558,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct             = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
-    ownerTryCatchAssume  = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->ownerTryCatchAssume;
+
+    if (context.ownerTryCatchAssume || (from->extension && from->extension->ownerTryCatchAssume))
+    {
+        allocateExtension();
+        extension->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extension->ownerTryCatchAssume;
+    }
 
     // Replace a type by another one during generic instantiation
     typeInfo = Generic::doTypeSubstitution(context.replaceTypes, from->typeInfo);

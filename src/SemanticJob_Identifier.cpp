@@ -1186,10 +1186,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
         // Try/Assume
-        if (identifier->ownerTryCatchAssume && (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+        if (identifier->extension && identifier->extension->ownerTryCatchAssume && (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
             identifier->allocateExtension();
-            switch (identifier->ownerTryCatchAssume->kind)
+            switch (identifier->extension->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
                 identifier->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;

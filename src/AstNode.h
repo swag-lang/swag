@@ -252,6 +252,7 @@ struct AstNode
         AstNode*                       exportNode;
         DataSegment*                   anyTypeSegment;
         AstAttrUse*                    ownerAttrUse;
+        AstTryCatchAssume*             ownerTryCatchAssume;
 
         uint32_t castOffset;
         uint32_t stackOffset;
@@ -268,7 +269,6 @@ struct AstNode
     AstBreakable*       ownerBreakable;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
-    AstTryCatchAssume*  ownerTryCatchAssume;
     AstCompilerIfBlock* ownerCompilerIfBlock;
 
     TypeInfo* typeInfo;

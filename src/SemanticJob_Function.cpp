@@ -1038,11 +1038,17 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     // The content will be inline in its separated syntax block
-    auto inlineNode                 = Ast::newInline(identifier->sourceFile, identifier);
-    inlineNode->attributeFlags      = funcDecl->attributeFlags;
-    inlineNode->func                = funcDecl;
-    inlineNode->scope               = identifier->ownerScope;
-    inlineNode->ownerTryCatchAssume = identifier->ownerTryCatchAssume;
+    auto inlineNode            = Ast::newInline(identifier->sourceFile, identifier);
+    inlineNode->attributeFlags = funcDecl->attributeFlags;
+    inlineNode->func           = funcDecl;
+    inlineNode->scope          = identifier->ownerScope;
+
+    if (identifier->extension && identifier->extension->ownerTryCatchAssume)
+    {
+        inlineNode->allocateExtension();
+        inlineNode->extension->ownerTryCatchAssume = identifier->extension->ownerTryCatchAssume;
+    }
+
     inlineNode->allocateExtension();
 
     if (funcDecl->extension)
@@ -1052,9 +1058,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     // Try/Assume
-    if (inlineNode->ownerTryCatchAssume && (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
+    if (inlineNode->extension && inlineNode->extension->ownerTryCatchAssume && (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
-        switch (inlineNode->ownerTryCatchAssume->kind)
+        switch (inlineNode->extension->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
             inlineNode->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
