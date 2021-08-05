@@ -87,8 +87,6 @@ llvm debug, pas à jour
 OPTIMS
 ****************************************
 -------------------------------------
-optim switch si int/string etc... (table, hash...)
--------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode
@@ -96,8 +94,6 @@ BinOpModuloS32/div immediate mode
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
--------------------------------------
-makestackpointer suivi de copyrctort, faire une instruction "copy address stack to rt"
 -------------------------------------
 getfromstackparam8/16/32 pour eviter le cast d'après
 -------------------------------------

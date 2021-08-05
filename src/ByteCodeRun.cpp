@@ -874,6 +874,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::MakeStackPointerParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
+    case ByteCodeOp::MakeStackPointerRT:
+        registersRR[0].pointer = context->bp + ip->a.u32;
+        break;
 
     case ByteCodeOp::SetZeroStack8:
         *(uint8_t*) (context->bp + ip->a.u32) = 0;

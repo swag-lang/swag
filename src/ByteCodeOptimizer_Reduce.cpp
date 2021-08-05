@@ -264,6 +264,15 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    if ((ip[0].op == ByteCodeOp::MakeStackPointer) &&
+        (ip[1].op == ByteCodeOp::CopyRCtoRT) &&
+        (ip[0].a.u32 == ip[1].a.u32) &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        SET_OP(ip + 1, ByteCodeOp::MakeStackPointerRT);
+        ip[1].a.u32 = ip[0].b.u32;
+    }
+
     // Clear stack followed by a setstack
     if ((ip[0].op == ByteCodeOp::SetZeroStack32) &&
         (ip[1].op == ByteCodeOp::SetAtStackPointer32) &&

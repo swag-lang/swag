@@ -176,8 +176,8 @@ BYTECODE_OP(Add64byVB64, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B | 
 
 BYTECODE_OP(CopyRCtoRR, OPFLAG_READ_A | OPFLAG_IMM_A, "result = _rau64_", 0)
 BYTECODE_OP(CopyRCtoRR2, OPFLAG_READ_A | OPFLAG_READ_B, "result = _ra_, _rb_", 0)
-BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "&result = _ra_", 0)
-BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A, "_ra_ = &result", 0)
+BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "resultPtr = _ra_", 0)
+BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A, "_ra_ = resultPtr", 0)
 BYTECODE_OP(CopyRTtoRC, OPFLAG_WRITE_A, "_ra_ = result", 0)
 BYTECODE_OP(CopyRTtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = result", 0)
 
@@ -197,6 +197,7 @@ BYTECODE_OP(GetFromStackParam64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_R
 
 BYTECODE_OP(MakeStackPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = stack + _rbu32_", 0)
 BYTECODE_OP(MakeStackPointerParam, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL32_C, "_ra_ = param + _rcu32_", 0)
+BYTECODE_OP(MakeStackPointerRT, OPFLAG_READ_VAL32_A, "resultPtr = stack + _rau32_", 0)
 
 BYTECODE_OP(SetZeroStack8, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0", 0)
 BYTECODE_OP(SetZeroStack16, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0", 0)
