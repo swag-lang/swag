@@ -985,7 +985,8 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
         break;
 
     default:
-        ownerAttrUse = attrUse;
+        allocateExtension();
+        extension->ownerAttrUse = attrUse;
         break;
     }
 }

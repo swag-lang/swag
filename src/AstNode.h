@@ -251,6 +251,7 @@ struct AstNode
         AstNode*                       alternativeNode;
         AstNode*                       exportNode;
         DataSegment*                   anyTypeSegment;
+        AstAttrUse*                    ownerAttrUse;
 
         uint32_t castOffset;
         uint32_t stackOffset;
@@ -265,7 +266,6 @@ struct AstNode
     Scope*              ownerScope;
     Scope*              ownerStructScope;
     AstBreakable*       ownerBreakable;
-    AstAttrUse*         ownerAttrUse;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
     AstTryCatchAssume*  ownerTryCatchAssume;
@@ -305,7 +305,7 @@ struct AstVarDecl : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     AttributeList attributes;
-    Utf8             publicName;
+    Utf8          publicName;
 
     AstNode* type;
     AstNode* assignment;
@@ -374,7 +374,7 @@ struct AstAttrUse : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode*         content;
+    AstNode*      content;
     AttributeList attributes;
 };
 
@@ -649,7 +649,7 @@ struct AstEnum : public AstNode
 
 struct AstEnumValue : public AstNode
 {
-    AstNode*         clone(CloneContext& context) override;
+    AstNode*      clone(CloneContext& context) override;
     AttributeList attributes;
 };
 
