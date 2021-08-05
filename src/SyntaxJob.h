@@ -190,9 +190,10 @@ struct SyntaxJob : public Job
     bool doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
     bool doRange(AstNode* parent, AstNode* expression, AstNode** result);
 
-    SyntaxContext       context;
-    Tokenizer           tokenizer;
-    Token               token;
+    SyntaxContext context;
+    Tokenizer     tokenizer;
+    Token         token;
+
     Scope*              currentScope           = nullptr;
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
@@ -202,9 +203,12 @@ struct SyntaxJob : public Job
     AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstInline*          currentInline          = nullptr;
-    uint64_t            currentFlags           = 0;
-    uint32_t            contextualNoInline     = 0;
-    bool                moduleSpecified        = false;
-    bool                inFunCall              = false;
-    bool                afterGlobal            = false;
+
+    uint64_t currentFlags = 0;
+
+    uint32_t contextualNoInline = 0;
+
+    bool moduleSpecified = false;
+    bool inFunCall       = false;
+    bool afterGlobal     = false;
 };
