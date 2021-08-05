@@ -5,6 +5,23 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 
+bool SyntaxJob::checkIsValidUserName(AstNode* node)
+{
+    if (node->parent && (node->parent->flags & AST_GENERATED))
+        return true;
+    if (node->flags & AST_GENERATED)
+        return true;
+
+    // An identifier that starts with '__' is reserved for internal usage !
+    if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
+    {
+        if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
+            return error(node->token, Utf8::format(Msg0272, node->token.text.c_str()));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
     if (node->kind != AstNodeKind::IdentifierRef ||
