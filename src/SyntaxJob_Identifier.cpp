@@ -28,9 +28,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
         node->childs.size() > 1 ||
         node->childs.back()->kind != AstNodeKind::Identifier)
     {
-        Utf8 err = "expected a single identifier ";
-        err += msg;
-        return error(node, err);
+        return error(node, Utf8::format(Msg0121, msg));
     }
 
     return true;

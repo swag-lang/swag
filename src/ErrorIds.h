@@ -117,7 +117,7 @@
 #define Msg0118 "during inline expansion"
 #define Msg0119 "missing function call parameters"
 #define Msg0120 "field name '%s' cannot be found in tuple"
-#define Msg0121
+#define Msg0121 "expected a single identifier %s"
 #define Msg0122 "unknown identifier '%s'"
 #define Msg0123 "invalid lambda call, cannot reference structure member '%s'"
 #define Msg0124 "invalid lambda call, '%s' is not a variable"
