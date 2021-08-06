@@ -106,7 +106,7 @@ impl HuffmanTable
             k += sizes[i]
         }
 
-        maxCode[16] = 0x10000;
+        maxCode[16] = 0x10000
         visit v, ci: codeLengths
         {
             if !v continue
