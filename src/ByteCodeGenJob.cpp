@@ -1,13 +1,11 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
-#include "Diagnostic.h"
 #include "ThreadManager.h"
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Context.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)

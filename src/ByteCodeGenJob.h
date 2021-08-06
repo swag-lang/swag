@@ -51,17 +51,6 @@ enum class SafetyMsg
 
 struct ByteCodeGenContext : public JobContext
 {
-    VectorNative<AstNode*>        stackForceNode;
-    VectorNative<SourceLocation*> stackForceLocation;
-    ByteCode*                     bc;
-    ByteCodeGenJob*               job;
-    SourceLocation*               forceLocation     = nullptr;
-    AstNode*                      forceNode         = nullptr;
-    bool                          noLocation        = false;
-    uint32_t                      contextFlags      = 0;
-    uint16_t                      instructionsFlags = 0;
-    uint32_t                      tryCatchScope     = 0;
-
     void setNoLocation()
     {
         noLocation = true;
@@ -101,6 +90,20 @@ struct ByteCodeGenContext : public JobContext
         else
             forceNode = nullptr;
     }
+
+    VectorNative<AstNode*>        stackForceNode;
+    VectorNative<SourceLocation*> stackForceLocation;
+
+    ByteCode*       bc            = nullptr;
+    ByteCodeGenJob* job           = nullptr;
+    SourceLocation* forceLocation = nullptr;
+    AstNode*        forceNode     = nullptr;
+
+    uint32_t contextFlags  = 0;
+    uint32_t tryCatchScope = 0;
+
+    uint16_t instructionsFlags = 0;
+    bool     noLocation        = false;
 };
 
 struct PushLocation
@@ -185,17 +188,23 @@ struct ByteCodeGenJob : public Job
         g_Allocator.free<ByteCodeGenJob>(this);
     }
 
+    static void askForByteCode(Job* job, AstNode* node, uint32_t flags);
+    static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
+
+    static void inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
+    static void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
+    static void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
+    static void releaseByteCodeJob(AstNode* node);
+    static bool canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr);
+    static bool checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc);
+    static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
+    static void freeStructParametersRegisters(ByteCodeGenContext* context);
+
     static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
     static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0, const std::source_location location = std::source_location::current());
-    static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
-    static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);
-    static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
-    static void                 computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
-    static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
-    static void                 releaseByteCodeJob(AstNode* node);
 
-    static bool canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr);
+    static bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
@@ -230,7 +239,6 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitCall(ByteCodeGenContext* context);
     static void emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams);
-    static bool checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc);
     static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
@@ -242,7 +250,6 @@ struct ByteCodeGenJob : public Job
     static bool emitInitStackTrace(ByteCodeGenContext* context);
     static bool emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode);
     static bool emitThrow(ByteCodeGenContext* context);
-    static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
     static bool emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0);
@@ -311,7 +318,6 @@ struct ByteCodeGenJob : public Job
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static void emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal);
-    static void freeStructParametersRegisters(ByteCodeGenContext* context);
     static bool emitLocalVarDeclBefore(ByteCodeGenContext* context);
     static bool emitLocalVarDecl(ByteCodeGenContext* context);
     static void emitRetValRef(ByteCodeGenContext* context, RegisterList& r0, bool retVal, uint32_t stackOffset);
@@ -340,7 +346,6 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsicMakeCallback(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeForeign(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeInterface(ByteCodeGenContext* context);
-    static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
@@ -405,6 +410,7 @@ struct ByteCodeGenJob : public Job
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;
     VectorNative<Scope*>   collectScopes;
+    VectorNative<AstNode*> dependentNodesTmp;
 
     enum class Pass
     {
@@ -414,7 +420,6 @@ struct ByteCodeGenJob : public Job
         WaitForDependenciesResolved,
     };
 
-    AstNode*               allParamsTmp = nullptr;
-    Pass                   pass         = Pass::Generate;
-    VectorNative<AstNode*> dependentNodesTmp;
+    AstNode* allParamsTmp = nullptr;
+    Pass     pass         = Pass::Generate;
 };
