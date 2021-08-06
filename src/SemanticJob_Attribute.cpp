@@ -196,12 +196,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     {
         isHereTmp.clear();
 
-        // Inherit flags
         auto attributeFlags = curAttr->attributeFlags;
-        if (flags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE | ATTRIBUTE_PROTECTED))
-            attributeFlags &= ~(ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE | ATTRIBUTE_PROTECTED);
 
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_SELECTIF_MASK);
+        // Inherit all simple flags
+        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_SELECTIF_MASK | ATTRIBUTE_EXPOSE_MASK);
+
+        // Inherit with condition
         INHERIT(forNode, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
@@ -209,7 +209,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
-        INHERIT(forNode, ATTRIBUTE_SELECTIF_ON | ATTRIBUTE_SELECTIF_OFF);
+        INHERIT(forNode, ATTRIBUTE_SELECTIF_MASK);
+        INHERIT(forNode, ATTRIBUTE_EXPOSE_MASK);
 
         for (auto child : curAttr->childs)
         {
