@@ -35,6 +35,7 @@ struct Stats
     atomic<size_t> allocatorMemory = 0;
     atomic<size_t> wastedMemory    = 0;
     atomic<size_t> memNodes        = 0;
+    atomic<size_t> memNodesExt     = 0;
     atomic<size_t> memScopes       = 0;
     atomic<size_t> memSeg          = 0;
     atomic<size_t> memConcat       = 0;
