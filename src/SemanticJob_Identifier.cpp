@@ -39,7 +39,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->inheritComputedValue(childBack);
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO | AST_SIDE_EFFECTS);
 
-    if (childBack->flags & AST_IS_CONST_ASSIGN)
+    if (childBack->semFlags & AST_SEM_IS_CONST_ASSIGN)
         node->flags |= AST_IS_CONST;
 
     // Symbol is in fact a constant value : no need for bytecode
@@ -66,7 +66,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
-        node->flags |= AST_IS_CONST_ASSIGN;
+        node->semFlags |= AST_SEM_IS_CONST_ASSIGN;
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
@@ -75,10 +75,10 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->flags & AST_IS_CONST_ASSIGN_INHERIT))
+    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->semFlags & AST_SEM_IS_CONST_ASSIGN_INHERIT))
     {
-        node->flags |= AST_IS_CONST_ASSIGN;
-        node->flags |= AST_IS_CONST_ASSIGN_INHERIT;
+        node->semFlags |= AST_SEM_IS_CONST_ASSIGN;
+        node->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
     }
 
     typeInfo                            = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -1203,8 +1203,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Setup parent if necessary
         if (returnType->kind == TypeInfoKind::Struct)
         {
-            identifier->flags |= AST_IS_CONST_ASSIGN_INHERIT;
-            identifier->flags |= AST_IS_CONST_ASSIGN;
+            identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
+            identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN;
         }
 
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
