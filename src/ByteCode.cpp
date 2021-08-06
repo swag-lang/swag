@@ -53,8 +53,7 @@ const Utf8& ByteCode::getCallName()
     // used to differentiate overloads)
     if (node && node->sourceFile->isRuntimeFile && !(node->attributeFlags & ATTRIBUTE_CALLBACK) && !node->ownerStructScope)
     {
-        SWAG_ASSERT(node->resolvedSymbolName);
-        if (node->resolvedSymbolName->cptOverloadsInit == 1)
+        if (node->resolvedSymbolName && node->resolvedSymbolName->cptOverloadsInit == 1)
         {
             callName = name;
             return callName;

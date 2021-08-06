@@ -130,13 +130,14 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     typeInfoStruct->opInit        = opInit;
 
     // Export generated function if necessary
-    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    if (!(structNode->flags & AST_FROM_GENERIC))
     {
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opInit->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = g_LangSpec.name_opInitGenerated;
-        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserInitFct)
             typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
@@ -245,7 +246,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
-                    return context->internalError( "generateStructInit, invalid native type sizeof", varDecl);
+                    return context->internalError("generateStructInit, invalid native type sizeof", varDecl);
                 }
             }
 
