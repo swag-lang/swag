@@ -118,10 +118,7 @@ JobResult SemanticJob::execute()
 
         // Sub functions attributes inheritance
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
-        {
-            originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC;
-            originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_SAFETY_MASK;
-        }
+            inheritAttributesFromMainFunc(originalNode);
 
         // In configuration pass1, we only treat the #dependencies block
         if (sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
@@ -153,7 +150,7 @@ JobResult SemanticJob::execute()
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter || (node->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)));
 
         // Some attribute flags must propagate from parent to childs, whatever
-        propagateAttributes(node);
+        inheritAttributesFromParent(node);
 
         switch (node->semanticState)
         {

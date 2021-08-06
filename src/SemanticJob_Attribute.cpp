@@ -7,14 +7,35 @@
 #include "Math.h"
 #include "LanguageSpec.h"
 
-void SemanticJob::propagateAttributes(AstNode* child)
+void SemanticJob::inheritAttributesFromParent(AstNode* child)
 {
     if (!child->parent)
         return;
-    child->attributeFlags |= child->parent->attributeFlags &
-                             (ATTRIBUTE_SAFETY_MASK |
-                              ATTRIBUTE_SELECTIF_OFF |
-                              ATTRIBUTE_SELECTIF_ON);
+
+    child->attributeFlags |= child->parent->attributeFlags & (ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_SELECTIF_OFF | ATTRIBUTE_SELECTIF_ON);
+}
+
+void SemanticJob::inheritAttributesFromMainFunc(AstNode* child)
+{
+    SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
+    SWAG_ASSERT(child->ownerFct);
+
+    child->attributeFlags |= child->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC;
+
+    // Inherith those attributes from parent function only if they are not redefined
+    // in the sub function
+#define INHERIT(__f)                      \
+    if (!(child->attributeFlags & (__f))) \
+        child->attributeFlags |= child->ownerFct->attributeFlags & (__f);
+
+    INHERIT(ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
+    INHERIT(ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
+    INHERIT(ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
+    INHERIT(ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_NULLPTR_OFF);
+    INHERIT(ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+
+    INHERIT(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+    INHERIT(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
 }
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)

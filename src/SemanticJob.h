@@ -166,7 +166,8 @@ struct SemanticJob : public Job
     static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
 
     static void     enterState(AstNode* node);
-    static void     propagateAttributes(AstNode* child);
+    static void     inheritAttributesFromParent(AstNode* child);
+    static void     inheritAttributesFromMainFunc(AstNode* child);
     static bool     checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static bool     collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool     collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
