@@ -251,7 +251,12 @@ void ThreadManager::waitEndJobs()
 Job* ThreadManager::getJob()
 {
     scoped_lock lk(mutexAdd);
-    Job*        job;
+    return getJobNoLock();
+}
+
+Job* ThreadManager::getJobNoLock()
+{
+    Job* job;
 
     // If no IO is running, then we can take one in priority
     if (!currentJobsIO)
@@ -309,6 +314,15 @@ Job* ThreadManager::getJob(JobThread* thread)
         return job;
 
     mutexAdd.lock();
+
+    // Try another time in case a thread as push a job
+    job = getJobNoLock();
+    if (job)
+    {
+        mutexAdd.unlock();
+        return job;
+    }
+
     availableThreads.push_back(thread);
     mutexAdd.unlock();
 
