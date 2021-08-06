@@ -151,7 +151,7 @@ void SemanticJob::inheritAttributesFromParent(AstNode* child)
     child->attributeFlags |= child->parent->attributeFlags & (ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_SELECTIF_MASK);
 }
 
-void SemanticJob::inheritAttributesFromMainFunc(AstNode* child)
+void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 {
     SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
     SWAG_ASSERT(child->ownerFct);

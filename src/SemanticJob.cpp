@@ -118,7 +118,7 @@ JobResult SemanticJob::execute()
 
         // Sub functions attributes inheritance
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
-            inheritAttributesFromMainFunc(originalNode);
+            inheritAttributesFromOwnerFunc(originalNode);
 
         // In configuration pass1, we only treat the #dependencies block
         if (sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)

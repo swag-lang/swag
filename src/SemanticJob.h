@@ -167,7 +167,7 @@ struct SemanticJob : public Job
 
     static void     enterState(AstNode* node);
     static void     inheritAttributesFromParent(AstNode* child);
-    static void     inheritAttributesFromMainFunc(AstNode* child);
+    static void     inheritAttributesFromOwnerFunc(AstNode* child);
     static bool     checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static bool     collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool     collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
