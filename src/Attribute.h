@@ -45,6 +45,9 @@ static const uint64_t ATTRIBUTE_DISCARDABLE         = 0x0000004000000000;
 static const uint64_t ATTRIBUTE_DEPRECATED          = 0x0000008000000000;
 static const uint64_t ATTRIBUTE_EXPORT_TYPE_METHODS = 0x0000010000000000;
 
+static const uint64_t ATTRIBUTE_OPTIM_MASK    = (ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF | ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+static const uint64_t ATTRIBUTE_SELECTIF_MASK = (ATTRIBUTE_SELECTIF_ON | ATTRIBUTE_SELECTIF_OFF);
+
 struct TypeInfoFuncAttr;
 struct AstNode;
 
@@ -72,7 +75,6 @@ struct AttributeList
 
     void reset()
     {
-        isHere.clear();
         allAttributes.clear();
     }
 
@@ -86,6 +88,5 @@ struct AttributeList
         return (uint32_t) allAttributes.size();
     }
 
-    VectorNative<TypeInfoFuncAttr*> isHere;
-    vector<OneAttribute>            allAttributes;
+    vector<OneAttribute> allAttributes;
 };
