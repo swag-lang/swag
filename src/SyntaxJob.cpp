@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "Workspace.h"
 #include "ErrorIds.h"
+#include "LoadSourceFileJob.h"
 
 bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 {
@@ -272,82 +273,94 @@ JobResult SyntaxJob::execute()
     Timer timer(&g_Stats.syntaxTime);
     timer.start();
 
-    baseContext        = &context;
-    context.job        = this;
-    context.sourceFile = sourceFile;
-    g_Stats.numFiles++;
-
-    if (!sourceFile->load())
-        return JobResult::ReleaseJob;
-
-    tokenizer.setFile(sourceFile);
-
-    module = sourceFile->module;
-
-    // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
-
-    // Creates a top namespace with the module namespace name
-    currentScope     = module->scopeRoot;
-    auto parentScope = module->scopeRoot;
-
-    Utf8 npName;
-    if (sourceFile->imported)
+    // First do the setup that does not need to source file to be loaded
+    if (!setupDone)
     {
-        npName.append((const char*) sourceFile->imported->buildCfg.moduleNamespace.buffer, (int) sourceFile->imported->buildCfg.moduleNamespace.count);
-        if (npName.empty())
-            npName = sourceFile->imported->name;
-    }
-    else if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
-    {
-        npName.append((const char*) module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
-        if (npName.empty())
-            npName = module->name;
-    }
+        setupDone          = true;
+        baseContext        = &context;
+        context.job        = this;
+        context.sourceFile = sourceFile;
+        g_Stats.numFiles++;
 
-    if (!npName.empty())
-    {
-        auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
-        namespaceNode->token.text = npName;
+        tokenizer.setFile(sourceFile);
 
-        scoped_lock lk(parentScope->symTable.mutex);
-        auto        symbol = parentScope->symTable.findNoLock(npName);
-        if (!symbol)
+        module = sourceFile->module;
+
+        // Setup root ast for file
+        sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
+
+        // Creates a top namespace with the module namespace name
+        currentScope     = module->scopeRoot;
+        auto parentScope = module->scopeRoot;
+
+        Utf8 npName;
+        if (sourceFile->imported)
         {
-            auto typeInfo  = allocType<TypeInfoNamespace>();
-            typeInfo->name = npName;
-            auto newScope  = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
-            if (sourceFile->imported)
-                newScope->flags |= SCOPE_IMPORTED;
-            newScope->flags |= SCOPE_AUTO_GENERATED;
-            typeInfo->scope         = newScope;
-            namespaceNode->typeInfo = typeInfo;
-            parentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
-            parentScope = newScope;
+            npName.append((const char*) sourceFile->imported->buildCfg.moduleNamespace.buffer, (int) sourceFile->imported->buildCfg.moduleNamespace.count);
+            if (npName.empty())
+                npName = sourceFile->imported->name;
         }
+        else if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
+        {
+            npName.append((const char*) module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
+            if (npName.empty())
+                npName = module->name;
+        }
+
+        if (!npName.empty())
+        {
+            auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+            namespaceNode->token.text = npName;
+
+            scoped_lock lk(parentScope->symTable.mutex);
+            auto        symbol = parentScope->symTable.findNoLock(npName);
+            if (!symbol)
+            {
+                auto typeInfo  = allocType<TypeInfoNamespace>();
+                typeInfo->name = npName;
+                auto newScope  = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
+                if (sourceFile->imported)
+                    newScope->flags |= SCOPE_IMPORTED;
+                newScope->flags |= SCOPE_AUTO_GENERATED;
+                typeInfo->scope         = newScope;
+                namespaceNode->typeInfo = typeInfo;
+                parentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
+                parentScope = newScope;
+            }
+            else
+            {
+                parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
+                if (sourceFile->imported)
+                    parentScope->flags |= SCOPE_IMPORTED;
+                parentScope->flags |= SCOPE_AUTO_GENERATED;
+            }
+        }
+
+        // One private scope per file. We do NOT register the scope in the list of childs
+        // of the module scope, to avoid contention in // (and this is useless). That way,
+        // no need to lock the module scope each time a file is encountered.
+        sourceFile->computePrivateScopeName();
+        sourceFile->scopePrivate              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
+        sourceFile->scopePrivate->parentScope = parentScope;
+        sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
+
+        // By default, everything is private if it comes from the test folder, or for the configuration file
+        if (sourceFile->fromTests || sourceFile->isCfgFile)
+            currentScope = sourceFile->scopePrivate;
         else
-        {
-            parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
-            if (sourceFile->imported)
-                parentScope->flags |= SCOPE_IMPORTED;
-            parentScope->flags |= SCOPE_AUTO_GENERATED;
-        }
+            currentScope = parentScope;
+        sourceFile->astRoot->ownerScope = currentScope;
     }
 
-    // One private scope per file. We do NOT register the scope in the list of childs
-    // of the module scope, to avoid contention in // (and this is useless). That way,
-    // no need to lock the module scope each time a file is encountered.
-    sourceFile->computePrivateScopeName();
-    sourceFile->scopePrivate              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
-    sourceFile->scopePrivate->parentScope = parentScope;
-    sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
-
-    // By default, everything is private if it comes from the test folder, or for the configuration file
-    if (sourceFile->fromTests || sourceFile->isCfgFile)
-        currentScope = sourceFile->scopePrivate;
-    else
-        currentScope = parentScope;
-    sourceFile->astRoot->ownerScope = currentScope;
+    // Then load the file
+    if (!sourceFile->buffer)
+    {
+        auto loadJob        = g_Allocator.alloc<LoadSourceFileJob>();
+        loadJob->sourceFile = sourceFile;
+        loadJob->addDependentJob(this);
+        jobsToAdd.push_back(loadJob);
+        return JobResult::KeepJobAlive;
+    }
 
     bool ok = eatToken();
     while (true)

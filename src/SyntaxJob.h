@@ -211,4 +211,5 @@ struct SyntaxJob : public Job
     bool moduleSpecified = false;
     bool inFunCall       = false;
     bool afterGlobal     = false;
+    bool setupDone       = false;
 };

@@ -190,21 +190,6 @@ bool Scope::isParentOf(Scope* child)
     return false;
 }
 
-void Scope::addChildNoLock(Scope* child)
-{
-    if (!child)
-        return;
-    child->indexInParent = (uint32_t) childScopes.size();
-    childScopes.push_back(child);
-    child->parentScope = this;
-    child->flags |= flags & SCOPE_PRIVATE;
-
-    if (child->flags & SCOPE_ROOT_PRIVATE)
-    {
-        privateScopes[child->owner->sourceFile] = child;
-    }
-}
-
 void Scope::removeChildNoLock(Scope* child)
 {
     SWAG_ASSERT(childScopes[child->indexInParent] == child);
@@ -231,6 +216,21 @@ bool Scope::isSameOrParentOf(Scope* child)
     }
 
     return false;
+}
+
+void Scope::addChildNoLock(Scope* child)
+{
+    if (!child)
+        return;
+    child->indexInParent = (uint32_t) childScopes.size();
+    childScopes.push_back(child);
+    child->parentScope = this;
+    child->flags |= flags & SCOPE_PRIVATE;
+
+    if (child->flags & SCOPE_ROOT_PRIVATE)
+    {
+        privateScopes[child->owner->sourceFile] = child;
+    }
 }
 
 Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)

@@ -473,6 +473,9 @@
     <ClCompile Include="..\src\Module_Run.cpp">
       <Filter>Main\Wmf</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\LoadSourceFileJob.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -757,6 +760,9 @@
     </ClInclude>
     <ClInclude Include="..\src\OutputFileWin32.h">
       <Filter>Main\Os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LoadSourceFileJob.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
