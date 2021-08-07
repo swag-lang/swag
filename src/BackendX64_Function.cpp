@@ -2857,17 +2857,29 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRAParams.push_back(ip->c.u32);
             pushRAParams.push_back(ip->d.u32);
             break;
+
+        // We need to add 8 because the call has pushed one register on the stack
+        // We need to add 8 again, because of the first 'push edi' at the start of the function
+        // Se we add 16 in total to get the offset of the parameter in the stack
+        case ByteCodeOp::GetFromStackParam8:
+            BackendX64Inst::emit_Clear32(pp, RAX);
+            BackendX64Inst::emit_Load8_Indirect(pp, 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::GetFromStackParam16:
+            BackendX64Inst::emit_Clear32(pp, RAX);
+            BackendX64Inst::emit_Load16_Indirect(pp, 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::GetFromStackParam32:
+            BackendX64Inst::emit_Load32_Indirect(pp, 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
         case ByteCodeOp::GetFromStackParam64:
-            // We need to add 8 because the call has pushed one register on the stack
-            // We need to add 8 again, because of the first 'push edi' at the start of the function
-            // Se we add 16 in total to get the offset of the parameter in the stack
             BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeStackPointerParam:
-            // We need to add 8 because the call has pushed one register on the stack
-            // We need to add 8 again, because of the first 'push edi' at the start of the function
-            // Se we add 16 in total to get the offset of the parameter in the stack
             BackendX64Inst::emit_LoadAddress_Indirect(pp, 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;

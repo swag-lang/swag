@@ -867,9 +867,19 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->c.u32].u64 = *(uint64_t*) (context->bp + ip->d.u32);
         break;
+    case ByteCodeOp::GetFromStackParam8:
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFF;
+        break;
+    case ByteCodeOp::GetFromStackParam16:
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFFFF;
+        break;
+    case ByteCodeOp::GetFromStackParam32:
+        registersRC[ip->a.u32].u64 = *(uint64_t*)(context->bp + ip->b.u32) & 0xFFFFFFFF;
+        break;
     case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
+
     case ByteCodeOp::MakeStackPointer:
     case ByteCodeOp::MakeStackPointerParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;

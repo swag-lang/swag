@@ -3779,6 +3779,24 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::GetFromStackParam8:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 1));
+            break;
+        }
+        case ByteCodeOp::GetFromStackParam16:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 2));
+            break;
+        }
+        case ByteCodeOp::GetFromStackParam32:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 4));
+            break;
+        }
         case ByteCodeOp::GetFromStackParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
@@ -5080,7 +5098,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     return true;
 }
 
-bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
+bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeInBytes)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -5095,11 +5113,19 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     {
         llvm::Type* ty = nullptr;
         SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
-        r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
-        builder.CreateStore(arg, r0);
+        if (sizeInBytes)
+        {
+            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+        }
+        else
+        {
+            r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
+            builder.CreateStore(arg, r0);
+        }
     }
     else
     {
+        SWAG_ASSERT(sizeInBytes == 0);
         builder.CreateStore(builder.CreateLoad(arg), r0);
     }
 

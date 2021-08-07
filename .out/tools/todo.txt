@@ -89,8 +89,6 @@ x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------
-getfromstackparam8/16/32 pour eviter le cast d'après
--------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
 detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
