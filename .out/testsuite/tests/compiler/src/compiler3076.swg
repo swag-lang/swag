@@ -18,9 +18,9 @@ var x, y: AA
 #[Swag.Optim("", true)]
 #test
 {
-    x = AA{1, 1}
-    y = AA{2, 2}
+    x = AA{1, 2}
+    y = AA{3, 4}
     x = toto(x, y)
-    @assert(x.x == 3.0)
-    @assert(x.y == 3.0)
+    @assert(x.x == 4.0)
+    @assert(x.y == 6.0)
 }

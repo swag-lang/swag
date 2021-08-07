@@ -4,20 +4,25 @@
 #include "Module.h"
 #include "Log.h"
 
+// Testing if a stack pointer is not null is irrelevant. This can happen often because of
+// safety checks, when dereferencing a struct on the stack
 bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, 0x00000001, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         auto ip = parseCxt.curIp;
 
-        // Testing if a stack pointer is not null is irrelevant. This can happen often because of
-        // safety checks, when dereferencing a struct on the stack
-        if ((ip[0].op == ByteCodeOp::MakeStackPointer || ip[0].op == ByteCodeOp::CopyRRtoRC) &&
-            ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
-            !(ip[1].flags & BCI_IMM_A) &&
-            ip[0].a.u32 == ip[1].a.u32)
+        // Some instructions will never provide a null pointer
+        if (ip[0].op == ByteCodeOp::MakeStackPointer ||
+            ip[0].op == ByteCodeOp::InternalGetTlsPtr ||
+            ip[0].op == ByteCodeOp::CopyRRtoRC)
         {
-            SET_OP(ip + 1, ByteCodeOp::Jump);
-            return;
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+                !(ip[1].flags & BCI_IMM_A) &&
+                ip[0].a.u32 == ip[1].a.u32)
+            {
+                SET_OP(ip + 1, ByteCodeOp::Jump);
+                return;
+            }
         }
 
         if (ip[0].op == ByteCodeOp::CopyRTtoRC &&
@@ -27,18 +32,6 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             ip[0].a.u32 == ip[2].a.u32)
         {
             SET_OP(ip + 2, ByteCodeOp::Jump);
-            return;
-        }
-
-        // Testing if a pointer is not null is irrelevant if previous instruction is InternalGetTlsPtr
-        if (ip[0].op == ByteCodeOp::InternalGetTlsPtr &&
-            ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
-            !(ip[1].flags & BCI_IMM_A) &&
-            ip[0].c.u32 == ip[1].a.u32 &&
-            (ip[0].flags & BCI_IMM_B) &&
-            ip[0].b.u32)
-        {
-            SET_OP(ip + 1, ByteCodeOp::Jump);
             return;
         }
 
