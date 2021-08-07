@@ -113,7 +113,6 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
 
 void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
     if (ip->op == ByteCodeOp::MakeStackPointer ||
         ip->op == ByteCodeOp::MakeBssSegPointer ||
         ip->op == ByteCodeOp::MakeMutableSegPointer ||
@@ -121,29 +120,9 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
     {
         context->mapU32U32[ip->a.u32] = ip->b.u32;
     }
-    else if (flags & OPFLAG_WRITE_A && !(ip->flags & BCI_IMM_A))
+    else if (ip->op == ByteCodeOp::InternalGetTlsPtr)
     {
-        auto it = context->mapU32U32.find(ip->a.u32);
-        if (it != context->mapU32U32.end())
-            context->mapU32U32.erase(it);
-    }
-    else if (flags & OPFLAG_WRITE_B && !(ip->flags & BCI_IMM_B))
-    {
-        auto it = context->mapU32U32.find(ip->b.u32);
-        if (it != context->mapU32U32.end())
-            context->mapU32U32.erase(it);
-    }
-    else if (flags & OPFLAG_WRITE_C && !(ip->flags & BCI_IMM_C))
-    {
-        auto it = context->mapU32U32.find(ip->c.u32);
-        if (it != context->mapU32U32.end())
-            context->mapU32U32.erase(it);
-    }
-    else if (flags & OPFLAG_WRITE_D && !(ip->flags & BCI_IMM_D))
-    {
-        auto it = context->mapU32U32.find(ip->d.u32);
-        if (it != context->mapU32U32.end())
-            context->mapU32U32.erase(it);
+        context->mapU32U32[ip->a.u32] = UINT32_MAX; // Disable optim whatever
     }
 }
 
@@ -255,7 +234,9 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                     for (auto it1 : context->paramsReg)
                     {
                         auto it2 = context->mapU32U32.find(it1);
-                        if (it2 != context->mapU32U32.end() && it2->second == it->second)
+                        if (it2 == context->mapU32U32.end())
+                            continue;
+                        if (it2->second == UINT32_MAX || it->second == UINT32_MAX || it2->second == it->second)
                         {
                             ok = false;
                             ip = ipOrg;
@@ -289,13 +270,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                     while (ip->flags & BCI_POST_COPYMOVE)
                         ByteCodeOptimizer::setNop(context, ip++);
                 }
-
-                context->mapU32U32.clear();
             }
             else
             {
                 ip = ipOrg;
             }
+
+            context->mapU32U32.clear();
         }
     }
 
