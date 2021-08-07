@@ -80,7 +80,7 @@ struct ByteCodeOptimizer
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void reducex2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static bool optimizePassReduce(ByteCodeOptContext* context);
 
@@ -88,12 +88,13 @@ struct ByteCodeOptimizer
 };
 
 #ifdef SWAG_DEV_MODE
-#define SET_OP(__ip, __op)             \
-    do                                 \
-    {                                  \
-        (__ip)->op         = __op;     \
-        (__ip)->sourceFile = __FILE__; \
-        (__ip)->sourceLine = __LINE__; \
+#define SET_OP(__ip, __op)                        \
+    do                                            \
+    {                                             \
+        (__ip)->op                    = __op;     \
+        (__ip)->sourceFile            = __FILE__; \
+        (__ip)->sourceLine            = __LINE__; \
+        context->passHasDoneSomething = true;     \
     } while (0);
 #else
 #define SET_OP(__ip, __op) \

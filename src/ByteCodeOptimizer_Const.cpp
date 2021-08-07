@@ -555,7 +555,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd16:
@@ -565,7 +564,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd32:
@@ -575,7 +573,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd64:
@@ -585,7 +582,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr8:
@@ -595,7 +591,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr16:
@@ -605,7 +600,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr32:
@@ -615,7 +609,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr64:
@@ -625,7 +618,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
-                    context->passHasDoneSomething = true;
                 }
                 break;
 

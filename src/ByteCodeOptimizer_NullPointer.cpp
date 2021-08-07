@@ -17,7 +17,6 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             ip[0].a.u32 == ip[1].a.u32)
         {
             SET_OP(ip + 1, ByteCodeOp::Jump);
-            context->passHasDoneSomething = true;
             return;
         }
 
@@ -28,7 +27,18 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             ip[0].a.u32 == ip[2].a.u32)
         {
             SET_OP(ip + 2, ByteCodeOp::Jump);
-            context->passHasDoneSomething = true;
+            return;
+        }
+
+        // Testing if a pointer is not null is irrelevant if previous instruction is InternalGetTlsPtr
+        if (ip[0].op == ByteCodeOp::InternalGetTlsPtr &&
+            ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            ip[0].c.u32 == ip[1].a.u32 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::Jump);
             return;
         }
 
@@ -41,7 +51,6 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             ip[0].b.u32)
         {
             SET_OP(ip + 1, ByteCodeOp::Jump);
-            context->passHasDoneSomething = true;
             return;
         }
 
@@ -103,7 +112,6 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
                 ip1[0].a.u32 == paramNPReg)
             {
                 SET_OP(ip1, ByteCodeOp::Jump);
-                context->passHasDoneSomething = true;
             }
 
             // Check not null done multiple times with the same parameter
@@ -115,7 +123,6 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
                 ip1[0].c.u32 == paramNPIdx)
             {
                 SET_OP(ip1 + 1, ByteCodeOp::Jump);
-                context->passHasDoneSomething = true;
             }
         });
     });
