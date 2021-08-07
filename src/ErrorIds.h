@@ -224,7 +224,7 @@
 #define Msg0225 "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'"
 #define Msg0226 "cannot access by index because special function 'opIndex' cannot be found in type '%s'"
 #define Msg0227 "cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'"
-#define Msg0228 "[safety] invalid dynamic cast"
+#define Msg0228 "[safety] invalid dynamic cast, types mismatch"
 #define Msg0229 "[safety] bad slicing, lower bound is greater than upper bound"
 #define Msg0230 "[safety] bad slicing, upper bound is out of range"
 #define Msg0231 "copy semantic is forbidden for type '%s' because of 'Swag.NoCopy' attribute"

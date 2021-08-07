@@ -67,8 +67,6 @@ que faire ?
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------
-cast any avec struct, ca fait quoi (et avec les using ?)
--------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
 x64/llvm debug
