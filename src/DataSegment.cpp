@@ -29,7 +29,6 @@ void DataSegment::setup(SegmentKind _kind, Module* _module)
         break;
     case SegmentKind::Data:
         name = "data segment";
-        name = "data segment";
         break;
     case SegmentKind::Bss:
         name = "bss segment";

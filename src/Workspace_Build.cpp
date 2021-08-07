@@ -82,19 +82,16 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
 
 Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind)
 {
-    Module* module = nullptr;
+    Module* module = g_Allocator.alloc<Module>();
 
     {
         scoped_lock lk(mutexModules);
 
+#ifdef SWAG_DEV_MODE
         auto it = mapModulesNames.find(moduleName);
-        if (it != mapModulesNames.end())
-        {
-            it->second->setup(moduleName, modulePath);
-            return it->second;
-        }
+        SWAG_ASSERT(it == mapModulesNames.end());
+#endif
 
-        module = g_Allocator.alloc<Module>();
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
     }
