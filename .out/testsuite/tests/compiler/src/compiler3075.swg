@@ -3,7 +3,6 @@ struct AA
     x, y: f32
 }
 
-#[Swag.Inline]
 func toto(a, b: AA)->AA
 {
     var result: retval
@@ -12,12 +11,14 @@ func toto(a, b: AA)->AA
     return result
 }
 
-#[Swag.PrintBc]
+var x, y: AA
+
+//#[Swag.PrintBc]
 #[Swag.Optim("", true)]
 #test
 {
-    x := AA{1, 1}
-    y := AA{2, 2}
+    x = AA{1, 1}
+    y = AA{2, 2}
     x = toto(x, y)
     @assert(x.x == 3.0)
     @assert(x.y == 3.0)

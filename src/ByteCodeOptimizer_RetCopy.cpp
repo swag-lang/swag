@@ -114,8 +114,13 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
 void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
-    if (ip->op == ByteCodeOp::MakeStackPointer)
+    if (ip->op == ByteCodeOp::MakeStackPointer ||
+        ip->op == ByteCodeOp::MakeBssSegPointer ||
+        ip->op == ByteCodeOp::MakeMutableSegPointer ||
+        ip->op == ByteCodeOp::MakeCompilerSegPointer)
+    {
         context->mapU32U32[ip->a.u32] = ip->b.u32;
+    }
     else if (flags & OPFLAG_WRITE_A && !(ip->flags & BCI_IMM_A))
     {
         auto it = context->mapU32U32.find(ip->a.u32);
@@ -324,6 +329,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
+            /*if (ByteCode::isMemCpy(ip) && ip->b.u32 == ipOrg->a.u32 && ipOrg->a.u32 == ipOrg[1].node->ownerInline->resultRegisterRC[0])
+            {
+                SET_OP(ipOrg, ByteCodeOp::CopyRBtoRA64);
+                ipOrg->b.u32 = ip->a.u32;
+                setNop(context, ip);
+            }
+            else */
             if (ip->op == ByteCodeOp::MakeStackPointer && ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
                 optimRetCopy(context, ipOrg, ip);
             else
