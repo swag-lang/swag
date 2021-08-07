@@ -50,6 +50,9 @@ struct ByteCodeOptimizer
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
+    static void registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+
     static bool optimizePassJumps(ByteCodeOptContext* context);
     static bool optimizePassLoop(ByteCodeOptContext* context);
     static bool optimizePassDeadCode(ByteCodeOptContext* context);

@@ -60,8 +60,6 @@ script, si #main resoud pas, erreur bizarre
 -------------------------------------
 debugger : print
 -------------------------------------
-pb des pointers alias avec retval (retval qui pointe sur une variable qu'on utilise dans la fonction elle-même)
--------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
