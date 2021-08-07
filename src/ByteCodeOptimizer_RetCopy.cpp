@@ -159,11 +159,9 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
 // ... post move stuff
 bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 {
-    context->mapU32U32.clear();
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool startOk = false;
-        registerMakeAddr(context, ip);
 
         if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].a.u32)
             startOk = true;
@@ -178,10 +176,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             // Find the following call
             context->paramsReg.clear();
             while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
-            {
-                registerParamsReg(context, ip);
                 ip++;
-            }
 
             if (ip->op != ByteCodeOp::End)
                 ip++;
@@ -195,34 +190,10 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             // This will copy the result in the real variable
             if (ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
             {
-                bool ok = true;
-                if (ip->op == ByteCodeOp::MakeStackPointer && ip->a.u32 == ip[1].a.u32)
-                {
-                    uint32_t offset = ip->b.u32;
-
-                    // Pointer aliasing. Do not make the optimization if the wanted result is also a parameter
-                    // to the call. For example a = toto(a, b).
-                    for (auto it1 : context->paramsReg)
-                    {
-                        auto it2 = context->mapU32U32.find(it1);
-                        if (it2 != context->mapU32U32.end() && it2->second == offset)
-                        {
-                            ok = false;
-                            ip = ipOrg;
-                            break;
-                        }
-                    }
-                }
-
-                if (ok)
-                {
-                    if (ip->op == ByteCodeOp::MakeStackPointer)
-                        optimRetCopy(context, ipOrg, ip);
-                    else if (ip->op == ByteCodeOp::CopyRRtoRC && ip[1].a.u32 == ip[0].a.u32)
-                        optimRetCopy(context, ipOrg, ip);
-                }
-
-                context->mapU32U32.clear();
+                if (ip->op == ByteCodeOp::MakeStackPointer)
+                    optimRetCopy(context, ipOrg, ip);
+                else if (ip->op == ByteCodeOp::CopyRRtoRC && ip[1].a.u32 == ip[0].a.u32)
+                    optimRetCopy(context, ipOrg, ip);
             }
             else
                 ip = ipOrg;
