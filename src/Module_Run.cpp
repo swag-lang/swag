@@ -251,15 +251,18 @@ void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
 
 bool Module::flushCompilerMessages(JobContext* context)
 {
-    while (!compilerMessages.empty())
+    bool pending = false;
+    for (int i = 0; i < compilerMessages.size(); i++)
     {
-        auto& msg = compilerMessages.back();
+        auto& msg = compilerMessages[i];
 
         // Be sure we have a #compiler for that message
         int index = (int) msg.kind;
         if (byteCodeCompiler[index].empty())
         {
+            compilerMessages[i] = move(compilerMessages.back());
             compilerMessages.pop_back();
+            i--;
             continue;
         }
 
@@ -269,17 +272,26 @@ bool Module::flushCompilerMessages(JobContext* context)
             context->node           = context->sourceFile->astRoot;
             auto     storageSegment = &context->sourceFile->module->compilerSegment;
             uint32_t storageOffset;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, MAKE_CONCRETE_SHOULD_WAIT));
-            if (context->result != ContextResult::Done)
-                return true;
-            msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
+
+            context->result = ContextResult::Done;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, pending ? 0 : MAKE_CONCRETE_SHOULD_WAIT));
+            if (context->result == ContextResult::Pending)
+                pending = true;
+            else
+                msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
         }
 
-        sendCompilerMessage(&msg, context->baseJob);
-        SWAG_ASSERT(context->result == ContextResult::Done);
-
-        compilerMessages.pop_back();
+        if (context->result == ContextResult::Done)
+        {
+            sendCompilerMessage(&msg, context->baseJob);
+            compilerMessages[i] = move(compilerMessages.back());
+            compilerMessages.pop_back();
+            i--;
+        }
     }
+
+    if (pending)
+        context->result = ContextResult::Pending;
 
     return true;
 }
@@ -294,7 +306,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
     ScopedLock lk(mutexByteCodeCompiler);
-    int         index = (int) msg->kind;
+    int        index = (int) msg->kind;
     if (byteCodeCompiler[index].empty())
         return true;
 
