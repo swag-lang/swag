@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.h"
+#include "Allocator.h"
 struct SourceFile;
 
 struct LoadSourceFileJob : public Job
@@ -9,7 +10,10 @@ struct LoadSourceFileJob : public Job
         flags |= JOB_IS_IO;
     }
 
-    JobResult execute() override;
+    void release() override
+    {
+        g_Allocator.free<LoadSourceFileJob>(this);
+    }
 
-    SourceFile* sourceFile;
+    JobResult execute() override;
 };
