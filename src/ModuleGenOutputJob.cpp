@@ -8,7 +8,6 @@
 JobResult ModuleGenOutputJob::execute()
 {
     Timer timer(&g_Stats.genOutputTimeJob);
-    timer.start();
 
     module->backend->generateOutput(buildParameters);
     g_Stats.numGenModules++;
@@ -24,6 +23,5 @@ JobResult ModuleGenOutputJob::execute()
     if (buildParameters.compileType != BackendCompileType::Test)
         module->setHasBeenBuilt(BUILDRES_COMPILER);
 
-    timer.stop();
     return JobResult::ReleaseJob;
 }

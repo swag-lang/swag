@@ -23,9 +23,5 @@ JobResult ModulePrepOutputJob::execute()
         }
     }
 
-    timer.start();
-    auto result = module->backend->prepareOutput(buildParameters, this);
-    timer.stop();
-
-    return result;
+    return module->backend->prepareOutput(buildParameters, this);
 }

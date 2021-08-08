@@ -65,7 +65,6 @@ bool SourceFile::load()
         return true;
 
     Timer read(&g_Stats.readFilesTime);
-    read.start();
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
@@ -95,7 +94,6 @@ bool SourceFile::load()
     }
 
     closeFile(&handle);
-    read.stop();
 
     curBuffer = buffer;
     endBuffer = buffer + bufferSize;

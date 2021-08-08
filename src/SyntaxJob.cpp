@@ -271,7 +271,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 JobResult SyntaxJob::execute()
 {
     Timer timer(&g_Stats.syntaxTime);
-    timer.start();
 
     // First do the setup that does not need to source file to be loaded
     if (!setupDone)
@@ -383,6 +382,5 @@ JobResult SyntaxJob::execute()
             ok = doTopLevelInstruction(sourceFile->astRoot);
     }
 
-    timer.stop();
     return JobResult::ReleaseJob;
 }

@@ -4,14 +4,10 @@
 
 struct Timer
 {
-    Timer(atomic<uint64_t>* dest)
+    Timer(atomic<uint64_t>* dest, bool force = false)
         : destValue{dest}
     {
-    }
-
-    Timer()
-        : destValue{&internal}
-    {
+        start(force);
     }
 
     ~Timer()
@@ -19,30 +15,26 @@ struct Timer
         stop();
     }
 
-    void start(bool force = false)
+    void start(bool force)
     {
-        if (g_CommandLine.stats || g_CommandLine.verbose || force)
+        if (g_CommandLine.stats || force)
         {
             started    = true;
             timeBefore = OS::timerNow();
         }
     }
 
-    void stop(bool force = false)
+    void stop()
     {
-        if (g_CommandLine.stats || g_CommandLine.verbose || force)
+        if (started)
         {
-            if (started)
-            {
-                started   = false;
-                timeAfter = OS::timerNow();
-                elapsed   = timeAfter - timeBefore;
-                *destValue += elapsed;
-            }
+            started   = false;
+            timeAfter = OS::timerNow();
+            elapsed   = timeAfter - timeBefore;
+            *destValue += elapsed;
         }
     }
 
-    atomic<uint64_t>  internal;
     atomic<uint64_t>* destValue;
     uint64_t          elapsed    = 0;
     uint64_t          timeBefore = 0;

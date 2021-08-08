@@ -25,12 +25,6 @@ enum class ModuleBuildPass
 
 struct ModuleBuildJob : public Job
 {
-    ModuleBuildJob()
-        : timerSemanticModule{&g_Stats.semanticModuleTime}
-        , timerRun{&g_Stats.runTime}
-    {
-    }
-
     bool      loadDependency(ModuleDependency* dep);
     void      publishFilesToTarget();
     void      publishFilesToPublic();
@@ -38,7 +32,4 @@ struct ModuleBuildJob : public Job
 
     ModuleBuildPass pass      = ModuleBuildPass::Init;
     bool            fromError = false;
-    Timer           timerSyntax;
-    Timer           timerSemanticModule;
-    Timer           timerRun;
 };

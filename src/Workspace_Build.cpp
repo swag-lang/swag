@@ -499,19 +499,15 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     {
         Timer timer(&g_Stats.bootstrapTime);
-        timer.start();
         SWAG_CHECK(buildRTModule(bootstrapModule));
-        timer.stop();
     }
 
     // Runtime module semantic pass
     //////////////////////////////////////////////////
     {
         Timer timer(&g_Stats.runtimeTime);
-        timer.start();
         runtimeModule->initFrom(bootstrapModule);
         SWAG_CHECK(buildRTModule(runtimeModule));
-        timer.stop();
     }
 
     // Wait for optional jobs running to finish, remove
@@ -642,8 +638,7 @@ bool Workspace::build()
     auto result = true;
 
     {
-        Timer timer(&g_Stats.totalTime);
-        timer.start(true);
+        Timer timer(&g_Stats.totalTime, true);
 
         setup();
 
@@ -661,8 +656,6 @@ bool Workspace::build()
         addRuntime();
         setupTarget();
         result = buildTarget();
-
-        timer.stop(true);
     }
 
     // Results

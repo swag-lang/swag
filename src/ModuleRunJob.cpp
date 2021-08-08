@@ -14,7 +14,6 @@ JobResult ModuleRunJob::execute()
 
     // Timing...
     Timer timer(&g_Stats.runTestTime);
-    timer.start();
 
     if (buildParameters.compileType == BackendCompileType::Test)
         g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
@@ -36,6 +35,5 @@ JobResult ModuleRunJob::execute()
         OS::doRunProcess(cmdLine, path.parent_path().parent_path().string());
     }
 
-    timer.stop();
     return JobResult::ReleaseJob;
 }

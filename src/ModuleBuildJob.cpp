@@ -151,7 +151,6 @@ JobResult ModuleBuildJob::execute()
         else
         {
             pass = ModuleBuildPass::Publish;
-            timerSyntax.start();
 
             for (auto file : module->files)
             {
@@ -191,8 +190,6 @@ JobResult ModuleBuildJob::execute()
             g_ThreadMgr.addJob(job);
         }
 
-        timerSyntax.stop();
-
         pass = ModuleBuildPass::IncludeSwg;
         if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
         {
@@ -225,9 +222,6 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::SemanticModule)
     {
         pass = ModuleBuildPass::AfterSemantic;
-        if (g_CommandLine.stats)
-            timerSemanticModule.start();
-
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -280,10 +274,6 @@ JobResult ModuleBuildJob::execute()
             module->handleGeneratedFile = nullptr;
         }
 
-        // Timing...
-        if (g_CommandLine.stats && timerSemanticModule.started)
-            timerSemanticModule.stop();
-
         pass = ModuleBuildPass::WaitForDependenciesEffective;
     }
 
@@ -319,10 +309,6 @@ JobResult ModuleBuildJob::execute()
         module->mutableSegment.doPatchMethods(&context);
         module->tlsSegment.doPatchMethods(&context);
         module->constantSegment.doPatchMethods(&context);
-
-        // Timing...
-        if (g_CommandLine.stats)
-            timerRun.start();
 
         if (!module->hasBytecodeToRun())
             pass = ModuleBuildPass::Output;
@@ -470,10 +456,6 @@ JobResult ModuleBuildJob::execute()
                 }
             }
         }
-
-        // Timing...
-        if (g_CommandLine.stats)
-            timerRun.stop();
 
         if (module->numErrors)
             return JobResult::ReleaseJob;

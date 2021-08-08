@@ -373,7 +373,6 @@ CompareVersionResult ModuleCfgManager::compareVersions(uint32_t depVer, uint32_t
 bool ModuleCfgManager::execute()
 {
     Timer timer(&g_Stats.cfgTime);
-    timer.start();
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     // In this pass, only the #dependencies block will be evaluated
@@ -546,6 +545,5 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace.numErrors.load() == 0;
     }
 
-    timer.stop();
     return ok;
 }
