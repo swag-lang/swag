@@ -53,7 +53,8 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
             auto remainSize = tryBlock->size - size;
             if (remainSize > 32)
             {
-                g_Stats.wastedMemory -= size;
+                if (g_CommandLine.stats)
+                    g_Stats.wastedMemory -= size;
                 auto bucket = remainSize / 8;
                 auto split  = (uint8_t*) tryBlock + size;
                 auto result = tryBlock;
@@ -86,7 +87,8 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
             }
             else
             {
-                g_Stats.wastedMemory -= tryBlock->size;
+                if (g_CommandLine.stats)
+                    g_Stats.wastedMemory -= tryBlock->size;
 
                 auto result = tryBlock;
                 if (prevBlock)
@@ -125,7 +127,8 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
         freeBucketsCpt[wastedBucket]++;
     }
 
-    g_Stats.wastedMemory -= bucket * 8;
+    if (g_CommandLine.stats)
+        g_Stats.wastedMemory -= bucket * 8;
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
 #ifdef SWAG_DEV_MODE
@@ -182,7 +185,8 @@ void* AllocatorImpl::alloc(size_t size)
         if (lastBucket)
         {
             auto remain = lastBucket->allocated - lastBucket->maxUsed;
-            g_Stats.wastedMemory += remain;
+            if (g_CommandLine.stats)
+                g_Stats.wastedMemory += remain;
 
             bucket = remain / 8;
             if (bucket < MAX_FREE_BUCKETS)
@@ -221,9 +225,12 @@ void* AllocatorImpl::alloc(size_t size)
 
         currentData = lastBucket->data;
 
-        g_Stats.allocatorMemory += sizeof(AllocatorBucket);
-        g_Stats.allocatorMemory += lastBucket->allocated;
-        g_Stats.wastedMemory += lastBucket->allocated;
+        if (g_CommandLine.stats)
+        {
+            g_Stats.allocatorMemory += sizeof(AllocatorBucket);
+            g_Stats.allocatorMemory += lastBucket->allocated;
+            g_Stats.wastedMemory += lastBucket->allocated;
+        }
     }
 
     auto returnData = currentData;
@@ -232,7 +239,8 @@ void* AllocatorImpl::alloc(size_t size)
 #endif
     currentData += size;
     lastBucket->maxUsed += size;
-    g_Stats.wastedMemory -= size;
+    if (g_CommandLine.stats)
+        g_Stats.wastedMemory -= size;
     return returnData;
 }
 
@@ -246,7 +254,8 @@ void AllocatorImpl::free(void* ptr, size_t size)
     memset(ptr, 0xFE, size);
 #endif
 
-    g_Stats.wastedMemory += size;
+    if (g_CommandLine.stats)
+        g_Stats.wastedMemory += size;
 
     auto bsize = size / 8;
     if (bsize < MAX_FREE_BUCKETS)

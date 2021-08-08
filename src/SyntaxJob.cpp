@@ -279,7 +279,8 @@ JobResult SyntaxJob::execute()
         baseContext        = &context;
         context.job        = this;
         context.sourceFile = sourceFile;
-        g_Stats.numFiles++;
+        if (g_CommandLine.stats)
+            g_Stats.numFiles++;
 
         tokenizer.setFile(sourceFile);
 
@@ -312,7 +313,7 @@ JobResult SyntaxJob::execute()
             namespaceNode->token.text = npName;
 
             ScopedLock lk(parentScope->symTable.mutex);
-            auto        symbol = parentScope->symTable.findNoLock(npName);
+            auto       symbol = parentScope->symTable.findNoLock(npName);
             if (!symbol)
             {
                 auto typeInfo  = allocType<TypeInfoNamespace>();

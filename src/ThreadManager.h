@@ -12,8 +12,8 @@ struct ThreadManager
     void addJobNoLock(Job* job);
     Job* getJob();
     Job* getJobNoLock();
+    Job* getJobNoLock(VectorNative<Job*>& queue);
     Job* getJob(JobThread* thread);
-    Job* getJob(VectorNative<Job*>& queue);
     bool doneWithJobs();
     void clearOptionalJobs();
     void executeOneJob(Job* job);

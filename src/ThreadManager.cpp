@@ -279,7 +279,7 @@ Job* ThreadManager::getJobNoLock()
     // If no IO is running, then we can take one in priority
     if (!currentJobsIO)
     {
-        job = getJob(queueJobsIO);
+        job = getJobNoLock(queueJobsIO);
         if (job)
         {
             currentJobsIO++;
@@ -288,24 +288,24 @@ Job* ThreadManager::getJobNoLock()
     }
 
     // Else we take a normal job if we can
-    job = getJob(queueJobs);
+    job = getJobNoLock(queueJobs);
     if (job)
         return job;
 
     // Else we take an optional job if we can
-    job = getJob(queueJobsOpt);
+    job = getJobNoLock(queueJobsOpt);
     if (job)
         return job;
 
     // Otherwise, then IO, as there's nothing left
-    job = getJob(queueJobsIO);
+    job = getJobNoLock(queueJobsIO);
     if (job)
         currentJobsIO++;
 
     return job;
 }
 
-Job* ThreadManager::getJob(VectorNative<Job*>& queue)
+Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
 {
     if (queue.empty())
         return nullptr;

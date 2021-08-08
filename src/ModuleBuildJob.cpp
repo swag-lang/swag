@@ -363,7 +363,8 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodeRunFunc)
             {
-                g_Stats.runFunctions++;
+                if (g_CommandLine.stats)
+                    g_Stats.runFunctions++;
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -386,7 +387,8 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeTestFunc)
                 {
-                    g_Stats.testFunctions++;
+                    if (g_CommandLine.stats)
+                        g_Stats.testFunctions++;
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;

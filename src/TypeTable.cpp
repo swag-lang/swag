@@ -15,7 +15,7 @@ TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
-    auto&       mapPerSeg = getMapPerSeg(storageSegment);
+    auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
@@ -39,7 +39,8 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.concreteTypesJob[typeName] = job;
-    g_Stats.totalConcreteStructTypes++;
+    if (g_CommandLine.stats)
+        g_Stats.totalConcreteStructTypes++;
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
     {
@@ -118,7 +119,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     {
         if (context && g_CommandLine.verboseConcreteTypes)
             g_Log.verbose(Utf8::format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
-        g_Stats.totalConcreteTypes++;
+        if (g_CommandLine.stats)
+            g_Stats.totalConcreteTypes++;
     }
 
     auto& swagScope = g_Workspace.swagScope;
@@ -571,9 +573,9 @@ void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
 
 TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
 {
-    auto&       mapPerSeg = getMapPerSeg(segment);
+    auto&      mapPerSeg = getMapPerSeg(segment);
     SharedLock lk(mapPerSeg.mutex);
-    auto        it = mapPerSeg.concreteTypesReverse.find(concreteType);
+    auto       it = mapPerSeg.concreteTypesReverse.find(concreteType);
     if (it == mapPerSeg.concreteTypesReverse.end())
         return nullptr;
     return it->second;
