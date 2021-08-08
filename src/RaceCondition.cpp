@@ -2,6 +2,7 @@
 #ifdef SWAG_HAS_ASSERT
 #include "RaceCondition.h"
 #include "Assert.h"
+#include "ScopedLock.h"
 
 RaceCondition::RaceCondition(Instance* instance, bool read)
 {

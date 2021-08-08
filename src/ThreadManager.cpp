@@ -158,7 +158,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         if (!job->dependentJob->waitOnJobs)
         {
             job->dependentJob->wakeUpBy = job;
-            g_ThreadMgr.addJobNoLock(job->dependentJob);
+            addJobNoLock(job->dependentJob);
         }
     }
 
