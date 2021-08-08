@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
+#include "Timer.h"
 
 const char* g_TokenNames[] =
     {
@@ -124,6 +125,8 @@ bool Tokenizer::doMultiLineComment(Token& token)
 
 bool Tokenizer::getToken(Token& token)
 {
+    Timer timer(&g_Stats.tokenizerTime);
+
     lastTokenIsEOL      = forceLastTokenIsEOL;
     forceLastTokenIsEOL = false;
     lastTokenIsBlank    = false;

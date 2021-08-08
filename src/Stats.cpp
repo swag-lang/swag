@@ -46,6 +46,7 @@ void Stats::print()
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Time)
     {
         g_Log.messageHeaderDot("cfg time", Utf8::format("%.3fs", OS::timerToSeconds(cfgTime.load())));
+        g_Log.messageHeaderDot("tokenizer time", Utf8::format("%.3fs", OS::timerToSeconds(tokenizerTime.load())));
         g_Log.messageHeaderDot("syntax time", Utf8::format("%.3fs", OS::timerToSeconds(syntaxTime.load())));
         g_Log.messageHeaderDot("read files", Utf8::format("%.3fs", OS::timerToSeconds(readFilesTime.load())));
         g_Log.messageHeaderDot("semantic time", Utf8::format("%.3fs", OS::timerToSeconds(semanticTime.load())));

@@ -19,6 +19,7 @@ struct Stats
     atomic<uint64_t> readFilesTime             = 0;
     atomic<uint64_t> totalTime                 = 0;
     atomic<uint64_t> cfgTime                   = 0;
+    atomic<uint64_t> tokenizerTime             = 0;
     atomic<uint64_t> syntaxTime                = 0;
     atomic<uint64_t> semanticTime              = 0;
     atomic<uint64_t> runTime                   = 0;
