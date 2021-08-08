@@ -7,6 +7,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Timer.h"
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
 {
@@ -102,6 +103,8 @@ void SemanticJob::enterState(AstNode* node)
 
 JobResult SemanticJob::execute()
 {
+    Timer timer(&g_Stats.semanticTime);
+
     scoped_lock lkExecute(executeMutex);
     if (sourceFile->module->numErrors)
         return JobResult::ReleaseJob;

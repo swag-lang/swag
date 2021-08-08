@@ -20,7 +20,7 @@ struct Stats
     atomic<uint64_t> totalTime                 = 0;
     atomic<uint64_t> cfgTime                   = 0;
     atomic<uint64_t> syntaxTime                = 0;
-    atomic<uint64_t> semanticModuleTime        = 0;
+    atomic<uint64_t> semanticTime              = 0;
     atomic<uint64_t> runTime                   = 0;
     atomic<uint64_t> runTestTime               = 0;
     atomic<uint64_t> prepOutputTimeJob         = 0;
