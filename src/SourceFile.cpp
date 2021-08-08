@@ -77,12 +77,8 @@ bool SourceFile::load()
     fseek(handle, 0, SEEK_SET);
 
     // Read content
-    allocBufferSize        = (unsigned) g_Allocator.alignSize(bufferSize + 4);
-    buffer                 = (char*) g_Allocator.alloc(allocBufferSize);
-    buffer[bufferSize]     = 0;
-    buffer[bufferSize + 1] = 0;
-    buffer[bufferSize + 2] = 0;
-    buffer[bufferSize + 3] = 0;
+    allocBufferSize = (unsigned) g_Allocator.alignSize(bufferSize + 4);
+    buffer          = (char*) g_Allocator.alloc(allocBufferSize);
 
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
@@ -95,8 +91,12 @@ bool SourceFile::load()
 
     closeFile(&handle);
 
-    curBuffer = buffer;
-    endBuffer = buffer + bufferSize;
+    buffer[bufferSize]     = 0;
+    buffer[bufferSize + 1] = 0;
+    buffer[bufferSize + 2] = 0;
+    buffer[bufferSize + 3] = 0;
+    curBuffer              = buffer;
+    endBuffer              = buffer + bufferSize;
 
     if (!checkFormat())
         return false;

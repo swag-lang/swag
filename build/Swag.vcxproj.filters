@@ -474,7 +474,7 @@
       <Filter>Main\Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LoadSourceFileJob.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Main\Jobs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -761,11 +761,11 @@
     <ClInclude Include="..\src\OutputFileWin32.h">
       <Filter>Main\Os</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\LoadSourceFileJob.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ScopedLock.h">
       <Filter>Main\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LoadSourceFileJob.h">
+      <Filter>Main\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
