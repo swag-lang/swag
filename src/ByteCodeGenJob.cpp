@@ -659,7 +659,7 @@ JobResult ByteCodeGenJob::execute()
                 if (dep->extension->byteCodeJob->dependentNodes.empty())
                     continue;
 
-                shared_lock lk1(dep->extension->byteCodeJob->mutexDependent);
+                SharedLock lk1(dep->extension->byteCodeJob->mutexDependent);
                 for (auto newDep : dep->extension->byteCodeJob->dependentNodes)
                 {
                     auto it = done.find(newDep);

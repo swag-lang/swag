@@ -9,7 +9,7 @@
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
-    shared_lock lk(mutex);
+    SharedLock lk(mutex);
     return findNoLock(name, crc);
 }
 
@@ -276,7 +276,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
 
 bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)
 {
-    shared_lock lk(mutex);
+    SharedLock lk(mutex);
     return checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
 }
 

@@ -73,7 +73,7 @@ SourceFile* Workspace::findFile(const char* fileName)
 
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
-    shared_lock lk(mutexModules);
+    SharedLock lk(mutexModules);
     auto        it = mapModulesNames.find(moduleName);
     if (it == mapModulesNames.end())
         return nullptr;

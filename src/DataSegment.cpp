@@ -174,7 +174,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
 
 uint32_t DataSegment::offset(uint8_t* location)
 {
-    shared_lock lock(mutex);
+    SharedLock lock(mutex);
 
     uint32_t offset = 0;
     for (int i = 0; i < buckets.size(); i++)
@@ -205,7 +205,7 @@ uint8_t* DataSegment::address(DataSegment* lockedSegment, uint32_t location)
 
 uint8_t* DataSegment::address(uint32_t location)
 {
-    shared_lock lock(mutex);
+    SharedLock lock(mutex);
     return addressNoLock(location);
 }
 

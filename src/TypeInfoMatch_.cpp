@@ -769,7 +769,7 @@ TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 
 TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
 {
-    shared_lock lk(mutex);
+    SharedLock lk(mutex);
     return hasInterfaceNoLock(itf);
 }
 

@@ -571,7 +571,7 @@ void Module::setHasBeenBuilt(uint32_t buildResult)
 
 uint32_t Module::getHasBeenBuilt()
 {
-    shared_lock lk(mutexDependency);
+    SharedLock lk(mutexDependency);
     return hasBeenBuilt;
 }
 
@@ -751,7 +751,7 @@ bool Module::compileString(const Utf8& text)
 
 TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
-    shared_lock lk(mutexFile);
+    SharedLock lk(mutexFile);
     auto        it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second->typeInfoFunc;
@@ -759,7 +759,7 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 
 ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 {
-    shared_lock lk(mutexFile);
+    SharedLock lk(mutexFile);
     auto        it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second;

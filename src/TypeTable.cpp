@@ -572,7 +572,7 @@ void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
 TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
 {
     auto&       mapPerSeg = getMapPerSeg(segment);
-    shared_lock lk(mapPerSeg.mutex);
+    SharedLock lk(mapPerSeg.mutex);
     auto        it = mapPerSeg.concreteTypesReverse.find(concreteType);
     if (it == mapPerSeg.concreteTypesReverse.end())
         return nullptr;

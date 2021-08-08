@@ -12,19 +12,19 @@ ModuleManager g_ModuleMgr;
 
 bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
 {
-    shared_lock lk(mutexLoaded);
+    SharedLock lk(mutexLoaded);
     return loadedModules.find(moduleName) != loadedModules.end();
 }
 
 bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
 {
-    shared_lock lk(mutexLoaded);
+    SharedLock lk(mutexLoaded);
     return failedLoadedModules.find(moduleName) != failedLoadedModules.end();
 }
 
 void ModuleManager::resetFailedModule(const Utf8& moduleName)
 {
-    shared_lock lk(mutexLoaded);
+    SharedLock lk(mutexLoaded);
     auto        it = failedLoadedModules.find(moduleName);
     if (it != failedLoadedModules.end())
         failedLoadedModules.erase(it);
@@ -93,7 +93,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
-    shared_lock lk(mutexLoaded);
+    SharedLock lk(mutexLoaded);
     auto        here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
         return OS::getProcAddress(here->second, funcName.c_str());

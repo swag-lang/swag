@@ -54,6 +54,7 @@ void Stats::print()
         g_Log.messageHeaderDot("prep out time", Utf8::format("%.3fs (genfunc: %.3fs saveobj: %.3fs)", OS::timerToSeconds(prepOutputTimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
         g_Log.messageHeaderDot("gen out time", Utf8::format("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
         g_Log.messageHeaderDot("optim bc time", Utf8::format("%.3fs", OS::timerToSeconds(optimBCTime.load())));
+        g_Log.messageHeaderDot("contention time", Utf8::format("%.3fs", OS::timerToSeconds(contentionTime.load())));
         g_Log.messageHeaderDot("total time", Utf8::format("%.3fs", OS::timerToSeconds(totalTime.load())));
         g_Log.print("\n");
     }
