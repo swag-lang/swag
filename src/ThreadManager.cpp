@@ -339,8 +339,10 @@ Job* ThreadManager::getJob(JobThread* thread)
     if (job)
         return job;
 
+    unique_lock lk(thread->mutexNotify);
+
     {
-        ScopedLock lk(mutexAdd);
+        ScopedLock lk1(mutexAdd);
 
         // Try another time in case another thread has pushed a job
         job = getJobNoLock();
@@ -350,7 +352,7 @@ Job* ThreadManager::getJob(JobThread* thread)
         availableThreads.push_back(thread);
     }
 
-    thread->waitForANewJob();
+    thread->condVar.wait(lk);
     return nullptr;
 }
 

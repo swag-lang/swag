@@ -8,7 +8,6 @@ struct JobThread
 
     void loop();
     void notifyJob();
-    void waitForANewJob();
 
     mutex              mutexNotify;
     condition_variable condVar;

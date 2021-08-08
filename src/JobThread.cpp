@@ -17,13 +17,7 @@ JobThread::~JobThread()
 void JobThread::notifyJob()
 {
     lock_guard lk(mutexNotify);
-    condVar.notify_all();
-}
-
-void JobThread::waitForANewJob()
-{
-    unique_lock lk(mutexNotify);
-    condVar.wait(lk);
+    condVar.notify_one();
 }
 
 void JobThread::loop()
