@@ -10,6 +10,7 @@
 #include "Attribute.h"
 #include "Scope.h"
 #include "VectorNative.h"
+#include "ScopedLock.h"
 
 struct AstTypeExpression;
 struct DocContent;
@@ -737,7 +738,7 @@ struct AstCompilerIfBlock : public AstNode
 
     void addSymbol(AstNode* node, SymbolName* symbolName)
     {
-        scoped_lock lk(mutex);
+        ScopedLock lk(mutex);
         symbols.push_back({node, symbolName});
     }
 

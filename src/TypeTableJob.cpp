@@ -78,7 +78,7 @@ bool TypeTableJob::computeStruct()
     }
 
     auto&       mapPerSeg = typeTable->getMapPerSeg(storageSegment);
-    scoped_lock lk(mapPerSeg.mutex);
+    ScopedLock lk(mapPerSeg.mutex);
 
     // Simple structure name, without generics
     SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));

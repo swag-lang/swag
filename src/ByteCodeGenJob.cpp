@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "Context.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
@@ -294,7 +295,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (!node)
         return;
 
-    scoped_lock lk(node->mutex);
+    ScopedLock lk(node->mutex);
     auto        sourceFile = node->sourceFile;
 
     // If this is a foreign function, we do not need bytecode
@@ -344,7 +345,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (flags & ASKBC_ADD_DEP_NODE)
     {
         SWAG_ASSERT(job);
-        scoped_lock lk1(job->mutexDependent);
+        ScopedLock lk1(job->mutexDependent);
         job->dependentNodes.push_back(node);
     }
 
@@ -391,7 +392,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 
         if (flags & ASKBC_WAIT_DONE)
         {
-            scoped_lock lk1(extension->byteCodeJob->mutexDependent);
+            ScopedLock lk1(extension->byteCodeJob->mutexDependent);
             extension->byteCodeJob->dependentJobs.add(job);
         }
 
@@ -413,14 +414,14 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 
 void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
 {
-    scoped_lock lk(node->mutex);
+    ScopedLock lk(node->mutex);
     node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
     node->extension->byteCodeJob = nullptr;
 }
 
 JobResult ByteCodeGenJob::execute()
 {
-    scoped_lock lkExecute(executeMutex);
+    ScopedLock lkExecute(executeMutex);
 
     if (!originalNode)
     {
@@ -578,7 +579,7 @@ JobResult ByteCodeGenJob::execute()
                 // Print resulting bytecode
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
-                    scoped_lock lk(module->mutexByteCode);
+                    ScopedLock lk(module->mutexByteCode);
                     module->byteCodePrintBC.push_back(context.bc);
                 }
             }
@@ -586,7 +587,7 @@ JobResult ByteCodeGenJob::execute()
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {
-            scoped_lock lk(originalNode->mutex);
+            ScopedLock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
@@ -604,14 +605,14 @@ JobResult ByteCodeGenJob::execute()
         while (!dependentNodesTmp.empty())
         {
             auto        node = dependentNodesTmp.back();
-            scoped_lock lk(node->mutex);
+            ScopedLock lk(node->mutex);
             if (node->semFlags & AST_SEM_BYTECODE_GENERATED)
             {
                 dependentNodesTmp.pop_back();
                 continue;
             }
 
-            scoped_lock lk1(node->extension->byteCodeJob->mutexDependent);
+            ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
             node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
@@ -630,7 +631,7 @@ JobResult ByteCodeGenJob::execute()
 
             // If the node is already solved, remove it from the list
             {
-                scoped_lock lk(node->mutex);
+                ScopedLock lk(node->mutex);
                 if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
                     continue;
             }
@@ -645,7 +646,7 @@ JobResult ByteCodeGenJob::execute()
             {
                 auto dep = tmp[toScan];
 
-                scoped_lock lkDep(dep->mutex);
+                ScopedLock lkDep(dep->mutex);
                 if (!dep->extension || !dep->extension->byteCodeJob)
                     continue;
 
@@ -683,14 +684,14 @@ JobResult ByteCodeGenJob::execute()
         {
             auto node = dependentNodesTmp.back();
 
-            scoped_lock lk(node->mutex);
+            ScopedLock lk(node->mutex);
             if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
             {
                 dependentNodesTmp.pop_back();
                 continue;
             }
 
-            scoped_lock lk1(node->extension->byteCodeJob->mutexDependent);
+            ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
             node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
@@ -714,7 +715,7 @@ JobResult ByteCodeGenJob::execute()
     // Register runtime function type, by name
     if (sourceFile->isRuntimeFile && context.bc)
     {
-        scoped_lock lk(sourceFile->module->mutexFile);
+        ScopedLock lk(sourceFile->module->mutexFile);
         SWAG_ASSERT(context.bc->typeInfoFunc);
         sourceFile->module->mapRuntimeFcts[context.bc->getCallName()] = context.bc;
     }

@@ -184,7 +184,7 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
     // Find the slot that corresponds to the native callback, because
     // we beed the bytecode pointer that matches 'cb'
     {
-        scoped_lock lk(g_MakeCallbackMutex);
+        ScopedLock lk(g_MakeCallbackMutex);
         for (uint32_t i = 0; i < g_MakeCallbackCount; i++)
         {
             if (g_CallbackArr[i].cb == cb)
@@ -213,7 +213,7 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
 // Runtime function called by user code
 void* makeCallback(void* lambda)
 {
-    scoped_lock lk(g_MakeCallbackMutex);
+    ScopedLock lk(g_MakeCallbackMutex);
 
     // Search if the lambda pointer has already been associated with a given callback
     for (uint32_t i = 0; i < g_MakeCallbackCount; i++)

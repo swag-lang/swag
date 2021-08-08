@@ -181,7 +181,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             pz++;
         }
 
-        scoped_lock lk(modl->mutexGeneratedFile);
+        ScopedLock lk(modl->mutexGeneratedFile);
 
         if (!modl->handleGeneratedFile)
         {
@@ -311,7 +311,7 @@ JobResult SyntaxJob::execute()
             auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
             namespaceNode->token.text = npName;
 
-            scoped_lock lk(parentScope->symTable.mutex);
+            ScopedLock lk(parentScope->symTable.mutex);
             auto        symbol = parentScope->symTable.findNoLock(npName);
             if (!symbol)
             {

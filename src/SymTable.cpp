@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "ScopedLock.h"
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
@@ -22,7 +23,7 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     return registerSymbolNameNoLock(context, node, kind, aliasName);
 }
 
@@ -61,7 +62,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 
     if (!wasPlaceHolder)
     {
-        scoped_lock lock(symbol->mutex);
+        ScopedLock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
         {
             symbol->cptOverloads++;
@@ -83,7 +84,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             DataSegment*   storageSegment,
                                             Utf8*          aliasName)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->isGenerated)
         flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
@@ -122,7 +123,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (resultName)
         *resultName = symbol;
 
-    scoped_lock     lock(symbol->mutex);
+    ScopedLock     lock(symbol->mutex);
     SymbolOverload* result = nullptr;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolName = symbol;
@@ -413,7 +414,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
 
 bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
-    scoped_lock lkn(symbol->mutex);
+    ScopedLock lkn(symbol->mutex);
 
     if (!symbol->overloads.empty())
     {
@@ -522,7 +523,7 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 
 void SymbolName::addDependentJob(Job* job)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     dependentJobs.add(job);
 }
 

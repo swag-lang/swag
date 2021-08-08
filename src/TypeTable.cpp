@@ -16,7 +16,7 @@ TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     auto&       mapPerSeg = getMapPerSeg(storageSegment);
-    scoped_lock lk(mapPerSeg.mutex);
+    ScopedLock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
 

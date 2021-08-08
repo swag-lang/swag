@@ -10,6 +10,7 @@
 #include "ModuleManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -49,12 +50,12 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     if (structDecl->scope != node->structScope)
     {
         auto        typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
-        scoped_lock lk1(typeStruct->mutex);
+        ScopedLock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfaces++;
         node->sourceFile->module->decImplForToSolve(typeStruct);
 
-        scoped_lock lk2(node->structScope->parentScope->mutex);
-        scoped_lock lk3(node->structScope->mutex);
+        ScopedLock lk2(node->structScope->parentScope->mutex);
+        ScopedLock lk3(node->structScope->mutex);
 
         node->structScope->parentScope->removeChildNoLock(node->structScope);
         for (auto s : node->structScope->childScopes)
@@ -141,8 +142,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure interface has been fully solved
     {
-        scoped_lock lk(node->identifier->mutex);
-        scoped_lock lk1(node->identifier->resolvedSymbolName->mutex);
+        ScopedLock lk(node->identifier->mutex);
+        ScopedLock lk1(node->identifier->resolvedSymbolName->mutex);
         if (node->identifier->resolvedSymbolName->cptOverloads)
         {
             job->waitForSymbolNoLock(node->identifier->resolvedSymbolName);
@@ -161,7 +162,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     // Register interface in the structure
     TypeInfoParam* typeParamItf = nullptr;
     {
-        scoped_lock lk(typeStruct->mutex);
+        ScopedLock lk(typeStruct->mutex);
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
@@ -186,7 +187,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         {
             auto symbolName = node->scope->symTable.find(child->token.text);
             SWAG_ASSERT(symbolName);
-            scoped_lock lk(symbolName->mutex);
+            ScopedLock lk(symbolName->mutex);
             if (symbolName->cptOverloads)
             {
                 job->waitForSymbolNoLock(symbolName);
@@ -302,8 +303,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
 void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
-    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    ScopedLock lk(typeInfoStruct->mutex);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
@@ -313,8 +314,8 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 
 void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutex);
-    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    ScopedLock lk(typeInfoStruct->mutex);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
     typeInfoStruct->cptRemainingMethods--;

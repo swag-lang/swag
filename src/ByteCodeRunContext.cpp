@@ -24,7 +24,7 @@ void ByteCodeRunContext::releaseStack()
         registersRR = nullptr;
 
         // To avoid wasting memory, we recycle bytecode stacks
-        scoped_lock lk(g_FreeStackMutex);
+        ScopedLock lk(g_FreeStackMutex);
         *(void**) stack  = g_FirstFreeStack;
         g_FirstFreeStack = stack;
         stack            = nullptr;
@@ -44,7 +44,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     if (!stack)
     {
         // To avoid wasting memory, we recycle bytecode stacks
-        scoped_lock lk(g_FreeStackMutex);
+        ScopedLock lk(g_FreeStackMutex);
         if (g_FirstFreeStack)
         {
             stack            = (uint8_t*) g_FirstFreeStack;

@@ -148,7 +148,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
 
     case TypeInfoKind::Enum:
     {
-        scoped_lock lk(childType->mutex); // race condition with 'name'
+        ScopedLock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         break;
@@ -157,7 +157,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        scoped_lock lk(childType->mutex); // race condition with 'name'
+        ScopedLock lk(childType->mutex); // race condition with 'name'
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         break;
     }
@@ -243,7 +243,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     // Add struct type and scope
     structNode->inheritOwners(sourceFile->astRoot);
     Scope*      rootScope = structNode->ownerScope;
-    scoped_lock lk(rootScope->symTable.mutex);
+    ScopedLock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->token.text);
     if (symbol)
     {

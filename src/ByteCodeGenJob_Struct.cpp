@@ -10,6 +10,8 @@
 #include "ErrorIds.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
+#include "ScopedLock.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {
@@ -71,7 +73,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutexGen);
+    ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->opInit)
         return true;
 
@@ -79,7 +81,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
         auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opInit);
         if (symbol && symbol->cptOverloads)
         {
@@ -157,7 +159,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
-            scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
         return true;
@@ -172,7 +174,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         {
-            scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
         return true;
@@ -311,7 +313,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -320,7 +322,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
 bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutexGen);
+    ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
     if (typeInfoStruct->opDrop)
@@ -332,7 +334,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
         auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opDrop);
         if (symbol && symbol->cptOverloads)
         {
@@ -430,7 +432,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -449,7 +451,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutexGen);
+    ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
     if (typeInfoStruct->opPostMove)
@@ -460,7 +462,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
         auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostMove);
         if (symbol && symbol->cptOverloads)
         {
@@ -558,7 +560,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -576,7 +578,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->mutexGen);
+    ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
         return true;
     if (typeInfoStruct->opPostCopy)
@@ -587,7 +589,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
         auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostCopy);
         if (symbol && symbol->cptOverloads)
         {
@@ -685,7 +687,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
     {
-        scoped_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
@@ -720,7 +722,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
         return true;
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-    scoped_lock lk(structNode->mutex);
+    ScopedLock lk(structNode->mutex);
     structNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
     return true;

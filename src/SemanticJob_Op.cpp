@@ -5,6 +5,7 @@
 #include "SourceFile.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
 
 bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
@@ -256,7 +257,7 @@ SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, 
     if (!symbol)
         return nullptr;
 
-    scoped_lock lkn(symbol->mutex);
+    ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
         context->job->waitForSymbolNoLock(symbol);
 
@@ -330,7 +331,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         job->clearTryMatch();
 
         {
-            scoped_lock lk(symbol->mutex);
+            ScopedLock lk(symbol->mutex);
             for (auto overload : symbol->overloads)
             {
                 auto t               = job->getTryMatch();

@@ -3,6 +3,7 @@
 #include "Tokenizer.h"
 #include "Workspace.h"
 #include "TypeInfo.h"
+#include "ScopedLock.h"
 
 TypeManager g_TypeMgr;
 
@@ -476,7 +477,7 @@ TypeInfo* TypeManager::literalTypeToType(const Token& token)
 
 TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 {
-    scoped_lock lk(typeInfo->mutex);
+    ScopedLock lk(typeInfo->mutex);
     if (typeInfo->isConst())
         return typeInfo;
 

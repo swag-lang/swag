@@ -108,7 +108,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
         // Add/Get namespace
         {
-            scoped_lock lk(currentScope->symTable.mutex);
+            ScopedLock lk(currentScope->symTable.mutex);
             auto        symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {

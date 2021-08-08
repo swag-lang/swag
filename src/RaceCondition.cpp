@@ -10,7 +10,7 @@ RaceCondition::RaceCondition(Instance* instance, bool read)
 
 void RaceCondition::lock(Instance* instance, bool r)
 {
-    scoped_lock lk(instance->mutex);
+    ScopedLock lk(instance->mutex);
     myInstance = instance;
 
     auto currentThreadId = this_thread::get_id();
@@ -31,7 +31,7 @@ RaceCondition::~RaceCondition()
 
 void RaceCondition::unlock()
 {
-    scoped_lock lk(myInstance->mutex);
+    ScopedLock lk(myInstance->mutex);
     if (!read && myInstance->lastThreadID == this_thread::get_id())
     {
         SWAG_ASSERT(myInstance->countWrite);

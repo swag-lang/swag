@@ -256,6 +256,7 @@
     <ClInclude Include="..\src\ModuleCfgManager.h" />
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h" />
     <ClInclude Include="..\src\RaceCondition.h" />
+    <ClInclude Include="..\src\ScopedLock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />

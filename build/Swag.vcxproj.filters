@@ -764,6 +764,9 @@
     <ClInclude Include="..\src\LoadSourceFileJob.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ScopedLock.h">
+      <Filter>Main\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

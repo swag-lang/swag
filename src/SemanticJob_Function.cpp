@@ -9,6 +9,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -225,7 +226,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {
-        scoped_lock lk(sourceFile->module->mutexFile);
+        ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({node, node->token, Msg0739});
@@ -321,7 +322,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
     {
-        scoped_lock lk(node->mutex);
+        ScopedLock lk(node->mutex);
         node->semFlags |= AST_SEM_PARTIAL_RESOLVE;
         node->dependentJobs.setRunning();
         return true;
@@ -350,7 +351,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
 bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
-    scoped_lock lk(funcNode->mutex);
+    ScopedLock lk(funcNode->mutex);
     funcNode->semFlags |= AST_SEM_FULL_RESOLVE | AST_SEM_PARTIAL_RESOLVE;
     funcNode->dependentJobs.setRunning();
     return true;
@@ -555,14 +556,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
+            ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
         }
         else if (funcNode->token.text == g_LangSpec.name_opDrop)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
+            ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
             SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
@@ -570,7 +571,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
+            ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
             SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->token, Utf8::format(Msg0765, typeStruct->name.c_str())}));
         }
@@ -578,7 +579,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
+            ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
     }
@@ -695,7 +696,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
     {
         for (auto f : funcNode->subDecls)
         {
-            scoped_lock lk(f->mutex);
+            ScopedLock lk(f->mutex);
 
             // Disabled by #if block
             if (f->semFlags & AST_SEM_DISABLED)
@@ -704,7 +705,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
 
             if (f->ownerCompilerIfBlock && f->ownerCompilerIfBlock->ownerFct == funcNode)
             {
-                scoped_lock lk1(f->ownerCompilerIfBlock->mutex);
+                ScopedLock lk1(f->ownerCompilerIfBlock->mutex);
                 f->ownerCompilerIfBlock->subDecls.push_back(f);
             }
             else

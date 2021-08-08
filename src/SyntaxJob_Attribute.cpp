@@ -19,7 +19,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->inheritTokenName(token);
 
     // Register attribute
-    scoped_lock lk(currentScope->symTable.mutex);
+    ScopedLock lk(currentScope->symTable.mutex);
     auto        typeInfo = allocType<TypeInfoFuncAttr>();
     typeInfo->declNode   = attrNode;
 

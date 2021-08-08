@@ -105,7 +105,7 @@ JobResult SemanticJob::execute()
 {
     Timer timer(&g_Stats.semanticTime);
 
-    scoped_lock lkExecute(executeMutex);
+    ScopedLock lkExecute(executeMutex);
     if (sourceFile->module->numErrors)
         return JobResult::ReleaseJob;
 
@@ -172,7 +172,7 @@ JobResult SemanticJob::execute()
                     // We inform the parent function that we have seen the sub thing, and that
                     // the attributes context is now fine for it. That way, the parent function can
                     // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
-                    scoped_lock lk(node->mutex);
+                    ScopedLock lk(node->mutex);
 
                     // Do NOT use canDoSem here, because we need to test the flag with the node locked, as it can be changed
                     // in registerFuncSymbol by another thread

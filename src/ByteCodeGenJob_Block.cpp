@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "ScopedLock.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {
@@ -780,7 +781,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         return true;
 
     auto&       table = scope->symTable;
-    scoped_lock lock(table.mutex);
+    ScopedLock lock(table.mutex);
 
     auto count = (int) table.structVarsToDrop.size() - 1;
     if (count == -1)

@@ -50,7 +50,7 @@ namespace Ast
             node->flags |= parent->flags & AST_RUN_BLOCK;
             node->flags |= parent->flags & AST_IN_MIXIN;
 
-            scoped_lock lk(parent->mutex);
+            ScopedLock lk(parent->mutex);
             node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
         }
@@ -262,7 +262,7 @@ namespace Ast
         if (!parent)
             return;
 
-        scoped_lock lk(parent->mutex);
+        ScopedLock lk(parent->mutex);
         auto        idx = child->childParentIdx;
         SWAG_ASSERT(parent->childs[idx] == child);
         parent->childs.erase(idx);
@@ -278,7 +278,7 @@ namespace Ast
 
         if (parent)
         {
-            scoped_lock lk(parent->mutex);
+            ScopedLock lk(parent->mutex);
             child->childParentIdx = index;
             parent->childs.insertAtIndex(child, index);
             for (auto i = index; i < parent->childs.size(); i++)
@@ -299,7 +299,7 @@ namespace Ast
 
         if (parent)
         {
-            scoped_lock lk(parent->mutex);
+            ScopedLock lk(parent->mutex);
             child->childParentIdx = 0;
             parent->childs.push_front(child);
             for (auto i = 1; i < parent->childs.size(); i++)
@@ -318,7 +318,7 @@ namespace Ast
 
         if (parent)
         {
-            scoped_lock lk(parent->mutex);
+            ScopedLock lk(parent->mutex);
             child->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(child);
             if (!child->ownerScope)

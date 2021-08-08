@@ -85,7 +85,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     Module* module = g_Allocator.alloc<Module>();
 
     {
-        scoped_lock lk(mutexModules);
+        ScopedLock lk(mutexModules);
 
 #ifdef SWAG_DEV_MODE
         auto it = mapModulesNames.find(moduleName);

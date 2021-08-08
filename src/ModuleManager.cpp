@@ -57,13 +57,13 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
         if (h == NULL)
         {
-            scoped_lock lk(mutexLoaded);
+            ScopedLock lk(mutexLoaded);
             failedLoadedModules.insert(name);
             return false;
         }
     }
 
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
 
     // In case it is now loaded, after the lock
     if (isModuleLoaded(name))
@@ -85,7 +85,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (!applyPatches(name, h))
         return false;
 
-    scoped_lock lk1(mutexLoaded);
+    ScopedLock lk1(mutexLoaded);
     loadedModules[name] = h;
     return true;
 }
@@ -102,7 +102,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 
 void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
 {
-    scoped_lock lk(mutexPatch);
+    ScopedLock lk(mutexPatch);
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -132,7 +132,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
 
 bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 {
-    scoped_lock lk(mutexPatch);
+    ScopedLock lk(mutexPatch);
 
     auto it = patchOffsets.find(moduleName);
     if (it == patchOffsets.end())

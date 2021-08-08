@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "ScopedLock.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -152,7 +153,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
 void SemanticJob::sortParameters(AstNode* allParams)
 {
-    scoped_lock lk(allParams->mutex);
+    ScopedLock lk(allParams->mutex);
 
     if (!allParams || !(allParams->flags & AST_MUST_SORT_CHILDS))
         return;
@@ -872,7 +873,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             auto parentStructNode = identifier->identifierRef->startScope->owner;
             SWAG_ASSERT(parentStructNode->resolvedSymbolName);
-            scoped_lock lk(parentStructNode->resolvedSymbolName->mutex);
+            ScopedLock lk(parentStructNode->resolvedSymbolName->mutex);
             if (parentStructNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
             {
                 context->job->waitForSymbolNoLock(parentStructNode->resolvedSymbolName);
@@ -1035,7 +1036,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
         {
-            scoped_lock lk(symbol->mutex);
+            ScopedLock lk(symbol->mutex);
             if (overload->flags & OVERLOAD_INCOMPLETE)
             {
                 context->job->waitForSymbolNoLock(symbol);
@@ -1138,7 +1139,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 // Need to wait for function full semantic resolve
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
                 {
-                    scoped_lock lk(funcDecl->mutex);
+                    ScopedLock lk(funcDecl->mutex);
                     if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
                     {
                         funcDecl->dependentJobs.add(context->job);
@@ -2236,7 +2237,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     auto&       matches           = job->cacheMatches;
     auto        symbol            = firstMatch.symbolName;
     auto        genericParameters = firstMatch.genericParameters;
-    scoped_lock lk(symbol->mutex);
+    ScopedLock lk(symbol->mutex);
 
     // If we are inside a generic function (not instantiated), then we are done, we
     // cannot instantiate (can occure when evaluating function body of an incomplete short lammbda
@@ -2949,7 +2950,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
 bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
-    scoped_lock lk(funcDecl->mutex);
+    ScopedLock lk(funcDecl->mutex);
 
     // Be sure block has been solved
     if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
@@ -3357,7 +3358,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     for (auto& p : dependentSymbols)
     {
         auto        symbol = p.first;
-        scoped_lock lkn(symbol->mutex);
+        ScopedLock lkn(symbol->mutex);
 
         if (!symbol->cptOverloads)
             continue;
@@ -3432,7 +3433,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         for (auto& p : dependentSymbols)
         {
             auto        symbol = p.first;
-            scoped_lock lk(symbol->mutex);
+            ScopedLock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
                 OneOverload t;

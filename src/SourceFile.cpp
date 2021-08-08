@@ -127,7 +127,7 @@ uint32_t SourceFile::getChar(unsigned& offset)
 
 Utf8 SourceFile::getLine(long lineNo)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     if (isExternal)
     {
         if (allLines.empty())
@@ -171,7 +171,7 @@ Utf8 SourceFile::getLine(long lineNo)
 
 void SourceFile::computePrivateScopeName()
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     if (!scopeName.empty())
         return;
     scopeName = "__" + name;
@@ -188,7 +188,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (silent > 0 && !diag.exceptionError)
         return false;
 
-    scoped_lock lock(g_Log.mutexAccess);
+    ScopedLock lock(g_Log.mutexAccess);
 
     // Warning to error option ?
     auto errorLevel = diag.errorLevel;

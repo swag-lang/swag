@@ -670,7 +670,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         {
             // Need to wait for function full semantic resolve
             {
-                scoped_lock lk(funcDecl->mutex);
+                ScopedLock lk(funcDecl->mutex);
                 if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
                 {
                     funcDecl->dependentJobs.add(context->job);

@@ -3,6 +3,7 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
+#include "ScopedLock.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
@@ -19,7 +20,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     // Add enum type and scope
     Scope* newScope = nullptr;
     {
-        scoped_lock lk(currentScope->symTable.mutex);
+        ScopedLock lk(currentScope->symTable.mutex);
         newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
         if (newScope->kind != ScopeKind::Enum)
         {
@@ -33,7 +34,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         enumNode->scope = newScope;
 
         // If an 'impl' came first, then typeinfo has already been defined
-        scoped_lock   lk1(newScope->owner->mutex);
+        ScopedLock   lk1(newScope->owner->mutex);
         TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
         if (!typeInfo)
         {

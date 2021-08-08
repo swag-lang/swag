@@ -232,7 +232,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
 void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
 {
-    scoped_lock lk(mutexByteCodeCompiler);
+    ScopedLock lk(mutexByteCodeCompiler);
 
     // Cannot decide yet if there's a corresponding #compiler for that message, so push it
     if (numCompilerFunctions > 0)
@@ -293,7 +293,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    scoped_lock lk(mutexByteCodeCompiler);
+    ScopedLock lk(mutexByteCodeCompiler);
     int         index = (int) msg->kind;
     if (byteCodeCompiler[index].empty())
         return true;

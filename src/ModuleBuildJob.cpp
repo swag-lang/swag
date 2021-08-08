@@ -15,6 +15,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LoadSourceFileJob.h"
+#include "ScopedLock.h"
 
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
@@ -112,7 +113,7 @@ JobResult ModuleBuildJob::execute()
                 return JobResult::ReleaseJob;
 
             // If this module is not done, wait for it
-            scoped_lock lk1(depModule->mutexDependency);
+            ScopedLock lk1(depModule->mutexDependency);
             if ((depModule->hasBeenBuilt & BUILDRES_EXPORT) == 0)
             {
                 depModule->dependentJobs.add(this);

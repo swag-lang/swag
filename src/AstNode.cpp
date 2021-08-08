@@ -776,7 +776,7 @@ Utf8 AstFuncDecl::getDisplayName()
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     if (!fullnameForeign.empty())
         return;
 
@@ -853,7 +853,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)
     {
-        scoped_lock lk(f->mutex);
+        ScopedLock lk(f->mutex);
 
         // A sub declaration node has the root of the file as parent, but has the correct scope. We need to find
         // the duplicated parent node that corresponds to the original one, in order to get the corresponding new

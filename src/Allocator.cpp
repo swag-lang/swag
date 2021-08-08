@@ -4,6 +4,7 @@
 #include "Os.h"
 #include "Log.h"
 #include "ErrorIds.h"
+#include "ScopedLock.h"
 
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
@@ -271,7 +272,7 @@ Allocator::Allocator()
     if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
         shared = true;
-        scoped_lock lk(g_AllocatorMutex);
+        ScopedLock lk(g_AllocatorMutex);
         if (g_SharedAllocator)
         {
             impl = g_SharedAllocator->impl;

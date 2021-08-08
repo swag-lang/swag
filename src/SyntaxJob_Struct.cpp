@@ -84,7 +84,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
     // Be sure we have associated a struct typeinfo (we can parse an impl block before the corresponding struct)
     {
-        scoped_lock lk1(newScope->owner->mutex);
+        ScopedLock lk1(newScope->owner->mutex);
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
@@ -120,7 +120,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto parentScope = newScope;
     if (implInterface)
     {
-        scoped_lock lk(newScope->symTable.mutex);
+        ScopedLock lk(newScope->symTable.mutex);
         Utf8        itfName  = implNode->identifier->childs.back()->token.text;
         auto        symbol   = newScope->symTable.findNoLock(itfName);
         Scope*      subScope = nullptr;
@@ -217,7 +217,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     // Add struct type and scope
     Scope* newScope = nullptr;
     {
-        scoped_lock lk(currentScope->symTable.mutex);
+        ScopedLock lk(currentScope->symTable.mutex);
         newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, currentScope, true);
         if (newScope->kind != ScopeKind::Struct)
         {
@@ -230,7 +230,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         structNode->scope = newScope;
 
         // If an 'impl' came first, then typeinfo has already been defined
-        scoped_lock     lk1(newScope->owner->mutex);
+        ScopedLock     lk1(newScope->owner->mutex);
         TypeInfoStruct* typeInfo = nullptr;
         if (!newScope->owner->typeInfo)
         {

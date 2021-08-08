@@ -12,7 +12,7 @@
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
 
     mutableSegment.setup(SegmentKind::Data, this);
     constantSegment.setup(SegmentKind::Constant, this);
@@ -206,7 +206,7 @@ SourceFile* Module::findFile(const Utf8& fileName)
 
 void Module::allocateBackend()
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
     if (backend)
         return;
 
@@ -245,20 +245,20 @@ void Module::release()
 
 void Module::addExportSourceFile(SourceFile* file)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
     exportSourceFiles.insert(file);
 }
 
 void Module::addErrorModule(Module* module)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
     errorModules.push_back(module);
 }
 
 void Module::addFile(SourceFile* file)
 {
-    scoped_lock lk(mutexFile);
-    scoped_lock lk1(scopeRoot->mutex);
+    ScopedLock lk(mutexFile);
+    ScopedLock lk1(scopeRoot->mutex);
     addFileNoLock(file);
 }
 
@@ -285,8 +285,8 @@ void Module::addFileNoLock(SourceFile* file)
 
 void Module::removeFile(SourceFile* file)
 {
-    scoped_lock lk(mutexFile);
-    scoped_lock lk1(scopeRoot->mutex);
+    ScopedLock lk(mutexFile);
+    ScopedLock lk1(scopeRoot->mutex);
 
     SWAG_ASSERT(file->module == this);
 
@@ -306,7 +306,7 @@ void Module::removeFile(SourceFile* file)
 
 void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
 {
-    scoped_lock lk(mutexGlobalVars);
+    ScopedLock lk(mutexGlobalVars);
     switch (varKind)
     {
     case GlobalVarKind::Mutable:
@@ -334,7 +334,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     {
         if (filter & ((uint64_t) 1 << i))
         {
-            scoped_lock lk(mutexByteCodeCompiler);
+            ScopedLock lk(mutexByteCodeCompiler);
             SWAG_ASSERT(numCompilerFunctions > 0);
             numCompilerFunctions--;
             byteCodeCompiler[i].push_back(bc);
@@ -344,7 +344,7 @@ void Module::addCompilerFunc(ByteCode* bc)
 
 void Module::addByteCodeFunc(ByteCode* bc)
 {
-    scoped_lock lk(mutexByteCode);
+    ScopedLock lk(mutexByteCode);
 
     SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
     SWAG_ASSERT(!bc->isAddedToList);
@@ -391,13 +391,13 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
 void Module::addForeignLib(const Utf8& text)
 {
-    scoped_lock lk(mutexDependency);
+    ScopedLock lk(mutexDependency);
     buildParameters.foreignLibs.insert(text);
 }
 
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
-    scoped_lock lk(mutexDependency);
+    ScopedLock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
     {
         if (dep->name == importNode->token.text)
@@ -491,7 +491,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
 bool Module::removeDependency(AstNode* importNode)
 {
-    scoped_lock lk(mutexDependency);
+    ScopedLock lk(mutexDependency);
     for (int i = 0; i < moduleDependencies.size(); i++)
     {
         if (moduleDependencies[i]->node == importNode)
@@ -530,7 +530,7 @@ bool Module::waitForDependenciesDone(Job* job)
         if (depModule->numErrors)
             continue;
 
-        scoped_lock lk(depModule->mutexDependency);
+        ScopedLock lk(depModule->mutexDependency);
         if (depModule->hasBeenBuilt != BUILDRES_FULL)
         {
             job->waitingId = "WAIT_DEP_DONE";
@@ -555,14 +555,14 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 
 void Module::setBuildPass(BuildPass buildP)
 {
-    scoped_lock lk(mutexBuildPass);
+    ScopedLock lk(mutexBuildPass);
     buildPass = (BuildPass) min((int) buildP, (int) buildPass);
     buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)
 {
-    scoped_lock lk(mutexDependency);
+    ScopedLock lk(mutexDependency);
     if (hasBeenBuilt == buildResult)
         return;
     hasBeenBuilt |= buildResult;
@@ -767,7 +767,7 @@ ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 
 void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
 
     auto it = implForToSolve.find(structName);
     if (it == implForToSolve.end())
@@ -781,7 +781,7 @@ void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
 
 bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
 
     if (typeStruct->declNode && typeStruct->declNode->flags & AST_FROM_GENERIC)
         return false;
@@ -797,7 +797,7 @@ bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
 
 void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
 {
-    scoped_lock lk(mutexFile);
+    ScopedLock lk(mutexFile);
 
     auto it = implForToSolve.find(typeStruct->structName);
     SWAG_ASSERT(it != implForToSolve.end());

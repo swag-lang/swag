@@ -5,10 +5,11 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "ScopedLock.h"
 
 void Job::addDependentJob(Job* job)
 {
-    scoped_lock lk(executeMutex);
+    ScopedLock lk(executeMutex);
     dependentJobs.add(job);
 }
 
@@ -26,7 +27,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
         return;
 
     auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    scoped_lock lk(typeInfoStruct->mutex);
+    ScopedLock lk(typeInfoStruct->mutex);
 
     if (module->waitImplForToSolve(this, typeInfoStruct))
     {
@@ -38,7 +39,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
         return;
     SWAG_ASSERT(typeInfoStruct->declNode);
     SWAG_ASSERT(typeInfoStruct->scope);
-    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
     setPending(nullptr, "WAIT_INTERFACES", nullptr, typeInfoStruct);
 }
@@ -51,12 +52,12 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
         return;
 
     auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    scoped_lock lk(typeInfoStruct->mutex);
+    ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
     SWAG_ASSERT(typeInfoStruct->declNode);
     SWAG_ASSERT(typeInfoStruct->scope);
-    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
     setPending(nullptr, "WAIT_METHODS", nullptr, typeInfoStruct);
 }
@@ -79,7 +80,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         return;
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-    scoped_lock lk(structNode->mutex);
+    ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(this);
@@ -106,7 +107,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     auto symbol   = typeInfo->declNode->resolvedSymbolName;
     auto overload = typeInfo->declNode->resolvedSymbolOverload;
     SWAG_ASSERT(symbol && overload);
-    scoped_lock lk(symbol->mutex);
+    ScopedLock lk(symbol->mutex);
     if (overload->flags & OVERLOAD_INCOMPLETE)
     {
         SWAG_ASSERT(overload->symbol == symbol);

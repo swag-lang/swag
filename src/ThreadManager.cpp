@@ -32,7 +32,7 @@ void ThreadManager::init()
 
 void ThreadManager::addJob(Job* job)
 {
-    scoped_lock lk(mutexAdd);
+    ScopedLock lk(mutexAdd);
     addJobNoLock(job);
 }
 
@@ -91,7 +91,7 @@ void ThreadManager::addJobNoLock(Job* job)
 
 void ThreadManager::jobHasEnded(Job* job, JobResult result)
 {
-    scoped_lock lk(mutexAdd);
+    ScopedLock lk(mutexAdd);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
@@ -125,7 +125,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     // Some jobs need to be run because this one is finished
     if (result == JobResult::ReleaseJob)
     {
-        scoped_lock lk1(job->mutexDependent);
+        ScopedLock lk1(job->mutexDependent);
         for (auto toRun : job->dependentJobs.list)
         {
             toRun->wakeUpBy = job;
@@ -170,7 +170,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // Is this the last job ?
-    scoped_lock lk1(mutexDone);
+    ScopedLock lk1(mutexDone);
     if (doneWithJobs())
         condVarDone.notify_all();
 }
@@ -237,7 +237,7 @@ bool ThreadManager::doneWithJobs()
 void ThreadManager::clearOptionalJobs()
 {
     {
-        scoped_lock lk(mutexAdd);
+        ScopedLock lk(mutexAdd);
         for (auto p : queueJobsOpt)
             p->release();
         queueJobsOpt.clear();
@@ -268,7 +268,7 @@ void ThreadManager::waitEndJobs()
 
 Job* ThreadManager::getJob()
 {
-    scoped_lock lk(mutexAdd);
+    ScopedLock lk(mutexAdd);
     return getJobNoLock();
 }
 

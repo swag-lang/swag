@@ -44,7 +44,7 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
 
 const Utf8& ByteCode::getCallName()
 {
-    scoped_lock lk(mutexCallName);
+    ScopedLock lk(mutexCallName);
     if (!callName.empty())
         return callName;
 

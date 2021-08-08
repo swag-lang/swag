@@ -95,7 +95,7 @@ void DataSegment::initFrom(DataSegment* other)
 
 void DataSegment::align(uint32_t alignOf)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     alignNoLock(alignOf);
 }
 
@@ -115,7 +115,7 @@ void DataSegment::alignNoLock(uint32_t alignOf)
 
 uint32_t DataSegment::reserve(uint32_t size, uint8_t** resultPtr, uint32_t alignOf)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     return reserveNoLock(size, alignOf, resultPtr);
 }
 
@@ -244,7 +244,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         return storageOffset;
     }
 
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     switch (typeInfo->sizeOf)
     {
     case 1:
@@ -325,7 +325,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 
 uint32_t DataSegment::addString(const Utf8& str, uint8_t** resultPtr)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     return addStringNoLock(str, resultPtr);
 }
 
@@ -373,13 +373,13 @@ void DataSegment::applyPatchPtr()
 
 void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
 {
-    scoped_lock lk(mutexPatchMethod);
+    ScopedLock lk(mutexPatchMethod);
     patchMethods.push_back({funcDecl, storageOffset});
 }
 
 void DataSegment::doPatchMethods(JobContext* context)
 {
-    scoped_lock lk(mutexPatchMethod);
+    ScopedLock lk(mutexPatchMethod);
     for (auto it : patchMethods)
     {
         auto      funcNode  = it.first;
@@ -416,7 +416,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     ref.fromOffset  = srcOffset;
     ref.fromSegment = seg;
 
-    scoped_lock lk(mutexPtr);
+    ScopedLock lk(mutexPtr);
 
 #ifdef SWAG_DEV_MODE
     // We must have at least one pointer difference with all other offsets, otherwise we will
@@ -435,7 +435,7 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocTyp
     if (kind == SegmentKind::Compiler)
         return;
 
-    scoped_lock lk(mutexPtr);
+    ScopedLock lk(mutexPtr);
 
     initFuncPtr[offset] = {funcName, relocType};
     if (g_CommandLine.stats)
@@ -492,7 +492,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
 
 void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     auto        it = savedValues.find(address);
     if (it != savedValues.end())
         return;
@@ -527,7 +527,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 
 void DataSegment::restoreAllValues()
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     for (auto& one : savedValues)
     {
         if (one.second.ptr == nullptr)
@@ -566,7 +566,7 @@ void DataSegment::release()
 
 void DataSegment::makeLinear()
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     if (buckets.size() == 1)
         return;
 

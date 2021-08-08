@@ -2,10 +2,11 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "TypeManager.h"
+#include "ScopedLock.h"
 
 void TypeInfo::clearName()
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     name.clear();
     displayName.clear();
 }
@@ -29,7 +30,7 @@ void TypeInfo::getScopedName(Utf8& newName)
 
 Utf8 TypeInfo::getName()
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     computeWhateverNameNoLock(COMPUTE_NAME);
     SWAG_ASSERT(!name.empty());
     return name;
@@ -42,7 +43,7 @@ Utf8 TypeInfo::getDisplayName()
 
 const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 {
-    scoped_lock lk(mutex);
+    ScopedLock lk(mutex);
     return computeWhateverNameNoLock(nameType);
 }
 
