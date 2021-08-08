@@ -562,8 +562,10 @@ namespace OS
 
     void setThreadName(thread* thread, const char* threadName)
     {
-        DWORD threadId = GetThreadId(static_cast<HANDLE>(thread->native_handle()));
+        auto  handle   = static_cast<HANDLE>(thread->native_handle());
+        DWORD threadId = GetThreadId(handle);
         setThreadName(threadId, threadName);
+        SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     uint64_t tlsAlloc()
