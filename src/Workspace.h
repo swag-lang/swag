@@ -84,6 +84,7 @@ struct Workspace
 
     vector<OneTag> tags;
 
+    map<Utf8, Module*> mapFirstPassModulesNames;
     map<Utf8, Module*> mapModulesNames;
     Module*            filteredModule = nullptr;
     Module*            bootstrapModule;

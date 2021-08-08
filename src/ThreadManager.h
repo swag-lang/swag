@@ -15,6 +15,7 @@ struct ThreadManager
     Job* getJob(JobThread* thread);
     Job* getJob(VectorNative<Job*>& queue);
     bool doneWithJobs();
+    void clearOptionalJobs();
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
@@ -22,6 +23,7 @@ struct ThreadManager
 
     VectorNative<Job*>       queueJobsIO;
     VectorNative<Job*>       queueJobs;
+    VectorNative<Job*>       queueJobsOpt;
     VectorNative<JobThread*> availableThreads;
     VectorNative<JobThread*> workerThreads;
     VectorNative<Job*>       waitingJobs;
@@ -29,8 +31,9 @@ struct ThreadManager
     condition_variable       condVar;
     mutex                    mutexDone;
     condition_variable       condVarDone;
-    atomic<int>              jobsInThreads = 0;
-    int                      currentJobsIO = 0;
+    atomic<int>              jobsInThreads    = 0;
+    atomic<int>              jobsOptInThreads = 0;
+    int                      currentJobsIO    = 0;
 };
 
 extern ThreadManager g_ThreadMgr;

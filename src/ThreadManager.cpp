@@ -70,7 +70,9 @@ void ThreadManager::addJobNoLock(Job* job)
 
     SWAG_ASSERT(job->waitOnJobs == 0);
 
-    if (job->flags & JOB_IS_IO)
+    if (job->flags & JOB_IS_OPT)
+        queueJobsOpt.push_back(job);
+    else if (job->flags & JOB_IS_IO)
         queueJobsIO.push_back(job);
     else
         queueJobs.push_back(job);
@@ -93,7 +95,10 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
-    jobsInThreads--;
+    if (job->flags & JOB_IS_OPT)
+        jobsOptInThreads--;
+    else
+        jobsInThreads--;
     job->wakeUpBy = nullptr;
 
     // Some jobs have been registered to be pushed
@@ -229,6 +234,19 @@ bool ThreadManager::doneWithJobs()
     return queueJobs.empty() && queueJobsIO.empty() && jobsInThreads == 0;
 }
 
+void ThreadManager::clearOptionalJobs()
+{
+    {
+        scoped_lock lk(mutexAdd);
+        for (auto p : queueJobsOpt)
+            p->release();
+        queueJobsOpt.clear();
+    }
+
+    while (jobsOptInThreads)
+        this_thread::yield();
+}
+
 void ThreadManager::waitEndJobs()
 {
     // If one core only, do the jobs right now, in order
@@ -274,6 +292,11 @@ Job* ThreadManager::getJobNoLock()
     if (job)
         return job;
 
+    // Else we take an optional job if we can
+    job = getJob(queueJobsOpt);
+    if (job)
+        return job;
+
     // Otherwise, then IO, as there's nothing left
     job = getJob(queueJobsIO);
     if (job)
@@ -303,7 +326,10 @@ Job* ThreadManager::getJob(VectorNative<Job*>& queue)
 
     job->waitingId = nullptr;
 
-    jobsInThreads++;
+    if (job->flags & JOB_IS_OPT)
+        jobsOptInThreads++;
+    else
+        jobsInThreads++;
     return job;
 }
 

@@ -484,6 +484,17 @@ bool Workspace::buildRTModule(Module* module)
 
 bool Workspace::buildTarget()
 {
+    // Load as much files as we can during setup stage
+    // to void wasting some cores
+    //////////////////////////////////////////////////
+
+    if (g_CommandLine.numCores != 1)
+    {
+        auto enumJob0          = g_Allocator.alloc<EnumerateModuleJob>();
+        enumJob0->readFileMode = true;
+        g_ThreadMgr.addJob(enumJob0);
+    }
+
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
     {
@@ -503,9 +514,14 @@ bool Workspace::buildTarget()
         timer.stop();
     }
 
-    // Config pass (compute/fetch dependencies...
+    // Wait for optional jobs running to finish, remove
+    // the rest
     //////////////////////////////////////////////////
     g_ThreadMgr.waitEndJobs();
+    g_ThreadMgr.clearOptionalJobs();
+
+    // Config pass (compute/fetch dependencies...
+    //////////////////////////////////////////////////
     SWAG_CHECK(g_ModuleCfgMgr.execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
@@ -515,8 +531,9 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    auto enumJob = g_Allocator.alloc<EnumerateModuleJob>();
-    g_ThreadMgr.addJob(enumJob);
+    auto enumJob1          = g_Allocator.alloc<EnumerateModuleJob>();
+    enumJob1->readFileMode = false;
+    g_ThreadMgr.addJob(enumJob1);
     g_ThreadMgr.waitEndJobs();
 
     // Filter modules to build

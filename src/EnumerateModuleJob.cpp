@@ -4,15 +4,31 @@
 #include "Os.h"
 #include "Module.h"
 #include "ModuleCfgManager.h"
+#include "LoadSourceFileJob.h"
+#include "ThreadManager.h"
 
-SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime)
+SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass)
 {
-    auto file         = g_Allocator.alloc<SourceFile>();
-    file->fromTests   = theModule->kind == ModuleKind::Test;
-    file->name        = fileName;
-    fs::path pathFile = dirName.c_str();
-    pathFile.append(fileName);
-    file->path      = Utf8::normalizePath(pathFile);
+    auto file       = g_Allocator.alloc<SourceFile>();
+    file->fromTests = theModule->kind == ModuleKind::Test;
+    file->name      = fileName;
+
+    if (prePass)
+    {
+        file->path            = dirName;
+        file->buffer          = prePass->buffer;
+        file->curBuffer       = prePass->curBuffer;
+        file->endBuffer       = prePass->endBuffer;
+        file->bufferSize      = prePass->bufferSize;
+        file->allocBufferSize = prePass->allocBufferSize;
+    }
+    else
+    {
+        fs::path pathFile = dirName.c_str();
+        pathFile.append(fileName);
+        file->path = Utf8::normalizePath(pathFile);
+    }
+
     file->writeTime = writeTime;
 
     // If we have only one core, then we will sort files in alphabetical order to always
@@ -33,6 +49,29 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     path += "/";
     path += SWAG_SRC_FOLDER;
     path += "/";
+
+    // Is the list of files already computed ?
+    auto it = g_Workspace.mapFirstPassModulesNames.find(path.string());
+    if (it != g_Workspace.mapFirstPassModulesNames.end())
+    {
+        for (auto f : it->second->files)
+        {
+            if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || strstr(f->name, g_CommandLine.testFilter.c_str()))
+            {
+                auto pz = strrchr(f->name, '.');
+                if (pz && !_strcmpi(pz, ".swg"))
+                {
+                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f);
+                }
+                else
+                {
+                    theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, f->writeTime);
+                }
+            }
+        }
+
+        return;
+    }
 
     // Scan source folder
     vector<string> directories;
@@ -91,6 +130,58 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 }
 
+void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
+{
+    // Scan source folder
+    OS::visitFolders(basePath.string().c_str(), [&](const char* cFileName) {
+        string path = basePath.string() + cFileName;
+        path += "/";
+        path += SWAG_SRC_FOLDER;
+        path += "/";
+
+        auto module                                = g_Allocator.alloc<Module>();
+        g_Workspace.mapFirstPassModulesNames[path] = module;
+
+        // Scan source folder
+        vector<string> directories;
+        directories.push_back(path);
+
+        string tmp, tmp1;
+        while (directories.size())
+        {
+            tmp = move(directories.back());
+            directories.pop_back();
+
+            OS::visitFilesFolders(tmp.c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
+                if (isFolder)
+                {
+                    tmp1 = tmp + "/" + cFileName;
+                    directories.emplace_back(move(tmp1));
+                }
+                else
+                {
+                    auto file         = g_Allocator.alloc<SourceFile>();
+                    file->name        = cFileName;
+                    fs::path pathFile = tmp.c_str();
+                    pathFile.append(cFileName);
+                    file->path      = Utf8::normalizePath(pathFile);
+                    file->writeTime = writeTime;
+                    module->files.push_back(file);
+
+                    auto pz = strrchr(cFileName, '.');
+                    if (pz && !_strcmpi(pz, ".swg"))
+                    {
+                        auto readFileJob        = g_Allocator.alloc<LoadSourceFileJob>();
+                        readFileJob->flags      = JOB_IS_OPT;
+                        readFileJob->sourceFile = file;
+                        g_ThreadMgr.addJob(readFileJob);
+                    }
+                }
+            });
+        }
+    });
+}
+
 Module* EnumerateModuleJob::addModule(const fs::path& path)
 {
     Utf8       moduleName, moduleFolder;
@@ -134,44 +225,60 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
 
 JobResult EnumerateModuleJob::execute()
 {
-    // Modules in the workspace
-    if (!g_CommandLine.scriptCommand)
+    // Just scan the files, and load them, as optional jobs, during the build setup stage
+    if (readFileMode)
     {
-        enumerateModules(g_Workspace.dependenciesPath);
-        enumerateModules(g_Workspace.modulesPath);
-        enumerateModules(g_Workspace.examplesPath);
-        if (g_CommandLine.test)
-            enumerateModules(g_Workspace.testsPath);
+        if (!g_CommandLine.scriptCommand)
+        {
+            loadFilesInModules(g_Workspace.dependenciesPath);
+            loadFilesInModules(g_Workspace.modulesPath);
+            loadFilesInModules(g_Workspace.examplesPath);
+            if (g_CommandLine.test)
+                loadFilesInModules(g_Workspace.testsPath);
+        }
     }
+
+    // Modules in the workspace
     else
     {
-        // If we are in script mode, then we add one single module with the script file
-        auto parentFolder  = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
-        auto file          = g_Allocator.alloc<SourceFile>();
-        file->name         = fs::path(g_CommandLine.scriptName).filename().string();
-        auto scriptModule  = g_Workspace.createOrUseModule(file->name, parentFolder, ModuleKind::Script);
-        file->path         = g_CommandLine.scriptName;
-        file->module       = scriptModule;
-        file->isScriptFile = true;
-        scriptModule->addFile(file);
-        g_Workspace.runModule = scriptModule;
-    }
-
-    // Add all external dependencies
-    for (int i = 0; i < g_Workspace.modules.size(); i++)
-    {
-        auto m = g_Workspace.modules[i];
-        for (auto d : m->moduleDependencies)
+        if (!g_CommandLine.scriptCommand)
         {
-            if (d->fetchKind != DependencyFetchKind::Swag)
-                continue;
+            enumerateModules(g_Workspace.dependenciesPath);
+            enumerateModules(g_Workspace.modulesPath);
+            enumerateModules(g_Workspace.examplesPath);
+            if (g_CommandLine.test)
+                enumerateModules(g_Workspace.testsPath);
+        }
+        else
+        {
+            // If we are in script mode, then we add one single module with the script file
+            auto parentFolder  = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
+            auto file          = g_Allocator.alloc<SourceFile>();
+            file->name         = fs::path(g_CommandLine.scriptName).filename().string();
+            auto scriptModule  = g_Workspace.createOrUseModule(file->name, parentFolder, ModuleKind::Script);
+            file->path         = g_CommandLine.scriptName;
+            file->module       = scriptModule;
+            file->isScriptFile = true;
+            scriptModule->addFile(file);
+            g_Workspace.runModule = scriptModule;
+        }
 
-            Utf8       moduleName, moduleFolder;
-            ModuleKind kind;
-            fs::path   modulePath = fs::path(d->resolvedLocation.c_str());
-            g_Workspace.computeModuleName(modulePath, moduleName, moduleFolder, kind);
-            if (!g_Workspace.getModuleByName(moduleName))
-                addModule(modulePath);
+        // Add all external dependencies
+        for (int i = 0; i < g_Workspace.modules.size(); i++)
+        {
+            auto m = g_Workspace.modules[i];
+            for (auto d : m->moduleDependencies)
+            {
+                if (d->fetchKind != DependencyFetchKind::Swag)
+                    continue;
+
+                Utf8       moduleName, moduleFolder;
+                ModuleKind kind;
+                fs::path   modulePath = fs::path(d->resolvedLocation.c_str());
+                g_Workspace.computeModuleName(modulePath, moduleName, moduleFolder, kind);
+                if (!g_Workspace.getModuleByName(moduleName))
+                    addModule(modulePath);
+            }
         }
     }
 

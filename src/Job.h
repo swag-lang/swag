@@ -16,6 +16,7 @@ static const uint8_t JOB_IS_PENDING     = 0x04;
 static const uint8_t JOB_IS_PENDING_RUN = 0x08;
 static const uint8_t JOB_COMPILER_PASS  = 0x10;
 static const uint8_t JOB_IS_IO          = 0x20;
+static const uint8_t JOB_IS_OPT         = 0x40;
 
 enum class ContextResult
 {
