@@ -14,6 +14,7 @@
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "LoadSourceFileJob.h"
 
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
@@ -154,11 +155,20 @@ JobResult ModuleBuildJob::execute()
 
             for (auto file : module->files)
             {
-                auto job          = g_Allocator.alloc<SyntaxJob>();
-                job->sourceFile   = file;
-                job->module       = module;
-                job->dependentJob = this;
-                jobsToAdd.push_back(job);
+                auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
+                syntaxJob->sourceFile   = file;
+                syntaxJob->module       = module;
+                syntaxJob->dependentJob = this;
+                if (!file->buffer)
+                {
+                    auto loadFileJob        = g_Allocator.alloc<LoadSourceFileJob>();
+                    loadFileJob->sourceFile = file;
+                    loadFileJob->jobsToAdd.push_back(syntaxJob);
+                    loadFileJob->dependentJob = this;
+                    jobsToAdd.push_back(loadFileJob);
+                }
+                else
+                    jobsToAdd.push_back(syntaxJob);
             }
 
             if (!jobsToAdd.empty())
