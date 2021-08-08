@@ -79,7 +79,6 @@ struct DataSegment
     uint32_t reserveNoLock(uint32_t size, uint32_t alignOf, uint8_t** resultPtr = nullptr);
     uint32_t reserveNoLock(uint32_t size, uint8_t** resultPtr = nullptr);
     uint32_t offset(uint8_t* location);
-    uint8_t* address(DataSegment* lockedSegment, uint32_t location);
     uint8_t* address(uint32_t location);
     uint8_t* addressNoLock(uint32_t location);
 

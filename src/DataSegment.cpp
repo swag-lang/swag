@@ -193,16 +193,6 @@ uint32_t DataSegment::offset(uint8_t* location)
     return 0;
 }
 
-uint8_t* DataSegment::address(DataSegment* lockedSegment, uint32_t location)
-{
-    if (lockedSegment != this)
-        mutex.lock();
-    auto result = addressNoLock(location);
-    if (lockedSegment != this)
-        mutex.unlock();
-    return result;
-}
-
 uint8_t* DataSegment::address(uint32_t location)
 {
     SharedLock lock(mutex);
@@ -493,7 +483,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
 void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
     ScopedLock lk(mutex);
-    auto        it = savedValues.find(address);
+    auto       it = savedValues.find(address);
     if (it != savedValues.end())
         return;
 
