@@ -31,7 +31,9 @@ struct Stats
     atomic<uint64_t> bootstrapTime             = 0;
     atomic<uint64_t> runtimeTime               = 0;
     atomic<uint64_t> outputDbgTime             = 0;
-    atomic<uint64_t> contentionTime                   = 0;
+    atomic<uint64_t> contentionTime            = 0;
+    atomic<uint64_t> allocTime                 = 0;
+    atomic<uint64_t> freeTime                  = 0;
 
     atomic<size_t> allocatorMemory = 0;
     atomic<size_t> wastedMemory    = 0;

@@ -55,6 +55,8 @@ void Stats::print()
         g_Log.messageHeaderDot("gen out time", Utf8::format("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
         g_Log.messageHeaderDot("optim bc time", Utf8::format("%.3fs", OS::timerToSeconds(optimBCTime.load())));
         g_Log.messageHeaderDot("contention time", Utf8::format("%.3fs", OS::timerToSeconds(contentionTime.load())));
+        g_Log.messageHeaderDot("alloc time", Utf8::format("%.3fs", OS::timerToSeconds(allocTime.load())));
+        g_Log.messageHeaderDot("free time", Utf8::format("%.3fs", OS::timerToSeconds(freeTime.load())));
         g_Log.messageHeaderDot("total time", Utf8::format("%.3fs", OS::timerToSeconds(totalTime.load())));
         g_Log.print("\n");
     }

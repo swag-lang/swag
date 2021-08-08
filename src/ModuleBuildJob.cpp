@@ -180,6 +180,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        if (g_CommandLine.buildPass <= BuildPass::Syntax)
+            return JobResult::ReleaseJob;
+
         // Need to run all error modules
         // Each file with a #global testerror on top is now in a dedicated module, so we need to
         // run them in case the error has not been triggered during the syntax pass

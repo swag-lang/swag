@@ -307,6 +307,8 @@ size_t Allocator::alignSize(size_t size)
 
 void* Allocator::alloc(size_t size)
 {
+    Timer timer(&g_Stats.allocTime);
+
     if (shared)
         g_AllocatorMutex.lock();
 
@@ -333,6 +335,8 @@ void Allocator::free(void* ptr, size_t size)
 {
     if (!ptr || !size)
         return;
+
+    Timer timer(&g_Stats.freeTime);
 
     if (shared)
         g_AllocatorMutex.lock();
