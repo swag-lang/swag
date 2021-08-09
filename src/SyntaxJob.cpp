@@ -163,53 +163,56 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     Utf8     tmpFilePath     = "<generated>";
     uint32_t previousLogLine = 0;
 
-    // Log the generated code in 'generated.swg'
+    // Log the generated code in '<module>.swg'
     if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
     {
-        auto modl       = fromNode->sourceFile->module;
-        Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
-        tmpFilePath     = publicPath;
-        tmpFileName     = modl->name + ".gwg";
-        publicPath += tmpFileName;
-
-        uint32_t    countEol = 0;
-        const char* pz       = content.c_str();
-        for (int i = 0; i < content.length(); i++)
+        auto modl = fromNode->sourceFile->module;
+        if (modl->buildCfg.backendDebugInformations)
         {
-            if (*pz == '\n')
-                countEol++;
-            pz++;
-        }
+            Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
+            tmpFilePath     = publicPath;
+            tmpFileName     = modl->name + ".gwg";
+            publicPath += tmpFileName;
 
-        ScopedLock lk(modl->mutexGeneratedFile);
+            uint32_t    countEol = 0;
+            const char* pz       = content.c_str();
+            for (int i = 0; i < content.length(); i++)
+            {
+                if (*pz == '\n')
+                    countEol++;
+                pz++;
+            }
 
-        if (!modl->handleGeneratedFile)
-        {
-            if (modl->firstGenerated)
-                fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "wN");
-            else
-                fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
+            ScopedLock lk(modl->mutexGeneratedFile);
+
             if (!modl->handleGeneratedFile)
             {
-                g_Log.errorOS(Utf8::format(Msg0524, publicPath.c_str()));
-                return false;
+                if (modl->firstGenerated)
+                    fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "wN");
+                else
+                    fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
+                if (!modl->handleGeneratedFile)
+                {
+                    g_Log.errorOS(Utf8::format(Msg0524, publicPath.c_str()));
+                    return false;
+                }
             }
+
+            modl->firstGenerated = false;
+
+            Utf8 sourceCode = Utf8::format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+            fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
+            modl->countLinesGeneratedFile += 1;
+            previousLogLine = modl->countLinesGeneratedFile;
+
+            fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
+            modl->countLinesGeneratedFile += countEol;
+
+            static char eol = '\n';
+            fwrite(&eol, 1, 1, modl->handleGeneratedFile);
+            fwrite(&eol, 1, 1, modl->handleGeneratedFile);
+            modl->countLinesGeneratedFile += 2;
         }
-
-        modl->firstGenerated = false;
-
-        Utf8 sourceCode = Utf8::format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
-        fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
-        modl->countLinesGeneratedFile += 1;
-        previousLogLine = modl->countLinesGeneratedFile;
-
-        fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
-        modl->countLinesGeneratedFile += countEol;
-
-        static char eol = '\n';
-        fwrite(&eol, 1, 1, modl->handleGeneratedFile);
-        fwrite(&eol, 1, 1, modl->handleGeneratedFile);
-        modl->countLinesGeneratedFile += 2;
     }
 
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
