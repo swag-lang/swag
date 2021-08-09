@@ -160,14 +160,14 @@ void* AllocatorImpl::alloc(size_t size)
         result = tryBucket(MAX_FREE_BUCKETS - 1, size);
         if (result)
             return result;
-    }
 
-    // Try other big buckets
-    for (int i = (int) bucket + 1; i <= MAX_FREE_BUCKETS - 2; i++)
-    {
-        result = tryBucket(i, size);
-        if (result)
-            return result;
+        // Try other big buckets
+        for (int i = (int) bucket + 1; i <= MAX_FREE_BUCKETS - 2; i++)
+        {
+            result = tryBucket(i, size);
+            if (result)
+                return result;
+        }
     }
 
     // Magic number
