@@ -38,7 +38,6 @@ void operator delete(void* addr)
 AllocatorImpl::AllocatorImpl()
 {
     memset(freeBuckets, 0, sizeof(freeBuckets));
-    memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
 }
 
 void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
@@ -68,8 +67,6 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
                     auto next                     = freeBuckets[bucket];
                     freeBuckets[bucket]           = split;
                     *(void**) freeBuckets[bucket] = next;
-                    freeBucketsCpt[bucket]++;
-
                     if (prevBlock)
                         prevBlock->next = tryBlock->next;
                     else
@@ -114,8 +111,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 
 void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
 {
-    if (bucket >= MAX_FREE_BUCKETS)
-        return nullptr;
+    SWAG_ASSERT(bucket >= MAX_FREE_BUCKETS);
     if (!freeBuckets[bucket])
         return nullptr;
 
@@ -128,7 +124,8 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
         auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
         *(void**) ptr             = freeBuckets[wastedBucket];
         freeBuckets[wastedBucket] = ptr;
-        freeBucketsCpt[wastedBucket]++;
+        if (g_CommandLine.stats)
+            g_Stats.wastedMemory += wasted;
     }
 
     if (g_CommandLine.stats)
@@ -138,8 +135,6 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
 #ifdef SWAG_DEV_MODE
     memset(result, 0xAA, size);
 #endif
-    freeBucketsCpt[bucket]--;
-
     return result;
 }
 
@@ -156,13 +151,8 @@ void* AllocatorImpl::alloc(size_t size)
         if (result)
             return result;
 
-        // Try to split the biggest bucket
-        result = tryBucket(MAX_FREE_BUCKETS - 1, size);
-        if (result)
-            return result;
-
         // Try other big buckets
-        for (int i = (int) bucket + 1; i <= MAX_FREE_BUCKETS - 2; i++)
+        for (int i = MAX_FREE_BUCKETS - 1; i > (int) bucket; i--)
         {
             result = tryBucket(i, size);
             if (result)
@@ -194,9 +184,8 @@ void* AllocatorImpl::alloc(size_t size)
             bucket = remain / 8;
             if (bucket < MAX_FREE_BUCKETS)
             {
-                auto next           = freeBuckets[bucket];
-                freeBuckets[bucket] = lastBucket->data + lastBucket->maxUsed;
-                freeBucketsCpt[bucket]++;
+                auto next                     = freeBuckets[bucket];
+                freeBuckets[bucket]           = lastBucket->data + lastBucket->maxUsed;
                 *(void**) freeBuckets[bucket] = next;
             }
             else
@@ -265,7 +254,6 @@ void AllocatorImpl::free(void* ptr, size_t size)
     {
         *(void**) ptr      = freeBuckets[bsize];
         freeBuckets[bsize] = ptr;
-        freeBucketsCpt[bsize]++;
         return;
     }
 

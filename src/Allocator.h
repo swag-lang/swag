@@ -30,7 +30,6 @@ struct AllocatorImpl
     AllocatorBucket* lastBucket     = nullptr;
     uint8_t*         currentData    = nullptr;
     void*            freeBuckets[MAX_FREE_BUCKETS];
-    size_t           freeBucketsCpt[MAX_FREE_BUCKETS];
 };
 
 struct Allocator
