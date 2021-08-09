@@ -14,7 +14,7 @@ struct ByteCodeOptimizerJob : public Job
         g_Allocator.free<ByteCodeOptimizerJob>(this);
     }
 
-    bool optimize(bool isAsync);
+    bool optimize();
 
     vector<function<bool(ByteCodeOptContext*)>> passes;
     int                                         startIndex, endIndex;

@@ -9,7 +9,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Backend.h"
-#include "ByteCodeOptimizerJob.h"
+#include "ByteCodeOptimizer.h"
 #include "ModuleCfgManager.h"
 #include "ErrorIds.h"
 
@@ -74,7 +74,7 @@ SourceFile* Workspace::findFile(const char* fileName)
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     SharedLock lk(mutexModules);
-    auto        it = mapModulesNames.find(moduleName);
+    auto       it = mapModulesNames.find(moduleName);
     if (it == mapModulesNames.end())
         return nullptr;
     return it->second;
@@ -466,11 +466,10 @@ bool Workspace::buildRTModule(Module* module)
     g_ThreadMgr.waitEndJobs();
     checkPendingJobs();
 
-    ByteCodeOptimizerJob opt;
-    opt.module     = module;
-    opt.startIndex = 0;
-    opt.endIndex   = (int) module->byteCodeFunc.size();
-    opt.optimize(false);
+    ByteCodeOptimizer opt;
+    bool              done;
+    opt.optimize(nullptr, module, done);
+    g_ThreadMgr.waitEndJobs();
 
     // Errors !!!
     if (module->numErrors)

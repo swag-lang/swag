@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
+#include "ThreadManager.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
@@ -262,7 +263,10 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
             newJob->endIndex     = min(startIndex + count, (int) module->byteCodeFunc.size());
             newJob->dependentJob = job;
             startIndex += count;
-            job->jobsToAdd.push_back(newJob);
+            if (job)
+                job->jobsToAdd.push_back(newJob);
+            else
+                g_ThreadMgr.addJob(newJob);
         }
 
         module->optimPass = 1;

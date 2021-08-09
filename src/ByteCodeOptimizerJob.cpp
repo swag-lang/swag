@@ -23,7 +23,7 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassLoop);
 }
 
-bool ByteCodeOptimizerJob::optimize(bool isAsync)
+bool ByteCodeOptimizerJob::optimize()
 {
     Timer tm(&g_Stats.optimBCTime);
 
@@ -66,8 +66,7 @@ bool ByteCodeOptimizerJob::optimize(bool isAsync)
         if (!restart)
             break;
         module->optimNeedRestart = module->optimNeedRestart + 1;
-        if (isAsync)
-            break;
+        break;
     }
 
     return true;
@@ -75,6 +74,6 @@ bool ByteCodeOptimizerJob::optimize(bool isAsync)
 
 JobResult ByteCodeOptimizerJob::execute()
 {
-    optimize(true);
+    optimize();
     return JobResult::ReleaseJob;
 }
