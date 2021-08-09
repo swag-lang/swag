@@ -84,9 +84,7 @@ bool ByteCodeOptimizer::optimizePassNullPointer(ByteCodeOptContext* context)
             auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
 
             // Incrmenting the tested pointer is fine. The safety check after on the same pointer could be removed...
-            if (ip1->op == ByteCodeOp::IncPointer64 && ip1->a.u32 == paramNPReg && ip1->c.u32 == paramNPReg)
-                paramNPReg = paramNPReg;
-            else
+            if (ip1->op != ByteCodeOp::IncPointer64 || ip1->a.u32 != paramNPReg || ip1->c.u32 != paramNPReg)
             {
                 if ((flags1 & OPFLAG_WRITE_A) && !(ip1->flags & BCI_IMM_A) && ip1->a.u32 == paramNPReg)
                     paramNPReg = UINT32_MAX;
