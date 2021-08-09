@@ -26,10 +26,14 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 {
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
+
     while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJump(node->end))
         node->end++;
     if (node->end->op == ByteCodeOp::Ret)
         return;
+
+    if (node->end->flags & BCI_SAFETY && node->end->op == ByteCodeOp::JumpIfNotZero64)
+        node->flags |= BCOTN_HAS_SAFETY_JINZ64;
 
     bool here = false;
 
@@ -74,19 +78,27 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
 
         parseCxt.cb(context, parseCxt);
 
+        // Stop the parsing
         if (parseCxt.mustStopAll)
+        {
             return;
+        }
+
+        // Just stop that block
         if (parseCxt.mustStopBlock)
         {
             parseCxt.mustStopBlock = false;
             return;
         }
 
+        // We have reached the last instruction of the block
         if (parseCxt.curIp == node->end)
             break;
+
         parseCxt.curIp++;
     }
 
+    // Parse left
     if (node->next1 == UINT32_MAX)
         return;
     if (!(context->tree[node->next1].flags & parseCxt.doneFlag))
@@ -99,6 +111,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
             return;
     }
 
+    // Parse right
     if (node->next2 == UINT32_MAX)
         return;
     if (!(context->tree[node->next2].flags & parseCxt.doneFlag))

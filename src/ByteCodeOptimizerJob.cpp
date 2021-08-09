@@ -8,7 +8,7 @@
 
 ByteCodeOptimizerJob::ByteCodeOptimizerJob()
 {
-    passes.push_back(ByteCodeOptimizer::optimizePassNullPointer);
+    passes.push_back(ByteCodeOptimizer::optimizePassSafetyNullPointer);
     passes.push_back(ByteCodeOptimizer::optimizePassJumps);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadCode);
     passes.push_back(ByteCodeOptimizer::optimizePassImmediate);

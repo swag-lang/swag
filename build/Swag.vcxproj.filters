@@ -284,7 +284,7 @@
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_NullPointer.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_SafetyNullPointer.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Symbol.cpp">

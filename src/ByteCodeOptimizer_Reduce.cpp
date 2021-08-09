@@ -2383,6 +2383,45 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
+void ByteCodeOptimizer::reduceNullPointer(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    // Some instructions will never provide a null pointer
+    if (ip[0].op == ByteCodeOp::MakeStackPointer ||
+        ip[0].op == ByteCodeOp::InternalGetTlsPtr ||
+        ip[0].op == ByteCodeOp::CopyRRtoRC)
+    {
+        if (ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::Jump);
+            return;
+        }
+    }
+
+    if (ip[0].op == ByteCodeOp::CopyRTtoRC &&
+        ip[1].op == ByteCodeOp::IncSPPostCall &&
+        ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
+        !(ip[2].flags & BCI_IMM_A) &&
+        ip[0].a.u32 == ip[2].a.u32)
+    {
+        SET_OP(ip + 2, ByteCodeOp::Jump);
+        return;
+    }
+
+    // Testing if a pointer is not null is irrelevant if previous instruction has incremented the pointer.
+    if (ip[0].op == ByteCodeOp::IncPointer64 &&
+        ip[1].op == ByteCodeOp::JumpIfNotZero64 &&
+        !(ip[1].flags & BCI_IMM_A) &&
+        ip[0].c.u32 == ip[1].a.u32 &&
+        (ip[0].flags & BCI_IMM_B) &&
+        ip[0].b.u32)
+    {
+        SET_OP(ip + 1, ByteCodeOp::Jump);
+        return;
+    }
+}
+
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -2398,6 +2437,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceCmpJump(context, ip);
         reduceX2(context, ip);
         reduceSwap(context, ip);
+        reduceNullPointer(context, ip);
     }
 
     return true;

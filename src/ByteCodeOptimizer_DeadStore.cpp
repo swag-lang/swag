@@ -6,7 +6,7 @@
 // read of that register between them, then the first write is useless and can be removed
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
-    parseTree(context, 0, context->tree[0].start, 0x00000001, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
+    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         auto ip    = parseCxt.curIp;
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
@@ -25,7 +25,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 
         bool hasRead  = false;
         bool hasWrite = false;
-        parseTree(context, parseCxt.curNode, parseCxt.curIp, 0x00000002, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1) {
+        parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1) {
             auto ip1 = parseCxt1.curIp;
             if (ip1 == ip)
                 return;
