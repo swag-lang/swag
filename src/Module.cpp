@@ -33,7 +33,19 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     buildParameters.outputFileName = name.c_str();
 
     // Setup build configuration
-    if (g_CommandLine.buildCfg == "debug")
+    if (g_CommandLine.buildCfg == "fast-compile")
+    {
+        buildCfg.byteCodeOptimize         = false;
+        buildCfg.byteCodeDebugInline      = false;
+        buildCfg.byteCodeInline           = false;
+        buildCfg.byteCodeEmitAssume       = true;
+        buildCfg.safetyGuards             = 0;
+        buildCfg.stackTrace               = false;
+        buildCfg.backendOptimizeSpeed     = false;
+        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendDebugInformations = false;
+    }
+    else if (g_CommandLine.buildCfg == "debug")
     {
         buildCfg.byteCodeOptimize         = false;
         buildCfg.byteCodeDebugInline      = true;
@@ -752,7 +764,7 @@ bool Module::compileString(const Utf8& text)
 TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
-    auto        it = mapRuntimeFcts.find(fctName);
+    auto       it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second->typeInfoFunc;
 }
@@ -760,7 +772,7 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
-    auto        it = mapRuntimeFcts.find(fctName);
+    auto       it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second;
 }
