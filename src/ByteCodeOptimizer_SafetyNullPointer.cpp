@@ -8,6 +8,9 @@
 // safety checks, when dereferencing a struct on the stack
 bool ByteCodeOptimizer::optimizePassSafetyNullPointer(ByteCodeOptContext* context)
 {
+    if (!(context->module->buildCfg.safetyGuards & BuildCfg::SAFETY_NP))
+        return true;
+
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         auto ip = parseCxt.curIp;
 

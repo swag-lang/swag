@@ -38,6 +38,7 @@ struct ByteCodeOptTreeParseContext
 struct ByteCodeOptContext : public JobContext
 {
     ByteCode*                          bc;
+    Module*                            module;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
 
