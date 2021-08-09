@@ -6,8 +6,12 @@
 #include "ErrorIds.h"
 #include "ScopedLock.h"
 
+const uint64_t ALLOCATOR_BUCKET_SIZE = 1024 * 1024;
+
+#ifdef SWAG_CHECK_MEMORY
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
+#endif
 
 thread_local Allocator g_Allocator;
 atomic<int>            g_CompilerAllocTh = 0;
@@ -167,8 +171,7 @@ void* AllocatorImpl::alloc(size_t size)
     }
 
     // Magic number
-    uint32_t maxTries = !lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated ? 1024 : 128;
-    result            = tryFreeBlock(maxTries, size);
+    result = tryFreeBlock(1024, size);
     if (result)
     {
 #ifdef SWAG_DEV_MODE
