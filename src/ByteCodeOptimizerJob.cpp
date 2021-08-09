@@ -27,47 +27,42 @@ bool ByteCodeOptimizerJob::optimize()
 {
     Timer tm(&g_Stats.optimBCTime);
 
-    while (true)
+    bool restart = false;
+    for (int i = startIndex; i < endIndex; i++)
     {
-        bool restart = false;
-        for (int i = startIndex; i < endIndex; i++)
+        auto bc = module->byteCodeFunc[i];
+        if (!module->mustOptimizeBC(bc->node))
+            continue;
+        optContext.bc     = bc;
+        optContext.module = module;
+
+        while (true)
         {
-            auto bc = module->byteCodeFunc[i];
-            if (!module->mustOptimizeBC(bc->node))
-                continue;
-            optContext.bc     = bc;
-            optContext.module = module;
+            ByteCodeOptimizer::genTree(&optContext);
+            ByteCodeOptimizer::setJumps(&optContext);
 
-            while (true)
+            if (optContext.hasError)
+                return false;
+            optContext.allPassesHaveDoneSomething = false;
+            for (auto pass : passes)
             {
-                ByteCodeOptimizer::genTree(&optContext);
-                ByteCodeOptimizer::setJumps(&optContext);
-
-                if (optContext.hasError)
+                optContext.passHasDoneSomething = false;
+                if (!pass(&optContext))
                     return false;
-                optContext.allPassesHaveDoneSomething = false;
-                for (auto pass : passes)
-                {
-                    optContext.passHasDoneSomething = false;
-                    if (!pass(&optContext))
-                        return false;
-                    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
-                }
-
-                ByteCodeOptimizer::removeNops(&optContext);
-                if (!optContext.allPassesHaveDoneSomething)
-                    break;
-
-                restart = true;
+                optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
             }
-        }
 
-        // Restart everything if something has been done during this pass
-        if (!restart)
-            break;
-        module->optimNeedRestart = module->optimNeedRestart + 1;
-        break;
+            ByteCodeOptimizer::removeNops(&optContext);
+            if (!optContext.allPassesHaveDoneSomething)
+                break;
+
+            restart = true;
+        }
     }
+
+    // Restart everything if something has been done during this pass
+    if (restart)
+        module->optimNeedRestart = module->optimNeedRestart + 1;
 
     return true;
 }
