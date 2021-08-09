@@ -355,7 +355,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0]);
+                inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[0]);
             }
 
             auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);

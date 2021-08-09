@@ -23,6 +23,39 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassLoop);
 }
 
+bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
+{
+    if (!module->mustOptimizeBC(bc->node))
+        return true;
+    optContext.bc = bc;
+    optContext.module = module;
+
+    while (true)
+    {
+        ByteCodeOptimizer::genTree(&optContext);
+        ByteCodeOptimizer::setJumps(&optContext);
+
+        if (optContext.hasError)
+            return false;
+        optContext.allPassesHaveDoneSomething = false;
+        for (auto pass : passes)
+        {
+            optContext.passHasDoneSomething = false;
+            if (!pass(&optContext))
+                return false;
+            optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+        }
+
+        ByteCodeOptimizer::removeNops(&optContext);
+        if (!optContext.allPassesHaveDoneSomething)
+            break;
+
+        restart = true;
+    }
+
+    return true;
+}
+
 bool ByteCodeOptimizerJob::optimize()
 {
     Timer tm(&g_Stats.optimBCTime);
@@ -31,33 +64,7 @@ bool ByteCodeOptimizerJob::optimize()
     for (int i = startIndex; i < endIndex; i++)
     {
         auto bc = module->byteCodeFunc[i];
-        if (!module->mustOptimizeBC(bc->node))
-            continue;
-        optContext.bc     = bc;
-        optContext.module = module;
-
-        while (true)
-        {
-            ByteCodeOptimizer::genTree(&optContext);
-            ByteCodeOptimizer::setJumps(&optContext);
-
-            if (optContext.hasError)
-                return false;
-            optContext.allPassesHaveDoneSomething = false;
-            for (auto pass : passes)
-            {
-                optContext.passHasDoneSomething = false;
-                if (!pass(&optContext))
-                    return false;
-                optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
-            }
-
-            ByteCodeOptimizer::removeNops(&optContext);
-            if (!optContext.allPassesHaveDoneSomething)
-                break;
-
-            restart = true;
-        }
+        SWAG_CHECK(optimize(bc, restart));
     }
 
     // Restart everything if something has been done during this pass

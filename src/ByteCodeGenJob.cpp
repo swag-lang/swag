@@ -8,6 +8,7 @@
 #include "Context.h"
 #include "LanguageSpec.h"
 #include "ScopedLock.h"
+#include "ByteCodeOptimizerJob.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
@@ -296,7 +297,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         return;
 
     ScopedLock lk(node->mutex);
-    auto        sourceFile = node->sourceFile;
+    auto       sourceFile = node->sourceFile;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
@@ -604,7 +605,7 @@ JobResult ByteCodeGenJob::execute()
     {
         while (!dependentNodesTmp.empty())
         {
-            auto        node = dependentNodesTmp.back();
+            auto       node = dependentNodesTmp.back();
             ScopedLock lk(node->mutex);
             if (node->semFlags & AST_SEM_BYTECODE_GENERATED)
             {
@@ -697,6 +698,21 @@ JobResult ByteCodeGenJob::execute()
         }
     }
 
+    // Do one optimization pass on function
+    if (context.bc &&
+        context.bc->node &&
+        context.bc->node->kind == AstNodeKind::FuncDecl &&
+        !context.bc->node->sourceFile->numTestErrors)
+    {
+        if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
+        {
+            ByteCodeOptimizerJob opt;
+            bool                 restart;
+            opt.module = module;
+            opt.optimize(context.bc, restart);
+        }
+    }
+
     // Inform dependencies that everything is done
     releaseByteCodeJob(originalNode);
 
@@ -720,12 +736,12 @@ JobResult ByteCodeGenJob::execute()
         sourceFile->module->mapRuntimeFcts[context.bc->getCallName()] = context.bc;
     }
 
-    // Be sure that every used registers have been released
     if (context.bc &&
         context.bc->node &&
         context.bc->node->kind == AstNodeKind::FuncDecl &&
         !context.bc->node->sourceFile->numTestErrors)
     {
+        // Be sure that every used registers have been released
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
             context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' does not release all registers !", context.bc->node->token.text.c_str()));
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
