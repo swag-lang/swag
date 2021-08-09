@@ -197,7 +197,7 @@ void* AllocatorImpl::alloc(size_t size)
             }
         }
 
-        lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
+        lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + max(size, ALLOCATOR_BUCKET_SIZE));
         if (!lastBucket)
         {
             g_Log.error(Msg0014);
@@ -207,13 +207,7 @@ void* AllocatorImpl::alloc(size_t size)
 
         lastBucket->maxUsed   = 0;
         lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);
-        lastBucket->data      = (uint8_t*) malloc(lastBucket->allocated);
-        if (!lastBucket->data)
-        {
-            g_Log.error(Msg0014);
-            OS::exit(-1);
-            return nullptr;
-        }
+        lastBucket->data      = (uint8_t*) (lastBucket + 1);
 
         currentData = lastBucket->data;
 
