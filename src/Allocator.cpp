@@ -111,7 +111,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 
 void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
 {
-    SWAG_ASSERT(bucket >= MAX_FREE_BUCKETS);
+    SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     if (!freeBuckets[bucket])
         return nullptr;
 

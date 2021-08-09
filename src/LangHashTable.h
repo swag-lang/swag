@@ -1,6 +1,6 @@
 #pragma once
 template<typename V, int N>
-struct HashTable
+struct LangHashTable
 {
     struct Entry
     {
@@ -14,6 +14,7 @@ struct HashTable
     uint32_t allocated = 0;
     uint32_t count;
     bool     firstLetter[256] = {0};
+    int      maxLetters       = 0;
 
     const V* find(const Utf8& key)
     {
@@ -22,7 +23,7 @@ struct HashTable
 
     const V* find(const char* key, int keyLen, uint32_t crc)
     {
-        if (!firstLetter[key[0]])
+        if (!firstLetter[key[0]] || keyLen > maxLetters)
             return nullptr;
 
         if (!crc)
@@ -52,6 +53,7 @@ struct HashTable
         }
 
         firstLetter[key[0]] = true;
+        maxLetters          = max(maxLetters, keyLen);
         buffer[idx].hash    = crc;
         buffer[idx].key     = key;
         buffer[idx].keyLen  = keyLen;

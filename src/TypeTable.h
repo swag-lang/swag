@@ -1,4 +1,5 @@
 #pragma once
+#include "Utf8.h"
 #include "DependentJobs.h"
 #include "TypeInfo.h"
 struct JobContext;
@@ -28,10 +29,10 @@ struct TypeTable
 
     struct MapPerSeg
     {
-        shared_mutex                      mutex;
-        map<Utf8, MapType>                concreteTypes;
-        map<ConcreteTypeInfo*, TypeInfo*> concreteTypesReverse;
-        map<Utf8, TypeTableJob*>          concreteTypesJob;
+        shared_mutex                                 mutex;
+        unordered_map<Utf8, MapType, HashUtf8>       concreteTypes;
+        unordered_map<Utf8, TypeTableJob*, HashUtf8> concreteTypesJob;
+        unordered_map<ConcreteTypeInfo*, TypeInfo*>  concreteTypesReverse;
     };
 
     bool  makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);

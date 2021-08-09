@@ -3,7 +3,7 @@
 #include "TypeInfo.h"
 #include "Tokenizer.h"
 #include "Utf8.h"
-#include "HashTable.h"
+#include "LangHashTable.h"
 struct TypeInfoNative;
 
 struct LanguageSpec
@@ -16,9 +16,9 @@ struct LanguageSpec
 
     string tokenToName(TokenId id);
 
-    HashTable<pair<TokenId, LiteralType>, 4096> keywords;
-    HashTable<LiteralType, 256>                 nativeTypes;
-    HashTable<uint64_t, 256>                    attributesFlags;
+    LangHashTable<pair<TokenId, LiteralType>, 4096> keywords;
+    LangHashTable<LiteralType, 256>                 nativeTypes;
+    LangHashTable<uint64_t, 256>                    attributesFlags;
 
     Utf8 name__setupRuntime;
     Utf8 name__panic;

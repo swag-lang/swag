@@ -86,3 +86,11 @@ struct Utf8
     static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
     static Utf8        truncateDisplay(const char* str, int maxLen);
 };
+
+struct HashUtf8
+{
+    size_t operator()(const Utf8& node) const
+    {
+        return node.hash();
+    }
+};

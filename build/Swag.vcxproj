@@ -250,7 +250,7 @@
     <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
     <ClInclude Include="..\src\ErrorIds.h" />
-    <ClInclude Include="..\src\HashTable.h" />
+    <ClInclude Include="..\src\LangHashTable.h" />
     <ClInclude Include="..\src\LLVMInc.h" />
     <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\ModuleCfgManager.h" />

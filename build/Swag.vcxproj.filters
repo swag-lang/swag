@@ -653,9 +653,6 @@
     <ClInclude Include="../src/Timer.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\HashTable.h">
-      <Filter>Main\Core</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Concat.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
@@ -766,6 +763,9 @@
     </ClInclude>
     <ClInclude Include="..\src\LoadSourceFileJob.h">
       <Filter>Main\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LangHashTable.h">
+      <Filter>Tokenizer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
