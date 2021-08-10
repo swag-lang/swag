@@ -296,8 +296,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (!node)
         return;
 
-    ScopedLock lk(node->mutex);
-    auto       sourceFile = node->sourceFile;
+    auto sourceFile = node->sourceFile;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
@@ -312,11 +311,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             // Need to wait for function full semantic resolve
             if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
             {
-                if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
-                {
-                    funcDecl->dependentJobs.add(job);
-                    job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_FULL_RESOLVE", funcDecl, nullptr);
-                }
+                SWAG_ASSERT(job);
+                job->waitFuncDeclFullResolve(funcDecl);
+                if (job->baseContext->result != ContextResult::Done)
+                    return;
             }
 
             return;
@@ -332,15 +330,14 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         // Need to wait for function full semantic resolve
         if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
         {
-            if (!(node->semFlags & AST_SEM_FULL_RESOLVE))
-            {
-                SWAG_ASSERT(funcDecl);
-                funcDecl->dependentJobs.add(job);
-                job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_FULL_RESOLVE", funcDecl, nullptr);
+            SWAG_ASSERT(funcDecl);
+            job->waitFuncDeclFullResolve(funcDecl);
+            if (job->baseContext->result != ContextResult::Done)
                 return;
-            }
         }
     }
+
+    ScopedLock lk(node->mutex);
 
     // Register the node dependency
     if (flags & ASKBC_ADD_DEP_NODE)
