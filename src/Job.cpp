@@ -78,12 +78,22 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-    ScopedLock lk(structNode->mutex);
-    if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    bool mustWait   = false;
+
     {
-        structNode->dependentJobs.add(this);
-        setPending(structNode->resolvedSymbolName, "AST_SEM_BYTECODE_GENERATED", structNode, nullptr);
+        SharedLock lk(structNode->mutex);
+        mustWait = !(structNode->semFlags & AST_SEM_BYTECODE_GENERATED);
+    }
+
+    if (mustWait)
+    {
+        ScopedLock lk(structNode->mutex);
+        if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
+        {
+            structNode->dependentJobs.add(this);
+            setPending(structNode->resolvedSymbolName, "AST_SEM_BYTECODE_GENERATED", structNode, nullptr);
+        }
     }
 }
 
