@@ -138,11 +138,9 @@ JobResult ModuleBuildJob::execute()
         bool mustBuild = true;
         if (!module->backend->mustCompile && !g_CommandLine.test)
         {
-            mustBuild = false;
-
             // Force the build if we will run that module in bytecode mode
-            if (g_CommandLine.scriptMode && g_Workspace.runModule == module)
-                mustBuild = true;
+            if (!g_CommandLine.scriptMode || g_Workspace.runModule != module)
+                mustBuild = false;
         }
 
         if (!mustBuild)
