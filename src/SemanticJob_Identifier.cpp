@@ -3418,7 +3418,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         for (auto& p : dependentSymbols)
         {
             auto       symbol = p.first;
-            ScopedLock lk(symbol->mutex);
+            SharedLock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
                 OneOverload t;

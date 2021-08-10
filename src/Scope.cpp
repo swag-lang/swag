@@ -179,7 +179,7 @@ void Scope::addPublicNode(AstNode* node)
 
 bool Scope::isParentOf(Scope* child)
 {
-    ScopedLock lk(mutex);
+    SharedLock lk(mutex);
     while (child)
     {
         if (child == this)

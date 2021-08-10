@@ -682,7 +682,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
                 auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
-                    ScopedLock lk(symbol->mutex);
+                    SharedLock lk(symbol->mutex);
                     for (auto overload : symbol->overloads)
                     {
                         auto t               = job->getTryMatch();
@@ -706,7 +706,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         }
         else
         {
-            return context->internalError( "resolveInit, invalid type");
+            return context->internalError("resolveInit, invalid type");
         }
     }
 
