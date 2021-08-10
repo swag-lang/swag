@@ -303,6 +303,7 @@ struct SemanticJob : public Job
     static bool         fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool         fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool         resolveIdentifier(SemanticContext* context);
+    static bool         needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
     static bool         resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
     static TypeInfo*    findTypeInContext(SemanticContext* context, AstNode* node);
     static bool         findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);

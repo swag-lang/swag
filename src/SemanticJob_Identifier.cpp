@@ -3278,6 +3278,59 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return resolveIdentifier(context, node, false);
 }
 
+bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait)
+{
+    if (!symbol->cptOverloads)
+        return false;
+
+    // This is enough to resolve, as we just need parameters, and that case means that some functions
+    // do not know their return type yet (short lambdas)
+    if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+        return false;
+
+    needToWait = true;
+    if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface)
+    {
+        bool canIncomplete = false;
+
+        // If a structure is referencing itself, we will match the incomplete symbol for now
+        // We can also do an incomplete match with the identifier of an Impl block
+        if ((node->flags & AST_STRUCT_MEMBER) || (node->flags & AST_CAN_MATCH_INCOMPLETE))
+            canIncomplete = true;
+
+        // If identifier is in a pointer type expression, can incomplete resolve
+        if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression)
+        {
+            auto typeExprNode = CastAst<AstTypeExpression>(node->parent->parent, AstNodeKind::TypeExpression);
+            if (typeExprNode->ptrCount)
+                canIncomplete = true;
+        }
+
+        if (canIncomplete)
+        {
+            if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+            {
+                if (!node->callParameters && !node->genericParameters)
+                {
+                    needToWait                   = false;
+                    node->resolvedSymbolName     = symbol;
+                    node->resolvedSymbolOverload = symbol->overloads[0];
+                    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+
+                    // If this is a generic type, and it's from an instante, we must wait, because we will
+                    // have to instantiate that symbol too
+                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                        needToWait = true;
+                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                        needToWait = true;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting)
 {
     auto  job                = context->job;
@@ -3342,59 +3395,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto& p : dependentSymbols)
     {
-        auto       symbol = p.first;
+        auto symbol     = p.first;
+        bool needToWait = false;
+
         ScopedLock lkn(symbol->mutex);
-
-        if (!symbol->cptOverloads)
+        if (!needToWaitForSymbol(context, node, symbol, needToWait))
             continue;
-
-        // This is enough to resolve, as we just need parameters, and that case means that some functions
-        // do not know their return type yet (short lambdas)
-        if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
-            continue;
-
-        bool newToWait = true;
-        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface)
-        {
-            bool canIncomplete = false;
-
-            // If a structure is referencing itself, we will match the incomplete symbol for now
-            // We can also do an incomplete match with the identifier of an Impl block
-            if ((node->flags & AST_STRUCT_MEMBER) || (node->flags & AST_CAN_MATCH_INCOMPLETE))
-                canIncomplete = true;
-
-            // If identifier is in a pointer type expression, can incomplete resolve
-            if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression)
-            {
-                auto typeExprNode = CastAst<AstTypeExpression>(node->parent->parent, AstNodeKind::TypeExpression);
-                if (typeExprNode->ptrCount)
-                    canIncomplete = true;
-            }
-
-            if (canIncomplete)
-            {
-                if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
-                {
-                    if (!node->callParameters && !node->genericParameters)
-                    {
-                        newToWait                    = false;
-                        node->resolvedSymbolName     = symbol;
-                        node->resolvedSymbolOverload = symbol->overloads[0];
-                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-
-                        // If this is a generic type, and it's from an instante, we must wait, because we will
-                        // have to instantiate that symbol too
-                        if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
-                            newToWait = true;
-                        if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
-                            newToWait = true;
-                    }
-                }
-            }
-        }
-
-        if (newToWait)
+        if (needToWait)
             job->waitSymbolNoLock(symbol);
+
         return true;
     }
 
