@@ -60,7 +60,6 @@ struct Workspace
     OneTag*     hasTag(const Utf8& name);
     void        setupCachePath();
     Utf8        getTargetFolder();
-    Utf8        getPublicPath(Module* module, bool forWrite);
     void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);

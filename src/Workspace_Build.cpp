@@ -202,46 +202,6 @@ Utf8 Workspace::getTargetFolder()
     return g_CommandLine.buildCfg + "-" + Backend::GetOsName() + "-" + Backend::GetArchName();
 }
 
-Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
-{
-    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
-        return "";
-
-    Utf8 publicPath = module->path + "/";
-    publicPath += SWAG_PUBLIC_FOLDER;
-    publicPath += "/";
-    publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
-
-    if (!fs::exists(publicPath.c_str()))
-    {
-        if (!forWrite)
-            return "";
-        error_code errorCode;
-        if (!fs::create_directories(publicPath.c_str(), errorCode))
-        {
-            module->error(Utf8::format(Msg0543, publicPath.c_str()));
-            return "";
-        }
-    }
-
-    auto cfgPublicPath = publicPath + getTargetFolder().c_str();
-    cfgPublicPath += "/";
-
-    if (!fs::exists(cfgPublicPath.c_str()))
-    {
-        if (!forWrite)
-            return "";
-        error_code errorCode;
-        if (!fs::create_directories(cfgPublicPath.c_str(), errorCode))
-        {
-            module->error(Utf8::format(Msg0543, cfgPublicPath.c_str()));
-            return "";
-        }
-    }
-
-    return cfgPublicPath;
-}
-
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
@@ -257,7 +217,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        g_Log.error(Utf8::format(Msg0545, targetPath.string().c_str()));
+        g_Log.errorOS(Utf8::format(Msg0545, targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -265,21 +225,21 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        g_Log.error(Utf8::format(Msg0546, cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(Msg0546, cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.error(Utf8::format(Msg0547, cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(Msg0547, cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(workspacePath.filename().string() + "-" + g_Workspace.getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.error(Utf8::format(Msg0547, cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(Msg0547, cachePath.string().c_str()));
         OS::exit(-1);
     }
 

@@ -97,6 +97,42 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
         buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
+
+    computePublicPath();
+}
+
+void Module::computePublicPath()
+{
+    if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+        return;
+
+    publicPath = path + "/";
+    publicPath += SWAG_PUBLIC_FOLDER;
+    publicPath += "/";
+    publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
+
+    if (!fs::exists(publicPath.c_str()))
+    {
+        error_code errorCode;
+        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        {
+            g_Log.errorOS(Utf8::format(Msg0543, publicPath.c_str()));
+            OS::exit(-1);
+        }
+    }
+
+    publicPath += g_Workspace.getTargetFolder().c_str();
+    publicPath += "/";
+
+    if (!fs::exists(publicPath.c_str()))
+    {
+        error_code errorCode;
+        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        {
+            g_Log.errorOS(Utf8::format(Msg0543, publicPath.c_str()));
+            OS::exit(-1);
+        }
+    }
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)

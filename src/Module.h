@@ -86,6 +86,7 @@ struct Module
     void        release();
     void        allocateBackend();
     void        initFrom(Module* other);
+    void        computePublicPath();
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
@@ -159,6 +160,7 @@ struct Module
     Utf8   name;
     Utf8   nameNormalized;
     Utf8   remoteLocationDep;
+    Utf8   publicPath;
 
     BuildCfg        buildCfg;
     BuildCfg        localCfgDep;

@@ -56,13 +56,14 @@ JobResult FetchModuleJobFileSystem::execute()
     }
 
     // Copy all files
+    error_code errorCode;
     for (auto& f : srcFiles)
     {
         fs::path srcFileName  = string(dep->resolvedLocation) + f;
         fs::path destFileName = destPath + f;
 
         auto folder = destFileName.parent_path();
-        if (!fs::exists(folder) && !fs::create_directories(folder))
+        if (!fs::exists(folder) && !fs::create_directories(folder, errorCode))
         {
             g_Log.errorOS(Utf8::format(Msg0604, folder.c_str()));
             return JobResult::ReleaseJob;

@@ -38,7 +38,7 @@ void Workspace::scriptCommand()
     error_code errorCode;
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.error(Utf8::format(Msg0547, cacheWorkspace.c_str()));
+        g_Log.errorOS(Utf8::format(Msg0547, cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -46,7 +46,7 @@ void Workspace::scriptCommand()
     cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.error(Utf8::format(Msg0547, cacheWorkspace.c_str()));
+        g_Log.errorOS(Utf8::format(Msg0547, cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 

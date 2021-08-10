@@ -38,8 +38,8 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     SWAG_ASSERT(depModule->backend);
 
     // Add all public files from the dependency module
-    string publicPath = g_Workspace.getPublicPath(depModule, false).c_str();
-    if (fs::exists(publicPath))
+    auto publicPath = depModule->publicPath;
+    if (fs::exists(publicPath.c_str()))
     {
         OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
             auto pz = strrchr(filename, '.');
@@ -539,7 +539,7 @@ void ModuleBuildJob::publishFilesToPublic()
     if (module->exportSourceFiles.empty())
         return;
 
-    string publicPath = g_Workspace.getPublicPath(module, true).c_str();
+    string publicPath = module->publicPath.c_str();
     if (publicPath.empty())
         return;
 

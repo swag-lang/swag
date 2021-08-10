@@ -169,7 +169,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         auto modl = fromNode->sourceFile->module;
         if (modl->buildCfg.backendDebugInformations)
         {
-            Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
+            auto publicPath = modl->publicPath;
             tmpFilePath     = publicPath;
             tmpFileName     = modl->name + ".gwg";
             publicPath += tmpFileName;

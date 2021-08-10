@@ -539,7 +539,7 @@
 #define Msg0540 "fatal error: missing workspace folder '--workspace'"
 #define Msg0541 "fatal error: workspace folder '%s' does not exist"
 #define Msg0542 "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist"
-#define Msg0543 "cannot create public directory '%s'"
+#define Msg0543 "fatal error: cannot create public directory '%s'"
 #define Msg0544
 #define Msg0545 "fatal error: cannot create target directory '%s'"
 #define Msg0546 "fatal error: cache directory '%s' does not exist"

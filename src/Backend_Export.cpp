@@ -835,7 +835,7 @@ bool Backend::setupExportFile(bool force)
     if (!exportFilePath.empty())
         return true;
 
-    Utf8 publicPath = g_Workspace.getPublicPath(module, true);
+    auto publicPath = module->publicPath;
     if (publicPath.empty())
         return false;
 
