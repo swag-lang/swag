@@ -195,7 +195,10 @@ namespace BackendLinker
         // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
         static mutex oo;
         while (!oo.try_lock())
+        {
             g_ThreadMgr.tryExecuteJob();
+            this_thread::yield();
+        }
 
         auto objFileType = Backend::getObjType(g_CommandLine.os);
         bool result      = true;
