@@ -208,9 +208,8 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
             modl->countLinesGeneratedFile += countEol;
 
-            static char eol = '\n';
-            fwrite(&eol, 1, 1, modl->handleGeneratedFile);
-            fwrite(&eol, 1, 1, modl->handleGeneratedFile);
+            static const char* eol = "\n\n";
+            fwrite(&eol, 2, 2, modl->handleGeneratedFile);
             modl->countLinesGeneratedFile += 2;
         }
     }
