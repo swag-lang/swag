@@ -10,6 +10,7 @@ struct SourceFile;
 struct Module;
 struct Diagnostic;
 struct TypeInfo;
+struct AstFuncDecl;
 
 static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
 static const uint8_t JOB_IS_IN_THREAD   = 0x02;
@@ -87,6 +88,7 @@ struct Job
     void waitAllStructMethods(TypeInfo* typeInfo);
     void waitStructGenerated(TypeInfo* typeInfo);
     void waitOverloadCompleted(SymbolOverload* overload);
+    void waitFuncDeclFullResolve(AstFuncDecl* funcDecl);
     void waitTypeCompleted(TypeInfo* typeInfo);
     void setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo);
 

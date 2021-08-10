@@ -117,6 +117,26 @@ void Job::waitOverloadCompleted(SymbolOverload* overload)
     }
 }
 
+void Job::waitFuncDeclFullResolve(AstFuncDecl* funcDecl)
+{
+    bool mustWait = false;
+
+    {
+        SharedLock lk(funcDecl->mutex);
+        mustWait = !(funcDecl->semFlags & AST_SEM_FULL_RESOLVE);
+    }
+
+    if (mustWait)
+    {
+        ScopedLock lk(funcDecl->mutex);
+        if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
+        {
+            funcDecl->dependentJobs.add(this);
+            setPending(funcDecl->resolvedSymbolName, "AST_SEM_FULL_RESOLVE", funcDecl, nullptr);
+        }
+    }
+}
+
 void Job::waitTypeCompleted(TypeInfo* typeInfo)
 {
     if (!typeInfo)

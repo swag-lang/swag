@@ -1129,15 +1129,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 // Need to wait for function full semantic resolve
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
-                {
-                    ScopedLock lk(funcDecl->mutex);
-                    if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
-                    {
-                        funcDecl->dependentJobs.add(context->job);
-                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_FULL_RESOLVE", funcDecl, nullptr);
-                        return true;
-                    }
-                }
+                context->job->waitFuncDeclFullResolve(funcDecl);
+                if (context->result != ContextResult::Done)
+                    return true;
 
                 // First pass, we inline the function.
                 // The identifier for the function call will be reresolved later when the content
