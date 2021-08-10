@@ -3398,11 +3398,19 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         auto symbol     = p.first;
         bool needToWait = false;
 
-        ScopedLock lkn(symbol->mutex);
-        if (!needToWaitForSymbol(context, node, symbol, needToWait))
-            continue;
+        {
+            SharedLock lkn(symbol->mutex);
+            if (!needToWaitForSymbol(context, node, symbol, needToWait))
+                continue;
+        }
+
         if (needToWait)
+        {
+            ScopedLock lkn(symbol->mutex);
+            if (!needToWaitForSymbol(context, node, symbol, needToWait))
+                continue;
             job->waitSymbolNoLock(symbol);
+        }
 
         return true;
     }
