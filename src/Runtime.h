@@ -352,6 +352,7 @@ enum class CompilerMsgKind
     PassBeforeOutput,
     PassAllDone,
     SemanticFunc,
+    Max
 };
 
 enum class CompilerMsgKindMask : uint64_t

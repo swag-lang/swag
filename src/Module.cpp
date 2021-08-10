@@ -382,7 +382,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     {
         if (filter & ((uint64_t) 1 << i))
         {
-            ScopedLock lk(mutexByteCodeCompiler);
+            ScopedLock lk(byteCodeCompilerMutex[i]);
             SWAG_ASSERT(numCompilerFunctions > 0);
             numCompilerFunctions--;
             byteCodeCompiler[i].push_back(bc);

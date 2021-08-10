@@ -152,7 +152,6 @@ struct Module
     shared_mutex mutexFile;
     shared_mutex mutexByteCode;
     mutex        mutexGlobalVars;
-    mutex        mutexByteCodeCompiler;
     mutex        mutexBuildPass;
     mutex        mutexGeneratedFile;
 
@@ -178,7 +177,8 @@ struct Module
 
     VectorNative<SourceFile*>       files;
     VectorNative<Module*>           errorModules;
-    VectorNative<ByteCode*>         byteCodeCompiler[64];
+    VectorNative<ByteCode*>         byteCodeCompiler[(int) CompilerMsgKind::Max];
+    mutex                           byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
     VectorNative<ByteCode*>         byteCodeFunc;
     VectorNative<ByteCode*>         byteCodeTestFunc;
     VectorNative<ByteCode*>         byteCodeInitFunc;

@@ -232,7 +232,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
 void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
 {
-    ScopedLock lk(mutexByteCodeCompiler);
+    ScopedLock lk(byteCodeCompilerMutex[(int) msg.kind]);
 
     // Cannot decide yet if there's a corresponding #compiler for that message, so push it
     if (numCompilerFunctions > 0)
@@ -305,9 +305,8 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    ScopedLock lk(mutexByteCodeCompiler);
-    int        index = (int) msg->kind;
-    if (byteCodeCompiler[index].empty())
+    ScopedLock lk(byteCodeCompilerMutex[(int) msg->kind]);
+    if (byteCodeCompiler[(int) msg->kind].empty())
         return true;
 
     // Convert to a concrete message for the user
@@ -321,7 +320,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     context.baseJob = dependentJob;
 
     PushSwagContext cxt;
-    for (auto bc : byteCodeCompiler[index])
+    for (auto bc : byteCodeCompiler[(int) msg->kind])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
