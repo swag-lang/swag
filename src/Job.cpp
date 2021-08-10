@@ -25,7 +25,7 @@ void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
-    auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (module->waitImplForToSolve(this, typeInfoStruct))
@@ -50,7 +50,7 @@ void Job::waitAllStructMethods(TypeInfo* typeInfo)
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
-    auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
@@ -78,12 +78,22 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(this);
         setPending(structNode->resolvedSymbolName, "AST_SEM_BYTECODE_GENERATED", structNode, nullptr);
+    }
+}
+
+void Job::waitOverloadCompleted(SymbolOverload* overload)
+{
+    ScopedLock lk(overload->symbol->mutex);
+    if (overload->flags & OVERLOAD_INCOMPLETE)
+    {
+        waitSymbolNoLock(overload->symbol);
+        return;
     }
 }
 
@@ -103,16 +113,10 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (!typeInfo->declNode)
         return;
 
-    auto symbol   = typeInfo->declNode->resolvedSymbolName;
-    auto overload = typeInfo->declNode->resolvedSymbolOverload;
-    SWAG_ASSERT(symbol && overload);
-    ScopedLock lk(symbol->mutex);
-    if (overload->flags & OVERLOAD_INCOMPLETE)
-    {
-        SWAG_ASSERT(overload->symbol == symbol);
-        waitSymbolNoLock(symbol);
+    SWAG_ASSERT(typeInfo->declNode->resolvedSymbolOverload);
+    waitOverloadCompleted(typeInfo->declNode->resolvedSymbolOverload);
+    if (baseContext->result == ContextResult::Pending)
         return;
-    }
 
     // Be sure type sizeof is correct, because it could have been created before the
     // raw type has been completed because of //

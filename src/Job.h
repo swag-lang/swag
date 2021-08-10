@@ -5,6 +5,7 @@
 struct JobThread;
 struct AstNode;
 struct SymbolName;
+struct SymbolOverload;
 struct SourceFile;
 struct Module;
 struct Diagnostic;
@@ -85,6 +86,7 @@ struct Job
     void waitAllStructInterfaces(TypeInfo* typeInfo);
     void waitAllStructMethods(TypeInfo* typeInfo);
     void waitStructGenerated(TypeInfo* typeInfo);
+    void waitOverloadCompleted(SymbolOverload* overload);
     void waitTypeCompleted(TypeInfo* typeInfo);
     void setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo);
 

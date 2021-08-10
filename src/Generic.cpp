@@ -272,12 +272,9 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
                 continue;
         }
 
-        ScopedLock lk(declNode->resolvedSymbolOverload->symbol->mutex);
-        if (declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
-        {
-            context->job->waitSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
+        context->job->waitOverloadCompleted(declNode->resolvedSymbolOverload);
+        if (context->result == ContextResult::Pending)
             return;
-        }
 
         SWAG_ASSERT(typeInfo->sizeOf > 0);
     }
@@ -423,7 +420,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     newTypeFunc->forceComputeName();
 
     ScopedLock lk(newFunc->resolvedSymbolName->mutex);
-    auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
+    auto       newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
     structJob->dependentJobs.add(newJob);
 }
 

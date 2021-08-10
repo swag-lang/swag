@@ -872,13 +872,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef->startScope)
         {
             auto parentStructNode = identifier->identifierRef->startScope->owner;
-            SWAG_ASSERT(parentStructNode->resolvedSymbolName);
-            ScopedLock lk(parentStructNode->resolvedSymbolName->mutex);
-            if (parentStructNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
-            {
-                context->job->waitSymbolNoLock(parentStructNode->resolvedSymbolName);
+            context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
+            if (context->result == ContextResult::Pending)
                 return true;
-            }
         }
 
         overload->flags |= OVERLOAD_USED;
@@ -1035,14 +1031,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
-        {
-            ScopedLock lk(symbol->mutex);
-            if (overload->flags & OVERLOAD_INCOMPLETE)
-            {
-                context->job->waitSymbolNoLock(symbol);
-                return true;
-            }
-        }
+        context->job->waitOverloadCompleted(overload);
+        if (context->result == ContextResult::Pending)
+            return true;
 
         if (identifier->token.text == g_LangSpec.name_opInit)
             return context->report({identifier, identifier->token, Msg0100});
@@ -2232,11 +2223,11 @@ void SemanticJob::checkCaninstantiateGenericSymbol(SemanticContext* context, One
 
 bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
 {
-    auto        job               = context->job;
-    auto        node              = context->node;
-    auto&       matches           = job->cacheMatches;
-    auto        symbol            = firstMatch.symbolName;
-    auto        genericParameters = firstMatch.genericParameters;
+    auto       job               = context->job;
+    auto       node              = context->node;
+    auto&      matches           = job->cacheMatches;
+    auto       symbol            = firstMatch.symbolName;
+    auto       genericParameters = firstMatch.genericParameters;
     ScopedLock lk(symbol->mutex);
 
     // If we are inside a generic function (not instantiated), then we are done, we
@@ -3357,7 +3348,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto& p : dependentSymbols)
     {
-        auto        symbol = p.first;
+        auto       symbol = p.first;
         ScopedLock lkn(symbol->mutex);
 
         if (!symbol->cptOverloads)
@@ -3432,7 +3423,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         toSolveOverload.clear();
         for (auto& p : dependentSymbols)
         {
-            auto        symbol = p.first;
+            auto       symbol = p.first;
             ScopedLock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
