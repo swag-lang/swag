@@ -89,11 +89,21 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
 
 void Job::waitOverloadCompleted(SymbolOverload* overload)
 {
-    ScopedLock lk(overload->symbol->mutex);
-    if (overload->flags & OVERLOAD_INCOMPLETE)
+    bool mustWait = false;
+
     {
-        waitSymbolNoLock(overload->symbol);
-        return;
+        SharedLock lk(overload->symbol->mutex);
+        mustWait = overload->flags & OVERLOAD_INCOMPLETE;
+    }
+
+    if (mustWait)
+    {
+        ScopedLock lk(overload->symbol->mutex);
+        if (overload->flags & OVERLOAD_INCOMPLETE)
+        {
+            waitSymbolNoLock(overload->symbol);
+            return;
+        }
     }
 }
 
