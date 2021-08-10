@@ -2111,14 +2111,11 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
     // We cannot visit fields of an incomplete struct.
     // So we must wait...
+    context->job->waitOverloadCompleted(fromStruct->declNode->resolvedSymbolOverload);
+    if (context->result != ContextResult::Done)
     {
-        SharedLock lk(fromStruct->declNode->resolvedSymbolName->mutex);
-        if (fromStruct->declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
-        {
-            SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
-            context->job->waitSymbolNoLock(fromStruct->declNode->resolvedSymbolName);
-            return true;
-        }
+        SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+        return true;
     }
 
     TypeInfoParam* done = nullptr;
