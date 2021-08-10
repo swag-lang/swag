@@ -846,7 +846,7 @@ bool Backend::setupExportFile(bool force)
         exportFileName = exportName;
         exportFilePath = publicPath;
     }
-    else if (fs::exists(publicPath.c_str()))
+    else
     {
         exportFileName = exportName;
         exportFilePath = publicPath;
