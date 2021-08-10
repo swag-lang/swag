@@ -112,8 +112,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
-    if (!freeBuckets[bucket])
-        return nullptr;
+    SWAG_ASSERT(freeBuckets[bucket]);
 
     // If the bucket size is greater than the real size, then put the remaining
     // memory size in the corresponding bucket
@@ -143,20 +142,26 @@ void* AllocatorImpl::alloc(size_t size)
     SWAG_ASSERT((size & 7) == 0);
 
     auto  bucket = size / 8;
-    void* result;
+    void* result = nullptr;
     if (bucket < MAX_FREE_BUCKETS)
     {
         // Try in the list of free blocks, per bucket
-        result = tryBucket((uint32_t) bucket, size);
-        if (result)
-            return result;
+        if (freeBuckets[bucket])
+        {
+            result = tryBucket((uint32_t) bucket, size);
+            if (result)
+                return result;
+        }
 
         // Try other big buckets
         for (int i = MAX_FREE_BUCKETS - 1; i > (int) bucket; i--)
         {
-            result = tryBucket(i, size);
-            if (result)
-                return result;
+            if (freeBuckets[i])
+            {
+                result = tryBucket(i, size);
+                if (result)
+                    return result;
+            }
         }
     }
 
