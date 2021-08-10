@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "AstNode.h"
 #include "ByteCodeStack.h"
+#include "Workspace.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -168,6 +169,10 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         waitingJobs.push_back(job);
         job->waitingJobIndex = (int) waitingJobs.size() - 1;
     }
+    else if (job->jobGroup)
+    {
+        job->jobGroup->doneJob();
+    }
 
     // Is this the last job ?
     ScopedLock lk1(mutexDone);
@@ -300,9 +305,24 @@ Job* ThreadManager::getJobNoLock()
     // Otherwise, then IO, as there's nothing left
     job = getJobNoLock(queueJobsIO);
     if (job)
+    {
         currentJobsIO++;
+        return job;
+    }
 
-    return job;
+    // Otherwise, steal a syntax job from a module if we can
+    ScopedLock lk(g_Workspace.mutexModules);
+    for (auto p : g_Workspace.modules)
+    {
+        job = p->syntaxGroup.pickJob();
+        if (job)
+        {
+            job->flags |= JOB_IS_IN_THREAD;
+            return job;
+        }
+    }
+
+    return nullptr;
 }
 
 Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
@@ -330,6 +350,7 @@ Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
         jobsOptInThreads++;
     else
         jobsInThreads++;
+
     return job;
 }
 

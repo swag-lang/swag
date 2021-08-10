@@ -216,6 +216,7 @@
     <ClInclude Include="../src/Os.h" />
     <ClInclude Include="../src/ModuleGenOutputJob.h" />
     <ClInclude Include="../src/ModuleOutputJob.h" />
+    <ClInclude Include="..\src\JobGroup.h" />
     <ClInclude Include="..\src\LoadSourceFileJob.h" />
     <ClInclude Include="..\src\OutputFileWin32.h" />
     <ClInclude Include="../src/RegisterList.h" />

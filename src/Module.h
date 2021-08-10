@@ -7,6 +7,7 @@
 #include "DependentJobs.h"
 #include "SymTable.h"
 #include "Tokenizer.h"
+#include "JobGroup.h"
 
 struct Utf8;
 struct SourceFile;
@@ -193,6 +194,7 @@ struct Module
     set<SourceFile*>                exportSourceFiles;
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;
+    JobGroup                        syntaxGroup;
 
     AstNode*          astRoot             = nullptr;
     Scope*            scopeRoot           = nullptr;

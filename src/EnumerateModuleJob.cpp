@@ -6,6 +6,7 @@
 #include "ModuleCfgManager.h"
 #include "LoadSourceFileJob.h"
 #include "ThreadManager.h"
+#include "SyntaxJob.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass)
 {
@@ -36,7 +37,22 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<Source
     if (g_CommandLine.numCores == 1)
         allFiles.push_back(file);
     else
+    {
+        // In async mode, syntax jobs are treated in a special way, as in fact they could be run at any time
+        // before the module job reaches the ModuleBuildPass::Syntax
+        // So each time a thread does not have a job to run, it will try a syntax job instead of doing nothing.
+        // When a module reaches the ModuleBuildPass::Syntax, it will cancel all pending special syntax jobs,
+        // and change them to "normal" ones.
+        // If we do not have to rebuild a module, we will do some syntax jobs anyway, but this is fine as
+        // they are done during "idle" time.
         theModule->addFile(file);
+        auto syntaxJob        = g_Allocator.alloc<SyntaxJob>();
+        syntaxJob->sourceFile = file;
+        syntaxJob->module     = theModule;
+        syntaxJob->flags |= JOB_IS_OPT;
+        syntaxJob->jobGroup = &theModule->syntaxGroup;
+        theModule->syntaxGroup.addJob(syntaxJob);
+    }
 
     return file;
 }
@@ -161,6 +177,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                 else
                 {
                     auto file         = g_Allocator.alloc<SourceFile>();
+                    file->module      = module;
                     file->name        = cFileName;
                     fs::path pathFile = tmp.c_str();
                     pathFile.append(cFileName);

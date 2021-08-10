@@ -145,28 +145,25 @@ JobResult ModuleBuildJob::execute()
 
         if (!mustBuild)
         {
+            module->syntaxGroup.waitAndClear();
             pass = ModuleBuildPass::WaitForDependencies;
         }
         else
         {
             pass = ModuleBuildPass::Publish;
+            module->syntaxGroup.complete(this);
 
-            for (auto file : module->files)
+            // When synchrone, do it now, as syntaxGroup is not relevant
+            if (g_CommandLine.numCores == 1)
             {
-                auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
-                syntaxJob->sourceFile   = file;
-                syntaxJob->module       = module;
-                syntaxJob->dependentJob = this;
-                if (!file->buffer)
+                for (auto file : module->files)
                 {
-                    auto loadFileJob        = g_Allocator.alloc<LoadSourceFileJob>();
-                    loadFileJob->sourceFile = file;
-                    loadFileJob->jobsToAdd.push_back(syntaxJob);
-                    loadFileJob->dependentJob = this;
-                    jobsToAdd.push_back(loadFileJob);
-                }
-                else
+                    auto syntaxJob = g_Allocator.alloc<SyntaxJob>();
+                    syntaxJob->sourceFile = file;
+                    syntaxJob->module = module;
+                    syntaxJob->dependentJob = this;
                     jobsToAdd.push_back(syntaxJob);
+                }
             }
 
             if (!jobsToAdd.empty())

@@ -11,6 +11,7 @@ struct Module;
 struct Diagnostic;
 struct TypeInfo;
 struct AstFuncDecl;
+struct JobGroup;
 
 static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
 static const uint8_t JOB_IS_IN_THREAD   = 0x02;
@@ -109,6 +110,7 @@ struct Job
     const char* waitingId           = nullptr;
     AstNode*    waitingIdNode       = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
+    JobGroup*   jobGroup            = nullptr;
 
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;
