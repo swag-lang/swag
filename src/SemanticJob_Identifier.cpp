@@ -876,7 +876,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             ScopedLock lk(parentStructNode->resolvedSymbolName->mutex);
             if (parentStructNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
             {
-                context->job->waitForSymbolNoLock(parentStructNode->resolvedSymbolName);
+                context->job->waitSymbolNoLock(parentStructNode->resolvedSymbolName);
                 return true;
             }
         }
@@ -1039,7 +1039,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             ScopedLock lk(symbol->mutex);
             if (overload->flags & OVERLOAD_INCOMPLETE)
             {
-                context->job->waitForSymbolNoLock(symbol);
+                context->job->waitSymbolNoLock(symbol);
                 return true;
             }
         }
@@ -1887,7 +1887,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         }
         else if (symbol->cptOverloads)
         {
-            job->waitForSymbolNoLock(symbol);
+            job->waitSymbolNoLock(symbol);
             return true;
         }
 
@@ -2839,7 +2839,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             // a function
             if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
-                context->job->waitForAllStructInterfaces(oneParam->typeInfo);
+                context->job->waitAllStructInterfaces(oneParam->typeInfo);
                 if (context->result == ContextResult::Pending)
                     return true;
             }
@@ -3409,7 +3409,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
 
         if (newToWait)
-            job->waitForSymbolNoLock(symbol);
+            job->waitSymbolNoLock(symbol);
         return true;
     }
 

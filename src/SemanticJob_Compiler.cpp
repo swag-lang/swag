@@ -49,7 +49,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
                 // It is possible to convert a complex struct to a constant static array of values if the struct
                 // implements 'opCount' and 'opSlice'
-                context->job->waitForAllStructMethods(realType);
+                context->job->waitAllStructMethods(realType);
                 if (context->result != ContextResult::Done)
                     return true;
 

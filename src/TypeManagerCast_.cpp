@@ -108,7 +108,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         {
             SWAG_ASSERT(context && context->job);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            context->job->waitForSymbolNoLock(symbol);
+            context->job->waitSymbolNoLock(symbol);
             return true;
         }
 
@@ -176,7 +176,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             SWAG_ASSERT(context && context->job);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            context->job->waitForSymbolNoLock(symbol);
+            context->job->waitSymbolNoLock(symbol);
             return true;
         }
 
@@ -2116,7 +2116,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         if (fromStruct->declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
-            context->job->waitForSymbolNoLock(fromStruct->declNode->resolvedSymbolName);
+            context->job->waitSymbolNoLock(fromStruct->declNode->resolvedSymbolName);
             return true;
         }
     }

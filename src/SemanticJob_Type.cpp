@@ -534,7 +534,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     auto exprTypeInfo = TypeManager::concreteReference(exprNode->typeInfo);
     if (typeNode->typeInfo->kind == TypeInfoKind::Interface && exprTypeInfo->kind == TypeInfoKind::Struct)
     {
-        context->job->waitForAllStructInterfaces(exprTypeInfo);
+        context->job->waitAllStructInterfaces(exprTypeInfo);
         if (context->result == ContextResult::Pending)
             return true;
     }

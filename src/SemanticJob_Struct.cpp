@@ -146,7 +146,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         ScopedLock lk1(node->identifier->resolvedSymbolName->mutex);
         if (node->identifier->resolvedSymbolName->cptOverloads)
         {
-            job->waitForSymbolNoLock(node->identifier->resolvedSymbolName);
+            job->waitSymbolNoLock(node->identifier->resolvedSymbolName);
             return true;
         }
     }
@@ -190,7 +190,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             ScopedLock lk(symbolName->mutex);
             if (symbolName->cptOverloads)
             {
-                job->waitForSymbolNoLock(symbolName);
+                job->waitSymbolNoLock(symbolName);
                 return true;
             }
         }

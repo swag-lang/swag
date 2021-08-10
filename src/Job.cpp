@@ -5,7 +5,6 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
-#include "ScopedLock.h"
 
 void Job::addDependentJob(Job* job)
 {
@@ -13,13 +12,13 @@ void Job::addDependentJob(Job* job)
     dependentJobs.add(job);
 }
 
-void Job::waitForSymbolNoLock(SymbolName* symbol)
+void Job::waitSymbolNoLock(SymbolName* symbol)
 {
     setPending(symbol, "WAIT_SYMBOL", nullptr, nullptr);
     symbol->addDependentJobNoLock(this);
 }
 
-void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
+void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
@@ -44,7 +43,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
     setPending(nullptr, "WAIT_INTERFACES", nullptr, typeInfoStruct);
 }
 
-void Job::waitForAllStructMethods(TypeInfo* typeInfo)
+void Job::waitAllStructMethods(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
@@ -111,7 +110,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (overload->flags & OVERLOAD_INCOMPLETE)
     {
         SWAG_ASSERT(overload->symbol == symbol);
-        waitForSymbolNoLock(symbol);
+        waitSymbolNoLock(symbol);
         return;
     }
 

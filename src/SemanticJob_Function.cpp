@@ -977,7 +977,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         // If we are returning an interface, be sure they are defined before casting
         if (returnType && returnType->kind == TypeInfoKind::Interface)
         {
-            context->job->waitForAllStructInterfaces(child->typeInfo);
+            context->job->waitAllStructInterfaces(child->typeInfo);
             if (context->result != ContextResult::Done)
                 return true;
         }

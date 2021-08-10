@@ -259,7 +259,7 @@ SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, 
 
     ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
-        context->job->waitForSymbolNoLock(symbol);
+        context->job->waitSymbolNoLock(symbol);
 
     return symbol;
 }

@@ -452,7 +452,7 @@ JobResult ByteCodeGenJob::execute()
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
             context.result  = ContextResult::Done;
-            waitForAllStructInterfaces(typeStruct);
+            waitAllStructInterfaces(typeStruct);
             if (context.result == ContextResult::Pending)
                 return JobResult::KeepJobAlive;
             SWAG_ASSERT(typeStruct->interfaces.size() == 1);

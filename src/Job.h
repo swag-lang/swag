@@ -81,9 +81,9 @@ struct Job
     }
 
     void addDependentJob(Job* job);
-    void waitForSymbolNoLock(SymbolName* symbol);
-    void waitForAllStructInterfaces(TypeInfo* typeInfo);
-    void waitForAllStructMethods(TypeInfo* typeInfo);
+    void waitSymbolNoLock(SymbolName* symbol);
+    void waitAllStructInterfaces(TypeInfo* typeInfo);
+    void waitAllStructMethods(TypeInfo* typeInfo);
     void waitStructGenerated(TypeInfo* typeInfo);
     void waitTypeCompleted(TypeInfo* typeInfo);
     void setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo);

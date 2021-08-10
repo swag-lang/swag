@@ -768,7 +768,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->kind == TypeInfoKind::Interface && rightConcreteType->kind == TypeInfoKind::Struct)
             {
-                context->job->waitForAllStructInterfaces(rightConcreteType);
+                context->job->waitAllStructInterfaces(rightConcreteType);
                 if (context->result == ContextResult::Pending)
                     return true;
             }

@@ -202,10 +202,10 @@ JobResult TypeTableJob::execute()
     waitTypeCompleted(typeInfo);
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
-    waitForAllStructInterfaces(realType);
+    waitAllStructInterfaces(realType);
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
-    waitForAllStructMethods(realType);
+    waitAllStructMethods(realType);
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
     waitStructGenerated(realType);

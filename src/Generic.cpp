@@ -238,7 +238,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     symbol->cptOverloads++;
     symbol->cptOverloadsInit++;
     if (waitSymbol && context->result == ContextResult::Done)
-        job->waitForSymbolNoLock(symbol);
+        job->waitSymbolNoLock(symbol);
 
     // Run semantic on that struct/function
     auto sourceFile = context->sourceFile;
@@ -275,7 +275,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
         ScopedLock lk(declNode->resolvedSymbolOverload->symbol->mutex);
         if (declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
         {
-            context->job->waitForSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
+            context->job->waitSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
             return;
         }
 
@@ -291,10 +291,10 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
-    context->job->waitForAllStructMethods(typeStruct);
+    context->job->waitAllStructMethods(typeStruct);
     if (context->result != ContextResult::Done)
         return true;
-    context->job->waitForAllStructInterfaces(typeStruct);
+    context->job->waitAllStructInterfaces(typeStruct);
     if (context->result != ContextResult::Done)
         return true;
 
