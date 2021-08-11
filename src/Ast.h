@@ -55,7 +55,11 @@ namespace Ast
     {
         auto node = g_Allocator.alloc0<T>();
         if (g_CommandLine.stats)
+        {
+            g_Stats.numNodes++;
             g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+        }
+
         return node;
     }
 

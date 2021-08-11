@@ -21,6 +21,7 @@ void Stats::print()
         g_Log.messageHeaderDot("files", Utf8::format("%u", numFiles.load()));
         g_Log.messageHeaderDot("source lines", Utf8::format("%u", numLines.load()));
         g_Log.messageHeaderDot("lines/s", Utf8::format("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
+        g_Log.messageHeaderDot("ast nodes", Utf8::format("%u", numNodes.load()));
         if (g_CommandLine.output)
             g_Log.messageHeaderDot("output modules", Utf8::format("%u", numGenModules.load()));
         if (g_CommandLine.test)
