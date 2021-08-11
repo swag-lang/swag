@@ -52,16 +52,6 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
-    template<typename T>
-    T* alloc0()
-    {
-        auto size       = alignSize(sizeof(T));
-        auto returnData = alloc(size);
-        memset(returnData, 0, size);
-        ::new (returnData) T;
-        return (T*) returnData;
-    }
-
     static size_t alignSize(size_t size);
     void          free(void*, size_t size);
     void*         alloc(size_t size);

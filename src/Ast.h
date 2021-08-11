@@ -53,7 +53,7 @@ namespace Ast
     template<typename T>
     T* newNode()
     {
-        auto node = g_Allocator.alloc0<T>();
+        auto node = g_Allocator.alloc<T>();
         if (g_CommandLine.stats)
         {
             g_Stats.numNodes++;
