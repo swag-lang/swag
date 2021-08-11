@@ -968,6 +968,7 @@ namespace Ast
         }
 
         case AstNodeKind::Statement:
+        case AstNodeKind::SwitchCaseBlock:
             if (node->childs.count == 1 &&
                 node->parent->kind != AstNodeKind::FuncDecl &&
                 node->parent->kind != AstNodeKind::CompilerMacro &&

@@ -160,11 +160,12 @@ void SemanticJob::sortParameters(AstNode* allParams)
     if (allParams->childs.size() <= 1)
         return;
 
-    sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-        AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-        AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-        return p1->indexParam < p2->indexParam;
-    });
+    sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2)
+         {
+             AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+             AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+             return p1->indexParam < p2->indexParam;
+         });
 
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
@@ -222,15 +223,16 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     }
 
     // Replace every types inside the function
-    Ast::visit(funcDecl, [&](AstNode* p) {
-        auto it = typeDefinedFct->replaceTypes.find(p->token.text);
-        if (it == typeDefinedFct->replaceTypes.end())
-            return;
-        p->token.text = it->second->name;
-        if (p->resolvedSymbolOverload)
-            p->resolvedSymbolOverload->typeInfo = it->second;
-        p->typeInfo = it->second;
-    });
+    Ast::visit(funcDecl, [&](AstNode* p)
+               {
+                   auto it = typeDefinedFct->replaceTypes.find(p->token.text);
+                   if (it == typeDefinedFct->replaceTypes.end())
+                       return;
+                   p->token.text = it->second->name;
+                   if (p->resolvedSymbolOverload)
+                       p->resolvedSymbolOverload->typeInfo = it->second;
+                   p->typeInfo = it->second;
+               });
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
@@ -506,7 +508,9 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     auto checkParent = identifier->identifierRef->parent;
     if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
         checkParent = checkParent->parent;
-    if (checkParent->kind == AstNodeKind::Statement || checkParent->kind == AstNodeKind::StatementNoScope)
+    if (checkParent->kind == AstNodeKind::Statement ||
+        checkParent->kind == AstNodeKind::StatementNoScope ||
+        checkParent->kind == AstNodeKind::SwitchCaseBlock)
     {
         // If this is the last identifier
         if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
@@ -2355,10 +2359,11 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
             }
         }
 
-        Ast::visit(idRef, [&](AstNode* n) {
-            if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
-                ((AstIdentifier*) n)->identifierRef = idRef;
-        });
+        Ast::visit(idRef, [&](AstNode* n)
+                   {
+                       if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
+                           ((AstIdentifier*) n)->identifierRef = idRef;
+                   });
     }
 
     idRef->inheritAndFlag1(AST_CONST_EXPR);
@@ -2868,7 +2873,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
     auto childCount = genericParameters->childs.size();
     for (int i = 0; i < childCount; i++)
     {
-        auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+        auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
         symMatchContext.genericParameters.push_back(oneParam);
         symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
     }

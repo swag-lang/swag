@@ -32,7 +32,8 @@ void ByteCodeGenJob::sortRegistersRC(ByteCodeGenContext* context)
     context->bc->isDirtyRegistersRC = false;
     if (context->bc->availableRegistersRC.size() <= 1)
         return;
-    sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b) { return a > b; });
+    sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b)
+         { return a > b; });
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
@@ -740,7 +741,11 @@ JobResult ByteCodeGenJob::execute()
     {
         // Be sure that every used registers have been released
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
+        {
             context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' does not release all registers !", context.bc->node->token.text.c_str()));
+            if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+                context.bc->print();
+        }
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
         {
             context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' releases too many registers !", context.bc->node->token.text.c_str()));

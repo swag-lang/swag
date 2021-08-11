@@ -655,6 +655,7 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
     case AstNodeKind::Impl:
     case AstNodeKind::CompilerIf:
     case AstNodeKind::CompilerIfBlock:
+    case AstNodeKind::SwitchCaseBlock:
         for (auto s : childs)
             s->setOwnerAttrUse(attrUse);
         break;

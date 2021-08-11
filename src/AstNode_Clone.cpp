@@ -118,21 +118,127 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 
 AstNode* AstNode::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstNode>();
-
-    if (flags & AST_NEED_SCOPE)
+    switch (kind)
     {
-        auto cloneContext        = context;
-        cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
-        newNode->copyFrom(cloneContext, this);
-        context.propageResult(cloneContext);
-    }
-    else
-    {
-        newNode->copyFrom(context, this);
-    }
+    case AstNodeKind::VarDecl:
+    case AstNodeKind::ConstDecl:
+    case AstNodeKind::FuncDeclParam:
+        return ((AstVarDecl*) this)->clone(context);
+    case AstNodeKind::IdentifierRef:
+        return ((AstIdentifierRef*) this)->clone(context);
+    case AstNodeKind::Identifier:
+    case AstNodeKind::FuncCall:
+        return ((AstIdentifier*) this)->clone(context);
+    case AstNodeKind::FuncDecl:
+        return ((AstFuncDecl*) this)->clone(context);
+    case AstNodeKind::AttrDecl:
+        return ((AstAttrDecl*) this)->clone(context);
+    case AstNodeKind::AttrUse:
+        return ((AstAttrUse*) this)->clone(context);
+    case AstNodeKind::FuncCallParam:
+        return ((AstFuncCallParam*) this)->clone(context);
+    case AstNodeKind::BinaryOp:
+        return ((AstBinaryOpNode*) this)->clone(context);
+    case AstNodeKind::ConditionalExpression:
+        return ((AstConditionalOpNode*) this)->clone(context);
+    case AstNodeKind::If:
+    case AstNodeKind::CompilerIf:
+        return ((AstIf*) this)->clone(context);
+    case AstNodeKind::Break:
+    case AstNodeKind::Continue:
+    case AstNodeKind::FallThrough:
+        return ((AstBreakContinue*) this)->clone(context);
+    case AstNodeKind::LabelBreakable:
+        return ((AstLabelBreakable*) this)->clone(context);
+    case AstNodeKind::While:
+        return ((AstWhile*) this)->clone(context);
+    case AstNodeKind::For:
+        return ((AstFor*) this)->clone(context);
+    case AstNodeKind::Loop:
+        return ((AstLoop*) this)->clone(context);
+    case AstNodeKind::Visit:
+        return ((AstVisit*) this)->clone(context);
+    case AstNodeKind::Switch:
+        return ((AstSwitch*) this)->clone(context);
+    case AstNodeKind::SwitchCase:
+        return ((AstSwitchCase*) this)->clone(context);
+    case AstNodeKind::SwitchCaseBlock:
+        return ((AstSwitchCaseBlock*) this)->clone(context);
+    case AstNodeKind::TypeExpression:
+        return ((AstTypeExpression*) this)->clone(context);
+    case AstNodeKind::TypeLambda:
+        return ((AstTypeLambda*) this)->clone(context);
+    case AstNodeKind::ArrayPointerSlicing:
+        return ((AstArrayPointerSlicing*) this)->clone(context);
+    case AstNodeKind::ArrayPointerIndex:
+        return ((AstArrayPointerIndex*) this)->clone(context);
+    case AstNodeKind::StructDecl:
+    case AstNodeKind::InterfaceDecl:
+        return ((AstStruct*) this)->clone(context);
+    case AstNodeKind::Impl:
+        return ((AstImpl*) this)->clone(context);
+    case AstNodeKind::EnumDecl:
+        return ((AstEnum*) this)->clone(context);
+    case AstNodeKind::EnumValue:
+        return ((AstEnumValue*) this)->clone(context);
+    case AstNodeKind::Init:
+        return ((AstInit*) this)->clone(context);
+    case AstNodeKind::Drop:
+    case AstNodeKind::PostCopy:
+    case AstNodeKind::PostMove:
+        return ((AstDropCopyMove*) this)->clone(context);
+    case AstNodeKind::Return:
+        return ((AstReturn*) this)->clone(context);
+    case AstNodeKind::CompilerInline:
+        return ((AstCompilerInline*) this)->clone(context);
+    case AstNodeKind::CompilerMacro:
+        return ((AstCompilerMacro*) this)->clone(context);
+    case AstNodeKind::CompilerMixin:
+        return ((AstCompilerMixin*) this)->clone(context);
+    case AstNodeKind::Inline:
+        return ((AstInline*) this)->clone(context);
+    case AstNodeKind::CompilerIfBlock:
+        return ((AstCompilerIfBlock*) this)->clone(context);
+    case AstNodeKind::CompilerRun:
+    case AstNodeKind::CompilerSelectIf:
+    case AstNodeKind::CompilerCheckIf:
+    case AstNodeKind::CompilerAst:
+        return ((AstCompilerSpecFunc*) this)->clone(context);
+    case AstNodeKind::Namespace:
+        return ((AstNameSpace*) this)->clone(context);
+    case AstNodeKind::Try:
+    case AstNodeKind::Catch:
+    case AstNodeKind::Assume:
+    case AstNodeKind::Throw:
+        return ((AstTryCatchAssume*) this)->clone(context);
+    case AstNodeKind::Alias:
+        return ((AstAlias*) this)->clone(context);
+    case AstNodeKind::Cast:
+    case AstNodeKind::AutoCast:
+    case AstNodeKind::BitCast:
+        return ((AstCast*) this)->clone(context);
+    case AstNodeKind::FuncCallParams:
+        return ((AstFuncCallParams*) this)->clone(context);
+    case AstNodeKind::Range:
+        return ((AstRange*) this)->clone(context);
+    case AstNodeKind::MakePointerLambda:
+        return ((AstMakePointerLambda*) this)->clone(context);
 
-    return newNode;
+    default:
+    {
+        auto newNode = Ast::newNode<AstNode>();
+        if (flags & AST_NEED_SCOPE)
+        {
+            auto cloneContext        = context;
+            cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+            newNode->copyFrom(cloneContext, this);
+            context.propageResult(cloneContext);
+        }
+        else
+            newNode->copyFrom(context, this);
+        return newNode;
+    }
+    }
 }
 
 AstNode* AstVarDecl::clone(CloneContext& context)
@@ -739,17 +845,6 @@ AstNode* AstDropCopyMove::clone(CloneContext& context)
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->count      = findChildRef(count, newNode);
-    return newNode;
-}
-
-AstNode* AstReloc::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstReloc>();
-    newNode->copyFrom(context, this);
-
-    newNode->expression1 = findChildRef(expression1, newNode);
-    newNode->expression2 = findChildRef(expression2, newNode);
-    newNode->count       = findChildRef(count, newNode);
     return newNode;
 }
 

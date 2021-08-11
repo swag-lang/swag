@@ -554,31 +554,31 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->token.text == g_LangSpec.name_opInit)
         {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto       typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
         }
         else if (funcNode->token.text == g_LangSpec.name_opDrop)
         {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto       typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
             SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec.name_opPostCopy)
         {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto       typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
             SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->token, Utf8::format(Msg0765, typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec.name_opPostMove)
         {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto       typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
@@ -611,10 +611,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     {
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
-        // The function wants to return something, but has the 'Swag.noreturn' attribute
+        // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
             return context->report({funcNode->returnType, Msg0766});
-        // The function returns nothing but has the 'Swag.discardable' attribute
+        // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, funcNode->token, Msg0767});
     }

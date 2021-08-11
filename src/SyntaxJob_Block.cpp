@@ -115,7 +115,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
             Scoped scoped(this, newScope);
 
-            auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::Statement, sourceFile, caseNode);
+            auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::SwitchCaseBlock, sourceFile, caseNode);
             statement->allocateExtension();
             statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
             statement->ownerCase                    = caseNode;

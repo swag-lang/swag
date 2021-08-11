@@ -553,7 +553,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
         SWAG_ASSERT(fallNode->switchCase->caseIndex < switchNode->cases.size() - 1);
 
         auto nextCase      = switchNode->cases[fallNode->switchCase->caseIndex + 1];
-        auto nextCaseBlock = CastAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::Statement);
+        auto nextCaseBlock = CastAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::SwitchCaseBlock);
 
         inst        = context->bc->out + fallNode->jumpInstruction;
         diff        = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
@@ -601,7 +601,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
     auto node      = context->node;
-    auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
+    auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
     auto caseNode  = blockNode->ownerCase;
 
     if (caseNode->ownerSwitch->expression)
@@ -689,7 +689,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
+    auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
     // For the default case, do nothing, fallback to the end of the switch
     if (blockNode->ownerCase->specFlags & AST_SPEC_SWITCHCASE_ISDEFAULT)
