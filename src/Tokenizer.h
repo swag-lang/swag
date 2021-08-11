@@ -4,7 +4,7 @@ struct SourceFile;
 struct TypeInfo;
 enum class Intrisic;
 
-enum class TokenId : uint16_t
+enum class TokenId : uint8_t
 {
 #define DEFINE_TOKEN_ID(__id, __flags) __id,
 #include "TokenIds.h"
@@ -54,12 +54,14 @@ struct SourceLocation
 
 struct Token
 {
+    TokenId     id = TokenId::Invalid;
+    LiteralType literalType;
+    uint8_t     padding[6];
+
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
-    LiteralType    literalType;
-    TokenId        id = TokenId::Invalid;
 };
 
 struct Tokenizer
