@@ -260,6 +260,12 @@ struct AstNode
         uint32_t anyTypeOffset;
     };
 
+    AstNodeKind         kind;
+    AstNodeResolveState semanticState;
+    AstNodeResolveState bytecodeState;
+    uint8_t             specFlags;
+    uint32_t            childParentIdx;
+
     shared_mutex           mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
@@ -293,12 +299,6 @@ struct AstNode
 
     uint32_t doneFlags;
     uint32_t semFlags;
-
-    uint32_t            childParentIdx;
-    AstNodeResolveState semanticState;
-    AstNodeResolveState bytecodeState;
-    AstNodeKind         kind;
-    uint8_t             specFlags;
 };
 
 struct AstVarDecl : public AstNode
