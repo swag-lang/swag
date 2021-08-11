@@ -476,6 +476,9 @@
     <ClCompile Include="..\src\LoadSourceFileJob.cpp">
       <Filter>Main\Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\AstNode_Clone.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

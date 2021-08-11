@@ -267,6 +267,7 @@
     <ClCompile Include="../src/AstOutput.cpp" />
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
+    <ClCompile Include="..\src\AstNode_Clone.cpp" />
     <ClCompile Include="..\src\Backend_Export.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Data.cpp" />
     <ClCompile Include="../src/BackendLLVMDbg.cpp" />
