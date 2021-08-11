@@ -7,9 +7,9 @@ struct RegisterList
     // To optimize memory, register cannot have a value > 255. This should be fine as we are recycling
     // registers. But perhaps one day an assert will trigger (if we do not correctly free a register for example).
     // For now, stick to 8 bits max.
-    uint8_t oneResult[MAX_STATIC];
-    uint8_t countResults = 0;
-    bool    canFree      = true;
+    uint8_t oneResult[MAX_STATIC] = {0};
+    uint8_t countResults          = 0;
+    bool    cannotFree            = false;
 
     RegisterList()
     {
@@ -38,19 +38,19 @@ struct RegisterList
         SWAG_ASSERT(r <= 255);
         oneResult[0] = (uint8_t) r;
         countResults = 1;
-        canFree      = true;
+        cannotFree   = false;
     }
 
     void operator+=(const RegisterList& other)
     {
-        SWAG_ASSERT(canFree == other.canFree);
+        SWAG_ASSERT(cannotFree == other.cannotFree);
         for (int i = 0; i < (int) other.size(); i++)
             *this += other[i];
     }
 
     void operator+=(uint32_t r)
     {
-        SWAG_ASSERT(canFree);
+        SWAG_ASSERT(!cannotFree);
         SWAG_ASSERT(r <= 255);
         SWAG_ASSERT(countResults < MAX_STATIC);
         oneResult[countResults++] = (uint8_t) r;
@@ -59,7 +59,7 @@ struct RegisterList
     void clear()
     {
         countResults = 0;
-        canFree      = true;
+        cannotFree   = false;
     }
 
     bool operator==(const RegisterList& other)

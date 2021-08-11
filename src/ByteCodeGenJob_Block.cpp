@@ -93,9 +93,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     if (overload->flags & OVERLOAD_VAR_INLINE)
                     {
                         overload->registers = callParam->resultRegisterRC;
-                        if (overload->registers.canFree)
+                        if (!overload->registers.cannotFree)
                         {
-                            overload->registers.canFree = false;
+                            overload->registers.cannotFree = true;
                             node->allocateExtension();
                             for (int r = 0; r < overload->registers.size(); r++)
                                 node->extension->registersToRelease.push_back(overload->registers[r]);
@@ -130,9 +130,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             if (overload->flags & OVERLOAD_VAR_INLINE)
                             {
                                 overload->registers = callParam->resultRegisterRC;
-                                if (overload->registers.canFree)
+                                if (!overload->registers.cannotFree)
                                 {
-                                    overload->registers.canFree = false;
+                                    overload->registers.cannotFree = true;
                                     node->allocateExtension();
                                     for (int r = 0; r < overload->registers.size(); r++)
                                         node->extension->registersToRelease.push_back(overload->registers[r]);
@@ -159,7 +159,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         if (overload->flags & OVERLOAD_VAR_INLINE)
                         {
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
-                            overload->registers.canFree = false;
+                            overload->registers.cannotFree = true;
                             node->allocateExtension();
                             for (int r = 0; r < overload->registers.size(); r++)
                                 node->extension->registersToRelease.push_back(overload->registers[r]);
@@ -780,7 +780,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     if (!scope)
         return true;
 
-    auto&       table = scope->symTable;
+    auto&      table = scope->symTable;
     ScopedLock lock(table.mutex);
 
     auto count = (int) table.structVarsToDrop.size() - 1;

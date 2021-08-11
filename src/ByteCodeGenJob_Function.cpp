@@ -1136,7 +1136,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
                 if (param->indexParam == i)
                 {
-                    if (param->additionalRegisterRC.canFree)
+                    if (!param->additionalRegisterRC.cannotFree)
                     {
                         for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->additionalRegisterRC[r]);
@@ -1144,7 +1144,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                     {
-                        if (freeRegistersParams && param->resultRegisterRC.canFree)
+                        if (freeRegistersParams && !param->resultRegisterRC.cannotFree)
                             toFree.push_back(param->resultRegisterRC[r]);
                         accParams.push_back(param->resultRegisterRC[r]);
                         maxCallParams++;
@@ -1179,7 +1179,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                     for (int r = regList.size() - 1; r >= 0;)
                     {
-                        if (regList.canFree)
+                        if (!regList.cannotFree)
                             toFree.push_back(regList[r]);
                         accParams.push_back(regList[r--]);
                         precallStack += sizeof(Register);
@@ -1223,7 +1223,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     if (typeRawVariadic->kind == TypeInfoKind::Native && typeRawVariadic->sizeOf < sizeof(Register))
                     {
                         done = true;
-                        if (param->additionalRegisterRC.canFree)
+                        if (!param->additionalRegisterRC.cannotFree)
                         {
                             for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
                                 toFree.push_back(param->additionalRegisterRC[r]);
@@ -1231,7 +1231,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                         for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                         {
-                            if (freeRegistersParams && param->resultRegisterRC.canFree)
+                            if (freeRegistersParams && !param->resultRegisterRC.cannotFree)
                                 toFree.push_back(param->resultRegisterRC[r]);
                             auto inst   = emitInstruction(context, ByteCodeOp::PushRVParam, param->resultRegisterRC[r--]);
                             inst->b.u64 = typeRawVariadic->sizeOf;
@@ -1244,7 +1244,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 if (!done)
                 {
-                    if (param->additionalRegisterRC.canFree)
+                    if (!param->additionalRegisterRC.cannotFree)
                     {
                         for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->additionalRegisterRC[r]);
@@ -1252,7 +1252,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                     {
-                        if (freeRegistersParams && param->resultRegisterRC.canFree)
+                        if (freeRegistersParams && !param->resultRegisterRC.cannotFree)
                             toFree.push_back(param->resultRegisterRC[r]);
                         accParams.push_back(param->resultRegisterRC[r--]);
                         precallStack += sizeof(Register);

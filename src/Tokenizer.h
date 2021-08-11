@@ -48,15 +48,15 @@ enum class LiteralType : uint8_t
 
 struct SourceLocation
 {
-    uint32_t line;
-    uint32_t column;
+    uint32_t line   = 0;
+    uint32_t column = 0;
 };
 
 struct Token
 {
-    TokenId     id = TokenId::Invalid;
-    LiteralType literalType;
-    uint8_t     padding[6];
+    TokenId     id          = TokenId::Invalid;
+    LiteralType literalType = (LiteralType) 0;
+    uint8_t     padding[6]  = {0};
 
     Utf8           text;
     SourceLocation startLocation;

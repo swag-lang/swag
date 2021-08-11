@@ -13,7 +13,7 @@
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();
-    rc.canFree = true;
+    rc.cannotFree = false;
     if (num == 0)
         return;
     if (num == 1)
@@ -94,7 +94,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     bool onlyOne = false;
     if (resultRegisterRC.size() == 1)
     {
-        SWAG_ASSERT(resultRegisterRC.canFree);
+        SWAG_ASSERT(!resultRegisterRC.cannotFree);
         onlyOne = true;
         resultRegisterRC += reserveRegisterRC(context);
     }
@@ -116,30 +116,30 @@ void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& 
     if (rc.size() == count)
         return;
 
-    SWAG_ASSERT(rc.canFree);
+    SWAG_ASSERT(!rc.cannotFree);
 
     RegisterList rs;
     for (int i = 0; i < count; i++)
         rs += rc[i];
 
-    if (rc.canFree)
+    if (!rc.cannotFree)
     {
         for (int i = count; i < rc.size(); i++)
             freeRegisterRC(context, rc[i]);
     }
 
-    rs.canFree = rc.canFree;
-    rc         = rs;
+    rs.cannotFree = rc.cannotFree;
+    rc            = rs;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
-    if (!rc.canFree)
+    if (rc.cannotFree)
         return;
     for (int i = 0; i < rc.size(); i++)
         freeRegisterRC(context, rc[i]);
     rc.clear();
-    rc.canFree = true;
+    rc.cannotFree = false;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
@@ -152,7 +152,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 
 void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0)
 {
-    if (!r0.canFree)
+    if (r0.cannotFree)
     {
         RegisterList re;
         reserveRegisterRC(context, re, r0.size());

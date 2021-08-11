@@ -111,8 +111,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (resolved->typeInfo->numRegisters() == 1 && !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
             {
                 resolved->flags |= OVERLOAD_REGISTER;
-                resolved->registers         = reserveRegisterRC(context);
-                resolved->registers.canFree = false;
+                resolved->registers            = reserveRegisterRC(context);
+                resolved->registers.cannotFree = true;
                 node->ownerScope->owner->allocateExtension();
                 for (int i = 0; i < resolved->registers.size(); i++)
                     node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);

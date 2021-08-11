@@ -467,9 +467,9 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
     // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
     ensureCanBeChangedRC(context, left->resultRegisterRC);
-    left->additionalRegisterRC     = left->resultRegisterRC;
-    left->resultRegisterRC.canFree = false;
-    binNode->seekJumpExpression    = context->bc->numInstructions;
+    left->additionalRegisterRC        = left->resultRegisterRC;
+    left->resultRegisterRC.cannotFree = true;
+    binNode->seekJumpExpression       = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
     return true;
 }
@@ -503,9 +503,9 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
     // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
     ensureCanBeChangedRC(context, left->resultRegisterRC);
-    left->additionalRegisterRC     = left->resultRegisterRC;
-    left->resultRegisterRC.canFree = false;
-    binNode->seekJumpExpression    = context->bc->numInstructions;
+    left->additionalRegisterRC        = left->resultRegisterRC;
+    left->resultRegisterRC.cannotFree = true;
+    binNode->seekJumpExpression       = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
     return true;
 }
@@ -566,7 +566,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
             {
                 auto front = node->childs[0];
-                SWAG_ASSERT(front->additionalRegisterRC.canFree);
+                SWAG_ASSERT(!front->additionalRegisterRC.cannotFree);
                 r2 = front->additionalRegisterRC;
                 front->additionalRegisterRC.clear();
             }

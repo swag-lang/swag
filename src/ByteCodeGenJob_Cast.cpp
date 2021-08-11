@@ -46,7 +46,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
     }
 
-    if (exprNode->resultRegisterRC.canFree)
+    if (!exprNode->resultRegisterRC.cannotFree)
     {
         exprNode->ownerScope->owner->allocateExtension();
         for (int r = 0; r < exprNode->resultRegisterRC.size(); r++)
