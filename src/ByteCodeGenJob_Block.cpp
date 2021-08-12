@@ -249,7 +249,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
 {
     auto node = context->node;
 
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -406,7 +406,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     auto         node = context->node;
     PushLocation pl(context, &node->token.endLocation);
 
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -685,7 +685,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -715,7 +715,7 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
     Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope));
+        SWAG_CHECK(computeLeaveScope(context, scope));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -733,7 +733,7 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope));
+        SWAG_CHECK(computeLeaveScope(context, scope));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -751,7 +751,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope));
+        SWAG_CHECK(computeLeaveScope(context, scope));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -913,7 +913,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope, forceNoDrop, errDefer));
+        SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, errDefer));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -921,7 +921,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
+bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
 {
     PushLocation pl(context, &context->node->token.endLocation);
 
@@ -964,17 +964,17 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
     case AstNodeKind::CompilerMacro:
     {
         auto macroNode = CastAst<AstCompilerMacro>(node, AstNodeKind::CompilerMacro);
-        SWAG_CHECK(emitLeaveScope(context, macroNode->scope));
+        SWAG_CHECK(computeLeaveScope(context, macroNode->scope));
         break;
     }
     case AstNodeKind::CompilerInline:
     {
         auto inlineNode = CastAst<AstCompilerInline>(node, AstNodeKind::CompilerInline);
-        SWAG_CHECK(emitLeaveScope(context, inlineNode->scope));
+        SWAG_CHECK(computeLeaveScope(context, inlineNode->scope));
         break;
     }
     default:
-        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
         break;
     }
 

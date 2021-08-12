@@ -23,7 +23,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
         return true;
 
-    SWAG_CHECK(emitLeaveScope(context, funcDecl->scope));
+    SWAG_CHECK(computeLeaveScope(context, funcDecl->scope));
     if (context->result != ContextResult::Done)
         return true;
 

@@ -351,7 +351,7 @@ struct ByteCodeGenJob : public Job
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool errDefer);
     static bool emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer);
-    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool errDefer = false);
+    static bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool errDefer = false);
     static bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
     static bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);
     static bool emitConditionalOp(ByteCodeGenContext* context);
