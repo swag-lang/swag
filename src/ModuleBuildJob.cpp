@@ -183,8 +183,6 @@ JobResult ModuleBuildJob::execute()
         // Each file with a #global testerror on top is now in a dedicated module, so we need to
         // run them in case the error has not been triggered during the syntax pass
         {
-            SharedLock lkm(module->mutexFile);
-            printf("%d\n", module->errorModules.size());
             for (auto errorMd : module->errorModules)
             {
                 auto job       = g_Allocator.alloc<ModuleBuildJob>();
