@@ -45,8 +45,6 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
-        loadModuleError = OS::getLastErrorAsString();
-
         // Try on system folders
         if (canBeSystem)
         {
@@ -58,6 +56,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         if (h == NULL)
         {
             ScopedLock lk(mutexLoaded);
+            loadModuleError = OS::getLastErrorAsString();
             failedLoadedModules.insert(name);
             return false;
         }
@@ -142,7 +141,10 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
     {
         auto fnPtr = OS::getProcAddress(moduleHandle, one.funcDecl->fullnameForeign.c_str());
         if (!fnPtr)
+        {
+            loadModuleError = OS::getLastErrorAsString();
             return false;
+        }
 
         *one.patchAddress = ByteCode::doForeignLambda(fnPtr);
     }

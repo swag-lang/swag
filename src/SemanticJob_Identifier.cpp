@@ -3412,9 +3412,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         if (needToWait)
         {
             ScopedLock lkn(symbol->mutex);
+            needToWait = false;
             if (!needToWaitForSymbol(context, node, symbol, needToWait))
                 continue;
-            job->waitSymbolNoLock(symbol);
+            if (needToWait)
+                job->waitSymbolNoLock(symbol);
         }
 
         return true;
