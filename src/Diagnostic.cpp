@@ -8,7 +8,7 @@ thread_local Utf8 g_ErrorHint;
 
 void Diagnostic::printSourceLine(int headerSize) const
 {
-    if (g_CommandLine.errorSourceOut)
+    if (g_CommandLine->errorSourceOut)
     {
         g_Log.print("-->");
         for (int i = 0; i < headerSize - 3; i++)
@@ -48,7 +48,7 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
-        if (g_CommandLine.warningsAsErrors)
+        if (g_CommandLine->warningsAsErrors)
         {
             g_Log.setColor(errorColor);
             g_Log.print("error: (from warning): ");
@@ -85,7 +85,7 @@ void Diagnostic::report(bool verboseMode) const
     int headerSize = 0;
 
     // Source line right after the header
-    if (!g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
+    if (!g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
         printSourceLine(headerSize + 4);
 
     // User message
@@ -93,7 +93,7 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.eol();
 
     // Source file and location on their own line
-    if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
+    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
     {
         g_Log.setColor(sourceFileColor);
         printSourceLine(headerSize + 4);
@@ -103,7 +103,7 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.setColor(codeColor);
 
     // Source code
-    if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
+    if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut)
     {
         auto location0 = startLocation;
         auto location1 = endLocation;
@@ -333,7 +333,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Code remarks
-    if (g_CommandLine.errorSourceOut && g_CommandLine.errorNoteOut)
+    if (g_CommandLine->errorSourceOut && g_CommandLine->errorNoteOut)
     {
         if (!remarks.empty())
         {

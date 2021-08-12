@@ -666,7 +666,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     {
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = g_CommandLine.buildCfg;
+        node->computedValue->text = g_CommandLine->buildCfg;
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
@@ -696,7 +696,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             return true;
         SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, Msg0248}));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(Msg0249, front->typeInfo->getDisplayName().c_str())}));
-        auto tag       = g_Workspace.hasTag(front->computedValue->text);
+        auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
         node->computedValue->reg.b = tag ? true : false;
@@ -724,7 +724,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo = typeNode->typeInfo;
         node->setFlagsValueIsComputed();
 
-        auto tag = g_Workspace.hasTag(nameNode->computedValue->text);
+        auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
         if (tag)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
@@ -749,7 +749,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerLocation:
     {
-        node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
+        node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         auto locNode   = node;
 
         if (!node->childs.empty())
@@ -767,7 +767,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerCallerLocation:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Msg0254}));
-        node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
+        node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:

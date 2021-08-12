@@ -1488,8 +1488,8 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
-        if (funcNode->stackSize > g_CommandLine.stackSizeRT)
-            context->sourceFile->report({funcNode, funcNode->token, Utf8::format(Msg0536, Utf8::toNiceSize(g_CommandLine.stackSizeRT).c_str())});
+        if (funcNode->stackSize > g_CommandLine->stackSizeRT)
+            context->sourceFile->report({funcNode, funcNode->token, Utf8::format(Msg0536, Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

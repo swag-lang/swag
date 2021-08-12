@@ -70,7 +70,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 
     // any
     {
-        auto              ptrType = getPointerToType(g_Workspace.swagScope.regTypeInfo, mainFile);
+        auto              ptrType = getPointerToType(g_Workspace->swagScope.regTypeInfo, mainFile);
         auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "ptrvalue", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "typeinfo", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrType);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});

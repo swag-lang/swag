@@ -738,7 +738,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr0.LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace.swagScope.regTypeInfo);
+        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "typeinfo";
         tr0.LF_FieldList.fields.push_back(field);
@@ -1385,7 +1385,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
         emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
     return true;
 }

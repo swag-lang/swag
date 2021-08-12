@@ -353,7 +353,7 @@ namespace Ast
         newScope->parentScope = parentScope;
         newScope->owner       = owner;
         newScope->name        = name;
-        if (g_CommandLine.stats)
+        if (g_CommandLine->stats)
             g_Stats.memScopes += sizeof(Scope);
 
         return newScope;

@@ -18,7 +18,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
-    if (g_CommandLine.os == BackendOs::Windows)
+    if (g_CommandLine->os == BackendOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         {
@@ -35,7 +35,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 
         // Stack probing. Must do it by end to avoid linking with vc runtime on windows.
         // void __chkstk()
-        if (g_CommandLine.arch == BackendArch::X86_64)
+        if (g_CommandLine->arch == BackendArch::X86_64)
         {
             Utf8 in;
             in.append(R"(
@@ -87,7 +87,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     SWAG_CHECK(emitOS(buildParameters));
 
     const char* entryPoint = nullptr;
-    switch (g_CommandLine.os)
+    switch (g_CommandLine->os)
     {
     case BackendOs::Windows:
         entryPoint = "mainCRTStartup";

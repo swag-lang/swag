@@ -330,7 +330,7 @@ bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embed
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0367}));
-    SWAG_ASSERT(g_CommandLine.test);
+    SWAG_ASSERT(g_CommandLine->test);
     SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, Msg0368}));
 
     if (embedded)
@@ -459,22 +459,22 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_lexer)
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine->test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == g_LangSpec->name_syntax)
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine->test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == g_LangSpec->name_semantic)
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine->test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == g_LangSpec->name_backend)
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine->test)
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else
@@ -494,7 +494,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (!moduleSpecified)
         {
             moduleSpecified = true;
-            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
@@ -503,7 +503,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0374}));
-        SWAG_ASSERT(g_CommandLine.test);
+        SWAG_ASSERT(g_CommandLine->test);
 
         if (token.text == g_LangSpec->name_testerrors)
             sourceFile->multipleTestErrors = true;
@@ -526,7 +526,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (!moduleSpecified)
         {
             moduleSpecified = true;
-            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
@@ -535,7 +535,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0375}));
-        SWAG_ASSERT(g_CommandLine.test);
+        SWAG_ASSERT(g_CommandLine->test);
 
         if (token.text == g_LangSpec->name_testwarnings)
             sourceFile->multipleTestWarnings = true;

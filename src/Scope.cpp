@@ -257,7 +257,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
     newScope->name  = scopeName;
     if (isPrivate)
         newScope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.memScopes += sizeof(Scope);
 
     addChildNoLock(newScope);

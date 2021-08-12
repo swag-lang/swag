@@ -608,7 +608,7 @@ template<typename T>
 T* allocType()
 {
     auto newType = g_Allocator.alloc<T>();
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.memTypes += sizeof(T);
     return newType;
 }

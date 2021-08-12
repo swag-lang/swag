@@ -26,7 +26,7 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     // Some dependencies can have been added by this stage
     if (!depModule)
     {
-        depModule = g_Workspace.getModuleByName(dep->name);
+        depModule = g_Workspace->getModuleByName(dep->name);
         SWAG_ASSERT(depModule);
         depModule->allocateBackend();
         dep->module = depModule;
@@ -82,7 +82,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Init)
     {
         if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
-            module->initFrom(g_Workspace.runtimeModule);
+            module->initFrom(g_Workspace->runtimeModule);
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;
         else if (module->kind == ModuleKind::Config)
@@ -100,7 +100,7 @@ JobResult ModuleBuildJob::execute()
 
         for (auto& dep : module->moduleDependencies)
         {
-            auto depModule = g_Workspace.getModuleByName(dep->name);
+            auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
                 module->error(Utf8::format(Msg0499, dep->name.c_str()));
@@ -136,10 +136,10 @@ JobResult ModuleBuildJob::execute()
 
         // If we do not need to compile, then exit, we're done with that module
         bool mustBuild = true;
-        if (!module->backend->mustCompile && !g_CommandLine.test)
+        if (!module->backend->mustCompile && !g_CommandLine->test)
         {
             // Force the build if we will run that module in bytecode mode
-            if (!g_CommandLine.scriptMode || g_Workspace.runModule != module)
+            if (!g_CommandLine->scriptMode || g_Workspace->runModule != module)
                 mustBuild = false;
         }
 
@@ -154,7 +154,7 @@ JobResult ModuleBuildJob::execute()
             module->syntaxGroup.complete(this);
 
             // When synchrone, do it now, as syntaxGroup is not relevant
-            if (g_CommandLine.numCores == 1)
+            if (g_CommandLine->numCores == 1)
             {
                 for (auto file : module->files)
                 {
@@ -175,7 +175,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
-        if (g_CommandLine.buildPass <= BuildPass::Syntax)
+        if (g_CommandLine->buildPass <= BuildPass::Syntax)
             return JobResult::ReleaseJob;
 
         // Need to run all error modules
@@ -190,7 +190,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         pass = ModuleBuildPass::IncludeSwg;
-        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
+        if (g_CommandLine->output && !module->path.empty() && module->kind != ModuleKind::Test)
         {
             publishFilesToPublic();
             publishFilesToTarget();
@@ -327,16 +327,16 @@ JobResult ModuleBuildJob::execute()
         PushSwagContext cxt;
 
         // Setup runtime
-        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
+        auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
         if (module->criticalErrors)
             return JobResult::ReleaseJob;
 
         // #init functions are only executed in script mode, if the module has a #main
-        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode && module->byteCodeMainFunc;
+        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine->scriptMode && module->byteCodeMainFunc;
         // OR in a test module, during testing
-        callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests;
+        callInitDrop |= g_CommandLine->test && g_CommandLine->runByteCodeTests;
         if (callInitDrop)
         {
             for (auto func : module->byteCodeInitFunc)
@@ -358,7 +358,7 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodeRunFunc)
             {
-                if (g_CommandLine.stats)
+                if (g_CommandLine->stats)
                     g_Stats.runFunctions++;
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
@@ -372,7 +372,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #test functions are only executed in test mode
-        if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+        if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
         {
             if (!module->byteCodeTestFunc.empty())
             {
@@ -382,7 +382,7 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeTestFunc)
                 {
-                    if (g_CommandLine.stats)
+                    if (g_CommandLine->stats)
                         g_Stats.testFunctions++;
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
@@ -400,7 +400,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #main function, in script mode
-        if (module->byteCodeMainFunc && g_CommandLine.scriptMode)
+        if (module->byteCodeMainFunc && g_CommandLine->scriptMode)
         {
             module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
             if (module->criticalErrors)
@@ -432,13 +432,13 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Output)
     {
         // During unit testing, be sure we don't have untriggered errors
-        if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+        if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
         {
             for (auto file : module->files)
             {
                 if (file->numTestErrors)
                 {
-                    if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                    if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
                     {
                         auto nb             = file->numTestErrors.load();
                         file->numTestErrors = 0;
@@ -448,7 +448,7 @@ JobResult ModuleBuildJob::execute()
 
                 if (file->numTestWarnings)
                 {
-                    if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                    if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
                     {
                         auto nb               = file->numTestWarnings.load();
                         file->numTestWarnings = 0;
@@ -466,14 +466,14 @@ JobResult ModuleBuildJob::execute()
         else
         {
             // Do not run native tests or command in script mode, it's already done in bytecode
-            if (g_CommandLine.scriptMode)
+            if (g_CommandLine->scriptMode)
                 pass = ModuleBuildPass::Done;
             else
                 pass = ModuleBuildPass::RunNative;
 
             if (module->mustOutputSomething())
             {
-                if (g_CommandLine.output)
+                if (g_CommandLine->output)
                 {
                     module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
                     auto outputJob          = g_Allocator.alloc<ModuleOutputJob>();
@@ -499,7 +499,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
+        if (module->mustGenerateTestExe() && g_CommandLine->runBackendTests)
         {
             auto job                            = g_Allocator.alloc<ModuleRunJob>();
             job->module                         = module;
@@ -511,7 +511,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Run command
-        if (g_CommandLine.run && module->kind != ModuleKind::Test)
+        if (g_CommandLine->run && module->kind != ModuleKind::Test)
         {
             auto job                         = g_Allocator.alloc<ModuleRunJob>();
             job->module                      = module;
@@ -593,7 +593,7 @@ void ModuleBuildJob::publishFilesToTarget()
         auto job          = g_Allocator.alloc<CopyFileJob>();
         job->module       = module;
         job->sourcePath   = publishPath + "/" + cFileName;
-        job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+        job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
         job->dependentJob = this;
         jobsToAdd.push_back(job);
     });
@@ -610,7 +610,7 @@ void ModuleBuildJob::publishFilesToTarget()
             auto job          = g_Allocator.alloc<CopyFileJob>();
             job->module       = module;
             job->sourcePath   = osArchPath + "/" + cFileName;
-            job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+            job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
             job->dependentJob = this;
             jobsToAdd.push_back(job);
         });

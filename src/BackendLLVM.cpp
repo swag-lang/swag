@@ -215,7 +215,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
 
     if (pp.pass == BackendPreCompilePass::End)
     {
-        if (g_Workspace.bootstrapModule->numErrors || g_Workspace.runtimeModule->numErrors)
+        if (g_Workspace->bootstrapModule->numErrors || g_Workspace->runtimeModule->numErrors)
             module->numErrors++;
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -255,7 +255,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     // Target triple
     string archName;
-    switch (g_CommandLine.arch)
+    switch (g_CommandLine->arch)
     {
     case BackendArch::X86_64:
         archName = (const char*) llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin();
@@ -266,7 +266,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string vendorName;
-    switch (g_CommandLine.vendor)
+    switch (g_CommandLine->vendor)
     {
     case BackendVendor::Pc:
         vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
@@ -277,7 +277,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string osName;
-    switch (g_CommandLine.os)
+    switch (g_CommandLine->os)
     {
     case BackendOs::Windows:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
@@ -294,7 +294,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string abiName;
-    switch (g_CommandLine.abi)
+    switch (g_CommandLine->abi)
     {
     case BackendAbi::Msvc:
         abiName = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();

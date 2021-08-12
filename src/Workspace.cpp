@@ -8,11 +8,11 @@
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
 
-Workspace g_Workspace;
+Workspace *g_Workspace = nullptr;
 
 void Workspace::setupPaths()
 {
-    workspacePath = fs::absolute(g_CommandLine.workspacePath);
+    workspacePath = fs::absolute(g_CommandLine->workspacePath);
 
     testsPath = workspacePath;
     testsPath.append(SWAG_TESTS_FOLDER);
@@ -35,7 +35,7 @@ void Workspace::setupUserTags()
 {
     // Command line tags
     // Format is --tag:"TagName : type = value"
-    for (auto& tag : g_CommandLine.tags)
+    for (auto& tag : g_CommandLine->tags)
     {
         OneTag oneTag;
         oneTag.cmdLine = tag;
@@ -156,7 +156,7 @@ void Workspace::setup()
         g_Log.error(Utf8::format(Msg0541, workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!g_CommandLine.scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
+    else if (!g_CommandLine->scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
     {
         g_Log.error(Utf8::format(Msg0542, workspacePath.string().c_str()));
         invalid = true;
@@ -174,7 +174,7 @@ void Workspace::setup()
 void Workspace::setupCachePath()
 {
     // Cache directory
-    cachePath = g_CommandLine.cachePath;
+    cachePath = g_CommandLine->cachePath;
     if (cachePath.empty())
     {
         cachePath = OS::getTemporaryFolder();

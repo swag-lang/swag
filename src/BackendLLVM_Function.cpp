@@ -5140,7 +5140,7 @@ void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::Alloca
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
-    auto typeFuncBC = g_Workspace.runtimeModule->getRuntimeTypeFct(name);
+    auto typeFuncBC = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     auto FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
 
     // Invert regs

@@ -91,4 +91,4 @@ struct Workspace
     SwagScope          swagScope;
 };
 
-extern Workspace g_Workspace;
+extern Workspace* g_Workspace;

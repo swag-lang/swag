@@ -4,7 +4,7 @@
 #include "ErrorIds.h"
 #include "Log.h"
 
-CommandLine g_CommandLine;
+CommandLine* g_CommandLine = nullptr;
 
 bool CommandLine::check()
 {
@@ -73,12 +73,12 @@ bool CommandLine::check()
     }
 
     // Add/check script file extension
-    if (!g_CommandLine.scriptName.empty())
+    if (!g_CommandLine->scriptName.empty())
     {
-        fs::path p(g_CommandLine.scriptName);
+        fs::path p(g_CommandLine->scriptName);
         if (p.extension().string().empty())
         {
-            g_CommandLine.scriptName += ".swgs";
+            g_CommandLine->scriptName += ".swgs";
         }
         else if (p.extension().string() != ".swgs")
         {

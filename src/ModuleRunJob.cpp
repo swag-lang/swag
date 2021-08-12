@@ -7,7 +7,7 @@
 
 JobResult ModuleRunJob::execute()
 {
-    fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName;
+    fs::path path = g_Workspace->targetPath.string() + buildParameters.outputFileName;
     path += Backend::getOutputFileExtension(BuildCfgBackendKind::Executable);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
@@ -24,14 +24,14 @@ JobResult ModuleRunJob::execute()
     {
         uint32_t numErrors = 0;
         OS::doProcess(module, path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
-        g_Workspace.numErrors += numErrors;
+        g_Workspace->numErrors += numErrors;
         module->numErrors += numErrors;
     }
     else
     {
         auto cmdLine = path.string();
         cmdLine += " ";
-        cmdLine += g_CommandLine.userArguments;
+        cmdLine += g_CommandLine->userArguments;
         OS::doRunProcess(cmdLine, path.parent_path().parent_path().string());
     }
 

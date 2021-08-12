@@ -237,8 +237,8 @@ void initDefaultContext()
     g_TlsThreadLocalId = OS::tlsAlloc();
     OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
 
-    g_ProcessInfos.arguments.buffer = g_CommandLine.userArgumentsSlice.first;
-    g_ProcessInfos.arguments.count  = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+    g_ProcessInfos.arguments.buffer = g_CommandLine->userArgumentsSlice.first;
+    g_ProcessInfos.arguments.count  = (uint64_t) g_CommandLine->userArgumentsSlice.second;
     g_ProcessInfos.contextTlsId     = g_TlsContextId;
     g_ProcessInfos.defaultContext   = &g_DefaultContext;
     g_ProcessInfos.byteCodeRun      = byteCodeRun;

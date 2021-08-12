@@ -217,9 +217,9 @@ namespace OS
                                 fileName += tokens[2];
                                 auto sourceFile = module->findFile(fileName);
                                 if (!sourceFile)
-                                    sourceFile = g_Workspace.bootstrapModule->findFile(fileName);
+                                    sourceFile = g_Workspace->bootstrapModule->findFile(fileName);
                                 if (!sourceFile)
-                                    sourceFile = g_Workspace.runtimeModule->findFile(fileName);
+                                    sourceFile = g_Workspace->runtimeModule->findFile(fileName);
                                 if (sourceFile && tokens.size() == 6) // error: drive letter: path: line: column: message
                                 {
                                     SourceLocation startLoc;

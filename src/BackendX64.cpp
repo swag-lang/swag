@@ -339,7 +339,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
     if (pp.pass == BackendPreCompilePass::End)
     {
-        if (g_Workspace.bootstrapModule->numErrors || g_Workspace.runtimeModule->numErrors)
+        if (g_Workspace->bootstrapModule->numErrors || g_Workspace->runtimeModule->numErrors)
             module->numErrors++;
         if (module->numErrors)
             return JobResult::ReleaseJob;

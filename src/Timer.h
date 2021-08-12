@@ -17,7 +17,7 @@ struct Timer
 
     void start(bool force)
     {
-        if (g_CommandLine.stats || force)
+        if ((g_CommandLine && g_CommandLine->stats) || force)
             timeBefore = OS::timerNow();
     }
 

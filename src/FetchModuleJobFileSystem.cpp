@@ -26,7 +26,7 @@ JobResult FetchModuleJobFileSystem::execute()
         srcFiles.insert(n);
     });
 
-    auto destPath = g_Workspace.dependenciesPath.string();
+    auto destPath = g_Workspace->dependenciesPath.string();
     destPath += dep->name.c_str();
 
     // Collect list of dest files if they exist, in order to remove old ones

@@ -16,7 +16,7 @@ void Log::setColor(LogColor color)
 
 void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
 {
-    if (g_CommandLine.silent)
+    if (g_CommandLine->silent)
         return;
     lock();
     setColor(headerColor);
@@ -39,7 +39,7 @@ void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColo
 
 void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot, bool mustLock)
 {
-    if (g_CommandLine.silent)
+    if (g_CommandLine->silent)
         return;
     if (mustLock)
         lock();
@@ -95,7 +95,7 @@ void Log::errorOS(const Utf8& message)
 
 void Log::message(const Utf8& message)
 {
-    if (g_CommandLine.silent)
+    if (g_CommandLine->silent)
         return;
     lock();
     setColor(LogColor::Gray);
@@ -108,7 +108,7 @@ void Log::message(const Utf8& message)
 
 void Log::verbose(const Utf8& message, bool forceEol)
 {
-    if (g_CommandLine.silent || !g_CommandLine.verbose)
+    if (g_CommandLine->silent || !g_CommandLine->verbose)
         return;
     lock();
     setColor(LogColor::DarkCyan);

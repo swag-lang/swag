@@ -70,7 +70,7 @@ void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t 
 
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
 {
-    auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+    auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
 
     SourceFile*     sourceFile;
     SourceLocation* location;
@@ -432,7 +432,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (ip->a.u32)
             context->incSP(ip->a.u32);
-        if (context->sp == context->stack + g_CommandLine.stackSizeBC)
+        if (context->sp == context->stack + g_CommandLine->stackSizeBC)
             return false;
         context->bc->leaveByteCode(context);
         context->ip = context->pop<ByteCodeInstruction*>();
@@ -1435,8 +1435,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicArguments:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) g_CommandLine.userArgumentsSlice.first;
-        registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+        registersRC[ip->a.u32].pointer = (uint8_t*) g_CommandLine->userArgumentsSlice.first;
+        registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine->userArgumentsSlice.second;
         break;
     }
     case ByteCodeOp::IntrinsicCompiler:
@@ -1454,7 +1454,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicErrorMsg:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_aterrormsg);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_aterrormsg);
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);
@@ -1463,7 +1463,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::InternalPanic:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
 
         SourceFile*     sourceFile;
         SourceLocation* location;
@@ -1478,7 +1478,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicPanic:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_atpanic);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atpanic);
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);
@@ -1520,7 +1520,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::InternalGetTlsPtr:
     {
         auto module = context->sourceFile->module;
-        auto bc     = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__tlsGetPtr);
+        auto bc     = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__tlsGetPtr);
         module->tlsSegment.makeLinear(); // be sure init segment is not divided in chunks
         context->push(module->tlsSegment.address(0));
         context->push((uint64_t) module->tlsSegment.totalCount);
@@ -1541,7 +1541,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicSetErr:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_atseterr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atseterr);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 2);
@@ -1565,26 +1565,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::InternalClearErr:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__clearerr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__clearerr);
         localCall(context, bc, 0);
         break;
     }
     case ByteCodeOp::InternalPushErr:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__pusherr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__pusherr);
         localCall(context, bc, 0);
         break;
     }
     case ByteCodeOp::InternalPopErr:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__poperr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__poperr);
         localCall(context, bc, 0);
         break;
     }
 
     case ByteCodeOp::IntrinsicInterfaceOf:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_atinterfaceof);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atinterfaceof);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 2, ip->c.u32);
@@ -1734,7 +1734,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicStrCmp:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_atstrcmp);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atstrcmp);
         context->push(registersRC[ip->d.u32].u64);
         context->push(registersRC[ip->c.u32].pointer);
         context->push(registersRC[ip->b.u32].u64);
@@ -1744,7 +1744,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicTypeCmp:
     {
-        auto bc = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name_attypecmp);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_attypecmp);
         context->push<uint64_t>(ip->c.u32);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);
@@ -2865,7 +2865,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
-            if (g_CommandLine.dbgCatch && runContext->canCatchError)
+            if (g_CommandLine->dbgCatch && runContext->canCatchError)
             {
                 runContext->ip--;
                 runContext->debugOn    = true;

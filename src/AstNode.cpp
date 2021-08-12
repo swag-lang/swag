@@ -231,7 +231,7 @@ void AstNode::allocateExtension()
     if (extension)
         return;
     extension = g_Allocator.alloc<Extension>();
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
 }
 

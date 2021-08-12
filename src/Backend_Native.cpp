@@ -19,7 +19,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase*
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
                 continue;
             if (node->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
@@ -70,10 +70,10 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     int precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 0)
     {
-        SWAG_ASSERT(g_Workspace.bootstrapModule);
-        addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
-        SWAG_ASSERT(g_Workspace.runtimeModule);
-        addFunctionsToJob(g_Workspace.runtimeModule, job, 0, (int) g_Workspace.runtimeModule->byteCodeFunc.size());
+        SWAG_ASSERT(g_Workspace->bootstrapModule);
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int) g_Workspace->bootstrapModule->byteCodeFunc.size());
+        SWAG_ASSERT(g_Workspace->runtimeModule);
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFunc.size());
     }
 
     addFunctionsToJob(moduleToGen, job, start, end);

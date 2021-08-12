@@ -333,7 +333,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Ask for bytecode
     bool genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
         genByteCode = false;
     if (node->token.text[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;

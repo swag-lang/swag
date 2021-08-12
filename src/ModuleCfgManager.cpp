@@ -44,7 +44,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
         moduleFolder = parentFolder.string();
     }
     else
-        g_Workspace.computeModuleName(parentFolder, moduleName, moduleFolder, kind);
+        g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
     auto cfgModule  = g_Allocator.alloc<Module>();
     cfgModule->kind = ModuleKind::Config;
@@ -82,7 +82,7 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
-    if (g_CommandLine.numCores == 1)
+    if (g_CommandLine->numCores == 1)
         allFiles.push_back(file);
     else
     {
@@ -106,7 +106,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
                          if (!fs::exists(cfgName))
                          {
                              g_Log.error(Utf8::format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
-                             g_Workspace.numErrors++;
+                             g_Workspace->numErrors++;
                              return;
                          }
 
@@ -144,7 +144,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
 
     // Remove source configuration file
     FILE* fdest    = nullptr;
-    auto  destPath = g_Workspace.cachePath.string();
+    auto  destPath = g_Workspace->cachePath.string();
     destPath += "/";
     cfgFilePath = destPath;
 
@@ -176,7 +176,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
 
 bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
-    string remotePath = g_CommandLine.exePath.parent_path().string();
+    string remotePath = g_CommandLine->exePath.parent_path().string();
     remotePath += "/";
     remotePath += dep->locationParam;
     remotePath += "/";
@@ -294,7 +294,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
-            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
+            if (cfgModule->wasAddedDep || g_CommandLine->computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -303,10 +303,10 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         // If the dependency does not specify something, that means that we don't know if we are up to date.
-        // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
+        // In that case, if g_CommandLine->computeDep is true, we will have to fetch dependency configuration file
         // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
         case CompareVersionResult::EQUAL:
-            if (g_CommandLine.computeDep)
+            if (g_CommandLine->computeDep)
             {
                 if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
                 {
@@ -337,7 +337,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
             cfgModule->fetchDep = dep;
-            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
+            if (cfgModule->wasAddedDep || g_CommandLine->computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -378,29 +378,29 @@ bool ModuleCfgManager::execute()
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     // In this pass, only the #dependencies block will be evaluated
-    if (!g_CommandLine.scriptCommand)
+    if (!g_CommandLine->scriptCommand)
     {
-        enumerateCfgFiles(g_Workspace.dependenciesPath);
-        enumerateCfgFiles(g_Workspace.modulesPath);
-        enumerateCfgFiles(g_Workspace.examplesPath);
-        if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
-            enumerateCfgFiles(g_Workspace.testsPath);
+        enumerateCfgFiles(g_Workspace->dependenciesPath);
+        enumerateCfgFiles(g_Workspace->modulesPath);
+        enumerateCfgFiles(g_Workspace->examplesPath);
+        if (g_CommandLine->test || g_CommandLine->listDepCmd || g_CommandLine->fetchDep)
+            enumerateCfgFiles(g_Workspace->testsPath);
     }
 
     // When this is a simple script, then register the script file as the configuration file
     else
     {
         auto file          = g_Allocator.alloc<SourceFile>();
-        file->name         = fs::path(g_CommandLine.scriptName.c_str()).filename().string().c_str();
+        file->name         = fs::path(g_CommandLine->scriptName.c_str()).filename().string().c_str();
         file->isCfgFile    = true;
         file->isScriptFile = true;
-        file->path         = Utf8::normalizePath(g_CommandLine.scriptName);
+        file->path         = Utf8::normalizePath(g_CommandLine->scriptName);
         registerCfgFile(file);
     }
 
     g_ThreadMgr.waitEndJobs();
-    g_Workspace.checkPendingJobs();
-    if (g_Workspace.numErrors)
+    g_Workspace->checkPendingJobs();
+    if (g_Workspace->numErrors)
         return false;
 
     // Remember the configuration of the local module
@@ -464,8 +464,8 @@ bool ModuleCfgManager::execute()
         }
 
         g_ThreadMgr.waitEndJobs();
-        g_Workspace.checkPendingJobs();
-        ok = g_Workspace.numErrors.load() == 0;
+        g_Workspace->checkPendingJobs();
+        ok = g_Workspace->numErrors.load() == 0;
     }
 
     if (ok)
@@ -499,7 +499,7 @@ bool ModuleCfgManager::execute()
     }
 
     // List all dependencies
-    if (ok && g_CommandLine.listDepCmd)
+    if (ok && g_CommandLine->listDepCmd)
     {
         for (auto m : allModules)
         {
@@ -518,7 +518,7 @@ bool ModuleCfgManager::execute()
     }
 
     // Fetch all modules
-    if (ok && g_CommandLine.fetchDep)
+    if (ok && g_CommandLine->fetchDep)
     {
         for (auto m : allModules)
         {
@@ -544,7 +544,7 @@ bool ModuleCfgManager::execute()
         }
 
         g_ThreadMgr.waitEndJobs();
-        ok = g_Workspace.numErrors.load() == 0;
+        ok = g_Workspace->numErrors.load() == 0;
     }
 
     return ok;

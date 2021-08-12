@@ -900,7 +900,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)
-        g_Workspace.swagScope.registerType(node->typeInfo);
+        g_Workspace->swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
     if (!(typeInfo->flags & TYPEINFO_GENERIC))
@@ -1057,7 +1057,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)
-        g_Workspace.swagScope.registerType(node->typeInfo);
+        g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
 }

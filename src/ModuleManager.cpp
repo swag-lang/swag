@@ -38,7 +38,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         return false;
 
     // First try in the target folder (local modules)
-    fs::path path = g_Workspace.targetPath;
+    fs::path path = g_Workspace->targetPath;
     path += name.c_str();
     path += ".dll";
 

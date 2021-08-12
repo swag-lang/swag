@@ -453,7 +453,7 @@ void TypeManager::registerTypeType()
     // Generate the alias for 'const *TypeInfo'
     typeInfoTypeType = allocType<TypeInfoPointer>();
     typeInfoTypeType->flags |= TYPEINFO_CONST;
-    typeInfoTypeType->pointedType = g_Workspace.swagScope.regTypeInfo;
+    typeInfoTypeType->pointedType = g_Workspace->swagScope.regTypeInfo;
     typeInfoTypeType->computeName();
     typeInfoTypeType->sizeOf                        = sizeof(void*);
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;

@@ -13,7 +13,7 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::PrepareOutput;
 
         // Generate .swg file with public definitions
-        if (g_CommandLine.output)
+        if (g_CommandLine->output)
         {
             auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
             exportJob->backend      = module->backend;
@@ -31,7 +31,7 @@ JobResult ModuleOutputJob::execute()
         int minPerFile = 1024;
         int maxPerFile = 1024;
 
-        if (g_CommandLine.backendType == BackendType::LLVM)
+        if (g_CommandLine->backendType == BackendType::LLVM)
         {
             minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;

@@ -147,7 +147,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         granularity *= 2;
         bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
         bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
-        if (g_CommandLine.stats)
+        if (g_CommandLine->stats)
             g_Stats.memSeg += bucket.size;
         memset(bucket.buffer, 0, bucket.size);
         bucket.count = size;
@@ -416,7 +416,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
 #endif
 
     initPtr.push_back(ref);
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.numInitPtr++;
 }
 
@@ -428,7 +428,7 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocTyp
     ScopedLock lk(mutexPtr);
 
     initFuncPtr[offset] = {funcName, relocType};
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.numInitFuncPtr++;
 }
 

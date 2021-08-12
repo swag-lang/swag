@@ -164,7 +164,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     uint32_t previousLogLine = 0;
 
     // Log the generated code in '<module>.swg'
-    if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
+    if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine->output)
     {
         auto modl = fromNode->sourceFile->module;
         if (modl->buildCfg.backendDebugInformations)
@@ -281,7 +281,7 @@ JobResult SyntaxJob::execute()
         baseContext        = &context;
         context.job        = this;
         context.sourceFile = sourceFile;
-        if (g_CommandLine.stats)
+        if (g_CommandLine->stats)
             g_Stats.numFiles++;
 
         tokenizer.setFile(sourceFile);

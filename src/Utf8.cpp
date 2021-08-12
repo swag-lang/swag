@@ -83,11 +83,11 @@ void Utf8::reserve(int newSize)
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.memUtf8 += allocated;
 
     g_Allocator.free(buffer, lastAllocated);
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.memUtf8 -= lastAllocated;
 
     buffer = newBuffer;

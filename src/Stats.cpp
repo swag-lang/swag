@@ -8,13 +8,13 @@ Stats g_Stats;
 
 void Stats::print()
 {
-    if (!g_CommandLine.stats || g_CommandLine.silent)
+    if (!g_CommandLine->stats || g_CommandLine->silent)
         return;
 
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.print("\n");
 
-    if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Count)
+    if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Count)
     {
         g_Log.messageHeaderDot("workers", Utf8::format("%u", numWorkers));
         g_Log.messageHeaderDot("modules", Utf8::format("%u", numModules.load()));
@@ -22,13 +22,13 @@ void Stats::print()
         g_Log.messageHeaderDot("source lines", Utf8::format("%u", numLines.load()));
         g_Log.messageHeaderDot("lines/s", Utf8::format("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
         g_Log.messageHeaderDot("ast nodes", Utf8::format("%u", numNodes.load()));
-        if (g_CommandLine.output)
+        if (g_CommandLine->output)
             g_Log.messageHeaderDot("output modules", Utf8::format("%u", numGenModules.load()));
-        if (g_CommandLine.test)
+        if (g_CommandLine->test)
             g_Log.messageHeaderDot("executed #test", Utf8::format("%u", testFunctions.load()));
         g_Log.messageHeaderDot("executed #run", Utf8::format("%u", runFunctions.load()));
-        if (g_Workspace.numErrors)
-            g_Log.messageHeaderDot("errors", Utf8::format("%u", g_Workspace.numErrors.load()), LogColor::Red);
+        if (g_Workspace->numErrors)
+            g_Log.messageHeaderDot("errors", Utf8::format("%u", g_Workspace->numErrors.load()), LogColor::Red);
         g_Log.print("\n");
 
         g_Log.messageHeaderDot("instructions", Utf8::format("%u", numInstructions.load()));
@@ -44,7 +44,7 @@ void Stats::print()
         g_Log.print("\n");
     }
 
-    if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Time)
+    if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Time)
     {
         g_Log.messageHeaderDot("cfg time", Utf8::format("%.3fs", OS::timerToSeconds(cfgTime.load())));
         g_Log.messageHeaderDot("tokenizer time", Utf8::format("%.3fs", OS::timerToSeconds(tokenizerTime.load())));
@@ -63,7 +63,7 @@ void Stats::print()
         g_Log.print("\n");
     }
 
-    if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Memory)
+    if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Memory)
     {
         g_Log.messageHeaderDot("mem total", Utf8::format("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()));
         g_Log.messageHeaderDot("mem wasted", Utf8::format("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()));
@@ -80,7 +80,7 @@ void Stats::print()
         g_Log.messageHeaderDot("mem symover", Utf8::format("%s", Utf8::toNiceSize(memSymOver.load()).c_str()));
         g_Log.messageHeaderDot("mem utf8", Utf8::format("%s", Utf8::toNiceSize(memUtf8.load()).c_str()));
 
-        if (g_CommandLine.backendType == BackendType::X64)
+        if (g_CommandLine->backendType == BackendType::X64)
         {
             g_Log.print("\n");
             g_Log.messageHeaderDot("mem x64 dbg", Utf8::format("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));

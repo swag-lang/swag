@@ -39,7 +39,7 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.concreteTypesJob[typeName] = job;
-    if (g_CommandLine.stats)
+    if (g_CommandLine->stats)
         g_Stats.totalConcreteStructTypes++;
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
@@ -117,13 +117,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
 
     if (storageSegment->kind != SegmentKind::Compiler)
     {
-        if (context && g_CommandLine.verboseConcreteTypes)
+        if (context && g_CommandLine->verboseConcreteTypes)
             g_Log.verbose(Utf8::format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
-        if (g_CommandLine.stats)
+        if (g_CommandLine->stats)
             g_Stats.totalConcreteTypes++;
     }
 
-    auto& swagScope = g_Workspace.swagScope;
+    auto& swagScope = g_Workspace->swagScope;
 
     TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)

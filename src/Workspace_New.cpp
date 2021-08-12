@@ -6,10 +6,10 @@
 
 void newScriptFile()
 {
-    ofstream file(g_CommandLine.scriptName);
+    ofstream file(g_CommandLine->scriptName);
     if (!file.is_open())
     {
-        g_Log.errorOS(Utf8::format(Msg0347, g_CommandLine.scriptName.c_str()));
+        g_Log.errorOS(Utf8::format(Msg0347, g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -30,8 +30,8 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.message(Utf8::format("=> script file '%s' has been created", g_CommandLine.scriptName.c_str()));
-    g_Log.message(Utf8::format("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
+    g_Log.message(Utf8::format("=> script file '%s' has been created", g_CommandLine->scriptName.c_str()));
+    g_Log.message(Utf8::format("=> type 'swag script -f:%s' to run that script", g_CommandLine->scriptName.c_str()));
 }
 
 void Workspace::newModule(string moduleName)
@@ -114,7 +114,7 @@ void Workspace::newModule(string moduleName)
 void Workspace::newCommand()
 {
     // Create a script file
-    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
+    if (workspacePath.empty() && !g_CommandLine->scriptName.empty())
     {
         newScriptFile();
         OS::exit(0);
@@ -131,7 +131,7 @@ void Workspace::newCommand()
     // Create workspace
     error_code errorCode;
     string     moduleName;
-    if (g_CommandLine.moduleName.empty())
+    if (g_CommandLine->moduleName.empty())
     {
         if (fs::exists(workspacePath))
         {
@@ -183,7 +183,7 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        moduleName = g_CommandLine.moduleName;
+        moduleName = g_CommandLine->moduleName;
     }
 
     // Create module

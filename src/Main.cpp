@@ -12,11 +12,14 @@ extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
 {
+    g_CommandLine = g_Allocator.alloc<CommandLine>();
+    g_Workspace   = g_Allocator.alloc<Workspace>();
+
     OS::setup();
 
     // Arguments
     CommandLineParser cmdParser;
-    cmdParser.setup(&g_CommandLine);
+    cmdParser.setup(g_CommandLine);
 
     // Log default help
     if (argc <= 1)
@@ -61,58 +64,58 @@ int main(int argc, const char* argv[])
     }
     else
     {
-        g_CommandLine.exePath = swagFolder;
-        g_CommandLine.exePath += "\\";
+        g_CommandLine->exePath = swagFolder;
+        g_CommandLine->exePath += "\\";
         fs::path pathF = fs::absolute(argv[0]).string();
-        g_CommandLine.exePath += pathF.filename();
+        g_CommandLine->exePath += pathF.filename();
     }
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))
         OS::exit(-1);
-    if (!g_CommandLine.check())
+    if (!g_CommandLine->check())
         OS::exit(-1);
 
     // Output command line in verbose mode
-    if (g_CommandLine.verboseCmdLine)
+    if (g_CommandLine->verboseCmdLine)
         g_Log.verbose(cmdParser.buildString(true));
 
     // Deal with the main command
     if (command == "script")
     {
-        g_Workspace.scriptCommand();
+        g_Workspace->scriptCommand();
     }
     else if (command == "build")
     {
-        g_Workspace.build();
+        g_Workspace->build();
     }
     else if (command == "run")
     {
-        g_CommandLine.run = true;
-        g_Workspace.build();
+        g_CommandLine->run = true;
+        g_Workspace->build();
     }
     else if (command == "test")
     {
-        g_CommandLine.test = true;
-        g_Workspace.build();
+        g_CommandLine->test = true;
+        g_Workspace->build();
     }
     else if (command == "list")
     {
-        g_CommandLine.listDepCmd = true;
-        g_CommandLine.computeDep = true;
-        g_CommandLine.fetchDep   = false;
-        g_Workspace.build();
+        g_CommandLine->listDepCmd = true;
+        g_CommandLine->computeDep = true;
+        g_CommandLine->fetchDep   = false;
+        g_Workspace->build();
     }
     else if (command == "get")
     {
-        g_CommandLine.getDepCmd  = true;
-        g_CommandLine.computeDep = true;
-        g_CommandLine.fetchDep   = true;
-        g_Workspace.build();
+        g_CommandLine->getDepCmd  = true;
+        g_CommandLine->computeDep = true;
+        g_CommandLine->fetchDep   = true;
+        g_Workspace->build();
     }
     else if (command == "clean")
     {
-        g_Workspace.cleanCommand();
+        g_Workspace->cleanCommand();
     }
     else if (command == "version")
     {
@@ -120,12 +123,12 @@ int main(int argc, const char* argv[])
     }
     else if (command == "env")
     {
-        g_CommandLine.exePath = fs::absolute(argv[0]).string();
-        OS::setSwagFolder(g_CommandLine.exePath.parent_path().string());
+        g_CommandLine->exePath = fs::absolute(argv[0]).string();
+        OS::setSwagFolder(g_CommandLine->exePath.parent_path().string());
     }
     else if (command == "new")
     {
-        g_Workspace.newCommand();
+        g_Workspace->newCommand();
     }
 
     // Prints stats, then exit
@@ -133,7 +136,7 @@ int main(int argc, const char* argv[])
 
     // To avoid freeing some stuff, and have a fast exit
     g_Exiting = true;
-    OS::exit(g_Workspace.numErrors > 0 ? -1 : 0);
+    OS::exit(g_Workspace->numErrors > 0 ? -1 : 0);
 
     return 0;
 }

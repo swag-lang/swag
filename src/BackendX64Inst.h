@@ -1554,7 +1554,6 @@ namespace BackendX64Inst
             {
                 emit_NearJumpOp(pp, jumpType);
                 int8_t offset8 = (int8_t) relOffset;
-                SWAG_ASSERT(offset8 >= -127 && offset8 <= 128);
                 pp.concat.addU8(*(uint8_t*) &offset8);
             }
             else

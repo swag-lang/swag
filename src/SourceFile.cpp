@@ -192,7 +192,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Warning to error option ?
     auto errorLevel = diag.errorLevel;
-    if (g_CommandLine.warningsAsErrors)
+    if (g_CommandLine->warningsAsErrors)
         errorLevel = DiagnosticLevel::Error;
 
     // Are we in the #semerror block.
@@ -236,10 +236,10 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
                 numTestErrors = 0;
             else if (!inSemError)
                 numTestErrors--;
-            if (g_CommandLine.verboseTestErrors)
+            if (g_CommandLine->verboseTestErrors)
             {
                 diag.report(true);
-                if (g_CommandLine.errorNoteOut)
+                if (g_CommandLine->errorNoteOut)
                 {
                     for (auto note : notes)
                         note->report(true);
@@ -265,10 +265,10 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
                 numTestWarnings = 0;
             else if (!inSemError)
                 numTestWarnings--;
-            if (g_CommandLine.verboseTestErrors)
+            if (g_CommandLine->verboseTestErrors)
             {
                 diag.report(true);
-                if (g_CommandLine.errorNoteOut)
+                if (g_CommandLine->errorNoteOut)
                 {
                     for (auto note : notes)
                         note->report(true);
@@ -281,7 +281,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Print error/warning
     diag.report();
-    if (g_CommandLine.errorNoteOut)
+    if (g_CommandLine->errorNoteOut)
     {
         for (auto note : notes)
             note->report();
@@ -291,7 +291,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (errorLevel == DiagnosticLevel::Error)
     {
         // Raise error
-        g_Workspace.numErrors++;
+        g_Workspace->numErrors++;
 
         // Callstack
         if (g_ByteCodeStack.currentContext)
@@ -303,7 +303,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         // Error stack trace
         for (int i = context->traceIndex - 1; i >= 0; i--)
         {
-            auto sourceFile = g_Workspace.findFile((const char*) context->trace[i]->fileName.buffer);
+            auto sourceFile = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
             if (sourceFile)
             {
                 SourceLocation startLoc;

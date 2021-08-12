@@ -14,9 +14,9 @@ void ThreadManager::init()
     initDefaultContext();
 
     int numCores = std::thread::hardware_concurrency();
-    if (g_CommandLine.numCores == 0)
-        g_CommandLine.numCores = numCores;
-    int numWorkers     = g_CommandLine.numCores;
+    if (g_CommandLine->numCores == 0)
+        g_CommandLine->numCores = numCores;
+    int numWorkers     = g_CommandLine->numCores;
     numWorkers         = max(1, numWorkers);
     numWorkers         = min(numWorkers, numCores);
     g_Stats.numWorkers = numWorkers;
@@ -79,7 +79,7 @@ void ThreadManager::addJobNoLock(Job* job)
         queueJobs.push_back(job);
 
     // Wakeup one thread
-    if (g_CommandLine.numCores != 1)
+    if (g_CommandLine->numCores != 1)
     {
         if (!availableThreads.empty())
         {
@@ -255,7 +255,7 @@ void ThreadManager::clearOptionalJobs()
 void ThreadManager::waitEndJobs()
 {
     // If one core only, do the jobs right now, in order
-    if (g_CommandLine.numCores == 1)
+    if (g_CommandLine->numCores == 1)
     {
         while (tryExecuteJob()) {}
         return;
@@ -311,8 +311,8 @@ Job* ThreadManager::getJobNoLock()
     }
 
     // Otherwise, steal a syntax job from a module if we can
-    ScopedLock lk(g_Workspace.mutexModules);
-    for (auto p : g_Workspace.modules)
+    ScopedLock lk(g_Workspace->mutexModules);
+    for (auto p : g_Workspace->modules)
     {
         job = p->syntaxGroup.pickJob();
         if (job)
@@ -332,7 +332,7 @@ Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
 
     auto jobPickIndex = (int) queue.size() - 1;
 #ifdef SWAG_DEV_MODE
-    if (g_CommandLine.randomize)
+    if (g_CommandLine->randomize)
         jobPickIndex = rand() % queue.count;
 #endif
 

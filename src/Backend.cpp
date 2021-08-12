@@ -24,11 +24,11 @@ BackendFunctionBodyJobBase* Backend::newFunctionJob()
 
 void Backend::setup()
 {
-    if (!g_CommandLine.output)
+    if (!g_CommandLine->output)
         return;
 
     // Compiler
-    switch (g_CommandLine.backendType)
+    switch (g_CommandLine->backendType)
     {
     case BackendType::LLVM:
     case BackendType::X64:
@@ -41,7 +41,7 @@ void Backend::setup()
 
 string Backend::getCacheFolder(const BuildParameters& buildParameters)
 {
-    auto targetPath = g_Workspace.cachePath.string();
+    auto targetPath = g_Workspace->cachePath.string();
     return targetPath;
 }
 
@@ -67,7 +67,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (exportFilePath.empty())
         return false;
-    if (g_CommandLine.rebuild)
+    if (g_CommandLine->rebuild)
         return false;
 
     auto timeToTest = timeExportFile;
@@ -91,9 +91,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (module->areAllFilesExported())
         return true;
-    if (timeToTest < g_Workspace.bootstrapModule->moreRecentSourceFile)
+    if (timeToTest < g_Workspace->bootstrapModule->moreRecentSourceFile)
         return false;
-    if (timeToTest < g_Workspace.runtimeModule->moreRecentSourceFile)
+    if (timeToTest < g_Workspace->runtimeModule->moreRecentSourceFile)
         return false;
     if (!invert && timeToTest < moreRecentSourceFile)
         return false;
@@ -101,8 +101,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // If one of my dependency is more recent than me, then need to rebuild
     for (auto dep : module->moduleDependencies)
     {
-        auto it = g_Workspace.mapModulesNames.find(dep->name);
-        SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+        auto it = g_Workspace->mapModulesNames.find(dep->name);
+        SWAG_ASSERT(it != g_Workspace->mapModulesNames.end());
         auto depModule = it->second;
         if (!depModule->backend->isUpToDate(timeToTest, true))
             return false;
@@ -121,19 +121,19 @@ string Backend::getOutputFileExtension(BuildCfgBackendKind type)
     switch (type)
     {
     case BuildCfgBackendKind::Executable:
-        if (g_CommandLine.os == BackendOs::Windows)
+        if (g_CommandLine->os == BackendOs::Windows)
             return ".exe";
         return "";
 
     case BuildCfgBackendKind::StaticLib:
-        if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
+        if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
             return ".lib";
         return ".a";
 
     case BuildCfgBackendKind::DynamicLib:
-        if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
+        if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
             return ".dll";
-        if (isOsDarwin(g_CommandLine.os))
+        if (isOsDarwin(g_CommandLine->os))
             return ".dylib";
         return ".so";
 
@@ -145,8 +145,8 @@ string Backend::getOutputFileExtension(BuildCfgBackendKind type)
 
 string Backend::getObjectFileExtension()
 {
-    if (g_CommandLine.abi == BackendAbi::Msvc ||
-        (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi)))
+    if (g_CommandLine->abi == BackendAbi::Msvc ||
+        (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi)))
         return ".obj";
     return ".o";
 }
@@ -167,7 +167,7 @@ BackendObjType Backend::getObjType(BackendOs os)
 string Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
+    string destFile = g_Workspace->targetPath.string() + buildParameters.outputFileName;
     destFile += getOutputFileExtension(buildParameters.buildCfg->backendKind);
     destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
     return destFile;
@@ -175,7 +175,7 @@ string Backend::getOutputFileName(const BuildParameters& buildParameters)
 
 const char* Backend::GetArchName()
 {
-    switch (g_CommandLine.arch)
+    switch (g_CommandLine->arch)
     {
     case BackendArch::X86_64:
         return "x86_64";
@@ -186,7 +186,7 @@ const char* Backend::GetArchName()
 
 const char* Backend::GetOsName()
 {
-    switch (g_CommandLine.os)
+    switch (g_CommandLine->os)
     {
     case BackendOs::Windows:
         return "windows";
@@ -201,7 +201,7 @@ const char* Backend::GetOsName()
 
 const char* Backend::GetAbiName()
 {
-    switch (g_CommandLine.abi)
+    switch (g_CommandLine->abi)
     {
     case BackendAbi::Msvc:
         return "msvc";
@@ -214,7 +214,7 @@ const char* Backend::GetAbiName()
 
 const char* Backend::GetVendorName()
 {
-    switch (g_CommandLine.vendor)
+    switch (g_CommandLine->vendor)
     {
     case BackendVendor::Pc:
         return "pc";

@@ -79,7 +79,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     // There'is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
     if (sourceFile->isRuntimeFile && token.text == g_LangSpec->name_Swag)
-        currentScope = g_Workspace.bootstrapModule->files[0]->astRoot->ownerScope;
+        currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
     while (true)
     {

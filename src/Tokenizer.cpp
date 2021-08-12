@@ -47,7 +47,7 @@ void Tokenizer::processChar(uint32_t c)
 
     if (c == '\n')
     {
-        if (g_CommandLine.stats)
+        if (g_CommandLine->stats)
             g_Stats.numLines++;
         location.column = 0;
         location.line++;

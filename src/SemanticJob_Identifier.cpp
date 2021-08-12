@@ -3730,16 +3730,16 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     toProcess.push_back(context->sourceFile->scopePrivate);
 
     // Add bootstrap
-    SWAG_ASSERT(g_Workspace.bootstrapModule);
-    scopes.insert(g_Workspace.bootstrapModule->scopeRoot);
-    toProcess.push_back(g_Workspace.bootstrapModule->scopeRoot);
+    SWAG_ASSERT(g_Workspace->bootstrapModule);
+    scopes.insert(g_Workspace->bootstrapModule->scopeRoot);
+    toProcess.push_back(g_Workspace->bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
     if (!sourceFile->isBootstrapFile)
     {
-        SWAG_ASSERT(g_Workspace.runtimeModule);
-        scopes.insert(g_Workspace.runtimeModule->scopeRoot);
-        toProcess.push_back(g_Workspace.runtimeModule->scopeRoot);
+        SWAG_ASSERT(g_Workspace->runtimeModule);
+        scopes.insert(g_Workspace->runtimeModule->scopeRoot);
+        toProcess.push_back(g_Workspace->runtimeModule->scopeRoot);
     }
 
     for (int i = 0; i < toProcess.size(); i++)
