@@ -10,7 +10,7 @@
 #include "File.h"
 #include "LanguageSpec.h"
 
-ModuleCfgManager g_ModuleCfgMgr;
+ModuleCfgManager* g_ModuleCfgMgr = nullptr;
 
 Module* ModuleCfgManager::getCfgModule(const Utf8& name)
 {
@@ -94,28 +94,30 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 {
     vector<SourceFile*> allFiles;
 
-    OS::visitFolders(path.string().c_str(), [&](const char* cFileName) {
-        auto cfgPath = path;
-        cfgPath.append(cFileName);
+    OS::visitFolders(path.string().c_str(), [&](const char* cFileName)
+                     {
+                         auto cfgPath = path;
+                         cfgPath.append(cFileName);
 
-        auto cfgName = cfgPath;
-        cfgName.append(SWAG_CFG_FILE);
+                         auto cfgName = cfgPath;
+                         cfgName.append(SWAG_CFG_FILE);
 
-        // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
-        if (!fs::exists(cfgName))
-        {
-            g_Log.error(Utf8::format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
-            g_Workspace.numErrors++;
-            return;
-        }
+                         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
+                         if (!fs::exists(cfgName))
+                         {
+                             g_Log.error(Utf8::format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
+                             g_Workspace.numErrors++;
+                             return;
+                         }
 
-        newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
-    });
+                         newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+                     });
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+             { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
         for (auto file : allFiles)
         {
             registerCfgFile(file);

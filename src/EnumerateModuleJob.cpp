@@ -128,7 +128,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 
     // Add the config file, second pass
-    auto cfgModule = g_ModuleCfgMgr.getCfgModule(theModule->name);
+    auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name);
     if (cfgModule)
     {
         auto cfgFile    = theModule->path + "/" + SWAG_CFG_FILE;

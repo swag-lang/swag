@@ -100,7 +100,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     module->setup(moduleName, modulePath);
 
     // Setup from the config module, if it exists
-    auto cfgModule = g_ModuleCfgMgr.getCfgModule(moduleName);
+    auto cfgModule = g_ModuleCfgMgr->getCfgModule(moduleName);
     if (cfgModule)
     {
         module->buildCfg                    = cfgModule->buildCfg;
@@ -477,7 +477,8 @@ bool Workspace::buildTarget()
 
     // Config pass (compute/fetch dependencies...
     //////////////////////////////////////////////////
-    SWAG_CHECK(g_ModuleCfgMgr.execute());
+    g_ModuleCfgMgr = new ModuleCfgManager;
+    SWAG_CHECK(g_ModuleCfgMgr->execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
     if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)

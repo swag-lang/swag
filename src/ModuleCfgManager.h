@@ -34,4 +34,4 @@ struct ModuleCfgManager
     set<Module*>       pendingCfgModules;
 };
 
-extern ModuleCfgManager g_ModuleCfgMgr;
+extern ModuleCfgManager* g_ModuleCfgMgr;
