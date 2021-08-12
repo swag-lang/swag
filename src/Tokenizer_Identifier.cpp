@@ -25,7 +25,7 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
 
     appendTokenName(token);
 
-    auto it = g_LangSpec.keywords.find(token.text);
+    auto it = g_LangSpec->keywords.find(token.text);
     if (it)
         token.id = (*it).first;
     else

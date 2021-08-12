@@ -211,4 +211,4 @@ struct LanguageSpec
     Utf8 name_exp2;
 };
 
-extern LanguageSpec g_LangSpec;
+extern LanguageSpec *g_LangSpec;

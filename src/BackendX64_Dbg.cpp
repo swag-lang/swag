@@ -1113,7 +1113,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                     // Codeview seems to need this pointer to be named "this"...
                     // So add it
-                    if (typeFunc->isMethod() && child->token.text == g_LangSpec.name_self)
+                    if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
                     {
                         //////////
                         dbgStartRecord(pp, concat, S_LOCAL);

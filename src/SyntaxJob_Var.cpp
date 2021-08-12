@@ -27,7 +27,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         if (node->token.text.find("@alias") == 0)
         {
-            if (node->token.text == g_LangSpec.name_atalias)
+            if (node->token.text == g_LangSpec->name_atalias)
                 return error(node->token, Msg0275);
 
             const char* pz  = node->token.text.c_str() + 6;

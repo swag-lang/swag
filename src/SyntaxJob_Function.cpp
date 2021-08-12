@@ -149,15 +149,15 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     paramNode->token.text = move(token.text);
 
     // 'self'
-    if (token.id == TokenId::KwdConst || paramNode->token.text == g_LangSpec.name_self)
+    if (token.id == TokenId::KwdConst || paramNode->token.text == g_LangSpec->name_self)
     {
         bool isConst = false;
         if (token.id == TokenId::KwdConst)
         {
             isConst = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec.name_self, error(token, Msg0405));
-            paramNode->token.text = g_LangSpec.name_self;
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(token, Msg0405));
+            paramNode->token.text = g_LangSpec->name_self;
         }
 
         SWAG_CHECK(eatToken());
@@ -294,7 +294,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
             paramNode->flags |= AST_DECL_USING;
             paramNode->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
-            paramNode->token.text = g_LangSpec.name_self;
+            paramNode->token.text = g_LangSpec->name_self;
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
             typeNode->typeFlags   = TYPEFLAG_ISSELF | TYPEFLAG_USING;

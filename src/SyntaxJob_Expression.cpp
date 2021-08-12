@@ -552,7 +552,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
     while (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
-        if (token.text == g_LangSpec.name_safe)
+        if (token.text == g_LangSpec->name_safe)
         {
             switch (opId)
             {
@@ -577,7 +577,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec.name_small)
+        if (token.text == g_LangSpec->name_small)
         {
             switch (opId)
             {
@@ -596,7 +596,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec.name_nodrop)
+        if (token.text == g_LangSpec->name_nodrop)
         {
             switch (opId)
             {
@@ -613,7 +613,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec.name_move)
+        if (token.text == g_LangSpec->name_move)
         {
             switch (opId)
             {
@@ -630,7 +630,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             continue;
         }
 
-        if (token.text == g_LangSpec.name_moveraw)
+        if (token.text == g_LangSpec->name_moveraw)
         {
             switch (opId)
             {
@@ -1387,14 +1387,14 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::IntrinsicDrop:
-        node->token.text = g_LangSpec.name_atdrop;
+        node->token.text = g_LangSpec->name_atdrop;
         break;
     case TokenId::IntrinsicPostCopy:
-        node->token.text = g_LangSpec.name_atpostCopy;
+        node->token.text = g_LangSpec->name_atpostCopy;
         node->kind       = AstNodeKind::PostCopy;
         break;
     case TokenId::IntrinsicPostMove:
-        node->token.text = g_LangSpec.name_atpostMove;
+        node->token.text = g_LangSpec->name_atpostMove;
         node->kind       = AstNodeKind::PostMove;
         break;
     }

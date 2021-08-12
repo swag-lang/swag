@@ -64,7 +64,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     // Hardcoded swag enums
     if (context->sourceFile->isBootstrapFile)
     {
-        if (enumNode->token.text == g_LangSpec.name_AttributeUsage)
+        if (enumNode->token.text == g_LangSpec->name_AttributeUsage)
             enumNode->attributeFlags |= ATTRIBUTE_ENUM_FLAGS;
     }
 

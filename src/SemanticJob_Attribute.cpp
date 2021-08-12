@@ -45,19 +45,19 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
     {
-        if (oneAttribute->token.text == g_LangSpec.name_Complete && kind == AstNodeKind::Switch)
+        if (oneAttribute->token.text == g_LangSpec->name_Complete && kind == AstNodeKind::Switch)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_AttrUsage && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == g_LangSpec->name_AttrUsage && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_AttrMulti && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == g_LangSpec->name_AttrMulti && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_Global && isLocalVar)
+        if (oneAttribute->token.text == g_LangSpec->name_Global && isLocalVar)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_Strict && kind == AstNodeKind::Alias)
+        if (oneAttribute->token.text == g_LangSpec->name_Strict && kind == AstNodeKind::Alias)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_PrintBc && kind == AstNodeKind::CompilerAst)
+        if (oneAttribute->token.text == g_LangSpec->name_PrintBc && kind == AstNodeKind::CompilerAst)
             return true;
-        if (oneAttribute->token.text == g_LangSpec.name_Align && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
+        if (oneAttribute->token.text == g_LangSpec->name_Align && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
             return true;
     }
 
@@ -220,7 +220,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_AttrMulti))
+            if (!typeInfo->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
             {
                 if (isHereTmp.contains(typeInfo))
                 {
@@ -236,14 +236,14 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                auto value = curAttr->attributes.getValue(g_LangSpec.name_Swag_AttrUsage, g_LangSpec.name_usage);
+                auto value = curAttr->attributes.getValue(g_LangSpec->name_Swag_AttrUsage, g_LangSpec->name_usage);
                 if (value)
                 {
                     auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage = value->reg.u32;
                 }
 
-                if (curAttr->attributes.hasAttribute(g_LangSpec.name_Swag_AttrMulti))
+                if (curAttr->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
                 {
                     auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage |= AttributeUsage::Multi;
@@ -251,14 +251,14 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Predefined attributes will mark some flags (to speed up detection)
-            auto it = g_LangSpec.attributesFlags.find(child->token.text);
+            auto it = g_LangSpec->attributesFlags.find(child->token.text);
             if (it)
                 flags |= *it;
 
             // Else search by name (attributes with parameters)
-            else if (child->token.text == g_LangSpec.name_ExportType)
+            else if (child->token.text == g_LangSpec->name_ExportType)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_ExportType, g_LangSpec.name_what);
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
@@ -268,22 +268,22 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec.name_methods)
+                    if (w == g_LangSpec->name_methods)
                         flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
                     else
                         return context->report({child, Utf8::format(Msg0599, w.c_str())});
                 }
             }
-            else if (child->token.text == g_LangSpec.name_Safety)
+            else if (child->token.text == g_LangSpec->name_Safety)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_what);
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_Safety, g_LangSpec->name_what);
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
                 vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
 
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Safety, g_LangSpec.name_value);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Safety, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
 
                 if (text.empty())
@@ -299,27 +299,27 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec.name_nullptr)
+                    if (w == g_LangSpec->name_nullptr)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_NULLPTR_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
                     }
-                    else if (w == g_LangSpec.name_boundcheck)
+                    else if (w == g_LangSpec->name_boundcheck)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
                     }
-                    else if (w == g_LangSpec.name_overflow)
+                    else if (w == g_LangSpec->name_overflow)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     }
-                    else if (w == g_LangSpec.name_math)
+                    else if (w == g_LangSpec->name_math)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
                     }
-                    else if (w == g_LangSpec.name_castany)
+                    else if (w == g_LangSpec->name_castany)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
@@ -328,16 +328,16 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({child, Utf8::format(Msg0593, w.c_str())});
                 }
             }
-            else if (child->token.text == g_LangSpec.name_Optim)
+            else if (child->token.text == g_LangSpec->name_Optim)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_what);
+                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_Optim, g_LangSpec->name_what);
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
                 vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
 
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Optim, g_LangSpec.name_value);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Optim, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
 
                 if (text.empty())
@@ -350,12 +350,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec.name_bytecode)
+                    if (w == g_LangSpec->name_bytecode)
                     {
                         flags &= ~(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
                     }
-                    else if (w == g_LangSpec.name_backend)
+                    else if (w == g_LangSpec->name_backend)
                     {
                         flags &= ~(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
@@ -364,22 +364,22 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({child, Utf8::format(Msg0594, w.c_str())});
                 }
             }
-            else if (child->token.text == g_LangSpec.name_SelectIf)
+            else if (child->token.text == g_LangSpec->name_SelectIf)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_SelectIf, g_LangSpec.name_value);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_SelectIf, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
                 flags &= ~(ATTRIBUTE_SELECTIF_MASK);
                 flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
-            else if (child->token.text == g_LangSpec.name_Pack)
+            else if (child->token.text == g_LangSpec->name_Pack)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
                 SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(Msg0595, attrValue->reg.u8)}));
             }
-            else if (child->token.text == g_LangSpec.name_Align)
+            else if (child->token.text == g_LangSpec->name_Align)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
+                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
                 SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(Msg0596, attrValue->reg.u8)}));
             }

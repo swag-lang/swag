@@ -63,7 +63,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
                 SWAG_CHECK(eatToken());
             }
 
-            if (token.text == g_LangSpec.name_self)
+            if (token.text == g_LangSpec->name_self)
             {
                 SWAG_VERIFY(currentStructScope, error(token, Msg0334));
                 SWAG_CHECK(eatToken());

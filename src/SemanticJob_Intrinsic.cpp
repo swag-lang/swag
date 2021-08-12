@@ -190,7 +190,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({node, Msg0796});
         node->typeInfo = typeInfo;
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opData, nullptr, nullptr, node, nullptr, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
             return true;
         node->typeInfo = g_TypeMgr.typeInfoPVoid;
@@ -292,7 +292,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({expression, Msg0800});
         node->typeInfo = typeInfo;
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opCount, nullptr, nullptr, node, nullptr, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
             return true;
         node->typeInfo = g_TypeMgr.typeInfoUInt;

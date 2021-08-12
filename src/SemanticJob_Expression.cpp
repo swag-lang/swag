@@ -718,7 +718,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opData, nullptr, nullptr, expression, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, expression, nullptr, false));
             if (context->result == ContextResult::Pending)
                 return true;
         }

@@ -23,7 +23,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
-    auto moduleName = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_module);
+    auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
     SWAG_ASSERT(moduleName && !moduleName->text.empty());
 
     if (!g_ModuleMgr.loadModule(moduleName->text))
@@ -49,7 +49,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     }
 
     void* fn           = nullptr;
-    auto  foreignValue = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    auto  foreignValue = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
     if (foreignValue && !foreignValue->text.empty())
         fn = g_ModuleMgr.getFnPointer(moduleName->text, foreignValue->text);
     else

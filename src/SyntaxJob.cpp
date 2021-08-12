@@ -132,9 +132,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(error(token, Utf8::format(Msg0329, g_LangSpec.tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, Utf8::format(Msg0329, g_LangSpec->tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Utf8::format(Msg0330, g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
+            SWAG_CHECK(error(token, Utf8::format(Msg0330, g_LangSpec->tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
     SWAG_CHECK(eatToken());

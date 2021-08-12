@@ -53,8 +53,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (context->result != ContextResult::Done)
                     return true;
 
-                auto symCount = hasUserOp(g_LangSpec.name_opCount, (TypeInfoStruct*) realType);
-                auto symSlice = hasUserOp(g_LangSpec.name_opSlice, (TypeInfoStruct*) realType);
+                auto symCount = hasUserOp(g_LangSpec->name_opCount, (TypeInfoStruct*) realType);
+                auto symSlice = hasUserOp(g_LangSpec->name_opSlice, (TypeInfoStruct*) realType);
                 if (!symCount || !symSlice)
                     return context->report({node, Utf8::format(Msg0281, realType->getDisplayName().c_str())});
 
@@ -63,7 +63,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
                 // opCount
                 params.push_back(node);
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opCount, nullptr, nullptr, node, params, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params, false));
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -84,7 +84,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 tmpNode.typeInfo = g_TypeMgr.typeInfoUInt;
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node, params, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params, false));
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -113,11 +113,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return context->report({node, Utf8::format(Msg0059, typeSliceContent->getDisplayName().c_str())});
 
                 // opDrop
-                if (hasUserOp(g_LangSpec.name_opDrop, (TypeInfoStruct*) realType))
+                if (hasUserOp(g_LangSpec->name_opDrop, (TypeInfoStruct*) realType))
                 {
                     params.clear();
                     params.push_back(node);
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opDrop, nullptr, nullptr, node, params, false));
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opDrop, nullptr, nullptr, node, params, false));
                     if (context->result != ContextResult::Done)
                         return true;
 

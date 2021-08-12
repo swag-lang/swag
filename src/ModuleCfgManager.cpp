@@ -225,7 +225,7 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     }
 
     // Check mode
-    if (tokens[0] != g_LangSpec.name_swag && tokens[0] != g_LangSpec.name_disk)
+    if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Utf8::format(Msg0515, tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
@@ -233,14 +233,14 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     cfgFileName.clear();
 
     // Local module, as a filepath
-    if (tokens[0] == g_LangSpec.name_disk)
+    if (tokens[0] == g_LangSpec->name_disk)
     {
         dep->fetchKind = DependencyFetchKind::Disk;
         return fetchModuleCfgDisk(dep, cfgFilePath, cfgFileName);
     }
 
     // Direct access to compiler std workspace
-    if (tokens[0] == g_LangSpec.name_swag)
+    if (tokens[0] == g_LangSpec->name_swag)
     {
         dep->fetchKind = DependencyFetchKind::Swag;
         return fetchModuleCfgSwag(dep, cfgFilePath, cfgFileName);

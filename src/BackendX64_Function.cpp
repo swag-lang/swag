@@ -637,7 +637,7 @@ void BackendX64::emitInternalPanic(const BuildParameters& buildParameters, AstNo
     else
         BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
-    emitCall(pp, g_LangSpec.name__panic);
+    emitCall(pp, g_LangSpec->name__panic);
 }
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -1832,7 +1832,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_atstrcmp);
+            emitCall(pp, g_LangSpec->name_atstrcmp);
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
             SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
@@ -1844,7 +1844,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_attypecmp);
+            emitCall(pp, g_LangSpec->name_attypecmp);
             break;
 
         case ByteCodeOp::TestNotZero8:
@@ -2242,7 +2242,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u64, RCX);
                 BackendX64Inst::emit_Clear64(pp, RDX);
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, R8);
-                emitCall(pp, g_LangSpec.name_memset);
+                emitCall(pp, g_LangSpec->name_memset);
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -2251,7 +2251,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_imul64_RAX(pp, ip->c.u64);
             BackendX64Inst::emit_Copy64(pp, RAX, R8);
-            emitCall(pp, g_LangSpec.name_memset);
+            emitCall(pp, g_LangSpec->name_memset);
             break;
 
         case ByteCodeOp::SetZeroStack8:
@@ -2278,7 +2278,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RCX, RDI);
                 BackendX64Inst::emit_Clear64(pp, RDX);
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
-                emitCall(pp, g_LangSpec.name_memset);
+                emitCall(pp, g_LangSpec->name_memset);
             }
             break;
         }
@@ -2557,67 +2557,67 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, R8);
-            emitCall(pp, g_LangSpec.name_memcpy);
+            emitCall(pp, g_LangSpec->name_memcpy);
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec.name_memcpy);
+            emitCall(pp, g_LangSpec->name_memcpy);
             break;
 
         case ByteCodeOp::IntrinsicMemMove:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec.name_memmove);
+            emitCall(pp, g_LangSpec->name_memmove);
             break;
 
         case ByteCodeOp::IntrinsicMemSet:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec.name_memset);
+            emitCall(pp, g_LangSpec->name_memset);
             break;
 
         case ByteCodeOp::IntrinsicMemCmp:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), R8, RDI);
-            emitCall(pp, g_LangSpec.name_memcmp);
+            emitCall(pp, g_LangSpec->name_memcmp);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicCStrLen:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec.name_strlen);
+            emitCall(pp, g_LangSpec->name_strlen);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicAlloc:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec.name_malloc);
+            emitCall(pp, g_LangSpec->name_malloc);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicRealloc:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec.name_realloc);
+            emitCall(pp, g_LangSpec->name_realloc);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicFree:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec.name_free);
+            emitCall(pp, g_LangSpec->name_free);
             break;
 
         case ByteCodeOp::InternalInitStackTrace:
-            emitCall(pp, g_LangSpec.name__initStackTrace);
+            emitCall(pp, g_LangSpec->name__initStackTrace);
             break;
         case ByteCodeOp::InternalStackTrace:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RSP);
-            emitCall(pp, g_LangSpec.name__stackTrace);
+            emitCall(pp, g_LangSpec->name__stackTrace);
             break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(buildParameters, ip->node, (const char*) ip->d.pointer);
@@ -2632,7 +2632,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, g_LangSpec.name__tlsGetPtr);
+            emitCall(pp, g_LangSpec->name__tlsGetPtr);
             break;
 
         case ByteCodeOp::IntrinsicGetContext:
@@ -2640,14 +2640,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, g_LangSpec.name__tlsGetValue);
+            emitCall(pp, g_LangSpec->name__tlsGetValue);
             break;
         case ByteCodeOp::IntrinsicSetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, g_LangSpec.name__tlsSetValue);
+            emitCall(pp, g_LangSpec->name__tlsSetValue);
             break;
 
         case ByteCodeOp::IntrinsicArguments:
@@ -2655,7 +2655,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_atargs);
+            emitCall(pp, g_LangSpec->name_atargs);
             break;
 
         case ByteCodeOp::IntrinsicCompiler:
@@ -2676,7 +2676,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_aterrormsg);
+            emitCall(pp, g_LangSpec->name_aterrormsg);
             break;
         case ByteCodeOp::IntrinsicPanic:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
@@ -2686,7 +2686,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_atpanic);
+            emitCall(pp, g_LangSpec->name_atpanic);
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
@@ -2696,7 +2696,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_atinterfaceof);
+            emitCall(pp, g_LangSpec->name_atinterfaceof);
             break;
 
         case ByteCodeOp::CopyRCtoRR:
@@ -2894,7 +2894,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
                 TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-                auto              foreignValue = typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+                auto              foreignValue = typeFuncNode->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
                 SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
                 name = foreignValue->text;
             }
@@ -3572,7 +3572,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
-                emitCall(pp, g_LangSpec.name_powf);
+                emitCall(pp, g_LangSpec->name_powf);
                 break;
             case TokenId::IntrinsicMin:
                 concat.addString4("\xF3\x0F\x5D\xC1"); // minss xmm0, xmm1
@@ -3581,7 +3581,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, g_LangSpec.name_atan2f);
+                emitCall(pp, g_LangSpec->name_atan2f);
                 break;
             default:
                 ok = false;
@@ -3598,7 +3598,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
-                emitCall(pp, g_LangSpec.name_pow);
+                emitCall(pp, g_LangSpec->name_pow);
                 break;
             case TokenId::IntrinsicMin:
                 concat.addString4("\xF2\x0F\x5D\xC1"); // minss xmm0, xmm1
@@ -3607,7 +3607,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, g_LangSpec.name_atan2);
+                emitCall(pp, g_LangSpec->name_atan2);
                 break;
             default:
                 ok = false;
@@ -3627,52 +3627,52 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\x51\xC0"); // sqrtps xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
-                emitCall(pp, g_LangSpec.name_sinf);
+                emitCall(pp, g_LangSpec->name_sinf);
                 break;
             case TokenId::IntrinsicCos:
-                emitCall(pp, g_LangSpec.name_cosf);
+                emitCall(pp, g_LangSpec->name_cosf);
                 break;
             case TokenId::IntrinsicTan:
-                emitCall(pp, g_LangSpec.name_tanf);
+                emitCall(pp, g_LangSpec->name_tanf);
                 break;
             case TokenId::IntrinsicSinh:
-                emitCall(pp, g_LangSpec.name_sinhf);
+                emitCall(pp, g_LangSpec->name_sinhf);
                 break;
             case TokenId::IntrinsicCosh:
-                emitCall(pp, g_LangSpec.name_coshf);
+                emitCall(pp, g_LangSpec->name_coshf);
                 break;
             case TokenId::IntrinsicTanh:
-                emitCall(pp, g_LangSpec.name_tanhf);
+                emitCall(pp, g_LangSpec->name_tanhf);
                 break;
             case TokenId::IntrinsicASin:
-                emitCall(pp, g_LangSpec.name_asinf);
+                emitCall(pp, g_LangSpec->name_asinf);
                 break;
             case TokenId::IntrinsicACos:
-                emitCall(pp, g_LangSpec.name_acosf);
+                emitCall(pp, g_LangSpec->name_acosf);
                 break;
             case TokenId::IntrinsicATan:
-                emitCall(pp, g_LangSpec.name_atanf);
+                emitCall(pp, g_LangSpec->name_atanf);
                 break;
             case TokenId::IntrinsicLog:
-                emitCall(pp, g_LangSpec.name_logf);
+                emitCall(pp, g_LangSpec->name_logf);
                 break;
             case TokenId::IntrinsicLog2:
-                emitCall(pp, g_LangSpec.name_log2f);
+                emitCall(pp, g_LangSpec->name_log2f);
                 break;
             case TokenId::IntrinsicLog10:
-                emitCall(pp, g_LangSpec.name_log10f);
+                emitCall(pp, g_LangSpec->name_log10f);
                 break;
             case TokenId::IntrinsicFloor:
-                emitCall(pp, g_LangSpec.name_floorf);
+                emitCall(pp, g_LangSpec->name_floorf);
                 break;
             case TokenId::IntrinsicCeil:
-                emitCall(pp, g_LangSpec.name_ceilf);
+                emitCall(pp, g_LangSpec->name_ceilf);
                 break;
             case TokenId::IntrinsicTrunc:
-                emitCall(pp, g_LangSpec.name_truncf);
+                emitCall(pp, g_LangSpec->name_truncf);
                 break;
             case TokenId::IntrinsicRound:
-                emitCall(pp, g_LangSpec.name_roundf);
+                emitCall(pp, g_LangSpec->name_roundf);
                 break;
             case TokenId::IntrinsicAbs:
                 BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF, RAX);
@@ -3680,10 +3680,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
                 break;
             case TokenId::IntrinsicExp:
-                emitCall(pp, g_LangSpec.name_expf);
+                emitCall(pp, g_LangSpec->name_expf);
                 break;
             case TokenId::IntrinsicExp2:
-                emitCall(pp, g_LangSpec.name_exp2f);
+                emitCall(pp, g_LangSpec->name_exp2f);
                 break;
             default:
                 ok = false;
@@ -3704,55 +3704,55 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\x51\xC0"); // sqrtpd xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
-                emitCall(pp, g_LangSpec.name_sin);
+                emitCall(pp, g_LangSpec->name_sin);
                 break;
             case TokenId::IntrinsicCos:
-                emitCall(pp, g_LangSpec.name_cos);
+                emitCall(pp, g_LangSpec->name_cos);
                 break;
             case TokenId::IntrinsicTan:
-                emitCall(pp, g_LangSpec.name_tan);
+                emitCall(pp, g_LangSpec->name_tan);
                 break;
             case TokenId::IntrinsicSinh:
-                emitCall(pp, g_LangSpec.name_sinh);
+                emitCall(pp, g_LangSpec->name_sinh);
                 break;
             case TokenId::IntrinsicCosh:
-                emitCall(pp, g_LangSpec.name_cosh);
+                emitCall(pp, g_LangSpec->name_cosh);
                 break;
             case TokenId::IntrinsicTanh:
-                emitCall(pp, g_LangSpec.name_tanh);
+                emitCall(pp, g_LangSpec->name_tanh);
                 break;
             case TokenId::IntrinsicASin:
-                emitCall(pp, g_LangSpec.name_asin);
+                emitCall(pp, g_LangSpec->name_asin);
                 break;
             case TokenId::IntrinsicACos:
-                emitCall(pp, g_LangSpec.name_acos);
+                emitCall(pp, g_LangSpec->name_acos);
                 break;
             case TokenId::IntrinsicATan:
-                emitCall(pp, g_LangSpec.name_atan);
+                emitCall(pp, g_LangSpec->name_atan);
                 break;
             case TokenId::IntrinsicATan2:
-                emitCall(pp, g_LangSpec.name_atan2);
+                emitCall(pp, g_LangSpec->name_atan2);
                 break;
             case TokenId::IntrinsicLog:
-                emitCall(pp, g_LangSpec.name_log);
+                emitCall(pp, g_LangSpec->name_log);
                 break;
             case TokenId::IntrinsicLog2:
-                emitCall(pp, g_LangSpec.name_log2);
+                emitCall(pp, g_LangSpec->name_log2);
                 break;
             case TokenId::IntrinsicLog10:
-                emitCall(pp, g_LangSpec.name_log10);
+                emitCall(pp, g_LangSpec->name_log10);
                 break;
             case TokenId::IntrinsicFloor:
-                emitCall(pp, g_LangSpec.name_floor);
+                emitCall(pp, g_LangSpec->name_floor);
                 break;
             case TokenId::IntrinsicCeil:
-                emitCall(pp, g_LangSpec.name_ceil);
+                emitCall(pp, g_LangSpec->name_ceil);
                 break;
             case TokenId::IntrinsicTrunc:
-                emitCall(pp, g_LangSpec.name_trunc);
+                emitCall(pp, g_LangSpec->name_trunc);
                 break;
             case TokenId::IntrinsicRound:
-                emitCall(pp, g_LangSpec.name_round);
+                emitCall(pp, g_LangSpec->name_round);
                 break;
             case TokenId::IntrinsicAbs:
                 BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF'FFFFFFFF, RAX);
@@ -3760,10 +3760,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
                 break;
             case TokenId::IntrinsicExp:
-                emitCall(pp, g_LangSpec.name_exp);
+                emitCall(pp, g_LangSpec->name_exp);
                 break;
             case TokenId::IntrinsicExp2:
-                emitCall(pp, g_LangSpec.name_exp2);
+                emitCall(pp, g_LangSpec->name_exp2);
                 break;
             default:
                 ok = false;
@@ -3781,7 +3781,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, g_LangSpec.name__geterr);
+            emitCall(pp, g_LangSpec->name__geterr);
             break;
         }
 
@@ -3791,18 +3791,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, g_LangSpec.name_atseterr);
+            emitCall(pp, g_LangSpec->name_atseterr);
             break;
         }
 
         case ByteCodeOp::InternalClearErr:
-            emitCall(pp, g_LangSpec.name__clearerr);
+            emitCall(pp, g_LangSpec->name__clearerr);
             break;
         case ByteCodeOp::InternalPushErr:
-            emitCall(pp, g_LangSpec.name__pusherr);
+            emitCall(pp, g_LangSpec->name__pusherr);
             break;
         case ByteCodeOp::InternalPopErr:
-            emitCall(pp, g_LangSpec.name__poperr);
+            emitCall(pp, g_LangSpec->name__poperr);
             break;
 
         default:
@@ -3917,7 +3917,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
 
     // Get function name
     Utf8 funcName;
-    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
     if (foreignValue && !foreignValue->text.empty())
         funcName = foreignValue->text;
     else

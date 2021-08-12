@@ -82,7 +82,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opInit);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -137,7 +137,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opInit->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec.name_opInitGenerated;
+        funcNode->token.text = g_LangSpec->name_opInitGenerated;
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserInitFct)
@@ -335,7 +335,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opDrop);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -400,7 +400,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opDrop->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec.name_opDropGenerated;
+        funcNode->token.text = g_LangSpec->name_opDropGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserDropFct)
             typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
@@ -463,7 +463,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostMove);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -528,7 +528,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opPostMove->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec.name_opPostMoveGenerated;
+        funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostMoveFct)
             typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
@@ -590,7 +590,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec.name_opPostCopy);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -655,7 +655,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
         funcNode->typeInfo   = opPostCopy->typeInfoFunc;
         funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec.name_opPostCopyGenerated;
+        funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostCopyFct)
             typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;

@@ -2,7 +2,7 @@
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 
-LanguageSpec g_LangSpec;
+LanguageSpec *g_LangSpec = nullptr;
 
 void LanguageSpec::setupNames()
 {

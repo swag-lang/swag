@@ -106,7 +106,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
 
-    auto moduleName = typeFunc->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_module);
+    auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
     SWAG_ASSERT(moduleName && !moduleName->text.empty());
 
     // Apply patch now, because module is already loaded

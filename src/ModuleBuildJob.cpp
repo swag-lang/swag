@@ -327,7 +327,7 @@ JobResult ModuleBuildJob::execute()
         PushSwagContext cxt;
 
         // Setup runtime
-        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec.name__setupRuntime);
+        auto setupFct = g_Workspace.runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
         if (module->criticalErrors)

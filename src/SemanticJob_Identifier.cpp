@@ -365,7 +365,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
         {
             auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
-            if (overload->symbol->name == g_LangSpec.name_opAffect)
+            if (overload->symbol->name == g_LangSpec->name_opAffect)
             {
                 nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;
@@ -538,31 +538,31 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     case AstNodeKind::FuncDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
+        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
+        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::StructDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
+        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
+        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumValue:
     {
         auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        v             = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Deprecated, g_LangSpec.name_msg);
+        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     }
@@ -1039,13 +1039,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (context->result == ContextResult::Pending)
             return true;
 
-        if (identifier->token.text == g_LangSpec.name_opInit)
+        if (identifier->token.text == g_LangSpec->name_opInit)
             return context->report({identifier, identifier->token, Msg0100});
-        if (identifier->token.text == g_LangSpec.name_opDrop)
+        if (identifier->token.text == g_LangSpec->name_opDrop)
             return context->report({identifier, identifier->token, Msg0101});
-        if (identifier->token.text == g_LangSpec.name_opPostCopy)
+        if (identifier->token.text == g_LangSpec->name_opPostCopy)
             return context->report({identifier, identifier->token, Msg0103});
-        if (identifier->token.text == g_LangSpec.name_opPostMove)
+        if (identifier->token.text == g_LangSpec->name_opPostMove)
             return context->report({identifier, identifier->token, Msg0104});
 
         // Be sure this is not a 'forward' decl
@@ -2405,7 +2405,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
-    if (node->token.text == g_LangSpec.name_retval)
+    if (node->token.text == g_LangSpec->name_retval)
     {
         // Be sure this is correct
         SWAG_CHECK(resolveRetVal(context));

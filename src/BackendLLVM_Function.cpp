@@ -652,7 +652,7 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm
     else
         r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
-    localCall(buildParameters, allocR, allocT, g_LangSpec.name__panic, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+    localCall(buildParameters, allocR, allocT, g_LangSpec->name__panic, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)
@@ -3314,18 +3314,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicPanic:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
         case ByteCodeOp::InternalInitStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__initStackTrace, {ip->a.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__initStackTrace, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__stackTrace, {ip->a.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__stackTrace, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalPanic:
@@ -3339,51 +3339,51 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0  = builder.getInt64(module->tlsSegment.totalCount);
             auto r1  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
             auto vid = builder.CreateLoad(pp.symTls_threadLocalId);
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__tlsGetPtr, {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsGetPtr, {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
             break;
         }
 
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__tlsGetValue, {ip->a.u32, UINT32_MAX}, {0, v0});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsGetValue, {ip->a.u32, UINT32_MAX}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name_atargs, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name_atargs, {ip->a.u32, ip->b.u32}, {});
             break;
         }
 
         case ByteCodeOp::IntrinsicGetErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__geterr, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__geterr, {ip->a.u32, ip->b.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicSetErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name_atseterr, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name_atseterr, {ip->a.u32, ip->b.u32}, {});
             break;
         }
         case ByteCodeOp::InternalClearErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__clearerr, {}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__clearerr, {}, {});
             break;
         }
         case ByteCodeOp::InternalPushErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__pusherr, {}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__pusherr, {}, {});
             break;
         }
         case ByteCodeOp::InternalPopErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec.name__poperr, {}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__poperr, {}, {});
             break;
         }
 
@@ -3977,7 +3977,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
-                auto foreignValue = typeFuncNode->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+                auto foreignValue = typeFuncNode->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
                 SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
 
                 llvm::FunctionType* T;
@@ -5070,7 +5070,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
 
     // Get function name
     Utf8 funcName;
-    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec.name_Swag_Foreign, g_LangSpec.name_function);
+    auto foreignValue = typeFuncBC->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
     if (foreignValue && !foreignValue->text.empty())
         funcName = foreignValue->text;
     else

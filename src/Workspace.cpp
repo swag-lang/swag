@@ -59,7 +59,7 @@ void Workspace::setupUserTags()
             {
                 tokens1[0].trim();
                 tokens1[1].trim();
-                auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
+                auto it = g_LangSpec->nativeTypes.find(tokens1[1]);
                 if (!it)
                 {
                     g_Log.error(Utf8::format(Msg0539, tokens1[0].c_str(), tokens1[1].c_str()));

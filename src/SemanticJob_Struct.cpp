@@ -14,13 +14,13 @@
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
-    waitUserOp(context, g_LangSpec.name_opPostCopy, node);
+    waitUserOp(context, g_LangSpec->name_opPostCopy, node);
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, g_LangSpec.name_opPostMove, node);
+    waitUserOp(context, g_LangSpec->name_opPostMove, node);
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, g_LangSpec.name_opDrop, node);
+    waitUserOp(context, g_LangSpec->name_opDrop, node);
     if (context->result == ContextResult::Pending)
         return true;
     return true;
@@ -568,7 +568,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->packing = 0;
     else
     {
-        auto value = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Pack, g_LangSpec.name_value);
+        auto value = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
         if (value)
             node->packing = value->reg.u8;
     }
@@ -755,7 +755,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         bool relocated = false;
         if (typeParam)
         {
-            auto forceOffset = typeParam->attributes.getValue(g_LangSpec.name_Swag_Offset, g_LangSpec.name_name);
+            auto forceOffset = typeParam->attributes.getValue(g_LangSpec->name_Swag_Offset, g_LangSpec->name_name);
             if (forceOffset)
             {
                 for (auto p : typeInfo->fields)
@@ -770,7 +770,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
                 if (!relocated)
                 {
-                    auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
+                    auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
                     SWAG_ASSERT(attr);
                     return context->report({attr->node, Utf8::format(Msg0673, forceOffset->text.c_str())});
                 }
@@ -847,7 +847,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // User specific alignment
-    auto userAlignOf = typeInfo->attributes.getValue(g_LangSpec.name_Swag_Align, g_LangSpec.name_value);
+    auto userAlignOf = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
     if (userAlignOf)
         typeInfo->alignOf = userAlignOf->reg.u8;
     else if (node->packing)
@@ -857,12 +857,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // An opaque struct will be exported as an array of bytes.
     // We need to be sure that alignement will be respected, so we force "Swag.Align" attribute
     // if not already present.
-    if (!userAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec.name_Swag_Opaque))
+    if (!userAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec->name_Swag_Opaque))
     {
         OneAttribute       ot;
         AttributeParameter otp;
-        ot.name           = g_LangSpec.name_Swag_Align;
-        otp.name          = g_LangSpec.name_value;
+        ot.name           = g_LangSpec->name_Swag_Align;
+        otp.name          = g_LangSpec->name_value;
         otp.typeInfo      = g_TypeMgr.typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
         ot.parameters.push_back(otp);
@@ -993,9 +993,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Utf8::format(Msg0681, child->typeInfo->getDisplayName().c_str())}));
         }
 
-        if (typeParam->attributes.hasAttribute(g_LangSpec.name_Swag_Offset))
+        if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
         {
-            auto attr = typeParam->attributes.getAttribute(g_LangSpec.name_Swag_Offset);
+            auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
             SWAG_ASSERT(attr);
             return context->report({attr->node, Msg0682});
         }

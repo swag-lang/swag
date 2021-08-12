@@ -546,7 +546,8 @@ bool Workspace::buildTarget()
 bool Workspace::build()
 {
     g_TypeMgr.setup();
-    g_LangSpec.setup();
+    g_LangSpec = new LanguageSpec;
+    g_LangSpec->setup();
     Backend::setup();
 
     // [devmode] stuff

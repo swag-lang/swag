@@ -206,13 +206,13 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 
         // Resolve call
         auto typeInfo = node->array->typeInfo;
-        if (!hasUserOp(context, g_LangSpec.name_opSlice, node->array))
+        if (!hasUserOp(context, g_LangSpec->name_opSlice, node->array))
         {
             Utf8 msg = Utf8::format(Msg0320, node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
             return context->report({node->array, msg});
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opSlice, nullptr, nullptr, node->array, node->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams, false));
     }
     else
     {
@@ -612,7 +612,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
         // Resolve call
         auto typeInfo = arrayNode->array->typeInfo;
-        if (!hasUserOp(context, g_LangSpec.name_opIndex, arrayNode->array))
+        if (!hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array))
         {
             if (arrayNode->array->token.text.empty())
             {
@@ -626,7 +626,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             }
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec.name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
         break;
     }
 

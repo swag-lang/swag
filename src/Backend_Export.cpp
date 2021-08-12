@@ -227,7 +227,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
             AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
 
             // Name
-            bool isSelf = varDecl->token.text == g_LangSpec.name_self;
+            bool isSelf = varDecl->token.text == g_LangSpec->name_self;
             if (isSelf && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
@@ -302,7 +302,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
             if (p->flags & AST_DECL_USING)
                 CONCAT_FIXED_STR(bufferSwg, "using ");
 
-            bool isSelf = p->token.text == g_LangSpec.name_self;
+            bool isSelf = p->token.text == g_LangSpec->name_self;
             if (isSelf && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
@@ -660,27 +660,27 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
 
-            if (node->token.text == g_LangSpec.name_opInitGenerated)
+            if (node->token.text == g_LangSpec->name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opInit(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == g_LangSpec.name_opDropGenerated)
+            else if (node->token.text == g_LangSpec->name_opDropGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opDrop(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == g_LangSpec.name_opRelocGenerated)
+            else if (node->token.text == g_LangSpec->name_opRelocGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opReloc(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == g_LangSpec.name_opPostCopyGenerated)
+            else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opPostCopy(using self);");
                 bufferSwg.addEol();
             }
-            else if (node->token.text == g_LangSpec.name_opPostMoveGenerated)
+            else if (node->token.text == g_LangSpec->name_opPostMoveGenerated)
             {
                 CONCAT_FIXED_STR(bufferSwg, "func opPostMove(using self);");
                 bufferSwg.addEol();

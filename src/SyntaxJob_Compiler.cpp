@@ -364,7 +364,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     /////////////////////////////////
-    if (token.text == g_LangSpec.name_export)
+    if (token.text == g_LangSpec->name_export)
     {
         if (!sourceFile->imported)
         {
@@ -378,7 +378,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_generated)
+    else if (token.text == g_LangSpec->name_generated)
     {
         sourceFile->isGenerated = true;
         if (sourceFile->imported)
@@ -388,7 +388,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_foreignlib)
+    else if (token.text == g_LangSpec->name_foreignlib)
     {
         auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
         if (result)
@@ -448,31 +448,31 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_skip)
+    else if (token.text == g_LangSpec->name_skip)
     {
         sourceFile->buildPass = BuildPass::Lexer;
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_testpass)
+    else if (token.text == g_LangSpec->name_testpass)
     {
         SWAG_CHECK(eatToken());
-        if (token.text == g_LangSpec.name_lexer)
+        if (token.text == g_LangSpec->name_lexer)
         {
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
-        else if (token.text == g_LangSpec.name_syntax)
+        else if (token.text == g_LangSpec->name_syntax)
         {
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
-        else if (token.text == g_LangSpec.name_semantic)
+        else if (token.text == g_LangSpec->name_semantic)
         {
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
-        else if (token.text == g_LangSpec.name_backend)
+        else if (token.text == g_LangSpec->name_backend)
         {
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Backend;
@@ -488,7 +488,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_testerror || token.text == g_LangSpec.name_testerrors)
+    else if (token.text == g_LangSpec->name_testerror || token.text == g_LangSpec->name_testerrors)
     {
         // Put the file in its own module, because of errors
         if (!moduleSpecified)
@@ -505,7 +505,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0374}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        if (token.text == g_LangSpec.name_testerrors)
+        if (token.text == g_LangSpec->name_testerrors)
             sourceFile->multipleTestErrors = true;
         else
         {
@@ -520,7 +520,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec.name_testwarning || token.text == g_LangSpec.name_testwarnings)
+    else if (token.text == g_LangSpec->name_testwarning || token.text == g_LangSpec->name_testwarnings)
     {
         // Put the file in its own module, because of errors
         if (!moduleSpecified)
@@ -537,7 +537,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0375}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        if (token.text == g_LangSpec.name_testwarnings)
+        if (token.text == g_LangSpec->name_testwarnings)
             sourceFile->multipleTestWarnings = true;
         else
         {
@@ -705,7 +705,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     {
         while (true)
         {
-            if (token.text == g_LangSpec.name_location)
+            if (token.text == g_LangSpec->name_location)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
@@ -716,7 +716,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 continue;
             }
 
-            if (token.text == g_LangSpec.name_version)
+            if (token.text == g_LangSpec->name_version)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
