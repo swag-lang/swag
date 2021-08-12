@@ -623,7 +623,7 @@ Utf8 Utf8::format(const char* format, ...)
     va_start(args, format);
     vsnprintf(vec.buffer, len + 1, format, args);
     va_end(args);
-    return move(vec);
+    return vec;
 }
 
 void Utf8::tokenize(const char* str, char c, vector<Utf8>& tokens)

@@ -1971,8 +1971,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
             if (job->bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx ||
-                oneOverload.symMatchContext.result == MatchResult::BadGenericMatch && job->bestMatchResult == MatchResult::BadSignature)
+                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx) ||
+                (oneOverload.symMatchContext.result == MatchResult::BadGenericMatch && job->bestMatchResult == MatchResult::BadSignature))
             {
                 job->bestMatchResult    = oneOverload.symMatchContext.result;
                 job->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;

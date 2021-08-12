@@ -26,7 +26,7 @@ void* operator new(size_t t)
     return p + 1;
 }
 
-void operator delete(void* addr)
+void operator delete(void* addr) noexcept
 {
     if (!addr)
         return;
