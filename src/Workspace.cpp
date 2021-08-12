@@ -8,7 +8,7 @@
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
 
-Workspace *g_Workspace = nullptr;
+Workspace* g_Workspace = nullptr;
 
 void Workspace::setupPaths()
 {
@@ -140,6 +140,9 @@ void Workspace::setupUserTags()
 
 void Workspace::setup()
 {
+    g_TypeMgr = g_Allocator.alloc<TypeManager>();
+    g_TypeMgr->setup();
+
     setupPaths();
     setupInternalTags();
     setupUserTags();

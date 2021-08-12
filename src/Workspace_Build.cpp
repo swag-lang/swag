@@ -553,9 +553,7 @@ bool Workspace::buildTarget()
 bool Workspace::build()
 {
     g_ModuleMgr = g_Allocator.alloc<ModuleManager>();
-    g_TypeMgr   = g_Allocator.alloc<TypeManager>();
-    g_TypeMgr->setup();
-    g_LangSpec = g_Allocator.alloc<LanguageSpec>();
+    g_LangSpec  = g_Allocator.alloc<LanguageSpec>();
     g_LangSpec->setup();
     Backend::setup();
 
