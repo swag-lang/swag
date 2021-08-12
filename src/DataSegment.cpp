@@ -182,7 +182,7 @@ uint32_t DataSegment::offset(uint8_t* location)
         auto bucket = &buckets[i];
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
-            offset += (uint32_t)(location - bucket->buffer);
+            offset += (uint32_t) (location - bucket->buffer);
             return offset;
         }
 
@@ -552,6 +552,8 @@ void DataSegment::restoreAllValues()
 
 void DataSegment::release()
 {
+    for (auto& b : buckets)
+        g_Allocator.free(b.buffer, Allocator::alignSize(b.size));
 }
 
 void DataSegment::makeLinear()

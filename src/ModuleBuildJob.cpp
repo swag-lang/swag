@@ -17,6 +17,97 @@
 #include "LoadSourceFileJob.h"
 #include "ScopedLock.h"
 
+void ModuleBuildJob::publishFilesToPublic()
+{
+    if (module->exportSourceFiles.empty())
+        return;
+
+    string publicPath = module->publicPath.c_str();
+    if (publicPath.empty())
+        return;
+
+    // We need the public folder to be in sync with the current state of the code.
+    // That means that every files in the public folder that is no more '#global export' must
+    // be removed (and every old file that does not exist anymore)
+    set<Utf8> publicFiles;
+    for (auto one : module->exportSourceFiles)
+    {
+        auto name = one->name;
+        name.makeUpper();
+        publicFiles.insert(name);
+    }
+
+    OS::visitFiles(publicPath.c_str(), [&](const char* filename)
+                   {
+                       // Keep the generated file untouched !
+                       if (module->backend->exportFileName == filename)
+                           return;
+
+                       // If this is still a #public file, then do nothing. The job will erase it
+                       // if the one from the source code is more recent
+                       Utf8 pubName = filename;
+                       pubName.makeUpper();
+                       if (publicFiles.find(pubName) != publicFiles.end())
+                           return;
+
+                       // Otherwise, remove it !
+                       auto path = publicPath + "/";
+                       path += filename;
+                       error_code errorCode;
+                       fs::remove(path, errorCode);
+                   });
+
+    // Add all #public files
+    for (auto one : module->exportSourceFiles)
+    {
+        auto job          = g_Allocator.alloc<CopyFileJob>();
+        job->module       = module;
+        job->sourcePath   = one->path;
+        job->destPath     = publicPath + "/" + one->name;
+        job->dependentJob = this;
+        jobsToAdd.push_back(job);
+    }
+}
+
+void ModuleBuildJob::publishFilesToTarget()
+{
+    string publishPath = module->path + "/";
+    publishPath += SWAG_PUBLISH_FOLDER;
+    if (!fs::exists(publishPath))
+        return;
+
+    // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
+    // current target is
+    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName)
+                   {
+                       auto job          = g_Allocator.alloc<CopyFileJob>();
+                       job->module       = module;
+                       job->sourcePath   = publishPath + "/" + cFileName;
+                       job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
+                       job->dependentJob = this;
+                       jobsToAdd.push_back(job);
+                   });
+
+    // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
+    auto osArchPath = publishPath;
+    osArchPath += "/";
+    osArchPath += Backend::GetOsName();
+    osArchPath += "-";
+    osArchPath += Backend::GetArchName();
+    if (fs::exists(osArchPath))
+    {
+        OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName)
+                       {
+                           auto job          = g_Allocator.alloc<CopyFileJob>();
+                           job->module       = module;
+                           job->sourcePath   = osArchPath + "/" + cFileName;
+                           job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
+                           job->dependentJob = this;
+                           jobsToAdd.push_back(job);
+                       });
+    }
+}
+
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
     auto depModule = dep->module;
@@ -506,7 +597,6 @@ JobResult ModuleBuildJob::execute()
         {
             auto job                            = g_Allocator.alloc<ModuleRunJob>();
             job->module                         = module;
-            job->dependentJob                   = this;
             job->buildParameters                = module->buildParameters;
             job->buildParameters.outputFileName = module->name;
             job->buildParameters.compileType    = BackendCompileType::Test;
@@ -518,107 +608,20 @@ JobResult ModuleBuildJob::execute()
         {
             auto job                         = g_Allocator.alloc<ModuleRunJob>();
             job->module                      = module;
-            job->dependentJob                = this;
             job->buildParameters             = module->buildParameters;
             job->buildParameters.compileType = BackendCompileType::Normal;
             jobsToAdd.push_back(job);
         }
     }
 
-    module->release();
     module->sendCompilerMessage(CompilerMsgKind::PassAllDone, this);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;
 }
 
-void ModuleBuildJob::publishFilesToPublic()
+void ModuleBuildJob::release()
 {
-    if (module->exportSourceFiles.empty())
-        return;
-
-    string publicPath = module->publicPath.c_str();
-    if (publicPath.empty())
-        return;
-
-    // We need the public folder to be in sync with the current state of the code.
-    // That means that every files in the public folder that is no more '#global export' must
-    // be removed (and every old file that does not exist anymore)
-    set<Utf8> publicFiles;
-    for (auto one : module->exportSourceFiles)
-    {
-        auto name = one->name;
-        name.makeUpper();
-        publicFiles.insert(name);
-    }
-
-    OS::visitFiles(publicPath.c_str(), [&](const char* filename)
-                   {
-                       // Keep the generated file untouched !
-                       if (module->backend->exportFileName == filename)
-                           return;
-
-                       // If this is still a #public file, then do nothing. The job will erase it
-                       // if the one from the source code is more recent
-                       Utf8 pubName = filename;
-                       pubName.makeUpper();
-                       if (publicFiles.find(pubName) != publicFiles.end())
-                           return;
-
-                       // Otherwise, remove it !
-                       auto path = publicPath + "/";
-                       path += filename;
-                       error_code errorCode;
-                       fs::remove(path, errorCode);
-                   });
-
-    // Add all #public files
-    for (auto one : module->exportSourceFiles)
-    {
-        auto job          = g_Allocator.alloc<CopyFileJob>();
-        job->module       = module;
-        job->sourcePath   = one->path;
-        job->destPath     = publicPath + "/" + one->name;
-        job->dependentJob = this;
-        jobsToAdd.push_back(job);
-    }
-}
-
-void ModuleBuildJob::publishFilesToTarget()
-{
-    string publishPath = module->path + "/";
-    publishPath += SWAG_PUBLISH_FOLDER;
-    if (!fs::exists(publishPath))
-        return;
-
-    // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
-    // current target is
-    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName)
-                   {
-                       auto job          = g_Allocator.alloc<CopyFileJob>();
-                       job->module       = module;
-                       job->sourcePath   = publishPath + "/" + cFileName;
-                       job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
-                       job->dependentJob = this;
-                       jobsToAdd.push_back(job);
-                   });
-
-    // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
-    auto osArchPath = publishPath;
-    osArchPath += "/";
-    osArchPath += Backend::GetOsName();
-    osArchPath += "-";
-    osArchPath += Backend::GetArchName();
-    if (fs::exists(osArchPath))
-    {
-        OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName)
-                       {
-                           auto job          = g_Allocator.alloc<CopyFileJob>();
-                           job->module       = module;
-                           job->sourcePath   = osArchPath + "/" + cFileName;
-                           job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
-                           job->dependentJob = this;
-                           jobsToAdd.push_back(job);
-                       });
-    }
+    if (fromError)
+        module->release();
 }

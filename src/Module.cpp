@@ -198,24 +198,6 @@ void Module::initFrom(Module* other)
     typeTable.initFrom(this, &other->typeTable);
 }
 
-bool Module::mustGenerateTestExe()
-{
-    if (!g_CommandLine->test)
-        return false;
-    if (!g_CommandLine->outputTest)
-        return false;
-    if (kind != ModuleKind::Test)
-        return false;
-    if (byteCodeTestFunc.empty())
-        return false;
-    if (g_CommandLine->scriptMode)
-        return false;
-    if (g_Workspace->filteredModule && g_Workspace->filteredModule != this)
-        return false;
-
-    return true;
-}
-
 bool Module::canGenerateLegit()
 {
     // Normal module
@@ -289,6 +271,9 @@ void Module::release()
     mutableSegment.release();
     bssSegment.release();
     tlsSegment.release();
+
+    for (auto& b : byteCodeFunc)
+        b->release();
 }
 
 void Module::addExportSourceFile(SourceFile* file)
@@ -741,6 +726,26 @@ bool Module::hasBytecodeToRun()
 bool Module::areAllFilesExported()
 {
     return buildCfg.backendKind == BuildCfgBackendKind::Export;
+}
+
+bool Module::mustGenerateTestExe()
+{
+    if (!g_CommandLine->test)
+        return false;
+    if (!g_CommandLine->outputTest)
+        return false;
+    if (kind != ModuleKind::Test)
+        return false;
+    if (byteCodeTestFunc.empty())
+        return false;
+    if (g_CommandLine->scriptMode)
+        return false;
+    if (g_Workspace->filteredModule && g_Workspace->filteredModule != this)
+        return false;
+    if (numTestErrors || numTestWarnings)
+        return false;
+
+    return true;
 }
 
 bool Module::mustOutputSomething()

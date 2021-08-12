@@ -25,6 +25,7 @@ enum class ModuleBuildPass
 
 struct ModuleBuildJob : public Job
 {
+    void      release() override;
     bool      loadDependency(ModuleDependency* dep);
     void      publishFilesToTarget();
     void      publishFilesToPublic();

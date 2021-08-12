@@ -12,6 +12,12 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
 
+void ByteCode::release()
+{
+    auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
+    g_Allocator.free(out, s);
+}
+
 void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force)
 {
     *file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
