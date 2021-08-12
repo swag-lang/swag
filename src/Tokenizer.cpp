@@ -41,7 +41,7 @@ void Tokenizer::setFile(SourceFile* file)
     sourceFile      = file;
 }
 
-inline void Tokenizer::processChar(uint32_t c)
+void Tokenizer::processChar(uint32_t c)
 {
     location.column++;
 
@@ -54,13 +54,13 @@ inline void Tokenizer::processChar(uint32_t c)
     }
 }
 
-inline void Tokenizer::treatChar(uint32_t c, unsigned offset)
+void Tokenizer::treatChar(uint32_t c, unsigned offset)
 {
     processChar(c);
     sourceFile->curBuffer += offset;
 }
 
-inline uint32_t Tokenizer::getChar()
+uint32_t Tokenizer::getChar()
 {
     unsigned offset;
     auto     c = sourceFile->getChar(offset);
@@ -68,7 +68,7 @@ inline uint32_t Tokenizer::getChar()
     return c;
 }
 
-inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
+uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 {
     return sourceFile->getChar(offset);
 }
