@@ -3358,7 +3358,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->kind == TypeInfoKind::Generic)
     {
         // Just take the generic type for now
-        node->typeInfo          = g_TypeMgr.typeInfoUndefined;
+        node->typeInfo          = g_TypeMgr->typeInfoUndefined;
         identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
         return true;
     }
@@ -3896,7 +3896,7 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     node->typeInfo = back->typeInfo;
 
     SWAG_CHECK(checkCanThrow(context));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoString, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
 }

@@ -80,7 +80,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
-        node->typeInfo = g_TypeMgr.typeInfoBool;
+        node->typeInfo = g_TypeMgr->typeInfoBool;
     }
 
     return true;
@@ -95,7 +95,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->typeInfo = g_TypeMgr.typeInfoS32;
+        node->typeInfo = g_TypeMgr->typeInfoS32;
         node->setFlagsValueIsComputed();
         switch (leftTypeInfo->nativeType)
         {
@@ -143,7 +143,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
-        node->typeInfo = g_TypeMgr.typeInfoS32;
+        node->typeInfo = g_TypeMgr->typeInfoS32;
     }
 
     return true;
@@ -203,7 +203,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
-        node->typeInfo = g_TypeMgr.typeInfoBool;
+        node->typeInfo = g_TypeMgr->typeInfoBool;
     }
 
     return true;
@@ -263,7 +263,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
-        node->typeInfo = g_TypeMgr.typeInfoBool;
+        node->typeInfo = g_TypeMgr->typeInfoBool;
     }
 
     return true;
@@ -303,8 +303,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return true;
     }
 
-    if ((leftTypeInfo->kind == TypeInfoKind::Lambda || leftTypeInfo == g_TypeMgr.typeInfoNull) &&
-        (rightTypeInfo->kind == TypeInfoKind::Lambda || rightTypeInfo == g_TypeMgr.typeInfoNull) &&
+    if ((leftTypeInfo->kind == TypeInfoKind::Lambda || leftTypeInfo == g_TypeMgr->typeInfoNull) &&
+        (rightTypeInfo->kind == TypeInfoKind::Lambda || rightTypeInfo == g_TypeMgr->typeInfoNull) &&
         (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
     {
         // This is fine to compare two lambdas
@@ -331,11 +331,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({right, Msg0007});
 
     // Slice can only be compared to null
-    if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr.typeInfoNull)
+    if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr->typeInfoNull)
         return context->report({left, Msg0009});
 
     // Interface can only be compared to null
-    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr.typeInfoNull)
+    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull)
         return context->report({left, Msg0010});
 
     // Some types can only be compared for equality
@@ -346,9 +346,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)
-        node->typeInfo = g_TypeMgr.typeInfoS32;
+        node->typeInfo = g_TypeMgr->typeInfoS32;
     else
-        node->typeInfo = g_TypeMgr.typeInfoBool;
+        node->typeInfo = g_TypeMgr->typeInfoBool;
     TypeManager::promote(left, right);
 
     left->typeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);

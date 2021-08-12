@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     auto node      = context->node;
     auto toTypeItf = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Interface);
 
-    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
+    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
         return true;
@@ -628,7 +628,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
+    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
     {
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -680,7 +680,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         fromTypeInfo      = TypeManager::concreteReferenceType(typeVariadic->rawType);
     }
 
-    if (fromTypeInfo == g_TypeMgr.typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
+    if (fromTypeInfo == g_TypeMgr->typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }

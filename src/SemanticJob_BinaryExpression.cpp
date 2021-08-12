@@ -31,7 +31,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         node->typeInfo = leftTypeInfo;
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -40,7 +40,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         node->typeInfo = rightTypeInfo;
         SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, Msg0144}));
         SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Utf8::format(Msg0579, leftTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -73,25 +73,25 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
         case NativeTypeKind::S32:
             if (addOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 + right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (addOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 + right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (addOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 + right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (addOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 + right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -146,14 +146,14 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         if (rightTypeInfo->kind == TypeInfoKind::Pointer)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-            node->typeInfo = g_TypeMgr.typeInfoInt;
+            node->typeInfo = g_TypeMgr->typeInfoInt;
             return true;
         }
 
         // Pointer arithmetic
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -186,25 +186,25 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         {
         case NativeTypeKind::S32:
             if (subOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 - right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (subOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 - right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (subOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 - right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (subOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 - right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -273,25 +273,25 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::S32:
             if (mulOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 * right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (mulOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 * right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (mulOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU32)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 * right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (mulOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
-                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU64)});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 * right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -702,7 +702,7 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     right->computedValue->text = Ast::literalToString(right->typeInfo, *right->computedValue);
     node->setFlagsValueIsComputed();
     node->computedValue->text = left->computedValue->text + right->computedValue->text.c_str();
-    node->typeInfo            = g_TypeMgr.typeInfoString;
+    node->typeInfo            = g_TypeMgr->typeInfoString;
     return true;
 }
 
@@ -1190,9 +1190,9 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
 
-    node->typeInfo = g_TypeMgr.promoteUntyped(left->typeInfo);
+    node->typeInfo = g_TypeMgr->promoteUntyped(left->typeInfo);
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
@@ -1242,9 +1242,9 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         return true;
     }
 
-    node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, left, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, right, CASTFLAG_AUTO_BOOL));
+    node->typeInfo = g_TypeMgr->typeInfoBool;
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, left, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, right, CASTFLAG_AUTO_BOOL));
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
 

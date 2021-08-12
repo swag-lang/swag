@@ -13,7 +13,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
@@ -47,7 +47,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
     if (module->mustOptimizeBC(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
@@ -154,7 +154,7 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
     // checked as a separated function
     if (fct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
     {
-        if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+        if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
         {
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
@@ -188,7 +188,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
     node->allocateExtension();
     node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
@@ -432,7 +432,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             // switch without an expression : a case is a boolean expressions
             else
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
             }
         }
     }
@@ -468,7 +468,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
             if (context->result != ContextResult::Done)
                 return true;
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
@@ -487,8 +487,8 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         else
         {
             auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoInt, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoInt, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoInt, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
         }
 
         node->expression->allocateExtension();
@@ -541,7 +541,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);
         identifier->genericParameters->flags |= AST_NO_BYTECODE;
         auto child      = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
-        child->typeInfo = g_TypeMgr.typeInfoBool;
+        child->typeInfo = g_TypeMgr->typeInfoBool;
         child->allocateComputedValue();
         child->computedValue->reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
         child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
@@ -704,7 +704,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 bool SemanticJob::resolveGetErr(SemanticContext* context)
 {
     auto node         = context->node;
-    node->typeInfo    = g_TypeMgr.typeInfoString;
+    node->typeInfo    = g_TypeMgr->typeInfoString;
     node->byteCodeFct = ByteCodeGenJob::emitGetErr;
     return true;
 }
@@ -729,7 +729,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     }
 
     if (!node->typeInfo)
-        node->typeInfo = g_TypeMgr.typeInfoUInt;
+        node->typeInfo = g_TypeMgr->typeInfoUInt;
     node->byteCodeFct = ByteCodeGenJob::emitIndex;
     return true;
 }

@@ -287,7 +287,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, node->token, Msg0744}));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, Msg0745}));
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Msg0745}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Msg0746}));
         }
 
@@ -305,7 +305,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Do we have a return value
-    if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+    if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
     {
         if (!(node->content->flags & AST_NO_SEMANTIC))
         {
@@ -418,7 +418,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (!typeNode->childs.empty())
         typeNode->typeInfo = typeNode->childs.front()->typeInfo;
     else
-        typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
+        typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
 
     // If the function returns a reference, then transform it to a normal return type if
     // this is not a reference to a "by copy" type
@@ -503,9 +503,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // It will be done in the same way as parameters
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
+        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
         {
-            typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
+            typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
             funcNode->flags &= ~AST_SHORT_LAMBDA;
         }
     }
@@ -906,13 +906,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     node->resolvedFuncDecl = funcNode;
 
     // Nothing to return
-    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
+    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && node->childs.empty())
         return true;
 
     // Check return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     bool lateRegister = funcNode->returnType->flags & AST_FORCE_FUNC_LATE_REGISTER;
-    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
+    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))

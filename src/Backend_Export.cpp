@@ -255,7 +255,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
 
     CONCAT_FIXED_STR(bufferSwg, ")");
 
-    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
         emitType(typeFunc->returnType, indent);
@@ -329,7 +329,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
 
     CONCAT_FIXED_STR(bufferSwg, ")");
 
-    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
         emitType(typeFunc->returnType, indent);

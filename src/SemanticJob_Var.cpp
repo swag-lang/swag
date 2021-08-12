@@ -446,7 +446,7 @@ bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
 
         if (isGeneric)
         {
-            node->assignment->typeInfo = g_TypeMgr.typeInfoS32;
+            node->assignment->typeInfo = g_TypeMgr->typeInfoS32;
             node->assignment->flags |= AST_NO_SEMANTIC;
         }
         else
@@ -817,7 +817,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteReferenceType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
-        SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->report({node->assignment, Msg0307}));
+        SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoVoid, context->report({node->assignment, Msg0307}));
 
         // We need to decide which integer/float type it is
         node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
@@ -850,13 +850,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    if (!node->typeInfo || node->typeInfo == g_TypeMgr.typeInfoUndefined)
+    if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
     {
         // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
         if ((node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION)) ||
-            node->typeInfo == g_TypeMgr.typeInfoUndefined)
+            node->typeInfo == g_TypeMgr->typeInfoUndefined)
         {
-            node->typeInfo = g_TypeMgr.typeInfoUndefined;
+            node->typeInfo = g_TypeMgr->typeInfoUndefined;
             genericType    = false;
 
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
@@ -867,7 +867,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Type should be a correct one
-    SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoNull, context->report({node, node->token, Msg0308}));
+    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, node->token, Msg0308}));
 
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, Utf8::format(Msg0309, AstNode::getKindName(node).c_str(), node->token.text.c_str())}));

@@ -89,7 +89,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
         return true;
 
     SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
     if (child->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)

@@ -193,7 +193,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (this == g_TypeMgr.typeInfoNull && to->kind == TypeInfoKind::Lambda)
+        if (this == g_TypeMgr->typeInfoNull && to->kind == TypeInfoKind::Lambda)
             return true;
     }
 
@@ -202,16 +202,16 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (this == g_TypeMgr.typeInfoNull)
+        if (this == g_TypeMgr->typeInfoNull)
             return true;
-        if (to == g_TypeMgr.typeInfoNull)
+        if (to == g_TypeMgr->typeInfoNull)
             return true;
     }
 
     auto other = static_cast<TypeInfoPointer*>(to);
 
     // Anonymous pointers
-    if ((isSameFlags & ISSAME_CAST) && other->pointedType == g_TypeMgr.typeInfoVoid)
+    if ((isSameFlags & ISSAME_CAST) && other->pointedType == g_TypeMgr->typeInfoVoid)
         return true;
 
     return pointedType->isSame(other->pointedType, isSameFlags);
@@ -660,7 +660,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (kind == TypeInfoKind::Lambda && to == g_TypeMgr.typeInfoNull)
+        if (kind == TypeInfoKind::Lambda && to == g_TypeMgr->typeInfoNull)
             return true;
     }
 
@@ -674,9 +674,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if ((isSameFlags & ISSAME_EXACT) || (to->kind == TypeInfoKind::Lambda))
     {
-        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !other->returnType)
+        if (returnType && returnType != g_TypeMgr->typeInfoVoid && !other->returnType)
             return false;
-        if (!returnType && other->returnType && other->returnType != g_TypeMgr.typeInfoVoid)
+        if (!returnType && other->returnType && other->returnType != g_TypeMgr->typeInfoVoid)
             return false;
         if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, isSameFlags))
             return false;

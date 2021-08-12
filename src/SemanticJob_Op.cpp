@@ -32,12 +32,12 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     // Whatever except nothing
     if (wanted == nullptr)
     {
-        if (returnType == g_TypeMgr.typeInfoVoid)
+        if (returnType == g_TypeMgr->typeInfoVoid)
             return context->report({node, node->token, Utf8::format(Msg0063, node->token.text.c_str())});
         return true;
     }
 
-    if (wanted != g_TypeMgr.typeInfoVoid && returnType == g_TypeMgr.typeInfoVoid)
+    if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
         return context->report({node, node->token, Utf8::format(Msg0064, node->token.text.c_str(), wanted->getDisplayName().c_str())});
     if (!returnType->isSame(wanted, ISSAME_CAST))
         return context->report({node->returnType, Utf8::format(Msg0065, node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
@@ -93,13 +93,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, Utf8::format(Msg0071, name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0072, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0072, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
     }
     else if (isOpVisit)
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, Utf8::format(Msg0073, name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0074, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0074, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Msg0075}));
     }
 
@@ -107,8 +107,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (isOpVisit)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
-        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr.typeInfoCode));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoCode));
     }
     else if (name == g_LangSpec->name_opCast)
     {
@@ -118,12 +118,12 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     else if (name == g_LangSpec->name_opEquals)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoBool));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoBool));
     }
     else if (name == g_LangSpec->name_opCmp)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoS32));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoS32));
     }
     else if (name == g_LangSpec->name_opBinary)
     {
@@ -138,56 +138,56 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     else if (name == g_LangSpec->name_opPostCopy || name == g_LangSpec->name_opPostMove || name == g_LangSpec->name_opDrop)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
     }
     else if (name == g_LangSpec->name_opCount)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoUInt));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoUInt));
     }
     else if (name == g_LangSpec->name_opData)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoConstPVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoConstPVoid));
     }
     else if (name == g_LangSpec->name_opAssign)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
     }
     else if (name == g_LangSpec->name_opAffect)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
         SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Utf8::format(Msg0077, name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr.typeInfoUInt));
-        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr.typeInfoUInt));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
     }
     else if (name == g_LangSpec->name_opIndex)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         for (int i = 1; i < parameters->childs.size(); i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoUInt));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoUInt));
     }
     else if (name == g_LangSpec->name_opIndexAssign)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
         for (int i = 1; i < parameters->childs.size() - 1; i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoUInt));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoUInt));
     }
     else if (name == g_LangSpec->name_opIndexAffect)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
         for (int i = 1; i < parameters->childs.size() - 1; i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoUInt));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoUInt));
     }
     else if (name == g_LangSpec->name_opInit && node->sourceFile->isGenerated)
     {
@@ -317,7 +317,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     {
         literal.kind                = AstNodeKind::Literal;
         literal.computedValue->text = opConst ? opConst : "";
-        literal.typeInfo            = opType ? opType : g_TypeMgr.typeInfoString;
+        literal.typeInfo            = opType ? opType : g_TypeMgr->typeInfoString;
         literal.flags |= AST_VALUE_COMPUTED;
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;

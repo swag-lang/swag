@@ -253,7 +253,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     }
     case TypeInfoKind::Variadic:
     {
-        return getSliceType(typeInfo, g_TypeMgr.typeInfoAny, file);
+        return getSliceType(typeInfo, g_TypeMgr->typeInfoAny, file);
     }
 
     case TypeInfoKind::Interface:
@@ -315,7 +315,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     if (typeFunc->returnType)
     {
         for (int r = 0; r < typeFunc->returnType->numRegisters(); r++)
-            params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+            params.push_back(getType(g_TypeMgr->typeInfoPVoid, file));
     }
 
     for (auto one : typeFunc->parameters)
@@ -329,7 +329,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
         {
             for (int r = 0; r < one->typeInfo->numRegisters(); r++)
             {
-                params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+                params.push_back(getType(g_TypeMgr->typeInfoPVoid, file));
             }
         }
     }

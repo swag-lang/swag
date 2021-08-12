@@ -105,7 +105,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
+        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -121,7 +121,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
+        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -149,7 +149,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
+        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;

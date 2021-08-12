@@ -445,7 +445,7 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
     auto node = context->node;
     node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
     node->flags |= AST_CONST_EXPR;
-    node->typeInfo = g_TypeMgr.typeInfoVoid;
+    node->typeInfo = g_TypeMgr->typeInfoVoid;
     return true;
 }
 
@@ -630,7 +630,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
     if (expression->flags & AST_VALUE_COMPUTED)
     {
         node->childs.clear();

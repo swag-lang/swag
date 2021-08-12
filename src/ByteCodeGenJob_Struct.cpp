@@ -64,7 +64,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
         inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->extension->bc);
         SWAG_ASSERT(numParams <= 2);
-        inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr.typeInfoOpCall : (uint8_t*) g_TypeMgr.typeInfoOpCall2;
+        inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr->typeInfoOpCall : (uint8_t*) g_TypeMgr->typeInfoOpCall2;
         SWAG_ASSERT(inst->a.pointer);
     }
 
@@ -124,7 +124,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
-    opInit->typeInfoFunc = g_TypeMgr.typeInfoOpCall;
+    opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
     opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opInit";
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
@@ -386,7 +386,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     }
 
     auto opDrop            = g_Allocator.alloc<ByteCode>();
-    opDrop->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
+    opDrop->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opDrop = opDrop;
     opDrop->sourceFile     = sourceFile;
     opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opDropGenerated";
@@ -514,7 +514,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     }
 
     auto opPostMove            = g_Allocator.alloc<ByteCode>();
-    opPostMove->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
+    opPostMove->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opPostMove = opPostMove;
     opPostMove->sourceFile     = sourceFile;
     opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostMoveGenerated";
@@ -641,7 +641,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     }
 
     auto opPostCopy            = g_Allocator.alloc<ByteCode>();
-    opPostCopy->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
+    opPostCopy->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;
     opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostCopyGenerated";

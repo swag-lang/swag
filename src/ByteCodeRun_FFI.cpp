@@ -221,7 +221,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     // Function return type
     ffi_type* typeResult = &ffi_type_void;
     auto      returnType = TypeManager::concreteType(typeInfoFunc->returnType);
-    if (returnType != g_TypeMgr.typeInfoVoid)
+    if (returnType != g_TypeMgr->typeInfoVoid)
     {
         // Special return
         if (returnType->kind == TypeInfoKind::Slice ||

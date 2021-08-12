@@ -122,7 +122,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
     }
 
-    node->typeInfo = g_TypeMgr.typeInfoBool;
+    node->typeInfo = g_TypeMgr->typeInfoBool;
 
     bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
     bool forTuple  = leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE;
@@ -244,7 +244,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -326,7 +326,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             break;
         }
 

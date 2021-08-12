@@ -204,7 +204,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         if (result)
             *result = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeInfo = g_TypeMgr.typeInfoCode;
+        node->typeInfo = g_TypeMgr->typeInfoCode;
         node->typeFlags |= TYPEFLAG_ISCODE;
         SWAG_CHECK(eatToken());
         return true;
@@ -217,7 +217,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         if (result)
             *result = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
-        node->typeInfo = g_TypeMgr.typeInfoNameAlias;
+        node->typeInfo = g_TypeMgr->typeInfoNameAlias;
         node->typeFlags |= TYPEFLAG_ISNAMEALIAS;
         SWAG_CHECK(eatToken());
         return true;

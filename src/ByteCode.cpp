@@ -133,7 +133,7 @@ void ByteCode::markLabels()
 
 bool ByteCode::isDoingNothing()
 {
-    if (getCallType()->returnType != g_TypeMgr.typeInfoVoid)
+    if (getCallType()->returnType != g_TypeMgr->typeInfoVoid)
         return false;
 
     if (numInstructions == 2)

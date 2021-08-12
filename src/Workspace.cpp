@@ -130,7 +130,7 @@ void Workspace::setupUserTags()
         }
         else
         {
-            oneTag.type        = g_TypeMgr.typeInfoBool;
+            oneTag.type        = g_TypeMgr->typeInfoBool;
             oneTag.value.reg.b = true;
             oneTag.name        = oneTagName;
             tags.push_back(oneTag);

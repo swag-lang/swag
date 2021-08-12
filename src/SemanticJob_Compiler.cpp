@@ -81,7 +81,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 // opSlice
                 AstNode tmpNode;
                 memset(&tmpNode, 0, sizeof(AstNode));
-                tmpNode.typeInfo = g_TypeMgr.typeInfoUInt;
+                tmpNode.typeInfo = g_TypeMgr->typeInfoUInt;
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params, false));
@@ -245,7 +245,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, Msg0237}));
     }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     if (context->result != ContextResult::Done)
         return true;
@@ -526,7 +526,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
     if (context->result != ContextResult::Done)
@@ -564,7 +564,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto back   = node->childs[0];
 
     SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, Msg0242}));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, Utf8::format(Msg0243, back->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Utf8::format(Msg0243, back->typeInfo->getDisplayName().c_str())}));
     node->setFlagsValueIsComputed();
 
     if (!(node->doneFlags & AST_DONE_LOAD))
@@ -615,8 +615,8 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         // Creates return type
         auto ptrArray         = allocType<TypeInfoArray>();
         ptrArray->count       = stat_buf.st_size;
-        ptrArray->pointedType = g_TypeMgr.typeInfoU8;
-        ptrArray->finalType   = g_TypeMgr.typeInfoU8;
+        ptrArray->pointedType = g_TypeMgr->typeInfoU8;
+        ptrArray->finalType   = g_TypeMgr->typeInfoU8;
         ptrArray->sizeOf      = ptrArray->count;
         ptrArray->totalCount  = stat_buf.st_size;
         ptrArray->computeName();
@@ -633,7 +633,7 @@ bool SemanticJob::resolveCompilerDefined(SemanticContext* context)
     auto node = context->node;
     node->setFlagsValueIsComputed();
     node->computedValue->reg.b = node->childs.back()->resolvedSymbolOverload != nullptr;
-    node->typeInfo             = g_TypeMgr.typeInfoBool;
+    node->typeInfo             = g_TypeMgr->typeInfoBool;
     return true;
 }
 
@@ -646,7 +646,7 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     SWAG_VERIFY(node->ownerFct, context->report({node, Msg0247}));
 
     node->semFlags |= AST_SEM_FORCE_SCOPE;
-    node->typeInfo = g_TypeMgr.typeInfoVoid;
+    node->typeInfo = g_TypeMgr->typeInfoVoid;
 
     identifierRef->previousResolvedNode = node;
     if (node->ownerInline)
@@ -667,25 +667,25 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
         node->computedValue->text = g_CommandLine.buildCfg;
-        node->typeInfo            = g_TypeMgr.typeInfoString;
+        node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
         node->computedValue->text = Backend::GetArchName();
-        node->typeInfo            = g_TypeMgr.typeInfoString;
+        node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerOs:
         node->setFlagsValueIsComputed();
         node->computedValue->text = Backend::GetOsName();
-        node->typeInfo            = g_TypeMgr.typeInfoString;
+        node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerAbi:
         node->setFlagsValueIsComputed();
         node->computedValue->text = Backend::GetAbiName();
-        node->typeInfo            = g_TypeMgr.typeInfoString;
+        node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerHasTag:
@@ -697,7 +697,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, Msg0248}));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(Msg0249, front->typeInfo->getDisplayName().c_str())}));
         auto tag       = g_Workspace.hasTag(front->computedValue->text);
-        node->typeInfo = g_TypeMgr.typeInfoBool;
+        node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
         node->computedValue->reg.b = tag ? true : false;
         return true;
@@ -772,13 +772,13 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerCallerFunction:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Msg0255}));
-        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerFunction:
     {
         SWAG_VERIFY(node->ownerFct, context->report({node, Msg0256}));
-        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->typeInfo = g_TypeMgr->typeInfoString;
         node->setFlagsValueIsComputed();
         node->computedValue->text = node->ownerFct->getNameForUserCompiler();
         return true;

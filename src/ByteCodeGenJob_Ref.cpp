@@ -397,7 +397,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, g_TypeMgr.typeInfoAny, false));
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, g_TypeMgr->typeInfoAny, false));
         node->resultRegisterRC         = node->array->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         freeRegisterRC(context, node->access);

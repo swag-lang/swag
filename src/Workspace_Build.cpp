@@ -186,7 +186,7 @@ void Workspace::setupInternalTags()
     switch (g_CommandLine.arch)
     {
     case BackendArch::X86_64:
-        oneTag.type       = g_TypeMgr.typeInfoString;
+        oneTag.type       = g_TypeMgr->typeInfoString;
         oneTag.value.text = "little";
         oneTag.name       = "Swag.Endian";
         tags.push_back(oneTag);
@@ -477,7 +477,7 @@ bool Workspace::buildTarget()
 
     // Config pass (compute/fetch dependencies...
     //////////////////////////////////////////////////
-    g_ModuleCfgMgr = new ModuleCfgManager;
+    g_ModuleCfgMgr = g_Allocator.alloc<ModuleCfgManager>();
     SWAG_CHECK(g_ModuleCfgMgr->execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
@@ -545,8 +545,9 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    g_TypeMgr.setup();
-    g_LangSpec = new LanguageSpec;
+    g_TypeMgr = g_Allocator.alloc<TypeManager>();
+    g_TypeMgr->setup();
+    g_LangSpec = g_Allocator.alloc<LanguageSpec>();
     g_LangSpec->setup();
     Backend::setup();
 

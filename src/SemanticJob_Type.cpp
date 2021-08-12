@@ -88,7 +88,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     }
     else
     {
-        typeInfo->returnType = g_TypeMgr.typeInfoVoid;
+        typeInfo->returnType = g_TypeMgr->typeInfoVoid;
     }
 
     if (node->parameters)
@@ -134,7 +134,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         // If generic, do not evaluate. No type for now
         if (typeNode->ownerStructScope && typeNode->ownerStructScope->owner->typeInfo->flags & TYPEINFO_GENERIC)
         {
-            typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
+            typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
             return true;
         }
 
@@ -158,14 +158,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Code
     if (typeNode->typeFlags & TYPEFLAG_ISCODE)
     {
-        typeNode->typeInfo = g_TypeMgr.typeInfoCode;
+        typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
 
     // NameAlias
     if (typeNode->typeFlags & TYPEFLAG_ISNAMEALIAS)
     {
-        typeNode->typeInfo = g_TypeMgr.typeInfoNameAlias;
+        typeNode->typeInfo = g_TypeMgr->typeInfoNameAlias;
         return true;
     }
 

@@ -163,7 +163,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
-        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
     }
     else if (typeFunc->returnType->numRegisters() == 1)
     {
@@ -171,8 +171,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
     else if (typeFunc->returnType->numRegisters() == 2)
     {
-        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
-        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
     }
 
     // Then variadic
@@ -183,8 +183,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
-            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
-            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
             numParams--;
         }
     }
@@ -200,8 +200,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
         else
         {
-            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
-            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
         }
     }
 
@@ -1052,19 +1052,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpMulS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::IMUL);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMulU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMulS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::IMUL);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMulU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMulF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
@@ -1107,19 +1107,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpPlusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpPlusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpPlusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpPlusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpPlusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FADD);
@@ -1130,19 +1130,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpMinusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMinusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMinusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMinusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMinusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
@@ -1260,7 +1260,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe9"); // imul cl
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoS8));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS8));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1269,7 +1269,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe1"); // mul cl
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoU8));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU8));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1278,7 +1278,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe9"); // imul cx
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoS16));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS16));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1287,7 +1287,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe1"); // mul cx
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoU16));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU16));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1296,7 +1296,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe9"); // imul ecx
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS32));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1305,7 +1305,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe1"); // mul ecx
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU32));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1314,7 +1314,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe9"); // imul rcx
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS64));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1323,7 +1323,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe1"); // mul rcx
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU64));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1509,35 +1509,35 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpMinusEqS8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoS8));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoU8));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoU16));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoU16));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpMinusEqU32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS64));
             MK_BINOPEQ64_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqU64:
             MK_BINOPEQ64_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FSUB);
@@ -1548,35 +1548,35 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpPlusEqS8:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoS8));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpPlusEqU8:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoU8));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::AffectOpPlusEqS16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoS16));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::AffectOpPlusEqU16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoU16));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoS32));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpPlusEqU32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoU32));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoS64));
+            emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::AffectOpPlusEqU64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr.typeInfoU64));
+            emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FADD);
@@ -3893,7 +3893,7 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
 {
     // Store result to rt0
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr.typeInfoVoid)
+    if (returnType != g_TypeMgr->typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
             (returnType->kind == TypeInfoKind::Interface) ||
@@ -3964,11 +3964,11 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         {
             auto index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
 
             index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
             numCallParams--;
         }
     }
@@ -3986,25 +3986,25 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             typeParam->kind == TypeInfoKind::Array)
         {
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->kind == TypeInfoKind::Slice ||
                  typeParam->isNative(NativeTypeKind::String))
         {
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
                  typeParam->kind == TypeInfoKind::Interface)
         {
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else
         {
@@ -4024,12 +4024,12 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         returnType->isNative(NativeTypeKind::String))
     {
         paramsRegisters.push_back(offsetRT);
-        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
+        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
     else if (returnByCopy)
     {
         paramsRegisters.push_back(offsetRT);
-        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
+        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 
     // Set the first 4 parameters. Can be return register, or function parameter.
@@ -4042,7 +4042,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         static const uint8_t regf4[] = {XMM0, XMM1, XMM2, XMM3};
 
         // This is a return register
-        if (type == g_TypeMgr.typeInfoUndefined)
+        if (type == g_TypeMgr->typeInfoUndefined)
         {
             if (returnByCopy)
                 BackendX64Inst::emit_Load64_Indirect(pp, r, reg4[i], RDI);
@@ -4069,7 +4069,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         for (int i = 4; i < (int) paramsRegisters.size(); i++)
         {
             // This is for a return value
-            if (paramsTypes[i] == g_TypeMgr.typeInfoUndefined)
+            if (paramsTypes[i] == g_TypeMgr->typeInfoUndefined)
             {
                 if (returnByCopy)
                     BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);

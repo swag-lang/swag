@@ -863,7 +863,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         AttributeParameter otp;
         ot.name           = g_LangSpec->name_Swag_Align;
         otp.name          = g_LangSpec->name_value;
-        otp.typeInfo      = g_TypeMgr.typeInfoU8;
+        otp.typeInfo      = g_TypeMgr->typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
         ot.parameters.push_back(otp);
         typeInfo->attributes.emplace(ot);
@@ -1023,7 +1023,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (!(node->flags & AST_FROM_GENERIC))
     {
         auto typeParam      = allocType<TypeInfoParam>();
-        typeParam->typeInfo = g_TypeMgr.typeInfoPVoid;
+        typeParam->typeInfo = g_TypeMgr->typeInfoPVoid;
         typeParam->name     = typeParam->typeInfo->name;
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = 0;

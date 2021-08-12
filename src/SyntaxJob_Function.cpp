@@ -217,7 +217,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
             {
                 auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                 paramNode->type                = newTypeExpression;
-                newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
+                newTypeExpression->literalType = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
             }
             else
@@ -231,7 +231,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
                 {
                     auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                     paramNode->type                = newTypeExpression;
-                    newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
+                    newTypeExpression->literalType = g_TypeMgr->typeInfoVariadic;
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(paramNode->type, typeExpression);
                 }
@@ -536,7 +536,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
-        typeExpression->literalType = g_TypeMgr.typeInfoString;
+        typeExpression->literalType = g_TypeMgr->typeInfoString;
     }
     else if (typeFuncId == TokenId::CompilerSelectIf || typeFuncId == TokenId::CompilerCheckIf)
     {
@@ -544,7 +544,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
-        typeExpression->literalType = g_TypeMgr.typeInfoBool;
+        typeExpression->literalType = g_TypeMgr->typeInfoBool;
     }
 
     funcNode->typeInfo->computeName();

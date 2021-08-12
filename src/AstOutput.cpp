@@ -68,7 +68,7 @@ namespace Ast
 
     bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
     {
-        if (typeInfo == g_TypeMgr.typeInfoNull)
+        if (typeInfo == g_TypeMgr->typeInfoNull)
         {
             CONCAT_FIXED_STR(concat, "null");
             return true;

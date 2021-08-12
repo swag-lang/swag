@@ -5,7 +5,7 @@
 #include "TypeInfo.h"
 #include "ScopedLock.h"
 
-TypeManager g_TypeMgr;
+TypeManager* g_TypeMgr = nullptr;
 
 static TypeInfo*                            g_LiteralTypeToType[(int) LiteralType::TT_MAX];
 thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesI;
@@ -298,7 +298,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         {
             auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
             if (!returnType)
-                return g_TypeMgr.typeInfoVoid;
+                return g_TypeMgr->typeInfoVoid;
             return concreteType(returnType, flags);
         }
         break;
@@ -391,9 +391,9 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 TypeInfo* TypeManager::solidifyUntyped(TypeInfo* typeInfo)
 {
     if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
-        return g_TypeMgr.typeInfoS32;
+        return g_TypeMgr->typeInfoS32;
     if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
-        return g_TypeMgr.typeInfoF32;
+        return g_TypeMgr->typeInfoF32;
     return typeInfo;
 }
 

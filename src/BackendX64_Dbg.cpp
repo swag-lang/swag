@@ -636,7 +636,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Variadic)
     {
-        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr.typeInfoAny);
+        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny);
     }
 
     // TypedVariadic
@@ -988,7 +988,7 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
     if (patchSOffset == concat.totalCount())
     {
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(dbgGetOrCreateType(pp, g_TypeMgr.typeInfoBool));
+        concat.addU32(dbgGetOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         dbgEmitTruncatedString(concat, "__fake__");
         concat.addU16(0);
