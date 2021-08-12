@@ -131,7 +131,7 @@ struct TypeManager
     TypeInfoCode*      typeInfoCode           = nullptr;
     TypeInfoNameAlias* typeInfoNameAlias      = nullptr;
 
-    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {0};
+    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };
 
 extern TypeManager* g_TypeMgr;

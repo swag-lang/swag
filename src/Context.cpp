@@ -7,8 +7,8 @@
 
 uint64_t                        g_TlsContextId     = 0;
 uint64_t                        g_TlsThreadLocalId = 0;
-SwagContext                     g_DefaultContext   = {0};
-SwagProcessInfos                g_ProcessInfos     = {0};
+SwagContext                     g_DefaultContext   = {{0}};
+SwagProcessInfos                g_ProcessInfos     = {{0}};
 thread_local ByteCodeRunContext g_RunContext;
 static mutex                    g_MakeCallbackMutex;
 static uint32_t                 g_MakeCallbackCount = 0;

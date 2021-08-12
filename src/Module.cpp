@@ -300,6 +300,7 @@ void Module::addExportSourceFile(SourceFile* file)
 void Module::addErrorModule(Module* module)
 {
     ScopedLock lk(mutexFile);
+    SWAG_ASSERT(!errorModules.contains(module));
     errorModules.push_back(module);
 }
 
@@ -596,9 +597,8 @@ bool Module::waitForDependenciesDone(Job* job)
 void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result)
 {
     result = moduleDependencies;
-    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2) {
-        return n2->module->hasDependencyTo(n1->module);
-    });
+    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2)
+         { return n2->module->hasDependencyTo(n1->module); });
 }
 
 void Module::setBuildPass(BuildPass buildP)

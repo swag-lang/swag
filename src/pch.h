@@ -1,7 +1,9 @@
 #pragma once
 
+#ifdef _MSC_VER
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#endif
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wreorder-ctor"
@@ -11,7 +13,6 @@
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #pragma clang diagnostic ignored "-Wmicrosoft-include"
-#pragma clang diagnostic ignored "-Wmissing-braces"
 #pragma clang diagnostic ignored "-Wmicrosoft-cast"
 #pragma clang diagnostic ignored "-Wchar-subscripts"
 #pragma clang diagnostic ignored "-Wunused-const-variable"

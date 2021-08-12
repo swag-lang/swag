@@ -41,19 +41,20 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     auto publicPath = depModule->publicPath;
     if (fs::exists(publicPath.c_str()))
     {
-        OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
-            auto pz = strrchr(filename, '.');
-            if (pz && !_strcmpi(pz, ".swg"))
-            {
-                auto file  = g_Allocator.alloc<SourceFile>();
-                file->name = filename;
-                file->path = publicPath + "/";
-                file->path += filename;
-                file->path     = Utf8::normalizePath(file->path);
-                file->imported = depModule;
-                files.push_back(file);
-            }
-        });
+        OS::visitFiles(publicPath.c_str(), [&](const char* filename)
+                       {
+                           auto pz = strrchr(filename, '.');
+                           if (pz && !_strcmpi(pz, ".swg"))
+                           {
+                               auto file  = g_Allocator.alloc<SourceFile>();
+                               file->name = filename;
+                               file->path = publicPath + "/";
+                               file->path += filename;
+                               file->path     = Utf8::normalizePath(file->path);
+                               file->imported = depModule;
+                               files.push_back(file);
+                           }
+                       });
     }
 
     // One syntax job per dependency file
@@ -158,9 +159,9 @@ JobResult ModuleBuildJob::execute()
             {
                 for (auto file : module->files)
                 {
-                    auto syntaxJob = g_Allocator.alloc<SyntaxJob>();
-                    syntaxJob->sourceFile = file;
-                    syntaxJob->module = module;
+                    auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
+                    syntaxJob->sourceFile   = file;
+                    syntaxJob->module       = module;
                     syntaxJob->dependentJob = this;
                     jobsToAdd.push_back(syntaxJob);
                 }
@@ -181,12 +182,16 @@ JobResult ModuleBuildJob::execute()
         // Need to run all error modules
         // Each file with a #global testerror on top is now in a dedicated module, so we need to
         // run them in case the error has not been triggered during the syntax pass
-        for (auto errorMd : module->errorModules)
         {
-            auto job       = g_Allocator.alloc<ModuleBuildJob>();
-            job->module    = errorMd;
-            job->fromError = true;
-            g_ThreadMgr.addJob(job);
+            SharedLock lkm(module->mutexFile);
+            printf("%d\n", module->errorModules.size());
+            for (auto errorMd : module->errorModules)
+            {
+                auto job       = g_Allocator.alloc<ModuleBuildJob>();
+                job->module    = errorMd;
+                job->fromError = true;
+                g_ThreadMgr.addJob(job);
+            }
         }
 
         pass = ModuleBuildPass::IncludeSwg;
@@ -549,24 +554,25 @@ void ModuleBuildJob::publishFilesToPublic()
         publicFiles.insert(name);
     }
 
-    OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
-        // Keep the generated file untouched !
-        if (module->backend->exportFileName == filename)
-            return;
+    OS::visitFiles(publicPath.c_str(), [&](const char* filename)
+                   {
+                       // Keep the generated file untouched !
+                       if (module->backend->exportFileName == filename)
+                           return;
 
-        // If this is still a #public file, then do nothing. The job will erase it
-        // if the one from the source code is more recent
-        Utf8 pubName = filename;
-        pubName.makeUpper();
-        if (publicFiles.find(pubName) != publicFiles.end())
-            return;
+                       // If this is still a #public file, then do nothing. The job will erase it
+                       // if the one from the source code is more recent
+                       Utf8 pubName = filename;
+                       pubName.makeUpper();
+                       if (publicFiles.find(pubName) != publicFiles.end())
+                           return;
 
-        // Otherwise, remove it !
-        auto path = publicPath + "/";
-        path += filename;
-        error_code errorCode;
-        fs::remove(path, errorCode);
-    });
+                       // Otherwise, remove it !
+                       auto path = publicPath + "/";
+                       path += filename;
+                       error_code errorCode;
+                       fs::remove(path, errorCode);
+                   });
 
     // Add all #public files
     for (auto one : module->exportSourceFiles)
@@ -589,14 +595,15 @@ void ModuleBuildJob::publishFilesToTarget()
 
     // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
     // current target is
-    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-        auto job          = g_Allocator.alloc<CopyFileJob>();
-        job->module       = module;
-        job->sourcePath   = publishPath + "/" + cFileName;
-        job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
-        job->dependentJob = this;
-        jobsToAdd.push_back(job);
-    });
+    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName)
+                   {
+                       auto job          = g_Allocator.alloc<CopyFileJob>();
+                       job->module       = module;
+                       job->sourcePath   = publishPath + "/" + cFileName;
+                       job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
+                       job->dependentJob = this;
+                       jobsToAdd.push_back(job);
+                   });
 
     // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
     auto osArchPath = publishPath;
@@ -606,13 +613,14 @@ void ModuleBuildJob::publishFilesToTarget()
     osArchPath += Backend::GetArchName();
     if (fs::exists(osArchPath))
     {
-        OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
-            auto job          = g_Allocator.alloc<CopyFileJob>();
-            job->module       = module;
-            job->sourcePath   = osArchPath + "/" + cFileName;
-            job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
-            job->dependentJob = this;
-            jobsToAdd.push_back(job);
-        });
+        OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName)
+                       {
+                           auto job          = g_Allocator.alloc<CopyFileJob>();
+                           job->module       = module;
+                           job->sourcePath   = osArchPath + "/" + cFileName;
+                           job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
+                           job->dependentJob = this;
+                           jobsToAdd.push_back(job);
+                       });
     }
 }
