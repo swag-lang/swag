@@ -277,7 +277,7 @@ namespace OS
                 switch (exit)
                 {
                 case 0:
-                case -666:
+                case (DWORD) -666:
                     break;
                 case STATUS_ACCESS_VIOLATION:
                     g_Log.lock();
@@ -938,7 +938,7 @@ namespace OS
         auto          res = _BitScanReverse(&index, value);
         if (!res)
             return 8;
-        return (uint8_t)(8 - index - 1);
+        return (uint8_t) (8 - index - 1);
     }
 
     uint16_t bitcountlz(uint16_t value)
@@ -947,7 +947,7 @@ namespace OS
         auto          res = _BitScanReverse(&index, value);
         if (!res)
             return 16;
-        return (uint8_t)(16 - index - 1);
+        return (uint8_t) (16 - index - 1);
     }
 
     uint32_t bitcountlz(uint32_t value)
@@ -956,7 +956,7 @@ namespace OS
         auto          res = _BitScanReverse(&index, value);
         if (!res)
             return 32;
-        return (uint8_t)(32 - index - 1);
+        return (uint8_t) (32 - index - 1);
     }
 
     uint64_t bitcountlz(uint64_t value)
@@ -965,7 +965,7 @@ namespace OS
         auto          res = _BitScanReverse64(&index, value);
         if (!res)
             return 64;
-        return (uint8_t)(64 - index - 1);
+        return (uint8_t) (64 - index - 1);
     }
 
     uint16_t byteswap(uint16_t value)
