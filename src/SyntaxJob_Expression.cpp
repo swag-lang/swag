@@ -519,7 +519,7 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
             //     +
             //    / \
             //   *   C
-            //  / \  
+            //  / \
             // A   B
 
             auto leftRight = right->childs[0];

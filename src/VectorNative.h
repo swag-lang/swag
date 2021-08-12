@@ -158,21 +158,21 @@ struct VectorNative
         count += other.count;
     }
 
-    bool contains(T value)
+    bool contains(const T& val)
     {
         for (int i = 0; i < count; i++)
         {
-            if (buffer[i] == value)
+            if (buffer[i] == val)
                 return true;
         }
 
         return false;
     }
 
-    void insert(T value)
+    void insert(const T& val)
     {
-        if (!contains(value))
-            push_back(value);
+        if (!contains(val))
+            push_back(val);
     }
 
     size_t capacity() const

@@ -238,7 +238,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     }
 
     // Compute structure name
-    structNode->token.text = move(typeList->computeTupleName(context));
+    structNode->token.text = typeList->computeTupleName(context);
 
     // Add struct type and scope
     structNode->inheritOwners(sourceFile->astRoot);

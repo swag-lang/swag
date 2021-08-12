@@ -316,6 +316,8 @@ void* Allocator::alloc(size_t size)
     size += 2 * sizeof(uint64_t);
 #endif
 
+    if (!impl)
+        impl = &_impl;
     uint8_t* result = (uint8_t*) impl->alloc(size);
 
 #ifdef SWAG_CHECK_MEMORY
@@ -349,6 +351,8 @@ void Allocator::free(void* ptr, size_t size)
     size += 2 * sizeof(uint64_t);
 #endif
 
+    if (!impl)
+        impl = &_impl;
     impl->free(addr, size);
 
     if (shared)

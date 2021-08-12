@@ -156,7 +156,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0464));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, Msg0464));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
@@ -201,7 +201,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0464));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, Msg0464));
         token.literalValue.u64 += val;
 
         c = getCharNoSeek(offset);
