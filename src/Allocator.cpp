@@ -54,7 +54,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
         if (size <= tryBlock->size)
         {
             auto remainSize = tryBlock->size - size;
-            if (remainSize > 32)
+            if (remainSize)
             {
                 if (g_CommandLine && g_CommandLine->stats)
                     g_Stats.wastedMemory -= size;
