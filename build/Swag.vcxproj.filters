@@ -182,9 +182,6 @@
     <ClCompile Include="../src/ffi/ffi.c">
       <Filter>ByteCode\FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ffi/ffi64.c">
-      <Filter>ByteCode\FFI</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ffi/prep_cif.c">
       <Filter>ByteCode\FFI</Filter>
     </ClCompile>
