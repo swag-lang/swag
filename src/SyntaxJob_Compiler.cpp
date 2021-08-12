@@ -494,7 +494,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (!moduleSpecified)
         {
             moduleSpecified = true;
-            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
@@ -526,7 +526,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (!moduleSpecified)
         {
             moduleSpecified = true;
-            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);

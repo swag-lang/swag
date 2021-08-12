@@ -273,8 +273,26 @@ void ThreadManager::waitEndJobs()
 
 Job* ThreadManager::getJob()
 {
-    ScopedLock lk(mutexAdd);
-    return getJobNoLock();
+    {
+        ScopedLock lk(mutexAdd);
+        auto       job = getJobNoLock();
+        if (job)
+            return job;
+    }
+
+    // Otherwise, steal a syntax job from a module if we can
+    SharedLock lk(g_Workspace->mutexModules);
+    for (auto p : g_Workspace->modules)
+    {
+        auto job = p->syntaxGroup.pickJob();
+        if (job)
+        {
+            job->flags |= JOB_IS_IN_THREAD;
+            return job;
+        }
+    }
+
+    return nullptr;
 }
 
 Job* ThreadManager::getJobNoLock()
@@ -308,18 +326,6 @@ Job* ThreadManager::getJobNoLock()
     {
         currentJobsIO++;
         return job;
-    }
-
-    // Otherwise, steal a syntax job from a module if we can
-    ScopedLock lk(g_Workspace->mutexModules);
-    for (auto p : g_Workspace->modules)
-    {
-        job = p->syntaxGroup.pickJob();
-        if (job)
-        {
-            job->flags |= JOB_IS_IN_THREAD;
-            return job;
-        }
     }
 
     return nullptr;

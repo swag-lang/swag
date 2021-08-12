@@ -230,4 +230,5 @@ struct Module
     bool dependenciesDone   = false;
     bool mustFetchDep       = false;
     bool wasAddedDep        = false;
+    bool isErrorModule      = false;
 };
