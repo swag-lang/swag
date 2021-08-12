@@ -31,4 +31,4 @@ struct ModuleManager
     Utf8                           loadModuleError;
 };
 
-extern ModuleManager g_ModuleMgr;
+extern ModuleManager *g_ModuleMgr;

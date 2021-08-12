@@ -8,7 +8,7 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 
-ModuleManager g_ModuleMgr;
+ModuleManager* g_ModuleMgr = nullptr;
 
 bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
 {
@@ -25,7 +25,7 @@ bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
 void ModuleManager::resetFailedModule(const Utf8& moduleName)
 {
     SharedLock lk(mutexLoaded);
-    auto        it = failedLoadedModules.find(moduleName);
+    auto       it = failedLoadedModules.find(moduleName);
     if (it != failedLoadedModules.end())
         failedLoadedModules.erase(it);
 }
@@ -94,7 +94,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
     SharedLock lk(mutexLoaded);
-    auto        here = loadedModules.find(moduleName);
+    auto       here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
         return OS::getProcAddress(here->second, funcName.c_str());
     return nullptr;

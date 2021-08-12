@@ -12,6 +12,7 @@
 #include "ByteCodeOptimizer.h"
 #include "ModuleCfgManager.h"
 #include "ErrorIds.h"
+#include "ModuleManager.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
 {
@@ -545,7 +546,8 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    g_TypeMgr = g_Allocator.alloc<TypeManager>();
+    g_ModuleMgr = g_Allocator.alloc<ModuleManager>();
+    g_TypeMgr   = g_Allocator.alloc<TypeManager>();
     g_TypeMgr->setup();
     g_LangSpec = g_Allocator.alloc<LanguageSpec>();
     g_LangSpec->setup();

@@ -586,7 +586,7 @@ bool Module::waitForDependenciesDone(Job* job)
             return false;
         }
 
-        g_ModuleMgr.loadModule(depModule->name);
+        g_ModuleMgr->loadModule(depModule->name);
     }
 
     dependenciesDone = true;

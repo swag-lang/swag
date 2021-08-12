@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Backend.h"
 #include "Workspace.h"
-#include "OS.h"
+#include "Os.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "LLVMSetup.h"

@@ -3,6 +3,11 @@
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wreorder-ctor"
+#pragma clang diagnostic ignored "-Wswitch"
+#endif
+
 ////////////////////////////
 #include "LLVMInc.h"
 

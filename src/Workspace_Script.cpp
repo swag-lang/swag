@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "OS.h"
+#include "Os.h"
 #include "ErrorIds.h"
 
 void Workspace::scriptCommand()
