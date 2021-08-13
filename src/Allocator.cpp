@@ -241,25 +241,48 @@ void AllocatorImpl::free(void* ptr, size_t size)
         return;
     SWAG_ASSERT(!(size & 7));
 
+    if (g_CommandLine && g_CommandLine->stats)
+        g_Stats.wastedMemory += size;
+
 #ifdef SWAG_DEV_MODE
     memset(ptr, 0xFE, size);
 #endif
 
-    if (g_CommandLine && g_CommandLine->stats)
-        g_Stats.wastedMemory += size;
-
     auto bsize = size / 8;
     if (bsize < MAX_FREE_BUCKETS)
     {
-        *(void**) ptr      = freeBuckets[bsize];
-        freeBuckets[bsize] = ptr;
-        return;
+        // :SimpleDefrag
+        if (((size * 2) < MAX_FREE_BUCKETS * 8) && freeBuckets[bsize] == (uint8_t*) ptr + size)
+        {
+            freeBuckets[bsize] = *(void**) freeBuckets[bsize];
+            size *= 2;
+            *(void**) ptr         = freeBuckets[size / 8];
+            freeBuckets[size / 8] = ptr;
+        }
+        else
+        {
+            *(void**) ptr      = freeBuckets[bsize];
+            freeBuckets[bsize] = ptr;
+        }
     }
-
-    auto fptr      = (FreeBlock*) ptr;
-    fptr->size     = size;
-    fptr->next     = firstFreeBlock;
-    firstFreeBlock = fptr;
+    else
+    {
+        // :SimpleDefrag
+        if ((uint8_t*) firstFreeBlock == (uint8_t*) ptr + size)
+        {
+            auto fptr      = (FreeBlock*) ptr;
+            fptr->size     = size + firstFreeBlock->size;
+            fptr->next     = firstFreeBlock->next;
+            firstFreeBlock = fptr;
+        }
+        else
+        {
+            auto fptr      = (FreeBlock*) ptr;
+            fptr->size     = size;
+            fptr->next     = firstFreeBlock;
+            firstFreeBlock = fptr;
+        }
+    }
 }
 
 Allocator::Allocator()
