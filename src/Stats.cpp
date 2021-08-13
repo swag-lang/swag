@@ -67,6 +67,7 @@ void Stats::print()
     {
         g_Log.messageHeaderDot("mem total", Utf8::format("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()));
         g_Log.messageHeaderDot("mem wasted", Utf8::format("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()));
+        g_Log.print("\n");
         g_Log.messageHeaderDot("mem nodes", Utf8::format("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
         g_Log.messageHeaderDot("mem nodes ext", Utf8::format("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
         g_Log.messageHeaderDot("mem scopes", Utf8::format("%s", Utf8::toNiceSize(memScopes.load()).c_str()));

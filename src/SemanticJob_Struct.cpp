@@ -325,7 +325,7 @@ void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
+bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
 {
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
@@ -377,13 +377,13 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     case TypeInfoKind::Struct:
     {
         auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
-        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
+        SWAG_CHECK(checkImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
     case TypeInfoKind::Enum:
     {
         auto enumNode = CastAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
-        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, enumNode->scope));
+        SWAG_CHECK(checkImplScopes(context, node, node->structScope, enumNode->scope));
         break;
     }
     default:
