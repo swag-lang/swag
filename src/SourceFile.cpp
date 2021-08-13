@@ -77,7 +77,7 @@ bool SourceFile::load()
     fseek(handle, 0, SEEK_SET);
 
     // Read content
-    allocBufferSize = (unsigned) g_Allocator.alignSize(bufferSize + 4);
+    allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
     buffer          = (char*) g_Allocator.alloc(allocBufferSize);
 
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
@@ -85,7 +85,7 @@ bool SourceFile::load()
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);
-        g_Log.errorOS(Utf8::format("error reading source file '%s'", path.c_str()));
+        g_Log.errorOS(Utf8::format(Msg0153, path.c_str()));
         return false;
     }
 

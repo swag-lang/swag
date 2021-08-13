@@ -149,7 +149,7 @@
 #define Msg0150 "division by zero"
 #define Msg0151 "invalid number syntax, missing at least one digit"
 #define Msg0152 "invalid number syntax, a digit separator '_' cannot end a literal number"
-#define Msg0153
+#define Msg0153 "error reading source file '%s'"
 #define Msg0154 "invalid number syntax, a digit separator '_' cannot start a literal number"
 #define Msg0155 "invalid number syntax, a digit separator '_' cannot start a fractional part"
 #define Msg0156 "invalid number syntax, a digit separator '_' cannot start an exponent part"

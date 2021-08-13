@@ -563,7 +563,7 @@ void DataSegment::makeLinear()
 
     Bucket h;
 
-    h.count  = (uint32_t) g_Allocator.alignSize(totalCount);
+    h.count  = (uint32_t) Allocator::alignSize(totalCount);
     h.size   = h.count;
     h.buffer = (uint8_t*) g_Allocator.alloc(h.count);
 
