@@ -176,29 +176,33 @@ void* AllocatorImpl::alloc(size_t size)
     }
 
     // Do we need to allocate a new data block ?
-    if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
+    if (!lastBucket || lastBucket->maxUsed + size > lastBucket->allocated)
     {
         // We get the remaining space in the last bucket, to be able to use it as
         // a free block
         if (lastBucket)
         {
             auto remain = lastBucket->allocated - lastBucket->maxUsed;
-            if (g_CommandLine && g_CommandLine->stats)
-                g_Stats.wastedMemory += remain;
+            if (remain)
+            {
+                SWAG_ASSERT(!(remain & 7));
+                if (g_CommandLine && g_CommandLine->stats)
+                    g_Stats.wastedMemory += remain;
 
-            bucket = remain / 8;
-            if (bucket < MAX_FREE_BUCKETS)
-            {
-                auto next                     = freeBuckets[bucket];
-                freeBuckets[bucket]           = lastBucket->data + lastBucket->maxUsed;
-                *(void**) freeBuckets[bucket] = next;
-            }
-            else
-            {
-                auto next            = firstFreeBlock;
-                firstFreeBlock       = (FreeBlock*) (lastBucket->data + lastBucket->maxUsed);
-                firstFreeBlock->size = remain;
-                firstFreeBlock->next = next;
+                bucket = remain / 8;
+                if (bucket < MAX_FREE_BUCKETS)
+                {
+                    auto next                     = freeBuckets[bucket];
+                    freeBuckets[bucket]           = lastBucket->data + lastBucket->maxUsed;
+                    *(void**) freeBuckets[bucket] = next;
+                }
+                else
+                {
+                    auto next            = firstFreeBlock;
+                    firstFreeBlock       = (FreeBlock*) (lastBucket->data + lastBucket->maxUsed);
+                    firstFreeBlock->size = remain;
+                    firstFreeBlock->next = next;
+                }
             }
         }
 
