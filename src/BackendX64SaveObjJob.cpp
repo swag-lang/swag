@@ -3,7 +3,6 @@
 #include "BackendX64SaveObjJob.h"
 #include "ModulePrepOutputJob.h"
 #include "BackendX64.h"
-#include "Timer.h"
 
 JobResult BackendX64SaveObjJob::execute()
 {

@@ -135,6 +135,8 @@ const char* Utf8::c_str() const
         memcpy(buf, buffer, count);
         t->buffer     = buf;
         buffer[count] = 0;
+        if (g_CommandLine->stats)
+            g_Stats.memUtf8 += allocated;
     }
 
     return count ? buffer : nullString;
@@ -169,10 +171,11 @@ void Utf8::operator=(const char* txt)
 void Utf8::operator=(Utf8&& from)
 {
     reset();
-    count       = from.count;
-    allocated   = from.allocated;
-    buffer      = from.buffer;
-    from.buffer = nullptr;
+    count          = from.count;
+    allocated      = from.allocated;
+    buffer         = from.buffer;
+    from.buffer    = nullptr;
+    from.allocated = 0;
     from.reset();
 }
 
@@ -451,6 +454,8 @@ void Utf8::makeLocal()
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;
+    if (g_CommandLine->stats)
+        g_Stats.memUtf8 += allocated;
 }
 
 void Utf8::append(const char* txt, int len)

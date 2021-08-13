@@ -907,6 +907,35 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.globalSegment.release();
     pp.stringSegment.release();
 
+    pp.relocTableTextSection.table.clear();
+    pp.relocTableTextSection.table.shrink_to_fit();
+    pp.relocTableCSSection.table.clear();
+    pp.relocTableCSSection.table.shrink_to_fit();
+    pp.relocTableMSSection.table.clear();
+    pp.relocTableMSSection.table.shrink_to_fit();
+    pp.relocTableTSSection.table.clear();
+    pp.relocTableTSSection.table.shrink_to_fit();
+    pp.relocTableTLSSection.table.clear();
+    pp.relocTableTLSSection.table.shrink_to_fit();
+    pp.relocTablePDSection.table.clear();
+    pp.relocTablePDSection.table.shrink_to_fit();
+    pp.relocTableDBGSSection.table.clear();
+    pp.relocTableDBGSSection.table.shrink_to_fit();
+    pp.allSymbols.clear();
+    pp.allSymbols.shrink_to_fit();
+    pp.functions.clear();
+    pp.functions.shrink_to_fit();
+    pp.dbgTypeRecords.clear();
+    pp.dbgTypeRecords.shrink_to_fit();
+
+    pp.directives.reset();
+
+    pp.mapSymbols.clear();
+    pp.globalStrings.clear();
+    pp.dbgMapTypes.clear();
+    pp.dbgMapPtrTypes.clear();
+    pp.dbgMapPtrPtrTypes.clear();
+
     return true;
 }
 
