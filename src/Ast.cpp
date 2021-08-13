@@ -15,6 +15,11 @@ namespace Ast
         node->kind       = kind;
         node->parent     = parent;
         node->sourceFile = sourceFile;
+
+        // Count nodes (not precise). Just to have an hint on the number of bytecode instructions
+        if (parent && parent->ownerFct)
+            parent->ownerFct->nodeCounts++;
+
         if (allocChilds)
             node->childs.reserve(allocChilds);
 

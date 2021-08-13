@@ -418,6 +418,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
+    newNode->nodeCounts        = nodeCounts;
 
     //cloneContext.parentScope = context.parentScope;
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;

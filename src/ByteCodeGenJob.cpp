@@ -246,6 +246,18 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     {
         auto oldSize        = (int) (bc->maxInstructions * sizeof(ByteCodeInstruction));
         bc->maxInstructions = bc->maxInstructions * 2;
+
+        // Evaluate the first number of instructions for a given function.
+        // We take the number of ast nodes in the function as a metric.
+        // 0.7f is kind of magical, based on various measures.
+        // This is to mitigate the number of reallocations, without wasting too much memory.
+        if (!bc->maxInstructions && bc->node && bc->node->kind == AstNodeKind::FuncDecl)
+        {
+            auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+            if (funcDecl->nodeCounts)
+                bc->maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
+        }
+
         bc->maxInstructions = max(bc->maxInstructions, 8);
         auto newInstuctions = (ByteCodeInstruction*) g_Allocator.alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
         memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
