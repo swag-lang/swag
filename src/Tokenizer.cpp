@@ -31,8 +31,10 @@ bool Tokenizer::isLiteral(TokenId id)
 
 void Tokenizer::appendTokenName(Token& token)
 {
-    token.text.append(startTokenName, (int)(sourceFile->curBuffer - startTokenName));
-    //token.text.setView(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
+    if (realAppendName)
+        token.text.append(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
+    else
+        token.text.setView(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
 }
 
 void Tokenizer::setFile(SourceFile* file)

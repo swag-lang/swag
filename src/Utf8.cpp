@@ -238,7 +238,7 @@ void Utf8::operator+=(uint32_t c)
 
 Utf8::operator const char*()
 {
-    return buffer;
+    return c_str();
 }
 
 char Utf8::operator[](int index) const
@@ -311,7 +311,7 @@ bool Utf8::compareNoCase(const Utf8& txt1)
 {
     if (count != txt1.count)
         return false;
-    return _strcmpi(buffer, txt1.buffer) == 0;
+    return _strnicmp(buffer, txt1.buffer, count) == 0;
 }
 
 void Utf8::replaceAll(char src, char dst)

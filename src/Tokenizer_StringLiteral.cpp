@@ -126,6 +126,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 
         if (!raw && c == '"')
         {
+            realAppendName = true;
             treatChar(c, offset);
             continue;
         }
@@ -133,5 +134,6 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         break;
     }
 
+    realAppendName = false;
     return true;
 }

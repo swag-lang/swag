@@ -98,6 +98,7 @@ struct Tokenizer
     bool           forceLastTokenIsEOL = false;
     bool           lastTokenIsEOL      = false;
     bool           lastTokenIsBlank    = false;
+    bool           realAppendName      = false;
 };
 
 extern const char*    g_TokenNames[];
