@@ -104,14 +104,6 @@ bool SourceFile::load()
     return true;
 }
 
-void SourceFile::releaseBuffer()
-{
-    if (isExternal || isBootstrapFile || isRuntimeFile)
-        return;
-    g_Allocator.free(buffer, allocBufferSize);
-    buffer = nullptr;
-}
-
 uint32_t SourceFile::getChar(unsigned& offset)
 {
     if (curBuffer >= endBuffer)

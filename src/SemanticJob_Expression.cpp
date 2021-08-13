@@ -16,7 +16,7 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
     if (!SWAG_IS_HEX(c))
     {
         auto loc = node->token.startLocation;
-        loc.column += (uint32_t)(pz - node->computedValue->text.c_str());
+        loc.column += (uint32_t) (pz - node->computedValue->text.c_str());
         if (c == '"')
             return context->report({node->sourceFile, loc, Utf8::format("not enough hexadecimal digit, %s", errMsg)});
         else
@@ -43,7 +43,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     auto len = node->computedValue->text.length();
     result.reserve(len);
 
-    auto start = node->computedValue->text.c_str();
+    auto start = (const char*) node->computedValue->text.buffer;
     auto pz    = start;
     while (pz - start < len)
     {
@@ -131,7 +131,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         }
         }
 
-        loc.column += (uint32_t)(pz - start) - 1;
+        loc.column += (uint32_t) (pz - start) - 1;
         return context->report({node->sourceFile, loc, Utf8::format("unrecognized character escape sequence '%c'", c)});
     }
 

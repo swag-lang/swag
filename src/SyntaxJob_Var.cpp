@@ -30,9 +30,10 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
             if (node->token.text == g_LangSpec->name_atalias)
                 return error(node->token, Msg0275);
 
-            const char* pz  = node->token.text.c_str() + 6;
-            int         num = 0;
-            while (*pz)
+            const char* pz    = node->token.text.buffer + 6;
+            auto        endpz = node->token.text.buffer + node->token.text.count;
+            int         num   = 0;
+            while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
                     return error(node->token, Utf8::format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));

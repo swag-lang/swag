@@ -381,9 +381,13 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             if (node->flags & AST_DEFINED_INTRINSIC)
                 extension->bc->name = node->token.text;
             else if (node->sourceFile->isRuntimeFile)
-                extension->bc->name = node->token.text.c_str();
+                extension->bc->name = node->token.text;
             else
-                extension->bc->name = node->ownerScope->getFullName() + "_" + node->token.text.c_str();
+            {
+                extension->bc->name = node->ownerScope->getFullName();
+                extension->bc->name += "_";
+                extension->bc->name += node->token.text;
+            }
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->extension->bc);
             if (flags & ASKBC_WAIT_DONE)

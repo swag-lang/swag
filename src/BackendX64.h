@@ -84,12 +84,12 @@ struct DbgTypeRecordMFuncId
 
 struct DbgTypeField
 {
-    uint16_t      kind = 0;
+    Utf8          name;
     ComputedValue value;
     TypeInfo*     valueType       = nullptr;
-    const char*   name            = nullptr;
     DbgTypeIndex  type            = 0;
     uint16_t      accessSpecifier = 0;
+    uint16_t      kind            = 0;
 };
 
 struct DbgTypeRecordFieldList

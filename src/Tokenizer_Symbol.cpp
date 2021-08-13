@@ -16,9 +16,6 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     case '\\':
         token.id = TokenId::SymBackSlash;
         return true;
-    case '$':
-        token.id = TokenId::SymDollar;
-        return true;
     case '(':
         token.id = TokenId::SymLeftParen;
         return true;

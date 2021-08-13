@@ -248,7 +248,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         SWAG_CHECK(eatToken());
         if (token.id == TokenId::SymLeftCurly)
         {
-            node->identifier = Ast::newIdentifierRef(sourceFile, "retval", node, this);
+            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
             auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));

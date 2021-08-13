@@ -263,7 +263,7 @@ namespace Ast
             return;
 
         ScopedLock lk(parent->mutex);
-        auto        idx = child->childParentIdx;
+        auto       idx = child->childParentIdx;
         SWAG_ASSERT(parent->childs[idx] == child);
         parent->childs.erase(idx);
         for (int i = idx; i < parent->childs.size(); i++)
@@ -514,17 +514,22 @@ namespace Ast
             node->inheritTokenLocation(syntaxJob->token);
 
         Utf8 str;
-        auto pz = name.buffer;
-        while (*pz)
+        int  cpt = 0;
+        auto pz  = name.buffer;
+        while (*pz && cpt != name.count)
         {
             auto pzStart = pz;
-            while (*pz && *pz != '.')
+            while (*pz && *pz != '.' && cpt != name.count)
+            {
                 pz++;
+                cpt++;
+            }
 
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
             str.buffer      = pzStart;
             str.count       = (int) (pz - pzStart);
+            str.allocated   = name.allocated;
             id->token.text  = str;
 
             id->token.id = TokenId::Identifier;
@@ -533,8 +538,11 @@ namespace Ast
             id->identifierRef = node;
             id->inheritOwners(node);
 
-            if (*pz)
+            if (*pz && cpt != name.count)
+            {
+                cpt++;
                 pz++;
+            }
         }
 
         str.buffer = nullptr; // to avoid free on destruction

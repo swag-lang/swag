@@ -332,13 +332,12 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
         return it->second.offset;
     }
 
-    auto     strLen = (uint32_t) str.length() + 1;
     uint8_t* addr;
-    auto     offset = reserveNoLock(strLen, &addr);
+    auto     offset = reserveNoLock(str.count + 1, &addr);
     if (resultPtr)
         *resultPtr = addr;
-    memcpy(addr, str.c_str(), strLen);
-    SWAG_ASSERT(addr[strLen - 1] == 0);
+    memcpy(addr, str.buffer, str.count);
+    addr[str.count]    = 0;
     storedStrings[str] = {offset, addr};
 
     return offset;

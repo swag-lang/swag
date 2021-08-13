@@ -237,7 +237,7 @@ void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
     ensureSpace(len);
-    memcpy(currentSP, v.c_str(), len);
+    memcpy(currentSP, v.buffer, len);
     currentSP += len;
 }
 

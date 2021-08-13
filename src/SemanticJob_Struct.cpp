@@ -49,7 +49,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
 
     if (structDecl->scope != node->structScope)
     {
-        auto        typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
         ScopedLock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfaces++;
         node->sourceFile->module->decImplForToSolve(typeStruct);
@@ -245,7 +245,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // Be sure every functions of the interface has been covered
-    Diagnostic                diag{node, node->token, Utf8::format(Msg0657, typeBaseInterface->name.c_str())};
     vector<const Diagnostic*> notes;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
@@ -257,7 +256,10 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     if (!notes.empty())
+    {
+        Diagnostic diag{node, node->token, Utf8::format(Msg0657, typeBaseInterface->name.c_str())};
         return context->report(diag, notes);
+    }
 
     // Construct itable in the constant segment
     auto     constSegment = getConstantSegFromContext(node);
@@ -423,12 +425,13 @@ bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
     {
         Ast::addChildFront(structNode, structNode->genericParameters);
 
-        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-            n->inheritOwners(structNode);
-            n->ownerStructScope = structNode->scope;
-            n->ownerScope       = structNode->scope;
-            n->flags |= AST_IS_GENERIC;
-        });
+        Ast::visit(structNode->genericParameters, [&](AstNode* n)
+                   {
+                       n->inheritOwners(structNode);
+                       n->ownerStructScope = structNode->scope;
+                       n->ownerScope       = structNode->scope;
+                       n->flags |= AST_IS_GENERIC;
+                   });
     }
 
     return true;

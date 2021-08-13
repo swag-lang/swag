@@ -82,7 +82,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
+        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -125,7 +125,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
     opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
-    opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opInit";
+    opInit->name         = structNode->ownerScope->getFullName();
+    opInit->name += "_";
+    opInit->name += structNode->token.text;
+    opInit->name += "_opInit";
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->isCompilerGenerated   = true;
@@ -335,7 +338,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
+        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -389,7 +392,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opDrop = opDrop;
     opDrop->sourceFile     = sourceFile;
-    opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opDropGenerated";
+    opDrop->name           = structNode->ownerScope->getFullName();
+    opDrop->name += "_";
+    opDrop->name += structNode->token.text;
+    opDrop->name += "_opDropGenerated";
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->isCompilerGenerated   = true;
@@ -463,7 +469,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -517,7 +523,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opPostMove = opPostMove;
     opPostMove->sourceFile     = sourceFile;
-    opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostMoveGenerated";
+    opPostMove->name           = structNode->ownerScope->getFullName();
+    opPostMove->name += "_";
+    opPostMove->name += structNode->token.text;
+    opPostMove->name += "_opPostMoveGenerated";
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->isCompilerGenerated   = true;
@@ -590,7 +599,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -644,7 +653,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;
-    opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostCopyGenerated";
+    opPostCopy->name           = structNode->ownerScope->getFullName();
+    opPostCopy->name += "_";
+    opPostCopy->name += structNode->token.text;
+    opPostCopy->name += "_opPostCopyGenerated";
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->isCompilerGenerated   = true;
@@ -721,7 +733,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     structNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();

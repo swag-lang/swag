@@ -18,7 +18,6 @@ struct SourceFile
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     bool internalError(AstNode* node, const char* msg);
 
-    void releaseBuffer();
     bool checkFormat();
     void setExternalBuffer(char* buf, uint32_t size);
     void computePrivateScopeName();

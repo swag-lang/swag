@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Utf8.h"
 #include "CommandLine.h"
+#include "ScopedLock.h"
 
 Utf8::Utf8()
 {
@@ -57,6 +58,15 @@ Utf8::Utf8(const Utf8& from)
     if (!len)
         return;
 
+    // View
+    if (!from.allocated && from.buffer)
+    {
+        count     = from.count;
+        allocated = from.allocated;
+        buffer    = from.buffer;
+        return;
+    }
+
     reserve(len + 1);
     memcpy(buffer, from.buffer, len + 1);
     count = len;
@@ -75,6 +85,7 @@ void Utf8::reserve(int newSize)
 {
     if (newSize <= allocated)
         return;
+    makeLocal();
 
     auto lastAllocated = allocated;
     allocated *= 2;
@@ -106,6 +117,19 @@ int Utf8::length() const
 const char* Utf8::c_str() const
 {
     static const char* nullString = "";
+
+    if (buffer && buffer[count])
+    {
+        static mutex mutex;
+        ScopedLock   lk(mutex);
+        auto         t = const_cast<Utf8*>(this);
+        t->allocated   = (int) Allocator::alignSize(count + 1);
+        auto buf       = (char*) g_Allocator.alloc(allocated);
+        memcpy(buf, buffer, count);
+        t->buffer     = buf;
+        buffer[count] = 0;
+    }
+
     return count ? buffer : nullString;
 }
 
@@ -149,6 +173,17 @@ void Utf8::operator=(const Utf8& other)
 {
     if (&other == this)
         return;
+
+    // View
+    if (!other.allocated && other.buffer)
+    {
+        g_Allocator.free(buffer, allocated);
+        count     = other.count;
+        allocated = other.allocated;
+        buffer    = other.buffer;
+        return;
+    }
+
     clear();
     append(other);
 }
@@ -235,7 +270,10 @@ bool operator==(const Utf8& str1, const char* str2)
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;
-    return !strcmp(str1.buffer, str2);
+    auto len = strlen(str2);
+    if (str1.count != len)
+        return false;
+    return !strncmp(str1.buffer, str2, str1.count);
 }
 
 bool operator==(const Utf8& str1, const Utf8& str2)
@@ -244,7 +282,7 @@ bool operator==(const Utf8& str1, const Utf8& str2)
         return false;
     if (str1.count == 0)
         return true;
-    return !strcmp(str1.buffer, str2.buffer);
+    return !strncmp(str1.buffer, str2.buffer, str1.count);
 }
 
 bool operator!=(const Utf8& str1, const char* str2)
@@ -359,8 +397,9 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
     uni.clear();
 
     unsigned    offset;
-    const char* pz = buffer;
-    while (*pz)
+    const char* pz    = buffer;
+    auto        endpz = buffer + count;
+    while (pz != endpz)
     {
         if (maxChars != -1 && uni.size() >= maxChars)
             return;
@@ -375,8 +414,9 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
     uni.clear();
 
     unsigned    offset;
-    const char* pz = buffer;
-    while (*pz)
+    const char* pz    = buffer;
+    auto        endpz = buffer + count;
+    while (pz != endpz)
     {
         if (maxChars != -1 && uni.size() >= maxChars)
             return;
@@ -384,6 +424,26 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
         pz = decodeUtf8(pz, c, offset);
         uni.push_back((uint16_t) c);
     }
+}
+
+void Utf8::setView(const char* txt, int len)
+{
+    reset();
+    buffer    = const_cast<char*>(txt);
+    count     = len;
+    allocated = 0;
+}
+
+void Utf8::makeLocal()
+{
+    if (allocated || !buffer || !count)
+        return;
+
+    allocated = (int) Allocator::alignSize(count + 1);
+    auto buf  = (char*) g_Allocator.alloc(allocated);
+    memcpy(buf, buffer, count);
+    buffer        = buf;
+    buffer[count] = 0;
 }
 
 void Utf8::append(const char* txt, int len)
@@ -439,23 +499,23 @@ void Utf8::append(uint32_t utf)
     else if (utf <= 0x07FF)
     {
         reserve(count + 3);
-        buffer[count++] = (uint8_t)(((utf >> 6) & 0x1F) | 0xC0);
-        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x1F) | 0xC0);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0xFFFF)
     {
         reserve(count + 4);
-        buffer[count++] = (uint8_t)(((utf >> 12) & 0x0F) | 0xE0);
-        buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 12) & 0x0F) | 0xE0);
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0x10FFFF)
     {
         reserve(count + 5);
-        buffer[count++] = (uint8_t)(((utf >> 18) & 0x07) | 0xF0);
-        buffer[count++] = (uint8_t)(((utf >> 12) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 18) & 0x07) | 0xF0);
+        buffer[count++] = (uint8_t) (((utf >> 12) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
     }
     else
     {
@@ -471,6 +531,7 @@ void Utf8::append(uint32_t utf)
 void Utf8::remove(int index, int len)
 {
     SWAG_ASSERT(index + len <= count);
+    makeLocal();
     memmove(buffer + index, buffer + index + len, count - index);
     count -= len;
     buffer[count] = 0;
@@ -484,6 +545,7 @@ void Utf8::insert(int index, const char* str)
         return;
     }
 
+    makeLocal();
     int len = (int) strlen(str);
     reserve(count + len + 1);
     memmove(buffer + index + len, buffer + index, count - index);
@@ -497,6 +559,7 @@ void Utf8::replace(const char* src, const char* dst)
     int pos;
     int len, lenins;
 
+    makeLocal();
     len    = (int) strlen(src);
     lenins = (int) strlen(dst);
     pos    = 0;
