@@ -149,6 +149,20 @@ struct VectorNative
         count--;
     }
 
+    void erase_unordered_byval(const T& val)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (buffer[i] == val)
+            {
+                erase_unordered(i);
+                return;
+            }
+        }
+
+        SWAG_ASSERT(false);
+    }
+
     void append(const VectorNative& other)
     {
         if (!other.count)

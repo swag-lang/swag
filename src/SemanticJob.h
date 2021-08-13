@@ -26,19 +26,19 @@ struct SymbolName;
 
 struct SemanticContext : public JobContext
 {
-    SemanticJob*     job = nullptr;
-    set<SymbolName*> currentLockedSymbol;
+    SemanticJob*              job = nullptr;
+    VectorNative<SymbolName*> currentLockedSymbol;
 };
 
 struct LockSymbolOncePerContext
 {
     LockSymbolOncePerContext(SemanticContext* context, SymbolName* sym)
     {
-        if (context->currentLockedSymbol.find(sym) != context->currentLockedSymbol.end())
+        if (context->currentLockedSymbol.contains(sym))
             return;
         savedContext = context;
         savedSymbol  = sym;
-        context->currentLockedSymbol.insert(sym);
+        context->currentLockedSymbol.push_back(sym);
         sym->mutex.lock();
     }
 
@@ -47,9 +47,7 @@ struct LockSymbolOncePerContext
         if (!savedContext)
             return;
         savedSymbol->mutex.unlock();
-        auto it = savedContext->currentLockedSymbol.find(savedSymbol);
-        SWAG_ASSERT(it != savedContext->currentLockedSymbol.end());
-        savedContext->currentLockedSymbol.erase(it);
+        savedContext->currentLockedSymbol.erase_unordered_byval(savedSymbol);
     }
 
     SemanticContext* savedContext = nullptr;
