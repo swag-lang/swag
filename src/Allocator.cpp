@@ -23,6 +23,8 @@ void* operator new(size_t t)
     t      = Allocator::alignSize((int) t + sizeof(uint64_t));
     auto p = (uint64_t*) g_Allocator.alloc(t);
     *p     = (uint64_t) t;
+    if (g_CommandLine && g_CommandLine->stats)
+        g_Stats.memNew += t;
     return p + 1;
 }
 
@@ -32,6 +34,8 @@ void operator delete(void* addr) noexcept
         return;
     auto p = (uint64_t*) addr;
     p--;
+    if (g_CommandLine && g_CommandLine->stats)
+        g_Stats.memNew -= *p;
     return g_Allocator.free(p, *p);
 }
 
