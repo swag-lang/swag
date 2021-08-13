@@ -1,33 +1,19 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
 #include "ByteCodeOptimizer.h"
-#include "ByteCode.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
-#include "Timer.h"
 
-ByteCodeOptimizerJob::ByteCodeOptimizerJob()
-{
-    passes.push_back(ByteCodeOptimizer::optimizePassSafetyNullPointer);
-    passes.push_back(ByteCodeOptimizer::optimizePassJumps);
-    passes.push_back(ByteCodeOptimizer::optimizePassDeadCode);
-    passes.push_back(ByteCodeOptimizer::optimizePassImmediate);
-    passes.push_back(ByteCodeOptimizer::optimizePassConst);
-    passes.push_back(ByteCodeOptimizer::optimizePassDupCopyRBRA);
-    passes.push_back(ByteCodeOptimizer::optimizePassDupCopy);
-    passes.push_back(ByteCodeOptimizer::optimizePassRetCopyLocal);
-    passes.push_back(ByteCodeOptimizer::optimizePassRetCopyInline);
-    passes.push_back(ByteCodeOptimizer::optimizePassRetCopyGlobal);
-    passes.push_back(ByteCodeOptimizer::optimizePassReduce);
-    passes.push_back(ByteCodeOptimizer::optimizePassDeadStore);
-    passes.push_back(ByteCodeOptimizer::optimizePassLoop);
-}
+#define OPT_PASS(__func)                     \
+    optContext.passHasDoneSomething = false; \
+    if (!__func(&optContext))                \
+        return false;                        \
+    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
 
 bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 {
     if (!module->mustOptimizeBC(bc->node))
         return true;
-    optContext.bc = bc;
+    optContext.bc     = bc;
     optContext.module = module;
 
     while (true)
@@ -38,13 +24,20 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         if (optContext.hasError)
             return false;
         optContext.allPassesHaveDoneSomething = false;
-        for (auto pass : passes)
-        {
-            optContext.passHasDoneSomething = false;
-            if (!pass(&optContext))
-                return false;
-            optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
-        }
+
+        OPT_PASS(ByteCodeOptimizer::optimizePassSafetyNullPointer);
+        OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
+        OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
+        OPT_PASS(ByteCodeOptimizer::optimizePassImmediate);
+        OPT_PASS(ByteCodeOptimizer::optimizePassConst);
+        OPT_PASS(ByteCodeOptimizer::optimizePassDupCopyRBRA);
+        OPT_PASS(ByteCodeOptimizer::optimizePassDupCopy);
+        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyLocal);
+        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyInline);
+        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyGlobal);
+        OPT_PASS(ByteCodeOptimizer::optimizePassReduce);
+        OPT_PASS(ByteCodeOptimizer::optimizePassDeadStore);
+        OPT_PASS(ByteCodeOptimizer::optimizePassLoop);
 
         ByteCodeOptimizer::removeNops(&optContext);
         if (!optContext.allPassesHaveDoneSomething)

@@ -5,8 +5,6 @@ struct ByteCode;
 
 struct ByteCodeOptimizerJob : public Job
 {
-    ByteCodeOptimizerJob();
-
     JobResult execute() override;
 
     void release() override
@@ -17,7 +15,7 @@ struct ByteCodeOptimizerJob : public Job
     bool optimize(ByteCode* bc, bool& restart);
     bool optimize();
 
-    vector<function<bool(ByteCodeOptContext*)>> passes;
-    int                                         startIndex, endIndex;
-    ByteCodeOptContext                          optContext;
+    ByteCodeOptContext optContext;
+    int                startIndex;
+    int                endIndex;
 };
