@@ -68,15 +68,22 @@ const Utf8& Scope::getFullName()
     if (flags & SCOPE_PRIVATE)
         return name;
 
-    ScopedLock lk(mutex);
+    {
+        SharedLock lk(mutex);
+        if (!fullname.empty())
+            return fullname;
+    }
 
-    if (!fullname.empty())
+    {
+        ScopedLock lk(mutex);
+        if (!fullname.empty())
+            return fullname;
+        if (parentScope)
+            makeFullName(fullname, parentScope->getFullName(), name);
+        else
+            fullname = name;
         return fullname;
-    if (parentScope)
-        makeFullName(fullname, parentScope->getFullName(), name);
-    else
-        fullname = name;
-    return fullname;
+    }
 }
 
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
