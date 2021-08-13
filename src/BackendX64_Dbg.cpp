@@ -586,7 +586,10 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
     tr1.LF_Structure.fieldList   = tr0.index;
     if (typeInfo->kind == TypeInfoKind::Slice)
-        tr1.name = Utf8::format("[..] %s", pointedType->name.c_str()); // debugger dosen't like 'const' before a slice name
+    {
+        tr1.name = "[..] ";
+        tr1.name += pointedType->name; // debugger dosen't like 'const' before a slice name
+    }
     else
         tr1.name = typeInfo->name;
 

@@ -697,7 +697,7 @@ namespace Ast
         case AstNodeKind::Alias:
         {
             CONCAT_FIXED_STR(concat, "alias ");
-            concat.addString(node->token.text.c_str());
+            concat.addString(node->token.text);
             CONCAT_FIXED_STR(concat, " = ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;

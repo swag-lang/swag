@@ -24,6 +24,7 @@ struct Utf8
     ~Utf8();
 
     uint32_t    hash() const;
+    void        freeBuffer();
     void        reset();
     void        reserve(int newSize);
     void        resize(int newSize);

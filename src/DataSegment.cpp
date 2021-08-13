@@ -226,8 +226,8 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto     stringOffset = addString(computedValue.text);
         uint8_t* addr;
         auto     storageOffset = reserve(2 * sizeof(uint64_t), &addr);
-        ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.c_str();
-        ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.length();
+        ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.buffer;
+        ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.count;
         if (resultPtr)
             *resultPtr = addr;
         addInitPtr(storageOffset, stringOffset);

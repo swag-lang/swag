@@ -9,12 +9,19 @@ Utf8::Utf8()
 
 Utf8::~Utf8()
 {
+    freeBuffer();
+}
+
+void Utf8::freeBuffer()
+{
     g_Allocator.free(buffer, allocated);
+    if (g_CommandLine->stats)
+        g_Stats.memUtf8 -= allocated;
 }
 
 void Utf8::reset()
 {
-    g_Allocator.free(buffer, allocated);
+    freeBuffer();
     buffer    = nullptr;
     count     = 0;
     allocated = 0;
@@ -177,7 +184,7 @@ void Utf8::operator=(const Utf8& other)
     // View
     if (!other.allocated && other.buffer)
     {
-        g_Allocator.free(buffer, allocated);
+        freeBuffer();
         count     = other.count;
         allocated = other.allocated;
         buffer    = other.buffer;
