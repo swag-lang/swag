@@ -108,7 +108,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown + Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
+        auto nameLib = nameDown;
+        nameLib += Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
         emitGlobalString(pp, precompileIndex, nameLib, RAX);
         BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
         BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RAX);
@@ -126,7 +127,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-        auto initFunc = Utf8::format("%s_globalInit", nameDown.c_str());
+        auto initFunc = nameDown;
+        initFunc += "_globalInit";
         emitCall(pp, initFunc);
     }
 
@@ -165,7 +167,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto funcDrop = Utf8::format("%s_globalDrop", nameDown.c_str());
+        auto funcDrop = nameDown;
+        funcDrop += "_globalDrop";
         emitCall(pp, funcDrop);
     }
 

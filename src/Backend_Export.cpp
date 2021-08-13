@@ -216,7 +216,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
     else
         CONCAT_FIXED_STR(bufferSwg, "func ");
 
-    bufferSwg.addString(node->token.text.c_str());
+    bufferSwg.addString(node->token.text);
     CONCAT_FIXED_STR(bufferSwg, "(");
 
     if (parameters)
@@ -291,7 +291,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     }
 
     CONCAT_FIXED_STR(bufferSwg, " ");
-    bufferSwg.addString(node->token.text.c_str());
+    bufferSwg.addString(node->token.text);
     CONCAT_FIXED_STR(bufferSwg, "(");
 
     uint32_t idx = 0;
@@ -388,7 +388,7 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
     SWAG_CHECK(emitAttributes(typeEnum, indent));
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "enum ");
-    bufferSwg.addString(node->token.text.c_str());
+    bufferSwg.addString(node->token.text);
     CONCAT_FIXED_STR(bufferSwg, " : ");
     emitType(typeEnum->rawType, indent);
 
@@ -444,7 +444,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
     {
         CONCAT_FIXED_STR(bufferSwg, " ");
-        bufferSwg.addString(node->token.text.c_str());
+        bufferSwg.addString(node->token.text);
     }
 
     bufferSwg.addEol();
@@ -532,7 +532,7 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
 
     if (!(node->flags & AST_AUTO_NAME))
     {
-        bufferSwg.addString(node->token.text.c_str());
+        bufferSwg.addString(node->token.text);
         if (node->type)
         {
             CONCAT_FIXED_STR(bufferSwg, ": ");
@@ -724,7 +724,8 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
         if (!(scope->flags & SCOPE_AUTO_GENERATED))
         {
             bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("namespace %s", scope->name.c_str());
+            CONCAT_FIXED_STR(bufferSwg, "namespace ");
+            bufferSwg.addString(scope->name);
             bufferSwg.addEol();
             bufferSwg.addIndent(indent);
             CONCAT_FIXED_STR(bufferSwg, "{");
@@ -759,12 +760,14 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
         }
         else if (scope->kind == ScopeKind::Enum)
         {
-            bufferSwg.addStringFormat("impl enum %s", scope->name.c_str());
+            CONCAT_FIXED_STR(bufferSwg, "impl enum ");
+            bufferSwg.addString(scope->name);
             bufferSwg.addEol();
         }
         else
         {
-            bufferSwg.addStringFormat("impl %s", scope->name.c_str());
+            CONCAT_FIXED_STR(bufferSwg, "impl ");
+            bufferSwg.addString(scope->name);
             bufferSwg.addEol();
         }
 
@@ -825,7 +828,9 @@ void Backend::emitDependencies()
 {
     for (const auto& dep : module->moduleDependencies)
     {
-        bufferSwg.addStringFormat("#import \"%s\"", dep->name.c_str());
+        CONCAT_FIXED_STR(bufferSwg, "#import \"");
+        bufferSwg.addString(dep->name);
+        bufferSwg.addChar('"');
         bufferSwg.addEol();
     }
 }

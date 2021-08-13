@@ -78,10 +78,10 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
         auto outFileFame = getOutputFileName(module->buildParameters);
-        if (!fs::exists(outFileFame))
+        if (!fs::exists(outFileFame.c_str()))
             return false;
         auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
-        if(!invert && (timeOut < moreRecentSourceFile))
+        if (!invert && (timeOut < moreRecentSourceFile))
             return false;
         if (invert && (timeOut > moreRecentSourceFile))
             return false;
@@ -164,10 +164,11 @@ BackendObjType Backend::getObjType(BackendOs os)
     }
 }
 
-string Backend::getOutputFileName(const BuildParameters& buildParameters)
+Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    string destFile = g_Workspace->targetPath.string() + buildParameters.outputFileName;
+    Utf8 destFile = g_Workspace->targetPath.string();
+    destFile += buildParameters.outputFileName;
     destFile += getOutputFileExtension(buildParameters.buildCfg->backendKind);
     destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
     return destFile;

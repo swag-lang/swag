@@ -80,7 +80,7 @@ struct Backend
 
     static void   setup();
     static string getCacheFolder(const BuildParameters& buildParameters);
-    static string getOutputFileName(const BuildParameters& buildParameters);
+    static Utf8   getOutputFileName(const BuildParameters& buildParameters);
     static bool   passByValue(TypeInfo* typeInfo);
 
     static string         getObjectFileExtension();

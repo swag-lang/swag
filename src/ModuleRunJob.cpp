@@ -7,7 +7,7 @@
 
 JobResult ModuleRunJob::execute()
 {
-    fs::path path = g_Workspace->targetPath.string() + buildParameters.outputFileName;
+    fs::path path = g_Workspace->targetPath.string() + buildParameters.outputFileName.c_str();
     path += Backend::getOutputFileExtension(BuildCfgBackendKind::Executable);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;

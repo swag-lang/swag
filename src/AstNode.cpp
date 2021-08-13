@@ -394,7 +394,10 @@ Utf8 AstNode::getScopedName()
     auto& fullName = ownerScope->getFullName();
     if (fullName.empty())
         return token.text;
-    return fullName + "." + token.text.c_str();
+    auto result = fullName;
+    result += ".";
+    result += token.text;
+    return result;
 }
 
 Utf8 AstNode::getArticleKindName(AstNode* node)

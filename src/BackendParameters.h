@@ -90,7 +90,7 @@ inline bool isArchArm(BackendArch arch)
 struct BuildParameters
 {
     set<Utf8>          foreignLibs;
-    string             outputFileName;
+    Utf8               outputFileName;
     BuildCfg*          buildCfg        = nullptr;
     int                precompileIndex = 0;
     BackendCompileType compileType     = BackendCompileType::Normal;

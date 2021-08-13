@@ -679,7 +679,7 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             // in the compiler
             concat.addU64_safe(0);
             auto ptr = concat.getSeekPtr() - 8;
-            memcpy(ptr, symbol.name.c_str(), symbol.name.length());
+            memcpy(ptr, symbol.name.buffer, symbol.name.length());
         }
         else
         {
@@ -736,13 +736,9 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     uint32_t subTotal = 4;
     for (auto str : pp.stringTable)
     {
-        concat.addString(str->c_str(), str->length() + 1);
-
-        // Be sure string ends with '0', otherwise this is considered by the linker as a corruption
-        // (the last byte of the string table must be 0)
-        SWAG_ASSERT(str->buffer[str->count] == 0);
-
-        subTotal += str->length() + 1;
+        concat.addString(str->buffer, str->count);
+        concat.addU8(0);
+        subTotal += str->count + 1;
     }
 
     SWAG_ASSERT(subTotal == pp.stringTableOffset);

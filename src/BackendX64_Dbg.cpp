@@ -141,7 +141,7 @@ Utf8 BackendX64::dbgGetScopedName(AstNode* node)
     auto nn = node->getScopedName();
     Utf8 result;
 
-    auto pz      = nn.c_str();
+    auto pz      = nn.buffer;
     bool lastDot = false;
     for (int i = 0; i < nn.length(); i++, pz++)
     {
@@ -246,7 +246,7 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     Utf8 version = Utf8::format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
     concat.align(4);
-    *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+    *patchRecordCount = (uint16_t) (concat.totalCount() - patchRecordOffset);
 
     *patchSCount = concat.totalCount() - patchSOffset;
 }
@@ -266,13 +266,14 @@ void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat, bool align)
         concat.align(4);
     SWAG_ASSERT(pp.dbgRecordIdx);
     pp.dbgRecordIdx--;
-    *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
+    *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
 void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
 {
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
-    concat.addString(str.c_str(), str.length() + 1);
+    concat.addString(str.buffer, str.count);
+    concat.addU8(0);
 }
 
 void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
@@ -527,7 +528,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo*
 {
     auto simpleType = dbgGetSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
-        return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
+        return (DbgTypeIndex) (simpleType | (NearPointer64 << 8));
 
     // In the cache of pointers
     auto it = pp.dbgMapPtrTypes.find(typeInfo);
@@ -573,7 +574,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     tr0.LF_FieldList.fields.push_back(field);
 
     field.kind          = LF_MEMBER;
-    field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt64);
+    field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
     field.value.reg.u32 = sizeof(void*);
     field.name          = "count";
     tr0.LF_FieldList.fields.push_back(field);
@@ -670,13 +671,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         DbgTypeField  field;
         tr0.kind            = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "data";
         tr0.LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt64);
+        field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "sizeof";
         tr0.LF_FieldList.fields.push_back(field);
@@ -701,13 +702,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         DbgTypeField  field;
         tr0.kind            = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "data";
         tr0.LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = sizeof(void*);
         field.name          = "itable";
         tr0.LF_FieldList.fields.push_back(field);
@@ -732,7 +733,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         DbgTypeField  field;
         tr0.kind            = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "ptrvalue";
         tr0.LF_FieldList.fields.push_back(field);
@@ -1108,7 +1109,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     concat.addU16(0);     // Flags
                     concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
-                    concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
+                    concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                     dbgEndRecord(pp, concat);
 
                     // Codeview seems to need this pointer to be named "this"...
@@ -1128,7 +1129,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         concat.addU16(0);     // Flags
                         concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
                         dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
-                        concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
+                        concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                         dbgEndRecord(pp, concat);
                     }
 
@@ -1323,7 +1324,7 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
 
         dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
         auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
-        concat.addU16((uint16_t)(endOffsetVar - localVar->ownerScope->backendStart)); // Range
+        concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
         dbgEndRecord(pp, concat);
     }
 
@@ -1332,9 +1333,8 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
     /////////////////////////////////
     if (scope->childScopes.size() > 1)
     {
-        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2) {
-            return n1->backendStart < n2->backendStart;
-        });
+        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2)
+             { return n1->backendStart < n2->backendStart; });
     }
 
     for (auto c : scope->childScopes)

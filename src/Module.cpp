@@ -30,7 +30,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     scopeRoot->owner               = astRoot;
     buildPass                      = g_CommandLine->buildPass;
     buildParameters.buildCfg       = &buildCfg;
-    buildParameters.outputFileName = name.c_str();
+    buildParameters.outputFileName = name;
 
     // Setup build configuration
     if (g_CommandLine->buildCfg == "fast-compile")
