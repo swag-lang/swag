@@ -479,6 +479,9 @@
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Module_CompilerMsg.cpp">
+      <Filter>Main\Wmf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

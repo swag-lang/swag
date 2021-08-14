@@ -1,3 +1,3 @@
 :loop
-call tst_dm.bat
+call std_dm.bat
 goto loop

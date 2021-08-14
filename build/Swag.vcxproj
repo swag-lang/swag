@@ -359,6 +359,7 @@
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp" />
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />
+    <ClCompile Include="..\src\Module_CompilerMsg.cpp" />
     <ClCompile Include="..\src\Module_Run.cpp" />
     <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
