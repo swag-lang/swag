@@ -11,6 +11,7 @@ enum class ModuleBuildPass
     Dependencies,
     Syntax,
     IncludeSwg,
+    BeforeCompilerMessages,
     AfterSemantic,
     WaitForDependencies,
     WaitForDependenciesEffective,

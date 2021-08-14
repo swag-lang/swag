@@ -191,6 +191,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.name.buffer = (void*) node->token.text.c_str();
     msg.name.count  = node->token.text.length();
     msg.type        = (ConcreteTypeInfo*) typeInfo; // Will be converted if really sent
+    msg.flags       = 0;
     module->postCompilerMessage(msg);
 
     return true;

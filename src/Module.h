@@ -117,6 +117,7 @@ struct Module
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     void postCompilerMessage(ConcreteCompilerMessage& msg);
+    bool prepareCompilerMessages(JobContext* context);
     bool flushCompilerMessages(JobContext* context);
 
     void              addCompilerFunc(ByteCode* bc);

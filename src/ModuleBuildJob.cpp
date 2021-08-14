@@ -314,7 +314,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
-        pass = ModuleBuildPass::AfterSemantic;
+        pass = ModuleBuildPass::BeforeCompilerMessages;
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -326,12 +326,25 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::BeforeCompilerMessages)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        pass = ModuleBuildPass::AfterSemantic;
+
+        if (!module->prepareCompilerMessages(&context))
+            return JobResult::ReleaseJob;
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
+    }
+
+    //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::AfterSemantic)
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        // Send all compiler messages
         if (!module->flushCompilerMessages(&context))
             return JobResult::ReleaseJob;
         if (context.result != ContextResult::Done)

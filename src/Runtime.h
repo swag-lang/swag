@@ -365,12 +365,15 @@ enum class CompilerMsgKindMask : uint64_t
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 
+static const uint32_t CM_TYPE_CONVERTED = 0x00000001;
+
 struct ConcreteCompilerMessage
 {
     SwagSlice         moduleName;
     CompilerMsgKind   kind;
     SwagSlice         name;
     ConcreteTypeInfo* type;
+    uint32_t          flags;
 };
 
 static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;

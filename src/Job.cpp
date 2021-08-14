@@ -173,6 +173,8 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
 void Job::setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo)
 {
     SWAG_ASSERT(baseContext);
+    if (baseContext->result == ContextResult::Pending)
+        return;
     waitingSymbolSolved = symbolToWait;
     waitingId           = id;
     waitingIdNode       = node;

@@ -538,6 +538,7 @@ namespace Swag
         kind:           CompilerMsgKind = ?
 	    name:           string
         type:           const* TypeInfo
+        flags:          u32
     }
 
     interface ICompiler

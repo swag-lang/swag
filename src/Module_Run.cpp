@@ -7,6 +7,7 @@
 #include "SemanticJob.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "PrepCompilerMsgJob.h"
 
 bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
@@ -249,14 +250,13 @@ void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
     }
 }
 
-bool Module::flushCompilerMessages(JobContext* context)
+bool Module::prepareCompilerMessages(JobContext* context)
 {
-    bool pending = false;
+    // Eliminate messages without a corresponding #compiler
     for (int i = 0; i < compilerMessages.size(); i++)
     {
         auto& msg = compilerMessages[i];
 
-        // Be sure we have a #compiler for that message
         int index = (int) msg.kind;
         if (byteCodeCompiler[index].empty())
         {
@@ -265,41 +265,48 @@ bool Module::flushCompilerMessages(JobContext* context)
             i--;
             continue;
         }
-
-        if (msg.kind == CompilerMsgKind::SemanticFunc)
-        {
-            context->sourceFile     = files.front();
-            context->node           = context->sourceFile->astRoot;
-            auto     storageSegment = &context->sourceFile->module->compilerSegment;
-            uint32_t storageOffset;
-
-            context->result = ContextResult::Done;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, storageSegment, &storageOffset, pending ? 0 : MAKE_CONCRETE_SHOULD_WAIT));
-            if (context->result == ContextResult::Pending)
-                pending = true;
-            else
-                msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
-        }
-
-        if (context->result == ContextResult::Done)
-        {
-            sendCompilerMessage(&msg, context->baseJob);
-            compilerMessages[i] = move(compilerMessages.back());
-            compilerMessages.pop_back();
-            i--;
-        }
     }
 
-    if (pending)
-        context->result = ContextResult::Pending;
+    if (compilerMessages.empty())
+        return true;
 
+    // Batch prepare
+    auto count     = (int) compilerMessages.size() / g_Stats.numWorkers;
+    count          = max(count, 1);
+    count          = min(count, (int) compilerMessages.size());
+    int startIndex = 0;
+    while (startIndex < compilerMessages.size())
+    {
+        auto newJob          = g_Allocator.alloc<PrepCompilerMsgJob>();
+        newJob->module       = this;
+        newJob->startIndex   = startIndex;
+        newJob->endIndex     = min(startIndex + count, (int) compilerMessages.size());
+        newJob->dependentJob = context->baseJob;
+        startIndex += count;
+        context->baseJob->jobsToAdd.push_back(newJob);
+    }
+
+    return true;
+}
+
+bool Module::flushCompilerMessages(JobContext* context)
+{
+    for (int i = 0; i < compilerMessages.size(); i++)
+    {
+        auto& msg = compilerMessages[i];
+        SWAG_ASSERT(!byteCodeCompiler[(int) msg.kind].empty());
+        sendCompilerMessage(&msg, context->baseJob);
+    }
+
+    compilerMessages.clear();
+    compilerMessages.shrink_to_fit();
     return true;
 }
 
 bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
-    ConcreteCompilerMessage msg;
-    msg.kind = msgKind;
+    ConcreteCompilerMessage msg = {0};
+    msg.kind                    = msgKind;
     return sendCompilerMessage(&msg, dependentJob);
 }
 
