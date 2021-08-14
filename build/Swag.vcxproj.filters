@@ -476,11 +476,11 @@
     <ClCompile Include="..\src\AstNode_Clone.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PrepCompilerMsgJob.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Module_CompilerMsg.cpp">
       <Filter>Main\Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PrepCompilerMsgJob.cpp">
+      <Filter>Main\Jobs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -777,7 +777,7 @@
       <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
-      <Filter>Semantic</Filter>
+      <Filter>Main\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
