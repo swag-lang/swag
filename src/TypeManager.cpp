@@ -45,16 +45,17 @@ void TypeManager::setup()
     typeInfoNull->name.setView("null", 4);
     typeInfoNull->sizeOf = sizeof(Register);
 
-#define MAKE_PTR(__r, __p)                                                 \
-    typeInfoPointers[(int) __r]              = new TypeInfoPointer();      \
-    typeInfoPointers[(int) __r]->pointedType = __p;                        \
-    typeInfoPointers[(int) __r]->computeName();                            \
-    typeInfoPointers[(int) __r]->sizeOf           = sizeof(Register);      \
-    typeInfoConstPointers[(int) __r]              = new TypeInfoPointer(); \
-    typeInfoConstPointers[(int) __r]->pointedType = __p;                   \
-    typeInfoConstPointers[(int) __r]->computeName();                       \
-    typeInfoConstPointers[(int) __r]->sizeOf = sizeof(Register);           \
-    typeInfoConstPointers[(int) __r]->setConst();
+#define MAKE_PTR(__r, __p)                                                            \
+    typeInfoPointers[(int) __r]              = new TypeInfoPointer();                 \
+    typeInfoPointers[(int) __r]->pointedType = __p;                                   \
+    typeInfoPointers[(int) __r]->sizeOf      = sizeof(Register);                      \
+    typeInfoPointers[(int) __r]->flags       = TYPEINFO_SHARED;                       \
+    typeInfoPointers[(int) __r]->computeName();                                       \
+    typeInfoConstPointers[(int) __r]              = new TypeInfoPointer();            \
+    typeInfoConstPointers[(int) __r]->pointedType = __p;                              \
+    typeInfoConstPointers[(int) __r]->sizeOf      = sizeof(Register);                 \
+    typeInfoConstPointers[(int) __r]->flags       = TYPEINFO_CONST | TYPEINFO_SHARED; \
+    typeInfoConstPointers[(int) __r]->computeName();
 
     MAKE_PTR(NativeTypeKind::Void, typeInfoVoid);
     MAKE_PTR(NativeTypeKind::U8, typeInfoU8);
@@ -550,9 +551,9 @@ void TypeManager::registerTypeType()
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, uint64_t ptrFlags)
 {
-    if (toType->kind == TypeInfoKind::Native)
+    if (toType->kind == TypeInfoKind::Native && ptrFlags == 0)
     {
         TypeInfoPointer* result;
         if (isConst)
@@ -566,8 +567,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
     auto ptrType         = allocType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
+    ptrType->flags       = ptrFlags | (isConst ? TYPEINFO_CONST : 0);
     ptrType->computeName();
-    if (isConst)
-        ptrType->setConst();
     return ptrType;
 }

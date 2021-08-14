@@ -203,7 +203,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // Otherwise, this is strange, we should have a type
-    SWAG_VERIFY(typeNode->typeInfo, context->internalError( "resolveType, null type !"));
+    SWAG_VERIFY(typeNode->typeInfo, context->internalError("resolveType, null type !"));
 
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier)
@@ -248,23 +248,31 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
         for (int i = 0; i < typeNode->ptrCount; i++)
         {
-            auto ptrPointer1         = allocType<TypeInfoPointer>();
-            ptrPointer1->pointedType = firstType;
-            ptrPointer1->sizeOf      = sizeof(void*);
-            ptrPointer1->flags |= (firstType->flags & TYPEINFO_GENERIC);
+            bool isConst = false;
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
-                ptrPointer1->flags |= TYPEINFO_CONST;
-            if (typeNode->typeFlags & TYPEFLAG_ISCONST && i == 0)
-                ptrPointer1->flags |= TYPEINFO_CONST;
-            if (typeNode->typeFlags & TYPEFLAG_ISSELF)
-                ptrPointer1->flags |= TYPEINFO_SELF;
-            if (typeNode->typeFlags & TYPEFLAG_USING)
-                ptrPointer1->flags |= TYPEINFO_HAS_USING;
+                isConst = true;
+            else if (typeNode->typeFlags & TYPEFLAG_ISCONST && i == 0)
+                isConst = true;
 
-            ptrPointer1->forceComputeName();
+            auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
+            if (typeNode->typeFlags & TYPEFLAG_ISSELF)
+                ptrFlags |= TYPEINFO_SELF;
+            if (typeNode->typeFlags & TYPEFLAG_USING)
+                ptrFlags |= TYPEINFO_HAS_USING;
+
+            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, ptrFlags);
 
             if (ptrPointer)
             {
+                // Be sure we have a unique instance of the type, not a shared predefined one
+                if (ptrPointer->flags & TYPEINFO_SHARED)
+                {
+                    auto newPtr = (TypeInfoPointer*) ptrPointer->clone();
+                    if (typeNode->typeInfo == ptrPointer)
+                        typeNode->typeInfo = newPtr;
+                    ptrPointer = newPtr;
+                }
+
                 ptrPointer->pointedType = ptrPointer1;
                 ptrPointer->forceComputeName();
             }
@@ -278,6 +286,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     ptrRef->flags |= TYPEINFO_CONST;
                 ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
                 ptrRef->computeName();
+
+                // Be sure we have a unique instance of the type, not a shared predefined one
+                if (ptrPointer1->flags & TYPEINFO_SHARED)
+                    ptrPointer1 = (TypeInfoPointer*) ptrPointer1->clone();
                 ptrPointer1->pointedType = ptrRef;
                 ptrPointer1->forceComputeName();
             }

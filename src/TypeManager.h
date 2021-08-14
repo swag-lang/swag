@@ -100,7 +100,7 @@ struct TypeManager
     static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
 
     void             registerTypeType();
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst);
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, uint64_t ptrFlags = 0);
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;
