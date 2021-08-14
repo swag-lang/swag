@@ -356,8 +356,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         return context->report({expr, Utf8::format(Msg0807, typeInfo->getDisplayName().c_str())});
     }
 
-    auto typeVar     = allocType<TypeInfoVariadic>();
-    typeVar->kind    = TypeInfoKind::TypedVariadic;
+    auto typeVar     = allocType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
     typeVar->rawType = node->typeInfo;
     typeVar->computeName();
     node->typeInfo = typeVar;

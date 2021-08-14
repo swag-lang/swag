@@ -55,6 +55,10 @@ struct Stats
 
     atomic<size_t> sizeBackendDbg = 0;
 
+#ifdef SWAG_DEV_MODE
+    atomic<int> countTypesByKind[50] = {0};
+#endif
+
     void print();
 };
 

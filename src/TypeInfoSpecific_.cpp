@@ -333,7 +333,7 @@ Utf8 TypeInfoList::computeTupleName(JobContext* context)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType = allocType<TypeInfoList>();
+    auto newType = allocType<TypeInfoList>(kind);
 
     int size = (int) subTypes.size();
     newType->subTypes.reserve(size);
