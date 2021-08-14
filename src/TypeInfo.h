@@ -184,9 +184,9 @@ struct TypeInfoNative : public TypeInfo
 
     TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint32_t fl)
     {
-        kind         = TypeInfoKind::Native;
-        nativeType   = type;
-        name         = tname;
+        kind       = TypeInfoKind::Native;
+        nativeType = type;
+        name.setView(tname, (int) strlen(tname));
         sizeOf       = sof;
         flags        = fl;
         valueInteger = 0;
