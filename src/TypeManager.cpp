@@ -45,24 +45,34 @@ void TypeManager::setup()
     typeInfoNull->name.setView("null", 4);
     typeInfoNull->sizeOf = sizeof(Register);
 
-#define MAKE_PTR(__r, __p, __c)               \
-    __r              = new TypeInfoPointer(); \
-    __r->pointedType = __p;                   \
-    __r->computeName();                       \
-    if (__c)                                  \
-        __r->setConst();                      \
-    __r->sizeOf = sizeof(Register);
+#define MAKE_PTR(__r, __p)                                                 \
+    typeInfoPointers[(int) __r]              = new TypeInfoPointer();      \
+    typeInfoPointers[(int) __r]->pointedType = __p;                        \
+    typeInfoPointers[(int) __r]->computeName();                            \
+    typeInfoPointers[(int) __r]->sizeOf           = sizeof(Register);      \
+    typeInfoConstPointers[(int) __r]              = new TypeInfoPointer(); \
+    typeInfoConstPointers[(int) __r]->pointedType = __p;                   \
+    typeInfoConstPointers[(int) __r]->computeName();                       \
+    typeInfoConstPointers[(int) __r]->sizeOf = sizeof(Register);           \
+    typeInfoConstPointers[(int) __r]->setConst();
 
-    MAKE_PTR(typeInfoPVoid, typeInfoVoid, false);
-    MAKE_PTR(typeInfoConstPVoid, typeInfoVoid, true);
-    MAKE_PTR(typeInfoPU8, typeInfoU8, false);
-    MAKE_PTR(typeInfoConstPU8, typeInfoU8, true);
-    MAKE_PTR(typeInfoPU16, typeInfoU16, false);
-    MAKE_PTR(typeInfoConstPU16, typeInfoU16, true);
-    MAKE_PTR(typeInfoPU32, typeInfoU32, false);
-    MAKE_PTR(typeInfoConstPU32, typeInfoU32, true);
-    MAKE_PTR(typeInfoPU64, typeInfoU64, false);
-    MAKE_PTR(typeInfoConstPU64, typeInfoU64, true);
+    MAKE_PTR(NativeTypeKind::Void, typeInfoVoid);
+    MAKE_PTR(NativeTypeKind::U8, typeInfoU8);
+    MAKE_PTR(NativeTypeKind::U16, typeInfoU16);
+    MAKE_PTR(NativeTypeKind::U32, typeInfoU32);
+    MAKE_PTR(NativeTypeKind::U64, typeInfoU64);
+    MAKE_PTR(NativeTypeKind::UInt, typeInfoUInt);
+    MAKE_PTR(NativeTypeKind::S8, typeInfoS8);
+    MAKE_PTR(NativeTypeKind::S16, typeInfoS16);
+    MAKE_PTR(NativeTypeKind::S32, typeInfoS32);
+    MAKE_PTR(NativeTypeKind::S64, typeInfoS64);
+    MAKE_PTR(NativeTypeKind::Int, typeInfoInt);
+    MAKE_PTR(NativeTypeKind::Rune, typeInfoRune);
+    MAKE_PTR(NativeTypeKind::Bool, typeInfoBool);
+    MAKE_PTR(NativeTypeKind::F32, typeInfoF32);
+    MAKE_PTR(NativeTypeKind::F64, typeInfoF64);
+    MAKE_PTR(NativeTypeKind::String, typeInfoString);
+    MAKE_PTR(NativeTypeKind::Any, typeInfoAny);
 
     // The rest
     typeInfoCode      = new TypeInfoCode();
@@ -549,19 +559,13 @@ TypeInfo* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
 {
     if (toType->kind == TypeInfoKind::Native)
     {
-        switch (toType->nativeType)
-        {
-        case NativeTypeKind::Void:
-            return isConst ? typeInfoConstPVoid : typeInfoPVoid;
-        case NativeTypeKind::U8:
-            return isConst ? typeInfoConstPU8 : typeInfoPU8;
-        case NativeTypeKind::U16:
-            return isConst ? typeInfoConstPU16 : typeInfoPU16;
-        case NativeTypeKind::U32:
-            return isConst ? typeInfoConstPU32 : typeInfoPU32;
-        case NativeTypeKind::U64:
-            return isConst ? typeInfoConstPU64 : typeInfoPU64;
-        }
+        TypeInfoPointer* result;
+        if (isConst)
+            result = typeInfoConstPointers[(int) toType->nativeType];
+        else
+            result = typeInfoPointers[(int) toType->nativeType];
+        if (result)
+            return result;
     }
 
     auto ptrType         = allocType<TypeInfoPointer>();

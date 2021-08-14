@@ -121,17 +121,9 @@ struct TypeManager
     TypeInfoNative* typeInfoUInt      = nullptr;
     TypeInfoNative* typeInfoInt       = nullptr;
 
-    TypeInfoPointer* typeInfoNull       = nullptr;
-    TypeInfoPointer* typeInfoPVoid      = nullptr;
-    TypeInfoPointer* typeInfoConstPVoid = nullptr;
-    TypeInfoPointer* typeInfoPU8        = nullptr;
-    TypeInfoPointer* typeInfoConstPU8   = nullptr;
-    TypeInfoPointer* typeInfoPU16       = nullptr;
-    TypeInfoPointer* typeInfoConstPU16  = nullptr;
-    TypeInfoPointer* typeInfoPU32       = nullptr;
-    TypeInfoPointer* typeInfoConstPU32  = nullptr;
-    TypeInfoPointer* typeInfoPU64       = nullptr;
-    TypeInfoPointer* typeInfoConstPU64  = nullptr;
+    TypeInfoPointer* typeInfoNull                                       = nullptr;
+    TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count] = {0};
+    TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]      = {0};
 
     TypeInfoPointer*   typeInfoTypeType       = nullptr;
     TypeInfoVariadic*  typeInfoVariadic       = nullptr;

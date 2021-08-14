@@ -163,7 +163,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
-        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
     }
     else if (typeFunc->returnType->numRegisters() == 1)
     {
@@ -171,8 +171,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
     else if (typeFunc->returnType->numRegisters() == 2)
     {
-        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
-        pushRAParams.push_back(g_TypeMgr->typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
+        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
     }
 
     // Then variadic

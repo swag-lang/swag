@@ -2240,7 +2240,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (castFlags & CASTFLAG_EXPLICIT && toType->isPointerVoid())
         {
             if (!(castFlags & CASTFLAG_JUST_CHECK))
-                fromNode->typeInfo = g_TypeMgr->typeInfoConstPVoid;
+                fromNode->typeInfo = g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void];
             return true;
         }
     }

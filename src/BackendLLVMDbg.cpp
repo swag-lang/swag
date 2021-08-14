@@ -315,7 +315,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     if (typeFunc->returnType)
     {
         for (int r = 0; r < typeFunc->returnType->numRegisters(); r++)
-            params.push_back(getType(g_TypeMgr->typeInfoPVoid, file));
+            params.push_back(getType(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void], file));
     }
 
     for (auto one : typeFunc->parameters)
@@ -329,7 +329,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
         {
             for (int r = 0; r < one->typeInfo->numRegisters(); r++)
             {
-                params.push_back(getType(g_TypeMgr->typeInfoPVoid, file));
+                params.push_back(getType(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void], file));
             }
         }
     }

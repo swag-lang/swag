@@ -20,7 +20,7 @@ bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
 
     // Check expression
     SWAG_CHECK(checkIsConcrete(context, expr));
-    if (!expr->typeInfo->isSame(g_TypeMgr->typeInfoConstPVoid, ISSAME_CAST))
+    if (!expr->typeInfo->isSame(g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void], ISSAME_CAST))
         return context->report({expr, Msg0783});
 
     node->typeInfo    = first->typeInfo;
@@ -42,7 +42,7 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     if (typeFunc->numReturnRegisters() > 1)
         return context->report({node, Utf8::format(Msg0786, typeFunc->returnType->getDisplayName().c_str())});
 
-    node->typeInfo    = g_TypeMgr->typeInfoPVoid;
+    node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
     return true;
 }
@@ -144,7 +144,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        node->typeInfo    = g_TypeMgr->typeInfoConstPU8;
+        node->typeInfo    = g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::U8];
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
@@ -161,7 +161,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)
     {
-        node->typeInfo    = g_TypeMgr->typeInfoPVoid;
+        node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
@@ -172,7 +172,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
             return true;
-        node->typeInfo = g_TypeMgr->typeInfoPVoid;
+        node->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }

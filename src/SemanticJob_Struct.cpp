@@ -1026,7 +1026,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (!(node->flags & AST_FROM_GENERIC))
     {
         auto typeParam      = allocType<TypeInfoParam>();
-        typeParam->typeInfo = g_TypeMgr->typeInfoPVoid;
+        typeParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         typeParam->name     = typeParam->typeInfo->name;
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = 0;
