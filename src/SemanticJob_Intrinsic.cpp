@@ -149,26 +149,14 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->pointedType = ptrSlice->pointedType;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->computeName();
-        if (ptrSlice->isConst())
-            ptrType->setConst();
-        node->typeInfo    = ptrType;
+        auto ptrSlice     = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        node->typeInfo    = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrSlice->isConst());
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
-        auto ptrArray        = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->pointedType = ptrArray->pointedType;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->computeName();
-        if (ptrArray->isConst())
-            ptrType->setConst();
-        node->typeInfo    = ptrType;
+        auto ptrArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        node->typeInfo    = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst());
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)

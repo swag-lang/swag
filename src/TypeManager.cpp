@@ -542,3 +542,14 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
     return max(1, typeInfo->sizeOf);
 }
+
+TypeInfo* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
+{
+    auto ptrType         = allocType<TypeInfoPointer>();
+    ptrType->pointedType = toType;
+    ptrType->sizeOf      = sizeof(Register);
+    ptrType->computeName();
+    if (isConst)
+        ptrType->setConst();
+    return ptrType;
+}
