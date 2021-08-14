@@ -45,22 +45,24 @@ void TypeManager::setup()
     typeInfoNull->name.setView("null", 4);
     typeInfoNull->sizeOf = sizeof(Register);
 
-    typeInfoPVoid              = new TypeInfoPointer();
-    typeInfoPVoid->pointedType = typeInfoVoid;
-    typeInfoPVoid->computeName();
-    typeInfoPVoid->sizeOf = sizeof(Register);
+#define MAKE_PTR(__r, __p, __c)               \
+    __r              = new TypeInfoPointer(); \
+    __r->pointedType = __p;                   \
+    __r->computeName();                       \
+    if (__c)                                  \
+        __r->setConst();                      \
+    __r->sizeOf = sizeof(Register);
 
-    typeInfoConstPVoid              = new TypeInfoPointer();
-    typeInfoConstPVoid->pointedType = typeInfoVoid;
-    typeInfoConstPVoid->computeName();
-    typeInfoConstPVoid->setConst();
-    typeInfoConstPVoid->sizeOf = sizeof(Register);
-
-    typeInfoConstPU8              = new TypeInfoPointer();
-    typeInfoConstPU8->pointedType = typeInfoU8;
-    typeInfoConstPU8->computeName();
-    typeInfoConstPU8->setConst();
-    typeInfoConstPU8->sizeOf = sizeof(Register);
+    MAKE_PTR(typeInfoPVoid, typeInfoVoid, false);
+    MAKE_PTR(typeInfoConstPVoid, typeInfoVoid, true);
+    MAKE_PTR(typeInfoPU8, typeInfoU8, false);
+    MAKE_PTR(typeInfoConstPU8, typeInfoU8, true);
+    MAKE_PTR(typeInfoPU16, typeInfoU16, false);
+    MAKE_PTR(typeInfoConstPU16, typeInfoU16, true);
+    MAKE_PTR(typeInfoPU32, typeInfoU32, false);
+    MAKE_PTR(typeInfoConstPU32, typeInfoU32, true);
+    MAKE_PTR(typeInfoPU64, typeInfoU64, false);
+    MAKE_PTR(typeInfoConstPU64, typeInfoU64, true);
 
     // The rest
     typeInfoCode      = new TypeInfoCode();
@@ -545,6 +547,23 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 TypeInfo* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
 {
+    if (toType->kind == TypeInfoKind::Native)
+    {
+        switch (toType->nativeType)
+        {
+        case NativeTypeKind::Void:
+            return isConst ? typeInfoConstPVoid : typeInfoPVoid;
+        case NativeTypeKind::U8:
+            return isConst ? typeInfoConstPU8 : typeInfoPU8;
+        case NativeTypeKind::U16:
+            return isConst ? typeInfoConstPU16 : typeInfoPU16;
+        case NativeTypeKind::U32:
+            return isConst ? typeInfoConstPU32 : typeInfoPU32;
+        case NativeTypeKind::U64:
+            return isConst ? typeInfoConstPU64 : typeInfoPU64;
+        }
+    }
+
     auto ptrType         = allocType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
