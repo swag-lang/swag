@@ -17,24 +17,23 @@ JobResult PrepCompilerMsgJob::execute()
     for (int i = startIndex; i < endIndex; i++)
     {
         auto& msg = module->compilerMessages[i];
-        SWAG_ASSERT(!module->byteCodeCompiler[(int) msg.kind].empty());
+        SWAG_ASSERT(!module->byteCodeCompiler[(int) msg.concrete.kind].empty());
 
-        if (msg.kind == CompilerMsgKind::SemanticFunc)
+        if (msg.concrete.kind == CompilerMsgKind::SemanticFunc)
         {
-            if (msg.flags & CM_TYPE_CONVERTED)
+            if (msg.concrete.type)
                 continue;
 
             auto     storageSegment = &context.sourceFile->module->compilerSegment;
             uint32_t storageOffset;
 
             context.result = ContextResult::Done;
-
-            if (!module->typeTable.makeConcreteTypeInfo(&context, (TypeInfo*) msg.type, storageSegment, &storageOffset, MAKE_CONCRETE_SHOULD_WAIT))
+            if (!module->typeTable.makeConcreteTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, MAKE_CONCRETE_SHOULD_WAIT))
                 return JobResult::ReleaseJob;
             if (context.result != ContextResult::Done)
                 return JobResult::KeepJobAlive;
-            msg.flags |= CM_TYPE_CONVERTED;
-            msg.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
+
+            msg.concrete.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
         }
     }
 

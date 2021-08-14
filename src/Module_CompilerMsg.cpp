@@ -5,9 +5,9 @@
 #include "SemanticJob.h"
 #include "PrepCompilerMsgJob.h"
 
-void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
+void Module::postCompilerMessage(CompilerMessage& msg)
 {
-    ScopedLock lk(byteCodeCompilerMutex[(int) msg.kind]);
+    ScopedLock lk(byteCodeCompilerMutex[(int) msg.concrete.kind]);
 
     // Cannot decide yet if there's a corresponding #compiler for that message, so push it
     if (numCompilerFunctions > 0)
@@ -17,7 +17,7 @@ void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
     // So if there's no #compiler function for the given message, just dismiss it.
     else
     {
-        int index = (int) msg.kind;
+        int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
             return;
         compilerMessages.push_back(msg);
@@ -31,7 +31,7 @@ bool Module::prepareCompilerMessages(JobContext* context)
     {
         auto& msg = compilerMessages[i];
 
-        int index = (int) msg.kind;
+        int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {
             compilerMessages[i] = move(compilerMessages.back());
@@ -65,11 +65,10 @@ bool Module::prepareCompilerMessages(JobContext* context)
 
 bool Module::flushCompilerMessages(JobContext* context)
 {
-    for (int i = 0; i < compilerMessages.size(); i++)
+    for (auto& msg: compilerMessages)
     {
-        auto& msg = compilerMessages[i];
-        SWAG_ASSERT(!byteCodeCompiler[(int) msg.kind].empty());
-        sendCompilerMessage(&msg, context->baseJob);
+        SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
+        sendCompilerMessage(&msg.concrete, context->baseJob);
     }
 
     compilerMessages.clear();

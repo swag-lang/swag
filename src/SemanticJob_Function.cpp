@@ -186,12 +186,11 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    ConcreteCompilerMessage msg;
-    msg.kind        = CompilerMsgKind::SemanticFunc;
-    msg.name.buffer = (void*) node->token.text.c_str();
-    msg.name.count  = node->token.text.length();
-    msg.type        = (ConcreteTypeInfo*) typeInfo; // Will be converted if really sent
-    msg.flags       = 0;
+    CompilerMessage msg      = {0};
+    msg.concrete.kind        = CompilerMsgKind::SemanticFunc;
+    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.count  = node->token.text.length();
+    msg.typeInfo             = typeInfo;
     module->postCompilerMessage(msg);
 
     return true;

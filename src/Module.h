@@ -75,6 +75,12 @@ struct ExecuteNodeParams
     SymbolOverload*        specReturnOpDrop  = nullptr;
 };
 
+struct CompilerMessage
+{
+    ConcreteCompilerMessage concrete;
+    TypeInfo*               typeInfo;
+};
+
 static const uint32_t BUILDRES_NONE     = 0x00000000;
 static const uint32_t BUILDRES_EXPORT   = 0x00000001;
 static const uint32_t BUILDRES_COMPILER = 0x00000002;
@@ -116,7 +122,7 @@ struct Module
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
-    void postCompilerMessage(ConcreteCompilerMessage& msg);
+    void postCompilerMessage(CompilerMessage& msg);
     bool prepareCompilerMessages(JobContext* context);
     bool flushCompilerMessages(JobContext* context);
 
@@ -191,7 +197,7 @@ struct Module
     VectorNative<AstNode*>          globalVarsBss;
     VectorNative<AstNode*>          globalVarsMutable;
     VectorNative<AstNode*>          globalVarsConstant;
-    vector<ConcreteCompilerMessage> compilerMessages;
+    vector<CompilerMessage>         compilerMessages;
     set<SourceFile*>                exportSourceFiles;
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;
