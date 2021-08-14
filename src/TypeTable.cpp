@@ -8,58 +8,11 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
-TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
-{
-    return mapPerSegment[segment->kind == SegmentKind::Compiler ? 1 : 0];
-}
-
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
-}
-
-bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
-{
-    SWAG_ASSERT(context);
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-
-    auto& mapPerSeg            = getMapPerSeg(storageSegment);
-    auto  job                  = g_Allocator.alloc<TypeTableJob>();
-    job->module                = module;
-    job->typeTable             = this;
-    job->sourceFile            = sourceFile;
-    job->concreteTypeInfoValue = concreteTypeInfoValue;
-    job->typeInfo              = typeInfo;
-    job->storageOffset         = storageOffset;
-    job->storageSegment        = storageSegment;
-    job->cflags                = cflags & ~MAKE_CONCRETE_SHOULD_WAIT;
-    job->typeName              = typeName;
-    job->nodes.push_back(context->node);
-    mapPerSeg.concreteTypesJob[typeName] = job;
-    if (g_CommandLine->stats)
-        g_Stats.totalConcreteStructTypes++;
-
-    if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
-    {
-        SWAG_ASSERT(context->result == ContextResult::Done || !strcmp(context->baseJob->waitingId, "MAKE_CONCRETE_SHOULD_WAIT"));
-        job->dependentJob = context->baseJob;
-        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
-        context->baseJob->jobsToAdd.push_back(job);
-    }
-    else
-    {
-        // No need to wait for the result. We then register the top level job as the job to wait for this
-        // new one. We CANNOT just register the current dependJob, as it can already be waiting
-        job->dependentJob = context->baseJob->dependentJob;
-        while (job->dependentJob && job->dependentJob->dependentJob)
-            job->dependentJob = job->dependentJob->dependentJob;
-        g_ThreadMgr.addJob(job);
-    }
-
-    return true;
 }
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
@@ -596,4 +549,51 @@ void TypeTable::initFrom(Module* module, TypeTable* other)
         it.second.concreteType                                        = (ConcreteTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
         mapPerSegment[1].concreteTypesReverse[it.second.concreteType] = it.second.realType;
     }
+}
+
+TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
+{
+    return mapPerSegment[segment->kind == SegmentKind::Compiler ? 1 : 0];
+}
+
+bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
+{
+    SWAG_ASSERT(context);
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    auto& mapPerSeg            = getMapPerSeg(storageSegment);
+    auto  job                  = g_Allocator.alloc<TypeTableJob>();
+    job->module                = module;
+    job->typeTable             = this;
+    job->sourceFile            = sourceFile;
+    job->concreteTypeInfoValue = concreteTypeInfoValue;
+    job->typeInfo              = typeInfo;
+    job->storageOffset         = storageOffset;
+    job->storageSegment        = storageSegment;
+    job->cflags                = cflags & ~MAKE_CONCRETE_SHOULD_WAIT;
+    job->typeName              = typeName;
+    job->nodes.push_back(context->node);
+    mapPerSeg.concreteTypesJob[typeName] = job;
+    if (g_CommandLine->stats)
+        g_Stats.totalConcreteStructTypes++;
+
+    if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+    {
+        SWAG_ASSERT(context->result == ContextResult::Done || !strcmp(context->baseJob->waitingId, "MAKE_CONCRETE_SHOULD_WAIT"));
+        job->dependentJob = context->baseJob;
+        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
+        context->baseJob->jobsToAdd.push_back(job);
+    }
+    else
+    {
+        // No need to wait for the result. We then register the top level job as the job to wait for this
+        // new one. We CANNOT just register the current dependJob, as it can already be waiting
+        job->dependentJob = context->baseJob->dependentJob;
+        while (job->dependentJob && job->dependentJob->dependentJob)
+            job->dependentJob = job->dependentJob->dependentJob;
+        g_ThreadMgr.addJob(job);
+    }
+
+    return true;
 }
