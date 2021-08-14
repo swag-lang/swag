@@ -53,13 +53,11 @@ static const uint64_t TYPEINFO_ENUM_INDEX               = 0x00000000'02000000;
 static const uint64_t TYPEINFO_STRICT                   = 0x00000000'04000000;
 static const uint64_t TYPEINFO_FAKE_ALIAS               = 0x00000000'08000000;
 static const uint64_t TYPEINFO_HAS_USING                = 0x00000000'10000000;
-//static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'20000000;
-//static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
-static const uint64_t TYPEINFO_STRUCT_NO_COPY = 0x00000000'80000000;
-static const uint64_t TYPEINFO_CAN_THROW      = 0x00000001'00000000;
-static const uint64_t TYPEINFO_HAD_DROP       = 0x00000002'00000000;
-static const uint64_t TYPEINFO_HAD_POST_COPY  = 0x00000004'00000000;
-static const uint64_t TYPEINFO_HAD_POST_MOVE  = 0x00000008'00000000;
+static const uint64_t TYPEINFO_HAD_POST_MOVE            = 0x00000000'20000000;
+static const uint64_t TYPEINFO_HAD_POST_COPY            = 0x00000000'40000000;
+static const uint64_t TYPEINFO_STRUCT_NO_COPY           = 0x00000000'80000000;
+static const uint64_t TYPEINFO_CAN_THROW                = 0x00000001'00000000;
+static const uint64_t TYPEINFO_HAD_DROP                 = 0x00000002'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
@@ -68,27 +66,6 @@ static const uint32_t ISSAME_FOR_AFFECT = 0x00000008;
 
 struct TypeInfo
 {
-    virtual bool isSame(TypeInfo* from, uint32_t isSameFlags)
-    {
-        if (this == from)
-            return true;
-
-        if (kind != from->kind)
-            return false;
-
-        if (isSameFlags & ISSAME_EXACT)
-        {
-            if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
-                return false;
-            if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
-                return false;
-            if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
-                return false;
-        }
-
-        return true;
-    }
-
     bool isPointerTo(NativeTypeKind pointerKind);
     bool isPointerTo(TypeInfoKind pointerKind);
     bool isPointerTo(TypeInfo* finalType);
@@ -110,6 +87,27 @@ struct TypeInfo
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     // clang-format on
+
+    virtual bool isSame(TypeInfo* from, uint32_t isSameFlags)
+    {
+        if (this == from)
+            return true;
+
+        if (kind != from->kind)
+            return false;
+
+        if (isSameFlags & ISSAME_EXACT)
+        {
+            if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
+                return false;
+            if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
+                return false;
+            if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
+                return false;
+        }
+
+        return true;
+    }
 
     void setConst()
     {
@@ -170,10 +168,10 @@ struct TypeInfo
     AstNode* declNode = nullptr;
     uint64_t flags    = 0;
 
-    uint32_t sizeOf = 0;
-
+    uint32_t       sizeOf     = 0;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
+    uint8_t        padding[2];
 };
 
 struct TypeInfoNative : public TypeInfo
