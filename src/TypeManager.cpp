@@ -463,17 +463,6 @@ TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
     return typeInfo;
 }
 
-void TypeManager::registerTypeType()
-{
-    // Generate the alias for 'const *TypeInfo'
-    typeInfoTypeType = allocType<TypeInfoPointer>();
-    typeInfoTypeType->flags |= TYPEINFO_CONST;
-    typeInfoTypeType->pointedType = g_Workspace->swagScope.regTypeInfo;
-    typeInfoTypeType->computeName();
-    typeInfoTypeType->sizeOf                        = sizeof(void*);
-    g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
-}
-
 TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
 {
     SWAG_ASSERT(literalType < LiteralType::TT_MAX);
@@ -555,7 +544,13 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     return max(1, typeInfo->sizeOf);
 }
 
-TypeInfo* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
+void TypeManager::registerTypeType()
+{
+    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true);
+    g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
+}
+
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst)
 {
     if (toType->kind == TypeInfoKind::Native)
     {

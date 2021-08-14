@@ -99,8 +99,8 @@ struct TypeManager
     static uint32_t  alignOf(TypeInfo* typeInfo);
     static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
 
-    void      registerTypeType();
-    TypeInfo* makePointerTo(TypeInfo* toType, bool isConst);
+    void             registerTypeType();
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst);
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;
