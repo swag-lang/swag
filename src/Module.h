@@ -187,6 +187,7 @@ struct Module
     VectorNative<Module*>           errorModules;
     VectorNative<ByteCode*>         byteCodeCompiler[(int) CompilerMsgKind::Max];
     mutex                           byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
+    mutex                           mutexCompilerMessages;
     VectorNative<ByteCode*>         byteCodeFunc;
     VectorNative<ByteCode*>         byteCodeTestFunc;
     VectorNative<ByteCode*>         byteCodeInitFunc;

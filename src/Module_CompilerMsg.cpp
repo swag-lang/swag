@@ -7,21 +7,16 @@
 
 void Module::postCompilerMessage(CompilerMessage& msg)
 {
-    ScopedLock lk(byteCodeCompilerMutex[(int) msg.concrete.kind]);
-
-    // Cannot decide yet if there's a corresponding #compiler for that message, so push it
-    if (numCompilerFunctions > 0)
-        compilerMessages.push_back(msg);
-
-    // We can decide, because every #compiler function have been registered.
-    // So if there's no #compiler function for the given message, just dismiss it.
-    else
+    // We can decide to filter the message only if all #compiler functions have been registered
+    if (numCompilerFunctions == 0)
     {
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
             return;
-        compilerMessages.push_back(msg);
     }
+
+    ScopedLock lk(mutexCompilerMessages);
+    compilerMessages.push_back(msg);
 }
 
 bool Module::prepareCompilerMessages(JobContext* context)
@@ -65,7 +60,7 @@ bool Module::prepareCompilerMessages(JobContext* context)
 
 bool Module::flushCompilerMessages(JobContext* context)
 {
-    for (auto& msg: compilerMessages)
+    for (auto& msg : compilerMessages)
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
         sendCompilerMessage(&msg.concrete, context->baseJob);
@@ -85,7 +80,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    ScopedLock lk(byteCodeCompilerMutex[(int) msg->kind]);
+    SWAG_ASSERT(numCompilerFunctions == 0);
     if (byteCodeCompiler[(int) msg->kind].empty())
         return true;
 
