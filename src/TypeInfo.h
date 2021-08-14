@@ -89,63 +89,14 @@ struct TypeInfo
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     // clang-format on
 
-    virtual bool isSame(TypeInfo* from, uint32_t isSameFlags)
-    {
-        if (this == from)
-            return true;
-
-        if (kind != from->kind)
-            return false;
-
-        if (isSameFlags & ISSAME_EXACT)
-        {
-            if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
-                return false;
-            if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
-                return false;
-            if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
-                return false;
-        }
-
-        return true;
-    }
-
-    void setConst()
-    {
-        if (flags & TYPEINFO_CONST)
-            return;
-        flags |= TYPEINFO_CONST;
-        name        = "const " + name;
-        displayName = "const " + displayName;
-    }
-
-    virtual int numRegisters()
-    {
-        if (sizeOf == 0)
-            return 0;
-        if (flags & TYPEINFO_RETURN_BY_COPY)
-            return 1;
-        int result = max(sizeOf, sizeof(void*)) / sizeof(void*);
-        SWAG_ASSERT(result <= 2);
-        return result;
-    }
-
-    void copyFrom(TypeInfo* from)
-    {
-        name       = from->name;
-        declNode   = from->declNode;
-        kind       = from->kind;
-        nativeType = from->nativeType;
-        flags      = from->flags & ~TYPEINFO_SHARED;
-        sizeOf     = from->sizeOf;
-    }
-
+    virtual bool      isSame(TypeInfo* from, uint32_t isSameFlags);
     virtual TypeInfo* clone() = 0;
-    void              clearName();
-    void              forceComputeName();
-    void              getScopedName(Utf8& name);
-    Utf8              getName();
+    virtual int       numRegisters();
     virtual Utf8      getDisplayName();
+    virtual void      computeWhateverName(Utf8& resName, uint32_t nameType);
+
+    void copyFrom(TypeInfo* from);
+    void setConst();
 
     // clang-format off
     void            computeName() { computeWhateverName(COMPUTE_NAME); computeWhateverName(COMPUTE_DISPLAY_NAME); }
@@ -153,9 +104,12 @@ struct TypeInfo
     void            computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
     // clang-format on
 
+    void               clearName();
+    void               forceComputeName();
+    void               getScopedName(Utf8& name);
+    Utf8               getName();
     const Utf8&        computeWhateverName(uint32_t nameType);
     const Utf8&        computeWhateverNameNoLock(uint32_t nameType);
-    virtual void       computeWhateverName(Utf8& resName, uint32_t nameType);
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 

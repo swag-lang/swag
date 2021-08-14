@@ -294,3 +294,54 @@ bool TypeInfo::isMethod()
         return false;
     return true;
 }
+
+bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
+{
+    if (this == from)
+        return true;
+
+    if (kind != from->kind)
+        return false;
+
+    if (isSameFlags & ISSAME_EXACT)
+    {
+        if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
+            return false;
+        if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
+            return false;
+        if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
+            return false;
+    }
+
+    return true;
+}
+
+void TypeInfo::setConst()
+{
+    if (flags & TYPEINFO_CONST)
+        return;
+    flags |= TYPEINFO_CONST;
+    name        = "const " + name;
+    displayName = "const " + displayName;
+}
+
+int TypeInfo::numRegisters()
+{
+    if (sizeOf == 0)
+        return 0;
+    if (flags & TYPEINFO_RETURN_BY_COPY)
+        return 1;
+    int result = max(sizeOf, sizeof(void*)) / sizeof(void*);
+    SWAG_ASSERT(result <= 2);
+    return result;
+}
+
+void TypeInfo::copyFrom(TypeInfo* from)
+{
+    name       = from->name;
+    declNode   = from->declNode;
+    kind       = from->kind;
+    nativeType = from->nativeType;
+    flags      = from->flags & ~TYPEINFO_SHARED;
+    sizeOf     = from->sizeOf;
+}
