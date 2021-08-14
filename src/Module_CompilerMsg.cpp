@@ -5,18 +5,27 @@
 #include "SemanticJob.h"
 #include "PrepCompilerMsgJob.h"
 
-void Module::postCompilerMessage(CompilerMessage& msg)
+bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
 {
     // We can decide to filter the message only if all #compiler functions have been registered
     if (numCompilerFunctions == 0)
     {
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
-            return;
+            return true;
+
+        /*if (msg.typeInfo)
+        {
+            auto     storageSegment = &context->sourceFile->module->compilerSegment;
+            uint32_t storageOffset;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, msg.typeInfo, storageSegment, &storageOffset));
+            msg.concrete.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
+        }*/
     }
 
     ScopedLock lk(mutexCompilerMessages);
     compilerMessages.push_back(msg);
+    return true;
 }
 
 bool Module::prepareCompilerMessages(JobContext* context)
@@ -26,6 +35,7 @@ bool Module::prepareCompilerMessages(JobContext* context)
     {
         auto& msg = compilerMessages[i];
 
+        // If no #compiler function corresponding to the message, remove
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {

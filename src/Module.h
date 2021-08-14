@@ -122,7 +122,7 @@ struct Module
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
-    void postCompilerMessage(CompilerMessage& msg);
+    bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
     bool prepareCompilerMessages(JobContext* context);
     bool flushCompilerMessages(JobContext* context);
 

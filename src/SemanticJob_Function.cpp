@@ -191,7 +191,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.concrete.name.buffer = (void*) node->token.text.c_str();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = typeInfo;
-    module->postCompilerMessage(msg);
+    SWAG_CHECK(module->postCompilerMessage(context, msg));
 
     return true;
 }
