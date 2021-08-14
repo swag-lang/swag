@@ -121,6 +121,7 @@ struct TypeManager
     TypeInfoPointer*   typeInfoNull           = nullptr;
     TypeInfoPointer*   typeInfoPVoid          = nullptr;
     TypeInfoPointer*   typeInfoConstPVoid     = nullptr;
+    TypeInfoPointer*   typeInfoConstPU8       = nullptr;
     TypeInfoPointer*   typeInfoTypeType       = nullptr;
     TypeInfoVariadic*  typeInfoVariadic       = nullptr;
     TypeInfoNative*    typeInfoUntypedInt     = nullptr;

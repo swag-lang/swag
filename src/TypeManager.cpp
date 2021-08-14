@@ -40,6 +40,7 @@ void TypeManager::setup()
     typeInfoVariadic->name.setView("...", 3);
     typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
+    // Some default pointers
     typeInfoNull = new TypeInfoPointer();
     typeInfoNull->name.setView("null", 4);
     typeInfoNull->sizeOf = sizeof(Register);
@@ -55,6 +56,13 @@ void TypeManager::setup()
     typeInfoConstPVoid->setConst();
     typeInfoConstPVoid->sizeOf = sizeof(Register);
 
+    typeInfoConstPU8              = new TypeInfoPointer();
+    typeInfoConstPU8->pointedType = typeInfoU8;
+    typeInfoConstPU8->computeName();
+    typeInfoConstPU8->setConst();
+    typeInfoConstPU8->sizeOf = sizeof(Register);
+
+    // The rest
     typeInfoCode      = new TypeInfoCode();
     typeInfoNameAlias = new TypeInfoNameAlias();
 

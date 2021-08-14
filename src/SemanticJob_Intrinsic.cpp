@@ -144,12 +144,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->pointedType = g_TypeMgr->typeInfoU8;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->computeName();
-        ptrType->setConst();
-        node->typeInfo    = ptrType;
+        node->typeInfo    = g_TypeMgr->typeInfoConstPU8;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
@@ -178,11 +173,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)
     {
-        auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->pointedType = g_TypeMgr->typeInfoVoid;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->computeName();
-        node->typeInfo    = ptrType;
+        node->typeInfo    = g_TypeMgr->typeInfoPVoid;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
