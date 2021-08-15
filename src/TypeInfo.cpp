@@ -342,13 +342,19 @@ TypeInfoParam* TypeInfoParam::clone()
     auto newType        = g_TypeMgr->makeParam();
     newType->name       = name;
     newType->namedParam = namedParam;
-    newType->value      = value;
     newType->attributes = attributes;
     newType->typeInfo   = typeInfo;
     newType->declNode   = declNode;
     newType->index      = index;
     newType->offset     = offset;
     newType->flags      = flags;
+
+    if (value)
+    {
+        newType->allocateComputedValue();
+        *newType->value = *value;
+    }
+
     return newType;
 }
 
@@ -357,4 +363,11 @@ bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t isSameFlags)
     if (this == to)
         return true;
     return typeInfo->isSame(to->typeInfo, isSameFlags);
+}
+
+void TypeInfoParam::allocateComputedValue()
+{
+    if (value)
+        return;
+    value = g_Allocator.alloc<ComputedValue>();
 }

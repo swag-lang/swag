@@ -341,7 +341,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 {
                     for (auto one : typeEnum->values)
                     {
-                        if (valText.find(one->value.text) == valText.end())
+                        if (valText.find(one->value->text) == valText.end())
                         {
                             Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
@@ -356,7 +356,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 {
                     for (auto one : typeEnum->values)
                     {
-                        if (val64.find(one->value.reg.u64) == val64.end())
+                        if (val64.find(one->value->reg.u64) == val64.end())
                         {
                             Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};

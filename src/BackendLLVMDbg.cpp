@@ -105,7 +105,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
         bool                          isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
         for (auto& value : typeInfoEnum->values)
         {
-            auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value.reg.u64, isUnsigned);
+            auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value->reg.u64, isUnsigned);
             subscripts.push_back(typeField);
         }
 

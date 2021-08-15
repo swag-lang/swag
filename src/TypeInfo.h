@@ -232,14 +232,15 @@ struct TypeInfoParam
     int            numRegisters();
     bool           isSame(TypeInfoParam* to, uint32_t isSameFlags);
     TypeInfoParam* clone();
+    void           allocateComputedValue();
 
     Utf8          name;
     Utf8          namedParam;
-    ComputedValue value;
     AttributeList attributes;
 
-    TypeInfo* typeInfo = nullptr;
-    AstNode*  declNode = nullptr;
+    ComputedValue* value    = nullptr;
+    TypeInfo*      typeInfo = nullptr;
+    AstNode*       declNode = nullptr;
 
     uint64_t flags  = 0;
     int      index  = 0;

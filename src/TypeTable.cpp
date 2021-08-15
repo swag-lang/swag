@@ -405,23 +405,25 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     {
         if (realType->typeInfo->kind == TypeInfoKind::Array || realType->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
-            SWAG_ASSERT(realType->value.storageOffset != UINT32_MAX);
-            SWAG_ASSERT(realType->value.storageSegment);
-            concreteType->value = realType->value.storageSegment->address(realType->value.storageOffset);
-            storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value.storageOffset, SegmentKind::Constant);
+            SWAG_ASSERT(realType->value);
+            SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);
+            SWAG_ASSERT(realType->value->storageSegment);
+            concreteType->value = realType->value->storageSegment->address(realType->value->storageOffset);
+            storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
         }
         else if (realType->typeInfo->kind == TypeInfoKind::Slice)
         {
-            SWAG_ASSERT(realType->value.storageOffset != UINT32_MAX);
-            SWAG_ASSERT(realType->value.storageSegment);
+            SWAG_ASSERT(realType->value);
+            SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);
+            SWAG_ASSERT(realType->value->storageSegment);
 
             // :SliceLiteral
-            auto count         = realType->value.reg.u64;
-            auto offsetContent = realType->value.storageOffset;
+            auto count         = realType->value->reg.u64;
+            auto offsetContent = realType->value->storageOffset;
 
             uint64_t* ptrSlice;
             auto      offsetSlice = storageSegment->reserve(2 * sizeof(uint64_t), (uint8_t**) &ptrSlice);
-            ptrSlice[0]           = (uint64_t) realType->value.storageSegment->address(offsetContent);
+            ptrSlice[0]           = (uint64_t) realType->value->storageSegment->address(offsetContent);
             ptrSlice[1]           = count;
 
             concreteType->value = ptrSlice;
@@ -430,7 +432,8 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
         }
         else
         {
-            auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, realType->value, (uint8_t**) &concreteType->value);
+            SWAG_ASSERT(realType->value);
+            auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, *realType->value, (uint8_t**) &concreteType->value);
             storageSegment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
         }
     }

@@ -22,7 +22,11 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
                 auto genParam   = callGenericParameters->childs[i];
                 param->typeInfo = genParam->typeInfo;
                 if (genParam->computedValue)
-                    param->value = *genParam->computedValue;
+                {
+                    param->allocateComputedValue();
+                    *param->value = *genParam->computedValue;
+                }
+
                 if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
                     param->flags |= TYPEINFO_DEFINED_VALUE;
             }
@@ -64,9 +68,13 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         {
             auto nodeParam = nodeGenericParameters[i];
             nodeParam->setFlagsValueIsComputed();
-            *nodeParam->computedValue = param->value;
-            nodeParam->kind           = AstNodeKind::ConstDecl;
+            nodeParam->kind = AstNodeKind::ConstDecl;
             nodeParam->flags |= AST_FROM_GENERIC;
+            if (param->value)
+            {
+                nodeParam->allocateComputedValue();
+                *nodeParam->computedValue = *param->value;
+            }
         }
     }
 

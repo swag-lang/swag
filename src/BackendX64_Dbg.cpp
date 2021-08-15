@@ -829,7 +829,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
                 field.type      = dbgGetOrCreateType(pp, p->typeInfo);
                 field.name      = p->namedParam;
                 field.valueType = typeEnum->rawType;
-                field.value     = p->value;
+                field.value     = *p->value;
                 tr0.LF_FieldList.fields.push_back(field);
             }
             dbgAddTypeRecord(pp, tr0);

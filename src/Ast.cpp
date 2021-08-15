@@ -77,23 +77,24 @@ namespace Ast
             {
                 auto value = typeEnum->values[i];
                 bool ok    = false;
+                SWAG_ASSERT(value->value);
                 switch (typeEnum->rawType->nativeType)
                 {
                 case NativeTypeKind::U8:
-                    if (value->value.reg.u8 & reg.u8)
+                    if (value->value->reg.u8 & reg.u8)
                         ok = true;
                     break;
                 case NativeTypeKind::U16:
-                    if (value->value.reg.u16 & reg.u16)
+                    if (value->value->reg.u16 & reg.u16)
                         ok = true;
                     break;
                 case NativeTypeKind::U32:
-                    if (value->value.reg.u32 & reg.u32)
+                    if (value->value->reg.u32 & reg.u32)
                         ok = true;
                     break;
                 case NativeTypeKind::U64:
                 case NativeTypeKind::UInt:
-                    if (value->value.reg.u64 & reg.u64)
+                    if (value->value->reg.u64 & reg.u64)
                         ok = true;
                     break;
                 }
@@ -117,25 +118,26 @@ namespace Ast
             {
                 auto value = typeEnum->values[i];
                 bool ok    = false;
+                SWAG_ASSERT(value->value);
                 if (typeEnum->rawType->kind == TypeInfoKind::Native)
                 {
                     switch (typeEnum->rawType->nativeType)
                     {
                     case NativeTypeKind::S8:
                     case NativeTypeKind::U8:
-                        if (value->value.reg.u8 == reg.u8)
+                        if (value->value->reg.u8 == reg.u8)
                             ok = true;
                         break;
                     case NativeTypeKind::S16:
                     case NativeTypeKind::U16:
-                        if (value->value.reg.u16 == reg.u16)
+                        if (value->value->reg.u16 == reg.u16)
                             ok = true;
                         break;
                     case NativeTypeKind::S32:
                     case NativeTypeKind::U32:
                     case NativeTypeKind::Rune:
                     case NativeTypeKind::F32:
-                        if (value->value.reg.u32 == reg.u32)
+                        if (value->value->reg.u32 == reg.u32)
                             ok = true;
                         break;
                     case NativeTypeKind::S64:
@@ -143,11 +145,11 @@ namespace Ast
                     case NativeTypeKind::Int:
                     case NativeTypeKind::UInt:
                     case NativeTypeKind::F64:
-                        if (value->value.reg.u64 == reg.u64)
+                        if (value->value->reg.u64 == reg.u64)
                             ok = true;
                         break;
                     case NativeTypeKind::String:
-                        if (value->value.text == text)
+                        if (value->value->text == text)
                             ok = true;
                         break;
                     }

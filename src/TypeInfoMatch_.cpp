@@ -395,15 +395,20 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     }
 }
 
-static bool valueEqualsTo(const ComputedValue& value, AstNode* node)
+static bool valueEqualsTo(const ComputedValue* value, AstNode* node)
 {
+    if (!value && !node->computedValue)
+        return true;
+
     // Types
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        if (value.reg.u64 == node->computedValue->reg.u64)
+        if (!value)
+            return false;
+        if (value->reg.u64 == node->computedValue->reg.u64)
             return true;
 
-        auto typeInfo1 = (TypeInfo*) value.reg.u64;
+        auto typeInfo1 = (TypeInfo*) value->reg.u64;
         auto typeInfo2 = (TypeInfo*) node->computedValue->reg.u64;
         if (!typeInfo1 || !typeInfo2)
             return false;
@@ -414,22 +419,24 @@ static bool valueEqualsTo(const ComputedValue& value, AstNode* node)
 
     if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        if (value.storageSegment != node->computedValue->storageSegment)
+        if (!value)
             return false;
-        if (value.storageOffset == UINT32_MAX && node->computedValue->storageOffset != UINT32_MAX)
+        if (value->storageSegment != node->computedValue->storageSegment)
             return false;
-        if (value.storageOffset != UINT32_MAX && node->computedValue->storageOffset == UINT32_MAX)
+        if (value->storageOffset == UINT32_MAX && node->computedValue->storageOffset != UINT32_MAX)
             return false;
-        if (value.storageOffset == node->computedValue->storageOffset)
+        if (value->storageOffset != UINT32_MAX && node->computedValue->storageOffset == UINT32_MAX)
+            return false;
+        if (value->storageOffset == node->computedValue->storageOffset)
             return true;
 
-        void* addr1 = value.storageSegment->address(value.storageOffset);
+        void* addr1 = value->storageSegment->address(value->storageOffset);
         void* addr2 = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
         return memcmp(addr1, addr2, node->typeInfo->sizeOf) == 0;
     }
 
     node->allocateComputedValue();
-    return value == *node->computedValue;
+    return *value == *node->computedValue;
 }
 
 static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
