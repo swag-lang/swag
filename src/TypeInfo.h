@@ -227,6 +227,25 @@ struct TypeInfo
     uint8_t        padding[2];
 };
 
+struct TypeInfoParam
+{
+    int            numRegisters();
+    bool           isSame(TypeInfoParam* to, uint32_t isSameFlags);
+    TypeInfoParam* clone();
+
+    Utf8          name;
+    Utf8          namedParam;
+    ComputedValue value;
+    AttributeList attributes;
+
+    TypeInfo* typeInfo = nullptr;
+    AstNode*  declNode = nullptr;
+
+    uint64_t flags  = 0;
+    int      index  = 0;
+    int      offset = 0;
+};
+
 struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative()
@@ -265,29 +284,6 @@ struct TypeInfoNamespace : public TypeInfo
     TypeInfo* clone() override;
 
     Scope* scope = nullptr;
-};
-
-struct TypeInfoParam
-{
-    int numRegisters()
-    {
-        return typeInfo->numRegisters();
-    }
-
-    bool           isSame(TypeInfoParam* to, uint32_t isSameFlags);
-    TypeInfoParam* clone();
-
-    Utf8          name;
-    Utf8          namedParam;
-    ComputedValue value;
-    AttributeList attributes;
-
-    TypeInfo* typeInfo = nullptr;
-    AstNode*  declNode = nullptr;
-
-    uint64_t flags  = 0;
-    int      index  = 0;
-    int      offset = 0;
 };
 
 struct TypeInfoEnum : public TypeInfo

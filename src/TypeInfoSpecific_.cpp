@@ -109,28 +109,6 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
     return rawType->isSame(to, isSameFlags);
 }
 
-TypeInfoParam* TypeInfoParam::clone()
-{
-    auto newType        = g_Allocator.alloc<TypeInfoParam>();
-    newType->name       = name;
-    newType->namedParam = namedParam;
-    newType->value      = value;
-    newType->attributes = attributes;
-    newType->typeInfo   = typeInfo;
-    newType->declNode   = declNode;
-    newType->index      = index;
-    newType->offset     = offset;
-    newType->flags      = flags;
-    return newType;
-}
-
-bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t isSameFlags)
-{
-    if (this == to)
-        return true;
-    return typeInfo->isSame(to->typeInfo, isSameFlags);
-}
-
 TypeInfo* TypeInfoReference::clone()
 {
     auto newType          = allocType<TypeInfoReference>();
