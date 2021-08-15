@@ -279,7 +279,6 @@ namespace Swag
         Namespace
         Enum
         Func
-        Param
         Lambda
         Pointer
         Reference

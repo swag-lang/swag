@@ -66,11 +66,10 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     for (auto param : parameters->childs)
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
-        auto funcParam        = allocType<TypeInfoParam>();
+        auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
         funcParam->namedParam = param->token.text;
         funcParam->name       = param->typeInfo->name;
         funcParam->typeInfo   = param->typeInfo;
-        funcParam->sizeOf     = param->typeInfo->sizeOf;
         funcParam->index      = index++;
         funcParam->declNode   = nodeParam;
 

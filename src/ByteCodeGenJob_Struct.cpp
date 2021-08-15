@@ -903,7 +903,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
             {
                 auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
-                auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
+                auto typeParam = param->resolvedParameter;
 
                 emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
                 if (retVal && typeParam->offset)

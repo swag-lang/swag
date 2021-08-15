@@ -166,7 +166,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
-            typeParamItf = allocType<TypeInfoParam>();
+            typeParamItf = g_Allocator.alloc<TypeInfoParam>();
             typeBaseInterface->computeScopedName();
             typeParamItf->namedParam = typeBaseInterface->scopedName;
             SWAG_ASSERT(!typeParamItf->namedParam.empty());
@@ -476,11 +476,10 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         {
             for (auto param : node->genericParameters->childs)
             {
-                auto funcParam        = allocType<TypeInfoParam>();
+                auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
                 funcParam->namedParam = param->token.text;
                 funcParam->name       = param->typeInfo->name;
                 funcParam->typeInfo   = param->typeInfo;
-                funcParam->sizeOf     = param->typeInfo->sizeOf;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
@@ -633,11 +632,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
         {
-            typeParam             = allocType<TypeInfoParam>();
+            typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->token.text;
             typeParam->name       = child->typeInfo->name;
             typeParam->typeInfo   = child->typeInfo;
-            typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             if (varDecl->flags & AST_DECL_USING)
                 typeParam->flags |= TYPEINFO_HAS_USING;
@@ -964,10 +962,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeParam             = allocType<TypeInfoParam>();
+            typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->token.text;
             typeParam->name       = child->typeInfo->name;
-            typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->declNode   = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
@@ -1025,18 +1022,16 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // Struct interface, with one pointer for the data, and one pointer for itable
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        auto typeParam      = allocType<TypeInfoParam>();
+        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
         typeParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         typeParam->name     = typeParam->typeInfo->name;
-        typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = 0;
         typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
-        typeParam           = allocType<TypeInfoParam>();
+        typeParam           = g_Allocator.alloc<TypeInfoParam>();
         typeParam->typeInfo = typeITable;
         typeParam->name     = typeParam->typeInfo->name;
-        typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = sizeof(void*);
         typeParam->index    = 1;
         typeInterface->fields.push_back(typeParam);

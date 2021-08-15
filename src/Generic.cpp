@@ -203,7 +203,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         auto numParams = typeLambda->parameters.size();
         for (int idx = 0; idx < numParams; idx++)
         {
-            auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
+            auto param = typeLambda->parameters[idx];
             newType    = doTypeSubstitution(replaceTypes, param->typeInfo);
             if (newType != param->typeInfo)
             {
@@ -214,7 +214,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
                     newLambda->replaceTypes = replaceTypes;
                 }
 
-                auto newParam      = CastTypeInfo<TypeInfoParam>(newLambda->parameters[idx], TypeInfoKind::Param);
+                auto newParam      = newLambda->parameters[idx];
                 newParam->typeInfo = newType;
             }
         }

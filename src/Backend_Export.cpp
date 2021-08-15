@@ -67,12 +67,6 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
         attr      = &type->attributes;
         break;
     }
-    case TypeInfoKind::Param:
-    {
-        auto type = CastTypeInfo<TypeInfoParam>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
-        break;
-    }
     }
 
     outputContext.indent = indent;
@@ -492,7 +486,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     {
         for (auto p : typeStruct->fields)
         {
-            SWAG_CHECK(emitAttributes(p, indent + 1));
+            outputContext.indent = indent + 1;
+            SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, p->attributes));
 
             // Struct/interface content
             if (p->declNode->kind == AstNodeKind::VarDecl)
@@ -506,7 +501,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         for (auto p : typeStruct->consts)
         {
             auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
-            SWAG_CHECK(emitAttributes(p, indent + 1));
+            outputContext.indent = indent + 1;
+            SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, p->attributes));
             SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
             bufferSwg.addEol();
         }

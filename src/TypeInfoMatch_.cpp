@@ -252,8 +252,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         auto num = symbolLambda->parameters.size();
                         for (int idx = 0; idx < num; idx++)
                         {
-                            auto symbolParam = CastTypeInfo<TypeInfoParam>(symbolLambda->parameters[idx], TypeInfoKind::Param);
-                            auto typeParam   = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
+                            auto symbolParam = symbolLambda->parameters[idx];
+                            auto typeParam   = typeLambda->parameters[idx];
                             if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC &&
                                 !typeParam->typeInfo->isNative(NativeTypeKind::Undefined)) // For lambda literals, with deduced types
                             {

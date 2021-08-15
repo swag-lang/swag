@@ -37,35 +37,33 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     SWAG_ASSERT(!typeName.empty());
 
     auto& mapPerSeg = getMapPerSeg(storageSegment);
-    if (typeInfo->kind != TypeInfoKind::Param)
-    {
-        // Already computed ?
-        auto it = mapPerSeg.concreteTypes.find(typeName);
-        if (it != mapPerSeg.concreteTypes.end())
-        {
-            if (ptrTypeInfo)
-                *ptrTypeInfo = it->second.newRealType;
-            if (result)
-                *result = it->second.concreteType;
-            *storage = it->second.storageOffset;
 
-            // The registered type is the full version, so exit, and wait for the job to complete if necessary
-            if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+    // Already computed ?
+    auto it = mapPerSeg.concreteTypes.find(typeName);
+    if (it != mapPerSeg.concreteTypes.end())
+    {
+        if (ptrTypeInfo)
+            *ptrTypeInfo = it->second.newRealType;
+        if (result)
+            *result = it->second.concreteType;
+        *storage = it->second.storageOffset;
+
+        // The registered type is the full version, so exit, and wait for the job to complete if necessary
+        if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+        {
+            SWAG_ASSERT(context);
+            if (context->baseJob->baseContext->result != ContextResult::Pending)
             {
-                SWAG_ASSERT(context);
-                if (context->baseJob->baseContext->result != ContextResult::Pending)
+                auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
+                if (itJob != mapPerSeg.concreteTypesJob.end())
                 {
-                    auto itJob = mapPerSeg.concreteTypesJob.find(typeName);
-                    if (itJob != mapPerSeg.concreteTypesJob.end())
-                    {
-                        itJob->second->addDependentJob(context->baseJob);
-                        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
-                    }
+                    itJob->second->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
                 }
             }
-
-            return true;
         }
+
+        return true;
     }
 
     if (storageSegment->kind != SegmentKind::Compiler)
@@ -93,9 +91,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
         typeStruct = swagScope.regTypeInfoStruct;
-        break;
-    case TypeInfoKind::Param:
-        typeStruct = swagScope.regTypeInfoParam;
         break;
     case TypeInfoKind::FuncAttr:
     case TypeInfoKind::Lambda:

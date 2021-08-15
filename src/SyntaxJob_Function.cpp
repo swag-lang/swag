@@ -466,7 +466,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
     {
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
-        auto typeParam        = allocType<TypeInfoParam>();
+        auto typeParam        = g_Allocator.alloc<TypeInfoParam>();
         typeParam->namedParam = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
         typeParam->declNode   = funcNode;

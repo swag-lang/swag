@@ -728,7 +728,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         for (auto child : parameters->childs)
         {
             auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
+            auto typeParam = param->resolvedParameter;
             emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
                 emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;

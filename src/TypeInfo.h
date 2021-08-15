@@ -267,29 +267,27 @@ struct TypeInfoNamespace : public TypeInfo
     Scope* scope = nullptr;
 };
 
-struct TypeInfoParam : public TypeInfo
+struct TypeInfoParam
 {
-    TypeInfoParam()
-        : TypeInfo{TypeInfoKind::Param}
-    {
-    }
-
-    int numRegisters() override
+    int numRegisters()
     {
         return typeInfo->numRegisters();
     }
 
-    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
-    TypeInfo* clone() override;
+    bool           isSame(TypeInfoParam* to, uint32_t isSameFlags);
+    TypeInfoParam* clone();
 
+    Utf8          name;
     Utf8          namedParam;
     ComputedValue value;
     AttributeList attributes;
 
     TypeInfo* typeInfo = nullptr;
+    AstNode*  declNode = nullptr;
 
-    int index  = 0;
-    int offset = 0;
+    uint64_t flags  = 0;
+    int      index  = 0;
+    int      offset = 0;
 };
 
 struct TypeInfoEnum : public TypeInfo

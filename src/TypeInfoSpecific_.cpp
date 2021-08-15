@@ -109,26 +109,26 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
     return rawType->isSame(to, isSameFlags);
 }
 
-TypeInfo* TypeInfoParam::clone()
+TypeInfoParam* TypeInfoParam::clone()
 {
-    auto newType        = allocType<TypeInfoParam>();
+    auto newType        = g_Allocator.alloc<TypeInfoParam>();
+    newType->name       = name;
     newType->namedParam = namedParam;
+    newType->value      = value;
+    newType->attributes = attributes;
     newType->typeInfo   = typeInfo;
+    newType->declNode   = declNode;
     newType->index      = index;
     newType->offset     = offset;
-    newType->attributes = attributes;
-    newType->copyFrom(this);
+    newType->flags      = flags;
     return newType;
 }
 
-bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
+bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    if (!TypeInfo::isSame(to, isSameFlags))
-        return false;
-    auto other = static_cast<TypeInfoParam*>(to);
-    return typeInfo->isSame(other->typeInfo, isSameFlags);
+    return typeInfo->isSame(to->typeInfo, isSameFlags);
 }
 
 TypeInfo* TypeInfoReference::clone()
@@ -493,13 +493,13 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoParam*>(genericParameters[i]->clone());
+        auto param = genericParameters[i]->clone();
         newType->genericParameters.push_back(param);
     }
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoParam*>(parameters[i]->clone());
+        auto param = parameters[i]->clone();
         newType->parameters.push_back(param);
     }
 
@@ -745,8 +745,8 @@ TypeInfo* TypeInfoStruct::clone()
     newType->genericParameters.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(genericParameters[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = genericParameters[i];
+        param      = param->clone();
         newType->genericParameters.push_back(param);
     }
 
@@ -754,8 +754,8 @@ TypeInfo* TypeInfoStruct::clone()
     newType->fields.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(fields[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = fields[i];
+        param      = param->clone();
         newType->fields.push_back(param);
     }
 
@@ -763,8 +763,8 @@ TypeInfo* TypeInfoStruct::clone()
     newType->consts.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(consts[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = consts[i];
+        param      = param->clone();
         newType->consts.push_back(param);
     }
 
@@ -772,8 +772,8 @@ TypeInfo* TypeInfoStruct::clone()
     newType->methods.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(methods[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = methods[i];
+        param      = param->clone();
         newType->methods.push_back(param);
     }
 
