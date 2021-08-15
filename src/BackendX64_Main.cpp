@@ -242,12 +242,12 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_processInfos, 0);
     BackendX64Inst::emit_Copy64(pp, RAX, RCX);
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
-    emitCall(pp, "memcpy");
+    emitCall(pp, g_LangSpec->name_memcpy);
 
     // Thread local storage
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTls_threadLocalId, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-    emitCall(pp, "__tlsAlloc");
+    emitCall(pp, g_LangSpec->name__tlsAlloc);
 
     // Reloc functions
     emitPatchForeignPointers(buildParameters, &module->constantSegment, pp.symCSIndex);

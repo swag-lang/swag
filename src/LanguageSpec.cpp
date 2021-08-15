@@ -2,7 +2,7 @@
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 
-LanguageSpec *g_LangSpec = nullptr;
+LanguageSpec* g_LangSpec = nullptr;
 
 void LanguageSpec::setupNames()
 {
@@ -20,15 +20,6 @@ void LanguageSpec::setupNames()
     name__stackTrace     = "__stackTrace";
     name__loaddll        = "__loaddll";
     name__exit           = "__exit";
-
-    name_memcpy  = "memcpy";
-    name_memset  = "memset";
-    name_memmove = "memmove";
-    name_memcmp  = "memcmp";
-    name_strlen  = "strlen";
-    name_malloc  = "malloc";
-    name_realloc = "realloc";
-    name_free    = "free";
 
     name_swag = "swag";
     name_Swag = "Swag";
@@ -142,7 +133,7 @@ void LanguageSpec::setupNames()
     name_value      = "value";
     name_disk       = "disk";
     name_retval     = "retval";
-    name_methods    = "methods";    
+    name_methods    = "methods";
 
     name_atalias       = "@alias";
     name_atdrop        = "@drop";
@@ -156,46 +147,54 @@ void LanguageSpec::setupNames()
     name_atstrcmp      = "@strcmp";
     name_attypecmp     = "@typecmp";
 
-    name_powf   = "powf";
-    name_atan2f = "atan2f";
-    name_pow    = "pow";
-    name_atan2  = "atan2";
-    name_sinf   = "sinf";
-    name_cosf   = "cosf";
-    name_tanf   = "tanf";
-    name_sinhf  = "sinhf";
-    name_coshf  = "coshf";
-    name_tanhf  = "tanhf";
-    name_asinf  = "asinf";
-    name_acosf  = "acosf";
-    name_atanf  = "atanf";
-    name_logf   = "logf";
-    name_log2f  = "log2f";
-    name_log10f = "log10f";
-    name_floorf = "floorf";
-    name_ceilf  = "ceilf";
-    name_truncf = "truncf";
-    name_roundf = "roundf";
-    name_expf   = "expf";
-    name_exp2f  = "exp2f";
-    name_sin    = "sin";
-    name_cos    = "cos";
-    name_tan    = "tan";
-    name_sinh   = "sinh";
-    name_cosh   = "cosh";
-    name_tanh   = "tanh";
-    name_asin   = "asin";
-    name_acos   = "acos";
-    name_atan   = "atan";
-    name_log    = "log";
-    name_log2   = "log2";
-    name_log10  = "log10";
-    name_floor  = "floor";
-    name_ceil   = "ceil";
-    name_trunc  = "trunc";
-    name_round  = "round";
-    name_exp    = "exp";
-    name_exp2   = "exp2";
+    name_memcpy  = "memcpy";
+    name_memset  = "memset";
+    name_memmove = "memmove";
+    name_memcmp  = "memcmp";
+    name_strlen  = "strlen";
+    name_malloc  = "malloc";
+    name_realloc = "realloc";
+    name_free    = "free";
+    name_powf    = "powf";
+    name_atan2f  = "atan2f";
+    name_pow     = "pow";
+    name_atan2   = "atan2";
+    name_sinf    = "sinf";
+    name_cosf    = "cosf";
+    name_tanf    = "tanf";
+    name_sinhf   = "sinhf";
+    name_coshf   = "coshf";
+    name_tanhf   = "tanhf";
+    name_asinf   = "asinf";
+    name_acosf   = "acosf";
+    name_atanf   = "atanf";
+    name_logf    = "logf";
+    name_log2f   = "log2f";
+    name_log10f  = "log10f";
+    name_floorf  = "floorf";
+    name_ceilf   = "ceilf";
+    name_truncf  = "truncf";
+    name_roundf  = "roundf";
+    name_expf    = "expf";
+    name_exp2f   = "exp2f";
+    name_sin     = "sin";
+    name_cos     = "cos";
+    name_tan     = "tan";
+    name_sinh    = "sinh";
+    name_cosh    = "cosh";
+    name_tanh    = "tanh";
+    name_asin    = "asin";
+    name_acos    = "acos";
+    name_atan    = "atan";
+    name_log     = "log";
+    name_log2    = "log2";
+    name_log10   = "log10";
+    name_floor   = "floor";
+    name_ceil    = "ceil";
+    name_trunc   = "trunc";
+    name_round   = "round";
+    name_exp     = "exp";
+    name_exp2    = "exp2";
 }
 
 void LanguageSpec::setupKeywords()
