@@ -99,7 +99,7 @@ struct TypeInfo
     void setConst();
 
     // clang-format off
-    void            computeName() { computeWhateverName(COMPUTE_NAME); computeWhateverName(COMPUTE_DISPLAY_NAME); }
+    void            computeName() { computeWhateverName(COMPUTE_NAME); }
     void            computeScopedName() { computeWhateverName(COMPUTE_SCOPED_NAME); }
     void            computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
     // clang-format on
@@ -116,7 +116,6 @@ struct TypeInfo
     shared_mutex mutex;
 
     Utf8 name;
-    Utf8 displayName;
     Utf8 scopedName;
     Utf8 scopedNameExport;
 

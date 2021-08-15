@@ -8,14 +8,12 @@ void TypeInfo::clearName()
 {
     ScopedLock lk(mutex);
     name.clear();
-    displayName.clear();
 }
 
 void TypeInfo::forceComputeName()
 {
     clearName();
     computeWhateverName(COMPUTE_NAME);
-    computeWhateverName(COMPUTE_DISPLAY_NAME);
 }
 
 void TypeInfo::getScopedName(Utf8& newName)
@@ -38,7 +36,9 @@ Utf8 TypeInfo::getName()
 
 Utf8 TypeInfo::getDisplayName()
 {
-    return displayName.empty() ? name : displayName;
+    Utf8 str;
+    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    return str.empty() ? name : str;
 }
 
 const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
@@ -53,6 +53,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
     switch (nameType)
     {
     case COMPUTE_NAME:
+    case COMPUTE_DISPLAY_NAME:
         if (name.empty())
         {
             computeWhateverName(str, nameType);
@@ -60,15 +61,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         }
 
         return name;
-
-    case COMPUTE_DISPLAY_NAME:
-        if (displayName.empty())
-        {
-            computeWhateverName(str, nameType);
-            displayName = move(str);
-        }
-
-        return displayName;
 
     case COMPUTE_SCOPED_NAME:
         if (scopedName.empty())
@@ -98,13 +90,8 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
     switch (nameType)
     {
     case COMPUTE_NAME:
-        resName = name;
-        break;
-
     case COMPUTE_DISPLAY_NAME:
-        if (displayName.empty())
-            displayName = name;
-        resName = displayName;
+        resName = name;
         break;
 
     case COMPUTE_SCOPED_NAME:
@@ -321,8 +308,7 @@ void TypeInfo::setConst()
     if (flags & TYPEINFO_CONST)
         return;
     flags |= TYPEINFO_CONST;
-    name        = "const " + name;
-    displayName = "const " + displayName;
+    name = "const " + name;
 }
 
 int TypeInfo::numRegisters()

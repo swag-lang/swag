@@ -899,9 +899,10 @@ Utf8 TypeInfoStruct::getDisplayName()
         return Utf8::format("interface %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
         return Utf8::format("union %s", name.c_str());
-    if (displayName.empty())
-        return Utf8::format("struct %s", name.c_str());
-    return Utf8::format("struct %s", displayName.c_str());
+
+    Utf8 str;
+    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    return Utf8::format("struct %s", str.c_str());
 }
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
