@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeRun.h"
 #include "Math.h"
-#include "Log.h"
 #include "Diagnostic.h"
-#include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 
 #define OK()                              \
@@ -53,7 +50,7 @@
     SET_OP(ip, ByteCodeOp::SetImmediate32); \
     ip->b.b   = ip->a.b __op ip->b.b;       \
     ip->a.u32 = ip->c.u32;                  \
-    OK();    
+    OK();
 
 // Make constant folding. If an instruction is purely constant, then compute the result and replace the instruction
 // with that result
@@ -68,6 +65,26 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
         auto node       = ip->node;
         auto sourceFile = node->sourceFile;
+
+        if (ip->flags & BCI_IMM_C)
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::IntrinsicMemCpy:
+                printf("a");
+                break;
+            case ByteCodeOp::IntrinsicMemMove:
+                printf("b");
+                break;
+            case ByteCodeOp::IntrinsicMemSet:
+                printf("c");
+                break;
+            case ByteCodeOp::IntrinsicMemCmp:
+                printf("d");
+                break;
+
+            }
+        }
 
         if ((ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
         {
@@ -551,7 +568,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskAnd8:
                 if (ip->b.u8 == 0xFF)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA8);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA8);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -560,7 +577,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskAnd16:
                 if (ip->b.u16 == 0xFFFF)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA16);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA16);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -569,7 +586,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskAnd32:
                 if (ip->b.u32 == 0xFFFFFFFF)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA32);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA32);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -578,7 +595,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskAnd64:
                 if (ip->b.u64 == 0xFFFFFFFFFFFFFFFF)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA64);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -587,7 +604,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskOr8:
                 if (ip->b.u8 == 0)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA8);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA8);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -596,7 +613,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskOr16:
                 if (ip->b.u16 == 0)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA16);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA16);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -605,7 +622,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskOr32:
                 if (ip->b.u32 == 0)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA32);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA32);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -614,7 +631,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpBitmaskOr64:
                 if (ip->b.u64 == 0)
                 {
-                    SET_OP(ip,  ByteCodeOp::CopyRBtoRA64);
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->flags &= ~BCI_IMM_B;
@@ -688,7 +705,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::InvertU8:
-                SET_OP(ip,  ByteCodeOp::SetImmediate32);
+                SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ip->b.s8 = ~ip->b.s8;
                 OK();
                 break;
@@ -840,22 +857,22 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::CastU64F64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.f64 = (float) ip->b.u64;
                 OK();
                 break;
             case ByteCodeOp::CastF32F64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.f64 = ip->b.f32;
                 OK();
                 break;
             case ByteCodeOp::CastF64S64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.s64 = (int64_t) ip->b.f64;
                 OK();
                 break;
             case ByteCodeOp::CastF64F32:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.f32 = (float) ip->b.f64;
                 OK();
                 break;
@@ -897,7 +914,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             {
                 Register result;
                 SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.u64 = result.u64;
                 OK();
                 break;
@@ -917,17 +934,17 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::Add64byVB64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.u64 = ip->c.u64 + ip->b.u64;
                 OK();
                 break;
             case ByteCodeOp::Mul64byVB64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.s64 = ip->c.s64 * ip->b.s64;
                 OK();
                 break;
             case ByteCodeOp::Div64byVB64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.s64 = ip->c.s64 / ip->b.s64;
                 OK();
                 break;
@@ -937,7 +954,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
             case ByteCodeOp::ClearMaskU64:
-                SET_OP(ip,  ByteCodeOp::SetImmediate64);
+                SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.u64 = ip->c.u64 & ip->b.u64;
                 OK();
                 break;

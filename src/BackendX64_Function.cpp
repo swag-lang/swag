@@ -102,7 +102,7 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
         SWAG_ASSERT(sizeStack >= 8);
         sizeStack -= 8;
         sizeStack /= 8;
-        auto unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (sizeStack << 4));
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
         unwind0 <<= 8;
         unwind0 |= (uint16_t) offsetSubRSP;
         unwind.push_back(unwind0);
@@ -110,11 +110,11 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
     else
     {
         SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        auto unwind0 = (uint16_t)(UWOP_ALLOC_LARGE);
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
         unwind0 <<= 8;
         unwind0 |= (uint16_t) offsetSubRSP;
         unwind.push_back(unwind0);
-        unwind0 = (uint16_t)(sizeStack / 8);
+        unwind0 = (uint16_t) (sizeStack / 8);
         unwind.push_back(unwind0);
     }
 }
@@ -379,7 +379,7 @@ void BackendX64::emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeI
                 auto seekPtr = pp.concat.getSeekPtr() - 1;
                 auto seekJmp = pp.concat.totalCount();
                 BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
-                *seekPtr = (uint8_t)(concat.totalCount() - seekJmp);
+                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
             }
         }
 
@@ -433,7 +433,7 @@ void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInst
                 auto seekPtr = pp.concat.getSeekPtr() - 1;
                 auto seekJmp = pp.concat.totalCount();
                 BackendX64Inst::emit_ClearN(pp, RAX, numBits);
-                *seekPtr = (uint8_t)(concat.totalCount() - seekJmp);
+                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
             }
         }
 
@@ -502,7 +502,7 @@ void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCod
             auto seekPtr = pp.concat.getSeekPtr() - 1;
             auto seekJmp = pp.concat.totalCount();
             BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
-            *seekPtr = (uint8_t)(concat.totalCount() - seekJmp);
+            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
         }
 
         switch (numBits)
@@ -573,7 +573,7 @@ void BackendX64::emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeIn
             auto seekJmp = pp.concat.totalCount();
             BackendX64Inst::emit_ClearN(pp, RCX, numBits);
             BackendX64Inst::emit_StoreN_Indirect(pp, 0, RCX, RAX, numBits);
-            *seekPtr = (uint8_t)(concat.totalCount() - seekJmp);
+            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
         }
 
         switch (numBits)
@@ -2563,28 +2563,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            MK_IMMC_64(R8);
             emitCall(pp, g_LangSpec->name_memcpy);
             break;
 
         case ByteCodeOp::IntrinsicMemMove:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            MK_IMMC_64(R8);
             emitCall(pp, g_LangSpec->name_memmove);
             break;
 
         case ByteCodeOp::IntrinsicMemSet:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            MK_IMMC_64(R8);
             emitCall(pp, g_LangSpec->name_memset);
             break;
 
         case ByteCodeOp::IntrinsicMemCmp:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), R8, RDI);
+            MK_IMMD_64(R8);
             emitCall(pp, g_LangSpec->name_memcmp);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -2774,7 +2774,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 // There's 2 more PushRAParam to come after CopySPVaargs, so offset is 16.
                 // We also need to take care of real parameters (offset is ip->b.u32)
                 // We also need to take care of the return registers, which are always first
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(16 + ip->b.u32 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t) (16 + ip->b.u32 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else if (!pushRVParams.empty())
@@ -3829,7 +3829,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
 void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
 {
-    uint32_t sizeStack = (uint32_t)(pushRAParams.size() * sizeof(Register));
+    uint32_t sizeStack = (uint32_t) (pushRAParams.size() * sizeof(Register));
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
 
     // pushRVParams are for variadics. It contains registers like pushRAParams, but also the sizeof of what needs to be pushed

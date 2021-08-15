@@ -18,27 +18,7 @@ struct ByteCodeOptimizer
     inline static bool hasRefToReg(ByteCodeInstruction* inst, uint32_t reg)  { return hasRefToRegA(inst, reg) || hasRefToRegB(inst, reg) || hasRefToRegC(inst, reg) || hasRefToRegD(inst, reg); }
     // clang-format on
 
-    inline static bool isJumpBlock(ByteCodeInstruction* inst)
-    {
-        if (!ByteCode::isJump(inst))
-            return false;
-        if (inst[1].op != ByteCodeOp::InternalPanic || inst->b.s32 != 1)
-            return true;
-        switch (inst->op)
-        {
-        case ByteCodeOp::JumpIfNotZero8:
-        case ByteCodeOp::JumpIfNotZero16:
-        case ByteCodeOp::JumpIfNotZero32:
-        case ByteCodeOp::JumpIfNotZero64:
-        case ByteCodeOp::JumpIfZero8:
-        case ByteCodeOp::JumpIfZero16:
-        case ByteCodeOp::JumpIfZero32:
-        case ByteCodeOp::JumpIfZero64:
-            return false;
-        }
-
-        return true;
-    }
+    static bool isJumpBlock(ByteCodeInstruction* inst);
 
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx);
@@ -56,14 +36,12 @@ struct ByteCodeOptimizer
     static bool optimizePassJumps(ByteCodeOptContext* context);
     static bool optimizePassLoop(ByteCodeOptContext* context);
     static bool optimizePassDeadCode(ByteCodeOptContext* context);
-    static bool optimizePassEmptyFct(ByteCodeOptContext* context);
     static bool optimizePassDeadStore(ByteCodeOptContext* context);
     static bool optimizePassImmediate(ByteCodeOptContext* context);
     static bool optimizePassConst(ByteCodeOptContext* context);
     static bool optimizePassRetCopyLocal(ByteCodeOptContext* context);
     static bool optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static bool optimizePassRetCopyInline(ByteCodeOptContext* context);
-    static bool optimizePassErr(ByteCodeOptContext* context);
     static bool optimizePassSafetyNullPointer(ByteCodeOptContext* context);
 
     static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);

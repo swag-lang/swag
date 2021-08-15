@@ -276,3 +276,25 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
 
     return true;
 }
+
+bool ByteCodeOptimizer::isJumpBlock(ByteCodeInstruction* inst)
+{
+    if (!ByteCode::isJump(inst))
+        return false;
+    if (inst[1].op != ByteCodeOp::InternalPanic || inst->b.s32 != 1)
+        return true;
+    switch (inst->op)
+    {
+    case ByteCodeOp::JumpIfNotZero8:
+    case ByteCodeOp::JumpIfNotZero16:
+    case ByteCodeOp::JumpIfNotZero32:
+    case ByteCodeOp::JumpIfNotZero64:
+    case ByteCodeOp::JumpIfZero8:
+    case ByteCodeOp::JumpIfZero16:
+    case ByteCodeOp::JumpIfZero32:
+    case ByteCodeOp::JumpIfZero64:
+        return false;
+    }
+
+    return true;
+}

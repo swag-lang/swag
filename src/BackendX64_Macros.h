@@ -282,6 +282,12 @@
     else                                                           \
         BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
 
+#define MK_IMMD_64(__reg)                                            \
+    if (ip->flags & BCI_IMM_D)                                       \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->d.u64, __reg); \
+    else                                                             \
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), __reg, RDI);
+
 #define MK_BINOPEQ8_CAB(__op)                                                 \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7F)                           \

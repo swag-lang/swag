@@ -1308,17 +1308,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicMemCpy:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-
-            if (ip->flags & BCI_IMM_C)
-                builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, builder.getInt64(ip->c.u64));
-            else
-            {
-                auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
-                builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, r2);
-            }
-
+            auto r0   = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r1   = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto size = MK_IMMC_64();
+            builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, size);
             break;
         }
 
@@ -1326,7 +1319,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
+            auto r2 = MK_IMMC_64();
             builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, r2);
             break;
         }
@@ -1335,7 +1328,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
+            auto r2 = MK_IMMC_64();
             builder.CreateMemSet(r0, r1, r2, llvm::Align{});
             break;
         }
@@ -1345,7 +1338,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
             auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
-            auto r3 = builder.CreateLoad(GEP_I32(allocR, ip->d.u32));
+            auto r3 = MK_IMMD_64();
             builder.CreateStore(builder.CreateCall(pp.fn_memcmp, {r1, r2, r3}), r0);
             break;
         }

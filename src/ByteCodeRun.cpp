@@ -661,7 +661,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         void*  dst  = (void*) registersRC[ip->a.u32].pointer;
         void*  src  = (void*) registersRC[ip->b.u32].pointer;
-        size_t size = registersRC[ip->c.u32].u64;
+        size_t size = IMMC_U64(ip);
         memcpy(dst, src, size);
         break;
     }
@@ -679,7 +679,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         void*    dst   = (void*) registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;
-        size_t   size  = registersRC[ip->c.u32].u64;
+        size_t   size  = IMMC_U64(ip);
         memset(dst, value, size);
         break;
     }
@@ -688,7 +688,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         void*  dst                 = (void*) registersRC[ip->b.u32].pointer;
         void*  src                 = (void*) registersRC[ip->c.u32].pointer;
-        size_t size                = registersRC[ip->d.u32].u64;
+        size_t size                = IMMD_U64(ip);
         registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
     }
@@ -874,7 +874,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFFFF;
         break;
     case ByteCodeOp::GetFromStackParam32:
-        registersRC[ip->a.u32].u64 = *(uint64_t*)(context->bp + ip->b.u32) & 0xFFFFFFFF;
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFFFFFFFF;
         break;
     case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
@@ -1768,26 +1768,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::CompareOp3WayU32:
     {
         auto sub                   = IMMA_S32(ip) - IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
         break;
     }
     case ByteCodeOp::CompareOp3WayU64:
     case ByteCodeOp::CompareOp3WayS64:
     {
         auto sub                   = IMMA_S64(ip) - IMMB_S64(ip);
-        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
         break;
     }
     case ByteCodeOp::CompareOp3WayF32:
     {
         auto sub                   = IMMA_F32(ip) - IMMB_F32(ip);
-        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
         break;
     }
     case ByteCodeOp::CompareOp3WayF64:
     {
         auto sub                   = IMMA_F64(ip) - IMMB_F64(ip);
-        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
         break;
     }
 

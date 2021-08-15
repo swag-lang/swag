@@ -25,7 +25,9 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->flags & BCI_START_STMT)
+        {
             memset(regs.buffer, 0, maxReg * sizeof(void*));
+        }
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
