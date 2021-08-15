@@ -67,6 +67,12 @@ static const uint32_t ISSAME_FOR_AFFECT = 0x00000008;
 
 struct TypeInfo
 {
+    // clang-format off
+    TypeInfo() = default;
+    TypeInfo(const char* name, TypeInfoKind kind) : name{ name }, kind { kind } {}
+    TypeInfo(TypeInfoKind kind) : kind{kind} {}
+    // clang-format on
+
     bool isPointerTo(NativeTypeKind pointerKind);
     bool isPointerTo(TypeInfoKind pointerKind);
     bool isPointerTo(TypeInfo* finalType);
@@ -131,8 +137,8 @@ struct TypeInfo
 struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative()
+        : TypeInfo{TypeInfoKind::Native}
     {
-        kind         = TypeInfoKind::Native;
         valueInteger = 0;
     }
 
@@ -159,8 +165,8 @@ struct TypeInfoNative : public TypeInfo
 struct TypeInfoNamespace : public TypeInfo
 {
     TypeInfoNamespace()
+        : TypeInfo{TypeInfoKind::Namespace}
     {
-        kind = TypeInfoKind::Namespace;
     }
 
     TypeInfo* clone() override;
@@ -171,8 +177,8 @@ struct TypeInfoNamespace : public TypeInfo
 struct TypeInfoParam : public TypeInfo
 {
     TypeInfoParam()
+        : TypeInfo{TypeInfoKind::Param}
     {
-        kind = TypeInfoKind::Param;
     }
 
     int numRegisters() override
@@ -196,8 +202,8 @@ struct TypeInfoParam : public TypeInfo
 struct TypeInfoEnum : public TypeInfo
 {
     TypeInfoEnum()
+        : TypeInfo{TypeInfoKind::Enum}
     {
-        kind = TypeInfoKind::Enum;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -303,8 +309,8 @@ struct SymbolMatchContext
 struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()
+        : TypeInfo{TypeInfoKind::FuncAttr}
     {
-        kind = TypeInfoKind::FuncAttr;
     }
 
     int numParamsRegisters()
@@ -343,8 +349,8 @@ struct TypeInfoFuncAttr : public TypeInfo
 struct TypeInfoPointer : public TypeInfo
 {
     TypeInfoPointer()
+        : TypeInfo{TypeInfoKind::Pointer}
     {
-        kind = TypeInfoKind::Pointer;
     }
 
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
@@ -357,8 +363,8 @@ struct TypeInfoPointer : public TypeInfo
 struct TypeInfoReference : public TypeInfo
 {
     TypeInfoReference()
+        : TypeInfo{TypeInfoKind::Reference}
     {
-        kind   = TypeInfoKind::Reference;
         sizeOf = sizeof(void*);
     }
 
@@ -373,8 +379,8 @@ struct TypeInfoReference : public TypeInfo
 struct TypeInfoArray : public TypeInfo
 {
     TypeInfoArray()
+        : TypeInfo{TypeInfoKind::Array}
     {
-        kind = TypeInfoKind::Array;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -397,8 +403,8 @@ struct TypeInfoArray : public TypeInfo
 struct TypeInfoSlice : public TypeInfo
 {
     TypeInfoSlice()
+        : TypeInfo{TypeInfoKind::Slice}
     {
-        kind   = TypeInfoKind::Slice;
         sizeOf = 2 * sizeof(void*);
     }
 
@@ -434,8 +440,8 @@ struct TypeInfoList : public TypeInfo
 struct TypeInfoVariadic : public TypeInfo
 {
     TypeInfoVariadic()
+        : TypeInfo{TypeInfoKind::Variadic}
     {
-        kind = TypeInfoKind::Variadic;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -448,8 +454,8 @@ struct TypeInfoVariadic : public TypeInfo
 struct TypeInfoGeneric : public TypeInfo
 {
     TypeInfoGeneric()
+        : TypeInfo{TypeInfoKind::Generic}
     {
-        kind = TypeInfoKind::Generic;
         flags |= TYPEINFO_GENERIC;
     }
 
@@ -462,8 +468,8 @@ struct TypeInfoGeneric : public TypeInfo
 struct TypeInfoStruct : public TypeInfo
 {
     TypeInfoStruct()
+        : TypeInfo{TypeInfoKind::Struct}
     {
-        kind = TypeInfoKind::Struct;
     }
 
     int numRegisters() override
@@ -513,8 +519,8 @@ struct TypeInfoStruct : public TypeInfo
 struct TypeInfoAlias : public TypeInfo
 {
     TypeInfoAlias()
+        : TypeInfo{TypeInfoKind::Alias}
     {
-        kind = TypeInfoKind::Alias;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -533,9 +539,8 @@ struct TypeInfoAlias : public TypeInfo
 struct TypeInfoCode : public TypeInfo
 {
     TypeInfoCode()
+        : TypeInfo{"code", TypeInfoKind::Code}
     {
-        name = "code";
-        kind = TypeInfoKind::Code;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -547,9 +552,8 @@ struct TypeInfoCode : public TypeInfo
 struct TypeInfoNameAlias : public TypeInfo
 {
     TypeInfoNameAlias()
+        : TypeInfo{"alias", TypeInfoKind::NameAlias}
     {
-        name = "alias";
-        kind = TypeInfoKind::NameAlias;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
