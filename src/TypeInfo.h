@@ -11,13 +11,15 @@ struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
 struct Job;
-enum class Intrisic;
 struct AstNode;
 struct ByteCode;
+struct TypeInfo;
+struct TypeInfoParam;
 struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
+enum class Intrisic;
 
 static const int COMPUTE_NAME               = 0;
 static const int COMPUTE_SCOPED_NAME        = 1;
@@ -64,6 +66,97 @@ static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
 static const uint32_t ISSAME_INTERFACE  = 0x00000004;
 static const uint32_t ISSAME_FOR_AFFECT = 0x00000008;
+
+enum class MatchResult
+{
+    Ok,
+    TooManyParameters,
+    TooManyGenericParameters,
+    NotEnoughParameters,
+    MissingParameters,
+    NotEnoughGenericParameters,
+    BadSignature,
+    BadGenericMatch,
+    BadGenericSignature,
+    InvalidNamedParameter,
+    MissingNamedParameter,
+    DuplicatedNamedParameter,
+    SelectIfFailed,
+};
+
+struct BadSignatureInfos
+{
+    TypeInfo* badSignatureRequestedType;
+    TypeInfo* badSignatureGivenType;
+    Utf8      badGenMatch;
+    int       badSignatureParameterIdx;
+
+    void clear()
+    {
+        badGenMatch.clear();
+        badSignatureParameterIdx  = -1;
+        badSignatureRequestedType = nullptr;
+        badSignatureGivenType     = nullptr;
+    }
+};
+
+struct SymbolMatchContext
+{
+    static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
+    static const uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
+    static const uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
+    static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
+    static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
+    static const uint32_t MATCH_UNCONST           = 0x00000020;
+    static const uint32_t MATCH_UFCS              = 0x00000040;
+
+    SymbolMatchContext()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        genericParameters.clear();
+        parameters.clear();
+        solvedParameters.clear();
+        doneParameters.clear();
+        genericParametersCallTypes.clear();
+        genericParametersGenTypes.clear();
+        genericReplaceTypes.clear();
+        mapGenericTypesIndex.clear();
+        badSignatureInfos.clear();
+        flags              = 0;
+        result             = MatchResult::Ok;
+        cptResolved        = 0;
+        hasNamedParameters = false;
+        semContext         = nullptr;
+    }
+
+    void resetTmp()
+    {
+        cptResolved        = 0;
+        hasNamedParameters = false;
+    }
+
+    VectorNative<AstNode*>       genericParameters;
+    VectorNative<AstNode*>       parameters;
+    VectorNative<TypeInfoParam*> solvedParameters;
+    VectorNative<bool>           doneParameters;
+    VectorNative<TypeInfo*>      genericParametersCallTypes;
+    VectorNative<TypeInfo*>      genericParametersGenTypes;
+    map<Utf8, TypeInfo*>         genericReplaceTypes;
+    map<Utf8, uint32_t>          mapGenericTypesIndex;
+    BadSignatureInfos            badSignatureInfos;
+
+    SemanticContext* semContext = nullptr;
+
+    uint32_t    flags;
+    MatchResult result;
+    int         cptResolved;
+
+    bool hasNamedParameters;
+};
 
 struct TypeInfo
 {
@@ -214,96 +307,6 @@ struct TypeInfoEnum : public TypeInfo
 
     Scope*    scope   = nullptr;
     TypeInfo* rawType = nullptr;
-};
-
-enum class MatchResult
-{
-    Ok,
-    TooManyParameters,
-    TooManyGenericParameters,
-    NotEnoughParameters,
-    MissingParameters,
-    NotEnoughGenericParameters,
-    BadSignature,
-    BadGenericMatch,
-    BadGenericSignature,
-    InvalidNamedParameter,
-    MissingNamedParameter,
-    DuplicatedNamedParameter,
-    SelectIfFailed,
-};
-
-struct BadSignatureInfos
-{
-    TypeInfo* badSignatureRequestedType;
-    TypeInfo* badSignatureGivenType;
-    Utf8      badGenMatch;
-    int       badSignatureParameterIdx;
-
-    void clear()
-    {
-        badGenMatch.clear();
-        badSignatureParameterIdx  = -1;
-        badSignatureRequestedType = nullptr;
-        badSignatureGivenType     = nullptr;
-    }
-};
-
-struct SymbolMatchContext
-{
-    static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
-    static const uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
-    static const uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
-    static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
-    static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
-    static const uint32_t MATCH_UNCONST           = 0x00000020;
-    static const uint32_t MATCH_UFCS              = 0x00000040;
-
-    SymbolMatchContext()
-    {
-        reset();
-    }
-
-    void reset()
-    {
-        genericParameters.clear();
-        parameters.clear();
-        solvedParameters.clear();
-        doneParameters.clear();
-        genericParametersCallTypes.clear();
-        genericParametersGenTypes.clear();
-        genericReplaceTypes.clear();
-        mapGenericTypesIndex.clear();
-        badSignatureInfos.clear();
-        flags              = 0;
-        result             = MatchResult::Ok;
-        cptResolved        = 0;
-        hasNamedParameters = false;
-        semContext         = nullptr;
-    }
-
-    void resetTmp()
-    {
-        cptResolved        = 0;
-        hasNamedParameters = false;
-    }
-
-    SemanticContext*             semContext = nullptr;
-    VectorNative<AstNode*>       genericParameters;
-    VectorNative<AstNode*>       parameters;
-    VectorNative<TypeInfoParam*> solvedParameters;
-    VectorNative<bool>           doneParameters;
-    VectorNative<TypeInfo*>      genericParametersCallTypes;
-    VectorNative<TypeInfo*>      genericParametersGenTypes;
-    map<Utf8, TypeInfo*>         genericReplaceTypes;
-    map<Utf8, uint32_t>          mapGenericTypesIndex;
-    BadSignatureInfos            badSignatureInfos;
-
-    uint32_t    flags;
-    MatchResult result;
-    int         cptResolved;
-
-    bool hasNamedParameters;
 };
 
 struct TypeInfoFuncAttr : public TypeInfo
