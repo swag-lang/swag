@@ -74,6 +74,7 @@ void Stats::print()
         g_Log.messageHeaderDot("mem seg", Utf8::format("%s", Utf8::toNiceSize(memSeg.load()).c_str()));
         g_Log.messageHeaderDot("mem concat", Utf8::format("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
         g_Log.messageHeaderDot("mem types", Utf8::format("%s", Utf8::toNiceSize(memTypes.load()).c_str()));
+        g_Log.messageHeaderDot("mem params", Utf8::format("%s", Utf8::toNiceSize(memParams.load()).c_str()));
         g_Log.messageHeaderDot("mem bcinstr", Utf8::format("%s", Utf8::toNiceSize(memInstructions.load()).c_str()));
         g_Log.messageHeaderDot("mem bcstack", Utf8::format("%s", Utf8::toNiceSize(memBcStack.load()).c_str()));
         g_Log.messageHeaderDot("mem symtable", Utf8::format("%s", Utf8::toNiceSize(memSymTable.load()).c_str()));

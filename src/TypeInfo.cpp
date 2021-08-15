@@ -339,7 +339,7 @@ int TypeInfoParam::numRegisters()
 
 TypeInfoParam* TypeInfoParam::clone()
 {
-    auto newType        = g_Allocator.alloc<TypeInfoParam>();
+    auto newType        = g_TypeMgr->makeParam();
     newType->name       = name;
     newType->namedParam = namedParam;
     newType->value      = value;

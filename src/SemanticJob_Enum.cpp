@@ -308,7 +308,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                                                            storageSegment));
 
     // Store each value in the enum type
-    auto typeParam = g_Allocator.alloc<TypeInfoParam>();
+    auto typeParam = g_TypeMgr->makeParam();
     typeParam->flags |= TYPEINFO_DEFINED_VALUE;
     typeParam->namedParam = valNode->token.text;
     typeParam->typeInfo   = rawTypeInfo;

@@ -94,7 +94,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     {
         for (auto param : node->parameters->childs)
         {
-            auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+            auto typeParam      = g_TypeMgr->makeParam();
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)

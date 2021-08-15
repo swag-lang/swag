@@ -101,6 +101,7 @@ struct TypeManager
 
     void             registerTypeType();
     TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, uint64_t ptrFlags = 0);
+    TypeInfoParam*   makeParam();
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;

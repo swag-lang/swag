@@ -571,3 +571,11 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, uint
     ptrType->computeName();
     return ptrType;
 }
+
+TypeInfoParam* TypeManager::makeParam()
+{
+    auto typeParam = g_Allocator.alloc<TypeInfoParam>();
+    if (g_CommandLine && g_CommandLine->stats)
+        g_Stats.memParams += Allocator::alignSize(sizeof(TypeInfoParam));
+    return typeParam;
+}

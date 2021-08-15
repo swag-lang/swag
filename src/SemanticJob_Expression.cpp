@@ -469,7 +469,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         if (!typeInfo->subTypes.empty())
             typeInfo->name += ", ";
 
-        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        auto typeParam      = g_TypeMgr->makeParam();
         typeParam->typeInfo = TypeManager::concreteReference(child->typeInfo);
         typeInfo->subTypes.push_back(typeParam);
 
@@ -541,7 +541,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
-        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        auto typeParam      = g_TypeMgr->makeParam();
         typeParam->typeInfo = child->typeInfo;
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
