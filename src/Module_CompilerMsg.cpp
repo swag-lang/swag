@@ -90,7 +90,6 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    SWAG_ASSERT(numCompilerFunctions == 0);
     if (byteCodeCompiler[(int) msg->kind].empty())
         return true;
 
