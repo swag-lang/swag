@@ -223,7 +223,12 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     // Mark all instructions which are a jump destination
     context->bc->numJumps = (uint32_t) context->jumps.size();
     for (auto jump : context->jumps)
-        jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
+    {
+        if (jump->flags & BCI_SAFETY)
+            jump[jump->b.s32 + 1].flags |= BCI_START_STMT_S;
+        else
+            jump[jump->b.s32 + 1].flags |= BCI_START_STMT_N;
+    }
 }
 
 bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)

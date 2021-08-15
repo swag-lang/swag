@@ -22,11 +22,13 @@ static const uint16_t BCI_IMM_B         = 0x0020;
 static const uint16_t BCI_IMM_C         = 0x0040;
 static const uint16_t BCI_IMM_D         = 0x0080;
 static const uint16_t BCI_OPT_FLAG      = 0x0100;
-static const uint16_t BCI_START_STMT    = 0x0200;
-static const uint16_t BCI_POST_COPYMOVE = 0x0400;
-static const uint16_t BCI_UNPURE        = 0x0800;
-static const uint16_t BCI_TRYCATCH      = 0x1000;
-static const uint16_t BCI_SHIFT_SMALL   = 0x8000;
+static const uint16_t BCI_POST_COPYMOVE = 0x0200;
+static const uint16_t BCI_UNPURE        = 0x0400;
+static const uint16_t BCI_TRYCATCH      = 0x0800;
+static const uint16_t BCI_SHIFT_SMALL   = 0x1000;
+static const uint16_t BCI_START_STMT_N  = 0x2000;
+static const uint16_t BCI_START_STMT_S  = 0x4000;
+static const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 
 struct ByteCodeInstruction
 {

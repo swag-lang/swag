@@ -1,4 +1,4 @@
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     var a, b: [16] u8

@@ -24,10 +24,9 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->flags & BCI_START_STMT)
-        {
+        // Do not care about jump destination from safety blocks
+        if (ip->flags & BCI_START_STMT_N)
             memset(regs.buffer, 0, maxReg * sizeof(void*));
-        }
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
