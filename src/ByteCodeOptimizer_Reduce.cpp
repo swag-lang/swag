@@ -245,7 +245,6 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::MakeMutableSegPointer:
         case ByteCodeOp::MakeBssSegPointer:
         case ByteCodeOp::MakeCompilerSegPointer:
-        case ByteCodeOp::MakeLambda:
         case ByteCodeOp::DeRef8:
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
