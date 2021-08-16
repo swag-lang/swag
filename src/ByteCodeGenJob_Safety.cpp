@@ -126,7 +126,8 @@ void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t 
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NULLPTR_ON, ATTRIBUTE_SAFETY_NULLPTR_OFF))
         return;
 
-    auto re = reserveRegisterRC(context);
+    PushICFlags ic(context, BCI_SAFETY);
+    auto        re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, re, r);
     auto inst = emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd64, re, 0, re);
     inst->flags |= BCI_IMM_B;
