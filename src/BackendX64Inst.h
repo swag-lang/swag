@@ -1575,17 +1575,90 @@ namespace BackendX64Inst
         pp.labelsToSolve.push_back(label);
     }
 
-    inline void emitClearX(X64PerThread& pp, uint32_t toClear, uint32_t offset, uint8_t reg)
+    inline void emitCopyX(X64PerThread& pp, uint32_t count, uint32_t offset, uint8_t regDst, uint8_t regSrc)
     {
-        if (!toClear)
+        if (!count)
+            return;
+        SWAG_ASSERT(regDst == RCX);
+        SWAG_ASSERT(regSrc == RDX);
+
+        // SSE 16 octets
+        if (count >= 16)
+        {
+            while (count >= 16)
+            {
+                pp.concat.addString2("\x0F\x10"); // movups xmm0, [rdx+??]
+                if (offset <= 0x7F)
+                {
+                    pp.concat.addU8(0x40 | regSrc);
+                    pp.concat.addU8((uint8_t) offset);
+                }
+                else
+                {
+                    pp.concat.addU8(0x80 | regSrc);
+                    pp.concat.addU32(offset);
+                }
+                pp.concat.addString2("\x0F\x11"); // movups [rcx+??], xmm0
+                if (offset <= 0x7F)
+                {
+                    pp.concat.addU8(0x40 | regDst);
+                    pp.concat.addU8((uint8_t) offset);
+                }
+                else
+                {
+                    pp.concat.addU8(0x80 | regDst);
+                    pp.concat.addU32(offset);
+                }
+
+                count -= 16;
+                offset += 16;
+            }
+        }
+
+        while (count >= 8)
+        {
+            emit_Load64_Indirect(pp, offset, RAX, regSrc);
+            emit_Store64_Indirect(pp, offset, RAX, regDst);
+            count -= 8;
+            offset += 8;
+        }
+
+        while (count >= 4)
+        {
+            emit_Load32_Indirect(pp, offset, RAX, regSrc);
+            emit_Store32_Indirect(pp, offset, RAX, regDst);
+            count -= 4;
+            offset += 4;
+        }
+
+        while (count >= 2)
+        {
+            emit_Load16_Indirect(pp, offset, RAX, regSrc);
+            emit_Store16_Indirect(pp, offset, RAX, regDst);
+            count -= 2;
+            offset += 2;
+        }
+
+        while (count >= 1)
+        {
+            emit_Load8_Indirect(pp, offset, RAX, regSrc);
+            emit_Store8_Indirect(pp, offset, RAX, regDst);
+            count -= 1;
+            offset += 1;
+        }
+    }
+
+    inline void emitClearX(X64PerThread& pp, uint32_t count, uint32_t offset, uint8_t reg)
+    {
+        if (!count)
             return;
         SWAG_ASSERT(reg == RAX || reg == RDI);
 
         // SSE 16 octets
-        if (toClear >= 16)
+        if (count >= 16)
         {
             pp.concat.addString3("\x0F\x57\xC0"); // xorps xmm0, xmm0
-            while (toClear >= 16)
+            while (count >= 16)
             {
                 pp.concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
                 if (offset <= 0x7F)
@@ -1598,36 +1671,36 @@ namespace BackendX64Inst
                     pp.concat.addU8(0x80 | reg);
                     pp.concat.addU32(offset);
                 }
-                toClear -= 16;
+                count -= 16;
                 offset += 16;
             }
         }
 
-        while (toClear >= 8)
+        while (count >= 8)
         {
             emit_Store64_Immediate(pp, offset, 0, reg);
-            toClear -= 8;
+            count -= 8;
             offset += 8;
         }
 
-        while (toClear >= 4)
+        while (count >= 4)
         {
             emit_Store32_Immediate(pp, offset, 0, reg);
-            toClear -= 4;
+            count -= 4;
             offset += 4;
         }
 
-        while (toClear >= 2)
+        while (count >= 2)
         {
             emit_Store16_Immediate(pp, offset, 0, reg);
-            toClear -= 2;
+            count -= 2;
             offset += 2;
         }
 
-        while (toClear >= 1)
+        while (count >= 1)
         {
             emit_Store8_Immediate(pp, offset, 0, reg);
-            toClear -= 1;
+            count -= 1;
             offset += 1;
         }
     }

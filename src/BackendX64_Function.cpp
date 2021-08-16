@@ -2532,33 +2532,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemCpy8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RDX);
-            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emitCopyX(pp, 1, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RDX);
-            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emitCopyX(pp, 2, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RDX);
-            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emitCopyX(pp, 4, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emitCopyX(pp, 8, 0, RCX, RDX);
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            MK_IMMC_64(R8);
-            emitCall(pp, g_LangSpec->name_memcpy);
+            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128)
+                BackendX64Inst::emitCopyX(pp, (uint32_t) ip->c.u64, 0, RCX, RDX);
+            else
+            {
+                MK_IMMC_64(R8);
+                emitCall(pp, g_LangSpec->name_memcpy);
+            }
             break;
 
         case ByteCodeOp::IntrinsicMemMove:
