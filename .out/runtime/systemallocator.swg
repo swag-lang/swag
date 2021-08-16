@@ -15,32 +15,32 @@ impl IAllocator for SystemAllocator
         // So this involves extra space !
         switch request.mode
         {
-            case Free:
-                if !request.address break
-                ptr := cast(**void) request.address
-                @free(ptr[bitcast(uint) -1'int])
-                request.address = null
+        case Free:
+            if !request.address break
+            ptr := cast(**void) request.address
+            @free(ptr[bitcast(uint) -1'int])
+            request.address = null
 
-            case Alloc:
-                request.address = null
-                fallthrough
+        case Alloc:
+            request.address = null
+            fallthrough
 
-            case Realloc:
-                size := request.size
-                size += @sizeof(*void)
-                alignement := request.alignement orelse @sizeof(*void)
-                size += alignement - 1
+        case Realloc:
+            size := request.size
+            size += @sizeof(*void)
+            alignement := request.alignement orelse @sizeof(*void)
+            size += alignement - 1
 
-                storePtr := cast(**void) request.address
-                realPtr := cast(*u8) @realloc(storePtr ? storePtr[bitcast(uint) -1'int] : null, size)
+            storePtr := cast(**void) request.address
+            realPtr := cast(*u8) @realloc(storePtr ? storePtr[bitcast(uint) -1'int] : null, size)
 
-                userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
-                if userPtr != realPtr userPtr += alignement
-                userPtr += @sizeof(*void)
+            userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
+            if userPtr != realPtr userPtr += alignement
+            userPtr += @sizeof(*void)
 
-                storePtr = cast(**void) userPtr
-                storePtr[bitcast(uint) -1'int] = realPtr
-                request.address = userPtr
+            storePtr = cast(**void) userPtr
+            storePtr[bitcast(uint) -1'int] = realPtr
+            request.address = userPtr
         }
     }
 }
