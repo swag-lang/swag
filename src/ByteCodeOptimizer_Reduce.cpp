@@ -815,24 +815,6 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             context->passHasDoneSomething = true;
         }
 
-        // followed by one or two SetAtPointer
-        // Is this safe ?
-        if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
-             ip[1].op == ByteCodeOp::SetAtPointer16 ||
-             ip[1].op == ByteCodeOp::SetAtPointer32 ||
-             ip[1].op == ByteCodeOp::SetAtPointer64) &&
-            ip[0].a.u32 == ip[0].c.u32 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            ip[1].c.s64 += ip[0].b.s64;
-            if (ip[2].op == ip[1].op && ip[0].a.u32 == ip[2].a.u32)
-            {
-                SWAG_ASSERT(!(ip[2].flags & BCI_START_STMT));
-                ip[2].c.s64 += ip[0].b.s64;
-            }
-            setNop(context, ip);
-        }
-
         if ((ip[1].op == ByteCodeOp::SetZeroAtPointer8 ||
              ip[1].op == ByteCodeOp::SetZeroAtPointer16 ||
              ip[1].op == ByteCodeOp::SetZeroAtPointer32 ||

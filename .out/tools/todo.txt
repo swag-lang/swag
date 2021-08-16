@@ -49,6 +49,10 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+DEBUG line 2e ligne : 2 F9 pour passer la ligne
+            case DrawTriangles:
+                params := &cmd.drawTriangles
+-------------------------------------
 sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
 oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
 -------------------------------------
