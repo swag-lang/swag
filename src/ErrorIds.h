@@ -646,8 +646,8 @@
 #define Msg0647
 #define Msg0648 "expected a struct, but '%s' is %s"
 #define Msg0649
-#define Msg0650 "function '%s' is not part of interface '%s'"
-#define Msg0651 "here is the definition of interface '%s'"
+#define Msg0650
+#define Msg0651
 #define Msg0652 "function '%s' has an incorrect signature for interface '%s'"
 #define Msg0653 "should be"
 #define Msg0654 "missing first parameter 'self' for interface function '%s'"

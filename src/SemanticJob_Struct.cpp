@@ -207,13 +207,10 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // We need to search the function (as a variable) in the interface
+        // If not found, then this is a normal function...
         auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
         if (!symbolName)
-        {
-            Diagnostic diag{child, child->token, Utf8::format(Msg0650, child->token.text.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, Utf8::format(Msg0651, typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
-            return context->report(diag, &note);
-        }
+            continue;
 
         // Match function signature
         auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
