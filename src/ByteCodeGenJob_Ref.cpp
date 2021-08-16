@@ -252,7 +252,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         break;
     default:
-        return context->internalError( "emitTypeDeRef, size not supported");
+        return context->internalError("emitTypeDeRef, size not supported");
     }
 
     return true;
@@ -444,7 +444,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
     else
     {
-        return context->internalError( "emitPointerDeRef, type not supported");
+        return context->internalError("emitPointerDeRef, type not supported");
     }
 
     return true;
@@ -520,7 +520,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
             return true;
         }
 
-        return context->internalError( "emitMakeArrayPointerSlicing, type not supported");
+        return context->internalError("emitMakeArrayPointerSlicing, type not supported");
     }
 
     uint64_t sizeOf = 1;
@@ -533,7 +533,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     else if (typeVar->kind == TypeInfoKind::Pointer)
         sizeOf = CastTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
     else
-        return context->internalError( "emitMakeArrayPointerSlicing, type not supported");
+        return context->internalError("emitMakeArrayPointerSlicing, type not supported");
 
     emitSafetyArrayPointerSlicing(context, node);
 
@@ -880,7 +880,7 @@ void ByteCodeGenJob::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32
         break;
     default:
     {
-        auto inst = emitInstruction(context, ByteCodeOp::MemCpyX, r0, r1);
+        auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
         inst->flags |= BCI_IMM_C;
         inst->c.u64 = sizeOf;
         break;

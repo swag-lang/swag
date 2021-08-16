@@ -2553,12 +2553,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDX);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
-        case ByteCodeOp::MemCpyX:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, R8);
-            emitCall(pp, g_LangSpec->name_memcpy);
-            break;
 
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

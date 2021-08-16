@@ -71,18 +71,21 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             switch (ip->op)
             {
             case ByteCodeOp::IntrinsicMemCpy:
-                printf("a");
+                if (ip->c.u64 == 0)
+                    setNop(context, ip);
                 break;
             case ByteCodeOp::IntrinsicMemMove:
-                printf("b");
+                if (ip->c.u64 == 0)
+                    setNop(context, ip);
                 break;
             case ByteCodeOp::IntrinsicMemSet:
-                printf("c");
+                if (ip->c.u64 == 0)
+                    setNop(context, ip);
                 break;
             case ByteCodeOp::IntrinsicMemCmp:
-                printf("d");
+                if (ip->d.u64 == 0)
+                    setNop(context, ip);
                 break;
-
             }
         }
 
