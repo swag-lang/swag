@@ -91,6 +91,13 @@ void AstNode::inheritTokenLocation(Token& tkn)
     token.endLocation   = tkn.endLocation;
 }
 
+void AstNode::inheritTokenLocation(AstNode* node)
+{
+    token.startLocation = node->token.startLocation;
+    token.endLocation   = node->token.endLocation;
+    sourceFile          = node->sourceFile;
+}
+
 void AstNode::inheritOwners(AstNode* op)
 {
     if (!op)

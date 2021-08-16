@@ -535,7 +535,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         auto identifier        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
         identifier->aliasNames = node->aliasNames;
-        identifier->inheritTokenLocation(node->token);
+        identifier->inheritTokenLocation(node);
 
         // Generic parameters
         identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);

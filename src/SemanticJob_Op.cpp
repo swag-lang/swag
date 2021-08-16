@@ -305,11 +305,11 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     ComputedValue cValue;
     parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;
-    parameters.inheritTokenLocation(left->token);
+    parameters.inheritTokenLocation(left);
     parameters.inheritOwners(left);
     literal.flags      = 0;
     literal.sourceFile = left->sourceFile;
-    literal.inheritTokenLocation(left->token);
+    literal.inheritTokenLocation(left);
     literal.inheritOwners(left);
     literal.computedValue = &cValue;
 

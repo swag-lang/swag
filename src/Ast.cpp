@@ -44,7 +44,7 @@ namespace Ast
         else
         {
             if (parent)
-                node->inheritTokenLocation(parent->token);
+                node->inheritTokenLocation(parent);
             node->inheritOwners(parent);
         }
 

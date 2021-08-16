@@ -723,11 +723,11 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
     // Retrieve the pointer of the function
     auto exprNode = Ast::newNode<AstMakePointerLambda>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
-    exprNode->inheritTokenLocation(lambda->token);
+    exprNode->inheritTokenLocation(lambda);
     exprNode->lambda       = lambda;
     exprNode->semanticFct  = SemanticJob::resolveMakePointer;
     AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
-    identifierRef->inheritTokenLocation(lambda->token);
+    identifierRef->inheritTokenLocation(lambda);
     forceTakeAddress(identifierRef);
 
     if (result)

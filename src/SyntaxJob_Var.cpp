@@ -201,7 +201,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         SWAG_CHECK(checkIsValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
         varNode->kind       = kind;
-        varNode->inheritTokenLocation(leftNode->token);
+        varNode->inheritTokenLocation(leftNode);
 
         if (result)
             *result = varNode;

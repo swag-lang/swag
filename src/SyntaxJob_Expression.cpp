@@ -1235,7 +1235,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 else if (affectNode->token.id != TokenId::SymEqual)
                 {
                     auto newAffect = Ast::clone(affectExpression, affectNode);
-                    newAffect->inheritTokenLocation(affectExpression->token);
+                    newAffect->inheritTokenLocation(affectExpression);
                 }
 
                 // In case of an affectation, create 'otherVar = firstVar'

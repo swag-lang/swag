@@ -202,6 +202,7 @@ struct AstNode
     void inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3);
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(Token& tkn);
+    void inheritTokenLocation(AstNode* node);
     void inheritOwners(AstNode* op);
     void inheritOwnersAndFlags(SyntaxJob* job);
     void inheritLocationFromChilds();

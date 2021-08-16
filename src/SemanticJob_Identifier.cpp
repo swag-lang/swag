@@ -724,7 +724,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     auto child  = dependentVar->childs[i];
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
                     idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
-                    idNode->inheritTokenLocation(idRef->token);
+                    idNode->inheritTokenLocation(idRef);
                     Ast::addChildFront(idRef, idNode);
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
@@ -735,7 +735,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
                 idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
-                idNode->inheritTokenLocation(identifier->token);
+                idNode->inheritTokenLocation(identifier);
 
                 // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
                 // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
@@ -2295,7 +2295,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token    = identifierRef->previousResolvedNode->token;
-    fctCallParam->inheritTokenLocation(node->token);
+    fctCallParam->inheritTokenLocation(node);
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;

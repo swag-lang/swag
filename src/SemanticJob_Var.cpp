@@ -362,7 +362,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         id->sourceFile = context->sourceFile;
         id->token.text = node->token.text;
         id->inheritOwners(node);
-        id->inheritTokenLocation(node->token);
+        id->inheritTokenLocation(node);
         SWAG_CHECK(resolveIdentifier(context, id, true));
         if (context->result != ContextResult::Done)
             return true;
@@ -511,10 +511,10 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
-        param->inheritTokenLocation(child->token);
+        param->inheritTokenLocation(child);
     }
 
-    identifier->callParameters->inheritTokenLocation(varDecl->assignment->token);
+    identifier->callParameters->inheritTokenLocation(varDecl->assignment);
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;

@@ -2852,17 +2852,17 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     // Seems a little bit like a hack. Not sure this will always work.
     fromNode->parent->flags |= AST_REVERSE_SEMANTIC;
 
-    varNode->inheritTokenLocation(fromNode->token);
+    varNode->inheritTokenLocation(fromNode);
     varNode->flags |= AST_GENERATED;
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
-    typeNode->inheritTokenLocation(fromNode->token);
+    typeNode->inheritTokenLocation(fromNode);
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type = typeNode;
 
     typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->declNode->token.text, typeNode);
     typeNode->identifier->flags |= AST_GENERATED;
-    typeNode->identifier->inheritTokenLocation(fromNode->token);
+    typeNode->identifier->inheritTokenLocation(fromNode);
 
     auto back = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
@@ -2878,7 +2878,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // Make parameters
     auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-    identifier->inheritTokenLocation(fromNode->token);
+    identifier->inheritTokenLocation(fromNode);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
     identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
 
@@ -2891,7 +2891,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         auto         oneParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         CloneContext cloneContext;
         cloneContext.parent = oneParam;
-        oneParam->inheritTokenLocation(oneChild->token);
+        oneParam->inheritTokenLocation(oneChild);
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->kind == AstNodeKind::Identifier)
