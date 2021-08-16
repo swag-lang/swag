@@ -126,6 +126,25 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
 
 void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    if (ip->op == ByteCodeOp::IntrinsicMemCpy && ip->flags & BCI_IMM_C)
+    {
+        switch (ip->c.u32)
+        {
+        case 1:
+            SET_OP(ip, ByteCodeOp::MemCpy8);
+            break;
+        case 2:
+            SET_OP(ip, ByteCodeOp::MemCpy16);
+            break;
+        case 4:
+            SET_OP(ip, ByteCodeOp::MemCpy32);
+            break;
+        case 8:
+            SET_OP(ip, ByteCodeOp::MemCpy64);
+            break;
+        }
+    }
+
     // Copy a constant value (from segment) to the stack
     if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
         ip[1].op == ByteCodeOp::MakeStackPointer &&
