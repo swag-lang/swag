@@ -106,12 +106,16 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Reserve room to pass parameters to embedded intrinsics
     auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
 
-    // Main context
+    // Set default system allocator function
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
-    builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
+    SWAG_ASSERT(bcAlloc->node->attributeFlags & ATTRIBUTE_CALLBACK);
+    auto funcAlloc = CastAst<AstFuncDecl>(bcAlloc->node, AstNodeKind::FuncDecl);
+    auto allocFct  = modu.getOrInsertFunction(funcAlloc->fullnameForeign.c_str(), pp.allocatorTy);
+    auto callee    = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, allocFct.getCallee(), builder.getInt64Ty());
+    callee         = builder.CreateOr(callee, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+    builder.CreateStore(callee, builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt64PtrTy(context)));
 
     //mainContext.allocator.itable = &defaultAllocTable
     {

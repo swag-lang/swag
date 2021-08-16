@@ -61,10 +61,16 @@ script, si #main resoud pas, erreur bizarre
 -------------------------------------
 debugger : print
 -------------------------------------
+
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
 que faire ?
+
+Update: Lorgner do côté des callbacks. Maintenant ca marche "en temps normal" car les allocators sont en callback par defaut.
+Ajouter des checks ? Ajouter [Swag.Callback] dans la definition d'une interface pour forcer la method a etre en callback ?
+Mais quid des lambas passés en paramètres ?
+
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------

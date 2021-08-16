@@ -1,7 +1,7 @@
 #[Swag.Callback]
 func titi()
 {
-    @print("x")
+    //@print("x")
 }
 
 //#[Swag.PrintBc]

@@ -6,6 +6,7 @@ struct SystemAllocator
 
 impl IAllocator for SystemAllocator
 {
+    #[Callback]
     func alloc(self, request: *AllocatorRequest)
     {
         // We are considering that the default system heap alloc does not align

@@ -274,13 +274,17 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (funcChild->attributeFlags & ATTRIBUTE_FOREIGN)
         {
             funcChild->computeFullNameForeign(true);
-
-            // Need to patch the segment at runtime, init, with the real address of the function
             constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;
             g_ModuleMgr->addPatchFuncAddress((void**) constSegment->address(offset), funcChild);
+        }
+        else if (funcChild->attributeFlags & ATTRIBUTE_CALLBACK)
+        {
+            *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
+            funcChild->computeFullNameForeign(true);
+            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
         {
