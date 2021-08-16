@@ -2231,7 +2231,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::SetZeroAtPointerX:
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
             // Expand
-            if (ip->b.u32 <= 128)
+            if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 BackendX64Inst::emitClearX(pp, ip->b.u32, ip->c.u32, RAX);
@@ -2269,7 +2269,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::SetZeroStackX:
         {
             // Expand
-            if (ip->b.u32 <= 128)
+            if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
             {
                 BackendX64Inst::emitClearX(pp, ip->b.u32, offsetStack + ip->a.u32, RDI);
             }
@@ -2553,7 +2553,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicMemCpy:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128)
+            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
                 BackendX64Inst::emitCopyX(pp, ip->c.u32, 0, RCX, RDX);
             else
             {
@@ -2571,7 +2571,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicMemSet:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128))
+            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && buildParameters.buildCfg->backendOptimizeSpeed)
                 BackendX64Inst::emitClearX(pp, ip->c.u32, 0, RCX);
             else
             {
