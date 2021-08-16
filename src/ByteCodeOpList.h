@@ -152,7 +152,7 @@ BYTECODE_OP(MemCpy64, OPFLAG_IS_MEMCPY | OPFLAG_READ_A | OPFLAG_READ_B, "memcpy(
 
 BYTECODE_OP(IntrinsicMemCpy, OPFLAG_IS_MEMCPY | OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C, "@memcpy(_ra_, _rb_, _rcu64_)", 0)
 BYTECODE_OP(IntrinsicMemMove, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C, "@memmove(_ra_, _rb_, _rcu64_)", 0)
-BYTECODE_OP(IntrinsicMemSet, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C, "@memset(_ra_, _rb_, _rcu64_)", 0)
+BYTECODE_OP(IntrinsicMemSet, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_B | OPFLAG_IMM_C, "@memset(_ra_, _rbu64_, _rcu64_)", 0)
 BYTECODE_OP(IntrinsicMemCmp, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_IMM_D, "_ra_ = @memcmp(_rb_, _rc_, _rdu64_)", 0)
 BYTECODE_OP(IntrinsicCStrLen, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @cstrlen(_rb_)", 2)
 

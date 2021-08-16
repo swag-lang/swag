@@ -1319,7 +1319,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicMemSet:
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_8();
             auto r2 = MK_IMMC_64();
             builder.CreateMemSet(r0, r1, r2, llvm::Align{});
             break;

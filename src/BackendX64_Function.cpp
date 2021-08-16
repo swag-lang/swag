@@ -2554,7 +2554,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128)
-                BackendX64Inst::emitCopyX(pp, (uint32_t) ip->c.u64, 0, RCX, RDX);
+                BackendX64Inst::emitCopyX(pp, ip->c.u32, 0, RCX, RDX);
             else
             {
                 MK_IMMC_64(R8);
@@ -2571,9 +2571,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicMemSet:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            MK_IMMC_64(R8);
-            emitCall(pp, g_LangSpec->name_memset);
+            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128))
+                BackendX64Inst::emitClearX(pp, ip->c.u32, 0, RCX);
+            else
+            {
+                MK_IMMB_8(RDX);
+                MK_IMMC_64(R8);
+                emitCall(pp, g_LangSpec->name_memset);
+            }
             break;
 
         case ByteCodeOp::IntrinsicMemCmp:

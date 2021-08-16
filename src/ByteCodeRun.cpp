@@ -670,7 +670,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicMemSet:
     {
         void*    dst   = (void*) registersRC[ip->a.u32].pointer;
-        uint32_t value = registersRC[ip->b.u32].u8;
+        uint32_t value = IMMB_U8(ip);
         size_t   size  = IMMC_U64(ip);
         memset(dst, value, size);
         break;
