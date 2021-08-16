@@ -4,7 +4,7 @@ func titi()
     @print("x")
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     fn := &titi

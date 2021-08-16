@@ -1652,7 +1652,7 @@ namespace BackendX64Inst
     {
         if (!count)
             return;
-        SWAG_ASSERT(reg == RAX || reg == RDI);
+        SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDI);
 
         // SSE 16 octets
         if (count >= 16)

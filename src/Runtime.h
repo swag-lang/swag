@@ -372,9 +372,11 @@ struct ConcreteCompilerMessage
     ConcreteTypeInfo* type;
 };
 
-static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
-static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x4000000000000000;
-static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
+static const uint64_t SWAG_LAMBDA_BC_MARKER_BIT      = 63;
+static const uint64_t SWAG_LAMBDA_BC_MARKER          = 1ULL << SWAG_LAMBDA_BC_MARKER_BIT;
+static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER_BIT = 62;
+static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER     = 1ULL << SWAG_LAMBDA_FOREIGN_MARKER_BIT;
+static const uint64_t SWAG_LAMBDA_MARKER_MASK        = SWAG_LAMBDA_BC_MARKER | SWAG_LAMBDA_FOREIGN_MARKER;
 
 const uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
 const uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;

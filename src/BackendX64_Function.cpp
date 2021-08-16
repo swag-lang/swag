@@ -2983,19 +2983,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Test if it's a bytecode lambda
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RCX, RCX);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+            concat.addString4("\x48\x0F\xBA\xE0"); // bt rax, ??
+            concat.addU8(SWAG_LAMBDA_BC_MARKER_BIT);
+            concat.addString2("\x0f\x82"); // jb ???????? => jump to bytecode lambda
             concat.addU32(0);
             auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToBCOffset = concat.totalCount();
 
-            // Test if it's a foreign lambda
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RCX, RCX);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
+            // Test if it's a foreign lambda (and clear the bit if it is)
+            concat.addString4("\x48\x0F\xBA\xF0"); // btr rax, ??
+            concat.addU8(SWAG_LAMBDA_FOREIGN_MARKER_BIT);
+            concat.addString2("\x0f\x82"); // jb ???????? => jump to foreign lambda
             concat.addU32(0);
             auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToForeignOffset = concat.totalCount();
@@ -3015,8 +3013,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
 
-            BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Copy64(pp, RAX, R10);
             SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD2"); // call r10
