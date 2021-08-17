@@ -32,6 +32,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te", "--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
 
     addArg("bu", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
+    addArg("ge", "--force", nullptr, CommandLineType::Bool, &cmdLine->getDepForce, nullptr, "force to flush dependencies");
 
     addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
 

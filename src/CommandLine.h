@@ -98,10 +98,11 @@ struct CommandLine
     bool        outputLegit = true;
 
     // Dependencies
-    bool getDepCmd  = false;
-    bool listDepCmd = false;
-    bool computeDep = false;
-    bool fetchDep   = true;
+    bool getDepCmd   = false;
+    bool listDepCmd  = false;
+    bool computeDep  = false;
+    bool fetchDep    = true;
+    bool getDepForce = false;
 
     // Clean
     bool cleanDep = false;

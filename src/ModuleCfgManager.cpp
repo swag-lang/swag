@@ -504,9 +504,9 @@ bool ModuleCfgManager::execute()
         {
             cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
-            {
                 module->mustFetchDep = true;
-            }
+            else if (g_CommandLine->getDepCmd && g_CommandLine->getDepForce)
+                module->mustFetchDep = true;
         }
     }
 
