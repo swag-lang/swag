@@ -62,7 +62,7 @@ impl Image
         defer
         {
             if found.type.opDrop
-                found.type.opDrop(ptrDecoder);
+                found.type.opDrop(ptrDecoder)
             Memory.free(ptrDecoder, found.type.sizeof)
         }
 
