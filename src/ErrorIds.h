@@ -165,7 +165,7 @@
 #define Msg0166 "fatal error: script file '%s' does not exist"
 #define Msg0167 "operator '^' not allowed on type '%s'"
 #define Msg0168 "invalid operation '%s' on a tuple type"
-#define Msg0169
+#define Msg0169 "more than one module with name '%s' is present in the workspace (path is '%s')"
 #define Msg0170 "operator '<<' not allowed on type '%s'"
 #define Msg0171
 #define Msg0172 "operator '>>' not allowed on type '%s'"

@@ -60,8 +60,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        auto errorStr = Utf8::format("more than one module with name '%s' is present in the workspace (path is '%s')", moduleName.c_str(), moduleFolder.c_str());
-        g_Log.error(errorStr);
+        g_Log.error(Utf8::format(Msg0169, moduleName.c_str(), moduleFolder.c_str()));
         OS::exit(-1);
     }
 
@@ -372,8 +371,10 @@ bool ModuleCfgManager::execute()
 {
     Timer timer(&g_Stats.cfgTime);
 
-    // Enumerate existing configuration files, and do syntax/semantic for all of them
-    // In this pass, only the #dependencies block will be evaluated
+    // Enumerate existing configuration files, and do 
+    // syntax/semantic for all of them.
+    // In this pass, only the #dependencies block will 
+    // be evaluated
     //////////////////////////////////////////////////
     if (!g_CommandLine->scriptCommand)
     {
@@ -408,7 +409,8 @@ bool ModuleCfgManager::execute()
         module->localCfgDep = module->buildCfg;
     }
 
-    // Populate the list of all modules dependencies, until everything is done
+    // Populate the list of all modules dependencies, 
+    // until everything is done
     //////////////////////////////////////////////////
     bool ok = true;
     while (ok)
@@ -530,8 +532,6 @@ bool ModuleCfgManager::execute()
         {
             if (!m.second->fetchDep)
                 continue;
-            //if (m.second->fetchDep->fetchKind == DependencyFetchKind::Swag)
-            //    continue;
             if (!m.second->mustFetchDep)
                 continue;
 
