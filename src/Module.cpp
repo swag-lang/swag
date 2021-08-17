@@ -464,60 +464,66 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     moduleDependencies.push_front(dep);
 
     // Check version
-    bool         invalidVersion = false;
     vector<Utf8> splits;
     Utf8::tokenize(dep->version.c_str(), '.', splits);
 
-    while (true)
-    {
-        if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
-        {
-            invalidVersion = true;
-            break;
-        }
-
-        int* setVer = nullptr;
-        for (int i = 0; i < 3; i++)
-        {
-            switch (i)
-            {
-            case 0:
-                setVer = &dep->verNum;
-                break;
-            case 1:
-                setVer = &dep->revNum;
-                break;
-            case 2:
-                setVer = &dep->buildNum;
-                break;
-            }
-
-            if (splits[i] == '?')
-            {
-                *setVer = -1;
-                continue;
-            }
-
-            for (int j = 0; j < splits[i].length(); j++)
-            {
-                if (!isdigit(splits[i][j]))
-                    invalidVersion = true;
-            }
-
-            *setVer = atoi(splits[i]);
-            if (*setVer < 0)
-                invalidVersion = true;
-        }
-
-        break;
-    }
-
-    if (invalidVersion)
+    if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
         Diagnostic diag{importNode, tokenVersion, Msg0288};
         Diagnostic note{dep->node, Msg0289, DiagnosticLevel::Note};
         return importNode->sourceFile->report(diag, &note);
-        return false;
+    }
+
+    int* setVer = nullptr;
+    for (int i = 0; i < 3; i++)
+    {
+        switch (i)
+        {
+        case 0:
+            setVer = &dep->verNum;
+            break;
+        case 1:
+            setVer = &dep->revNum;
+            break;
+        case 2:
+            setVer = &dep->buildNum;
+            break;
+        }
+
+        if (splits[i] == '?')
+        {
+            *setVer = -1;
+            continue;
+        }
+
+        // Be sure we have a number
+        for (int j = 0; j < splits[i].length(); j++)
+        {
+            if (!isdigit(splits[i][j]))
+            {
+                Diagnostic diag{importNode, tokenVersion, Msg0288};
+                Diagnostic note{dep->node, Msg0289, DiagnosticLevel::Note};
+                return importNode->sourceFile->report(diag, &note);
+            }
+        }
+
+        *setVer = atoi(splits[i]);
+        if (*setVer < 0)
+        {
+            Diagnostic diag{importNode, tokenVersion, Msg0288};
+            Diagnostic note{dep->node, Msg0289, DiagnosticLevel::Note};
+            return importNode->sourceFile->report(diag, &note);
+        }
+
+        switch (i)
+        {
+        case 1:
+            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(Msg0335, dep->revNum)}));
+            break;
+        case 2:
+            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(Msg0336, dep->buildNum)}));
+            break;
+        }
     }
 
     return true;

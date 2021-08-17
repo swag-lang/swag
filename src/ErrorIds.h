@@ -331,8 +331,8 @@
 #define Msg0332 "cannot use operator 'orelse' on type '%s'"
 #define Msg0333 "expected an alias name, found '%s'"
 #define Msg0334 "'self' can only be used inside a struct or 'impl' block"
-#define Msg0335
-#define Msg0336
+#define Msg0335 "'#import' has a specific revision ('%d') but undefined major version ('?')"
+#define Msg0336 "'#import' has a specific build number ('%d') but undefined revision ('?')"
 #define Msg0337 "cannot use a range in a switch with an expression"
 #define Msg0338 "too many array dimensions (maximum is '254')"
 #define Msg0339 "missing pointer declaration '*' after 'const'"
@@ -499,7 +499,7 @@
 #define Msg0500 "missing '%d' test errors (%d raised)"
 #define Msg0501 "missing '%d' test warnings (%d raised)"
 #define Msg0502 "cannot open file '%s'"
-#define Msg0503 
+#define Msg0503
 #define Msg0504 "operation '%s' not allowed, left type is '%s' and right type is '%s'"
 #define Msg0505 "%s overflow, maximum size is 0x%I64x bytes"
 #define Msg0506
