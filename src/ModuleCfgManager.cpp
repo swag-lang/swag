@@ -340,6 +340,11 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         case CompareVersionResult::EQUAL:
+            /*if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+            {
+                cfgModule->fetchDep = dep;
+                pendingCfgModules.insert(cfgModule);
+            }*/
             break;
         }
     }
@@ -371,9 +376,9 @@ bool ModuleCfgManager::execute()
 {
     Timer timer(&g_Stats.cfgTime);
 
-    // Enumerate existing configuration files, and do 
+    // Enumerate existing configuration files, and do
     // syntax/semantic for all of them.
-    // In this pass, only the #dependencies block will 
+    // In this pass, only the #dependencies block will
     // be evaluated
     //////////////////////////////////////////////////
     if (!g_CommandLine->scriptCommand)
@@ -409,7 +414,7 @@ bool ModuleCfgManager::execute()
         module->localCfgDep = module->buildCfg;
     }
 
-    // Populate the list of all modules dependencies, 
+    // Populate the list of all modules dependencies,
     // until everything is done
     //////////////////////////////////////////////////
     bool ok = true;

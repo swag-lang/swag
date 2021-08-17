@@ -21,8 +21,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "script file name");
 
-    addArg("bu", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
-    addArg("bu", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
+    addArg("all", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
+    addArg("all", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
 
     addArg("bu", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
     addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
