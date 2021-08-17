@@ -340,11 +340,15 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         case CompareVersionResult::EQUAL:
-            /*if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+            // If version is more specific, then take it
+            if ((cfgModule->fetchDep->verNum == UINT32_MAX && dep->verNum != UINT32_MAX) ||
+                (cfgModule->fetchDep->revNum == UINT32_MAX && dep->revNum != UINT32_MAX) ||
+                (cfgModule->fetchDep->buildNum == UINT32_MAX && dep->buildNum != UINT32_MAX))
             {
                 cfgModule->fetchDep = dep;
                 pendingCfgModules.insert(cfgModule);
-            }*/
+            }
+
             break;
         }
     }
