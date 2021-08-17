@@ -5,6 +5,7 @@ struct ConcatBufferBucket
     datas:  *u8
     next:   *ConcatBufferBucket
     count:  uint
+    size:   uint
 }
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
@@ -17,13 +18,13 @@ struct ConcatBuffer
     lastBucket:     *ConcatBufferBucket
     currentSP:      *u8
 
-    bucketSize:     uint = 1024
+    granularity:    uint = 1024
     totalCount:     uint
 }
 
 impl ConcatBuffer
 {
-    private func release(using self)
+    private method release()
     {
         if !firstBucket
             return
@@ -31,24 +32,24 @@ impl ConcatBuffer
         while ptr
         {
             nextPtr := ptr.next
-            Memory.free(ptr.datas, bucketSize, allocator)
+            Memory.free(ptr.datas, ptr.size, allocator)
             Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
             ptr = nextPtr
         }
     }
 
-    func opCount(using self)->uint
+    method opCount()->uint
     {
         return count()
     }
 
-    func opDrop(using self)
+    method opDrop()
     {
         release()
     }
 
     // Returns the number of bytes
-    func count(using self)->uint
+    method count()->uint
     {
         if !lastBucket
             return 0;
@@ -57,34 +58,24 @@ impl ConcatBuffer
     }
 
     // Returns the number of elements in the given bucket
-    func bucketCount(using self, b: *ConcatBufferBucket)->uint
+    func bucketCount(using const self, b: *ConcatBufferBucket)->uint
     {
-        if b != lastBucket return b.count
+        if b != lastBucket
+            return b.count
         return cast(uint) (currentSP - lastBucket.datas)
     }
 
     // Be sure that there is enough room to store at least 'numBytes' bytes
-    func grow(using self, numBytes: uint)
+    method grow(numBytes: uint)
     {
-        Debug.assert(numBytes <= bucketSize)
-
-        if firstBucket
+        if lastBucket
         {
             bcount := cast(uint) (currentSP - lastBucket.datas);
-            if bcount + numBytes <= bucketSize
+            if bcount + numBytes <= lastBucket.size
                 return
 
-            totalCount += bcount;
-            lastBucket.count = bcount;
-
-            // Next is already allocated
-            if lastBucket.next
-            {
-                lastBucket = lastBucket.next
-                currentSP = lastBucket.datas
-                lastBucket.count = 0
-                return;
-            }
+            totalCount += bcount
+            lastBucket.count = bcount
         }
 
         // Need to allocate a new bucket
@@ -98,29 +89,31 @@ impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = Memory.alloc(bucketSize, allocator)
+        bsize := Math.max(granularity, numBytes)
+        lastBucket.datas = Memory.alloc(bsize, allocator)
+        lastBucket.size  = bsize
         currentSP = lastBucket.datas
     }
 
     // Associate an allocator with the buffer.
     // The allocator can only be changed if the buffer has no pending buckets.
-    func setAllocator(using self, alloc: Swag.IAllocator)
+    method setAllocator(alloc: Swag.IAllocator)
     {
         Debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc;
     }
 
-    // Set the size of one given bucket. Minimum size is 4.
+    // Set the granularity of datas of a given bucket. Minimum size is 4.
     // The buffer will be erased before the change, even if the new size is the same as the current one.
-    func setBucketSize(using self, size: uint)
+    method setBucketSize(size: uint)
     {
         Debug.assert(size >= 4)
-        free()
-        bucketSize = size
+        clear()
+        granularity = size
     }
 
     // Release the content of the buffer
-    func free(using self)
+    method clear()
     {
         @drop(self)
         firstBucket, lastBucket = null
@@ -128,19 +121,8 @@ impl ConcatBuffer
         totalCount = 0
     }
 
-    // Clear the content of the buffer, but do not free the memory
-    func clear(using self)
-    {
-        if !firstBucket
-            return
-        lastBucket = firstBucket
-        lastBucket.count = 0
-        currentSP = lastBucket.datas
-        totalCount = 0
-    }
-
     // Add one byte to the buffer
-    func addByte(using self, byte: u8)
+    method addByte(byte: u8)
     {
         grow(1)
         currentSP[0] = byte
@@ -149,7 +131,7 @@ impl ConcatBuffer
 
     // Add a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
-    func addBytes(using self, bytes: const [..] u8, contiguous = true)
+    method addBytes(bytes: const [..] u8, contiguous = true)
     {
         num := @countof(bytes)
         if !num
@@ -165,7 +147,7 @@ impl ConcatBuffer
         if !contiguous
         {
             curCount := cast(uint) (currentSP - lastBucket.datas)
-            remain := bucketSize - curCount
+            remain := lastBucket.size - curCount
             while num > remain
             {
                 Memory.copy(currentSP, slicePtr, remain)
@@ -174,8 +156,8 @@ impl ConcatBuffer
                 currentSP += remain
                 if !num
                     return
-                grow(1) // Will alloc a new bucket as the current one is full
-                remain = bucketSize
+                grow(granularity) // Will alloc a new bucket as the current one is full
+                remain = lastBucket.size
             }
         }
         else
@@ -190,7 +172,7 @@ impl ConcatBuffer
     }
 
     // Convert buffer to a String
-    func toString(using self)->String
+    method toString()->String
     {
         var result: retval
         if !firstBucket
@@ -211,7 +193,7 @@ impl ConcatBuffer
     // Convert buffer to a String by moving the content if possible
     // After the call, the buffer will be empty if the,move can be done
     // (otherwise, the result will contain a copy)
-    func moveToString(using self)->String
+    method moveToString()->String
     {
         if !firstBucket
         {
@@ -226,7 +208,7 @@ impl ConcatBuffer
             // Move buffer
             result.allocator = allocator
             result.buffer    = firstBucket.datas
-            result.capacity  = bucketSize
+            result.capacity  = firstBucket.size
             result.length    = cast(uint) (currentSP - lastBucket.datas)
 
             // And clear me

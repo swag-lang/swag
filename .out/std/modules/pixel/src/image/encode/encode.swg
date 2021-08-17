@@ -19,7 +19,7 @@ public struct EncodeOptions
 public interface IEncoder
 {
     canEncode:  func(self, string)->bool
-    encode:     func(self, string, Image, EncodeOptions) throw
+    encode:     func(self, *ConcatBuffer, Image, EncodeOptions) throw
 }
 
 // Register an image encoder
@@ -36,7 +36,7 @@ public func(T) addEncoder()
 // Save an image to a file
 impl Image
 {
-    public func save(fileName: string, image: Image, options: EncodeOptions = @{}) throw
+    public method save(fileName: string, options: EncodeOptions = @{}) throw
     {
         // Find the encoder that can treat 'fileName'
         var found: *Encoder
@@ -60,13 +60,16 @@ impl Image
             Memory.free(ptrEncoder, found.type.sizeof)
         }
 
-        // Decode
+        // Encode
         itf := @mkinterface(ptrEncoder, found.type, IEncoder)
-        return try itf.encode(fileName, image, options)
+        var result: ConcatBuffer
+        try itf.encode(&result, dref self, options)
+        try File.writeAllBytes(fileName, result)
     }
 }
 
 // Initialize predefined encoders
 #init
 {
+    addEncoder'(Bmp.Encoder)()
 }

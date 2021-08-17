@@ -97,3 +97,24 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 
     return try write(stream, @dataof(buffer), @countof(buffer))
 }
+
+// Write a file with the content of a 'ConcatBuffer'
+#[Swag.Discardable]
+func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
+{
+    var result: retval
+
+    stream := try openWrite(fullname)
+    Debug.assert(stream.isOpen())
+    defer stream.close()
+
+    total := 0'uint
+    p := buffer.firstBucket
+    while p
+    {
+        total += try write(stream, p.datas, buffer.bucketCount(p))
+        p = p.next
+    }
+
+    return total
+}
