@@ -67,6 +67,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (exportFilePath.empty())
         return false;
+    if (!timeExportFile)
+        return false;
     if (g_CommandLine->rebuild)
         return false;
 

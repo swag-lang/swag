@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "Module.h"
-#include "FetchModuleJobFileSystem.h"
-#include "Os.h"
+#include "FetchModuleFileSystemJob.h"
 #include "Workspace.h"
 #include "CopyFileJob.h"
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 
-JobResult FetchModuleJobFileSystem::execute()
+JobResult FetchModuleFileSystemJob::execute()
 {
     auto dep = module->fetchDep;
 
@@ -16,30 +15,32 @@ JobResult FetchModuleJobFileSystem::execute()
 
     // Collect list of source files
     set<string> srcFiles;
-    OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
-        auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
+    OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName)
+                      {
+                          auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
 
-        // Do not collect public folder
-        if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
-            return;
+                          // Do not collect public folder
+                          if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+                              return;
 
-        srcFiles.insert(n);
-    });
+                          srcFiles.insert(n);
+                      });
 
     auto destPath = g_Workspace->dependenciesPath.string();
     destPath += dep->name.c_str();
 
     // Collect list of dest files if they exist, in order to remove old ones
     vector<string> dstFiles;
-    OS::visitFilesRec(destPath.c_str(), [&](const char* fileName) {
-        auto n = Utf8::normalizePath(fileName + destPath.length());
+    OS::visitFilesRec(destPath.c_str(), [&](const char* fileName)
+                      {
+                          auto n = Utf8::normalizePath(fileName + destPath.length());
 
-        // Do not collect public folder
-        if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
-            return;
+                          // Do not collect public folder
+                          if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+                              return;
 
-        dstFiles.push_back(n);
-    });
+                          dstFiles.push_back(n);
+                      });
 
     // Remove all files in dest folder that are no more in source folder
     for (auto f : dstFiles)

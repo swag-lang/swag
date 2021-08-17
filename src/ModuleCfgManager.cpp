@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
-#include "FetchModuleJobFileSystem.h"
+#include "FetchModuleFileSystemJob.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "File.h"
@@ -85,9 +85,7 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
     if (g_CommandLine->numCores == 1)
         allFiles.push_back(file);
     else
-    {
         registerCfgFile(file);
-    }
 }
 
 void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
@@ -119,9 +117,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
              { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
         for (auto file : allFiles)
-        {
             registerCfgFile(file);
-        }
     }
 }
 
@@ -378,6 +374,7 @@ bool ModuleCfgManager::execute()
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     // In this pass, only the #dependencies block will be evaluated
+    //////////////////////////////////////////////////
     if (!g_CommandLine->scriptCommand)
     {
         enumerateCfgFiles(g_Workspace->dependenciesPath);
@@ -403,7 +400,8 @@ bool ModuleCfgManager::execute()
     if (g_Workspace->numErrors)
         return false;
 
-    // Remember the configuration of the local module
+    // Remember the configuration of the local modules
+    //////////////////////////////////////////////////
     for (auto m : allModules)
     {
         auto module         = m.second;
@@ -411,6 +409,7 @@ bool ModuleCfgManager::execute()
     }
 
     // Populate the list of all modules dependencies, until everything is done
+    //////////////////////////////////////////////////
     bool ok = true;
     while (ok)
     {
@@ -468,38 +467,44 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace->numErrors.load() == 0;
     }
 
-    if (ok)
-    {
-        for (auto m : allModules)
-        {
-            auto module = m.second;
-            auto dep    = module->fetchDep;
-            if (!dep)
-                continue;
+    if (!ok)
+        return false;
 
-            // Verify that all fetch dep match with the corresponding module
-            auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+    // Compare versions
+    //////////////////////////////////////////////////
+    for (auto m : allModules)
+    {
+        auto module = m.second;
+        auto dep    = module->fetchDep;
+        if (!dep)
+            continue;
+
+        // Verify that all fetch dep match with the corresponding module
+        auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+        if (cmp != CompareVersionResult::EQUAL)
+        {
+            Diagnostic diag{dep->node, Utf8::format(Msg0518, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+            dep->node->sourceFile->report(diag);
+            ok = false;
+        }
+
+        // Compare the fetch version with the original local one. If they do not match, then we must fetch the module content
+        if (!module->wasAddedDep && !module->mustFetchDep)
+        {
+            cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
             {
-                Diagnostic diag{dep->node, Utf8::format(Msg0518, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
-                dep->node->sourceFile->report(diag);
-                ok = false;
-            }
-
-            // Compare the fetch version with the original local one. If they do not match, then we must fetch the module content
-            if (!module->wasAddedDep && !module->mustFetchDep)
-            {
-                cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-                if (cmp != CompareVersionResult::EQUAL)
-                {
-                    module->mustFetchDep = true;
-                }
+                module->mustFetchDep = true;
             }
         }
     }
 
+    if (!ok)
+        return false;
+
     // List all dependencies
-    if (ok && g_CommandLine->listDepCmd)
+    //////////////////////////////////////////////////
+    if (g_CommandLine->listDepCmd)
     {
         for (auto m : allModules)
         {
@@ -518,14 +523,15 @@ bool ModuleCfgManager::execute()
     }
 
     // Fetch all modules
-    if (ok && g_CommandLine->fetchDep)
+    //////////////////////////////////////////////////
+    if (g_CommandLine->fetchDep)
     {
         for (auto m : allModules)
         {
             if (!m.second->fetchDep)
                 continue;
-            if (m.second->fetchDep->fetchKind == DependencyFetchKind::Swag)
-                continue;
+            //if (m.second->fetchDep->fetchKind == DependencyFetchKind::Swag)
+            //    continue;
             if (!m.second->mustFetchDep)
                 continue;
 
@@ -534,7 +540,7 @@ bool ModuleCfgManager::execute()
             {
             case DependencyFetchKind::Disk:
             case DependencyFetchKind::Swag:
-                fetchJob = g_Allocator.alloc<FetchModuleJobFileSystem>();
+                fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
                 break;
             }
 

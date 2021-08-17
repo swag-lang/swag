@@ -1,9 +1,9 @@
 #pragma once
 #include "Job.h"
 
-struct FetchModuleJobFileSystem : public Job
+struct FetchModuleFileSystemJob : public Job
 {
-    FetchModuleJobFileSystem()
+    FetchModuleFileSystemJob()
     {
         flags |= JOB_IS_IO;
     }
