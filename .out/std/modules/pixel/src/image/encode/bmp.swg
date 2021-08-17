@@ -18,7 +18,7 @@ public impl IEncoder for Encoder
         fileHeader.bfType    = 0x4d42
         fileHeader.bfSize    = cast(u32) image.size + @sizeof(FileHeader)
         fileHeader.bfOffBits = @sizeof(FileHeader) + @sizeof(Header)
-        result.addBytes(@mkslice(cast(const *u8) &fileHeader, @sizeof(FileHeader)))
+        result.addStruct(fileHeader)
 
         var header: Header
         header.biSize        = @sizeof(Header)
@@ -27,7 +27,7 @@ public impl IEncoder for Encoder
         header.biPlanes      = 1
         header.biBitCount    = image.bpp
         header.biCompression = FILL_BI_RGB
-        result.addBytes(@mkslice(cast(const *u8) &header, header.biSize))
+        result.addStruct(header)
 
         align := (header.biWidth * 3) & 3
         if image.bpp != 24 or !align

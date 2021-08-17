@@ -121,7 +121,7 @@ impl ConcatBuffer
         totalCount = 0
     }
 
-    // Add one byte to the buffer
+    // Append one byte to the buffer
     method addByte(byte: u8)
     {
         grow(1)
@@ -129,7 +129,7 @@ impl ConcatBuffer
         currentSP += 1
     }
 
-    // Add a slice of bytes to the buffer
+    // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     method addBytes(bytes: const [..] u8, contiguous = true)
     {
@@ -169,6 +169,13 @@ impl ConcatBuffer
         // rest of the slice
         Memory.copy(currentSP, slicePtr, num)
         currentSP += num
+    }
+
+    // Append the content of a struct
+    #[Swag.Inline]
+    method(T) addStruct(val: T)
+    {
+        addBytes(@mkslice(cast(const *u8) &val, @sizeof(T)))
     }
 
     // Convert buffer to a String
