@@ -463,6 +463,16 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
                 *storageSegment = overload->computedValue.storageSegment;
                 return true;
             }
+
+            if (subArray->array->hasComputedValue())
+            {
+                SWAG_ASSERT(subArray->array->computedValue);
+                SWAG_ASSERT(subArray->array->computedValue->storageOffset != UINT32_MAX);
+                SWAG_ASSERT(subArray->array->computedValue->storageSegment);
+                *storageOffset = subArray->array->computedValue->storageOffset + (uint32_t)offsetAccess;
+                *storageSegment = subArray->array->computedValue->storageSegment;
+                return true;
+            }
         }
     }
 
@@ -876,9 +886,9 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     else if (concreteType->kind == TypeInfoKind::Array)
     {
         node->allocateComputedValue();
-        node->computedValue->storageOffset = storageSegment->offset(ptr);
+        node->computedValue->storageOffset  = storageSegment->offset(ptr);
         node->computedValue->storageSegment = storageSegment;
-        node->typeInfo = concreteType;
+        node->typeInfo                      = concreteType;
     }
     else if (concreteType->kind == TypeInfoKind::Slice)
     {
