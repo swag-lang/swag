@@ -1951,7 +1951,6 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     if (fromNode && (fromTypeList->sizeOf != newSizeof))
     {
-        SWAG_ASSERT(fromNode->typeInfo == fromTypeList);
         fromTypeList         = (TypeInfoList*) fromTypeList->clone();
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;
