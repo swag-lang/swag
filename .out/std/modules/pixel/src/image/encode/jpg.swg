@@ -50,6 +50,11 @@ struct SOSinfotype
     Bf: u8
 }
 
+struct ColorRGB
+{
+    B, G, R: u8
+}
+
 const APP0info = APP0infotype{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 1, 1, 0, 1, 1, 0, 0}
 const SOF0info = SOF0infotype{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
 const SOSinfo  = SOSinfotype{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
@@ -93,15 +98,81 @@ const std_ac_chrominance_values: [] u8 = @[
     0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda,
     0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa]
 
+#[Swag.Opaque]
 public struct Encoder
 {
+    imageX:     u16
+    imageY:     u16
+    bufferRGB:  *ColorRGB
 }
 
 impl Encoder
 {
     method loadBitmap(image: Image)
     {
+        imageX = cast(u16) image.width
+        imageY = cast(u16) image.height
 
+        // Of the image
+        var xDiv8, yDiv8: u16
+        if imageX % 8 != 0
+            xDiv8 = cast(u16) ((imageX / 8) * 8 + 8)
+        else
+            xDiv8 = imageX
+        if imageY % 8 != 0
+            yDiv8 = cast(u16) ((imageY / 8) * 8 + 8)
+        else
+            yDiv8 = imageY
+
+        bufferRGB = Memory.new'ColorRGB(cast(uint) (xDiv8 * yDiv8))
+        pref := image.pixels
+        loop nrline: imageY
+        {
+            switch image.bpp
+            {
+            case 24:
+                loop column: imageX
+                {
+                    bufferRGB[column + nrline * xDiv8].B = pref[0]
+                    bufferRGB[column + nrline * xDiv8].G = pref[1]
+                    bufferRGB[column + nrline * xDiv8].R = pref[2]
+                    pref += 4;
+                }
+
+            case 32:
+                Memory.copy(bufferRGB + nrline * xDiv8, pref, cast(uint) (imageX * 3))
+                pref += imageX * 3
+            }
+
+            var lastcolor: ColorRGB = ?
+            Memory.copy(&lastcolor, bufferRGB + nrline * xDiv8 + imageX - 1, 3)
+            for column := imageX; column < xDiv8; column += 1
+                Memory.copy(bufferRGB + nrline * xDiv8 + column, &lastcolor, 3)
+        }
+
+        imageX  = xDiv8
+        tmpline := Memory.alloc(cast(uint) imageX * @sizeof(ColorRGB))
+
+        // Reorder in memory the inversed bitmap
+        nrLineUp := imageY - 1
+        nrLineDn := 0
+        dimline  := cast(uint) (imageX * 3)
+        while nrLineUp > nrLineDn
+        {
+            Memory.copy(tmpline, bufferRGB + nrLineUp * imageX, dimline)
+            Memory.copy(bufferRGB + nrLineUp * imageX, bufferRGB + nrLineDn * imageX, dimline)
+            Memory.copy(bufferRGB + nrLineDn * imageX, tmpline, dimline)
+            nrLineUp -= 1
+            nrLineDn += 1
+        }
+
+        // Y completion:
+        Memory.copy(tmpline, bufferRGB + (imageY - 1) * imageX, dimline)
+        for nrLine := imageY; nrLine < yDiv8; nrLine += 1
+            Memory.copy(bufferRGB + nrLine * imageX, tmpline, dimline)
+
+        imageY = yDiv8
+        Memory.free(tmpline, cast(uint) imageX * @sizeof(ColorRGB))
     }
 }
 
