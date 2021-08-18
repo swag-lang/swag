@@ -1091,6 +1091,48 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
 
 void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::ClearRA &&
+        ip[2].op == ByteCodeOp::ClearRA &&
+        ip[3].op == ByteCodeOp::ClearRA &&
+        !(ip[0].flags & BCI_START_STMT) &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        !(ip[3].flags & BCI_START_STMT))
+    {
+        ip[0].b.u32 = ip[1].a.u32;
+        ip[0].c.u32 = ip[2].a.u32;
+        ip[0].d.u32 = ip[3].a.u32;
+        SET_OP(ip, ByteCodeOp::ClearRA4);
+        setNop(context, ip + 1);
+        setNop(context, ip + 2);
+        setNop(context, ip + 3);
+    }
+
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::ClearRA &&
+        ip[2].op == ByteCodeOp::ClearRA &&
+        !(ip[0].flags & BCI_START_STMT) &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT))
+    {
+        ip[0].b.u32 = ip[1].a.u32;
+        ip[0].c.u32 = ip[2].a.u32;
+        SET_OP(ip, ByteCodeOp::ClearRA3);
+        setNop(context, ip + 1);
+        setNop(context, ip + 2);
+    }
+
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::ClearRA &&
+        !(ip[0].flags & BCI_START_STMT) &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        ip[0].b.u32 = ip[1].a.u32;
+        SET_OP(ip, ByteCodeOp::ClearRA2);
+        setNop(context, ip + 1);
+    }
+
     // SetAtStackPointer x2
     if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
         ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
@@ -2435,9 +2477,9 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceSetAt(context, ip);
         reduceNoOp(context, ip);
         reduceCmpJump(context, ip);
-        reduceX2(context, ip);
         reduceSwap(context, ip);
         reduceNullPointer(context, ip);
+        reduceX2(context, ip);
     }
 
     return true;

@@ -789,6 +789,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ClearRA:
             BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
             break;
+        case ByteCodeOp::ClearRA2:
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->b.u32), 0, RDI);
+            break;
+        case ByteCodeOp::ClearRA3:
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->b.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->c.u32), 0, RDI);
+            break;
+        case ByteCodeOp::ClearRA4:
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->b.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->c.u32), 0, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->d.u32), 0, RDI);
+            break;
 
         case ByteCodeOp::CopyRBtoRA8:
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);

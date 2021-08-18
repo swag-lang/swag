@@ -734,6 +734,27 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = 0;
         break;
     }
+    case ByteCodeOp::ClearRA2:
+    {
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->b.u32].u64 = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRA3:
+    {
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->b.u32].u64 = 0;
+        registersRC[ip->c.u32].u64 = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRA4:
+    {
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->b.u32].u64 = 0;
+        registersRC[ip->c.u32].u64 = 0;
+        registersRC[ip->d.u32].u64 = 0;
+        break;
+    }
 
     case ByteCodeOp::IncrementRA32:
     {

@@ -38,6 +38,36 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+        case ByteCodeOp::ClearRA2:
+            regsRW[ip->a.u32] = 0;
+            regsRW[ip->b.u32] = 0;
+            regs[ip->a.u32]   = ip;
+            regs[ip->b.u32]   = ip;
+            ip->flags &= ~BCI_IMM_C;
+            ip->flags &= ~BCI_IMM_D;
+            break;
+        case ByteCodeOp::ClearRA3:
+            regsRW[ip->a.u32] = 0;
+            regsRW[ip->b.u32] = 0;
+            regsRW[ip->c.u32] = 0;
+            regs[ip->a.u32] = ip;
+            regs[ip->b.u32] = ip;
+            regs[ip->c.u32] = ip;
+            ip->flags &= ~BCI_IMM_C;
+            ip->flags &= ~BCI_IMM_D;
+            break;
+        case ByteCodeOp::ClearRA4:
+            regsRW[ip->a.u32] = 0;
+            regsRW[ip->b.u32] = 0;
+            regsRW[ip->c.u32] = 0;
+            regsRW[ip->d.u32] = 0;
+            regs[ip->a.u32] = ip;
+            regs[ip->b.u32] = ip;
+            regs[ip->c.u32] = ip;
+            regs[ip->d.u32] = ip;
+            ip->flags &= ~BCI_IMM_C;
+            ip->flags &= ~BCI_IMM_D;
+            break;
         case ByteCodeOp::SetImmediate32:
             regsRW[ip->a.u32] = ip->b.u32;
             regs[ip->a.u32]   = ip;
