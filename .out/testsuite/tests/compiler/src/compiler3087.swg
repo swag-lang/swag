@@ -1,4 +1,4 @@
-//#[Swag.PrintBc]
+#[Swag.PrintBc]
 #test
 {
     x := 6

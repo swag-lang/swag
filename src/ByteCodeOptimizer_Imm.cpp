@@ -50,9 +50,9 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regsRW[ip->a.u32] = 0;
             regsRW[ip->b.u32] = 0;
             regsRW[ip->c.u32] = 0;
-            regs[ip->a.u32] = ip;
-            regs[ip->b.u32] = ip;
-            regs[ip->c.u32] = ip;
+            regs[ip->a.u32]   = ip;
+            regs[ip->b.u32]   = ip;
+            regs[ip->c.u32]   = ip;
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
@@ -61,10 +61,10 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regsRW[ip->b.u32] = 0;
             regsRW[ip->c.u32] = 0;
             regsRW[ip->d.u32] = 0;
-            regs[ip->a.u32] = ip;
-            regs[ip->b.u32] = ip;
-            regs[ip->c.u32] = ip;
-            regs[ip->d.u32] = ip;
+            regs[ip->a.u32]   = ip;
+            regs[ip->b.u32]   = ip;
+            regs[ip->c.u32]   = ip;
+            regs[ip->d.u32]   = ip;
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
@@ -90,7 +90,9 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 ip->flags |= BCI_IMM_B;
                 regs[ip->a.u32] = nullptr;
                 ip->b.u64       = regsRW[ip->a.u32];
+                break;
             }
+
             // Read/write to A, and A is a constant, we store the current value in C. The constant folding pass can take care of that
             // depending on the instruction
             if (!(ip->flags & BCI_IMM_C) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs[ip->a.u32] &&
@@ -100,18 +102,22 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 ip->flags |= BCI_IMM_C;
                 regs[ip->a.u32] = nullptr;
                 ip->c.u64       = regsRW[ip->a.u32];
+                break;
             }
-            else
-            {
-                if (flags & OPFLAG_WRITE_A)
-                    regs[ip->a.u32] = nullptr;
-                if (flags & OPFLAG_WRITE_B)
-                    regs[ip->b.u32] = nullptr;
-                if (flags & OPFLAG_WRITE_C)
-                    regs[ip->c.u32] = nullptr;
-                if (flags & OPFLAG_WRITE_D)
-                    regs[ip->d.u32] = nullptr;
-            }
+
+            // Operators can read from A and write to C, with A == C.
+            // In that case we want the optim to take place on A if it's immediate, so do not cancel it for C.
+            if ((flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_A) && regs[ip->a.u32])
+                break;
+
+            if (flags & OPFLAG_WRITE_A)
+                regs[ip->a.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_B)
+                regs[ip->b.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_C)
+                regs[ip->c.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_D)
+                regs[ip->d.u32] = nullptr;
             break;
         }
 

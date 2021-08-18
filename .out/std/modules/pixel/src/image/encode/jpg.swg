@@ -130,6 +130,10 @@ impl Encoder
             switch image.bpp
             {
             case 24:
+                Memory.copy(bufferRGB + nrline * xDiv8, pref, cast(uint) (imageX * 3))
+                pref += imageX * 3
+
+            case 32:
                 loop column: imageX
                 {
                     bufferRGB[column + nrline * xDiv8].b = pref[0]
@@ -137,10 +141,6 @@ impl Encoder
                     bufferRGB[column + nrline * xDiv8].r = pref[2]
                     pref += 4;
                 }
-
-            case 32:
-                Memory.copy(bufferRGB + nrline * xDiv8, pref, cast(uint) (imageX * 3))
-                pref += imageX * 3
             }
 
             var lastcolor: ColorRGB = ?
