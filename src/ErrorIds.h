@@ -197,8 +197,8 @@
 #define Msg0198 "if this is an array literal and not a type definition, use '@[' instead of '['"
 #define Msg0199 "forbidden 'opDrop' special function for '%s' because struct is marked with 'Swag.ConstExpr'"
 #define Msg0200 "cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'"
-#define Msg0201
-#define Msg0202
+#define Msg0201 "if this is a tuple literal and not a type definition, use '@{' instead of '{'"
+#define Msg0202 "expected a type inside a tuple type definition, found '%s'"
 #define Msg0203 "cannot cast, not enough initializers ('%d' expected, '%d' provided)"
 #define Msg0204 "cannot cast, too many initializers ('%d' expected, '%d' provided)"
 #define Msg0205 "not enough parameters in tuple initialization ('%d' expected, '%d' provided)"

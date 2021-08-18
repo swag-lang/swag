@@ -410,6 +410,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
+    // Specific error messages
+    if (parent && parent->kind == AstNodeKind::TupleContent)
+    {
+        Diagnostic diag{sourceFile, token, Utf8::format(Msg0202, token.text.c_str())};
+        Diagnostic note{sourceFile, parent->token, Msg0201, DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
+    }
+
+    // Generic error
     return error(token, Utf8::format(Msg0343, token.text.c_str()));
 }
 

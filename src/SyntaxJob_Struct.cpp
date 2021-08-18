@@ -85,7 +85,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     // Be sure we have associated a struct typeinfo (we can parse an impl block before the corresponding struct)
     {
         ScopedLock lk1(newScope->owner->mutex);
-        auto        typeInfo = newScope->owner->typeInfo;
+        auto       typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
             if (scopeKind == ScopeKind::Enum)
@@ -121,9 +121,9 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         ScopedLock lk(newScope->symTable.mutex);
-        Utf8        itfName  = implNode->identifier->childs.back()->token.text;
-        auto        symbol   = newScope->symTable.findNoLock(itfName);
-        Scope*      subScope = nullptr;
+        Utf8       itfName  = implNode->identifier->childs.back()->token.text;
+        auto       symbol   = newScope->symTable.findNoLock(itfName);
+        Scope*     subScope = nullptr;
         if (!symbol)
         {
             subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
@@ -230,7 +230,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         structNode->scope = newScope;
 
         // If an 'impl' came first, then typeinfo has already been defined
-        ScopedLock     lk1(newScope->owner->mutex);
+        ScopedLock      lk1(newScope->owner->mutex);
         TypeInfoStruct* typeInfo = nullptr;
         if (!newScope->owner->typeInfo)
         {
@@ -264,16 +264,17 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     // Dispatch owners
     if (structNode->genericParameters)
     {
-        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-            n->ownerStructScope = newScope;
-            n->ownerScope       = newScope;
-            n->flags |= AST_IS_GENERIC;
-            if (n->kind == AstNodeKind::FuncDeclParam)
-            {
-                auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                newScope->symTable.registerSymbolName(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
-            }
-        });
+        Ast::visit(structNode->genericParameters, [&](AstNode* n)
+                   {
+                       n->ownerStructScope = newScope;
+                       n->ownerScope       = newScope;
+                       n->flags |= AST_IS_GENERIC;
+                       if (n->kind == AstNodeKind::FuncDeclParam)
+                       {
+                           auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+                           newScope->symTable.registerSymbolName(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+                       }
+                   });
     }
 
     SWAG_CHECK(eatToken());
@@ -329,7 +330,8 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         AstTypeExpression* typeExpression = nullptr;
         AstNode*           expression;
         Token              prevToken = token;
-        SWAG_CHECK(doTypeExpression(nullptr, &expression));
+        SWAG_CHECK(doTypeExpression(parent, &expression));
+        Ast::removeFromParent(expression);
 
         // Name followed by ':'
         if (token.id == TokenId::SymColon)
