@@ -391,6 +391,8 @@ namespace Win32Priv
         func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
         func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
+        func DeleteFileA(lpFileName: LPCSTR)->BOOL;
+        func DeleteFileW(lpFileName: LPCWSTR)->BOOL;
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
@@ -559,6 +561,18 @@ namespace Win32Priv
     func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME) throw
     {
         if !Win32Priv.FileTimeToSystemTime(lpFileTime, lpSystemTime)
+            try setError(GetLastError())
+    }
+
+    func DeleteFileA(lpFileName: LPCSTR) throw
+    {
+        if !Win32Priv.DeleteFileA(lpFileName)
+            try setError(GetLastError())
+    }
+
+    func DeleteFileW(lpFileName: LPCWSTR) throw
+    {
+        if !Win32Priv.DeleteFileW(lpFileName)
             try setError(GetLastError())
     }
 

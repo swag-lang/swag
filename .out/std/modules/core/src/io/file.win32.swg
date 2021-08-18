@@ -3,6 +3,13 @@
 #global namespace File
 using Win32
 
+// Delete the specified file
+func delete(fullname: string) throw
+{
+    winPath := utf16.toZeroTerminated(fullname)
+    try DeleteFileW(@dataof(winPath))
+}
+
 // Returns true if the given file exists
 func exists(fullname: string)->bool
 {

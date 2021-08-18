@@ -7,12 +7,12 @@ public struct Encoder
 
 public impl IEncoder for Encoder
 {
-    func canEncode(using self, fileName: string)->bool
+    method canEncode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    func encode(using self, result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
         var fileHeader: FileHeader
         fileHeader.bfType    = 0x4d42

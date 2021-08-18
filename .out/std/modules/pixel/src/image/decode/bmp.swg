@@ -52,12 +52,12 @@ public struct Decoder
 
 public impl IDecoder for Decoder
 {
-    func canDecode(using self, fileName: string)->bool
+    method canDecode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
+    method decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         dataof := @dataof(buffer)
         countof := @countof(buffer)
