@@ -2131,8 +2131,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             if (done)
             {
                 Diagnostic diag{fromNode, fromNode->token, Utf8::format(Msg0200, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
-                Diagnostic note1{done->declNode, Msg0201, DiagnosticLevel::Note};
-                Diagnostic note2{field->declNode, Msg0202, DiagnosticLevel::Note};
+                Diagnostic note1{done->declNode, Note015, DiagnosticLevel::Note};
+                Diagnostic note2{field->declNode, Note016, DiagnosticLevel::Note};
                 return context->report(diag, &note1, &note2);
             }
 

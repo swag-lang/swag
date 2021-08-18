@@ -186,11 +186,12 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->ownerScope = rootScope;
     rootScope->symTable.registerSymbolName(&context, structNode, SymbolKind::Struct);
 
-    Ast::visit(structNode->content, [&](AstNode* n) {
-        n->inheritOwners(structNode);
-        n->ownerStructScope = newScope;
-        n->ownerScope       = newScope;
-    });
+    Ast::visit(structNode->content, [&](AstNode* n)
+               {
+                   n->inheritOwners(structNode);
+                   n->ownerStructScope = newScope;
+                   n->ownerScope       = newScope;
+               });
 
     return true;
 }
@@ -281,7 +282,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Array
     if (token.id == TokenId::SymLeftSquare)
     {
-        isPtrConst = false;
+        isPtrConst           = false;
+        auto leftSquareToken = token;
 
         SWAG_CHECK(eatToken());
         while (true)
@@ -311,6 +313,22 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+
+        if (token.id == TokenId::SymComma)
+        {
+            // Special error if inside a function call parameter
+            auto callParam = node->findParent(AstNodeKind::FuncCallParam);
+            if (callParam)
+            {
+                Diagnostic diag{sourceFile, token, Utf8::format(Msg0171, token.text.c_str())};
+                Diagnostic note{sourceFile, leftSquareToken, Msg0198, DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            else
+            {
+                return error(token, Utf8::format(Msg0171, token.text.c_str()));
+            }
+        }
     }
 
     // Const after array

@@ -167,7 +167,7 @@
 #define Msg0168 "invalid operation '%s' on a tuple type"
 #define Msg0169 "more than one module with name '%s' is present in the workspace (path is '%s')"
 #define Msg0170 "operator '<<' not allowed on type '%s'"
-#define Msg0171
+#define Msg0171 "expected the type of the array after dimensions, found '%s'"
 #define Msg0172 "operator '>>' not allowed on type '%s'"
 #define Msg0173 "shift operand should be 'u32' and not '%s'"
 #define Msg0174 "this type is '%s' (could be casted with 'cast(%s)')"
@@ -194,11 +194,11 @@
 #define Msg0195 "value '%I64u' is truncated in 'f64'"
 #define Msg0196 "not enough initializers for '%s' ('%d' expected, '%d' provided)"
 #define Msg0197 "too many initializers for '%s' ('%d' expected, '%d' provided)"
-#define Msg0198
+#define Msg0198 "if this is an array literal and not a type definition, use '@[' instead of '['"
 #define Msg0199 "forbidden 'opDrop' special function for '%s' because struct is marked with 'Swag.ConstExpr'"
 #define Msg0200 "cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'"
-#define Msg0201 "here is one"
-#define Msg0202 "here is another"
+#define Msg0201
+#define Msg0202
 #define Msg0203 "cannot cast, not enough initializers ('%d' expected, '%d' provided)"
 #define Msg0204 "cannot cast, too many initializers ('%d' expected, '%d' provided)"
 #define Msg0205 "not enough parameters in tuple initialization ('%d' expected, '%d' provided)"
@@ -950,6 +950,8 @@
 #define Note012 "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder"
 #define Note013 "symbol has been found thanks to a 'using'"
 #define Note014 "if you want to dereference variable '%s' like in C, use 'dref %s'"
+#define Note015 "here is one"
+#define Note016 "here is another"
 
 #define Rem0000 "this could be casted with 'cast(%s)'"
 #define Rem0001 "symbol '%s' was not found in '%s'"
