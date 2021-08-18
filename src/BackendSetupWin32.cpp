@@ -83,7 +83,7 @@ namespace OS
             if (!getWinSdkFolder(winSdkPath, winSdkVersion))
             {
                 g_Log.error(Msg0036);
-                exit(-1);
+                OS::exit(-1);
             }
 
             if (g_CommandLine->verbosePath)
