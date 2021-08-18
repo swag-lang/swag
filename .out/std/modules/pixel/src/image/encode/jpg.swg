@@ -52,7 +52,7 @@ struct SOSinfotype
 
 struct ColorRGB
 {
-    B, G, R: u8
+    b, g, r: u8
 }
 
 const APP0info = APP0infotype{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 1, 1, 0, 1, 1, 0, 0}
@@ -113,7 +113,6 @@ impl Encoder
         imageX = cast(u16) image.width
         imageY = cast(u16) image.height
 
-        // Of the image
         var xDiv8, yDiv8: u16
         if imageX % 8 != 0
             xDiv8 = cast(u16) ((imageX / 8) * 8 + 8)
@@ -133,9 +132,9 @@ impl Encoder
             case 24:
                 loop column: imageX
                 {
-                    bufferRGB[column + nrline * xDiv8].B = pref[0]
-                    bufferRGB[column + nrline * xDiv8].G = pref[1]
-                    bufferRGB[column + nrline * xDiv8].R = pref[2]
+                    bufferRGB[column + nrline * xDiv8].b = pref[0]
+                    bufferRGB[column + nrline * xDiv8].g = pref[1]
+                    bufferRGB[column + nrline * xDiv8].r = pref[2]
                     pref += 4;
                 }
 
@@ -166,7 +165,7 @@ impl Encoder
             nrLineDn += 1
         }
 
-        // Y completion:
+        // Y completion
         Memory.copy(tmpline, bufferRGB + (imageY - 1) * imageX, dimline)
         for nrLine := imageY; nrLine < yDiv8; nrLine += 1
             Memory.copy(bufferRGB + nrLine * imageX, tmpline, dimline)
