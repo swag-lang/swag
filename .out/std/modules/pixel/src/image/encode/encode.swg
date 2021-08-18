@@ -72,4 +72,5 @@ impl Image
 #init
 {
     addEncoder'(Bmp.Encoder)()
+    addEncoder'(Tga.Encoder)()
 }
