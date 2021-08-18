@@ -464,12 +464,12 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
                 return true;
             }
 
-            if (subArray->array->hasComputedValue())
+            if (subArray->array->flags & AST_VALUE_COMPUTED)
             {
                 SWAG_ASSERT(subArray->array->computedValue);
                 SWAG_ASSERT(subArray->array->computedValue->storageOffset != UINT32_MAX);
                 SWAG_ASSERT(subArray->array->computedValue->storageSegment);
-                *storageOffset = subArray->array->computedValue->storageOffset + (uint32_t)offsetAccess;
+                *storageOffset  = subArray->array->computedValue->storageOffset + (uint32_t) offsetAccess;
                 *storageSegment = subArray->array->computedValue->storageSegment;
                 return true;
             }

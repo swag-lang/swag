@@ -207,7 +207,6 @@ struct AstNode
     void inheritOwnersAndFlags(SyntaxJob* job);
     void inheritLocationFromChilds();
 
-    bool hasComputedValue();
     void allocateComputedValue();
     void setFlagsValueIsComputed();
     void inheritComputedValue(AstNode* from);

@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         node->access->doneFlags |= AST_DONE_CAST1;
     }
 
-    if (!node->access->hasComputedValue())
+    if (!(node->access->flags & AST_VALUE_COMPUTED))
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 
     // Pointer increment
@@ -354,7 +354,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
-        if (!node->access->hasComputedValue())
+        if (!(node->access->flags & AST_VALUE_COMPUTED))
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
         truncRegisterRC(context, node->array->resultRegisterRC, 1);
 

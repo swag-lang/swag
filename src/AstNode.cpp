@@ -132,11 +132,6 @@ void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
     flags |= job->currentFlags;
 }
 
-bool AstNode::hasComputedValue()
-{
-    return (flags & AST_VALUE_COMPUTED);
-}
-
 void AstNode::allocateComputedValue()
 {
     if (!computedValue)
