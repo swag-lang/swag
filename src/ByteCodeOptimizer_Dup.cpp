@@ -156,6 +156,33 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             }
         }
 
+        // If we use a register that comes from a CopyRBRA, then use the initial
+        // register instead (that way, the Copy can become deadstore and removed later)
+        // Do it for specific intructions, when sizes are a match
+        if (op == ByteCodeOp::CopyRBtoRA32)
+        {
+            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
+            {
+                switch (ip->op)
+                {
+                case ByteCodeOp::SetAtPointer32:
+                case ByteCodeOp::SetAtStackPointer32:
+                case ByteCodeOp::AffectOpPlusEqS32:
+                    auto it = mapCopyRA.find(ip->b.u32);
+                    if (it != mapCopyRA.end())
+                    {
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->b.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         // Reset CopyRARB map
         if (isJumpBlock(ip))
         {

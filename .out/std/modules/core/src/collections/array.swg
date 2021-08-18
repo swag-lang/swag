@@ -195,6 +195,14 @@ impl Array
         return @mkslice(buffer, count)
     }
 
+    /*func createTempBuffer(size: uint)->Array'u8
+    {
+        var result: retval
+        result.allocator = @getcontext().tempAllocator
+        result.resize(size)
+        return result
+    }*/
+
     // Ensure the Array is big enough to store at least 'newCount' elements
     // Number of valid elements does not change
     method grow(newCount : uint)
