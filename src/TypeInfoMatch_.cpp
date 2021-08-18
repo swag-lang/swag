@@ -752,11 +752,11 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
 
-    matchParameters(context, fields, CASTFLAG_TRY_COERCE);
+    matchParameters(context, fields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, fields, CASTFLAG_TRY_COERCE);
+    matchNamedParameters(context, fields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
     if (context.result != MatchResult::Ok)
         return;
 

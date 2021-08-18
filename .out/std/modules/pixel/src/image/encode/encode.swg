@@ -73,4 +73,5 @@ impl Image
 {
     addEncoder'(Bmp.Encoder)()
     addEncoder'(Tga.Encoder)()
+    addEncoder'(Jpg.Encoder)()
 }
