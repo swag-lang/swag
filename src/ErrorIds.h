@@ -415,9 +415,9 @@
 #define Msg0416 "special function '%s' should have a body"
 #define Msg0417 "'@power' called with invalid values '%.3f' and '%.3f'"
 #define Msg0418 "cannot cast from immutable type '%s' to mutable '%s'"
-#define Msg0419
-#define Msg0420
-#define Msg0421
+#define Msg0419 "semantic cycle detected during resolution of %s '%s'"
+#define Msg0420 "%s '%s' is waiting for "
+#define Msg0421 "%s '%s' to be solved"
 #define Msg0422
 #define Msg0423 "'@log2' called with invalid value '%.3f'"
 #define Msg0424 "'@log10' called with invalid value '%.3f'"
@@ -546,7 +546,7 @@
 #define Msg0547 "fatal error: cannot create cache directory '%s'"
 #define Msg0548
 #define Msg0549 "module '%s', cannot resolve %s '%s'"
-#define Msg0550 "module '%s', cannot resolve %s"
+#define Msg0550
 #define Msg0551 "here is the declaration"
 #define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
 #define Msg0553 "here is the definition of the tuple"
@@ -889,7 +889,7 @@
 #define Msg0890 "symbol '%s' already defined as a name alias in an accessible scope"
 #define Msg0891 "invalid '%s', use '%s' instead to do a logical test"
 #define Msg0892 "placeholder identifier '%s' has not been solved"
-#define Msg0893 "identifier '%s' has not been solved (do you have a cycle ?)"
+#define Msg0893 "identifier '%s' has not been solved"
 #define Msg0894 "variable '%s' is used before being declared"
 #define Msg0895 "expected a top level instruction"
 #define Msg0896 "expected an embedded instruction or a curly block"

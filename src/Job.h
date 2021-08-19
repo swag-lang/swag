@@ -13,13 +13,14 @@ struct TypeInfo;
 struct AstFuncDecl;
 struct JobGroup;
 
-static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
-static const uint8_t JOB_IS_IN_THREAD   = 0x02;
-static const uint8_t JOB_IS_PENDING     = 0x04;
-static const uint8_t JOB_IS_PENDING_RUN = 0x08;
-static const uint8_t JOB_COMPILER_PASS  = 0x10;
-static const uint8_t JOB_IS_IO          = 0x20;
-static const uint8_t JOB_IS_OPT         = 0x40;
+static const uint8_t JOB_IS_IN_QUEUE       = 0x01;
+static const uint8_t JOB_IS_IN_THREAD      = 0x02;
+static const uint8_t JOB_IS_PENDING        = 0x04;
+static const uint8_t JOB_IS_PENDING_RUN    = 0x08;
+static const uint8_t JOB_COMPILER_PASS     = 0x10;
+static const uint8_t JOB_IS_IO             = 0x20;
+static const uint8_t JOB_IS_OPT            = 0x40;
+static const uint8_t JOB_NO_PENDING_REPORT = 0x80;
 
 enum class ContextResult
 {
@@ -100,17 +101,20 @@ struct Job
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;
 
-    AstNode*    originalNode        = nullptr;
+    AstNode*    originalNode = nullptr;
+    SourceFile* sourceFile   = nullptr;
+    Module*     module       = nullptr;
+    Job*        dependentJob = nullptr;
+    Job*        wakeUpBy     = nullptr;
+    JobContext* baseContext  = nullptr;
+
     SymbolName* waitingSymbolSolved = nullptr;
-    SourceFile* sourceFile          = nullptr;
-    Module*     module              = nullptr;
-    Job*        dependentJob        = nullptr;
-    Job*        wakeUpBy            = nullptr;
-    JobContext* baseContext         = nullptr;
     const char* waitingId           = nullptr;
     AstNode*    waitingIdNode       = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
-    JobGroup*   jobGroup            = nullptr;
+    Job*        waitingJob          = nullptr;
+
+    JobGroup* jobGroup = nullptr;
 
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;

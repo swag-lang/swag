@@ -40,6 +40,7 @@ struct PendingJob
 struct Workspace
 {
     void    errorPendingJobs(vector<PendingJob>& pendingJobs);
+    void    computeWaitingJobs();
     void    checkPendingJobs();
     bool    buildRTModule(Module* module);
     bool    buildTarget();
