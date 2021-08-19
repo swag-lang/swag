@@ -7,6 +7,8 @@ using Win32
 private func timerEntry(param: *void)
 {
     t := cast(*Timer) param
+    if !@getcontext()
+        @setcontext(t.context)
     t.userLambda(dref t)
 }
 
@@ -27,14 +29,22 @@ impl Timer
         Debug.assert(elapsedTimeMs > 0)
         Debug.assert(lambda != null)
         userLambda = lambda
+        context = dref @getcontext()
         try CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
     }
 
     // Release the timer
     func release(using self)
     {
-        if !handle return
-        DeleteTimerQueueTimer(null, handle, null)
+        if !handle
+            return
+
+        evt := assume CreateEventA(null, FALSE, FALSE, null)
+        defer CloseHandle(evt)
+
+        DeleteTimerQueueTimer(null, handle, evt)
+        assume WaitForSingleObject(evt, INFINITE)
+
         handle = null
     }
 }

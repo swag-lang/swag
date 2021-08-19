@@ -410,6 +410,7 @@ func __stackTrace(loc: CompilerSourceLocation)
 
 
 ////////////////////////////////////////////////////////////
+#[Swag.Safety("", false)]
 func @panic(message: string, loc: CompilerSourceLocation)
 {
     cxt := @getcontext()

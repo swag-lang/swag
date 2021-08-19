@@ -7,4 +7,5 @@ struct Timer
 {
     userLambda: func(Timer)
     handle:     TimerHandle
+    context:    Swag.Context
 }

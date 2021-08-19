@@ -13,7 +13,6 @@ func entry(t: Timer)
     var timer: Timer
     catch timer.init(10, &entry, true)
     @assert(!@err)
-    defer timer.release()
-    Threading.sleep(31)
-    //@assert(G >= 1)
+    Threading.sleep(30)
+    timer.release()
 }
