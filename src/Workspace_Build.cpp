@@ -310,7 +310,6 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             notes.push_back(note);
 
             Diagnostic diag{pendingJob->originalNode, pendingJob->originalNode->token, Utf8::format(Msg0419, AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
-            diag.remarks.push_back(id);
             sourceFile->report(diag, notes);
             continue;
         }

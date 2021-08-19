@@ -1322,7 +1322,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            explicitCastHint = Utf8::format(Rem0000, bi.badSignatureRequestedType->name.c_str());
+            explicitCastHint = Utf8::format(Hnt0025, bi.badSignatureRequestedType->name.c_str());
         break;
     }
 

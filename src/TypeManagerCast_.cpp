@@ -231,7 +231,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(Utf8::format(Msg0174, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
+                PushErrHint errh(Utf8::format(Hnt0032, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
                 Diagnostic  diag{fromNode, Utf8::format(Msg0175, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
                 context->report(diag);
                 done = true;

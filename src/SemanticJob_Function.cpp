@@ -963,7 +963,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
     {
         Diagnostic  diag{child, Utf8::format(Msg0774, concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
-        PushErrHint errh(Msg0773);
+        PushErrHint errh(Hnt0026);
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {

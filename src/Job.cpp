@@ -250,11 +250,11 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::Node:
-            kindName    = Msg0134;
+            kindName    = Note017;
             kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)
             {
-                kindName    = Msg0131;
+                kindName    = Note018;
                 kindArticle = "to ";
                 first       = first->childs.front();
                 hint        = Utf8::format(Hnt0011, first->typeInfo->getDisplayName().c_str());

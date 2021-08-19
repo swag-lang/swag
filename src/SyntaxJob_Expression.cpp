@@ -338,12 +338,12 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
 
     if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
     {
-        PushErrHint errh(Msg0261);
+        PushErrHint errh(Hnt0008);
         return error(arrayNode, Utf8::format(Msg0262, token.text.c_str()));
     }
 
     {
-        PushErrHint errh(Msg0263);
+        PushErrHint errh(Hnt0030);
         SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
     }
 
@@ -1428,7 +1428,7 @@ bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
         rangeNode->specFlags |= AST_SPEC_RANGE_EXCLUDE_UP;
 
     SWAG_CHECK(eatToken());
-    PushErrHint errh(Msg0363);
+    PushErrHint errh(Hnt0031);
     SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
     return true;
 }

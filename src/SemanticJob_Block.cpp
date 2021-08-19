@@ -669,7 +669,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     else
     {
-        PushErrHint errh(Msg0628);
+        PushErrHint errh(Hnt0006);
         return context->report({node->expression, Utf8::format(Msg0629, typeInfo->getDisplayName().c_str())});
     }
 

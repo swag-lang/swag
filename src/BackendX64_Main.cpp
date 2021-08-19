@@ -28,7 +28,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Utf8::format(Msg0056, Backend::GetOsName()));
+        module->error(Utf8::format(Note018, Backend::GetOsName()));
         return false;
     }
 }

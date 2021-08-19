@@ -216,7 +216,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     // Variable to visit
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, Msg0871));
     {
-        PushErrHint errh(Msg0357);
+        PushErrHint errh(Hnt0009);
         SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
     }
 
@@ -231,12 +231,12 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymComma));
 
             {
-                PushErrHint errh(Msg0358);
+                PushErrHint errh(Hnt0007);
                 SWAG_CHECK(verifyError(prevToken, token.id != TokenId::SymColon, Msg0872));
             }
 
             {
-                PushErrHint errh(Msg0359);
+                PushErrHint errh(Hnt0010);
                 SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             }
 
@@ -249,7 +249,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 
         {
             SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0871));
-            PushErrHint errh(Msg0360);
+            PushErrHint errh(Hnt0029);
             SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }
     }
@@ -289,7 +289,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymLeftCurly)
     {
         {
-            PushErrHint errh(Msg0361);
+            PushErrHint errh(Hnt0028);
             SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
         }
 
@@ -305,7 +305,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
             {
                 SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0874));
-                PushErrHint errh(Msg0362);
+                PushErrHint errh(Hnt0027);
                 SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
             }
         }
