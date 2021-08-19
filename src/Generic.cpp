@@ -296,7 +296,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
-    context->job->waitAllStructMethods(typeStruct);
+    context->job->waitAllStructSpecialMethods(typeStruct);
     if (context->result != ContextResult::Done)
         return true;
     context->job->waitAllStructInterfaces(typeStruct);
@@ -395,8 +395,6 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
 
     // Clone original node
     AstFuncDecl* newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
-
-    //auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     if (newFunc->genericParameters)
     {
         newFunc->flags |= AST_IS_GENERIC;

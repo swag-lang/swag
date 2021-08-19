@@ -174,7 +174,7 @@ struct SemanticJob : public Job
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
-    static void         decreaseMethodCount(TypeInfoStruct* typeInfoStruct);
+    static void         decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
     static SymbolName*  hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct);
     static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left);

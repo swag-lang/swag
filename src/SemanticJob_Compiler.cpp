@@ -488,17 +488,16 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
 
     // Decrease methods count to resolve
     set<TypeInfoStruct*> allStructs;
-    for (auto typeStructPair : block->methodsCount)
+    for (auto& typeStructPair : block->methodsCount)
     {
         // Remove the corresponding method
-        auto typeStruct = typeStructPair.first;
+        auto typeStruct = typeStructPair.typeInfo;
         allStructs.insert(typeStruct);
 
-        auto idx                 = typeStructPair.second;
-        typeStruct->methods[idx] = nullptr;
+        typeStruct->methods[typeStructPair.methodIdx] = nullptr;
 
         // Then decrease wanted method number count
-        decreaseMethodCount(typeStruct);
+        decreaseMethodCount(typeStructPair.funcNode, typeStruct);
     }
 
     // Clean array

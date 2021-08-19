@@ -315,14 +315,18 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
+void SemanticJob::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutex);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
     typeInfoStruct->cptRemainingMethods--;
-    if (!typeInfoStruct->cptRemainingMethods)
+    bool isSpecOp = funcNode->isSpecialFunctionName();
+    if (isSpecOp)
+        typeInfoStruct->cptRemainingSpecialMethods--;
+
+    if (!typeInfoStruct->cptRemainingMethods || (isSpecOp && !typeInfoStruct->cptRemainingSpecialMethods))
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 

@@ -743,9 +743,16 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<AstCompilerIfBlock*>         blocks;
     VectorNative<pair<AstNode*, SymbolName*>> symbols;
     VectorNative<TypeInfoStruct*>             interfacesCount;
-    VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
-    VectorNative<AstNode*>                    subDecls;
-    VectorNative<AstNode*>                    imports;
+
+    struct MethodCount
+    {
+        AstFuncDecl*    funcNode;
+        TypeInfoStruct* typeInfo;
+        int             methodIdx;
+    };
+    VectorNative<MethodCount> methodsCount;
+    VectorNative<AstNode*>    subDecls;
+    VectorNative<AstNode*>    imports;
 
     int numTestErrors   = 0;
     int numTestWarnings = 0;

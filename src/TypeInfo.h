@@ -509,9 +509,10 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*       opPostMove        = nullptr;
     AstFuncDecl*    opUserPostMoveFct = nullptr;
 
-    uint32_t alignOf                = 0;
-    uint32_t cptRemainingInterfaces = 0;
-    uint32_t cptRemainingMethods    = 0;
+    uint32_t alignOf                    = 0;
+    uint32_t cptRemainingInterfaces     = 0;
+    uint32_t cptRemainingMethods        = 0;
+    uint32_t cptRemainingSpecialMethods = 0;
 };
 
 struct TypeInfoAlias : public TypeInfo

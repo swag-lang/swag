@@ -477,16 +477,19 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
         if (funcNode->ownerCompilerIfBlock)
-            funcNode->ownerCompilerIfBlock->methodsCount.push_back({typeStruct, (int) typeStruct->methods.size() - 1});
+            funcNode->ownerCompilerIfBlock->methodsCount.push_back({funcNode, typeStruct, (int) typeStruct->methods.size() - 1});
+        if (funcNode->isSpecialFunctionName())
+            typeStruct->cptRemainingSpecialMethods++;
     }
 
     // Dispatch owners
     if (funcNode->genericParameters)
     {
-        Ast::visit(funcNode->genericParameters, [&](AstNode* n) {
-            n->ownerFct   = funcNode;
-            n->ownerScope = newScope;
-        });
+        Ast::visit(funcNode->genericParameters, [&](AstNode* n)
+                   {
+                       n->ownerFct   = funcNode;
+                       n->ownerScope = newScope;
+                   });
     }
 
     // Parameters

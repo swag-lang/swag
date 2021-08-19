@@ -96,6 +96,7 @@ enum class JobWaitKind
     WaitInterfacesFor,
     WaitInterfaces,
     WaitMethods,
+    WaitSpecialMethods,
     DepDone,
     WaitDepDoneExec,
 };
@@ -111,6 +112,7 @@ struct Job
     void addDependentJob(Job* job);
     void waitSymbolNoLock(SymbolName* symbol);
     void waitAllStructInterfaces(TypeInfo* typeInfo);
+    void waitAllStructSpecialMethods(TypeInfo* typeInfo);
     void waitAllStructMethods(TypeInfo* typeInfo);
     void waitStructGenerated(TypeInfo* typeInfo);
     void waitOverloadCompleted(SymbolOverload* overload);

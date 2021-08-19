@@ -479,10 +479,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         // Determine if function is generic
-        if (funcNode->parameters)
-            funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
         if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC))
             funcNode->flags |= AST_IS_GENERIC;
+        if (funcNode->parameters)
+            funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
         if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC))
             funcNode->flags |= AST_IS_GENERIC;
         if (funcNode->genericParameters)
@@ -640,7 +640,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         SWAG_ASSERT(funcNode->methodParam);
         funcNode->methodParam->attributes = typeFunc->attributes;
         auto typeStruct                   = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-        context->job->decreaseMethodCount(typeStruct);
+        context->job->decreaseMethodCount(funcNode, typeStruct);
     }
 
     resolveSubDecls(context, funcNode);
