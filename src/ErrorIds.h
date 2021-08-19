@@ -747,8 +747,8 @@
 #define Msg0748 "not all control paths of %s return a value"
 #define Msg0749 "%s missing return value"
 #define Msg0750 "'#compiler' function should have 'Swag.CompilerMsgMask' as a parameter"
-#define Msg0751
-#define Msg0752
+#define Msg0751 "function '%s' has the 'Swag.NoGeneric' attribute but seems to be generic"
+#define Msg0752 "function '%s' cannot have generic parameters because it is flagged with the 'Swag.NoGeneric' attribute"
 #define Msg0753 "function '%s' cannot have the 'Swag.Complete' attribute, this is reserved for 'opAffect'"
 #define Msg0754 "function '%s' cannot have the 'Swag.Implicit' attribute, this is reserved for 'opAffect' and 'opCast'"
 #define Msg0755 "function '%s' cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'"
@@ -766,7 +766,7 @@
 #define Msg0767 "function cannot have the 'Swag.Discardable' attribute because it returns 'void'"
 #define Msg0768 "unreachable code"
 #define Msg0769 "'retval' can only be used in a function body"
-#define Msg0770
+#define Msg0770 
 #define Msg0771 "'retval' cannot be used in a function that returns nothing"
 #define Msg0772 "missing a return value ('%s')"
 #define Msg0773 "this should be removed"

@@ -72,6 +72,9 @@ namespace Swag
     // Hardcoded for local variables
     attr Global()
 
+    #[AttrUsage(AttributeUsage.Function)]
+    attr NotGeneric()
+
     // Hardcoded for struct and variables
     attr Align(value: u8)
 

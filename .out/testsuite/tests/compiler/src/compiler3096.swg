@@ -1,3 +1,5 @@
+#global testerror
+
 struct(T) AA
 {
     x: T
@@ -6,18 +8,10 @@ struct(T) AA
 impl AA
 {
     #[Swag.NotGeneric]
-    func create(size: u8)->AA'u8
+    func create(size: T)->AA'u8
     {
         var result: retval
         result.x = size
         return result
     }
-}
-
-//#[Swag.PrintBc]
-#test
-{
-    v := AA.create(10)
-    @assert(@typeof(v.x) == u8)
-    @assert(v.x == 10)
 }

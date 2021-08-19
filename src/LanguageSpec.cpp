@@ -414,6 +414,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Callback", ATTRIBUTE_CALLBACK);
     attributesFlags.add("NoCopy", ATTRIBUTE_NO_COPY);
     attributesFlags.add("Opaque", ATTRIBUTE_OPAQUE);
+    attributesFlags.add("NotGeneric", ATTRIBUTE_NOT_GENERIC);
 }
 
 void LanguageSpec::setupNativeTypes()

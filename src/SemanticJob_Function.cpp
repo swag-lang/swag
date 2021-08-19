@@ -479,16 +479,27 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         // Determine if function is generic
-        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC))
+        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC) && !(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC))
             funcNode->flags |= AST_IS_GENERIC;
+        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC) && !(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC))
+            funcNode->flags |= AST_IS_GENERIC;
+
         if (funcNode->parameters)
+        {
             funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
-        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC))
-            funcNode->flags |= AST_IS_GENERIC;
+        }
+
         if (funcNode->genericParameters)
+        {
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Utf8::format(Msg0752, funcNode->token.text.c_str())}));
             funcNode->flags |= AST_IS_GENERIC;
+        }
+
         if (funcNode->flags & AST_IS_GENERIC)
             typeInfo->flags |= TYPEINFO_GENERIC;
+
+        if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
+            return context->report({funcNode, funcNode->token, Utf8::format(Msg0751, funcNode->token.text.c_str())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
