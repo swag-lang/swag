@@ -364,6 +364,25 @@ void Workspace::computeWaitingJobs()
         {
             if (p == pendingJob)
                 continue;
+
+            if (p->dependentJobs.list.contains(pendingJob))
+            {
+                pendingJob->waitingJob = p;
+                break;
+            }
+
+            if (p->jobsToAdd.contains(pendingJob))
+            {
+                pendingJob->waitingJob = p;
+                break;
+            }
+
+            if (p->dependentJob == pendingJob)
+            {
+                pendingJob->waitingJob = p;
+                break;
+            }
+
             if (!p->originalNode)
                 continue;
 
@@ -416,7 +435,15 @@ void Workspace::computeWaitingJobs()
             {
                 pendingJob->waitingJob = p;
                 break;
-            }
+            }        
+        }
+
+        // If we are waiting for a symbol, and there's no corresponding job, then consider this as
+        // a side effect of something else, and do not report error
+        // If this correct ?
+        if (pendingJob->waitingSymbolSolved && !pendingJob->waitingJob)
+        {
+            pendingJob->flags |= JOB_NO_PENDING_REPORT;
         }
     }
 }
