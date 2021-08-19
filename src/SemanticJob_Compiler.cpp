@@ -150,8 +150,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     {
         if (!module->waitForDependenciesDone(context->job))
         {
-            context->job->waitingId = "WAIT_DEP_DONE_EXEC";
-            context->result         = ContextResult::Pending;
+            context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
+            context->result           = ContextResult::Pending;
             return true;
         }
     }
@@ -610,7 +610,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         newJob->dependentJob = job->dependentJob;
         newJob->addDependentJob(job);
         job->jobsToAdd.push_back(newJob);
-        job->setPending(nullptr, "LOAD_FILE", node, nullptr);
+        job->setPending(nullptr, JobWaitKind::LoadFile, node, nullptr);
 
         // Creates return type
         auto ptrArray         = allocType<TypeInfoArray>();

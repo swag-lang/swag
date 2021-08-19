@@ -2948,7 +2948,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
     if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->job);
-        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
+        context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);
         return true;
     }
 

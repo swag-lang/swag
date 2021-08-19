@@ -76,6 +76,30 @@ enum class JobResult
     KeepJobAlive,
 };
 
+enum class JobWaitKind
+{
+    None,
+    SemByteCodeGenerated,
+    SemByteCodeResolved,
+    SemFullResolve,
+    SemPartialResolve,
+    MakeConcrete,
+    PendingLambdaTyping,
+    LoadFile,
+    AskBcWaitResolve,
+    MakeInline,
+    EmitInit,
+    EmitDrop,
+    EmitPostMove,
+    EmitPostCopy,
+    WaitSymbol,
+    WaitInterfacesFor,
+    WaitInterfaces,
+    WaitMethods,
+    DepDone,
+    WaitDepDoneExec,
+};
+
 struct Job
 {
     virtual JobResult execute() = 0;
@@ -92,7 +116,7 @@ struct Job
     void waitOverloadCompleted(SymbolOverload* overload);
     void waitFuncDeclFullResolve(AstFuncDecl* funcDecl);
     void waitTypeCompleted(TypeInfo* typeInfo);
-    void setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo);
+    void setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* node, TypeInfo* typeInfo);
 
     shared_mutex           executeMutex;
     shared_mutex           mutexDependent;
@@ -109,7 +133,7 @@ struct Job
     JobContext* baseContext  = nullptr;
 
     SymbolName* waitingSymbolSolved = nullptr;
-    const char* waitingId           = nullptr;
+    JobWaitKind waitingKind         = JobWaitKind::None;
     AstNode*    waitingIdNode       = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
     Job*        waitingJob          = nullptr;

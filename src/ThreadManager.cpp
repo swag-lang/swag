@@ -350,7 +350,7 @@ Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
 
-    job->waitingId = nullptr;
+    job->waitingKind = JobWaitKind::None;
 
     if (job->flags & JOB_IS_OPT)
         jobsOptInThreads++;

@@ -370,7 +370,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
-            job->setPending(nullptr, "AST_SEM_BYTECODE_GENERATED", node, nullptr);
+            job->setPending(nullptr, JobWaitKind::SemByteCodeGenerated, node, nullptr);
         }
 
         node->allocateExtension();
@@ -425,7 +425,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         {
             SWAG_ASSERT(node->extension && node->extension->byteCodeJob);
             node->extension->byteCodeJob->dependentJobs.add(job);
-            job->setPending(nullptr, "ASKBC_WAIT_RESOLVED", node, nullptr);
+            job->setPending(nullptr, JobWaitKind::AskBcWaitResolve, node, nullptr);
             return;
         }
     }
@@ -632,7 +632,7 @@ JobResult ByteCodeGenJob::execute()
             }
 
             ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-            waitingId     = "AST_SEM_BYTECODE_GENERATED";
+            waitingKind   = JobWaitKind::SemByteCodeGenerated;
             waitingIdNode = node;
             node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
@@ -713,7 +713,7 @@ JobResult ByteCodeGenJob::execute()
             }
 
             ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-            waitingId     = "AST_SEM_BYTECODE_RESOLVED";
+            waitingKind     = JobWaitKind::SemByteCodeResolved;
             waitingIdNode = node;
             node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;

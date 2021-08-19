@@ -58,7 +58,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
                 if (itJob != mapPerSeg.concreteTypesJob.end())
                 {
                     itJob->second->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
+                    context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete, nullptr, typeInfo);
                 }
             }
         }
@@ -578,9 +578,9 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
     {
-        SWAG_ASSERT(context->result == ContextResult::Done || !strcmp(context->baseJob->waitingId, "MAKE_CONCRETE_SHOULD_WAIT"));
+        SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::MakeConcrete);
         job->dependentJob = context->baseJob;
-        context->baseJob->setPending(nullptr, "MAKE_CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
+        context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete, nullptr, typeInfo);
         context->baseJob->jobsToAdd.push_back(job);
     }
     else

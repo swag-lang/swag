@@ -268,8 +268,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             node = node->parent;
 
         // Is there a dependency cycle ?
-        bool isCycle = false;
-        auto depJob  = pendingJob->waitingJob;
+        bool      isCycle = false;
+        auto      depJob  = pendingJob->waitingJob;
+        set<Job*> done;
         while (depJob)
         {
             if (depJob == pendingJob)
@@ -278,6 +279,10 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                 break;
             }
 
+            if (done.find(depJob) != done.end())
+                break;
+
+            done.insert(depJob);
             depJob = depJob->waitingJob;
         }
 
@@ -435,7 +440,7 @@ void Workspace::computeWaitingJobs()
             {
                 pendingJob->waitingJob = p;
                 break;
-            }        
+            }
         }
 
         // If we are waiting for a symbol, and there's no corresponding job, then consider this as
@@ -453,11 +458,10 @@ void Workspace::checkPendingJobs()
     if (g_ThreadMgr.waitingJobs.empty())
         return;
 
-    set<SymbolName*> doneSymbols;
-    set<Utf8>        doneIds;
     computeWaitingJobs();
 
     // Collect unsolved jobs
+    set<SymbolName*>   doneSymbols;
     vector<PendingJob> pendingJobs;
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
@@ -488,7 +492,7 @@ void Workspace::checkPendingJobs()
         }
 
         // No need to raise multiple times an error for the same id
-        Utf8 id = pendingJob->waitingId;
+        Utf8 id = Utf8::format("[kind: %d]", pendingJob->waitingKind);
         if (pendingJob->waitingIdNode)
         {
             id += " ";
@@ -502,14 +506,6 @@ void Workspace::checkPendingJobs()
         {
             id += " ";
             id += pendingJob->waitingIdType->getDisplayName();
-        }
-
-        if (!id.empty())
-        {
-            //Utf8 doneId = Utf8::format("%s%llx%llx", (size_t) pendingJob->waitingIdNode, (size_t) pendingJob->waitingIdType);
-            /*if (doneIds.find(id) != doneIds.end())
-                continue;
-            doneIds.insert(id);*/
         }
 
         PendingJob pj;
