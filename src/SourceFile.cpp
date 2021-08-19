@@ -315,8 +315,11 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
         {
-            OS::errorBox("[Developer Mode]", "Error raised !");
-            return false;
+            if (!OS::isDebuggerAttached())
+            {
+                OS::errorBox("[Developer Mode]", "Error raised !");
+                return false;
+            }
         }
     }
 

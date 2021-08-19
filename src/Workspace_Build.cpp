@@ -311,7 +311,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         // If this job is waiting for another job, then we will raise an error for the waiting job only
-        if (pendingJob->waitingJob && !(pendingJob->waitingJob->flags & JOB_NO_PENDING_REPORT))
+        if (pendingJob->waitingJob)
         {
             pendingJob->flags |= JOB_NO_PENDING_REPORT;
             continue;

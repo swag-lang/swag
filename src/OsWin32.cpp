@@ -593,6 +593,11 @@ namespace OS
         ExitProcess(code);
     }
 
+    bool isDebuggerAttached()
+    {
+        return IsDebuggerPresent() ? true : false;
+    }
+
     void assertBox(const char* expr, const char* file, int line)
     {
         char msg[2048];

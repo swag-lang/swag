@@ -17,6 +17,7 @@ namespace OS
     void  exit(int code);
     void* loadLibrary(const char* name);
     void* getProcAddress(void* handle, const char* name);
+    bool  isDebuggerAttached();
 
     Utf8 getLastErrorAsString();
     void errorBox(const char* expr, const char* title);
