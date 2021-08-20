@@ -1,11 +1,14 @@
-/*//#[Swag.PrintBc]
-func(x: string) toto()
+#global testerror
+
+//#[Swag.PrintBc]
+func(x: u8) toto()
 {
+    @print(x)
 }
 
 
 //#[Swag.PrintBc]
 #test
 {
-	toto'string()
-}*/
+	toto'u8()
+}

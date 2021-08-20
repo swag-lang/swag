@@ -606,7 +606,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     continue;
                 }
 
-                if (firstChild->flags & AST_VALUE_COMPUTED)
+                if (firstChild->flags & AST_VALUE_COMPUTED && !(firstChild->flags & AST_VALUE_IS_TYPEINFO))
                     isValue = true;
 
                 if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && !isValue)
