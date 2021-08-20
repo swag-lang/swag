@@ -224,11 +224,18 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     // First variable
     AstNodeKind kind;
     if (token.id == TokenId::KwdConst)
+    {
         kind = AstNodeKind::ConstDecl;
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(Msg0622, token.text.c_str())));
+    }
     else
+    {
         kind = AstNodeKind::VarDecl;
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(Msg0315, token.text.c_str())));
+    }
 
-    SWAG_CHECK(eatToken());
     SWAG_CHECK(doVarDecl(parent, result, kind));
     return true;
 }

@@ -1,9 +1,6 @@
-
-
-
+#global testerror
 //#[Swag.PrintBc]
-#global testerror;
 #test
 {
-	let d: s32;
+	const d: s32
 }

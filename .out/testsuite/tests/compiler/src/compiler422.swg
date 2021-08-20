@@ -1,10 +1,7 @@
-
-
-
-//#[Swag.PrintBc]
 #global testerror
+//#[Swag.PrintBc]
 #test
 {
-	let d: s32 = 666;
-	let c: *s32 = &d;
+	const d: s32 = 666;
+	const c: *s32 = &d;
 }

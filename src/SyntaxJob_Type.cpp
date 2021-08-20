@@ -328,6 +328,16 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
         }
 
+        if (g_TokenFlags[(int) token.id] & TOKEN_SYM &&
+            token.id != TokenId::SymComma &&
+            token.id != TokenId::SymLeftCurly &&
+            token.id != TokenId::SymAsterisk)
+        {
+            Diagnostic diag{sourceFile, token, Utf8::format(Msg0343, token.text.c_str())};
+            Diagnostic note{sourceFile, leftSquareToken, Msg0198, DiagnosticLevel::Note};
+            return sourceFile->report(diag, &note);
+        }
+
         if (token.id == TokenId::SymComma)
         {
             // Special error if inside a function call parameter
