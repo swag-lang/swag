@@ -1,6 +1,3 @@
-;
-;
-
 #[Swag.ConstExpr]
 func main ()-> u32
 {

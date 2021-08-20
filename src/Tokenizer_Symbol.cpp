@@ -99,16 +99,8 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
         return true;
 
     case '~':
-        c = getCharNoSeek(offset);
-        if (c == '=')
-        {
-            token.id = TokenId::SymTildeEqual;
-            treatChar(c, offset);
-        }
-        else
-        {
-            token.id = TokenId::SymTilde;
-        }
+        c        = getCharNoSeek(offset);
+        token.id = TokenId::SymTilde;
         return true;
 
     case '=':
