@@ -1,6 +1,3 @@
-
-#global testerror
-
 struct(T) Point
 {
 	x: T = 5
@@ -12,5 +9,5 @@ alias Point2f = Point'f32
 //#[Swag.PrintBc]
 #test
 {
-	var pt : Point2f(1.0, 1)
+	var pt : Point2f{1.0, 1}
 }

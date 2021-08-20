@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 
 struct(T) Point
 {
@@ -6,4 +6,4 @@ struct(T) Point
 	y: T = 10
 }
 
-type Point2f: Point
+alias Point2f = Point

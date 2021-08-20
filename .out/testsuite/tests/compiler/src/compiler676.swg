@@ -9,5 +9,5 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt : Point(1.0, 1.0, true)
+	var pt : Point{1.0, 1.0, true}
 }

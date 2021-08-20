@@ -6,4 +6,4 @@ struct(T) Point
 	y: T = 10
 }
 
-type Point2f: Point!bool
+alias Point2f = Point'bool

@@ -11,5 +11,5 @@ alias Point2f = Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt : Point2f(1.0, 2.0)
+	var pt : Point2f{1.0, 2.0}
 }
