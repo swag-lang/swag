@@ -418,6 +418,13 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return sourceFile->report(diag, &note);
     }
 
+    if (token.id == TokenId::SymLeftParen)
+    {
+        Diagnostic diag{sourceFile, token, Utf8::format(Msg0343, token.text.c_str())};
+        Diagnostic note{sourceFile, token, Note020, DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
+    }
+
     // Generic error
     return error(token, Utf8::format(Msg0343, token.text.c_str()));
 }

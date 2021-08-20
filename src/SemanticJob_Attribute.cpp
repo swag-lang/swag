@@ -115,7 +115,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         auto       nakedName = AstNode::getKindName(checkNode);
         Diagnostic diag{oneAttribute, Utf8::format(Msg0583, oneAttribute->token.text.c_str(), specificMsg)};
-        Diagnostic note1{checkNode, checkNode->token, Utf8::format(Msg0584, nakedName.c_str()), DiagnosticLevel::Note};
+        Diagnostic note1{checkNode, checkNode->token, Utf8::format(Note019, nakedName.c_str()), DiagnosticLevel::Note};
         Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Msg0587, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }

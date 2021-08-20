@@ -1,970 +1,975 @@
-#define Msg0488 "%s '%s' cannot be dereferenced like a pointer"
-#define Msg0013 "%s '%s' cannot be referenced in that context because it's not an rvalue"
-#define Msg0097 "%s '%s' has not been used as the first parameter to call '%s'"
-#define Msg0083 "%s '%s' is deprecated"
-#define Msg0420 "%s '%s' is waiting for "
-#define Msg0421 "%s '%s' to be solved"
-#define Msg0747 "%s cannot be public"
-#define Msg0749 "%s missing return value"
-#define Msg0505 "%s overflow, maximum size is 0x%I64x bytes"
-#define Msg0606 "%s should return a value"
-#define Msg0834 "%s size overflow"
-#define Msg0234 "'#ast' expression is not 'string' ('%s' provided)"
-#define Msg0255 "'#callerfunction' can only be set in a function parameter declaration"
-#define Msg0254 "'#callerlocation' can only be set in a function parameter declaration"
-#define Msg0750 "'#compiler' function should have 'Swag.CompilerMsgMask' as a parameter"
-#define Msg0268 "'#dependencies' can only be declared at the file level"
-#define Msg0232 "'#dependencies' can only be used in the module configuration file"
-#define Msg0256 "'#function' can only be called inside a function"
-#define Msg0283 "'#gettag' default value expected, found a type"
-#define Msg0245 "'#gettag' name expected, found a type"
-#define Msg0250 "'#gettag' name value cannot be evaluated at compile time"
-#define Msg0251 "'#gettag' parameter should be a string, but is '%s'"
-#define Msg0370 "'#global export' already defined"
-#define Msg0371 "'#global foreignlib' should be followed by a string"
-#define Msg0374 "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)"
-#define Msg0375 "'#global testwarning' is invalid outside a test module (in the './tests' folder of the workspace)"
-#define Msg0369 "'#global' should be defined first, at the top of the file"
-#define Msg0376 "'#global' unexpected token '%s'"
-#define Msg0248 "'#hastag' name cannot be evaluated at compile time"
-#define Msg0249 "'#hastag' parameter should be a string ('%s' provided)"
-#define Msg0378 "'#import' can only be declared at the top level scope"
-#define Msg0377 "'#import' can only be used in the module configuration file"
-#define Msg0235 "'#import' can only be used inside a '#dependencies' block"
-#define Msg0336 "'#import' has a specific build number ('%d') but undefined revision ('?')"
-#define Msg0335 "'#import' has a specific revision ('%d') but undefined major version ('?')"
-#define Msg0284 "'#import' location already defined as '%s'"
-#define Msg0380 "'#import' location defined twice"
-#define Msg0379 "'#import' should be followed by a string"
-#define Msg0286 "'#import' version already defined as '%s'"
-#define Msg0382 "'#import' version defined twice"
-#define Msg0288 "'#import' version invalid format"
-#define Msg0243 "'#load' parameter should be of type string ('%s' provided)"
-#define Msg0239 "'#macro' can only be used inside a 'Swag.Macro' function"
-#define Msg0739 "'#main' directive already defined"
-#define Msg0366 "'#mixin' empty replacement block"
-#define Msg0365 "'#mixin' invalid replacement '%s'"
-#define Msg0364 "'#mixin' replacement block can only be used inside a breakable statement"
-#define Msg0384 "'#placeholder' can only be declared in a top level scope"
-#define Msg0385 "'#placeholder' should be followed by an identifier"
-#define Msg0233 "'#selectif' expression is not 'bool' ('%s' provided)"
-#define Msg0368 "'#semerror' cannot be in a '#if' block"
-#define Msg0241 "'#semerror' has not triggered an error"
-#define Msg0367 "'#semerror' is invalid outside a test module (in the './tests' folder of the workspace)"
-#define Msg0744 "'#test' functions can only be used in a test module (in the './tests' folder of the workspace)"
-#define Msg0908 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
-#define Msg0224 "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'"
-#define Msg0350 "'%s' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public"
-#define Msg0535 "'%s' can only be used before a call that can raise errors"
-#define Msg0139 "'%s' can only be used before a function call, and '%s' is %s"
-#define Msg0138 "'%s' can only be used inside a function marked with 'throw', and '%s' is not"
-#define Msg0842 "'%s' can only be used inside a function"
-#define Msg0089 "'%s' cannot be evaluated at compile time"
-#define Msg0137 "'%s' cannot be used inside a struct special function"
-#define Msg0788 "'%s' cannot have 'null' as first parameter"
-#define Msg0498 "'%s' count parameter should be an integer, but is '%s'"
-#define Msg0495 "'%s' first parameter should be a pointer, but is '%s'"
-#define Msg0570 "'%s' operation not allowed on type 'any'"
-#define Msg0497 "'%s' second parameter should be a pointer to type '%s', but points to '%s'"
-#define Msg0496 "'%s' second parameter should be a pointer, but is '%s'"
-#define Msg0853 "'%s' should be immediatly followed by an identifier"
-#define Msg0787 "'%s' should have a pointer as a first parameter"
-#define Msg0225 "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'"
-#define Msg0427 "'@acos' called with invalid value '%.3f'"
-#define Msg0741 "'@alias' names are not all contiguous in function '%s' (missing '@alias%u')"
-#define Msg0275 "'@alias' variable name should be followed by a number"
-#define Msg0426 "'@asin' called with invalid value '%.3f'"
-#define Msg0800 "'@countof' cannot be used on a tuple type"
-#define Msg0801 "'@countof' cannot be used on type '%s'"
-#define Msg0797 "'@dataof' cannot be applied to expression of type '%s'"
-#define Msg0796 "'@dataof' cannot be used on a tuple type"
-#define Msg0630 "'@index' can only be used inside a breakable loop"
-#define Msg0490 "'@init' count parameter should be an integer, but is '%s'"
-#define Msg0489 "'@init' first parameter should be a pointer, but is '%s'"
-#define Msg0428 "'@log' called with invalid value '%.3f'"
-#define Msg0424 "'@log10' called with invalid value '%.3f'"
-#define Msg0423 "'@log2' called with invalid value '%.3f'"
-#define Msg0790 "'@mkany' cannot have 'null' as first parameter"
-#define Msg0792 "'@mkany' should have a 'typeinfo' or a type value as a second parameter ('%s' provided)"
-#define Msg0789 "'@mkany' should have a pointer as a first parameter"
-#define Msg0784 "'@mkcallback' should have a lambda value as a first parameter"
-#define Msg0783 "'@mkforeign' should have a 'const *void' as a second parameter"
-#define Msg0782 "'@mkforeign' should have a lambda type as a first parameter"
-#define Msg0793 "'@mkinterface' should have a one dimension pointer or a struct as a first parameter"
-#define Msg0794 "'@mkinterface' should have a typeinfo as a second parameter"
-#define Msg0795 "'@mkinterface' should have an interface as a third parameter"
-#define Msg0417 "'@power' called with invalid values '%.3f' and '%.3f'"
-#define Msg0806 "'@spread' can only be called as a function parameter"
-#define Msg0425 "'@sqrt' called with invalid value '%.3f'"
-#define Msg0596 "'Swag.Align' value should be a power of two ('%d' provided)"
-#define Msg0617 "'Swag.Complete' attribute cannot be used on a switch with type '%s'"
-#define Msg0599 "'Swag.ExportType' invalid value '%s'"
-#define Msg0594 "'Swag.Optim' invalid value '%s'"
-#define Msg0595 "'Swag.Pack' value should be 0 or a power of two ('%d' provided)"
-#define Msg0593 "'Swag.Safety' invalid value '%s'"
-#define Msg0028 "'Swag.Strict' attribute can only be used on a type alias"
-#define Msg0159 "'Swag.Tls' and 'Swag.Compiler' attributes are exclusive"
-#define Msg0632 "'break' can only be used inside a breakable block"
-#define Msg0865 "'case' or 'default' expected"
-#define Msg0869 "'case' statement is empty"
-#define Msg0848 "'catch' can only be used inside a function"
-#define Msg0637 "'continue' can only be used inside a breakable loop"
-#define Msg0866 "'default' already defined"
-#define Msg0616 "'default' is invalid in a switch marked with 'Swag.Complete'"
-#define Msg0634 "'fallthrough' can only be used inside a 'case' block"
-#define Msg0633 "'fallthrough' can only be used inside a 'switch' block"
-#define Msg0635 "'fallthrough' cannot be used in the last 'case' of the switch"
-#define Msg0438 "'for' is invalid for an enum implementation block"
-#define Msg0559 "'move' cannot be applied to a constant expression"
-#define Msg0075 "'opVisit' should have the 'Swag.Macro' attribute"
-#define Msg0791 "'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')"
-#define Msg0769 "'retval' can only be used in a function body"
-#define Msg0771 "'retval' cannot be used in a function that returns nothing"
-#define Msg0334 "'self' can only be used inside a struct or 'impl' block"
-#define Msg0406 "'self' can only be used inside an 'impl' block"
-#define Msg0306 "'slice' should be declared as immutable with 'const'"
-#define Msg0392 "'swag' namespace is reserved by the compiler"
-#define Msg0854 "'throw' can only be used inside a function"
-#define Msg0692 "'using' cannot be used on a variable of type '%s'"
-#define Msg0691 "'using' cannot be used on an enum variable"
-#define Msg0695 "'using' cannot be used on type %s"
-#define Msg0668 "'using' is invalid on a constant"
-#define Msg0669 "'using' on a field is only valid for a struct type ('%s' provided)"
-#define Msg0451 "'using' on a member is invalid in an interface definition"
-#define Msg0689 "'using' on a variable cannot be used in '%s' scope"
-#define Msg0453 "'var' is not necessary to declare a field"
-#define Msg0399 "'{' is expected instead of '%s'"
-#define Msg0901 ", found identifier '%s' "
-#define Msg0900 ", found symbol '%s' "
-#define Msg0903 ", found token '%s' "
-#define Msg0902 ", found type '%s' "
-#define Msg0904 "; did you miss 'var' or 'const' to declare a global variable ?"
-#define Msg0259 "<foreign code>"
-#define Msg0215 "[safety] '<<' shift operand value on type '%s' is greater than '%d'"
-#define Msg0216 "[safety] '>>' shift operand value on type '%s' is greater than '%d'"
-#define Msg0219 "[safety] '@abs' integer overflow on type '%s'"
-#define Msg0533 "[safety] '@cstrlen' pointer is null"
-#define Msg0531 "[safety] '@memcmp' first pointer is null"
-#define Msg0532 "[safety] '@memcmp' second pointer is null"
-#define Msg0526 "[safety] '@memcpy' destination pointer is null"
-#define Msg0527 "[safety] '@memcpy' source pointer is null"
-#define Msg0528 "[safety] '@memmove' destination pointer is null"
-#define Msg0529 "[safety] '@memmove' source pointer is null"
-#define Msg0530 "[safety] '@memset' destination pointer is null"
-#define Msg0229 "[safety] bad slicing, lower bound is greater than upper bound"
-#define Msg0230 "[safety] bad slicing, upper bound is out of range"
-#define Msg0208 "[safety] cast from a negative value of type '%s' to unsigned type '%s'"
-#define Msg0859 "[safety] dereferencing a null pointer"
-#define Msg0221 "[safety] division by zero"
-#define Msg0222 "[safety] index out of range"
-#define Msg0211 "[safety] integer overflow during '*' operation on type '%s'"
-#define Msg0214 "[safety] integer overflow during '*=' operation on type '%s'"
-#define Msg0209 "[safety] integer overflow during '+' operation on type '%s'"
-#define Msg0212 "[safety] integer overflow during '+=' operation on type '%s'"
-#define Msg0210 "[safety] integer overflow during '-' operation on type '%s'"
-#define Msg0213 "[safety] integer overflow during '-=' operation on type '%s'"
-#define Msg0217 "[safety] integer overflow during '<<' operation on type '%s'"
-#define Msg0218 "[safety] integer overflow during '>>' operation on type '%s'"
-#define Msg0220 "[safety] integer overflow when taking the negative value of type '%s'"
-#define Msg0228 "[safety] invalid dynamic cast, types mismatch"
-#define Msg0207 "[safety] truncated bits when casting expression from '%s' to '%s'"
-#define Msg0349 "a %s definition should appear at file or namespace scope"
-#define Msg0407 "a method can only be declared inside a struct 'impl' block"
-#define Msg0301 "affect not allowed from an array"
-#define Msg0571 "affect not allowed on %s '%s'"
-#define Msg0572 "affect not allowed, '%s' is %s"
-#define Msg0566 "affect operation not allowed"
-#define Msg0564 "affect operation not allowed, left expression is const"
-#define Msg0567 "affect operation not allowed, left expression is not a variable"
-#define Msg0565 "affect operation not allowed, left expression is not an l-value"
-#define Msg0574 "affect to tuple is not possible because right expression is not compatible"
-#define Msg0027 "alias can only be used with a type or an identifier"
-#define Msg0030 "alias cannot be used on %s"
-#define Msg0025 "alias is public but '%s' is not"
-#define Msg0780 "alias name '%s' is unused and should be removed"
-#define Msg0814 "alignement cannot be computed because expression is generic"
-#define Msg0115 "ambiguous resolution of generic %s '%s'"
-#define Msg0116 "ambiguous resolution of symbol '%s'"
-#define Msg0277 "an '@alias' number should be in the range [0, 31] ('%u' provided)"
-#define Msg0310 "an enum variable should be initialized"
-#define Msg0247 "an identifier marked with '#scopefct' can only be used inside a function"
-#define Msg0246 "an identifier marked with '#scopefct' cannot be used in a scope"
-#define Msg0010 "an interface can only be compared to 'null'"
-#define Msg0676 "an interface can only contain members of type 'lambda' ('%s' provided)"
-#define Msg0485 "array access type should be integer, but is '%s'"
-#define Msg0021 "array dimension cannot be evaluated at compile time"
-#define Msg0023 "array dimension is 0"
-#define Msg0022 "array dimension should be integer, but is '%s'"
-#define Msg0840 "array size should be defined before the type name"
-#define Msg0293 "attempt to unpack '%u' variables, but '%s' contains only '%u' field(s)"
-#define Msg0591 "attribute '%s' assigned twice to '%s' ('Swag.AttrMulti' is not present in the declaration of '%s')"
-#define Msg0583 "attribute '%s' can only be applied to %s"
-#define Msg0588 "attribute '%s' cannot be applied to %s"
-#define Msg0586 "attribute '%s' cannot be used in that context"
-#define Msg0600 "attribute '%s' does not have the 'File' usage, and cannot be used with '#global'"
-#define Msg0297 "attribute 'Swag.Discardable' can only be used on a lambda variable (provided type is '%s')"
-#define Msg0602 "attribute parameter cannot be evaluated at compile time"
-#define Msg0136 "back ticked identifier can only be used inside a 'Swag.Macro' function or an '#inline' block"
-#define Msg0135 "backtick can only be used inside an inline/macro block"
-#define Msg0054 "bad generic parameter '%d' for %s (type expected, value provided)"
-#define Msg0057 "bad generic parameter '%d' for %s (value expected, type provided)"
-#define Msg0476 "bad slicing, lower bound '%I64u' is greater than upper bound '%I64u'"
-#define Msg0477 "bad slicing, upper bound '%I64u' is out of range"
-#define Msg0655 "bad type for first parameter of interface function implementation ('self' expected, '%s' provided)"
-#define Msg0679 "bad type for first parameter of interface member ('self' expected, '%s' provided)"
-#define Msg0070 "bad type of generic parameter '%d' for %s ('%s' expected, '%s' provided)"
-#define Msg0053 "bad type of parameter '%d' for %s ('%s' expected, '%s' provided)"
-#define Msg0050 "bad type of parameter '%d' for %s ('%s' is expected for field '%s', '%s' provided)"
-#define Msg0047 "bad type of parameter '%d' for %s, generic type '%s' is assigned to '%s' ('%s' provided)"
-#define Msg0833 "bit inversion operation not allowed on type '%s'"
-#define Msg0434 "bytecode execution, "
-#define Msg0015 "bytecode stack overflow (maximum stack size is '--stack-size:%s')"
-#define Msg0076 "call level limit reached (maximum level is '--max-recurse:%d')"
-#define Msg0786 "callback return type '%s' not supported"
-#define Msg0785 "callback type not supported, too many parameters (maximum is '%d')"
-#define Msg0227 "cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'"
-#define Msg0226 "cannot access by index because special function 'opIndex' cannot be found in type '%s'"
-#define Msg0049 "cannot access environment variable 'PATH'"
-#define Msg0509 "cannot access file '%s'"
-#define Msg0051 "cannot add '%s' to the 'PATH' environment variable"
-#define Msg0569 "cannot affect an expression of type 'void'"
-#define Msg0029 "cannot alias multiple variables"
-#define Msg0160 "cannot assign a function pointer to a constant"
-#define Msg0032 "cannot bitcast from type '%s' (should be native integer, char or float)"
-#define Msg0033 "cannot bitcast to a type with a bigger size ('%s' from '%s')"
-#define Msg0493 "cannot call '@postcopy' on type '%s' because it is marked with the 'Swag.NoCopy' attribute"
-#define Msg0105 "cannot call empty function '%s'"
-#define Msg0200 "cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'"
-#define Msg0177 "cannot cast from '%s' to '%s'"
-#define Msg0418 "cannot cast from immutable type '%s' to mutable '%s'"
-#define Msg0907 "cannot cast from type '%s' to pointer type; only type 'uint' is accepted"
-#define Msg0175 "cannot cast implicitly from '%s' to '%s'"
-#define Msg0203 "cannot cast, not enough initializers ('%d' expected, '%d' provided)"
-#define Msg0204 "cannot cast, too many initializers ('%d' expected, '%d' provided)"
-#define Msg0176 "cannot cast, type '%s' does not implement interface '%s'"
-#define Msg0059 "cannot convert slice of type '%s' to a constant expression"
-#define Msg0058 "cannot convert type '%s' to a constant expression"
-#define Msg0537 "cannot convert typeinfo '%s' to runtime typeinfo"
-#define Msg0045 "cannot create '%s' process (::CreatePipe)"
-#define Msg0311 "cannot create constant because type '%s' is generic"
-#define Msg0604 "cannot create directory '%s'"
-#define Msg0046 "cannot create process '%s'"
-#define Msg0312 "cannot create variable because type '%s' is generic"
-#define Msg0351 "cannot declare a %s symbol in a private scope (%s '%s' is private)"
-#define Msg0279 "cannot decompose a tuple in %s"
-#define Msg0709 "cannot deduce flag value of '%s' because previous value is not power of two"
-#define Msg0308 "cannot deduce type from 'null'"
-#define Msg0603 "cannot delete file '%s'"
-#define Msg0486 "cannot dereference a 'void' pointer"
-#define Msg0482 "cannot dereference a tuple type"
-#define Msg0481 "cannot dereference type '%s'"
-#define Msg0483 "cannot dereference type '%s'"
-#define Msg0094 "cannot discard a function call that returns nothing"
-#define Msg0111 "cannot discard a function call that returns nothing"
-#define Msg0280 "cannot evaluate constant expression of type '%s' at compile time"
-#define Msg0281 "cannot evaluate constant expression of type '%s' at compile time, because struct is not marked with 'Swag.ConstExpr'"
-#define Msg0090 "cannot evaluate function parameter at compile time (type is '%s')"
-#define Msg0321 "cannot evaluate tuple value at compile time because one of its members is not 'Swag.ConstExpr'"
-#define Msg0810 "cannot evaluate type in that context because it's generic"
-#define Msg0775 "cannot expand '%s' because this is recursive"
-#define Msg0781 "cannot expand '%s' in global scope because it contains sub declarations, this is not (yet?) supported"
-#define Msg0510 "cannot fetch file '%s' for module dependency '%s'"
-#define Msg0508 "cannot find '%s' in module folder '%s'"
-#define Msg0244 "cannot find file '%s'"
-#define Msg0079 "cannot find special function '%s' in '%s'"
-#define Msg0673 "cannot find structure member '%s' to compute variable relocation"
-#define Msg0680 "cannot initialize an interface member"
-#define Msg0038 "cannot instantiate generic %s '%s' with an untyped float, you need to specify a type\n"
-#define Msg0037 "cannot instantiate generic %s '%s' with an untyped integer, you need to specify a type\n"
-#define Msg0042 "cannot instantiate generic function '%s', missing contextual types replacements"
-#define Msg0041 "cannot instantiate generic function '%s', missing generic parameters"
-#define Msg0039 "cannot instantiate generic struct '%s', missing contextual types replacements"
-#define Msg0043 "cannot instantiate variable because type '%s' is generic"
-#define Msg0832 "cannot negate number '%I64d' because '%I64u' is not in the range of 's64'"
-#define Msg0830 "cannot negate number '%d' because '%u' is not in the range of 's16'"
-#define Msg0831 "cannot negate number '%d' because '%u' is not in the range of 's32'"
-#define Msg0829 "cannot negate number '%d' because '%u' is not in the range of 's8'"
-#define Msg0223 "cannot open #load file '%s'"
-#define Msg0524 "cannot open file '%s' for writing"
-#define Msg0502 "cannot open file '%s'"
-#define Msg0091 "cannot reference 'Swag.Compiler' %s '%s' from runtime %s"
-#define Msg0107 "cannot reference 'Swag.Compiler' function '%s' from runtime function '%s'"
-#define Msg0108 "cannot reference 'Swag.Test' function '%s' from '%s'"
-#define Msg0101 "cannot reference 'opDrop' special function (use '@drop' instead)"
-#define Msg0100 "cannot reference 'opInit' special function (use '@init' instead)"
-#define Msg0103 "cannot reference 'opPostCopy' special function (use '@postcopy' instead)"
-#define Msg0104 "cannot reference 'opPostMove' special function (use '@postmove' instead)"
-#define Msg0060 "cannot reference a compiler constant at runtime"
-#define Msg0012 "cannot reference a type expression"
-#define Msg0206 "cannot reference variable '%s' because it's in another stack frame"
-#define Msg0682 "cannot relocate an interface member"
-#define Msg0516 "cannot resolve dependency to module '%s' because of two different major versions ('%d' and '%d')"
-#define Msg0518 "cannot resolve dependency to module '%s', version '%s' cannot be found at location '%s'"
-#define Msg0258 "cannot resolve foreign function call to '%s'"
-#define Msg0133 "cannot resolve identifier '%s'"
-#define Msg0681 "cannot resolve interface because type '%s' is generic"
-#define Msg0513 "cannot resolve module dependency '%s' ('location' is empty)"
-#define Msg0672 "cannot resolve struct '%s' because type '%s' is generic"
-#define Msg0004 "cannot select function '%s' because '%s' has failed"
-#define Msg0048 "cannot set environment variable 'SWAG_FOLDER' to '%s'\n"
-#define Msg0320 "cannot slice '%s' because special function 'opSlice' cannot be found in type '%s'"
-#define Msg0465 "cannot take address of %s"
-#define Msg0471 "cannot take address of a macro"
-#define Msg0472 "cannot take address of a mixin"
-#define Msg0473 "cannot take address of an inline function"
-#define Msg0469 "cannot take address of constant"
-#define Msg0114 "cannot take the address of a function with call parameters"
-#define Msg0161 "cannot transform type '%s' to a constant array because 'opCount' returns '0'"
-#define Msg0162 "cannot transform type '%s' to a constant array because 'opSlice' returns an empty slice"
-#define Msg0292 "cannot unpack '%s' because it does not contain any field"
-#define Msg0291 "cannot unpack type '%s' which is not a struct"
-#define Msg0117 "cannot use 'using' on two variables with the same type"
-#define Msg0337 "cannot use a range in a switch with an expression"
-#define Msg0332 "cannot use operator 'orelse' on type '%s'"
-#define Msg0624 "cannot visit a tuple"
-#define Msg0627 "cannot visit a variadic type by pointer"
-#define Msg0636 "cannot visit an enum by pointer"
-#define Msg0525 "cannot write to file '%s'"
-#define Msg0722 "command line error: argument '%s' should be followed by '%s'"
-#define Msg0724 "command line error: argument '%s' should be followed by 'true' or 'false' ('%s')"
-#define Msg0725 "command line error: argument '%s' should be followed by a string"
-#define Msg0728 "command line error: argument '%s' should be followed by an integer value ('%s')"
-#define Msg0727 "command line error: argument '%s' should be followed by an integer value"
-#define Msg0519 "command line error: invalid --stack-size value (%s), valid range is [%s, %s]"
-#define Msg0520 "command line error: invalid abi '%s' for x64 backend"
-#define Msg0523 "command line error: invalid arch '%s' for x64 backend"
-#define Msg0720 "command line error: invalid argument '%s'"
-#define Msg0522 "command line error: invalid os '%s' for x64 backend"
-#define Msg0521 "command line error: invalid vendor '%s' for x64 backend"
-#define Msg0001 "compare operation not allowed on type '%s'"
-#define Msg0007 "comparison operations are invalid on tuple types"
-#define Msg0238 "compiler assertion failed"
-#define Msg0737 "compiler instruction '%s' is invalid as a default parameter value"
-#define Msg0743 "compiler special function cannot have the 'Swag.Inline' attribute"
-#define Msg0405 "const before a function parameter name can only be followed by 'self'"
-#define Msg0305 "constant should be explicitly initialized"
-#define Msg0298 "constant should be initialized"
-#define Msg0805 "constant value should be unsigned, but is '%I64d'"
-#define Msg0802 "constant value should be unsigned, but is '%d'"
-#define Msg0231 "copy semantic is forbidden for type '%s' because of 'Swag.NoCopy' attribute"
-#define Msg0557 "dependency module '%s' cannot be found in that workspace"
-#define Msg0511 "dependency module folder '%s' does not exist"
-#define Msg0699 "dimension of enum array type '%s' should be specified"
-#define Msg0150 "division by zero"
-#define Msg0129 "during '#checkif' validation of function call"
-#define Msg0128 "during '#selectif' validation of function call"
-#define Msg0112 "during generic expansion"
-#define Msg0118 "during inline expansion"
-#define Msg0684 "embedded interface '%s' cannot be public"
-#define Msg0675 "embedded struct '%s' cannot be public"
-#define Msg0356 "empty attribute"
-#define Msg0447 "empty tuple definition"
-#define Msg0700 "enum array type '%s' should be 'const'"
-#define Msg0701 "enum slice type '%s' should be 'const'"
-#define Msg0717 "enum value '%s' is out of range of 's16'"
-#define Msg0718 "enum value '%s' is out of range of 's32'"
-#define Msg0719 "enum value '%s' is out of range of 's64'"
-#define Msg0716 "enum value '%s' is out of range of 's8'"
-#define Msg0710 "enum value '%s' is out of range of 'u16'"
-#define Msg0712 "enum value '%s' is out of range of 'u32'"
-#define Msg0714 "enum value '%s' is out of range of 'u64'"
-#define Msg0708 "enum value '%s' is out of range of 'u8'"
-#define Msg0706 "enum value '%s' of type '%s' should be initialized"
-#define Msg0400 "enum value identifier expected"
-#define Msg0153 "error reading source file '%s'"
-#define Msg0036 "error: backend: cannot locate windows sdk folder"
-#define Msg0102 "evaluation of a function parameter of type '%s' is not supported at compile time"
-#define Msg0435 "exception during compile time execution !"
-#define Msg0330 "expected '%s' instead of '%s' %s"
-#define Msg0141 "expected '[', '{', '(', '\"' or an intrinsic name, found character '%c'"
-#define Msg0460 "expected a binary digit, found '%s'"
-#define Msg0898 "expected a left expression for variable declaration"
-#define Msg0897 "expected a left expression"
-#define Msg0121 "expected a single identifier %s"
-#define Msg0444 "expected a struct name, found '%s'"
-#define Msg0662 "expected a struct or an enum, but '%s' is %s"
-#define Msg0648 "expected a struct, but '%s' is %s"
-#define Msg0290 "expected a struct, but symbol '%s' is %s"
-#define Msg0895 "expected a top level instruction"
-#define Msg0343 "expected a type declaration, found '%s'"
-#define Msg0202 "expected a type inside a tuple type definition, found '%s'"
-#define Msg0333 "expected an alias name, found '%s'"
-#define Msg0355 "expected an attribute name, found '%s'"
-#define Msg0582 "expected an attribute, but '%s' is %s"
-#define Msg0896 "expected an embedded instruction or a curly block"
-#define Msg0396 "expected an enum name, found '%s'"
-#define Msg0702 "expected an enum type, found '%s'"
-#define Msg0899 "expected an expression"
-#define Msg0285 "expected an identifier, found a literal"
-#define Msg0835 "expected an identifier, found symbol '%s'"
-#define Msg0646 "expected an interface, but '%s' is %s"
-#define Msg0171 "expected the type of the array after dimensions, found '%s'"
-#define Msg0798 "expression cannot be evaluated at compile time"
-#define Msg0615 "expression cannot be evaluated at compile time, and switch is 'Swag.Complete'"
-#define Msg0862 "expression is empty"
-#define Msg0807 "expression of type '%s' cannot be spreaded"
-#define Msg0240 "expression should be of type 'code', but is '%s'"
-#define Msg0257 "failed to load module '%s' while resolving foreign function '%s': %s"
-#define Msg0052 "failed to start watcher service !"
-#define Msg0055 "failed to update watcher service !"
-#define Msg0546 "fatal error: cache directory '%s' does not exist"
-#define Msg0547 "fatal error: cannot create cache directory '%s'"
-#define Msg0818 "fatal error: cannot create directory '%s'"
-#define Msg0824 "fatal error: cannot create file '%s'"
-#define Msg0543 "fatal error: cannot create public directory '%s'"
-#define Msg0347 "fatal error: cannot create script file '%s'"
-#define Msg0545 "fatal error: cannot create target directory '%s'"
-#define Msg0345 "fatal error: cannot delete directory '%s'"
-#define Msg0344 "fatal error: cannot delete file '%s'"
-#define Msg0165 "fatal error: cannot find 'SWAG_FOLDER' in the environment; you must run 'swag env' first at the Swag.exe location to register its path"
-#define Msg0539 "fatal error: command line --tag '%s' unsupported type '%s'"
-#define Msg0507 "fatal error: invalid module '%s', configuration file '%s' is missing"
-#define Msg0319 "fatal error: invalid script file extension; should be '.swgs' instead of '%s'"
-#define Msg0000 "fatal error: invalid swag command '%s'"
-#define Msg0538 "fatal error: invalid value '%s' for command line '--tag:%s'; this is not a valid literal"
-#define Msg0322 "fatal error: invalid value for '--tag:%s' (%s)"
-#define Msg0542 "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist"
-#define Msg0318 "fatal error: missing script file; use '--file:<filename>.swgs' to specify a script to run"
-#define Msg0540 "fatal error: missing workspace folder '--workspace'"
-#define Msg0397 "fatal error: module '%s' already exists in the '/modules' folder"
-#define Msg0014 "fatal error: not enough memory !"
-#define Msg0166 "fatal error: script file '%s' does not exist"
-#define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
-#define Msg0554 "fatal error: some problems have been found in compiler runtime !!!"
-#define Msg0817 "fatal error: workspace folder '%s' already exists"
-#define Msg0541 "fatal error: workspace folder '%s' does not exist"
-#define Msg0120 "field name '%s' cannot be found in tuple"
-#define Msg0242 "filename cannot be evaluated at compile time"
-#define Msg0466 "floating point number exponent should have at least one digit"
-#define Msg0199 "forbidden 'opDrop' special function for '%s' because struct is marked with 'Swag.ConstExpr'"
-#define Msg0325 "found '#elif' without a corresponding '#if'"
-#define Msg0324 "found '#else' without a corresponding '#if'"
-#define Msg0326 "found ')' without a corresponding opening '('"
-#define Msg0328 "found ']' without a corresponding opening '['"
-#define Msg0323 "found 'else' without a corresponding 'if'"
-#define Msg0327 "found '}' without a corresponding opening '{'"
-#define Msg0763 "function '%s' cannot be marked with 'Swag.Inline' attribute"
-#define Msg0761 "function '%s' cannot be marked with 'Swag.Macro' attribute"
-#define Msg0762 "function '%s' cannot be marked with 'Swag.Mixin' attribute"
-#define Msg0752 "function '%s' cannot have generic parameters because it is flagged with the 'Swag.NoGeneric' attribute"
-#define Msg0753 "function '%s' cannot have the 'Swag.Complete' attribute, this is reserved for 'opAffect'"
-#define Msg0756 "function '%s' cannot have the 'Swag.Implicit' attribute because it's generic"
-#define Msg0754 "function '%s' cannot have the 'Swag.Implicit' attribute, this is reserved for 'opAffect' and 'opCast'"
-#define Msg0755 "function '%s' cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'"
-#define Msg0078 "function '%s' does not match a special function/operator overload"
-#define Msg0652 "function '%s' has an incorrect signature for interface '%s'"
-#define Msg0751 "function '%s' has the 'Swag.NoGeneric' attribute but seems to be generic"
-#define Msg0757 "function '%s' is marked with 'Swag.Macro' and 'Swag.Inline' attributes at the same time"
-#define Msg0758 "function '%s' is marked with 'Swag.Macro' and 'Swag.Mixin' attributes at the same time"
-#define Msg0759 "function '%s' is marked with 'Swag.Mixin' and 'Swag.Inline' attributes at the same time"
-#define Msg0760 "function '%s' is marked with 'Swag.Mixin' and 'Swag.Macro' attributes at the same time"
-#define Msg0088 "function '%s' is not declared with the 'Swag.Mixin' attribute, and this is mandatory for a function call at global scope"
-#define Msg0098 "function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)"
-#define Msg0766 "function cannot have a return type because it is flagged with the 'Swag.NoReturn' attribute"
-#define Msg0767 "function cannot have the 'Swag.Discardable' attribute because it returns 'void'"
-#define Msg0764 "function cannot return a value of type '%s'"
-#define Msg0413 "function names starting with '@' are reserved for intrinsics"
-#define Msg0742 "function with the 'Swag.Foreign' attribute cannot have a body"
-#define Msg0745 "function with the 'Swag.Test' attribute cannot have a return value"
-#define Msg0746 "function with the 'Swag.Test' attribute cannot have parameters"
-#define Msg0386 "global 'using' should be declared at the top of the file"
-#define Msg0313 "global variable cannot be declared as 'public'"
-#define Msg0126 "here is '%s'"
-#define Msg0158 "here is a previous declaration"
-#define Msg0587 "here is attribute '%s'"
-#define Msg0589 "here is the %s"
-#define Msg0398 "here is the declaration of '%s'"
-#define Msg0551 "here is the declaration"
-#define Msg0018 "here is the definition of '%s'"
-#define Msg0553 "here is the definition of the tuple"
-#define Msg0084 "here is the deprecated definition"
-#define Msg0592 "here is the faulty attribute"
-#define Msg0106 "here is the function"
-#define Msg0619 "here is the missing value"
-#define Msg0517 "here is the other '#import'"
-#define Msg0884 "here is the other definition"
-#define Msg0287 "here is the previous definition"
-#define Msg0253 "here is the related command line option: '%s'"
-#define Msg0095 "here is the variable declaration"
-#define Msg0085 "identifier '%s' cannot be dereferenced like a struct (type is '%s')"
-#define Msg0110 "identifier '%s' cannot be found in %s '%s'"
-#define Msg0093 "identifier '%s' cannot be found in tuple"
-#define Msg0127 "identifier '%s' has call parameters, but is %s and not a function"
-#define Msg0125 "identifier '%s' has call parameters, but is a variable of type '%s' and not a function"
-#define Msg0893 "identifier '%s' has not been solved"
-#define Msg0316 "identifier '%s' should be public"
-#define Msg0272 "identifier '%s' starts with '__', and this is reserved by the language"
-#define Msg0448 "identifier expected"
-#define Msg0881 "identifier is preceeded with '.', but no scope can be found in context"
-#define Msg0201 "if this is a tuple literal and not a type definition, use '@{' instead of '{'"
-#define Msg0198 "if this is an array literal and not a type definition, use '@[' instead of '['"
-#define Msg0660 "implementation block for '%s' is not private but the corresponding identifier is"
-#define Msg0659 "implementation block for '%s' is private but the corresponding identifier is not"
-#define Msg0661 "implementation block is not defined in the same scope as '%s' ('impl' parent scope is '%s', '%s' parent scope is '%s')"
-#define Msg0441 "implementation block kind (%s) does not match the type of '%s' (%s)"
-#define Msg0468 "index out of range (index is '%I64u', maximum index is '%I64u')"
-#define Msg0670 "initialization expression cannot be evaluated at compile time"
-#define Msg0906 "initialization value cannot be evaluated atcompile time because 'opAffect' is not 'Swag.ConstExpr'"
-#define Msg0270 "initializer list is empty"
-#define Msg0733 "inline function has variadic arguments, this is not yet supported"
-#define Msg0683 "interface '%s' is empty"
-#define Msg0861 "intrinsic parameter expression cannot be empty"
-#define Msg0891 "invalid '%s', use '%s' instead to do a logical test"
-#define Msg0276 "invalid '@alias' variable name '%s', '%s' is not a valid number"
-#define Msg0845 "invalid 'assume' inside '%s' expression"
-#define Msg0844 "invalid 'catch' inside '%s' expression"
-#define Msg0514 "invalid 'location' format; should have the form 'location=\"mode@accesspath\"'"
-#define Msg0515 "invalid 'location' mode; should be 'swag' or 'disk', not '%s'"
-#define Msg0846 "invalid 'throw' inside '%s' expression"
-#define Msg0843 "invalid 'try' inside '%s' expression"
-#define Msg0694 "invalid 'using' type"
-#define Msg0470 "invalid address expression"
-#define Msg0454 "invalid affect operator '==', did you mean '=' ?"
-#define Msg0099 "invalid aliased identifiers because function '%s' is not a macro or a mixin"
-#define Msg0598 "invalid attribute '%s'"
-#define Msg0597 "invalid attribute usage"
-#define Msg0031 "invalid bitcast type '%s' (should be native integer, char or float)"
-#define Msg0081 "invalid character '%s'"
-#define Msg0267 "invalid compare operator '=', did you mean '==' ?"
-#define Msg0314 "invalid file format, should be ascii, utf-8 or utf-8-bom"
-#define Msg0069 "invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)"
-#define Msg0074 "invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)"
-#define Msg0072 "invalid generic parameter for special function '%s' ('string' expected, '%s' provided)"
-#define Msg0130 "invalid generic parameters, identifier '%s' is %s and not a function or a structure"
-#define Msg0440 "invalid generic parameters, should be naked"
-#define Msg0463 "invalid hexadecimal digit '%s'"
-#define Msg0304 "invalid initialization expression for an array"
-#define Msg0395 "invalid label identifier '%s'"
-#define Msg0877 "invalid label name, identifier expected"
-#define Msg0876 "invalid label name, you should add ';' or put a valid label identifier"
-#define Msg0124 "invalid lambda call, '%s' is not a variable"
-#define Msg0123 "invalid lambda call, cannot reference structure member '%s'"
-#define Msg0467 "invalid literal number prefix '%s'"
-#define Msg0381 "invalid location '%s'"
-#define Msg0776 "invalid name alias"
-#define Msg0778 "invalid name alias, should be a single identifier"
-#define Msg0777 "invalid name alias, should be an identifier"
-#define Msg0403 "invalid named parameter '%s'"
-#define Msg0061 "invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)"
-#define Msg0073 "invalid number of generic parameters for special function '%s'"
-#define Msg0071 "invalid number of generic parameters for special function '%s'"
-#define Msg0145 "invalid number syntax, a digit separator '_' cannot be followed by another digit separator"
-#define Msg0152 "invalid number syntax, a digit separator '_' cannot end a literal number"
-#define Msg0155 "invalid number syntax, a digit separator '_' cannot start a fractional part"
-#define Msg0154 "invalid number syntax, a digit separator '_' cannot start a literal number"
-#define Msg0156 "invalid number syntax, a digit separator '_' cannot start an exponent part"
-#define Msg0151 "invalid number syntax, missing at least one digit"
-#define Msg0168 "invalid operation '%s' on a tuple type"
-#define Msg0573 "invalid operation on a tuple type"
-#define Msg0264 "invalid operator modifier '%s'"
-#define Msg0066 "invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)"
-#define Msg0077 "invalid parameter '2' for special function '%s' (cannot be of type '%s')"
-#define Msg0408 "invalid parameter name '%s'"
-#define Msg0373 "invalid pass name '%s'"
-#define Msg0132 "invalid reference to private scope"
-#define Msg0065 "invalid return type for special function '%s' ('%s' expected, '%s' provided)"
-#define Msg0609 "invalid switch type '%s'"
-#define Msg0608 "invalid switch type 'any', you need to cast to a concrete type"
-#define Msg0841 "invalid token '%s' after 'discard'"
-#define Msg0449 "invalid token '%s' in tuple type, ',' or '}' are expected here"
-#define Msg0455 "invalid token '%s' in variable declaration, ':' or '=' are expected here"
-#define Msg0260 "invalid token '['"
-#define Msg0402 "invalid token, ',' expected"
-#define Msg0401 "invalid token, identifier expected"
-#define Msg0629 "invalid type '%s' for 'visit'"
-#define Msg0731 "invalid type '%s' for attribute parameter"
-#define Msg0697 "invalid type '%s' for enum flags (should be unsigned integer)"
-#define Msg0698 "invalid type '%s' for enum index (should be integer)"
-#define Msg0017 "invalid type declaration, symbol '%s' is not a type (it's %s)"
-#define Msg0296 "invalid variable name '%s' because '@alias' can only be used inside a macro or a mixin function"
-#define Msg0410 "invalid variable name '%s'"
-#define Msg0278 "invalid variable name '%s', cannot start with '@'"
-#define Msg0383 "invalid version '%s'"
-#define Msg0436 "it could be a bug in the compile time part of your program"
-#define Msg0584 "it is applied on this %s"
-#define Msg0639 "label name '%s' already defined in the hierarchy"
-#define Msg0331 "line break or ';' is expected before '%s' to close the %s"
-#define Msg0464 "literal number is too big (cannot fit in 64 bits)"
-#define Msg0558 "llvm backend cannot create target '%s'"
-#define Msg0034 "llvm backend unsupported os '%s'"
-#define Msg0237 "message expression cannot be evaluated at compile time"
-#define Msg0236 "message expression is not a string"
-#define Msg0828 "minus operation not allowed on type '%s'"
-#define Msg0879 "missing '#global if' expression"
-#define Msg0878 "missing '#if' expression"
-#define Msg0269 "missing '#main' function (executable entry point)"
-#define Msg0500 "missing '%d' test errors (%d raised)"
-#define Msg0501 "missing '%d' test warnings (%d raised)"
-#define Msg0329 "missing '%s' %s"
-#define Msg0867 "missing 'case' expression before ':'"
-#define Msg0868 "missing 'case' expression before 'break'"
-#define Msg0863 "missing 'if' boolean expression before '{'"
-#define Msg0864 "missing 'while' boolean expression before '{'"
-#define Msg0772 "missing a return value ('%s')"
-#define Msg0872 "missing another 'visit' variable name after ',' and before ':'"
-#define Msg0654 "missing first parameter 'self' for interface function '%s'"
-#define Msg0020 "missing function call '()' to %s"
-#define Msg0119 "missing function call parameters"
-#define Msg0414 "missing function name instead of '%s'"
-#define Msg0409 "missing function parameter type or assignment"
-#define Msg0883 "missing function parameters before '{'"
-#define Msg0412 "missing generic name or type"
-#define Msg0411 "missing generic parameters"
-#define Msg0303 "missing initialization expression to deduce size of array"
-#define Msg0394 "missing label identifier before '{'"
-#define Msg0390 "missing namespace name before ';'"
-#define Msg0389 "missing namespace name before '{'"
-#define Msg0677 "missing parameters for interface member '%s' ('self' expected as first parameter)"
-#define Msg0068 "missing parameters for special function '%s'"
-#define Msg0341 "missing pointer '*' or reference '&' marker after 'const'"
-#define Msg0339 "missing pointer declaration '*' after 'const'"
-#define Msg0064 "missing return type for special function '%s' ('%s' expected)"
-#define Msg0063 "missing return type for special function '%s'"
-#define Msg0874 "missing the 'loop' expression to evaluate before '{'"
-#define Msg0871 "missing the 'visit' expression to evaluate before '{'"
-#define Msg0556 "module '%s' cannot be found in that workspace"
-#define Msg0549 "module '%s', cannot resolve %s '%s'"
-#define Msg0169 "more than one module with name '%s' is present in the workspace (path is '%s')"
-#define Msg0011 "named parameter '%s' already used"
-#define Msg0393 "namespace cannot have the same name as the module ('%s')"
-#define Msg0388 "namespace definition should appear either at file scope or immediately within another namespace definition"
-#define Msg0391 "namespace name should be an identifier ('%s' provided)"
-#define Msg0827 "negate an unsigned type ('%s') is not allowed"
-#define Msg0880 "no corresponding '}' has been found"
-#define Msg0299 "non mutable variable should be initialized"
-#define Msg0113 "none of the %d overloads could match"
-#define Msg0748 "not all control paths of %s return a value"
-#define Msg0035 "not enough generic parameters for %s"
-#define Msg0196 "not enough initializers for '%s' ('%d' expected, '%d' provided)"
-#define Msg0016 "not enough parameters for %s"
-#define Msg0205 "not enough parameters in tuple initialization ('%d' expected, '%d' provided)"
-#define Msg0087 "only calls to 'Swag.Mixin' functions can be done at global scope ('%s' is %s)"
-#define Msg0870 "opVisit special name expected"
-#define Msg0005 "operation '%s' not allowed on %s '%s'"
-#define Msg0504 "operation '%s' not allowed, left type is '%s' and right type is '%s'"
-#define Msg0157 "operator '%' not allowed on type '%s'"
-#define Msg0164 "operator '&' not allowed on type '%s'"
-#define Msg0148 "operator '*' not allowed on type '%s'"
-#define Msg0143 "operator '+' not allowed on type '%s'"
-#define Msg0142 "operator '+' not allowed with operand type '%s'"
-#define Msg0147 "operator '-' not allowed on type '%s'"
-#define Msg0146 "operator '-' not allowed with operand type '%s'"
-#define Msg0149 "operator '/' not allowed on type '%s'"
-#define Msg0170 "operator '<<' not allowed on type '%s'"
-#define Msg0172 "operator '>>' not allowed on type '%s'"
-#define Msg0167 "operator '^' not allowed on type '%s'"
-#define Msg0163 "operator '|' not allowed on type '%s'"
-#define Msg0265 "operator modifier '%s' already used once"
-#define Msg0266 "operator modifier '%s' is invalid for operator '%s'"
-#define Msg0006 "parameter '%d' should be named"
-#define Msg0738 "parameter '%d' should have a default value"
-#define Msg0040 "partial type alias for generic struct instantiation is not supported"
-#define Msg0892 "placeholder identifier '%s' has not been solved"
-#define Msg0144 "pointer arithmetic not allowed on 'typeinfo'"
-#define Msg0579 "pointer arithmetic not allowed with operand type '%s'"
-#define Msg0024 "pointer to 'Swag.TypeInfo' should be 'const'"
-#define Msg0342 "pointer to reference is not (yet?) supported"
-#define Msg0348 "private definition should appear at file or namespace scope"
-#define Msg0300 "reference should be initialized"
-#define Msg0774 "returning a value of type '%s', but %s returns nothing"
-#define Msg0431 "runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with '?' if this is intended"
-#define Msg0419 "semantic cycle detected during resolution of %s '%s'"
-#define Msg0173 "shift operand should be 'u32' and not '%s'"
-#define Msg0653 "should be"
-#define Msg0812 "size cannot be computed because expression is generic"
-#define Msg0009 "slice can only be compared to 'null'"
-#define Msg0474 "slicing operator cannot be applied on an array with multiple dimensions"
-#define Msg0475 "slicing operator cannot be applied on type '%s'"
-#define Msg0657 "some functions of interface '%s' are not implemented"
-#define Msg0067 "special function '%s' should be defined in a 'impl' scope"
-#define Msg0416 "special function '%s' should have a body"
-#define Msg0625 "special visit name is only valid for struct (type is '%s')"
-#define Msg0536 "stack overflow (maximum stack size is '--stack-size:%s')"
-#define Msg0765 "struct '%s' has the 'Swag.NoCopy' attribute, so 'opPostCopy' is irrelevant"
-#define Msg0082 "struct '%s' should be initialized in place with '{}' and not parenthesis (this is reserved for function calls)"
-#define Msg0295 "struct cannot be initialized twice"
-#define Msg0666 "struct cannot be marked with 'Swag.Opaque' because it is not public"
-#define Msg0667 "struct cannot be marked with 'Swag.Opaque' because the whole file is exported ('#global export')"
-#define Msg0839 "struct initialization of '%s' should be done with '{}' and not parenthesis (this is reserved for function calls)"
-#define Msg0674 "struct member name '%s' starts with 'item', and this is reserved by the language"
-#define Msg0610 "switch body is empty"
-#define Msg0612 "switch enum value '%s' already defined"
-#define Msg0620 "switch is incomplete (missing '%s.%s')"
-#define Msg0613 "switch value '%d' already defined"
-#define Msg0614 "switch value '%f' already defined"
-#define Msg0611 "switch value '%s' already defined"
-#define Msg0607 "switch without an expression cannot be marked as 'Swag.Complete'"
-#define Msg0885 "symbol '%s' already defined as %s in an accessible scope"
-#define Msg0890 "symbol '%s' already defined as a name alias in an accessible scope"
-#define Msg0886 "symbol '%s' already defined in an accessible scope"
-#define Msg0346 "symbol '%s' already defined in parent scope"
-#define Msg0888 "symbol '%s' already defined with the same signature in an accessible scope"
-#define Msg0262 "symbol ':' is interpreted as a pointer dereference, but is followed by a symbol ('%s')"
-#define Msg0696 "symbol already defined"
-#define Msg0062 "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)"
-#define Msg0626 "too many 'visit' alias names (maximum is '2', but '%u' are provided)"
-#define Msg0338 "too many array dimensions (maximum is '254')"
-#define Msg0459 "too many digits in literal number"
-#define Msg0044 "too many generic parameters for %s '%s'"
-#define Msg0491 "too many initialization parameters for type '%s'"
-#define Msg0197 "too many initializers for '%s' ('%d' expected, '%d' provided)"
-#define Msg0026 "too many parameters for %s"
-#define Msg0340 "too many pointer dimensions (maximim is '%u')"
-#define Msg0252 "type '%s' and type '%s' defined in the command line for '%s' are incompatible"
-#define Msg0002 "type '%s' cannot be used in a range expression"
-#define Msg0911 "type '%s' cannot be used in an union because it contains 'opDrop' (or one of its members does)"
-#define Msg0909 "type '%s' cannot be used in an union because it contains 'opPostCopy' (or one of its members does)"
-#define Msg0910 "type '%s' cannot be used in an union because it contains 'opPostMove' (or one of its members does)"
-#define Msg0671 "type '%s' is generic, but struct '%s' does not declare generic parameters"
-#define Msg0478 "type '%s' is immutable and cannot be changed"
-#define Msg0838 "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"
-#define Msg0730 "type 'alias' is only valid in a 'Swag.Macro' or 'Swag.Mixin' function"
-#define Msg0729 "type 'code' is only valid in a 'Swag.Macro' or 'Swag.Mixin' function"
-#define Msg0307 "type of expression is 'void'"
-#define Msg0294 "type to tuple conversion is not (yet?) supported for type '%s'"
-#define Msg0309 "unable to deduce type of %s '%s'"
-#define Msg0534 "uncatched error when calling '%s'; missing 'try', 'assume' or 'catch'"
-#define Msg0274 "unexpected call parameters for variable '%s'"
-#define Msg0080 "unexpected end of file found in comment"
-#define Msg0905 "unexpected end of line found in string literal"
-#define Msg0273 "unexpected generic parameters for variable '%s'"
-#define Msg0352 "unexpected token '%s' after 'private' attribute"
-#define Msg0353 "unexpected token '%s' after 'protected' attribute"
-#define Msg0354 "unexpected token '%s' after 'public' attribute"
-#define Msg0140 "unknown compiler instruction '%s'"
-#define Msg0122 "unknown identifier '%s'"
-#define Msg0631 "unknown label '%s'"
-#define Msg0499 "unknown module dependency '%s'"
-#define Msg0008 "unknown named parameter '%s'"
-#define Msg0282 "unpacking '%d' variable(s), but the tuple on the right contains '%d' element(s)"
-#define Msg0768 "unreachable code"
-#define Msg0664 "unsupported alias as an implementation block name"
-#define Msg0555 "unsupported tuple type in generic parameters"
-#define Msg0109 "unused return value of function '%s'"
-#define Msg0092 "unused return value of lambda '%s'"
-#define Msg0096 "unused variable '%s'"
-#define Msg0180 "value '%I64d' is negative and not in the range of 'u16'"
-#define Msg0182 "value '%I64d' is negative and not in the range of 'u32'"
-#define Msg0185 "value '%I64d' is negative and not in the range of 'u64'"
-#define Msg0178 "value '%I64d' is negative and not in the range of 'u8'"
-#define Msg0187 "value '%I64d' is not in the range of 's16'"
-#define Msg0188 "value '%I64d' is not in the range of 's32'"
-#define Msg0189 "value '%I64d' is not in the range of 's64'"
-#define Msg0186 "value '%I64d' is not in the range of 's8'"
-#define Msg0191 "value '%I64d' is truncated in 'f32'"
-#define Msg0194 "value '%I64d' is truncated in 'f64'"
-#define Msg0181 "value '%I64u' is not in the range of 'u16'"
-#define Msg0183 "value '%I64u' is not in the range of 'u32'"
-#define Msg0179 "value '%I64u' is not in the range of 'u8'"
-#define Msg0192 "value '%I64u' is truncated in 'f32'"
-#define Msg0195 "value '%I64u' is truncated in 'f64'"
-#define Msg0193 "value '%lf' is truncated in 'f32'"
-#define Msg0086 "variable '%s' has only been used to find function '%s'; use scope '%s' instead"
-#define Msg0894 "variable '%s' is used before being declared"
-#define Msg0645 "variable initialized twice, first with type arguments, and then with this assignment"
-#define Msg0271 "variable name or '?' expected in tuple unpacking"
-#define Msg0457 "variable should have a type or should be initialized"
-#define Msg0734 "variadic argument should be the last one"
-#define Msg0289 "version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character"
-#define Msg0056 "x64 backend unsupported os '%s'"
-#define Msg0726 "attribute declaration ('attr'), unlike function, should not have a return value starting with '->'"
-#define Msg0858
-#define Msg0561
-#define Msg0826
-#define Msg0315
-#define Msg0622
-#define Msg0825
-#define Msg0190
-#define Msg0560
-#define Msg0823
-#define Msg0623
-#define Msg0822
-#define Msg0860
-#define Msg0512
-#define Msg0821
-#define Msg0820
-#define Msg0819
-#define Msg0638
-#define Msg0685
-#define Msg0816
-#define Msg0815
-#define Msg0813
-#define Msg0184
-#define Msg0811
-#define Msg0809
-#define Msg0808
-#define Msg0641
-#define Msg0642
-#define Msg0804
-#define Msg0803
-#define Msg0686
-#define Msg0799
-#define Msg0779
-#define Msg0687
-#define Msg0688
-#define Msg0643
-#define Msg0640
-#define Msg0456
-#define Msg0644
-#define Msg0458
-#define Msg0317
-#define Msg0452
-#define Msg0770 
-#define Msg0647
-#define Msg0450
-#define Msg0461
-#define Msg0462
-#define Msg0446
-#define Msg0445
-#define Msg0443
-#define Msg0550
-#define Msg0442
-#define Msg0439
-#define Msg0873
-#define Msg0875
-#define Msg0548
-#define Msg0437
-#define Msg0433
-#define Msg0432
-#define Msg0882
-#define Msg0690
-#define Msg0430
-#define Msg0678
-#define Msg0740
-#define Msg0693
-#define Msg0372
-#define Msg0736
-#define Msg0735
-#define Msg0429
-#define Msg0732
-#define Msg0544
-#define Msg0506
-#define Msg0649
-#define Msg0650
-#define Msg0703
-#define Msg0704
-#define Msg0651
-#define Msg0656
-#define Msg0723
-#define Msg0422
-#define Msg0721
-#define Msg0658
-#define Msg0415
-#define Msg0479
-#define Msg0705
-#define Msg0480
-#define Msg0484
-#define Msg0715
-#define Msg0663
-#define Msg0404
-#define Msg0713
-#define Msg0711
-#define Msg0665
-#define Msg0503
-#define Msg0492
-#define Msg0494
-#define Msg0707
-#define Msg0387
-#define Msg0621
-#define Msg0562
-#define Msg0618
-#define Msg0563
-#define Msg0302
-#define Msg0568
-#define Msg0889
-#define Msg0575
-#define Msg0605
-#define Msg0576
-#define Msg0577
-#define Msg0578
-#define Msg0580
-#define Msg0581
-#define Msg0585
-#define Msg0601
-#define Msg0887
-#define Msg0590
-#define Msg0836
-#define Msg0837
-#define Msg0847
-#define Msg0849
-#define Msg0850
-#define Msg0851
-#define Msg0852
-#define Msg0855
-#define Msg0856
-#define Msg0857
-#define Msg0628
-#define Msg0358
-#define Msg0261
-#define Msg0357
-#define Msg0359
-#define Msg0487
-#define Msg0773
-#define Msg0362
-#define Msg0361
-#define Msg0360
-#define Msg0263
-#define Msg0363
-#define Msg0174
-#define Msg0912
+extern const char* Msg0000;
+extern const char* Msg0001;
+extern const char* Msg0002;
+extern const char* Msg0004;
+extern const char* Msg0005;
+extern const char* Msg0006;
+extern const char* Msg0007;
+extern const char* Msg0008;
+extern const char* Msg0009;
+extern const char* Msg0010;
+extern const char* Msg0011;
+extern const char* Msg0012;
+extern const char* Msg0013;
+extern const char* Msg0014;
+extern const char* Msg0015;
+extern const char* Msg0016;
+extern const char* Msg0017;
+extern const char* Msg0018;
+extern const char* Msg0020;
+extern const char* Msg0021;
+extern const char* Msg0022;
+extern const char* Msg0023;
+extern const char* Msg0024;
+extern const char* Msg0025;
+extern const char* Msg0026;
+extern const char* Msg0027;
+extern const char* Msg0028;
+extern const char* Msg0029;
+extern const char* Msg0030;
+extern const char* Msg0031;
+extern const char* Msg0032;
+extern const char* Msg0033;
+extern const char* Msg0034;
+extern const char* Msg0035;
+extern const char* Msg0036;
+extern const char* Msg0037;
+extern const char* Msg0038;
+extern const char* Msg0039;
+extern const char* Msg0040;
+extern const char* Msg0041;
+extern const char* Msg0042;
+extern const char* Msg0043;
+extern const char* Msg0044;
+extern const char* Msg0045;
+extern const char* Msg0046;
+extern const char* Msg0047;
+extern const char* Msg0048;
+extern const char* Msg0049;
+extern const char* Msg0050;
+extern const char* Msg0051;
+extern const char* Msg0052;
+extern const char* Msg0053;
+extern const char* Msg0054;
+extern const char* Msg0055;
+extern const char* Msg0056;
+extern const char* Msg0057;
+extern const char* Msg0058;
+extern const char* Msg0059;
+extern const char* Msg0060;
+extern const char* Msg0061;
+extern const char* Msg0062;
+extern const char* Msg0063;
+extern const char* Msg0064;
+extern const char* Msg0065;
+extern const char* Msg0066;
+extern const char* Msg0067;
+extern const char* Msg0068;
+extern const char* Msg0069;
+extern const char* Msg0070;
+extern const char* Msg0071;
+extern const char* Msg0072;
+extern const char* Msg0073;
+extern const char* Msg0074;
+extern const char* Msg0075;
+extern const char* Msg0076;
+extern const char* Msg0077;
+extern const char* Msg0078;
+extern const char* Msg0079;
+extern const char* Msg0080;
+extern const char* Msg0081;
+extern const char* Msg0082;
+extern const char* Msg0083;
+extern const char* Msg0084;
+extern const char* Msg0085;
+extern const char* Msg0086;
+extern const char* Msg0087;
+extern const char* Msg0088;
+extern const char* Msg0089;
+extern const char* Msg0090;
+extern const char* Msg0091;
+extern const char* Msg0092;
+extern const char* Msg0093;
+extern const char* Msg0094;
+extern const char* Msg0095;
+extern const char* Msg0096;
+extern const char* Msg0097;
+extern const char* Msg0098;
+extern const char* Msg0099;
+extern const char* Msg0100;
+extern const char* Msg0101;
+extern const char* Msg0102;
+extern const char* Msg0103;
+extern const char* Msg0104;
+extern const char* Msg0105;
+extern const char* Msg0106;
+extern const char* Msg0107;
+extern const char* Msg0108;
+extern const char* Msg0109;
+extern const char* Msg0110;
+extern const char* Msg0111;
+extern const char* Msg0112;
+extern const char* Msg0113;
+extern const char* Msg0114;
+extern const char* Msg0115;
+extern const char* Msg0116;
+extern const char* Msg0117;
+extern const char* Msg0118;
+extern const char* Msg0119;
+extern const char* Msg0120;
+extern const char* Msg0121;
+extern const char* Msg0122;
+extern const char* Msg0123;
+extern const char* Msg0124;
+extern const char* Msg0125;
+extern const char* Msg0126;
+extern const char* Msg0127;
+extern const char* Msg0128;
+extern const char* Msg0129;
+extern const char* Msg0130;
+extern const char* Msg0132;
+extern const char* Msg0133;
+extern const char* Msg0135;
+extern const char* Msg0136;
+extern const char* Msg0137;
+extern const char* Msg0138;
+extern const char* Msg0139;
+extern const char* Msg0140;
+extern const char* Msg0141;
+extern const char* Msg0142;
+extern const char* Msg0143;
+extern const char* Msg0144;
+extern const char* Msg0145;
+extern const char* Msg0146;
+extern const char* Msg0147;
+extern const char* Msg0148;
+extern const char* Msg0149;
+extern const char* Msg0150;
+extern const char* Msg0151;
+extern const char* Msg0152;
+extern const char* Msg0153;
+extern const char* Msg0154;
+extern const char* Msg0155;
+extern const char* Msg0156;
+extern const char* Msg0157;
+extern const char* Msg0158;
+extern const char* Msg0159;
+extern const char* Msg0160;
+extern const char* Msg0161;
+extern const char* Msg0162;
+extern const char* Msg0163;
+extern const char* Msg0164;
+extern const char* Msg0165;
+extern const char* Msg0166;
+extern const char* Msg0167;
+extern const char* Msg0168;
+extern const char* Msg0169;
+extern const char* Msg0170;
+extern const char* Msg0171;
+extern const char* Msg0172;
+extern const char* Msg0173;
+extern const char* Msg0174;
+extern const char* Msg0175;
+extern const char* Msg0176;
+extern const char* Msg0177;
+extern const char* Msg0178;
+extern const char* Msg0179;
+extern const char* Msg0180;
+extern const char* Msg0181;
+extern const char* Msg0182;
+extern const char* Msg0183;
+extern const char* Msg0184;
+extern const char* Msg0185;
+extern const char* Msg0186;
+extern const char* Msg0187;
+extern const char* Msg0188;
+extern const char* Msg0189;
+extern const char* Msg0190;
+extern const char* Msg0191;
+extern const char* Msg0192;
+extern const char* Msg0193;
+extern const char* Msg0194;
+extern const char* Msg0195;
+extern const char* Msg0196;
+extern const char* Msg0197;
+extern const char* Msg0198;
+extern const char* Msg0199;
+extern const char* Msg0200;
+extern const char* Msg0201;
+extern const char* Msg0202;
+extern const char* Msg0203;
+extern const char* Msg0204;
+extern const char* Msg0205;
+extern const char* Msg0206;
+extern const char* Msg0207;
+extern const char* Msg0208;
+extern const char* Msg0209;
+extern const char* Msg0210;
+extern const char* Msg0211;
+extern const char* Msg0212;
+extern const char* Msg0213;
+extern const char* Msg0214;
+extern const char* Msg0215;
+extern const char* Msg0216;
+extern const char* Msg0217;
+extern const char* Msg0218;
+extern const char* Msg0219;
+extern const char* Msg0220;
+extern const char* Msg0221;
+extern const char* Msg0222;
+extern const char* Msg0223;
+extern const char* Msg0224;
+extern const char* Msg0225;
+extern const char* Msg0226;
+extern const char* Msg0227;
+extern const char* Msg0228;
+extern const char* Msg0229;
+extern const char* Msg0230;
+extern const char* Msg0231;
+extern const char* Msg0232;
+extern const char* Msg0233;
+extern const char* Msg0234;
+extern const char* Msg0235;
+extern const char* Msg0236;
+extern const char* Msg0237;
+extern const char* Msg0238;
+extern const char* Msg0239;
+extern const char* Msg0240;
+extern const char* Msg0241;
+extern const char* Msg0242;
+extern const char* Msg0243;
+extern const char* Msg0244;
+extern const char* Msg0245;
+extern const char* Msg0246;
+extern const char* Msg0247;
+extern const char* Msg0248;
+extern const char* Msg0249;
+extern const char* Msg0250;
+extern const char* Msg0251;
+extern const char* Msg0252;
+extern const char* Msg0253;
+extern const char* Msg0254;
+extern const char* Msg0255;
+extern const char* Msg0256;
+extern const char* Msg0257;
+extern const char* Msg0258;
+extern const char* Msg0259;
+extern const char* Msg0260;
+extern const char* Msg0261;
+extern const char* Msg0262;
+extern const char* Msg0263;
+extern const char* Msg0264;
+extern const char* Msg0265;
+extern const char* Msg0266;
+extern const char* Msg0267;
+extern const char* Msg0268;
+extern const char* Msg0269;
+extern const char* Msg0270;
+extern const char* Msg0271;
+extern const char* Msg0272;
+extern const char* Msg0273;
+extern const char* Msg0274;
+extern const char* Msg0275;
+extern const char* Msg0276;
+extern const char* Msg0277;
+extern const char* Msg0278;
+extern const char* Msg0279;
+extern const char* Msg0280;
+extern const char* Msg0281;
+extern const char* Msg0282;
+extern const char* Msg0283;
+extern const char* Msg0284;
+extern const char* Msg0285;
+extern const char* Msg0286;
+extern const char* Msg0287;
+extern const char* Msg0288;
+extern const char* Msg0289;
+extern const char* Msg0290;
+extern const char* Msg0291;
+extern const char* Msg0292;
+extern const char* Msg0293;
+extern const char* Msg0294;
+extern const char* Msg0295;
+extern const char* Msg0296;
+extern const char* Msg0297;
+extern const char* Msg0298;
+extern const char* Msg0299;
+extern const char* Msg0300;
+extern const char* Msg0301;
+extern const char* Msg0302;
+extern const char* Msg0303;
+extern const char* Msg0304;
+extern const char* Msg0305;
+extern const char* Msg0306;
+extern const char* Msg0307;
+extern const char* Msg0308;
+extern const char* Msg0309;
+extern const char* Msg0310;
+extern const char* Msg0311;
+extern const char* Msg0312;
+extern const char* Msg0313;
+extern const char* Msg0314;
+extern const char* Msg0315;
+extern const char* Msg0316;
+extern const char* Msg0317;
+extern const char* Msg0318;
+extern const char* Msg0319;
+extern const char* Msg0320;
+extern const char* Msg0321;
+extern const char* Msg0322;
+extern const char* Msg0323;
+extern const char* Msg0324;
+extern const char* Msg0325;
+extern const char* Msg0326;
+extern const char* Msg0327;
+extern const char* Msg0328;
+extern const char* Msg0329;
+extern const char* Msg0330;
+extern const char* Msg0331;
+extern const char* Msg0332;
+extern const char* Msg0333;
+extern const char* Msg0334;
+extern const char* Msg0335;
+extern const char* Msg0336;
+extern const char* Msg0337;
+extern const char* Msg0338;
+extern const char* Msg0339;
+extern const char* Msg0340;
+extern const char* Msg0341;
+extern const char* Msg0342;
+extern const char* Msg0343;
+extern const char* Msg0344;
+extern const char* Msg0345;
+extern const char* Msg0346;
+extern const char* Msg0347;
+extern const char* Msg0348;
+extern const char* Msg0349;
+extern const char* Msg0350;
+extern const char* Msg0351;
+extern const char* Msg0352;
+extern const char* Msg0353;
+extern const char* Msg0354;
+extern const char* Msg0355;
+extern const char* Msg0356;
+extern const char* Msg0357;
+extern const char* Msg0358;
+extern const char* Msg0359;
+extern const char* Msg0360;
+extern const char* Msg0361;
+extern const char* Msg0362;
+extern const char* Msg0363;
+extern const char* Msg0364;
+extern const char* Msg0365;
+extern const char* Msg0366;
+extern const char* Msg0367;
+extern const char* Msg0368;
+extern const char* Msg0369;
+extern const char* Msg0370;
+extern const char* Msg0371;
+extern const char* Msg0372;
+extern const char* Msg0373;
+extern const char* Msg0374;
+extern const char* Msg0375;
+extern const char* Msg0376;
+extern const char* Msg0377;
+extern const char* Msg0378;
+extern const char* Msg0379;
+extern const char* Msg0380;
+extern const char* Msg0381;
+extern const char* Msg0382;
+extern const char* Msg0383;
+extern const char* Msg0384;
+extern const char* Msg0385;
+extern const char* Msg0386;
+extern const char* Msg0387;
+extern const char* Msg0388;
+extern const char* Msg0389;
+extern const char* Msg0390;
+extern const char* Msg0391;
+extern const char* Msg0392;
+extern const char* Msg0393;
+extern const char* Msg0394;
+extern const char* Msg0395;
+extern const char* Msg0396;
+extern const char* Msg0397;
+extern const char* Msg0398;
+extern const char* Msg0399;
+extern const char* Msg0400;
+extern const char* Msg0401;
+extern const char* Msg0402;
+extern const char* Msg0403;
+extern const char* Msg0404;
+extern const char* Msg0405;
+extern const char* Msg0406;
+extern const char* Msg0407;
+extern const char* Msg0408;
+extern const char* Msg0409;
+extern const char* Msg0410;
+extern const char* Msg0411;
+extern const char* Msg0412;
+extern const char* Msg0413;
+extern const char* Msg0414;
+extern const char* Msg0415;
+extern const char* Msg0416;
+extern const char* Msg0417;
+extern const char* Msg0418;
+extern const char* Msg0419;
+extern const char* Msg0420;
+extern const char* Msg0421;
+extern const char* Msg0422;
+extern const char* Msg0423;
+extern const char* Msg0424;
+extern const char* Msg0425;
+extern const char* Msg0426;
+extern const char* Msg0427;
+extern const char* Msg0428;
+extern const char* Msg0429;
+extern const char* Msg0430;
+extern const char* Msg0431;
+extern const char* Msg0432;
+extern const char* Msg0433;
+extern const char* Msg0434;
+extern const char* Msg0435;
+extern const char* Msg0436;
+extern const char* Msg0437;
+extern const char* Msg0438;
+extern const char* Msg0439;
+extern const char* Msg0440;
+extern const char* Msg0441;
+extern const char* Msg0442;
+extern const char* Msg0443;
+extern const char* Msg0444;
+extern const char* Msg0445;
+extern const char* Msg0446;
+extern const char* Msg0447;
+extern const char* Msg0448;
+extern const char* Msg0449;
+extern const char* Msg0450;
+extern const char* Msg0451;
+extern const char* Msg0452;
+extern const char* Msg0453;
+extern const char* Msg0454;
+extern const char* Msg0455;
+extern const char* Msg0456;
+extern const char* Msg0457;
+extern const char* Msg0458;
+extern const char* Msg0459;
+extern const char* Msg0460;
+extern const char* Msg0461;
+extern const char* Msg0462;
+extern const char* Msg0463;
+extern const char* Msg0464;
+extern const char* Msg0465;
+extern const char* Msg0466;
+extern const char* Msg0467;
+extern const char* Msg0468;
+extern const char* Msg0469;
+extern const char* Msg0470;
+extern const char* Msg0471;
+extern const char* Msg0472;
+extern const char* Msg0473;
+extern const char* Msg0474;
+extern const char* Msg0475;
+extern const char* Msg0476;
+extern const char* Msg0477;
+extern const char* Msg0478;
+extern const char* Msg0479;
+extern const char* Msg0480;
+extern const char* Msg0481;
+extern const char* Msg0482;
+extern const char* Msg0483;
+extern const char* Msg0484;
+extern const char* Msg0485;
+extern const char* Msg0486;
+extern const char* Msg0487;
+extern const char* Msg0488;
+extern const char* Msg0489;
+extern const char* Msg0490;
+extern const char* Msg0491;
+extern const char* Msg0492;
+extern const char* Msg0493;
+extern const char* Msg0494;
+extern const char* Msg0495;
+extern const char* Msg0496;
+extern const char* Msg0497;
+extern const char* Msg0498;
+extern const char* Msg0499;
+extern const char* Msg0500;
+extern const char* Msg0501;
+extern const char* Msg0502;
+extern const char* Msg0503;
+extern const char* Msg0504;
+extern const char* Msg0505;
+extern const char* Msg0506;
+extern const char* Msg0507;
+extern const char* Msg0508;
+extern const char* Msg0509;
+extern const char* Msg0510;
+extern const char* Msg0511;
+extern const char* Msg0512;
+extern const char* Msg0513;
+extern const char* Msg0514;
+extern const char* Msg0515;
+extern const char* Msg0516;
+extern const char* Msg0517;
+extern const char* Msg0518;
+extern const char* Msg0519;
+extern const char* Msg0520;
+extern const char* Msg0521;
+extern const char* Msg0522;
+extern const char* Msg0523;
+extern const char* Msg0524;
+extern const char* Msg0525;
+extern const char* Msg0526;
+extern const char* Msg0527;
+extern const char* Msg0528;
+extern const char* Msg0529;
+extern const char* Msg0530;
+extern const char* Msg0531;
+extern const char* Msg0532;
+extern const char* Msg0533;
+extern const char* Msg0534;
+extern const char* Msg0535;
+extern const char* Msg0536;
+extern const char* Msg0537;
+extern const char* Msg0538;
+extern const char* Msg0539;
+extern const char* Msg0540;
+extern const char* Msg0541;
+extern const char* Msg0542;
+extern const char* Msg0543;
+extern const char* Msg0544;
+extern const char* Msg0545;
+extern const char* Msg0546;
+extern const char* Msg0547;
+extern const char* Msg0548;
+extern const char* Msg0549;
+extern const char* Msg0550;
+extern const char* Msg0551;
+extern const char* Msg0552;
+extern const char* Msg0553;
+extern const char* Msg0554;
+extern const char* Msg0555;
+extern const char* Msg0556;
+extern const char* Msg0557;
+extern const char* Msg0558;
+extern const char* Msg0559;
+extern const char* Msg0560;
+extern const char* Msg0561;
+extern const char* Msg0562;
+extern const char* Msg0563;
+extern const char* Msg0564;
+extern const char* Msg0565;
+extern const char* Msg0566;
+extern const char* Msg0567;
+extern const char* Msg0568;
+extern const char* Msg0569;
+extern const char* Msg0570;
+extern const char* Msg0571;
+extern const char* Msg0572;
+extern const char* Msg0573;
+extern const char* Msg0574;
+extern const char* Msg0575;
+extern const char* Msg0576;
+extern const char* Msg0577;
+extern const char* Msg0578;
+extern const char* Msg0579;
+extern const char* Msg0580;
+extern const char* Msg0581;
+extern const char* Msg0582;
+extern const char* Msg0583;
+extern const char* Msg0584;
+extern const char* Msg0585;
+extern const char* Msg0586;
+extern const char* Msg0587;
+extern const char* Msg0588;
+extern const char* Msg0589;
+extern const char* Msg0590;
+extern const char* Msg0591;
+extern const char* Msg0592;
+extern const char* Msg0593;
+extern const char* Msg0594;
+extern const char* Msg0595;
+extern const char* Msg0596;
+extern const char* Msg0597;
+extern const char* Msg0598;
+extern const char* Msg0599;
+extern const char* Msg0600;
+extern const char* Msg0601;
+extern const char* Msg0602;
+extern const char* Msg0603;
+extern const char* Msg0604;
+extern const char* Msg0605;
+extern const char* Msg0606;
+extern const char* Msg0607;
+extern const char* Msg0608;
+extern const char* Msg0609;
+extern const char* Msg0610;
+extern const char* Msg0611;
+extern const char* Msg0612;
+extern const char* Msg0613;
+extern const char* Msg0614;
+extern const char* Msg0615;
+extern const char* Msg0616;
+extern const char* Msg0617;
+extern const char* Msg0618;
+extern const char* Msg0619;
+extern const char* Msg0620;
+extern const char* Msg0621;
+extern const char* Msg0622;
+extern const char* Msg0623;
+extern const char* Msg0624;
+extern const char* Msg0625;
+extern const char* Msg0626;
+extern const char* Msg0627;
+extern const char* Msg0628;
+extern const char* Msg0629;
+extern const char* Msg0630;
+extern const char* Msg0631;
+extern const char* Msg0632;
+extern const char* Msg0633;
+extern const char* Msg0634;
+extern const char* Msg0635;
+extern const char* Msg0636;
+extern const char* Msg0637;
+extern const char* Msg0638;
+extern const char* Msg0639;
+extern const char* Msg0640;
+extern const char* Msg0641;
+extern const char* Msg0642;
+extern const char* Msg0643;
+extern const char* Msg0644;
+extern const char* Msg0645;
+extern const char* Msg0646;
+extern const char* Msg0647;
+extern const char* Msg0648;
+extern const char* Msg0649;
+extern const char* Msg0650;
+extern const char* Msg0651;
+extern const char* Msg0652;
+extern const char* Msg0653;
+extern const char* Msg0654;
+extern const char* Msg0655;
+extern const char* Msg0656;
+extern const char* Msg0657;
+extern const char* Msg0658;
+extern const char* Msg0659;
+extern const char* Msg0660;
+extern const char* Msg0661;
+extern const char* Msg0662;
+extern const char* Msg0663;
+extern const char* Msg0664;
+extern const char* Msg0665;
+extern const char* Msg0666;
+extern const char* Msg0667;
+extern const char* Msg0668;
+extern const char* Msg0669;
+extern const char* Msg0670;
+extern const char* Msg0671;
+extern const char* Msg0672;
+extern const char* Msg0673;
+extern const char* Msg0674;
+extern const char* Msg0675;
+extern const char* Msg0676;
+extern const char* Msg0677;
+extern const char* Msg0678;
+extern const char* Msg0679;
+extern const char* Msg0680;
+extern const char* Msg0681;
+extern const char* Msg0682;
+extern const char* Msg0683;
+extern const char* Msg0684;
+extern const char* Msg0685;
+extern const char* Msg0686;
+extern const char* Msg0687;
+extern const char* Msg0688;
+extern const char* Msg0689;
+extern const char* Msg0690;
+extern const char* Msg0691;
+extern const char* Msg0692;
+extern const char* Msg0693;
+extern const char* Msg0694;
+extern const char* Msg0695;
+extern const char* Msg0696;
+extern const char* Msg0697;
+extern const char* Msg0698;
+extern const char* Msg0699;
+extern const char* Msg0700;
+extern const char* Msg0701;
+extern const char* Msg0702;
+extern const char* Msg0703;
+extern const char* Msg0704;
+extern const char* Msg0705;
+extern const char* Msg0706;
+extern const char* Msg0707;
+extern const char* Msg0708;
+extern const char* Msg0709;
+extern const char* Msg0710;
+extern const char* Msg0711;
+extern const char* Msg0712;
+extern const char* Msg0713;
+extern const char* Msg0714;
+extern const char* Msg0715;
+extern const char* Msg0716;
+extern const char* Msg0717;
+extern const char* Msg0718;
+extern const char* Msg0719;
+extern const char* Msg0720;
+extern const char* Msg0721;
+extern const char* Msg0722;
+extern const char* Msg0723;
+extern const char* Msg0724;
+extern const char* Msg0725;
+extern const char* Msg0726;
+extern const char* Msg0727;
+extern const char* Msg0728;
+extern const char* Msg0729;
+extern const char* Msg0730;
+extern const char* Msg0731;
+extern const char* Msg0732;
+extern const char* Msg0733;
+extern const char* Msg0734;
+extern const char* Msg0735;
+extern const char* Msg0736;
+extern const char* Msg0737;
+extern const char* Msg0738;
+extern const char* Msg0739;
+extern const char* Msg0740;
+extern const char* Msg0741;
+extern const char* Msg0742;
+extern const char* Msg0743;
+extern const char* Msg0744;
+extern const char* Msg0745;
+extern const char* Msg0746;
+extern const char* Msg0747;
+extern const char* Msg0748;
+extern const char* Msg0749;
+extern const char* Msg0750;
+extern const char* Msg0751;
+extern const char* Msg0752;
+extern const char* Msg0753;
+extern const char* Msg0754;
+extern const char* Msg0755;
+extern const char* Msg0756;
+extern const char* Msg0757;
+extern const char* Msg0758;
+extern const char* Msg0759;
+extern const char* Msg0760;
+extern const char* Msg0761;
+extern const char* Msg0762;
+extern const char* Msg0763;
+extern const char* Msg0764;
+extern const char* Msg0765;
+extern const char* Msg0766;
+extern const char* Msg0767;
+extern const char* Msg0768;
+extern const char* Msg0769;
+extern const char* Msg0770;
+extern const char* Msg0771;
+extern const char* Msg0772;
+extern const char* Msg0773;
+extern const char* Msg0774;
+extern const char* Msg0775;
+extern const char* Msg0776;
+extern const char* Msg0777;
+extern const char* Msg0778;
+extern const char* Msg0779;
+extern const char* Msg0780;
+extern const char* Msg0781;
+extern const char* Msg0782;
+extern const char* Msg0783;
+extern const char* Msg0784;
+extern const char* Msg0785;
+extern const char* Msg0786;
+extern const char* Msg0787;
+extern const char* Msg0788;
+extern const char* Msg0789;
+extern const char* Msg0790;
+extern const char* Msg0791;
+extern const char* Msg0792;
+extern const char* Msg0793;
+extern const char* Msg0794;
+extern const char* Msg0795;
+extern const char* Msg0796;
+extern const char* Msg0797;
+extern const char* Msg0798;
+extern const char* Msg0799;
+extern const char* Msg0800;
+extern const char* Msg0801;
+extern const char* Msg0802;
+extern const char* Msg0803;
+extern const char* Msg0804;
+extern const char* Msg0805;
+extern const char* Msg0806;
+extern const char* Msg0807;
+extern const char* Msg0808;
+extern const char* Msg0809;
+extern const char* Msg0810;
+extern const char* Msg0811;
+extern const char* Msg0812;
+extern const char* Msg0813;
+extern const char* Msg0814;
+extern const char* Msg0815;
+extern const char* Msg0816;
+extern const char* Msg0817;
+extern const char* Msg0818;
+extern const char* Msg0819;
+extern const char* Msg0820;
+extern const char* Msg0821;
+extern const char* Msg0822;
+extern const char* Msg0823;
+extern const char* Msg0824;
+extern const char* Msg0825;
+extern const char* Msg0826;
+extern const char* Msg0827;
+extern const char* Msg0828;
+extern const char* Msg0829;
+extern const char* Msg0830;
+extern const char* Msg0831;
+extern const char* Msg0832;
+extern const char* Msg0833;
+extern const char* Msg0834;
+extern const char* Msg0835;
+extern const char* Msg0836;
+extern const char* Msg0837;
+extern const char* Msg0838;
+extern const char* Msg0839;
+extern const char* Msg0840;
+extern const char* Msg0841;
+extern const char* Msg0842;
+extern const char* Msg0843;
+extern const char* Msg0844;
+extern const char* Msg0845;
+extern const char* Msg0846;
+extern const char* Msg0847;
+extern const char* Msg0848;
+extern const char* Msg0849;
+extern const char* Msg0850;
+extern const char* Msg0851;
+extern const char* Msg0852;
+extern const char* Msg0853;
+extern const char* Msg0854;
+extern const char* Msg0855;
+extern const char* Msg0856;
+extern const char* Msg0857;
+extern const char* Msg0858;
+extern const char* Msg0859;
+extern const char* Msg0860;
+extern const char* Msg0861;
+extern const char* Msg0862;
+extern const char* Msg0863;
+extern const char* Msg0864;
+extern const char* Msg0865;
+extern const char* Msg0866;
+extern const char* Msg0867;
+extern const char* Msg0868;
+extern const char* Msg0869;
+extern const char* Msg0870;
+extern const char* Msg0871;
+extern const char* Msg0872;
+extern const char* Msg0873;
+extern const char* Msg0874;
+extern const char* Msg0875;
+extern const char* Msg0876;
+extern const char* Msg0877;
+extern const char* Msg0878;
+extern const char* Msg0879;
+extern const char* Msg0880;
+extern const char* Msg0881;
+extern const char* Msg0882;
+extern const char* Msg0883;
+extern const char* Msg0884;
+extern const char* Msg0885;
+extern const char* Msg0886;
+extern const char* Msg0887;
+extern const char* Msg0888;
+extern const char* Msg0889;
+extern const char* Msg0890;
+extern const char* Msg0891;
+extern const char* Msg0892;
+extern const char* Msg0893;
+extern const char* Msg0894;
+extern const char* Msg0895;
+extern const char* Msg0896;
+extern const char* Msg0897;
+extern const char* Msg0898;
+extern const char* Msg0899;
+extern const char* Msg0900;
+extern const char* Msg0901;
+extern const char* Msg0902;
+extern const char* Msg0903;
+extern const char* Msg0904;
+extern const char* Msg0905;
+extern const char* Msg0906;
+extern const char* Msg0907;
+extern const char* Msg0908;
+extern const char* Msg0909;
+extern const char* Msg0910;
+extern const char* Msg0911;
+extern const char* Msg0912;
 
-#define Hnt0006 "this cannot be visited"
-#define Hnt0007 "this implies another 'visit' variable name"
-#define Hnt0008 "this is a pointer dereference ':'"
-#define Hnt0009 "this should be a 'visit' variable name or the expression to evaluate"
-#define Hnt0010 "this should be a 'visit' variable name"
-#define Hnt0021 "this should be a pointer"
-#define Hnt0025 "this could be casted with 'cast(%s)'"
-#define Hnt0001 "this '@sqrt' is called with a negative value"
-#define Hnt0023 "this call could be preceeded by 'discard' if you do not want to use the return value"
-#define Hnt0005 "this could be casted to 'uint'"
-#define Hnt0000 "this divisor expression is zero"
-#define Hnt0017 "this function is marked with the 'Swag.Inline' attribute"
-#define Hnt0015 "this function is marked with the 'Swag.Macro' attribute"
-#define Hnt0016 "this function is marked with the 'Swag.Mixin' attribute"
-#define Hnt0018 "this is a constant"
-#define Hnt0024 "this is a pointer type declaration because of '*'"
-#define Hnt0003 "this is a static reference to a struct member"
-#define Hnt0014 "this is invalid in global scope"
-#define Hnt0012 "this return (%s) should have type '%s'"
-#define Hnt0004 "this should be 'const %s'"
-#define Hnt0020 "this should be 'impl %s'"
-#define Hnt0019 "this should be 'impl enum %s'"
-#define Hnt0013 "this should be on another line, or separated with ';'"
-#define Hnt0011 "this type is '%s'"
-#define Hnt0022 "this type is immutable ('const')"
-#define Hnt0002 "this value can only be converted to type '%s' with a dynamic call to 'opAffect'"
-#define Hnt0026 "this should be removed"
-#define Hnt0027 "this should be the 'loop' expression to evaluate"
-#define Hnt0028 "this should be the 'loop' variable name or the expression to evaluate"
-#define Hnt0029 "this should be the 'visit' expression to evaluate"
-#define Hnt0030 "this should be the expression to dereference"
-#define Hnt0031 "this should be the range right expression"
-#define Hnt0032 "this type is '%s' (could be casted with 'cast(%s)')"
-#define Hnt0033
+extern const char* Hnt0000;
+extern const char* Hnt0001;
+extern const char* Hnt0002;
+extern const char* Hnt0003;
+extern const char* Hnt0004;
+extern const char* Hnt0005;
+extern const char* Hnt0006;
+extern const char* Hnt0007;
+extern const char* Hnt0008;
+extern const char* Hnt0009;
+extern const char* Hnt0010;
+extern const char* Hnt0011;
+extern const char* Hnt0012;
+extern const char* Hnt0013;
+extern const char* Hnt0014;
+extern const char* Hnt0015;
+extern const char* Hnt0016;
+extern const char* Hnt0017;
+extern const char* Hnt0018;
+extern const char* Hnt0019;
+extern const char* Hnt0020;
+extern const char* Hnt0021;
+extern const char* Hnt0022;
+extern const char* Hnt0023;
+extern const char* Hnt0024;
+extern const char* Hnt0025;
+extern const char* Hnt0026;
+extern const char* Hnt0027;
+extern const char* Hnt0028;
+extern const char* Hnt0029;
+extern const char* Hnt0030;
+extern const char* Hnt0031;
+extern const char* Hnt0032;
+extern const char* Hnt0033;
 
-#define Note011 "%s is marked with 'Swag.NoReturn', so the return is used inside %s"
-#define Note001 "'%s' is %s of type '%s' which does not contain a subscope"
-#define Note010 "'%s' is %s"
-#define Note006 "did you mean '%s' ?"
-#define Note008 "here is %s"
-#define Note016 "here is another"
-#define Note000 "here is its declaration"
-#define Note015 "here is one"
-#define Note007 "here is the '%s'"
-#define Note014 "if you want to dereference variable '%s' like in C, use 'dref %s'"
-#define Note005 "is there a missing 'self' ?"
-#define Note012 "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder"
-#define Note002 "occurred %s %s'%s'"
-#define Note003 "occurred %s"
-#define Note004 "occurred in generated code"
-#define Note013 "symbol has been found thanks to a 'using'"
-#define Note009 "you can run swag with --dbgcatch to attach the bytecode debugger when the error occurs"
-#define Note017 "when solving"
-#define Note018 "when solving affectation"
-#define Note019
+extern const char* Note000;
+extern const char* Note001;
+extern const char* Note002;
+extern const char* Note003;
+extern const char* Note004;
+extern const char* Note005;
+extern const char* Note006;
+extern const char* Note007;
+extern const char* Note008;
+extern const char* Note009;
+extern const char* Note010;
+extern const char* Note011;
+extern const char* Note012;
+extern const char* Note013;
+extern const char* Note014;
+extern const char* Note015;
+extern const char* Note016;
+extern const char* Note017;
+extern const char* Note018;
+extern const char* Note019;
+extern const char* Note020;
+extern const char* Note021;
+extern const char* Note022;
+extern const char* Note023;
+extern const char* Note024;
+extern const char* Note025;
 
-#define Rem0001 "symbol '%s' was not found in '%s'"
-#define Rem0002 "symbol '%s' exists in interface scope '%s'"
-#define Rem0000 
-
+extern const char* Rem0000;
+extern const char* Rem0001;
+extern const char* Rem0002;

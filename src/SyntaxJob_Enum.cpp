@@ -34,7 +34,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         enumNode->scope = newScope;
 
         // If an 'impl' came first, then typeinfo has already been defined
-        ScopedLock   lk1(newScope->owner->mutex);
+        ScopedLock    lk1(newScope->owner->mutex);
         TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
         if (!typeInfo)
         {
@@ -122,7 +122,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Msg0400));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0400, token.text.c_str())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;
