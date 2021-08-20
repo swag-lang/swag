@@ -729,7 +729,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 Diagnostic diag(typeNode, typeNode->token, Utf8::format(Msg0252, typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
-                Diagnostic note(typeNode, typeNode->token, Utf8::format(Msg0253, tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                Diagnostic note(typeNode, typeNode->token, Utf8::format(Note038, tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);

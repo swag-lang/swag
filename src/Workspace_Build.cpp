@@ -355,7 +355,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         diag.remarks.push_back(id);
 #endif
 
-        Diagnostic note{declNode, declNode->token, Msg0551, DiagnosticLevel::Note};
+        Diagnostic note{declNode, declNode->token, Note028, DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
     }
 }

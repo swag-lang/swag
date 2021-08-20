@@ -28,7 +28,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                note = new Diagnostic{p, p->token, Msg0884, DiagnosticLevel::Note};
+                note = new Diagnostic{p, p->token, Note036, DiagnosticLevel::Note};
                 break;
             }
         }

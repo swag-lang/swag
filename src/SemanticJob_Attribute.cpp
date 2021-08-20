@@ -116,7 +116,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto       nakedName = AstNode::getKindName(checkNode);
         Diagnostic diag{oneAttribute, Utf8::format(Msg0583, oneAttribute->token.text.c_str(), specificMsg)};
         Diagnostic note1{checkNode, checkNode->token, Utf8::format(Note019, nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Msg0587, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Note025, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }
     else
@@ -125,15 +125,15 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (nakedName == "<node>")
         {
             Diagnostic diag{oneAttribute, Utf8::format(Msg0586, oneAttribute->token.text.c_str())};
-            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Msg0587, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Note025, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1);
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
             Diagnostic diag{oneAttribute, Utf8::format(Msg0588, oneAttribute->token.text.c_str(), nakedName.c_str())};
-            Diagnostic note1{checkNode, checkNode->token, Utf8::format(Msg0589, nakedName1.c_str()), DiagnosticLevel::Note};
-            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Msg0587, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic note1{checkNode, checkNode->token, Utf8::format(Note026, nakedName1.c_str()), DiagnosticLevel::Note};
+            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, Utf8::format(Note025, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
         }
     }
@@ -225,7 +225,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 if (isHereTmp.contains(typeInfo))
                 {
                     Diagnostic diag{forNode, forNode->token, Utf8::format(Msg0591, child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
-                    Diagnostic note{child, child->token, Msg0592, DiagnosticLevel::Note};
+                    Diagnostic note{child, child->token, Note032, DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
 
@@ -448,7 +448,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         if (resolvedName->kind != SymbolKind::Attribute)
         {
             Diagnostic diag{identifier, Utf8::format(Msg0598, resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, resolved->node->token, Utf8::format(Msg0018, resolvedName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{resolved->node, resolved->node->token, Utf8::format(Note029, resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->report(diag, &note);
             return false;
         }
@@ -460,7 +460,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
                 Diagnostic diag{identifier, Utf8::format(Msg0600, resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, resolved->node->token, Utf8::format(Msg0018, resolvedName->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{resolved->node, resolved->node->token, Utf8::format(Note029, resolvedName->name.c_str()), DiagnosticLevel::Note};
                 context->report(diag, &note);
                 return false;
             }

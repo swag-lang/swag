@@ -344,7 +344,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (valText.find(one->value->text) == valText.end())
                         {
                             Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
+                            Diagnostic note{one->declNode, one->declNode->token, Note034, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -359,7 +359,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (val64.find(one->value->reg.u64) == val64.end())
                         {
                             Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
+                            Diagnostic note{one->declNode, one->declNode->token, Note034, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -820,7 +820,7 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
             if (check->token.text == node->token.text)
             {
                 Diagnostic diag(node, node->token, Utf8::format(Msg0639, node->token.text.c_str()));
-                Diagnostic note(check, check->token, Msg0884, DiagnosticLevel::Note);
+                Diagnostic note(check, check->token, Note036, DiagnosticLevel::Note);
                 context->report(diag, &note);
             }
         }

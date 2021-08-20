@@ -229,7 +229,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({node, node->token, Msg0739});
-            Diagnostic note{module->mainIsDefined, sourceFile->module->mainIsDefined->token, Msg0884, DiagnosticLevel::Note};
+            Diagnostic note{module->mainIsDefined, sourceFile->module->mainIsDefined->token, Note036, DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 

@@ -118,7 +118,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Interface)
     {
         Diagnostic diag{node->identifier, Utf8::format(Msg0646, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Note029, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -127,7 +127,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
         Diagnostic diag{node->identifierFor, Utf8::format(Msg0648, node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, Utf8::format(Note029, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -335,7 +335,7 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Note029, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
         {
             Diagnostic diag{node->identifier, Utf8::format(Msg0659, node->identifier->token.text.c_str())};
@@ -370,7 +370,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
     {
         Diagnostic diag{node->identifier, Utf8::format(Msg0662, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, Utf8::format(Note029, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -462,7 +462,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         {
             if (p != node)
             {
-                note = new Diagnostic{p, p->token, Msg0884, DiagnosticLevel::Note};
+                note = new Diagnostic{p, p->token, Note036, DiagnosticLevel::Note};
                 break;
             }
         }

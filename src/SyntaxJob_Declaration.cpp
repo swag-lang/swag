@@ -40,7 +40,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 default:
                 {
                     Diagnostic diag{node, node->token, Msg0386};
-                    Diagnostic note{child, child->token, Msg0158, DiagnosticLevel::Note};
+                    Diagnostic note{child, child->token, Note024, DiagnosticLevel::Note};
                     return sourceFile->report(diag, &note);
                 }
                 }
@@ -123,7 +123,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             {
                 Utf8       msg = Utf8::format(Msg0886, symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-                Utf8       note = Msg0884;
+                Utf8       note = Note036;
                 Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }
