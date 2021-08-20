@@ -30,7 +30,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 
     if (!ip)
     {
-        Diagnostic diag{Msg0259, DiagnosticLevel::CallStack};
+        Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
         diag.stackLevel        = level;
         diag.currentStackLevel = current;
         diag.report();

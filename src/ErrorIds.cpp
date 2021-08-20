@@ -141,7 +141,6 @@ const char* Msg0900 = ", found symbol '%s' ";
 const char* Msg0903 = ", found '%s' ";
 const char* Msg0902 = ", found type '%s' ";
 const char* Msg0904 = "; did you miss 'var' or 'const' to declare a global variable ?";
-const char* Msg0259 = "<foreign code>";
 const char* Msg0215 = "[safety] '<<' shift operand value on type '%s' is greater than '%d'";
 const char* Msg0216 = "[safety] '>>' shift operand value on type '%s' is greater than '%d'";
 const char* Msg0219 = "[safety] '@abs' integer overflow on type '%s'";
@@ -907,6 +906,7 @@ const char* Msg0174 = nullptr;
 const char* Msg0341 = nullptr;
 const char* Msg0483 = nullptr;
 const char* Msg0111 = nullptr;
+const char* Msg0259 = nullptr;
 const char* Msg0912 = nullptr;
 
 const char* Hnt0006 = "this cannot be visited";
