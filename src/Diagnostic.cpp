@@ -139,7 +139,7 @@ void Diagnostic::report(bool verboseMode) const
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 uint32_t countBlanks = 0;
-                while (isblank(*pz++))
+                while (*pz < 0x7f && isblank(*pz++))
                     countBlanks++;
                 minBlanks = min(minBlanks, countBlanks);
             }

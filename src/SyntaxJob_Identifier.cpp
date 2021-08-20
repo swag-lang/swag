@@ -95,7 +95,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymLeftParen)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return sourceFile->report({identifier, token, Msg0839});
+                return sourceFile->report({identifier, token, Utf8::format(Msg0839, identifier->token.text.c_str())});
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));

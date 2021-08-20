@@ -20,8 +20,8 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     // Register attribute
     ScopedLock lk(currentScope->symTable.mutex);
-    auto        typeInfo = allocType<TypeInfoFuncAttr>();
-    typeInfo->declNode   = attrNode;
+    auto       typeInfo = allocType<TypeInfoFuncAttr>();
+    typeInfo->declNode  = attrNode;
 
     auto newScope      = Ast::newScope(attrNode, attrNode->token.text, ScopeKind::Attribute, currentScope);
     attrNode->typeInfo = typeInfo;
@@ -34,6 +34,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
+    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Msg0726));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     return true;

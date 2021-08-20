@@ -685,7 +685,7 @@
 #define Msg0295 "struct cannot be initialized twice"
 #define Msg0666 "struct cannot be marked with 'Swag.Opaque' because it is not public"
 #define Msg0667 "struct cannot be marked with 'Swag.Opaque' because the whole file is exported ('#global export')"
-#define Msg0839 "struct initialization should be done with '{}' and not parenthesis (this is reserved for function calls)"
+#define Msg0839 "struct initialization of '%s' should be done with '{}' and not parenthesis (this is reserved for function calls)"
 #define Msg0674 "struct member name '%s' starts with 'item', and this is reserved by the language"
 #define Msg0610 "switch body is empty"
 #define Msg0612 "switch enum value '%s' already defined"
@@ -767,7 +767,7 @@
 #define Msg0734 "variadic argument should be the last one"
 #define Msg0289 "version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character"
 #define Msg0056 "x64 backend unsupported os '%s'"
-#define Msg0726
+#define Msg0726 "attribute declaration ('attr'), unlike function, should not have a return value starting with '->'"
 #define Msg0858
 #define Msg0561
 #define Msg0826
