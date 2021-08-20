@@ -90,9 +90,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
             Token nextToken;
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
-            {
                 msg += Msg0904;
-            }
         }
         break;
     }

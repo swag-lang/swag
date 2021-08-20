@@ -1122,7 +1122,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag(identifier, identifier->token, Msg0111);
+            Diagnostic diag(identifier, identifier->token, Msg0094);
             Diagnostic note(overload->node, overload->node->token, Msg0106, DiagnosticLevel::Note);
             return context->report(diag, &note);
         }

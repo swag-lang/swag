@@ -418,7 +418,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     default:
     {
-        return context->report({arrayNode->array, Utf8::format(Msg0483, arrayType->getDisplayName().c_str())});
+        return context->report({arrayNode->array, Utf8::format(Msg0481, arrayType->getDisplayName().c_str())});
     }
     }
 
