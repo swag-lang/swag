@@ -527,9 +527,6 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += declNode->token.text;
     }
 
-    if (nameType == COMPUTE_DISPLAY_NAME && declNode)
-        resName += declNode->token.text;
-
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Parameters
