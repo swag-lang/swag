@@ -288,30 +288,37 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     // loop can be empty for an infinit loop
     if (token.id != TokenId::SymLeftCurly)
     {
+        Utf8  name;
+        Token tokenName;
+        if (token.id == TokenId::SymLeftParen)
         {
-            PushErrHint errh(Hnt0028);
-            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
-        }
-
-        Token tokenName = node->expression->token;
-
-        Utf8 name;
-        if (token.id == TokenId::SymColon)
-        {
-            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
-            SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
-            name = node->expression->childs.back()->token.text;
-            SWAG_CHECK(eatToken());
-
-            {
-                SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0874));
-                PushErrHint errh(Hnt0027);
-                SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
-            }
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }
         else
         {
-            Ast::addChildBack(node, node->expression);
+            {
+                PushErrHint errh(Hnt0028);
+                SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
+            }
+
+            tokenName = node->expression->token;
+            if (token.id == TokenId::SymColon)
+            {
+                SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
+                SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
+                name = node->expression->childs.back()->token.text;
+                SWAG_CHECK(eatToken());
+
+                {
+                    SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0874));
+                    PushErrHint errh(Hnt0027);
+                    SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
+                }
+            }
+            else
+            {
+                Ast::addChildBack(node, node->expression);
+            }
         }
 
         // Range

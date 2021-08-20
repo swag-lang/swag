@@ -2,7 +2,7 @@
 #global testwarning
 #test
 {
-	loop(10)
+	loop 10
 	{
 		break
 		a := 0
