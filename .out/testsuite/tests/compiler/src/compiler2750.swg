@@ -14,7 +14,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := Swag.MaxF64
+    x := Swag.F64.Max
     y := cast(u64) x
 }
 

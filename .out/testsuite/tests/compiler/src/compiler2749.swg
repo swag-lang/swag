@@ -7,7 +7,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := Swag.MaxF32
+    x := Swag.F32.Max
     y := cast(u32) x
 }
 
@@ -23,7 +23,7 @@
 #[Swag.Optim("", false)]
 #test
 {
-    x := Swag.MaxF64
+    x := Swag.F64.Max
     y := cast(u32) x
 }
 
