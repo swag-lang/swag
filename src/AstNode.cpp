@@ -564,6 +564,10 @@ Utf8 AstFuncDecl::getDisplayName()
         return "'#main' block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         return "'#compiler' block";
+    if (attributeFlags & ATTRIBUTE_INIT_FUNC)
+        return "'#init' block";
+    if (attributeFlags & ATTRIBUTE_DROP_FUNC)
+        return "'#drop' block";
 
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return Utf8::format("'%s' block", token.text.c_str());

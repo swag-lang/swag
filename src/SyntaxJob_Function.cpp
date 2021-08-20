@@ -564,7 +564,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(!funcForCompiler, error(token, Utf8::format(Msg0416, funcNode->token.text.c_str())));
+        SWAG_VERIFY(!funcForCompiler, error(token, Utf8::format(Msg0416, funcNode->getDisplayName().c_str())));
         SWAG_CHECK(eatSemiCol("function declaration"));
         funcNode->flags |= AST_EMPTY_FCT;
         return true;

@@ -68,7 +68,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
     // Special function outside an impl block. This is valid from some...
     if (!parent)
-        return context->report({node, node->token, Utf8::format(Msg0067, name.c_str())});
+        return context->report({node, node->token, Utf8::format(Msg0067, node->getDisplayName().c_str())});
 
     TypeInfo* typeStruct = nullptr;
     if (parent)
