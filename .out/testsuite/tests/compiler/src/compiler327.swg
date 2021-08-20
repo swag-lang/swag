@@ -1,8 +1,6 @@
-
-#global testpass syntax;
-
-#global testerror;
+#global testpass syntax
+//#global testerror
 #test
 {
-	var a: [4] s32 = {};
+	var a: [4] s32 = {}
 }

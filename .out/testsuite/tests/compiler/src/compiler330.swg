@@ -1,8 +1,5 @@
-
-;
-
-#global testerror;
+#global testerror
 #test
 {
-	var a: [1] s32 = {0, 1};
+	var a: [1] s32 = @{0, 1}
 }
