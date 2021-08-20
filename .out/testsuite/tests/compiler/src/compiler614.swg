@@ -1,13 +1,10 @@
-
-
-
-//#[Swag.PrintBc]
 #global testerror
-func(T) Print(x: T)
+//#[Swag.PrintBc]
+func(T) print(x: T)
 {
 }
 
 #test
 {
-	Print!(string)(1)
+	print'(string)(1)
 }

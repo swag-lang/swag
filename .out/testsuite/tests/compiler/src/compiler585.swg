@@ -1,6 +1,3 @@
-
-
-
 #global testerror
 func(op: string) toto()
 {
@@ -9,5 +6,5 @@ func(op: string) toto()
 #test
 {
 	c := 0
-	toto!(c)()
+	toto'(c)()
 }

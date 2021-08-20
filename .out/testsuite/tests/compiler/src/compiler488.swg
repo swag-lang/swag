@@ -1,8 +1,5 @@
-
-
-
+//#global testerror
 //#[Swag.PrintBc]
-#global testerror
 #test
 {
 	var res = T(0)

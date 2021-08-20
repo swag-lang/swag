@@ -1775,7 +1775,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     }
 
     // Multiple overloads
-    Diagnostic diag{node, node->token, Utf8::format(Msg0113, overloads.size())};
+    Diagnostic diag{node, node->token, Utf8::format(Msg0113, overloads.size(), overloads[0]->overload->symbol->name.c_str())};
     symbolErrorRemarks(context, overloads, node, &diag);
 
     vector<const Diagnostic*> notes;
