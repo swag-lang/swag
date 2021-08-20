@@ -43,6 +43,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         arrayNode->lowerBound = firstExpr;
         SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
         *exprNode = arrayNode;
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     }
 
     // Deref by index
@@ -72,10 +73,10 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
         }
-    }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Msg0260));
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Msg0826));
+    }
 
     return true;
 }
@@ -172,7 +173,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         expr->flags |= AST_IN_ATOMIC_EXPR;
         if (result)
             *result = expr;
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, Note021));
         break;
     }
 

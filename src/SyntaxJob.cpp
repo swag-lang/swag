@@ -141,6 +141,15 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
     return true;
 }
 
+bool SyntaxJob::eatTokenNoEOL(TokenId id, const char* msg)
+{
+    auto lastToken = token;
+    SWAG_CHECK(eatToken(id, msg));
+    if (tokenizer.lastTokenIsEOL)
+        SWAG_CHECK(error(lastToken, Utf8::format(Msg0858, lastToken.text.c_str(), msg)));
+    return true;
+}
+
 bool SyntaxJob::eatSemiCol(const char* msg)
 {
     if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !tokenizer.lastTokenIsEOL)

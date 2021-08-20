@@ -312,7 +312,21 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             SWAG_CHECK(eatToken());
         }
 
+        auto rightSquareToken = token;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        if (tokenizer.lastTokenIsEOL)
+        {
+            if (contextFlags & CONTEXT_FLAG_VARDECL_INIT_EXPRESSION)
+            {
+                Diagnostic diag{sourceFile, rightSquareToken, Msg0561};
+                Diagnostic note{sourceFile, leftSquareToken, Msg0198, DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            else
+            {
+                return error(rightSquareToken, Msg0561);
+            }
+        }
 
         if (token.id == TokenId::SymComma)
         {

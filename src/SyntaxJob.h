@@ -53,6 +53,9 @@ static const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | ID
 static const uint32_t EXPR_FLAG_NONE   = 0x00000000;
 static const uint32_t EXPR_FLAG_SIMPLE = 0x00000001;
 
+static const uint32_t CONTEXT_FLAG_VARDECL_INIT_EXPRESSION = 0x00000001;
+static const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
+
 struct SyntaxContext : public JobContext
 {
     SyntaxJob* job = nullptr;
@@ -76,6 +79,7 @@ struct SyntaxJob : public Job
 
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
+    bool eatTokenNoEOL(TokenId id, const char* msg);
     bool eatSemiCol(const char* msg = nullptr);
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
@@ -205,6 +209,7 @@ struct SyntaxJob : public Job
     AstInline*          currentInline          = nullptr;
 
     uint64_t currentFlags = 0;
+    uint64_t contextFlags = 0;
 
     uint32_t contextualNoInline = 0;
 
@@ -212,4 +217,22 @@ struct SyntaxJob : public Job
     bool inFunCall       = false;
     bool afterGlobal     = false;
     bool setupDone       = false;
+};
+
+struct PushSyntaxContextFlags
+{
+    PushSyntaxContextFlags(SyntaxJob* job, uint64_t flags)
+        : job{job}
+    {
+        oldFlags = job->contextFlags;
+        job->contextFlags |= flags;
+    }
+
+    ~PushSyntaxContextFlags()
+    {
+        job->contextFlags = oldFlags;
+    }
+
+    SyntaxJob* job;
+    uint64_t   oldFlags;
 };

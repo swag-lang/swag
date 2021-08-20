@@ -247,6 +247,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
         {
+            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, &type, true));
             Ast::removeFromParent(type);
@@ -256,7 +257,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
         if (token.id == TokenId::SymEqual)
         {
-            auto saveToken = move(token);
+            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_VARDECL_INIT_EXPRESSION);
+            auto                   saveToken = move(token);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
             Ast::removeFromParent(assign);
