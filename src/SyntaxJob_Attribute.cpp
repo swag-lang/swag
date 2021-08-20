@@ -35,6 +35,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Msg0726));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Msg0190));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     return true;
@@ -151,6 +152,8 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             AstNode* params;
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+
+            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Utf8::format(Msg0825, token.text.c_str())));
 
             if (token.id != TokenId::SymRightSquare)
             {

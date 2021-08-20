@@ -318,7 +318,9 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             return true;
         }
 
-        return sourceFile->report({parent, token, Msg0447});
+        Diagnostic diag{sourceFile, token, Utf8::format(Msg0447, token.text.c_str())};
+        Diagnostic note{sourceFile, curly, Msg0201, DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
     }
 
     int idx = 0;
