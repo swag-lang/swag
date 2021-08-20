@@ -1204,13 +1204,19 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     for (auto& alias : id->aliasNames)
                     {
                         if (alias.text == r.second)
+                        {
+                            PushErrHint errh(Hnt0026);
                             return context->report({id, alias, Utf8::format(Msg0780, alias.text.c_str())});
+                        }
                     }
 
                     for (auto& alias : id->callParameters->aliasNames)
                     {
                         if (alias.text == r.second)
+                        {
+                            PushErrHint errh(Hnt0026);
                             return context->report({id, alias, Utf8::format(Msg0780, alias.text.c_str())});
+                        }
                     }
                 }
             }
