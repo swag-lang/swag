@@ -377,7 +377,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, error(token, Msg0341));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, error(token, Msg0339));
 
                 // Pointer to a const reference
                 if (token.id == TokenId::SymAmpersand)

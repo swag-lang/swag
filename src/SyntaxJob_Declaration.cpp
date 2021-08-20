@@ -109,7 +109,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         // Add/Get namespace
         {
             ScopedLock lk(currentScope->symTable.mutex);
-            auto        symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
+            auto       symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {
                 auto typeInfo           = allocType<TypeInfoNamespace>();
@@ -140,7 +140,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     }
 
     currentScope   = oldScope;
-    auto openCurly = move(token);
+    auto openCurly = token;
 
     if (forGlobal)
     {
@@ -153,7 +153,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, Note022));
 
         // Content of namespace is toplevel
         Scoped scoped(this, newScope);
@@ -163,7 +163,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         }
 
         SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0880));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly, Note023));
     }
 
     return true;
