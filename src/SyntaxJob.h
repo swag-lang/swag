@@ -53,7 +53,7 @@ static const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | ID
 static const uint32_t EXPR_FLAG_NONE   = 0x00000000;
 static const uint32_t EXPR_FLAG_SIMPLE = 0x00000001;
 
-static const uint32_t CONTEXT_FLAG_VARDECL_INIT_EXPRESSION = 0x00000001;
+static const uint32_t CONTEXT_FLAG_EXPRESSION              = 0x00000001;
 static const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
 
 struct SyntaxContext : public JobContext

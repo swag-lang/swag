@@ -292,10 +292,13 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::SymAsterisk:
     case TokenId::SymLeftSquare:
     case TokenId::SymLeftCurly:
+    {
+        PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
+    }
 
     case TokenId::SymLiteralCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
@@ -986,7 +989,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
-    PushSyntaxContextFlags cf(this, CONTEXT_FLAG_VARDECL_INIT_EXPRESSION);
+    PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
 
     // var x = ? : not initialized
     if (token.id == TokenId::SymQuestion)
