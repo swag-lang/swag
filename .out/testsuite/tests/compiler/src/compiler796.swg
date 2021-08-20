@@ -1,6 +1,4 @@
-#global testerror
-
-//#[Swag.PrintBc]
+/*//#[Swag.PrintBc]
 func(x: string) toto()
 {
 }
@@ -9,5 +7,5 @@ func(x: string) toto()
 //#[Swag.PrintBc]
 #test
 {
-	toto!string()
-}
+	toto'string()
+}*/

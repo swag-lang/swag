@@ -1,5 +1,3 @@
-
-
 #global testerror
 func(T) toto(x: *T)
 {
@@ -9,5 +7,5 @@ func(T) toto(x: *T)
 #test
 {
 	cpt := 50
-	toto!s32(&cpt)
+	toto's32(&cpt)
 }

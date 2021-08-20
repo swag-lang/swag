@@ -8,5 +8,5 @@ struct(T) Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt: Point!bool
+	var pt: Point'bool
 }

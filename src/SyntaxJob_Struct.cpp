@@ -466,7 +466,10 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         break;
 
     case TokenId::KwdVar:
+    {
+        PushErrHint errh(Hnt0026);
         return sourceFile->report({parent, token, Msg0453});
+    }
 
     // A normal declaration
     default:

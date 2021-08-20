@@ -986,6 +986,8 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
+    PushSyntaxContextFlags cf(this, CONTEXT_FLAG_VARDECL_INIT_EXPRESSION);
+
     // var x = ? : not initialized
     if (token.id == TokenId::SymQuestion)
     {

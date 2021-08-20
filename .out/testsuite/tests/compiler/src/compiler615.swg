@@ -1,6 +1,3 @@
-
-
-
 //#[Swag.PrintBc]
 #global testerror
 func(T) Print(x: T, y: T)
@@ -9,5 +6,5 @@ func(T) Print(x: T, y: T)
 
 #test
 {
-	Print!(s32)(1, "1")
+	Print'(s32)(1, "1")
 }
