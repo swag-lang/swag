@@ -1,8 +1,7 @@
-
 #global testerror
 
 #test
 {
-    let languageName = "Swift"
+    const languageName = "Swift"
     languageName = "Swift++"
 }
