@@ -371,35 +371,35 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 / right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (right->computedValue->reg.s64 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 / right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue->reg.u64 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 / right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
             if (right->computedValue->reg.f32 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.f32 = left->computedValue->reg.f32 / right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
             if (right->computedValue->reg.f64 == 0)
-                return context->report(Hnt0000, {right, Msg0150});
+                return context->report(Hnt0033, {right, Msg0150});
             node->computedValue->reg.f64 = left->computedValue->reg.f64 / right->computedValue->reg.f64;
             break;
         default:
@@ -407,7 +407,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         }
     }
     else if (right->isConstant0())
-        return context->report(Hnt0000, {right, Msg0150});
+        return context->report(Hnt0033, {right, Msg0150});
 
     return true;
 }

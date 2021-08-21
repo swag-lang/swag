@@ -908,7 +908,7 @@ extern const char* Msg0910;
 extern const char* Msg0911;
 extern const char* Msg0912;
 
-extern const char* Hnt0000;
+extern const char* Hnt0033;
 extern const char* Hnt0001;
 extern const char* Hnt0002;
 extern const char* Hnt0003;

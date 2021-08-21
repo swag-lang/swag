@@ -1,7 +1,5 @@
-
-
-//#[Swag.PrintBc]
 #global testerror
+//#[Swag.PrintBc]
 #test
 {
 	func chooseStepFunction()
