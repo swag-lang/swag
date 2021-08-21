@@ -2579,7 +2579,11 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                         displayName = typeRef->name;
                     if (!displayName.empty())
                     {
-                        diag = new Diagnostic{node, node->token, Utf8::format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                        auto varDecl = node->findParent(AstNodeKind::VarDecl);
+                        if (node->identifierRef && node->identifierRef->flags & AST_TUPLE_UNPACK && varDecl)
+                            diag = new Diagnostic{node, node->token, Utf8::format(Msg0821, varDecl->token.text.c_str(), displayName.c_str())};
+                        else
+                            diag = new Diagnostic{node, node->token, Utf8::format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
                         if (typeRef && (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::Interface))
                         {
                             auto note = new Diagnostic{identifierRef->startScope->owner, identifierRef->startScope->owner->token, Utf8::format(Note029, displayName.c_str()), DiagnosticLevel::Note};

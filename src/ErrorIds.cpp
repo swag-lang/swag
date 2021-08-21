@@ -761,7 +761,7 @@ const char* Msg0623 = "missing variable type or assignment (':' or '=')";
 const char* Msg0822 = "'using' on a variable with a type pointer can only be used on a pointer to a struct (type is '%s')";
 const char* Msg0860 = "a %s cannot be marked with 'Swag.NotGeneric' attribute";
 const char* Msg0512 = "a %s cannot be marked with 'Swag.NoReturn' attribute";
-const char* Msg0821 = nullptr;
+const char* Msg0821 = "cannot unpack variable '%s' from struct '%s' because there's no corresponding member";
 const char* Msg0820 = nullptr;
 const char* Msg0819 = nullptr;
 const char* Msg0638 = nullptr;
