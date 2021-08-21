@@ -237,14 +237,20 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
+    // Message ?
     auto expr = node->childs[0];
     if (node->childs.size() > 1)
     {
-        auto msg = node->childs[1];
-        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, Msg0236}));
+        auto msg     = node->childs[1];
+        auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
+        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Utf8::format(Msg0236, msg->typeInfo->getDisplayName().c_str())}));
+        SWAG_CHECK(evaluateConstExpression(context, msg));
+        if (context->result != ContextResult::Done)
+            return true;
         SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, Msg0237}));
     }
 
+    // Expression to check
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     if (context->result != ContextResult::Done)
