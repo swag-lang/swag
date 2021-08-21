@@ -1,9 +1,8 @@
-
 #global testerror
 
 func toto() -> {f32, bool}
 {
-	return {666, true}
+	return @{666, true}
 }
 
 #test

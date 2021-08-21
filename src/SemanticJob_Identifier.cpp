@@ -1678,7 +1678,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     AstNode*       callParameters    = nullptr;
 
     // node can be null when we try to resolve a userOp
-    if (node)
+    if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
     {
         identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters = identifier->genericParameters;

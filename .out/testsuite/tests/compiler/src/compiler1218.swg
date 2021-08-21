@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct Vector2
@@ -7,7 +6,7 @@ struct Vector2
 	y: f32
 }
 
-const XAxis: Vector2(y: 1.0, 1)
+const XAxis: Vector2{y: 1.0, 1}
 
 #test
 {

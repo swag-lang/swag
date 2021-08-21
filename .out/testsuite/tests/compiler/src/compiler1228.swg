@@ -1,5 +1,4 @@
-
-#global testerror
+//#global testerror
 
 namespace A
 {
@@ -12,9 +11,8 @@ func isZeroEpsilo2(x: f32) => false
 func isZeroEpsilo3(x: f32) => false
 func isZeroEpsilo4(x: f32) => false
 
-using A
-
 #test
 {
-    isZeroEpsilon(true)
+    using A
+    discard isZeroEpsilon(true)
 }

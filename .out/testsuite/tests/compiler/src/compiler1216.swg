@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct Vector2
@@ -7,7 +6,7 @@ struct Vector2
 	y: f32
 }
 
-const XAxis: Vector2 = {1, 4, 5}
+const XAxis: Vector2 = @{1, 4, 5}
 
 //#[Swag.PrintBc]
 #test

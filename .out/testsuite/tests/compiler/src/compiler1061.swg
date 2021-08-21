@@ -1,5 +1,3 @@
-
-
 #global testerror
 struct(T) Array
 {
@@ -24,6 +22,6 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	var arr: Array!Point
+	var arr: Array'Point
 	arr.add(1.0)
 }

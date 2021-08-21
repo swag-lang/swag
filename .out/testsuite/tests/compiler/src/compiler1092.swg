@@ -10,5 +10,5 @@ enum TITI
 
 #test
 {
-	let x : TITI = TITI.F1 + TITI.F2
+	const x : TITI = TITI.F1 + TITI.F2
 }
