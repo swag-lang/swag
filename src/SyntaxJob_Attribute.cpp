@@ -162,6 +162,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             }
         }
 
+        attrBlockNode->token.endLocation = token.endLocation;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
         if (single)
             break;

@@ -263,7 +263,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         if (node->childs.size() > 1)
         {
             auto msg = node->childs[1];
-            context->report({node, node->token, Utf8::format("%s", msg->computedValue->text.c_str())});
+            context->report({node, node->token, msg->computedValue->text});
         }
         else
             context->report({node, node->token, Msg0238});
