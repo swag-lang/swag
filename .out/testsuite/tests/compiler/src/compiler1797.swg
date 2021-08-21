@@ -1,6 +1,3 @@
-
-#global testerror
-
 var G = 0
 
 namespace A.B
@@ -13,7 +10,7 @@ namespace A.B
 
 #test
 {
-    using NP = A.B
+    using A.B
     toto(10)
     @assert(G == 10)
 }

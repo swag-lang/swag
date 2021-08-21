@@ -1,4 +1,3 @@
-
 #global testerror
 
 namespace A.B
@@ -11,5 +10,5 @@ namespace A.B
 #test
 {
     toto := &A.B.toto
-    using toto = A.B.toto
+    alias toto = A.B.toto
 }

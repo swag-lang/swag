@@ -207,7 +207,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier)
     {
-        auto child = typeNode->childs.back();
+        auto child = typeNode->identifier->childs.back();
         if (!child->typeInfo || !child->typeInfo->isNative(NativeTypeKind::Undefined))
         {
             if (child->resolvedSymbolName)
@@ -220,7 +220,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, Utf8::format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic diag{child->sourceFile, child->token, Utf8::format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
                     Diagnostic note{symOver->node, symOver->node->token, Utf8::format(Note029, symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
