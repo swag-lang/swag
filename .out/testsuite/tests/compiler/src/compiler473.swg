@@ -1,8 +1,6 @@
-
-
+#global testerror
 
 //#[Swag.PrintBc]
-#global testerror
 #test
 {
 	a := &F;

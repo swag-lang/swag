@@ -1,7 +1,6 @@
-
+#global testerror
 
 //#[Swag.PrintBc]
-#global testerror
 #test
 {
 	cpt := 0

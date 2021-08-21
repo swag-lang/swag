@@ -739,7 +739,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report({node, Msg0303}));
-        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node, Msg0304}));
+        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node->assignment, Msg0304}));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
