@@ -1,4 +1,3 @@
-
 #global testerror
 
 func titi()->(s32, s32)

@@ -1,4 +1,3 @@
-
 #global testerror
 
 func(T) toto(x: T)
@@ -8,5 +7,5 @@ func(T) toto(x: T)
 
 #test
 {
-    toto!bool(1.0)
+    toto'bool(1.0)
 }

@@ -553,7 +553,7 @@ const char* Msg0455 = "expected ':' or '=' in variable declaration, found '%s'";
 const char* Msg0260 = "invalid token '['";
 const char* Msg0402 = "invalid token, ',' expected";
 const char* Msg0401 = "invalid token, identifier expected";
-const char* Msg0629 = "invalid type '%s' for 'visit'";
+const char* Msg0629 = "expression of type '%s' cannot be visited with 'visit'";
 const char* Msg0731 = "invalid type '%s' for attribute parameter";
 const char* Msg0697 = "invalid type '%s' for enum flags (should be unsigned integer)";
 const char* Msg0698 = "invalid type '%s' for enum index (should be integer)";
