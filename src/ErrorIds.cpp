@@ -942,7 +942,11 @@ const char* Hnt0029 = "this should be the 'visit' expression to evaluate";
 const char* Hnt0030 = "this should be the expression to dereference";
 const char* Hnt0031 = "this should be the range right expression";
 const char* Hnt0032 = "this type is '%s' (could be casted with 'cast(%s)')";
-const char* Hnt0033 = nullptr;
+const char* Hnt0033 = "this evaluates to 0";
+const char* Hnt0034 = nullptr;
+const char* Hnt0035 = nullptr;
+const char* Hnt0036 = nullptr;
+const char* Hnt0037 = nullptr;
 
 const char* Note011 = "%s is marked with 'Swag.NoReturn', so the return is used inside %s";
 const char* Note001 = "'%s' is %s of type '%s' which does not contain a subscope";

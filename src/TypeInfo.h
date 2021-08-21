@@ -215,6 +215,7 @@ struct TypeInfo
     shared_mutex mutex;
 
     Utf8 name;
+    Utf8 displayName;
     Utf8 scopedName;
     Utf8 scopedNameExport;
 
@@ -522,6 +523,7 @@ struct TypeInfoAlias : public TypeInfo
     {
     }
 
+    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 

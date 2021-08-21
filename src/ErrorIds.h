@@ -942,6 +942,10 @@ extern const char* Hnt0030;
 extern const char* Hnt0031;
 extern const char* Hnt0032;
 extern const char* Hnt0033;
+extern const char* Hnt0034;
+extern const char* Hnt0035;
+extern const char* Hnt0036;
+extern const char* Hnt0037;
 
 extern const char* Note000;
 extern const char* Note001;

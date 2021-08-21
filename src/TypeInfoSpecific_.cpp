@@ -86,6 +86,20 @@ TypeInfo* TypeInfoAlias::clone()
     return newType;
 }
 
+void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
+{
+    if (nameType == COMPUTE_DISPLAY_NAME && flags & TYPEINFO_FAKE_ALIAS)
+    {
+        if (flags & TYPEINFO_CONST)
+            resName += "const ";
+        resName += rawType->computeWhateverName(nameType);
+    }
+    else
+    {
+        TypeInfo::computeWhateverName(resName, nameType);
+    }
+}
+
 bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)

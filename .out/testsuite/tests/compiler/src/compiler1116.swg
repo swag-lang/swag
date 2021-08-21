@@ -1,7 +1,5 @@
-
-
 #global testerror
 #test
 {
-	x := 5 % 0
+	x := 5 % (1 - 1)
 }

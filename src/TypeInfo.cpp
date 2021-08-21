@@ -8,6 +8,7 @@ void TypeInfo::clearName()
 {
     ScopedLock lk(mutex);
     name.clear();
+    displayName.clear();
 }
 
 void TypeInfo::forceComputeName()
@@ -53,7 +54,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
     switch (nameType)
     {
     case COMPUTE_NAME:
-    case COMPUTE_DISPLAY_NAME:
         if (name.empty())
         {
             computeWhateverName(str, nameType);
@@ -61,6 +61,15 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         }
 
         return name;
+
+    case COMPUTE_DISPLAY_NAME:
+        if (displayName.empty())
+        {
+            computeWhateverName(str, nameType);
+            displayName = move(str);
+        }
+
+        return displayName;
 
     case COMPUTE_SCOPED_NAME:
         if (scopedName.empty())
