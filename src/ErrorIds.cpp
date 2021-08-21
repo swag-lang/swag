@@ -1,7 +1,7 @@
 #include "pch.h"
 
 const char* Msg0488 = "%s '%s' cannot be dereferenced like a pointer";
-const char* Msg0013 = "%s '%s' cannot be referenced in that context because it's not an rvalue";
+const char* Msg0013 = "%s '%s' cannot be referenced in that context because it's not a value";
 const char* Msg0097 = "%s '%s' has not been used as the first parameter to call '%s'";
 const char* Msg0083 = "%s '%s' is deprecated";
 const char* Msg0420 = "%s '%s' is waiting for ";
@@ -120,8 +120,8 @@ const char* Msg0438 = "'for' is invalid for an enum implementation block";
 const char* Msg0559 = "'move' cannot be applied to a constant expression";
 const char* Msg0075 = "'opVisit' should have the 'Swag.Macro' attribute";
 const char* Msg0791 = "'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')";
-const char* Msg0769 = "'retval' can only be used in a function body";
-const char* Msg0771 = "'retval' cannot be used in a function that returns nothing";
+const char* Msg0769 = "'retval' type can only be used in a function body";
+const char* Msg0771 = "'retval' type cannot be used in a function that returns nothing";
 const char* Msg0334 = "'self' can only be used inside a struct or 'impl' block";
 const char* Msg0406 = "'self' can only be used inside an 'impl' block";
 const char* Msg0306 = "'slice' should be declared as immutable with 'const'";
@@ -257,7 +257,7 @@ const char* Msg0709 = "cannot deduce flag value of '%s' because previous value i
 const char* Msg0308 = "cannot deduce type from 'null'";
 const char* Msg0603 = "cannot delete file '%s'";
 const char* Msg0486 = "cannot dereference a 'void' pointer";
-const char* Msg0482 = "cannot dereference a tuple type";
+const char* Msg0482 = "cannot dereference a tuple type like a pointer or an array";
 const char* Msg0481 = "cannot dereference type '%s'";
 const char* Msg0094 = "cannot discard a function call that returns nothing";
 const char* Msg0280 = "cannot evaluate constant expression of type '%s' at compile time";
@@ -758,7 +758,7 @@ const char* Msg0190 = "attribute declaration ('attr'), unlike function, cannot b
 const char* Msg0560 = "'retval' type is invalid for a function return type";
 const char* Msg0823 = "'case' statement is empty, you should add a 'break'";
 const char* Msg0623 = "missing variable type or assignment (':' or '=')";
-const char* Msg0822 = nullptr;
+const char* Msg0822 = "'using' on a variable with a type pointer can only be used on a pointer to a struct (type is '%s')";
 const char* Msg0860 = nullptr;
 const char* Msg0512 = nullptr;
 const char* Msg0821 = nullptr;
@@ -924,7 +924,7 @@ const char* Hnt0015 = "this function is marked with the 'Swag.Macro' attribute";
 const char* Hnt0016 = "this function is marked with the 'Swag.Mixin' attribute";
 const char* Hnt0018 = "this is a constant";
 const char* Hnt0024 = "this is a pointer type declaration because of '*'";
-const char* Hnt0003 = "this is a static reference to a struct member";
+const char* Hnt0003 = "this is a static reference to a struct member of '%s'";
 const char* Hnt0014 = "this is invalid in global scope";
 const char* Hnt0012 = "this return (%s) should have type '%s'";
 const char* Hnt0004 = "this should be 'const %s'";
@@ -944,7 +944,7 @@ const char* Hnt0032 = "this type is '%s' (could be casted with 'cast(%s)')";
 const char* Hnt0033 = "this evaluates to 0";
 const char* Hnt0000 = "this divisor expression is zero";
 const char* Hnt0034 = "this returns nothing";
-const char* Hnt0035 = nullptr;
+const char* Hnt0035 = "this is an alias and should be an identifier";
 const char* Hnt0036 = nullptr;
 const char* Hnt0037 = nullptr;
 

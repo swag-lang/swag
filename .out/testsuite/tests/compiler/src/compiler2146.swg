@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct P
@@ -10,6 +9,5 @@ impl Alias
 {
     func toto(using self)
     {
-
     }
 }

@@ -1,8 +1,7 @@
-
-#global testerror
+//#global testerror
 
 //#[Swag.Inline]
-func toto(a:string = #os)
+func toto(a: string = #os)
 {
 
 }

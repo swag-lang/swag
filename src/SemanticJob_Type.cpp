@@ -27,18 +27,21 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
         {
             name = "struct member";
-            hint = Hnt0003;
+            hint = Utf8::format(Hnt0003, node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
         }
 
         Diagnostic  diag{node, Utf8::format(Msg0013, name.c_str(), node->resolvedSymbolName->name.c_str())};
         Diagnostic* note = nullptr;
 
         // Missing self ?
-        if (node->ownerStructScope && node->ownerStructScope == context->node->ownerStructScope && node->ownerFct)
+        if (node->childs.size() <= 1 && node->ownerStructScope && node->ownerStructScope == context->node->ownerStructScope && node->ownerFct)
+        {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
-                note = new Diagnostic{node, Note005, DiagnosticLevel::Note};
+            {
+                note = new Diagnostic{Note005, DiagnosticLevel::Note};
+            }
+        }
 
-        context->expansionNode.push_back({context->node, JobContext::ExpansionType::Node});
         return context->report(hint, diag, note);
     }
 

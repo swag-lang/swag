@@ -375,7 +375,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     }
 
     auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
-    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report({node->identifier, Msg0664}));
+    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report(Hnt0035, {node->identifier, Msg0664}));
 
     switch (typeInfo->kind)
     {
