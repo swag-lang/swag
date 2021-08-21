@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.Inline]
+#[Swag.NoReturn]
 #test
 {
 }

@@ -783,7 +783,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto funcDecl = CastAst<AstFuncDecl>(identifier->typeInfo->declNode, AstNodeKind::FuncDecl);
         if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
         {
-            Diagnostic diag{identifier, identifier->token, Utf8::format(Msg0088, funcDecl->token.text.c_str())};
+            Diagnostic diag{identifier, identifier->token, Utf8::format(Msg0088, funcDecl->getDisplayName().c_str())};
             Diagnostic note{funcDecl, funcDecl->token, Note033, DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
