@@ -242,9 +242,9 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
 
     // Add struct type and scope
     structNode->inheritOwners(sourceFile->astRoot);
-    Scope*      rootScope = structNode->ownerScope;
+    Scope*     rootScope = structNode->ownerScope;
     ScopedLock lk(rootScope->symTable.mutex);
-    auto        symbol = rootScope->symTable.findNoLock(structNode->token.text);
+    auto       symbol = rootScope->symTable.findNoLock(structNode->token.text);
     if (symbol)
     {
         // Must release struct node, it's useless
@@ -260,10 +260,11 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
-        Ast::visit(structNode->content, [&](AstNode* n) {
-            n->ownerStructScope = newScope;
-            n->ownerScope       = newScope;
-        });
+        Ast::visit(structNode->content, [&](AstNode* n)
+                   {
+                       n->ownerStructScope = newScope;
+                       n->ownerScope       = newScope;
+                   });
 
         rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
         Ast::addChildBack(sourceFile->astRoot, structNode);
@@ -817,7 +818,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteReferenceType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
-        SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoVoid, context->report({node->assignment, Msg0307}));
+
+        if (node->typeInfo == g_TypeMgr->typeInfoVoid)
+        {
+            if (node->assignment->typeInfo->kind == TypeInfoKind::FuncAttr && node->assignment->resolvedSymbolOverload)
+            {
+                auto        over = node->assignment->resolvedSymbolOverload;
+                PushErrHint errh(Hnt0034);
+                Diagnostic  diag{node->assignment, Msg0307};
+                Diagnostic  note{over->node, over->node->token, Utf8::format(Note008, SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            return context->report({node->assignment, Msg0307});
+        }
 
         // We need to decide which integer/float type it is
         node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
