@@ -1,4 +1,3 @@
-
 #global testerror
 
 using Swag
@@ -30,12 +29,12 @@ func toto()
 func changeContext(user: code)
 {
     savedCxt := @getcontext()
-    var cxt: Context = :savedCxt
+    var cxt: Context = dref savedCxt
     @setcontext(cxt)
 
     #macro
     {
-        #mixin code
+        #mixin `user
     }
 
     @setcontext(savedCxt)

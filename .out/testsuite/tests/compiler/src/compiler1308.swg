@@ -1,12 +1,13 @@
-
 #global testerror
 
 #test
 {
 	error := false
-    outer: loop x: 10
+    label outer
+    loop x: 10
     {
-        outer: loop 20
+        label outer
+        loop 20
         {
             break outer
         }
