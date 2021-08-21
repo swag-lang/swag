@@ -657,33 +657,48 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     return true;
 }
 
+Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::CompilerFunction:
+    case TokenId::CompilerCallerFunction:
+        return node->ownerFct->getNameForUserCompiler();
+    case TokenId::CompilerBuildCfg:
+        return g_CommandLine->buildCfg;
+    case TokenId::CompilerArch:
+        return Backend::GetArchName();
+    case TokenId::CompilerOs:
+        return Backend::GetOsName();
+    case TokenId::CompilerAbi:
+        return Backend::GetAbiName();
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    return "";
+}
+
 bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 {
     auto node = context->node;
 
     switch (node->token.id)
     {
+    case TokenId::CompilerFunction:
+        SWAG_VERIFY(node->ownerFct, context->report({node, Msg0256}));
+        node->setFlagsValueIsComputed();
+        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
+        node->typeInfo            = g_TypeMgr->typeInfoString;
+        return true;
+
     case TokenId::CompilerBuildCfg:
-        node->setFlagsValueIsComputed();
-        node->computedValue->text = g_CommandLine->buildCfg;
-        node->typeInfo            = g_TypeMgr->typeInfoString;
-        return true;
-
     case TokenId::CompilerArch:
-        node->setFlagsValueIsComputed();
-        node->computedValue->text = Backend::GetArchName();
-        node->typeInfo            = g_TypeMgr->typeInfoString;
-        return true;
-
     case TokenId::CompilerOs:
-        node->setFlagsValueIsComputed();
-        node->computedValue->text = Backend::GetOsName();
-        node->typeInfo            = g_TypeMgr->typeInfoString;
-        return true;
-
     case TokenId::CompilerAbi:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = Backend::GetAbiName();
+        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
@@ -773,15 +788,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Msg0255}));
         node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
-
-    case TokenId::CompilerFunction:
-    {
-        SWAG_VERIFY(node->ownerFct, context->report({node, Msg0256}));
-        node->typeInfo = g_TypeMgr->typeInfoString;
-        node->setFlagsValueIsComputed();
-        node->computedValue->text = node->ownerFct->getNameForUserCompiler();
-        return true;
-    }
 
     default:
         return context->internalError("resolveCompilerFunction, unknown token");

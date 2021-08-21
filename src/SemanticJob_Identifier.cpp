@@ -428,10 +428,16 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             auto funcParam = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
                 continue;
-            if (funcParam->assignment->token.id == TokenId::CompilerCallerLocation)
+            switch (funcParam->assignment->token.id)
+            {
+            case TokenId::CompilerCallerLocation:
+            case TokenId::CompilerCallerFunction:
+            case TokenId::CompilerBuildCfg:
+            case TokenId::CompilerArch:
+            case TokenId::CompilerOs:
+            case TokenId::CompilerAbi:
                 continue;
-            if (funcParam->assignment->token.id == TokenId::CompilerCallerFunction)
-                continue;
+            }
 
             auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
             if (typeParam->kind != TypeInfoKind::Struct &&

@@ -265,6 +265,7 @@ struct SemanticJob : public Job
     static bool         registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     static void         resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
     AstNode*            backToSemError();
+    static Utf8         getCompilerFunctionString(AstNode* node, TokenId id);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

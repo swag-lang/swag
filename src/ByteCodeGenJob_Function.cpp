@@ -885,11 +885,15 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             break;
         }
         case TokenId::CompilerCallerFunction:
+        case TokenId::CompilerBuildCfg:
+        case TokenId::CompilerArch:
+        case TokenId::CompilerOs:
+        case TokenId::CompilerAbi:
         {
             reserveLinearRegisterRC2(context, regList);
-            const auto& str            = node->ownerFct->getNameForUserCompiler();
-            auto        storageSegment = SemanticJob::getConstantSegFromContext(context->node);
-            auto        storageOffset  = storageSegment->addString(str);
+            auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->token.id);
+            auto storageSegment = SemanticJob::getConstantSegFromContext(context->node);
+            auto storageOffset  = storageSegment->addString(str);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
@@ -1040,11 +1044,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Sort childs by parameter index
     if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
-        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-            AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-            AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-            return p1->indexParam < p2->indexParam;
-        });
+        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2)
+             {
+                 AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+                 AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+                 return p1->indexParam < p2->indexParam;
+             });
     }
     else if (allParams && (allParams->semFlags & AST_SEM_INVERSE_PARAMS))
     {
@@ -1057,7 +1062,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
         auto numFuncParams = (int) typeInfoFunc->parameters.size();
-        auto numVariadic   = (uint32_t)(numCallParams - numFuncParams) + 1;
+        auto numVariadic   = (uint32_t) (numCallParams - numFuncParams) + 1;
         int  offset        = numVariadic * 2 * sizeof(Register);
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
@@ -1299,7 +1304,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Variadic parameter is on top of stack
     else if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
-        auto numVariadic = (uint32_t)(numCallParams - numTypeParams) + 1;
+        auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
 
         // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
         // This is the main difference with typedvariadic, which directly point to the pushed variadic parameters
@@ -1323,7 +1328,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
     else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
-        auto numVariadic  = (uint32_t)(numCallParams - numTypeParams) + 1;
+        auto numVariadic  = (uint32_t) (numCallParams - numTypeParams) + 1;
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
         auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
 
