@@ -10,6 +10,44 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
+void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnostic*>& notes)
+{
+    auto                      childs = node->childs;
+    VectorNative<SymbolName*> done;
+    while (!childs.empty())
+    {
+        auto c = childs.back();
+        childs.pop_back();
+        if (c->flags & AST_CONST_EXPR)
+            continue;
+
+        if (c->resolvedSymbolName)
+        {
+            if (done.contains(c->resolvedSymbolName))
+                continue;
+            done.push_back(c->resolvedSymbolName);
+
+            if (c->resolvedSymbolName->kind == SymbolKind::Function)
+            {
+                if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                {
+                    auto note = new Diagnostic(c, c->token, Utf8::format(Note042, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                    notes.push_back(note);
+                }
+            }
+
+            if (c->resolvedSymbolName->kind == SymbolKind::Variable)
+            {
+                auto note = new Diagnostic(c, c->token, Utf8::format(Note041, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                notes.push_back(note);
+            }
+        }
+
+        if (c->childs.size())
+            childs.append(c->childs);
+    }
+}
+
 bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
     // No need to run, this is already baked
@@ -20,7 +58,14 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     auto module     = sourceFile->module;
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, Msg0798}));
+        // Given some clues about childs which are not constexpr
+        if (!(node->flags & AST_CONST_EXPR))
+        {
+            Diagnostic                diag{node, Msg0798};
+            vector<const Diagnostic*> notes;
+            computeNonConstExprNotes(node, notes);
+            return context->report(diag, notes);
+        }
     }
 
     // Request to generate the corresponding bytecode

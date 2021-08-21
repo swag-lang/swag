@@ -989,7 +989,11 @@ const char* Note022 = "to start the namespace body";
 const char* Note018 = "when solving affectation";
 const char* Note017 = "when solving";
 const char* Note009 = "you can run swag with --dbgcatch to attach the bytecode debugger when the error occurs";
-const char* Note041 = nullptr;
+const char* Note041 = "'%s' is a variable and variables inside expressions cannot be evaluated at compile time";
+const char* Note042 = "'%s' is a function without the 'Swag.ConstExpr' attribute (you could also use '#run' before the call)";
+const char* Note043 = nullptr;
+const char* Note044 = nullptr;
+const char* Note045 = nullptr;
 
 const char* Rem0001 = "symbol '%s' was not found in '%s'";
 const char* Rem0002 = "symbol '%s' exists in interface scope '%s'";

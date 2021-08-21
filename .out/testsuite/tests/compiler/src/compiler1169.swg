@@ -1,4 +1,3 @@
-
 #global testerror
 
 var TOTO = "win32"
