@@ -1,6 +1,6 @@
-#global testerror;
+#global testerror
 
-#[AttrUsage(AttributeUsage.StructVariable)]
+#[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
 attr toto();
 
 #[toto]

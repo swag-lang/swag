@@ -450,7 +450,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     // Be sure we have only one struct node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, Msg0696});
+        Diagnostic  diag({node, Utf8::format(Msg0696, node->resolvedSymbolName->name.c_str())});
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {

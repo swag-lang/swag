@@ -156,7 +156,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
-            return context->report({node->array, Utf8::format(Msg0474, node->array->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(Msg0474, node->array->typeInfo->getDisplayName().c_str())});
 
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;

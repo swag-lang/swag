@@ -22,7 +22,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, Msg0696});
+        Diagnostic  diag({node, Utf8::format(Msg0820, node->resolvedSymbolName->name.c_str())});
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {
