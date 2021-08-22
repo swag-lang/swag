@@ -74,13 +74,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += Utf8::format(g_E[Err0900], token.text.c_str());
+        msg += Utf8::format(g_E[Nte0049], token.text.c_str());
     else if (token.id == TokenId::Identifier)
-        msg += Utf8::format(g_E[Err0901], token.text.c_str());
+        msg += Utf8::format(g_E[Nte0048], token.text.c_str());
     else if (token.id == TokenId::NativeType)
-        msg += Utf8::format(g_E[Err0902], token.text.c_str());
+        msg += Utf8::format(g_E[Nte0050], token.text.c_str());
     else
-        msg += Utf8::format(g_E[Err0903], token.text.c_str());
+        msg += Utf8::format(g_E[Nte0047], token.text.c_str());
 
     switch (token.id)
     {
@@ -90,7 +90,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
             Token nextToken;
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
-                msg += g_E[Err0904];
+                msg += g_E[Nte0051];
         }
         break;
     }
