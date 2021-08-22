@@ -1656,14 +1656,14 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
 
         if (notFound && notFound == overloads.size())
         {
-            diag->remarks.push_back(Utf8::format(g_E[Rem0001], node->token.text.c_str(), identifier->identifierRef->typeInfo->getDisplayName().c_str()));
+            diag->remarks.push_back(Utf8::format(g_E[Note043], node->token.text.c_str(), identifier->identifierRef->typeInfo->getDisplayName().c_str()));
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)
                 {
                     if (s->symTable.find(node->token.text))
                     {
-                        diag->remarks.push_back(Utf8::format(g_E[Rem0002], node->token.text.c_str(), s->getFullName().c_str()));
+                        diag->remarks.push_back(Utf8::format(g_E[Note044], node->token.text.c_str(), s->getFullName().c_str()));
                     }
                 }
             }
