@@ -15,7 +15,7 @@ impl S
         {
             #macro
             {
-                let @alias0 = `v
+                var @alias0 = `v
                 #mixin `stmt
             }
         }

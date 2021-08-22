@@ -230,6 +230,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         auto        first       = exp.first;
         const char* kindName    = nullptr;
         const char* kindArticle = "";
+        bool        showExpand  = true;
         Utf8        hint;
         switch (exp.second)
         {
@@ -268,25 +269,32 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     hint          = Utf8::format(Hnt0012, returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
                 }
             }
+            else
+            {
+                showExpand = false;
+            }
 
             break;
         }
 
-        auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
-        if (name.empty())
-            name = first->token.text;
+        if (showExpand)
+        {
+            auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
+            if (name.empty())
+                name = first->token.text;
 
-        if (!name.empty())
-        {
-            auto note  = new Diagnostic{first, first->token, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
-            note->hint = hint;
-            notes.push_back(note);
-        }
-        else
-        {
-            auto note  = new Diagnostic{first, first->token, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
-            note->hint = hint;
-            notes.push_back(note);
+            if (!name.empty())
+            {
+                auto note  = new Diagnostic{first, first->token, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+                note->hint = hint;
+                notes.push_back(note);
+            }
+            else
+            {
+                auto note  = new Diagnostic{first, first->token, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
+                note->hint = hint;
+                notes.push_back(note);
+            }
         }
     }
 

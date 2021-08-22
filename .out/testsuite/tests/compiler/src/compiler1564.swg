@@ -1,4 +1,3 @@
-
 #global testerror
 
 //#[Swag.PrintBc]
@@ -6,5 +5,5 @@
 {
     x := 0
     y := 0
-    x = raw raw,move raw,move y
+    x =,moveraw,moveraw,move,moveraw,move y
 }
