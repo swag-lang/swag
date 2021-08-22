@@ -326,7 +326,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         if (!toSolve)
         {
             Diagnostic diag{node, Utf8::format(Msg0549, pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+#ifdef SWAG_DEV_MODE
             diag.remarks.push_back(id);
+#endif
             sourceFile->report(diag);
             continue;
         }

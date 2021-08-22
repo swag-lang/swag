@@ -61,7 +61,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto& structName     = identifierStruct->childs.back()->token.text;
     implNode->token.text = structName;
 
-    // Register the impl for block name, because we are not use that the newScope will be the correct one
+    // Register the 'impl for' block name, because we are not sure that the newScope will be the correct one
     // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
     if (implInterface)
         module->addImplForToSolve(structName);
