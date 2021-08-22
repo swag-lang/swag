@@ -1,2 +1,2 @@
-#global testerror;
-var b: A;
+#global testerror
+var b: A
