@@ -356,7 +356,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         diag.remarks.push_back(it.id);
 #endif
 
-        Diagnostic note{declNode, g_E[Note028], DiagnosticLevel::Note};
+        Diagnostic note{declNode, g_E[Nte0028], DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
     }
 }

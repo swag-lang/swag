@@ -31,14 +31,14 @@ void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnosti
             {
                 if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                 {
-                    auto note = new Diagnostic(c, Utf8::format(g_E[Note042], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                    auto note = new Diagnostic(c, Utf8::format(g_E[Nte0042], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                     notes.push_back(note);
                 }
             }
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                auto note = new Diagnostic(c, Utf8::format(g_E[Note041], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                auto note = new Diagnostic(c, Utf8::format(g_E[Nte0041], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 notes.push_back(note);
             }
         }
@@ -798,7 +798,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 Diagnostic diag(typeNode, Utf8::format(g_E[Err0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
-                Diagnostic note(typeNode, Utf8::format(g_E[Note038], tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                Diagnostic note(typeNode, Utf8::format(g_E[Nte0038], tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);

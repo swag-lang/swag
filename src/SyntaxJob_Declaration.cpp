@@ -40,7 +40,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 default:
                 {
                     Diagnostic diag{node, g_E[Err0386]};
-                    Diagnostic note{child, g_E[Note024], DiagnosticLevel::Note};
+                    Diagnostic note{child, g_E[Nte0024], DiagnosticLevel::Note};
                     return sourceFile->report(diag, &note);
                 }
                 }
@@ -123,7 +123,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             {
                 Utf8       msg = Utf8::format(g_E[Err0886], symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-                Utf8       note = g_E[Note036];
+                Utf8       note = g_E[Nte0036];
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }
@@ -153,7 +153,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, g_E[Note022]));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, g_E[Nte0022]));
 
         // Content of namespace is toplevel
         Scoped scoped(this, newScope);
@@ -163,7 +163,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         }
 
         SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly, g_E[Note023]));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly, g_E[Nte0023]));
     }
 
     return true;

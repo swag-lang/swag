@@ -446,7 +446,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0343], token.text.c_str())};
-        Diagnostic note{sourceFile, token, g_E[Note020], DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, token, g_E[Nte0020], DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 

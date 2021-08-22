@@ -38,7 +38,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
             {
-                note = new Diagnostic{g_E[Note005], DiagnosticLevel::Note};
+                note = new Diagnostic{g_E[Nte0005], DiagnosticLevel::Note};
             }
         }
 
@@ -224,12 +224,12 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Interface)
                 {
                     Diagnostic diag{child->sourceFile, child->token, Utf8::format(g_E[Err0017], child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, Utf8::format(g_E[Note029], symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic note{symOver->node, Utf8::format(g_E[Nte0029], symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
                         {
-                            Diagnostic note1{Utf8::format(g_E[Note014], symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
+                            Diagnostic note1{Utf8::format(g_E[Nte0014], symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
                             return context->report(g_E[Hnt0024], diag, &note1, &note);
                         }
                         else
@@ -413,7 +413,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
                 Diagnostic diag(back, Utf8::format(g_E[Err0025], back->token.text.c_str()));
-                Diagnostic note(overload->node, Utf8::format(g_E[Note029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic note(overload->node, Utf8::format(g_E[Nte0029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
 

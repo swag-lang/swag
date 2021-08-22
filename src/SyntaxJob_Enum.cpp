@@ -27,7 +27,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
             PushErrHint errh(Utf8::format(g_E[Hnt0019], implNode->token.text.c_str()));
             Diagnostic  diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
-            Diagnostic  note{enumNode, Utf8::format(g_E[Note027], implNode->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic  note{enumNode, Utf8::format(g_E[Nte0027], implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 

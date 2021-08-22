@@ -320,7 +320,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     {
         Utf8       msg = Utf8::format(g_E[Err0885], symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};
-        Utf8       note = g_E[Note036];
+        Utf8       note = g_E[Nte0036];
         Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -351,7 +351,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
 
         Utf8       msg = Utf8::format(g_E[Err0886], symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = g_E[Note036];
+        Utf8       note = g_E[Nte0036];
         Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -362,7 +362,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     {
         Utf8       msg = Utf8::format(g_E[Err0886], symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = g_E[Note036];
+        Utf8       note = g_E[Nte0036];
         Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -381,7 +381,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             auto       firstOverload = overload;
             Utf8       msg           = Utf8::format(g_E[Err0888], symbol->name.c_str());
             Diagnostic diag{node, token, msg};
-            Utf8       note = g_E[Note036];
+            Utf8       note = g_E[Nte0036];
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
             if (typeInfo->kind == TypeInfoKind::FuncAttr)
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
@@ -423,7 +423,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
             auto       firstOverload = symbol->overloads[0];
             Utf8       msg           = Utf8::format(g_E[Err0885], symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
             Diagnostic diag{node, msg};
-            Utf8       note = g_E[Note036];
+            Utf8       note = g_E[Nte0036];
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
             context->report(diag, &diagNote);
         }

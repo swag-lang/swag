@@ -324,7 +324,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_LOWER:
         {
             Diagnostic diag{dep->node, Utf8::format(g_E[Err0516], dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            Diagnostic note{cfgModule->fetchDep->node, g_E[Note035], DiagnosticLevel::Note};
+            Diagnostic note{cfgModule->fetchDep->node, g_E[Nte0035], DiagnosticLevel::Note};
             dep->node->sourceFile->report(diag, &note);
             return false;
         }

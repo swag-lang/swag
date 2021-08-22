@@ -167,7 +167,7 @@ void Workspace::setup()
 
     if (invalid)
     {
-        g_Log.message(g_E[Note012]);
+        g_Log.message(g_E[Nte0012]);
         OS::exit(-1);
     }
 

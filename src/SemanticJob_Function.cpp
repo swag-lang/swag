@@ -233,7 +233,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({node, g_E[Err0739]});
-            Diagnostic note{module->mainIsDefined, g_E[Note036], DiagnosticLevel::Note};
+            Diagnostic note{module->mainIsDefined, g_E[Nte0036], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -973,7 +973,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            Diagnostic note{funcNode, Utf8::format(g_E[Note011], node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
+            Diagnostic note{funcNode, Utf8::format(g_E[Nte0011], node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 

@@ -251,11 +251,11 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::Node:
-            kindName    = g_E[Note017];
+            kindName    = g_E[Nte0017];
             kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)
             {
-                kindName    = g_E[Note018];
+                kindName    = g_E[Nte0018];
                 kindArticle = "to ";
                 first       = first->childs.front();
                 hint        = Utf8::format(g_E[Hnt0011], first->typeInfo->getDisplayName().c_str());
@@ -285,13 +285,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
             if (!name.empty())
             {
-                auto note  = new Diagnostic{first, Utf8::format(g_E[Note002], kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
             else
             {
-                auto note  = new Diagnostic{first, Utf8::format(g_E[Note003], kindName), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(g_E[Nte0003], kindName), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
@@ -301,7 +301,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (diag.sourceNode && diag.sourceNode->sourceFile && diag.sourceNode->sourceFile->sourceNode)
     {
         auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
-        auto note       = new Diagnostic{sourceNode, g_E[Note004], DiagnosticLevel::Note};
+        auto note       = new Diagnostic{sourceNode, g_E[Nte0004], DiagnosticLevel::Note};
         notes.push_back(note);
     }
 }

@@ -439,14 +439,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
                 Diagnostic diag{importNode, tokenLocation, Utf8::format(g_E[Err0284], dep->location.c_str())};
-                Diagnostic note{dep->node, g_E[Note037], DiagnosticLevel::Note};
+                Diagnostic note{dep->node, g_E[Nte0037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
                 Diagnostic diag{importNode, tokenVersion, Utf8::format(g_E[Err0286], dep->version.c_str())};
-                Diagnostic note{dep->node, g_E[Note037], DiagnosticLevel::Note};
+                Diagnostic note{dep->node, g_E[Nte0037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
