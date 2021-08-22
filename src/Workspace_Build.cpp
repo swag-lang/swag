@@ -293,8 +293,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto prevJob = pendingJob;
             while (depJob != pendingJob)
             {
-                Utf8 msg = Utf8::format(g_E[Err0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-                msg += Utf8::format(g_E[Err0421], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
+                Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
+                msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
                 auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
                 notes.push_back(note);
 
@@ -303,8 +303,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                 depJob = depJob->waitingJob;
             }
 
-            Utf8 msg = Utf8::format(g_E[Err0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-            msg += Utf8::format(g_E[Err0421], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
+            Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
+            msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
             auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
             notes.push_back(note);
 
