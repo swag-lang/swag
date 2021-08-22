@@ -246,7 +246,7 @@ JobResult ModuleBuildJob::execute()
             module->syntaxGroup.complete(this);
 
             // When synchrone, do it now, as syntaxGroup is not relevant
-            if (g_CommandLine->numCores == 1)
+            if (g_CommandLine->numCores == 1 || g_CommandLine->scriptCommand)
             {
                 for (auto file : module->files)
                 {
