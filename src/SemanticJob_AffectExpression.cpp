@@ -18,7 +18,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Msg0559}));
+        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Utf8::format(Msg0559, right->typeInfo->getDisplayName().c_str())}));
     }
 
     return true;
@@ -384,7 +384,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     default:
-        return context->internalError( "resolveAffect, invalid token");
+        return context->internalError("resolveAffect, invalid token");
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitAffect;

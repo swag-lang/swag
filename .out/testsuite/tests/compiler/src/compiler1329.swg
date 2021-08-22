@@ -1,4 +1,3 @@
-
 #global testerror
 
 interface toto

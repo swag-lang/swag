@@ -1,9 +1,8 @@
-
 #global testerror
 
 interface TOTO
 {
-	print: func(s32)
+	print: func(self, s32)
 }
 
 struct TITI
