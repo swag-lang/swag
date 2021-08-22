@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct Point
@@ -7,11 +6,11 @@ struct Point
 	y: s32
 }
 
-const nullPoint: Point(10, 50) = {100, 500}
+const NullPoint: Point{10, 50} = @{100, 500}
 
 //#[Swag.PrintBc]
 #test
 {
-	@assert(nullPoint.x == 100)
-	@assert(nullPoint.y == 500)
+	@assert(NullPoint.x == 100)
+	@assert(NullPoint.y == 500)
 }
