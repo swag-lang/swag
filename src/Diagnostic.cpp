@@ -351,6 +351,9 @@ void Diagnostic::report(bool verboseMode) const
         }
     }
 
+    if (g_CommandLine->errorSourceOut)
+        g_Log.eol();
+
     g_Log.setDefaultColor();
     g_ErrorHint.clear();
 }
