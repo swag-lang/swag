@@ -61,11 +61,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto& structName     = identifierStruct->childs.back()->token.text;
     implNode->token.text = structName;
 
-    // Register the 'impl for' block name, because we are not sure that the newScope will be the correct one
-    // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
-    if (implInterface)
-        module->addImplForToSolve(structName);
-
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
@@ -110,8 +105,15 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         SWAG_ASSERT(scopeKind == ScopeKind::Struct);
+
+        // Register the 'impl for' block name, because we are not sure that the newScope will be the correct one
+        // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
+        // See test 2909 for that kind of case...
+        module->addImplForToSolve(structName);
+
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfaces++;
+
         if (implNode->ownerCompilerIfBlock)
             implNode->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
     }
