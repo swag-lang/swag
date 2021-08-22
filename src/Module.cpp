@@ -650,7 +650,7 @@ bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
     Utf8 msg1 = "[compiler internal] ";
     msg1 += msg;
-    return node->sourceFile->report({node, node->token, msg1});
+    return node->sourceFile->report({node, msg1});
 }
 
 void Module::printStartBuilding(const BuildParameters& bp)

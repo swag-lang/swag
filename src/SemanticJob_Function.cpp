@@ -232,8 +232,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
-            Diagnostic diag({node, node->token, Msg0739});
-            Diagnostic note{module->mainIsDefined, sourceFile->module->mainIsDefined->token, Note036, DiagnosticLevel::Note};
+            Diagnostic diag({node, Msg0739});
+            Diagnostic note{module->mainIsDefined, Note036, DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -256,7 +256,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({node, node->token, Utf8::format(Msg0741, node->token.text.c_str(), n)});
+                return context->report({node, Utf8::format(Msg0741, node->token.text.c_str(), n)});
             mask >>= 1;
         }
     }
@@ -278,25 +278,25 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->report({node, node->token, Msg0742});
+        return context->report({node, Msg0742});
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         if (node->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, Msg0743}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, Msg0743}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, node->token, Msg0744}));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Msg0744}));
             SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Msg0745}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Msg0746}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, node->token, Utf8::format(Msg0747, node->getDisplayName().c_str())}));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Utf8::format(Msg0747, node->getDisplayName().c_str())}));
         }
     }
 
@@ -315,8 +315,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({node, node->token, Utf8::format(Msg0748, node->getDisplayName().c_str())});
-                return context->report({node, node->token, Utf8::format(Msg0749, node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
+                    return context->report({node, Utf8::format(Msg0748, node->getDisplayName().c_str())});
+                return context->report({node, Utf8::format(Msg0749, node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
             }
         }
     }
@@ -451,36 +451,36 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, Utf8::format(Msg0757, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, Utf8::format(Msg0758, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0757, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(Msg0758, funcNode->getDisplayName().c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, Utf8::format(Msg0759, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, Utf8::format(Msg0760, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0759, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(Msg0760, funcNode->getDisplayName().c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
         if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, Utf8::format(Msg0761, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, Utf8::format(Msg0762, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, Utf8::format(Msg0763, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, funcNode->token, Utf8::format(Msg0860, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, funcNode->token, Utf8::format(Msg0512, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(Msg0761, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(Msg0762, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0763, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Utf8::format(Msg0860, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Utf8::format(Msg0512, funcNode->getDisplayName().c_str())}));
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect, context->report({funcNode, funcNode->token, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, funcNode->token, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Utf8::format(Msg0755, funcNode->getDisplayName().c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect, context->report({funcNode, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(Msg0755, funcNode->getDisplayName().c_str())}));
 
     // implicit attribute cannot be used on a generic function
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
-        return context->report({funcNode, funcNode->token, Utf8::format(Msg0756, funcNode->getDisplayName().c_str())});
+        return context->report({funcNode, Utf8::format(Msg0756, funcNode->getDisplayName().c_str())});
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
@@ -505,7 +505,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report({funcNode, funcNode->token, Utf8::format(Msg0751, funcNode->token.text.c_str())});
+            return context->report({funcNode, Utf8::format(Msg0751, funcNode->token.text.c_str())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
@@ -581,7 +581,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->token, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -589,7 +589,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->token, Utf8::format(Msg0765, typeStruct->name.c_str())}));
+            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, Utf8::format(Msg0765, typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
@@ -632,7 +632,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
             return context->report({funcNode->returnType, Msg0766});
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report({funcNode, funcNode->token, Msg0767});
+            return context->report({funcNode, Msg0767});
     }
 
     if (funcNode->flags & AST_IS_GENERIC)
@@ -832,12 +832,12 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report({node, node->token, Msg0769}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, node->token, Msg0769}));
+    SWAG_VERIFY(fctDecl, context->report({node, Msg0769}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Msg0769}));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, Msg0771}));
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, Msg0771}));
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
@@ -954,7 +954,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     if (node->childs.empty())
     {
-        return context->report({node, node->token, Utf8::format(Msg0772, funcNode->returnType->typeInfo->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0772, funcNode->returnType->typeInfo->getDisplayName().c_str())});
     }
 
     auto returnType = funcNode->returnType->typeInfo;
@@ -973,12 +973,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            Diagnostic note{funcNode,
-                            funcNode->token,
-                            Utf8::format(Note011,
-                                         node->ownerInline->func->getDisplayName().c_str(),
-                                         funcNode->getDisplayName().c_str()),
-                            DiagnosticLevel::Note};
+            Diagnostic note{funcNode, Utf8::format(Note011, node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -1242,7 +1237,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!funcDecl->subDecls.empty())
     {
         context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
-        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, funcDecl->token, Utf8::format(Msg0781, identifier->token.text.c_str())}));
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(Msg0781, identifier->token.text.c_str())}));
 
         // Authorize a sub function to access inline parameters, if possible
         // This will work for compile time values, otherwise we will have an out of stack frame when generating the code

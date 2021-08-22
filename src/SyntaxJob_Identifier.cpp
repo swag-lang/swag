@@ -71,7 +71,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == g_LangSpec->name_Self)
     {
-        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, identifier->token, Msg0838}));
+        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, Msg0838}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else

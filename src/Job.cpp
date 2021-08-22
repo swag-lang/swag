@@ -285,13 +285,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
             if (!name.empty())
             {
-                auto note  = new Diagnostic{first, first->token, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
             else
             {
-                auto note  = new Diagnostic{first, first->token, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
@@ -301,7 +301,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (diag.sourceNode && diag.sourceNode->sourceFile && diag.sourceNode->sourceFile->sourceNode)
     {
         auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
-        auto note       = new Diagnostic{sourceNode, sourceNode->token, Note004, DiagnosticLevel::Note};
+        auto note       = new Diagnostic{sourceNode, Note004, DiagnosticLevel::Note};
         notes.push_back(note);
     }
 }

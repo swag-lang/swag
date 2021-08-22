@@ -309,7 +309,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
             notes.push_back(note);
 
-            Diagnostic diag{pendingJob->originalNode, pendingJob->originalNode->token, Utf8::format(Msg0419, AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
+            Diagnostic diag{pendingJob->originalNode, Utf8::format(Msg0419, AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
             sourceFile->report(diag, notes);
             continue;
         }
@@ -325,7 +325,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve)
         {
-            Diagnostic diag{node, node->token, Utf8::format(Msg0549, pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, Utf8::format(Msg0549, pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
             diag.remarks.push_back(id);
             sourceFile->report(diag);
             continue;
@@ -350,12 +350,12 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             msg = Utf8::format(Msg0894, toSolve->name.c_str());
         }
 
-        Diagnostic diag{node, node->token, msg};
+        Diagnostic diag{node, msg};
 #ifdef SWAG_DEV_MODE
         diag.remarks.push_back(id);
 #endif
 
-        Diagnostic note{declNode, declNode->token, Note028, DiagnosticLevel::Note};
+        Diagnostic note{declNode, Note028, DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
     }
 }

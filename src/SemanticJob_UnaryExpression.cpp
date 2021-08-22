@@ -24,9 +24,9 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        return context->report({child, child->token, Utf8::format(Msg0827, typeInfo->getDisplayName().c_str())});
+        return context->report({child, Utf8::format(Msg0827, typeInfo->getDisplayName().c_str())});
     default:
-        return context->report({child, child->token, Utf8::format(Msg0828, typeInfo->getDisplayName().c_str())});
+        return context->report({child, Utf8::format(Msg0828, typeInfo->getDisplayName().c_str())});
     }
 
     if (child->flags & AST_VALUE_COMPUTED && !(child->doneFlags & AST_DONE_NEG_EATEN))
@@ -140,7 +140,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({child, child->token, Utf8::format(Msg0833, typeInfo->getDisplayName().c_str())});
+        return context->report({child, Utf8::format(Msg0833, typeInfo->getDisplayName().c_str())});
     }
 
     if (child->flags & AST_VALUE_COMPUTED)

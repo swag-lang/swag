@@ -39,11 +39,11 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         typeVar                                   = varDecl->typeInfo;
     }
 
-    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, varDecl->token, Utf8::format(Msg0291, typeVar->name.c_str())}));
+    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, Utf8::format(Msg0291, typeVar->name.c_str())}));
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
-    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, varDecl->token, Utf8::format(Msg0292, typeStruct->getDisplayName().c_str())}));
-    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, varDecl->token, Utf8::format(Msg0293, numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
+    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, Utf8::format(Msg0292, typeStruct->getDisplayName().c_str())}));
+    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, Utf8::format(Msg0293, numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
     return true;
 }
 
@@ -604,7 +604,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             ownerFct = ownerFct->ownerFct;
         }
         if (!ownerFct)
-            return context->report({node, node->token, Utf8::format(Msg0296, node->token.text.c_str())});
+            return context->report({node, Utf8::format(Msg0296, node->token.text.c_str())});
     }
 
     uint32_t symbolFlags = 0;
@@ -832,7 +832,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 auto        over = node->assignment->resolvedSymbolOverload;
                 PushErrHint errh(Hnt0034);
                 Diagnostic  diag{node->assignment, Msg0307};
-                Diagnostic  note{over->node, over->node->token, Utf8::format(Note008, SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
+                Diagnostic  note{over->node, Utf8::format(Note008, SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
@@ -887,10 +887,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Type should be a correct one
-    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, node->token, Msg0308}));
+    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, Msg0308}));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, Utf8::format(Msg0309, AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, Utf8::format(Msg0309, AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -938,7 +938,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeInfo->kind == TypeInfoKind::Enum ||
             (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Enum))
         {
-            return context->report({node, node->token, Msg0310});
+            return context->report({node, Msg0310});
         }
     }
 

@@ -946,7 +946,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
-        return context->report({callNode, callNode->token, Utf8::format(Msg0534, funcNode->token.text.c_str())});
+        return context->report({callNode, Utf8::format(Msg0534, funcNode->token.text.c_str())});
 
     if (!raiseErrors)
     {
@@ -1494,7 +1494,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-            context->sourceFile->report({funcNode, funcNode->token, Utf8::format(Msg0536, Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+            context->sourceFile->report({funcNode, Utf8::format(Msg0536, Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

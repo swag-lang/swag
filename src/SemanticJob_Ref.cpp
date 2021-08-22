@@ -42,7 +42,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
     {
         PushErrHint errh(msg1);
         Diagnostic  diag{node, msg};
-        Diagnostic  note{funcNode, funcNode->token, Utf8::format(Note029, funcNode->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic  note{funcNode, Utf8::format(Note029, funcNode->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 

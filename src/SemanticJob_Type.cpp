@@ -224,7 +224,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Interface)
                 {
                     Diagnostic diag{child->sourceFile, child->token, Utf8::format(Msg0017, child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, symOver->node->token, Utf8::format(Note029, symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic note{symOver->node, Utf8::format(Note029, symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
@@ -412,8 +412,8 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
-                Diagnostic diag(back, back->token, Utf8::format(Msg0025, back->token.text.c_str()));
-                Diagnostic note(overload->node, overload->node->token, Utf8::format(Note029, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(back, Utf8::format(Msg0025, back->token.text.c_str()));
+                Diagnostic note(overload->node, Utf8::format(Note029, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
 
@@ -487,7 +487,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, back->token, Utf8::format(Msg0030, SymTable::getArticleKindName(symbol->kind))});
+        return context->report({back, Utf8::format(Msg0030, SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);

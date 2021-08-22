@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, context->node->token, Utf8::format(Msg0206, overload->symbol->name.c_str())});
+        return context->report({context->node, Utf8::format(Msg0206, overload->symbol->name.c_str())});
     return true;
 }
 

@@ -31,14 +31,14 @@ void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnosti
             {
                 if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                 {
-                    auto note = new Diagnostic(c, c->token, Utf8::format(Note042, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                    auto note = new Diagnostic(c, Utf8::format(Note042, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                     notes.push_back(note);
                 }
             }
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                auto note = new Diagnostic(c, c->token, Utf8::format(Note041, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                auto note = new Diagnostic(c, Utf8::format(Note041, c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 notes.push_back(note);
             }
         }
@@ -308,10 +308,10 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         if (node->childs.size() > 1)
         {
             auto msg = node->childs[1];
-            context->report({node, node->token, msg->computedValue->text});
+            context->report({node, msg->computedValue->text});
         }
         else
-            context->report({node, node->token, Msg0238});
+            context->report({node, Msg0238});
         return false;
     }
 
@@ -329,7 +329,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, node->token, Msg0239});
+        return context->report({node, Msg0239});
 
     return true;
 }
@@ -435,7 +435,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
 {
     // Should never be reached
-    return context->report({context->node, context->node->token, Msg0241});
+    return context->report({context->node, Msg0241});
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
@@ -794,8 +794,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag(typeNode, typeNode->token, Utf8::format(Msg0252, typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
-                Diagnostic note(typeNode, typeNode->token, Utf8::format(Note038, tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(typeNode, Utf8::format(Msg0252, typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
+                Diagnostic note(typeNode, Utf8::format(Note038, tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);

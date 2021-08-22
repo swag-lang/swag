@@ -2767,7 +2767,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 }
                 else
                 {
-                    Diagnostic diag{ip->node, ip->node->token, Msg0434 + context->errorMsg};
+                    Diagnostic diag{ip->node, Msg0434 + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
@@ -2851,7 +2851,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     runContext->ip--;
     auto       ip = runContext->ip;
-    Diagnostic diag{ip->node, ip->node->token, Msg0435};
+    Diagnostic diag{ip->node, Msg0435};
     Diagnostic note1{Msg0436, DiagnosticLevel::Note};
     Diagnostic note2{Note009, DiagnosticLevel::Note};
     diag.exceptionError            = true;

@@ -205,7 +205,6 @@ struct AstNode
     void inheritTokenLocation(AstNode* node);
     void inheritOwners(AstNode* op);
     void inheritOwnersAndFlags(SyntaxJob* job);
-    void inheritLocationFromChilds();
 
     void allocateComputedValue();
     void setFlagsValueIsComputed();
@@ -236,6 +235,7 @@ struct AstNode
     bool        mustInline();
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();
+    void        computeEndLocation();
 
     struct Extension
     {

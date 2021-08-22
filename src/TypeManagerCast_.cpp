@@ -576,7 +576,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0178, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0178, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -599,7 +599,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0179, fromNode->computedValue->reg.u64)});
+                        context->report({fromNode, Utf8::format(Msg0179, fromNode->computedValue->reg.u64)});
                     return false;
                 }
 
@@ -693,7 +693,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0180, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0180, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -716,7 +716,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0181, fromNode->computedValue->reg.u64)});
+                        context->report({fromNode, Utf8::format(Msg0181, fromNode->computedValue->reg.u64)});
                     return false;
                 }
 
@@ -810,7 +810,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0182, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0182, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -833,7 +833,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.u64 > UINT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0183, fromNode->computedValue->reg.u64)});
+                        context->report({fromNode, Utf8::format(Msg0183, fromNode->computedValue->reg.u64)});
                     return false;
                 }
 
@@ -918,7 +918,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0185, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0185, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -1028,7 +1028,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0185, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0185, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -1137,7 +1137,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0186, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0186, fromNode->computedValue->reg.s64)});
                     return false;
                 }
 
@@ -1236,7 +1236,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0187, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0187, fromNode->computedValue->reg.s64)});
                     return false;
                 }
 
@@ -1325,7 +1325,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0188, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0188, fromNode->computedValue->reg.s64)});
                     return false;
                 }
 
@@ -1404,7 +1404,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT64_MIN || fromNode->computedValue->reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0189, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0189, fromNode->computedValue->reg.s64)});
                     return false;
                 }
 
@@ -1479,7 +1479,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT64_MIN || fromNode->computedValue->reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0189, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0189, fromNode->computedValue->reg.s64)});
                     return false;
                 }
 
@@ -1521,7 +1521,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue->reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0191, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0191, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -1579,7 +1579,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue->reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0192, fromNode->computedValue->reg.u64)});
+                        context->report({fromNode, Utf8::format(Msg0192, fromNode->computedValue->reg.u64)});
                     return false;
                 }
             }
@@ -1608,7 +1608,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpD != fromNode->computedValue->reg.f64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0193, fromNode->computedValue->reg.f64)});
+                        context->report({fromNode, Utf8::format(Msg0193, fromNode->computedValue->reg.f64)});
                     return false;
                 }
             }
@@ -1652,7 +1652,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue->reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0194, fromNode->computedValue->reg.s64)});
+                        context->report({fromNode, Utf8::format(Msg0194, fromNode->computedValue->reg.s64)});
                     return false;
                 }
             }
@@ -1710,7 +1710,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue->reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, Utf8::format(Msg0195, fromNode->computedValue->reg.u64)});
+                        context->report({fromNode, Utf8::format(Msg0195, fromNode->computedValue->reg.u64)});
                     return false;
                 }
             }
@@ -2130,7 +2130,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             // Ambiguous ! Two fields with a 'using' on the same struct
             if (done)
             {
-                Diagnostic diag{fromNode, fromNode->token, Utf8::format(Msg0200, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                Diagnostic diag{fromNode, Utf8::format(Msg0200, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
                 Diagnostic note1{done->declNode, Note015, DiagnosticLevel::Note};
                 Diagnostic note2{field->declNode, Note016, DiagnosticLevel::Note};
                 return context->report(diag, &note1, &note2);

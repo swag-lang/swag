@@ -76,7 +76,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             hint = Utf8::format(Hnt0020, implNode->token.text.c_str());
         PushErrHint errh(hint);
         Diagnostic  diag{implNode, Utf8::format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
-        Diagnostic  note{newScope->owner, newScope->owner->token, Utf8::format(Note027, implNode->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic  note{newScope->owner, Utf8::format(Note027, implNode->token.text.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
@@ -222,8 +222,8 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         if (newScope->kind != ScopeKind::Struct)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, implNode->identifier->token, Utf8::format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
-            Diagnostic note{structNode, structNode->token, Utf8::format(Note027, implNode->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{implNode->identifier, Utf8::format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+            Diagnostic note{structNode, Utf8::format(Note027, implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 

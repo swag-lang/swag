@@ -208,7 +208,7 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
     if (dep->location.empty())
-        return dep->node->sourceFile->report({dep->node, dep->node->token, Utf8::format(Msg0513, dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, Utf8::format(Msg0513, dep->name.c_str())});
 
     vector<Utf8> tokens;
     Utf8::tokenize(dep->location.c_str(), '@', tokens);

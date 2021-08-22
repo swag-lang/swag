@@ -365,30 +365,14 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
-void AstNode::inheritLocationFromChilds()
+void AstNode::computeEndLocation()
 {
-    if (childs.empty())
-        return;
-    for (auto child : childs)
-        child->inheritLocationFromChilds();
-
-    auto front = childs.front();
-    auto back  = childs.back();
-
-    // A type code will messe up line infos
-    if (back->typeInfo && back->typeInfo->kind == TypeInfoKind::Code)
+    switch (kind)
     {
-        if (childs.size() == 1)
-            return;
-        back = childs[(int) childs.size() - 1];
+    case AstNodeKind::IdentifierRef:
+        token.endLocation = childs.back()->token.endLocation;
+        break;
     }
-
-    if (token.startLocation.column == 0 && token.startLocation.line == 0)
-        token.startLocation = front->token.startLocation;
-    if (token.startLocation.line != front->token.endLocation.line || token.startLocation.column > front->token.endLocation.column)
-        token.startLocation = front->token.startLocation;
-    if (token.endLocation.line != back->token.endLocation.line || token.endLocation.column < back->token.endLocation.column)
-        token.endLocation = back->token.endLocation;
 }
 
 Utf8 AstNode::getScopedName()

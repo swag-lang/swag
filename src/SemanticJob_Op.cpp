@@ -33,12 +33,12 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     if (wanted == nullptr)
     {
         if (returnType == g_TypeMgr->typeInfoVoid)
-            return context->report({node, node->token, Utf8::format(Msg0063, node->token.text.c_str())});
+            return context->report({node, Utf8::format(Msg0063, node->token.text.c_str())});
         return true;
     }
 
     if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
-        return context->report({node, node->token, Utf8::format(Msg0064, node->token.text.c_str(), wanted->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0064, node->token.text.c_str(), wanted->getDisplayName().c_str())});
     if (!returnType->isSame(wanted, ISSAME_CAST))
         return context->report({node->returnType, Utf8::format(Msg0065, node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
     return true;
@@ -68,7 +68,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
     // Special function outside an impl block. This is valid from some...
     if (!parent)
-        return context->report({node, node->token, Utf8::format(Msg0067, node->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(Msg0067, node->getDisplayName().c_str())});
 
     TypeInfo* typeStruct = nullptr;
     if (parent)
@@ -81,7 +81,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
             return true;
 
         // First parameter must be be struct
-        SWAG_VERIFY(node->parameters, context->report({node, node->token, Utf8::format(Msg0068, name.c_str())}));
+        SWAG_VERIFY(node->parameters, context->report({node, Utf8::format(Msg0068, name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
         SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), Utf8::format(Msg0069, name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
         auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
@@ -91,16 +91,16 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     // Generic operator must have one generic parameter of type string
     if (name == g_LangSpec->name_opBinary || name == g_LangSpec->name_opUnary || name == g_LangSpec->name_opAssign || name == g_LangSpec->name_opIndexAssign)
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, Utf8::format(Msg0071, name.c_str())}));
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, Utf8::format(Msg0071, name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0072, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
     }
     else if (isOpVisit)
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, Utf8::format(Msg0073, name.c_str())}));
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, Utf8::format(Msg0073, name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, ISSAME_CAST), context->report({firstGen, Utf8::format(Msg0074, name.c_str(), firstGen->typeInfo->getDisplayName().c_str())}));
-        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Msg0075}));
+        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, Msg0075}));
     }
 
     // Check each function
@@ -194,7 +194,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else
     {
-        return context->report({node, node->token, Utf8::format(Msg0078, name.c_str())});
+        return context->report({node, Utf8::format(Msg0078, name.c_str())});
     }
 
     return true;

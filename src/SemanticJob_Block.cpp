@@ -159,8 +159,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, fct->token, Utf8::format(Msg0748, fct->getDisplayName().c_str())});
-                return context->report({fct, fct->token, Utf8::format(Msg0606, fct->getDisplayName().c_str())});
+                    return context->report({fct, Utf8::format(Msg0748, fct->getDisplayName().c_str())});
+                return context->report({fct, Utf8::format(Msg0606, fct->getDisplayName().c_str())});
             }
         }
     }
@@ -247,7 +247,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, Msg0607}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, Msg0607}));
 
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;
     if (!node->expression)
@@ -275,7 +275,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         return context->report({node->expression, Utf8::format(Msg0609, typeSwitch->getDisplayName().c_str())});
     }
 
-    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Msg0610}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, Msg0610}));
 
     // Collect constant expressions, to avoid double definitions
     set<uint64_t> val64;
@@ -325,12 +325,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Msg0616}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, Msg0616}));
 
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report({node, node->token, Utf8::format(Msg0617, node->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(Msg0617, node->typeInfo->getDisplayName().c_str())});
         if (node->beforeAutoCastType)
-            return context->report({node, node->token, Utf8::format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(Msg0617, node->beforeAutoCastType->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -343,8 +343,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (valText.find(one->value->text) == valText.end())
                         {
-                            Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Note034, DiagnosticLevel::Note};
+                            Diagnostic diag{node, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, Note034, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -358,8 +358,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (val64.find(one->value->reg.u64) == val64.end())
                         {
-                            Diagnostic diag{node, node->token, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Note034, DiagnosticLevel::Note};
+                            Diagnostic diag{node, Utf8::format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, Note034, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -522,7 +522,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, Msg0624}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, Msg0624}));
         AstIdentifierRef* identifierRef = nullptr;
         bool              cloneParam    = false;
         if (node->expression->kind == AstNodeKind::IdentifierRef)
@@ -648,7 +648,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0627}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Msg0627}));
         content += Utf8::format("{ loop %s { ", (const char*) concat.firstBucket->datas);
         content += Utf8::format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
         content += Utf8::format("var %s = @index; ", alias1Name.c_str());
@@ -659,7 +659,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, node->token, Msg0636}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Msg0636}));
         content += Utf8::format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Utf8::format("loop %d { ", typeEnum->values.size());
         content += Utf8::format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
@@ -682,9 +682,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(node->block, [&](AstNode* x) {
-        if (!x->ownerBreakable)
-            x->ownerBreakable = loopNode; });
+    Ast::visit(node->block, [&](AstNode* x)
+               {
+                   if (!x->ownerBreakable)
+                       x->ownerBreakable = loopNode;
+               });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 
@@ -716,7 +718,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     auto ownerBreakable = node->ownerBreakable;
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
-    SWAG_VERIFY(ownerBreakable, context->report({node, node->token, Msg0630}));
+    SWAG_VERIFY(ownerBreakable, context->report({node, Msg0630}));
 
     ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
 
@@ -748,7 +750,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         node->ownerBreakable = breakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, Msg0632}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Msg0632}));
     node->ownerBreakable->breakList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
@@ -759,19 +761,19 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 bool SemanticJob::resolveFallThrough(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, node->token, Msg0633}));
+    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Msg0633}));
     node->ownerBreakable->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
         parent = parent->parent;
-    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, node->token, Msg0634}));
+    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Msg0634}));
     node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, node->token, Msg0635}));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, Msg0635}));
 
     SWAG_CHECK(checkUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
@@ -799,8 +801,8 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
         node->ownerBreakable = lastBreakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, Msg0637}));
-    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, Msg0637}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Msg0637}));
+    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, Msg0637}));
     node->ownerBreakable->continueList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
@@ -819,8 +821,8 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         {
             if (check->token.text == node->token.text)
             {
-                Diagnostic diag(node, node->token, Utf8::format(Msg0639, node->token.text.c_str()));
-                Diagnostic note(check, check->token, Note036, DiagnosticLevel::Note);
+                Diagnostic diag{node, Utf8::format(Msg0639, node->token.text.c_str())};
+                Diagnostic note{check, Note036, DiagnosticLevel::Note};
                 context->report(diag, &note);
             }
         }
