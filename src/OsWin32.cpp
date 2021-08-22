@@ -228,7 +228,7 @@ namespace OS
                                     SourceLocation endLoc = startLoc;
                                     auto           msg    = tokens.back();
                                     msg                   = "runtime execution, " + msg;
-                                    Diagnostic diag({sourceFile, startLoc, endLoc, msg});
+                                    Diagnostic diag{sourceFile, startLoc, endLoc, msg};
                                     sourceFile->report(diag);
                                 }
                                 else

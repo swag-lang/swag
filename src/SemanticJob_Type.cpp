@@ -412,8 +412,8 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
-                Diagnostic diag(back, Utf8::format(g_E[Err0025], back->token.text.c_str()));
-                Diagnostic note(overload->node, Utf8::format(g_E[Nte0029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag{back, Utf8::format(g_E[Err0025], back->token.text.c_str())};
+                Diagnostic note{overload->node, Utf8::format(g_E[Nte0029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 

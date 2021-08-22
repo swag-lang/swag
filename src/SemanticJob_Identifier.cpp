@@ -573,8 +573,8 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
     }
 
-    Diagnostic diag({identifier, Utf8::format(g_E[Err0083], SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning});
-    Diagnostic note1({node, g_E[Nte0031], DiagnosticLevel::Note});
+    Diagnostic diag{identifier, Utf8::format(g_E[Err0083], SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
+    Diagnostic note1{node, g_E[Nte0031], DiagnosticLevel::Note};
     if (v && v->text.empty())
     {
         context->report(diag, &note1);
@@ -973,8 +973,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
             else if (typeInfoRet->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
             {
-                Diagnostic diag(identifier, g_E[Err0094]);
-                Diagnostic note(overload->node, g_E[Nte0039], DiagnosticLevel::Note);
+                Diagnostic diag{identifier, g_E[Err0094]};
+                Diagnostic note{overload->node, g_E[Nte0039], DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
@@ -1128,8 +1128,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag(identifier, g_E[Err0094]);
-            Diagnostic note(overload->node, g_E[Nte0033], DiagnosticLevel::Note);
+            Diagnostic diag{identifier, g_E[Err0094]};
+            Diagnostic note{overload->node, g_E[Nte0033], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 

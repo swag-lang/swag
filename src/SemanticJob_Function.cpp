@@ -232,7 +232,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
-            Diagnostic diag({node, g_E[Err0739]});
+            Diagnostic diag{node, g_E[Err0739]};
             Diagnostic note{module->mainIsDefined, g_E[Nte0036], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
