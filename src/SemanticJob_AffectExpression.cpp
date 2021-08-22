@@ -216,7 +216,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
                     if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
                     {
-                        Utf8 msg = Utf8::format(Msg0224, leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Utf8::format(Msg0908, leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 

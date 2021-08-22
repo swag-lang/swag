@@ -1,4 +1,3 @@
-
 #global testerror
 
 interface TOTO
@@ -24,8 +23,4 @@ impl TOTO for TITI
 {
     var XX: TOTO
     TOTO.print(XX, true)
-    /*var YY: TITI
-    XX = YY
-    XX.print(true)
-    YY.print(true)*/
 }

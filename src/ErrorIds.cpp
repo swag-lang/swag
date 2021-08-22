@@ -62,8 +62,7 @@ const char* Msg0368 = "'#semerror' cannot be in a '#if' block";
 const char* Msg0241 = "'#semerror' has not triggered an error";
 const char* Msg0367 = "'#semerror' is invalid outside a test module (in the './tests' folder of the workspace)";
 const char* Msg0744 = "'#test' functions can only be used in a test module (in the './tests' folder of the workspace)";
-const char* Msg0908 = "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'";
-const char* Msg0224 = "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'";
+const char* Msg0908 = "'%s = %s' is impossible because no corresponding 'opAffect' function cannot be found in '%s'";
 const char* Msg0350 = "'%s' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public";
 const char* Msg0535 = "'%s' can only be used before a function call that can raise errors (function marked with 'throw')";
 const char* Msg0139 = "'%s' can only be used before a function call, and '%s' is %s";
@@ -764,6 +763,7 @@ const char* Msg0289 = "version should be of the form 'version.revision.buildnum'
 const char* Msg0056 = "x64 backend unsupported os '%s'";
 const char* Msg0820 = "enum '%s' already defined";
 const char* Msg0819 = "cannot alias a pointer or an array reference";
+const char* Msg0224 = nullptr;
 const char* Msg0638 = nullptr;
 const char* Msg0685 = nullptr;
 const char* Msg0816 = nullptr;

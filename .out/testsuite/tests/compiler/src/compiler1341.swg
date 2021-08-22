@@ -1,9 +1,8 @@
-
 #global testerror
 
 interface TOTO
 {
-	print: func(string)
+	print: func(self, string)
 }
 
 struct TITI
@@ -15,12 +14,4 @@ impl TOTO for TITI
     func print(y: bool, x: string)
     {
     }
-}
-
-//#[Swag.PrintBc]
-#test
-{
-/*    var x: TOTO
-    var y: TITI
-    x = y*/
 }
