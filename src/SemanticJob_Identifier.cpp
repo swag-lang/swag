@@ -2263,7 +2263,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
 
         if (!(node->flags & AST_IS_GENERIC) && genericParameters)
         {
-            // If we are inside a #back instruction, then setup
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
         }
         else

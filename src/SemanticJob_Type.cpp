@@ -531,6 +531,8 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     typeInfo->computeName();
     uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+        symbolFlags |= OVERLOAD_GENERIC;
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     return true;
 }
