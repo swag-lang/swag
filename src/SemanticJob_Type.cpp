@@ -442,6 +442,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         }
     }
 
+    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, Msg0819}));
     SWAG_VERIFY(overload, context->report({back, Msg0027}));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
