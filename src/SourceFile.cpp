@@ -41,7 +41,7 @@ bool SourceFile::checkFormat()
         || (c1 == 0x84 && c2 == 0x31 && c3 == 0x95 && c4 == 0x33) // GB-18030
     )
     {
-        report({this, Msg0314});
+        report({this, g_E[Msg0314]});
         return false;
     }
 
@@ -85,7 +85,7 @@ bool SourceFile::load()
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);
-        g_Log.errorOS(Utf8::format(Msg0153, path.c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0153], path.c_str()));
         return false;
     }
 

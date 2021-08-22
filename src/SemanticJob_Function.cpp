@@ -76,15 +76,15 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Code is only valid for a macro or mixin
         auto paramType = nodeParam->typeInfo;
         if (paramType->kind == TypeInfoKind::Code)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, Msg0729}));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, g_E[Msg0729]}));
         if (paramType->kind == TypeInfoKind::NameAlias)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, Msg0730}));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, g_E[Msg0730]}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, Utf8::format(Msg0731, funcParam->typeInfo->getDisplayName().c_str())}));
-            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, Utf8::format(Msg0731, funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, Utf8::format(g_E[Msg0731], funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, Utf8::format(g_E[Msg0731], funcParam->typeInfo->getDisplayName().c_str())}));
         }
 
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
@@ -92,19 +92,19 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Variadic must be the last one
         if (paramType->kind == TypeInfoKind::Variadic)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Msg0733}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, g_E[Msg0733]}));
 
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report({nodeParam, Msg0734});
+                return context->report({nodeParam, g_E[Msg0734]});
         }
         else if (paramType->kind == TypeInfoKind::TypedVariadic)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Msg0733}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, g_E[Msg0733]}));
 
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report({nodeParam, Msg0734});
+                return context->report({nodeParam, g_E[Msg0734]});
         }
 
         // A struct/interface is forced to be a const reference
@@ -140,14 +140,14 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     break;
 
                 default:
-                    context->report({nodeParam->assignment, Utf8::format(Msg0737, nodeParam->assignment->token.text.c_str())});
+                    context->report({nodeParam->assignment, Utf8::format(g_E[Msg0737], nodeParam->assignment->token.text.c_str())});
                     break;
                 }
             }
         }
         else if (nodeParam->typeInfo->kind != TypeInfoKind::Code)
         {
-            SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Utf8::format(Msg0738, index)}));
+            SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Utf8::format(g_E[Msg0738], index)}));
         }
 
         if (forGenerics)
@@ -232,8 +232,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
-            Diagnostic diag({node, Msg0739});
-            Diagnostic note{module->mainIsDefined, Note036, DiagnosticLevel::Note};
+            Diagnostic diag({node, g_E[Msg0739]});
+            Diagnostic note{module->mainIsDefined, g_E[Note036], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -256,7 +256,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({node, Utf8::format(Msg0741, node->token.text.c_str(), n)});
+                return context->report({node, Utf8::format(g_E[Msg0741], node->token.text.c_str(), n)});
             mask >>= 1;
         }
     }
@@ -278,25 +278,25 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->report({node, Msg0742});
+        return context->report({node, g_E[Msg0742]});
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         if (node->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, Msg0743}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, g_E[Msg0743]}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Msg0744}));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Msg0745}));
-            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Msg0746}));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, g_E[Msg0744]}));
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, g_E[Msg0745]}));
+            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, g_E[Msg0746]}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Utf8::format(Msg0747, node->getDisplayName().c_str())}));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Utf8::format(g_E[Msg0747], node->getDisplayName().c_str())}));
         }
     }
 
@@ -315,8 +315,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({node, Utf8::format(Msg0748, node->getDisplayName().c_str())});
-                return context->report({node, Utf8::format(Msg0749, node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
+                    return context->report({node, Utf8::format(g_E[Msg0748], node->getDisplayName().c_str())});
+                return context->report({node, Utf8::format(g_E[Msg0749], node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
             }
         }
     }
@@ -408,9 +408,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Msg0750}));
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, g_E[Msg0750]}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Msg0750}));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, g_E[Msg0750]}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
@@ -451,36 +451,36 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0757, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(Msg0758, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(g_E[Msg0757], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(g_E[Msg0758], funcNode->getDisplayName().c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0759, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(Msg0760, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(g_E[Msg0759], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(g_E[Msg0760], funcNode->getDisplayName().c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
         if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(Msg0761, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(Msg0762, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(Msg0763, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Utf8::format(Msg0860, funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Utf8::format(Msg0512, funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Utf8::format(g_E[Msg0761], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Utf8::format(g_E[Msg0762], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(g_E[Msg0763], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Utf8::format(g_E[Msg0860], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Utf8::format(g_E[Msg0512], funcNode->getDisplayName().c_str())}));
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect, context->report({funcNode, Utf8::format(Msg0753, funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(Msg0754, funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(Msg0755, funcNode->getDisplayName().c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect, context->report({funcNode, Utf8::format(g_E[Msg0753], funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Msg0754], funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(g_E[Msg0755], funcNode->getDisplayName().c_str())}));
 
     // implicit attribute cannot be used on a generic function
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
-        return context->report({funcNode, Utf8::format(Msg0756, funcNode->getDisplayName().c_str())});
+        return context->report({funcNode, Utf8::format(g_E[Msg0756], funcNode->getDisplayName().c_str())});
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
@@ -497,7 +497,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Utf8::format(Msg0752, funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Utf8::format(g_E[Msg0752], funcNode->token.text.c_str())}));
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -505,7 +505,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report({funcNode, Utf8::format(Msg0751, funcNode->token.text.c_str())});
+            return context->report({funcNode, Utf8::format(g_E[Msg0751], funcNode->token.text.c_str())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
@@ -561,7 +561,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Reference &&
         typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->report({typeNode->childs.front(), Utf8::format(Msg0764, typeInfo->returnType->getDisplayName().c_str())});
+        return context->report({typeNode->childs.front(), Utf8::format(g_E[Msg0764], typeInfo->returnType->getDisplayName().c_str())});
 
     typeInfo->forceComputeName();
 
@@ -581,7 +581,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Utf8::format(Msg0199, typeStruct->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Utf8::format(g_E[Msg0199], typeStruct->getDisplayName().c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -589,7 +589,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, Utf8::format(Msg0765, typeStruct->name.c_str())}));
+            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, Utf8::format(g_E[Msg0765], typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
@@ -629,10 +629,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
-            return context->report({funcNode->returnType, Msg0766});
+            return context->report({funcNode->returnType, g_E[Msg0766]});
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report({funcNode, Msg0767});
+            return context->report({funcNode, g_E[Msg0767]});
     }
 
     if (funcNode->flags & AST_IS_GENERIC)
@@ -821,7 +821,7 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
         }
 
         auto idx = Ast::findChildIndex(node->parent, node);
-        return context->report({node->parent->childs[idx + 1], Msg0768, DiagnosticLevel::Warning});
+        return context->report({node->parent->childs[idx + 1], g_E[Msg0768], DiagnosticLevel::Warning});
     }
 
     return true;
@@ -832,12 +832,12 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report({node, Msg0769}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Msg0769}));
+    SWAG_VERIFY(fctDecl, context->report({node, g_E[Msg0769]}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, g_E[Msg0769]}));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, Msg0771}));
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, g_E[Msg0771]}));
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
@@ -954,7 +954,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     if (node->childs.empty())
     {
-        return context->report({node, Utf8::format(Msg0772, funcNode->returnType->typeInfo->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(g_E[Msg0772], funcNode->returnType->typeInfo->getDisplayName().c_str())});
     }
 
     auto returnType = funcNode->returnType->typeInfo;
@@ -968,12 +968,12 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
     {
-        Diagnostic  diag{child, Utf8::format(Msg0774, concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
-        PushErrHint errh(Hnt0026);
+        Diagnostic  diag{child, Utf8::format(g_E[Msg0774], concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
+        PushErrHint errh(g_E[Hnt0026]);
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            Diagnostic note{funcNode, Utf8::format(Note011, node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
+            Diagnostic note{funcNode, Utf8::format(g_E[Note011], node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -1045,7 +1045,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
-            return context->report({identifier, Utf8::format(Msg0775, identifier->token.text.c_str())});
+            return context->report({identifier, Utf8::format(g_E[Msg0775], identifier->token.text.c_str())});
         ownerInline = ownerInline->ownerInline;
     }
 
@@ -1173,14 +1173,14 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             // Replace named aliases
             if (param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
             {
-                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, Msg0776}));
+                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, g_E[Msg0776]}));
                 auto back = child->childs.back();
                 if (back->kind == AstNodeKind::CompilerCode)
                     back = back->childs.front();
-                SWAG_VERIFY(back->kind == AstNodeKind::IdentifierRef, context->report({child, Msg0777}));
+                SWAG_VERIFY(back->kind == AstNodeKind::IdentifierRef, context->report({child, g_E[Msg0777]}));
 
                 auto idRef = CastAst<AstIdentifierRef>(back, AstNodeKind::IdentifierRef);
-                SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, Msg0778}));
+                SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, g_E[Msg0778]}));
                 cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->token.text;
             }
         }
@@ -1206,8 +1206,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     {
                         if (alias.text == r.second)
                         {
-                            PushErrHint errh(Hnt0026);
-                            return context->report({id, alias, Utf8::format(Msg0780, alias.text.c_str())});
+                            PushErrHint errh(g_E[Hnt0026]);
+                            return context->report({id, alias, Utf8::format(g_E[Msg0780], alias.text.c_str())});
                         }
                     }
 
@@ -1215,8 +1215,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     {
                         if (alias.text == r.second)
                         {
-                            PushErrHint errh(Hnt0026);
-                            return context->report({id, alias, Utf8::format(Msg0780, alias.text.c_str())});
+                            PushErrHint errh(g_E[Hnt0026]);
+                            return context->report({id, alias, Utf8::format(g_E[Msg0780], alias.text.c_str())});
                         }
                     }
                 }
@@ -1237,7 +1237,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!funcDecl->subDecls.empty())
     {
         context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
-        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(Msg0781, identifier->token.text.c_str())}));
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(g_E[Msg0781], identifier->token.text.c_str())}));
 
         // Authorize a sub function to access inline parameters, if possible
         // This will work for compile time values, otherwise we will have an out of stack frame when generating the code

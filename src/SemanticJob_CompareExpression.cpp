@@ -74,7 +74,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Utf8::format(Msg0001, leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Utf8::format(g_E[Msg0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -137,7 +137,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, Utf8::format(Msg0001, leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Utf8::format(g_E[Msg0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -197,7 +197,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Utf8::format(Msg0001, leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Utf8::format(g_E[Msg0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -257,7 +257,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, Utf8::format(Msg0001, leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Utf8::format(g_E[Msg0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -315,34 +315,34 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
-        return context->report({left, Utf8::format(Msg0005, node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Utf8::format(g_E[Msg0005], node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({right, Utf8::format(Msg0005, node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, Utf8::format(g_E[Msg0005], node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
     }
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({left, Msg0007});
+        return context->report({left, g_E[Msg0007]});
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, Msg0007});
+        return context->report({right, g_E[Msg0007]});
 
     // Slice can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr->typeInfoNull)
-        return context->report({left, Msg0009});
+        return context->report({left, g_E[Msg0009]});
 
     // Interface can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull)
-        return context->report({left, Msg0010});
+        return context->report({left, g_E[Msg0010]});
 
     // Some types can only be compared for equality
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-            return context->report({left, Utf8::format(Msg0005, node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, Utf8::format(g_E[Msg0005], node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)

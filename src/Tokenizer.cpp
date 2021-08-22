@@ -96,7 +96,7 @@ bool Tokenizer::doMultiLineComment(Token& token)
         {
             location = token.startLocation;
             location.column += 2;
-            error(token, Msg0080);
+            error(token, g_E[Msg0080]);
             return false;
         }
 
@@ -216,7 +216,7 @@ bool Tokenizer::getToken(Token& token)
 
             if (token.id == TokenId::Identifier)
             {
-                error(token, Utf8::format(Msg0140, token.text.c_str()));
+                error(token, Utf8::format(g_E[Msg0140], token.text.c_str()));
                 return false;
             }
 
@@ -263,7 +263,7 @@ bool Tokenizer::getToken(Token& token)
             if (!token.text.count)
             {
                 token.startLocation = location;
-                error(token, Utf8::format(Msg0141, nc));
+                error(token, Utf8::format(g_E[Msg0141], nc));
                 return false;
             }
 
@@ -309,7 +309,7 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         token.text = c;
         token.id   = TokenId::Invalid;
-        error(token, Utf8::format(Msg0081, token.text.c_str()));
+        error(token, Utf8::format(g_E[Msg0081], token.text.c_str()));
         return false;
     }
 

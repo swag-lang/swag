@@ -50,7 +50,7 @@ JobResult FetchModuleFileSystemJob::execute()
             auto n = destPath + f;
             if (!fs::remove(n))
             {
-                g_Log.errorOS(Utf8::format(Msg0603, n.c_str()));
+                g_Log.errorOS(Utf8::format(g_E[Msg0603], n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -66,7 +66,7 @@ JobResult FetchModuleFileSystemJob::execute()
         auto folder = destFileName.parent_path();
         if (!fs::exists(folder) && !fs::create_directories(folder, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0604, folder.c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0604], folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

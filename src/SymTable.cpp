@@ -318,9 +318,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        Utf8       msg = Utf8::format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+        Utf8       msg = Utf8::format(g_E[Msg0885], symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};
-        Utf8       note = Note036;
+        Utf8       note = g_E[Note036];
         Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -349,9 +349,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             return true;
         }
 
-        Utf8       msg = Utf8::format(Msg0886, symbol->name.c_str());
+        Utf8       msg = Utf8::format(g_E[Msg0886], symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = Note036;
+        Utf8       note = g_E[Note036];
         Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -360,9 +360,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // Overloads are not allowed on certain types
     if (!canOverload && checkSameName)
     {
-        Utf8       msg = Utf8::format(Msg0886, symbol->name.c_str());
+        Utf8       msg = Utf8::format(g_E[Msg0886], symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = Note036;
+        Utf8       note = g_E[Note036];
         Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -379,9 +379,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto       firstOverload = overload;
-            Utf8       msg           = Utf8::format(Msg0888, symbol->name.c_str());
+            Utf8       msg           = Utf8::format(g_E[Msg0888], symbol->name.c_str());
             Diagnostic diag{node, token, msg};
-            Utf8       note = Note036;
+            Utf8       note = g_E[Note036];
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
             if (typeInfo->kind == TypeInfoKind::FuncAttr)
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
@@ -421,15 +421,15 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = Utf8::format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+            Utf8       msg           = Utf8::format(g_E[Msg0885], symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
             Diagnostic diag{node, msg};
-            Utf8       note = Note036;
+            Utf8       note = g_E[Note036];
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
             context->report(diag, &diagNote);
         }
         else
         {
-            Utf8       msg = Utf8::format(Msg0890, symbol->name.c_str());
+            Utf8       msg = Utf8::format(g_E[Msg0890], symbol->name.c_str());
             Diagnostic diag{node, msg};
             context->report(diag);
         }

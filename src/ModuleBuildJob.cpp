@@ -195,7 +195,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
-                module->error(Utf8::format(Msg0499, dep->name.c_str()));
+                module->error(Utf8::format(g_E[Msg0499], dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
@@ -549,7 +549,7 @@ JobResult ModuleBuildJob::execute()
                     {
                         auto nb             = file->numTestErrors.load();
                         file->numTestErrors = 0;
-                        file->report({file, Utf8::format(Msg0500, nb, file->numErrors)});
+                        file->report({file, Utf8::format(g_E[Msg0500], nb, file->numErrors)});
                     }
                 }
 
@@ -559,7 +559,7 @@ JobResult ModuleBuildJob::execute()
                     {
                         auto nb               = file->numTestWarnings.load();
                         file->numTestWarnings = 0;
-                        file->report({file, Utf8::format(Msg0501, nb, file->numWarnings)});
+                        file->report({file, Utf8::format(g_E[Msg0501], nb, file->numWarnings)});
                     }
                 }
             }

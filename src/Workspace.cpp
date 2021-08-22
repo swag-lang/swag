@@ -62,7 +62,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec->nativeTypes.find(tokens1[1]);
                 if (!it)
                 {
-                    g_Log.error(Utf8::format(Msg0539, tokens1[0].c_str(), tokens1[1].c_str()));
+                    g_Log.error(Utf8::format(g_E[Msg0539], tokens1[0].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
@@ -105,7 +105,7 @@ void Workspace::setupUserTags()
 
                 if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
                 {
-                    g_Log.error(Utf8::format(Msg0538, tokenVal.c_str(), tokens1[0].c_str()));
+                    g_Log.error(Utf8::format(g_E[Msg0538], tokenVal.c_str(), tokens1[0].c_str()));
                     OS::exit(-1);
                 }
 
@@ -118,7 +118,7 @@ void Workspace::setupUserTags()
                 auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
-                    auto err = Utf8::format(Msg0322, tokens1[0].c_str(), errMsg.c_str());
+                    auto err = Utf8::format(g_E[Msg0322], tokens1[0].c_str(), errMsg.c_str());
                     g_Log.error(err);
                     OS::exit(-1);
                 }
@@ -149,25 +149,25 @@ void Workspace::setup()
 
     if (workspacePath.empty())
     {
-        g_Log.error(Msg0540);
+        g_Log.error(g_E[Msg0540]);
         OS::exit(-1);
     }
 
     bool invalid = false;
     if (!fs::exists(workspacePath))
     {
-        g_Log.error(Utf8::format(Msg0541, workspacePath.string().c_str()));
+        g_Log.error(Utf8::format(g_E[Msg0541], workspacePath.string().c_str()));
         invalid = true;
     }
     else if (!g_CommandLine->scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
     {
-        g_Log.error(Utf8::format(Msg0542, workspacePath.string().c_str()));
+        g_Log.error(Utf8::format(g_E[Msg0542], workspacePath.string().c_str()));
         invalid = true;
     }
 
     if (invalid)
     {
-        g_Log.message(Note012);
+        g_Log.message(g_E[Note012]);
         OS::exit(-1);
     }
 

@@ -70,7 +70,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Utf8::format(Msg0034, Backend::GetOsName()));
+        module->error(Utf8::format(g_E[Msg0034], Backend::GetOsName()));
         return false;
     }
 }
@@ -93,7 +93,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Utf8::format(Msg0034, Backend::GetOsName()));
+        module->error(Utf8::format(g_E[Msg0034], Backend::GetOsName()));
         return false;
     }
 

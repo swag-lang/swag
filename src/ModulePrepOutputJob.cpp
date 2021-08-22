@@ -18,7 +18,7 @@ JobResult ModulePrepOutputJob::execute()
     {
         if (!module->mainIsDefined)
         {
-            module->error(Msg0269);
+            module->error(g_E[Msg0269]);
             return JobResult::ReleaseJob;
         }
     }

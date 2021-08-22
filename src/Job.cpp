@@ -235,30 +235,30 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         switch (exp.second)
         {
         case JobContext::ExpansionType::Generic:
-            kindName    = Msg0112;
+            kindName    = g_E[Msg0112];
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::Inline:
-            kindName    = Msg0118;
+            kindName    = g_E[Msg0118];
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::SelectIf:
-            kindName    = Msg0128;
+            kindName    = g_E[Msg0128];
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::CheckIf:
-            kindName    = Msg0129;
+            kindName    = g_E[Msg0129];
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::Node:
-            kindName    = Note017;
+            kindName    = g_E[Note017];
             kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)
             {
-                kindName    = Note018;
+                kindName    = g_E[Note018];
                 kindArticle = "to ";
                 first       = first->childs.front();
-                hint        = Utf8::format(Hnt0011, first->typeInfo->getDisplayName().c_str());
+                hint        = Utf8::format(g_E[Hnt0011], first->typeInfo->getDisplayName().c_str());
             }
             else if (first->kind == AstNodeKind::Return)
             {
@@ -266,7 +266,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 if (returnNode->resolvedFuncDecl)
                 {
                     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
-                    hint          = Utf8::format(Hnt0012, returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
+                    hint          = Utf8::format(g_E[Hnt0012], returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
                 }
             }
             else
@@ -285,13 +285,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
             if (!name.empty())
             {
-                auto note  = new Diagnostic{first, Utf8::format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(g_E[Note002], kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
             else
             {
-                auto note  = new Diagnostic{first, Utf8::format(Note003, kindName), DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, Utf8::format(g_E[Note003], kindName), DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
             }
@@ -301,7 +301,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (diag.sourceNode && diag.sourceNode->sourceFile && diag.sourceNode->sourceFile->sourceNode)
     {
         auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
-        auto note       = new Diagnostic{sourceNode, Note004, DiagnosticLevel::Note};
+        auto note       = new Diagnostic{sourceNode, g_E[Note004], DiagnosticLevel::Note};
         notes.push_back(note);
     }
 }
@@ -318,7 +318,7 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
 {
     if (value <= maxValue)
         return true;
-    return report({node, Utf8::format(Msg0505, typeOverflow, maxValue)});
+    return report({node, Utf8::format(g_E[Msg0505], typeOverflow, maxValue)});
 }
 
 bool JobContext::internalError(const char* msg, AstNode* specNode)

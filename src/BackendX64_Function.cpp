@@ -2487,7 +2487,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeCompilerSegPointer:
-            return ip->node->sourceFile->report({ip->node, Msg0060});
+            return ip->node->sourceFile->report({ip->node, g_E[Msg0060]});
 
         case ByteCodeOp::IncPointer64:
             if (ip->flags & BCI_IMM_B)

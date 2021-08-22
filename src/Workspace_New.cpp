@@ -9,7 +9,7 @@ void newScriptFile()
     ofstream file(g_CommandLine->scriptName);
     if (!file.is_open())
     {
-        g_Log.errorOS(Utf8::format(Msg0347, g_CommandLine->scriptName.c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0347], g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -44,13 +44,13 @@ void Workspace::newModule(string moduleName)
 
     if (fs::exists(modulePath))
     {
-        g_Log.errorOS(Utf8::format(Msg0397, moduleName.c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0397], moduleName.c_str()));
         OS::exit(-1);
     }
 
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.errorOS(Utf8::format(Msg0818, modulePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0818], modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -60,7 +60,7 @@ void Workspace::newModule(string moduleName)
     ofstream fileCfg(cfgFileName);
     if (!fileCfg.is_open())
     {
-        g_Log.errorOS(Utf8::format(Msg0824, cfgFileName.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0824], cfgFileName.string().c_str()));
         OS::exit(-1);
     }
 
@@ -89,7 +89,7 @@ void Workspace::newModule(string moduleName)
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.errorOS(Utf8::format(Msg0818, modulePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0818], modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -97,7 +97,7 @@ void Workspace::newModule(string moduleName)
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        g_Log.errorOS(Utf8::format(Msg0824, modulePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0824], modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -124,7 +124,7 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        g_Log.error(Msg0540);
+        g_Log.error(g_E[Msg0540]);
         OS::exit(-1);
     }
 
@@ -135,38 +135,38 @@ void Workspace::newCommand()
     {
         if (fs::exists(workspacePath))
         {
-            g_Log.error(Utf8::format(Msg0817, workspacePath.string().c_str()));
+            g_Log.error(Utf8::format(g_E[Msg0817], workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
         if (!fs::create_directories(workspacePath, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0818, workspacePath.string().c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0818], workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(examplesPath, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0818, examplesPath.string().c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0818], examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(testsPath, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0818, testsPath.string().c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0818], testsPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(modulesPath, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0818, modulesPath.string().c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0818], modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(dependenciesPath, errorCode))
         {
-            g_Log.errorOS(Utf8::format(Msg0818, dependenciesPath.string().c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Msg0818], dependenciesPath.string().c_str()));
             OS::exit(-1);
         }
 
@@ -179,7 +179,7 @@ void Workspace::newCommand()
     {
         if (!fs::exists(workspacePath))
         {
-            g_Log.error(Utf8::format(Msg0541, workspacePath.string().c_str()));
+            g_Log.error(Utf8::format(g_E[Msg0541], workspacePath.string().c_str()));
             OS::exit(-1);
         }
 

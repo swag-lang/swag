@@ -163,7 +163,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         if (!overflow)
         {
             overflow = true;
-            module->error(Utf8::format(Msg0834, name));
+            module->error(Utf8::format(g_E[Msg0834], name));
         }
     }
 

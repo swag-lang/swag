@@ -110,7 +110,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            g_Log.error(Utf8::format(Msg0045, cmdline.c_str()));
+            g_Log.error(Utf8::format(g_E[Msg0045], cmdline.c_str()));
             return false;
         }
 
@@ -134,7 +134,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
+                g_Log.errorOS(Utf8::format(g_E[Msg0046], cmdline.c_str()));
                 return false;
             }
         }
@@ -348,7 +348,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Utf8::format(Msg0046, cmdline.c_str()));
+                g_Log.errorOS(Utf8::format(g_E[Msg0046], cmdline.c_str()));
                 return;
             }
         }
@@ -664,7 +664,7 @@ namespace OS
         LONG lRes = RegSetKeyValueA(HKEY_CURRENT_USER, "Environment", "SWAG_FOLDER", REG_SZ, folder.c_str(), (DWORD) folder.size() + 1);
         if (lRes != ERROR_SUCCESS)
         {
-            g_Log.error(Utf8::format(Msg0048, folder.c_str()));
+            g_Log.error(Utf8::format(g_E[Msg0048], folder.c_str()));
             OS::exit(-1);
         }
 
@@ -675,7 +675,7 @@ namespace OS
         lRes = RegOpenKeyExA(HKEY_CURRENT_USER, "Environment", 0, KEY_READ | KEY_WRITE, &hKey);
         if (lRes != ERROR_SUCCESS)
         {
-            g_Log.error(Msg0049);
+            g_Log.error(g_E[Msg0049]);
             OS::exit(-1);
         }
 
@@ -685,7 +685,7 @@ namespace OS
         if (lRes != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
-            g_Log.error(Msg0049);
+            g_Log.error(g_E[Msg0049]);
             OS::exit(-1);
         }
 
@@ -697,7 +697,7 @@ namespace OS
             if (lRes != ERROR_SUCCESS)
             {
                 RegCloseKey(hKey);
-                g_Log.error(Utf8::format(Msg0051, folder.c_str()));
+                g_Log.error(Utf8::format(g_E[Msg0051], folder.c_str()));
                 OS::exit(-1);
             }
 

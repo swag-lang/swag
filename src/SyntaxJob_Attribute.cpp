@@ -14,7 +14,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         *result = attrNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0355, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0355], token.text.c_str())));
 
     attrNode->inheritTokenName(token);
 
@@ -34,8 +34,8 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Msg0726));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Msg0190));
+    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, g_E[Msg0726]));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, g_E[Msg0190]));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     return true;
@@ -50,7 +50,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     {
     case TokenId::KwdPrivate:
         attr = ATTRIBUTE_PRIVATE;
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Msg0348));
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, g_E[Msg0348]));
         newScope = Ast::newPrivateScope(parent, parent->sourceFile, currentScope);
         SWAG_CHECK(eatToken());
         break;
@@ -62,11 +62,11 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         else
             attr = ATTRIBUTE_PROTECTED;
 
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Utf8::format(Msg0349, token.text.c_str())));
-        SWAG_VERIFY(!sourceFile->forceExport, error(token, Utf8::format(Msg0350, token.text.c_str())));
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Utf8::format(g_E[Msg0349], token.text.c_str())));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, Utf8::format(g_E[Msg0350], token.text.c_str())));
         if (newScope->flags & SCOPE_PRIVATE)
         {
-            SWAG_VERIFY(newScope->isTopLevel(), error(token, Utf8::format(Msg0351, token.text.c_str(), Scope::getNakedKindName(newScope->kind), newScope->name.c_str())));
+            SWAG_VERIFY(newScope->isTopLevel(), error(token, Utf8::format(g_E[Msg0351], token.text.c_str(), Scope::getNakedKindName(newScope->kind), newScope->name.c_str())));
             while (newScope->flags & SCOPE_PRIVATE)
                 newScope = newScope->parentScope;
         }
@@ -108,10 +108,10 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
 
         default:
             if (attr == ATTRIBUTE_PRIVATE)
-                return error(token, Utf8::format(Msg0352, token.text.c_str()));
+                return error(token, Utf8::format(g_E[Msg0352], token.text.c_str()));
             if (attr == ATTRIBUTE_PROTECTED)
-                return error(token, Utf8::format(Msg0353, token.text.c_str()));
-            return error(token, Utf8::format(Msg0354, token.text.c_str()));
+                return error(token, Utf8::format(g_E[Msg0353], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Msg0354], token.text.c_str()));
         }
 
         SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
@@ -153,12 +153,12 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Utf8::format(Msg0825, token.text.c_str())));
+            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Utf8::format(g_E[Msg0825], token.text.c_str())));
 
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));
-                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(Msg0355, token.text.c_str())));
+                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0355], token.text.c_str())));
             }
         }
 
@@ -168,7 +168,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             break;
     }
 
-    SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Msg0356));
+    SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, g_E[Msg0356]));
     auto back = attrBlockNode->childs.back();
     back->allocateExtension();
     SWAG_ASSERT(!back->extension->semanticAfterFct);

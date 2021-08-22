@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, Utf8::format(Msg0206, overload->symbol->name.c_str())});
+        return context->report({context->node, Utf8::format(g_E[Msg0206], overload->symbol->name.c_str())});
     return true;
 }
 
@@ -631,7 +631,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
             if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
+                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Msg0859]);
             safety = false;
             ensureCanBeChangedRC(context, node->resultRegisterRC);
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
@@ -643,13 +643,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (!(node->forceTakeAddress()))
         {
             if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
+                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Msg0859]);
             emitStructDeRef(context, false);
         }
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
         {
             if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
+                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Msg0859]);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
 

@@ -120,7 +120,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     default:
     {
         auto node = context->node;
-        context->report({node, Utf8::format(Msg0537, typeInfo->getDisplayName().c_str())});
+        context->report({node, Utf8::format(g_E[Msg0537], typeInfo->getDisplayName().c_str())});
         return false;
     }
     }

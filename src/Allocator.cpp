@@ -213,7 +213,7 @@ void* AllocatorImpl::alloc(size_t size)
         lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + max(size, ALLOCATOR_BUCKET_SIZE));
         if (!lastBucket)
         {
-            g_Log.error(Msg0014);
+            g_Log.error(g_E[Msg0014]);
             OS::exit(-1);
             return nullptr;
         }
@@ -313,7 +313,7 @@ Allocator::Allocator()
             g_SharedAllocator = (Allocator*) malloc(sizeof(Allocator));
             if (!g_SharedAllocator)
             {
-                g_Log.error(Msg0014);
+                g_Log.error(g_E[Msg0014]);
                 OS::exit(-1);
                 return;
             }

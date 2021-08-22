@@ -7,7 +7,7 @@ void Workspace::scriptCommand()
 {
     if (g_CommandLine->scriptName.empty())
     {
-        g_Log.error(Utf8::format(Msg0318, g_CommandLine->scriptName.c_str()));
+        g_Log.error(Utf8::format(g_E[Msg0318], g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -16,7 +16,7 @@ void Workspace::scriptCommand()
     g_CommandLine->scriptName = Utf8::normalizePath(pathF.string());
     if (!fs::exists(g_CommandLine->scriptName))
     {
-        g_Log.error(Utf8::format(Msg0166, g_CommandLine->scriptName.c_str()));
+        g_Log.error(Utf8::format(g_E[Msg0166], g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -29,7 +29,7 @@ void Workspace::scriptCommand()
     g_Workspace->setupCachePath();
     if (!fs::exists(g_Workspace->cachePath))
     {
-        g_Log.error(Utf8::format(Msg0546, g_Workspace->cachePath.string().c_str()));
+        g_Log.error(Utf8::format(g_E[Msg0546], g_Workspace->cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -38,7 +38,7 @@ void Workspace::scriptCommand()
     error_code errorCode;
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Utf8::format(Msg0547, cacheWorkspace.c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0547], cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -46,7 +46,7 @@ void Workspace::scriptCommand()
     cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Utf8::format(Msg0547, cacheWorkspace.c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Msg0547], cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 

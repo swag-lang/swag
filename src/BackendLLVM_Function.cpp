@@ -1196,7 +1196,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MakeCompilerSegPointer:
-            return ip->node->sourceFile->report({ip->node, Msg0060});
+            return ip->node->sourceFile->report({ip->node, g_E[Msg0060]});
 
         case ByteCodeOp::MakeStackPointer:
         {

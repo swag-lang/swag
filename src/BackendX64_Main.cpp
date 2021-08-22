@@ -28,7 +28,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Utf8::format(Note018, Backend::GetOsName()));
+        module->error(Utf8::format(g_E[Note018], Backend::GetOsName()));
         return false;
     }
 }
@@ -50,7 +50,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Utf8::format(Msg0056, Backend::GetOsName()));
+        module->error(Utf8::format(g_E[Msg0056], Backend::GetOsName()));
         return false;
     }
 

@@ -86,5 +86,5 @@ void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 void ByteCodeRunContext::stackOverflow()
 {
     hasError = true;
-    errorMsg = Utf8::format(Msg0015, Utf8::toNiceSize(g_CommandLine->stackSizeBC).c_str());
+    errorMsg = Utf8::format(g_E[Msg0015], Utf8::toNiceSize(g_CommandLine->stackSizeBC).c_str());
 }

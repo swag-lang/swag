@@ -82,7 +82,7 @@ namespace OS
             string winSdkVersion;
             if (!getWinSdkFolder(winSdkPath, winSdkVersion))
             {
-                g_Log.error(Msg0036);
+                g_Log.error(g_E[Msg0036]);
                 OS::exit(-1);
             }
 

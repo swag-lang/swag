@@ -14,7 +14,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
         return true;
     auto node = context->node;
-    return context->report({node, Utf8::format(Msg0504, node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str())});
+    return context->report({node, Utf8::format(g_E[Msg0504], node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
@@ -25,7 +25,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return context->report({node, Utf8::format(Msg0005, node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
+    return context->report({node, Utf8::format(g_E[Msg0005], node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)

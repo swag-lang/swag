@@ -58,8 +58,8 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     {
         if (assignment)
         {
-            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Msg0798}));
-            SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
+            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, g_E[Msg0798]}));
+            SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, g_E[Msg0798]}));
 
             // Store value in constant storageSegment
             uint32_t storageOffsetValue;
@@ -78,7 +78,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, g_E[Msg0798]}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegment(context, storageSegment, storageOffset, offset, assignment);
         SWAG_CHECK(result);
@@ -87,7 +87,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (assignment && assignment->kind == AstNodeKind::ExpressionList)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, g_E[Msg0798]}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegment(context, storageSegment, storageOffset, offset, assignment);
         SWAG_CHECK(result);
@@ -290,7 +290,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             auto assign   = node->assignment;
             auto overload = assign->resolvedSymbolOverload;
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                return context->report({assign, Msg0645});
+                return context->report({assign, g_E[Msg0645]});
 
             // Copy from a constant
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
