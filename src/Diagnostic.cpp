@@ -139,7 +139,7 @@ void Diagnostic::report(bool verboseMode) const
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 uint32_t countBlanks = 0;
-                while (*pz  > 0 && *pz <= 0x7f && isblank(*pz++))
+                while (SWAG_IS_BLANK(*pz++))
                     countBlanks++;
                 minBlanks = min(minBlanks, countBlanks);
             }
@@ -206,7 +206,7 @@ void Diagnostic::report(bool verboseMode) const
                         bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
                         if (isCWord)
                         {
-                            while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                            while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
                             {
                                 decal += 1;
                                 range += 1;
