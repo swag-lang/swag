@@ -10,7 +10,7 @@
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Msg0859]);
+    emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
 
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
@@ -44,7 +44,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    emitSafetyNullPointer(context, node->array->resultRegisterRC[0], g_E[Msg0859]);
+    emitSafetyNullPointer(context, node->array->resultRegisterRC[0], g_E[Err0859]);
 
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
@@ -113,7 +113,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     node->array->resultRegisterRC += reserveRegisterRC(context);
 
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
-    emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Msg0859]);
+    emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     // Pointer increment
@@ -202,7 +202,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
         if (safety)
-            emitSafetyNullPointer(context, r0, g_E[Msg0859]);
+            emitSafetyNullPointer(context, r0, g_E[Err0859]);
         emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         return true;
     }
@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (typeInfo->numRegisters() == 2)
     {
         if (safety)
-            emitSafetyNullPointer(context, r0, g_E[Msg0859]);
+            emitSafetyNullPointer(context, r0, g_E[Err0859]);
         transformResultToLinear2(context, r0);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
@@ -228,7 +228,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     }
 
     if (safety)
-        emitSafetyNullPointer(context, r0, g_E[Msg0859]);
+        emitSafetyNullPointer(context, r0, g_E[Err0859]);
 
     // We now only need one register
     truncRegisterRC(context, r0, 1);
@@ -275,7 +275,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Msg0859]);
+        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         ensureCanBeChangedRC(context, node->array->resultRegisterRC);
@@ -290,7 +290,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a slice
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Msg0859]);
+        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
@@ -324,7 +324,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
-        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Msg0859]);
+        emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())

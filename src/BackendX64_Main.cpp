@@ -50,7 +50,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Utf8::format(g_E[Msg0056], Backend::GetOsName()));
+        module->error(Utf8::format(g_E[Err0056], Backend::GetOsName()));
         return false;
     }
 

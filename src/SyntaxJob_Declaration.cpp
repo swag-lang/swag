@@ -39,7 +39,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                         break;
                 default:
                 {
-                    Diagnostic diag{node, g_E[Msg0386]};
+                    Diagnostic diag{node, g_E[Err0386]};
                     Diagnostic note{child, g_E[Note024], DiagnosticLevel::Note};
                     return sourceFile->report(diag, &note);
                 }
@@ -62,7 +62,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, g_E[Msg0388]));
+    SWAG_VERIFY(currentScope->isGlobal(), error(token, g_E[Err0388]));
     SWAG_CHECK(doNamespace(parent, result, false));
     return true;
 }
@@ -95,16 +95,16 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::Identifier:
             break;
         case TokenId::SymLeftCurly:
-            return error(token, g_E[Msg0389]);
+            return error(token, g_E[Err0389]);
         case TokenId::SymSemiColon:
-            return error(token, g_E[Msg0390]);
+            return error(token, g_E[Err0390]);
         default:
-            return error(token, Utf8::format(g_E[Msg0391], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0391], token.text.c_str()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, g_E[Msg0392]));
+            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, g_E[Err0392]));
 
         // Add/Get namespace
         {
@@ -121,7 +121,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Utf8       msg = Utf8::format(g_E[Msg0886], symbol->name.c_str());
+                Utf8       msg = Utf8::format(g_E[Err0886], symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = g_E[Note036];
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
@@ -162,7 +162,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             SWAG_CHECK(doTopLevelInstruction(namespaceNode));
         }
 
-        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Msg0880]));
+        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
         SWAG_CHECK(eatToken(TokenId::SymRightCurly, g_E[Note023]));
     }
 
@@ -181,7 +181,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Msg0880]));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -208,7 +208,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Msg0880]));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
     node->token.endLocation = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
@@ -505,8 +505,8 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
     labelNode->semanticFct = SemanticJob::resolveLabel;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, g_E[Msg0394]));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0395], token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, g_E[Err0394]));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 

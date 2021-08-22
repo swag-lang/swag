@@ -28,7 +28,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-        return context->report({oneAttribute, Utf8::format(g_E[Msg0582], oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, Utf8::format(g_E[Err0582], oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -114,7 +114,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (specificMsg)
     {
         auto       nakedName = AstNode::getKindName(checkNode);
-        Diagnostic diag{oneAttribute, Utf8::format(g_E[Msg0583], oneAttribute->token.text.c_str(), specificMsg)};
+        Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0583], oneAttribute->token.text.c_str(), specificMsg)};
         Diagnostic note1{checkNode, Utf8::format(g_E[Note019], nakedName.c_str()), DiagnosticLevel::Note};
         Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Note025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
@@ -124,14 +124,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto nakedName = AstNode::getArticleKindName(checkNode);
         if (nakedName == "<node>")
         {
-            Diagnostic diag{oneAttribute, Utf8::format(g_E[Msg0586], oneAttribute->token.text.c_str())};
+            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0586], oneAttribute->token.text.c_str())};
             Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Note025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1);
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
-            Diagnostic diag{oneAttribute, Utf8::format(g_E[Msg0588], oneAttribute->token.text.c_str(), nakedName.c_str())};
+            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0588], oneAttribute->token.text.c_str(), nakedName.c_str())};
             Diagnostic note1{checkNode, Utf8::format(g_E[Note026], nakedName1.c_str()), DiagnosticLevel::Note};
             Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Note025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
@@ -224,7 +224,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Utf8::format(g_E[Msg0591], child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
+                    Diagnostic diag{forNode, Utf8::format(g_E[Err0591], child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, g_E[Note032], DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
@@ -271,7 +271,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     if (w == g_LangSpec->name_methods)
                         flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
                     else
-                        return context->report({child, Utf8::format(g_E[Msg0599], w.c_str())});
+                        return context->report({child, Utf8::format(g_E[Err0599], w.c_str())});
                 }
             }
             else if (child->token.text == g_LangSpec->name_Safety)
@@ -325,7 +325,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                     }
                     else
-                        return context->report({child, Utf8::format(g_E[Msg0593], w.c_str())});
+                        return context->report({child, Utf8::format(g_E[Err0593], w.c_str())});
                 }
             }
             else if (child->token.text == g_LangSpec->name_Optim)
@@ -361,7 +361,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     }
                     else
-                        return context->report({child, Utf8::format(g_E[Msg0594], w.c_str())});
+                        return context->report({child, Utf8::format(g_E[Err0594], w.c_str())});
                 }
             }
             else if (child->token.text == g_LangSpec->name_SelectIf)
@@ -375,13 +375,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Msg0595], attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Err0595], attrValue->reg.u8)}));
             }
             else if (child->token.text == g_LangSpec->name_Align)
             {
                 auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Msg0596], attrValue->reg.u8)}));
+                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Err0596], attrValue->reg.u8)}));
             }
 
             // Remember attributes that's here
@@ -426,7 +426,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, g_E[Msg0597]}));
+    SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, g_E[Err0597]}));
 
     for (auto child : node->childs)
     {
@@ -447,7 +447,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{identifier, Utf8::format(g_E[Msg0598], resolvedName->name.c_str())};
+            Diagnostic diag{identifier, Utf8::format(g_E[Err0598], resolvedName->name.c_str())};
             Diagnostic note{resolved->node, Utf8::format(g_E[Note029], resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->report(diag, &note);
             return false;
@@ -459,7 +459,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
-                Diagnostic diag{identifier, Utf8::format(g_E[Msg0600], resolvedName->name.c_str())};
+                Diagnostic diag{identifier, Utf8::format(g_E[Err0600], resolvedName->name.c_str())};
                 Diagnostic note{resolved->node, Utf8::format(g_E[Note029], resolvedName->name.c_str()), DiagnosticLevel::Note};
                 context->report(diag, &note);
                 return false;
@@ -479,7 +479,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, g_E[Msg0602]}));
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, g_E[Err0602]}));
 
                 AttributeParameter attrParam;
                 attrParam.name     = param->resolvedParameter->namedParam;

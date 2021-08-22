@@ -1005,7 +1005,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(Utf8::format(g_E[Msg0431], over->node->token.text.c_str()));
+                    context->error(Utf8::format(g_E[Err0431], over->node->token.text.c_str()));
                 }
             }
         }
@@ -2761,13 +2761,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
                 if (location || !ip->node)
                 {
-                    Diagnostic diag{sourceFile, *location, g_E[Msg0434] + context->errorMsg};
+                    Diagnostic diag{sourceFile, *location, g_E[Err0434] + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
                     errorContext->report(diag);
                 }
                 else
                 {
-                    Diagnostic diag{ip->node, g_E[Msg0434] + context->errorMsg};
+                    Diagnostic diag{ip->node, g_E[Err0434] + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
@@ -2851,8 +2851,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     runContext->ip--;
     auto       ip = runContext->ip;
-    Diagnostic diag{ip->node, g_E[Msg0435]};
-    Diagnostic note1{g_E[Msg0436], DiagnosticLevel::Note};
+    Diagnostic diag{ip->node, g_E[Err0435]};
+    Diagnostic note1{g_E[Err0436], DiagnosticLevel::Note};
     Diagnostic note2{g_E[Note009], DiagnosticLevel::Note};
     diag.exceptionError            = true;
     g_ByteCodeStack.currentContext = runContext;

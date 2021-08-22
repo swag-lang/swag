@@ -882,7 +882,7 @@ namespace Ast
                         (symbol->kind == SymbolKind::Alias) ||
                         (symbol->kind == SymbolKind::TypeAlias))
                     {
-                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, Utf8::format(g_E[Msg0316], identifier->token.text.c_str())}));
+                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, Utf8::format(g_E[Err0316], identifier->token.text.c_str())}));
                     }
                 }
             }

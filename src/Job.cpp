@@ -235,19 +235,19 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         switch (exp.second)
         {
         case JobContext::ExpansionType::Generic:
-            kindName    = g_E[Msg0112];
+            kindName    = g_E[Err0112];
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::Inline:
-            kindName    = g_E[Msg0118];
+            kindName    = g_E[Err0118];
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::SelectIf:
-            kindName    = g_E[Msg0128];
+            kindName    = g_E[Err0128];
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::CheckIf:
-            kindName    = g_E[Msg0129];
+            kindName    = g_E[Err0129];
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::Node:
@@ -318,7 +318,7 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
 {
     if (value <= maxValue)
         return true;
-    return report({node, Utf8::format(g_E[Msg0505], typeOverflow, maxValue)});
+    return report({node, Utf8::format(g_E[Err0505], typeOverflow, maxValue)});
 }
 
 bool JobContext::internalError(const char* msg, AstNode* specNode)

@@ -219,7 +219,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        g_Log.errorOS(Utf8::format(g_E[Msg0545], targetPath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Err0545], targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -227,21 +227,21 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        g_Log.errorOS(Utf8::format(g_E[Msg0546], cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Err0546], cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Utf8::format(g_E[Msg0547], cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Err0547], cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(workspacePath.filename().string() + "-" + g_Workspace->getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Utf8::format(g_E[Msg0547], cachePath.string().c_str()));
+        g_Log.errorOS(Utf8::format(g_E[Err0547], cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -293,8 +293,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto prevJob = pendingJob;
             while (depJob != pendingJob)
             {
-                Utf8 msg = Utf8::format(g_E[Msg0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-                msg += Utf8::format(g_E[Msg0421], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
+                Utf8 msg = Utf8::format(g_E[Err0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
+                msg += Utf8::format(g_E[Err0421], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
                 auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
                 notes.push_back(note);
 
@@ -303,12 +303,12 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                 depJob = depJob->waitingJob;
             }
 
-            Utf8 msg = Utf8::format(g_E[Msg0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-            msg += Utf8::format(g_E[Msg0421], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
+            Utf8 msg = Utf8::format(g_E[Err0420], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
+            msg += Utf8::format(g_E[Err0421], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
             auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
             notes.push_back(note);
 
-            Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Msg0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
+            Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
             sourceFile->report(diag, notes);
             continue;
         }
@@ -324,7 +324,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve)
         {
-            Diagnostic diag{node, Utf8::format(g_E[Msg0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
 #ifdef SWAG_DEV_MODE
             diag.remarks.push_back(it.id);
 #endif
@@ -338,9 +338,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
         Utf8 msg;
         if (toSolve->kind == SymbolKind::PlaceHolder)
-            msg = Utf8::format(g_E[Msg0892], toSolve->name.c_str());
+            msg = Utf8::format(g_E[Err0892], toSolve->name.c_str());
         else
-            msg = Utf8::format(g_E[Msg0893], toSolve->name.c_str());
+            msg = Utf8::format(g_E[Err0893], toSolve->name.c_str());
 
         // a := func(a) for example
         if (toSolve->kind == SymbolKind::Variable &&
@@ -348,7 +348,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             declNode->sourceFile == node->sourceFile &&
             declNode->token.startLocation.line == node->token.startLocation.line)
         {
-            msg = Utf8::format(g_E[Msg0894], toSolve->name.c_str());
+            msg = Utf8::format(g_E[Err0894], toSolve->name.c_str());
         }
 
         Diagnostic diag{node, msg};
@@ -531,7 +531,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Msg0552] : g_E[Msg0554]);
+        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Err0552] : g_E[Err0554]);
         return false;
     }
 
@@ -549,7 +549,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Msg0552] : g_E[Msg0554]);
+        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Err0552] : g_E[Err0554]);
         return false;
     }
 
@@ -614,7 +614,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            g_Log.error(Utf8::format(g_E[Msg0556], g_CommandLine->moduleName.c_str()));
+            g_Log.error(Utf8::format(g_E[Err0556], g_CommandLine->moduleName.c_str()));
             return false;
         }
 
@@ -629,7 +629,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    g_Log.error(Utf8::format(g_E[Msg0557], dep->name.c_str()));
+                    g_Log.error(Utf8::format(g_E[Err0557], dep->name.c_str()));
                     return false;
                 }
 

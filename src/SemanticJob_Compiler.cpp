@@ -61,7 +61,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         // Given some clues about childs which are not constexpr
         if (!(node->flags & AST_CONST_EXPR))
         {
-            Diagnostic                diag{node, g_E[Msg0798]};
+            Diagnostic                diag{node, g_E[Err0798]};
             vector<const Diagnostic*> notes;
             computeNonConstExprNotes(node, notes);
             return context->report(diag, notes);
@@ -90,7 +90,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     break;
 
                 if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    return context->report({node, Utf8::format(g_E[Msg0321], realType->getDisplayName().c_str())});
+                    return context->report({node, Utf8::format(g_E[Err0321], realType->getDisplayName().c_str())});
 
                 // It is possible to convert a complex struct to a constant static array of values if the struct
                 // implements 'opCount' and 'opSlice'
@@ -101,7 +101,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 auto symCount = hasUserOp(g_LangSpec->name_opCount, (TypeInfoStruct*) realType);
                 auto symSlice = hasUserOp(g_LangSpec->name_opSlice, (TypeInfoStruct*) realType);
                 if (!symCount || !symSlice)
-                    return context->report({node, Utf8::format(g_E[Msg0281], realType->getDisplayName().c_str())});
+                    return context->report({node, Utf8::format(g_E[Err0281], realType->getDisplayName().c_str())});
 
                 VectorNative<AstNode*> params;
                 SWAG_ASSERT(!context->node->extension || !context->node->extension->resolvedUserOpSymbolOverload);
@@ -155,7 +155,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     ok = true;
                 if (!ok)
-                    return context->report({node, Utf8::format(g_E[Msg0059], typeSliceContent->getDisplayName().c_str())});
+                    return context->report({node, Utf8::format(g_E[Err0059], typeSliceContent->getDisplayName().c_str())});
 
                 // opDrop
                 if (hasUserOp(g_LangSpec->name_opDrop, (TypeInfoStruct*) realType))
@@ -184,7 +184,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 break;
 
             default:
-                return context->report({node, Utf8::format(g_E[Msg0280], realType->getDisplayName().c_str())});
+                return context->report({node, Utf8::format(g_E[Err0280], realType->getDisplayName().c_str())});
             }
         }
     }
@@ -239,7 +239,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, Utf8::format(g_E[Msg0233], expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, Utf8::format(g_E[Err0233], expression->typeInfo->getDisplayName().c_str())}));
 
     return true;
 }
@@ -253,13 +253,13 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Utf8::format(g_E[Msg0234], expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Utf8::format(g_E[Err0234], expression->typeInfo->getDisplayName().c_str())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, g_E[Msg0798]}));
+    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, g_E[Err0798]}));
 
     if (!expression->computedValue->text.empty())
     {
@@ -288,11 +288,11 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     {
         auto msg     = node->childs[1];
         auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Utf8::format(g_E[Msg0236], msg->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Utf8::format(g_E[Err0236], msg->typeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(evaluateConstExpression(context, msg));
         if (context->result != ContextResult::Done)
             return true;
-        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, g_E[Msg0237]}));
+        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, g_E[Err0237]}));
     }
 
     // Expression to check
@@ -311,7 +311,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
             context->report({node, msg->computedValue->text});
         }
         else
-            context->report({node, g_E[Msg0238]});
+            context->report({node, g_E[Err0238]});
         return false;
     }
 
@@ -329,7 +329,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, g_E[Msg0239]});
+        return context->report({node, g_E[Err0239]});
 
     return true;
 }
@@ -359,7 +359,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Utf8::format(g_E[Msg0240], expr->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Utf8::format(g_E[Err0240], expr->typeInfo->getDisplayName().c_str())}));
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
@@ -435,7 +435,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
 {
     // Should never be reached
-    return context->report({context->node, g_E[Msg0241]});
+    return context->report({context->node, g_E[Err0241]});
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
@@ -616,8 +616,8 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
 
-    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, g_E[Msg0242]}));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Utf8::format(g_E[Msg0243], back->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, g_E[Err0242]}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Utf8::format(g_E[Err0243], back->typeInfo->getDisplayName().c_str())}));
     node->setFlagsValueIsComputed();
 
     if (!(node->doneFlags & AST_DONE_LOAD))
@@ -642,13 +642,13 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!fs::exists(fullFileName.c_str()))
-                    return context->report({back, Utf8::format(g_E[Msg0244], filename.c_str())});
+                    return context->report({back, Utf8::format(g_E[Err0244], filename.c_str())});
             }
         }
 
         struct stat stat_buf;
         int         rc = stat(fullFileName, &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(g_E[Msg0223], back->computedValue->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(g_E[Err0223], back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto newJob                         = g_Allocator.alloc<LoadFileJob>();
@@ -695,8 +695,8 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto identifierRef = node->identifierRef;
 
-    SWAG_VERIFY(!identifierRef->startScope, context->report({node, g_E[Msg0246]}));
-    SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Msg0247]}));
+    SWAG_VERIFY(!identifierRef->startScope, context->report({node, g_E[Err0246]}));
+    SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0247]}));
 
     node->semFlags |= AST_SEM_FORCE_SCOPE;
     node->typeInfo = g_TypeMgr->typeInfoVoid;
@@ -741,7 +741,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::CompilerFunction:
-        SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Msg0256]}));
+        SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0256]}));
         node->setFlagsValueIsComputed();
         node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
         node->typeInfo            = g_TypeMgr->typeInfoString;
@@ -762,8 +762,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, g_E[Msg0248]}));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(g_E[Msg0249], front->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, g_E[Err0248]}));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(g_E[Err0249], front->typeInfo->getDisplayName().c_str())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -783,10 +783,10 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, g_E[Msg0250]}));
-        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Msg0245]}));
-        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Utf8::format(g_E[Msg0251], nameNode->typeInfo->getDisplayName().c_str())}));
-        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Msg0283]}));
+        SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, g_E[Err0250]}));
+        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Err0245]}));
+        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Utf8::format(g_E[Err0251], nameNode->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Err0283]}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
         node->typeInfo = typeNode->typeInfo;
@@ -797,7 +797,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag(typeNode, Utf8::format(g_E[Msg0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
+                Diagnostic diag(typeNode, Utf8::format(g_E[Err0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
                 Diagnostic note(typeNode, Utf8::format(g_E[Note038], tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
@@ -834,12 +834,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     }
 
     case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, g_E[Msg0254]}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, g_E[Err0254]}));
         node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, g_E[Msg0255]}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, g_E[Err0255]}));
         node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
 

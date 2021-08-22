@@ -88,7 +88,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
         auto count = g_RunContext.registersRR[0].u64;
         if (!count)
-            return callerContext->report({node, Utf8::format(g_E[Msg0161], realType->getDisplayName().c_str())});
+            return callerContext->report({node, Utf8::format(g_E[Err0161], realType->getDisplayName().c_str())});
 
         // Get the slice by calling 'opSlice'
         SWAG_ASSERT(params->specReturnOpSlice);
@@ -98,7 +98,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         opParams.callParams.push_back((uint64_t) self);
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
         if (!g_RunContext.registersRR[0].u64 || !g_RunContext.registersRR[1].u64)
-            return callerContext->report({node, Utf8::format(g_E[Msg0162], realType->getDisplayName().c_str())});
+            return callerContext->report({node, Utf8::format(g_E[Err0162], realType->getDisplayName().c_str())});
 
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(params->specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
         auto sizeSlice = (uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf;
@@ -158,7 +158,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         }
     }
 
-    return callerContext->report({node, Utf8::format(g_E[Msg0058], realType->getDisplayName().c_str())});
+    return callerContext->report({node, Utf8::format(g_E[Err0058], realType->getDisplayName().c_str())});
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)

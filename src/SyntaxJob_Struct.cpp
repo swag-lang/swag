@@ -34,7 +34,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
-        SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, g_E[Msg0438]}));
+        SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, g_E[Err0438]}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension();
@@ -46,7 +46,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         implInterface                         = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, g_E[Msg0440]}));
+        SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, g_E[Err0440]}));
     }
     else
     {
@@ -70,7 +70,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         else if (newScope->kind == ScopeKind::Struct)
             hint = Utf8::format(g_E[Hnt0020], implNode->token.text.c_str());
         PushErrHint errh(hint);
-        Diagnostic  diag{implNode, Utf8::format(g_E[Msg0441], Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic  diag{implNode, Utf8::format(g_E[Err0441], Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
         Diagnostic  note{newScope->owner, Utf8::format(g_E[Note027], implNode->token.text.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
@@ -156,7 +156,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, g_E[Msg0880]));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, g_E[Err0880]));
     SWAG_CHECK(eatToken());
 
     return true;
@@ -207,7 +207,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0444], token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0444], token.text.c_str())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(structNode));
 
@@ -224,7 +224,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         if (newScope->kind != ScopeKind::Struct)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, Utf8::format(g_E[Msg0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+            Diagnostic diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
             Diagnostic note{structNode, Utf8::format(g_E[Note027], implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
@@ -320,8 +320,8 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             return true;
         }
 
-        Diagnostic diag{sourceFile, token, Utf8::format(g_E[Msg0447], token.text.c_str())};
-        Diagnostic note{sourceFile, curly, g_E[Msg0201], DiagnosticLevel::Note};
+        Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0447], token.text.c_str())};
+        Diagnostic note{sourceFile, curly, g_E[Err0201], DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
@@ -341,7 +341,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         if (token.id == TokenId::SymColon)
         {
             typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
-            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken, g_E[Msg0448]));
+            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken, g_E[Err0448]));
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
@@ -366,7 +366,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
 
         idx++;
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, error(token, Utf8::format(g_E[Msg0449], token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, error(token, Utf8::format(g_E[Err0449], token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
             break;
         SWAG_CHECK(eatToken());
@@ -447,7 +447,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     // Using on a struct member
     case TokenId::KwdUsing:
     {
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, g_E[Msg0451]}));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, g_E[Err0451]}));
         SWAG_CHECK(eatToken());
 
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
@@ -472,7 +472,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     case TokenId::KwdVar:
     {
         PushErrHint errh(g_E[Hnt0026]);
-        return sourceFile->report({parent, token, g_E[Msg0453]});
+        return sourceFile->report({parent, token, g_E[Err0453]});
     }
 
     // A normal declaration

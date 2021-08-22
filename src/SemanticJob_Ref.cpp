@@ -13,7 +13,7 @@ bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uin
         return true;
     auto idx = arrayAccess->computedValue->reg.u64;
     if (idx >= maxCount)
-        return context->report({arrayAccess, Utf8::format(g_E[Msg0468], idx, maxCount - 1)});
+        return context->report({arrayAccess, Utf8::format(g_E[Err0468], idx, maxCount - 1)});
     return true;
 }
 
@@ -24,17 +24,17 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
 
     if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
     {
-        msg  = g_E[Msg0471];
+        msg  = g_E[Err0471];
         msg1 = g_E[Hnt0015];
     }
     else if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
     {
-        msg  = g_E[Msg0472];
+        msg  = g_E[Err0472];
         msg1 = g_E[Hnt0016];
     }
     else if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
     {
-        msg  = g_E[Msg0473];
+        msg  = g_E[Err0473];
         msg1 = g_E[Hnt0017];
     }
 
@@ -52,13 +52,13 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
 bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     if (node->kind != AstNodeKind::IdentifierRef && node->kind != AstNodeKind::ArrayPointerIndex)
-        return context->report({node, g_E[Msg0470]});
+        return context->report({node, g_E[Err0470]});
 
     if (!(node->flags & AST_L_VALUE))
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
-            return context->report({node, Utf8::format(g_E[Msg0465], SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
-        return context->report({node, g_E[Msg0469]});
+            return context->report({node, Utf8::format(g_E[Err0465], SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+        return context->report({node, g_E[Err0469]});
     }
 
     return true;
@@ -156,7 +156,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
-            return context->report({node, Utf8::format(g_E[Msg0474], node->array->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(g_E[Err0474], node->array->typeInfo->getDisplayName().c_str())});
 
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
@@ -208,7 +208,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfo = node->array->typeInfo;
         if (!hasUserOp(context, g_LangSpec->name_opSlice, node->array))
         {
-            Utf8 msg = Utf8::format(g_E[Msg0320], node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+            Utf8 msg = Utf8::format(g_E[Err0320], node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
             return context->report({node->array, msg});
         }
 
@@ -216,7 +216,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
     else
     {
-        return context->report({node->array, Utf8::format(g_E[Msg0475], node->array->typeInfo->getDisplayName().c_str())});
+        return context->report({node->array, Utf8::format(g_E[Err0475], node->array->typeInfo->getDisplayName().c_str())});
     }
 
     // startBound <= endBound
@@ -224,7 +224,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->lowerBound->computedValue->reg.u64 > node->upperBound->computedValue->reg.u64)
         {
-            return context->report({node->lowerBound, Utf8::format(g_E[Msg0476], node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)});
+            return context->report({node->lowerBound, Utf8::format(g_E[Err0476], node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)});
         }
     }
 
@@ -233,7 +233,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->upperBound->computedValue->reg.u64 > maxBound)
         {
-            return context->report({node->upperBound, Utf8::format(g_E[Msg0477], node->upperBound->computedValue->reg.u64)});
+            return context->report({node->upperBound, Utf8::format(g_E[Err0477], node->upperBound->computedValue->reg.u64)});
         }
     }
 
@@ -308,7 +308,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
-        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, Utf8::format(g_E[Msg0478], arrayType->getDisplayName().c_str())}));
+        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, Utf8::format(g_E[Err0478], arrayType->getDisplayName().c_str())}));
     }
     else
     {
@@ -319,7 +319,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, Utf8::format(g_E[Msg0485], arrayNode->access->typeInfo->getDisplayName().c_str())});
+        return context->report({arrayNode->access, Utf8::format(g_E[Err0485], arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     switch (arrayType->kind)
     {
@@ -327,7 +327,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode, g_E[Msg0486]}));
+        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode, g_E[Err0486]}));
         arrayNode->typeInfo = typePtr->pointedType;
         arrayNode->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
@@ -345,7 +345,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            return context->report({arrayNode->array, Utf8::format(g_E[Msg0481], arrayType->getDisplayName().c_str())});
+            return context->report({arrayNode->array, Utf8::format(g_E[Err0481], arrayType->getDisplayName().c_str())});
         }
 
         break;
@@ -392,7 +392,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Struct:
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({arrayNode->array, g_E[Msg0482]});
+            return context->report({arrayNode->array, g_E[Err0482]});
 
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
@@ -418,7 +418,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     default:
     {
-        return context->report({arrayNode->array, Utf8::format(g_E[Msg0481], arrayType->getDisplayName().c_str())});
+        return context->report({arrayNode->array, Utf8::format(g_E[Err0481], arrayType->getDisplayName().c_str())});
     }
     }
 
@@ -490,13 +490,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
 
     if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({arrayAccess, g_E[Msg0482]});
+        return context->report({arrayAccess, g_E[Err0482]});
 
     arrayNode->flags |= AST_R_VALUE;
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, Utf8::format(g_E[Msg0485], arrayNode->access->typeInfo->getDisplayName().c_str())});
+        return context->report({arrayNode->access, Utf8::format(g_E[Err0485], arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     // Do not set resolvedSymbolOverload !
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
@@ -527,7 +527,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode, g_E[Msg0486]}));
+        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode, g_E[Err0486]}));
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
@@ -626,12 +626,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (arrayNode->array->token.text.empty())
             {
-                Utf8 msg = Utf8::format(g_E[Msg0226], typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(g_E[Err0226], typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
             else
             {
-                Utf8 msg = Utf8::format(g_E[Msg0227], arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(g_E[Err0227], arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
         }
@@ -643,7 +643,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     default:
     {
         PushErrHint errh(g_E[Hnt0021]);
-        return context->report({arrayNode->array, Utf8::format(g_E[Msg0488], TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayName().c_str())});
+        return context->report({arrayNode->array, Utf8::format(g_E[Err0488], TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayName().c_str())});
     }
     }
 
@@ -656,12 +656,12 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Msg0489], expressionTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Err0489], expressionTypeInfo->getDisplayName().c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Msg0490], countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Err0490], countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
@@ -672,7 +672,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
         if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, Utf8::format(g_E[Msg0491], pointedType->getDisplayName().c_str())}));
+            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, Utf8::format(g_E[Err0491], pointedType->getDisplayName().c_str())}));
             auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
@@ -729,7 +729,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Msg0495], node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Err0495], node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -738,14 +738,14 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
         auto pointedType = TypeManager::concreteType(ptrType->pointedType);
         if (pointedType->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            return context->report({node->expression, Utf8::format(g_E[Msg0493], pointedType->getDisplayName().c_str())});
+            return context->report({node->expression, Utf8::format(g_E[Err0493], pointedType->getDisplayName().c_str())});
         }
     }
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Msg0498], node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Err0498], node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 

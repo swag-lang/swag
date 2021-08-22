@@ -98,7 +98,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = Utf8::format(g_E[Msg0076], g_CommandLine->maxRecurse);
+        context->errorMsg = Utf8::format(g_E[Err0076], g_CommandLine->maxRecurse);
         return;
     }
 

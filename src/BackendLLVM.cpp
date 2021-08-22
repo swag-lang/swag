@@ -312,7 +312,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(Utf8::format(g_E[Msg0558], targetTriple.c_str()));
+        g_Log.error(Utf8::format(g_E[Err0558], targetTriple.c_str()));
         return false;
     }
 

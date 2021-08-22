@@ -116,7 +116,7 @@ void Module::computePublicPath()
         error_code errorCode;
         if (!fs::create_directories(publicPath.c_str(), errorCode))
         {
-            g_Log.errorOS(Utf8::format(g_E[Msg0543], publicPath.c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
             OS::exit(-1);
         }
     }
@@ -129,7 +129,7 @@ void Module::computePublicPath()
         error_code errorCode;
         if (!fs::create_directories(publicPath.c_str(), errorCode))
         {
-            g_Log.errorOS(Utf8::format(g_E[Msg0543], publicPath.c_str()));
+            g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
             OS::exit(-1);
         }
     }
@@ -438,14 +438,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, Utf8::format(g_E[Msg0284], dep->location.c_str())};
+                Diagnostic diag{importNode, tokenLocation, Utf8::format(g_E[Err0284], dep->location.c_str())};
                 Diagnostic note{dep->node, g_E[Note037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, Utf8::format(g_E[Msg0286], dep->version.c_str())};
+                Diagnostic diag{importNode, tokenVersion, Utf8::format(g_E[Err0286], dep->version.c_str())};
                 Diagnostic note{dep->node, g_E[Note037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
@@ -469,8 +469,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic diag{importNode, tokenVersion, g_E[Msg0288]};
-        Diagnostic note{dep->node, g_E[Msg0289], DiagnosticLevel::Note};
+        Diagnostic diag{importNode, tokenVersion, g_E[Err0288]};
+        Diagnostic note{dep->node, g_E[Err0289], DiagnosticLevel::Note};
         return importNode->sourceFile->report(diag, &note);
     }
 
@@ -501,8 +501,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (!isdigit(splits[i][j]))
             {
-                Diagnostic diag{importNode, tokenVersion, g_E[Msg0288]};
-                Diagnostic note{dep->node, g_E[Msg0289], DiagnosticLevel::Note};
+                Diagnostic diag{importNode, tokenVersion, g_E[Err0288]};
+                Diagnostic note{dep->node, g_E[Err0289], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
         }
@@ -510,18 +510,18 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         *setVer = atoi(splits[i]);
         if (*setVer < 0)
         {
-            Diagnostic diag{importNode, tokenVersion, g_E[Msg0288]};
-            Diagnostic note{dep->node, g_E[Msg0289], DiagnosticLevel::Note};
+            Diagnostic diag{importNode, tokenVersion, g_E[Err0288]};
+            Diagnostic note{dep->node, g_E[Err0289], DiagnosticLevel::Note};
             return importNode->sourceFile->report(diag, &note);
         }
 
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Msg0335], dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Err0335], dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Msg0336], dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Err0336], dep->buildNum)}));
             break;
         }
     }

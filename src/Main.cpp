@@ -42,7 +42,7 @@ int main(int argc, const char* argv[])
         command != "script" &&
         command != "env")
     {
-        g_Log.error(Utf8::format(g_E[Msg0000], argv[1]));
+        g_Log.error(Utf8::format(g_E[Err0000], argv[1]));
         OS::exit(-1);
     }
 
@@ -59,7 +59,7 @@ int main(int argc, const char* argv[])
     {
         if (command != "env")
         {
-            g_Log.message(g_E[Msg0165]);
+            g_Log.message(g_E[Err0165]);
             OS::exit(-1);
         }
     }

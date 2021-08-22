@@ -270,8 +270,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Msg0526]);
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Msg0527]);
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0526]);
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Err0527]);
         emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -283,8 +283,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Msg0528]);
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Msg0529]);
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0528]);
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Err0529]);
         emitInstruction(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -296,7 +296,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Msg0530]);
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0530]);
         emitInstruction(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
@@ -308,8 +308,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Msg0531]);
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Msg0532]);
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0531]);
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Err0532]);
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
@@ -320,7 +320,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicCStrLen:
     {
         auto childSrc = callParams->childs[0];
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Msg0533]);
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Err0533]);
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicCStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
@@ -947,7 +947,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
     {
-        Diagnostic diag{callNode, Utf8::format(g_E[Msg0534], funcNode->token.text.c_str())};
+        Diagnostic diag{callNode, Utf8::format(g_E[Err0534], funcNode->token.text.c_str())};
         Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Note040], typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
@@ -958,7 +958,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            Diagnostic diag{parent, Utf8::format(g_E[Msg0535], parent->token.text.c_str())};
+            Diagnostic diag{parent, Utf8::format(g_E[Err0535], parent->token.text.c_str())};
             Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Note040], typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -1372,7 +1372,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
-        emitSafetyNullLambda(context, varNodeRegisters, g_E[Msg0859]);
+        emitSafetyNullLambda(context, varNodeRegisters, g_E[Err0859]);
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }
@@ -1500,7 +1500,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-            context->sourceFile->report({funcNode, Utf8::format(g_E[Msg0536], Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+            context->sourceFile->report({funcNode, Utf8::format(g_E[Err0536], Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

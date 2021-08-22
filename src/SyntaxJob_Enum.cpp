@@ -13,7 +13,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0396], token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0396], token.text.c_str())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -26,7 +26,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         {
             auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
             PushErrHint errh(Utf8::format(g_E[Hnt0019], implNode->token.text.c_str()));
-            Diagnostic  diag{implNode->identifier, Utf8::format(g_E[Msg0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic  diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
             Diagnostic  note{enumNode, Utf8::format(g_E[Note027], implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
@@ -61,7 +61,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Utf8::format(g_E[Msg0399], token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Utf8::format(g_E[Err0399], token.text.c_str())));
 
     // Content of enum
     Scoped scoped(this, newScope);
@@ -122,7 +122,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Msg0400], token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0400], token.text.c_str())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;
