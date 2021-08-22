@@ -2748,10 +2748,9 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
     if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
     {
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-            return context->report({node, Utf8::format(Msg0123, symbol->name.c_str())});
         if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-            return context->report({node, Utf8::format(Msg0124, identifierRef->resolvedSymbolName->name.c_str())});
+            return context->report({identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node,
+                                    Utf8::format(Msg0124, identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))});
     }
 
     return true;
