@@ -1,8 +1,5 @@
+#global testerror
 
-
-;
-
-#global testerror;
 enum A : u8
 {
 	Red = B.Red;
