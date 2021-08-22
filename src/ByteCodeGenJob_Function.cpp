@@ -946,7 +946,11 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
-        return context->report({callNode, Utf8::format(Msg0534, funcNode->token.text.c_str())});
+    {
+        Diagnostic diag{callNode, Utf8::format(Msg0534, funcNode->token.text.c_str())};
+        Diagnostic note{typeInfoFunc->declNode, Utf8::format(Note040, typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
 
     if (!raiseErrors)
     {
@@ -954,7 +958,9 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            return context->report({parent, Utf8::format(Msg0535, parent->token.text.c_str())});
+            Diagnostic diag{parent, Utf8::format(Msg0535, parent->token.text.c_str())};
+            Diagnostic note{typeInfoFunc->declNode, Utf8::format(Note040, typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
         }
     }
 

@@ -65,7 +65,7 @@ const char* Msg0744 = "'#test' functions can only be used in a test module (in t
 const char* Msg0908 = "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'";
 const char* Msg0224 = "'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'";
 const char* Msg0350 = "'%s' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public";
-const char* Msg0535 = "'%s' can only be used before a call that can raise errors";
+const char* Msg0535 = "'%s' can only be used before a function call that can raise errors (function marked with 'throw')";
 const char* Msg0139 = "'%s' can only be used before a function call, and '%s' is %s";
 const char* Msg0138 = "'%s' can only be used inside a function marked with 'throw', and '%s' is not";
 const char* Msg0842 = "'%s' can only be used inside a function";
