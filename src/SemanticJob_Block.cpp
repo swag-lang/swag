@@ -522,7 +522,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, Msg0624}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node->expression, Msg0624}));
         AstIdentifierRef* identifierRef = nullptr;
         bool              cloneParam    = false;
         if (node->expression->kind == AstNodeKind::IdentifierRef)
