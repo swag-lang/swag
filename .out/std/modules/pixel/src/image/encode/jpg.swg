@@ -17,12 +17,13 @@ struct APP0InfoType
 
 struct SOF0InfoType
 {
-    marker:     u16
-    length:     u16
-    precision:  u8
-    height:     u16
-    width:      u16
-    nrofComponents: u8
+    marker:         u16
+    length:         u16
+    precision:      u8
+    height:         u16
+    width:          u16
+    numComponents:  u8
+
     idy:    u8
     hvy:    u8
     qty:    u8
@@ -36,9 +37,10 @@ struct SOF0InfoType
 
 struct SOSInfoType
 {
-    marker: u16
-    length: u16
-    nrofcomponents: u8
+    marker:         u16
+    length:         u16
+    numComponents:  u8
+
     idy:    u8
     hty:    u8
     idcb:   u8
@@ -73,20 +75,20 @@ struct DQTInfoType
 
 struct DHTInfoType
 {
-    marker:         u16
-    length:         u16
-    HTYDCinfo:      u8
-    YDC_nrcodes:    [16] u8
-    YDC_values:     [12] u8
-    HTYACinfo:      u8
-    YAC_nrcodes:    [16] u8
-    YAC_values:     [162] u8
-    HTCbDCinfo:     u8
-    CbDC_nrcodes:   [16] u8
-    CbDC_values:    [12] u8
-    HTCbACinfo:     u8
-    CbAC_nrcodes:   [16] u8
-    CbAC_values:    [162] u8
+    marker:        u16
+    length:        u16
+    infoHTYDC:     u8
+    nrcodesYDC:    [16] u8
+    valuesYDC:     [12] u8
+    infoHTYAC:     u8
+    nrcodesYAC:    [16] u8
+    valuesYAC:     [162] u8
+    infoHTCbDC:    u8
+    nrcodesCbDC:   [16] u8
+    valuesCbDC:    [12] u8
+    infoHTCbAC:    u8
+    nrcodesCbAC:   [16] u8
+    valuesCbAC:    [162] u8
 }
 
 const APP0info = APP0InfoType{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 1, 1, 0, 1, 1, 0, 0}
@@ -147,12 +149,12 @@ public struct Encoder
 
     scaleFactor: u8 = 10
 
-    dqtInfo:    DQTInfoType
-    dhtInfo:    DHTInfoType
-    YDC_HT:     [12] BitString
-    CbDC_HT:    [12] BitString
-    YAC_HT:     [256] BitString
-    CbAC_HT:    [256] BitString
+    dqtInfo:   DQTInfoType
+    dhtInfo:   DHTInfoType
+    htYDC:     [12] BitString
+    htCbDC:    [12] BitString
+    htYAC:     [256] BitString
+    htCbAC:    [256] BitString
 
     YRtab:  [256] s32
     YGtab:  [256] s32
@@ -172,10 +174,10 @@ public struct Encoder
     DU_DCT: [64] s16
     DU:     [64] s16
 
-    category_alloc: Array'u8
-    category:       *u8
-    bitcode_alloc:  Array'BitString
-    bitcode:        *BitString
+    categoryAlloc: Array'u8
+    category:      *u8
+    bitcodeAlloc:  Array'BitString
+    bitcode:       *BitString
 }
 
 impl Encoder
@@ -269,19 +271,19 @@ impl Encoder
     {
         dhtInfo.marker     = 0xFFC4
         dhtInfo.length     = 0x01A2
-        dhtInfo.HTYDCinfo  = 0
-        dhtInfo.HTYACinfo  = 0x10
-        dhtInfo.HTCbDCinfo = 1
-        dhtInfo.HTCbACinfo = 0x11
+        dhtInfo.infoHTYDC  = 0
+        dhtInfo.infoHTYAC  = 0x10
+        dhtInfo.infoHTCbDC = 1
+        dhtInfo.infoHTCbAC = 0x11
 
-        loop i: 16  dhtInfo.YDC_nrcodes[i] = StdDcLuminanceNrCodes[i + 1]
-        loop i: 12  dhtInfo.YDC_values[i] = StdDcLuminanceValues[i]
-        loop i: 16  dhtInfo.YAC_nrcodes[i] = StdAcLuminanceNrCodes[i + 1]
-        loop i: 162 dhtInfo.YAC_values[i] = StdAcLuminanceValues[i]
-        loop i: 16  dhtInfo.CbDC_nrcodes[i] = StdDcChrominanceNrCodes[i + 1]
-        loop i: 12  dhtInfo.CbDC_values[i] = StdDcChrominanceValues[i]
-        loop i: 16  dhtInfo.CbAC_nrcodes[i] = StdAcChrominanceNrCodes[i + 1]
-        loop i: 162 dhtInfo.CbAC_values[i] = StdAcChrominanceValues[i]
+        loop i: 16  dhtInfo.nrcodesYDC[i] = StdDcLuminanceNrCodes[i + 1]
+        loop i: 12  dhtInfo.valuesYDC[i] = StdDcLuminanceValues[i]
+        loop i: 16  dhtInfo.nrcodesYAC[i] = StdAcLuminanceNrCodes[i + 1]
+        loop i: 162 dhtInfo.valuesYAC[i] = StdAcLuminanceValues[i]
+        loop i: 16  dhtInfo.nrcodesCbDC[i] = StdDcChrominanceNrCodes[i + 1]
+        loop i: 12  dhtInfo.valuesCbDC[i] = StdDcChrominanceValues[i]
+        loop i: 16  dhtInfo.nrcodesCbAC[i] = StdAcChrominanceNrCodes[i + 1]
+        loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
     method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *BitString)
@@ -304,18 +306,18 @@ impl Encoder
 
     method initHuffmanTables()
     {
-        computeHuffmanTable(StdDcLuminanceNrCodes, StdDcLuminanceValues, YDC_HT)
-        computeHuffmanTable(StdDcChrominanceNrCodes, StdDcChrominanceValues, CbDC_HT)
-        computeHuffmanTable(StdAcLuminanceNrCodes, StdAcLuminanceValues, YAC_HT)
-        computeHuffmanTable(StdAcChrominanceNrCodes, StdAcChrominanceValues, CbAC_HT)
+        computeHuffmanTable(StdDcLuminanceNrCodes, StdDcLuminanceValues, htYDC)
+        computeHuffmanTable(StdDcChrominanceNrCodes, StdDcChrominanceValues, htCbDC)
+        computeHuffmanTable(StdAcLuminanceNrCodes, StdAcLuminanceValues, htYAC)
+        computeHuffmanTable(StdAcChrominanceNrCodes, StdAcChrominanceValues, htCbAC)
     }
 
     method setNumbersCategoryAndBitcode()
     {
-        category_alloc.resize(65535)
-        bitcode_alloc.resize(65535)
-        category = category_alloc.buffer + 32767
-        bitcode  = bitcode_alloc.buffer + 32767
+        categoryAlloc.resize(65535)
+        bitcodeAlloc.resize(65535)
+        category = categoryAlloc.buffer + 32767
+        bitcode  = bitcodeAlloc.buffer + 32767
 
         nrlower := 1
         nrupper := 2
@@ -454,7 +456,7 @@ impl Encoder
         writeByte(SOF0info.precision)
         writeWord(cast(u16) srcImage.height)
         writeWord(cast(u16) srcImage.width)
-        writeByte(SOF0info.nrofComponents)
+        writeByte(SOF0info.numComponents)
         writeByte(SOF0info.idy)
         writeByte(SOF0info.hvy)
         writeByte(SOF0info.qty)
@@ -470,25 +472,25 @@ impl Encoder
     {
         writeWord(dhtInfo.marker)
         writeWord(dhtInfo.length)
-        writeByte(dhtInfo.HTYDCinfo)
-        loop i: 16  writeByte(dhtInfo.YDC_nrcodes[i])
-        loop i: 12  writeByte(dhtInfo.YDC_values[i])
-        writeByte(dhtInfo.HTYACinfo)
-        loop i: 16  writeByte(dhtInfo.YAC_nrcodes[i])
-        loop i: 162 writeByte(dhtInfo.YAC_values[i])
-        writeByte(dhtInfo.HTCbDCinfo)
-        loop i: 16  writeByte(dhtInfo.CbDC_nrcodes[i])
-        loop i: 12  writeByte(dhtInfo.CbDC_values[i])
-        writeByte(dhtInfo.HTCbACinfo)
-        loop i: 16  writeByte(dhtInfo.CbAC_nrcodes[i])
-        loop i: 162 writeByte(dhtInfo.CbAC_values[i])
+        writeByte(dhtInfo.infoHTYDC)
+        loop i: 16  writeByte(dhtInfo.nrcodesYDC[i])
+        loop i: 12  writeByte(dhtInfo.valuesYDC[i])
+        writeByte(dhtInfo.infoHTYAC)
+        loop i: 16  writeByte(dhtInfo.nrcodesYAC[i])
+        loop i: 162 writeByte(dhtInfo.valuesYAC[i])
+        writeByte(dhtInfo.infoHTCbDC)
+        loop i: 16  writeByte(dhtInfo.nrcodesCbDC[i])
+        loop i: 12  writeByte(dhtInfo.valuesCbDC[i])
+        writeByte(dhtInfo.infoHTCbAC)
+        loop i: 16  writeByte(dhtInfo.nrcodesCbAC[i])
+        loop i: 162 writeByte(dhtInfo.valuesCbAC[i])
     }
 
     method writeSOSinfo()
     {
         writeWord(SOSinfo.marker)
         writeWord(SOSinfo.length)
-        writeByte(SOSinfo.nrofcomponents)
+        writeByte(SOSinfo.numComponents)
         writeByte(SOSinfo.idy)
         writeByte(SOSinfo.hty)
         writeByte(SOSinfo.idcb)
@@ -702,9 +704,9 @@ impl Encoder
             for xpos := 0'u16; xpos < imageX; xpos += 8
             {
                 loadFromRGB(xpos, ypos)
-                processDU(YDU, fdtblY, &DCY, YDC_HT, YAC_HT)
-                processDU(CbDU, fdtblCb, &DCCb, CbDC_HT, CbAC_HT)
-                processDU(CrDU, fdtblCb, &DCCr, CbDC_HT, CbAC_HT)
+                processDU(YDU, fdtblY, &DCY, htYDC, htYAC)
+                processDU(CbDU, fdtblCb, &DCCb, htCbDC, htCbAC)
+                processDU(CrDU, fdtblCb, &DCCr, htCbDC, htCbAC)
             }
         }
     }
