@@ -156,23 +156,23 @@ public struct Encoder
     htYAC:     [256] BitString
     htCbAC:    [256] BitString
 
-    YRtab:  [256] s32
-    YGtab:  [256] s32
-    YBtab:  [256] s32
-    CbRtab: [256] s32
-    CbGtab: [256] s32
-    CbBtab: [256] s32
-    CrRtab: [256] s32
-    CrGtab: [256] s32
-    CrBtab: [256] s32
+    tabYR:   [256] s32
+    tabYG:   [256] s32
+    tabYB:   [256] s32
+    tabCbR:  [256] s32
+    tabCbG:  [256] s32
+    tabCbB:  [256] s32
+    tabCrR:  [256] s32
+    tabCrG:  [256] s32
+    tabCrB:  [256] s32
     fdtblY:  [64] f32
     fdtblCb: [64] f32
 
-    YDU:  [64] s8
-    CbDU: [64] s8
-    CrDU: [64] s8
-    DU_DCT: [64] s16
-    DU:     [64] s16
+    YDU:     [64] s8
+    CbDU:    [64] s8
+    CrDU:    [64] s8
+    DU_DCT:  [64] s16
+    DU:      [64] s16
 
     categoryAlloc: Array'u8
     category:      *u8
@@ -347,23 +347,23 @@ impl Encoder
     {
         loop R: 256
         {
-            YRtab[R]  = cast(s32) (65536 * 0.299 + 0.5) * R
-            CbRtab[R] = cast(s32) (65536 * -0.16874 + 0.5) * R
-            CrRtab[R] = cast(s32) (32768) * R
+            tabYR[R]  = cast(s32) (65536 * 0.299 + 0.5) * R
+            tabCbR[R] = cast(s32) (65536 * -0.16874 + 0.5) * R
+            tabCrR[R] = cast(s32) (32768) * R
         }
 
         loop G: 256
         {
-            YGtab[G]  = cast(s32) (65536 * 0.587 + 0.5) * G
-            CbGtab[G] = cast(s32) (65536 * -0.33126 + 0.5) * G
-            CrGtab[G] = cast(s32) (65536 * -0.41869 + 0.5) * G
+            tabYG[G]  = cast(s32) (65536 * 0.587 + 0.5) * G
+            tabCbG[G] = cast(s32) (65536 * -0.33126 + 0.5) * G
+            tabCrG[G] = cast(s32) (65536 * -0.41869 + 0.5) * G
         }
 
         loop B: 256
         {
-            YBtab[B]  = cast(s32) (65536 * 0.114 + 0.5) * B
-            CbBtab[B] = cast(s32) (32768) * B
-            CrBtab[B] = cast(s32) (65536 * -0.08131 + 0.5) * B
+            tabYB[B]  = cast(s32) (65536 * 0.114 + 0.5) * B
+            tabCbB[B] = cast(s32) (32768) * B
+            tabCrB[B] = cast(s32) (65536 * -0.08131 + 0.5) * B
         }
     }
 
@@ -507,17 +507,17 @@ impl Encoder
     {
         method Y(_r, _g, _b: u8)->u8
         {
-            return cast(u8) (((YRtab[(_r)] + YGtab[(_g)] + YBtab[(_b)]) >> 16) - 128)
+            return cast(u8) (((tabYR[(_r)] + tabYG[(_g)] + tabYB[(_b)]) >> 16) - 128)
         }
 
         method Cb(_r, _g, _b: u8)->u8
         {
-            return cast(u8) ((CbRtab[(_r)] + CbGtab[(_g)] + CbBtab[(_b)]) >> 16)
+            return cast(u8) ((tabCbR[(_r)] + tabCbG[(_g)] + tabCbB[(_b)]) >> 16)
         }
 
         method Cr(_r, _g, _b: u8)->u8
         {
-            return cast(u8) ((CrRtab[(_r)] + CrGtab[(_g)] + CrBtab[(_b)]) >> 16)
+            return cast(u8) ((tabCrR[(_r)] + tabCrG[(_g)] + tabCrB[(_b)]) >> 16)
         }
 
         pos := 0
