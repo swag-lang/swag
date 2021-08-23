@@ -451,7 +451,11 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         if (result)
             *result = attrUse;
-        SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
+        // We do not want a #[] to create a new scope when inside a function
+        if (token.id == TokenId::SymLeftCurly)
+            SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
+        else
+            SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
         if (attrUse->content)
             attrUse->content->setOwnerAttrUse(attrUse);
         break;

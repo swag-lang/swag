@@ -213,7 +213,7 @@ impl Encoder
                     bufferRGB[column + nrline * xDiv8].b = pref[0]
                     bufferRGB[column + nrline * xDiv8].g = pref[1]
                     bufferRGB[column + nrline * xDiv8].r = pref[2]
-                    pref += 4;
+                    pref += 4
                 }
             }
 
@@ -736,7 +736,7 @@ public impl IEncoder for Encoder
         bytepos = 7
         encoder()
 
-        if (bytepos >= 0)
+        if bytepos >= 0
         {
             var fillbits: BitString
             fillbits.length = cast(u8) (bytepos + 1)
