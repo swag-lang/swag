@@ -1,6 +1,8 @@
-/*#test
+#global testerror
+#test
 {
-    var x: [10] u8
-    ptr := &x[5]
-    dref (ptr - 1) = 0
-}*/
+    var bytenew: u8
+    var bytepos: s8
+    const mask: [4] u16 = @[0,0,0,0]
+    bytenew |= mask[bytepos]
+}

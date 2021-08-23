@@ -367,6 +367,9 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
 
 void AstNode::computeEndLocation()
 {
+    for (auto p : childs)
+        p->computeEndLocation();
+
     switch (kind)
     {
     case AstNodeKind::ArrayPointerIndex:
