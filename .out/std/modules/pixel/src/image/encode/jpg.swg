@@ -142,6 +142,9 @@ public struct Encoder
     stream:     *ConcatBuffer
     srcImage:   const *Image
 
+    bytenew: u8
+    bytepos: s8
+
     scaleFactor: u8 = 10
 
     dqtInfo:    DQTInfoType
@@ -332,7 +335,7 @@ impl Encoder
         }
     }
 
-    method precalculate_YCbCr_tables()
+    method precalculateYCbCrTables()
     {
         loop R: 256
         {
@@ -356,7 +359,7 @@ impl Encoder
         }
     }
 
-    method prepare_quant_tables()
+    method prepareQuantTables()
     {
         const AanSf: [8] f64 = @[1.0, 1.387039845, 1.306562965, 1.175875602, 1.0, 0.785694958, 0.541196100, 0.275899379]
         i := 0
@@ -380,6 +383,10 @@ impl Encoder
     {
         stream.addByte(cast(u8) (w >>,safe 8))
         stream.addByte(cast(u8) (w & 0xFF))
+    }
+
+    method writeBits(_bs: bitstring)
+    {
     }
 
     method writeAPP0info()
@@ -462,6 +469,11 @@ impl Encoder
         writeByte(SOSinfo.se)
         writeByte(SOSinfo.bf)
     }
+
+    method main_encoder()
+    {
+
+    }
 }
 
 public impl IEncoder for Encoder
@@ -483,8 +495,8 @@ public impl IEncoder for Encoder
         setDHTinfo()
         initHuffmanTables()
         setNumbersCategoryAndBitcode()
-        precalculate_YCbCr_tables()
-        prepare_quant_tables()
+        precalculateYCbCrTables()
+        prepareQuantTables()
 
         writeWord(0xFFD8) // SOI
 
@@ -493,6 +505,18 @@ public impl IEncoder for Encoder
         writeSOF0info()
         writeDHTinfo()
         writeSOSinfo()
+
+        bytenew = 0
+        bytepos = 7
+        main_encoder()
+
+        if (bytepos >= 0)
+        {
+            var fillbits: bitstring
+            fillbits.length = cast(u8) (bytepos + 1)
+            fillbits.value  = cast(u16) ((1 << (bytepos + 1)) - 1)
+            writeBits(fillbits)
+        }
 
 
         writeWord(0xFFD9) // EOI
