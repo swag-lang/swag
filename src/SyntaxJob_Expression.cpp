@@ -343,7 +343,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
     {
         PushErrHint errh(g_E[Hnt0008]);
-        return error(arrayNode, Utf8::format(g_E[Err0262], token.text.c_str()));
+        return error(token, Utf8::format(g_E[Err0262], token.text.c_str()));
     }
 
     {

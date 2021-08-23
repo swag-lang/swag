@@ -369,9 +369,12 @@ void AstNode::computeEndLocation()
 {
     switch (kind)
     {
+    case AstNodeKind::ArrayPointerIndex:
+        if (childs.size() < 2)
+            break;
+
     case AstNodeKind::IdentifierRef:
     case AstNodeKind::ArrayPointerSlicing:
-    case AstNodeKind::ArrayPointerIndex:
         token.startLocation = childs.front()->token.startLocation;
         token.endLocation   = childs.back()->token.endLocation;
         break;
