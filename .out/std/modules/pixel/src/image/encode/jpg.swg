@@ -166,6 +166,11 @@ public struct Encoder
     fdtbl_Y:  [64] f32
     fdtbl_Cb: [64] f32
 
+    YDU:  [64] s8
+    CbDU: [64] s8
+    CrDU: [64] s8
+
+
     category_alloc: Array'u8
     category:       *u8
     bitcode_alloc:  Array'bitstring
@@ -494,20 +499,162 @@ impl Encoder
         writeByte(SOSinfo.bf)
     }
 
-    method load_data_units_from_RGB_buffer(_xpos: u16, _ypos: u16)
+    #[Swag.Safety("", false)]
+    method loadFromRGB(_xpos: u16, _ypos: u16)
+    {
+        method Y(_r, _g, _b: u8)->u8
+        {
+            return cast(u8) (((YRtab[(_r)] + YGtab[(_g)] + YBtab[(_b)]) >> 16) - 128)
+        }
+
+        method Cb(_r, _g, _b: u8)->u8
+        {
+            return cast(u8) ((CbRtab[(_r)] + CbGtab[(_g)] + CbBtab[(_b)]) >> 16)
+        }
+
+        method Cr(_r, _g, _b: u8)->u8
+        {
+            return cast(u8) ((CrRtab[(_r)] + CrGtab[(_g)] + CrBtab[(_b)]) >> 16)
+        }
+
+        pos := 0
+        location := _ypos * imageX + _xpos
+        loop y: 8
+        {
+            loop x: 8
+            {
+                R         := bufferRGB[location].r
+                G         := bufferRGB[location].g
+                B         := bufferRGB[location].b
+                YDU[pos]  = Y(self, R, G, B)
+                CbDU[pos] = Cb(self, R, G, B)
+                CrDU[pos] = Cr(self, R, G, B)
+                location += 1
+                pos += 1
+            }
+
+            location += imageX - 8
+        }
+    }
+
+    method fdct_and_quantization(_data: *s8, _fdtbl: *f32, _outdata: *s16)
+    {
+        var datafloat: [64] f32
+
+        loop i: 64
+            datafloat[i] = _data[i]
+
+        dataptr := &datafloat[0]
+        loop ctr: 7..0
+        {
+            tmp0 := dataptr[0] + dataptr[7]
+            tmp7 := dataptr[0] - dataptr[7]
+            tmp1 := dataptr[1] + dataptr[6]
+            tmp6 := dataptr[1] - dataptr[6]
+            tmp2 := dataptr[2] + dataptr[5]
+            tmp5 := dataptr[2] - dataptr[5]
+            tmp3 := dataptr[3] + dataptr[4]
+            tmp4 := dataptr[3] - dataptr[4]
+
+            tmp10 := tmp0 + tmp3
+            tmp13 := tmp0 - tmp3
+            tmp11 := tmp1 + tmp2
+            tmp12 := tmp1 - tmp2
+
+            dataptr[0] = tmp10 + tmp11
+            dataptr[4] = tmp10 - tmp11
+
+            z1 := (tmp12 + tmp13) * 0.707106781
+            dataptr[2] = tmp13 + z1
+            dataptr[6] = tmp13 - z1
+
+            tmp10 = tmp4 + tmp5
+            tmp11 = tmp5 + tmp6
+            tmp12 = tmp6 + tmp7
+
+            z5 := (tmp10 - tmp12) * 0.382683433
+            z2 := 0.541196100 * tmp10 + z5
+            z4 := 1.306562965 * tmp12 + z5
+            z3 := tmp11 * 0.707106781
+
+            z11 := tmp7 + z3
+            z13 := tmp7 - z3
+
+            dataptr[5] = z13 + z2
+            dataptr[3] = z13 - z2
+            dataptr[1] = z11 + z4
+            dataptr[7] = z11 - z4
+
+            dataptr += 8
+        }
+
+        dataptr = datafloat
+
+        loop ctr: 7..0
+        {
+            tmp0 := dataptr[0] + dataptr[56]
+            tmp7 := dataptr[0] - dataptr[56]
+            tmp1 := dataptr[8] + dataptr[48]
+            tmp6 := dataptr[8] - dataptr[48]
+            tmp2 := dataptr[16] + dataptr[40]
+            tmp5 := dataptr[16] - dataptr[40]
+            tmp3 := dataptr[24] + dataptr[32]
+            tmp4 := dataptr[24] - dataptr[32]
+
+            tmp10 := tmp0 + tmp3
+            tmp13 := tmp0 - tmp3
+            tmp11 := tmp1 + tmp2
+            tmp12 := tmp1 - tmp2
+
+            dataptr[0]  = tmp10 + tmp11
+            dataptr[32] = tmp10 - tmp11
+
+            z1 := (tmp12 + tmp13) * 0.707106781
+            dataptr[16] = tmp13 + z1
+            dataptr[48] = tmp13 - z1
+
+            tmp10 = tmp4 + tmp5
+            tmp11 = tmp5 + tmp6
+            tmp12 = tmp6 + tmp7
+
+            z5 := (tmp10 - tmp12) * 0.382683433
+            z2 := 0.541196100 * tmp10 + z5
+            z4 := 1.306562965 * tmp12 + z5
+            z3 := tmp11 * 0.707106781
+
+            z11 := tmp7 + z3
+            z13 := tmp7 - z3
+
+            dataptr[40] = z13 + z2
+            dataptr[24] = z13 - z2
+            dataptr[8]  = z11 + z4
+            dataptr[56] = z11 - z4
+
+            dataptr += 1
+        }
+
+        loop i: 64
+        {
+            temp := datafloat[i] * _fdtbl[i]
+            _outdata[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
+        }
+    }
+
+    method process_DU(_componentDU: *s8, _fdtbl: *f32, _dC: *s16, _hTDC, _hTAC: *bitstring)
     {
     }
 
     method main_encoder()
     {
+        var DCY, DCCb, DCCr: s16
         for ypos := 0'u16; ypos < imageY; ypos += 8
         {
             for xpos := 0'u16; xpos < imageX; xpos += 8
             {
-                load_data_units_from_RGB_buffer(xpos, ypos)
-                //process_DU(YDU, fdtbl_Y, &DCY, YDC_HT, YAC_HT)
-                //process_DU(CbDU, fdtbl_Cb, &DCCb, CbDC_HT, CbAC_HT)
-                //process_DU(CrDU, fdtbl_Cb, &DCCr, CbDC_HT, CbAC_HT)
+                loadFromRGB(xpos, ypos)
+                process_DU(YDU, fdtbl_Y, &DCY, YDC_HT, YAC_HT)
+                process_DU(CbDU, fdtbl_Cb, &DCCb, CbDC_HT, CbAC_HT)
+                process_DU(CrDU, fdtbl_Cb, &DCCr, CbDC_HT, CbAC_HT)
             }
         }
     }
