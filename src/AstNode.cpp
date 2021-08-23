@@ -367,8 +367,11 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
 
 void AstNode::computeEndLocation()
 {
-    for (auto p : childs)
-        p->computeEndLocation();
+    if (!childs.empty())
+    {
+        for (auto p : childs)
+            p->computeEndLocation();
+    }
 
     switch (kind)
     {

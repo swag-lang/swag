@@ -494,9 +494,22 @@ impl Encoder
         writeByte(SOSinfo.bf)
     }
 
+    method load_data_units_from_RGB_buffer(_xpos: u16, _ypos: u16)
+    {
+    }
+
     method main_encoder()
     {
-
+        for ypos := 0'u16; ypos < imageY; ypos += 8
+        {
+            for xpos := 0'u16; xpos < imageX; xpos += 8
+            {
+                load_data_units_from_RGB_buffer(xpos, ypos)
+                //process_DU(YDU, fdtbl_Y, &DCY, YDC_HT, YAC_HT)
+                //process_DU(CbDU, fdtbl_Cb, &DCCb, CbDC_HT, CbAC_HT)
+                //process_DU(CrDU, fdtbl_Cb, &DCCr, CbDC_HT, CbAC_HT)
+            }
+        }
     }
 }
 
