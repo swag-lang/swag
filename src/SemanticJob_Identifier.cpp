@@ -1521,7 +1521,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<const Diagnostic*>& notes)
+void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->numTestErrors)
@@ -1529,8 +1529,7 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
     if (node->token.text.length() <= 4)
         return;
 
-    uint32_t                  bestScore = UINT32_MAX;
-    VectorNative<SymbolName*> bests;
+    uint32_t bestScore = UINT32_MAX;
 
     bool isFct = false;
     if (node->kind == AstNodeKind::Identifier)
@@ -1553,25 +1552,12 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
 
             auto score = Utf8::fuzzyCompare(node->token.text, one.symbolName->name);
             if (score < bestScore)
-                bests.clear();
+                best.clear();
             if (score <= bestScore)
             {
-                bests.push_back(one.symbolName);
+                best.push_back(one.symbolName->name);
                 bestScore = score;
             }
-        }
-    }
-
-    if (bestScore > 2)
-        return;
-
-    if (!bests.empty() && bests.size() <= 3)
-    {
-        for (int i = 0; i < bests.size(); i++)
-        {
-            auto sym  = bests[i];
-            auto note = new Diagnostic{Utf8::format(g_E[Nte0006], sym->name.c_str()), DiagnosticLevel::Note};
-            notes.push_back(note);
         }
     }
 }
@@ -2553,6 +2539,25 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
 
+            // Find best matches
+            vector<Utf8> best;
+            Utf8         appendMsg;
+            if (identifierRef->startScope)
+                scopeHierarchy.push_back(identifierRef->startScope);
+            symbolNotFoundHint(context, node, scopeHierarchy, best);
+            switch (best.size())
+            {
+            case 1:
+                appendMsg = Utf8::format(g_E[Nte0053], best[0].c_str());
+                break;
+            case 2:
+                appendMsg = Utf8::format(g_E[Nte0054], best[0].c_str(), best[1].c_str());
+                break;
+            case 3:
+                appendMsg = Utf8::format(g_E[Nte0055], best[0].c_str(), best[1].c_str(), best[2].c_str());
+                break;
+            }
+
             vector<const Diagnostic*> notes;
             Diagnostic*               diag = new Diagnostic{node, Utf8::format(g_E[Err0122], node->token.text.c_str())};
             if (identifierRef->startScope)
@@ -2592,11 +2597,11 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                 }
             }
 
+            diag->textMsg += appendMsg;
+
             VectorNative<OneTryMatch*> v;
             symbolErrorRemarks(context, v, node, diag);
             symbolErrorNotes(context, v, node, diag, notes);
-            symbolNotFoundHint(context, node, scopeHierarchy, notes);
-
             return context->report(*diag, notes);
         }
 

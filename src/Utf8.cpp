@@ -804,48 +804,28 @@ Utf8 Utf8::toNiceSize(size_t size)
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 {
-    int32_t  i, j, diagonal;
-    uint32_t cost = 0;
+#define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
-    auto s1len = str1.length();
-    auto s2len = str2.length();
+    unsigned int s1len, s2len, x, y, lastdiag, olddiag;
+    s1len = str1.length();
+    s2len = str2.length();
 
-    if (s1len + s2len == 0)
-        return UINT32_MAX;
-    if (s1len * s2len == 0)
-        return UINT32_MAX;
-
-    j              = s1len + 1;
-    auto allocSize = Allocator::alignSize(j * sizeof(uint32_t));
-    auto arr       = (uint32_t*) g_Allocator.alloc(allocSize);
-
-    for (i = 0; i < j; i++)
-        arr[i] = i + 1;
-
-    for (i = 0; i < s2len; i++)
+    unsigned int* column = new unsigned int[s1len + 1];
+    for (y = 1; y <= s1len; y++)
+        column[y] = y;
+    for (x = 1; x <= s2len; x++)
     {
-        diagonal = arr[0] - 1;
-        arr[0]   = i + 1;
-        j        = 0;
-        while (j < s1len)
+        column[0] = x;
+        for (y = 1, lastdiag = x - 1; y <= s1len; y++)
         {
-            cost = diagonal;
-            if (str1[j] != str2[i])
-                cost++;
-            if (cost > arr[j])
-                cost = arr[j];
-            j++;
-            if (cost > arr[j])
-                cost = arr[j];
-            diagonal = arr[j] - 1;
-            arr[j]   = cost + 1;
+            olddiag   = column[y];
+            column[y] = MIN3(column[y] + 1, column[y - 1] + 1, lastdiag + (str1[y - 1] == str2[x - 1] ? 0 : 1));
+            lastdiag  = olddiag;
         }
     }
 
-    cost = arr[j] - 1;
-    g_Allocator.free(arr, allocSize);
-
-    return cost; // (s1len + s2len - cost) / (float)(s1len + s2len);
+    auto result = column[s1len];
+    return result;
 }
 
 Utf8 Utf8::truncateDisplay(const char* str, int maxLen)
