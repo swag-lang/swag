@@ -635,22 +635,22 @@ impl Encoder
 
     method processDU(componentDU: *s8, fdtbl: *f32, dC: *s16, hTDC, hTAC: *BitString)
     {
-        EOB       := hTAC[0x00]
-        M16zeroes := hTAC[0xF0]
+        eob       := hTAC[0x00]
+        m16Zeroes := hTAC[0xF0]
 
         quantization(componentDU, fdtbl, duDct)
 
         loop i: 64
             du[ZigZag[i]] = duDct[i]
-        Diff := du[0] - dC[0]
+        diff := du[0] - dC[0]
         dC[0] = du[0]
 
-        if Diff == 0
+        if diff == 0
             writeBits(hTDC[0])
         else
         {
-            writeBits(hTDC[category[bitcast(uint) cast(int) Diff]])
-            writeBits(bitcode[bitcast(uint) cast(int) Diff])
+            writeBits(hTDC[category[bitcast(uint) cast(int) diff]])
+            writeBits(bitcode[bitcast(uint) cast(int) diff])
         }
 
         end0pos := 63
@@ -659,7 +659,7 @@ impl Encoder
 
         if end0pos == 0
         {
-            writeBits(EOB)
+            writeBits(eob)
             return
         }
 
@@ -673,7 +673,7 @@ impl Encoder
             if nrzeroes >= 16
             {
                 for nrmarker := 1; nrmarker <= nrzeroes / 16; nrmarker += 1
-                    writeBits(M16zeroes)
+                    writeBits(m16Zeroes)
                 nrzeroes = nrzeroes % 16
             }
 
@@ -683,20 +683,20 @@ impl Encoder
         }
 
         if end0pos != 63
-            writeBits(EOB)
+            writeBits(eob)
     }
 
     method encoder()
     {
-        var DCY, DCCb, DCCr: s16
+        var dcy, dccb, dccr: s16
         for ypos := 0'u16; ypos < imageY; ypos += 8
         {
             for xpos := 0'u16; xpos < imageX; xpos += 8
             {
                 loadFromRGB(xpos, ypos)
-                processDU(duY, fdtblY, &DCY, htYDC, htYAC)
-                processDU(duCb, fdtblCb, &DCCb, htCbDC, htCbAC)
-                processDU(duCr, fdtblCb, &DCCr, htCbDC, htCbAC)
+                processDU(duY, fdtblY, &dcy, htYDC, htYAC)
+                processDU(duCb, fdtblCb, &dccb, htCbDC, htCbAC)
+                processDU(duCr, fdtblCb, &dccr, htCbDC, htCbAC)
             }
         }
     }
