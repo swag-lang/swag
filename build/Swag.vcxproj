@@ -260,6 +260,7 @@
     <ClInclude Include="..\src\PrepCompilerMsgJob.h" />
     <ClInclude Include="..\src\RaceCondition.h" />
     <ClInclude Include="..\src\ScopedLock.h" />
+    <ClInclude Include="..\src\sImageEncoderJpeg.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -389,6 +390,7 @@
     <ClCompile Include="../src/Stats.cpp" />
     <ClCompile Include="../src/SwagScope.cpp" />
     <ClCompile Include="../src/SymTable.cpp" />
+    <ClCompile Include="..\src\sImageEncoderJpeg.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Attribute.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Block.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Compiler.cpp" />

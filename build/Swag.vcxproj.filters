@@ -485,6 +485,7 @@
     <ClCompile Include="..\src\ErrorIds.cpp">
       <Filter>Main\Global</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sImageEncoderJpeg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -785,6 +786,7 @@
     <ClInclude Include="..\src\ErrorList.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\sImageEncoderJpeg.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

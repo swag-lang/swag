@@ -5,6 +5,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "ErrorIds.h"
+#include "sImageEncoderJpeg.hpp"
 
 bool g_Exiting = false;
 
@@ -17,6 +18,9 @@ int main(int argc, const char* argv[])
     g_Workspace   = g_Allocator.alloc<Workspace>();
 
     OS::setup();
+
+    //sImageEncoderJpeg p;
+    //p.Encode();
 
     // Arguments
     CommandLineParser cmdParser;

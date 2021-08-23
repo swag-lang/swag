@@ -505,20 +505,10 @@ impl Encoder
     #[Swag.Safety("", false)]
     method loadFromRGB(xpos: u16, ypos: u16)
     {
-        method Y(r, g, b: u8)->u8
-        {
-            return cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
-        }
-
-        method Cb(r, g, b: u8)->u8
-        {
-            return cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
-        }
-
-        method Cr(r, g, b: u8)->u8
-        {
-            return cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
-        }
+        #[Swag.Inline]
+        method Y(r, g, b: u8)  => cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
+        method Cb(r, g, b: u8) => cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
+        method Cr(r, g, b: u8) => cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
 
         pos := 0
         location := ypos * imageX + xpos
@@ -526,12 +516,12 @@ impl Encoder
         {
             loop x: 8
             {
-                R         := bufferRGB[location].r
-                G         := bufferRGB[location].g
-                B         := bufferRGB[location].b
-                duY[pos]  = Y(self, R, G, B)
-                duCb[pos] = Cb(self, R, G, B)
-                duCr[pos] = Cr(self, R, G, B)
+                r := bufferRGB[location].r
+                g := bufferRGB[location].g
+                b := bufferRGB[location].b
+                duY[pos]  = Y(self, r, g, b)
+                duCb[pos] = Cb(self, r, g, b)
+                duCr[pos] = Cr(self, r, g, b)
                 location += 1
                 pos += 1
             }
