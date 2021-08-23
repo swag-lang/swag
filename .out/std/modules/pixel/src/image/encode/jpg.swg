@@ -387,7 +387,7 @@ impl Encoder
 
     method writeBits(_bs: bitstring)
     {
-        value  := _bs.value;
+        value  := _bs.value
         posval := cast(s32) _bs.length - 1
         while posval >= 0
         {
