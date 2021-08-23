@@ -232,7 +232,7 @@ impl Encoder
         {
             Memory.copy(tmpline.buffer, bufferRGB + nrLineUp * imageX, dimline)
             Memory.copy(bufferRGB + nrLineUp * imageX, bufferRGB + nrLineDn * imageX, dimline)
-            Memory.copy(bufferRGB + nrLineDn * imageX, tmpline, dimline)
+            Memory.copy(bufferRGB + nrLineDn * imageX, tmpline.buffer, dimline)
             nrLineUp -= 1
             nrLineDn += 1
         }
@@ -240,7 +240,7 @@ impl Encoder
         // Y completion
         Memory.copy(tmpline.buffer, bufferRGB + (imageY - 1) * imageX, dimline)
         for nrLine := imageY; nrLine < yDiv8; nrLine += 1
-            Memory.copy(bufferRGB + nrLine * imageX, tmpline, dimline)
+            Memory.copy(bufferRGB + nrLine * imageX, tmpline.buffer, dimline)
 
         imageY = yDiv8
     }
@@ -722,6 +722,9 @@ public impl IEncoder for Encoder
     {
         stream = result
         srcImage = &image
+
+        //try File.writeAllBytes("f:/j.bin", @mkslice(srcImage.pixels, srcImage.size))
+        //@print(srcImage.height)
 
         loadBitmap(image)
 
