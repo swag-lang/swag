@@ -540,12 +540,12 @@ impl Encoder
         }
     }
 
-    method quantization(_data: *s8, fdtbl: *f32, _outdata: *s16)
+    method quantization(data: *s8, fdtbl: *f32, outData: *s16)
     {
         var datafloat: [64] f32
 
         loop i: 64
-            datafloat[i] = _data[i]
+            datafloat[i] = data[i]
 
         dataptr := &datafloat[0]
         loop ctr: 7..0
@@ -639,7 +639,7 @@ impl Encoder
         loop i: 64
         {
             temp := datafloat[i] * fdtbl[i]
-            _outdata[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
+            outData[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
         }
     }
 
