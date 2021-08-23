@@ -1,53 +1,53 @@
 #global namespace Jpg
 using Core
 
-struct APP0infotype
+struct APP0InfoType
 {
-    marker: u16
-    length: u16
-    JFIFsignature: [5] u8
-    versionhi: u8
-    versionlo: u8
-    xyunits: u8
-    xdensity: u16
-    ydensity: u16
-    thumbnwidth: u8
-    thumbnheight: u8
+    marker:         u16
+    length:         u16
+    jfifSignature:  [5] u8
+    versionHi:      u8
+    versionLo:      u8
+    xyUnits:        u8
+    xDensity:       u16
+    yDensity:       u16
+    thumbnWidth:    u8
+    thumbnHeight:   u8
 }
 
-struct SOF0infotype
+struct SOF0InfoType
 {
-    marker: u16
-    length: u16
-    precision: u8
-    height: u16
-    width: u16
-    nrofcomponents: u8
-    IdY: u8
-    HVY: u8
-    QTY: u8
-    IdCb: u8
-    HVCb: u8
-    QTCb: u8
-    IdCr: u8
-    HVCr: u8
-    QTCr: u8
+    marker:     u16
+    length:     u16
+    precision:  u8
+    height:     u16
+    width:      u16
+    nrofComponents: u8
+    idy:    u8
+    hvy:    u8
+    qty:    u8
+    idcb:   u8
+    hvcb:   u8
+    qtcb:   u8
+    idcr:   u8
+    hvcr:   u8
+    qtcr:   u8
 }
 
-struct SOSinfotype
+struct SOSInfoType
 {
     marker: u16
     length: u16
     nrofcomponents: u8
-    IdY: u8
-    HTY: u8
-    IdCb: u8
-    HTCb: u8
-    IdCr: u8
-    HTCr: u8
-    Ss: u8
-    Se: u8
-    Bf: u8
+    idy:    u8
+    hty:    u8
+    idcb:   u8
+    htcb:   u8
+    idcr:   u8
+    htcr:   u8
+    ss:     u8
+    se:     u8
+    bf:     u8
 }
 
 struct ColorRGB
@@ -55,9 +55,43 @@ struct ColorRGB
     b, g, r: u8
 }
 
-const APP0info = APP0infotype{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 1, 1, 0, 1, 1, 0, 0}
-const SOF0info = SOF0infotype{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
-const SOSinfo  = SOSinfotype{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
+struct bitstring
+{
+    length: u8
+    value:  u16
+}
+
+struct DQTInfoType
+{
+    marker:   u16
+    length:   u16
+    infoQty:  u8
+    tableY:   [64] u8
+    infoQtcb: u8
+    tableCb:  [64] u8
+}
+
+struct DHTInfoType
+{
+    marker:         u16
+    length:         u16
+    HTYDCinfo:      u8
+    YDC_nrcodes:    [16] u8
+    YDC_values:     [12] u8
+    HTYACinfo:      u8
+    YAC_nrcodes:    [16] u8
+    YAC_values:     [162] u8
+    HTCbDCinfo:     u8
+    CbDC_nrcodes:   [16] u8
+    CbDC_values:    [12] u8
+    HTCbACinfo:     u8
+    CbAC_nrcodes:   [16] u8
+    CbAC_values:    [162] u8
+}
+
+const APP0info = APP0InfoType{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 1, 1, 0, 1, 1, 0, 0}
+const SOF0info = SOF0InfoType{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
+const SOSinfo  = SOSInfoType{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
 
 const std_dc_luminance_nrcodes   = @[0'u8, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]
 const std_dc_luminance_values    = @[0'u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -72,11 +106,11 @@ const zigzag: [] u8 = @[
     41, 43, 9,  11, 18, 24, 31, 40, 44, 53, 10, 19, 23, 32, 39, 45, 52, 54, 20, 22, 33, 38,
     46, 51, 55, 60, 21, 34, 37, 47, 50, 56, 59, 61, 35, 36, 48, 49, 57, 58, 62, 63]
 
-const std_luminance_qt: [] u8 = @[
+const LuminanceQt: [] u8 = @[
     16, 11, 10, 16, 24, 40,  51,  61, 12, 12, 14, 19, 26, 58,  60,  55, 14, 13, 16, 24, 40,  57,  69,  56,  14, 17, 22, 29, 51,  87,  80,  62,
     18, 22, 37, 56, 68, 109, 103, 77, 24, 35, 55, 64, 81, 104, 113, 92, 49, 64, 78, 87, 103, 121, 120, 101, 72, 92, 95, 98, 112, 100, 103, 99]
 
-const std_chrominance_qt: [] u8 = @[
+const ChrominanceQt: [] u8 = @[
     17, 18, 24, 47, 99, 99, 99, 99, 18, 21, 26, 66, 99, 99, 99, 99, 24, 26, 56, 99, 99, 99, 99, 99, 47, 66, 99, 99, 99, 99, 99, 99,
     99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99]
 
@@ -104,6 +138,20 @@ public struct Encoder
     imageX:     u16
     imageY:     u16
     bufferRGB:  *ColorRGB
+
+    scaleFactor: u8 = 10
+
+    dqtInfo:    DQTInfoType
+    dhtInfo:    DHTInfoType
+    YDC_HT:     [12] bitstring
+    CbDC_HT:    [12] bitstring
+    YAC_HT:     [256] bitstring
+    CbAC_HT:    [256] bitstring
+
+    category_alloc: Array'u8
+    category:       *u8
+    bitcode_alloc:  Array'bitstring
+    bitcode:        *bitstring
 }
 
 impl Encoder
@@ -150,7 +198,7 @@ impl Encoder
         }
 
         imageX  = xDiv8
-        tmpline := Memory.alloc(cast(uint) imageX * @sizeof(ColorRGB))
+        tmpline := Array.createBuffer(cast(uint) imageX * @sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
         nrLineUp := imageY - 1
@@ -158,7 +206,7 @@ impl Encoder
         dimline  := cast(uint) (imageX * 3)
         while nrLineUp > nrLineDn
         {
-            Memory.copy(tmpline, bufferRGB + nrLineUp * imageX, dimline)
+            Memory.copy(tmpline.buffer, bufferRGB + nrLineUp * imageX, dimline)
             Memory.copy(bufferRGB + nrLineUp * imageX, bufferRGB + nrLineDn * imageX, dimline)
             Memory.copy(bufferRGB + nrLineDn * imageX, tmpline, dimline)
             nrLineUp -= 1
@@ -166,12 +214,114 @@ impl Encoder
         }
 
         // Y completion
-        Memory.copy(tmpline, bufferRGB + (imageY - 1) * imageX, dimline)
+        Memory.copy(tmpline.buffer, bufferRGB + (imageY - 1) * imageX, dimline)
         for nrLine := imageY; nrLine < yDiv8; nrLine += 1
             Memory.copy(bufferRGB + nrLine * imageX, tmpline, dimline)
 
         imageY = yDiv8
-        Memory.free(tmpline, cast(uint) imageX * @sizeof(ColorRGB))
+    }
+
+    func setQuantTable(_basic_table: const *u8, _scale_factor: u8, _newtable: *u8)
+    {
+        loop i: 64
+        {
+            temp := (cast(s32) _basic_table[i] * _scale_factor + 50) / 100
+            temp = Math.clamp(temp, 0, 255)
+            _newtable[zigzag[i]] = cast(u8) temp
+        }
+    }
+
+    method set_DQTinfo()
+    {
+        dqtInfo.marker   = 0xFFDB
+        dqtInfo.length   = 132
+        dqtInfo.infoQty  = 0
+        dqtInfo.infoQtcb = 1
+        setQuantTable(LuminanceQt, scaleFactor, dqtInfo.tableY)
+        setQuantTable(ChrominanceQt, scaleFactor, dqtInfo.tableCb)
+    }
+
+    method set_DHTinfo()
+    {
+        dhtInfo.marker     = 0xFFC4
+        dhtInfo.length     = 0x01A2
+        dhtInfo.HTYDCinfo  = 0
+        dhtInfo.HTYACinfo  = 0x10
+        dhtInfo.HTCbDCinfo = 1
+        dhtInfo.HTCbACinfo = 0x11
+
+        loop i: 16
+            dhtInfo.YDC_nrcodes[i] = std_dc_luminance_nrcodes[i + 1]
+        loop i: 12
+            dhtInfo.YDC_values[i] = std_dc_luminance_values[i]
+        loop i: 16
+            dhtInfo.YAC_nrcodes[i] = std_ac_luminance_nrcodes[i + 1]
+        loop i: 162
+            dhtInfo.YAC_values[i] = std_ac_luminance_values[i]
+        loop i: 16
+            dhtInfo.CbDC_nrcodes[i] = std_dc_chrominance_nrcodes[i + 1]
+        loop i: 12
+            dhtInfo.CbDC_values[i] = std_dc_chrominance_values[i]
+        loop i: 16
+            dhtInfo.CbAC_nrcodes[i] = std_ac_chrominance_nrcodes[i + 1]
+        loop i: 162
+            dhtInfo.CbAC_values[i] = std_ac_chrominance_values[i]
+    }
+
+    method compute_Huffman_table(_nrcodes: const *u8, _std_table: const *u8, _hT: *bitstring)
+    {
+        codevalue    := 0'u16
+        pos_in_table := 0
+        loop k: 1..16
+        {
+            for j := 1; j <= _nrcodes[k]; j += 1
+            {
+                _hT[_std_table[pos_in_table]].value  = codevalue
+                _hT[_std_table[pos_in_table]].length = cast(u8) k
+                pos_in_table += 1
+                codevalue +=,safe 1
+            }
+
+            codevalue *=,safe 2
+        }
+    }
+
+    method init_Huffman_tables()
+    {
+        compute_Huffman_table(std_dc_luminance_nrcodes, std_dc_luminance_values, YDC_HT)
+        compute_Huffman_table(std_dc_chrominance_nrcodes, std_dc_chrominance_values, CbDC_HT)
+        compute_Huffman_table(std_ac_luminance_nrcodes, std_ac_luminance_values, YAC_HT)
+        compute_Huffman_table(std_ac_chrominance_nrcodes, std_ac_chrominance_values, CbAC_HT)
+    }
+
+    method set_numbers_category_and_bitcode()
+    {
+        category_alloc.resize(65535)
+        bitcode_alloc.resize(65535)
+        category = category_alloc.buffer + 32767
+        bitcode  = bitcode_alloc.buffer + 32767
+
+        nrlower := 1
+        nrupper := 2
+        loop cat: 1..15
+        {
+            loop nr:  nrlower..nrupper-1
+            {
+                category[nr]       = cast(u8) cat
+                bitcode[nr].length = cast(u8) cat
+                bitcode[nr].value  = cast(u16) nr
+            }
+
+            loop nr: -(nrupper - 1)..(-nrlower)
+            {
+                category[nr] = cast(u8) cat
+                bitcode[nr].length = cast(u8) cat
+                bitcode[nr].value  = cast(u16) (nrupper - 1 + nr)
+            }
+
+            nrlower <<= 1
+            nrupper <<= 1
+        }
     }
 }
 
@@ -186,5 +336,12 @@ public impl IEncoder for Encoder
     method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
         loadBitmap(image)
+
+        set_DQTinfo()
+        set_DHTinfo()
+        init_Huffman_tables()
+        //set_numbers_category_and_bitcode()
+        /*precalculate_YCbCr_tables()
+        prepare_quant_tables()*/
     }
 }

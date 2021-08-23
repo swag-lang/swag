@@ -184,6 +184,15 @@ impl Array
         capacity = newCapacity
     }
 
+    // Create a working buffer
+    #[Swag.NotGeneric]
+    func createBuffer(size: uint)->Array'u8
+    {
+        var result: retval
+        result.resize(size)
+        return result
+    }
+
     // Returns true if the array is empty
     #[Inline]
     method isEmpty() => count == 0
