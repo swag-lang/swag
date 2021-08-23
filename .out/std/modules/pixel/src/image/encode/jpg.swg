@@ -169,7 +169,8 @@ public struct Encoder
     YDU:  [64] s8
     CbDU: [64] s8
     CrDU: [64] s8
-
+    DU_DCT: [64] s16
+    DU:     [64] s16
 
     category_alloc: Array'u8
     category:       *u8
@@ -642,6 +643,55 @@ impl Encoder
 
     method process_DU(_componentDU: *s8, _fdtbl: *f32, _dC: *s16, _hTDC, _hTAC: *bitstring)
     {
+        EOB       := _hTAC[0x00]
+        M16zeroes := _hTAC[0xF0]
+
+        fdct_and_quantization(_componentDU, _fdtbl, DU_DCT)
+
+        loop i: 64
+            DU[zigzag[i]] = DU_DCT[i]
+        Diff := DU[0] - _dC[0]
+        _dC[0] = DU[0]
+
+        if Diff == 0
+            writeBits(_hTDC[0])
+        else
+        {
+            writeBits(_hTDC[category[bitcast(uint) cast(int) Diff]])
+            writeBits(bitcode[bitcast(uint) cast(int) Diff])
+        }
+
+        end0pos := 63
+        while (end0pos > 0) and (DU[end0pos] == 0)
+            end0pos -= 1
+
+        if end0pos == 0
+        {
+            writeBits(EOB)
+            return
+        }
+
+        i := 1
+        while i <= end0pos
+        {
+            startpos := i
+            while (i <= end0pos) and (DU[i] == 0)
+                i += 1
+            nrzeroes := i - startpos
+            if nrzeroes >= 16
+            {
+                for nrmarker := 1; nrmarker <= nrzeroes / 16; nrmarker += 1
+                    writeBits(M16zeroes)
+                nrzeroes = nrzeroes % 16
+            }
+
+            writeBits(_hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) DU[i]]])
+            writeBits(bitcode[bitcast(uint) cast(int) DU[i]])
+            i += 1
+        }
+
+        if end0pos != 63
+            writeBits(EOB)
     }
 
     method main_encoder()
