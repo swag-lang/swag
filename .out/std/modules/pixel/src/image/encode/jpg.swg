@@ -148,6 +148,18 @@ public struct Encoder
     YAC_HT:     [256] bitstring
     CbAC_HT:    [256] bitstring
 
+    YRtab:  [256] s32
+    YGtab:  [256] s32
+    YBtab:  [256] s32
+    CbRtab: [256] s32
+    CbGtab: [256] s32
+    CbBtab: [256] s32
+    CrRtab: [256] s32
+    CrGtab: [256] s32
+    CrBtab: [256] s32
+    fdtbl_Y:  [64] f32
+    fdtbl_Cb: [64] f32
+
     category_alloc: Array'u8
     category:       *u8
     bitcode_alloc:  Array'bitstring
@@ -231,7 +243,7 @@ impl Encoder
         }
     }
 
-    method set_DQTinfo()
+    method setDQTinfo()
     {
         dqtInfo.marker   = 0xFFDB
         dqtInfo.length   = 132
@@ -241,7 +253,7 @@ impl Encoder
         setQuantTable(ChrominanceQt, scaleFactor, dqtInfo.tableCb)
     }
 
-    method set_DHTinfo()
+    method setDHTinfo()
     {
         dhtInfo.marker     = 0xFFC4
         dhtInfo.length     = 0x01A2
@@ -268,7 +280,7 @@ impl Encoder
             dhtInfo.CbAC_values[i] = std_ac_chrominance_values[i]
     }
 
-    method compute_Huffman_table(_nrcodes: const *u8, _std_table: const *u8, _hT: *bitstring)
+    method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *bitstring)
     {
         codevalue    := 0'u16
         pos_in_table := 0
@@ -286,15 +298,15 @@ impl Encoder
         }
     }
 
-    method init_Huffman_tables()
+    method initHuffmanTables()
     {
-        compute_Huffman_table(std_dc_luminance_nrcodes, std_dc_luminance_values, YDC_HT)
-        compute_Huffman_table(std_dc_chrominance_nrcodes, std_dc_chrominance_values, CbDC_HT)
-        compute_Huffman_table(std_ac_luminance_nrcodes, std_ac_luminance_values, YAC_HT)
-        compute_Huffman_table(std_ac_chrominance_nrcodes, std_ac_chrominance_values, CbAC_HT)
+        computeHuffmanTable(std_dc_luminance_nrcodes, std_dc_luminance_values, YDC_HT)
+        computeHuffmanTable(std_dc_chrominance_nrcodes, std_dc_chrominance_values, CbDC_HT)
+        computeHuffmanTable(std_ac_luminance_nrcodes, std_ac_luminance_values, YAC_HT)
+        computeHuffmanTable(std_ac_chrominance_nrcodes, std_ac_chrominance_values, CbAC_HT)
     }
 
-    method set_numbers_category_and_bitcode()
+    method setNumbersCategoryAndBitcode()
     {
         category_alloc.resize(65535)
         bitcode_alloc.resize(65535)
@@ -314,13 +326,53 @@ impl Encoder
 
             loop nr: -(nrupper - 1)..(-nrlower)
             {
-                category[nr] = cast(u8) cat
-                bitcode[nr].length = cast(u8) cat
-                bitcode[nr].value  = cast(u16) (nrupper - 1 + nr)
+                nof := bitcast(uint) cast(int) nr
+                category[nof] = cast(u8) cat
+                bitcode[nof].length = cast(u8) cat
+                bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
             }
 
             nrlower <<= 1
             nrupper <<= 1
+        }
+    }
+
+    method precalculate_YCbCr_tables()
+    {
+        loop R: 256
+        {
+            YRtab[R]  = cast(s32) (65536 * 0.299 + 0.5) * R
+            CbRtab[R] = cast(s32) (65536 * -0.16874 + 0.5) * R
+            CrRtab[R] = cast(s32) (32768) * R
+        }
+
+        loop G: 256
+        {
+            YGtab[G]  = cast(s32) (65536 * 0.587 + 0.5) * G
+            CbGtab[G] = cast(s32) (65536 * -0.33126 + 0.5) * G
+            CrGtab[G] = cast(s32) (65536 * -0.41869 + 0.5) * G
+        }
+
+        loop B: 256
+        {
+            YBtab[B]  = cast(s32) (65536 * 0.114 + 0.5) * B
+            CbBtab[B] = cast(s32) (32768) * B
+            CrBtab[B] = cast(s32) (65536 * -0.08131 + 0.5) * B
+        }
+    }
+
+    method prepare_quant_tables()
+    {
+        const AanSf: [8] f64 = @[1.0, 1.387039845, 1.306562965, 1.175875602, 1.0, 0.785694958, 0.541196100, 0.275899379]
+        i := 0
+        loop row: 8
+        {
+            loop col: 8
+            {
+                fdtbl_Y[i]  = cast(f32) (1.0 / (cast(f64) dqtInfo.tableY[zigzag[i]] * AanSf[row] * AanSf[col] * 8.0))
+                fdtbl_Cb[i] = cast(f32) (1.0 / (cast(f64) dqtInfo.tableCb[zigzag[i]] * AanSf[row] * AanSf[col] * 8.0))
+                i += 1
+            }
         }
     }
 }
@@ -337,11 +389,11 @@ public impl IEncoder for Encoder
     {
         loadBitmap(image)
 
-        set_DQTinfo()
-        set_DHTinfo()
-        init_Huffman_tables()
-        //set_numbers_category_and_bitcode()
-        /*precalculate_YCbCr_tables()
-        prepare_quant_tables()*/
+        setDQTinfo()
+        setDHTinfo()
+        initHuffmanTables()
+        setNumbersCategoryAndBitcode()
+        precalculate_YCbCr_tables()
+        prepare_quant_tables()
     }
 }
