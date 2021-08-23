@@ -506,9 +506,11 @@ impl Encoder
     method loadFromRGB(xpos: u16, ypos: u16)
     {
         #[Swag.Inline]
-        method Y(r, g, b: u8)  => cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
-        method Cb(r, g, b: u8) => cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
-        method Cr(r, g, b: u8) => cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
+        {
+            method Y(r, g, b: u8)  => cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
+            method Cb(r, g, b: u8) => cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
+            method Cr(r, g, b: u8) => cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
+        }
 
         pos := 0
         location := ypos * imageX + xpos
@@ -532,12 +534,11 @@ impl Encoder
 
     method quantization(data: *s8, fdtbl: *f32, outData: *s16)
     {
-        var datafloat: [64] f32
-
+        var dataFloat: [64] f32
         loop i: 64
-            datafloat[i] = data[i]
+            dataFloat[i] = data[i]
 
-        dataptr := &datafloat[0]
+        dataptr := &dataFloat
         loop ctr: 7..0
         {
             tmp0 := dataptr[0] + dataptr[7]
@@ -581,7 +582,7 @@ impl Encoder
             dataptr += 8
         }
 
-        dataptr = datafloat
+        dataptr = dataFloat
 
         loop ctr: 7..0
         {
@@ -628,7 +629,7 @@ impl Encoder
 
         loop i: 64
         {
-            temp := datafloat[i] * fdtbl[i]
+            temp := dataFloat[i] * fdtbl[i]
             outData[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
         }
     }
@@ -649,8 +650,9 @@ impl Encoder
             writeBits(hTDC[0])
         else
         {
-            writeBits(hTDC[category[bitcast(uint) cast(int) diff]])
-            writeBits(bitcode[bitcast(uint) cast(int) diff])
+            diffc := bitcast(uint) cast(int) diff // If negative
+            writeBits(hTDC[category[diffc]])
+            writeBits(bitcode[diffc])
         }
 
         end0pos := 63
@@ -672,13 +674,14 @@ impl Encoder
             nrzeroes := i - startpos
             if nrzeroes >= 16
             {
-                for nrmarker := 1; nrmarker <= nrzeroes / 16; nrmarker += 1
+                loop nrmarker: 1..nrzeroes / 16
                     writeBits(m16Zeroes)
                 nrzeroes = nrzeroes % 16
             }
 
-            writeBits(hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) du[i]]])
-            writeBits(bitcode[bitcast(uint) cast(int) du[i]])
+            offc := bitcast(uint) cast(int) du[i] // If negative
+            writeBits(hTAC[nrzeroes * 16 + category[offc]])
+            writeBits(bitcode[offc])
             i += 1
         }
 

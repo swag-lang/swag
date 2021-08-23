@@ -63,7 +63,13 @@ impl Image
         // Encode
         itf := @mkinterface(ptrEncoder, found.type, IEncoder)
         var result: ConcatBuffer
+
+        //var ti: Time.Stopwatch
+        //ti.start()
         try itf.encode(&result, dref self, options)
+        //ti.stop()
+        //Console.printf("%ms\n", ti.elapsedMilliseconds())
+
         try File.writeAllBytes(fileName, result)
     }
 }
