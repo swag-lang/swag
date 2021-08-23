@@ -139,6 +139,9 @@ public struct Encoder
     imageY:     u16
     bufferRGB:  *ColorRGB
 
+    stream:     *ConcatBuffer
+    srcImage:   const *Image
+
     scaleFactor: u8 = 10
 
     dqtInfo:    DQTInfoType
@@ -262,22 +265,14 @@ impl Encoder
         dhtInfo.HTCbDCinfo = 1
         dhtInfo.HTCbACinfo = 0x11
 
-        loop i: 16
-            dhtInfo.YDC_nrcodes[i] = std_dc_luminance_nrcodes[i + 1]
-        loop i: 12
-            dhtInfo.YDC_values[i] = std_dc_luminance_values[i]
-        loop i: 16
-            dhtInfo.YAC_nrcodes[i] = std_ac_luminance_nrcodes[i + 1]
-        loop i: 162
-            dhtInfo.YAC_values[i] = std_ac_luminance_values[i]
-        loop i: 16
-            dhtInfo.CbDC_nrcodes[i] = std_dc_chrominance_nrcodes[i + 1]
-        loop i: 12
-            dhtInfo.CbDC_values[i] = std_dc_chrominance_values[i]
-        loop i: 16
-            dhtInfo.CbAC_nrcodes[i] = std_ac_chrominance_nrcodes[i + 1]
-        loop i: 162
-            dhtInfo.CbAC_values[i] = std_ac_chrominance_values[i]
+        loop i: 16  dhtInfo.YDC_nrcodes[i] = std_dc_luminance_nrcodes[i + 1]
+        loop i: 12  dhtInfo.YDC_values[i] = std_dc_luminance_values[i]
+        loop i: 16  dhtInfo.YAC_nrcodes[i] = std_ac_luminance_nrcodes[i + 1]
+        loop i: 162 dhtInfo.YAC_values[i] = std_ac_luminance_values[i]
+        loop i: 16  dhtInfo.CbDC_nrcodes[i] = std_dc_chrominance_nrcodes[i + 1]
+        loop i: 12  dhtInfo.CbDC_values[i] = std_dc_chrominance_values[i]
+        loop i: 16  dhtInfo.CbAC_nrcodes[i] = std_ac_chrominance_nrcodes[i + 1]
+        loop i: 162 dhtInfo.CbAC_values[i] = std_ac_chrominance_values[i]
     }
 
     method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *bitstring)
@@ -375,6 +370,98 @@ impl Encoder
             }
         }
     }
+
+    method writeByte(b: u8)
+    {
+        stream.addByte(b)
+    }
+
+    method writeWord(w: u16)
+    {
+        stream.addByte(cast(u8) (w >>,safe 8))
+        stream.addByte(cast(u8) (w & 0xFF))
+    }
+
+    method writeAPP0info()
+    {
+        writeWord(APP0info.marker)
+        writeWord(APP0info.length)
+        writeByte("J"'u8)
+        writeByte("F"'u8)
+        writeByte("I"'u8)
+        writeByte("F"'u8)
+        writeByte(0)
+        writeByte(APP0info.versionHi)
+        writeByte(APP0info.versionLo)
+        writeByte(APP0info.xyUnits)
+        writeWord(APP0info.xDensity)
+        writeWord(APP0info.yDensity)
+        writeByte(APP0info.thumbnWidth)
+        writeByte(APP0info.thumbnHeight)
+    }
+
+    method writeDQTinfo()
+    {
+        writeWord(dqtInfo.marker)
+        writeWord(dqtInfo.length)
+        writeByte(dqtInfo.infoQty)
+        loop i: 64 writeByte(dqtInfo.tableY[i])
+        writeByte(dqtInfo.infoQtcb)
+        loop i: 64 writeByte(dqtInfo.tableCb[i])
+    }
+
+    method writeSOF0info()
+    {
+        writeWord(SOF0info.marker)
+        writeWord(SOF0info.length)
+        writeByte(SOF0info.precision)
+        writeWord(cast(u16) srcImage.height)
+        writeWord(cast(u16) srcImage.width)
+        writeByte(SOF0info.nrofComponents)
+        writeByte(SOF0info.idy)
+        writeByte(SOF0info.hvy)
+        writeByte(SOF0info.qty)
+        writeByte(SOF0info.idcb)
+        writeByte(SOF0info.hvcb)
+        writeByte(SOF0info.qtcb)
+        writeByte(SOF0info.idcr)
+        writeByte(SOF0info.hvcr)
+        writeByte(SOF0info.qtcr)
+    }
+
+    method writeDHTinfo()
+    {
+        writeWord(dhtInfo.marker)
+        writeWord(dhtInfo.length)
+        writeByte(dhtInfo.HTYDCinfo)
+        loop i: 16  writeByte(dhtInfo.YDC_nrcodes[i])
+        loop i: 12  writeByte(dhtInfo.YDC_values[i])
+        writeByte(dhtInfo.HTYACinfo)
+        loop i: 16  writeByte(dhtInfo.YAC_nrcodes[i])
+        loop i: 162 writeByte(dhtInfo.YAC_values[i])
+        writeByte(dhtInfo.HTCbDCinfo)
+        loop i: 16  writeByte(dhtInfo.CbDC_nrcodes[i])
+        loop i: 12  writeByte(dhtInfo.CbDC_values[i])
+        writeByte(dhtInfo.HTCbACinfo)
+        loop i: 16  writeByte(dhtInfo.CbAC_nrcodes[i])
+        loop i: 162 writeByte(dhtInfo.CbAC_values[i])
+    }
+
+    method writeSOSinfo()
+    {
+        writeWord(SOSinfo.marker)
+        writeWord(SOSinfo.length)
+        writeByte(SOSinfo.nrofcomponents)
+        writeByte(SOSinfo.idy)
+        writeByte(SOSinfo.hty)
+        writeByte(SOSinfo.idcb)
+        writeByte(SOSinfo.htcb)
+        writeByte(SOSinfo.idcr)
+        writeByte(SOSinfo.htcr)
+        writeByte(SOSinfo.ss)
+        writeByte(SOSinfo.se)
+        writeByte(SOSinfo.bf)
+    }
 }
 
 public impl IEncoder for Encoder
@@ -387,6 +474,9 @@ public impl IEncoder for Encoder
 
     method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
+        stream = result
+        srcImage = &image
+
         loadBitmap(image)
 
         setDQTinfo()
@@ -395,5 +485,16 @@ public impl IEncoder for Encoder
         setNumbersCategoryAndBitcode()
         precalculate_YCbCr_tables()
         prepare_quant_tables()
+
+        writeWord(0xFFD8) // SOI
+
+        writeAPP0info()
+        writeDQTinfo()
+        writeSOF0info()
+        writeDHTinfo()
+        writeSOSinfo()
+
+
+        writeWord(0xFFD9) // EOI
     }
 }
