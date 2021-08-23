@@ -55,7 +55,7 @@ struct ColorRGB
     b, g, r: u8
 }
 
-struct bitstring
+struct BitString
 {
     length: u8
     value:  u16
@@ -93,15 +93,15 @@ const APP0info = APP0InfoType{0xFFE0, 16, @["J"'u8, "F"'u8, "I"'u8, "F"'u8, 0], 
 const SOF0info = SOF0InfoType{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
 const SOSinfo  = SOSInfoType{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
 
-const std_dc_luminance_nrcodes   = @[0'u8, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]
-const std_dc_luminance_values    = @[0'u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-const std_dc_chrominance_nrcodes = @[0'u8, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0]
-const std_dc_chrominance_values  = @[0'u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-const std_ac_luminance_nrcodes   = @[0'u8, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d]
-const std_ac_chrominance_nrcodes = @[0'u8, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77]
-const mask                       = @[1'u16, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
+const StdDcLuminanceNrCodes   = @[0'u8, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]
+const StdDcLuminanceValues    = @[0'u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+const StdDcChrominanceNrCodes = @[0'u8, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0]
+const StdDcChrominanceValues  = @[0'u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+const StdAcLuminanceNrCodes   = @[0'u8, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d]
+const StdAcChrominanceNrCodes = @[0'u8, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77]
+const Mask                    = @[1'u16, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
 
-const zigzag: [] u8 = @[
+const ZigZag: [] u8 = @[
     0,  1,  5,  6,  14, 15, 27, 28, 2,  4,  7,  13, 16, 26, 29, 42, 3,  8,  12, 17, 25, 30,
     41, 43, 9,  11, 18, 24, 31, 40, 44, 53, 10, 19, 23, 32, 39, 45, 52, 54, 20, 22, 33, 38,
     46, 51, 55, 60, 21, 34, 37, 47, 50, 56, 59, 61, 35, 36, 48, 49, 57, 58, 62, 63]
@@ -114,7 +114,7 @@ const ChrominanceQt: [] u8 = @[
     17, 18, 24, 47, 99, 99, 99, 99, 18, 21, 26, 66, 99, 99, 99, 99, 24, 26, 56, 99, 99, 99, 99, 99, 47, 66, 99, 99, 99, 99, 99, 99,
     99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99]
 
-const std_ac_luminance_values: [] u8 = @[
+const StdAcLuminanceValues: [] u8 = @[
     0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12, 0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07, 0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08,
     0x23, 0x42, 0xb1, 0xc1, 0x15, 0x52, 0xd1, 0xf0, 0x24, 0x33, 0x62, 0x72, 0x82, 0x09, 0x0a, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x25, 0x26, 0x27, 0x28,
     0x29, 0x2a, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59,
@@ -123,7 +123,7 @@ const std_ac_luminance_values: [] u8 = @[
     0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda, 0xe1, 0xe2,
     0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa]
 
-const std_ac_chrominance_values: [] u8 = @[
+const StdAcChrominanceValues: [] u8 = @[
     0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21, 0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71, 0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91,
     0xa1, 0xb1, 0xc1, 0x09, 0x23, 0x33, 0x52, 0xf0, 0x15, 0x62, 0x72, 0xd1, 0x0a, 0x16, 0x24, 0x34, 0xe1, 0x25, 0xf1, 0x17, 0x18, 0x19, 0x1a, 0x26,
     0x27, 0x28, 0x29, 0x2a, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58,
@@ -149,10 +149,10 @@ public struct Encoder
 
     dqtInfo:    DQTInfoType
     dhtInfo:    DHTInfoType
-    YDC_HT:     [12] bitstring
-    CbDC_HT:    [12] bitstring
-    YAC_HT:     [256] bitstring
-    CbAC_HT:    [256] bitstring
+    YDC_HT:     [12] BitString
+    CbDC_HT:    [12] BitString
+    YAC_HT:     [256] BitString
+    CbAC_HT:    [256] BitString
 
     YRtab:  [256] s32
     YGtab:  [256] s32
@@ -163,8 +163,8 @@ public struct Encoder
     CrRtab: [256] s32
     CrGtab: [256] s32
     CrBtab: [256] s32
-    fdtbl_Y:  [64] f32
-    fdtbl_Cb: [64] f32
+    fdtblY:  [64] f32
+    fdtblCb: [64] f32
 
     YDU:  [64] s8
     CbDU: [64] s8
@@ -174,8 +174,8 @@ public struct Encoder
 
     category_alloc: Array'u8
     category:       *u8
-    bitcode_alloc:  Array'bitstring
-    bitcode:        *bitstring
+    bitcode_alloc:  Array'BitString
+    bitcode:        *BitString
 }
 
 impl Encoder
@@ -251,7 +251,7 @@ impl Encoder
         {
             temp := (cast(s32) _basic_table[i] * _scale_factor + 50) / 100
             temp = Math.clamp(temp, 0, 255)
-            _newtable[zigzag[i]] = cast(u8) temp
+            _newtable[ZigZag[i]] = cast(u8) temp
         }
     }
 
@@ -274,17 +274,17 @@ impl Encoder
         dhtInfo.HTCbDCinfo = 1
         dhtInfo.HTCbACinfo = 0x11
 
-        loop i: 16  dhtInfo.YDC_nrcodes[i] = std_dc_luminance_nrcodes[i + 1]
-        loop i: 12  dhtInfo.YDC_values[i] = std_dc_luminance_values[i]
-        loop i: 16  dhtInfo.YAC_nrcodes[i] = std_ac_luminance_nrcodes[i + 1]
-        loop i: 162 dhtInfo.YAC_values[i] = std_ac_luminance_values[i]
-        loop i: 16  dhtInfo.CbDC_nrcodes[i] = std_dc_chrominance_nrcodes[i + 1]
-        loop i: 12  dhtInfo.CbDC_values[i] = std_dc_chrominance_values[i]
-        loop i: 16  dhtInfo.CbAC_nrcodes[i] = std_ac_chrominance_nrcodes[i + 1]
-        loop i: 162 dhtInfo.CbAC_values[i] = std_ac_chrominance_values[i]
+        loop i: 16  dhtInfo.YDC_nrcodes[i] = StdDcLuminanceNrCodes[i + 1]
+        loop i: 12  dhtInfo.YDC_values[i] = StdDcLuminanceValues[i]
+        loop i: 16  dhtInfo.YAC_nrcodes[i] = StdAcLuminanceNrCodes[i + 1]
+        loop i: 162 dhtInfo.YAC_values[i] = StdAcLuminanceValues[i]
+        loop i: 16  dhtInfo.CbDC_nrcodes[i] = StdDcChrominanceNrCodes[i + 1]
+        loop i: 12  dhtInfo.CbDC_values[i] = StdDcChrominanceValues[i]
+        loop i: 16  dhtInfo.CbAC_nrcodes[i] = StdAcChrominanceNrCodes[i + 1]
+        loop i: 162 dhtInfo.CbAC_values[i] = StdAcChrominanceValues[i]
     }
 
-    method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *bitstring)
+    method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *BitString)
     {
         codevalue    := 0'u16
         pos_in_table := 0
@@ -304,10 +304,10 @@ impl Encoder
 
     method initHuffmanTables()
     {
-        computeHuffmanTable(std_dc_luminance_nrcodes, std_dc_luminance_values, YDC_HT)
-        computeHuffmanTable(std_dc_chrominance_nrcodes, std_dc_chrominance_values, CbDC_HT)
-        computeHuffmanTable(std_ac_luminance_nrcodes, std_ac_luminance_values, YAC_HT)
-        computeHuffmanTable(std_ac_chrominance_nrcodes, std_ac_chrominance_values, CbAC_HT)
+        computeHuffmanTable(StdDcLuminanceNrCodes, StdDcLuminanceValues, YDC_HT)
+        computeHuffmanTable(StdDcChrominanceNrCodes, StdDcChrominanceValues, CbDC_HT)
+        computeHuffmanTable(StdAcLuminanceNrCodes, StdAcLuminanceValues, YAC_HT)
+        computeHuffmanTable(StdAcChrominanceNrCodes, StdAcChrominanceValues, CbAC_HT)
     }
 
     method setNumbersCategoryAndBitcode()
@@ -373,8 +373,8 @@ impl Encoder
         {
             loop col: 8
             {
-                fdtbl_Y[i]  = cast(f32) (1.0 / (cast(f64) dqtInfo.tableY[zigzag[i]] * AanSf[row] * AanSf[col] * 8.0))
-                fdtbl_Cb[i] = cast(f32) (1.0 / (cast(f64) dqtInfo.tableCb[zigzag[i]] * AanSf[row] * AanSf[col] * 8.0))
+                fdtblY[i]  = cast(f32) (1.0 / (cast(f64) dqtInfo.tableY[ZigZag[i]] * AanSf[row] * AanSf[col] * 8.0))
+                fdtblCb[i] = cast(f32) (1.0 / (cast(f64) dqtInfo.tableCb[ZigZag[i]] * AanSf[row] * AanSf[col] * 8.0))
                 i += 1
             }
         }
@@ -391,14 +391,14 @@ impl Encoder
         stream.addByte(cast(u8) (w & 0xFF))
     }
 
-    method writeBits(_bs: bitstring)
+    method writeBits(bs: BitString)
     {
-        value  := _bs.value
-        posval := cast(s32) _bs.length - 1
+        value  := bs.value
+        posval := cast(s32) bs.length - 1
         while posval >= 0
         {
-            if value & mask[posval]
-                bytenew |= cast(u8) mask[bytepos]
+            if value & Mask[posval]
+                bytenew |= cast(u8) Mask[bytepos]
             posval -= 1
             bytepos -= 1
             if bytepos < 0
@@ -538,7 +538,7 @@ impl Encoder
         }
     }
 
-    method fdct_and_quantization(_data: *s8, _fdtbl: *f32, _outdata: *s16)
+    method quantization(_data: *s8, fdtbl: *f32, _outdata: *s16)
     {
         var datafloat: [64] f32
 
@@ -636,28 +636,28 @@ impl Encoder
 
         loop i: 64
         {
-            temp := datafloat[i] * _fdtbl[i]
+            temp := datafloat[i] * fdtbl[i]
             _outdata[i] = cast(s16) (cast(s16)(temp + 16384.5) - 16384)
         }
     }
 
-    method process_DU(_componentDU: *s8, _fdtbl: *f32, _dC: *s16, _hTDC, _hTAC: *bitstring)
+    method processDU(componentDU: *s8, fdtbl: *f32, dC: *s16, hTDC, hTAC: *BitString)
     {
-        EOB       := _hTAC[0x00]
-        M16zeroes := _hTAC[0xF0]
+        EOB       := hTAC[0x00]
+        M16zeroes := hTAC[0xF0]
 
-        fdct_and_quantization(_componentDU, _fdtbl, DU_DCT)
+        quantization(componentDU, fdtbl, DU_DCT)
 
         loop i: 64
-            DU[zigzag[i]] = DU_DCT[i]
-        Diff := DU[0] - _dC[0]
-        _dC[0] = DU[0]
+            DU[ZigZag[i]] = DU_DCT[i]
+        Diff := DU[0] - dC[0]
+        dC[0] = DU[0]
 
         if Diff == 0
-            writeBits(_hTDC[0])
+            writeBits(hTDC[0])
         else
         {
-            writeBits(_hTDC[category[bitcast(uint) cast(int) Diff]])
+            writeBits(hTDC[category[bitcast(uint) cast(int) Diff]])
             writeBits(bitcode[bitcast(uint) cast(int) Diff])
         }
 
@@ -685,7 +685,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            writeBits(_hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) DU[i]]])
+            writeBits(hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) DU[i]]])
             writeBits(bitcode[bitcast(uint) cast(int) DU[i]])
             i += 1
         }
@@ -694,7 +694,7 @@ impl Encoder
             writeBits(EOB)
     }
 
-    method main_encoder()
+    method encoder()
     {
         var DCY, DCCb, DCCr: s16
         for ypos := 0'u16; ypos < imageY; ypos += 8
@@ -702,9 +702,9 @@ impl Encoder
             for xpos := 0'u16; xpos < imageX; xpos += 8
             {
                 loadFromRGB(xpos, ypos)
-                process_DU(YDU, fdtbl_Y, &DCY, YDC_HT, YAC_HT)
-                process_DU(CbDU, fdtbl_Cb, &DCCb, CbDC_HT, CbAC_HT)
-                process_DU(CrDU, fdtbl_Cb, &DCCr, CbDC_HT, CbAC_HT)
+                processDU(YDU, fdtblY, &DCY, YDC_HT, YAC_HT)
+                processDU(CbDU, fdtblCb, &DCCb, CbDC_HT, CbAC_HT)
+                processDU(CrDU, fdtblCb, &DCCr, CbDC_HT, CbAC_HT)
             }
         }
     }
@@ -722,9 +722,6 @@ public impl IEncoder for Encoder
     {
         stream = result
         srcImage = &image
-
-        //try File.writeAllBytes("f:/j.bin", @mkslice(srcImage.pixels, srcImage.size))
-        //@print(srcImage.height)
 
         loadBitmap(image)
 
@@ -745,16 +742,15 @@ public impl IEncoder for Encoder
 
         bytenew = 0
         bytepos = 7
-        main_encoder()
+        encoder()
 
         if (bytepos >= 0)
         {
-            var fillbits: bitstring
+            var fillbits: BitString
             fillbits.length = cast(u8) (bytepos + 1)
             fillbits.value  = cast(u16) ((1 << (bytepos + 1)) - 1)
             writeBits(fillbits)
         }
-
 
         writeWord(0xFFD9) // EOI
     }
