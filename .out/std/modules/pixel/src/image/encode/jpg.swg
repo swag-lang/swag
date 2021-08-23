@@ -387,6 +387,30 @@ impl Encoder
 
     method writeBits(_bs: bitstring)
     {
+        value  := _bs.value;
+        posval := cast(s32) _bs.length - 1
+        while posval >= 0
+        {
+            if value & mask[posval]
+                bytenew |= cast(u8) mask[bytepos]
+            posval -= 1
+            bytepos -= 1
+            if bytepos < 0
+            {
+                if bytenew == 0xFF
+                {
+                    writeByte(0xFF)
+                    writeByte(0)
+                }
+                else
+                {
+                    writeByte(bytenew)
+                }
+
+                bytepos = 7
+                bytenew = 0
+            }
+        }
     }
 
     method writeAPP0info()
