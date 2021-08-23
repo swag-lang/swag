@@ -168,11 +168,11 @@ public struct Encoder
     fdtblY:  [64] f32
     fdtblCb: [64] f32
 
-    YDU:     [64] s8
-    CbDU:    [64] s8
-    CrDU:    [64] s8
-    DU_DCT:  [64] s16
-    DU:      [64] s16
+    duY:     [64] s8
+    duCb:    [64] s8
+    duCr:    [64] s8
+    duDct:   [64] s16
+    du:      [64] s16
 
     categoryAlloc: Array'u8
     category:      *u8
@@ -247,13 +247,13 @@ impl Encoder
         imageY = yDiv8
     }
 
-    func setQuantTable(_basic_table: const *u8, _scale_factor: u8, _newtable: *u8)
+    func setQuantTable(basicTable: const *u8, scaleFactor: u8, newTable: *u8)
     {
         loop i: 64
         {
-            temp := (cast(s32) _basic_table[i] * _scale_factor + 50) / 100
+            temp := (cast(s32) basicTable[i] * scaleFactor + 50) / 100
             temp = Math.clamp(temp, 0, 255)
-            _newtable[ZigZag[i]] = cast(u8) temp
+            newTable[ZigZag[i]] = cast(u8) temp
         }
     }
 
@@ -286,16 +286,16 @@ impl Encoder
         loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
-    method computeHuffmanTable(_nrcodes: const *u8, _std_table: const *u8, _hT: *BitString)
+    method computeHuffmanTable(nrCodes: const *u8, stdTable: const *u8, hT: *BitString)
     {
         codevalue    := 0'u16
         pos_in_table := 0
         loop k: 1..16
         {
-            for j := 1; j <= _nrcodes[k]; j += 1
+            for j := 1; j <= nrCodes[k]; j += 1
             {
-                _hT[_std_table[pos_in_table]].value  = codevalue
-                _hT[_std_table[pos_in_table]].length = cast(u8) k
+                hT[stdTable[pos_in_table]].value  = codevalue
+                hT[stdTable[pos_in_table]].length = cast(u8) k
                 pos_in_table += 1
                 codevalue +=,safe 1
             }
@@ -503,25 +503,25 @@ impl Encoder
     }
 
     #[Swag.Safety("", false)]
-    method loadFromRGB(_xpos: u16, _ypos: u16)
+    method loadFromRGB(xpos: u16, ypos: u16)
     {
-        method Y(_r, _g, _b: u8)->u8
+        method Y(r, g, b: u8)->u8
         {
-            return cast(u8) (((tabYR[(_r)] + tabYG[(_g)] + tabYB[(_b)]) >> 16) - 128)
+            return cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
         }
 
-        method Cb(_r, _g, _b: u8)->u8
+        method Cb(r, g, b: u8)->u8
         {
-            return cast(u8) ((tabCbR[(_r)] + tabCbG[(_g)] + tabCbB[(_b)]) >> 16)
+            return cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
         }
 
-        method Cr(_r, _g, _b: u8)->u8
+        method Cr(r, g, b: u8)->u8
         {
-            return cast(u8) ((tabCrR[(_r)] + tabCrG[(_g)] + tabCrB[(_b)]) >> 16)
+            return cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
         }
 
         pos := 0
-        location := _ypos * imageX + _xpos
+        location := ypos * imageX + xpos
         loop y: 8
         {
             loop x: 8
@@ -529,9 +529,9 @@ impl Encoder
                 R         := bufferRGB[location].r
                 G         := bufferRGB[location].g
                 B         := bufferRGB[location].b
-                YDU[pos]  = Y(self, R, G, B)
-                CbDU[pos] = Cb(self, R, G, B)
-                CrDU[pos] = Cr(self, R, G, B)
+                duY[pos]  = Y(self, R, G, B)
+                duCb[pos] = Cb(self, R, G, B)
+                duCr[pos] = Cr(self, R, G, B)
                 location += 1
                 pos += 1
             }
@@ -648,12 +648,12 @@ impl Encoder
         EOB       := hTAC[0x00]
         M16zeroes := hTAC[0xF0]
 
-        quantization(componentDU, fdtbl, DU_DCT)
+        quantization(componentDU, fdtbl, duDct)
 
         loop i: 64
-            DU[ZigZag[i]] = DU_DCT[i]
-        Diff := DU[0] - dC[0]
-        dC[0] = DU[0]
+            du[ZigZag[i]] = duDct[i]
+        Diff := du[0] - dC[0]
+        dC[0] = du[0]
 
         if Diff == 0
             writeBits(hTDC[0])
@@ -664,7 +664,7 @@ impl Encoder
         }
 
         end0pos := 63
-        while (end0pos > 0) and (DU[end0pos] == 0)
+        while (end0pos > 0) and (du[end0pos] == 0)
             end0pos -= 1
 
         if end0pos == 0
@@ -677,7 +677,7 @@ impl Encoder
         while i <= end0pos
         {
             startpos := i
-            while (i <= end0pos) and (DU[i] == 0)
+            while (i <= end0pos) and (du[i] == 0)
                 i += 1
             nrzeroes := i - startpos
             if nrzeroes >= 16
@@ -687,8 +687,8 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            writeBits(hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) DU[i]]])
-            writeBits(bitcode[bitcast(uint) cast(int) DU[i]])
+            writeBits(hTAC[nrzeroes * 16 + category[bitcast(uint) cast(int) du[i]]])
+            writeBits(bitcode[bitcast(uint) cast(int) du[i]])
             i += 1
         }
 
@@ -704,9 +704,9 @@ impl Encoder
             for xpos := 0'u16; xpos < imageX; xpos += 8
             {
                 loadFromRGB(xpos, ypos)
-                processDU(YDU, fdtblY, &DCY, htYDC, htYAC)
-                processDU(CbDU, fdtblCb, &DCCb, htCbDC, htCbAC)
-                processDU(CrDU, fdtblCb, &DCCr, htCbDC, htCbAC)
+                processDU(duY, fdtblY, &DCY, htYDC, htYAC)
+                processDU(duCb, fdtblCb, &DCCb, htCbDC, htCbAC)
+                processDU(duCr, fdtblCb, &DCCr, htCbDC, htCbAC)
             }
         }
     }
