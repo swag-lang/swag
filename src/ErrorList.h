@@ -898,7 +898,7 @@ SWAG_ERROR(Err0908, "'%s = %s' is impossible because no corresponding 'opAffect'
 SWAG_ERROR(Err0909, "type '%s' cannot be used in an union because it contains 'opPostCopy' (or one of its members does)")
 SWAG_ERROR(Err0910, "type '%s' cannot be used in an union because it contains 'opPostMove' (or one of its members does)")
 SWAG_ERROR(Err0911, "type '%s' cannot be used in an union because it contains 'opDrop' (or one of its members does)")
-SWAG_ERROR(Err0912, "expected ':' after variable name, found a literal")
+SWAG_ERROR(Err0912, "expected ':' after variable name '%s', found a literal")
 
 SWAG_ERROR(Hnt0000, "this divisor expression is zero")
 SWAG_ERROR(Hnt0001, "this '@sqrt' is called with a negative value")
