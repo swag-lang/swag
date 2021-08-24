@@ -1,12 +1,38 @@
-using Core, Pixel
+using Core, Pixel, Threading
+
+struct TH
+{
+    using base: Thread
+    filename:   String
+}
+
+func entry(th: Thread)
+{
+    param := cast(const *TH) &th
+    img := assume Image.load(param.filename)
+}
 
 //#[Swag.PrintBc]
 #test
 {
     pathName := dataPath()
     files := try Directory.enumerateFiles(pathName)
+
+    var ths: Array'TH
+    ths.resize(files.count)
+
+    validImgs := 0
     visit f: files
     {
-        img := try Image.load(f.fullname)
+        if !Image.canDecode(f.fullname)
+            continue
+        th := ths[@index]
+        th.filename = f.fullname
+        try Thread.init(th, &entry)
+        try th.start()
+        validImgs += 1
     }
+
+    loop i: validImgs
+        ths[i].wait()
 }

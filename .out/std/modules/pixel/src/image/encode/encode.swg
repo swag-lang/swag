@@ -36,6 +36,19 @@ public func(T) addEncoder()
 // Save an image to a file
 impl Image
 {
+    // Returns 'true' if the given filename has a corresponding encoder
+    public func canEncode(fileName: string)->bool
+    {
+        visit *encoder: g_Encoder
+        {
+            if encoder.itf.canEncode(fileName)
+                return true
+        }
+
+        return false
+    }
+
+    // Save the image to a file
     public method save(fileName: string, options: EncodeOptions = @{}) throw
     {
         // Find the encoder that can treat 'fileName'

@@ -39,6 +39,18 @@ public func(T) addDecoder()
 // Load an image from file
 impl Image
 {
+    // Returns 'true' if the given filename has a corresponding decoder
+    public func canDecode(fileName: string)->bool
+    {
+        visit *decoder: g_Decoder
+        {
+            if decoder.itf.canDecode(fileName)
+                return true
+        }
+
+        return false
+    }
+
     public func load(fileName: string, options: DecodeOptions = @{})->Image throw
     {
         // Find the decoder that can treat 'fileName'
@@ -52,7 +64,8 @@ impl Image
             }
         }
 
-        if !found throw "no matching image decoder"
+        if !found
+            throw "no matching image decoder"
 
         // Read file content
         bytes := try File.readAllBytes(fileName)
