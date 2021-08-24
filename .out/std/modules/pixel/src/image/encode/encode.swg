@@ -13,6 +13,7 @@ private
 
 public struct EncodeOptions
 {
+    quality: u8 = 10    // Encoding quality between 1 and 100
 }
 
 // Interface to decode a buffer
@@ -62,7 +63,8 @@ impl Image
             }
         }
 
-        if !found throw "no matching image encoder"
+        if !found
+            throw "no matching image encoder"
 
         // Create an encoder instance
         ptrEncoder := Memory.new(found.type)
@@ -76,13 +78,7 @@ impl Image
         // Encode
         itf := @mkinterface(ptrEncoder, found.type, IEncoder)
         var result: ConcatBuffer
-
-        //var ti: Time.Stopwatch
-        //ti.start()
         try itf.encode(&result, dref self, options)
-        //ti.stop()
-        //Console.printf("%ms\n", ti.elapsedMilliseconds())
-
         try File.writeAllBytes(fileName, result)
     }
 }

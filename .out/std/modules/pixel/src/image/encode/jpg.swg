@@ -247,12 +247,12 @@ impl Encoder
         imageY = yDiv8
     }
 
-    func setQuantTable(basicTable: const *u8, scaleFactor: u8, newTable: *u8)
+    method setQuantTable(basicTable: const *u8, newTable: *u8)
     {
         loop i: 64
         {
             temp := (cast(s32) basicTable[i] * scaleFactor + 50) / 100
-            temp = Math.clamp(temp, 0, 255)
+            temp = Math.clamp(temp, 1, 255)
             newTable[ZigZag[i]] = cast(u8) temp
         }
     }
@@ -263,8 +263,8 @@ impl Encoder
         dqtInfo.length   = 132
         dqtInfo.infoQty  = 0
         dqtInfo.infoQtcb = 1
-        setQuantTable(LuminanceQt, scaleFactor, dqtInfo.tableY)
-        setQuantTable(ChrominanceQt, scaleFactor, dqtInfo.tableCb)
+        setQuantTable(LuminanceQt, dqtInfo.tableY)
+        setQuantTable(ChrominanceQt, dqtInfo.tableCb)
     }
 
     method setDHTinfo()
@@ -719,6 +719,7 @@ public impl IEncoder for Encoder
     {
         stream = result
         srcImage = &image
+        scaleFactor = cast(u8) (100 - Math.clamp(options.quality, 1, 100))
 
         loadBitmap(image)
 
