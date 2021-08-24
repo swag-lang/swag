@@ -1,4 +1,6 @@
-//#[Swag.PrintBc]
+#global testerror
+
+#[Swag.Optim("", false)]
 #[Swag.Safety("", true)]
 #test
 {
