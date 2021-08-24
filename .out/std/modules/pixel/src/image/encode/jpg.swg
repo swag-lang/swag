@@ -382,11 +382,13 @@ impl Encoder
         }
     }
 
+    #[Swag.Inline]
     method writeByte(b: u8)
     {
         stream.addByte(b)
     }
 
+    #[Swag.Inline]
     method writeWord(w: u16)
     {
         stream.addByte(cast(u8) (w >>,safe 8))
