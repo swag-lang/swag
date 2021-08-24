@@ -367,11 +367,8 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
 
 void AstNode::computeEndLocation()
 {
-    if (!childs.empty())
-    {
-        for (auto p : childs)
-            p->computeEndLocation();
-    }
+    for (auto p : childs)
+        p->computeEndLocation();
 
     switch (kind)
     {
@@ -381,6 +378,8 @@ void AstNode::computeEndLocation()
 
     case AstNodeKind::IdentifierRef:
     case AstNodeKind::ArrayPointerSlicing:
+        if (childs.empty())
+            break;
         token.startLocation = childs.front()->token.startLocation;
         token.endLocation   = childs.back()->token.endLocation;
         break;
