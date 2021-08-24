@@ -3,7 +3,6 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 
@@ -11,294 +10,6 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-    return true;
-}
-
-bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
-{
-    auto node = context->node;
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    return true;
-}
-
-bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
-{
-    if (context->sourceFile->module->buildCfg.stackTrace)
-    {
-        PushICFlags ic(context, BCI_TRYCATCH);
-        emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
-    }
-
-    return true;
-}
-
-bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
-{
-    auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::Throw);
-
-    // Push current error context in case the leave scope triggers some errors too
-    if (!(context->node->doneFlags & AST_DONE_STACK_TRACE))
-    {
-        emitInstruction(context, ByteCodeOp::InternalPushErr);
-        context->node->doneFlags |= AST_DONE_STACK_TRACE;
-        context->tryCatchScope++;
-    }
-
-    // Leave the current scope
-    // As this will reevaluate some childs, we need to force the BCI_TRYCATCH flags until we are done
-    // and come back here
-    SWAG_CHECK(emitLeaveScopeReturn(context, nullptr, true));
-    if (context->result != ContextResult::Done)
-        return true;
-
-    // Restore the error context, and keep error trace of current call
-    if (!(context->node->doneFlags & AST_DONE_STACK_TRACE1))
-    {
-        SWAG_ASSERT(context->tryCatchScope);
-        context->tryCatchScope--;
-        emitInstruction(context, ByteCodeOp::InternalPopErr);
-
-        if (context->sourceFile->module->buildCfg.stackTrace)
-        {
-            auto         r0 = reserveRegisterRC(context);
-            uint32_t     storageOffset;
-            DataSegment* storageSegment;
-            computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
-            emitMakeSegPointer(context, storageSegment, storageOffset, r0);
-            emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
-            freeRegisterRC(context, r0);
-        }
-
-        context->node->doneFlags |= AST_DONE_STACK_TRACE1;
-    }
-
-    TypeInfo* returnType = nullptr;
-    if (node->ownerInline)
-        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_ALIAS);
-    else
-        returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_ALIAS);
-
-    // Set default value
-    if (!returnType->isNative(NativeTypeKind::Void))
-    {
-        if (returnType->kind == TypeInfoKind::Struct)
-        {
-            if (node->ownerInline)
-                node->regInit = node->ownerInline->resultRegisterRC;
-            else if (!(context->node->doneFlags & AST_DONE_TRY_2))
-            {
-                reserveRegisterRC(context, node->regInit, 1);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                context->node->doneFlags |= AST_DONE_TRY_2;
-            }
-
-            TypeInfoPointer pt;
-            pt.pointedType = returnType;
-            SWAG_CHECK(emitInit(context, &pt, node->regInit, 1, nullptr, nullptr));
-            if (context->result != ContextResult::Done)
-                return true;
-
-            if (!node->ownerInline)
-                freeRegisterRC(context, node->regInit);
-        }
-        else if (returnType->kind == TypeInfoKind::Array)
-        {
-            auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
-            if (typeArr->finalType->kind != TypeInfoKind::Struct)
-            {
-                if (node->ownerInline)
-                {
-                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRC)->b.u64 = typeArr->sizeOf;
-                }
-                else
-                {
-                    auto r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
-                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
-                    freeRegisterRC(context, r0);
-                }
-            }
-            else
-            {
-                if (!(context->node->doneFlags & AST_DONE_TRY_2))
-                {
-                    reserveRegisterRC(context, node->regInit, 1);
-                    if (node->ownerInline)
-                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
-                    else
-                        emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                    context->node->doneFlags |= AST_DONE_TRY_2;
-                }
-
-                TypeInfoPointer pt;
-                pt.pointedType = typeArr->finalType;
-                SWAG_CHECK(emitInit(context, &pt, node->regInit, typeArr->totalCount, nullptr, nullptr));
-                if (context->result != ContextResult::Done)
-                    return true;
-
-                freeRegisterRC(context, node->regInit);
-            }
-        }
-        else if (returnType->numRegisters() == 1)
-        {
-            if (node->ownerInline)
-            {
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
-            }
-            else
-            {
-                auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::ClearRA, r0);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
-                freeRegisterRC(context, r0);
-            }
-        }
-        else if (returnType->numRegisters() == 2)
-        {
-            if (node->ownerInline)
-            {
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
-                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[1]);
-            }
-            else
-            {
-                auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::ClearRA, r0);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
-                freeRegisterRC(context, r0);
-            }
-        }
-        else
-        {
-            context->internalError( "emitTry, unsupported return type");
-        }
-    }
-
-    // Return from function
-    if (node->ownerInline)
-    {
-        node->seekJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::Jump);
-        node->ownerInline->returnList.push_back(node);
-    }
-    else
-    {
-        emitInstruction(context, ByteCodeOp::Ret)->a.u32 = node->ownerFct->stackSize;
-    }
-
-    return true;
-}
-
-bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
-{
-    PushICFlags ic(context, BCI_TRYCATCH);
-
-    auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto expr = node->childs.back();
-
-    if (!(node->doneFlags & AST_DONE_CAST1))
-    {
-        SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
-            return true;
-        node->doneFlags |= AST_DONE_CAST1;
-    }
-
-    if (!(node->doneFlags & AST_DONE_TRY_1))
-    {
-        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
-        node->doneFlags |= AST_DONE_TRY_1;
-    }
-
-    // In a top level function, this should panic
-    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
-    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
-    {
-        uint32_t     storageOffset;
-        DataSegment* storageSegment;
-        computeSourceLocation(context, node, &storageOffset, &storageSegment);
-
-        auto r1 = reserveRegisterRC(context);
-        if (context->sourceFile->module->buildCfg.stackTrace)
-            emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
-        emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-        emitInstruction(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
-        freeRegisterRC(context, expr->resultRegisterRC);
-        freeRegisterRC(context, r1);
-    }
-    else
-    {
-        freeRegisterRC(context, expr->resultRegisterRC);
-        SWAG_CHECK(emitTryThrowExit(context, context->node));
-        if (context->result != ContextResult::Done)
-            return true;
-    }
-
-    return true;
-}
-
-bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
-{
-    PushICFlags ic(context, BCI_TRYCATCH);
-
-    // try in a top level function is equivalent to assume
-    auto node = context->node;
-
-    AstFuncDecl* parentFct = nullptr;
-    if (node->ownerInline && ((node->semFlags & AST_SEM_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
-        parentFct = node->ownerInline->func;
-    else
-        parentFct = node->ownerFct;
-    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
-        return emitAssume(context);
-
-    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->ownerTryCatchAssume, AstNodeKind::Try);
-    if (!(node->doneFlags & AST_DONE_TRY_1))
-    {
-        RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-        tryNode->seekInsideJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
-        freeRegisterRC(context, r0);
-        node->doneFlags |= AST_DONE_TRY_1;
-    }
-
-    SWAG_CHECK(emitTryThrowExit(context, tryNode));
-    if (context->result != ContextResult::Done)
-        return true;
-
-    context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
-    return true;
-}
-
-bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
-{
-    if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
-        return true;
-
-    PushICFlags ic(context, BCI_TRYCATCH);
-
-    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->extension->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
-
-    RegisterList r0;
-    reserveRegisterRC(context, r0, 2);
-    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-    assumeNode->seekInsideJump = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
-
-    uint32_t     storageOffset;
-    DataSegment* storageSegment;
-    computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
-    auto r1 = reserveRegisterRC(context);
-
-    emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-    emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
-    freeRegisterRC(context, r0);
-    freeRegisterRC(context, r1);
-
-    context->bc->out[assumeNode->seekInsideJump].b.s32 = context->bc->numInstructions - assumeNode->seekInsideJump - 1;
     return true;
 }
 
@@ -319,7 +30,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto resolved   = node->resolvedSymbolOverload;
     auto typeInfo   = TypeManager::concreteReference(resolved->typeInfo);
     typeInfo        = TypeManager::concreteType(typeInfo);
-    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, context->internalError( "emitIdentifier, type is generic"));
+    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, context->internalError("emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)
@@ -621,7 +332,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError( Utf8::format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Utf8::format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
 
         // If previous node was a pointer index, then no need to check for a null pointer, it has already been done
         bool safety = true;
@@ -665,7 +376,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError( Utf8::format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
+        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError(Utf8::format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
@@ -676,5 +387,5 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    return context->internalError( "emitIdentifier");
+    return context->internalError("emitIdentifier");
 }

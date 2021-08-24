@@ -25,6 +25,5 @@ func toto() throw
 #test
 {
     catch toto()
-    //@print(cast(s64) G)
     @assert(G == 7)
 }

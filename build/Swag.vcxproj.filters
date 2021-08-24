@@ -485,6 +485,9 @@
     <ClCompile Include="..\src\ErrorIds.cpp">
       <Filter>Main\Global</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
+      <Filter>ByteCode\Gen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

@@ -293,6 +293,7 @@
     <ClCompile Include="..\src\ByteCodeGenJob_Block.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_Cast.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_CompareOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_Function.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_Identifier.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_Expression.cpp" />

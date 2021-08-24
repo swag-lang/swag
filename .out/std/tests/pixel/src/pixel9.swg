@@ -10,7 +10,10 @@ using Core, Pixel
     files := try Directory.enumerateFiles(pathName)
     visit f: files
     {
-        img := try Image.load(f.fullname, options)
-        @assert(img.pixels == null)
+        if Image.canLoad(f.fullname)
+        {
+            img := try Image.load(f.fullname, options)
+            @assert(img.pixels == null)
+        }
     }
 }
