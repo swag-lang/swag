@@ -398,6 +398,12 @@ impl Encoder
         stream.addByte(cast(u8) (w & 0xFF))
     }
 
+    #[Swag.Inline]
+    method writeBytes(s: [..] u8)
+    {
+        stream.addBytes(s)
+    }
+
     method writeBits(bs: BitString)
     {
         value  := bs.value
@@ -449,9 +455,9 @@ impl Encoder
         writeWord(dqtInfo.marker)
         writeWord(dqtInfo.length)
         writeByte(dqtInfo.infoQty)
-        loop i: 64 writeByte(dqtInfo.tableY[i])
+        writeBytes(dqtInfo.tableY)
         writeByte(dqtInfo.infoQtcb)
-        loop i: 64 writeByte(dqtInfo.tableCb[i])
+        writeBytes(dqtInfo.tableCb)
     }
 
     method writeSOF0info()
@@ -478,17 +484,17 @@ impl Encoder
         writeWord(dhtInfo.marker)
         writeWord(dhtInfo.length)
         writeByte(dhtInfo.infoHTYDC)
-        loop i: 16  writeByte(dhtInfo.nrcodesYDC[i])
-        loop i: 12  writeByte(dhtInfo.valuesYDC[i])
+        writeBytes(dhtInfo.nrcodesYDC)
+        writeBytes(dhtInfo.valuesYDC)
         writeByte(dhtInfo.infoHTYAC)
-        loop i: 16  writeByte(dhtInfo.nrcodesYAC[i])
-        loop i: 162 writeByte(dhtInfo.valuesYAC[i])
+        writeBytes(dhtInfo.nrcodesYAC)
+        writeBytes(dhtInfo.valuesYAC)
         writeByte(dhtInfo.infoHTCbDC)
-        loop i: 16  writeByte(dhtInfo.nrcodesCbDC[i])
-        loop i: 12  writeByte(dhtInfo.valuesCbDC[i])
+        writeBytes(dhtInfo.nrcodesCbDC)
+        writeBytes(dhtInfo.valuesCbDC)
         writeByte(dhtInfo.infoHTCbAC)
-        loop i: 16  writeByte(dhtInfo.nrcodesCbAC[i])
-        loop i: 162 writeByte(dhtInfo.valuesCbAC[i])
+        writeBytes(dhtInfo.nrcodesCbAC)
+        writeBytes(dhtInfo.valuesCbAC)
     }
 
     method writeSOSinfo()
