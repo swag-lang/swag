@@ -40,7 +40,7 @@ public func(T) addDecoder()
 impl Image
 {
     // Returns 'true' if the given filename has a corresponding decoder
-    public func canDecode(fileName: string)->bool
+    public func canLoad(fileName: string)->bool
     {
         visit *decoder: g_Decoder
         {

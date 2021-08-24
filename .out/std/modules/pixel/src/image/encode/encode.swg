@@ -37,7 +37,7 @@ public func(T) addEncoder()
 impl Image
 {
     // Returns 'true' if the given filename has a corresponding encoder
-    public func canEncode(fileName: string)->bool
+    public func canSave(fileName: string)->bool
     {
         visit *encoder: g_Encoder
         {

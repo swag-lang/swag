@@ -9,6 +9,7 @@ struct TH
 func entry(th: Thread)
 {
     param := cast(const *TH) &th
+    //Console.print(param.filename, "\n")
     img := assume Image.load(param.filename)
 }
 
@@ -24,7 +25,7 @@ func entry(th: Thread)
     validImgs := 0
     visit f: files
     {
-        if !Image.canDecode(f.fullname)
+        if !Image.canLoad(f.fullname)
             continue
         th := ths[@index]
         th.filename = f.fullname
