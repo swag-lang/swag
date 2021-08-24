@@ -357,6 +357,33 @@ func displayPage3()
         cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
     }
 
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(500, 400)
+
+        var lp: LinePath
+        lp.start(20, 50)
+        lp.curveTo(100, 10)
+        lp.curveTo(200, 100)
+        lp.curveTo(300, 50)
+        lp.curveTo(400, 80)
+        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+    }
+
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(500, 500)
+
+        var lp: LinePath
+        lp.start(60, 60)
+        lp.curveTo(150, 80)
+        lp.curveTo(200, 40)
+        lp.curveTo(180, 120)
+        lp.curveTo(120, 100)
+        lp.curveTo(80, 160)
+        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+    }
+
     cdc.end()
     renderer.resetTransform()
     renderer.draw(&cdc)

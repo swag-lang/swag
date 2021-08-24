@@ -378,31 +378,44 @@ public impl LinePath
                 flattenBezier(pos, p1, p2, quality)
 
             case Curve:
-                if i <= lastElem - 2
+                var p0, p1, p2, p3: Vector2
+                if i == 0
                 {
-                    p0 := i == 0 ? startPoint : elements[i - 1].position
-                    p1 := pos
-                    p2 := elements[i + 1].position
-                    p3 := elements[i + 2].position
-
-                    const alpha = 0.5
-                    const tension = 0.0
-
-                    t01 := Math.pow(Vector2.distance(p0, p1), alpha)
-                    t12 := Math.pow(Vector2.distance(p1, p2), alpha)
-                    t23 := Math.pow(Vector2.distance(p2, p3), alpha)
-
-                    m1 := (1.0 - tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
-                    m2 := (1.0 - tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
-
-                    sa := 2.0 * (p1 - p2) + m1 + m2
-                    sb := -3.0 * (p1 - p2) - m1 - m1 - m2
-                    sc := m1
-                    sd := p1
-                    flattenCurve(sa, sb, sc, sd, quality)
+                    p0 = (startPoint - pos) + startPoint
+                    p1 = startPoint
+                    p2 = pos
+                    p3 = elements[i + 1].position
+                }
+                else if i <= lastElem - 1
+                {
+                    p0 = i == 1 ? startPoint : elements[i - 2].position
+                    p1 = elements[i - 1].position
+                    p2 = pos
+                    p3 = elements[i + 1].position
                 }
                 else
-                    flattenLine(pos)
+                {
+                    p0 = elements[i - 2].position
+                    p1 = elements[i - 1].position
+                    p2 = pos
+                    p3 = pos + (pos - p1)
+                }
+
+                const alpha = 0.5
+                const tension = 0.0
+
+                t01 := Math.pow(Vector2.distance(p0, p1), alpha)
+                t12 := Math.pow(Vector2.distance(p1, p2), alpha)
+                t23 := Math.pow(Vector2.distance(p2, p3), alpha)
+
+                m1 := (1.0 - tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+                m2 := (1.0 - tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+
+                sa := 2.0 * (p1 - p2) + m1 + m2
+                sb := -3.0 * (p1 - p2) - m1 - m1 - m2
+                sc := m1
+                sd := p1
+                flattenCurve(sa, sb, sc, sd, quality)
 
             case Arc:
                 flattenArc(pos, elem.p1, elem.p2, quality)
