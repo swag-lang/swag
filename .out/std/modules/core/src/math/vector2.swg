@@ -48,6 +48,7 @@ impl Vector2
         #if   op == "+" return Vector2{x + other.x, y + other.y}
         #elif op == "-" return Vector2{x - other.x, y - other.y}
         #elif op == "*" return Vector2{x * other.x, y * other.y}
+        #elif op == "/" return Vector2{x / other.x, y / other.y}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
@@ -56,6 +57,7 @@ impl Vector2
         #if   op == "+" return Vector2{x + value, y + value}
         #elif op == "-" return Vector2{x - value, y - value}
         #elif op == "*" return Vector2{x * value, y * value}
+        #elif op == "/" return Vector2{x / value, y / value}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 

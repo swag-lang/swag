@@ -6,6 +6,7 @@ public enum ElementType
     Arc
     Bezier1
     Bezier2
+    Curve
 }
 
 public struct Element
@@ -37,7 +38,7 @@ public struct LinePath
 public impl LinePath
 {
     // Reset the path
-    func start(using self, startX, startY: f32)
+    method start(startX, startY: f32)
     {
         elements.clear()
         isClosed = false
@@ -47,7 +48,7 @@ public impl LinePath
     }
 
     // Add a line from the previous point to 'pt'
-    func lineTo(using self, x, y: f32)
+    method lineTo(x, y: f32)
     {
         var elem: Element = ?
         elem.type = .Line
@@ -58,7 +59,18 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    func bezierTo(using self, x, y: f32, ctx, cty: f32)
+    method curveTo(x, y: f32)
+    {
+        var elem: Element = ?
+        elem.type = .Curve
+        elem.position.set(x, y)
+        elements.add(elem)
+        endPoint.set(x, y)
+        isDirty = true
+    }
+
+    // Add a curve from the previous point to 'pt'
+    method bezierTo(x, y: f32, ctx, cty: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier1
@@ -70,7 +82,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    func bezierTo(using self, x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
+    method bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier2
@@ -83,7 +95,7 @@ public impl LinePath
     }
 
     // Add an arc from the previous point
-    func arcTo(using self, centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
+    method arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
         maxAngleRad := Math.toRadians(maxAngle)
@@ -104,7 +116,7 @@ public impl LinePath
 
     // Close the figure
     // Will add a line to the first point if necessary
-    func close(using self)
+    method close()
     {
         if isClosed return
 
@@ -116,7 +128,7 @@ public impl LinePath
     }
 
     // Initialize the path with a rectangle
-    func setRect(using self, left, top, width, height: f32)
+    method setRect(left, top, width, height: f32)
     {
         right := left + width
         bottom := top + height
@@ -129,7 +141,7 @@ public impl LinePath
     }
 
     // Initialize the path with a round rectangle
-    func setRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32)
+    method setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
     {
         right := left + width
         bottom := top + height
@@ -145,7 +157,7 @@ public impl LinePath
     }
 
     // Initialize the path with an ellipse
-    func setEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32)
+    method setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
         start(centerX, centerY - radiusY)
         arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
@@ -156,7 +168,7 @@ public impl LinePath
     }
 
     // Initialize the path with a circle
-    func setCircle(using self, centerX, centerY: f32, radius: f32)
+    method setCircle(centerX, centerY: f32, radius: f32)
     {
         start(centerX, centerY - radius)
         arcTo(centerX, centerY, radius, radius, 0, 90)
@@ -178,7 +190,7 @@ public impl LinePath
         return minDist
     }
 
-    private func flattenBezier(using self, pos, p1: Vector2, quality: PaintQuality)
+    private method flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
         minDist := getFlattenDistance(quality)
         startPt := endPosBuffer
@@ -211,7 +223,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private func flattenBezier(using self, pos, p1, p2: Vector2, quality: PaintQuality)
+    private method flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         v := pos - endPosBuffer
         minDist := getFlattenDistance(quality)
@@ -246,7 +258,38 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private func flattenArc(using self, pos, p1, p2: Vector2, quality: PaintQuality)
+    private method flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
+    {
+        minDist := getFlattenDistance(quality)
+        startPt := endPosBuffer
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{0, endPosBuffer})
+        tmp.add(@{1, p0 + p1 + p2 + p3})
+
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+
+            var point: Vector2 = ?
+            point  = p0 * t * t * t
+            point += p1 * t * t
+            point += p2 * t
+            point += p3
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+    }
+
+    private method flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         var endPos: Vector2 = ?
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
@@ -277,7 +320,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private func flattenLine(using self, pos: Vector2)
+    private method flattenLine(pos: Vector2)
     {
         totalLen += endPosBuffer.distance(pos)
         bvMin = Vector2.min(bvMin, pos)
@@ -287,7 +330,7 @@ public impl LinePath
     }
 
     // Convert the path to a list of points
-    func flatten(using self, quality: PaintQuality)
+    method flatten(quality: PaintQuality)
     {
         #[Swag.Inline]
         func roundVal(x: f32) => x//0.4 + Math.round(x)
@@ -309,25 +352,58 @@ public impl LinePath
         endPosBuffer.y = roundVal(startPoint.y)
         polygon.points.add(endPosBuffer)
 
-        var pos, p1, p2: Vector2 = ?
-        visit elem: elements
+        var pos, p1, p2, lastP: Vector2 = ?
+        lastElem := elements.count - 1
+        visit elem, i: elements
         {
             pos.x = roundVal(elem.position.x)
             pos.y = roundVal(elem.position.y)
+
+            #[Swag.Complete]
             switch elem.type
             {
             case Line:
                 flattenLine(pos)
+
             case Bezier1:
                 p1.x = roundVal(elem.p1.x)
                 p1.y = roundVal(elem.p1.y)
                 flattenBezier(pos, p1, quality)
+
             case Bezier2:
                 p1.x = roundVal(elem.p1.x)
                 p1.y = roundVal(elem.p1.y)
                 p2.x = roundVal(elem.p2.x)
                 p2.y = roundVal(elem.p2.y)
                 flattenBezier(pos, p1, p2, quality)
+
+            case Curve:
+                if i <= lastElem - 2
+                {
+                    p0 := i == 0 ? startPoint : elements[i - 1].position
+                    p1 := pos
+                    p2 := elements[i + 1].position
+                    p3 := elements[i + 2].position
+
+                    const alpha = 0.5
+                    const tension = 0.0
+
+                    t01 := Math.pow(Vector2.distance(p0, p1), alpha)
+                    t12 := Math.pow(Vector2.distance(p1, p2), alpha)
+                    t23 := Math.pow(Vector2.distance(p2, p3), alpha)
+
+                    m1 := (1.0 - tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+                    m2 := (1.0 - tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+
+                    sa := 2.0 * (p1 - p2) + m1 + m2
+                    sb := -3.0 * (p1 - p2) - m1 - m1 - m2
+                    sc := m1
+                    sd := p1
+                    flattenCurve(sa, sb, sc, sd, quality)
+                }
+                else
+                    flattenLine(pos)
+
             case Arc:
                 flattenArc(pos, elem.p1, elem.p2, quality)
             }
