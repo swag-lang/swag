@@ -92,6 +92,8 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
         return context->internalError( "emitCastToInterface, invalid type");
     }
 
+    SWAG_ASSERT(fromTypeStruct->cptRemainingInterfaces == 0);
+
     auto itf = fromTypeStruct->hasInterface(toTypeItf);
     SWAG_ASSERT(itf);
     transformResultToLinear2(context, exprNode);

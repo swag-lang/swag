@@ -33,8 +33,20 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
-    auto     back          = node->childs.front();
+    AstNode* node = context->node;
+    auto     back = node->childs.front();
+
+    // If we have a cast to an interface, be sure interface has been fully solved
+    // Semantic will pass only if the interface has been registered in the struct, and not solved.
+    // So we can reach that point and the interface is not done yet.
+    // :WaitInterfaceReg
+    if (node->castedTypeInfo)
+    {
+        context->job->waitAllStructInterfaces(node->castedTypeInfo);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
     node->resultRegisterRC = back->resultRegisterRC;
     SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
     return true;

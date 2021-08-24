@@ -51,6 +51,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     {
         auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
         ScopedLock lk1(typeStruct->mutex);
+        typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
         node->sourceFile->module->decImplForToSolve(typeStruct);
 
@@ -161,6 +162,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Register interface in the structure
     TypeInfoParam* typeParamItf = nullptr;
+    bool           hasRegItf    = false;
     {
         ScopedLock lk(typeStruct->mutex);
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
@@ -174,8 +176,13 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeParamItf->declNode = typeBaseInterface->declNode;
             typeParamItf->declNode = node;
             typeStruct->interfaces.push_back(typeParamItf);
+            hasRegItf = true;
         }
     }
+
+    // Interface has been registered in typeStruct->interfaces, so notify
+    if (hasRegItf)
+        decreaseInterfaceRegCount(typeStruct);
 
     for (int i = 0; i < childs.size(); i++)
     {
@@ -183,14 +190,20 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
 
+        // We need to search the function (as a variable) in the interface
+        // If not found, then this is a normal function...
+        auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
+        if (!symbolName)
+            continue;
+
         // We need to be sure function semantic is done
         {
-            auto symbolName = node->scope->symTable.find(child->token.text);
-            SWAG_ASSERT(symbolName);
-            ScopedLock lk(symbolName->mutex);
-            if (symbolName->cptOverloads)
+            auto symbolName1 = node->scope->symTable.find(child->token.text);
+            SWAG_ASSERT(symbolName1);
+            ScopedLock lk(symbolName1->mutex);
+            if (symbolName1->cptOverloads)
             {
-                job->waitSymbolNoLock(symbolName);
+                job->waitSymbolNoLock(symbolName1);
                 return true;
             }
         }
@@ -205,12 +218,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             if (context->result == ContextResult::Pending)
                 return true;
         }
-
-        // We need to search the function (as a variable) in the interface
-        // If not found, then this is a normal function...
-        auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
-        if (!symbolName)
-            continue;
 
         // Match function signature
         auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
@@ -302,6 +309,17 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     decreaseInterfaceCount(typeStruct);
 
     return true;
+}
+
+void SemanticJob::decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct)
+{
+    ScopedLock lk(typeInfoStruct->mutex);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
+
+    SWAG_ASSERT(typeInfoStruct->cptRemainingInterfacesReg);
+    typeInfoStruct->cptRemainingInterfacesReg--;
+    if (!typeInfoStruct->cptRemainingInterfacesReg)
+        typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
 void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)

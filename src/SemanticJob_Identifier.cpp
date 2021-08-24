@@ -2840,11 +2840,21 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
 
-            // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+            // Be sure all interfaces of the structure have been solved, in case a cast to an interface is necessary to match
             // a function
-            if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
+            // :WaitInterfaceReg
+            TypeInfoStruct* typeStruct = nullptr;
+            if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+                typeStruct = CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
+            else if (oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
-                context->job->waitAllStructInterfaces(oneParam->typeInfo);
+                auto typePtr = CastTypeInfo<TypeInfoPointer>(oneParam->typeInfo, TypeInfoKind::Pointer);
+                typeStruct   = CastTypeInfo<TypeInfoStruct>(typePtr->pointedType, TypeInfoKind::Struct);
+            }
+
+            if (typeStruct)
+            {
+                context->job->waitAllStructInterfacesReg(oneParam->typeInfo);
                 if (context->result == ContextResult::Pending)
                     return true;
             }

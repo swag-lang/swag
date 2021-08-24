@@ -537,6 +537,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     for (auto typeStruct : block->interfacesCount)
     {
         sourceFile->module->decImplForToSolve(typeStruct);
+        decreaseInterfaceRegCount(typeStruct);
         decreaseInterfaceCount(typeStruct);
     }
 

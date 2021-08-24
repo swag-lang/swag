@@ -18,6 +18,31 @@ void Job::waitSymbolNoLock(SymbolName* symbol)
     symbol->addDependentJobNoLock(this);
 }
 
+void Job::waitAllStructInterfacesReg(TypeInfo* typeInfo)
+{
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = ((TypeInfoPointer*)typeInfo)->pointedType;
+    if (typeInfo->kind != TypeInfoKind::Struct)
+        return;
+
+    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    ScopedLock lk(typeInfoStruct->mutex);
+
+    if (module->waitImplForToSolve(this, typeInfoStruct))
+    {
+        setPending(nullptr, JobWaitKind::WaitInterfacesFor, nullptr, typeInfoStruct);
+        return;
+    }
+
+    if (typeInfoStruct->cptRemainingInterfacesReg == 0)
+        return;
+    SWAG_ASSERT(typeInfoStruct->declNode);
+    SWAG_ASSERT(typeInfoStruct->scope);
+    ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
+    typeInfoStruct->scope->dependentJobs.add(this);
+    setPending(nullptr, JobWaitKind::WaitInterfacesReg, nullptr, typeInfoStruct);
+}
+
 void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))

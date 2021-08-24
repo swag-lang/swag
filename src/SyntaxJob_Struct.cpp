@@ -112,6 +112,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         module->addImplForToSolve(structName);
 
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
+        typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
 
         if (implNode->ownerCompilerIfBlock)

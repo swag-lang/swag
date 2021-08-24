@@ -512,6 +512,7 @@ struct TypeInfoStruct : public TypeInfo
 
     uint32_t alignOf                    = 0;
     uint32_t cptRemainingInterfaces     = 0;
+    uint32_t cptRemainingInterfacesReg  = 0;
     uint32_t cptRemainingMethods        = 0;
     uint32_t cptRemainingSpecialMethods = 0;
 };

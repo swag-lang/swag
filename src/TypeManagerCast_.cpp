@@ -6,6 +6,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
@@ -90,13 +91,13 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             return false;
 
         auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable.find("opAffect");
+        auto symbol     = structNode->scope->symTable.find(g_LangSpec->name_opAffect);
 
         // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
         if (!symbol && typeStruct->fromGeneric)
         {
             structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-            symbol     = structNode->scope->symTable.find("opAffect");
+            symbol     = structNode->scope->symTable.find(g_LangSpec->name_opAffect);
         }
 
         if (!symbol)
@@ -158,13 +159,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             return false;
 
         auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable.find("opCast");
+        auto symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast);
 
         // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
         if (!symbol && typeStruct->fromGeneric)
         {
             structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-            symbol     = structNode->scope->symTable.find("opCast");
+            symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast);
         }
 
         if (!symbol)
