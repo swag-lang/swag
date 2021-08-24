@@ -139,7 +139,7 @@ public struct Encoder
 {
     imageX:     u16
     imageY:     u16
-    bufferRGB:  *ColorRGB
+    bufferRGB:  Array'ColorRGB
 
     stream:     *ConcatBuffer
     srcImage:   const *Image
@@ -197,30 +197,32 @@ impl Encoder
         else
             yDiv8 = imageY
 
-        bufferRGB = Memory.new'ColorRGB(cast(uint) (xDiv8 * yDiv8))
+        bufferRGB.resize(cast(uint) (xDiv8 * yDiv8))
+        pdst := bufferRGB.buffer
         pref := image.pixels
+
         loop nrline: imageY
         {
             switch image.bpp
             {
             case 24:
-                Memory.copy(bufferRGB + nrline * xDiv8, pref, cast(uint) (imageX * 3))
+                Memory.copy(pdst + nrline * xDiv8, pref, cast(uint) (imageX * 3))
                 pref += imageX * 3
 
             case 32:
                 loop column: imageX
                 {
-                    bufferRGB[column + nrline * xDiv8].b = pref[0]
-                    bufferRGB[column + nrline * xDiv8].g = pref[1]
-                    bufferRGB[column + nrline * xDiv8].r = pref[2]
+                    pdst[column + nrline * xDiv8].b = pref[0]
+                    pdst[column + nrline * xDiv8].g = pref[1]
+                    pdst[column + nrline * xDiv8].r = pref[2]
                     pref += 4
                 }
             }
 
             var lastcolor: ColorRGB = ?
-            Memory.copy(&lastcolor, bufferRGB + nrline * xDiv8 + imageX - 1, 3)
+            Memory.copy(&lastcolor, pdst + nrline * xDiv8 + imageX - 1, 3)
             for column := imageX; column < xDiv8; column += 1
-                Memory.copy(bufferRGB + nrline * xDiv8 + column, &lastcolor, 3)
+                Memory.copy(pdst + nrline * xDiv8 + column, &lastcolor, 3)
         }
 
         imageX  = xDiv8
@@ -232,17 +234,17 @@ impl Encoder
         dimline  := cast(uint) (imageX * 3)
         while nrLineUp > nrLineDn
         {
-            Memory.copy(tmpline.buffer, bufferRGB + nrLineUp * imageX, dimline)
-            Memory.copy(bufferRGB + nrLineUp * imageX, bufferRGB + nrLineDn * imageX, dimline)
-            Memory.copy(bufferRGB + nrLineDn * imageX, tmpline.buffer, dimline)
+            Memory.copy(tmpline.buffer, pdst + nrLineUp * imageX, dimline)
+            Memory.copy(pdst + nrLineUp * imageX, pdst + nrLineDn * imageX, dimline)
+            Memory.copy(pdst + nrLineDn * imageX, tmpline.buffer, dimline)
             nrLineUp -= 1
             nrLineDn += 1
         }
 
         // Y completion
-        Memory.copy(tmpline.buffer, bufferRGB + (imageY - 1) * imageX, dimline)
+        Memory.copy(tmpline.buffer, pdst + (imageY - 1) * imageX, dimline)
         for nrLine := imageY; nrLine < yDiv8; nrLine += 1
-            Memory.copy(bufferRGB + nrLine * imageX, tmpline.buffer, dimline)
+            Memory.copy(pdst + nrLine * imageX, tmpline.buffer, dimline)
 
         imageY = yDiv8
     }
@@ -345,25 +347,25 @@ impl Encoder
 
     method precalculateYCbCrTables()
     {
-        loop R: 256
+        loop r: 256
         {
-            tabYR[R]  = cast(s32) (65536 * 0.299 + 0.5) * R
-            tabCbR[R] = cast(s32) (65536 * -0.16874 + 0.5) * R
-            tabCrR[R] = cast(s32) (32768) * R
+            tabYR[r]  = cast(s32) (65536 * 0.299 + 0.5) * r
+            tabCbR[r] = cast(s32) (65536 * -0.16874 + 0.5) * r
+            tabCrR[r] = cast(s32) (32768) * r
         }
 
-        loop G: 256
+        loop g: 256
         {
-            tabYG[G]  = cast(s32) (65536 * 0.587 + 0.5) * G
-            tabCbG[G] = cast(s32) (65536 * -0.33126 + 0.5) * G
-            tabCrG[G] = cast(s32) (65536 * -0.41869 + 0.5) * G
+            tabYG[g]  = cast(s32) (65536 * 0.587 + 0.5) * g
+            tabCbG[g] = cast(s32) (65536 * -0.33126 + 0.5) * g
+            tabCrG[g] = cast(s32) (65536 * -0.41869 + 0.5) * g
         }
 
-        loop B: 256
+        loop b: 256
         {
-            tabYB[B]  = cast(s32) (65536 * 0.114 + 0.5) * B
-            tabCbB[B] = cast(s32) (32768) * B
-            tabCrB[B] = cast(s32) (65536 * -0.08131 + 0.5) * B
+            tabYB[b]  = cast(s32) (65536 * 0.114 + 0.5) * b
+            tabCbB[b] = cast(s32) (32768) * b
+            tabCrB[b] = cast(s32) (65536 * -0.08131 + 0.5) * b
         }
     }
 
@@ -516,13 +518,15 @@ impl Encoder
 
         pos := 0
         location := ypos * imageX + xpos
+        pdst := bufferRGB.buffer
+
         loop y: 8
         {
             loop x: 8
             {
-                r := bufferRGB[location].r
-                g := bufferRGB[location].g
-                b := bufferRGB[location].b
+                r := pdst[location].r
+                g := pdst[location].g
+                b := pdst[location].b
                 duY[pos]  = Y(self, r, g, b)
                 duCb[pos] = Cb(self, r, g, b)
                 duCr[pos] = Cr(self, r, g, b)
