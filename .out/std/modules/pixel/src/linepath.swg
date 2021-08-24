@@ -118,11 +118,26 @@ public impl LinePath
     // Will add a line to the first point if necessary
     method close()
     {
-        if isClosed return
+        if isClosed
+            return
 
         v := endPoint - startPoint
         if v.lengthSquared() >= 0.5 * 0.5
             lineTo(startPoint.x, startPoint.y)
+
+        isClosed = true
+    }
+
+    // Close the figure
+    // Will add a curve to the first point if necessary
+    method closeCurve()
+    {
+        if isClosed
+            return
+
+        v := endPoint - startPoint
+        if v.lengthSquared() >= 0.5 * 0.5
+            curveTo(startPoint.x, startPoint.y)
 
         isClosed = true
     }
@@ -354,6 +369,7 @@ public impl LinePath
 
         var pos, p1, p2, lastP: Vector2 = ?
         lastElem := elements.count - 1
+
         visit elem, i: elements
         {
             pos.x = roundVal(elem.position.x)
@@ -381,17 +397,27 @@ public impl LinePath
                 var p0, p1, p2, p3: Vector2
                 if i == 0
                 {
-                    p0 = (startPoint - pos) + startPoint
+                    if isClosed
+                        p0 = elements[lastElem - 1].position
+                    else
+                        p0 = (startPoint - pos) + startPoint
                     p1 = startPoint
                     p2 = pos
                     p3 = elements[i + 1].position
                 }
-                else if i <= lastElem - 1
+                else if i < lastElem
                 {
                     p0 = i == 1 ? startPoint : elements[i - 2].position
                     p1 = elements[i - 1].position
                     p2 = pos
                     p3 = elements[i + 1].position
+                }
+                else if isClosed
+                {
+                    p0 = elements[i - 2].position
+                    p1 = elements[i - 1].position
+                    p2 = pos
+                    p3 = elements[1].position
                 }
                 else
                 {
