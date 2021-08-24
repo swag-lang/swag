@@ -12,7 +12,7 @@ using Core, Pixel
         img1 := Image.load(tmpPath("__h1v1A.jpg"))
         img2 := Image.load(tmpPath("__h1v1B.jpg"))
 
-        //File.delete(tmpPath("__h1v1A.jpg"))
-        //File.delete(tmpPath("__h1v1B.jpg"))
+        File.delete(tmpPath("__h1v1A.jpg"))
+        File.delete(tmpPath("__h1v1B.jpg"))
     }
 }

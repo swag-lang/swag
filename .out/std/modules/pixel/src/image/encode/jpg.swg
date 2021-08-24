@@ -106,15 +106,18 @@ const Mask                    = @[1'u16, 2, 4, 8, 16, 32, 64, 128, 256, 512, 102
 const ZigZag: [] u8 = @[
     0,  1,  5,  6,  14, 15, 27, 28, 2,  4,  7,  13, 16, 26, 29, 42, 3,  8,  12, 17, 25, 30,
     41, 43, 9,  11, 18, 24, 31, 40, 44, 53, 10, 19, 23, 32, 39, 45, 52, 54, 20, 22, 33, 38,
-    46, 51, 55, 60, 21, 34, 37, 47, 50, 56, 59, 61, 35, 36, 48, 49, 57, 58, 62, 63]
+    46, 51, 55, 60, 21, 34, 37, 47, 50, 56, 59, 61, 35, 36, 48, 49, 57, 58, 62, 63
+]
 
 const LuminanceQt: [] u8 = @[
     16, 11, 10, 16, 24, 40,  51,  61, 12, 12, 14, 19, 26, 58,  60,  55, 14, 13, 16, 24, 40,  57,  69,  56,  14, 17, 22, 29, 51,  87,  80,  62,
-    18, 22, 37, 56, 68, 109, 103, 77, 24, 35, 55, 64, 81, 104, 113, 92, 49, 64, 78, 87, 103, 121, 120, 101, 72, 92, 95, 98, 112, 100, 103, 99]
+    18, 22, 37, 56, 68, 109, 103, 77, 24, 35, 55, 64, 81, 104, 113, 92, 49, 64, 78, 87, 103, 121, 120, 101, 72, 92, 95, 98, 112, 100, 103, 99
+]
 
 const ChrominanceQt: [] u8 = @[
     17, 18, 24, 47, 99, 99, 99, 99, 18, 21, 26, 66, 99, 99, 99, 99, 24, 26, 56, 99, 99, 99, 99, 99, 47, 66, 99, 99, 99, 99, 99, 99,
-    99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99]
+    99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99
+]
 
 const StdAcLuminanceValues: [] u8 = @[
     0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12, 0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07, 0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08,
@@ -123,7 +126,8 @@ const StdAcLuminanceValues: [] u8 = @[
     0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89,
     0x8a, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6,
     0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda, 0xe1, 0xe2,
-    0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa]
+    0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa
+]
 
 const StdAcChrominanceValues: [] u8 = @[
     0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21, 0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71, 0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91,
@@ -132,7 +136,37 @@ const StdAcChrominanceValues: [] u8 = @[
     0x59, 0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
     0x88, 0x89, 0x8a, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4,
     0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda,
-    0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa]
+    0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa
+]
+
+var TabYR:   [256] s32 = ?
+var TabYG:   [256] s32 = ?
+var TabYB:   [256] s32 = ?
+var TabCbR:  [256] s32 = ?
+var TabCbG:  [256] s32 = ?
+var TabCbB:  [256] s32 = ?
+var TabCrR:  [256] s32 = ?
+var TabCrG:  [256] s32 = ?
+var TabCrB:  [256] s32 = ?
+
+// Precalculate YCbCr tables
+#run
+{
+    loop r: 256
+    {
+        TabYR[r]  = cast(s32) (65536 * 0.299 + 0.5) * r
+        TabCbR[r] = cast(s32) (65536 * -0.16874 + 0.5) * r
+        TabCrR[r] = cast(s32) (32768) * r
+
+        TabYG[r]  = cast(s32) (65536 * 0.587 + 0.5) * r
+        TabCbG[r] = cast(s32) (65536 * -0.33126 + 0.5) * r
+        TabCrG[r] = cast(s32) (65536 * -0.41869 + 0.5) * r
+
+        TabYB[r]  = cast(s32) (65536 * 0.114 + 0.5) * r
+        TabCbB[r] = cast(s32) (32768) * r
+        TabCrB[r] = cast(s32) (65536 * -0.08131 + 0.5) * r
+    }
+}
 
 #[Swag.Opaque]
 public struct Encoder
@@ -156,15 +190,6 @@ public struct Encoder
     htYAC:     [256] BitString
     htCbAC:    [256] BitString
 
-    tabYR:   [256] s32
-    tabYG:   [256] s32
-    tabYB:   [256] s32
-    tabCbR:  [256] s32
-    tabCbG:  [256] s32
-    tabCbB:  [256] s32
-    tabCrR:  [256] s32
-    tabCrG:  [256] s32
-    tabCrB:  [256] s32
     fdtblY:  [64] f32
     fdtblCb: [64] f32
 
@@ -290,15 +315,15 @@ impl Encoder
 
     method computeHuffmanTable(nrCodes: const *u8, stdTable: const *u8, hT: *BitString)
     {
-        codevalue    := 0'u16
-        pos_in_table := 0
+        codevalue  := 0'u16
+        posInTable := 0
         loop k: 1..16
         {
             for j := 1; j <= nrCodes[k]; j += 1
             {
-                hT[stdTable[pos_in_table]].value  = codevalue
-                hT[stdTable[pos_in_table]].length = cast(u8) k
-                pos_in_table += 1
+                hT[stdTable[posInTable]].value  = codevalue
+                hT[stdTable[posInTable]].length = cast(u8) k
+                posInTable += 1
                 codevalue +=,safe 1
             }
 
@@ -325,7 +350,7 @@ impl Encoder
         nrupper := 2
         loop cat: 1..15
         {
-            loop nr:  nrlower..nrupper-1
+            loop nr: nrlower..nrupper-1
             {
                 category[nr]       = cast(u8) cat
                 bitcode[nr].length = cast(u8) cat
@@ -342,30 +367,6 @@ impl Encoder
 
             nrlower <<= 1
             nrupper <<= 1
-        }
-    }
-
-    method precalculateYCbCrTables()
-    {
-        loop r: 256
-        {
-            tabYR[r]  = cast(s32) (65536 * 0.299 + 0.5) * r
-            tabCbR[r] = cast(s32) (65536 * -0.16874 + 0.5) * r
-            tabCrR[r] = cast(s32) (32768) * r
-        }
-
-        loop g: 256
-        {
-            tabYG[g]  = cast(s32) (65536 * 0.587 + 0.5) * g
-            tabCbG[g] = cast(s32) (65536 * -0.33126 + 0.5) * g
-            tabCrG[g] = cast(s32) (65536 * -0.41869 + 0.5) * g
-        }
-
-        loop b: 256
-        {
-            tabYB[b]  = cast(s32) (65536 * 0.114 + 0.5) * b
-            tabCbB[b] = cast(s32) (32768) * b
-            tabCrB[b] = cast(s32) (65536 * -0.08131 + 0.5) * b
         }
     }
 
@@ -511,9 +512,9 @@ impl Encoder
     {
         #[Swag.Inline]
         {
-            method Y(r, g, b: u8)  => cast(u8) (((tabYR[r] + tabYG[g] + tabYB[b]) >> 16) - 128)
-            method Cb(r, g, b: u8) => cast(u8) ((tabCbR[r] + tabCbG[g] + tabCbB[b]) >> 16)
-            method Cr(r, g, b: u8) => cast(u8) ((tabCrR[r] + tabCrG[g] + tabCrB[b]) >> 16)
+            method Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
+            method Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
+            method Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
         }
 
         pos := 0
@@ -731,7 +732,6 @@ public impl IEncoder for Encoder
         setDHTinfo()
         initHuffmanTables()
         setNumbersCategoryAndBitcode()
-        precalculateYCbCrTables()
         prepareQuantTables()
 
         writeWord(0xFFD8) // SOI
