@@ -52,6 +52,8 @@ impl Image
     // Save the image to a file
     public method save(fileName: string, options: EncodeOptions = @{}) throw
     {
+        Debug.assert(pixels != null, "image is invalid")
+
         // Find the encoder that can treat 'fileName'
         var found: *Encoder
         visit *encoder: g_Encoder
