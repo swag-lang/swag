@@ -6,14 +6,12 @@ using Core, Pixel
     {
         img := Image.load(imagePath("h1v1.jpg"))
 
-        var opt: EncodeOptions
-        opt.quality = 1
-        img.save(tmpPath("__h1v1A.jpg"), opt)
-        opt.quality = 100
-        img.save(tmpPath("__h1v1B.jpg"), opt)
+        img.save(tmpPath("__h1v1A.jpg"), EncodeOptions{quality: 1})
+        img.save(tmpPath("__h1v1B.jpg"), EncodeOptions{quality: 100})
 
         img1 := Image.load(tmpPath("__h1v1A.jpg"))
         img2 := Image.load(tmpPath("__h1v1B.jpg"))
+
         File.delete(tmpPath("__h1v1A.jpg"))
         File.delete(tmpPath("__h1v1B.jpg"))
     }
