@@ -412,19 +412,15 @@ public impl LinePath
                     p2 = pos
                     p3 = elements[i + 1].position
                 }
-                else if isClosed
-                {
-                    p0 = elements[i - 2].position
-                    p1 = elements[i - 1].position
-                    p2 = pos
-                    p3 = elements[1].position
-                }
                 else
                 {
                     p0 = elements[i - 2].position
                     p1 = elements[i - 1].position
                     p2 = pos
-                    p3 = pos + (pos - p1)
+                    if isClosed
+                        p3 = elements[1].position
+                    else
+                        p3 = pos + (pos - p1)
                 }
 
                 const alpha = 0.5
