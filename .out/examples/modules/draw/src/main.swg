@@ -370,13 +370,19 @@ func displayPage3()
         lp = lp1.newPath()
         lp.start(0, 50)
         lp.lineTo(100, 50)
-        pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
 
+        pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
         cdc.resetTransform()
         cdc.translateTransform(700, 200)
         cdc.drawPathList(&lp1, pen, DrawPathListMode.Separate)
+
         cdc.translateTransform(0, 150)
         pen.brush = Brush.createTexture(image1)
+        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+
+        cdc.translateTransform(0, 150)
+        pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
+        pen.dashStyle = .Dash
         cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
     }
 
