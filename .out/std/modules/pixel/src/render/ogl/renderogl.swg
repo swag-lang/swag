@@ -14,6 +14,7 @@ public struct RenderOgl
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
     hatchTextures:      [@countof(HatchStyle)] GLuint
+    blendingMode:       BlendingMode = .Alpha
 }
 
 impl RenderOgl
@@ -33,7 +34,7 @@ impl RenderOgl
         return result
     }
 
-    protected func init(using self, w, h: s32)
+    protected method init(w, h: s32)
     {
         width = w
         height = h
@@ -107,7 +108,7 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
-    protected func start(using self)
+    protected method start()
     {
         worldTransform.setIdentity()
         glClearStencil(0)
@@ -115,7 +116,7 @@ impl RenderOgl
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
-    func resize(using self, width, height: s32)
+    method resize(width, height: s32)
     {
         self.width = #scopefct.width
         self.height = #scopefct.height
@@ -144,7 +145,7 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    private func buidModelMatrix(using self, modelTransform: Transform2)
+    private method buidModelMatrix(modelTransform: Transform2)
     {
         tr := worldTransform
         tr.multiply(modelTransform)
@@ -168,7 +169,7 @@ impl RenderOgl
     }
 
     // Register an image for rendering
-    func addImage(using self, image: Image)->Texture
+    method addImage(image: Image)->Texture
     {
         var fmt: GLenum = 0
         internal := GL_RGB
@@ -197,14 +198,14 @@ impl RenderOgl
     }
 
     // Translate the world transform
-    func translateTransform(using self, x, y: f32)
+    method translateTransform(x, y: f32)
     {
         tr := Transform2.createTranslation(x, y)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
-    func rotateTransform(using self, angle: f32)
+    method rotateTransform(angle: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
@@ -212,7 +213,7 @@ impl RenderOgl
     }
 
     // Rotate the world transform
-    func rotateTransform(using self, angle: f32, centerX, centerY: f32)
+    method rotateTransform(angle: f32, centerX, centerY: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
@@ -220,21 +221,57 @@ impl RenderOgl
     }
 
     // Scale the world transform
-    func scaleTransform(using self, x, y: f32)
+    method scaleTransform(x, y: f32)
     {
         tr := Transform2.createScale(x, y, 0, 0)
         worldTransform.multiply(tr)
     }
 
     // Reset the world transform
-    func resetTransform(using self)
+    method resetTransform()
     {
         worldTransform.setIdentity()
         modelMatrix.setIdentity()
     }
 
+    private method setBlendingMode(bm: BlendingMode)
+    {
+        blendingMode = bm
+
+        #[Swag.Complete]
+        switch bm
+        {
+        case Copy:
+            glDisable(GL_BLEND)
+        case Alpha:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glBlendEquation(GL_FUNC_ADD)
+        case Add:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_ADD)
+        case Sub:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_SUBTRACT)
+        case SubDst:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
+        case Min:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_MIN)
+        case Max:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_MAX)
+        }
+    }
+
     // Draw the given painter
-    func draw(using self, dc: *Painter)
+    method draw(dc: *Painter)
     {
         if height == 0 or width == 0
             return
@@ -262,9 +299,7 @@ impl RenderOgl
         textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
 
         // Default state
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        glBlendEquation(GL_FUNC_ADD)
+        setBlendingMode(BlendingMode.Alpha)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glDisable(GL_SCISSOR_TEST)
         glDisable(GL_STENCIL_TEST)
@@ -280,42 +315,14 @@ impl RenderOgl
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
-        transparencyMode := false
+        overlapMode := false
         visit cmd: dc.commandBuffer
         {
             switch cmd.id
             {
             case SetBlendingMode:
                 params := &cmd.blendingMode
-                switch params.mode
-                {
-                case Copy:
-                    glDisable(GL_BLEND)
-                case Alpha:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                    glBlendEquation(GL_FUNC_ADD)
-                case Add:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_ONE, GL_ONE)
-                    glBlendEquation(GL_FUNC_ADD)
-                case Sub:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_ONE, GL_ONE)
-                    glBlendEquation(GL_FUNC_SUBTRACT)
-                case SubDst:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_ONE, GL_ONE)
-                    glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
-                case Min:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_ONE, GL_ONE)
-                    glBlendEquation(GL_MIN)
-                case Max:
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_ONE, GL_ONE)
-                    glBlendEquation(GL_MAX)
-                }
+                setBlendingMode(params.mode)
 
             case Clear:
                 params := &cmd.clear
@@ -356,53 +363,35 @@ impl RenderOgl
                 glDisable(GL_SCISSOR_TEST)
 
             case StartNoOverlap:
-                glEnable(GL_DEPTH_TEST)
-                glDepthMask(GL_TRUE)
-                glClear(GL_DEPTH_BUFFER_BIT)
-                transparencyMode = true
+                overlapMode = true
 
             case StopNoOverlap:
-                glDisable(GL_DEPTH_TEST)
-                glDepthMask(GL_FALSE)
-                transparencyMode = false
+                overlapMode = false
+                setBlendingMode(blendingMode)
 
             case DrawTriangles:
                 params := &cmd.drawTriangles
-                if !transparencyMode
+                if !overlapMode
                 {
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
                 }
                 else
                 {
+                    // First we mark the alpha buffer with the 'maximum' alpha to paint.
+                    // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
                     glEnable(GL_BLEND)
                     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
-                    //glBlendFunc(GL_ZERO, GL_ZERO)
-                    //glBlendEquation(GL_MIN)
-                    glDepthMask(GL_FALSE)
-                    //glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-
                     glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                     glBlendEquation(GL_MAX)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
-                    // First only write to the depth buffer. Each triangle should have
-                    // a different Z value to avoid overwritting each others
-                    glDepthMask(GL_TRUE)
-                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
-                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-
-                    // Then write to the color buffer by using the Z buffer
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA)
+                    // Then we use the stored alpha as the blend factor.
+                    // When a pixel is drawn once, the alpha value is set to 0, so this means that
+                    // the second pixel will not be written.
+                    glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
                     glBlendEquation(GL_FUNC_ADD)
-                    glDepthMask(GL_FALSE)
-                    glDepthFunc(GL_LEQUAL)
                     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                    glBlendEquation(GL_FUNC_ADD)
                 }
 
             case UpdateFont:
