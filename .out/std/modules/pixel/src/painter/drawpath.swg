@@ -658,7 +658,7 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode)
+    method drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
         if mode == .Separate
         {
@@ -694,7 +694,7 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode)
+    method drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color

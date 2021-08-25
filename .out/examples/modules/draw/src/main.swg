@@ -440,7 +440,7 @@ func displayPage4()
         pen.plotOffset = 2
 
         assume typeface.getStringOutline(&pathl, str, 70)
-        cdc.drawPathList(&pathl, pen, DrawPathListMode.Separate)
+        cdc.drawPathList(&pathl, pen)
         cdc.fillPath(&pathl, Argb.Black)
 
         cdc.resetTransform()
@@ -453,7 +453,7 @@ func displayPage4()
         p.flatten(PaintQuality.Normal)
         p.offset(4)
         p.clean()
-        cdc.drawPathList(&p, Argb.Red, 2, DrawPathListMode.Separate)
+        cdc.drawPathList(&p, Argb.Red, 2)
 
         cdc.resetTransform()
     }
@@ -465,7 +465,7 @@ func displayPage4()
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
         cdc.fillPath(&p, Argb.Red)
-        cdc.drawPathList(&p, Argb.Black, 2, DrawPathListMode.Separate)
+        cdc.drawPathList(&p, Argb.Black, 2)
 
         cdc.resetTransform()
     }
