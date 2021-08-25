@@ -331,7 +331,6 @@ func displayPage3()
     }
 
     {
-        cdc.setBlendingMode(BlendingMode.Alpha)
         var lp1: LinePath
         lp1.start(800, 800)
         lp1.bezierTo(150, 150, 250, 50)
@@ -339,7 +338,6 @@ func displayPage3()
     }
 
     {
-        cdc.setBlendingMode(BlendingMode.Alpha)
         var lp: LinePath
         lp.start(50, 800)
         lp.bezierTo(800, 50, 250, 50)
@@ -347,7 +345,6 @@ func displayPage3()
     }
 
     {
-        cdc.setBlendingMode(BlendingMode.Alpha)
         var lp1: LinePath
         lp1.start(400, 400)
         lp1.lineTo(500, 450)
@@ -361,6 +358,18 @@ func displayPage3()
         cdc.fillRect(0, 0, 150, 150, Argb.Blue)
         cdc.setBlendingMode(BlendingMode.Max)
         cdc.fillRect(50, 50, 150, 150, Argb.Red)
+        cdc.setBlendingMode(BlendingMode.Alpha)
+    }
+
+    {
+        var lp1: LinePathList
+        lp := lp1.newPath()
+        lp.start(300, 200)
+        lp.lineTo(300, 300)
+        lp = lp1.newPath()
+        lp.start(250, 250)
+        lp.lineTo(350, 250)
+        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50))
     }
 
     cdc.end()
