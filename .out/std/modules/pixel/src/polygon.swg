@@ -176,16 +176,16 @@ impl Polygon
         q := 0
         p := n - 1
 
-        lastDot := 0'f32
+        lastC := 0'f32
         while q < n
         {
             // Convex
-            v   := points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
-            v1  := points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
-            dot := v.dot(v1)
-            if lastDot == 0
-                lastDot = dot
-            else if Math.sign(dot) != Math.sign(lastDot)
+            v  := points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
+            v1 := points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
+            c  := v.cross(v1)
+            if lastC == 0
+                lastC = c
+            else if Math.sign(c) != Math.sign(lastC)
                 isConvex = false
 
             // Area

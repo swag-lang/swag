@@ -417,15 +417,15 @@ public impl LinePath
                     p3 = isClosed ? elements[1].position : pos + (pos - p1)
                 }
 
-                const alpha = 0.5
-                const tension = 0.0
+                const Alpha = 0.5
+                const Tension = 0.0
 
-                t01 := Math.pow(Vector2.distance(p0, p1), alpha)
-                t12 := Math.pow(Vector2.distance(p1, p2), alpha)
-                t23 := Math.pow(Vector2.distance(p2, p3), alpha)
+                t01 := Math.pow(Vector2.distance(p0, p1), Alpha)
+                t12 := Math.pow(Vector2.distance(p1, p2), Alpha)
+                t23 := Math.pow(Vector2.distance(p2, p3), Alpha)
 
-                m1 := (1.0 - tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
-                m2 := (1.0 - tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+                m1 := (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+                m2 := (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
 
                 sa := 2.0 * (p1 - p2) + m1 + m2
                 sb := -3.0 * (p1 - p2) - m1 - m1 - m2

@@ -84,6 +84,12 @@ impl Vector2
         return @{y * axis, -x * axis}
     }
 
+    // Returns the Z length of the perpendicular vector
+    func cross(using const self, other: Vector2)->f32
+    {
+        return x * other.y - y * other.x
+    }
+
     // Set the vector to zero
     func clear(using self)
     {
