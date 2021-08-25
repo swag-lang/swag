@@ -610,7 +610,8 @@ func createWindow()->HWND
     pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cStencilBits = 8
-    pfd.cColorBits   = 32
+    pfd.cColorBits   = 24
+    pfd.cAlphaBits   = 8
     pfd.cDepthBits   = 32
 
     assume

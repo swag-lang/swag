@@ -374,6 +374,17 @@ impl RenderOgl
                 }
                 else
                 {
+                    glEnable(GL_BLEND)
+                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+                    //glBlendFunc(GL_ZERO, GL_ZERO)
+                    //glBlendEquation(GL_MIN)
+                    glDepthMask(GL_FALSE)
+                    //glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
+                    glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
+                    glBlendEquation(GL_MAX)
+                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
                     // First only write to the depth buffer. Each triangle should have
                     // a different Z value to avoid overwritting each others
                     glDepthMask(GL_TRUE)
@@ -381,10 +392,17 @@ impl RenderOgl
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
                     // Then write to the color buffer by using the Z buffer
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA)
+                    glBlendEquation(GL_FUNC_ADD)
                     glDepthMask(GL_FALSE)
                     glDepthFunc(GL_LEQUAL)
                     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                    glBlendEquation(GL_FUNC_ADD)
                 }
 
             case UpdateFont:
