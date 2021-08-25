@@ -1538,6 +1538,7 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
         isFct           = identifier->callParameters;
     }
 
+    best.clear();
     for (auto s : scopeHierarchy)
     {
         for (uint32_t i = 0; i < s->symTable.mapNames.allocated; i++)
@@ -1555,7 +1556,19 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
                 best.clear();
             if (score <= bestScore)
             {
-                best.push_back(one.symbolName->name);
+                // Be sure it's not already in the best list
+                bool here = false;
+                for (auto& n : best)
+                {
+                    if (n == one.symbolName->name)
+                    {
+                        here = true;
+                        break;
+                    }
+                }
+
+                if (!here)
+                    best.push_back(one.symbolName->name);
                 bestScore = score;
             }
         }
@@ -2588,10 +2601,14 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                             diag = new Diagnostic{node, Utf8::format(g_E[Err0821], varDecl->token.text.c_str(), displayName.c_str())};
                         else
                             diag = new Diagnostic{node, Utf8::format(g_E[Err0110], node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
-                        if (typeRef && (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::Interface))
+                        switch (identifierRef->startScope->owner->kind)
                         {
+                        case AstNodeKind::StructDecl:
+                        case AstNodeKind::InterfaceDecl:
+                        case AstNodeKind::EnumDecl:
                             auto note = new Diagnostic{identifierRef->startScope->owner, Utf8::format(g_E[Nte0029], displayName.c_str()), DiagnosticLevel::Note};
                             notes.push_back(note);
+                            break;
                         }
                     }
                 }
