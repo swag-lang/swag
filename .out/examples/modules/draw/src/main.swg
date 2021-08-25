@@ -353,6 +353,7 @@ func displayPage3()
     }
 
     {
+        cdc.resetTransform()
         cdc.translateTransform(400, 200)
         cdc.setBlendingMode(BlendingMode.Add)
         cdc.fillRect(0, 0, 150, 150, Argb.Blue)
@@ -364,12 +365,18 @@ func displayPage3()
     {
         var lp1: LinePathList
         lp := lp1.newPath()
-        lp.start(300, 200)
-        lp.lineTo(300, 300)
+        lp.start(50, 0)
+        lp.lineTo(50, 100)
         lp = lp1.newPath()
-        lp.start(250, 250)
-        lp.lineTo(350, 250)
-        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50))
+        lp.start(0, 50)
+        lp.lineTo(100, 50)
+        pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
+
+        cdc.resetTransform()
+        cdc.translateTransform(700, 200)
+        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        cdc.translateTransform(0, 150)
+        cdc.drawPathList(&lp1, pen, DrawPathListMode.Separate)
     }
 
     cdc.end()
@@ -433,7 +440,7 @@ func displayPage4()
         pen.plotOffset = 2
 
         assume typeface.getStringOutline(&pathl, str, 70)
-        cdc.drawPath(&pathl, pen)
+        cdc.drawPathList(&pathl, pen, DrawPathListMode.Separate)
         cdc.fillPath(&pathl, Argb.Black)
 
         cdc.resetTransform()
@@ -446,7 +453,7 @@ func displayPage4()
         p.flatten(PaintQuality.Normal)
         p.offset(4)
         p.clean()
-        cdc.drawPath(&p, Argb.Red, 2)
+        cdc.drawPathList(&p, Argb.Red, 2, DrawPathListMode.Separate)
 
         cdc.resetTransform()
     }
@@ -458,7 +465,7 @@ func displayPage4()
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
         cdc.fillPath(&p, Argb.Red)
-        cdc.drawPath(&p, Argb.Black, 2)
+        cdc.drawPathList(&p, Argb.Black, 2, DrawPathListMode.Separate)
 
         cdc.resetTransform()
     }

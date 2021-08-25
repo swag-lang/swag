@@ -1,6 +1,12 @@
 #global public
 using Core, Core.Math, Core.Drawing
 
+public enum DrawPathListMode
+{
+    Separate
+    Merge
+}
+
 private struct Context
 {
     posBuffer:          Array'Vector2
@@ -644,24 +650,23 @@ impl Painter
 
         setTexture0(path.bvMin, path.bvMax, pen.brush)
         resetTexture1()
-
-        alpha := false
-        if pen.brush.color.argb & 0xFF000000 != 0xFF000000
-            alpha = true
-        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
-            alpha = true
-        if alpha and blendingMode == .Alpha
-            startNoOverlapMode()
+        startOverlapMode(pen)
 
         drawPath(&cxt)
 
-        if alpha and blendingMode == .Alpha
-            stopNoOverlapMode()
+        stopOverlapMode()
     }
 
     // Draw the line path
-    method drawPath(pathList: *LinePathList, pen: Pen)
+    method drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode)
     {
+        if mode == .Separate
+        {
+            visit p: pathList.paths
+                drawPath(p, pen)
+            return
+        }
+
         bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
         bvMax := Vector2{Swag.F32.Min, Swag.F32.Min}
         visit p: pathList.paths
@@ -671,16 +676,9 @@ impl Painter
             bvMax = Vector2.max(bvMin, p.bvMin)
         }
 
-        alpha := false
-        if pen.brush.color.argb & 0xFF000000 != 0xFF000000
-            alpha = true
-        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
-            alpha = true
-        if alpha and blendingMode == .Alpha
-            startNoOverlapMode()
-
         setTexture0(bvMin, bvMax, pen.brush)
         resetTexture1()
+        startOverlapMode(pen)
 
         var cxt: Context
         visit p: pathList.paths
@@ -692,17 +690,16 @@ impl Painter
             drawPath(&cxt)
         }
 
-        if alpha and blendingMode == .Alpha
-            stopNoOverlapMode()
+        stopOverlapMode()
     }
 
     // Draw the line path
-    method drawPath(pathList: *LinePathList, color: Color, penSize: f32)
+    method drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
-        drawPath(pathList, sharedSolidPen)
+        drawPathList(pathList, sharedSolidPen, mode)
     }
 
     private func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool

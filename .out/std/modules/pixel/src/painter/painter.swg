@@ -109,6 +109,7 @@ struct Painter
     lastTexture0Type:   BrushType = SolidColor
     lastTexture1Handle: TextureHandle
     canSetTexture0:     bool = true
+    overlapMode:        bool = false
     blendingMode:       BlendingMode = Alpha
 }
 
@@ -294,14 +295,27 @@ impl Painter
         cmd.font.fontRef = fontRef
     }
 
-    protected method startNoOverlapMode()
+    protected method startOverlapMode(pen: Pen)
     {
-        discard newCommand(CommandId.StartNoOverlap, true)
+        alpha := false
+        if pen.brush.color.argb & 0xFF000000 != 0xFF000000
+            alpha = true
+        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
+            alpha = true
+        if alpha and blendingMode == .Alpha
+        {
+            overlapMode = true
+            discard newCommand(CommandId.StartNoOverlap, true)
+        }
     }
 
-    protected method stopNoOverlapMode()
+    protected method stopOverlapMode()
     {
-        discard newCommand(CommandId.StopNoOverlap, true)
+        if overlapMode
+        {
+            overlapMode = false
+            discard newCommand(CommandId.StopNoOverlap, true)
+        }
     }
 
     // Call this before drawing
@@ -315,6 +329,7 @@ impl Painter
         vertexBuffer.clear()
         interpolationMode = .Pixel
         canSetTexture0 = true
+        overlapMode = false
         blendingMode = .Alpha
     }
 
