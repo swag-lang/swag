@@ -62,7 +62,7 @@ impl Painter
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    func measureString(using self, left, top: f32, text: string, font: *Font)->StringMetrics
+    method measureString(left, top: f32, text: string, font: *Font)->StringMetrics
     {
         var result: retval
 
@@ -85,7 +85,7 @@ impl Painter
     }
 
     // Draw a string
-    func drawString(using self, left, top: f32, text: string, font: *Font, color: Color)
+    method drawString(left, top: f32, text: string, font: *Font, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -93,7 +93,7 @@ impl Painter
     }
 
     // Draw a string
-    func drawString(using self, left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
+    method drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
@@ -157,7 +157,7 @@ impl Painter
     }
 
     // Draw a string
-    func drawString(using self, pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
+    method drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -165,7 +165,7 @@ impl Painter
     }
 
     // Draw a string
-    func drawString(using self, pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
+    method drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
         struct OneStr
         {
@@ -207,7 +207,7 @@ impl Painter
                 }
 
                 // Need to wrap if next character position is outside the box
-                if testX + desc.advanceX > pos.width
+                if testX + desc.advanceX + desc.shiftX > pos.width
                 {
                     if firstBlankIdx != Swag.U32.Max
                     {
@@ -224,7 +224,7 @@ impl Painter
                 }
             }
 
-            testX += desc.advanceX
+            testX += desc.advanceX + desc.shiftX
         }
 
         if lastLine != @countof(text)

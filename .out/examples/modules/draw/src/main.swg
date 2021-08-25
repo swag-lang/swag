@@ -21,7 +21,7 @@ var fontFam:    FontFamily
 var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
-var g_page:         s32 = 3
+var g_page:         s32 = 4
 const MaxPages = 6
 
 func dataPath()->String
@@ -417,6 +417,15 @@ func displayPage4()
         format.lineGap = 1
         cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
         cdc.drawString(rect, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black, format)
+    }
+
+    {
+        format := StringFormat{flags: StringFormatFlags.WordWrap}
+        format.horzAlignment = .Center
+        rect := Rectangle{650, 50, 200, 700}
+        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
+        const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
+        cdc.drawString(rect, TXT, fontSmall, Argb.Black, format)
     }
 
     {
