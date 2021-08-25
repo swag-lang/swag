@@ -436,7 +436,8 @@ impl Painter
         case Pattern:
             pattern = pen.pattern.buffer
             patternCount = cast(s32) pen.pattern.count
-            if patternCount == 0 fallthrough
+            if patternCount == 0
+                fallthrough
         case Dot:
             const P = @[1.0, 1.0]
             pattern = @dataof(P)
@@ -619,11 +620,21 @@ impl Painter
         }
     }
 
+    // Draw the line path
+    method drawPath(path: *LinePath, color: Color, penSize: f32)
+    {
+        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.color = color
+        sharedSolidPen.size = penSize
+        drawPath(path, sharedSolidPen)
+    }
+
     // Draw the line path with the given 'pen'
     method drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(paintQuality)
-        if Math.isZeroEpsilon(path.totalLen) return
+        if Math.isZeroEpsilon(path.totalLen)
+            return
 
         var cxt: Context
         cxt.path = path
@@ -639,7 +650,6 @@ impl Painter
             alpha = true
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
             alpha = true
-
         if alpha and blendingMode == .Alpha
             startNoOverlapMode()
 
@@ -650,19 +660,40 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPath(path: *LinePath, color: Color, penSize: f32)
-    {
-        sharedSolidPen.brush.type = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
-        drawPath(path, sharedSolidPen)
-    }
-
-    // Draw the line path
     method drawPath(pathList: *LinePathList, pen: Pen)
     {
+        bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
+        bvMax := Vector2{Swag.F32.Min, Swag.F32.Min}
         visit p: pathList.paths
-            drawPath(p, pen)
+        {
+            p.flatten(paintQuality)
+            bvMin = Vector2.min(bvMin, p.bvMin)
+            bvMax = Vector2.max(bvMin, p.bvMin)
+        }
+
+        alpha := false
+        if pen.brush.color.argb & 0xFF000000 != 0xFF000000
+            alpha = true
+        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
+            alpha = true
+        if alpha and blendingMode == .Alpha
+            startNoOverlapMode()
+
+        setTexture0(bvMin, bvMax, pen.brush)
+        resetTexture1()
+
+        var cxt: Context
+        visit p: pathList.paths
+        {
+            cxt.path = p
+            cxt.pen =  &pen
+            if pen.dashStyle != .None
+                preparePattern(&cxt)
+            drawPath(&cxt)
+        }
+
+        if alpha and blendingMode == .Alpha
+            stopNoOverlapMode()
     }
 
     // Draw the line path
@@ -673,7 +704,6 @@ impl Painter
         sharedSolidPen.size = penSize
         drawPath(pathList, sharedSolidPen)
     }
-
 
     private func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
     {
