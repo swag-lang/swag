@@ -648,12 +648,15 @@ impl Painter
         if pen.dashStyle != .None
             preparePattern(&cxt)
 
-        setTexture0(path.bvMin, path.bvMax, pen.brush)
+        bvMin := path.bvMin
+        bvMax := path.bvMax
+        bvMin -= pen.size / 2
+        bvMax += pen.size / 2
+        setTexture0(bvMin, bvMax, pen.brush)
         resetTexture1()
+
         startOverlapMode(pen)
-
         drawPath(&cxt)
-
         stopOverlapMode()
     }
 
@@ -672,12 +675,16 @@ impl Painter
         visit p: pathList.paths
         {
             p.flatten(paintQuality)
-            bvMin = Vector2.min(bvMin, p.bvMin)
-            bvMax = Vector2.max(bvMin, p.bvMin)
+            bvMin.x = Math.min(bvMin.x, p.bvMin.x)
+            bvMin.y = Math.min(bvMin.y, p.bvMin.y)
+            bvMax = Vector2.max(bvMax, p.bvMax)
         }
 
+        bvMin -= pen.size / 2
+        bvMax += pen.size / 2
         setTexture0(bvMin, bvMax, pen.brush)
         resetTexture1()
+
         startOverlapMode(pen)
 
         var cxt: Context

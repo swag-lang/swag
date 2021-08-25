@@ -374,9 +374,10 @@ func displayPage3()
 
         cdc.resetTransform()
         cdc.translateTransform(700, 200)
-        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
-        cdc.translateTransform(0, 150)
         cdc.drawPathList(&lp1, pen, DrawPathListMode.Separate)
+        cdc.translateTransform(0, 150)
+        pen.brush = Brush.createTexture(image1)
+        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
     }
 
     cdc.end()

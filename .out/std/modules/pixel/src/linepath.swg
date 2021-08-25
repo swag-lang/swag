@@ -338,9 +338,6 @@ public impl LinePath
     // Convert the path to a list of points
     method flatten(quality: PaintQuality)
     {
-        #[Swag.Inline]
-        func roundVal(x: f32) => x//0.4 + Math.round(x)
-
         // Already done ?
         if !isDirty and flattenQuality == quality and isFlatten
             return
@@ -349,13 +346,11 @@ public impl LinePath
         isFlatten      = true
         flattenQuality = quality
 
-        bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
+        bvMin, bvMax = startPoint
         polygon.clear()
         totalLen = 0
 
-        endPosBuffer.x = roundVal(startPoint.x)
-        endPosBuffer.y = roundVal(startPoint.y)
+        endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
 
         var pos, p1, p2, lastP: Vector2 = ?
@@ -363,8 +358,7 @@ public impl LinePath
 
         visit elem, i: elements
         {
-            pos.x = roundVal(elem.position.x)
-            pos.y = roundVal(elem.position.y)
+            pos = elem.position
 
             #[Swag.Complete]
             switch elem.type
@@ -373,16 +367,10 @@ public impl LinePath
                 flattenLine(pos)
 
             case Bezier1:
-                p1.x = roundVal(elem.p1.x)
-                p1.y = roundVal(elem.p1.y)
-                flattenBezier(pos, p1, quality)
+                flattenBezier(pos, elem.p1, quality)
 
             case Bezier2:
-                p1.x = roundVal(elem.p1.x)
-                p1.y = roundVal(elem.p1.y)
-                p2.x = roundVal(elem.p2.x)
-                p2.y = roundVal(elem.p2.y)
-                flattenBezier(pos, p1, p2, quality)
+                flattenBezier(pos, elem.p1, elem.p2, quality)
 
             case Curve:
                 var p0, p1, p2, p3: Vector2 = ?
