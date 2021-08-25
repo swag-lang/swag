@@ -376,14 +376,10 @@ impl Array
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
-
         if index == count
-        {
             @drop(buffer + count)
-            return
-        }
-
-        buffer[index] =,moveraw buffer[count]
+        else
+            buffer[index] =,moveraw buffer[count]
     }
 
     // Remove an element at 'index' by shifting all others.
@@ -405,21 +401,13 @@ impl Array
         }
     }
 
-    // Remove last element
-    method removeBack()
-    {
-        Debug.assert(count > 0)
-        @drop(buffer + count - 1)
-        count -= 1
-    }
-
     // Returns 'true' if the array contains 'value'.
     // O(n)
     method contains(value: T)->bool
     {
-        loop count
+        loop i: count
         {
-            if(buffer[@index] == value)
+            if buffer[i] == value
                 return true
         }
 
@@ -448,7 +436,7 @@ impl Array
     // Returns a copy of the last element
     method back()->T
     {
-        Debug.assert(count > 0)
+        Debug.assert(count > 0, "array is empty")
         var result: retval = buffer[count - 1]
         return result
     }
@@ -456,17 +444,25 @@ impl Array
     // Returns the address of the last element
     method backPtr()->*T
     {
-        Debug.assert(count > 0)
+        Debug.assert(count > 0, "array is empty")
         return buffer + count - 1
     }
 
     // Returns a copy of the last element, and remove it from the array
     method popBack()->T
     {
-        Debug.assert(count > 0)
+        Debug.assert(count > 0, "array is empty")
         var result: retval = ?
         result =,nodrop,moveraw buffer[count - 1]
         count -= 1
         return result
+    }
+
+    // Remove the last element
+    method removeBack()
+    {
+        Debug.assert(count > 0, "array is empty")
+        @drop(buffer + count - 1)
+        count -= 1
     }
 }
