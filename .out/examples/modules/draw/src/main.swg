@@ -377,6 +377,8 @@ func displayPage3()
         cdc.drawPathList(&lp1, pen, DrawPathListMode.Separate)
 
         cdc.translateTransform(0, 150)
+        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        cdc.translateTransform(150, 0)
         pen.brush = Brush.createTexture(image1)
         cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
 
@@ -627,27 +629,6 @@ func createWindow()->HWND
         null,
         wc.hInstance,
         null)
-
-    hDC = GetDC(hWnd)
-
-    var pfd: PIXELFORMATDESCRIPTOR
-    pfd.nSize        = @sizeof(pfd)
-    pfd.nVersion     = 1;
-    pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
-    pfd.iPixelType   = PFD_TYPE_RGBA
-    pfd.cStencilBits = 8
-    pfd.cColorBits   = 24
-    pfd.cAlphaBits   = 8
-    pfd.cDepthBits   = 32
-
-    assume
-    {
-        pf := ChoosePixelFormat(hDC, &pfd)
-        SetPixelFormat(hDC, pf, &pfd)
-        DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
-    }
-
-    ReleaseDC(hDC, hWnd)
     return hWnd
 }
 
@@ -690,7 +671,6 @@ func messageLoop()
         hWnd := createWindow()
 
         hDC = GetDC(hWnd)
-
         renderer.init(hDC, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))

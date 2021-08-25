@@ -14,6 +14,18 @@ public impl RenderOglWin32
     {
         Debug.assert(hDC == null)
         hDC = hdc
+
+        var pfd: PIXELFORMATDESCRIPTOR
+        pfd.nSize        = @sizeof(pfd)
+        pfd.nVersion     = 1;
+        pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
+        pfd.iPixelType   = PFD_TYPE_RGBA
+        pfd.cStencilBits = 8
+        pfd.cColorBits   = 24
+        pfd.cAlphaBits   = 8
+        pf := try ChoosePixelFormat(hDC, &pfd)
+        try SetPixelFormat(hDC, pf, &pfd)
+
         hRC = try wglCreateContext(hdc)
         try wglMakeCurrent(hDC, hRC)
         base.init(w, h)
