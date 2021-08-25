@@ -115,29 +115,20 @@ public impl LinePath
     }
 
     // Close the figure
-    // Will add a line to the first point if necessary
+    // Will add a line or a curve to the first point if necessary
     method close()
     {
-        if isClosed
+        if isClosed or !elements.count
             return
 
         v := endPoint - startPoint
         if v.lengthSquared() >= 0.5 * 0.5
-            lineTo(startPoint.x, startPoint.y)
-
-        isClosed = true
-    }
-
-    // Close the figure
-    // Will add a curve to the first point if necessary
-    method closeCurve()
-    {
-        if isClosed
-            return
-
-        v := endPoint - startPoint
-        if v.lengthSquared() >= 0.5 * 0.5
-            curveTo(startPoint.x, startPoint.y)
+        {
+            if elements.backPtr().type == .Curve
+                curveTo(startPoint.x, startPoint.y)
+            else
+                lineTo(startPoint.x, startPoint.y)
+        }
 
         isClosed = true
     }

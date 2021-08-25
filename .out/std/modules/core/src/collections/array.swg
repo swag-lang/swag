@@ -445,16 +445,22 @@ impl Array
         Slice.sort(@mkslice(buffer, count), cb)
     }
 
-    // Returns the last element, and remove it from the array
+    // Returns a copy of the last element
     method back()->T
     {
         Debug.assert(count > 0)
-        var result: retval = ?
-        result =,nodrop,moveraw buffer[count - 1]
+        var result: retval = buffer[count - 1]
         return result
     }
 
-    // Returns the last element, and remove it from the array
+    // Returns the address of the last element
+    method backPtr()->*T
+    {
+        Debug.assert(count > 0)
+        return buffer + count - 1
+    }
+
+    // Returns a copy of the last element, and remove it from the array
     method popBack()->T
     {
         Debug.assert(count > 0)

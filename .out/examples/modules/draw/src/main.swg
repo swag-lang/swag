@@ -382,7 +382,7 @@ func displayPage3()
         lp.curveTo(120, 100)
         lp.curveTo(80, 160)
         lp.curveTo(40, 140)
-        lp.closeCurve()
+        lp.close()
         cdc.fillPath(&lp, Argb.Blue)
         cdc.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
     }

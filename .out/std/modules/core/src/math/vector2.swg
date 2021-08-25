@@ -78,13 +78,14 @@ impl Vector2
     // Returns the dot product between two vectors
     func dot(using const self, other: Self) => (x * other.x) + (y * other.y)
 
-    // Returns the perpendicular vector. 'axis' will give the sign
+    // Returns the perpendicular vector in the 2D plane.
+    // 'axis' will give the sign of the result
     func cross(using const self, axis: f32)->Vector2
     {
         return @{y * axis, -x * axis}
     }
 
-    // Returns the Z length of the perpendicular vector
+    // Returns the Z signed length of the perpendicular vector
     func cross(using const self, other: Vector2)->f32
     {
         return x * other.y - y * other.x
