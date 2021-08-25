@@ -136,7 +136,7 @@ impl Painter
         return result
     }
 
-    protected func resetTexture0(using self)
+    protected method resetTexture0()
     {
         if lastTexture0Handle or lastTexture0Type != .SolidColor
         {
@@ -146,7 +146,7 @@ impl Painter
         }
     }
 
-    protected func resetTexture1(using self)
+    protected method resetTexture1()
     {
         if lastTexture1Handle
         {
@@ -155,7 +155,7 @@ impl Painter
         }
     }
 
-    protected func setTexture0(using self, bvMin, bvMax: Vector2, brush: Brush)
+    protected method setTexture0(bvMin, bvMax: Vector2, brush: Brush)
     {
         if !canSetTexture0
             return
@@ -199,7 +199,7 @@ impl Painter
         lastTexture0Type   = brush.type
     }
 
-    protected func setTexture1(using self, texture: Texture)
+    protected method setTexture1(texture: Texture)
     {
         if lastTexture1Handle == texture.handle
             return
@@ -209,7 +209,7 @@ impl Painter
         lastTexture1Handle = texture.handle
     }
 
-    protected func pushTriangleCmd(using self)->*Command
+    protected method pushTriangleCmd()->*Command
     {
         var cmd: *Command
         if commandBuffer.count
@@ -229,7 +229,7 @@ impl Painter
         return cmd
     }
 
-    protected func pushTriangle(using self, p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
+    protected method pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -246,7 +246,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected func pushTriangle(using self, p1, p2, p3: Vector2, color: Color)->uint
+    protected method pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -263,7 +263,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected func addEdgeAA(using self, tri: uint, start, end: Vector2)
+    protected method addEdgeAA(tri: uint, start, end: Vector2)
     {
         loop i: 3
         {
@@ -281,7 +281,7 @@ impl Painter
     }
 
     #[Swag.Inline]
-    protected func newCommand(using self, cmd: CommandId, replaceLast = false)->*Command
+    protected method newCommand(cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin, "begin() not called before")
 
@@ -294,7 +294,7 @@ impl Painter
         return ptr
     }
 
-    protected func updateFont(using self, fontRef: *Font)
+    protected method updateFont(fontRef: *Font)
     {
         if !fontRef.dirty return
         cmd := newCommand(CommandId.UpdateFont, false)
@@ -332,21 +332,21 @@ impl Painter
     }
 
     // Call this after drawing
-    func end(using self)
+    method end()
     {
         Debug.assert(drawingBegin)
         drawingBegin = false
     }
 
     // Clear the rendering surface
-    func clear(using self, color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
+    method clear(color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
         cmd.clear.color = color
     }
 
     // Set the paint position
-    func translateTransform(using self, x, y: f32)
+    method translateTransform(x, y: f32)
     {
         tr := Transform2.createTranslation(x, y)
         transform.multiply(tr)
@@ -354,7 +354,7 @@ impl Painter
     }
 
     // Set the paint rotation, in degrees
-    func rotateTransform(using self, angle: f32)
+    method rotateTransform(angle: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
@@ -363,7 +363,7 @@ impl Painter
     }
 
     // Set the paint rotation, in degrees
-    func rotateTransform(using self, angle: f32, centerX, centerY: f32)
+    method rotateTransform(angle: f32, centerX, centerY: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
@@ -372,7 +372,7 @@ impl Painter
     }
 
     // Set the paint scale
-    func scaleTransform(using self, x, y: f32)
+    method scaleTransform(x, y: f32)
     {
         tr := Transform2.createScale(x, y, 0, 0)
         transform.multiply(tr)
@@ -380,14 +380,14 @@ impl Painter
     }
 
     // Reset the paint position, rotation, scale
-    func resetTransform(using self)
+    method resetTransform()
     {
         transform.setIdentity()
         setTransform(transform)
     }
 
     // Set the paint transformation
-    func setTransform(using self, tr: Transform2)
+    method setTransform(tr: Transform2)
     {
         transform = tr
 
@@ -396,13 +396,13 @@ impl Painter
     }
 
     // Set the texture interpolation mode
-    func setInterpolationMode(using self, mode: InterpolationMode)
+    method setInterpolationMode(mode: InterpolationMode)
     {
         interpolationMode = mode
     }
 
     // Set the current clipping rectangle
-    func setClippingRect(using self, x, y, width, height: f32)
+    method setClippingRect(x, y, width, height: f32)
     {
         clippingRect = @{x, y, width, height}
         clippingRectOn = true
@@ -411,34 +411,34 @@ impl Painter
     }
 
     // Reset the current clipping rectangle
-    func resetClippingRect(using self)
+    method resetClippingRect()
     {
         clippingRectOn = false
         discard newCommand(CommandId.ResetClippingRect, true)
     }
 
     // Start painting in the clipping buffer
-    func startClippingRegion(using self, mode = ClippingMode.Set)
+    method startClippingRegion(mode = ClippingMode.Set)
     {
         cmd := newCommand(CommandId.StartClippingRegion, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Start painting in the clipping buffer
-    func setClippingRegionMode(using self, mode: ClippingMode)
+    method setClippingRegionMode(mode: ClippingMode)
     {
         cmd := newCommand(CommandId.SetClippingRegionMode, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.
-    func endClippingRegion(using self)
+    method endClippingRegion()
     {
         discard newCommand(CommandId.EndClippingRegion, true)
     }
 
     // Reset clipping buffer to its default value (no more clipping)
-    func resetClippingRegion(using self)
+    method resetClippingRegion()
     {
         discard newCommand(CommandId.ResetClippingRegion, true)
     }
