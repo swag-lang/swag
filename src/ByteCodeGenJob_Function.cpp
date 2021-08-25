@@ -1441,6 +1441,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // To avoid a double release of the register in emitLoop... sight...
     case AstNodeKind::While:
         break;
+    // Because resultRegisterRC is used to store the result
+    case AstNodeKind::ConditionalExpression:
+        break;
     default:
         node->parent->resultRegisterRC = node->resultRegisterRC;
         break;

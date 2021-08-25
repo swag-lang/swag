@@ -394,13 +394,10 @@ public impl LinePath
                 flattenBezier(pos, p1, p2, quality)
 
             case Curve:
-                var p0, p1, p2, p3: Vector2
+                var p0, p1, p2, p3: Vector2 = ?
                 if i == 0
                 {
-                    if isClosed
-                        p0 = elements[lastElem - 1].position
-                    else
-                        p0 = (startPoint - pos) + startPoint
+                    p0 = isClosed ? elements[lastElem - 1].position : (startPoint - pos) + startPoint
                     p1 = startPoint
                     p2 = pos
                     p3 = elements[i + 1].position
@@ -417,10 +414,7 @@ public impl LinePath
                     p0 = elements[i - 2].position
                     p1 = elements[i - 1].position
                     p2 = pos
-                    if isClosed
-                        p3 = elements[1].position
-                    else
-                        p3 = pos + (pos - p1)
+                    p3 = isClosed ? elements[1].position : pos + (pos - p1)
                 }
 
                 const alpha = 0.5
