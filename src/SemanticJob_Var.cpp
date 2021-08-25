@@ -756,7 +756,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!isCompilerConstant, context->report({node, g_E[Err0305]}));
     }
 
-    // Find type
+    // Types and assignements are specified
     if (node->type && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         SWAG_ASSERT(node->type->typeInfo);
@@ -820,10 +820,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, g_E[Err0306]}));
         }
     }
+
+    // Only assignement is specified, need to deduce type
     else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         node->typeInfo = TypeManager::concreteReferenceType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
+
+        // When affect is from a const struct, remove the const
+        if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->isConst())
+        {
+            if (node->typeInfo->flags & TYPEINFO_FAKE_ALIAS && node->assignment->kind != AstNodeKind::Cast)
+                node->typeInfo = ((TypeInfoAlias*) node->typeInfo)->rawType;
+        }
 
         if (node->typeInfo == g_TypeMgr->typeInfoVoid)
         {
@@ -846,6 +855,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
             SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
     }
+
+    // Only type is specified, this is it...
     else if (node->type)
     {
         node->typeInfo = node->type->typeInfo;

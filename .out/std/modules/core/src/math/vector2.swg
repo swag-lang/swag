@@ -12,8 +12,11 @@ impl Vector2
     const One:      Vector2{1, 1}
     const UnitX:    Vector2{1, 0}
     const UnitY:    Vector2{0, 1}
-    const UnitNX:   Vector2{-1, 0}
-    const UnitNY:   Vector2{0, -1}
+    const NegUnitX: Vector2{-1, 0}
+    const NegUnitY: Vector2{0, -1}
+    const Max:      Vector2{Swag.F32.Max, Swag.F32.Max}
+    const NegMax:   Vector2{-Swag.F32.Max, -Swag.F32.Max}
+    const Min:      Vector2{Swag.F32.Min, Swag.F32.Min}
 
     #[Swag.Complete]
     func opAffect(using self, value: f32)

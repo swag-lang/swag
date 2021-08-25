@@ -670,16 +670,10 @@ impl Painter
             return
         }
 
-        bvMin := Vector2{Swag.F32.Max, Swag.F32.Max}
-        bvMax := Vector2{Swag.F32.Min, Swag.F32.Min}
-        visit p: pathList.paths
-        {
-            p.flatten(paintQuality)
-            bvMin.x = Math.min(bvMin.x, p.bvMin.x)
-            bvMin.y = Math.min(bvMin.y, p.bvMin.y)
-            bvMax = Vector2.max(bvMax, p.bvMax)
-        }
+        pathList.flatten(paintQuality)
 
+        bvMin := pathList.bvMin
+        bvMax := pathList.bvMax
         bvMin -= pen.size / 2
         bvMax += pen.size / 2
         setTexture0(bvMin, bvMax, pen.brush)

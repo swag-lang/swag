@@ -48,8 +48,8 @@ impl LinePathList
     method flatten(quality: PaintQuality)
     {
         // Flatten all path, and compute BV
-        bvMin = Vector2{Swag.F32.Max, Swag.F32.Max}
-        bvMax = Vector2{-Swag.F32.Max, -Swag.F32.Max}
+        bvMin = Vector2.Max
+        bvMax = Vector2.NegMax
         visit p: paths
         {
             p.flatten(quality)
