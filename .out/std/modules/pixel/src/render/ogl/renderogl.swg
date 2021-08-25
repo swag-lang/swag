@@ -69,42 +69,42 @@ impl RenderOgl
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
         using HatchStyle
-        hatchTextures[Dot] = generateTexture(HatchDot, 8, 8)
-        hatchTextures[Horizontal] = generateTexture(HatchHorizontal, 8, 8)
-        hatchTextures[HorizontalLight] = generateTexture(HatchHorizontalLight, 8, 8)
-        hatchTextures[HorizontalNarrow] = generateTexture(HatchHorizontalNarrow, 8, 8)
-        hatchTextures[Vertical] = generateTexture(HatchVertical, 8, 8)
-        hatchTextures[VerticalLight] = generateTexture(HatchVerticalLight, 8, 8)
-        hatchTextures[VerticalNarrow] = generateTexture(HatchVerticalNarrow, 8, 8)
-        hatchTextures[SolidDiamond] = generateTexture(HatchSolidDiamond, 8, 8)
-        hatchTextures[OutlinedDiamond] = generateTexture(HatchOutlinedDiamond, 8, 8)
-        hatchTextures[HorizontalDark] = generateTexture(HatchHorizontalDark, 8, 8)
-        hatchTextures[VerticalDark] = generateTexture(HatchVerticalDark, 8, 8)
-        hatchTextures[Grid] = generateTexture(HatchGrid, 8, 8)
-        hatchTextures[GridLarge] = generateTexture(HatchGridLarge, 8, 8)
-        hatchTextures[GridDotted] = generateTexture(HatchGridDotted, 8, 8)
-        hatchTextures[Cross] = generateTexture(HatchCross, 8, 8)
-        hatchTextures[CrossLarge] = generateTexture(HatchCrossLarge, 8, 8)
-        hatchTextures[Percent5] = generateTexture(HatchPercent5, 8, 8)
-        hatchTextures[Percent10] = generateTexture(HatchPercent10, 8, 8)
-        hatchTextures[Percent20] = generateTexture(HatchPercent20, 8, 8)
-        hatchTextures[Percent25] = generateTexture(HatchPercent25, 8, 8)
-        hatchTextures[Percent30] = generateTexture(HatchPercent30, 8, 8)
-        hatchTextures[Percent40] = generateTexture(HatchPercent40, 8, 8)
-        hatchTextures[Percent50] = generateTexture(HatchPercent50, 8, 8)
-        hatchTextures[Percent60] = generateTexture(HatchPercent60, 8, 8)
-        hatchTextures[Percent70] = generateTexture(HatchPercent70, 8, 8)
-        hatchTextures[Percent75] = generateTexture(HatchPercent75, 8, 8)
-        hatchTextures[Percent80] = generateTexture(HatchPercent80, 8, 8)
-        hatchTextures[Percent90] = generateTexture(HatchPercent90, 8, 8)
-        hatchTextures[CheckBoard] = generateTexture(HatchCheckBoard, 8, 8)
-        hatchTextures[CheckBoardLarge] = generateTexture(HatchCheckBoardLarge, 8, 8)
-        hatchTextures[Weave] = generateTexture(HatchWeave, 8, 8)
-        hatchTextures[DiagonalForward] = generateTexture(HatchDiagonalForward, 8, 8)
-        hatchTextures[DiagonalForwardLight] = generateTexture(HatchDiagonalForwardLight, 8, 8)
-        hatchTextures[DiagonalBackward] = generateTexture(HatchDiagonalBackward, 8, 8)
-        hatchTextures[DiagonalBackwardLight] = generateTexture(HatchDiagonalBackwardLight, 8, 8)
-        hatchTextures[DiagonalCross] = generateTexture(HatchDiagonalCross, 8, 8)
+        hatchTextures[Dot] = generateTexture(Hatch.Dot, 8, 8)
+        hatchTextures[Horizontal] = generateTexture(Hatch.Horizontal, 8, 8)
+        hatchTextures[HorizontalLight] = generateTexture(Hatch.HorizontalLight, 8, 8)
+        hatchTextures[HorizontalNarrow] = generateTexture(Hatch.HorizontalNarrow, 8, 8)
+        hatchTextures[Vertical] = generateTexture(Hatch.Vertical, 8, 8)
+        hatchTextures[VerticalLight] = generateTexture(Hatch.VerticalLight, 8, 8)
+        hatchTextures[VerticalNarrow] = generateTexture(Hatch.VerticalNarrow, 8, 8)
+        hatchTextures[SolidDiamond] = generateTexture(Hatch.SolidDiamond, 8, 8)
+        hatchTextures[OutlinedDiamond] = generateTexture(Hatch.OutlinedDiamond, 8, 8)
+        hatchTextures[HorizontalDark] = generateTexture(Hatch.HorizontalDark, 8, 8)
+        hatchTextures[VerticalDark] = generateTexture(Hatch.VerticalDark, 8, 8)
+        hatchTextures[Grid] = generateTexture(Hatch.Grid, 8, 8)
+        hatchTextures[GridLarge] = generateTexture(Hatch.GridLarge, 8, 8)
+        hatchTextures[GridDotted] = generateTexture(Hatch.GridDotted, 8, 8)
+        hatchTextures[Cross] = generateTexture(Hatch.Cross, 8, 8)
+        hatchTextures[CrossLarge] = generateTexture(Hatch.CrossLarge, 8, 8)
+        hatchTextures[Percent5] = generateTexture(Hatch.Percent5, 8, 8)
+        hatchTextures[Percent10] = generateTexture(Hatch.Percent10, 8, 8)
+        hatchTextures[Percent20] = generateTexture(Hatch.Percent20, 8, 8)
+        hatchTextures[Percent25] = generateTexture(Hatch.Percent25, 8, 8)
+        hatchTextures[Percent30] = generateTexture(Hatch.Percent30, 8, 8)
+        hatchTextures[Percent40] = generateTexture(Hatch.Percent40, 8, 8)
+        hatchTextures[Percent50] = generateTexture(Hatch.Percent50, 8, 8)
+        hatchTextures[Percent60] = generateTexture(Hatch.Percent60, 8, 8)
+        hatchTextures[Percent70] = generateTexture(Hatch.Percent70, 8, 8)
+        hatchTextures[Percent75] = generateTexture(Hatch.Percent75, 8, 8)
+        hatchTextures[Percent80] = generateTexture(Hatch.Percent80, 8, 8)
+        hatchTextures[Percent90] = generateTexture(Hatch.Percent90, 8, 8)
+        hatchTextures[CheckBoard] = generateTexture(Hatch.CheckBoard, 8, 8)
+        hatchTextures[CheckBoardLarge] = generateTexture(Hatch.CheckBoardLarge, 8, 8)
+        hatchTextures[Weave] = generateTexture(Hatch.Weave, 8, 8)
+        hatchTextures[DiagonalForward] = generateTexture(Hatch.DiagonalForward, 8, 8)
+        hatchTextures[DiagonalForwardLight] = generateTexture(Hatch.DiagonalForwardLight, 8, 8)
+        hatchTextures[DiagonalBackward] = generateTexture(Hatch.DiagonalBackward, 8, 8)
+        hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
+        hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
     protected func start(using self)
@@ -264,6 +264,7 @@ impl RenderOgl
         // Default state
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glBlendEquation(GL_FUNC_ADD)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glDisable(GL_SCISSOR_TEST)
         glDisable(GL_STENCIL_TEST)
@@ -284,6 +285,38 @@ impl RenderOgl
         {
             switch cmd.id
             {
+            case SetBlendingMode:
+                params := &cmd.blendingMode
+                switch params.mode
+                {
+                case Copy:
+                    glDisable(GL_BLEND)
+                case Alpha:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                    glBlendEquation(GL_FUNC_ADD)
+                case Add:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_ONE, GL_ONE)
+                    glBlendEquation(GL_FUNC_ADD)
+                case Sub:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_ONE, GL_ONE)
+                    glBlendEquation(GL_FUNC_SUBTRACT)
+                case SubDst:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_ONE, GL_ONE)
+                    glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
+                case Min:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_ONE, GL_ONE)
+                    glBlendEquation(GL_MIN)
+                case Max:
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_ONE, GL_ONE)
+                    glBlendEquation(GL_MAX)
+                }
+
             case Clear:
                 params := &cmd.clear
                 (r, g, b) := params.color.toRgbf()

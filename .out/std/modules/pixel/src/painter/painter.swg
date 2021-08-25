@@ -30,6 +30,7 @@ enum CommandId
     UpdateFont
     StartNoOverlap
     StopNoOverlap
+    SetBlendingMode
 }
 
 #[Swag.EnumFlags]
@@ -52,6 +53,17 @@ enum ClippingMode
     Clear
 }
 
+enum BlendingMode
+{
+    Copy
+    Alpha
+    Add
+    Sub
+    SubDst
+    Min
+    Max
+}
+
 struct Command
 {
     id: CommandId = ?
@@ -64,6 +76,7 @@ struct Command
         clippingRegion: struct{mode: ClippingMode = ?; }
         font:           struct{fontRef: *Font; }
         texture1:       struct{texture: Texture; }
+        blendingMode:   struct{mode: BlendingMode = ?; }
 
         texture0: struct
                 {
@@ -99,6 +112,7 @@ struct Painter
     canSetTexture0:     bool = true
     curZ:               f32
     curZOffset:         f32
+    blendingMode:       BlendingMode = Alpha
 }
 
 impl Painter
@@ -314,6 +328,7 @@ impl Painter
         canSetTexture0 = true
         curZ = 0
         curZOffset = 0
+        blendingMode = .Alpha
     }
 
     // Call this after drawing
@@ -426,5 +441,13 @@ impl Painter
     func resetClippingRegion(using self)
     {
         discard newCommand(CommandId.ResetClippingRegion, true)
+    }
+
+    // Set the current blending mode
+    method setBlendingMode(mode: BlendingMode)
+    {
+        cmd := newCommand(CommandId.SetBlendingMode, true)
+        cmd.blendingMode.mode = mode
+        blendingMode = mode
     }
 }

@@ -22,7 +22,7 @@ var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
 var g_page:         s32 = 3
-const MaxPages = 5
+const MaxPages = 6
 
 func dataPath()->String
 {
@@ -345,46 +345,19 @@ func displayPage3()
     }
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 300)
-
-        var lp: LinePath
-        lp.start(0, 100)
-        lp.curveTo(50, 80)
-        lp.curveTo(100, 20)
-        lp.curveTo(150, 80)
-        lp.curveTo(200, 100)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+        var lp1: LinePath
+        lp1.start(300, 400)
+        lp1.lineTo(400, 450)
+        lp1.lineTo(300, 500)
+        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Blue), 50))
     }
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 400)
-
-        var lp: LinePath
-        lp.start(20, 50)
-        lp.curveTo(100, 10)
-        lp.curveTo(200, 100)
-        lp.curveTo(300, 50)
-        lp.curveTo(400, 80)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
-    }
-
-    {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 500)
-
-        var lp: LinePath
-        lp.start(60, 60)
-        lp.curveTo(150, 80)
-        lp.curveTo(200, 40)
-        lp.curveTo(180, 120)
-        lp.curveTo(120, 100)
-        lp.curveTo(80, 160)
-        lp.curveTo(40, 140)
-        lp.close()
-        cdc.fillPath(&lp, Argb.Blue)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
+        cdc.translateTransform(400, 200)
+        cdc.setBlendingMode(BlendingMode.Add)
+        cdc.fillRect(0, 0, 150, 150, Argb.Blue)
+        cdc.setBlendingMode(BlendingMode.Max)
+        cdc.fillRect(50, 50, 150, 150, Argb.Red)
     }
 
     cdc.end()
@@ -431,7 +404,6 @@ func displayPage4()
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
-        //brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Red)
         brush := Brush.createTexture(image1)
         rect := cdc.measureString(100, 300, str, font40)
         cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
@@ -507,6 +479,60 @@ func displayPage4()
     renderer.draw(&cdc)
 }
 
+func displayPage5()
+{
+    cdc.begin()
+    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
+    cdc.paintQuality = g_paintQuality
+
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(500, 300)
+
+        var lp: LinePath
+        lp.start(0, 100)
+        lp.curveTo(50, 80)
+        lp.curveTo(100, 20)
+        lp.curveTo(150, 80)
+        lp.curveTo(200, 100)
+        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+    }
+
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(500, 400)
+
+        var lp: LinePath
+        lp.start(20, 50)
+        lp.curveTo(100, 10)
+        lp.curveTo(200, 100)
+        lp.curveTo(300, 50)
+        lp.curveTo(400, 80)
+        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+    }
+
+    {
+        cdc.resetTransform()
+        cdc.translateTransform(500, 500)
+
+        var lp: LinePath
+        lp.start(60, 60)
+        lp.curveTo(150, 80)
+        lp.curveTo(200, 40)
+        lp.curveTo(180, 120)
+        lp.curveTo(120, 100)
+        lp.curveTo(80, 160)
+        lp.curveTo(40, 140)
+        lp.close()
+        cdc.fillPath(&lp, Argb.Blue)
+        cdc.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
+    }
+
+    cdc.end()
+    renderer.resetTransform()
+    renderer.draw(&cdc)
+}
+
 func display()
 {
     renderer.begin()
@@ -523,6 +549,7 @@ func display()
     case 2: displayPage2()
     case 3: displayPage3()
     case 4: displayPage4()
+    case 5: displayPage5()
     }
 
     renderer.end()

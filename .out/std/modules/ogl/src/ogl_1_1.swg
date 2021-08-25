@@ -72,8 +72,8 @@ const GL_QUAD_STRIP         = 0x0008
 const GL_POLYGON            = 0x0009
 
 /* BlendingFactorDest */
-const GL_ZERO                   = 0
-const GL_ONE                    = 1
+const GL_ZERO                   = 0x0000
+const GL_ONE                    = 0x0001
 const GL_SRC_COLOR              = 0x0300
 const GL_ONE_MINUS_SRC_COLOR    = 0x0301
 const GL_SRC_ALPHA              = 0x0302

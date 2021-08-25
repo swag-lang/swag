@@ -640,12 +640,12 @@ impl Painter
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
             alpha = true
 
-        if alpha
+        if alpha and blendingMode == .Alpha
             startNoOverlapMode()
 
         drawPath(&cxt)
 
-        if alpha
+        if alpha and blendingMode == .Alpha
             stopNoOverlapMode()
     }
 
