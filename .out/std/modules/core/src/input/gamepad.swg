@@ -23,7 +23,7 @@ struct GamePad
 impl GamePad
 {
     // Update the GamePad current state
-    func update(using self) throw
+    method update() throw
     {
         newConnected := isConnected(padIndex)
         if !newConnected
@@ -40,44 +40,44 @@ impl GamePad
     }
 
     // Reset the previous and current state
-    func clear(using self)
+    method clear()
     {
         previousState.clear()
         currentState.clear()
     }
 
     // Determines whether specified input device button is pressed
-    func isButtonPressed(using self, button: GamePadButton)->bool
+    method isButtonPressed(button: GamePadButton)->bool
     {
         return currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been pressed
-    func isButtonJustPressed(using self, button: GamePadButton)->bool
+    method isButtonJustPressed(button: GamePadButton)->bool
     {
         return currentState.pressed[button] and !previousState.pressed[button]
     }
 
     // Determines whether specified input device button is released (not pressed)
-    func isButtonReleased(using self, button: GamePadButton)->bool
+    method isButtonReleased(button: GamePadButton)->bool
     {
         return !currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been released
-    func isButtonJustReleased(using self, button: GamePadButton)->bool
+    method isButtonJustReleased(button: GamePadButton)->bool
     {
         return !currentState.pressed[button] and previousState.pressed[button]
     }
 
     // Get the analog position of the given button
-    func getPosition(using self, button: GamePadButton)->Point
+    method getPosition(button: GamePadButton)->Point
     {
         return currentState.position[button]
     }
 
     // Set the vibration motor speeds
-    func setVibration(using self, left, right: f32) throw
+    method setVibration(left, right: f32) throw
     {
         try setVibration(padIndex, left, right)
     }

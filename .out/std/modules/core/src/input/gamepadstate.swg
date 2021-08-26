@@ -13,7 +13,7 @@ struct GamePadState
 impl GamePadState
 {
     // Reset state to its default value
-    func clear(using self)
+    method clear()
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
         Memory.clear(&position, cast(uint) @sizeof(position))

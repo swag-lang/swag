@@ -5,9 +5,7 @@ using Math
 // Represents one mouse state
 struct MouseState
 {
-    // Whether each button is pressed or not
     pressed:    [@countof(MouseButton)] bool
-    // Mouse position, in screen coordinates
     position:   Point
 }
 
@@ -15,7 +13,7 @@ struct MouseState
 impl MouseState
 {
     // Compute the actual state of the mouse
-    func update(using self)
+    method update()
     {
         using MouseButton
         pressed[Left] = isMouseButtonPressed(Left)
@@ -27,7 +25,7 @@ impl MouseState
     }
 
     // Reset the state to its default value
-    func clear(using self)
+    method clear()
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
         position = getMousePos()

@@ -1,16 +1,16 @@
+#global public
 #global namespace Input
 
 // Represents one keyboard state
-public struct KeyboardState
+struct KeyboardState
 {
-    // Whether each key is pressed or not
     pressed: [@countof(Key)] bool
 }
 
-public impl KeyboardState
+impl KeyboardState
 {
     // Compute current keyboard state
-    func update(using self)
+    method update()
     {
         loop i: @countof(Key)
         {
@@ -19,7 +19,7 @@ public impl KeyboardState
     }
 
     // Reset keyboard state
-    func clear(using self)
+    method clear()
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
     }

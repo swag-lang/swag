@@ -20,7 +20,7 @@ struct Keyboard
 impl Keyboard
 {
     // Compute current state of the keyboard (all keys)
-    func update(using self)
+    method update()
     {
         previousState = currentState
         currentState.update()
@@ -60,7 +60,7 @@ impl Keyboard
     }
 
     // Reset the keyboard state
-    func clear(using self)
+    method clear()
     {
         previousState.clear()
         currentState.clear()
@@ -69,25 +69,25 @@ impl Keyboard
     }
 
     // Determines whether given key is currently being pressed
-    func isKeyPressed(using self, key: Key)->bool
+    method isKeyPressed(key: Key)->bool
     {
         return currentState.pressed[key]
     }
 
     // Determines whether given key has just been pressed
-    func isKeyJustPressed(using self, key: Key)->bool
+    method isKeyJustPressed(key: Key)->bool
     {
         return currentState.pressed[key] and !previousState.pressed[key]
     }
 
     // Determines whether given key is currently being released
-    func isKeyReleased(using self, key: Key)->bool
+    method isKeyReleased(key: Key)->bool
     {
         return !currentState.pressed[key]
     }
 
     // Determines whether given key has just been released
-    func isKeyJustReleased(using self, key: Key)->bool
+    method isKeyJustReleased(key: Key)->bool
     {
         return !currentState.pressed[key] and previousState.pressed[key]
     }
