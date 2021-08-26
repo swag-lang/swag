@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "pixel" location="swag@std"
+    #import "gui" location="swag@std"
 
     #run
     {
