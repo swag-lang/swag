@@ -22,6 +22,7 @@ var g_modeAA:       bool = true
 var g_paintQuality: PaintQuality = Normal
 var g_pattern:      bool = true
 var g_page:         s32 = 4
+var g_wnd:          Surface
 const MaxPages = 6
 
 func dataPath()->String
@@ -589,6 +590,13 @@ func display()
     case 5: displayPage5()
     }
 
+    pt := Input.getMousePos()
+    g_wnd.screenToSurface(&pt)
+    cdc.begin()
+    cdc.drawLine(0, 0, pt.x, pt.y, Argb.Red, 4)
+    cdc.end()
+    renderer.draw(&cdc)
+
     renderer.end()
 }
 
@@ -631,8 +639,8 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        wnd := Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
-        renderer.init(wnd.hWnd, W, H)
+        g_wnd = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        renderer.init(g_wnd.hWnd, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
         image0 = renderer.addImage(img0)
@@ -649,7 +657,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
-        wnd.show()
+        g_wnd.show()
         messageLoop()
 
         renderer.drop()

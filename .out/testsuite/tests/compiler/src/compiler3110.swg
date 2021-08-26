@@ -15,10 +15,16 @@ func titi() throw
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]
-#test
+func tata()
 {
     toto()
     {
         try titi()
     }
+}
+
+#test
+{
+    catch tata()
+    @assert(@err != null)
 }
