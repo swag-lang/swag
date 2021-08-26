@@ -1,7 +1,7 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using Core, Win32, Ogl, Gdi32, Pixel
+using Core, Win32, Ogl, Gdi32, Pixel, Gui
 using Core.Drawing, Core.Math
 
 const W = 1024
@@ -592,73 +592,27 @@ func display()
     renderer.end()
 }
 
-#[Swag.Callback]
-func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+func winProc(wnd: Surface, msg: SurfaceMessage)
 {
-    switch msg
+    switch msg.kind
     {
-    case WM_PAINT:
+    case Paint:
         display()
-        var ps: PAINTSTRUCT
-        BeginPaint(hWnd, &ps)
-        EndPaint(hWnd, &ps)
-        return 0
-
-    case WM_SIZE:
-        renderer.resize(LOWORD(lParam), HIWORD(lParam))
-	    assume PostMessageA(hWnd, WM_PAINT, 0, 0)
-	    return 0
-
-    case WM_DESTROY:
-        PostQuitMessage(0)
+    case Resize:
+        renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
     }
-
-    return DefWindowProcA(hWnd, msg, wParam, lParam)
-}
-
-func createWindow()->HWND
-{
-    var wc: WNDCLASSA
-    wc.style         = CS_OWNDC
-    wc.lpfnWndProc   = acast @mkcallback(&winProc)
-    wc.hInstance     = GetModuleHandleA(null)
-    wc.lpszClassName = @dataof("CLASS_NAME")
-    assume RegisterClassA(wc)
-
-    hWnd := CreateWindowExA(
-        0,
-        @dataof("CLASS_NAME"),
-        @dataof("Example"),
-        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-        100,
-        100,
-        W,
-        H,
-        null,
-        null,
-        wc.hInstance,
-        null)
-    return hWnd
 }
 
 func messageLoop()
 {
-    var msg:  MSG
     var keyb: Input.Keyboard
 
     loop
     {
-        //Console.printf("max used: %\n", @getcontext().tempAllocator.maxUsed)
+        if !Surface.messageLoop()
+            return
+
         Memory.freeTemp()
-
-        while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
-        {
-            if msg.message == WM_QUIT
-                return
-            TranslateMessage(&msg)
-            DispatchMessageA(&msg)
-        }
-
         display()
 
         keyb.update()
@@ -677,9 +631,9 @@ func messageLoop()
 {
     try
     {
-        hWnd := createWindow()
+        wnd := Surface.create("Example", W, H, &winProc)
 
-        hDC = GetDC(hWnd)
+        hDC = GetDC(wnd.hWnd)
         renderer.init(hDC, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
@@ -697,13 +651,10 @@ func messageLoop()
         fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
-        display()
-        ShowWindow(hWnd, SW_SHOW)
-        UpdateWindow(hWnd)
-
+        wnd.show()
         messageLoop()
 
         renderer.drop()
-        ReleaseDC(hWnd, hDC)
+        ReleaseDC(wnd.hWnd, hDC)
     }
 }

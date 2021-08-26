@@ -276,6 +276,38 @@ struct WNDCLASSW
     lpszClassName:    LPCWSTR
 }
 
+struct CREATESTRUCTA
+{
+    lpCreateParams: LPVOID
+    hInstance:      HINSTANCE
+    hMenu:          HMENU
+    hwndParent:     HWND
+    cy:             s32
+    cx:             s32
+    y:              s32
+    x:              s32
+    style:          LONG
+    lpszName:       LPCSTR
+    lpszClass:      LPCSTR
+    dwExStyle:      DWORD
+}
+
+struct CREATESTRUCTW
+{
+    lpCreateParams: LPVOID
+    hInstance:      HINSTANCE
+    hMenu:          HMENU
+    hwndParent:     HWND
+    cy:             s32
+    cx:             s32
+    y:              s32
+    x:              s32
+    style:          LONG
+    lpszName:       LPCWSTR
+    lpszClass:      LPCWSTR
+    dwExStyle:      DWORD
+}
+
 const WS_OVERLAPPED       = 0x00000000
 const WS_POPUP            = 0x80000000
 const WS_CHILD            = 0x40000000
@@ -368,6 +400,12 @@ const CS_BYTEALIGNCLIENT  = 0x1000
 const CS_BYTEALIGNWINDOW  = 0x2000
 const CS_GLOBALCLASS      = 0x4000
 
+const GWLP_WNDPROC        = -4
+const GWLP_HINSTANCE      = -6
+const GWLP_HWNDPARENT     = -8
+const GWLP_USERDATA       = -21
+const GWLP_ID             = -12
+
 struct RECT
 {
     left:   LONG
@@ -404,6 +442,9 @@ struct PAINTSTRUCT
     func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PostQuitMessage(nExitCode: s32);
 
+    func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->*LONG;
+    func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->*LONG;
+
     func GetDC(hWnd: HWND)->HDC;
 }
 
@@ -420,6 +461,9 @@ struct PAINTSTRUCT
     func TranslateMessage(lpMsg: const *MSG)->BOOL;
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
     func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
+
+    func SetWindowLongPtrA(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
+    func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
 }
 
 namespace user32priv

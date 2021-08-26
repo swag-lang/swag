@@ -10,6 +10,7 @@ public struct RenderOglWin32
 
 public impl RenderOglWin32
 {
+    // Initialize the renderer
     func init(using self, hdc: HDC, w, h: s32) throw
     {
         Debug.assert(hDC == null)
