@@ -940,7 +940,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Setup parent if necessary
-        auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
+        auto typeInfo = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
         SWAG_CHECK(setupIdentifierRef(context, identifier, typeInfo));
 
         // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode

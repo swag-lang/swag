@@ -2,12 +2,16 @@
 #global foreignlib "user32"
 using Swag
 
-alias HWND = 		const *void
-alias HMENU = 		const *void
-alias HICON =		const *void
-alias HCURSOR =		const *void
-alias HBRUSH =		const *void
-alias HDC =		    const *void
+#[Swag.Strict]
+{
+    alias HWND = 	const *void
+    alias HMENU = 	const *void
+    alias HICON =	const *void
+    alias HCURSOR =	const *void
+    alias HBRUSH =	const *void
+    alias HDC =		const *void
+}
+
 alias WPARAM =      u64
 alias LPARAM =      u64
 

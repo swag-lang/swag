@@ -240,7 +240,7 @@ func createWindow()->HWND
         DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
     }
 
-    ReleaseDC(hDC, hWnd)
+    ReleaseDC(hWnd, hDC)
     return hWnd
 }
 
