@@ -105,7 +105,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-    if (!TypeInfo::isSame(to, isSameFlags))
+    if (!TypeInfo::isSame(to, isSameFlags) || name != to->name)
     {
         auto me = TypeManager::concreteType(this, CONCRETE_ALIAS);
         if (me != this)

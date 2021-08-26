@@ -592,17 +592,6 @@ func display()
     renderer.end()
 }
 
-func winProc(wnd: Surface, msg: SurfaceMessage)
-{
-    switch msg.kind
-    {
-    case Paint:
-        display()
-    case Resize:
-        renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
-    }
-}
-
 func messageLoop()
 {
     var keyb: Input.Keyboard
@@ -624,6 +613,17 @@ func messageLoop()
             g_pattern = g_pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
             g_page = (g_page + 1) % MaxPages
+    }
+}
+
+func winProc(wnd: Surface, msg: SurfaceMessage)
+{
+    switch msg.kind
+    {
+    case Paint:
+        display()
+    case Resize:
+        renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
     }
 }
 
