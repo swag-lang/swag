@@ -103,7 +103,7 @@ impl Surface
         try RegisterClassW(wc)
 
         // Win ex flags
-        var winExFlags: DWORD// = WS_EX_TOOLWINDOW
+        var winExFlags: DWORD
         if flags & .PaletteWindow winExFlags |= WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST
 
         // Win flags

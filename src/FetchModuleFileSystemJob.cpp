@@ -19,8 +19,13 @@ JobResult FetchModuleFileSystemJob::execute()
                       {
                           auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
 
-                          // Do not collect public folder
-                          if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+                          // Collect the module config file, and everything in src/ and publish/
+                          Utf8 cfgFile = "/";
+                          cfgFile += SWAG_CFG_FILE;
+
+                          if (n != cfgFile &&
+                              (strstr(n.c_str(), SWAG_PUBLISH_FOLDER) != n.c_str() + 1) &&
+                              (strstr(n.c_str(), SWAG_SRC_FOLDER) != n.c_str() + 1))
                               return;
 
                           srcFiles.insert(n);
