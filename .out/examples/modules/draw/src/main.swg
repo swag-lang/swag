@@ -429,7 +429,7 @@ func displayPage4()
     }
 
     {
-        cdc.drawString(100, 200, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black)
+        cdc.drawString(100, 200, "this is a TEXT on a single line", fontSmall, Argb.Black)
     }
 
     {

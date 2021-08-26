@@ -194,8 +194,8 @@ impl Painter
                 lastLine = bi + 1
                 testX = 0
                 firstBlankIdx = Swag.U32.Max
-                lastBlankIdx = Swag.U32.Max
                 widthAtFirstBlank = 0
+                lastIsBlank = true
                 continue
             }
 
