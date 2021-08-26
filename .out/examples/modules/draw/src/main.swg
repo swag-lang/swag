@@ -631,7 +631,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        wnd := Surface.create("Example", W, H, &winProc)
+        wnd := Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
         renderer.init(wnd.hWnd, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
