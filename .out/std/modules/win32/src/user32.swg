@@ -381,6 +381,28 @@ const SW_SHOWDEFAULT      = 10
 const SW_FORCEMINIMIZE    = 11
 const SW_MAX              = 11
 
+func MAKEINTRESOURCEA(val: s32) => cast(LPCSTR) cast(uint) val
+func MAKEINTRESOURCEW(val: s32) => cast(LPCWSTR) cast(uint) val
+
+const IDC_ARROW           = 32512
+const IDC_IBEAM           = 32513
+const IDC_WAIT            = 32514
+const IDC_CROSS           = 32515
+const IDC_UPARROW         = 32516
+const IDC_SIZE            = 32640
+const IDC_ICON            = 32641
+const IDC_SIZENWSE        = 32642
+const IDC_SIZENESW        = 32643
+const IDC_SIZEWE          = 32644
+const IDC_SIZENS          = 32645
+const IDC_SIZEALL         = 32646
+const IDC_NO              = 32648
+const IDC_HAND            = 32649
+const IDC_APPSTARTING     = 32650
+const IDC_HELP            = 32651
+const IDC_PIN             = 32671
+const IDC_PERSON          = 32672
+
 struct MSG
 {
     hwnd:       HWND
@@ -464,6 +486,8 @@ struct PAINTSTRUCT
     func GetCursorPos(lpPoint: *POINT);
     func SetCursorPos(x, y: s32);
     func ShowCursor(show: BOOL);
+    func LoadCursorA(hInstance: HINSTANCE, lpCursorName: LPCSTR)->HCURSOR;
+    func LoadCursorW(hInstance: HINSTANCE, lpCursorName: LPCWSTR)->HCURSOR;
 
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
     func CreateWindowExW(dwExStyle: DWORD, lpClassName: LPCWSTR, lpWindowName: LPCWSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;

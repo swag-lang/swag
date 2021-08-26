@@ -1,8 +1,9 @@
+#global public
 #global if #os == "windows"
 using Core, Win32
 
 #[Swag.NoCopy]
-public struct Surface
+struct Surface
 {
     hWnd: HWND
     proc: func(Surface, SurfaceMessage)
@@ -44,19 +45,31 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 impl Surface
 {
     // Show the surface
-    public method show()
+    method show()
     {
         ShowWindow(hWnd, SW_SHOW)
     }
 
     // Hide the surface
-    public method hide()
+    method showMaximize()
+    {
+        ShowWindow(hWnd, SW_MAXIMIZE)
+    }
+
+    // Hide the surface
+    method showUnMaximize()
+    {
+        ShowWindow(hWnd, SW_RESTORE)
+    }
+
+    // Hide the surface
+    method hide()
     {
         ShowWindow(hWnd, SW_HIDE)
     }
 
     // Creates a new (invisible) surface
-    public func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(Surface, SurfaceMessage))->Surface throw
+    func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(Surface, SurfaceMessage))->Surface throw
     {
         var result: retval
 
@@ -67,6 +80,7 @@ impl Surface
         wc.style         = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS
         wc.lpfnWndProc   = acast @mkcallback(&winProc)
         wc.hInstance     = GetModuleHandleW(null)
+        wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
         wc.lpszClassName = @dataof(utf16.toZeroTerminated("Swag.Gui.Surface"))
         try RegisterClassW(wc)
 
@@ -84,7 +98,6 @@ impl Surface
         if flags & .SizeFrame winFlags |= WS_THICKFRAME
         if flags & .OverlappedWindow winFlags |= WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME
         if flags & .PopupWindow winFlags |= WS_POPUP | WS_BORDER | WS_SYSMENU
-        if flags & .PaletteWindow winFlags |= WS_SYSMENU | WS_THICKFRAME
 
         // Create window
         result.hWnd = CreateWindowExW(
@@ -106,7 +119,7 @@ impl Surface
     }
 
     // Returns 'false' when need to quit
-    public func messageLoop()->bool
+    func messageLoop()->bool
     {
         var msg: MSG
         while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
