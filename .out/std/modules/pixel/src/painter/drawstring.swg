@@ -180,7 +180,10 @@ impl Painter
         lastLine := 0'uint
         testX := 0.0
         firstBlankIdx := Swag.U32.Max
+        lastBlankIdx := Swag.U32.Max
         widthAtFirstBlank := 0.0
+        widthAtLastBlank := 0.0
+        lastIsBlank := false
         Utf8.visitRunes(|c, ci, bi| text)
         {
             if c == "\n"'rune
@@ -191,6 +194,7 @@ impl Painter
                 lastLine = bi + 1
                 testX = 0
                 firstBlankIdx = Swag.U32.Max
+                lastBlankIdx = Swag.U32.Max
                 widthAtFirstBlank = 0
                 continue
             }
@@ -202,12 +206,23 @@ impl Painter
                 // Store blank informations
                 if Unicode.isLatin1(c) and Latin1.isSpace(cast(u8) c)
                 {
-                    firstBlankIdx = cast(u32) bi
-                    widthAtFirstBlank = testX
+                    if !lastIsBlank
+                    {
+                        firstBlankIdx = cast(u32) bi
+                        widthAtFirstBlank = testX
+                    }
+
+                    lastBlankIdx = cast(u32) bi
+                    testX += desc.advanceX
+                    widthAtLastBlank = testX
+                    lastIsBlank = true
+                    continue
                 }
 
+                lastIsBlank = false
+
                 // Need to wrap if next character position is outside the box
-                if testX + desc.advanceX + desc.shiftX > pos.width
+                if testX + desc.advanceX > pos.width
                 {
                     if firstBlankIdx != Swag.U32.Max
                     {
@@ -215,16 +230,16 @@ impl Painter
                         oneStr.width = widthAtFirstBlank
                         arr.emplace(&oneStr)
 
-                        lastLine = firstBlankIdx + 1
-                        testX -= widthAtFirstBlank
+                        lastLine = lastBlankIdx + 1
+                        testX -= widthAtLastBlank
                         firstBlankIdx = Swag.U32.Max
+                        lastBlankIdx = Swag.U32.Max
                         widthAtFirstBlank = 0
-                        continue
                     }
                 }
             }
 
-            testX += desc.advanceX + desc.shiftX
+            testX += desc.advanceX
         }
 
         if lastLine != @countof(text)
