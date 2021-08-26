@@ -11,6 +11,14 @@ public struct RenderOglWin32
 public impl RenderOglWin32
 {
     // Initialize the renderer
+    func init(using self, hWnd: HWND, w, h: s32) throw
+    {
+        var hdc: HDC = GetDC(hWnd)
+        try init(hdc, w, h)
+        ReleaseDC(hWnd, hdc)
+    }
+
+    // Initialize the renderer
     func init(using self, hdc: HDC, w, h: s32) throw
     {
         Debug.assert(hDC == null)
@@ -32,7 +40,7 @@ public impl RenderOglWin32
         base.init(w, h)
     }
 
-    func drop(using self)
+    method drop()
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(hRC)

@@ -632,9 +632,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
     try
     {
         wnd := Surface.create("Example", W, H, &winProc)
-
-        hDC = GetDC(wnd.hWnd)
-        renderer.init(hDC, W, H)
+        renderer.init(wnd.hWnd, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
         image0 = renderer.addImage(img0)
@@ -655,6 +653,5 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         messageLoop()
 
         renderer.drop()
-        ReleaseDC(wnd.hWnd, hDC)
     }
 }
