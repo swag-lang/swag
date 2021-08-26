@@ -953,7 +953,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    typeInfo = TypeManager::concreteType(node->typeInfo);
+    typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
 
     // In case of a struct (or array of structs), be sure struct is now completed before
     // parsing variable.

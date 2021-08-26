@@ -1106,7 +1106,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_CONST_EXPR;
         }
 
-        auto returnType = TypeManager::concreteType(identifier->typeInfo);
+        auto returnType = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
 
         // Check return value
         if (!returnType->isNative(NativeTypeKind::Void))

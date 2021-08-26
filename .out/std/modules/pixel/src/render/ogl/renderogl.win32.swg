@@ -13,7 +13,7 @@ public impl RenderOglWin32
     // Initialize the renderer
     func init(using self, hWnd: HWND, w, h: s32) throw
     {
-        var hdc: HDC = GetDC(hWnd)
+        hdc := GetDC(hWnd)
         try init(hdc, w, h)
         ReleaseDC(hWnd, hdc)
     }
