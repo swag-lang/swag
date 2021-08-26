@@ -68,6 +68,24 @@ impl Surface
         ShowWindow(hWnd, SW_HIDE)
     }
 
+    // Transform a point in screen space relative to the surface
+    method screenToSurface(pt: *Math.Point)
+    {
+        wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
+        ScreenToClient(hWnd, &wpt)
+        pt.x = wpt.x
+        pt.y = wpt.y
+    }
+
+    // Transform a point relative to the surface in screen space
+    method surfaceToScreen(pt: *Math.Point)
+    {
+        wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
+        ClientToScreen(hWnd, &wpt)
+        pt.x = wpt.x
+        pt.y = wpt.y
+    }
+
     // Creates a new (invisible) surface
     func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(Surface, SurfaceMessage))->Surface throw
     {

@@ -515,6 +515,9 @@ struct PAINTSTRUCT
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
     func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
 
+    func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL;
+    func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL;
+
     func TranslateMessage(lpMsg: const *MSG)->BOOL;
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
     func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
