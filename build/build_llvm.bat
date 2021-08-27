@@ -1,6 +1,7 @@
-REM llvm 12 version 27/06/2021
+REM llvm version 27/08/2021
 REM llvm project must be stored in "swag/llvm" subfolder
 REM git clone https://github.com/llvm/llvm-project.git
+REM git pull https://github.com/llvm/llvm-project.git
 
 call "build_cfg.bat"
 

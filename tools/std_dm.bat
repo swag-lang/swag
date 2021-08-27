@@ -1,0 +1,1 @@
+swag_devmode test -w:../.out/std --backend:x64 --rebuild %1 %2 %3 %4
