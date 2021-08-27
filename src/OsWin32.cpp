@@ -565,7 +565,7 @@ namespace OS
         auto  handle   = static_cast<HANDLE>(thread->native_handle());
         DWORD threadId = GetThreadId(handle);
         setThreadName(threadId, threadName);
-        SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
+        //SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     uint64_t tlsAlloc()
