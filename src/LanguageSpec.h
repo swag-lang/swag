@@ -21,6 +21,7 @@ struct LanguageSpec
     LangHashTable<uint64_t, 256>                    attributesFlags;
 
     Utf8 name__setupRuntime;
+    Utf8 name__checkBackend;
     Utf8 name__panic;
     Utf8 name__clearerr;
     Utf8 name__pusherr;
@@ -211,4 +212,4 @@ struct LanguageSpec
     Utf8 name_exp2;
 };
 
-extern LanguageSpec *g_LangSpec;
+extern LanguageSpec* g_LangSpec;

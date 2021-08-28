@@ -7,6 +7,7 @@ LanguageSpec* g_LangSpec = nullptr;
 void LanguageSpec::setupNames()
 {
     name__setupRuntime   = "__setupRuntime";
+    name__checkBackend   = "__checkBackend";
     name__panic          = "__panic";
     name__clearerr       = "__clearerr";
     name__pusherr        = "__pusherr";
@@ -211,8 +212,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("#arch", {TokenId::CompilerArch, LiteralType::TT_MAX});
     keywords.add("#os", {TokenId::CompilerOs, LiteralType::TT_MAX});
     keywords.add("#abi", {TokenId::CompilerAbi, LiteralType::TT_MAX});
+    keywords.add("#backend", {TokenId::CompilerBackend, LiteralType::TT_MAX});
     keywords.add("#hastag", {TokenId::CompilerHasTag, LiteralType::TT_MAX});
     keywords.add("#gettag", {TokenId::CompilerGetTag, LiteralType::TT_MAX});
+    keywords.add("#module", {TokenId::CompilerModule, LiteralType::TT_MAX});
     keywords.add("#file", {TokenId::CompilerFile, LiteralType::TT_MAX});
     keywords.add("#line", {TokenId::CompilerLine, LiteralType::TT_MAX});
     keywords.add("#function", {TokenId::CompilerFunction, LiteralType::TT_MAX});

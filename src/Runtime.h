@@ -96,6 +96,13 @@ typedef void (*SwagBytecodeRun)(void*, ...);
 typedef void (*SwagThreadRun)(void*);
 typedef void* (*SwagMakeCallback)(void*);
 
+enum class SwagBackendType : uint32_t
+{
+    ByteCode,
+    X64,
+    LLVM
+};
+
 typedef struct SwagProcessInfos
 {
     SwagSlice        arguments;
@@ -103,6 +110,7 @@ typedef struct SwagProcessInfos
     SwagContext*     defaultContext;
     SwagBytecodeRun  byteCodeRun;
     SwagMakeCallback makeCallback;
+    SwagBackendType  backendKind;
 } SwagProcessInfos;
 
 struct BuildCfgBackendLLVM

@@ -144,6 +144,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:
     case TokenId::CompilerAbi:
+    case TokenId::CompilerBackend:
         SWAG_CHECK(doCompilerSpecialFunction(parent, result));
         break;
 

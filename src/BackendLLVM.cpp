@@ -90,7 +90,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.makeCallbackTy = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false);
     }
 
-    // swag_process_infos_t
+    // SwagProcessInfo
     {
         llvm::Type* members[] = {
             pp.sliceTy,
@@ -98,8 +98,9 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             pp.contextTy->getPointerTo(),
             pp.bytecodeRunTy->getPointerTo(),
             pp.makeCallbackTy->getPointerTo(),
+            llvm::Type::getInt32Ty(context),
         };
-        pp.processInfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+        pp.processInfosTy = llvm::StructType::create(context, members, "SwagProcessInfo");
         SWAG_ASSERT(pp.processInfosTy->isSized());
     }
 
@@ -109,14 +110,14 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
         pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
         pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_thread_local_id");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_threadLocalId");
     }
     else
     {
         pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
         pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
         pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_thread_local_id");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_threadLocalId");
     }
 
     // LIBC functions without llvm intrinsics
@@ -157,6 +158,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
     pp.cst3_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 3);
     pp.cst4_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 4);
+    pp.cst5_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 5);
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
     pp.cst1_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 1);
     pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);

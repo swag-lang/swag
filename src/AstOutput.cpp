@@ -659,6 +659,9 @@ namespace Ast
             case TokenId::CompilerAbi:
                 CONCAT_FIXED_STR(concat, "#abi");
                 break;
+            case TokenId::CompilerBackend:
+                CONCAT_FIXED_STR(concat, "#backend");
+                break;
             case TokenId::CompilerArch:
                 CONCAT_FIXED_STR(concat, "#arch");
                 break;

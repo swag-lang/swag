@@ -748,6 +748,20 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
+    case TokenId::CompilerBackend:
+        node->setFlagsValueIsComputed();
+        switch (g_CommandLine->backendType)
+        {
+        case BackendType::X64:
+            node->computedValue->reg.u64 = (uint64_t) SwagBackendType::X64;
+            break;
+        case BackendType::LLVM:
+            node->computedValue->reg.u64 = (uint64_t) SwagBackendType::LLVM;
+            break;
+        }
+        node->typeInfo = g_TypeMgr->typeInfoU32;
+        return true;
+
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:

@@ -108,7 +108,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Set default system allocator function
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*)ByteCode::undoByteCodeLambda(((void**)g_DefaultContext.allocator.itable)[0]);
+    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
@@ -133,13 +133,19 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         localCall(buildParameters, nullptr, allocT, g_LangSpec->name__tlsAlloc, {UINT32_MAX}, {toTlsId});
     }
 
-    // __process_infos.defaultContext = &mainContext
+    // Set main context
     {
         auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
-    // swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext)
+    // Set current backend as LLVM
+    {
+        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32}));
+        builder.CreateStore(builder.getInt32((uint32_t) SwagBackendType::LLVM), toBackendKind);
+    }
+
+    // Set default context in TLS
     {
         auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
         auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
@@ -252,6 +258,14 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto p0 = TO_PTR_I8(pp.processInfos);
         auto p1 = TO_PTR_I8(fct->getArg(0));
         builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
+    }
+
+    // Check backend
+    {
+        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
+        auto ptrStr = builder.CreateGlobalStringPtr(module->name.c_str());
+        auto v0     = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32})));
+        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__checkBackend, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(module->name.length()), v0});
     }
 
     // Init thread local storage id

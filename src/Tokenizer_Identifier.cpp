@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
+#include "Module.h"
 #include "Version.h"
 
 void Tokenizer::relaxIdentifier(Token& token)
@@ -56,6 +57,11 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
         token.id          = TokenId::LiteralString;
         token.literalType = LiteralType::TT_STRING;
         token.text        = sourceFile->path;
+        return;
+    case TokenId::CompilerModule:
+        token.id          = TokenId::LiteralString;
+        token.literalType = LiteralType::TT_STRING;
+        token.text        = sourceFile->module ? sourceFile->module->name : Utf8("?");
         return;
     case TokenId::CompilerLine:
         token.id               = TokenId::LiteralNumber;

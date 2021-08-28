@@ -86,18 +86,23 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
 
-    //__process_infos.defaultContext = &mainContext;
+    // Set main context
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
-    //swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);
+    // Set current backend as X64
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_backendKind, 0);
+    BackendX64Inst::emit_Store32_Immediate(pp, 0, (uint32_t) SwagBackendType::X64, RCX);
+
+    // Set default context in TLS
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_defaultContext, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
     emitCall(pp, g_LangSpec->name__tlsSetValue);
 
+    // Setup runtime
     emitCall(pp, g_LangSpec->name__setupRuntime);
 
     // Load all dependencies
@@ -243,6 +248,16 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Copy64(pp, RAX, RCX);
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, g_LangSpec->name_memcpy);
+
+    // Check backend
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_backendKind, 0);
+    BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RCX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+    BackendX64Inst::emit_Load64_Immediate(pp, module->name.length(), RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+    emitGlobalString(pp, precompileIndex, module->name, RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+    emitCall(pp, g_LangSpec->name__checkBackend);
 
     // Thread local storage
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTls_threadLocalId, 0);

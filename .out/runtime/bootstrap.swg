@@ -453,6 +453,13 @@ namespace Swag
     // Build configuration
     // #########################################################
 
+    enum BackendType
+    {
+        ByteCode
+        X64
+        LLVM
+    }
+
     struct BuildCfgBackendLLVM
     {
         minFunctionPerFile: u32 = 256;

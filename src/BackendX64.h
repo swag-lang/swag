@@ -259,12 +259,13 @@ struct X64PerThread
     uint32_t symDefaultAllocTable               = 0;
     uint32_t symTls_threadLocalId               = 0;
     uint32_t symPI_processInfos                 = 0;
-    uint32_t symPI_args_addr                    = 0;
-    uint32_t symPI_args_count                   = 0;
+    uint32_t symPI_argsAddr                     = 0;
+    uint32_t symPI_argsCount                    = 0;
     uint32_t symPI_contextTlsId                 = 0;
     uint32_t symPI_defaultContext               = 0;
     uint32_t symPI_byteCodeRun                  = 0;
     uint32_t symPI_makeCallback                 = 0;
+    uint32_t symPI_backendKind                  = 0;
     uint32_t symCst_U64F64                      = 0;
 
     uint32_t textSectionOffset = 0;
