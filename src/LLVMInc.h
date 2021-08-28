@@ -31,6 +31,8 @@
 #include "llvm/Transforms/Utils.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Analysis/TargetTransformInfo.h"
+#include "llvm/Analysis/AliasAnalysis.h"
+#include "llvm/Passes/PassBuilder.h"
 #include "lld/Common/Driver.h"
 #pragma warning(pop)
 #pragma warning(disable : 4100)

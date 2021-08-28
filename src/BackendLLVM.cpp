@@ -305,6 +305,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string targetTriple = Utf8::format("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    bool   isDebug      = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
 
     // Setup target
     modu.setTargetTriple(targetTriple);
@@ -316,11 +317,17 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         return false;
     }
 
+    // Create target machine
     auto                cpu      = "generic";
     auto                features = "";
     llvm::TargetOptions opt;
     auto                rm            = llvm::Optional<llvm::Reloc::Model>();
     auto                targetMachine = target->createTargetMachine(targetTriple, cpu, features, opt, rm);
+    if (isDebug)
+        targetMachine->setOptLevel(llvm::CodeGenOpt::None);
+    else
+        targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+    targetMachine->setO0WantsFastISel(true);
     modu.setDataLayout(targetMachine->createDataLayout());
 
     // Output file
@@ -331,47 +338,51 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     llvm::raw_fd_ostream      dest(filename, EC, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
 
-    // Optimize passes
-    if (buildParameters.buildCfg->backendOptimizeSpeed)
-        targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+    // Pipeline configurations
+    llvm::PipelineTuningOptions pipelineOptions;
+    pipelineOptions.LoopUnrolling     = !isDebug;
+    pipelineOptions.SLPVectorization  = !isDebug;
+    pipelineOptions.LoopVectorization = !isDebug;
+    pipelineOptions.LoopInterleaving  = !isDebug;
+    pipelineOptions.MergeFunctions    = !isDebug;
+
+    llvm::PassBuilder             passBuilder(false, targetMachine, pipelineOptions);
+    llvm::LoopAnalysisManager     loopMgr;
+    llvm::FunctionAnalysisManager functionMgr;
+    llvm::CGSCCAnalysisManager    cgsccMgr;
+    llvm::ModuleAnalysisManager   moduleMgr;
+
+    // Register the AA manager first so that our version is the one used
+    //functionMgr.registerPass([&]
+    //                         { return passBuilder.buildDefaultAAPipeline(); });
+
+    passBuilder.registerModuleAnalyses(moduleMgr);
+    passBuilder.registerCGSCCAnalyses(cgsccMgr);
+    passBuilder.registerFunctionAnalyses(functionMgr);
+    passBuilder.registerLoopAnalyses(loopMgr);
+    passBuilder.crossRegisterProxies(loopMgr, functionMgr, cgsccMgr, moduleMgr);
+
+    llvm::PassBuilder::OptimizationLevel optLevel;
+    if (isDebug)
+        optLevel = llvm::PassBuilder::OptimizationLevel::O0;
+    else if (buildParameters.buildCfg->backendOptimizeSize)
+        optLevel = llvm::PassBuilder::OptimizationLevel::Oz;
     else
-        targetMachine->setOptLevel(llvm::CodeGenOpt::None);
-    targetMachine->setO0WantsFastISel(true);
+        optLevel = llvm::PassBuilder::OptimizationLevel::O3;
 
-    bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+    llvm::ModulePassManager modulePassMgr;
+    if (optLevel == llvm::PassBuilder::OptimizationLevel::O0)
+        modulePassMgr = passBuilder.buildO0DefaultPipeline(optLevel);
+    else
+        modulePassMgr = passBuilder.buildPerModuleDefaultPipeline(optLevel);
 
-    llvm::PassManagerBuilder pmb;
-    pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
-    pmb.SizeLevel = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
-#ifdef SWAG_DEV_MODE
-    pmb.VerifyInput  = true;
-    pmb.VerifyOutput = true;
-#else
-    pmb.VerifyInput  = false;
-    pmb.VerifyOutput = false;
-#endif
-    pmb.DisableTailCalls   = isDebug;
-    pmb.DisableUnrollLoops = isDebug;
-    pmb.DisableGVNLoadPRE  = isDebug;
-    pmb.SLPVectorize       = !isDebug;
-    pmb.LoopVectorize      = !isDebug;
-    pmb.RerollLoops        = !isDebug;
-    //pmb.NewGVN             = !isDebug; // Does not work, assert in llvm (08/march/2021)
-    pmb.MergeFunctions    = !isDebug;
-    pmb.PrepareForLTO     = false;
-    pmb.PrepareForThinLTO = false;
-    pmb.PerformThinLTO    = false;
-    pmb.Inliner           = isDebug ? nullptr : llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
-    pmb.LibraryInfo       = new llvm::TargetLibraryInfoImpl(llvm::Triple(modu.getTargetTriple()));
+    llvm::legacy::PassManager codegenPassMgr;
+    codegenPassMgr.add(new llvm::TargetTransformInfoWrapperPass(targetMachine->getTargetIRAnalysis()));
+    targetMachine->addPassesToEmitFile(codegenPassMgr, dest, nullptr, llvm::CGFT_ObjectFile);
 
-    if (!isDebug)
-        llvmPass.add(new llvm::TargetTransformInfoWrapperPass(targetMachine->getTargetIRAnalysis()));
-    pmb.populateModulePassManager(llvmPass);
+    modulePassMgr.run(modu, moduleMgr);
+    codegenPassMgr.run(modu);
 
-    // Generate obj file pass
-    targetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
-
-    llvmPass.run(modu);
     dest.flush();
     dest.close();
 
