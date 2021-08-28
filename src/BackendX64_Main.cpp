@@ -67,13 +67,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    SWAG_ASSERT(bcAlloc->node->attributeFlags & ATTRIBUTE_CALLBACK);
-    auto funcAlloc = CastAst<AstFuncDecl>(bcAlloc->node, AstNodeKind::FuncDecl);
-    concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
-    emitSymbolRelocation(pp, funcAlloc->fullnameForeign);
-    BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RAX);
-    BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::OR);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
+    concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
+    emitSymbolRelocation(pp, bcAlloc->getCallName());
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
     //mainContext.allocator.itable = &defaultAllocTable;

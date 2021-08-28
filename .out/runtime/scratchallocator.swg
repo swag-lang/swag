@@ -90,7 +90,6 @@ impl ScratchAllocator
 
 impl IAllocator for ScratchAllocator
 {
-    #[Callback]
     func alloc(using self, request: *AllocatorRequest)
     {
         @assert(block != null)

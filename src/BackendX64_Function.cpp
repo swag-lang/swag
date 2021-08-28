@@ -34,6 +34,48 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
     return it->second;
 }
 
+uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
+{
+    uint16_t unwind0 = 0;
+
+    unwind0 = (RDI << 12);
+    unwind0 |= (UWOP_PUSH_NONVOL << 8);
+    unwind0 |= (uint8_t) offsetSubRSP;
+    return unwind0;
+}
+
+void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
+{
+    // UNWIND_CODE
+    // UBYTE:8: offset of the instruction after the "sub rsp"
+    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
+    // UBYTE:4: info (will code the size of the decrement of rsp)
+
+    SWAG_ASSERT(offsetSubRSP <= 0xFF);
+    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
+
+    if (sizeStack <= 128)
+    {
+        SWAG_ASSERT(sizeStack >= 8);
+        sizeStack -= 8;
+        sizeStack /= 8;
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+    }
+    else
+    {
+        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+        unwind0 = (uint16_t) (sizeStack / 8);
+        unwind.push_back(unwind0);
+    }
+}
+
 void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
 {
     if (calleeIndex < 4)
@@ -74,48 +116,6 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
         offset += 16;
         BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
-    }
-}
-
-uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
-{
-    uint16_t unwind0 = 0;
-
-    unwind0 = (RDI << 12);
-    unwind0 |= (UWOP_PUSH_NONVOL << 8);
-    unwind0 |= (uint8_t) offsetSubRSP;
-    return unwind0;
-}
-
-void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
-{
-    // UNWIND_CODE
-    // UBYTE:8: offset of the instruction after the "sub rsp"
-    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
-    // UBYTE:4: info (will code the size of the decrement of rsp)
-
-    SWAG_ASSERT(offsetSubRSP <= 0xFF);
-    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
-
-    if (sizeStack <= 128)
-    {
-        SWAG_ASSERT(sizeStack >= 8);
-        sizeStack -= 8;
-        sizeStack /= 8;
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-    }
-    else
-    {
-        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-        unwind0 = (uint16_t) (sizeStack / 8);
-        unwind.push_back(unwind0);
     }
 }
 
@@ -3854,7 +3854,6 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     MK_ALIGN16(sizeStack);
     SWAG_ASSERT(sizeStack <= sizeParamsStack);
 
-    // Emit all push params
     for (int iParam = 0; iParam < pushRVParams.size(); iParam++)
     {
         auto sizeOf = pushRVParams[0].second;

@@ -108,14 +108,10 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Set default system allocator function
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
+    auto bcAlloc = (ByteCode*)ByteCode::undoByteCodeLambda(((void**)g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    SWAG_ASSERT(bcAlloc->node->attributeFlags & ATTRIBUTE_CALLBACK);
-    auto funcAlloc = CastAst<AstFuncDecl>(bcAlloc->node, AstNodeKind::FuncDecl);
-    auto allocFct  = modu.getOrInsertFunction(funcAlloc->fullnameForeign.c_str(), pp.allocatorTy);
-    auto callee    = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, allocFct.getCallee(), builder.getInt64Ty());
-    callee         = builder.CreateOr(callee, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-    builder.CreateStore(callee, builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt64PtrTy(context)));
+    auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
+    builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
     //mainContext.allocator.itable = &defaultAllocTable
     {
