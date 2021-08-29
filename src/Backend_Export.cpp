@@ -53,38 +53,8 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
 
 bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent)
 {
-    SWAG_CHECK(emitAttributes(typeEnum, indent));
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "enum ");
-    bufferSwg.addString(node->token.text);
-    CONCAT_FIXED_STR(bufferSwg, " : ");
-    emitType(typeEnum->rawType, indent);
-
-    bufferSwg.addEolIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "{");
-    bufferSwg.addEol();
-
-    for (auto c : node->childs)
-    {
-        if (c->kind != AstNodeKind::EnumValue)
-            continue;
-        bufferSwg.addIndent(indent + 1);
-
-        bufferSwg.addString(c->token.text);
-        if (!c->childs.empty())
-        {
-            CONCAT_FIXED_STR(bufferSwg, " = ");
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c->childs.front()));
-        }
-
-        bufferSwg.addEol();
-    }
-
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "}");
-    bufferSwg.addEol();
-    bufferSwg.addEol();
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputEnum(outputContext, bufferSwg, typeEnum, node);
 }
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)

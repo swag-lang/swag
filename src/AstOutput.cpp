@@ -266,6 +266,42 @@ namespace Ast
         return true;
     }
 
+    bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node)
+    {
+        SWAG_CHECK(outputAttributes(context, concat, typeEnum));
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "enum ");
+        concat.addString(node->token.text);
+        CONCAT_FIXED_STR(concat, " : ");
+        SWAG_CHECK(outputType(context, concat, typeEnum->rawType));
+
+        concat.addEolIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{");
+        concat.addEol();
+
+        for (auto c : node->childs)
+        {
+            if (c->kind != AstNodeKind::EnumValue)
+                continue;
+            concat.addIndent(context.indent + 1);
+
+            concat.addString(c->token.text);
+            if (!c->childs.empty())
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(output(context, concat, c->childs.front()));
+            }
+
+            concat.addEol();
+        }
+
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
+        concat.addEol();
+        concat.addEol();
+        return true;
+    }
+
     bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
     {
         auto attr = &attributes;
