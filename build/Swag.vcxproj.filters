@@ -158,12 +158,6 @@
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Backend_Export.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Backend_Native.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="../src/LLVMSetup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>

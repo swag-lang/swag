@@ -1,10 +1,14 @@
 #include "pch.h"
 #include "Backend.h"
 #include "Workspace.h"
-#include "Os.h"
 #include "Module.h"
-#include "TypeManager.h"
 #include "LLVMSetup.h"
+#include "Backend.h"
+#include "Version.h"
+#include "ModuleSaveExportJob.h"
+#include "Backend.h"
+#include "ByteCode.h"
+#include "BackendFunctionBodyJobBase.h"
 
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
@@ -224,4 +228,164 @@ const char* Backend::GetVendorName()
     default:
         return "?";
     }
+}
+
+bool Backend::setupExportFile(bool force)
+{
+    if (!exportFilePath.empty())
+        return true;
+
+    auto publicPath = module->publicPath;
+    if (publicPath.empty())
+        return false;
+
+    Utf8 exportName = module->name + ".swg";
+    publicPath.append(exportName.c_str());
+    if (force)
+    {
+        exportFileName = exportName;
+        exportFilePath = publicPath;
+    }
+    else
+    {
+        exportFileName = exportName;
+        exportFilePath = publicPath;
+        timeExportFile = OS::getFileWriteTime(publicPath.c_str());
+    }
+
+    return true;
+}
+
+JobResult Backend::generateExportFile(Job* ownerJob)
+{
+    if (passExport == BackendPreCompilePass::Init)
+    {
+        passExport = BackendPreCompilePass::GenerateObj;
+        if (!setupExportFile(true))
+            return JobResult::ReleaseJob;
+        if (!mustCompile)
+            return JobResult::ReleaseJob;
+
+        bufferSwg.init(4 * 1024);
+        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        bufferSwg.addEol();
+        bufferSwg.addString("#global generated");
+        module->isSwag = true;
+        bufferSwg.addEol();
+
+        for (const auto& dep : module->moduleDependencies)
+        {
+            CONCAT_FIXED_STR(bufferSwg, "#import \"");
+            bufferSwg.addString(dep->name);
+            bufferSwg.addChar('"');
+            bufferSwg.addEol();
+        }
+
+        CONCAT_FIXED_STR(bufferSwg, "using Swag");
+        bufferSwg.addEol();
+        bufferSwg.addEol();
+
+        // Emit everything that's public
+        if (!AstOutput::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
+            return JobResult::ReleaseJob;
+    }
+
+    // Save the export file
+    if (passExport == BackendPreCompilePass::GenerateObj)
+    {
+        passExport = BackendPreCompilePass::Release;
+        auto job = g_Allocator.alloc<ModuleSaveExportJob>();
+        job->module = module;
+        job->dependentJob = ownerJob;
+        ownerJob->jobsToAdd.push_back(job);
+        return JobResult::KeepJobAlive;
+    }
+
+    return JobResult::ReleaseJob;
+}
+
+bool Backend::saveExportFile()
+{
+    auto result = bufferSwg.flushToFile(exportFilePath);
+    if (!result)
+        return false;
+    timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());
+    SWAG_ASSERT(timeExportFile);
+    module->setHasBeenBuilt(BUILDRES_EXPORT);
+    return true;
+}
+
+void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end)
+{
+    for (int i = start; i < end; i++)
+    {
+        auto one = moduleToGen->byteCodeFunc[i];
+        if (one->node)
+        {
+            auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+
+            // Do we need to generate that function ?
+            if (node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
+            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
+                continue;
+            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+            if (!node->content && !node->isSpecialFunctionGenerated())
+                continue;
+        }
+
+        job->byteCodeFunc.push_back(one);
+    }
+}
+
+void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
+{
+    int size = (int)moduleToGen->byteCodeFunc.size();
+    int precompileIndex = buildParameters.precompileIndex;
+    int range = size / numPreCompileBuffers;
+
+    if (precompileIndex == 0)
+    {
+        start = 0;
+        end = range;
+    }
+    else
+    {
+        start = precompileIndex * range;
+        end = start + range;
+        if (precompileIndex == numPreCompileBuffers - 1)
+            end = size;
+    }
+}
+
+bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
+{
+    SWAG_ASSERT(moduleToGen);
+
+    // Batch functions between files
+    int start = 0;
+    int end = 0;
+    getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
+
+    BackendFunctionBodyJobBase* job = newFunctionJob();
+    job->module = moduleToGen;
+    job->dependentJob = ownerJob;
+    job->buildParameters = buildParameters;
+    job->backend = this;
+
+    // Put the bootstrap and the runtime in the first file
+    int precompileIndex = buildParameters.precompileIndex;
+    if (precompileIndex == 0)
+    {
+        SWAG_ASSERT(g_Workspace->bootstrapModule);
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int)g_Workspace->bootstrapModule->byteCodeFunc.size());
+        SWAG_ASSERT(g_Workspace->runtimeModule);
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int)g_Workspace->runtimeModule->byteCodeFunc.size());
+    }
+
+    addFunctionsToJob(moduleToGen, job, start, end);
+
+    ownerJob->jobsToAdd.push_back(job);
+    return true;
 }
