@@ -41,70 +41,8 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf, int indent)
 {
-    if (node->kind == AstNodeKind::AttrDecl)
-        CONCAT_FIXED_STR(bufferSwg, "attr ");
-    else
-        CONCAT_FIXED_STR(bufferSwg, "func ");
-
-    bufferSwg.addString(node->token.text);
-    CONCAT_FIXED_STR(bufferSwg, "(");
-
-    if (parameters)
-    {
-        uint32_t idx = 0;
-        for (auto p : typeFunc->parameters)
-        {
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
-
-            // Name
-            bool isSelf = varDecl->token.text == g_LangSpec->name_self;
-            if (isSelf && p->typeInfo->isConst())
-                bufferSwg.addString("const ");
-
-            bufferSwg.addString(varDecl->token.text);
-
-            // Type
-            if (!isSelf)
-            {
-                CONCAT_FIXED_STR(bufferSwg, ": ");
-                emitType(p->typeInfo, indent);
-            }
-
-            // Assignment
-            if (varDecl->assignment)
-            {
-                CONCAT_FIXED_STR(bufferSwg, " = ");
-                SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
-            }
-
-            if (idx != parameters->childs.size() - 1)
-                CONCAT_FIXED_STR(bufferSwg, ", ");
-            idx++;
-        }
-    }
-
-    CONCAT_FIXED_STR(bufferSwg, ")");
-
-    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
-    {
-        CONCAT_FIXED_STR(bufferSwg, "->");
-        emitType(typeFunc->returnType, indent);
-    }
-
-    if (typeFunc->flags & TYPEINFO_CAN_THROW)
-        CONCAT_FIXED_STR(bufferSwg, " throw");
-
-    if (selectIf)
-    {
-        bufferSwg.addEolIndent(indent + 1);
-        outputContext.indent++;
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, selectIf));
-        outputContext.indent--;
-    }
-
-    CONCAT_FIXED_STR(bufferSwg, ";");
-    bufferSwg.addEol();
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputFuncSignature(outputContext, bufferSwg, typeFunc, node, parameters, selectIf);
 }
 
 bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent)

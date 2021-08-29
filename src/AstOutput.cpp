@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 namespace Ast
 {
@@ -82,6 +83,79 @@ namespace Ast
         }
 
         concat.addString(")]");
+        concat.addEol();
+        return true;
+    }
+
+    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+    {
+        return outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf);
+    }
+
+    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
+    {
+        if (node->kind == AstNodeKind::AttrDecl)
+            CONCAT_FIXED_STR(concat, "attr ");
+        else
+            CONCAT_FIXED_STR(concat, "func ");
+
+        concat.addString(node->token.text);
+        CONCAT_FIXED_STR(concat, "(");
+
+        if (parameters)
+        {
+            uint32_t idx = 0;
+            for (auto p : typeFunc->parameters)
+            {
+                AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+
+                // Name
+                bool isSelf = varDecl->token.text == g_LangSpec->name_self;
+                if (isSelf && p->typeInfo->isConst())
+                    concat.addString("const ");
+
+                concat.addString(varDecl->token.text);
+
+                // Type
+                if (!isSelf)
+                {
+                    CONCAT_FIXED_STR(concat, ": ");
+                    outputType(context, concat, p->typeInfo);
+                }
+
+                // Assignment
+                if (varDecl->assignment)
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(output(context, concat, varDecl->assignment));
+                }
+
+                if (idx != parameters->childs.size() - 1)
+                    CONCAT_FIXED_STR(concat, ", ");
+                idx++;
+            }
+        }
+
+        CONCAT_FIXED_STR(concat, ")");
+
+        if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+        {
+            CONCAT_FIXED_STR(concat, "->");
+            outputType(context, concat, typeFunc->returnType);
+        }
+
+        if (typeFunc->flags & TYPEINFO_CAN_THROW)
+            CONCAT_FIXED_STR(concat, " throw");
+
+        if (selectIf)
+        {
+            concat.addEolIndent(context.indent + 1);
+            context.indent++;
+            SWAG_CHECK(output(context, concat, selectIf));
+            context.indent--;
+        }
+
+        CONCAT_FIXED_STR(concat, ";");
         concat.addEol();
         return true;
     }
