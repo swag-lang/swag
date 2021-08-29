@@ -4,62 +4,61 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "AstOutput.h"
 #include "Module.h"
 
-namespace Ast
+bool AstOutput::checkIsPublic(OutputContext& context, AstNode* node)
 {
-    bool checkIsPublic(OutputContext& context, AstNode* node)
-    {
-        if (!context.forExport)
-            return true;
-
-        auto symbol   = node->resolvedSymbolName;
-        auto overload = node->resolvedSymbolOverload;
-
-        if (overload)
-        {
-            if (overload->node->sourceFile->isBootstrapFile ||
-                overload->node->sourceFile->isRuntimeFile ||
-                overload->node->sourceFile->forceExport ||
-                overload->node->sourceFile->imported)
-                return true;
-        }
-
-        if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
-        {
-            if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
-                (symbol->kind == SymbolKind::Function) ||
-                (symbol->kind == SymbolKind::Alias) ||
-                (symbol->kind == SymbolKind::TypeAlias))
-            {
-                SWAG_VERIFY(overload->node->attributeFlags & ATTRIBUTE_PUBLIC, node->sourceFile->report({node, Utf8::format(g_E[Err0316], node->token.text.c_str())}));
-            }
-        }
-
+    if (!context.forExport)
         return true;
+
+    auto symbol   = node->resolvedSymbolName;
+    auto overload = node->resolvedSymbolOverload;
+
+    if (overload)
+    {
+        if (overload->node->sourceFile->isBootstrapFile ||
+            overload->node->sourceFile->isRuntimeFile ||
+            overload->node->sourceFile->forceExport ||
+            overload->node->sourceFile->imported)
+            return true;
     }
 
-    void incIndentStatement(AstNode* node, int& indent)
+    if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
     {
-        if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
-            return;
-        if (node->kind != AstNodeKind::Statement)
-            indent++;
+        if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
+            (symbol->kind == SymbolKind::Function) ||
+            (symbol->kind == SymbolKind::Alias) ||
+            (symbol->kind == SymbolKind::TypeAlias))
+        {
+            SWAG_VERIFY(overload->node->attributeFlags & ATTRIBUTE_PUBLIC, node->sourceFile->report({node, Utf8::format(g_E[Err0316], node->token.text.c_str())}));
+        }
     }
 
-    void decIndentStatement(AstNode* node, int& indent)
-    {
-        if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
-            return;
-        if (node->kind != AstNodeKind::Statement)
-            indent--;
-    }
+    return true;
+}
 
-    bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
-    {
-        bool first = true;
-        concat.addIndent(context.indent);
-        concat.addString("#[AttrUsage(");
+void AstOutput::incIndentStatement(AstNode* node, int& indent)
+{
+    if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
+        return;
+    if (node->kind != AstNodeKind::Statement)
+        indent++;
+}
+
+void AstOutput::decIndentStatement(AstNode* node, int& indent)
+{
+    if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
+        return;
+    if (node->kind != AstNodeKind::Statement)
+        indent--;
+}
+
+bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
+{
+    bool first = true;
+    concat.addIndent(context.indent);
+    concat.addString("#[AttrUsage(");
 
 #define ADD_ATTRUSAGE(__f, __n)                      \
     if (typeFunc->attributeUsage & (int) __f)        \
@@ -71,1293 +70,1257 @@ namespace Ast
         CONCAT_FIXED_STR(concat, __n);               \
     }
 
-        if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
-            CONCAT_FIXED_STR(concat, "AttributeUsage.All");
-        else
-        {
-            ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
-            ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
-            ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
-            ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-            ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
-            ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
-        }
-
-        concat.addString(")]");
-        concat.addEol();
-        return true;
+    if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
+        CONCAT_FIXED_STR(concat, "AttributeUsage.All");
+    else
+    {
+        ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
+        ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
+        ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
+        ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
+        ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
+        ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
     }
 
-    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+    concat.addString(")]");
+    concat.addEol();
+    return true;
+}
+
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+{
+    return outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf);
+}
+
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
+{
+    if (node->kind == AstNodeKind::AttrDecl)
+        CONCAT_FIXED_STR(concat, "attr ");
+    else
+        CONCAT_FIXED_STR(concat, "func ");
+
+    concat.addString(node->token.text);
+    CONCAT_FIXED_STR(concat, "(");
+
+    if (parameters)
     {
-        return outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf);
-    }
-
-    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
-    {
-        if (node->kind == AstNodeKind::AttrDecl)
-            CONCAT_FIXED_STR(concat, "attr ");
-        else
-            CONCAT_FIXED_STR(concat, "func ");
-
-        concat.addString(node->token.text);
-        CONCAT_FIXED_STR(concat, "(");
-
-        if (parameters)
-        {
-            uint32_t idx = 0;
-            for (auto p : typeFunc->parameters)
-            {
-                AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
-
-                // Name
-                bool isSelf = varDecl->token.text == g_LangSpec->name_self;
-                if (isSelf && p->typeInfo->isConst())
-                    concat.addString("const ");
-
-                concat.addString(varDecl->token.text);
-
-                // Type
-                if (!isSelf)
-                {
-                    CONCAT_FIXED_STR(concat, ": ");
-                    outputType(context, concat, p->typeInfo);
-                }
-
-                // Assignment
-                if (varDecl->assignment)
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(output(context, concat, varDecl->assignment));
-                }
-
-                if (idx != parameters->childs.size() - 1)
-                    CONCAT_FIXED_STR(concat, ", ");
-                idx++;
-            }
-        }
-
-        CONCAT_FIXED_STR(concat, ")");
-
-        if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
-        {
-            CONCAT_FIXED_STR(concat, "->");
-            outputType(context, concat, typeFunc->returnType);
-        }
-
-        if (typeFunc->flags & TYPEINFO_CAN_THROW)
-            CONCAT_FIXED_STR(concat, " throw");
-
-        if (selectIf)
-        {
-            concat.addEolIndent(context.indent + 1);
-            context.indent++;
-            SWAG_CHECK(output(context, concat, selectIf));
-            context.indent--;
-        }
-
-        CONCAT_FIXED_STR(concat, ";");
-        concat.addEol();
-        return true;
-    }
-
-    bool outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
-    {
-        SWAG_CHECK(outputAttributes(context, concat, typeFunc));
-        concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "func");
-
-        // Emit generic parameter, except if the function is an instance
-        if (node->genericParameters)
-        {
-            if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
-                SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
-        }
-
-        CONCAT_FIXED_STR(concat, " ");
-        concat.addString(node->token.text);
-        CONCAT_FIXED_STR(concat, "(");
-
         uint32_t idx = 0;
-        if (node->parameters)
+        for (auto p : typeFunc->parameters)
         {
-            for (auto p : node->parameters->childs)
-            {
-                if (p->flags & AST_DECL_USING)
-                    CONCAT_FIXED_STR(concat, "using ");
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
 
-                bool isSelf = p->token.text == g_LangSpec->name_self;
-                if (isSelf && p->typeInfo->isConst())
-                    concat.addString("const ");
+            // Name
+            bool isSelf = varDecl->token.text == g_LangSpec->name_self;
+            if (isSelf && p->typeInfo->isConst())
+                concat.addString("const ");
 
-                concat.addString(p->token.text);
+            concat.addString(varDecl->token.text);
 
-                if (!isSelf)
-                {
-                    CONCAT_FIXED_STR(concat, ": ");
-                    outputType(context, concat, p->typeInfo);
-                }
-
-                auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-                if (param->assignment)
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(output(context, concat, param->assignment));
-                }
-
-                if (idx != typeFunc->parameters.size() - 1)
-                    CONCAT_FIXED_STR(concat, ", ");
-                idx++;
-            }
-        }
-
-        CONCAT_FIXED_STR(concat, ")");
-
-        if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
-        {
-            CONCAT_FIXED_STR(concat, "->");
-            outputType(context, concat, typeFunc->returnType);
-        }
-
-        if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->flags & AST_FUNC_RETURN_DEFINED))
-        {
-            CONCAT_FIXED_STR(concat, " => ");
-            SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
-            SWAG_CHECK(output(context, concat, node->content->childs.front()));
-        }
-        else
-        {
-            concat.addEolIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "{");
-            context.indent++;
-            concat.addEol();
-
-            if (node->content->kind != AstNodeKind::Statement)
-            {
-                concat.addIndent(context.indent);
-                context.indent--;
-                SWAG_CHECK(output(context, concat, node->content));
-                context.indent++;
-                concat.addEol();
-            }
-            else
-            {
-                for (auto c : node->subDecls)
-                {
-                    concat.addIndent(context.indent);
-                    SWAG_CHECK(output(context, concat, c));
-                    concat.addEol();
-                }
-
-                for (auto c : node->content->childs)
-                {
-                    concat.addIndent(context.indent);
-                    SWAG_CHECK(output(context, concat, c));
-                    concat.addEol();
-                }
-            }
-
-            context.indent--;
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "}");
-            concat.addEol();
-        }
-
-        concat.addEol();
-        return true;
-    }
-
-    bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node)
-    {
-        SWAG_CHECK(outputAttributes(context, concat, typeEnum));
-        concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "enum ");
-        concat.addString(node->token.text);
-        CONCAT_FIXED_STR(concat, " : ");
-        SWAG_CHECK(outputType(context, concat, typeEnum->rawType));
-
-        concat.addEolIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "{");
-        concat.addEol();
-
-        for (auto c : node->childs)
-        {
-            if (c->kind != AstNodeKind::EnumValue)
-                continue;
-            concat.addIndent(context.indent + 1);
-
-            concat.addString(c->token.text);
-            if (!c->childs.empty())
-            {
-                CONCAT_FIXED_STR(concat, " = ");
-                SWAG_CHECK(output(context, concat, c->childs.front()));
-            }
-
-            concat.addEol();
-        }
-
-        concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
-        concat.addEol();
-        concat.addEol();
-        return true;
-    }
-
-    bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
-    {
-        auto attr = &attributes;
-        if (attr && !attr->empty())
-        {
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "#[");
-
-            for (int j = 0; j < attr->allAttributes.size(); j++)
-            {
-                auto& one = attr->allAttributes[j];
-                if (j)
-                    CONCAT_FIXED_STR(concat, ", ");
-
-                // No need to write "Swag.", less to write, less to read, as export files have
-                // a 'using Swag' on top.
-                if (!strncmp(one.name.c_str(), "Swag.", 5))
-                    concat.addString(one.name.c_str() + 5);
-                else
-                    concat.addString(one.name);
-
-                if (!one.parameters.empty())
-                {
-                    concat.addChar('(');
-
-                    for (int i = 0; i < one.parameters.size(); i++)
-                    {
-                        auto& oneParam = one.parameters[i];
-                        if (i)
-                            CONCAT_FIXED_STR(concat, ", ");
-                        Ast::outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value);
-                    }
-
-                    concat.addChar(')');
-                }
-            }
-
-            CONCAT_FIXED_STR(concat, "]");
-            concat.addEol();
-        }
-
-        return true;
-    }
-
-    bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
-    {
-        if (typeInfo == g_TypeMgr->typeInfoNull)
-        {
-            CONCAT_FIXED_STR(concat, "null");
-            return true;
-        }
-
-        if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
-        {
-            SWAG_CHECK(Ast::output(context, concat, node));
-            return true;
-        }
-
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
-        auto str = literalToString(typeInfo, value);
-        switch (typeInfo->nativeType)
-        {
-        case NativeTypeKind::String:
-            concat.addString("\"" + str + "\"");
-            break;
-        case NativeTypeKind::Rune:
-            concat.addString("\"" + str + "\"\'rune");
-            break;
-        case NativeTypeKind::Bool:
-            concat.addString(str);
-            break;
-        default:
-            if (!(typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
-            {
-                str += '\'';
-                str += typeInfo->name;
-            }
-
-            concat.addString(str);
-            break;
-        }
-
-        return true;
-    }
-
-    bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
-    {
-        AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        concat.addString("@(");
-
-        if (funcDecl->parameters && !funcDecl->parameters->childs.empty())
-        {
-            for (auto p : funcDecl->parameters->childs)
-            {
-                if (p != funcDecl->parameters->childs.front())
-                    CONCAT_FIXED_STR(concat, ", ");
-                concat.addString(p->token.text);
-                if (!p->childs.empty())
-                {
-                    CONCAT_FIXED_STR(concat, ": ");
-                    SWAG_CHECK(output(context, concat, p->childs.front()));
-                }
-
-                auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-                if (param->assignment)
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(output(context, concat, param->assignment));
-                }
-            }
-        }
-
-        concat.addChar(')');
-
-        if (funcDecl->flags & AST_SHORT_LAMBDA)
-        {
-            CONCAT_FIXED_STR(concat, " => ");
-            SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
-            SWAG_CHECK(output(context, concat, funcDecl->content->childs.front()));
-        }
-        else
-        {
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, funcDecl->content));
-        }
-
-        return true;
-    }
-
-    bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node)
-    {
-        concat.addIndent(context.indent);
-        if (node->flags & AST_DECL_USING)
-            CONCAT_FIXED_STR(concat, "using ");
-        if (kindName)
-            concat.addString(kindName);
-
-        if (!(node->flags & AST_AUTO_NAME))
-        {
-            concat.addString(node->token.text);
-            if (node->type)
+            // Type
+            if (!isSelf)
             {
                 CONCAT_FIXED_STR(concat, ": ");
-                outputType(context, concat, node->typeInfo);
-
-                // Type with parameters
-                if (node->type->kind == AstNodeKind::TypeExpression)
-                {
-                    auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-                    if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
-                    {
-                        auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-                        if (typeId->callParameters)
-                        {
-                            concat.addChar('{');
-                            SWAG_CHECK(output(context, concat, typeId->callParameters));
-                            concat.addChar('}');
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            outputType(context, concat, node->typeInfo);
-        }
-
-        if (node->assignment)
-        {
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(output(context, concat, node->assignment));
-        }
-
-        return true;
-    }
-
-    bool outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
-    {
-        AttributeList* attr = nullptr;
-        switch (typeInfo->kind)
-        {
-        case TypeInfoKind::Struct:
-        case TypeInfoKind::Interface:
-        {
-            auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-            attr      = &type->attributes;
-            break;
-        }
-        case TypeInfoKind::FuncAttr:
-        {
-            auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
-            attr      = &type->attributes;
-            break;
-        }
-        case TypeInfoKind::Enum:
-        {
-            auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
-            attr      = &type->attributes;
-            break;
-        }
-        }
-
-        SWAG_CHECK(outputAttributes(context, concat, *attr));
-        return true;
-    }
-
-    bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
-    {
-        CONCAT_FIXED_STR(concat, "(");
-        int idx = 0;
-        for (auto p : node->childs)
-        {
-            if (idx)
-                CONCAT_FIXED_STR(concat, ", ");
-            concat.addString(p->token.text);
-
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-            if (varDecl->type)
-            {
-                CONCAT_FIXED_STR(concat, ": ");
-                outputType(context, concat, varDecl->type->typeInfo);
+                outputType(context, concat, p->typeInfo);
             }
 
+            // Assignment
             if (varDecl->assignment)
             {
                 CONCAT_FIXED_STR(concat, " = ");
                 SWAG_CHECK(output(context, concat, varDecl->assignment));
             }
 
+            if (idx != parameters->childs.size() - 1)
+                CONCAT_FIXED_STR(concat, ", ");
             idx++;
         }
+    }
 
-        CONCAT_FIXED_STR(concat, ")");
+    CONCAT_FIXED_STR(concat, ")");
+
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        outputType(context, concat, typeFunc->returnType);
+    }
+
+    if (typeFunc->flags & TYPEINFO_CAN_THROW)
+        CONCAT_FIXED_STR(concat, " throw");
+
+    if (selectIf)
+    {
+        concat.addEolIndent(context.indent + 1);
+        context.indent++;
+        SWAG_CHECK(output(context, concat, selectIf));
+        context.indent--;
+    }
+
+    CONCAT_FIXED_STR(concat, ";");
+    concat.addEol();
+    return true;
+}
+
+bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+{
+    SWAG_CHECK(outputAttributes(context, concat, typeFunc));
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "func");
+
+    // Emit generic parameter, except if the function is an instance
+    if (node->genericParameters)
+    {
+        if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
+            SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+    }
+
+    CONCAT_FIXED_STR(concat, " ");
+    concat.addString(node->token.text);
+    CONCAT_FIXED_STR(concat, "(");
+
+    uint32_t idx = 0;
+    if (node->parameters)
+    {
+        for (auto p : node->parameters->childs)
+        {
+            if (p->flags & AST_DECL_USING)
+                CONCAT_FIXED_STR(concat, "using ");
+
+            bool isSelf = p->token.text == g_LangSpec->name_self;
+            if (isSelf && p->typeInfo->isConst())
+                concat.addString("const ");
+
+            concat.addString(p->token.text);
+
+            if (!isSelf)
+            {
+                CONCAT_FIXED_STR(concat, ": ");
+                outputType(context, concat, p->typeInfo);
+            }
+
+            auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+            if (param->assignment)
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(output(context, concat, param->assignment));
+            }
+
+            if (idx != typeFunc->parameters.size() - 1)
+                CONCAT_FIXED_STR(concat, ", ");
+            idx++;
+        }
+    }
+
+    CONCAT_FIXED_STR(concat, ")");
+
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        outputType(context, concat, typeFunc->returnType);
+    }
+
+    if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->flags & AST_FUNC_RETURN_DEFINED))
+    {
+        CONCAT_FIXED_STR(concat, " => ");
+        SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
+        SWAG_CHECK(output(context, concat, node->content->childs.front()));
+    }
+    else
+    {
+        concat.addEolIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{");
+        context.indent++;
+        concat.addEol();
+
+        if (node->content->kind != AstNodeKind::Statement)
+        {
+            concat.addIndent(context.indent);
+            context.indent--;
+            SWAG_CHECK(output(context, concat, node->content));
+            context.indent++;
+            concat.addEol();
+        }
+        else
+        {
+            for (auto c : node->subDecls)
+            {
+                concat.addIndent(context.indent);
+                SWAG_CHECK(output(context, concat, c));
+                concat.addEol();
+            }
+
+            for (auto c : node->content->childs)
+            {
+                concat.addIndent(context.indent);
+                SWAG_CHECK(output(context, concat, c));
+                concat.addEol();
+            }
+        }
+
+        context.indent--;
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
+        concat.addEol();
+    }
+
+    concat.addEol();
+    return true;
+}
+
+bool AstOutput::outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node)
+{
+    SWAG_CHECK(outputAttributes(context, concat, typeEnum));
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "enum ");
+    concat.addString(node->token.text);
+    CONCAT_FIXED_STR(concat, " : ");
+    SWAG_CHECK(outputType(context, concat, typeEnum->rawType));
+
+    concat.addEolIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "{");
+    concat.addEol();
+
+    for (auto c : node->childs)
+    {
+        if (c->kind != AstNodeKind::EnumValue)
+            continue;
+        concat.addIndent(context.indent + 1);
+
+        concat.addString(c->token.text);
+        if (!c->childs.empty())
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(output(context, concat, c->childs.front()));
+        }
+
+        concat.addEol();
+    }
+
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "}");
+    concat.addEol();
+    concat.addEol();
+    return true;
+}
+
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
+{
+    auto attr = &attributes;
+    if (attr && !attr->empty())
+    {
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "#[");
+
+        for (int j = 0; j < attr->allAttributes.size(); j++)
+        {
+            auto& one = attr->allAttributes[j];
+            if (j)
+                CONCAT_FIXED_STR(concat, ", ");
+
+            // No need to write "Swag.", less to write, less to read, as export files have
+            // a 'using Swag' on top.
+            if (!strncmp(one.name.c_str(), "Swag.", 5))
+                concat.addString(one.name.c_str() + 5);
+            else
+                concat.addString(one.name);
+
+            if (!one.parameters.empty())
+            {
+                concat.addChar('(');
+
+                for (int i = 0; i < one.parameters.size(); i++)
+                {
+                    auto& oneParam = one.parameters[i];
+                    if (i)
+                        CONCAT_FIXED_STR(concat, ", ");
+                    outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value);
+                }
+
+                concat.addChar(')');
+            }
+        }
+
+        CONCAT_FIXED_STR(concat, "]");
+        concat.addEol();
+    }
+
+    return true;
+}
+
+bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+{
+    if (typeInfo == g_TypeMgr->typeInfoNull)
+    {
+        CONCAT_FIXED_STR(concat, "null");
         return true;
     }
 
-    bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node)
+    if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        SWAG_CHECK(outputAttributes(context, concat, typeStruct));
+        SWAG_CHECK(output(context, concat, node));
+        return true;
+    }
 
-        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-            concat.addIndent(context.indent);
-
-        if (node->kind == AstNodeKind::InterfaceDecl)
-            CONCAT_FIXED_STR(concat, "interface");
-        else
+    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+    auto str = Ast::literalToString(typeInfo, value);
+    switch (typeInfo->nativeType)
+    {
+    case NativeTypeKind::String:
+        concat.addString("\"" + str + "\"");
+        break;
+    case NativeTypeKind::Rune:
+        concat.addString("\"" + str + "\"\'rune");
+        break;
+    case NativeTypeKind::Bool:
+        concat.addString(str);
+        break;
+    default:
+        if (!(typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
         {
-            SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
-            auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-            if (structNode->structFlags & STRUCTFLAG_UNION)
-                CONCAT_FIXED_STR(concat, "union");
-            else
-                CONCAT_FIXED_STR(concat, "struct");
+            str += '\'';
+            str += typeInfo->name;
         }
 
-        if (node->genericParameters)
-            SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+        concat.addString(str);
+        break;
+    }
 
-        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+    return true;
+}
+
+bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
+{
+    AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    concat.addString("@(");
+
+    if (funcDecl->parameters && !funcDecl->parameters->childs.empty())
+    {
+        for (auto p : funcDecl->parameters->childs)
         {
-            CONCAT_FIXED_STR(concat, " ");
-            concat.addString(node->token.text);
+            if (p != funcDecl->parameters->childs.front())
+                CONCAT_FIXED_STR(concat, ", ");
+            concat.addString(p->token.text);
+            if (!p->childs.empty())
+            {
+                CONCAT_FIXED_STR(concat, ": ");
+                SWAG_CHECK(output(context, concat, p->childs.front()));
+            }
+
+            auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+            if (param->assignment)
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(output(context, concat, param->assignment));
+            }
+        }
+    }
+
+    concat.addChar(')');
+
+    if (funcDecl->flags & AST_SHORT_LAMBDA)
+    {
+        CONCAT_FIXED_STR(concat, " => ");
+        SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
+        SWAG_CHECK(output(context, concat, funcDecl->content->childs.front()));
+    }
+    else
+    {
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, funcDecl->content));
+    }
+
+    return true;
+}
+
+bool AstOutput::outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node)
+{
+    concat.addIndent(context.indent);
+    if (node->flags & AST_DECL_USING)
+        CONCAT_FIXED_STR(concat, "using ");
+    if (kindName)
+        concat.addString(kindName);
+
+    if (!(node->flags & AST_AUTO_NAME))
+    {
+        concat.addString(node->token.text);
+        if (node->type)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            outputType(context, concat, node->typeInfo);
+
+            // Type with parameters
+            if (node->type->kind == AstNodeKind::TypeExpression)
+            {
+                auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
+                {
+                    auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+                    if (typeId->callParameters)
+                    {
+                        concat.addChar('{');
+                        SWAG_CHECK(output(context, concat, typeId->callParameters));
+                        concat.addChar('}');
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        outputType(context, concat, node->typeInfo);
+    }
+
+    if (node->assignment)
+    {
+        CONCAT_FIXED_STR(concat, " = ");
+        SWAG_CHECK(output(context, concat, node->assignment));
+    }
+
+    return true;
+}
+
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+{
+    AttributeList* attr = nullptr;
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Struct:
+    case TypeInfoKind::Interface:
+    {
+        auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
+        break;
+    }
+    case TypeInfoKind::FuncAttr:
+    {
+        auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
+        break;
+    }
+    case TypeInfoKind::Enum:
+    {
+        auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
+        break;
+    }
+    }
+
+    SWAG_CHECK(outputAttributes(context, concat, *attr));
+    return true;
+}
+
+bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
+{
+    CONCAT_FIXED_STR(concat, "(");
+    int idx = 0;
+    for (auto p : node->childs)
+    {
+        if (idx)
+            CONCAT_FIXED_STR(concat, ", ");
+        concat.addString(p->token.text);
+
+        AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        if (varDecl->type)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            outputType(context, concat, varDecl->type->typeInfo);
         }
 
-        concat.addEol();
+        if (varDecl->assignment)
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(output(context, concat, varDecl->assignment));
+        }
+
+        idx++;
+    }
+
+    CONCAT_FIXED_STR(concat, ")");
+    return true;
+}
+
+bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node)
+{
+    SWAG_CHECK(outputAttributes(context, concat, typeStruct));
+
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "{");
-        concat.addEol();
 
-        // Opaque export. Just simulate structure with the correct size.
-        // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
-        if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+    if (node->kind == AstNodeKind::InterfaceDecl)
+        CONCAT_FIXED_STR(concat, "interface");
+    else
+    {
+        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
+        auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        if (structNode->structFlags & STRUCTFLAG_UNION)
+            CONCAT_FIXED_STR(concat, "union");
+        else
+            CONCAT_FIXED_STR(concat, "struct");
+    }
+
+    if (node->genericParameters)
+        SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+    {
+        CONCAT_FIXED_STR(concat, " ");
+        concat.addString(node->token.text);
+    }
+
+    concat.addEol();
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "{");
+    concat.addEol();
+
+    // Opaque export. Just simulate structure with the correct size.
+    // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
+    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+    {
+        // We initialize one field with a dummy value to force the compiler to acknowledge that the
+        // struct has some initialized fields (not all to zero)
+        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
         {
-            // We initialize one field with a dummy value to force the compiler to acknowledge that the
-            // struct has some initialized fields (not all to zero)
-            if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            if (typeStruct->sizeOf != 1)
             {
-                if (typeStruct->sizeOf != 1)
-                {
-                    concat.addIndent(context.indent + 1);
-                    concat.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
-                    concat.addEol();
-                }
-
                 concat.addIndent(context.indent + 1);
-                CONCAT_FIXED_STR(concat, "padding1: u8 = 1");
+                concat.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
                 concat.addEol();
             }
 
-            // Everything in the structure is not initialized
-            else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
-            {
-                concat.addIndent(context.indent + 1);
-                concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
-                concat.addEol();
-            }
+            concat.addIndent(context.indent + 1);
+            CONCAT_FIXED_STR(concat, "padding1: u8 = 1");
+            concat.addEol();
+        }
 
-            // Everything in the structure is initiaized to zero
-            else
+        // Everything in the structure is not initialized
+        else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        {
+            concat.addIndent(context.indent + 1);
+            concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
+            concat.addEol();
+        }
+
+        // Everything in the structure is initiaized to zero
+        else
+        {
+            concat.addIndent(context.indent + 1);
+            concat.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
+            concat.addEol();
+        }
+    }
+    else
+    {
+        context.indent++;
+        for (auto p : typeStruct->fields)
+        {
+            SWAG_CHECK(outputAttributes(context, concat, p->attributes));
+
+            // Struct/interface content
+            if (p->declNode->kind == AstNodeKind::VarDecl)
             {
-                concat.addIndent(context.indent + 1);
-                concat.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
+                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
+                SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
                 concat.addEol();
             }
         }
+
+        for (auto p : typeStruct->consts)
+        {
+            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
+            SWAG_CHECK(outputAttributes(context, concat, p->attributes));
+            SWAG_CHECK(outputVar(context, concat, "const ", varDecl));
+            concat.addEol();
+        }
+
+        context.indent--;
+    }
+
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "}");
+
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+        concat.addEol();
+    concat.addEol();
+
+    return true;
+}
+
+bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+{
+    typeInfo = TypeManager::concreteReference(typeInfo);
+    SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
+        return outputStruct(context, concat, typeStruct, (AstStruct*) typeStruct->declNode);
+
+    concat.addString("{");
+    int idx = 0;
+    for (auto field : typeStruct->fields)
+    {
+        if (idx)
+            CONCAT_FIXED_STR(concat, ", ");
+
+        if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
+        {
+            auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
+            SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
+        }
         else
         {
-            context.indent++;
-            for (auto p : typeStruct->fields)
+            if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
             {
-                SWAG_CHECK(outputAttributes(context, concat, p->attributes));
-
-                // Struct/interface content
-                if (p->declNode->kind == AstNodeKind::VarDecl)
-                {
-                    auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
-                    SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
-                    concat.addEol();
-                }
+                concat.addString(field->namedParam);
+                concat.addString(":");
             }
 
-            for (auto p : typeStruct->consts)
-            {
-                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
-                SWAG_CHECK(outputAttributes(context, concat, p->attributes));
-                SWAG_CHECK(outputVar(context, concat, "const ", varDecl));
-                concat.addEol();
-            }
+            SWAG_CHECK(outputType(context, concat, field->typeInfo));
+        }
 
-            context.indent--;
+        idx++;
+    }
+
+    concat.addString("}");
+    return true;
+}
+
+bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+{
+    if (typeInfo->kind == TypeInfoKind::Lambda)
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+        CONCAT_FIXED_STR(concat, "func(");
+        for (auto p : typeFunc->parameters)
+        {
+            if (p != typeFunc->parameters[0])
+                CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(outputType(context, concat, p->typeInfo));
+        }
+
+        CONCAT_FIXED_STR(concat, ")->");
+        SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
+
+        if (typeInfo->flags & TYPEINFO_CAN_THROW)
+            CONCAT_FIXED_STR(concat, " throw");
+    }
+    else
+    {
+        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            return outputTypeTuple(context, concat, typeInfo);
+
+        // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
+        // we take the 'converted' original struct type
+        if (typeInfo->kind == TypeInfoKind::Reference)
+        {
+            auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+            if (typeRef->originalType)
+                typeInfo = typeRef->originalType;
+        }
+
+        if (typeInfo->flags & TYPEINFO_SELF)
+        {
+            if (typeInfo->flags & TYPEINFO_CONST)
+                CONCAT_FIXED_STR(concat, "const self");
+            else
+                CONCAT_FIXED_STR(concat, "self");
+        }
+        else
+        {
+            typeInfo->computeScopedNameExport();
+            SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+            concat.addString(typeInfo->scopedNameExport);
+        }
+    }
+
+    return true;
+}
+
+bool AstOutput::output(OutputContext& context, Concat& concat, AstNode* node)
+{
+    if (!node)
+        return true;
+    if (node->extension && node->extension->exportNode)
+        node = node->extension->exportNode;
+    if (node->flags & AST_GENERATED)
+        return true;
+
+    switch (node->kind)
+    {
+    case AstNodeKind::FuncDeclType:
+        if (!node->childs.empty())
+        {
+            CONCAT_FIXED_STR(concat, "->");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+        }
+        break;
+
+    case AstNodeKind::FuncDeclParams:
+    {
+        concat.addChar('(');
+        bool first = true;
+        for (auto c : node->childs)
+        {
+            if (!first)
+                CONCAT_FIXED_STR(concat, ", ");
+            first = false;
+            SWAG_CHECK(output(context, concat, c));
+        }
+        concat.addChar(')');
+        break;
+    }
+
+    case AstNodeKind::FuncDecl:
+    {
+        auto nodeFunc = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        concat.addEolIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "func ");
+        if (nodeFunc->genericParameters)
+            SWAG_CHECK(output(context, concat, nodeFunc->genericParameters));
+        concat.addString(nodeFunc->token.text);
+        if (!nodeFunc->parameters)
+            CONCAT_FIXED_STR(concat, "()");
+        else
+            SWAG_CHECK(output(context, concat, nodeFunc->parameters));
+        if (nodeFunc->returnType)
+            SWAG_CHECK(output(context, concat, nodeFunc->returnType));
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, nodeFunc->content));
+        break;
+    }
+
+    case AstNodeKind::StructContent:
+        concat.addEolIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{ ");
+        concat.addEol();
+        for (auto c : node->childs)
+        {
+            concat.addIndent(context.indent + 1);
+            SWAG_CHECK(output(context, concat, c));
+            concat.addEol();
         }
 
         concat.addIndent(context.indent);
         CONCAT_FIXED_STR(concat, "}");
-
-        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-            concat.addEol();
         concat.addEol();
+        break;
 
-        return true;
+    case AstNodeKind::StructDecl:
+    case AstNodeKind::InterfaceDecl:
+    {
+        auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        switch (node->kind)
+        {
+        case AstNodeKind::StructDecl:
+            CONCAT_FIXED_STR(concat, "struct ");
+            break;
+        case AstNodeKind::InterfaceDecl:
+            CONCAT_FIXED_STR(concat, "interface ");
+            break;
+        }
+        concat.addString(nodeStruct->token.text);
+        concat.addIndent(context.indent);
+        SWAG_CHECK(output(context, concat, nodeStruct->content));
+        break;
     }
 
-    bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+    case AstNodeKind::Defer:
+        CONCAT_FIXED_STR(concat, "defer ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        concat.addEol();
+        break;
+
+    case AstNodeKind::AttrUse:
     {
-        typeInfo = TypeManager::concreteReference(typeInfo);
-        SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
-            return outputStruct(context, concat, typeStruct, (AstStruct*) typeStruct->declNode);
-
-        concat.addString("{");
-        int idx = 0;
-        for (auto field : typeStruct->fields)
+        auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+        bool first    = true;
+        CONCAT_FIXED_STR(concat, "#[");
+        for (auto s : nodeAttr->childs)
         {
-            if (idx)
+            if (s == nodeAttr->content)
+                continue;
+            if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
-
-            if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
-            {
-                auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
-                SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
-            }
-            else
-            {
-                if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
-                {
-                    concat.addString(field->namedParam);
-                    concat.addString(":");
-                }
-
-                SWAG_CHECK(outputType(context, concat, field->typeInfo));
-            }
-
-            idx++;
+            first = false;
+            SWAG_CHECK(output(context, concat, s));
         }
 
-        concat.addString("}");
-        return true;
+        concat.addChar(']');
+        concat.addEol();
+        concat.addIndent(context.indent);
+        SWAG_CHECK(output(context, concat, nodeAttr->content));
+        break;
     }
 
-    bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
-    {
-        if (typeInfo->kind == TypeInfoKind::Lambda)
+    case AstNodeKind::ExplicitNoInit:
+        concat.addChar('?');
+        break;
+
+    case AstNodeKind::Index:
+        CONCAT_FIXED_STR(concat, "@index");
+        break;
+    case AstNodeKind::GetErr:
+        CONCAT_FIXED_STR(concat, "@err");
+        break;
+    case AstNodeKind::Init:
+        CONCAT_FIXED_STR(concat, "@init(");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        if (node->childs.size() == 2)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
-            CONCAT_FIXED_STR(concat, "func(");
-            for (auto p : typeFunc->parameters)
-            {
-                if (p != typeFunc->parameters[0])
-                    CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputType(context, concat, p->typeInfo));
-            }
+            CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, node->childs.back()));
+        }
+        concat.addChar(')');
+        break;
+    case AstNodeKind::Drop:
+        CONCAT_FIXED_STR(concat, "@drop(");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        if (node->childs.size() == 2)
+        {
+            CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, node->childs.back()));
+        }
+        concat.addChar(')');
+        break;
+    case AstNodeKind::PostMove:
+        CONCAT_FIXED_STR(concat, "@postmove(");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        if (node->childs.size() == 2)
+        {
+            CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, node->childs.back()));
+        }
+        concat.addChar(')');
+        break;
+    case AstNodeKind::PostCopy:
+        CONCAT_FIXED_STR(concat, "@postcopy(");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        if (node->childs.size() == 2)
+        {
+            CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, node->childs.back()));
+        }
+        concat.addChar(')');
+        break;
 
-            CONCAT_FIXED_STR(concat, ")->");
-            SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
+    case AstNodeKind::Break:
+    {
+        auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+        CONCAT_FIXED_STR(concat, "break ");
+        concat.addString(nodeBreak->label);
+        break;
+    }
 
-            if (typeInfo->flags & TYPEINFO_CAN_THROW)
-                CONCAT_FIXED_STR(concat, " throw");
+    case AstNodeKind::Continue:
+    {
+        auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
+        CONCAT_FIXED_STR(concat, "continue ");
+        concat.addString(nodeContinue->label);
+        break;
+    }
+
+    case AstNodeKind::MakePointer:
+    {
+        concat.addChar('&');
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+    }
+
+    case AstNodeKind::MakePointerLambda:
+    {
+        auto lambdaNode = CastAst<AstMakePointerLambda>(node, AstNodeKind::MakePointerLambda);
+        outputLambdaExpression(context, concat, lambdaNode->lambda);
+        break;
+    }
+
+    case AstNodeKind::NoDrop:
+        CONCAT_FIXED_STR(concat, "nodrop ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::Move:
+        CONCAT_FIXED_STR(concat, "move ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::ArrayPointerIndex:
+    {
+        auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
+        if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+        {
+            CONCAT_FIXED_STR(concat, "dref ");
+            SWAG_CHECK(output(context, concat, arrayNode->array));
         }
         else
         {
-            if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                return outputTypeTuple(context, concat, typeInfo);
-
-            // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
-            // we take the 'converted' original struct type
-            if (typeInfo->kind == TypeInfoKind::Reference)
-            {
-                auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-                if (typeRef->originalType)
-                    typeInfo = typeRef->originalType;
-            }
-
-            if (typeInfo->flags & TYPEINFO_SELF)
-            {
-                if (typeInfo->flags & TYPEINFO_CONST)
-                    CONCAT_FIXED_STR(concat, "const self");
-                else
-                    CONCAT_FIXED_STR(concat, "self");
-            }
-            else
-            {
-                typeInfo->computeScopedNameExport();
-                SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-                concat.addString(typeInfo->scopedNameExport);
-            }
+            SWAG_CHECK(output(context, concat, arrayNode->array));
+            concat.addChar('[');
+            SWAG_CHECK(output(context, concat, arrayNode->access));
+            concat.addChar(']');
         }
-
-        return true;
+        break;
     }
 
-    bool output(OutputContext& context, Concat& concat, AstNode* node)
+    case AstNodeKind::ExpressionList:
     {
-        if (!node)
-            return true;
-        if (node->extension && node->extension->exportNode)
-            node = node->extension->exportNode;
-        if (node->flags & AST_GENERATED)
-            return true;
+        auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
+        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
+            concat.addString2("@{");
+        else
+            concat.addString2("@[");
 
-        switch (node->kind)
+        int idx = 0;
+        for (auto child : exprNode->childs)
         {
-        case AstNodeKind::FuncDeclType:
-            if (!node->childs.empty())
-            {
-                CONCAT_FIXED_STR(concat, "->");
-                SWAG_CHECK(output(context, concat, node->childs.front()));
-            }
-            break;
-
-        case AstNodeKind::FuncDeclParams:
-        {
-            concat.addChar('(');
-            bool first = true;
-            for (auto c : node->childs)
-            {
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                SWAG_CHECK(output(context, concat, c));
-            }
-            concat.addChar(')');
-            break;
+            if (child->flags & AST_GENERATED)
+                continue;
+            if (idx++)
+                CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, child));
         }
 
-        case AstNodeKind::FuncDecl:
-        {
-            auto nodeFunc = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-            concat.addEolIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "func ");
-            if (nodeFunc->genericParameters)
-                SWAG_CHECK(output(context, concat, nodeFunc->genericParameters));
-            concat.addString(nodeFunc->token.text);
-            if (!nodeFunc->parameters)
-                CONCAT_FIXED_STR(concat, "()");
-            else
-                SWAG_CHECK(output(context, concat, nodeFunc->parameters));
-            if (nodeFunc->returnType)
-                SWAG_CHECK(output(context, concat, nodeFunc->returnType));
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, nodeFunc->content));
-            break;
-        }
-
-        case AstNodeKind::StructContent:
-            concat.addEolIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "{ ");
-            concat.addEol();
-            for (auto c : node->childs)
-            {
-                concat.addIndent(context.indent + 1);
-                SWAG_CHECK(output(context, concat, c));
-                concat.addEol();
-            }
-
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "}");
-            concat.addEol();
-            break;
-
-        case AstNodeKind::StructDecl:
-        case AstNodeKind::InterfaceDecl:
-        {
-            auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-            switch (node->kind)
-            {
-            case AstNodeKind::StructDecl:
-                CONCAT_FIXED_STR(concat, "struct ");
-                break;
-            case AstNodeKind::InterfaceDecl:
-                CONCAT_FIXED_STR(concat, "interface ");
-                break;
-            }
-            concat.addString(nodeStruct->token.text);
-            concat.addIndent(context.indent);
-            SWAG_CHECK(output(context, concat, nodeStruct->content));
-            break;
-        }
-
-        case AstNodeKind::Defer:
-            CONCAT_FIXED_STR(concat, "defer ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            concat.addEol();
-            break;
-
-        case AstNodeKind::AttrUse:
-        {
-            auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
-            bool first    = true;
-            CONCAT_FIXED_STR(concat, "#[");
-            for (auto s : nodeAttr->childs)
-            {
-                if (s == nodeAttr->content)
-                    continue;
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                SWAG_CHECK(output(context, concat, s));
-            }
-
+        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
+            concat.addChar('}');
+        else
             concat.addChar(']');
-            concat.addEol();
-            concat.addIndent(context.indent);
-            SWAG_CHECK(output(context, concat, nodeAttr->content));
-            break;
-        }
+        break;
+    }
 
-        case AstNodeKind::ExplicitNoInit:
-            concat.addChar('?');
-            break;
+    case AstNodeKind::CompilerRun:
+    case AstNodeKind::CompilerAst:
+    case AstNodeKind::CompilerSelectIf:
+    case AstNodeKind::CompilerCheckIf:
+    {
+        if (node->kind == AstNodeKind::CompilerRun)
+            CONCAT_FIXED_STR(concat, "#run ");
+        else if (node->kind == AstNodeKind::CompilerAst)
+            CONCAT_FIXED_STR(concat, "#ast ");
+        else if (node->kind == AstNodeKind::CompilerSelectIf)
+            CONCAT_FIXED_STR(concat, "#selectif ");
+        else if (node->kind == AstNodeKind::CompilerCheckIf)
+            CONCAT_FIXED_STR(concat, "#checkif ");
 
-        case AstNodeKind::Index:
-            CONCAT_FIXED_STR(concat, "@index");
-            break;
-        case AstNodeKind::GetErr:
-            CONCAT_FIXED_STR(concat, "@err");
-            break;
-        case AstNodeKind::Init:
-            CONCAT_FIXED_STR(concat, "@init(");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            if (node->childs.size() == 2)
-            {
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs.back()));
-            }
-            concat.addChar(')');
-            break;
-        case AstNodeKind::Drop:
-            CONCAT_FIXED_STR(concat, "@drop(");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            if (node->childs.size() == 2)
-            {
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs.back()));
-            }
-            concat.addChar(')');
-            break;
-        case AstNodeKind::PostMove:
-            CONCAT_FIXED_STR(concat, "@postmove(");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            if (node->childs.size() == 2)
-            {
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs.back()));
-            }
-            concat.addChar(')');
-            break;
-        case AstNodeKind::PostCopy:
-            CONCAT_FIXED_STR(concat, "@postcopy(");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            if (node->childs.size() == 2)
-            {
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs.back()));
-            }
-            concat.addChar(')');
-            break;
-
-        case AstNodeKind::Break:
+        auto front = node->childs.front();
+        if (front->kind == AstNodeKind::FuncDecl)
         {
-            auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
-            CONCAT_FIXED_STR(concat, "break ");
-            concat.addString(nodeBreak->label);
-            break;
-        }
-
-        case AstNodeKind::Continue:
-        {
-            auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
-            CONCAT_FIXED_STR(concat, "continue ");
-            concat.addString(nodeContinue->label);
-            break;
-        }
-
-        case AstNodeKind::MakePointer:
-        {
-            concat.addChar('&');
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
-        }
-
-        case AstNodeKind::MakePointerLambda:
-        {
-            auto lambdaNode = CastAst<AstMakePointerLambda>(node, AstNodeKind::MakePointerLambda);
-            outputLambdaExpression(context, concat, lambdaNode->lambda);
-            break;
-        }
-
-        case AstNodeKind::NoDrop:
-            CONCAT_FIXED_STR(concat, "nodrop ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
-
-        case AstNodeKind::Move:
-            CONCAT_FIXED_STR(concat, "move ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
-
-        case AstNodeKind::ArrayPointerIndex:
-        {
-            auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
-            {
-                CONCAT_FIXED_STR(concat, "dref ");
-                SWAG_CHECK(output(context, concat, arrayNode->array));
-            }
-            else
-            {
-                SWAG_CHECK(output(context, concat, arrayNode->array));
-                concat.addChar('[');
-                SWAG_CHECK(output(context, concat, arrayNode->access));
-                concat.addChar(']');
-            }
-            break;
-        }
-
-        case AstNodeKind::ExpressionList:
-        {
-            auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-            if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
-                concat.addString2("@{");
-            else
-                concat.addString2("@[");
-
-            int idx = 0;
-            for (auto child : exprNode->childs)
-            {
-                if (child->flags & AST_GENERATED)
-                    continue;
-                if (idx++)
-                    CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, child));
-            }
-
-            if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
-                concat.addChar('}');
-            else
-                concat.addChar(']');
-            break;
-        }
-
-        case AstNodeKind::CompilerRun:
-        case AstNodeKind::CompilerAst:
-        case AstNodeKind::CompilerSelectIf:
-        case AstNodeKind::CompilerCheckIf:
-        {
-            if (node->kind == AstNodeKind::CompilerRun)
-                CONCAT_FIXED_STR(concat, "#run ");
-            else if (node->kind == AstNodeKind::CompilerAst)
-                CONCAT_FIXED_STR(concat, "#ast ");
-            else if (node->kind == AstNodeKind::CompilerSelectIf)
-                CONCAT_FIXED_STR(concat, "#selectif ");
-            else if (node->kind == AstNodeKind::CompilerCheckIf)
-                CONCAT_FIXED_STR(concat, "#checkif ");
-
-            auto front = node->childs.front();
-            if (front->kind == AstNodeKind::FuncDecl)
-            {
-                AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
-                incIndentStatement(funcDecl->content, context.indent);
-                concat.addEolIndent(context.indent);
-                SWAG_CHECK(output(context, concat, funcDecl->content));
-                decIndentStatement(funcDecl->content, context.indent);
-            }
-            else
-            {
-                SWAG_CHECK(output(context, concat, front));
-            }
-            break;
-        }
-
-        case AstNodeKind::CompilerIfBlock:
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
-
-        case AstNodeKind::CompilerMacro:
-            CONCAT_FIXED_STR(concat, "#macro");
-            incIndentStatement(node->childs.front(), context.indent);
+            AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
+            incIndentStatement(funcDecl->content, context.indent);
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            decIndentStatement(node->childs.front(), context.indent);
-            break;
-
-        case AstNodeKind::CompilerInline:
-            CONCAT_FIXED_STR(concat, "#inline");
-            incIndentStatement(node->childs.front(), context.indent);
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            decIndentStatement(node->childs.front(), context.indent);
-            break;
-
-        case AstNodeKind::CompilerMixin:
+            SWAG_CHECK(output(context, concat, funcDecl->content));
+            decIndentStatement(funcDecl->content, context.indent);
+        }
+        else
         {
-            auto compilerMixin = CastAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
-            CONCAT_FIXED_STR(concat, "#mixin ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            if (!compilerMixin->replaceTokens.empty())
+            SWAG_CHECK(output(context, concat, front));
+        }
+        break;
+    }
+
+    case AstNodeKind::CompilerIfBlock:
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::CompilerMacro:
+        CONCAT_FIXED_STR(concat, "#macro");
+        incIndentStatement(node->childs.front(), context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        decIndentStatement(node->childs.front(), context.indent);
+        break;
+
+    case AstNodeKind::CompilerInline:
+        CONCAT_FIXED_STR(concat, "#inline");
+        incIndentStatement(node->childs.front(), context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        decIndentStatement(node->childs.front(), context.indent);
+        break;
+
+    case AstNodeKind::CompilerMixin:
+    {
+        auto compilerMixin = CastAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
+        CONCAT_FIXED_STR(concat, "#mixin ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        if (!compilerMixin->replaceTokens.empty())
+        {
+            CONCAT_FIXED_STR(concat, " { ");
+            for (auto m : compilerMixin->replaceTokens)
             {
-                CONCAT_FIXED_STR(concat, " { ");
-                for (auto m : compilerMixin->replaceTokens)
+                switch (m.first)
                 {
-                    switch (m.first)
-                    {
-                    case TokenId::KwdBreak:
-                        CONCAT_FIXED_STR(concat, "break");
-                        break;
-                    case TokenId::KwdContinue:
-                        CONCAT_FIXED_STR(concat, "continue");
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        break;
-                    }
-
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(output(context, concat, m.second));
-                    CONCAT_FIXED_STR(concat, "; ");
+                case TokenId::KwdBreak:
+                    CONCAT_FIXED_STR(concat, "break");
+                    break;
+                case TokenId::KwdContinue:
+                    CONCAT_FIXED_STR(concat, "continue");
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
                 }
-                concat.addChar('}');
+
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(output(context, concat, m.second));
+                CONCAT_FIXED_STR(concat, "; ");
             }
-            break;
+            concat.addChar('}');
+        }
+        break;
+    }
+
+    case AstNodeKind::CompilerPrint:
+        CONCAT_FIXED_STR(concat, "#print ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::CompilerSemError:
+        CONCAT_FIXED_STR(concat, "#semerror ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::CompilerAssert:
+        CONCAT_FIXED_STR(concat, "#assert(");
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        if (node->childs.size() > 1)
+        {
+            concat.addChar(',');
+            SWAG_CHECK(output(context, concat, node->childs[1]));
         }
 
-        case AstNodeKind::CompilerPrint:
-            CONCAT_FIXED_STR(concat, "#print ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
+        concat.addChar(')');
+        break;
 
-        case AstNodeKind::CompilerSemError:
-            CONCAT_FIXED_STR(concat, "#semerror ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
+    case AstNodeKind::CompilerIf:
+    {
+        auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
+        CONCAT_FIXED_STR(concat, "#if ");
+        SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
 
-        case AstNodeKind::CompilerAssert:
-            CONCAT_FIXED_STR(concat, "#assert(");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            if (node->childs.size() > 1)
-            {
-                concat.addChar(',');
-                SWAG_CHECK(output(context, concat, node->childs[1]));
-            }
+        incIndentStatement(compilerIf->ifBlock, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
+        decIndentStatement(compilerIf->ifBlock, context.indent);
 
-            concat.addChar(')');
-            break;
-
-        case AstNodeKind::CompilerIf:
+        if (compilerIf->elseBlock)
         {
-            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
-            CONCAT_FIXED_STR(concat, "#if ");
-            SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
-
-            incIndentStatement(compilerIf->ifBlock, context.indent);
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
-            decIndentStatement(compilerIf->ifBlock, context.indent);
-
-            if (compilerIf->elseBlock)
+            CONCAT_FIXED_STR(concat, "#else ");
+            if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
             {
-                concat.addEolIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "#else ");
-                if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
-                {
-                    incIndentStatement(compilerIf->elseBlock, context.indent);
-                    concat.addEolIndent(context.indent);
-                }
-                SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
-                if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
-                {
-                    decIndentStatement(compilerIf->elseBlock, context.indent);
-                }
-            }
-            break;
-        }
-
-        case AstNodeKind::If:
-        {
-            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
-            CONCAT_FIXED_STR(concat, "if ");
-            SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
-
-            incIndentStatement(compilerIf->ifBlock, context.indent);
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
-            decIndentStatement(compilerIf->ifBlock, context.indent);
-
-            if (compilerIf->elseBlock)
-            {
-                concat.addEolIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "else");
                 incIndentStatement(compilerIf->elseBlock, context.indent);
                 concat.addEolIndent(context.indent);
-                SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
+            }
+            SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
+            if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
+            {
                 decIndentStatement(compilerIf->elseBlock, context.indent);
             }
-            break;
         }
+        break;
+    }
 
-        case AstNodeKind::For:
+    case AstNodeKind::If:
+    {
+        auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
+        CONCAT_FIXED_STR(concat, "if ");
+        SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
+
+        incIndentStatement(compilerIf->ifBlock, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
+        decIndentStatement(compilerIf->ifBlock, context.indent);
+
+        if (compilerIf->elseBlock)
         {
-            auto forNode = CastAst<AstFor>(node, AstNodeKind::For);
-            CONCAT_FIXED_STR(concat, "for ");
-            SWAG_CHECK(output(context, concat, forNode->preExpression));
-            CONCAT_FIXED_STR(concat, "; ");
-            SWAG_CHECK(output(context, concat, forNode->boolExpression));
-            CONCAT_FIXED_STR(concat, "; ");
-            SWAG_CHECK(output(context, concat, forNode->postExpression));
-            incIndentStatement(forNode->block, context.indent);
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, forNode->block));
-            decIndentStatement(forNode->block, context.indent);
-            break;
-        }
-
-        case AstNodeKind::Visit:
-        {
-            auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
-            CONCAT_FIXED_STR(concat, "visit ");
-
-            if (visitNode->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-                concat.addChar('*');
-
-            bool first = true;
-            for (auto& a : visitNode->aliasNames)
-            {
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                concat.addString(a.text);
-            }
-
-            if (!visitNode->aliasNames.empty())
-                CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(output(context, concat, visitNode->expression));
-            incIndentStatement(visitNode->block, context.indent);
+            CONCAT_FIXED_STR(concat, "else");
+            incIndentStatement(compilerIf->elseBlock, context.indent);
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, visitNode->block));
-            decIndentStatement(visitNode->block, context.indent);
-            break;
+            SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
+            decIndentStatement(compilerIf->elseBlock, context.indent);
         }
+        break;
+    }
 
-        case AstNodeKind::Loop:
+    case AstNodeKind::For:
+    {
+        auto forNode = CastAst<AstFor>(node, AstNodeKind::For);
+        CONCAT_FIXED_STR(concat, "for ");
+        SWAG_CHECK(output(context, concat, forNode->preExpression));
+        CONCAT_FIXED_STR(concat, "; ");
+        SWAG_CHECK(output(context, concat, forNode->boolExpression));
+        CONCAT_FIXED_STR(concat, "; ");
+        SWAG_CHECK(output(context, concat, forNode->postExpression));
+        incIndentStatement(forNode->block, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, forNode->block));
+        decIndentStatement(forNode->block, context.indent);
+        break;
+    }
+
+    case AstNodeKind::Visit:
+    {
+        auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
+        CONCAT_FIXED_STR(concat, "visit ");
+
+        if (visitNode->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+            concat.addChar('*');
+
+        bool first = true;
+        for (auto& a : visitNode->aliasNames)
         {
-            auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
-            CONCAT_FIXED_STR(concat, "loop ");
-            if (loopNode->specificName)
-            {
-                concat.addString(loopNode->specificName->token.text);
-                CONCAT_FIXED_STR(concat, ": ");
-            }
-
-            SWAG_CHECK(output(context, concat, loopNode->expression));
-            incIndentStatement(loopNode->block, context.indent);
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, loopNode->block));
-            decIndentStatement(loopNode->block, context.indent);
-            break;
-        }
-
-        case AstNodeKind::While:
-        {
-            auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
-            CONCAT_FIXED_STR(concat, "while ");
-            SWAG_CHECK(output(context, concat, whileNode->boolExpression));
-            incIndentStatement(whileNode->block, context.indent);
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, whileNode->block));
-            decIndentStatement(whileNode->block, context.indent);
-            break;
-        }
-
-        case AstNodeKind::CompilerSpecialFunction:
-        {
-            switch (node->token.id)
-            {
-            case TokenId::CompilerFunction:
-                CONCAT_FIXED_STR(concat, "#function");
-                break;
-            case TokenId::CompilerCallerFunction:
-                CONCAT_FIXED_STR(concat, "#callerfunction");
-                break;
-            case TokenId::CompilerCallerLocation:
-                CONCAT_FIXED_STR(concat, "#callerlocation");
-                break;
-            case TokenId::CompilerLocation:
-                CONCAT_FIXED_STR(concat, "#location");
-                if (!node->childs.empty())
-                {
-                    concat.addChar('(');
-                    SWAG_CHECK(output(context, concat, node->childs[0]));
-                    concat.addChar(')');
-                }
-                break;
-
-            case TokenId::CompilerOs:
-                CONCAT_FIXED_STR(concat, "#os");
-                break;
-            case TokenId::CompilerAbi:
-                CONCAT_FIXED_STR(concat, "#abi");
-                break;
-            case TokenId::CompilerBackend:
-                CONCAT_FIXED_STR(concat, "#backend");
-                break;
-            case TokenId::CompilerArch:
-                CONCAT_FIXED_STR(concat, "#arch");
-                break;
-            case TokenId::CompilerBuildCfg:
-                CONCAT_FIXED_STR(concat, "#cfg");
-                break;
-            case TokenId::CompilerHasTag:
-                CONCAT_FIXED_STR(concat, "#hastag(");
-                SWAG_CHECK(output(context, concat, node->childs[0]));
-                CONCAT_FIXED_STR(concat, ")");
-                break;
-            case TokenId::CompilerGetTag:
-                CONCAT_FIXED_STR(concat, "#gettag(");
-                SWAG_CHECK(output(context, concat, node->childs[0]));
+            if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs[1]));
-                CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, node->childs[2]));
-                CONCAT_FIXED_STR(concat, ")");
-                break;
-            default:
-                return node->sourceFile->internalError(node, "Ast::output, unknown compiler function");
-            }
-            break;
+            first = false;
+            concat.addString(a.text);
         }
 
-        case AstNodeKind::ConditionalExpression:
+        if (!visitNode->aliasNames.empty())
+            CONCAT_FIXED_STR(concat, ": ");
+        SWAG_CHECK(output(context, concat, visitNode->expression));
+        incIndentStatement(visitNode->block, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, visitNode->block));
+        decIndentStatement(visitNode->block, context.indent);
+        break;
+    }
+
+    case AstNodeKind::Loop:
+    {
+        auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
+        CONCAT_FIXED_STR(concat, "loop ");
+        if (loopNode->specificName)
+        {
+            concat.addString(loopNode->specificName->token.text);
+            CONCAT_FIXED_STR(concat, ": ");
+        }
+
+        SWAG_CHECK(output(context, concat, loopNode->expression));
+        incIndentStatement(loopNode->block, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, loopNode->block));
+        decIndentStatement(loopNode->block, context.indent);
+        break;
+    }
+
+    case AstNodeKind::While:
+    {
+        auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
+        CONCAT_FIXED_STR(concat, "while ");
+        SWAG_CHECK(output(context, concat, whileNode->boolExpression));
+        incIndentStatement(whileNode->block, context.indent);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, whileNode->block));
+        decIndentStatement(whileNode->block, context.indent);
+        break;
+    }
+
+    case AstNodeKind::CompilerSpecialFunction:
+    {
+        switch (node->token.id)
+        {
+        case TokenId::CompilerFunction:
+            CONCAT_FIXED_STR(concat, "#function");
+            break;
+        case TokenId::CompilerCallerFunction:
+            CONCAT_FIXED_STR(concat, "#callerfunction");
+            break;
+        case TokenId::CompilerCallerLocation:
+            CONCAT_FIXED_STR(concat, "#callerlocation");
+            break;
+        case TokenId::CompilerLocation:
+            CONCAT_FIXED_STR(concat, "#location");
+            if (!node->childs.empty())
+            {
+                concat.addChar('(');
+                SWAG_CHECK(output(context, concat, node->childs[0]));
+                concat.addChar(')');
+            }
+            break;
+
+        case TokenId::CompilerOs:
+            CONCAT_FIXED_STR(concat, "#os");
+            break;
+        case TokenId::CompilerAbi:
+            CONCAT_FIXED_STR(concat, "#abi");
+            break;
+        case TokenId::CompilerBackend:
+            CONCAT_FIXED_STR(concat, "#backend");
+            break;
+        case TokenId::CompilerArch:
+            CONCAT_FIXED_STR(concat, "#arch");
+            break;
+        case TokenId::CompilerBuildCfg:
+            CONCAT_FIXED_STR(concat, "#cfg");
+            break;
+        case TokenId::CompilerHasTag:
+            CONCAT_FIXED_STR(concat, "#hastag(");
             SWAG_CHECK(output(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, " ? (");
+            CONCAT_FIXED_STR(concat, ")");
+            break;
+        case TokenId::CompilerGetTag:
+            CONCAT_FIXED_STR(concat, "#gettag(");
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            CONCAT_FIXED_STR(concat, ", ");
             SWAG_CHECK(output(context, concat, node->childs[1]));
-            CONCAT_FIXED_STR(concat, ") : (");
+            CONCAT_FIXED_STR(concat, ", ");
             SWAG_CHECK(output(context, concat, node->childs[2]));
-            concat.addChar(')');
+            CONCAT_FIXED_STR(concat, ")");
             break;
-
-        case AstNodeKind::Alias:
-        {
-            CONCAT_FIXED_STR(concat, "alias ");
-            concat.addString(node->token.text);
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
+        default:
+            return node->sourceFile->internalError(node, "Ast::output, unknown compiler function");
         }
+        break;
+    }
 
-        case AstNodeKind::VarDecl:
-        case AstNodeKind::FuncDeclParam:
+    case AstNodeKind::ConditionalExpression:
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        CONCAT_FIXED_STR(concat, " ? (");
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        CONCAT_FIXED_STR(concat, ") : (");
+        SWAG_CHECK(output(context, concat, node->childs[2]));
+        concat.addChar(')');
+        break;
+
+    case AstNodeKind::Alias:
+    {
+        CONCAT_FIXED_STR(concat, "alias ");
+        concat.addString(node->token.text);
+        CONCAT_FIXED_STR(concat, " = ");
+        SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+    }
+
+    case AstNodeKind::VarDecl:
+    case AstNodeKind::FuncDeclParam:
+    {
+        AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+        if (varDecl->flags & AST_DECL_USING)
+            CONCAT_FIXED_STR(concat, "using ");
+        if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam)
+            CONCAT_FIXED_STR(concat, "var ");
+
+        if (varDecl->type)
         {
-            AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-            if (varDecl->flags & AST_DECL_USING)
-                CONCAT_FIXED_STR(concat, "using ");
-            if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam)
-                CONCAT_FIXED_STR(concat, "var ");
-
-            if (varDecl->type)
-            {
-                if (!varDecl->publicName.empty())
-                    concat.addString(varDecl->publicName);
-                else
-                    concat.addString(varDecl->token.text);
-
-                if (!(varDecl->type->flags & AST_GENERATED))
-                {
-                    CONCAT_FIXED_STR(concat, ": ");
-                    SWAG_CHECK(output(context, concat, varDecl->type));
-                }
-                else
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    auto typeExpr = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
-                    SWAG_ASSERT(!varDecl->assignment);
-                    SWAG_ASSERT(typeExpr->identifier);
-                    SWAG_ASSERT(varDecl->type->typeInfo && (varDecl->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
-                    auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
-                    CONCAT_FIXED_STR(concat, "@{");
-                    SWAG_CHECK(output(context, concat, id->callParameters));
-                    CONCAT_FIXED_STR(concat, "}");
-                }
-
-                if (varDecl->assignment)
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(output(context, concat, varDecl->assignment));
-                }
-            }
-            else
-            {
-                if (!varDecl->publicName.empty())
-                    concat.addString(varDecl->publicName);
-                else
-                    concat.addString(varDecl->token.text);
-                CONCAT_FIXED_STR(concat, " := ");
-                if (varDecl->assignment)
-                    SWAG_CHECK(output(context, concat, varDecl->assignment));
-            }
-
-            break;
-        }
-
-        case AstNodeKind::ConstDecl:
-        {
-            AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-            CONCAT_FIXED_STR(concat, "const ");
-
             if (!varDecl->publicName.empty())
                 concat.addString(varDecl->publicName);
             else
                 concat.addString(varDecl->token.text);
 
-            if (varDecl->type)
+            if (!(varDecl->type->flags & AST_GENERATED))
             {
                 CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(output(context, concat, varDecl->type));
+            }
+            else
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                auto typeExpr = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+                SWAG_ASSERT(!varDecl->assignment);
+                SWAG_ASSERT(typeExpr->identifier);
+                SWAG_ASSERT(varDecl->type->typeInfo && (varDecl->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
+                auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
+                CONCAT_FIXED_STR(concat, "@{");
+                SWAG_CHECK(output(context, concat, id->callParameters));
+                CONCAT_FIXED_STR(concat, "}");
             }
 
             if (varDecl->assignment)
@@ -1365,672 +1328,707 @@ namespace Ast
                 CONCAT_FIXED_STR(concat, " = ");
                 SWAG_CHECK(output(context, concat, varDecl->assignment));
             }
-            break;
+        }
+        else
+        {
+            if (!varDecl->publicName.empty())
+                concat.addString(varDecl->publicName);
+            else
+                concat.addString(varDecl->token.text);
+            CONCAT_FIXED_STR(concat, " := ");
+            if (varDecl->assignment)
+                SWAG_CHECK(output(context, concat, varDecl->assignment));
         }
 
-        case AstNodeKind::Using:
-        {
-            CONCAT_FIXED_STR(concat, "using ");
-            int idx = 0;
-            for (auto child : node->childs)
-            {
-                if (idx)
-                    CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(output(context, concat, child));
-                idx++;
-            }
+        break;
+    }
 
-            break;
+    case AstNodeKind::ConstDecl:
+    {
+        AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+        CONCAT_FIXED_STR(concat, "const ");
+
+        if (!varDecl->publicName.empty())
+            concat.addString(varDecl->publicName);
+        else
+            concat.addString(varDecl->token.text);
+
+        if (varDecl->type)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            SWAG_CHECK(output(context, concat, varDecl->type));
         }
 
-        case AstNodeKind::Return:
+        if (varDecl->assignment)
         {
-            CONCAT_FIXED_STR(concat, "return ");
-            if (!node->childs.empty())
-                SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(output(context, concat, varDecl->assignment));
+        }
+        break;
+    }
+
+    case AstNodeKind::Using:
+    {
+        CONCAT_FIXED_STR(concat, "using ");
+        int idx = 0;
+        for (auto child : node->childs)
+        {
+            if (idx)
+                CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(output(context, concat, child));
+            idx++;
         }
 
-        case AstNodeKind::IntrinsicProp:
-        {
-            auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
-            concat.addString(propertyNode->token.text);
-            concat.addChar('(');
-            int idx = 0;
-            for (auto child : node->childs)
-            {
-                if (idx)
-                    CONCAT_FIXED_STR(concat, ",");
-                SWAG_CHECK(output(context, concat, child));
-                idx++;
-            }
+        break;
+    }
 
-            concat.addChar(')');
-            break;
+    case AstNodeKind::Return:
+    {
+        CONCAT_FIXED_STR(concat, "return ");
+        if (!node->childs.empty())
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+        break;
+    }
+
+    case AstNodeKind::IntrinsicProp:
+    {
+        auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
+        concat.addString(propertyNode->token.text);
+        concat.addChar('(');
+        int idx = 0;
+        for (auto child : node->childs)
+        {
+            if (idx)
+                CONCAT_FIXED_STR(concat, ",");
+            SWAG_CHECK(output(context, concat, child));
+            idx++;
         }
 
-        case AstNodeKind::IdentifierRef:
+        concat.addChar(')');
+        break;
+    }
+
+    case AstNodeKind::IdentifierRef:
+    {
+        if (node->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
+            CONCAT_FIXED_STR(concat, ".");
+        auto back = node->childs.back();
+        if (back->resolvedSymbolName)
         {
-            if (node->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
-                CONCAT_FIXED_STR(concat, ".");
-            auto back = node->childs.back();
-            if (back->resolvedSymbolName)
-            {
-                auto symbol = back->resolvedSymbolName;
-                if (symbol && symbol->ownerTable->scope->isGlobal())
-                {
-                    SWAG_CHECK(output(context, concat, back));
-                    break;
-                }
-            }
-
-            int idx = 0;
-            for (auto child : node->childs)
-            {
-                // No need to output some scope names because the identifier will be generated with a full name
-                if (child->resolvedSymbolName &&
-                    child->resolvedSymbolName->kind == SymbolKind::Namespace &&
-                    child == node->childs.front() &&
-                    node->childs.size() > 1)
-                    continue;
-
-                if (idx)
-                    CONCAT_FIXED_STR(concat, ".");
-                SWAG_CHECK(output(context, concat, child));
-                idx++;
-            }
-
-            break;
-        }
-
-        case AstNodeKind::Identifier:
-            if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
-                concat.addChar('`');
-        case AstNodeKind::FuncCall:
-        {
-            auto identifier = static_cast<AstIdentifier*>(node);
-            auto symbol     = identifier->resolvedSymbolName;
-
-            SWAG_CHECK(checkIsPublic(context, node));
+            auto symbol = back->resolvedSymbolName;
             if (symbol && symbol->ownerTable->scope->isGlobal())
-                concat.addString(symbol->getFullName());
-            else
-                concat.addString(node->token.text);
-
-            if (identifier->genericParameters)
             {
-                concat.addChar('\'');
-                concat.addChar('(');
-                SWAG_CHECK(output(context, concat, identifier->genericParameters));
-                concat.addChar(')');
+                SWAG_CHECK(output(context, concat, back));
+                break;
             }
-
-            if (identifier->callParameters)
-            {
-                if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
-                    concat.addChar('{');
-                else
-                    concat.addChar('(');
-                SWAG_CHECK(output(context, concat, identifier->callParameters));
-                if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
-                    concat.addChar('}');
-                else
-                    concat.addChar(')');
-            }
-
-            break;
         }
 
-        case AstNodeKind::Switch:
+        int idx = 0;
+        for (auto child : node->childs)
         {
-            auto nodeSwitch = CastAst<AstSwitch>(node, AstNodeKind::Switch);
-            CONCAT_FIXED_STR(concat, "switch ");
-            SWAG_CHECK(output(context, concat, nodeSwitch->expression));
-            concat.addEolIndent(context.indent);
-            concat.addChar('{');
-            concat.addEolIndent(context.indent);
+            // No need to output some scope names because the identifier will be generated with a full name
+            if (child->resolvedSymbolName &&
+                child->resolvedSymbolName->kind == SymbolKind::Namespace &&
+                child == node->childs.front() &&
+                node->childs.size() > 1)
+                continue;
 
-            for (auto c : nodeSwitch->cases)
-            {
-                if (c->expressions.empty())
-                    CONCAT_FIXED_STR(concat, "default");
-                else
-                {
-                    CONCAT_FIXED_STR(concat, "case ");
-                    bool first = true;
-                    for (auto e : c->expressions)
-                    {
-                        if (!first)
-                            CONCAT_FIXED_STR(concat, ", ");
-                        SWAG_CHECK(output(context, concat, e));
-                        first = false;
-                    }
-                }
-                concat.addChar(':');
-                concat.addEolIndent(context.indent);
-                SWAG_CHECK(output(context, concat, c->block));
-                concat.addEolIndent(context.indent);
-            }
-
-            concat.addChar('}');
-            concat.addEolIndent(context.indent);
-            break;
+            if (idx)
+                CONCAT_FIXED_STR(concat, ".");
+            SWAG_CHECK(output(context, concat, child));
+            idx++;
         }
 
-        case AstNodeKind::StatementNoScope:
+        break;
+    }
+
+    case AstNodeKind::Identifier:
+        if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
+            concat.addChar('`');
+    case AstNodeKind::FuncCall:
+    {
+        auto identifier = static_cast<AstIdentifier*>(node);
+        auto symbol     = identifier->resolvedSymbolName;
+
+        SWAG_CHECK(checkIsPublic(context, node));
+        if (symbol && symbol->ownerTable->scope->isGlobal())
+            concat.addString(symbol->getFullName());
+        else
+            concat.addString(node->token.text);
+
+        if (identifier->genericParameters)
         {
-            for (auto child : node->childs)
-            {
-                if (child->flags & AST_GENERATED)
-                    continue;
-                context.indent++;
-                SWAG_CHECK(output(context, concat, child));
-                context.indent--;
-                concat.addEolIndent(context.indent);
-            }
-
-            break;
+            concat.addChar('\'');
+            concat.addChar('(');
+            SWAG_CHECK(output(context, concat, identifier->genericParameters));
+            concat.addChar(')');
         }
 
-        case AstNodeKind::Statement:
-        case AstNodeKind::SwitchCaseBlock:
-            if (node->childs.count == 1 &&
-                node->parent->kind != AstNodeKind::FuncDecl &&
-                node->parent->kind != AstNodeKind::CompilerMacro &&
-                node->childs.front()->kind != AstNodeKind::For &&
-                node->childs.front()->kind != AstNodeKind::If &&
-                node->childs.front()->kind != AstNodeKind::While &&
-                node->childs.front()->kind != AstNodeKind::Visit &&
-                node->childs.front()->kind != AstNodeKind::Loop &&
-                node->childs.front()->kind != AstNodeKind::LabelBreakable &&
-                node->childs.front()->kind != AstNodeKind::Switch)
-            {
-                context.indent++;
-                concat.addIndent(1);
-                SWAG_CHECK(output(context, concat, node->childs.front()));
-                context.indent--;
-            }
-            else
-            {
+        if (identifier->callParameters)
+        {
+            if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
                 concat.addChar('{');
-                concat.addEol();
-                for (auto child : node->childs)
-                {
-                    concat.addIndent(context.indent + 1);
-                    context.indent++;
-                    SWAG_CHECK(output(context, concat, child));
-                    context.indent--;
-                    concat.addEol();
-                }
-
-                concat.addIndent(context.indent);
+            else
+                concat.addChar('(');
+            SWAG_CHECK(output(context, concat, identifier->callParameters));
+            if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
                 concat.addChar('}');
-                concat.addEolIndent(context.indent);
-            }
-
-            break;
-
-        case AstNodeKind::FuncCallParam:
-        {
-            auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
-            if (!funcParam->namedParam.empty())
-            {
-                concat.addString(funcParam->namedParam);
-                concat.addChar(':');
-            }
-
-            SWAG_CHECK(output(context, concat, funcParam->childs.front()));
-            break;
+            else
+                concat.addChar(')');
         }
 
-        case AstNodeKind::FuncCallParams:
-        {
-            auto funcCallParams = CastAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
-            bool first          = true;
-            for (auto child : funcCallParams->childs)
-            {
-                if (child->flags & AST_GENERATED)
-                    continue;
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                SWAG_CHECK(output(context, concat, child));
-            }
+        break;
+    }
 
-            // Capture parameters
-            if (!funcCallParams->aliasNames.empty())
+    case AstNodeKind::Switch:
+    {
+        auto nodeSwitch = CastAst<AstSwitch>(node, AstNodeKind::Switch);
+        CONCAT_FIXED_STR(concat, "switch ");
+        SWAG_CHECK(output(context, concat, nodeSwitch->expression));
+        concat.addEolIndent(context.indent);
+        concat.addChar('{');
+        concat.addEolIndent(context.indent);
+
+        for (auto c : nodeSwitch->cases)
+        {
+            if (c->expressions.empty())
+                CONCAT_FIXED_STR(concat, "default");
+            else
             {
-                first = true;
-                CONCAT_FIXED_STR(concat, " <- |");
-                for (auto& t : funcCallParams->aliasNames)
+                CONCAT_FIXED_STR(concat, "case ");
+                bool first = true;
+                for (auto e : c->expressions)
                 {
                     if (!first)
                         CONCAT_FIXED_STR(concat, ", ");
-                    concat.addString(t.text);
+                    SWAG_CHECK(output(context, concat, e));
                     first = false;
                 }
-
-                CONCAT_FIXED_STR(concat, "|");
             }
-
-            break;
-        }
-
-        case AstNodeKind::SingleOp:
-            concat.addString(node->token.text);
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            break;
-
-        case AstNodeKind::NullConditionalExpression:
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addString(" orelse ");
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-
-        case AstNodeKind::AffectOp:
-        {
-            auto opNode = CastAst<AstOp>(node, AstNodeKind::AffectOp);
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addChar(' ');
-            concat.addString(node->token.text);
-            if (opNode->specFlags & AST_SPEC_OP_SAFE)
-                CONCAT_FIXED_STR(concat, ",safe");
-            if (opNode->specFlags & AST_SPEC_OP_SMALL)
-                CONCAT_FIXED_STR(concat, ",small");
-            concat.addChar(' ');
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-        }
-
-        case AstNodeKind::FactorOp:
-        {
-            auto opNode = CastAst<AstOp>(node, AstNodeKind::FactorOp);
-            concat.addChar('(');
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addChar(' ');
-            concat.addString(node->token.text);
-            if (opNode->specFlags & AST_SPEC_OP_SAFE)
-                CONCAT_FIXED_STR(concat, ",safe");
-            if (opNode->specFlags & AST_SPEC_OP_SMALL)
-                CONCAT_FIXED_STR(concat, ",small");
-            concat.addChar(' ');
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            concat.addChar(')');
-            break;
-        }
-
-        case AstNodeKind::BinaryOp:
-            concat.addChar('(');
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addChar(' ');
-            concat.addString(node->token.text);
-            concat.addChar(' ');
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            concat.addChar(')');
-            break;
-
-        case AstNodeKind::AutoCast:
-            CONCAT_FIXED_STR(concat, "acast ");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            break;
-
-        case AstNodeKind::Cast:
-            CONCAT_FIXED_STR(concat, "cast(");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, ") ");
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-
-        case AstNodeKind::BitCast:
-            CONCAT_FIXED_STR(concat, "bitcast(");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, ") ");
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-
-        case AstNodeKind::TypeExpression:
-        {
-            AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
-            if (typeNode->typeFlags & TYPEFLAG_RETVAL)
-            {
-                CONCAT_FIXED_STR(concat, "retval");
-                break;
-            }
-
-            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
-                CONCAT_FIXED_STR(concat, "const ");
-            if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
-                CONCAT_FIXED_STR(concat, "[..] ");
-            if (typeNode->arrayDim == UINT8_MAX)
-                CONCAT_FIXED_STR(concat, "[] ");
-            else if (typeNode->arrayDim)
-            {
-                CONCAT_FIXED_STR(concat, "[");
-                for (int i = 0; i < typeNode->arrayDim; i++)
-                {
-                    if (i)
-                        CONCAT_FIXED_STR(concat, ", ");
-                    SWAG_CHECK(output(context, concat, node->childs[i]));
-                }
-
-                CONCAT_FIXED_STR(concat, "] ");
-            }
-
-            for (int i = 0; i < typeNode->ptrCount; i++)
-                concat.addChar('*');
-            if (typeNode->identifier)
-            {
-                SWAG_CHECK(output(context, concat, typeNode->identifier));
-            }
-            else
-            {
-                auto literalType = typeNode->literalType;
-                if (!literalType)
-                    literalType = TypeManager::literalTypeToType(typeNode->token);
-                SWAG_ASSERT(literalType);
-                SWAG_ASSERT(!literalType->name.empty());
-                concat.addString(literalType->name);
-            }
-
-            break;
-        }
-
-        case AstNodeKind::Literal:
-            if (node->token.literalType == LiteralType::TT_RAW_STRING)
-                CONCAT_FIXED_STR(concat, "@\"");
-            else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
-                CONCAT_FIXED_STR(concat, "\"");
-
-            concat.addString(node->token.text);
-
-            if (node->token.literalType == LiteralType::TT_RAW_STRING)
-                CONCAT_FIXED_STR(concat, "\"@");
-            else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
-                CONCAT_FIXED_STR(concat, "\"");
-
-            if (!node->childs.empty())
-            {
-                CONCAT_FIXED_STR(concat, "'");
-                SWAG_CHECK(output(context, concat, node->childs[0]));
-            }
-            break;
-
-        case AstNodeKind::LabelBreakable:
-            CONCAT_FIXED_STR(concat, "label ");
-            concat.addString(node->token.text);
+            concat.addChar(':');
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            break;
-
-        case AstNodeKind::Range:
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, "..");
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-
-        default:
-            return node->sourceFile->internalError(node, "Ast::output, unknown node");
+            SWAG_CHECK(output(context, concat, c->block));
+            concat.addEolIndent(context.indent);
         }
 
-        return true;
+        concat.addChar('}');
+        concat.addEolIndent(context.indent);
+        break;
     }
 
-    bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+    case AstNodeKind::StatementNoScope:
     {
-        auto publicSet = scope->publicSet;
-        if (!publicSet)
-            return true;
-
-        // Consts
-        if (!publicSet->publicConst.empty())
+        for (auto child : node->childs)
         {
-            for (auto one : publicSet->publicConst)
-            {
-                AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
-                SWAG_CHECK(outputVar(context, concat, "const ", node));
-                concat.addEol();
-            }
+            if (child->flags & AST_GENERATED)
+                continue;
+            context.indent++;
+            SWAG_CHECK(output(context, concat, child));
+            context.indent--;
+            concat.addEolIndent(context.indent);
         }
 
-        // Stuff (alias)
-        if (!publicSet->publicNodes.empty())
-        {
-            for (auto one : publicSet->publicNodes)
-            {
-                concat.addIndent(context.indent);
-                SWAG_CHECK(output(context, concat, one));
-                concat.addEol();
-            }
-        }
-
-        // Structures
-        if (!publicSet->publicStruct.empty())
-        {
-            for (auto one : publicSet->publicStruct)
-            {
-                AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-                SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
-            }
-        }
-
-        if (!publicSet->publicInterface.empty())
-        {
-            for (auto one : publicSet->publicInterface)
-            {
-                AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
-                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-                SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
-            }
-        }
-
-        // Enums
-        if (!publicSet->publicEnum.empty())
-        {
-            for (auto one : publicSet->publicEnum)
-            {
-                TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
-                SWAG_CHECK(outputEnum(context, concat, typeEnum, one));
-            }
-        }
-
-        // Generic functions
-        if (!publicSet->publicInlinedFunc.empty())
-        {
-            for (auto func : publicSet->publicInlinedFunc)
-            {
-                AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
-                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-                SWAG_CHECK(outputFunc(context, concat, typeFunc, node));
-            }
-        }
-
-        // Functions
-        if (!publicSet->publicFunc.empty())
-        {
-            for (auto func : publicSet->publicFunc)
-            {
-                AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
-
-                // Can be removed in case of special functions
-                if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
-                    continue;
-
-                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-                node->computeFullNameForeign(true);
-                concat.addIndent(context.indent);
-
-                // Remape special functions to their generated equivalent
-                concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
-                concat.addEol();
-                SWAG_CHECK(outputAttributes(context, concat, typeFunc));
-                concat.addIndent(context.indent);
-
-                if (node->token.text == g_LangSpec->name_opInitGenerated)
-                {
-                    CONCAT_FIXED_STR(concat, "func opInit(using self);");
-                    concat.addEol();
-                }
-                else if (node->token.text == g_LangSpec->name_opDropGenerated)
-                {
-                    CONCAT_FIXED_STR(concat, "func opDrop(using self);");
-                    concat.addEol();
-                }
-                else if (node->token.text == g_LangSpec->name_opRelocGenerated)
-                {
-                    CONCAT_FIXED_STR(concat, "func opReloc(using self);");
-                    concat.addEol();
-                }
-                else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
-                {
-                    CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");
-                    concat.addEol();
-                }
-                else if (node->token.text == g_LangSpec->name_opPostMoveGenerated)
-                {
-                    CONCAT_FIXED_STR(concat, "func opPostMove(using self);");
-                    concat.addEol();
-                }
-                else
-                    SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node));
-
-                node->exportForeignLine = concat.eolCount;
-            }
-        }
-
-        // Attributes
-        if (!publicSet->publicAttr.empty())
-        {
-            for (auto func : publicSet->publicAttr)
-            {
-                auto              node = CastAst<AstAttrDecl>(func, AstNodeKind::AttrDecl);
-                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-                SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
-                concat.addIndent(context.indent);
-                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, nullptr));
-            }
-        }
-
-        return true;
+        break;
     }
 
-    bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
-    {
-        SWAG_ASSERT(moduleToGen);
-        if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
-            return true;
-        if (scope->flags & SCOPE_IMPORTED)
-            return true;
-
-        context.forExport = true;
-
-        // Namespace
-        if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
+    case AstNodeKind::Statement:
+    case AstNodeKind::SwitchCaseBlock:
+        if (node->childs.count == 1 &&
+            node->parent->kind != AstNodeKind::FuncDecl &&
+            node->parent->kind != AstNodeKind::CompilerMacro &&
+            node->childs.front()->kind != AstNodeKind::For &&
+            node->childs.front()->kind != AstNodeKind::If &&
+            node->childs.front()->kind != AstNodeKind::While &&
+            node->childs.front()->kind != AstNodeKind::Visit &&
+            node->childs.front()->kind != AstNodeKind::Loop &&
+            node->childs.front()->kind != AstNodeKind::LabelBreakable &&
+            node->childs.front()->kind != AstNodeKind::Switch)
         {
-            if (!(scope->flags & SCOPE_AUTO_GENERATED))
-            {
-                concat.addIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "namespace ");
-                concat.addString(scope->name);
-                concat.addEol();
-                concat.addIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "{");
-                concat.addEol();
-                context.indent++;
-            }
-
-            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
-            for (auto oneScope : scope->childScopes)
-                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
-
-            if (!(scope->flags & SCOPE_AUTO_GENERATED))
-            {
-                context.indent--;
-                concat.addIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "}");
-                concat.addEol();
-                concat.addEol();
-            }
-        }
-
-        // Impl
-        else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
-        {
-            concat.addIndent(context.indent);
-            if (scope->kind == ScopeKind::Impl)
-            {
-                auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
-                auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
-                concat.addStringFormat("impl %s for %s", symbol->node->getScopedName().c_str(), scope->parentScope->name.c_str());
-                concat.addEol();
-            }
-            else if (scope->kind == ScopeKind::Enum)
-            {
-                CONCAT_FIXED_STR(concat, "impl enum ");
-                concat.addString(scope->name);
-                concat.addEol();
-            }
-            else
-            {
-                CONCAT_FIXED_STR(concat, "impl ");
-                concat.addString(scope->name);
-                concat.addEol();
-            }
-
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "{");
-            concat.addEol();
-
             context.indent++;
-            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
-            for (auto oneScope : scope->childScopes)
-            {
-                if (oneScope->kind == ScopeKind::Impl)
-                    continue;
-                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
-            }
-
+            concat.addIndent(1);
+            SWAG_CHECK(output(context, concat, node->childs.front()));
             context.indent--;
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "}");
-            concat.addEol();
-            concat.addEol();
-
-            for (auto oneScope : scope->childScopes)
-            {
-                if (oneScope->kind != ScopeKind::Impl)
-                    continue;
-                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
-            }
         }
-
-        // Named scope
-        else if (!scope->name.empty())
-        {
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "{");
-            concat.addEol();
-
-            context.indent++;
-            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
-            for (auto oneScope : scope->childScopes)
-                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
-            context.indent--;
-
-            concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "}");
-            concat.addEol();
-            concat.addEol();
-        }
-
-        // Unnamed scope
         else
         {
-            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
-            for (auto oneScope : scope->childScopes)
-                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+            concat.addChar('{');
+            concat.addEol();
+            for (auto child : node->childs)
+            {
+                concat.addIndent(context.indent + 1);
+                context.indent++;
+                SWAG_CHECK(output(context, concat, child));
+                context.indent--;
+                concat.addEol();
+            }
+
+            concat.addIndent(context.indent);
+            concat.addChar('}');
+            concat.addEolIndent(context.indent);
         }
 
-        return true;
+        break;
+
+    case AstNodeKind::FuncCallParam:
+    {
+        auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
+        if (!funcParam->namedParam.empty())
+        {
+            concat.addString(funcParam->namedParam);
+            concat.addChar(':');
+        }
+
+        SWAG_CHECK(output(context, concat, funcParam->childs.front()));
+        break;
     }
-}; // namespace Ast
+
+    case AstNodeKind::FuncCallParams:
+    {
+        auto funcCallParams = CastAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
+        bool first          = true;
+        for (auto child : funcCallParams->childs)
+        {
+            if (child->flags & AST_GENERATED)
+                continue;
+            if (!first)
+                CONCAT_FIXED_STR(concat, ", ");
+            first = false;
+            SWAG_CHECK(output(context, concat, child));
+        }
+
+        // Capture parameters
+        if (!funcCallParams->aliasNames.empty())
+        {
+            first = true;
+            CONCAT_FIXED_STR(concat, " <- |");
+            for (auto& t : funcCallParams->aliasNames)
+            {
+                if (!first)
+                    CONCAT_FIXED_STR(concat, ", ");
+                concat.addString(t.text);
+                first = false;
+            }
+
+            CONCAT_FIXED_STR(concat, "|");
+        }
+
+        break;
+    }
+
+    case AstNodeKind::SingleOp:
+        concat.addString(node->token.text);
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        break;
+
+    case AstNodeKind::NullConditionalExpression:
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        concat.addString(" orelse ");
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        break;
+
+    case AstNodeKind::AffectOp:
+    {
+        auto opNode = CastAst<AstOp>(node, AstNodeKind::AffectOp);
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        concat.addChar(' ');
+        concat.addString(node->token.text);
+        if (opNode->specFlags & AST_SPEC_OP_SAFE)
+            CONCAT_FIXED_STR(concat, ",safe");
+        if (opNode->specFlags & AST_SPEC_OP_SMALL)
+            CONCAT_FIXED_STR(concat, ",small");
+        concat.addChar(' ');
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        break;
+    }
+
+    case AstNodeKind::FactorOp:
+    {
+        auto opNode = CastAst<AstOp>(node, AstNodeKind::FactorOp);
+        concat.addChar('(');
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        concat.addChar(' ');
+        concat.addString(node->token.text);
+        if (opNode->specFlags & AST_SPEC_OP_SAFE)
+            CONCAT_FIXED_STR(concat, ",safe");
+        if (opNode->specFlags & AST_SPEC_OP_SMALL)
+            CONCAT_FIXED_STR(concat, ",small");
+        concat.addChar(' ');
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        concat.addChar(')');
+        break;
+    }
+
+    case AstNodeKind::BinaryOp:
+        concat.addChar('(');
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        concat.addChar(' ');
+        concat.addString(node->token.text);
+        concat.addChar(' ');
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        concat.addChar(')');
+        break;
+
+    case AstNodeKind::AutoCast:
+        CONCAT_FIXED_STR(concat, "acast ");
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        break;
+
+    case AstNodeKind::Cast:
+        CONCAT_FIXED_STR(concat, "cast(");
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        CONCAT_FIXED_STR(concat, ") ");
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        break;
+
+    case AstNodeKind::BitCast:
+        CONCAT_FIXED_STR(concat, "bitcast(");
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        CONCAT_FIXED_STR(concat, ") ");
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        break;
+
+    case AstNodeKind::TypeExpression:
+    {
+        AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
+        if (typeNode->typeFlags & TYPEFLAG_RETVAL)
+        {
+            CONCAT_FIXED_STR(concat, "retval");
+            break;
+        }
+
+        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+            CONCAT_FIXED_STR(concat, "const ");
+        if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
+            CONCAT_FIXED_STR(concat, "[..] ");
+        if (typeNode->arrayDim == UINT8_MAX)
+            CONCAT_FIXED_STR(concat, "[] ");
+        else if (typeNode->arrayDim)
+        {
+            CONCAT_FIXED_STR(concat, "[");
+            for (int i = 0; i < typeNode->arrayDim; i++)
+            {
+                if (i)
+                    CONCAT_FIXED_STR(concat, ", ");
+                SWAG_CHECK(output(context, concat, node->childs[i]));
+            }
+
+            CONCAT_FIXED_STR(concat, "] ");
+        }
+
+        for (int i = 0; i < typeNode->ptrCount; i++)
+            concat.addChar('*');
+        if (typeNode->identifier)
+        {
+            SWAG_CHECK(output(context, concat, typeNode->identifier));
+        }
+        else
+        {
+            auto literalType = typeNode->literalType;
+            if (!literalType)
+                literalType = TypeManager::literalTypeToType(typeNode->token);
+            SWAG_ASSERT(literalType);
+            SWAG_ASSERT(!literalType->name.empty());
+            concat.addString(literalType->name);
+        }
+
+        break;
+    }
+
+    case AstNodeKind::Literal:
+        if (node->token.literalType == LiteralType::TT_RAW_STRING)
+            CONCAT_FIXED_STR(concat, "@\"");
+        else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+            CONCAT_FIXED_STR(concat, "\"");
+
+        concat.addString(node->token.text);
+
+        if (node->token.literalType == LiteralType::TT_RAW_STRING)
+            CONCAT_FIXED_STR(concat, "\"@");
+        else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+            CONCAT_FIXED_STR(concat, "\"");
+
+        if (!node->childs.empty())
+        {
+            CONCAT_FIXED_STR(concat, "'");
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+        }
+        break;
+
+    case AstNodeKind::LabelBreakable:
+        CONCAT_FIXED_STR(concat, "label ");
+        concat.addString(node->token.text);
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        break;
+
+    case AstNodeKind::Range:
+        SWAG_CHECK(output(context, concat, node->childs[0]));
+        CONCAT_FIXED_STR(concat, "..");
+        SWAG_CHECK(output(context, concat, node->childs[1]));
+        break;
+
+    default:
+        return node->sourceFile->internalError(node, "Ast::output, unknown node");
+    }
+
+    return true;
+}
+
+bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+{
+    auto publicSet = scope->publicSet;
+    if (!publicSet)
+        return true;
+
+    // Consts
+    if (!publicSet->publicConst.empty())
+    {
+        for (auto one : publicSet->publicConst)
+        {
+            AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
+            SWAG_CHECK(outputVar(context, concat, "const ", node));
+            concat.addEol();
+        }
+    }
+
+    // Stuff (alias)
+    if (!publicSet->publicNodes.empty())
+    {
+        for (auto one : publicSet->publicNodes)
+        {
+            concat.addIndent(context.indent);
+            SWAG_CHECK(output(context, concat, one));
+            concat.addEol();
+        }
+    }
+
+    // Structures
+    if (!publicSet->publicStruct.empty())
+    {
+        for (auto one : publicSet->publicStruct)
+        {
+            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
+        }
+    }
+
+    if (!publicSet->publicInterface.empty())
+    {
+        for (auto one : publicSet->publicInterface)
+        {
+            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+            SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
+        }
+    }
+
+    // Enums
+    if (!publicSet->publicEnum.empty())
+    {
+        for (auto one : publicSet->publicEnum)
+        {
+            TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
+            SWAG_CHECK(outputEnum(context, concat, typeEnum, one));
+        }
+    }
+
+    // Generic functions
+    if (!publicSet->publicInlinedFunc.empty())
+    {
+        for (auto func : publicSet->publicInlinedFunc)
+        {
+            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            SWAG_CHECK(outputFunc(context, concat, typeFunc, node));
+        }
+    }
+
+    // Functions
+    if (!publicSet->publicFunc.empty())
+    {
+        for (auto func : publicSet->publicFunc)
+        {
+            AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+
+            // Can be removed in case of special functions
+            if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
+                continue;
+
+            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            node->computeFullNameForeign(true);
+            concat.addIndent(context.indent);
+
+            // Remape special functions to their generated equivalent
+            concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
+            concat.addEol();
+            SWAG_CHECK(outputAttributes(context, concat, typeFunc));
+            concat.addIndent(context.indent);
+
+            if (node->token.text == g_LangSpec->name_opInitGenerated)
+            {
+                CONCAT_FIXED_STR(concat, "func opInit(using self);");
+                concat.addEol();
+            }
+            else if (node->token.text == g_LangSpec->name_opDropGenerated)
+            {
+                CONCAT_FIXED_STR(concat, "func opDrop(using self);");
+                concat.addEol();
+            }
+            else if (node->token.text == g_LangSpec->name_opRelocGenerated)
+            {
+                CONCAT_FIXED_STR(concat, "func opReloc(using self);");
+                concat.addEol();
+            }
+            else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
+            {
+                CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");
+                concat.addEol();
+            }
+            else if (node->token.text == g_LangSpec->name_opPostMoveGenerated)
+            {
+                CONCAT_FIXED_STR(concat, "func opPostMove(using self);");
+                concat.addEol();
+            }
+            else
+                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node));
+
+            node->exportForeignLine = concat.eolCount;
+        }
+    }
+
+    // Attributes
+    if (!publicSet->publicAttr.empty())
+    {
+        for (auto func : publicSet->publicAttr)
+        {
+            auto              node     = CastAst<AstAttrDecl>(func, AstNodeKind::AttrDecl);
+            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
+            concat.addIndent(context.indent);
+            SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, nullptr));
+        }
+    }
+
+    return true;
+}
+
+bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+{
+    SWAG_ASSERT(moduleToGen);
+    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+        return true;
+    if (scope->flags & SCOPE_IMPORTED)
+        return true;
+
+    context.forExport = true;
+
+    // Namespace
+    if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
+    {
+        if (!(scope->flags & SCOPE_AUTO_GENERATED))
+        {
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "namespace ");
+            concat.addString(scope->name);
+            concat.addEol();
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "{");
+            concat.addEol();
+            context.indent++;
+        }
+
+        SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+
+        if (!(scope->flags & SCOPE_AUTO_GENERATED))
+        {
+            context.indent--;
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "}");
+            concat.addEol();
+            concat.addEol();
+        }
+    }
+
+    // Impl
+    else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
+    {
+        concat.addIndent(context.indent);
+        if (scope->kind == ScopeKind::Impl)
+        {
+            auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
+            auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
+            concat.addStringFormat("impl %s for %s", symbol->node->getScopedName().c_str(), scope->parentScope->name.c_str());
+            concat.addEol();
+        }
+        else if (scope->kind == ScopeKind::Enum)
+        {
+            CONCAT_FIXED_STR(concat, "impl enum ");
+            concat.addString(scope->name);
+            concat.addEol();
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, "impl ");
+            concat.addString(scope->name);
+            concat.addEol();
+        }
+
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{");
+        concat.addEol();
+
+        context.indent++;
+        SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+        for (auto oneScope : scope->childScopes)
+        {
+            if (oneScope->kind == ScopeKind::Impl)
+                continue;
+            SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+        }
+
+        context.indent--;
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
+        concat.addEol();
+        concat.addEol();
+
+        for (auto oneScope : scope->childScopes)
+        {
+            if (oneScope->kind != ScopeKind::Impl)
+                continue;
+            SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+        }
+    }
+
+    // Named scope
+    else if (!scope->name.empty())
+    {
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{");
+        concat.addEol();
+
+        context.indent++;
+        SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+        context.indent--;
+
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
+        concat.addEol();
+        concat.addEol();
+    }
+
+    // Unnamed scope
+    else
+    {
+        SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+    }
+
+    return true;
+}

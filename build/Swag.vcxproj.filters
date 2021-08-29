@@ -788,6 +788,9 @@
     <ClInclude Include="..\src\ErrorList.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\AstOutput.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

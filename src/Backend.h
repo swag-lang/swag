@@ -1,6 +1,7 @@
 #pragma once
 #include "Concat.h"
 #include "Ast.h"
+#include "AstOutput.h"
 #include "BackendParameters.h"
 struct Module;
 struct BuildParameters;
@@ -60,8 +61,8 @@ struct Backend
     int                   numPreCompileBuffers = 0;
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
-    Ast::OutputContext outputContext;
-    bool               mustCompile = true;
+    AstOutput::OutputContext outputContext;
+    bool                     mustCompile = true;
 
     static void   setup();
     static string getCacheFolder(const BuildParameters& buildParameters);

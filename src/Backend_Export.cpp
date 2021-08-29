@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstOutput.h"
 #include "Backend.h"
 #include "Version.h"
 #include "Module.h"
@@ -60,7 +61,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         bufferSwg.addEol();
 
         // Emit everything that's public
-        if (!Ast::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
+        if (!AstOutput::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
             return JobResult::ReleaseJob;
     }
 

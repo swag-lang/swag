@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "AstOutput.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
@@ -578,8 +579,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Get back the expression string
     auto& concat = context->job->tmpConcat;
     concat.init(1024);
-    Ast::OutputContext outputContext;
-    SWAG_CHECK(Ast::output(outputContext, concat, node->expression));
+    AstOutput::OutputContext outputContext;
+    SWAG_CHECK(AstOutput::output(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

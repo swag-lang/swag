@@ -1,0 +1,42 @@
+#pragma once
+#include "AstNode.h"
+#include "Allocator.h"
+#include "SourceFile.h"
+#include "CommandLine.h"
+struct Utf8;
+struct Scope;
+struct Concat;
+struct TypeInfoEnum;
+enum class ScopeKind;
+
+struct AstOutput
+{
+    struct OutputContext
+    {
+        int  indent    = 0;
+        bool forExport = false;
+    };
+
+
+    static bool checkIsPublic(OutputContext& context, AstNode* node);
+    static void incIndentStatement(AstNode* node, int& indent);
+    static void decIndentStatement(AstNode* node, int& indent);
+
+    static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
+    static bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node);
+    static bool outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    static bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    static bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf);
+    static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
+    static bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
+    static bool outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
+    static bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
+    static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    static bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
+    static bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node);
+    static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
+    static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
+    static bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
+    static bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
+    static bool output(OutputContext& context, Concat& concat, AstNode* node);
+};

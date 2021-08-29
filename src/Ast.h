@@ -11,12 +11,6 @@ enum class ScopeKind;
 
 namespace Ast
 {
-    struct OutputContext
-    {
-        int  indent    = 0;
-        bool forExport = false;
-    };
-
     void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
     void removeFromParent(AstNode* child);
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
@@ -46,21 +40,6 @@ namespace Ast
     AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
-
-    bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node);
-    bool outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf);
-    bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
-    bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
-    bool outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
-    bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
-    bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
-    bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node);
-    bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
-    bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
-    bool output(OutputContext& context, Concat& concat, AstNode* node);
 
     template<typename T>
     T* newNode()
