@@ -87,11 +87,6 @@ bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, Ty
     return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
-{
-    return outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf);
-}
-
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
 {
     if (node->kind == AstNodeKind::AttrDecl)
@@ -1891,7 +1886,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
                 concat.addEol();
             }
             else
-                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node));
+                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf));
 
             node->exportForeignLine = concat.eolCount;
         }
