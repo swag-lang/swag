@@ -580,7 +580,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto& concat = context->job->tmpConcat;
     concat.init(1024);
     AstOutput::OutputContext outputContext;
-    SWAG_CHECK(AstOutput::output(outputContext, concat, node->expression));
+    SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

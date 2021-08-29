@@ -38,5 +38,5 @@ struct AstOutput
     static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
     static bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     static bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
-    static bool output(OutputContext& context, Concat& concat, AstNode* node);
+    static bool outputNode(OutputContext& context, Concat& concat, AstNode* node);
 };
