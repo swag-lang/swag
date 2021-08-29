@@ -18,7 +18,7 @@ struct AstOutput
     };
 
 
-    static bool checkIsPublic(OutputContext& context, AstNode* node);
+    static bool checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode);
     static void incIndentStatement(AstNode* node, int& indent);
     static void decIndentStatement(AstNode* node, int& indent);
 
@@ -34,7 +34,7 @@ struct AstOutput
     static bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
     static bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node);
     static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
-    static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
+    static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo, AstNode* node = nullptr);
     static bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     static bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     static bool outputNode(OutputContext& context, Concat& concat, AstNode* node);

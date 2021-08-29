@@ -163,6 +163,36 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     return true;
 }
 
+void ModuleBuildJob::checkMissingErrors()
+{
+    // During unit testing, be sure we don't have untriggered errors
+    if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
+    {
+        for (auto file : module->files)
+        {
+            if (file->numTestErrors)
+            {
+                if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
+                {
+                    auto nb             = file->numTestErrors.load();
+                    file->numTestErrors = 0;
+                    file->report({file, Utf8::format(g_E[Err0500], nb, file->numErrors)});
+                }
+            }
+
+            if (file->numTestWarnings)
+            {
+                if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
+                {
+                    auto nb               = file->numTestWarnings.load();
+                    file->numTestWarnings = 0;
+                    file->report({file, Utf8::format(g_E[Err0501], nb, file->numWarnings)});
+                }
+            }
+        }
+    }
+}
+
 JobResult ModuleBuildJob::execute()
 {
     JobContext context;
@@ -538,33 +568,6 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
-        // During unit testing, be sure we don't have untriggered errors
-        if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
-        {
-            for (auto file : module->files)
-            {
-                if (file->numTestErrors)
-                {
-                    if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
-                    {
-                        auto nb             = file->numTestErrors.load();
-                        file->numTestErrors = 0;
-                        file->report({file, Utf8::format(g_E[Err0500], nb, file->numErrors)});
-                    }
-                }
-
-                if (file->numTestWarnings)
-                {
-                    if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
-                    {
-                        auto nb               = file->numTestWarnings.load();
-                        file->numTestWarnings = 0;
-                        file->report({file, Utf8::format(g_E[Err0501], nb, file->numWarnings)});
-                    }
-                }
-            }
-        }
-
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -601,6 +604,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::RunNative)
     {
+        checkMissingErrors();
+
         pass = ModuleBuildPass::Done;
         if (module->numErrors)
             return JobResult::ReleaseJob;

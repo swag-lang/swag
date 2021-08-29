@@ -1,9 +1,9 @@
-struct AA
+public struct AA2682
 {
     x: s64
 }
 
-impl AA
+public impl AA2682
 {
     #[Swag.Implicit, Swag.Complete]
     func opAffect(using self, p: s64)
@@ -12,7 +12,7 @@ impl AA
     }
 }
 
-public func toto2682(v: AA)
+public func toto2682(v: AA2682)
 {
     @assert(v.x == 2)
 }

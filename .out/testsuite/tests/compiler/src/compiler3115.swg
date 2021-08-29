@@ -1,9 +1,10 @@
+#global testerror
 struct AA
 {
 
 }
 
-public func toto3115(x: AA)->AA
+public func toto3115()->AA
 {
     var result: retval
     return result

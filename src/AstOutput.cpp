@@ -7,31 +7,46 @@
 #include "AstOutput.h"
 #include "Module.h"
 
-bool AstOutput::checkIsPublic(OutputContext& context, AstNode* node)
+bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode)
 {
-    if (!context.forExport)
+    if (!context.forExport || !testNode)
         return true;
 
-    auto symbol   = node->resolvedSymbolName;
-    auto overload = node->resolvedSymbolOverload;
+    auto symbol   = testNode->resolvedSymbolName;
+    auto overload = testNode->resolvedSymbolOverload;
+    if (!symbol || !overload)
+        return true;
 
-    if (overload)
-    {
-        if (overload->node->sourceFile->isBootstrapFile ||
-            overload->node->sourceFile->isRuntimeFile ||
-            overload->node->sourceFile->forceExport ||
-            overload->node->sourceFile->imported)
-            return true;
-    }
+    if (overload->node->sourceFile->isBootstrapFile ||
+        overload->node->sourceFile->isRuntimeFile ||
+        overload->node->sourceFile->forceExport ||
+        overload->node->sourceFile->imported)
+        return true;
 
-    if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
+    if (symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
     {
         if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
             (symbol->kind == SymbolKind::Function) ||
+            (symbol->kind == SymbolKind::Struct) ||
+            (symbol->kind == SymbolKind::Enum) ||
+            (symbol->kind == SymbolKind::Interface) ||
             (symbol->kind == SymbolKind::Alias) ||
             (symbol->kind == SymbolKind::TypeAlias))
         {
-            SWAG_VERIFY(overload->node->attributeFlags & ATTRIBUTE_PUBLIC, node->sourceFile->report({node, Utf8::format(g_E[Err0316], node->token.text.c_str())}));
+            if (!(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+            {
+                if (usedNode && overload->node != usedNode)
+                {
+                    Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+                    Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
+                    return overload->node->sourceFile->report(diag, &note);
+                }
+                else
+                {
+                    Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+                    return overload->node->sourceFile->report(diag);
+                }
+            }
         }
     }
 
@@ -136,7 +151,13 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
-        outputType(context, concat, typeFunc->returnType);
+
+        SWAG_ASSERT(node->kind == AstNodeKind::FuncDecl);
+        auto returnNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)->returnType;
+        if (returnNode && !returnNode->childs.empty())
+            returnNode = returnNode->childs.front();
+
+        outputType(context, concat, typeFunc->returnType, returnNode);
     }
 
     if (typeFunc->flags & TYPEINFO_CAN_THROW)
@@ -678,8 +699,10 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     return true;
 }
 
-bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo, AstNode* node)
 {
+    // Lambda
+    /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
@@ -696,35 +719,41 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typ
 
         if (typeInfo->flags & TYPEINFO_CAN_THROW)
             CONCAT_FIXED_STR(concat, " throw");
+        return true;
     }
-    else
+
+    // Tuple
+    /////////////////////////////////
+    if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return outputTypeTuple(context, concat, typeInfo);
+
+    // Other types
+    /////////////////////////////////
+
+    // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
+    // we take the 'converted' original struct type
+    if (typeInfo->kind == TypeInfoKind::Reference)
     {
-        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return outputTypeTuple(context, concat, typeInfo);
-
-        // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
-        // we take the 'converted' original struct type
-        if (typeInfo->kind == TypeInfoKind::Reference)
-        {
-            auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-            if (typeRef->originalType)
-                typeInfo = typeRef->originalType;
-        }
-
-        if (typeInfo->flags & TYPEINFO_SELF)
-        {
-            if (typeInfo->flags & TYPEINFO_CONST)
-                CONCAT_FIXED_STR(concat, "const self");
-            else
-                CONCAT_FIXED_STR(concat, "self");
-        }
-        else
-        {
-            typeInfo->computeScopedNameExport();
-            SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-            concat.addString(typeInfo->scopedNameExport);
-        }
+        auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+        if (typeRef->originalType)
+            typeInfo = typeRef->originalType;
     }
+
+    if (typeInfo->flags & TYPEINFO_SELF)
+    {
+        if (typeInfo->flags & TYPEINFO_CONST)
+            CONCAT_FIXED_STR(concat, "const self");
+        else
+            CONCAT_FIXED_STR(concat, "self");
+        return true;
+    }
+
+    auto typeExport = typeInfo;
+    SWAG_CHECK(checkIsPublic(context, typeExport->declNode, node));
+
+    typeInfo->computeScopedNameExport();
+    SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+    concat.addString(typeInfo->scopedNameExport);
 
     return true;
 }
@@ -1442,10 +1471,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             concat.addChar('`');
     case AstNodeKind::FuncCall:
     {
+        SWAG_CHECK(checkIsPublic(context, node, node));
+
         auto identifier = static_cast<AstIdentifier*>(node);
         auto symbol     = identifier->resolvedSymbolName;
 
-        SWAG_CHECK(checkIsPublic(context, node));
         if (symbol && symbol->ownerTable->scope->isGlobal())
             concat.addString(symbol->getFullName());
         else

@@ -30,6 +30,7 @@ struct ModuleBuildJob : public Job
     bool      loadDependency(ModuleDependency* dep);
     void      publishFilesToTarget();
     void      publishFilesToPublic();
+    void      checkMissingErrors();
     JobResult execute() override;
 
     ModuleBuildPass pass      = ModuleBuildPass::Init;

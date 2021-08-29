@@ -3,7 +3,6 @@
 #include "ModuleExportJob.h"
 #include "ModulePrepOutputJob.h"
 #include "ModuleGenOutputJob.h"
-#include "ThreadManager.h"
 #include "Module.h"
 
 JobResult ModuleOutputJob::execute()
@@ -15,7 +14,12 @@ JobResult ModuleOutputJob::execute()
         // Generate .swg file with public definitions
         if (g_CommandLine->output)
         {
-            auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
+            auto exportJob = g_Allocator.alloc<ModuleExportJob>();
+
+            // This can arrive when testing, if the error is raised late, when generating export
+            if (!module->backend)
+                module->allocateBackend();
+
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);

@@ -767,10 +767,10 @@ bool Module::mustOutputSomething()
     else if (files.empty())
         mustOutput = false;
     // module must have unittest errors, so no output
-    else if (numTestErrors)
+    /*else if (numTestErrors)
         mustOutput = false;
     else if (numTestWarnings)
-        mustOutput = false;
+        mustOutput = false;*/
     // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine->outputTest)
         mustOutput = false;
