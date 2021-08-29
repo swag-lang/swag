@@ -51,19 +51,6 @@ struct Backend
     bool      saveExportFile();
     bool      setupExportFile(bool force = false);
 
-    void emitDependencies();
-    bool emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
-    bool emitAttributes(TypeInfo* typeInfo, int indent);
-    bool emitType(TypeInfo* typeInfo, int indent);
-    bool emitGenericParameters(AstNode* node, int indent);
-    bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
-    bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
-    bool emitVarSwg(const char* kindName, AstVarDecl* node, int indent);
-    bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
-    bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
-    bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf, int indent);
-    bool emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
-
     Concat bufferSwg;
     string exportFileName;
     string exportFilePath;
