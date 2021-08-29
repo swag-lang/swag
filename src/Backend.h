@@ -54,8 +54,7 @@ struct Backend
     void emitDependencies();
     bool emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
     bool emitAttributes(TypeInfo* typeInfo, int indent);
-    bool emitTypeTuple(TypeInfo* typeInfo, int indent);
-    void emitType(TypeInfo* typeInfo, int indent);
+    bool emitType(TypeInfo* typeInfo, int indent);
     bool emitGenericParameters(AstNode* node, int indent);
     bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
     bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);

@@ -45,157 +45,20 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 
 bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
 {
-    AttributeList* attr = nullptr;
-    switch (typeInfo->kind)
-    {
-    case TypeInfoKind::Struct:
-    case TypeInfoKind::Interface:
-    {
-        auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
-        break;
-    }
-    case TypeInfoKind::FuncAttr:
-    {
-        auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
-        break;
-    }
-    case TypeInfoKind::Enum:
-    {
-        auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
-        break;
-    }
-    }
-
     outputContext.indent = indent;
-    SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, *attr));
-    return true;
+    return Ast::outputAttributes(outputContext, bufferSwg, typeInfo);
 }
 
-bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
+bool Backend::emitType(TypeInfo* typeInfo, int indent)
 {
-    typeInfo = TypeManager::concreteReference(typeInfo);
-    SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
-    {
-        SWAG_CHECK(emitPublicStructSwg(typeStruct, (AstStruct*) typeStruct->declNode, indent));
-        return true;
-    }
-
-    bufferSwg.addString("{");
-    int idx = 0;
-    for (auto field : typeStruct->fields)
-    {
-        if (idx)
-            CONCAT_FIXED_STR(bufferSwg, ", ");
-
-        if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
-        {
-            auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
-            SWAG_CHECK(emitVarSwg(nullptr, varDecl, 0));
-        }
-        else
-        {
-            if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
-            {
-                bufferSwg.addString(field->namedParam);
-                bufferSwg.addString(":");
-            }
-
-            emitType(field->typeInfo, indent);
-        }
-
-        idx++;
-    }
-
-    bufferSwg.addString("}");
-    return true;
-}
-
-void Backend::emitType(TypeInfo* typeInfo, int indent)
-{
-    if (typeInfo->kind == TypeInfoKind::Lambda)
-    {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
-        CONCAT_FIXED_STR(bufferSwg, "func(");
-        for (auto p : typeFunc->parameters)
-        {
-            if (p != typeFunc->parameters[0])
-                CONCAT_FIXED_STR(bufferSwg, ", ");
-            emitType(p->typeInfo, indent);
-        }
-
-        CONCAT_FIXED_STR(bufferSwg, ")->");
-        emitType(typeFunc->returnType, indent);
-
-        if (typeInfo->flags & TYPEINFO_CAN_THROW)
-            CONCAT_FIXED_STR(bufferSwg, " throw");
-    }
-    else
-    {
-        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        {
-            emitTypeTuple(typeInfo, indent);
-            return;
-        }
-
-        // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
-        // we take the 'converted' original struct type
-        if (typeInfo->kind == TypeInfoKind::Reference)
-        {
-            auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-            if (typeRef->originalType)
-                typeInfo = typeRef->originalType;
-        }
-
-        if (typeInfo->flags & TYPEINFO_SELF)
-        {
-            if (typeInfo->flags & TYPEINFO_CONST)
-                CONCAT_FIXED_STR(bufferSwg, "const self");
-            else
-                CONCAT_FIXED_STR(bufferSwg, "self");
-        }
-        else
-        {
-            typeInfo->computeScopedNameExport();
-            SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-            bufferSwg.addString(typeInfo->scopedNameExport);
-        }
-    }
+    outputContext.indent = indent;
+    return Ast::outputType(outputContext, bufferSwg, typeInfo);
 }
 
 bool Backend::emitGenericParameters(AstNode* node, int indent)
 {
-    CONCAT_FIXED_STR(bufferSwg, "(");
-    int idx = 0;
-    for (auto p : node->childs)
-    {
-        if (idx)
-            CONCAT_FIXED_STR(bufferSwg, ", ");
-        bufferSwg.addString(p->token.text);
-
-        AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-        if (varDecl->type)
-        {
-            CONCAT_FIXED_STR(bufferSwg, ": ");
-            emitType(varDecl->type->typeInfo, indent);
-        }
-
-        if (varDecl->assignment)
-        {
-            CONCAT_FIXED_STR(bufferSwg, " = ");
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
-        }
-
-        idx++;
-    }
-
-    CONCAT_FIXED_STR(bufferSwg, ")");
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputGenericParameters(outputContext, bufferSwg, node);
 }
 
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent)
@@ -415,154 +278,14 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)
 {
-    SWAG_CHECK(emitAttributes(typeStruct, indent));
-
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-        bufferSwg.addIndent(indent);
-
-    if (node->kind == AstNodeKind::InterfaceDecl)
-        CONCAT_FIXED_STR(bufferSwg, "interface");
-    else
-    {
-        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
-        auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        if (structNode->structFlags & STRUCTFLAG_UNION)
-            CONCAT_FIXED_STR(bufferSwg, "union");
-        else
-            CONCAT_FIXED_STR(bufferSwg, "struct");
-    }
-
-    if (node->genericParameters)
-        SWAG_CHECK(emitGenericParameters(node->genericParameters, indent));
-
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-    {
-        CONCAT_FIXED_STR(bufferSwg, " ");
-        bufferSwg.addString(node->token.text);
-    }
-
-    bufferSwg.addEol();
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "{");
-    bufferSwg.addEol();
-
-    // Opaque export. Just simulate structure with the correct size.
-    // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
-    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
-    {
-        // We initialize one field with a dummy value to force the compiler to acknowledge that the
-        // struct has some initialized fields (not all to zero)
-        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-        {
-            if (typeStruct->sizeOf != 1)
-            {
-                bufferSwg.addIndent(indent + 1);
-                bufferSwg.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
-                bufferSwg.addEol();
-            }
-
-            bufferSwg.addIndent(indent + 1);
-            CONCAT_FIXED_STR(bufferSwg, "padding1: u8 = 1");
-            bufferSwg.addEol();
-        }
-
-        // Everything in the structure is not initialized
-        else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
-        {
-            bufferSwg.addIndent(indent + 1);
-            bufferSwg.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
-            bufferSwg.addEol();
-        }
-
-        // Everything in the structure is initiaized to zero
-        else
-        {
-            bufferSwg.addIndent(indent + 1);
-            bufferSwg.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
-            bufferSwg.addEol();
-        }
-    }
-    else
-    {
-        for (auto p : typeStruct->fields)
-        {
-            outputContext.indent = indent + 1;
-            SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, p->attributes));
-
-            // Struct/interface content
-            if (p->declNode->kind == AstNodeKind::VarDecl)
-            {
-                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
-                SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
-                bufferSwg.addEol();
-            }
-        }
-
-        for (auto p : typeStruct->consts)
-        {
-            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
-            outputContext.indent = indent + 1;
-            SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, p->attributes));
-            SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
-            bufferSwg.addEol();
-        }
-    }
-
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "}");
-
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-        bufferSwg.addEol();
-    bufferSwg.addEol();
-
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputStruct(outputContext, bufferSwg, typeStruct, node);
 }
 
 bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
 {
-    bufferSwg.addIndent(indent);
-    if (node->flags & AST_DECL_USING)
-        CONCAT_FIXED_STR(bufferSwg, "using ");
-    if (kindName)
-        bufferSwg.addString(kindName);
-
-    if (!(node->flags & AST_AUTO_NAME))
-    {
-        bufferSwg.addString(node->token.text);
-        if (node->type)
-        {
-            CONCAT_FIXED_STR(bufferSwg, ": ");
-            emitType(node->typeInfo, indent);
-
-            // Type with parameters
-            if (node->type->kind == AstNodeKind::TypeExpression)
-            {
-                auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-                if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
-                {
-                    auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-                    if (typeId->callParameters)
-                    {
-                        bufferSwg.addChar('{');
-                        SWAG_CHECK(Ast::output(outputContext, bufferSwg, typeId->callParameters));
-                        bufferSwg.addChar('}');
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        emitType(node->typeInfo, indent);
-    }
-
-    if (node->assignment)
-    {
-        CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->assignment));
-    }
-
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputVar(outputContext, bufferSwg, kindName, node);
 }
 
 bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent)

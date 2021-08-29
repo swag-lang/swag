@@ -6,6 +6,37 @@
 
 namespace Ast
 {
+    bool checkIsPublic(OutputContext& context, AstNode* node)
+    {
+        if (!context.forExport)
+            return true;
+
+        auto symbol   = node->resolvedSymbolName;
+        auto overload = node->resolvedSymbolOverload;
+
+        if (overload)
+        {
+            if (overload->node->sourceFile->isBootstrapFile ||
+                overload->node->sourceFile->isRuntimeFile ||
+                overload->node->sourceFile->forceExport ||
+                overload->node->sourceFile->imported)
+                return true;
+        }
+
+        if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
+        {
+            if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
+                (symbol->kind == SymbolKind::Function) ||
+                (symbol->kind == SymbolKind::Alias) ||
+                (symbol->kind == SymbolKind::TypeAlias))
+            {
+                SWAG_VERIFY(overload->node->attributeFlags & ATTRIBUTE_PUBLIC, node->sourceFile->report({node, Utf8::format(g_E[Err0316], node->token.text.c_str())}));
+            }
+        }
+
+        return true;
+    }
+
     void incIndentStatement(AstNode* node, int& indent)
     {
         if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
@@ -146,6 +177,309 @@ namespace Ast
         {
             concat.addEolIndent(context.indent);
             SWAG_CHECK(output(context, concat, funcDecl->content));
+        }
+
+        return true;
+    }
+
+    bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node)
+    {
+        concat.addIndent(context.indent);
+        if (node->flags & AST_DECL_USING)
+            CONCAT_FIXED_STR(concat, "using ");
+        if (kindName)
+            concat.addString(kindName);
+
+        if (!(node->flags & AST_AUTO_NAME))
+        {
+            concat.addString(node->token.text);
+            if (node->type)
+            {
+                CONCAT_FIXED_STR(concat, ": ");
+                outputType(context, concat, node->typeInfo);
+
+                // Type with parameters
+                if (node->type->kind == AstNodeKind::TypeExpression)
+                {
+                    auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                    if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
+                    {
+                        auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+                        if (typeId->callParameters)
+                        {
+                            concat.addChar('{');
+                            SWAG_CHECK(output(context, concat, typeId->callParameters));
+                            concat.addChar('}');
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            outputType(context, concat, node->typeInfo);
+        }
+
+        if (node->assignment)
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(output(context, concat, node->assignment));
+        }
+
+        return true;
+    }
+
+    bool outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+    {
+        AttributeList* attr = nullptr;
+        switch (typeInfo->kind)
+        {
+        case TypeInfoKind::Struct:
+        case TypeInfoKind::Interface:
+        {
+            auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+            attr      = &type->attributes;
+            break;
+        }
+        case TypeInfoKind::FuncAttr:
+        {
+            auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
+            attr      = &type->attributes;
+            break;
+        }
+        case TypeInfoKind::Enum:
+        {
+            auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
+            attr      = &type->attributes;
+            break;
+        }
+        }
+
+        SWAG_CHECK(outputAttributes(context, concat, *attr));
+        return true;
+    }
+
+    bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
+    {
+        CONCAT_FIXED_STR(concat, "(");
+        int idx = 0;
+        for (auto p : node->childs)
+        {
+            if (idx)
+                CONCAT_FIXED_STR(concat, ", ");
+            concat.addString(p->token.text);
+
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+            if (varDecl->type)
+            {
+                CONCAT_FIXED_STR(concat, ": ");
+                outputType(context, concat, varDecl->type->typeInfo);
+            }
+
+            if (varDecl->assignment)
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(output(context, concat, varDecl->assignment));
+            }
+
+            idx++;
+        }
+
+        CONCAT_FIXED_STR(concat, ")");
+        return true;
+    }
+
+    bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node)
+    {
+        SWAG_CHECK(outputAttributes(context, concat, typeStruct));
+
+        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+            concat.addIndent(context.indent);
+
+        if (node->kind == AstNodeKind::InterfaceDecl)
+            CONCAT_FIXED_STR(concat, "interface");
+        else
+        {
+            SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
+            auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+            if (structNode->structFlags & STRUCTFLAG_UNION)
+                CONCAT_FIXED_STR(concat, "union");
+            else
+                CONCAT_FIXED_STR(concat, "struct");
+        }
+
+        if (node->genericParameters)
+            SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+
+        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+        {
+            CONCAT_FIXED_STR(concat, " ");
+            concat.addString(node->token.text);
+        }
+
+        concat.addEol();
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "{");
+        concat.addEol();
+
+        // Opaque export. Just simulate structure with the correct size.
+        // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
+        if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+        {
+            // We initialize one field with a dummy value to force the compiler to acknowledge that the
+            // struct has some initialized fields (not all to zero)
+            if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            {
+                if (typeStruct->sizeOf != 1)
+                {
+                    concat.addIndent(context.indent + 1);
+                    concat.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
+                    concat.addEol();
+                }
+
+                concat.addIndent(context.indent + 1);
+                CONCAT_FIXED_STR(concat, "padding1: u8 = 1");
+                concat.addEol();
+            }
+
+            // Everything in the structure is not initialized
+            else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+            {
+                concat.addIndent(context.indent + 1);
+                concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
+                concat.addEol();
+            }
+
+            // Everything in the structure is initiaized to zero
+            else
+            {
+                concat.addIndent(context.indent + 1);
+                concat.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
+                concat.addEol();
+            }
+        }
+        else
+        {
+            context.indent++;
+            for (auto p : typeStruct->fields)
+            {
+                SWAG_CHECK(outputAttributes(context, concat, p->attributes));
+
+                // Struct/interface content
+                if (p->declNode->kind == AstNodeKind::VarDecl)
+                {
+                    auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
+                    SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
+                    concat.addEol();
+                }
+            }
+
+            for (auto p : typeStruct->consts)
+            {
+                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
+                SWAG_CHECK(outputAttributes(context, concat, p->attributes));
+                SWAG_CHECK(outputVar(context, concat, "const ", varDecl));
+                concat.addEol();
+            }
+
+            context.indent--;
+        }
+
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
+
+        if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+            concat.addEol();
+        concat.addEol();
+
+        return true;
+    }
+
+    bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+    {
+        typeInfo = TypeManager::concreteReference(typeInfo);
+        SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+        if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
+            return outputStruct(context, concat, typeStruct, (AstStruct*) typeStruct->declNode);
+
+        concat.addString("{");
+        int idx = 0;
+        for (auto field : typeStruct->fields)
+        {
+            if (idx)
+                CONCAT_FIXED_STR(concat, ", ");
+
+            if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
+            {
+                auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
+                SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
+            }
+            else
+            {
+                if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+                {
+                    concat.addString(field->namedParam);
+                    concat.addString(":");
+                }
+
+                SWAG_CHECK(outputType(context, concat, field->typeInfo));
+            }
+
+            idx++;
+        }
+
+        concat.addString("}");
+        return true;
+    }
+
+    bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+    {
+        if (typeInfo->kind == TypeInfoKind::Lambda)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+            CONCAT_FIXED_STR(concat, "func(");
+            for (auto p : typeFunc->parameters)
+            {
+                if (p != typeFunc->parameters[0])
+                    CONCAT_FIXED_STR(concat, ", ");
+                SWAG_CHECK(outputType(context, concat, p->typeInfo));
+            }
+
+            CONCAT_FIXED_STR(concat, ")->");
+            SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
+
+            if (typeInfo->flags & TYPEINFO_CAN_THROW)
+                CONCAT_FIXED_STR(concat, " throw");
+        }
+        else
+        {
+            if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                return outputTypeTuple(context, concat, typeInfo);
+
+            // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
+            // we take the 'converted' original struct type
+            if (typeInfo->kind == TypeInfoKind::Reference)
+            {
+                auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+                if (typeRef->originalType)
+                    typeInfo = typeRef->originalType;
+            }
+
+            if (typeInfo->flags & TYPEINFO_SELF)
+            {
+                if (typeInfo->flags & TYPEINFO_CONST)
+                    CONCAT_FIXED_STR(concat, "const self");
+                else
+                    CONCAT_FIXED_STR(concat, "self");
+            }
+            else
+            {
+                typeInfo->computeScopedNameExport();
+                SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+                concat.addString(typeInfo->scopedNameExport);
+            }
         }
 
         return true;
@@ -866,30 +1200,8 @@ namespace Ast
         {
             auto identifier = static_cast<AstIdentifier*>(node);
             auto symbol     = identifier->resolvedSymbolName;
-            auto overload   = identifier->resolvedSymbolOverload;
 
-            // Check public, if this is for export
-            if (context.forExport)
-            {
-                if (symbol &&
-                    overload &&
-                    symbol->name[0] != '@' &&
-                    overload->node->ownerScope->isGlobalOrImpl() &&
-                    !overload->node->sourceFile->isBootstrapFile &&
-                    !overload->node->sourceFile->isRuntimeFile &&
-                    !overload->node->sourceFile->forceExport &&
-                    !overload->node->sourceFile->imported)
-                {
-                    if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
-                        (symbol->kind == SymbolKind::Function) ||
-                        (symbol->kind == SymbolKind::Alias) ||
-                        (symbol->kind == SymbolKind::TypeAlias))
-                    {
-                        SWAG_VERIFY(overload->node->attributeFlags & ATTRIBUTE_PUBLIC, identifier->sourceFile->report({identifier, Utf8::format(g_E[Err0316], identifier->token.text.c_str())}));
-                    }
-                }
-            }
-
+            SWAG_CHECK(checkIsPublic(context, node));
             if (symbol && symbol->ownerTable->scope->isGlobal())
                 concat.addString(symbol->getFullName());
             else
