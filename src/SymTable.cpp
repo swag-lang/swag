@@ -85,8 +85,6 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             Utf8*          aliasName)
 {
     ScopedLock lk(mutex);
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->isGenerated)
-        flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
 }
 
@@ -123,7 +121,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (resultName)
         *resultName = symbol;
 
-    ScopedLock     lock(symbol->mutex);
+    ScopedLock      lock(symbol->mutex);
     SymbolOverload* result = nullptr;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolName = symbol;

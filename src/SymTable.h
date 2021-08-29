@@ -26,7 +26,7 @@ static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
 static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
 static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
-static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
+static const uint32_t OVERLOAD_VAR_TLS            = 0x00000400;
 static const uint32_t OVERLOAD_VAR_BSS            = 0x00000800;
 static const uint32_t OVERLOAD_IMPL               = 0x00001000;
 static const uint32_t OVERLOAD_RETVAL             = 0x00002000;
@@ -37,7 +37,6 @@ static const uint32_t OVERLOAD_VAR_COMPILER       = 0x00020000;
 static const uint32_t OVERLOAD_REGISTER           = 0x00040000;
 static const uint32_t OVERLOAD_CAN_CHANGE         = 0x00080000;
 static const uint32_t OVERLOAD_USED               = 0x00100000;
-static const uint32_t OVERLOAD_VAR_TLS            = 0x00200000;
 
 enum class SymbolKind
 {
