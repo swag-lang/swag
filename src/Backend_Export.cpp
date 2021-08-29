@@ -12,35 +12,8 @@
 
 bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 {
-    bool first = true;
-    bufferSwg.addIndent(indent);
-    bufferSwg.addString("#[AttrUsage(");
-
-#define ADD_ATTRUSAGE(__f, __n)                         \
-    if (typeFunc->attributeUsage & (int) __f)           \
-    {                                                   \
-        if (!first)                                     \
-            CONCAT_FIXED_STR(bufferSwg, "|");           \
-        first = false;                                  \
-        CONCAT_FIXED_STR(bufferSwg, "AttributeUsage."); \
-        CONCAT_FIXED_STR(bufferSwg, __n);               \
-    }
-
-    if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
-        CONCAT_FIXED_STR(bufferSwg, "AttributeUsage.All");
-    else
-    {
-        ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
-        ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
-        ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
-        ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-        ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
-        ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
-    }
-
-    bufferSwg.addString(")]");
-    bufferSwg.addEol();
-    return true;
+    outputContext.indent = indent;
+    return Ast::outputAttributesUsage(outputContext, bufferSwg, typeFunc);
 }
 
 bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)

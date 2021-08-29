@@ -47,6 +47,7 @@ namespace Ast
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
 
     bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
+    bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
     bool outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
     bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);

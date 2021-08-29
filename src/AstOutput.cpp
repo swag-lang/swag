@@ -53,6 +53,39 @@ namespace Ast
             indent--;
     }
 
+    bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
+    {
+        bool first = true;
+        concat.addIndent(context.indent);
+        concat.addString("#[AttrUsage(");
+
+#define ADD_ATTRUSAGE(__f, __n)                      \
+    if (typeFunc->attributeUsage & (int) __f)        \
+    {                                                \
+        if (!first)                                  \
+            CONCAT_FIXED_STR(concat, "|");           \
+        first = false;                               \
+        CONCAT_FIXED_STR(concat, "AttributeUsage."); \
+        CONCAT_FIXED_STR(concat, __n);               \
+    }
+
+        if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
+            CONCAT_FIXED_STR(concat, "AttributeUsage.All");
+        else
+        {
+            ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
+            ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
+            ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
+            ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
+            ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
+            ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
+        }
+
+        concat.addString(")]");
+        concat.addEol();
+        return true;
+    }
+
     bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
     {
         auto attr = &attributes;
