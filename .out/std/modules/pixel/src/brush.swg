@@ -1,5 +1,5 @@
 #global public
-using Core, Core.Drawing
+using Core
 
 enum BrushType
 {

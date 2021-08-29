@@ -2,7 +2,7 @@
 
 #global if #os == "windows"
 using Core, Win32, Ogl, Gdi32, Pixel, Gui
-using Core.Drawing, Core.Math
+using Core.Math
 
 const W = 1024
 const H = 1024

@@ -1,5 +1,5 @@
 #global public
-using Core.Drawing, Core.Math
+using Core.Math
 
 impl Painter
 {

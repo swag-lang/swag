@@ -1,5 +1,5 @@
 #global public
-using Core, Drawing
+using Core
 
 enum LineCapStyle
 {

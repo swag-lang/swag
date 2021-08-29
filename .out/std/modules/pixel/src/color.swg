@@ -1,10 +1,9 @@
-#global namespace Drawing
 #global public
-using Swag
+using Swag, Core
 
 struct Color
 {
-    #if BIG_ENDIAN
+    #if Core.BIG_ENDIAN
     {
         a, r, g, b: u8
         #[Offset("a")]
@@ -272,5 +271,41 @@ impl Color
         result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
         result.b = cast(u8) Math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
         return result
+    }
+}
+
+impl Core.Parse.IPokeValue for Color
+{
+    func poke(using self, buf: string)->string throw
+    {
+        var eat: uint
+        one := Tokenize.eatSpaces(buf)
+        if @countof(one) == 0 throw "invalid"
+
+        if Latin1.isDigit(buf[0])
+        {
+            (a, eat) = try Parse.getU8(one)
+            one = Tokenize.eatCount(one, eat)
+
+            one = Tokenize.eatSpaces(one)
+            (r, eat) = try Parse.getU8(one)
+            one = Tokenize.eatCount(one, eat)
+
+            one = Tokenize.eatSpaces(one)
+            (g, eat) = try Parse.getU8(one)
+            one = Tokenize.eatCount(one, eat)
+
+            one = Tokenize.eatSpaces(one)
+            (b, eat) = try Parse.getU8(one)
+            one = Tokenize.eatCount(one, eat)
+        }
+        else
+        {
+            id := try Parse.getIdentifier(one)
+            one = Tokenize.eatCount(one, @countof(id))
+            self.argb = cast(u32) Argb.fromName(id)
+        }
+
+        return one
     }
 }

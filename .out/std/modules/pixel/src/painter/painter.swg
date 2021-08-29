@@ -1,5 +1,5 @@
 #global public
-using Core, Ogl, Core.Drawing, Core.Math
+using Core, Ogl, Core.Math
 
 #[Swag.Pack(1)]
 struct VertexLayout

@@ -1,5 +1,5 @@
 #global public
-using Core, Core.Math, Core.Drawing
+using Core, Core.Math
 
 public enum DrawPathListMode
 {
