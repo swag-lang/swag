@@ -13,10 +13,10 @@ struct AstOutput
 {
     struct OutputContext
     {
-        int  indent    = 0;
-        bool forExport = false;
+        int      indent       = 0;
+        bool     forExport    = false;
+        AstNode* exportedNode = nullptr;
     };
-
 
     static bool checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode);
     static void incIndentStatement(AstNode* node, int& indent);
@@ -38,4 +38,22 @@ struct AstOutput
     static bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     static bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     static bool outputNode(OutputContext& context, Concat& concat, AstNode* node);
+};
+
+struct ScopeExportNode
+{
+    ScopeExportNode(AstOutput::OutputContext& context, AstNode* node)
+    {
+        savedContext         = &context;
+        savedExportedNode    = context.exportedNode;
+        context.exportedNode = node;
+    }
+
+    ~ScopeExportNode()
+    {
+        savedContext->exportedNode = savedExportedNode;
+    }
+
+    AstOutput::OutputContext* savedContext;
+    AstNode*                  savedExportedNode;
 };

@@ -23,30 +23,35 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
         overload->node->sourceFile->imported)
         return true;
 
-    if (symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
+    if (symbol->name.empty() || symbol->name[0] == '@')
+        return true;
+    if (!overload->node->ownerScope->isGlobalOrImpl())
+        return true;
+
+    if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
+        (symbol->kind == SymbolKind::Function) ||
+        (symbol->kind == SymbolKind::Struct) ||
+        (symbol->kind == SymbolKind::Enum) ||
+        (symbol->kind == SymbolKind::Interface) ||
+        (symbol->kind == SymbolKind::Alias) ||
+        (symbol->kind == SymbolKind::TypeAlias))
     {
-        if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
-            (symbol->kind == SymbolKind::Function) ||
-            (symbol->kind == SymbolKind::Struct) ||
-            (symbol->kind == SymbolKind::Enum) ||
-            (symbol->kind == SymbolKind::Interface) ||
-            (symbol->kind == SymbolKind::Alias) ||
-            (symbol->kind == SymbolKind::TypeAlias))
+        if (!(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
         {
-            if (!(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+            if (usedNode && overload->node != usedNode)
             {
-                if (usedNode && overload->node != usedNode)
-                {
-                    Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
-                    Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
-                    return overload->node->sourceFile->report(diag, &note);
-                }
+                Utf8 what;
+                if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
+                    what = Utf8::format("%s '%s'", SymTable::getNakedKindName(context.exportedNode->resolvedSymbolName->kind), context.exportedNode->resolvedSymbolName->name.c_str());
                 else
-                {
-                    Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
-                    return overload->node->sourceFile->report(diag);
-                }
+                    what = "declaration";
+                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+                Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
+                return overload->node->sourceFile->report(diag, &note);
             }
+
+            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+            return overload->node->sourceFile->report(diag);
         }
     }
 
@@ -104,6 +109,8 @@ bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, Ty
 
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
 {
+    ScopeExportNode sen(context, node);
+
     if (node->kind == AstNodeKind::AttrDecl)
         CONCAT_FIXED_STR(concat, "attr ");
     else
@@ -130,7 +137,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
             if (!isSelf)
             {
                 CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputType(context, concat, p->typeInfo));
+                SWAG_CHECK(outputType(context, concat, p->typeInfo, p->declNode->childs.front()));
             }
 
             // Assignment
