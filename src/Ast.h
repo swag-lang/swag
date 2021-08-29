@@ -59,6 +59,7 @@ namespace Ast
     bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
     bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node);
     bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
+    bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
     bool output(OutputContext& context, Concat& concat, AstNode* node);
 
     template<typename T>

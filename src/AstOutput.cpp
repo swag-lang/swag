@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Module.h"
 
 namespace Ast
 {
@@ -1769,6 +1770,265 @@ namespace Ast
 
         default:
             return node->sourceFile->internalError(node, "Ast::output, unknown node");
+        }
+
+        return true;
+    }
+
+    bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+    {
+        auto publicSet = scope->publicSet;
+        if (!publicSet)
+            return true;
+
+        // Consts
+        if (!publicSet->publicConst.empty())
+        {
+            for (auto one : publicSet->publicConst)
+            {
+                AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
+                SWAG_CHECK(outputVar(context, concat, "const ", node));
+                concat.addEol();
+            }
+        }
+
+        // Stuff (alias)
+        if (!publicSet->publicNodes.empty())
+        {
+            for (auto one : publicSet->publicNodes)
+            {
+                concat.addIndent(context.indent);
+                SWAG_CHECK(output(context, concat, one));
+                concat.addEol();
+            }
+        }
+
+        // Structures
+        if (!publicSet->publicStruct.empty())
+        {
+            for (auto one : publicSet->publicStruct)
+            {
+                AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+                SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
+            }
+        }
+
+        if (!publicSet->publicInterface.empty())
+        {
+            for (auto one : publicSet->publicInterface)
+            {
+                AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
+                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+                SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
+            }
+        }
+
+        // Enums
+        if (!publicSet->publicEnum.empty())
+        {
+            for (auto one : publicSet->publicEnum)
+            {
+                TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
+                SWAG_CHECK(outputEnum(context, concat, typeEnum, one));
+            }
+        }
+
+        // Generic functions
+        if (!publicSet->publicInlinedFunc.empty())
+        {
+            for (auto func : publicSet->publicInlinedFunc)
+            {
+                AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+                SWAG_CHECK(outputFunc(context, concat, typeFunc, node));
+            }
+        }
+
+        // Functions
+        if (!publicSet->publicFunc.empty())
+        {
+            for (auto func : publicSet->publicFunc)
+            {
+                AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+
+                // Can be removed in case of special functions
+                if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
+                    continue;
+
+                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+                node->computeFullNameForeign(true);
+                concat.addIndent(context.indent);
+
+                // Remape special functions to their generated equivalent
+                concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
+                concat.addEol();
+                SWAG_CHECK(outputAttributes(context, concat, typeFunc));
+                concat.addIndent(context.indent);
+
+                if (node->token.text == g_LangSpec->name_opInitGenerated)
+                {
+                    CONCAT_FIXED_STR(concat, "func opInit(using self);");
+                    concat.addEol();
+                }
+                else if (node->token.text == g_LangSpec->name_opDropGenerated)
+                {
+                    CONCAT_FIXED_STR(concat, "func opDrop(using self);");
+                    concat.addEol();
+                }
+                else if (node->token.text == g_LangSpec->name_opRelocGenerated)
+                {
+                    CONCAT_FIXED_STR(concat, "func opReloc(using self);");
+                    concat.addEol();
+                }
+                else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
+                {
+                    CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");
+                    concat.addEol();
+                }
+                else if (node->token.text == g_LangSpec->name_opPostMoveGenerated)
+                {
+                    CONCAT_FIXED_STR(concat, "func opPostMove(using self);");
+                    concat.addEol();
+                }
+                else
+                    SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node));
+
+                node->exportForeignLine = concat.eolCount;
+            }
+        }
+
+        // Attributes
+        if (!publicSet->publicAttr.empty())
+        {
+            for (auto func : publicSet->publicAttr)
+            {
+                auto              node = CastAst<AstAttrDecl>(func, AstNodeKind::AttrDecl);
+                TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+                SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
+                concat.addIndent(context.indent);
+                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, nullptr));
+            }
+        }
+
+        return true;
+    }
+
+    bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+    {
+        SWAG_ASSERT(moduleToGen);
+        if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+            return true;
+        if (scope->flags & SCOPE_IMPORTED)
+            return true;
+
+        context.forExport = true;
+
+        // Namespace
+        if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
+        {
+            if (!(scope->flags & SCOPE_AUTO_GENERATED))
+            {
+                concat.addIndent(context.indent);
+                CONCAT_FIXED_STR(concat, "namespace ");
+                concat.addString(scope->name);
+                concat.addEol();
+                concat.addIndent(context.indent);
+                CONCAT_FIXED_STR(concat, "{");
+                concat.addEol();
+                context.indent++;
+            }
+
+            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+            for (auto oneScope : scope->childScopes)
+                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+
+            if (!(scope->flags & SCOPE_AUTO_GENERATED))
+            {
+                context.indent--;
+                concat.addIndent(context.indent);
+                CONCAT_FIXED_STR(concat, "}");
+                concat.addEol();
+                concat.addEol();
+            }
+        }
+
+        // Impl
+        else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
+        {
+            concat.addIndent(context.indent);
+            if (scope->kind == ScopeKind::Impl)
+            {
+                auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
+                auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
+                concat.addStringFormat("impl %s for %s", symbol->node->getScopedName().c_str(), scope->parentScope->name.c_str());
+                concat.addEol();
+            }
+            else if (scope->kind == ScopeKind::Enum)
+            {
+                CONCAT_FIXED_STR(concat, "impl enum ");
+                concat.addString(scope->name);
+                concat.addEol();
+            }
+            else
+            {
+                CONCAT_FIXED_STR(concat, "impl ");
+                concat.addString(scope->name);
+                concat.addEol();
+            }
+
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "{");
+            concat.addEol();
+
+            context.indent++;
+            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+            for (auto oneScope : scope->childScopes)
+            {
+                if (oneScope->kind == ScopeKind::Impl)
+                    continue;
+                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+            }
+
+            context.indent--;
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "}");
+            concat.addEol();
+            concat.addEol();
+
+            for (auto oneScope : scope->childScopes)
+            {
+                if (oneScope->kind != ScopeKind::Impl)
+                    continue;
+                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+            }
+        }
+
+        // Named scope
+        else if (!scope->name.empty())
+        {
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "{");
+            concat.addEol();
+
+            context.indent++;
+            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+            for (auto oneScope : scope->childScopes)
+                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
+            context.indent--;
+
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "}");
+            concat.addEol();
+            concat.addEol();
+        }
+
+        // Unnamed scope
+        else
+        {
+            SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
+            for (auto oneScope : scope->childScopes)
+                SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
         }
 
         return true;

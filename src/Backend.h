@@ -62,7 +62,6 @@ struct Backend
     bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf, int indent);
-    bool emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
     bool emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
 
     Concat bufferSwg;
