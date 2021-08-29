@@ -415,6 +415,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
         if (inTypeVarDecl)
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
+        node->token.endLocation = node->identifier->token.endLocation;
         return true;
     }
     else if (token.id == TokenId::KwdStruct)
