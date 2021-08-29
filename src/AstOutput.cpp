@@ -762,6 +762,8 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typ
     }
 
     auto typeExport = typeInfo;
+    if (typeExport->kind == TypeInfoKind::Array)
+        typeExport = ((TypeInfoArray*) typeExport)->finalType;
     while (typeExport->kind == TypeInfoKind::Pointer)
         typeExport = ((TypeInfoPointer*) typeExport)->pointedType;
     SWAG_CHECK(checkIsPublic(context, typeExport->declNode, node));
