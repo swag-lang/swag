@@ -36,6 +36,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
         (symbol->kind == SymbolKind::Alias) ||
         (symbol->kind == SymbolKind::TypeAlias))
     {
+        Utf8 typeWhat = SymTable::getNakedKindName(overload);
         if (!(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
         {
             if (usedNode && overload->node != usedNode)
@@ -46,14 +47,17 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                     auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
                     what         = Utf8::format("%s '%s'", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
                 }
+                else if (usedNode->kind == AstNodeKind::FuncCall)
+                    what = "function call";
                 else
                     what = "declaration";
-                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+
+                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.text.c_str())};
                 Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
                 return context.report(diag, &note);
             }
 
-            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
+            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], typeWhat.c_str(), overload->node->token.text.c_str())};
             return context.report(diag);
         }
     }
@@ -188,6 +192,8 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
 
 bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
+    context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
+
     SWAG_CHECK(outputAttributes(context, concat, typeFunc));
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "func");
@@ -289,6 +295,8 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
     }
 
     concat.addEol();
+    context.expansionNode.pop_back();
+
     return true;
 }
 
@@ -670,6 +678,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
         concat.addEol();
     concat.addEol();
 
+    context.expansionNode.pop_back();
     return true;
 }
 
@@ -1492,6 +1501,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Identifier:
         if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
             concat.addChar('`');
+
     case AstNodeKind::FuncCall:
     {
         SWAG_CHECK(checkIsPublic(context, node, node));

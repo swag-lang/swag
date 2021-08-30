@@ -134,6 +134,7 @@ struct SymTable
 
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
+    static const char* getNakedKindName(SymbolOverload* overload);
 
     shared_mutex               mutex;
     SymTableHash               mapNames;

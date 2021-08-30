@@ -506,6 +506,13 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
     return "<symbol>";
 }
 
+const char* SymTable::getNakedKindName(SymbolOverload* overload)
+{
+    if (overload->flags & OVERLOAD_COMPUTED_VALUE)
+        return "constant";
+    return getNakedKindName(overload->symbol->kind);
+}
+
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 {
     for (auto it : overloads)

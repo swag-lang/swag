@@ -39,7 +39,8 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     typeInfo->declNode = node;
     node->scope->owner = node;
 
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum);
+    SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -296,8 +297,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
-    valNode->typeInfo = typeEnum;
-    SWAG_CHECK(typeEnum->scope->symTable.addSymbolTypeInfo(context,
+    valNode->typeInfo               = typeEnum;
+    valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context,
                                                            valNode,
                                                            valNode->typeInfo,
                                                            SymbolKind::EnumValue,
@@ -305,7 +306,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                                                            0,
                                                            nullptr,
                                                            storageOffset,
-                                                           storageSegment));
+                                                           storageSegment);
+    SWAG_CHECK(valNode->resolvedSymbolOverload);
 
     // Store each value in the enum type
     auto typeParam = g_TypeMgr->makeParam();

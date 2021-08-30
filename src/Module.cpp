@@ -395,6 +395,9 @@ void Module::addByteCodeFunc(ByteCode* bc)
         if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
             !(attributeFlags & ATTRIBUTE_INLINE) &&
             !(attributeFlags & ATTRIBUTE_COMPILER) &&
+            !(attributeFlags & ATTRIBUTE_INIT_FUNC) &&
+            !(attributeFlags & ATTRIBUTE_DROP_FUNC) &&
+            !(attributeFlags & ATTRIBUTE_TEST_FUNC) &&
             !(flags & AST_FROM_GENERIC))
             bc->node->ownerScope->addPublicFunc(bc->node);
 

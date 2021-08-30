@@ -1,0 +1,8 @@
+#global testerror
+var G = 0
+
+#[Swag.Inline]
+public func titi3123()
+{
+    G = 0
+}
