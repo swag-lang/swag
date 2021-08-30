@@ -1,14 +1,3 @@
-<p align="center">
-    <img src="./docs/swag_logo256.png" alt="swag logo">
-</p>
-
-<div style="text-align:center">
-
-<img src="./docs/swag_logo256.png"
-/>
-
-</div>
-
 ![Swag logo](docs/swag_logo256.png)
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developped for AAA game engines), but that one is by far the most advanced.
@@ -19,7 +8,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Currently in developpment** (since 2019), and very very far to be mature. Bugs, inexpected changes, do not use it to send a rocket on the moon !
 * **Low level** (i'm a C++ guy for 20+ years). So no garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
 * **Statically typed** (what else), but lots of automatic typing.
-* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, and **Rust** mostly for the things to avoid (i don't like Rust).
+* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, and **Rust** mostly for the things to avoid (i don't like Rust).
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
@@ -33,7 +22,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Meta programmation** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by **Go**.
 * **Modules**, compiled as separate dynamic libraries.
-* **Fast compile time** (at least in debug with the x64 backend) thanks to massive multithreading.
+* **Fast compile time** (at least in debug with the x64 backend) thanks to multithreading.
 * **Simple error system**, inspired from **Zig** (by Andrew Kelley).
 * **Generics**, for a simple usage. No template nightmare here...
 * **Powerfull macro/mixin** system, without the need of a specific syntax, inspired from **Jai**.
