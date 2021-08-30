@@ -703,8 +703,11 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
 
         if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
         {
-            auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
+            auto varDecl    = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
+            auto saveIndent = context.indent;
+            context.indent  = 0;
             SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
+            context.indent = saveIndent;
         }
         else
         {
