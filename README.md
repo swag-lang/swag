@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="f:/docs/swag_logo256.png" alt="swag logo">
+    <img src="docs/swag_logo256.png" alt="swag logo">
 </p>
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developped for AAA game engines), but that one is by far the most advanced.
@@ -120,4 +120,4 @@ func mySillyFunction()->string
 
 # For the braves
 
-* [How to build the source code](f:/swag/docs/how_to_build_swag.md)
+* [How to build the source code](docs/how_to_build_swag.md)
