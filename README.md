@@ -2,7 +2,7 @@
     <img src="https://cbeaudet.visualstudio.com/swag/_git/swag?path=%2Fdocs%2Fswag_logo256.png" alt="swag logo">
 </p>
 
-[[docs/swag_logo256.png]]
+![Text](docs/swag_logo256.png)
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developped for AAA game engines), but that one is by far the most advanced.
 
