@@ -4,7 +4,7 @@
 
 <div style="text-align:center">
 
-<img src="docs/swag_logo256.png"
+<img src="./docs/swag_logo256.png"
 />
 
 </div>
