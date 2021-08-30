@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="docs/swag_logo256.png" alt="swag logo">
+    <img src="./docs/swag_logo256.png" alt="swag logo">
 
 </p>
 
