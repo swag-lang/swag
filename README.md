@@ -1,11 +1,9 @@
 <p align="center">
     <img src="docs/swag_logo256.png" alt="swag logo">
 
-    ![Swag log](docs/swag_logo256.png)
-
 </p>
 
-![Text](docs/swag_logo256.png)
+![Swag logo](docs/swag_logo256.png)
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developped for AAA game engines), but that one is by far the most advanced.
 
@@ -72,7 +70,7 @@ using Core
 #main
 {
     const Msg = "Hello mad world !\n"
-    
+
     // The result of #ast is a string that will be compiled in place
     #ast
     {
@@ -109,7 +107,7 @@ using Core
 func mySillyFunction()->string
 {
     Console.print("Hello mad world at compile time !\n")
-    
+
     #ast
     {
         sb := StrConv.StringBuilder{}
