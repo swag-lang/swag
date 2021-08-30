@@ -1,11 +1,18 @@
 # How to compile Swag
-You will need LLVM version 12.0.1 (https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1).
+
+## LLVM
+##### You will need LLVM version 12.0.1 (https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1), and everything necessary to build it (like `cmake`).
+
 Download the full `Source Code` (zip) at the end of the list.
 Unzip that code to a subfolder named `llvm`, at the root of the swag source tree (for example `swag/llvm/`)
 
-## Under Windows
-You will need `Visual Studio 2019 16.11.1` or later.
+## Windows 10
+##### You will need the `Windows Sdk 10.0.19041.0` (https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/).
 
-* As there's no automatic detection, edit `build_cfg.bat` to match your version of Visual Studio and the MSVC version (used to find `cl.exe`)
-* Launch `build_llvm.bat` (this will take some time !)
-* Launch `build_swag.bat`
+It should also work with a more recent version, but this is not sure (sometimes somes functions are moved around between the UCRT and msvc runtime).
+
+##### You will need `Visual Studio 2019 16.11.1` or later.
+
+As there's no automatic detection, edit `build_cfg.bat` to match your version of Visual Studio.
+Launch `swag/build/build_llvm.bat` (this will take some time !).
+Launch `swag/build/build_swag.bat`.

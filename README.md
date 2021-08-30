@@ -6,8 +6,8 @@ It's a toy, but it's a toy which is now more advanced than expected.
 
 ### Swag is...
 * **Currently in developpment** (since 2019), and very very far to be mature. Bugs, inexpected changes, do not use it to send a rocket on the moon !
-* **Low level** (i'm a C++ guy for 20+ years). So no garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
-* **Statically typed** (what else), but lots of automatic typing.
+* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
+* **Statically typed** (what else), but lots of automatic type detection if you want to.
 * **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, and **Rust** mostly for the things to avoid (i don't like Rust).
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
