@@ -99,14 +99,28 @@
     }
 
     // With a range, you can loop in reverse order
-    // Loop from 5 to 0
-    loop 5..0
     {
+        // Loop from 5 to 0
+        loop 5..0
+        {
+        }
+
+        // Loop from 1 to -1
+        loop 1..-1
+        {
+        }
     }
 
-    // Loop from 1 to -1
-    loop 1..-1
+    // You can exclude the last value with the ..< syntax
     {
+        // Will loop from 1 to 2
+        cpt := 0
+        loop i: 1..<3
+        {
+            cpt += i
+        }
+
+        @assert(cpt == 1+2)
     }
 
     // A loop without an expression but with a block is infinite
