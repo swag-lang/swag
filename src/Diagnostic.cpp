@@ -44,6 +44,8 @@ void Diagnostic::report(bool verboseMode) const
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
+        if (g_CommandLine->errorSourceOut)
+            g_Log.eol();
         g_Log.setColor(errorColor);
         g_Log.print("error: ");
         break;
@@ -354,9 +356,6 @@ void Diagnostic::report(bool verboseMode) const
             }
         }
     }
-
-    if (g_CommandLine->errorSourceOut)
-        g_Log.eol();
 
     g_Log.setDefaultColor();
     g_ErrorHint.clear();

@@ -11,7 +11,7 @@ enum class ScopeKind;
 
 struct AstOutput
 {
-    struct OutputContext
+    struct OutputContext : public JobContext
     {
         int      indent       = 0;
         bool     forExport    = false;

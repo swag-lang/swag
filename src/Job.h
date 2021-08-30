@@ -56,6 +56,7 @@ struct JobContext
         SelectIf,
         CheckIf,
         Node,
+        Export,
     };
 
     VectorNative<pair<AstNode*, ExpansionType>> expansionNode;

@@ -21,7 +21,7 @@ void Job::waitSymbolNoLock(SymbolName* symbol)
 void Job::waitAllStructInterfacesReg(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-        typeInfo = ((TypeInfoPointer*)typeInfo)->pointedType;
+        typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
@@ -259,6 +259,10 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         Utf8        hint;
         switch (exp.second)
         {
+        case JobContext::ExpansionType::Export:
+            kindName    = g_E[Err0111];
+            kindArticle = "of ";
+            break;
         case JobContext::ExpansionType::Generic:
             kindName    = g_E[Err0112];
             kindArticle = "of ";

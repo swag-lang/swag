@@ -42,16 +42,19 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
             {
                 Utf8 what;
                 if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
-                    what = Utf8::format("%s '%s'", SymTable::getNakedKindName(context.exportedNode->resolvedSymbolName->kind), context.exportedNode->resolvedSymbolName->name.c_str());
+                {
+                    auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
+                    what         = Utf8::format("%s '%s'", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
+                }
                 else
                     what = "declaration";
                 Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
                 Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
-                return overload->node->sourceFile->report(diag, &note);
+                return context.report(diag, &note);
             }
 
             Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], SymTable::getNakedKindName(symbol->kind), overload->node->token.text.c_str())};
-            return overload->node->sourceFile->report(diag);
+            return context.report(diag);
         }
     }
 
@@ -497,8 +500,9 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const char* ki
         concat.addString(node->token.text);
         if (node->type)
         {
+            ScopeExportNode sen(context, node);
             CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputType(context, concat, node->typeInfo));
+            SWAG_CHECK(outputType(context, concat, node->typeInfo, node->type));
 
             // Type with parameters
             if (node->type->kind == AstNodeKind::TypeExpression)
@@ -563,6 +567,8 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
 
 bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node)
 {
+    context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
+
     SWAG_CHECK(outputAttributes(context, concat, typeStruct));
 
     if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
