@@ -94,7 +94,7 @@ using Core
 }
 ```
 More and more crazy.
-```
+``` c#
 using Core
 
 #main
