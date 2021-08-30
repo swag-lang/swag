@@ -1,5 +1,8 @@
 <p align="center">
-    <img src="https://cbeaudet.visualstudio.com/swag/_git/swag?path=%2Fdocs%2Fswag_logo256.png" alt="swag logo">
+    <img src="docs/swag_logo256.png" alt="swag logo">
+
+    ![Swag log](docs/swag_logo256.png)
+
 </p>
 
 ![Text](docs/swag_logo256.png)
