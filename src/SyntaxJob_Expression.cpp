@@ -828,6 +828,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     {
     case TokenId::CompilerRun:
     {
+        ScopedFlags sf(this, AST_RUN_BLOCK);
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerRun;

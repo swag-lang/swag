@@ -103,7 +103,7 @@ SWAG_ERROR(Err0103, "cannot reference 'opPostCopy' special function (use '@postc
 SWAG_ERROR(Err0104, "cannot reference 'opPostMove' special function (use '@postmove' instead)")
 SWAG_ERROR(Err0105, "cannot call empty function '%s'")
 SWAG_ERROR(Err0106, nullptr)
-SWAG_ERROR(Err0107, "cannot reference compile time function '%s' (marked with 'Swag.Compiler') from runtime function '%s'")
+SWAG_ERROR(Err0107, "cannot reference compile time function '%s' (marked with 'Swag.Compiler') from runtime %s")
 SWAG_ERROR(Err0108, "cannot reference 'Swag.Test' function '%s' from '%s'")
 SWAG_ERROR(Err0109, "unused return value of function '%s'")
 SWAG_ERROR(Err0110, "identifier '%s' cannot be found in %s '%s'")
