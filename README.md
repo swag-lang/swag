@@ -2,6 +2,7 @@
     <img src="./docs/swag_logo256.png" alt="swag logo">
 
 </p>
+<div style="text-align:center"><img src="docs/swag_logo256.png" /></div>
 
 ![Swag logo](docs/swag_logo256.png)
 
