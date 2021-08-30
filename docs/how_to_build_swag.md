@@ -9,8 +9,6 @@ Unzip that code to a subfolder named `llvm`, at the root of the swag source tree
 ## Windows 10
 ##### You will need the `Windows Sdk 10.0.19041.0` (https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/).
 
-It should also work with a more recent version, but this is not sure (sometimes somes functions are moved around between the UCRT and msvc runtime).
-
 ##### You will need `Visual Studio 2019 16.11.1` or later.
 
 As there's no automatic detection, edit `build_cfg.bat` to match your version of Visual Studio.

@@ -1,11 +1,11 @@
 ![Swag logo](docs/swag_logo256.png)
 
-Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developped for AAA game engines), but that one is by far the most advanced.
+Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
 It's a toy, but it's a toy which is now more advanced than expected.
 
 ### Swag is...
-* **Currently in developpment** (since 2019), and very very far to be mature. Bugs, inexpected changes, do not use it to send a rocket on the moon !
+* **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, do not use it to send a rocket on the moon !
 * **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
 * **Statically typed** (what else), but lots of automatic type detection if you want to.
 * **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, and **Rust** mostly for the things to avoid (i don't like Rust).
@@ -19,13 +19,13 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
 * **Type reflection** at compile time and runtime.
 * **Full compile time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
-* **Meta programmation** (you can write code that writes code).
+* **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by **Go**.
 * **Modules**, compiled as separate dynamic libraries.
 * **Fast compile time** (at least in debug with the x64 backend) thanks to multithreading.
 * **Simple error system**, inspired from **Zig** (by Andrew Kelley).
 * **Generics**, for a simple usage. No template nightmare here...
-* **Powerfull macro/mixin** system, without the need of a specific syntax, inspired from **Jai**.
+* **Powerful macro/mixin** system, without the need of a specific syntax, inspired from **Jai**.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
@@ -34,7 +34,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 
 # Hello mad world !
 
-Here without any additional library, by simply using instrinsic `@print`.
+Here without any additional library, by simply using intrinsic `@print`.
 ``` csharp
 #main
 {
@@ -118,4 +118,5 @@ func mySillyFunction()->string
 
 # For the braves
 
-* [How to build the source code](docs/how_to_build_swag.md)
+* [Start](docs/getting_started.md) your first project, compile it, run it !
+* [How to build](docs/how_to_build_swag.md) the compiler with the full source tree.
