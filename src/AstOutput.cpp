@@ -302,6 +302,8 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
 
 bool AstOutput::outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node)
 {
+    context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
+
     SWAG_CHECK(outputAttributes(context, concat, typeEnum));
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum ");
@@ -333,6 +335,8 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum*
     CONCAT_FIXED_STR(concat, "}");
     concat.addEol();
     concat.addEol();
+
+    context.expansionNode.pop_back();
     return true;
 }
 
