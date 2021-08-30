@@ -24,17 +24,14 @@
         @assert(y == 127)
     }
 
+    // Note that you can remove Safety checks with a special swag attribute
+    // Can be defined for a file, a function, or just a piece of code.
+    #[Swag.Safety("overflow", false)]
     {
-        // Note that you can remove Safety checks with a special swag attribute
-        // Can be defined for a file, a function, or just a piece of code.
-        // "of" stands for "OverFlow".
-        #[Swag.Safety("overflow", false)]
-        {
-            x := 255'u8
-            x += 255    // 254
-            x += 1      // 255
-            x >>= 1     // 127
-            @assert(x == 127)
-        }
+        x := 255'u8
+        x += 255    // 254
+        x += 1      // 255
+        x >>= 1     // 127
+        @assert(x == 127)
     }
 }

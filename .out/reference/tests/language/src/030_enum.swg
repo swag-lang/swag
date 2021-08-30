@@ -14,7 +14,7 @@
         using Swag
         enum Values { A; B; }
         type := @typeof(Values)
-        @assert(type.rawType == @typeof(s32))
+        @assert(type.rawType == s32)
     }
 
     // You can specify your own type after the enum name
@@ -237,7 +237,8 @@
         enum RGB { R; G; B; }
 
         cpt := 0
-        loop idx: RGB cpt += 1
+        loop idx: RGB
+            cpt += 1
         @assert(cpt == 3)
 
         visit val: RGB

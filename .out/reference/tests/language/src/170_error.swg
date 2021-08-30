@@ -6,7 +6,8 @@
 func count(name: string)->uint throw
 {
     // This function will return 0 in case of an error.
-    if name == null throw "null pointer"
+    if name == null
+        throw "null pointer"
 
     return @countof(name)
 }

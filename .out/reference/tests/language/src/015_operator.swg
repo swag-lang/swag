@@ -81,12 +81,20 @@
         @assert( 1 <=>  1 == 0)
     }
 
-    // Logic operator
+    {
+        x1 := 10 <=> 20
+        @assert(x1 == -1)
+        x2 := 20 <=> 10
+        @assert(x2 == 1)
+        x3 := 20 <=> 20
+        @assert(x3 == 0)
+    }
+
+    // Logic operator. This is not '&&' and '||' like in C++.
     {
         a := false
-
-        a = (1 > 10) and (10 < 1)    // And
-        a = (1 > 10) or (10 < 1)    // Or
+        a = (1 > 10) and (10 < 1)
+        a = (1 > 10) or (10 < 1)
     }
 
     // Null conditional operator
@@ -94,7 +102,7 @@
     {
         a := "string1"
         b := "string2"
-        c := a orelse b
+        c := a orelse b     // c = a if a is not null, else c = b
         @assert(c == "string1")
 
         a = null
@@ -112,15 +120,5 @@
         @assert(x < 10)
         @assert(x >= 5)
         @assert(x > 0)
-    }
-
-    // 3 ways comparison operator, returns a s32 of -1, 0 or 1
-    {
-        x1 := 10 <=> 20
-        @assert(x1 == -1)
-        x2 := 20 <=> 10
-        @assert(x2 == 1)
-        x3 := 20 <=> 20
-        @assert(x3 == 0)
     }
 }

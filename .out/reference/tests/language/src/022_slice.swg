@@ -29,7 +29,7 @@
 
     // You can create a slice with your own pointer and count using '@mkslice'
     {
-        var array: [4] u32 = @[10, 20, 30, 40]
+        var array: [4]  u32 = @[10, 20, 30, 40]
         var slice: [..] u32 = @mkslice(&array[0] + 2, 2)
         @assert(@countof(slice) == 2)
         @assert(slice[0] == 30)

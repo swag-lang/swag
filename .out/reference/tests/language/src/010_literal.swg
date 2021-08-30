@@ -45,10 +45,9 @@
 
         var e = -1E-1
         @assert(e == -0.1)
-
     }
 
-    // By default, a floating point value is 'f32', not 'f64' (aka double) like in c++
+    // By default, a floating point value is 'f32', not 'f64' (aka double) like in C++
     {
         var a = 1.5
         @assert(a == 1.5)

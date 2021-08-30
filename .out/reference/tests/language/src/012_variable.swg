@@ -1,6 +1,6 @@
 #test
 {
-    // To declare a variable, use the 'var' keyword
+    // To declare a variable, use the 'var' keyword, followed by ':' and then the type
     {
         var a: u32 = 1
         @assert(a == 1)
@@ -86,24 +86,7 @@
         @assert(@typeof(c) == f64)
     }
 
-    // If you use 'const' instead of 'var', the value must be known by the compiler
-    // (no memory footprint)
-    {
-        const a = 666
-        #assert(a == 666)
-
-        const b: string = "string"
-        #assert(b == "string")
-    }
-
-    // You can use '@typeof' or '@kindof' to get the type of another expression
-    {
-        var a = 0
-        var b: @typeof(a) = 1
-        @assert(@typeof(a) == @typeof(b))
-    }
-
-    // A local variable declared with the #[Swag.Global] attribute will be global
+    // A local variable declared with the #[Swag.Global] attribute will be global (like 'static' in C++)
     {
         func toto()->s32
         {

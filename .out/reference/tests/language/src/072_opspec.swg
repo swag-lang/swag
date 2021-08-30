@@ -14,7 +14,7 @@ alias WhateverType = bool
 impl Struct
 {
     // Called each time a variable needs to be dropped
-    // This is the destructor in c++
+    // This is the destructor in C++
     func opDrop(using self) {}
 
     // Called after a raw copy operation from one value to another

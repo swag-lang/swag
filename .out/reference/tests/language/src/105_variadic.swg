@@ -13,11 +13,11 @@
     {
         func myFunction(parameters: ...)
         {
+            @assert(@countof(parameters) == 3)
+
             @assert(@typeof(parameters[0]) == any)
             @assert(@typeof(parameters[1]) == any)
             @assert(@typeof(parameters[2]) == any)
-
-            @assert(@countof(parameters) == 3)
 
             @assert(@kindof(parameters[0]) == s32)
             @assert(@kindof(parameters[1]) == string)

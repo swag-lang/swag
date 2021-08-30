@@ -16,8 +16,9 @@
         @assert(@sizeof(a) == @sizeof(u32))
     }
 
-    // You cannot index a string to get a rune, except in ascii strings.
-    // You will retrieve a byte
+    // You cannot index a string to get a rune, except in ascii strings. This is because i didn't want the
+    // runtime to come with UTF8 decoding.
+    // So in that case you will retrieve a byte.
     {
         const a = "this is a chinese character: 是"
         const b = a[0]
@@ -36,9 +37,9 @@
         #assert(a == "this is a string")
     }
 
-    // You can concatenate some values if the values are known at compile Time. Use the '~' character for that
+    // You can concatenate some values if the values are known at compile time. Use the '~' character for that
     {
-        var a = "the devil number is " ~666
+        const a = "the devil number is " ~666
         @assert(a == "the devil number is 666")
 
         const b = 666

@@ -10,7 +10,7 @@
 #global protected
 #global private
 
-// All symbols in the file will go the namespace 'Toto'
+// All symbols in the file will go in the namespace 'Toto'
 #global namespace Toto
 
 // A #if for the whole file

@@ -56,7 +56,7 @@ A module is also organized in a predefined way :
 * `moduleName/` the folder name of the module is used to create output files.
 * `src/` contains the source code.
 * `public/` a generated folder that will contain all the exports needed by other modules to use that one (in case of a dynamic library).
-* `publish/` contains additional files to use that modules (like an external C dll).
+* `publish/` contains additional files to use that module (like an external C dll).
 
 A module also always contains a special file named `module.swg`. This file is used to configure the module, and is **mandatory**.
 
@@ -70,7 +70,7 @@ F:/> swag build -w:first
 
 You can omit the workspace name if you call swag directly from the workspace folder. This command will compile all modules in `modules/` and `examples/`.
 
-You can also build and run your workspace (because there's only one executable module).
+You can also build and run your workspace.
 
 ```
 F:/> swag run -w:first
@@ -94,4 +94,4 @@ You should take a look at the `reference/` sub folder in the Swag directory. It 
 
 It's a good starting point to familiarize yourself with the language.
 
-And as this is a normal Swag workspace, you can also build it with `swag test -w:swag/reference`.
+And as this is a normal Swag workspace, you could also build it with `swag test -w:swag/reference`.

@@ -21,8 +21,11 @@
 
         value := dref ptr
         @assert(value == 1)
+        @assert(@typeof(value) == s32)
+
         value1 := ptr[0]
         @assert(value1 == 1)
+        @assert(@typeof(value1) == s32)
     }
 
     // Pointers can be 'const'

@@ -1,6 +1,6 @@
 #test
 {
-    // An array is declared with []
+    // An array is declared with [] followed by the type
     {
         var array: [2] s32
         array[0] = 1
@@ -67,7 +67,7 @@
 
     // Sizes can be deduced from initialization too
     {
-        array := @[1, 2, 3, 4]
+        array  := @[1, 2, 3, 4]
         array1 := @[[1, 2], [3, 4]]
     }
 

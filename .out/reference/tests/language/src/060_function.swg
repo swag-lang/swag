@@ -9,7 +9,6 @@ func toto1()->s32
     return 0
 }
 
-
 // The return type can be deduced in case of a simple expression, with '=>' instead of '->'
 func sum(x, y: s32) => x + y
 

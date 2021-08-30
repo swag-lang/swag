@@ -10,7 +10,8 @@ var G: f32 = ?
 #run
 {
     // Dummy example, but at runtime, G will be equal to 10
-    loop 10 G += 1
+    loop 10
+        G += 1
 }
 
 // #main is the program entry point

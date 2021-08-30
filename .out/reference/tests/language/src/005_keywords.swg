@@ -7,6 +7,7 @@
 
 #abi
 #arch
+#backend
 #callerfunction
 #callerlocation
 #cfg
@@ -20,6 +21,7 @@
 #line
 #load
 #location
+#module
 #os
 #scopefct
 #semerror
@@ -136,10 +138,10 @@
 move
 nodrop
 
+acast
 alias
 assume
 attr
-acast
 bitcast
 cast
 catch
@@ -189,19 +191,19 @@ while
 any
 bool
 code
-rune
 f32
 f64
-s8
+int
+rune
 s16
 s32
 s64
-int
-u8
+s8
+string
+typeinfo
 u16
 u32
 u64
+u8
 uint
 void
-string
-typeinfo

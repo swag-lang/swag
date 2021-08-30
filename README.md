@@ -31,6 +31,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 ### Swag does not have...
 * **Exceptions**, because this is bad. This is really bad.
 * **Header files**, but who does, nowadays ?
+* **Mandatory semicolons**, yeah...
 
 # Hello mad world !
 
@@ -119,4 +120,7 @@ func mySillyFunction()->string
 # For the braves
 
 * [Start](docs/getting_started.md) your first project, compile it, run it !
+
+# For the very braves
+
 * [How to build](docs/how_to_build_swag.md) the compiler with the full source tree.

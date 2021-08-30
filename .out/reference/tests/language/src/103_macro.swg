@@ -115,13 +115,13 @@
         #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
         {
-            label up loop count
+            label Up loop count
             {
                 loop count
                 {
                     #macro
                     {
-                        #mixin `what { break = break up; }
+                        #mixin `what { break = break Up; }
                     }
                 }
             }

@@ -37,12 +37,13 @@
 
     // loop can be used on every types that accept the '@countof' intrinsic
     {
-        arr := @[1, 2, 3, 4]
+        arr := @[10, 20, 30, 40]
         @assert(@countof(arr) == 4)
 
         cpt := 0
-        loop arr cpt += arr[@index]
-        @assert(cpt == 1+2+3+4)
+        loop arr
+            cpt += arr[@index]
+        @assert(cpt == 10+20+30+40)
     }
 
     // On a string, it will loop for each byte, not character (if a character is more than one byte)
