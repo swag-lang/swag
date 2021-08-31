@@ -18,7 +18,7 @@
         @assert(dref ptr == 6)
     }
 
-    // '@typeof' will give you 'any', but '@kindof' will give you the real type
+    // '@typeof' will give you 'any', but '@kindof' will give you the real underlying type
     {
         var a: any = "string"
         @assert(@typeof(a) == any)
@@ -37,13 +37,5 @@
         @assert(array[1] == 2)
         @assert(array[2] == 3.0)
         @assert(array[3] == "4")
-    }
-
-    // For a function, '@typeof' is the function scoped type, so it cannot be compared
-    // with a flat type, but '@kindof' returns the flat type.
-    {
-        func foo()->s32 => 666
-        @assert(@typeof(foo) != func()->s32)
-        @assert(@kindof(foo) == func()->s32)
     }
 }

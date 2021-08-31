@@ -121,7 +121,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)(alias)([0-9]*)"
+          "match": "(@)(alias)([0-9]*)|.item([0-9]*)"
         }
       ]
     },
