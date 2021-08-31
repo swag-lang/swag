@@ -146,7 +146,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     }
 
     SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Utf8::format(g_E[Err0410], token.text.c_str())));
-    paramNode->token.text = move(token.text);
+    paramNode->token.text = token.text;
 
     // 'self'
     if (token.id == TokenId::KwdConst || paramNode->token.text == g_LangSpec->name_self)

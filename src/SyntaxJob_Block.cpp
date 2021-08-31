@@ -204,14 +204,14 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, g_E[Err0870]));
-        node->extraNameToken = move(token);
+        node->extraNameToken = token;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
     if (token.id == TokenId::SymAsterisk)
     {
-        node->wantPointerToken = move(token);
+        node->wantPointerToken = token;
         node->specFlags        = AST_SPEC_VISIT_WANTPOINTER;
         SWAG_CHECK(eatToken());
     }
@@ -393,7 +393,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, g_E[Err0876]));
-        node->label = move(token.text);
+        node->label = token.text;
         SWAG_CHECK(eatToken());
     }
 
@@ -423,7 +423,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, g_E[Err0877]));
-        node->label = move(token.text);
+        node->label = token.text;
         SWAG_CHECK(eatToken());
     }
 

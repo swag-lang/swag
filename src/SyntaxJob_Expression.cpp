@@ -9,7 +9,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveLiteral;
-    node->token       = move(token);
+    node->token       = token;
     if (result)
         *result = node;
 
@@ -423,7 +423,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode**
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveUnaryOp;
-        node->token       = move(token);
+        node->token       = token;
         if (result)
             *result = node;
         SWAG_CHECK(eatToken());
@@ -684,7 +684,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
             binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
         else
             binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
-        binaryNode->token = move(token);
+        binaryNode->token = token;
         SWAG_CHECK(eatToken());
 
         // Modifiers
@@ -717,7 +717,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
     {
         auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr, 2);
         binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
-        binaryNode->token       = move(token);
+        binaryNode->token       = token;
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
@@ -759,7 +759,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     {
         auto binaryNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
         binaryNode->semanticFct = SemanticJob::resolveBoolExpression;
-        binaryNode->token       = move(token);
+        binaryNode->token       = token;
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());

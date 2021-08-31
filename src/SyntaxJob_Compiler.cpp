@@ -90,7 +90,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerMixin;
-    node->token       = move(token);
+    node->token       = token;
 
     SWAG_CHECK(eatToken());
 
@@ -167,7 +167,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerAssert;
-    node->token                        = move(token);
+    node->token                        = token;
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
@@ -292,7 +292,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerRun;
-    node->token                        = move(token);
+    node->token                        = token;
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
@@ -326,7 +326,7 @@ bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embed
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerTestError;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->token = move(token);
+    node->token = token;
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, g_E[Err0367]}));
@@ -350,7 +350,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerPrint;
-    node->token                        = move(token);
+    node->token                        = token;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));

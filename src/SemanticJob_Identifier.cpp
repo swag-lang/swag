@@ -3013,7 +3013,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         else
             context->expansionNode.push_back({node, JobContext::ExpansionType::SelectIf});
 
-        auto result = executeCompilerNode(context, expr, true);
+        auto result = executeCompilerNode(context, expr, false);
 
         context->selectIfParameters = nullptr;
         context->expansionNode.pop_back();
