@@ -41,6 +41,7 @@
         @assert(ptr[0] == "s"'u8)
     }
 
+    // You can be weird, but is this necessary ?
     {
         var ptr:  *const *u8        // Normal pointer to a const pointer
         var ptr1: const *const *u8  // Const pointer to a const pointer
