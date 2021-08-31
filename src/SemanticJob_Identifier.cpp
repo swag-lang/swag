@@ -274,9 +274,13 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
         varNode->extension->alternativeScopes.append(identifier->parent->extension->alternativeScopes);
     }
 
+    // If we are in a const declaration, that temporary variable should be a const too...
+    if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+        varNode->kind = AstNodeKind::ConstDecl;
+
     // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
     // another global variable at compile time
-    if (identifier->ownerScope->isGlobalOrImpl())
+    else if (identifier->ownerScope->isGlobalOrImpl())
         varNode->kind = AstNodeKind::ConstDecl;
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
@@ -842,12 +846,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // A struct with parameters is in fact the creation of a temporary variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
         {
-            if (identifier->parent->parent->kind == AstNodeKind::VarDecl)
+            if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
             {
-                // Optim if we have var := Struct{}
+                // Optim if we have var = Struct{}
                 // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
                 // of 'var'
-                auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl);
+                auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
                 if (varNode->assignment == identifier->parent)
                 {
                     if (!varNode->type)

@@ -32,7 +32,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
         if (!assignment->castedTypeInfo)
-            return context->internalError( "storeToSegment, cannot resolve any");
+            return context->internalError("storeToSegment, cannot resolve any");
 
         // Store value in constant storageSegment
         auto     constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
@@ -179,7 +179,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
                     *(uint64_t*) ptrDest = value ? value->reg.u64 : 0;
                     break;
                 default:
-                    return context->internalError( "collectStructLiterals, invalid native type sizeof");
+                    return context->internalError("collectStructLiterals, invalid native type sizeof");
                 }
 
                 SWAG_ASSERT(typeInfo->sizeOf);
@@ -304,15 +304,25 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         }
         else
         {
-            // First collect values from the structure default init
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
-
-            // Then collect values from the type parameters
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+
+                // First collect values from the structure default initialization, except if the parameters cover 
+                // all the fields (in that case no need to initialize the struct twice)
+                if (!(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                    SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
+                else
+                    storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr, TypeManager::alignOf(typeInfo));
+
+                // Then collect values from the type parameters
                 SWAG_CHECK(storeToSegment(context, storageSegment, storageOffset, value, typeInfo, identifier->callParameters));
+            }
+            else
+            {
+                // Collect values from the structure default init
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
             }
 
             SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
