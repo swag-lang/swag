@@ -47,21 +47,36 @@
     }
 
     // Variadic parameters can be passed from function to function
-     {
-         func A(params: ...)
-         {
-             @assert(@countof(params) == 2)
-             @assert(@kindof(params[0]) == string)
-             @assert(@kindof(params[1]) == bool)
-             @assert(cast(string) params[0] == "value")
-             @assert(cast(bool) params[1] == true)
-         }
+    {
+        func A(params: ...)
+        {
+            @assert(@countof(params) == 2)
+            @assert(@kindof(params[0]) == string)
+            @assert(@kindof(params[1]) == bool)
+            @assert(cast(string) params[0] == "value")
+            @assert(cast(bool) params[1] == true)
+        }
 
-         func B(params: ...)
-         {
-             A(params)
-         }
+        func B(params: ...)
+        {
+            A(params)
+        }
 
-         B("value", true)
-     }
+        B("value", true)
+    }
+
+    // You can spread the content of an array with '@spread'
+    {
+        func sum(params: s32...)->s32
+        {
+            total := 0
+            visit v: params
+                total += v
+            return total
+        }
+
+        arr := @[1, 2, 3, 4]
+        res := sum(@spread(arr))
+        @assert(res == 1+2+3+4)
+    }
 }
