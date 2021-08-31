@@ -21,7 +21,6 @@
     { "include": "#intrinsics-literal" },
     { "include": "#compiler-function" },
     { "include": "#compiler-global" },
-    { "include": "#compiler-global1" },
     { "include": "#compiler-statement" },
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
@@ -152,21 +151,13 @@
     "compiler-global": {
       "patterns": [
         {
-          "name": "constant.character.escape",
+          "name": "meta.preprocessor",
           "match": "(#)(global)\\s+(export|foreignlib|generated|if|namespace|public|protected|private|skip|testpass|testerror|testerrors|testwarning|testwarnings)\\b",
           "captures": {
             "3": {
-              "name": "meta.preprocessor"
+              "name": "constant.character.escape"
             }
           }
-        }
-      ]
-    },
-    "compiler-global1": {
-      "patterns": [
-        {
-          "name": "constant.character.escape",
-          "match": "(#)(global)"
         }
       ]
     },
@@ -174,7 +165,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(assert|print|import|mixin|macro|inline|placeholder|if|else|elif|selectif|checkif)\\b"
+          "match": "(#)(global|load|assert|print|import|mixin|macro|inline|placeholder|if|else|elif|selectif|checkif)\\b"
         }
       ]
     },
@@ -182,7 +173,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(load|defined|scopefct|file|line|hastag|gettag|cfg|arch|os|abi|module|backend|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
+          "match": "(#)\\b(defined|scopefct|file|line|hastag|gettag|cfg|arch|os|abi|module|backend|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
         }
       ]
     },

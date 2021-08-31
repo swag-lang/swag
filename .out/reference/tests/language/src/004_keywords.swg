@@ -16,10 +16,8 @@
 #file
 #function
 #gettag
-#global
 #hastag
 #line
-#load
 #location
 #module
 #os
@@ -34,9 +32,11 @@
 #checkif
 #elif
 #else
+#global
 #if
 #import
 #inline
+#load
 #macro
 #mixin
 #placeholder
