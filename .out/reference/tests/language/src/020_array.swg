@@ -1,6 +1,6 @@
 #test
 {
-    // An array is declared with [] followed by the type
+    // A static array is declared with [] followed by the type
     {
         var array: [2] s32
         array[0] = 1

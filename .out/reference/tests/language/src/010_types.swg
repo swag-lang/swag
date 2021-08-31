@@ -62,15 +62,15 @@
 
     // The string type. Strings are UTF8, and are stored as two 64 bits (pointer to value, and length)
     {
-        var a: string = "string"
-        @assert(a == "string")
+        var a: string = "string 是"
+        @assert(a == "string 是")
         @assert(@sizeof(a) == 16)
     }
 
-    // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits (unicode 32)
+    // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits unicode code point.
     {
-        var a: rune = "C"'rune
-        @assert(a == "C"'rune)
+        var a: rune = "是"'rune
+        @assert(a == "是"'rune)
         @assert(@sizeof(a) == 4)
     }
 
