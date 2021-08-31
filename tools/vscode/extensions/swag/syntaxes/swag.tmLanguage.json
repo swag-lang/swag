@@ -241,6 +241,14 @@
     "function-call": {
       "patterns": [
         {
+          "match": "\\b(visit)\\(",
+          "captures": {
+            "1": {
+              "name": "keyword.control"
+            }
+          }
+        },
+        {
           "match": "([A-Za-z_][A-Za-z_0-9]*)\\(",
           "captures": {
             "1": {

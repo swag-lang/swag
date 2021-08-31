@@ -14,12 +14,11 @@
         #[Swag.Macro]
         func myMacro()
         {
-            a := 666
+            a := 666    // 'a' is declared in the scope of 'myMacro'
         }
 
         a := 0
-        myMacro()
-        myMacro()
+        myMacro()   // no conflict with the 'a' declared above
         @assert(a == 0)
     }
 
@@ -65,7 +64,7 @@
         func myMacro(what: code)
         {
             // No conflict, in its own scope
-            a := 0
+            a := 666
 
             #macro
             {
@@ -77,7 +76,7 @@
         a := 1
         myMacro()
         {
-            a += 2
+            a += 2  // will reference the 'a' above because this code is inside #macro
         }
 
         @assert(a == 3)
@@ -115,12 +114,15 @@
         #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
         {
-            label Up loop count
+            label Up
+            loop count
             {
                 loop count
                 {
                     #macro
                     {
+                        // 'break' in the user code will be replaced by 'break Up'
+                        // So it will break outside the outer loop
                         #mixin `what { break = break Up; }
                     }
                 }

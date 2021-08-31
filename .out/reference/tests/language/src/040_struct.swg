@@ -68,7 +68,7 @@
         @assert(v3.y == 20)
     }
 
-    // A struct can be initialized at the declaration
+    // The fields of a struct can be initialized at the declaration
     {
         struct MyStruct
         {

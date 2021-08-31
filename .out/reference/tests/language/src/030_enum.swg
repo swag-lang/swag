@@ -1,6 +1,6 @@
 #test
 {
-    // Enums values, unlike C, must end with ';' or an <eol>
+    // Enums values, unlike C, must end with ';' or an <eol> (like a normal Swag declaration)
     {
         enum Values
         {
@@ -183,6 +183,9 @@
         x := Value.A
         @assert(x[0] == 1)
         @assert(x[1] == 2)
+        y := Value.B
+        @assert(y[0] == 10)
+        @assert(y[1] == 20)
     }
 
     // A variable of type enum must be initialized, except if ? is used

@@ -5,7 +5,8 @@
     // The loop expression must be a positive value.
     {
         cpt := 0
-        loop 10 cpt += 1
+        loop 10
+            cpt += 1
         @assert(cpt == 10)
     }
 
@@ -131,4 +132,25 @@
         if @index == 4
             break
     }
+}
+
+// You can loop on a struct value if 'opCount' has been defined
+struct MyStruct
+{
+}
+
+impl MyStruct
+{
+    method opCount() => 4'uint
+}
+
+#test
+{
+    v   := MyStruct{}
+    cpt := 0
+
+    loop v
+        cpt += 1
+
+    @assert(cpt == 4)
 }
