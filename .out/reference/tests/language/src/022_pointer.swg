@@ -3,7 +3,13 @@
     // A pointer is declared with '*'
     {
         var ptr1: *u8
-        var ptr2: **u8 = null
+        var ptr2: **u8
+    }
+
+    // A pointer can be null
+    {
+        var ptr1: *u8
+        @assert(ptr1 == null)
     }
 
     // You can take the address of something with '&'
