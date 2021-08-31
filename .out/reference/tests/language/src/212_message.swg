@@ -1,8 +1,8 @@
-// #compiler is a special function that will be called by the compiler
+// #message is a special function that will be called by the compiler
 // The parameter is a mask that tells the compiler when to call the function.
 
 // Here the function will be called each time a function of the module has been typed
-#compiler(Swag.CompilerMsgMask.SemanticFunc)
+#message(Swag.CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
@@ -18,7 +18,7 @@
 
 // The compiler will call the following function after the semantic pass
 // So after all the functions of the module have been parsed
-#compiler(Swag.CompilerMsgMask.PassAfterSemantic)
+#message(Swag.CompilerMsgMask.PassAfterSemantic)
 {
     // We should have found 3 functions starting with "XX"
     @assert(G == 3)

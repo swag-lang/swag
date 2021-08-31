@@ -232,7 +232,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#init", {TokenId::CompilerFuncInit, LiteralType::TT_MAX});
     keywords.add("#drop", {TokenId::CompilerFuncDrop, LiteralType::TT_MAX});
     keywords.add("#main", {TokenId::CompilerFuncMain, LiteralType::TT_MAX});
-    keywords.add("#compiler", {TokenId::CompilerFuncCompiler, LiteralType::TT_MAX});
+    keywords.add("#message", {TokenId::CompilerFuncCompiler, LiteralType::TT_MAX});
     keywords.add("#placeholder", {TokenId::CompilerPlaceHolder, LiteralType::TT_MAX});
     keywords.add("#if", {TokenId::CompilerIf, LiteralType::TT_MAX});
     keywords.add("#else", {TokenId::CompilerElse, LiteralType::TT_MAX});

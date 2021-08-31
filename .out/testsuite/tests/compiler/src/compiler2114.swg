@@ -17,7 +17,7 @@ var toTreat: [4] string
 var toTreatCpt: u32
 
 //#[Swag.PrintBc]
-#compiler(CompilerMsgMask.SemanticFunc)
+#message(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
@@ -37,7 +37,7 @@ var toTreatCpt: u32
 
 #placeholder GG
 
-#compiler(CompilerMsgMask.PassAfterSemantic)
+#message(CompilerMsgMask.PassAfterSemantic)
 {
     itf := @compiler()
     itf.compileString("func GG() => 1234")

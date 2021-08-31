@@ -1,7 +1,7 @@
 
 #global testerror
 
-#compiler(0)
+#message(0)
 {
 
 }

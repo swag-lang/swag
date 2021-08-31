@@ -741,7 +741,7 @@ SWAG_ERROR(Err0746, "function with the 'Swag.Test' attribute cannot have paramet
 SWAG_ERROR(Err0747, "%s cannot be public")
 SWAG_ERROR(Err0748, "not all control paths of %s return a value")
 SWAG_ERROR(Err0749, "%s has a return type '%s', but the body is missing a 'return'")
-SWAG_ERROR(Err0750, "'#compiler' function should have a parameter of type 'Swag.CompilerMsgMask'")
+SWAG_ERROR(Err0750, "'#message' function should have a parameter of type 'Swag.CompilerMsgMask'")
 SWAG_ERROR(Err0751, "function '%s' has the 'Swag.NoGeneric' attribute but seems to be generic")
 SWAG_ERROR(Err0752, "function '%s' cannot have generic parameters because it is flagged with the 'Swag.NoGeneric' attribute")
 SWAG_ERROR(Err0753, "function '%s' cannot have the 'Swag.Complete' attribute, this is reserved for 'opAffect'")

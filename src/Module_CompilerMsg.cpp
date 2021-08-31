@@ -7,7 +7,7 @@
 
 bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
 {
-    // We can decide to filter the message only if all #compiler functions have been registered
+    // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)
     {
         int index = (int) msg.concrete.kind;
@@ -30,12 +30,12 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
 
 bool Module::prepareCompilerMessages(JobContext* context)
 {
-    // Eliminate messages without a corresponding #compiler
+    // Eliminate messages without a corresponding #message
     for (int i = 0; i < compilerMessages.size(); i++)
     {
         auto& msg = compilerMessages[i];
 
-        // If no #compiler function corresponding to the message, remove
+        // If no #message function corresponding to the message, remove
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {

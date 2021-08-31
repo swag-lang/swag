@@ -403,7 +403,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         return true;
     }
 
-    // If this is a #compiler function, we must have a flag mask as parameters
+    // If this is a #message function, we must have a flag mask as parameters
     if ((funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
     {
         auto parameters = funcNode->parameters;

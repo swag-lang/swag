@@ -558,7 +558,7 @@ Utf8 AstFuncDecl::getDisplayName()
     if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
         return "'#main' block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        return "'#compiler' block";
+        return "'#message' block";
     if (attributeFlags & ATTRIBUTE_INIT_FUNC)
         return "'#init' block";
     if (attributeFlags & ATTRIBUTE_DROP_FUNC)

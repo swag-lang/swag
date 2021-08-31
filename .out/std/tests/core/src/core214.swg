@@ -18,7 +18,7 @@ struct OneFunc
 
 var g: Array'OneFunc
 
-#compiler(CompilerMsgMask.SemanticFunc)
+#message(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
@@ -28,7 +28,7 @@ var g: Array'OneFunc
     g.add(@{msg.type, msg.name})
 }
 
-#compiler(CompilerMsgMask.PassAfterSemantic)
+#message(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder
     var builderFct: StringBuilder

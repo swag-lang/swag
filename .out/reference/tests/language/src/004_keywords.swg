@@ -44,10 +44,10 @@
 #selectif
 
 #ast
-#compiler
 #drop
 #init
 #main
+#message
 #run
 #test
 

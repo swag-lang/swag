@@ -501,7 +501,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, isMethod));
     }
 
-    // #compiler has an expression has parameters
+    // #message has an expression has parameters
     else if (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
     {
         Scoped    scoped(this, newScope);
