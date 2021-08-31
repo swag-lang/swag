@@ -808,7 +808,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Compute padding before the current field
         if (!relocated && node->packing > 1 && alignOf)
         {
-            alignOf           = min(alignOf, node->packing);
+            auto userAlignOf = typeParam->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
+            if (userAlignOf)
+                alignOf = userAlignOf->reg.u8;
+            else
+                alignOf = min(alignOf, node->packing);
             realStorageOffset = (uint32_t) TypeManager::align(realStorageOffset, alignOf);
             storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
         }
