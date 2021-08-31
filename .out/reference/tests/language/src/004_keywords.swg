@@ -132,11 +132,17 @@
 @stringof
 @typeof
 
+// Modifiers
+// ---------
+
+,move
+,nodrop
+,moveraw
+,safe
+,small
+
 // Language keywords
 // -----------------
-
-move
-nodrop
 
 acast
 alias
