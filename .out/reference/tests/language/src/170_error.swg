@@ -26,11 +26,12 @@ func myFunc()
     }
 }
 
-// The caller can stop the execution with 'try', and return to its own caller with the same error raised. The function must then also be marked with 'throw'.
-// Here the caller of 'myFunc1' will have to deal with the error at its turn.
+// The caller can stop the execution with 'try', and return to its own caller with the same error raised.
+// The function must then also be marked with 'throw'.
+// Here, the caller of 'myFunc1' will have to deal with the error at its turn.
 func myFunc1() throw
 {
-    // If 'count()' raises an error, 'myFunc1' will return
+    // If 'count()' raises an error, 'myFunc1' will return with the same error
     cpt := try count("filename")
 }
 

@@ -10,7 +10,11 @@ var Global = 0
 
 // static #if/#else, with an expression that can be evaluated at compiler time
 const DEBUG = 1
+const RELEASE = 0
 #if DEBUG
+{
+}
+#elif RELEASE
 {
 }
 #else
@@ -27,6 +31,7 @@ func isThisDebug() => true
     #assert(false, "this should not be called !")
 }
 
+// A more complicated #assert
 #[Swag.ConstExpr]
 func factorial(x: s32)->s32
 {

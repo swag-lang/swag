@@ -1,6 +1,6 @@
 #test
 {
-    // A mixin is declared like a function, with the attribute 'Swag.Mixin'
+    // A mixin is declared like a function, with the attribute #[Swag.Mixin]
     {
         #[Swag.Mixin]
         func myMixin()
@@ -41,6 +41,7 @@
         #[Swag.Mixin]
         func doItTwice(what: code)
         {
+            // You can then 'insert' the code with '#mixin'
             #mixin what
             #mixin what
         }
@@ -93,7 +94,7 @@
         #[Swag.Mixin]
         func setVar(variable: alias, value: s32)
         {
-            variable := value
+            var variable = value
         }
 
         setVar(#code a, 10)

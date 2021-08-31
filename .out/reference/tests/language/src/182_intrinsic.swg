@@ -52,8 +52,6 @@ func @memcpy(dst: *void, src: const *void, size: uint);
 func @memmove(dst: *void, src: const *void, size: uint);
 func @memcmp(dst, src: const *void, size: uint)->s32;
 func @cstrlen(value: const *u8)->uint;
-@strcmp()
-@typecmp()
 
 // Atomic operations
 

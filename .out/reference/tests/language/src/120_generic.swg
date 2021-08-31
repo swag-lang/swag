@@ -46,8 +46,8 @@
         @assert(call(100) == 1000)
     }
 
+    // Like functions, a struct can be generic
     {
-        // Like functions, a struct can be generic
         struct(T) Struct
         {
             val: T
@@ -60,7 +60,6 @@
     }
 
     {
-        // Like functions, a struct can be generic
         struct(T, N: s32) Struct
         {
             val: [N] T
