@@ -3013,7 +3013,11 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         else
             context->expansionNode.push_back({node, JobContext::ExpansionType::SelectIf});
 
-        auto result = executeCompilerNode(context, expr, false);
+        // #selectif is evaluated only once, and must be constexpr/
+        // #checkif is evaluated at each function call, and is more permissive
+        bool mustBeConst = funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIf;
+
+        auto result = executeCompilerNode(context, expr, mustBeConst);
 
         context->selectIfParameters = nullptr;
         context->expansionNode.pop_back();
