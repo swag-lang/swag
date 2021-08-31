@@ -1,4 +1,4 @@
-// 'impl' is used to declare some stuff in the scope of a struct/enum
+// 'impl' is used to declare some stuff in the scope of a struct
 
 #[Swag.ExportType("methods")]
 struct MyStruct
@@ -80,23 +80,4 @@ impl MyStruct
     @assert(fnX(v) == 5)
     @assert(fnY(v) == 10)
     @assert(fnZ(v) == 20)
-}
-
-// 'impl' can also be used for an enum
-enum RGB { R; G; B; }
-impl enum RGB
-{
-    func isRed(self) => self == R
-    func isRedOrBlue(self) => self == R or self == B
-}
-
-#test
-{
-    @assert(RGB.isRed(RGB.R))
-    @assert(RGB.isRedOrBlue(RGB.B))
-    using RGB
-    @assert(isRedOrBlue(R))
-    @assert(isRedOrBlue(B))
-    @assert(R.isRedOrBlue())
-    @assert(!RGB.G.isRedOrBlue())
 }

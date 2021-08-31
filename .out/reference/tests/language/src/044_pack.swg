@@ -1,4 +1,4 @@
-// You can control the struct layout with two attributes: #[Swag.Pack] and #[Swag.Align]
+// You can also control the struct layout with two attributes: #[Swag.Pack] and #[Swag.Align]
 
 #test
 {
