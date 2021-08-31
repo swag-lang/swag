@@ -1,6 +1,6 @@
 #test
 {
-    // On a function, you can use '#selectif' to constraint the usage of the function.
+    // On a function, you can use '#selectif' to constrain the usage of the function.
     // If the #selectif expression returns false, then the function will not be considered for the call match.
     // The #selectif expression is evaluated only once, whatever the call, so it is typically used to
     // check generic parameters.
@@ -32,15 +32,15 @@
             return x == 0
         }
 
-        // f32 version
+        // f32/f64 version
         func(T) isNull(x: T)->bool
             #selectif @typeof(T) == f32 or @typeof(T) == f64
         {
-            return @abs(x) < 0.00001
+            return @abs(x) < 0.01
         }
 
         @assert(isNull(0's32))
-        @assert(isNull(0.00000001'f32))
+        @assert(isNull(0.001'f32))
     }
 
     // #selectif can be followed by a block that returns a bool instead of an expression
@@ -79,6 +79,7 @@
         //x := sum'f32(1, 2)
     }
 
+    // Instead of #selectif, you can use #checkif.
     // #checkif is evaluated for each call, so it can be used to check
     // parameters, as long as they can be evaluated at compile time
     {
