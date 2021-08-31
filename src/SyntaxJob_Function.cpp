@@ -507,6 +507,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, g_E[Err0750]));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
