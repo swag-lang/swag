@@ -109,19 +109,19 @@ impl Vector2
     }
 
     // Returns true if this Vector2 is null
-    method isZero()->bool
+    func isZero(using const self)->bool
     {
         return x == 0 and y == 0
     }
 
     // Returns true if this Vector2 is null with an epsilon
-    method isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
+    func isZeroEpsilon(using const self, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns true if this Vector2 is equals to another with an epsilon
-    method isEqualEpsilon(other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
+    func isEqualEpsilon(using const self, other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
