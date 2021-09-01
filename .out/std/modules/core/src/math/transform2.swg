@@ -20,7 +20,7 @@ impl Transform2
     const Identity: Transform2{1, 0, 0, 1, 0, 0}
 
     // Set transform to identity
-    func setIdentity(using self)
+    mtd setIdentity()
     {
         m11 = 1; m12 = 0
         m21 = 0; m22 = 1
@@ -81,7 +81,7 @@ impl Transform2
     }
 
     // Multiply two matricies
-    func multiply(using self, matrix2: Transform2)
+    mtd multiply(matrix2: Transform2)
     {
         sm11 := m11
         m11 = sm11 * matrix2.m11 + m12 * matrix2.m21

@@ -4,7 +4,7 @@
 impl Vector2
 {
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
-    func isInTriangle(using const self, a, b, c: Vector2)->bool
+    mtdc isInTriangle(a, b, c: Vector2)->bool
     {
         ax  := c.x - b.x
         ay  := c.y - b.y
@@ -27,7 +27,7 @@ impl Vector2
     }
 
     // Returns the distance of the point to the given segment
-    func distanceToLine(using const self, a, b: Vector2)->f32
+    mtdc distanceToLine(a, b: Vector2)->f32
     {
         toPt := dref self - a
         seg  := b - a

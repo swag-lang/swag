@@ -15,85 +15,85 @@ impl Rectangle
     // Represents a rectangle with all coordinates to zero
     const Zero: Rectangle{0, 0, 0, 0}
 
-    func opEquals(using const self, other: Rectangle)->bool
+    mtdc opEquals(other: Rectangle)->bool
     {
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
     // horizontal center coordinate (x + width / 2)
     #[Swag.Inline]
-    func horzCenter(using const self)->f32
+    mtdc horzCenter()->f32
     {
         return x + (width * 0.5)
     }
 
     // vertical center coordinate (y + height / 2)
     #[Swag.Inline]
-    func vertCenter(using const self)->f32
+    mtdc vertCenter()->f32
     {
         return y + (height * 0.5)
     }
 
     // right coordinate (x + width)
     #[Swag.Inline]
-    func right(using const self)->f32
+    mtdc right()->f32
     {
         return x + width
     }
 
     // right coordinate (x + width)
     #[Swag.Inline]
-    func setRight(using self, value: f32)
+    mtd setRight(value: f32)
     {
         width = value - x
     }
 
     // bottom coordinate (y + height)
     #[Swag.Inline]
-    func bottom(using const self)->f32
+    mtdc bottom()->f32
     {
         return y + height
     }
 
     // bottom coordinate (y + height)
     #[Swag.Inline]
-    func setBottom(using self, value: f32)
+    mtd setBottom(value: f32)
     {
         height = value - y
     }
 
     // Set rectangle to (0, 0, 0, 0)
-    func clear(using self)
+    mtd clear()
     {
         x, y, width, height = 0
     }
 
     // Returns true if this instance is null
-    func isZero(using const self)->bool
+    mtdc isZero()->bool
     {
         return x == 0 and y == 0 and width == 0 and height == 0
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
-    func isEmpty(using const self)->bool
+    mtdc isEmpty()->bool
     {
         return width == 0 and height == 0
     }
 
     // Returns true if this instance has a positive surface (width and height greater than zero)
-    func isNormalized(using const self)->bool
+    mtd isNormalized()->bool
     {
         return width >= 0 and height >= 0
     }
 
     // Offset this point by a given value
-    func offset(using self, value: f32)
+    mtd offset(value: f32)
     {
         x, y += value
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, value: f32)
+    mtd scale(value: f32)
     {
         width, height *= value
     }
@@ -115,19 +115,19 @@ impl Rectangle
     }
 
     // Returns true if this instance is null with an epsilon
-    func isZeroEpsilon(using const self, eps = ConstF32.Epsilon)->bool
+    mtdc isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
-    func isEmptyEpsilon(using const self, eps = ConstF32.Epsilon)->bool
+    mtdc isEmptyEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Perform a Math.round operation on all the coordinates
-    func round(using self)
+    mtd round()
     {
         x = acast round(x)
         y = acast round(y)
@@ -136,7 +136,7 @@ impl Rectangle
     }
 
     // Perform a Math.trunc operation on all the coordinates
-    func trunc(using self)
+    mtd trunc()
     {
         x = acast trunc(x)
         y = acast trunc(y)
@@ -145,7 +145,7 @@ impl Rectangle
     }
 
     // Perform a Math.ceil operation on all the coordinates
-    func ceil(using self)
+    mtd ceil()
     {
         x = acast ceil(x)
         y = acast ceil(y)
@@ -160,19 +160,19 @@ impl Rectangle
     }
 
     // Determines if the specfied point is contained within the rectangular region
-    func contains(using const self, pt: Point)->bool
+    mtdc contains(pt: Point)->bool
     {
         return contains(pt.x, pt.y)
     }
 
     // Determines if the specfied rectangle is contained within the rectangular region
-    func contains(using const self, rect: Rectangle)->bool
+    mtdc contains(rect: Rectangle)->bool
     {
         return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
 
     // Intersect this rectangle with another one
-    func intersect(using self, with: Rectangle)
+    mtd intersect(with: Rectangle)
     {
         dref self = intersect(dref self, with)
     }
@@ -191,13 +191,13 @@ impl Rectangle
     }
 
     // Determines if this rectangle intersets with 'rect'
-    func intersectWith(using const self, rect: Rectangle)->bool
+    mtdc intersectWith(rect: Rectangle)->bool
     {
         return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
     }
 
     // Creates a rectangle that represents the union
-    func setUnion(using self, with: Rectangle)
+    mtd setUnion(with: Rectangle)
     {
         dref self = getUnion(dref self, with)
     }
