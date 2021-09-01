@@ -1,15 +1,11 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using Core, Win32, Ogl, Gdi32, Pixel, Gui
-using Core.Math
+using Core, Win32, Ogl, Gdi32, Pixel, Gui, Math
 
 const W = 1024
 const H = 1024
 
-var hDC:        HDC
-var cdc:        Painter
-var renderer:   RenderOglWin32
 var image0:     Texture
 var image1:     Texture
 var typeface:   const *TypeFace
@@ -18,11 +14,13 @@ var font40:     *Font
 var font80:     *Font
 var fontFam:    FontFamily
 
-var g_modeAA:       bool = true
-var g_paintQuality: PaintQuality = Normal
-var g_pattern:      bool = true
-var g_page:         s32 = 4
-var g_wnd:          Surface
+var g_Painter:      Painter
+var g_Renderer:     RenderOglWin32
+var g_ModeAA:       bool = true
+var g_PaintQuality: PaintQuality = Normal
+var g_Pattern:      bool = true
+var g_Page:         s32 = 4
+var g_Wnd:          Surface
 const MaxPages = 6
 
 func dataPath()->String
@@ -44,7 +42,7 @@ func displayPage0()
 {
     pen := Pen.createSolid(Argb.Black, 20)
 
-    if g_pattern
+    if g_Pattern
     {
         pen.dashStyle = .Dot
         //pen.pattern.add(1.0)
@@ -54,55 +52,55 @@ func displayPage0()
     }
 
     //////////////////////////////////////
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(50, 50)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(50, 50)
         pen.brush.color = Argb.Black
         pen.beginCapStyle = .None
         pen.endCapStyle = .None
-        cdc.drawLine(0, 0, 0, 150, pen)
+        g_Painter.drawLine(0, 0, 0, 150, pen)
 
         pen.beginCapStyle = .Square
         pen.endCapStyle = .Square
-        cdc.drawLine(100, 0, 150, 150, pen)
+        g_Painter.drawLine(100, 0, 150, 150, pen)
 
         pen.beginCapStyle = .Round
         pen.endCapStyle = .Round
-        cdc.drawLine(200, 0, 250, 150, pen)
+        g_Painter.drawLine(200, 0, 250, 150, pen)
 
         pen.beginCapStyle = .ArrowAnchor
         pen.endCapStyle = .ArrowAnchor
         pen.dashBeginCapStyle = .Round
         pen.dashEndCapStyle = .Round
-        cdc.drawLine(300, 0, 350, 150, pen)
+        g_Painter.drawLine(300, 0, 350, 150, pen)
 
         pen.beginCapStyle = .SquareAnchor
         pen.endCapStyle = .SquareAnchor
         pen.dashBeginCapStyle = .Triangle
         pen.dashEndCapStyle = .Triangle
         pen.brush.color = Color.fromArgb(0x5f, Argb.Black)
-        cdc.drawLine(400, 0, 450, 150, pen)
+        g_Painter.drawLine(400, 0, 450, 150, pen)
     }
 
-    cdc.drawLine(500, 0, 550, 150, Argb.Brown, 2)
+    g_Painter.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
-    cdc.resetTransform()
-    cdc.translateTransform(50, 250)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
     pen.joinStyle = .None
-    cdc.drawRect(0, 0, 100, 100, pen)
+    g_Painter.drawRect(0, 0, 100, 100, pen)
     pen.joinStyle = .Bevel
-    cdc.drawRect(150, 0, 100, 100, pen)
+    g_Painter.drawRect(150, 0, 100, 100, pen)
     pen.joinStyle = .Round
-    cdc.drawRect(300, 0, 100, 100, pen)
+    g_Painter.drawRect(300, 0, 100, 100, pen)
     pen.joinStyle = .Miter
-    cdc.drawRect(450, 0, 100, 100, pen)
+    g_Painter.drawRect(450, 0, 100, 100, pen)
 
     pen.brush.color = Argb.Red
     var path: LinePath
@@ -111,19 +109,19 @@ func displayPage0()
     path.lineTo(200, 50)
     pen.joinStyle = .Miter
 
-    cdc.resetTransform()
-    cdc.translateTransform(50, 400)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(50, 400)
+    g_Painter.drawPath(&path, pen)
     pen.joinStyle = .Bevel
 
-    cdc.resetTransform()
-    cdc.translateTransform(250, 400)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(250, 400)
+    g_Painter.drawPath(&path, pen)
     pen.joinStyle = .Round
 
-    cdc.resetTransform()
-    cdc.translateTransform(450, 400)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(450, 400)
+    g_Painter.drawPath(&path, pen)
 
     pen.brush.color = Argb.Green
     path.start(0, 0)
@@ -133,25 +131,25 @@ func displayPage0()
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
 
-    cdc.resetTransform()
-    cdc.translateTransform(50, 500)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(50, 500)
+    g_Painter.drawPath(&path, pen)
 
     path.start(0, 0)
     path.bezierTo(100, 0, 50, -50)
 
-    cdc.resetTransform()
-    cdc.translateTransform(250, 500)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(250, 500)
+    g_Painter.drawPath(&path, pen)
 
     path.start(0, 0)
     path.lineTo(50, 0)
     path.bezierTo(100, 50, 100, 0, 50, 50)
     path.lineTo(200, 50)
 
-    cdc.resetTransform()
-    cdc.translateTransform(400, 500)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(400, 500)
+    g_Painter.drawPath(&path, pen)
 
     path.start(0, 0)
     pen.brush.color = Argb.Purple
@@ -159,35 +157,35 @@ func displayPage0()
     path.lineTo(100, 50)
     path.arcTo(150, 50, 50, 50, -90, 0)
 
-    cdc.resetTransform()
-    cdc.translateTransform(50, 600)
-    cdc.drawPath(&path, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(50, 600)
+    g_Painter.drawPath(&path, pen)
 
-    cdc.resetTransform()
-    cdc.translateTransform(250, 600)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(250, 600)
     pen = Pen.createSolid(Argb.Blue, 10)
-    cdc.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
+    g_Painter.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
 
-    cdc.resetTransform()
-    cdc.translateTransform(400, 600)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(400, 600)
     pen.size = 4
-    cdc.drawCircle(50, 50, 50, pen)
+    g_Painter.drawCircle(50, 50, 50, pen)
 
-    cdc.resetTransform()
-    cdc.translateTransform(500, 600)
-    cdc.drawEllipse(50, 50, 25, 50, pen)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(500, 600)
+    g_Painter.drawEllipse(50, 50, 25, 50, pen)
 
     brush := Brush.createSolid(Argb.Black)
-    cdc.resetTransform()
-    cdc.translateTransform(600, 600)
-    cdc.fillCircle(50, 50, 50, brush)
-    cdc.end()
-    renderer.draw(&cdc)
+    g_Painter.resetTransform()
+    g_Painter.translateTransform(600, 600)
+    g_Painter.fillCircle(50, 50, 50, brush)
+    g_Painter.end()
+    g_Renderer.draw(&g_Painter)
 
     //////////////////////////////////////
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -197,43 +195,43 @@ func displayPage0()
     path.lineTo(0, 100)
     path.close()
     brush.color = Argb.Red
-    cdc.fillPath(&path, brush)
+    g_Painter.fillPath(&path, brush)
     path.polygon.offset(-10)
     brush.color = Argb.Blue
-    cdc.fillPath(&path, brush)
-    cdc.end()
+    g_Painter.fillPath(&path, brush)
+    g_Painter.end()
 
-    renderer.resetTransform()
-    renderer.translateTransform(625, 50)
-    renderer.draw(&cdc)
+    g_Renderer.resetTransform()
+    g_Renderer.translateTransform(625, 50)
+    g_Renderer.draw(&g_Painter)
 
     //////////////////////////////////////
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
     brush = Brush.createTiled(image0)
-    cdc.fillRect(750, 50, 100, 150, brush)
+    g_Painter.fillRect(750, 50, 100, 150, brush)
     brush = Brush.createTexture(image1)
-    cdc.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
-    cdc.fillCircle(850, 450, 50, brush)
-    cdc.end()
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Painter.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
+    g_Painter.fillCircle(850, 450, 50, brush)
+    g_Painter.end()
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 
     //////////////////////////////////////
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
     var lpl: LinePathList
-    cdc.translateTransform(750, 550)
+    g_Painter.translateTransform(750, 550)
     p0 := lpl.newPath()
     p0.setRect(0, 0, 100, 100)
     p1 := lpl.newPath()
     p1.setCircle(50, 160, 50)
-    cdc.fillPath(&lpl, Argb.Red)
-    cdc.end()
+    g_Painter.fillPath(&lpl, Argb.Red)
+    g_Painter.end()
 
-    renderer.draw(&cdc)
+    g_Renderer.draw(&g_Painter)
 }
 
 func displayPage1()
@@ -241,10 +239,10 @@ func displayPage1()
     var brush: Brush
     brush.color = Argb.Black
 
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
-    cdc.translateTransform(50, 50)
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
+    g_Painter.translateTransform(50, 50)
 
     cpt, cptLines := 0
     visit e: HatchStyle
@@ -252,97 +250,97 @@ func displayPage1()
         brush.type   = .Hatch
         brush.hatch  = e
         brush.uvMode = .Fill
-        cdc.fillRect(0, 0, 48, 48, brush)
+        g_Painter.fillRect(0, 0, 48, 48, brush)
         brush.uvMode = .Tile
-        cdc.fillRect(0, 75, 48, 48, brush)
+        g_Painter.fillRect(0, 75, 48, 48, brush)
 
-        cdc.translateTransform(75, 0)
+        g_Painter.translateTransform(75, 0)
         cpt += 1
         if cpt == 12
         {
             cptLines += 1
             cpt = 0
-            cdc.resetTransform()
-            cdc.translateTransform(50, 50 + 150.0 * cptLines)
+            g_Painter.resetTransform()
+            g_Painter.translateTransform(50, 50 + 150.0 * cptLines)
         }
     }
 
-    cdc.end()
+    g_Painter.end()
 
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 }
 
 func displayPage2()
 {
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
 
-    cdc.drawTexture(200, 0, image1)
+    g_Painter.drawTexture(200, 0, image1)
 
-    cdc.setInterpolationMode(InterpolationMode.Pixel)
-    cdc.drawTexture(50, 0, 96, 96, image0)
-    cdc.setInterpolationMode(InterpolationMode.Linear)
-    cdc.drawTexture(50, 110, 96, 96, image0)
+    g_Painter.setInterpolationMode(InterpolationMode.Pixel)
+    g_Painter.drawTexture(50, 0, 96, 96, image0)
+    g_Painter.setInterpolationMode(InterpolationMode.Linear)
+    g_Painter.drawTexture(50, 110, 96, 96, image0)
 
-    cdc.rotateTransform(45, 100, 300)
-    cdc.drawTexture(50, 250, 96, 96, image0)
+    g_Painter.rotateTransform(45, 100, 300)
+    g_Painter.drawTexture(50, 250, 96, 96, image0)
 
-    cdc.resetTransform()
+    g_Painter.resetTransform()
     pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
-    cdc.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
+    g_Painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    cdc.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, image1)
-    cdc.drawTexture(50, 700, @{228, 103, 206, 167}, image1)
+    g_Painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, image1)
+    g_Painter.drawTexture(50, 700, @{228, 103, 206, 167}, image1)
 
-    cdc.end()
+    g_Painter.end()
 
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 }
 
 func displayPage3()
 {
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
 
     brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
-    cdc.setClippingRect(0, 0, 100, 100)
-    cdc.fillCircle(100, 100, 100, brush)
-    cdc.drawCircle(100, 100, 100, Argb.Red, 4)
-    cdc.resetClippingRect()
+    g_Painter.setClippingRect(0, 0, 100, 100)
+    g_Painter.fillCircle(100, 100, 100, brush)
+    g_Painter.drawCircle(100, 100, 100, Argb.Red, 4)
+    g_Painter.resetClippingRect()
 
-    cdc.startClippingRegion(ClippingMode.Set)
-    cdc.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
-    cdc.setClippingRegionMode(ClippingMode.Clear)
-    cdc.fillCircle(200, 50, 50, Argb.White)
-    cdc.endClippingRegion()
+    g_Painter.startClippingRegion(ClippingMode.Set)
+    g_Painter.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
+    g_Painter.setClippingRegionMode(ClippingMode.Clear)
+    g_Painter.fillCircle(200, 50, 50, Argb.White)
+    g_Painter.endClippingRegion()
 
-    cdc.fillRect(0, 0, 1000, 1000, Argb.Red)
-    cdc.resetClippingRegion()
+    g_Painter.fillRect(0, 0, 1000, 1000, Argb.Red)
+    g_Painter.resetClippingRegion()
 
     {
-        cdc.drawCircle(500, 500, 400, Argb.Red, 1)
+        g_Painter.drawCircle(500, 500, 400, Argb.Red, 1)
     }
 
     {
-        cdc.drawRoundRect(500, 500, 200, 200, 10, 10, Color.fromArgb(0x51, Argb.Blue), 15)
+        g_Painter.drawRoundRect(500, 500, 200, 200, 10, 10, Color.fromArgb(0x51, Argb.Blue), 15)
     }
 
     {
         var lp1: LinePath
         lp1.start(800, 800)
         lp1.bezierTo(150, 150, 250, 50)
-        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
+        g_Painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
     }
 
     {
         var lp: LinePath
         lp.start(50, 800)
         lp.bezierTo(800, 50, 250, 50)
-        cdc.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
+        g_Painter.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
     }
 
     {
@@ -350,17 +348,17 @@ func displayPage3()
         lp1.start(400, 400)
         lp1.lineTo(500, 450)
         lp1.lineTo(400, 500)
-        cdc.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Blue), 50))
+        g_Painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Blue), 50))
     }
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(400, 200)
-        cdc.setBlendingMode(BlendingMode.Add)
-        cdc.fillRect(0, 0, 150, 150, Argb.Blue)
-        cdc.setBlendingMode(BlendingMode.Max)
-        cdc.fillRect(50, 50, 150, 150, Argb.Red)
-        cdc.setBlendingMode(BlendingMode.Alpha)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(400, 200)
+        g_Painter.setBlendingMode(BlendingMode.Add)
+        g_Painter.fillRect(0, 0, 150, 150, Argb.Blue)
+        g_Painter.setBlendingMode(BlendingMode.Max)
+        g_Painter.fillRect(50, 50, 150, 150, Argb.Red)
+        g_Painter.setBlendingMode(BlendingMode.Alpha)
     }
 
     {
@@ -373,32 +371,32 @@ func displayPage3()
         lp.lineTo(100, 50)
 
         pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
-        cdc.resetTransform()
-        cdc.translateTransform(700, 200)
-        cdc.drawPathList(&lp1, pen, DrawPathListMode.Separate)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(700, 200)
+        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Separate)
 
-        cdc.translateTransform(0, 150)
-        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
-        cdc.translateTransform(150, 0)
+        g_Painter.translateTransform(0, 150)
+        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        g_Painter.translateTransform(150, 0)
         pen.brush = Brush.createTexture(image1)
-        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
 
-        cdc.translateTransform(0, 150)
+        g_Painter.translateTransform(0, 150)
         pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
         pen.dashStyle = .Dash
-        cdc.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
     }
 
-    cdc.end()
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Painter.end()
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 }
 
 func displayPage4()
 {
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
 
     {
         var format: StringFormat
@@ -406,8 +404,8 @@ func displayPage4()
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.lineGap = 1
-        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        cdc.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", fontSmall, Argb.Black, format)
+        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        g_Painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", fontSmall, Argb.Black, format)
     }
 
     {
@@ -416,116 +414,116 @@ func displayPage4()
         format.flags |= .WordWrap
         format.underline = .Underline
         format.lineGap = 1
-        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        cdc.drawString(rect, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black, format)
+        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        g_Painter.drawString(rect, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black, format)
     }
 
     {
         format := StringFormat{flags: StringFormatFlags.WordWrap}
         format.horzAlignment = .Center
         rect := Rectangle{650, 50, 200, 700}
-        cdc.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
+        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        cdc.drawString(rect, TXT, fontSmall, Argb.Black, format)
+        g_Painter.drawString(rect, TXT, fontSmall, Argb.Black, format)
     }
 
     {
-        cdc.drawString(100, 200, "this is a TEXT on a single line", fontSmall, Argb.Black)
+        g_Painter.drawString(100, 200, "this is a TEXT on a single line", fontSmall, Argb.Black)
     }
 
     {
         fnt := fontFam.getFont(FontFamilyStyle.Regular)
-        cdc.fillCircle(100, 100, 5, Argb.Red)
-        cdc.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
+        g_Painter.fillCircle(100, 100, 5, Argb.Red)
+        g_Painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
 
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
         brush := Brush.createTexture(image1)
-        rect := cdc.measureString(100, 300, str, font40)
-        cdc.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        cdc.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
-        cdc.drawString(100, 300, str, font40, brush, UnderlineStyle.Strikeout)
-        cdc.drawString(100, 350, str, font40, Argb.Black)
+        rect := g_Painter.measureString(100, 300, str, font40)
+        g_Painter.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        g_Painter.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
+        g_Painter.drawString(100, 300, str, font40, brush, UnderlineStyle.Strikeout)
+        g_Painter.drawString(100, 350, str, font40, Argb.Black)
     }
 
     {
         var pathl: LinePathList
-        cdc.translateTransform(50, 470)
+        g_Painter.translateTransform(50, 470)
 
         pen := Pen.createSolid(Argb.Red, 5)
         pen.joinStyle = .Round
         pen.plotOffset = 2
 
         assume typeface.getStringOutline(&pathl, str, 70)
-        cdc.drawPathList(&pathl, pen)
-        cdc.fillPath(&pathl, Argb.Black)
+        g_Painter.drawPathList(&pathl, pen)
+        g_Painter.fillPath(&pathl, Argb.Black)
 
-        cdc.resetTransform()
+        g_Painter.resetTransform()
     }
 
     {
         var p: LinePathList
-        cdc.translateTransform(50, 570)
+        g_Painter.translateTransform(50, 570)
         assume typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(4)
         p.clean()
-        cdc.drawPathList(&p, Argb.Red, 2)
+        g_Painter.drawPathList(&p, Argb.Red, 2)
 
-        cdc.resetTransform()
+        g_Painter.resetTransform()
     }
 
     {
         var p: LinePathList
-        cdc.translateTransform(50, 670)
+        g_Painter.translateTransform(50, 670)
         assume typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
-        cdc.fillPath(&p, Argb.Red)
-        cdc.drawPathList(&p, Argb.Black, 2)
+        g_Painter.fillPath(&p, Argb.Red)
+        g_Painter.drawPathList(&p, Argb.Black, 2)
 
-        cdc.resetTransform()
+        g_Painter.resetTransform()
     }
 
     {
         var p: LinePath
-        cdc.translateTransform(500, 570)
+        g_Painter.translateTransform(500, 570)
         p.start(0, 0)
         p.lineTo(100, 0)
         p.lineTo(100, 100)
         p.lineTo(0, 100)
         p.close()
         p.flatten(PaintQuality.Normal)
-        cdc.drawPath(&p, Argb.Red, 2)
+        g_Painter.drawPath(&p, Argb.Red, 2)
         p.polygon.offset(10, JoinStyle.Miter)
-        cdc.drawPath(&p, Argb.Green, 2)
+        g_Painter.drawPath(&p, Argb.Green, 2)
         p.polygon.offset(10, JoinStyle.Bevel)
-        cdc.drawPath(&p, Argb.Green, 2)
+        g_Painter.drawPath(&p, Argb.Green, 2)
         p.polygon.offset(10, JoinStyle.Round)
-        cdc.drawPath(&p, Argb.Green, 4)
+        g_Painter.drawPath(&p, Argb.Green, 4)
 
-        cdc.resetTransform()
+        g_Painter.resetTransform()
     }
 
     // Draw font page
-    //cdc.drawTexture(100, 400, font80.atlases[0].texture)
+    //g_Painter.drawTexture(100, 400, font80.atlases[0].texture)
 
-    cdc.end()
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Painter.end()
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 }
 
 func displayPage5()
 {
-    cdc.begin()
-    cdc.paintParams |= g_modeAA ? .Antialiased : .Default
-    cdc.paintQuality = g_paintQuality
+    g_Painter.begin()
+    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 300)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(500, 300)
 
         var lp: LinePath
         lp.start(0, 100)
@@ -533,12 +531,12 @@ func displayPage5()
         lp.curveTo(100, 20)
         lp.curveTo(150, 80)
         lp.curveTo(200, 100)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
     }
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 400)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(500, 400)
 
         var lp: LinePath
         lp.start(20, 50)
@@ -546,12 +544,12 @@ func displayPage5()
         lp.curveTo(200, 100)
         lp.curveTo(300, 50)
         lp.curveTo(400, 80)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
     }
 
     {
-        cdc.resetTransform()
-        cdc.translateTransform(500, 500)
+        g_Painter.resetTransform()
+        g_Painter.translateTransform(500, 500)
 
         var lp: LinePath
         lp.start(60, 60)
@@ -562,25 +560,25 @@ func displayPage5()
         lp.curveTo(80, 160)
         lp.curveTo(40, 140)
         lp.close()
-        cdc.fillPath(&lp, Argb.Blue)
-        cdc.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
+        g_Painter.fillPath(&lp, Argb.Blue)
+        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
     }
 
-    cdc.end()
-    renderer.resetTransform()
-    renderer.draw(&cdc)
+    g_Painter.end()
+    g_Renderer.resetTransform()
+    g_Renderer.draw(&g_Painter)
 }
 
 func display()
 {
-    renderer.begin()
+    g_Renderer.begin()
 
-    cdc.begin()
-    cdc.clear(Color.fromArgb(0xFFEEEEEE))
-    cdc.end()
-    renderer.draw(&cdc)
+    g_Painter.begin()
+    g_Painter.clear(Color.fromArgb(0xFFEEEEEE))
+    g_Painter.end()
+    g_Renderer.draw(&g_Painter)
 
-    switch g_page
+    switch g_Page
     {
     case 0: displayPage0()
     case 1: displayPage1()
@@ -591,13 +589,13 @@ func display()
     }
 
     /*pt := Input.getMousePos()
-    g_wnd.screenToSurface(&pt)
-    cdc.begin()
-    cdc.drawLine(0, 0, pt.x, pt.y, Argb.Red, 4)
-    cdc.end()
-    renderer.draw(&cdc)*/
+    g_Wnd.screenToSurface(&pt)
+    g_Painter.begin()
+    g_Painter.drawLine(0, 0, pt.x, pt.y, Argb.Red, 4)
+    g_Painter.end()
+    g_Renderer.draw(&g_Painter)*/
 
-    renderer.end()
+    g_Renderer.end()
 }
 
 func messageLoop()
@@ -614,13 +612,13 @@ func messageLoop()
 
         keyb.update()
         if(keyb.isKeyJustPressed(Input.Key.F1))
-            g_modeAA = g_modeAA ? false : true
+            g_ModeAA = g_ModeAA ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F2))
-            g_paintQuality = cast(PaintQuality) ((cast(u32) g_paintQuality + 1) % 2)
+            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
         if(keyb.isKeyJustPressed(Input.Key.F3))
-            g_pattern = g_pattern ? false : true
+            g_Pattern = g_Pattern ? false : true
         if(keyb.isKeyJustPressed(Input.Key.F4))
-            g_page = (g_page + 1) % MaxPages
+            g_Page = (g_Page + 1) % MaxPages
     }
 }
 
@@ -631,7 +629,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
     case Paint:
         display()
     case Resize:
-        renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
+        g_Renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
     }
 }
 
@@ -639,13 +637,13 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        g_wnd = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
-        renderer.init(g_wnd.hWnd, W, H)
+        g_Wnd = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        g_Renderer.init(g_Wnd.hWnd, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
-        image0 = renderer.addImage(img0)
+        image0 = g_Renderer.addImage(img0)
         img1 := Image.load(imagePath("rgba.bmp"))
-        image1 = renderer.addImage(img1)
+        image1 = g_Renderer.addImage(img1)
 
         typeface = TypeFace.create(imagePath("arial.ttf"))
         fontSmall = Font.create(typeface, cast(u32) ((12 * 96) / 72))
@@ -657,9 +655,9 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
-        g_wnd.show()
+        g_Wnd.show()
         messageLoop()
 
-        renderer.drop()
+        g_Renderer.drop()
     }
 }
