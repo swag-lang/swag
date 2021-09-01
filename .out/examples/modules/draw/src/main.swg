@@ -6,13 +6,16 @@ using Core, Win32, Ogl, Gdi32, Pixel, Gui, Math
 const W = 1024
 const H = 1024
 
-var image0:     Texture
-var image1:     Texture
-var typeface:   const *TypeFace
-var fontSmall:  *Font
-var font40:     *Font
-var font80:     *Font
-var fontFam:    FontFamily
+namespace Res
+{
+    var image0:     Texture
+    var image1:     Texture
+    var typeface:   const *TypeFace
+    var fontSmall:  *Font
+    var font40:     *Font
+    var font80:     *Font
+    var fontFam:    FontFamily
+}
 
 var g_Painter:      Painter
 var g_Renderer:     RenderOglWin32
@@ -43,13 +46,7 @@ func displayPage0()
     pen := Pen.createSolid(Argb.Black, 20)
 
     if g_Pattern
-    {
         pen.dashStyle = .Dot
-        //pen.pattern.add(1.0)
-        //pen.pattern.add(1.0)
-        //pen.pattern.add(2.0)
-        //pen.pattern.add(1.0)
-    }
 
     //////////////////////////////////////
     g_Painter.begin()
@@ -209,9 +206,9 @@ func displayPage0()
     g_Painter.begin()
     g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
     g_Painter.paintQuality = g_PaintQuality
-    brush = Brush.createTiled(image0)
+    brush = Brush.createTiled(Res.image0)
     g_Painter.fillRect(750, 50, 100, 150, brush)
-    brush = Brush.createTexture(image1)
+    brush = Brush.createTexture(Res.image1)
     g_Painter.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
     g_Painter.fillCircle(850, 450, 50, brush)
     g_Painter.end()
@@ -277,22 +274,22 @@ func displayPage2()
     g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
     g_Painter.paintQuality = g_PaintQuality
 
-    g_Painter.drawTexture(200, 0, image1)
+    g_Painter.drawTexture(200, 0, Res.image1)
 
     g_Painter.setInterpolationMode(InterpolationMode.Pixel)
-    g_Painter.drawTexture(50, 0, 96, 96, image0)
+    g_Painter.drawTexture(50, 0, 96, 96, Res.image0)
     g_Painter.setInterpolationMode(InterpolationMode.Linear)
-    g_Painter.drawTexture(50, 110, 96, 96, image0)
+    g_Painter.drawTexture(50, 110, 96, 96, Res.image0)
 
     g_Painter.rotateTransform(45, 100, 300)
-    g_Painter.drawTexture(50, 250, 96, 96, image0)
+    g_Painter.drawTexture(50, 250, 96, 96, Res.image0)
 
     g_Painter.resetTransform()
     pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
     g_Painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    g_Painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, image1)
-    g_Painter.drawTexture(50, 700, @{228, 103, 206, 167}, image1)
+    g_Painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
+    g_Painter.drawTexture(50, 700, @{228, 103, 206, 167}, Res.image1)
 
     g_Painter.end()
 
@@ -378,7 +375,7 @@ func displayPage3()
         g_Painter.translateTransform(0, 150)
         g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
         g_Painter.translateTransform(150, 0)
-        pen.brush = Brush.createTexture(image1)
+        pen.brush = Brush.createTexture(Res.image1)
         g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
 
         g_Painter.translateTransform(0, 150)
@@ -405,7 +402,7 @@ func displayPage4()
         format.vertAlignment = .Center
         format.lineGap = 1
         g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        g_Painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", fontSmall, Argb.Black, format)
+        g_Painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontSmall, Argb.Black, format)
     }
 
     {
@@ -415,7 +412,7 @@ func displayPage4()
         format.underline = .Underline
         format.lineGap = 1
         g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        g_Painter.drawString(rect, "on multiple lines this is a text on multiple lines", fontSmall, Argb.Black, format)
+        g_Painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontSmall, Argb.Black, format)
     }
 
     {
@@ -424,15 +421,15 @@ func displayPage4()
         rect := Rectangle{650, 50, 200, 700}
         g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        g_Painter.drawString(rect, TXT, fontSmall, Argb.Black, format)
+        g_Painter.drawString(rect, TXT, Res.fontSmall, Argb.Black, format)
     }
 
     {
-        g_Painter.drawString(100, 200, "this is a TEXT on a single line", fontSmall, Argb.Black)
+        g_Painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontSmall, Argb.Black)
     }
 
     {
-        fnt := fontFam.getFont(FontFamilyStyle.Regular)
+        fnt := Res.fontFam.getFont(FontFamilyStyle.Regular)
         g_Painter.fillCircle(100, 100, 5, Argb.Red)
         g_Painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
@@ -440,12 +437,12 @@ func displayPage4()
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
-        brush := Brush.createTexture(image1)
-        rect := g_Painter.measureString(100, 300, str, font40)
+        brush := Brush.createTexture(Res.image1)
+        rect := g_Painter.measureString(100, 300, str, Res.font40)
         g_Painter.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
         g_Painter.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
-        g_Painter.drawString(100, 300, str, font40, brush, UnderlineStyle.Strikeout)
-        g_Painter.drawString(100, 350, str, font40, Argb.Black)
+        g_Painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
+        g_Painter.drawString(100, 350, str, Res.font40, Argb.Black)
     }
 
     {
@@ -456,7 +453,7 @@ func displayPage4()
         pen.joinStyle = .Round
         pen.plotOffset = 2
 
-        assume typeface.getStringOutline(&pathl, str, 70)
+        assume Res.typeface.getStringOutline(&pathl, str, 70)
         g_Painter.drawPathList(&pathl, pen)
         g_Painter.fillPath(&pathl, Argb.Black)
 
@@ -466,7 +463,7 @@ func displayPage4()
     {
         var p: LinePathList
         g_Painter.translateTransform(50, 570)
-        assume typeface.getStringOutline(&p, "A B C D", 70)
+        assume Res.typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(4)
         p.clean()
@@ -478,7 +475,7 @@ func displayPage4()
     {
         var p: LinePathList
         g_Painter.translateTransform(50, 670)
-        assume typeface.getStringOutline(&p, "A B C D", 70)
+        assume Res.typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(PaintQuality.Normal)
         p.offset(5, JoinStyle.Round)
         g_Painter.fillPath(&p, Argb.Red)
@@ -641,19 +638,19 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         g_Renderer.init(g_Wnd.hWnd, W, H)
 
         img0 := Image.load(imagePath("basn0g01.png"))
-        image0 = g_Renderer.addImage(img0)
         img1 := Image.load(imagePath("rgba.bmp"))
-        image1 = g_Renderer.addImage(img1)
+        Res.image0 = g_Renderer.addImage(img0)
+        Res.image1 = g_Renderer.addImage(img1)
 
-        typeface = TypeFace.create(imagePath("arial.ttf"))
-        fontSmall = Font.create(typeface, cast(u32) ((12 * 96) / 72))
-        font40 = Font.create(typeface, 40)
-        font80 = Font.create(typeface, 80)
+        Res.typeface = TypeFace.create(imagePath("arial.ttf"))
+        Res.fontSmall = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
+        Res.font40 = Font.create(Res.typeface, 40)
+        Res.font80 = Font.create(Res.typeface, 80)
 
-        fontFam.regular = Font.create(imagePath("arial.ttf"), 30)
-        fontFam.bold = Font.create(imagePath("arialbd.ttf"), 30)
-        fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
-        fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
+        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 30)
+        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 30)
+        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
+        Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
         g_Wnd.show()
         messageLoop()
