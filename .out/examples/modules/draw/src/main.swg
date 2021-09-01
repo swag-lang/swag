@@ -590,12 +590,12 @@ func display()
     case 5: displayPage5()
     }
 
-    pt := Input.getMousePos()
+    /*pt := Input.getMousePos()
     g_wnd.screenToSurface(&pt)
     cdc.begin()
     cdc.drawLine(0, 0, pt.x, pt.y, Argb.Red, 4)
     cdc.end()
-    renderer.draw(&cdc)
+    renderer.draw(&cdc)*/
 
     renderer.end()
 }
