@@ -741,11 +741,11 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
-    // Label has been defined : search the corresponding LabelBreakable node
+    // Label has been defined : search the corresponding ScopeBreakable node
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
         SWAG_VERIFY(breakable, context->report({node, Utf8::format(g_E[Err0631], node->label.c_str())}));
         node->ownerBreakable = breakable;
@@ -786,14 +786,14 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
 
-    // Label has been defined : search the corresponding LabelBreakable node
+    // Label has been defined : search the corresponding ScopeBreakable node
     AstBreakable* lastBreakable = nullptr;
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
         {
-            if (breakable->kind != AstNodeKind::LabelBreakable)
+            if (breakable->kind != AstNodeKind::ScopeBreakable)
                 lastBreakable = breakable;
             breakable = breakable->ownerBreakable;
         }
@@ -811,14 +811,14 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveLabel(SemanticContext* context)
+bool SemanticJob::resolveScopeBreakable(SemanticContext* context)
 {
     // Be sure we don't have ghosting (the same label in a parent)
-    auto node  = CastAst<AstLabelBreakable>(context->node, AstNodeKind::LabelBreakable);
+    auto node  = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     auto check = node->parent;
     while (check)
     {
-        if (check->kind == AstNodeKind::LabelBreakable)
+        if (check->kind == AstNodeKind::ScopeBreakable)
         {
             if (check->token.text == node->token.text)
             {

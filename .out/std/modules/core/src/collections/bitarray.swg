@@ -96,13 +96,13 @@ public impl BitArray
         remainingBits := count
         countBits := 0'uint
 
-        label up
+        scope up
         loop idx: Math.max(count >>,safe 5, 1)
         {
             var shift: u32 = 1
             loop Math.min(remainingBits, 32)
             {
-                label down
+                scope down
                 #macro
                 {
                     var @alias0 = cast(bool) (`buffer[`idx] & `shift)

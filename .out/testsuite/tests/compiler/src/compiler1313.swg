@@ -17,7 +17,7 @@ impl A
 {
     DROP = 0
     cpt := 0
-    label outer
+    scope outer
     {
         var x: A
         defer cpt = 1

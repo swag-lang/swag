@@ -283,7 +283,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("defer", {TokenId::KwdDefer, LiteralType::TT_MAX});
     keywords.add("errdefer", {TokenId::KwdErrDefer, LiteralType::TT_MAX});
     keywords.add("code", {TokenId::KwdCode, LiteralType::TT_MAX});
-    keywords.add("label", {TokenId::KwdLabel, LiteralType::TT_MAX});
+    keywords.add("scope", {TokenId::KwdScope, LiteralType::TT_MAX});
     keywords.add("try", {TokenId::KwdTry, LiteralType::TT_MAX});
     keywords.add("catch", {TokenId::KwdCatch, LiteralType::TT_MAX});
     keywords.add("assume", {TokenId::KwdAssume, LiteralType::TT_MAX});

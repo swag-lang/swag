@@ -7,7 +7,7 @@ impl S
     #[Swag.Macro, Swag.NoReturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
-        label up
+        scope up
         loop 5
         {
             loop 5

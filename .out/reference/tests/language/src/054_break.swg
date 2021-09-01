@@ -26,10 +26,10 @@
         @assert(cpt == 10)
     }
 
-    // You can name a scope with a 'label', and exit to the end of it
+    // You can name a scope with the 'scope' keyword, and exit to the end of it with a 'break'
     {
         cpt := 0
-        label BigScope
+        scope BigScope
         {
             loop 10
             {
@@ -43,11 +43,11 @@
         @assert(cpt == 1)
     }
 
-    // When used with a label, a continue is a way to go back
-    // to the start of the label
+    // When used with a scope, a continue is a way to go back
+    // to the start of the scope
     {
         cpt := 0
-        label down
+        scope Loop
         {
             cpt += 1
             if cpt == 5
@@ -56,5 +56,46 @@
         }
 
         @assert(cpt == 5)
+    }
+
+    // You are not obliged to name the scope, so this can also be used (for example)
+    // as an alternative of a bunch of if/else
+    {
+        cpt := 0
+        scope
+        {
+            if cpt == 1
+            {
+                @assert(cpt == 1)
+                break
+            }
+
+            if cpt == 2
+            {
+                @assert(cpt == 2)
+                break
+            }
+
+            if cpt == 3
+            {
+                @assert(cpt == 3)
+                break
+            }
+        }
+    }
+
+    // A scope can be followed by a simple statement
+    {
+        scope Up
+        loop 10
+        {
+            loop 10
+            {
+                if @index == 5
+                    break Up
+            }
+
+            @assert(false)
+        }
     }
 }

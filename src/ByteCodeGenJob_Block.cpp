@@ -454,7 +454,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 
     auto loopNode = static_cast<AstBreakable*>(node->parent);
 
-    if (node->parent->kind != AstNodeKind::LabelBreakable)
+    if (node->parent->kind != AstNodeKind::ScopeBreakable)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::Jump);
         auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;

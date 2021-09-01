@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    label
+    scope
     {
 
     }

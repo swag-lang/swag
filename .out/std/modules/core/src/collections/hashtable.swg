@@ -35,13 +35,13 @@ impl HashTable
             return
 
         remain := count
-        label up
+        scope up
         loop capacity
         {
             if table[@index].hash < HASH_FIRST
                 continue
 
-            label down
+            scope down
             #macro
             {
                 #if `ptr

@@ -77,7 +77,7 @@ enum class AstNodeKind : uint8_t
     Continue,
     Statement,
     StatementNoScope,
-    LabelBreakable,
+    ScopeBreakable,
     EnumDecl,
     StructDecl,
     InterfaceDecl,
@@ -473,9 +473,9 @@ struct AstBreakable : public AstNode
     int      seekJumpAfterBlock       = 0;
 };
 
-struct AstLabelBreakable : public AstBreakable
+struct AstScopeBreakable : public AstBreakable
 {
-    AstLabelBreakable()
+    AstScopeBreakable()
     {
         breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
     }

@@ -3,7 +3,7 @@
     cpt := 4
     loop cpt
     {
-        label up
+        scope up
         {
             @assert(@index == 0)
             return

@@ -89,7 +89,7 @@ struct SyntaxJob : public Job
     void        registerSubDecl(AstNode* subDecl);
     static void forceTakeAddress(AstNode* node);
 
-    bool doLabel(AstNode* parent, AstNode** result = nullptr);
+    bool doScopeBreakable(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);

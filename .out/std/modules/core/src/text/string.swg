@@ -183,7 +183,7 @@ impl String
         count := length
         scan := buffer
 
-        label up
+        scope up
         loop
         {
             sl := @mkslice(scan, count)
@@ -191,7 +191,7 @@ impl String
             if eat == 0
                 break
 
-            label down
+            scope down
             #macro
             {
                 #if `ptr

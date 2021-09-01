@@ -114,7 +114,7 @@
         #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
         {
-            label Up
+            scope Up
             loop count
             {
                 loop count

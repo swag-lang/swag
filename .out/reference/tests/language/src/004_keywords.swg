@@ -187,7 +187,7 @@ errdefer
 fallthrough
 for
 if
-label
+scope
 loop
 or
 return

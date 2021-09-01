@@ -3,10 +3,10 @@
 #test
 {
 	error := false
-    label outer
+    scope outer
     loop x: 10
     {
-        label outer
+        scope outer
         loop 20
         {
             break outer

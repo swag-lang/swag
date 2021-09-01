@@ -148,8 +148,8 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::Continue:
     case AstNodeKind::FallThrough:
         return ((AstBreakContinue*) this)->clone(context);
-    case AstNodeKind::LabelBreakable:
-        return ((AstLabelBreakable*) this)->clone(context);
+    case AstNodeKind::ScopeBreakable:
+        return ((AstScopeBreakable*) this)->clone(context);
     case AstNodeKind::While:
         return ((AstWhile*) this)->clone(context);
     case AstNodeKind::For:
@@ -540,9 +540,9 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstLabelBreakable::clone(CloneContext& context)
+AstNode* AstScopeBreakable::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstLabelBreakable>();
+    auto newNode = Ast::newNode<AstScopeBreakable>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;

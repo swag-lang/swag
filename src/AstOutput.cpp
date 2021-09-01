@@ -1591,7 +1591,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             node->childs.front()->kind != AstNodeKind::While &&
             node->childs.front()->kind != AstNodeKind::Visit &&
             node->childs.front()->kind != AstNodeKind::Loop &&
-            node->childs.front()->kind != AstNodeKind::LabelBreakable &&
+            node->childs.front()->kind != AstNodeKind::ScopeBreakable &&
             node->childs.front()->kind != AstNodeKind::Switch)
         {
             context.indent++;
@@ -1804,8 +1804,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
         break;
 
-    case AstNodeKind::LabelBreakable:
-        CONCAT_FIXED_STR(concat, "label ");
+    case AstNodeKind::ScopeBreakable:
+        CONCAT_FIXED_STR(concat, "scope ");
         concat.addString(node->token.text);
         concat.addEolIndent(context.indent);
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));

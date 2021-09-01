@@ -700,7 +700,7 @@ func visitRunes(buffer: const [..] u8, stmt: code)
 
         #macro
         {
-            label inside
+            scope inside
             {
                 @alias0 := `c
                 @alias1 := `charIdx

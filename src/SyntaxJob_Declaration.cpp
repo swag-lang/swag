@@ -489,8 +489,8 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     }
 
-    case TokenId::KwdLabel:
-        SWAG_CHECK(doLabel(parent, result));
+    case TokenId::KwdScope:
+        SWAG_CHECK(doScopeBreakable(parent, result));
         break;
     case TokenId::KwdAlias:
         SWAG_CHECK(doAlias(parent, result));
@@ -502,21 +502,23 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
+bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
 {
-    auto labelNode = Ast::newNode<AstLabelBreakable>(this, AstNodeKind::LabelBreakable, sourceFile, parent);
+    auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
     if (result)
         *result = labelNode;
-    labelNode->semanticFct = SemanticJob::resolveLabel;
+    labelNode->semanticFct = SemanticJob::resolveScopeBreakable;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, g_E[Err0394]));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
-    labelNode->inheritTokenName(token);
-    labelNode->inheritTokenLocation(token);
+    if (token.id != TokenId::SymLeftCurly)
+    {
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
+        labelNode->inheritTokenName(token);
+        labelNode->inheritTokenLocation(token);
+        SWAG_CHECK(eatToken());
+    }
 
     ScopedBreakable scoped(this, labelNode);
-    SWAG_CHECK(eatToken());
     SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }
