@@ -16,17 +16,17 @@ impl Point
     const One:  Point{1, 1}
 
     #[Swag.Complete]
-    func opAffect(using self, value: f32)
+    mtd opAffect(value: f32)
     {
         x, y = value
     }
 
-    func opEquals(using self, other: Point)->bool
+    mtdc opEquals(other: Point)->bool
     {
         return x == other.x and y == other.y
     }
 
-    func(op: string) opAssign(using self, other: Point)
+    mtd(op: string) opAssign(other: Point)
     {
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
@@ -34,7 +34,7 @@ impl Point
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opAssign(using self, value: f32)
+    mtd(op: string) opAssign(value: f32)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -42,7 +42,7 @@ impl Point
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, other: Point)->Self
+    mtdc(op: string) opBinary(other: Point)->Self
     {
         #if   op == "+" return Point{x + other.x, y + other.y}
         #elif op == "-" return Point{x - other.x, y - other.y}
@@ -50,7 +50,7 @@ impl Point
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, value: f32)->Self
+    mtdc(op: string) opBinary(value: f32)->Self
     {
         #if   op == "+" return Point{x + value, y + value}
         #elif op == "-" return Point{x - value, y - value}
@@ -59,25 +59,25 @@ impl Point
     }
 
     // Set Point to (0, 0)
-    func clear(using self)
+    mtd clear()
     {
         x, y = 0
     }
 
     // Returns 'true' if the Point is null
-    func isZero(using self)->bool
+    mtdc isZero()->bool
     {
         return x == 0 and y == 0
     }
 
     // Check for zero with an epsilon
-    func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    mtdc isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Offset this Point by a given value
-    func offset(using self, value: f32)
+    mtd offset(value: f32)
     {
         x, y += value
     }
@@ -90,21 +90,21 @@ impl Point
     }
 
     // Perform a Math.round operation on all the coordinates
-    func round(using self)
+    mtd round()
     {
         x = acast round(x)
         y = acast round(y)
     }
 
     // Perform a Math.trunc operation on all the coordinates
-    func trunc(using self)
+    mtd trunc()
     {
         x = acast trunc(x)
         y = acast trunc(y)
     }
 
     // Perform a Math.ceil operation on all the coordinates
-    func ceil(using self)
+    mtd ceil()
     {
         x = acast ceil(x)
         y = acast ceil(y)

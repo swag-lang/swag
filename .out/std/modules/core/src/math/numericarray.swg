@@ -9,12 +9,12 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    func opIndex(using self, idx: uint)->T
+    mtdc opIndex(idx: uint)->T
     {
         return buf[idx]
     }
 
-    func opEquals(using self, other: Self)->bool
+    mtdc opEquals(other: Self)->bool
     {
         loop N
         {
@@ -26,10 +26,11 @@ impl NumericArray
     }
 
     #[Safety("boundcheck", false), Complete]
-    func opAffect(using self, what: const [..] T)
+    mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
-        loop N buf[@index] = what[@index]
+        loop N
+            buf[@index] = what[@index]
     }
 
     #[Safety("boundcheck", false)]
@@ -37,64 +38,73 @@ impl NumericArray
     {
         Debug.assert(@countof(values) == N)
         var result: retval
-        loop N result.buf[@index] = values[@index]
+        loop N
+            result.buf[@index] = values[@index]
         return result
     }
 
     // Set all values
     #[Safety("boundcheck", false)]
-    func setAll(using self, value: T)
+    mtd setAll(value: T)
     {
-        loop N buf[@index] = value
+        loop N
+            buf[@index] = value
     }
 
     // Set all values
     #[Safety("boundcheck", false)]
-    func set(using self, values: T...)
+    mtd set(values: T...)
     {
         Debug.assert(@countof(values) == N)
-        loop N buf[@index] = values[@index]
+        loop N
+            buf[@index] = values[@index]
     }
 
     // Add
     #[Safety("boundcheck", false)]
-    func add(using self, value: T)
+    mtd add(value: T)
     {
-        loop N buf[@index] += value
+        loop N
+            buf[@index] += value
     }
 
     // Multiply
     #[Safety("boundcheck", false)]
-    func mul(using self, value: T)
+    mtd mul(value: T)
     {
-        loop N buf[@index] *= value
+        loop N
+            buf[@index] *= value
     }
 
     // Multiply & add
     #[Safety("boundcheck", false)]
-    func mulAdd(using self, value1, value2: T)
+    mtd mulAdd(value1, value2: T)
     {
-        loop N buf[@index] = (buf[@index] * value1) + value2
+        loop N
+            buf[@index] = (buf[@index] * value1) + value2
     }
 
     // Add
     #[Safety("boundcheck", false)]
-    func add(using self, value: Self)
+    mtd add(value: Self)
     {
-        loop N buf[@index] += value.buf[@index]
+        loop N
+            buf[@index] += value.buf[@index]
     }
 
     // Multiply
     #[Safety("boundcheck", false)]
-    func mul(using self, value: Self)
+    mtd mul(value: Self)
     {
-        loop N buf[@index] *= value.buf[@index]
+        loop N
+            buf[@index] *= value.buf[@index]
     }
 
     // Multiply & Add
     #[Safety("boundcheck", false)]
-    func mulAdd(using self, value1, value2: Self)
+    mtd mulAdd(value1, value2: Self)
     {
-        loop N buf[@index] = (buf[@index] * value1[@index]) + value2.buf[@index]
+        loop N
+            buf[@index] = (buf[@index] * value1[@index]) + value2.buf[@index]
     }
 }
