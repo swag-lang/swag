@@ -62,7 +62,7 @@ impl Painter
     }
 
     // Returns the bounding rectangle if a given text, at a given position
-    method measureString(left, top: f32, text: string, font: *Font)->StringMetrics
+    mtd measureString(left, top: f32, text: string, font: *Font)->StringMetrics
     {
         var result: retval
 
@@ -85,7 +85,7 @@ impl Painter
     }
 
     // Draw a string
-    method drawString(left, top: f32, text: string, font: *Font, color: Color)
+    mtd drawString(left, top: f32, text: string, font: *Font, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -93,7 +93,7 @@ impl Painter
     }
 
     // Draw a string
-    method drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
+    mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
@@ -157,7 +157,7 @@ impl Painter
     }
 
     // Draw a string
-    method drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
+    mtd drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -165,7 +165,7 @@ impl Painter
     }
 
     // Draw a string
-    method drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
+    mtd drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
         struct OneStr
         {

@@ -24,14 +24,14 @@ impl AA
         return false
     }
 
-    method(TV) set(v: TV)
+    mtd(TV) set(v: TV)
     {
         #assert(isIn(TV), "invalid type " ~ @stringof(TV))
         cur = TV
         dref cast(*TV) buf = v
     }
 
-    method(TV) get()->TV
+    mtd(TV) get()->TV
     {
         #assert(isIn(TV), "invalid type " ~ @stringof(TV))
         @assert(cur == TV)

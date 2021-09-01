@@ -32,18 +32,18 @@ struct Int128
 
 impl Int128
 {
-    method opEquals(other: Int128)->bool
+    mtd opEquals(other: Int128)->bool
     {
         return hi == other.hi and lo == other.lo
     }
 
-    method opCmp(other: Int128)->s32
+    mtd opCmp(other: Int128)->s32
     {
         if hi != other.hi return hi <=> other.hi
         return lo <=> other.lo
     }
 
-    method opCast()->f64
+    mtd opCast()->f64
     {
         const Shift64: f64 = bitcast(f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
         if hi < 0

@@ -11,7 +11,7 @@ struct BB
 impl BB
 {
     #[Swag.Inline]
-    method opIndex(idx: uint)->*AA
+    mtd opIndex(idx: uint)->*AA
     {
         return &aa;
     }

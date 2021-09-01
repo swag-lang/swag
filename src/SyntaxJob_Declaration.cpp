@@ -466,6 +466,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::KwdMethod:
+    case TokenId::KwdConstMethod:
     case TokenId::KwdFunc:
     {
         AstNode* subFunc;
@@ -582,6 +583,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdFunc:
     case TokenId::KwdMethod:
+    case TokenId::KwdConstMethod:
     case TokenId::CompilerFuncTest:
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:

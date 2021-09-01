@@ -61,7 +61,7 @@ struct IntPoint
 
 impl IntPoint
 {
-    method opEquals(other: Self)->bool
+    mtd opEquals(other: Self)->bool
     {
         return x == other.x and y == other.y
     }
@@ -84,7 +84,7 @@ struct IntersectNode
 
 impl IntersectNode
 {
-    method opCmp(other: *IntersectNode)->s32
+    mtd opCmp(other: *IntersectNode)->s32
     {
         return pt.y <=> other.pt.y
     }
@@ -99,7 +99,7 @@ struct LocalMinimum
 
 impl LocalMinimum
 {
-    method opCmp(other: LocalMinimum)->s32
+    mtd opCmp(other: LocalMinimum)->s32
     {
         return other.y <=> y
     }
@@ -157,7 +157,7 @@ struct PolyNode
 
 impl PolyNode
 {
-    method addChild(child: *PolyNode)
+    mtd addChild(child: *PolyNode)
     {
         cnt := cast(u32) childs.count
         childs.add(child)
@@ -199,7 +199,7 @@ public struct Transform
 
 impl Transform
 {
-    method execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType)
+    mtd execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType)
     {
         subjFillType  = subjFillT
         clipFillType  = clipFillT
@@ -211,7 +211,7 @@ impl Transform
         disposeAllOutRecs()
     }
 
-    method addPath(pg: *ClipperPath, polyType: PolyType)
+    mtd addPath(pg: *ClipperPath, polyType: PolyType)
     {
         highI := cast(int) pg.count - 1
         while highI > 0 and (pg.buffer[highI] == pg.buffer[0])
@@ -385,7 +385,7 @@ impl Transform
         return result
     }
 
-    method addJoin(op1, op2: *OutPt, offPt: IntPoint)
+    mtd addJoin(op1, op2: *OutPt, offPt: IntPoint)
     {
         j := Memory.new'Join()
         j.outPt1 = op1
@@ -394,7 +394,7 @@ impl Transform
         joinList.add(j)
     }
 
-    method slopesEqual(e1: *Edge, e2: *Edge)->bool
+    mtd slopesEqual(e1: *Edge, e2: *Edge)->bool
     {
         if useFullRange
         {
@@ -406,7 +406,7 @@ impl Transform
         return (e1.top.y - e1.bot.y) * (e2.top.x - e2.bot.x) == (e1.top.x - e1.bot.x) * (e2.top.y - e2.bot.y)
     }
 
-    method slopesEqual(pt1, pt2, pt3: IntPoint)->bool
+    mtd slopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
         if useFullRange
         {
@@ -418,7 +418,7 @@ impl Transform
         return (pt1.y - pt2.y) * (pt2.x - pt3.x) == (pt1.x - pt2.x) * (pt2.y - pt3.y)
     }
 
-    method slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
+    mtd slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
     {
         if useFullRange
         {
@@ -439,7 +439,7 @@ impl Transform
         return (pt2.y > pt1.y) == (pt2.y < pt3.y)
     }
 
-    method rangeTest(pt: IntPoint)
+    mtd rangeTest(pt: IntPoint)
     {
         if pt.x > LoRange or pt.y > LoRange or -pt.x > LoRange or -pt.y > LoRange
         {
@@ -484,7 +484,7 @@ impl Transform
         return e
     }
 
-    method processBound(edge: *Edge, nextIsForward: bool)->*Edge
+    mtd processBound(edge: *Edge, nextIsForward: bool)->*Edge
     {
         e := edge
         result := e
@@ -600,7 +600,7 @@ impl Transform
         return result
     }
 
-    method popScanbeam(res: *CInt)->bool
+    mtd popScanbeam(res: *CInt)->bool
     {
         if !scanBeamList.count
             return false
@@ -613,13 +613,13 @@ impl Transform
         return true
     }
 
-    method insertScanbeam(y: CInt)
+    mtd insertScanbeam(y: CInt)
     {
         scanBeamList.add(y)
         scanBeamList.sort()
     }
 
-    method reset()
+    mtd reset()
     {
         currentLM = 0
         if currentLM == minimaList.count
@@ -652,12 +652,12 @@ impl Transform
     }
 
     #[Swag.Inline]
-    method localMinimaPending()->bool
+    mtd localMinimaPending()->bool
     {
         return currentLM != minimaList.count
     }
 
-    method deleteFromSEL(e: *Edge)
+    mtd deleteFromSEL(e: *Edge)
     {
         selPrev := e.prevInSEL
         selNext := e.nextInSEL
@@ -672,7 +672,7 @@ impl Transform
         e.nextInSEL, e.prevInSEL = null
     }
 
-    method popEdgeFromSEL(edge: **Edge)->bool
+    mtd popEdgeFromSEL(edge: **Edge)->bool
     {
         if !sortedEdges return false
         dref edge = sortedEdges
@@ -680,7 +680,7 @@ impl Transform
         return true
     }
 
-    method processHorizontals()
+    mtd processHorizontals()
     {
         var horzEdge: *Edge
         while popEdgeFromSEL(&horzEdge)
@@ -717,7 +717,7 @@ impl Transform
         return dir == .LeftToRight ? e.nextInAEL : e.prevInAEL
     }
 
-    method getLastOutPt(e: *Edge)->*OutPt
+    mtd getLastOutPt(e: *Edge)->*OutPt
     {
         outRec := polyOuts[e.outIdx]
         if e.side == .Left
@@ -726,7 +726,7 @@ impl Transform
             return outRec.pts.prev
     }
 
-    method addGhostJoin(op: *OutPt, offPt: IntPoint)
+    mtd addGhostJoin(op: *OutPt, offPt: IntPoint)
     {
         j := Memory.new'Join()
         j.outPt1 = op
@@ -735,7 +735,7 @@ impl Transform
         ghostJoinList.add(j)
     }
 
-    method processHorizontal(hE: *Edge)
+    mtd processHorizontal(hE: *Edge)
     {
         horzEdge := hE
 
@@ -915,7 +915,7 @@ impl Transform
         }
     }
 
-    method updateEdgeIntoAEL(ed: **Edge)
+    mtd updateEdgeIntoAEL(ed: **Edge)
     {
         e := dref ed
         e.nextInLML.outIdx = e.outIdx
@@ -940,7 +940,7 @@ impl Transform
         dref ed = e
     }
 
-    method swapPositionsInAEL(edge1, edge2: *Edge)
+    mtd swapPositionsInAEL(edge1, edge2: *Edge)
     {
         if edge1.nextInAEL == edge1.prevInAEL or edge2.nextInAEL == edge2.prevInAEL
             return
@@ -995,7 +995,7 @@ impl Transform
             activeEdges = edge2
     }
 
-    method deleteFromAEL(e: *Edge)
+    mtd deleteFromAEL(e: *Edge)
     {
         aelPrev := e.prevInAEL
         aelNext := e.nextInAEL
@@ -1011,21 +1011,21 @@ impl Transform
         e.prevInAEL = null
     }
 
-    method clearJoins()
+    mtd clearJoins()
     {
         visit p: joinList
             Memory.delete(p)
         joinList.clear()
     }
 
-    method clearGhostJoins()
+    mtd clearGhostJoins()
     {
         visit p: ghostJoinList
             Memory.delete(p)
         ghostJoinList.clear()
     }
 
-    method executeInternal()
+    mtd executeInternal()
     {
         reset()
         maximaList.clear()
@@ -1075,7 +1075,7 @@ impl Transform
         clearGhostJoins()
     }
 
-    method doSimplePolygons()
+    mtd doSimplePolygons()
     {
         visit outrec: polyOuts
         {
@@ -1164,7 +1164,7 @@ impl Transform
         }
     }
 
-    method fixupOutPolygon(outrec: *OutRec)
+    mtd fixupOutPolygon(outrec: *OutRec)
     {
         outrec.bottomPt = null
         pp := outrec.pts
@@ -1204,7 +1204,7 @@ impl Transform
         outrec.pts = pp
     }
 
-    method getOutRec(idx: s32)->*OutRec
+    mtd getOutRec(idx: s32)->*OutRec
     {
         outrec := polyOuts[idx]
         while outrec != polyOuts[outrec.idx]
@@ -1212,7 +1212,7 @@ impl Transform
         return outrec
     }
 
-    method joinPoints(j: *Join, outRec1, outRec2: *OutRec)->bool
+    mtd joinPoints(j: *Join, outRec1, outRec2: *OutRec)->bool
     {
         op1 := j.outPt1
         op2 := j.outPt2
@@ -1589,7 +1589,7 @@ impl Transform
         return firstLeft
     }
 
-    method fixupFirstLefts2(innerOutRec, outerOutRec: *OutRec)
+    mtd fixupFirstLefts2(innerOutRec, outerOutRec: *OutRec)
     {
         orfl := outerOutRec.firstLeft
         visit outRec: polyOuts
@@ -1608,7 +1608,7 @@ impl Transform
         }
     }
 
-    method fixupFirstLefts1(oldOutRec, newOutRec: *OutRec)
+    mtd fixupFirstLefts1(oldOutRec, newOutRec: *OutRec)
     {
         visit outRec: polyOuts
         {
@@ -1621,7 +1621,7 @@ impl Transform
         }
     }
 
-    method fixupFirstLefts3(oldOutRec, newOutRec: *OutRec)
+    mtd fixupFirstLefts3(oldOutRec, newOutRec: *OutRec)
     {
         visit outRec: polyOuts
         {
@@ -1631,7 +1631,7 @@ impl Transform
         }
     }
 
-    method joinCommonEdges()
+    mtd joinCommonEdges()
     {
         visit join: joinList
         {
@@ -1733,7 +1733,7 @@ impl Transform
         return e.top.y == y and e.nextInLML
     }
 
-    method doMaxima(e: *Edge)
+    mtd doMaxima(e: *Edge)
     {
         eMaxPair := getMaximaPairEx(e)
         if !eMaxPair
@@ -1769,7 +1769,7 @@ impl Transform
         }
     }
 
-    method processEdgesAtTopOfScanbeam(topY: CInt)
+    mtd processEdgesAtTopOfScanbeam(topY: CInt)
     {
         e := activeEdges
         while e
@@ -1871,7 +1871,7 @@ impl Transform
         }
     }
 
-    method processIntersections(topY: CInt)
+    mtd processIntersections(topY: CInt)
     {
         if !activeEdges
             return
@@ -1885,7 +1885,7 @@ impl Transform
         sortedEdges = null
     }
 
-    method buildIntersectList(topY: CInt)
+    mtd buildIntersectList(topY: CInt)
     {
         if !activeEdges
             return
@@ -1934,7 +1934,7 @@ impl Transform
         sortedEdges = null
     }
 
-    method copyAELToSEL()
+    mtd copyAELToSEL()
     {
         e := activeEdges
         sortedEdges = e
@@ -1951,7 +1951,7 @@ impl Transform
         return (inode.edge1.nextInSEL == inode.edge2) or (inode.edge1.prevInSEL == inode.edge2)
     }
 
-    method fixupIntersectionOrder()->bool
+    mtd fixupIntersectionOrder()->bool
     {
         copyAELToSEL()
         intersectList.sort()
@@ -1973,7 +1973,7 @@ impl Transform
         return true
     }
 
-    method processIntersectList()
+    mtd processIntersectList()
     {
         visit iNode: intersectList
         {
@@ -1985,7 +1985,7 @@ impl Transform
         intersectList.clear()
     }
 
-    method swapPositionsInSEL(edge1, edge2: *Edge)
+    mtd swapPositionsInSEL(edge1, edge2: *Edge)
     {
         if !edge1.nextInSEL and !edge1.prevInSEL
             return
@@ -2042,7 +2042,7 @@ impl Transform
             sortedEdges = edge2
     }
 
-    method intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
+    mtd intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
     {
         var b1, b2: f64
         if edge1.dx == edge2.dx
@@ -2108,7 +2108,7 @@ impl Transform
         }
     }
 
-    method popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
+    mtd popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
     {
         if currentLM == minimaList.count or minimaList[currentLM].y != y
             return false
@@ -2141,7 +2141,7 @@ impl Transform
             return e2.curr.x < e1.curr.x
     }
 
-    method insertEdgeIntoAEL(edge, startE: *Edge)
+    mtd insertEdgeIntoAEL(edge, startE: *Edge)
     {
         startEdge := startE
         if !activeEdges
@@ -2171,21 +2171,21 @@ impl Transform
         }
     }
 
-    method isEvenOddFillType(edge: *Edge)->bool
+    mtd isEvenOddFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject
             return subjFillType == .EvenOdd
         return clipFillType == .EvenOdd
     }
 
-    method isEvenOddAltFillType(edge: *Edge)->bool
+    mtd isEvenOddAltFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject
             return clipFillType == .EvenOdd
         return subjFillType == .EvenOdd
     }
 
-    method setWindingCount(edge: *Edge)
+    mtd setWindingCount(edge: *Edge)
     {
         e := edge.prevInAEL
 
@@ -2276,7 +2276,7 @@ impl Transform
         }
     }
 
-    method isContributing(edge: *Edge)->bool
+    mtd isContributing(edge: *Edge)->bool
     {
         var pft, pft2: PolyFillType = ?
         if edge.polyType == .Subject
@@ -2374,7 +2374,7 @@ impl Transform
         return true
     }
 
-    method createOutRec()->*OutRec
+    mtd createOutRec()->*OutRec
     {
         result := Memory.new'OutRec()
         polyOuts.add(result)
@@ -2382,7 +2382,7 @@ impl Transform
         return result
     }
 
-    method setHoleState(e: *Edge, outrec: *OutRec)
+    mtd setHoleState(e: *Edge, outrec: *OutRec)
     {
         e2 := e.prevInAEL
         var eTmp: *Edge
@@ -2411,7 +2411,7 @@ impl Transform
     }
 
     #[Swag.Discardable]
-    method addOutPt(e: *Edge, pt: IntPoint)->*OutPt
+    mtd addOutPt(e: *Edge, pt: IntPoint)->*OutPt
     {
         if e.outIdx < 0
         {
@@ -2452,7 +2452,7 @@ impl Transform
     }
 
     #[Swag.Discardable]
-    method addLocalMinPoly(e1, e2: *Edge, pt: IntPoint)->*OutPt
+    mtd addLocalMinPoly(e1, e2: *Edge, pt: IntPoint)->*OutPt
     {
         var result: *OutPt
         var e, prevE: *Edge
@@ -2499,7 +2499,7 @@ impl Transform
         return result
     }
 
-    method addEdgeToSEL(edge: *Edge)
+    mtd addEdgeToSEL(edge: *Edge)
     {
         if !sortedEdges
         {
@@ -2678,7 +2678,7 @@ impl Transform
         }
     }
 
-    method appendPolygon(e1, e2: *Edge)
+    mtd appendPolygon(e1, e2: *Edge)
     {
         outRec1 := polyOuts[e1.outIdx]
         outRec2 := polyOuts[e2.outIdx]
@@ -2769,7 +2769,7 @@ impl Transform
         outRec2.idx = outRec1.idx
     }
 
-    method addLocalMaxPoly(e1, e2: *Edge, pt: IntPoint)
+    mtd addLocalMaxPoly(e1, e2: *Edge, pt: IntPoint)
     {
         addOutPt(e1, pt)
         if e2.windDelta == 0 addOutPt(e2, pt)
@@ -2799,7 +2799,7 @@ impl Transform
         edge2.outIdx = outIdx
     }
 
-    method intersectEdges(e1, e2: *Edge, pt: IntPoint)
+    mtd intersectEdges(e1, e2: *Edge, pt: IntPoint)
     {
         e1Contributing := e1.outIdx >= 0
         e2Contributing := e2.outIdx >= 0
@@ -2950,7 +2950,7 @@ impl Transform
         }
     }
 
-    method insertLocalMinimaIntoAEL(botY: CInt)
+    mtd insertLocalMinimaIntoAEL(botY: CInt)
     {
         var lm: *LocalMinimum
         while popLocalMinima(botY, &lm)
@@ -3065,7 +3065,7 @@ impl Transform
         return result
     }
 
-    method buildResult(polys: *ClipperPaths)
+    mtd buildResult(polys: *ClipperPaths)
     {
         polys.reserve(polyOuts.count)
         loop i: polyOuts
@@ -3089,7 +3089,7 @@ impl Transform
         }
     }
 
-    method disposeAllOutRecs()
+    mtd disposeAllOutRecs()
     {
         loop i: polyOuts disposeOutRec(i)
         polyOuts.clear()
@@ -3110,7 +3110,7 @@ impl Transform
         }
     }
 
-    method disposeOutRec(index: uint)
+    mtd disposeOutRec(index: uint)
     {
         outRec := polyOuts[index]
         if outRec.pts
@@ -3119,7 +3119,7 @@ impl Transform
         polyOuts[index] = null
     }
 
-    method getBounds()->IntRect
+    mtd getBounds()->IntRect
     {
         var result: retval
 

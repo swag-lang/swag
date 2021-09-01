@@ -207,7 +207,7 @@ public struct Encoder
 
 impl Encoder
 {
-    method loadBitmap(image: Image)
+    mtd loadBitmap(image: Image)
     {
         imageX = cast(u16) image.width
         imageY = cast(u16) image.height
@@ -274,7 +274,7 @@ impl Encoder
         imageY = yDiv8
     }
 
-    method setQuantTable(basicTable: const *u8, newTable: *u8)
+    mtd setQuantTable(basicTable: const *u8, newTable: *u8)
     {
         loop i: 64
         {
@@ -284,7 +284,7 @@ impl Encoder
         }
     }
 
-    method setDQTinfo()
+    mtd setDQTinfo()
     {
         dqtInfo.marker   = 0xFFDB
         dqtInfo.length   = 132
@@ -294,7 +294,7 @@ impl Encoder
         setQuantTable(ChrominanceQt, dqtInfo.tableCb)
     }
 
-    method setDHTinfo()
+    mtd setDHTinfo()
     {
         dhtInfo.marker     = 0xFFC4
         dhtInfo.length     = 0x01A2
@@ -313,7 +313,7 @@ impl Encoder
         loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
-    method computeHuffmanTable(nrCodes: const *u8, stdTable: const *u8, hT: *BitString)
+    mtd computeHuffmanTable(nrCodes: const *u8, stdTable: const *u8, hT: *BitString)
     {
         codevalue  := 0'u16
         posInTable := 0
@@ -331,7 +331,7 @@ impl Encoder
         }
     }
 
-    method initHuffmanTables()
+    mtd initHuffmanTables()
     {
         computeHuffmanTable(StdDcLuminanceNrCodes, StdDcLuminanceValues, htYDC)
         computeHuffmanTable(StdDcChrominanceNrCodes, StdDcChrominanceValues, htCbDC)
@@ -339,7 +339,7 @@ impl Encoder
         computeHuffmanTable(StdAcChrominanceNrCodes, StdAcChrominanceValues, htCbAC)
     }
 
-    method setNumbersCategoryAndBitcode()
+    mtd setNumbersCategoryAndBitcode()
     {
         categoryAlloc.resize(65535)
         bitcodeAlloc.resize(65535)
@@ -370,7 +370,7 @@ impl Encoder
         }
     }
 
-    method prepareQuantTables()
+    mtd prepareQuantTables()
     {
         const AanSf: [8] f64 = @[1.0, 1.387039845, 1.306562965, 1.175875602, 1.0, 0.785694958, 0.541196100, 0.275899379]
         i := 0
@@ -386,25 +386,25 @@ impl Encoder
     }
 
     #[Swag.Inline]
-    method writeByte(b: u8)
+    mtd writeByte(b: u8)
     {
         stream.addByte(b)
     }
 
     #[Swag.Inline]
-    method writeWord(w: u16)
+    mtd writeWord(w: u16)
     {
         stream.addByte(cast(u8) (w >>,safe 8))
         stream.addByte(cast(u8) (w & 0xFF))
     }
 
     #[Swag.Inline]
-    method writeBytes(s: [..] u8)
+    mtd writeBytes(s: [..] u8)
     {
         stream.addBytes(s)
     }
 
-    method writeBits(bs: BitString)
+    mtd writeBits(bs: BitString)
     {
         value  := bs.value
         posval := cast(s32) bs.length - 1
@@ -432,7 +432,7 @@ impl Encoder
         }
     }
 
-    method writeAPP0info()
+    mtd writeAPP0info()
     {
         writeWord(APP0info.marker)
         writeWord(APP0info.length)
@@ -450,7 +450,7 @@ impl Encoder
         writeByte(APP0info.thumbnHeight)
     }
 
-    method writeDQTinfo()
+    mtd writeDQTinfo()
     {
         writeWord(dqtInfo.marker)
         writeWord(dqtInfo.length)
@@ -460,7 +460,7 @@ impl Encoder
         writeBytes(dqtInfo.tableCb)
     }
 
-    method writeSOF0info()
+    mtd writeSOF0info()
     {
         writeWord(SOF0info.marker)
         writeWord(SOF0info.length)
@@ -479,7 +479,7 @@ impl Encoder
         writeByte(SOF0info.qtcr)
     }
 
-    method writeDHTinfo()
+    mtd writeDHTinfo()
     {
         writeWord(dhtInfo.marker)
         writeWord(dhtInfo.length)
@@ -497,7 +497,7 @@ impl Encoder
         writeBytes(dhtInfo.valuesCbAC)
     }
 
-    method writeSOSinfo()
+    mtd writeSOSinfo()
     {
         writeWord(SOSinfo.marker)
         writeWord(SOSinfo.length)
@@ -514,13 +514,13 @@ impl Encoder
     }
 
     #[Swag.Safety("", false)]
-    method loadFromRGB(xpos: u16, ypos: u16)
+    mtd loadFromRGB(xpos: u16, ypos: u16)
     {
         #[Swag.Inline]
         {
-            method Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
-            method Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
-            method Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
+            mtd Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
+            mtd Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
+            mtd Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
         }
 
         pos := 0
@@ -545,7 +545,7 @@ impl Encoder
         }
     }
 
-    method quantization(data: *s8, fdtbl: *f32, outData: *s16)
+    mtd quantization(data: *s8, fdtbl: *f32, outData: *s16)
     {
         var dataFloat: [64] f32
         loop i: 64
@@ -647,7 +647,7 @@ impl Encoder
         }
     }
 
-    method processDU(componentDU: *s8, fdtbl: *f32, dC: *s16, hTDC, hTAC: *BitString)
+    mtd processDU(componentDU: *s8, fdtbl: *f32, dC: *s16, hTDC, hTAC: *BitString)
     {
         eob       := hTAC[0x00]
         m16Zeroes := hTAC[0xF0]
@@ -702,7 +702,7 @@ impl Encoder
             writeBits(eob)
     }
 
-    method encoder()
+    mtd encoder()
     {
         var dcy, dccb, dccr: s16
         for ypos := 0'u16; ypos < imageY; ypos += 8
@@ -720,13 +720,13 @@ impl Encoder
 
 public impl IEncoder for Encoder
 {
-    method canEncode(fileName: string)->bool
+    mtd canEncode(fileName: string)->bool
     {
         ext := Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
         stream = result
         srcImage = &image

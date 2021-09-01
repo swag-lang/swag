@@ -35,7 +35,7 @@ private struct Context
 
 impl Painter
 {
-    private method drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
+    private mtd drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -56,7 +56,7 @@ impl Painter
         }
     }
 
-    private method drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
+    private mtd drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -71,7 +71,7 @@ impl Painter
         }
     }
 
-    private method drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    private mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -106,7 +106,7 @@ impl Painter
         }
     }
 
-    private method drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    private mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -131,7 +131,7 @@ impl Painter
         }
     }
 
-    private method drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
+    private mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
     {
         radius := d.length()
         if radius < 2.5
@@ -146,7 +146,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private method drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    private mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
         #[Swag.Complete]
         switch capStyle
@@ -160,7 +160,7 @@ impl Painter
         }
     }
 
-    private method drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
+    private mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
     {
         if penSize < 3 return
 
@@ -174,7 +174,7 @@ impl Painter
         }
     }
 
-    private method drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
+    private mtd drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
     {
         v0 := p
 
@@ -199,7 +199,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private method drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
+    private mtd drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
         var startPos, endPos: Vector2 = ?
         startPos.x = center.x + (Math.cos(angle0) * radius)
@@ -240,7 +240,7 @@ impl Painter
         }
     }
 
-    private method drawJoinRound(p, d1, d2: Vector2, pen: Pen)
+    private mtd drawJoinRound(p, d1, d2: Vector2, pen: Pen)
     {
         var angle0, angle1: f32 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
@@ -267,7 +267,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private method drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    private mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
@@ -321,7 +321,7 @@ impl Painter
         }
     }
 
-    private method drawJoin(using cxt: *Context, p, d1, d2: Vector2)
+    private mtd drawJoin(using cxt: *Context, p, d1, d2: Vector2)
     {
         #[Swag.Complete]
         switch pen.joinStyle
@@ -334,7 +334,7 @@ impl Painter
         }
     }
 
-    private method drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
+    private mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
     {
         if beginLine or lastLineInvalid return
 
@@ -352,7 +352,7 @@ impl Painter
         }
     }
 
-    private method drawMoveCursor(using cxt: *Context, pos: Vector2)
+    private mtd drawMoveCursor(using cxt: *Context, pos: Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {
@@ -367,7 +367,7 @@ impl Painter
         }
     }
 
-    private method drawLineInternal(using cxt: *Context, pos: Vector2)
+    private mtd drawLineInternal(using cxt: *Context, pos: Vector2)
     {
         // Compute line (half width on each side)
         newPos := pos
@@ -480,7 +480,7 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
-    private method drawLine(using cxt: *Context, pos: Vector2)
+    private mtd drawLine(using cxt: *Context, pos: Vector2)
     {
         // solid
         if pen.dashStyle == .None
@@ -550,7 +550,7 @@ impl Painter
         }
     }
 
-    private method drawLineBeginCap(using cxt: *Context)
+    private mtd drawLineBeginCap(using cxt: *Context)
     {
         if pen.beginCapStyle == .None return
         if penSize < 3 return
@@ -564,7 +564,7 @@ impl Painter
         drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
-    private method drawLineEndCap(using cxt: *Context)
+    private mtd drawLineEndCap(using cxt: *Context)
     {
         if pen.endCapStyle == .None return
         if penSize < 3 return
@@ -578,7 +578,7 @@ impl Painter
         drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
-    private method drawPath(using cxt: *Context)
+    private mtd drawPath(using cxt: *Context)
     {
         if pen.size < 1 or path.polygon.points.count == 0
             return
@@ -627,7 +627,7 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPath(path: *LinePath, color: Color, penSize: f32)
+    mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
@@ -636,7 +636,7 @@ impl Painter
     }
 
     // Draw the line path with the given 'pen'
-    method drawPath(path: *LinePath, pen: Pen)
+    mtd drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(paintQuality)
         if Math.isZeroEpsilon(path.totalLen)
@@ -661,7 +661,7 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
+    mtd drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
         if mode == .Separate
         {
@@ -695,7 +695,7 @@ impl Painter
     }
 
     // Draw the line path
-    method drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
+    mtd drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
@@ -727,7 +727,7 @@ impl Painter
         return true
     }
 
-    private method triangulate(path: *LinePath)->Array's32
+    private mtd triangulate(path: *LinePath)->Array's32
     {
         var result: retval
 
@@ -804,7 +804,7 @@ impl Painter
     }
 
     // Fill the line path with the given 'brush'
-    method fillPath(path: *LinePath, brush: Brush)
+    mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
         if Math.isZeroEpsilon(path.totalLen) return
@@ -899,14 +899,14 @@ impl Painter
     }
 
     // Fill the line path
-    method fillPath(path: *LinePath, color: Color)
+    mtd fillPath(path: *LinePath, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         fillPath(path, sharedSolidBrush)
     }
 
-    private method triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
+    private mtd triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTexture1()
@@ -922,7 +922,7 @@ impl Painter
 
             if paintParams & .Antialiased
             {
-                method addAA(prim: uint, tri: const *Poly2Tri.Triangle)
+                mtd addAA(prim: uint, tri: const *Poly2Tri.Triangle)
                 {
                     if !tri return
                     v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
@@ -952,7 +952,7 @@ impl Painter
 
     // Fill the list of paths
     // clockwise = fill, anti-clockwise = hole
-    method fillPath(pathList: *LinePathList, brush: Brush)
+    mtd fillPath(pathList: *LinePathList, brush: Brush)
     {
         // Add a little offset in case of AA
         offsetPath := paintParams & .Antialiased ? 0.25 : 0
@@ -991,7 +991,7 @@ impl Painter
     }
 
     // Fill the line path
-    method fillPath(pathList: *LinePathList, color: Color)
+    mtd fillPath(pathList: *LinePathList, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color

@@ -6,7 +6,7 @@ struct AA
 
 impl AA
 {
-    method titi()
+    mtd titi()
     {
         x := 0
     }

@@ -20,7 +20,7 @@ struct Keyboard
 impl Keyboard
 {
     // Compute current state of the keyboard (all keys)
-    method update()
+    mtd update()
     {
         previousState = currentState
         currentState.update()
@@ -60,7 +60,7 @@ impl Keyboard
     }
 
     // Reset the keyboard state
-    method clear()
+    mtd clear()
     {
         previousState.clear()
         currentState.clear()
@@ -69,25 +69,25 @@ impl Keyboard
     }
 
     // Determines whether given key is currently being pressed
-    method isKeyPressed(key: Key)->bool
+    mtd isKeyPressed(key: Key)->bool
     {
         return currentState.pressed[key]
     }
 
     // Determines whether given key has just been pressed
-    method isKeyJustPressed(key: Key)->bool
+    mtd isKeyJustPressed(key: Key)->bool
     {
         return currentState.pressed[key] and !previousState.pressed[key]
     }
 
     // Determines whether given key is currently being released
-    method isKeyReleased(key: Key)->bool
+    mtd isKeyReleased(key: Key)->bool
     {
         return !currentState.pressed[key]
     }
 
     // Determines whether given key has just been released
-    method isKeyJustReleased(key: Key)->bool
+    mtd isKeyJustReleased(key: Key)->bool
     {
         return !currentState.pressed[key] and previousState.pressed[key]
     }

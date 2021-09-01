@@ -51,7 +51,7 @@ public struct Edge
 
 impl Edge
 {
-    method set(p1, p2: *Point)
+    mtd set(p1, p2: *Point)
     {
         p = p1
         q = p2
@@ -88,17 +88,17 @@ public struct Triangle
 
 impl Triangle
 {
-    method markConstrainedEdge(index: s32)
+    mtd markConstrainedEdge(index: s32)
     {
         constrainedEdge[index] = true
     }
 
-    method markConstrainedEdge(edge: *Edge)
+    mtd markConstrainedEdge(edge: *Edge)
     {
         markConstrainedEdge(edge.p, edge.q)
     }
 
-    method markConstrainedEdge(p, q: *Point)
+    mtd markConstrainedEdge(p, q: *Point)
     {
         if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0])
             constrainedEdge[2] = true
@@ -108,13 +108,13 @@ impl Triangle
             constrainedEdge[0] = true
     }
 
-    method oppositePoint(t: *Triangle, p: *Point)->*Point
+    mtd oppositePoint(t: *Triangle, p: *Point)->*Point
     {
         cw := t.pointCW(p)
         return pointCW(cw)
     }
 
-    method edgeIndex(p1, p2: *Point)->s32
+    mtd edgeIndex(p1, p2: *Point)->s32
     {
         switch p1
         {
@@ -134,7 +134,7 @@ impl Triangle
         return -1
     }
 
-    method index(p: *Point)->s32
+    mtd index(p: *Point)->s32
     {
         switch p
         {
@@ -147,7 +147,7 @@ impl Triangle
         return -1
     }
 
-    method neighborAcross(point: *Point)->*Triangle
+    mtd neighborAcross(point: *Point)->*Triangle
     {
         switch point
         {
@@ -157,7 +157,7 @@ impl Triangle
         }
     }
 
-    method neighborCW(point: *Point)->*Triangle
+    mtd neighborCW(point: *Point)->*Triangle
     {
         switch point
         {
@@ -167,7 +167,7 @@ impl Triangle
         }
     }
 
-    method neighborCCW(p: *Point)->*Triangle
+    mtd neighborCCW(p: *Point)->*Triangle
     {
         switch p
         {
@@ -177,7 +177,7 @@ impl Triangle
         }
     }
 
-    method getConstrainedEdgeCCW(p: *Point)->bool
+    mtd getConstrainedEdgeCCW(p: *Point)->bool
     {
         switch p
         {
@@ -187,7 +187,7 @@ impl Triangle
         }
     }
 
-    method getConstrainedEdgeCW(p: *Point)->bool
+    mtd getConstrainedEdgeCW(p: *Point)->bool
     {
         switch p
         {
@@ -197,7 +197,7 @@ impl Triangle
         }
     }
 
-    method pointCW(point: *Point)->*Point
+    mtd pointCW(point: *Point)->*Point
     {
         switch point
         {
@@ -210,7 +210,7 @@ impl Triangle
         return null
     }
 
-    method pointCCW(point: *Point)->*Point
+    mtd pointCCW(point: *Point)->*Point
     {
         switch point
         {
@@ -223,7 +223,7 @@ impl Triangle
         return null
     }
 
-    method getDelaunayEdgeCCW(p: *Point)->bool
+    mtd getDelaunayEdgeCCW(p: *Point)->bool
     {
         switch p
         {
@@ -233,7 +233,7 @@ impl Triangle
         }
     }
 
-    method getDelaunayEdgeCW(p: *Point)->bool
+    mtd getDelaunayEdgeCW(p: *Point)->bool
     {
         switch p
         {
@@ -243,7 +243,7 @@ impl Triangle
         }
     }
 
-    method setDelaunayEdgeCCW(p: *Point, e: bool)
+    mtd setDelaunayEdgeCCW(p: *Point, e: bool)
     {
         switch p
         {
@@ -253,7 +253,7 @@ impl Triangle
         }
     }
 
-    method setDelaunayEdgeCW(p: *Point, e: bool)
+    mtd setDelaunayEdgeCW(p: *Point, e: bool)
     {
         switch p
         {
@@ -263,7 +263,7 @@ impl Triangle
         }
     }
 
-    method setConstrainedEdgeCCW(p: *Point, ce: bool)
+    mtd setConstrainedEdgeCCW(p: *Point, ce: bool)
     {
         switch p
         {
@@ -273,7 +273,7 @@ impl Triangle
         }
     }
 
-    method setConstrainedEdgeCW(p: *Point, ce: bool)
+    mtd setConstrainedEdgeCW(p: *Point, ce: bool)
     {
         switch p
         {
@@ -283,7 +283,7 @@ impl Triangle
         }
     }
 
-    method clearNeighbor(triangle: *Triangle)
+    mtd clearNeighbor(triangle: *Triangle)
     {
         switch triangle
         {
@@ -293,31 +293,31 @@ impl Triangle
         }
     }
 
-    method clearNeighbors()
+    mtd clearNeighbors()
     {
         neighbors[0] = null
         neighbors[1] = null
         neighbors[2] = null
     }
 
-    method clearDelaunayEdges()
+    mtd clearDelaunayEdges()
     {
         delaunayEdge[0] = false
         delaunayEdge[1] = false
         delaunayEdge[2] = false
     }
 
-    method contains(p: *Point)->bool
+    mtd contains(p: *Point)->bool
     {
         return p == points[0] or p == points[1] or p == points[2]
     }
 
-    method contains(p1, p2: *Point)->bool
+    mtd contains(p1, p2: *Point)->bool
     {
         return contains(p1) and contains(p2)
     }
 
-    method markNeighbor(p1, p2: *Point, t: *Triangle)
+    mtd markNeighbor(p1, p2: *Point, t: *Triangle)
     {
         if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2])
             neighbors[0] = t
@@ -329,7 +329,7 @@ impl Triangle
             Debug.assert(false)
     }
 
-    method markNeighbor(t: *Triangle)
+    mtd markNeighbor(t: *Triangle)
     {
         if t.contains(points[1], points[2])
         {
@@ -348,7 +348,7 @@ impl Triangle
         }
     }
 
-    method legalize(opoint, npoint: *Point)
+    mtd legalize(opoint, npoint: *Point)
     {
         switch opoint
         {
@@ -403,7 +403,7 @@ struct AdvancingFront
 
 impl AdvancingFront
 {
-    method locatePoint(point: *Point)->*Node
+    mtd locatePoint(point: *Point)->*Node
     {
         px := point.x
         node := searchNode
@@ -446,7 +446,7 @@ impl AdvancingFront
         return node
     }
 
-    method locateNode(x: f64)->*Node
+    mtd locateNode(x: f64)->*Node
     {
         node := searchNode
         if x < node.value
@@ -503,12 +503,12 @@ public struct Tesselate
 
 impl Tesselate
 {
-    method opDrop()
+    mtd opDrop()
     {
         clear()
     }
 
-    method clear()
+    mtd clear()
     {
         Memory.delete(head)
         Memory.delete(tail)
@@ -524,13 +524,13 @@ impl Tesselate
     }
 
     // To call before adding a polyline
-    public method startPolyLine()
+    public mtd startPolyLine()
     {
         polyStart = points.count
     }
 
     // Register a new point
-    public method addPoint(x, y: f64)
+    public mtd addPoint(x, y: f64)
     {
         p := Memory.new'Point()
         p.x = x
@@ -539,7 +539,7 @@ impl Tesselate
     }
 
     // To call to register the polyline
-    public method endPolyLine()
+    public mtd endPolyLine()
     {
         func initEdges(using self, polyline: [..] *Point)
         {
@@ -557,7 +557,7 @@ impl Tesselate
     }
 
     // Triangulate
-    public method triangulate()
+    public mtd triangulate()
     {
         if points.isEmpty() return
 
@@ -568,12 +568,12 @@ impl Tesselate
     }
 
     // Get the result
-    public method getTriangles()->const [..] *Triangle
+    public mtd getTriangles()->const [..] *Triangle
     {
         return triangles.toSlice()
     }
 
-    method sweepPoints()
+    mtd sweepPoints()
     {
         loop i: 1..points.count-1
         {
@@ -584,7 +584,7 @@ impl Tesselate
         }
     }
 
-    method addEdgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
+    mtd addEdgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
     {
         triangle := t
         Debug.assert(triangle != null, "EdgeEvent - null triangle")
@@ -644,7 +644,7 @@ impl Tesselate
         }
     }
 
-    method flipEdgeEvent(ep, eq: *Point, tri: *Triangle, p: *Point)
+    mtd flipEdgeEvent(ep, eq: *Point, tri: *Triangle, p: *Point)
     {
         t := tri
         Debug.assert(t != null)
@@ -685,7 +685,7 @@ impl Tesselate
         }
     }
 
-    method nextFlipTriangle(o: Orientation, t, ot: *Triangle, p, op: *Point)->*Triangle
+    mtd nextFlipTriangle(o: Orientation, t, ot: *Triangle, p, op: *Point)->*Triangle
     {
         if o == .CCW
         {
@@ -712,7 +712,7 @@ impl Tesselate
         return null
     }
 
-    method flipScanEdgeEvent(ep, eq: *Point, flip_triangle: *Triangle, t: *Triangle, p: *Point)
+    mtd flipScanEdgeEvent(ep, eq: *Point, flip_triangle: *Triangle, t: *Triangle, p: *Point)
     {
         ot := t.neighborAcross(p)
         Debug.assert(ot != null, "FlipScanEdgeEvent - null neighbor across")
@@ -733,7 +733,7 @@ impl Tesselate
         }
     }
 
-    method addEdgeEvent(edge: *Edge, node: *Node)
+    mtd addEdgeEvent(edge: *Edge, node: *Node)
     {
         edgeEvent.constrainedEdge = edge
         edgeEvent.right = edge.p.x > edge.q.x
@@ -745,7 +745,7 @@ impl Tesselate
         addEdgeEvent(edge.p, edge.q, node.triangle, edge.q)
     }
 
-    method fillEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillEdgeEvent(edge: *Edge, node: *Node)
     {
         if edgeEvent.right
             fillRightAboveEdgeEvent(edge, node)
@@ -753,7 +753,7 @@ impl Tesselate
             fillLeftAboveEdgeEvent(edge, node)
     }
 
-    method fillRightAboveEdgeEvent(edge: *Edge, n: *Node)
+    mtd fillRightAboveEdgeEvent(edge: *Edge, n: *Node)
     {
         node := n
         while node.next.point.x < edge.p.x
@@ -765,7 +765,7 @@ impl Tesselate
         }
     }
 
-    method fillRightBelowEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillRightBelowEdgeEvent(edge: *Edge, node: *Node)
     {
         if node.point.x < edge.p.x
         {
@@ -779,7 +779,7 @@ impl Tesselate
         }
     }
 
-    method fillRightConcaveEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillRightConcaveEdgeEvent(edge: *Edge, node: *Node)
     {
         fill(node.next)
         if node.next.point != edge.p
@@ -792,7 +792,7 @@ impl Tesselate
         }
     }
 
-    method fillRightConvexEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillRightConvexEdgeEvent(edge: *Edge, node: *Node)
     {
         if orient2d(node.next.point, node.next.next.point, node.next.next.next.point) == .CCW
         {
@@ -805,7 +805,7 @@ impl Tesselate
         }
     }
 
-    method fillLeftAboveEdgeEvent(edge: *Edge, n: *Node)
+    mtd fillLeftAboveEdgeEvent(edge: *Edge, n: *Node)
     {
         node := n
         while node.prev.point.x > edge.p.x
@@ -817,7 +817,7 @@ impl Tesselate
         }
     }
 
-    method fillLeftBelowEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillLeftBelowEdgeEvent(edge: *Edge, node: *Node)
     {
         if node.point.x > edge.p.x
         {
@@ -831,7 +831,7 @@ impl Tesselate
         }
     }
 
-    method fillLeftConvexEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillLeftConvexEdgeEvent(edge: *Edge, node: *Node)
     {
         if orient2d(node.prev.point, node.prev.prev.point, node.prev.prev.prev.point) == .CW
             fillLeftConcaveEdgeEvent(edge, node.prev)
@@ -842,7 +842,7 @@ impl Tesselate
         }
     }
 
-    method fillLeftConcaveEdgeEvent(edge: *Edge, node: *Node)
+    mtd fillLeftConcaveEdgeEvent(edge: *Edge, node: *Node)
     {
         fill(node.prev)
         if node.prev.point != edge.p
@@ -869,7 +869,7 @@ impl Tesselate
         return false
     }
 
-    method pointEvent(point: *Point)->*Node
+    mtd pointEvent(point: *Point)->*Node
     {
         node := locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
@@ -880,7 +880,7 @@ impl Tesselate
         return new_node
     }
 
-    method fillAdvancingFront(n: *Node)
+    mtd fillAdvancingFront(n: *Node)
     {
         node := n.next
         while node and node.next
@@ -906,7 +906,7 @@ impl Tesselate
         }
     }
 
-    method fillBasin(node: *Node)
+    mtd fillBasin(node: *Node)
     {
         if orient2d(node.point, node.next.point, node.next.next.point) == .CCW
             basin.leftNode = node.next.next
@@ -931,7 +931,7 @@ impl Tesselate
         fillBasinReq(basin.bottomNode)
     }
 
-    method fillBasinReq(n: *Node)
+    mtd fillBasinReq(n: *Node)
     {
         node := n
         if isShallow(node)
@@ -967,7 +967,7 @@ impl Tesselate
         fillBasinReq(node)
     }
 
-    method isShallow(node: *Node)->bool
+    mtd isShallow(node: *Node)->bool
     {
         var height: f64
         if basin.leftHighest
@@ -1027,7 +1027,7 @@ impl Tesselate
         return Math.atan2(x, y)
     }
 
-    method fill(node: *Node)
+    mtd fill(node: *Node)
     {
         triangle := Memory.new'Triangle()
         triangle.points[0] = node.prev.point
@@ -1045,7 +1045,7 @@ impl Tesselate
             mapTriangleToNodes(triangle)
     }
 
-    method newFrontTriangle(point: *Point, node: *Node)->*Node
+    mtd newFrontTriangle(point: *Point, node: *Node)->*Node
     {
         triangle := Memory.new'Triangle()
         triangle.points[0] = point
@@ -1131,7 +1131,7 @@ impl Tesselate
         return det > 0
     }
 
-    method legalize(t: *Triangle)->bool
+    mtd legalize(t: *Triangle)->bool
     {
         loop i: 3
         {
@@ -1216,7 +1216,7 @@ impl Tesselate
         t.markNeighbor(ot)
     }
 
-    method mapTriangleToNodes(t: *Triangle)
+    mtd mapTriangleToNodes(t: *Triangle)
     {
         loop i: 3
         {
@@ -1228,12 +1228,12 @@ impl Tesselate
         }
     }
 
-    method locateNode(point: *Point)->*Node
+    mtd locateNode(point: *Point)->*Node
     {
         return front.locateNode(point.x)
     }
 
-    method finalizationPolygon()
+    mtd finalizationPolygon()
     {
         t := front.head.next.triangle
         p := front.head.next.point
@@ -1242,7 +1242,7 @@ impl Tesselate
         if t meshClean(t)
     }
 
-    method meshClean(triangle: *Triangle)
+    mtd meshClean(triangle: *Triangle)
     {
         var stack: Array'*Triangle
         stack.add(triangle)
@@ -1261,7 +1261,7 @@ impl Tesselate
         }
     }
 
-    method initTriangulation()
+    mtd initTriangulation()
     {
         xmin, xmax := points[0].x
         ymin, ymax := points[0].y
@@ -1295,7 +1295,7 @@ impl Tesselate
         Slice.sort(points.toSlice(), &cmp)
     }
 
-    method createAdvancingFront()
+    mtd createAdvancingFront()
     {
         triangle := Memory.new'Triangle()
         triangle.points[0] = points[0]

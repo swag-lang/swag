@@ -14,9 +14,9 @@ impl ZLibDecoder
         bs := ByteStream.create(buffer)
         if bs.length() < 6 throw "invalid format"
 
-        // Compression method (8 is "deflate")
+        // Compression mtd (8 is "deflate")
         cmf := bs.readU8()
-        if cmf & 0xF != 8 throw "invalid compression method"
+        if cmf & 0xF != 8 throw "invalid compression mtd"
 
         // Window size
         cinfo := (cmf >>,safe 4) & 0xF

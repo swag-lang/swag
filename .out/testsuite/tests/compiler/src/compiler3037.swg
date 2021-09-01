@@ -6,7 +6,7 @@ struct BB
 
 impl BB
 {
-    method opDrop()
+    mtd opDrop()
     {
     }
 }

@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    method(T) opAffect(other: T)
+    mtd(T) opAffect(other: T)
     {
         if T == bool
             x = 1

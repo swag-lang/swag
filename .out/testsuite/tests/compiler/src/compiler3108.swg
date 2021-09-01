@@ -10,12 +10,12 @@ struct AA
 
 impl Itf for AA
 {
-    method YYY()->s32
+    mtd YYY()->s32
     {
         return 666
     }
 
-    method toto()
+    mtd toto()
     {
         @print(YYY(self))
     }

@@ -5,7 +5,7 @@ struct IntPoint
 
 impl IntPoint
 {
-    method opEquals(other: Self)->bool
+    mtd opEquals(other: Self)->bool
     {
         return Y == other.Y
     }

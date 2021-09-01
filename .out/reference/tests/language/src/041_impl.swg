@@ -33,15 +33,18 @@ impl MyStruct
     func returnZ(me: Self) => me.z
 }
 
-// If you declare your function with 'method' instead of 'func', then
-// the first parameter is automatically 'using self'. Other than that,
-// it's exactly the same.
+// If you declare your function with 'mtd' (method) instead of 'func', then
+// the first parameter is forced to be 'using self'.
+// If you declare your function with 'mtdc' (method const) instead of 'func', then
+// the first parameter is forced to be 'const using self'.
+//
+// Other than that, it's exactly the same.
 // So this is just syntaxic sugar to avoid repeating the 'using self'.
 
 impl MyStruct
 {
-    method methodReturnX()          => x
-    func   funcReturnX(using self)  => x
+    mtd  methodReturnX()          => x
+    func funcReturnX(using self)  => x
 }
 
 #test

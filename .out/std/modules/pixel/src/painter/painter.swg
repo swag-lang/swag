@@ -134,7 +134,7 @@ impl Painter
         return result
     }
 
-    protected method resetTexture0()
+    protected mtd resetTexture0()
     {
         if lastTexture0Handle or lastTexture0Type != .SolidColor
         {
@@ -144,7 +144,7 @@ impl Painter
         }
     }
 
-    protected method resetTexture1()
+    protected mtd resetTexture1()
     {
         if lastTexture1Handle
         {
@@ -153,7 +153,7 @@ impl Painter
         }
     }
 
-    protected method setTexture0(bvMin, bvMax: Vector2, brush: Brush)
+    protected mtd setTexture0(bvMin, bvMax: Vector2, brush: Brush)
     {
         if !canSetTexture0
             return
@@ -197,7 +197,7 @@ impl Painter
         lastTexture0Type   = brush.type
     }
 
-    protected method setTexture1(texture: Texture)
+    protected mtd setTexture1(texture: Texture)
     {
         if lastTexture1Handle == texture.handle
             return
@@ -207,7 +207,7 @@ impl Painter
         lastTexture1Handle = texture.handle
     }
 
-    protected method pushTriangleCmd()->*Command
+    protected mtd pushTriangleCmd()->*Command
     {
         var cmd: *Command
         if commandBuffer.count
@@ -227,7 +227,7 @@ impl Painter
         return cmd
     }
 
-    protected method pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
+    protected mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -242,7 +242,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected method pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
+    protected mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -257,7 +257,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected method addEdgeAA(tri: uint, start, end: Vector2)
+    protected mtd addEdgeAA(tri: uint, start, end: Vector2)
     {
         loop i: 3
         {
@@ -275,7 +275,7 @@ impl Painter
     }
 
     #[Swag.Inline]
-    protected method newCommand(cmd: CommandId, replaceLast = false)->*Command
+    protected mtd newCommand(cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin, "begin() not called before")
 
@@ -288,14 +288,14 @@ impl Painter
         return ptr
     }
 
-    protected method updateFont(fontRef: *Font)
+    protected mtd updateFont(fontRef: *Font)
     {
         if !fontRef.dirty return
         cmd := newCommand(CommandId.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
 
-    protected method startOverlapMode(pen: Pen)
+    protected mtd startOverlapMode(pen: Pen)
     {
         alpha := false
         if pen.brush.color.argb & 0xFF000000 != 0xFF000000
@@ -309,7 +309,7 @@ impl Painter
         }
     }
 
-    protected method stopOverlapMode()
+    protected mtd stopOverlapMode()
     {
         if overlapMode
         {
@@ -334,21 +334,21 @@ impl Painter
     }
 
     // Call this after drawing
-    method end()
+    mtd end()
     {
         Debug.assert(drawingBegin)
         drawingBegin = false
     }
 
     // Clear the rendering surface
-    method clear(color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
+    mtd clear(color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
     {
         cmd := newCommand(CommandId.Clear)
         cmd.clear.color = color
     }
 
     // Set the paint position
-    method translateTransform(x, y: f32)
+    mtd translateTransform(x, y: f32)
     {
         tr := Transform2.createTranslation(x, y)
         transform.multiply(tr)
@@ -356,7 +356,7 @@ impl Painter
     }
 
     // Set the paint rotation, in degrees
-    method rotateTransform(angle: f32)
+    mtd rotateTransform(angle: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
@@ -365,7 +365,7 @@ impl Painter
     }
 
     // Set the paint rotation, in degrees
-    method rotateTransform(angle: f32, centerX, centerY: f32)
+    mtd rotateTransform(angle: f32, centerX, centerY: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
@@ -374,7 +374,7 @@ impl Painter
     }
 
     // Set the paint scale
-    method scaleTransform(x, y: f32)
+    mtd scaleTransform(x, y: f32)
     {
         tr := Transform2.createScale(x, y, 0, 0)
         transform.multiply(tr)
@@ -382,14 +382,14 @@ impl Painter
     }
 
     // Reset the paint position, rotation, scale
-    method resetTransform()
+    mtd resetTransform()
     {
         transform.setIdentity()
         setTransform(transform)
     }
 
     // Set the paint transformation
-    method setTransform(tr: Transform2)
+    mtd setTransform(tr: Transform2)
     {
         transform = tr
 
@@ -398,13 +398,13 @@ impl Painter
     }
 
     // Set the texture interpolation mode
-    method setInterpolationMode(mode: InterpolationMode)
+    mtd setInterpolationMode(mode: InterpolationMode)
     {
         interpolationMode = mode
     }
 
     // Set the current clipping rectangle
-    method setClippingRect(x, y, width, height: f32)
+    mtd setClippingRect(x, y, width, height: f32)
     {
         clippingRect = @{x, y, width, height}
         clippingRectOn = true
@@ -413,40 +413,40 @@ impl Painter
     }
 
     // Reset the current clipping rectangle
-    method resetClippingRect()
+    mtd resetClippingRect()
     {
         clippingRectOn = false
         discard newCommand(CommandId.ResetClippingRect, true)
     }
 
     // Start painting in the clipping buffer
-    method startClippingRegion(mode = ClippingMode.Set)
+    mtd startClippingRegion(mode = ClippingMode.Set)
     {
         cmd := newCommand(CommandId.StartClippingRegion, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Start painting in the clipping buffer
-    method setClippingRegionMode(mode: ClippingMode)
+    mtd setClippingRegionMode(mode: ClippingMode)
     {
         cmd := newCommand(CommandId.SetClippingRegionMode, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.
-    method endClippingRegion()
+    mtd endClippingRegion()
     {
         discard newCommand(CommandId.EndClippingRegion, true)
     }
 
     // Reset clipping buffer to its default value (no more clipping)
-    method resetClippingRegion()
+    mtd resetClippingRegion()
     {
         discard newCommand(CommandId.ResetClippingRegion, true)
     }
 
     // Set the current blending mode
-    method setBlendingMode(mode: BlendingMode)
+    mtd setBlendingMode(mode: BlendingMode)
     {
         cmd := newCommand(CommandId.SetBlendingMode, true)
         cmd.blendingMode.mode = mode

@@ -4,12 +4,12 @@ struct AA
 
 impl AA
 {
-    method opCount()->uint
+    mtd opCount()->uint
     {
         return 4
     }
 
-    method opSlice(a, b: uint)->const [..] string
+    mtd opSlice(a, b: uint)->const [..] string
     {
         return @["1", "2", "3" , "4"]
     }

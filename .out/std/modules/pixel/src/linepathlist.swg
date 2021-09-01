@@ -10,12 +10,12 @@ struct LinePathList
 
 impl LinePathList
 {
-    method opDrop()
+    mtd opDrop()
     {
         clear()
     }
 
-    method opPostCopy()
+    mtd opPostCopy()
     {
         visit p, i: paths
         {
@@ -26,10 +26,10 @@ impl LinePathList
     }
 
     #[Swag.Inline]
-    method count() => paths.count
+    mtd count() => paths.count
 
     // Remove all internal line paths
-    method clear()
+    mtd clear()
     {
         visit p: paths
             Memory.delete(p)
@@ -37,7 +37,7 @@ impl LinePathList
     }
 
     // Returns a new path
-    method newPath()->*LinePath
+    mtd newPath()->*LinePath
     {
         ptr := Memory.new'LinePath()
         paths.add(ptr)
@@ -45,7 +45,7 @@ impl LinePathList
     }
 
     // Flatten all paths
-    method flatten(quality: PaintQuality)
+    mtd flatten(quality: PaintQuality)
     {
         // Flatten all path, and compute BV
         bvMin = Vector2.Max
@@ -60,7 +60,7 @@ impl LinePathList
 
     // Call fast offset on all paths
     // They must before be flattened
-    method offset(value: f32)
+    mtd offset(value: f32)
     {
         visit p: paths
             p.polygon.offset(value)
@@ -68,7 +68,7 @@ impl LinePathList
 
     // Call quality offset on all paths
     // They must before be flattened
-    method offset(value: f32, joinStyle: JoinStyle)
+    mtd offset(value: f32, joinStyle: JoinStyle)
     {
         visit p: paths
         {
@@ -79,7 +79,7 @@ impl LinePathList
 
     // Clean all paths
     // They must before be flattened
-    method clean()
+    mtd clean()
     {
         visit p: paths
             p.polygon.clean()

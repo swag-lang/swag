@@ -61,12 +61,12 @@ struct Offset
 
 impl Offset
 {
-    method opDrop()
+    mtd opDrop()
     {
         clear()
     }
 
-    method clear()
+    mtd clear()
     {
         visit node: polyNodes.childs
             Memory.delete(node)
@@ -74,7 +74,7 @@ impl Offset
         lowest.x = -1
     }
 
-    method addPath(path: ClipperPath, joinType: JoinType)
+    mtd addPath(path: ClipperPath, joinType: JoinType)
     {
         highI := path.count - 1
         if highI < 0 return
@@ -117,7 +117,7 @@ impl Offset
         }
     }
 
-    method execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
+    mtd execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
     {
         solution.clear()
         fixOrientations()
@@ -173,7 +173,7 @@ impl Offset
         return area(poly) >= 0
     }
 
-    method fixOrientations()
+    mtd fixOrientations()
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
@@ -201,7 +201,7 @@ impl Offset
     #[Swag.Inline]
     func cround(val: f64) => cast(CInt) Math.round(val)
 
-    method doOffset(delta: f64)
+    mtd doOffset(delta: f64)
     {
         using Math
 
@@ -299,7 +299,7 @@ impl Offset
         }
     }
 
-    method offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
+    mtd offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         k := dref ptrk
 
@@ -354,7 +354,7 @@ impl Offset
         dref ptrk = j
     }
 
-    method doSquare(j, k: s32)
+    mtd doSquare(j, k: s32)
     {
         kN := normals[k]
         jN := normals[j]
@@ -370,7 +370,7 @@ impl Offset
         destPoly.add(IntPoint{r1, r2})
     }
 
-    method doMiter(j, k: s32, r: f64)
+    mtd doMiter(j, k: s32, r: f64)
     {
         kN := normals[k]
         jN := normals[j]
@@ -382,7 +382,7 @@ impl Offset
         destPoly.add(IntPoint{r1, r2})
     }
 
-    method doRound(j, k: s32)
+    mtd doRound(j, k: s32)
     {
         kN := normals[k]
         jN := normals[j]

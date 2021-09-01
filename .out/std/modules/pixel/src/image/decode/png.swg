@@ -131,11 +131,11 @@ impl Decoder
         if header.width == 0 or header.height == 0
             throw "invalid dimensions"
         if header.compressionMethod != 0
-            throw "invalid compression method"
+            throw "invalid compression mtd"
         if header.filterMethod != 0
-            throw "invalid filter method"
+            throw "invalid filter mtd"
         if header.interlaceMethod != .None and header.interlaceMethod != .Adam7
-            throw "invalid interlace method"
+            throw "invalid interlace mtd"
 
         using header
         if colorType & .Paletted throw "unsupported paletted image"

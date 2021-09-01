@@ -72,7 +72,7 @@ impl MyStruct
 impl MyStruct
 {
     #[Swag.Macro]
-    method(ptr: bool) opVisitReverse(stmt: code)
+    mtd(ptr: bool) opVisitReverse(stmt: code)
     {
         // Visit fields in reverse order (z, y then x)
         loop idx: 3

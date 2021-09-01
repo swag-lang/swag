@@ -10,7 +10,7 @@ impl Variant
     }
 
     // Set the variant value
-    method set()
+    mtd set()
     {
         checkValidType(0)
     }

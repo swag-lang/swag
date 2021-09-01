@@ -270,7 +270,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool isMethod)
+bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool isMethod, bool isConstMethod)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, g_E[Err0883]));
 
@@ -280,7 +280,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
     else
         SWAG_CHECK(eatToken());
 
-    if (token.id != TokenId::SymRightParen || isMethod)
+    if (token.id != TokenId::SymRightParen || isMethod || isConstMethod)
     {
         auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
         allParams->semanticFct = SemanticJob::resolveFuncDeclParams;
@@ -289,7 +289,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             *result = allParams;
 
         // Add 'using self' as the first parameter in case of a method
-        if (isMethod)
+        if (isMethod || isConstMethod)
         {
             auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
             paramNode->flags |= AST_DECL_USING;
@@ -298,8 +298,10 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
             typeNode->typeFlags   = TYPEFLAG_ISSELF | TYPEFLAG_USING;
-            typeNode->identifier  = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
-            paramNode->type       = typeNode;
+            if (isConstMethod)
+                typeNode->typeFlags |= TYPEFLAG_ISCONST;
+            typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
+            paramNode->type      = typeNode;
         }
 
         while (token.id != TokenId::SymRightParen)
@@ -364,8 +366,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (result)
         *result = funcNode;
 
-    bool isMethod = token.id == TokenId::KwdMethod;
-    if (isMethod)
+    bool isMethod      = token.id == TokenId::KwdMethod;
+    bool isConstMethod = token.id == TokenId::KwdConstMethod;
+    if (isMethod || isConstMethod)
     {
         SWAG_VERIFY(funcNode->ownerStructScope && funcNode->ownerStructScope->kind == ScopeKind::Struct, error(token, g_E[Err0407]));
     }
@@ -498,7 +501,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, isMethod));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, isMethod, isConstMethod));
     }
 
     // #message has an expression has parameters

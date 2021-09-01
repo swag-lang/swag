@@ -23,7 +23,7 @@ struct GamePad
 impl GamePad
 {
     // Update the GamePad current state
-    method update() throw
+    mtd update() throw
     {
         newConnected := isConnected(padIndex)
         if !newConnected
@@ -40,44 +40,44 @@ impl GamePad
     }
 
     // Reset the previous and current state
-    method clear()
+    mtd clear()
     {
         previousState.clear()
         currentState.clear()
     }
 
     // Determines whether specified input device button is pressed
-    method isButtonPressed(button: GamePadButton)->bool
+    mtd isButtonPressed(button: GamePadButton)->bool
     {
         return currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been pressed
-    method isButtonJustPressed(button: GamePadButton)->bool
+    mtd isButtonJustPressed(button: GamePadButton)->bool
     {
         return currentState.pressed[button] and !previousState.pressed[button]
     }
 
     // Determines whether specified input device button is released (not pressed)
-    method isButtonReleased(button: GamePadButton)->bool
+    mtd isButtonReleased(button: GamePadButton)->bool
     {
         return !currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been released
-    method isButtonJustReleased(button: GamePadButton)->bool
+    mtd isButtonJustReleased(button: GamePadButton)->bool
     {
         return !currentState.pressed[button] and previousState.pressed[button]
     }
 
     // Get the analog position of the given button
-    method getPosition(button: GamePadButton)->Point
+    mtd getPosition(button: GamePadButton)->Point
     {
         return currentState.position[button]
     }
 
     // Set the vibration motor speeds
-    method setVibration(left, right: f32) throw
+    mtd setVibration(left, right: f32) throw
     {
         try setVibration(padIndex, left, right)
     }

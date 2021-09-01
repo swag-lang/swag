@@ -6,7 +6,7 @@ struct BB
 
 impl BB
 {
-    method opPostMove()
+    mtd opPostMove()
     {
         @print("toto")
     }

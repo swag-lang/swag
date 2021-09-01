@@ -38,7 +38,7 @@ public struct LinePath
 public impl LinePath
 {
     // Reset the path
-    method start(startX, startY: f32)
+    mtd start(startX, startY: f32)
     {
         elements.clear()
         isClosed = false
@@ -48,7 +48,7 @@ public impl LinePath
     }
 
     // Add a line from the previous point to 'pt'
-    method lineTo(x, y: f32)
+    mtd lineTo(x, y: f32)
     {
         var elem: Element = ?
         elem.type = .Line
@@ -59,7 +59,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    method curveTo(x, y: f32)
+    mtd curveTo(x, y: f32)
     {
         var elem: Element = ?
         elem.type = .Curve
@@ -70,7 +70,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    method bezierTo(x, y: f32, ctx, cty: f32)
+    mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier1
@@ -82,7 +82,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
-    method bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
+    mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var elem: Element = ?
         elem.type = .Bezier2
@@ -95,7 +95,7 @@ public impl LinePath
     }
 
     // Add an arc from the previous point
-    method arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
+    mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
     {
         initAngleRad := Math.toRadians(initAngle)
         maxAngleRad := Math.toRadians(maxAngle)
@@ -116,7 +116,7 @@ public impl LinePath
 
     // Close the figure
     // Will add a line or a curve to the first point if necessary
-    method close()
+    mtd close()
     {
         if isClosed or !elements.count
             return
@@ -134,7 +134,7 @@ public impl LinePath
     }
 
     // Initialize the path with a rectangle
-    method setRect(left, top, width, height: f32)
+    mtd setRect(left, top, width, height: f32)
     {
         right := left + width
         bottom := top + height
@@ -147,7 +147,7 @@ public impl LinePath
     }
 
     // Initialize the path with a round rectangle
-    method setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
+    mtd setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
     {
         right := left + width
         bottom := top + height
@@ -163,7 +163,7 @@ public impl LinePath
     }
 
     // Initialize the path with an ellipse
-    method setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
+    mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
         start(centerX, centerY - radiusY)
         arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
@@ -174,7 +174,7 @@ public impl LinePath
     }
 
     // Initialize the path with a circle
-    method setCircle(centerX, centerY: f32, radius: f32)
+    mtd setCircle(centerX, centerY: f32, radius: f32)
     {
         start(centerX, centerY - radius)
         arcTo(centerX, centerY, radius, radius, 0, 90)
@@ -196,7 +196,7 @@ public impl LinePath
         return minDist
     }
 
-    private method flattenBezier(pos, p1: Vector2, quality: PaintQuality)
+    private mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
         minDist := getFlattenDistance(quality)
         startPt := endPosBuffer
@@ -229,7 +229,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private method flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
+    private mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         v := pos - endPosBuffer
         minDist := getFlattenDistance(quality)
@@ -264,7 +264,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private method flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
+    private mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
         minDist := getFlattenDistance(quality)
         startPt := endPosBuffer
@@ -295,7 +295,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private method flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
+    private mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         var endPos: Vector2 = ?
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
@@ -326,7 +326,7 @@ public impl LinePath
             flattenLine(tmp[i].pos)
     }
 
-    private method flattenLine(pos: Vector2)
+    private mtd flattenLine(pos: Vector2)
     {
         totalLen += endPosBuffer.distance(pos)
         bvMin = Vector2.min(bvMin, pos)
@@ -336,7 +336,7 @@ public impl LinePath
     }
 
     // Convert the path to a list of points
-    method flatten(quality: PaintQuality)
+    mtd flatten(quality: PaintQuality)
     {
         // Already done ?
         if !isDirty and flattenQuality == quality and isFlatten

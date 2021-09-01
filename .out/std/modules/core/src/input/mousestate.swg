@@ -13,7 +13,7 @@ struct MouseState
 impl MouseState
 {
     // Compute the actual state of the mouse
-    method update()
+    mtd update()
     {
         using MouseButton
         pressed[Left] = isMouseButtonPressed(Left)
@@ -25,7 +25,7 @@ impl MouseState
     }
 
     // Reset the state to its default value
-    method clear()
+    mtd clear()
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
         position = getMousePos()

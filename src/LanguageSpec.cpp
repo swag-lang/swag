@@ -256,7 +256,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("union", {TokenId::KwdUnion, LiteralType::TT_MAX});
     keywords.add("interface", {TokenId::KwdInterface, LiteralType::TT_MAX});
     keywords.add("func", {TokenId::KwdFunc, LiteralType::TT_MAX});
-    keywords.add("method", {TokenId::KwdMethod, LiteralType::TT_MAX});
+    keywords.add("mtd", {TokenId::KwdMethod, LiteralType::TT_MAX});
+    keywords.add("mtdc", {TokenId::KwdConstMethod, LiteralType::TT_MAX});
     keywords.add("true", {TokenId::KwdTrue, LiteralType::TT_MAX});
     keywords.add("false", {TokenId::KwdFalse, LiteralType::TT_MAX});
     keywords.add("null", {TokenId::KwdNull, LiteralType::TT_MAX});

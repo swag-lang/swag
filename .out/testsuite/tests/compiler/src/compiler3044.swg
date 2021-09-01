@@ -4,7 +4,7 @@ struct(T: const [..] typeinfo) AA
 
 impl AA
 {
-    method isIn(V: typeinfo)->bool
+    mtd isIn(V: typeinfo)->bool
     {
         var ms: uint = 0
         visit p: T

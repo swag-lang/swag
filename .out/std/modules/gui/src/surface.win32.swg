@@ -45,31 +45,31 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 impl Surface
 {
     // Show the surface
-    method show()
+    mtd show()
     {
         ShowWindow(hWnd, SW_SHOW)
     }
 
     // Hide the surface
-    method showMaximize()
+    mtd showMaximize()
     {
         ShowWindow(hWnd, SW_MAXIMIZE)
     }
 
     // Hide the surface
-    method showUnMaximize()
+    mtd showUnMaximize()
     {
         ShowWindow(hWnd, SW_RESTORE)
     }
 
     // Hide the surface
-    method hide()
+    mtd hide()
     {
         ShowWindow(hWnd, SW_HIDE)
     }
 
     // Transform a point in screen space relative to the surface
-    method screenToSurface(pt: *Math.Point)
+    mtd screenToSurface(pt: *Math.Point)
     {
         wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
         ScreenToClient(hWnd, &wpt)
@@ -78,7 +78,7 @@ impl Surface
     }
 
     // Transform a point relative to the surface in screen space
-    method surfaceToScreen(pt: *Math.Point)
+    mtd surfaceToScreen(pt: *Math.Point)
     {
         wpt := POINT{cast(s32) pt.x, cast(s32) pt.y}
         ClientToScreen(hWnd, &wpt)

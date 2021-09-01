@@ -7,12 +7,12 @@ public struct Encoder
 
 public impl IEncoder for Encoder
 {
-    method canEncode(fileName: string)->bool
+    mtd canEncode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
         var fileHeader: FileHeader
         fileHeader.bfType    = 0x4d42

@@ -50,7 +50,7 @@ impl Image
     }
 
     // Save the image to a file
-    public method save(fileName: string, options: EncodeOptions = @{}) throw
+    public mtd save(fileName: string, options: EncodeOptions = @{}) throw
     {
         Debug.assert(pixels != null, "image is invalid")
 

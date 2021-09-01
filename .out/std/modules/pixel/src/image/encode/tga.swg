@@ -7,12 +7,12 @@ public struct Encoder
 
 public impl IEncoder for Encoder
 {
-    method canEncode(fileName: string)->bool
+    mtd canEncode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".tga"
     }
 
-    method encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
     {
         if image.width > Swag.U16.Max  throw "image width is too big"
         if image.height > Swag.U16.Max throw "image height is too big"

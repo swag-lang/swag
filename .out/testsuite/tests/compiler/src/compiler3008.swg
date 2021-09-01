@@ -1,5 +1,5 @@
 #global testerror
-method toto()
+mtd toto()
 {
 
 }

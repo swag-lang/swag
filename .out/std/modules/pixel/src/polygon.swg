@@ -16,13 +16,13 @@ struct Polygon
 impl Polygon
 {
     // Get the given point, with an optional offset
-    method getPoint(i: uint)->Vector2
+    mtd getPoint(i: uint)->Vector2
     {
         return points.buffer[i]
     }
 
     // Get the given point, with an optional offset
-    method getPoint(i: uint, offset: f32)->Vector2
+    mtd getPoint(i: uint, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset)
             return points.buffer[i]
@@ -59,19 +59,19 @@ impl Polygon
     }
 
     // Clear all points
-    method clear()
+    mtd clear()
     {
         points.clear()
     }
 
     // Add a new point
-    method add(v: Vector2)
+    mtd add(v: Vector2)
     {
         points.add(v)
     }
 
     // Fast expand polygon by a given amount
-    method offset(value: f32)
+    mtd offset(value: f32)
     {
         if Math.isZeroEpsilon(value) return
         if !points.count return
@@ -85,7 +85,7 @@ impl Polygon
         points =,move copy
     }
 
-    private method storeClipperResult(res: Clipper.ClipperPaths)
+    private mtd storeClipperResult(res: Clipper.ClipperPaths)
     {
         clear()
         if !res.count return
@@ -104,7 +104,7 @@ impl Polygon
     }
 
     // Slow but quality offset with a joinStyle
-    method offset(value: f32, joinStyle: JoinStyle)
+    mtd offset(value: f32, joinStyle: JoinStyle)
     {
         if Math.isZeroEpsilon(value) return
         if !points.count return
@@ -138,7 +138,7 @@ impl Polygon
     }
 
     // Clean polygon by removing bad/unecessary points
-    method clean()
+    mtd clean()
     {
         if !points.count return
 
@@ -164,7 +164,7 @@ impl Polygon
 
     // Compute internal values, like convex/clockwise
     // Call it once the polygon contains all its points
-    method compute()
+    mtd compute()
     {
         if !points.count return
 

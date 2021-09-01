@@ -141,7 +141,7 @@ struct MyStruct
 
 impl MyStruct
 {
-    method opCount() => 4'uint
+    mtd opCount() => 4'uint
 }
 
 #test

@@ -3,9 +3,9 @@ var G: s32
 struct XX {}
 impl XX
 {
-    method opDrop() { G += 1; }
-    method opPostCopy() {G += 1; }
-    method opPostMove() {G += 1; }
+    mtd opDrop() { G += 1; }
+    mtd opPostCopy() {G += 1; }
+    mtd opPostMove() {G += 1; }
 }
 
 struct(T: const [..] typeinfo) Variant
@@ -23,7 +23,7 @@ impl Variant
         return res
     }
 
-    method opPostCopy()
+    mtd opPostCopy()
     {
         #if orFlags() & .HasPostCopy
         {
@@ -31,7 +31,7 @@ impl Variant
         }
     }
 
-    method opPostMove()
+    mtd opPostMove()
     {
         #if orFlags() & .HasPostMove
         {
@@ -39,7 +39,7 @@ impl Variant
         }
     }
 
-    method opDrop()
+    mtd opDrop()
     {
         #if orFlags() & .HasDrop
         {

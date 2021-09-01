@@ -40,7 +40,7 @@ public impl RenderOglWin32
         base.init(w, h)
     }
 
-    method drop()
+    mtd drop()
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(hRC)

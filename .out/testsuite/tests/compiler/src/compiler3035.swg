@@ -6,7 +6,7 @@ struct BB
 
 impl BB
 {
-    method opPostCopy()
+    mtd opPostCopy()
     {
         @print("toto")
     }

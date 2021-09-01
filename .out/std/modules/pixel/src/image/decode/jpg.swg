@@ -220,7 +220,7 @@ const Zag: [64] u32 = @[
 
 impl Decoder
 {
-    method init(buffer: const [..] u8) throw
+    mtd init(buffer: const [..] u8) throw
     {
         @init(self)
         stream = @dataof(buffer)
@@ -236,7 +236,7 @@ impl Decoder
         try locateSofMarker()
     }
 
-    method start() throw
+    mtd start() throw
     {
         try
         {
@@ -248,7 +248,7 @@ impl Decoder
         }
     }
 
-    method doit(buf: *u8) throw
+    mtd doit(buf: *u8) throw
     {
         var scanLineOfs: *void
         var scanLineLen: u32
@@ -300,7 +300,7 @@ impl Decoder
         return cast(*s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
-    method loadNextRow() throw
+    mtd loadNextRow() throw
     {
         var blockMcuX: [MaxComponents] s32
 
@@ -368,7 +368,7 @@ impl Decoder
         }
     }
 
-    method restartProcess() throw
+    mtd restartProcess() throw
     {
         i := 1536
         while i > 0
@@ -404,7 +404,7 @@ impl Decoder
         getBits2(16)
     }
 
-    method huffDecode(ph: *HuffTables)->s32
+    mtd huffDecode(ph: *HuffTables)->s32
     {
         symbol := ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
         if symbol < 0
@@ -425,7 +425,7 @@ impl Decoder
         return symbol
     }
 
-    method decodeNextRow() throw
+    mtd decodeNextRow() throw
     {
         rowBlock := 0
         loop mcusPerRow
@@ -535,7 +535,7 @@ impl Decoder
         }
     }
 
-    method idct(data: *s16, buf: *u8)
+    mtd idct(data: *s16, buf: *u8)
     {
         pdstPtr := buf
         dataPtr := data
@@ -705,7 +705,7 @@ impl Decoder
         }
     }
 
-    method transformRow()
+    mtd transformRow()
     {
         psrcPtr := blockSeg[0]
         pdstPtr := pSampleBuf
@@ -719,7 +719,7 @@ impl Decoder
         }
     }
 
-    method findEoi() throw
+    mtd findEoi() throw
     {
         if !progressiveFlag
         {
@@ -732,7 +732,7 @@ impl Decoder
         totalBytesRead -= inBufLeft
     }
 
-    method decode(scanLineOfs: **void, scanLineLen: *u32)->s32 throw
+    mtd decode(scanLineOfs: **void, scanLineLen: *u32)->s32 throw
     {
         if totalLinesLeft == 0
             return Done
@@ -789,7 +789,7 @@ impl Decoder
         return Okay
     }
 
-    method convertGrayscale()
+    mtd convertGrayscale()
     {
         row := maxMcuSizeY - mcuLinesLeft
         d := scanLine0.buffer
@@ -810,7 +810,7 @@ impl Decoder
         }
     }
 
-    method convertH1V1()
+    mtd convertH1V1()
     {
         row := maxMcuSizeY - mcuLinesLeft
         d := scanLine0.buffer
@@ -833,7 +833,7 @@ impl Decoder
         }
     }
 
-    method convertH1V2()
+    mtd convertH1V2()
     {
         row := maxMcuSizeY - mcuLinesLeft
         d0 := scanLine0.buffer
@@ -873,7 +873,7 @@ impl Decoder
         }
     }
 
-    method convertH2V1()
+    mtd convertH2V1()
     {
         row := maxMcuSizeY - mcuLinesLeft
         d0 := scanLine0.buffer
@@ -915,7 +915,7 @@ impl Decoder
         }
     }
 
-    method convertH2V2()
+    mtd convertH2V2()
     {
         row := maxMcuSizeY - mcuLinesLeft
         d0 := scanLine0.buffer
@@ -974,7 +974,7 @@ impl Decoder
         }
     }
 
-    method initFrame() throw
+    mtd initFrame() throw
     {
         if compsInFrame == 1
         {
@@ -1058,7 +1058,7 @@ impl Decoder
         createLookUps()
     }
 
-    method createLookUps()
+    mtd createLookUps()
     {
         var fix: [4] s32 = ?
         fix[0] = cast(s32) ((1.40200 / 2) * (1 << 16) + 0.5)
@@ -1076,7 +1076,7 @@ impl Decoder
         }
     }
 
-    method initScan()->bool throw
+    mtd initScan()->bool throw
     {
         res := try locateSosMarker()
         if !res return false
@@ -1098,14 +1098,14 @@ impl Decoder
         return true
     }
 
-    method stuffChar(q: u8)
+    mtd stuffChar(q: u8)
     {
         inBufOfs -= 1
         dref inBufOfs = q
         inBufLeft += 1
     }
 
-    method fixInBuffer()
+    mtd fixInBuffer()
     {
         if bitsLeft == 16
             stuffChar(cast(u8) ((bitBuf >>,safe 16) & 0xFF))
@@ -1120,7 +1120,7 @@ impl Decoder
         getBits2(16)
     }
 
-    method checkQuantTables() throw
+    mtd checkQuantTables() throw
     {
         loop i: compsInScan
         {
@@ -1129,7 +1129,7 @@ impl Decoder
         }
     }
 
-    method makeHuffTable(idx: s32, hs: *HuffTables)
+    mtd makeHuffTable(idx: s32, hs: *HuffTables)
     {
         var huffSize: [257] u8
         var huffCode: [257] u32
@@ -1221,7 +1221,7 @@ impl Decoder
         }
     }
 
-    method checkHuffTables() throw
+    mtd checkHuffTables() throw
     {
         loop i: compsInScan
         {
@@ -1248,7 +1248,7 @@ impl Decoder
         }
     }
 
-    method calcMcuBlockOrder()
+    mtd calcMcuBlockOrder()
     {
         maxSampH := 0
         maxSampV := 0
@@ -1314,7 +1314,7 @@ impl Decoder
     }
 
     #[Safety("overflow", false)]
-    method decodeBlockDcFirst(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockDcFirst(cmpId: s32, blkX, blkY: s32) throw
     {
         p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
         s := huffDecode(&h[compDcTab[cmpId]])
@@ -1330,7 +1330,7 @@ impl Decoder
     }
 
     #[Safety("overflow", false)]
-    method decodeBlockDcRefine(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockDcRefine(cmpId: s32, blkX, blkY: s32) throw
     {
         if getBits2(1)
         {
@@ -1340,7 +1340,7 @@ impl Decoder
     }
 
     #[Safety("overflow", false)]
-    method decodeBlockAcFirst(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockAcFirst(cmpId: s32, blkX, blkY: s32) throw
     {
         if eobRun
         {
@@ -1387,7 +1387,7 @@ impl Decoder
     }
 
     #[Safety("overflow", false)]
-    method decodeBlockAcRefine(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockAcRefine(cmpId: s32, blkX, blkY: s32) throw
     {
         p1 := 1 << successiveLow
         m1 := (-1) << successiveLow
@@ -1486,7 +1486,7 @@ impl Decoder
         }
     }
 
-    method decodeScan(fn: func(*Decoder, s32, s32, s32) throw) throw
+    mtd decodeScan(fn: func(*Decoder, s32, s32, s32) throw) throw
     {
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32
@@ -1541,7 +1541,7 @@ impl Decoder
         }
     }
 
-    method initProgressive() throw
+    mtd initProgressive() throw
     {
         if compsInFrame == 4 throw "unsupported color space"
 
@@ -1605,14 +1605,14 @@ impl Decoder
         calcMcuBlockOrder()
     }
 
-    method initSequential() throw
+    mtd initSequential() throw
     {
         res := try initScan()
         if !res throw "unexpected marker"
     }
 
     #[Safety("overflow", false), Discardable]
-    method getBits1(numBits: s32)->u32
+    mtd getBits1(numBits: s32)->u32
     {
         i := bitBuf >> cast(u32) ((16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
         bitsLeft -= numBits
@@ -1633,7 +1633,7 @@ impl Decoder
     }
 
     #[Safety("overflow", false), Discardable]
-    method getBits2(numBits: s32)->u32
+    mtd getBits2(numBits: s32)->u32
     {
         i := (bitBuf >> cast(u32) (16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
         bitsLeft -= numBits
@@ -1653,7 +1653,7 @@ impl Decoder
         return i
     }
 
-    method getOctet()->u8
+    mtd getOctet()->u8
     {
         var paddingFlag: bool
         c := getChar(&paddingFlag)
@@ -1680,7 +1680,7 @@ impl Decoder
         return cast(u8) c
     }
 
-    method getChar(paddingFlag: *bool)->u32
+    mtd getChar(paddingFlag: *bool)->u32
     {
         if !inBufLeft
         {
@@ -1702,7 +1702,7 @@ impl Decoder
         return c
     }
 
-    method getChar()->u32
+    mtd getChar()->u32
     {
         if !inBufLeft
         {
@@ -1722,7 +1722,7 @@ impl Decoder
         return c
     }
 
-    method nextMarker()->Marker
+    mtd nextMarker()->Marker
     {
         var c: u32
 
@@ -1745,7 +1745,7 @@ impl Decoder
     }
 
     #[Discardable]
-    method processMarkers()->Marker throw
+    mtd processMarkers()->Marker throw
     {
         loop
         {
@@ -1775,7 +1775,7 @@ impl Decoder
         return Marker.M_ERROR
     }
 
-    method readVariableMarker(marker: Marker) throw
+    mtd readVariableMarker(marker: Marker) throw
     {
         left := getBits1(16)
         if left < 2 throw "bad variable marker"
@@ -1789,7 +1789,7 @@ impl Decoder
         }
     }
 
-    method readDhtMarker() throw
+    mtd readDhtMarker() throw
     {
         var huffNumt: [17] u8
         var huffValt: [256] u8
@@ -1831,7 +1831,7 @@ impl Decoder
         }
     }
 
-    method readDqtMarker() throw
+    mtd readDqtMarker() throw
     {
         left := getBits1(16)
         if left < 2 throw "bad dqt marker"
@@ -1860,13 +1860,13 @@ impl Decoder
         }
     }
 
-    method readDriMarker() throw
+    mtd readDriMarker() throw
     {
         if getBits1(16) != 4 throw "bad dri length"
         restartInterval = getBits1(16)
     }
 
-    method readSofMarker() throw
+    mtd readSofMarker() throw
     {
         left := getBits1(16)
         if getBits1(8) != 8 throw "bad precision"
@@ -1890,7 +1890,7 @@ impl Decoder
         }
     }
 
-    method readSosMarker() throw
+    mtd readSosMarker() throw
     {
         left := getBits1(16)
         n    := getBits1(8)
@@ -1941,7 +1941,7 @@ impl Decoder
         }
     }
 
-    method locateSosMarker()->bool throw
+    mtd locateSosMarker()->bool throw
     {
         c := try processMarkers()
         if c == .M_EOI
@@ -1952,7 +1952,7 @@ impl Decoder
         return true
     }
 
-    method locateSoiMarker() throw
+    mtd locateSoiMarker() throw
     {
         lastRune := getBits1(8)
         thisChar := getBits1(8)
@@ -1973,7 +1973,7 @@ impl Decoder
         if thisChar != 0xFF throw "not a jpeg"
     }
 
-    method locateSofMarker() throw
+    mtd locateSofMarker() throw
     {
         try locateSoiMarker()
         c := try processMarkers()
@@ -2001,7 +2001,7 @@ impl Decoder
         }
     }
 
-    method prepareInBuffer()
+    mtd prepareInBuffer()
     {
         inBufLeft = 0
         inBufOfs = inBuf
@@ -2031,13 +2031,13 @@ impl Decoder
 
 public impl IDecoder for Decoder
 {
-    method canDecode(fileName: string)->bool
+    mtd canDecode(fileName: string)->bool
     {
         ext := Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    method decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
+    mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         try
         {

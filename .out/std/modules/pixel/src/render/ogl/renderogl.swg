@@ -34,7 +34,7 @@ impl RenderOgl
         return result
     }
 
-    protected method init(w, h: s32)
+    protected mtd init(w, h: s32)
     {
         width = w
         height = h
@@ -108,7 +108,7 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
-    protected method start()
+    protected mtd start()
     {
         worldTransform.setIdentity()
         glClearStencil(0)
@@ -116,7 +116,7 @@ impl RenderOgl
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
-    method resize(width, height: s32)
+    mtd resize(width, height: s32)
     {
         self.width = #scopefct.width
         self.height = #scopefct.height
@@ -145,7 +145,7 @@ impl RenderOgl
         m[3,3] = 1;
     }
 
-    private method buidModelMatrix(modelTransform: Transform2)
+    private mtd buidModelMatrix(modelTransform: Transform2)
     {
         tr := worldTransform
         tr.multiply(modelTransform)
@@ -169,7 +169,7 @@ impl RenderOgl
     }
 
     // Register an image for rendering
-    method addImage(image: Image)->Texture
+    mtd addImage(image: Image)->Texture
     {
         var fmt: GLenum = 0
         internal := GL_RGB
@@ -198,14 +198,14 @@ impl RenderOgl
     }
 
     // Translate the world transform
-    method translateTransform(x, y: f32)
+    mtd translateTransform(x, y: f32)
     {
         tr := Transform2.createTranslation(x, y)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
-    method rotateTransform(angle: f32)
+    mtd rotateTransform(angle: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
@@ -213,7 +213,7 @@ impl RenderOgl
     }
 
     // Rotate the world transform
-    method rotateTransform(angle: f32, centerX, centerY: f32)
+    mtd rotateTransform(angle: f32, centerX, centerY: f32)
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
@@ -221,20 +221,20 @@ impl RenderOgl
     }
 
     // Scale the world transform
-    method scaleTransform(x, y: f32)
+    mtd scaleTransform(x, y: f32)
     {
         tr := Transform2.createScale(x, y, 0, 0)
         worldTransform.multiply(tr)
     }
 
     // Reset the world transform
-    method resetTransform()
+    mtd resetTransform()
     {
         worldTransform.setIdentity()
         modelMatrix.setIdentity()
     }
 
-    private method setBlendingMode(bm: BlendingMode)
+    private mtd setBlendingMode(bm: BlendingMode)
     {
         blendingMode = bm
 
@@ -271,7 +271,7 @@ impl RenderOgl
     }
 
     // Draw the given painter
-    method draw(dc: *Painter)
+    mtd draw(dc: *Painter)
     {
         if height == 0 or width == 0
             return

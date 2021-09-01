@@ -17,7 +17,7 @@ impl ScratchAllocator
         return result
     }
 
-    private method free(addr: *void, size: uint)
+    private mtd free(addr: *void, size: uint)
     {
         var req: AllocatorRequest
         req.mode = .Free
@@ -26,7 +26,7 @@ impl ScratchAllocator
         allocator.alloc(&req)
     }
 
-    private method alloc(size: uint, alignement: u32 = 0)->*void
+    private mtd alloc(size: uint, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest
         req.mode = .Alloc
@@ -37,7 +37,7 @@ impl ScratchAllocator
     }
 
     // Release the allocated block
-    method release()
+    mtd release()
     {
         freeAll()
 
@@ -49,7 +49,7 @@ impl ScratchAllocator
     }
 
     // Restore all memory
-    method freeAll()
+    mtd freeAll()
     {
         used = 0
         while firstLeak
@@ -63,7 +63,7 @@ impl ScratchAllocator
 
     // First initialize the allocator, by allocating the main block
     // Will call 'setCapacity'
-    method setup()
+    mtd setup()
     {
         c := @gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
         setCapacity(c)
@@ -71,7 +71,7 @@ impl ScratchAllocator
 
     // This will call 'release' prior to changing the capacity, so this must
     // be called at an early stage
-    method setCapacity(newCapacity: uint, alloc: IAllocator = null)
+    mtd setCapacity(newCapacity: uint, alloc: IAllocator = null)
     {
         if capacity == newCapacity and block
             return

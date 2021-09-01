@@ -19,18 +19,18 @@ impl Vector2
     const Min:      Vector2{Swag.F32.Min, Swag.F32.Min}
 
     #[Swag.Complete]
-    method opAffect(value: f32)
+    mtd opAffect(value: f32)
     {
         x = value
         y = value
     }
 
-    method opEquals(other: Self)->bool
+    mtd opEquals(other: Self)->bool
     {
         return x == other.x and y == other.y
     }
 
-    method(op: string) opAssign(other: Self)
+    mtd(op: string) opAssign(other: Self)
     {
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
@@ -38,7 +38,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    method(op: string) opAssign(value: f32)
+    mtd(op: string) opAssign(value: f32)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -46,7 +46,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    method(op: string) opBinary(other: Self)->Self
+    mtd(op: string) opBinary(other: Self)->Self
     {
         #if   op == "+" return Vector2{x + other.x, y + other.y}
         #elif op == "-" return Vector2{x - other.x, y - other.y}
@@ -55,7 +55,7 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    method(op: string) opBinary(value: f32)->Self
+    mtd(op: string) opBinary(value: f32)->Self
     {
         #if   op == "+" return Vector2{x + value, y + value}
         #elif op == "-" return Vector2{x - value, y - value}
@@ -66,68 +66,68 @@ impl Vector2
 
     // Set content
     #[Swag.Inline]
-    method set(x, y: f32)
+    mtd set(x, y: f32)
     {
         self.x = #scopefct.x
         self.y = #scopefct.y
     }
 
     // Return sthe length of the vector
-    func length(using const self) => sqrt((x * x) + (y * y))
+    mtdc length() => sqrt((x * x) + (y * y))
 
     // Returns the squared length of the vector
-    func lengthSquared(using const self) => (x * x) + (y * y)
+    mtdc lengthSquared() => (x * x) + (y * y)
 
     // Returns the dot product between two vectors
-    func dot(using const self, other: Self) => (x * other.x) + (y * other.y)
+    mtdc dot(other: Self) => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result
-    func cross(using const self, axis: f32)->Vector2
+    mtdc cross(axis: f32)->Vector2
     {
         return @{y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector
-    func cross(using const self, other: Vector2)->f32
+    mtdc cross(other: Vector2)->f32
     {
         return x * other.y - y * other.x
     }
 
     // Set the vector to zero
-    method clear()
+    mtd clear()
     {
         x = 0
         y = 0
     }
 
     // Negate the vector
-    method negate()
+    mtd negate()
     {
         x = -x
         y = -y
     }
 
     // Returns true if this Vector2 is null
-    func isZero(using const self)->bool
+    mtdc isZero()->bool
     {
         return x == 0 and y == 0
     }
 
     // Returns true if this Vector2 is null with an epsilon
-    func isZeroEpsilon(using const self, eps = cast(f32) ConstF64.Epsilon)->bool
+    mtdc isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns true if this Vector2 is equals to another with an epsilon
-    func isEqualEpsilon(using const self, other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
+    mtdc isEqualEpsilon(other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
 
     // Returns the distance between two vectors
-    func distance(using const self, to: Self)->f32
+    mtdc distance(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -135,7 +135,7 @@ impl Vector2
     }
 
     // Returns the square distance between two vectors
-    func distanceSquared(using const self, to: Self)->f32
+    mtdc distanceSquared(to: Self)->f32
     {
         xn := (x - to.x)
         yn := (y - to.y)
@@ -143,7 +143,7 @@ impl Vector2
     }
 
     // Normalize this vector (set its length to 1)
-    method normalize()
+    mtd normalize()
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -153,7 +153,7 @@ impl Vector2
     }
 
     // Returns this vector normalized
-    func toNormalize(using const self)->Vector2
+    mtdc toNormalize()->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -162,7 +162,7 @@ impl Vector2
     }
 
     // Set the vector length
-    method setLengthSafe(newLength: f32)
+    mtd setLengthSafe(newLength: f32)
     {
         normalizeSafe()
         x *= newLength
@@ -170,7 +170,7 @@ impl Vector2
     }
 
     // Set the vector length
-    method setLength(newLength: f32)
+    mtd setLength(newLength: f32)
     {
         normalize()
         x *= newLength
@@ -178,7 +178,7 @@ impl Vector2
     }
 
     // Normalize this vector (set its length to 1) even if its length is almost null
-    method normalizeSafe()
+    mtd normalizeSafe()
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
@@ -194,7 +194,7 @@ impl Vector2
     }
 
     // Returns this vector normalized even if its length is almost null
-    func toNormalizeSafe(using const self)->Vector2
+    mtdc toNormalizeSafe()->Vector2
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)

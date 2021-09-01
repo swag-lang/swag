@@ -10,7 +10,7 @@ struct AA
 
 impl AA
 {
-    method YYY()->s32
+    mtd YYY()->s32
     {
         return 666
     }
@@ -18,7 +18,7 @@ impl AA
 
 impl Itf for AA
 {
-    method toto()
+    mtd toto()
     {
         @print(YYY(self))
     }

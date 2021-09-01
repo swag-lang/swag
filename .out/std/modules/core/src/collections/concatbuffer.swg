@@ -24,7 +24,7 @@ struct ConcatBuffer
 
 impl ConcatBuffer
 {
-    private method release()
+    private mtd release()
     {
         if !firstBucket
             return
@@ -38,18 +38,18 @@ impl ConcatBuffer
         }
     }
 
-    method opCount()->uint
+    mtd opCount()->uint
     {
         return count()
     }
 
-    method opDrop()
+    mtd opDrop()
     {
         release()
     }
 
     // Returns the number of bytes
-    method count()->uint
+    mtd count()->uint
     {
         if !lastBucket
             return 0;
@@ -66,7 +66,7 @@ impl ConcatBuffer
     }
 
     // Be sure that there is enough room to store at least 'numBytes' bytes
-    method grow(numBytes: uint)
+    mtd grow(numBytes: uint)
     {
         if lastBucket
         {
@@ -97,7 +97,7 @@ impl ConcatBuffer
 
     // Associate an allocator with the buffer.
     // The allocator can only be changed if the buffer has no pending buckets.
-    method setAllocator(alloc: Swag.IAllocator)
+    mtd setAllocator(alloc: Swag.IAllocator)
     {
         Debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc;
@@ -105,7 +105,7 @@ impl ConcatBuffer
 
     // Set the granularity of datas of a given bucket. Minimum size is 4.
     // The buffer will be erased before the change, even if the new size is the same as the current one.
-    method setBucketSize(size: uint)
+    mtd setBucketSize(size: uint)
     {
         Debug.assert(size >= 4)
         clear()
@@ -113,7 +113,7 @@ impl ConcatBuffer
     }
 
     // Release the content of the buffer
-    method clear()
+    mtd clear()
     {
         @drop(self)
         firstBucket, lastBucket = null
@@ -122,7 +122,7 @@ impl ConcatBuffer
     }
 
     // Append one byte to the buffer
-    method addByte(byte: u8)
+    mtd addByte(byte: u8)
     {
         grow(1)
         currentSP[0] = byte
@@ -131,7 +131,7 @@ impl ConcatBuffer
 
     // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
-    method addBytes(bytes: const [..] u8, contiguous = true)
+    mtd addBytes(bytes: const [..] u8, contiguous = true)
     {
         num := @countof(bytes)
         if !num
@@ -173,13 +173,13 @@ impl ConcatBuffer
 
     // Append the content of a struct
     #[Swag.Inline]
-    method(T) addStruct(val: T)
+    mtd(T) addStruct(val: T)
     {
         addBytes(@mkslice(cast(const *u8) &val, @sizeof(T)))
     }
 
     // Convert buffer to a String
-    method toString()->String
+    mtd toString()->String
     {
         var result: retval
         if !firstBucket
@@ -200,7 +200,7 @@ impl ConcatBuffer
     // Convert buffer to a String by moving the content if possible
     // After the call, the buffer will be empty if the,move can be done
     // (otherwise, the result will contain a copy)
-    method moveToString()->String
+    mtd moveToString()->String
     {
         if !firstBucket
         {

@@ -20,31 +20,31 @@ impl Variant
         return false
     }
 
-    method opDrop()
+    mtd opDrop()
     {
         drop()
     }
 
-    method(TN) opAffect(other: TN)
+    mtd(TN) opAffect(other: TN)
     {
         set'TN(other)
     }
 
-    method(TN) opEquals(other: TN)->bool
+    mtd(TN) opEquals(other: TN)->bool
         #checkif checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer == other
     }
 
-    method(TN) opCmp(other: TN)->s32
+    mtd(TN) opCmp(other: TN)->s32
         #checkif checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer <=> other
     }
 
-    method opPostCopy()
+    mtd opPostCopy()
     {
         #if AllFlags & .HasPostCopy
         {
@@ -56,7 +56,7 @@ impl Variant
         }
     }
 
-    method opPostMove()
+    mtd opPostMove()
     {
         #if AllFlags & .HasPostMove
         {
@@ -69,7 +69,7 @@ impl Variant
     }
 
     // Drop the variant content (if necessary)
-    method drop()
+    mtd drop()
     {
         #if AllFlags & .HasDrop
         {
@@ -83,7 +83,7 @@ impl Variant
     }
 
     // Set the variant value
-    method(TN) set(value: TN)
+    mtd(TN) set(value: TN)
         #checkif checkValidType(T, TN)
     {
         // Drop previous value if necessary
@@ -95,7 +95,7 @@ impl Variant
 
     // Get the variant value of the given type
     // Will assert if the current type does not match
-    method(TN) get()->TN
+    mtd(TN) get()->TN
         #checkif checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")

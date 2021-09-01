@@ -26,8 +26,8 @@ using Swag
         return typeStruct.structName == name
     }
 
-    // Get information about a specific method in a given struct
-    // Returns null if the method does not exist
+    // Get information about a specific mtd in a given struct
+    // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeInfoParam
     {
         if type.kind != TypeInfoKind.Struct

@@ -10,7 +10,7 @@ struct KeyboardState
 impl KeyboardState
 {
     // Compute current keyboard state
-    method update()
+    mtd update()
     {
         loop i: @countof(Key)
         {
@@ -19,7 +19,7 @@ impl KeyboardState
     }
 
     // Reset keyboard state
-    method clear()
+    mtd clear()
     {
         Memory.clear(&pressed, cast(uint) @sizeof(pressed))
     }

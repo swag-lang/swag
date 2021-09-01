@@ -12,23 +12,23 @@ struct(T) Array
 impl Array
 {
     #[Inline]
-    method opCount()->uint
+    mtd opCount()->uint
     {
         return count
     }
 
     #[Inline]
-    method opData()->const *T
+    mtd opData()->const *T
     {
         return buffer
     }
 
-    method opDrop()
+    mtd opDrop()
     {
         free()
     }
 
-    method opPostCopy()
+    mtd opPostCopy()
     {
         if buffer == null
             return
@@ -48,24 +48,24 @@ impl Array
         }
     }
 
-    method opCast()->[..] T
+    mtd opCast()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
-    method opCast()->const [..] T
+    mtd opCast()->const [..] T
     {
         return @mkslice(buffer, count)
     }
 
-    method opSlice(lower, upper: uint)->[..] T
+    mtd opSlice(lower, upper: uint)->[..] T
     {
         Debug.assert(lower <= upper and lower < count and upper < count)
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
     #[Inline]
-    method opIndex(index: uint)->*T
+    mtd opIndex(index: uint)->*T
         #selectif Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
@@ -73,28 +73,28 @@ impl Array
     }
 
     #[Inline]
-    method opIndex(index: uint)->T
+    mtd opIndex(index: uint)->T
         #selectif !Reflection.isStruct(T)
     {
         Debug.assert(index < count, "index out of range")
         return buffer[index]
     }
 
-    method opIndexAffect(index: uint, value: T)
+    mtd opIndexAffect(index: uint, value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index < count, "index out of range")
         buffer[index] = value
     }
 
-    method(op: string) opIndexAssign(index: uint, value: T)
+    mtd(op: string) opIndexAssign(index: uint, value: T)
     {
         Debug.assert(index < count, "index out of range")
         #ast "buffer[index] " ~op~ " value"
     }
 
     // Initializes an Array that contains values copied from the specified array
-    method opAffect(arr: const [..] T)
+    mtd opAffect(arr: const [..] T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         clear()
@@ -143,7 +143,7 @@ impl Array
         }
     }
 
-    method free()
+    mtd free()
     {
         if !buffer
             return
@@ -158,7 +158,7 @@ impl Array
         Memory.free(buffer, capacity * @sizeof(T), allocator)
     }
 
-    method realloc(newCapacity: uint)
+    mtd realloc(newCapacity: uint)
     {
         if allocator == null
             allocator = @getcontext().allocator
@@ -195,18 +195,18 @@ impl Array
 
     // Returns true if the array is empty
     #[Inline]
-    method isEmpty() => count == 0
+    mtd isEmpty() => count == 0
 
     // Returns a slice
     #[Inline]
-    method toSlice()->[..] T
+    mtd toSlice()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements
     // Number of valid elements does not change
-    method grow(newCount : uint)
+    mtd grow(newCount : uint)
     {
         if newCount <= capacity
             return
@@ -216,7 +216,7 @@ impl Array
 
     // Reserve room for 'newCapacity' elements without changing the array count
     // Number of valid elements does not change
-    method reserve(newCapacity: uint)
+    mtd reserve(newCapacity: uint)
     {
         if !newCapacity
         {
@@ -233,7 +233,7 @@ impl Array
     }
 
     // Change the number of valid elements in the array
-    method resize(newCount : uint)
+    mtd resize(newCount : uint)
     {
         if newCount == count
             return
@@ -251,7 +251,7 @@ impl Array
     }
 
     // Set the number of elements to 0
-    method clear()
+    mtd clear()
     {
         #if Reflection.hasDrop(@typeof(T))
         {
@@ -263,7 +263,7 @@ impl Array
     }
 
     // Add a copy of one element at the end of the array
-    method add(value: T)
+    mtd add(value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
@@ -273,7 +273,7 @@ impl Array
 
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
-    method(G) addAny(value: G)
+    mtd(G) addAny(value: G)
         #selectif Reflection.canCopy(@typeof(G))
     {
         #if @typeof(G) != @typeof(T)
@@ -289,7 +289,7 @@ impl Array
 
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
-    method emplaceAddress(num: u32)->*T
+    mtd emplaceAddress(num: u32)->*T
     {
         grow(count + num)
         count += num
@@ -297,7 +297,7 @@ impl Array
     }
 
     // Move one element at the end of the array
-    method emplace(value: *T)
+    mtd emplace(value: *T)
     {
         grow(count + 1)
         buffer[count] =,nodrop,move dref value
@@ -307,7 +307,7 @@ impl Array
     // Insert a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    method insertAt(index: uint, value: T)
+    mtd insertAt(index: uint, value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         Debug.assert(index <= count, "index out of range")
@@ -325,7 +325,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    method emplaceAt(index: uint, value: *T)
+    mtd emplaceAt(index: uint, value: *T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -340,7 +340,7 @@ impl Array
     }
 
     // Append a slice to the end of this instance
-    method add(values: const [..] T)
+    mtd add(values: const [..] T)
         #selectif Reflection.canCopy(@typeof(T))
     {
         sliceCount := @countof(values)
@@ -372,7 +372,7 @@ impl Array
 
     // Remove an element at 'index' by replacing it with the last element.
     // Order is not preserved
-    method removeAt(index: uint)
+    mtd removeAt(index: uint)
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
@@ -384,7 +384,7 @@ impl Array
 
     // Remove an element at 'index' by shifting all others.
     // Order is preserved
-    method removeAtOrdered(index: uint)
+    mtd removeAtOrdered(index: uint)
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
@@ -403,7 +403,7 @@ impl Array
 
     // Returns 'true' if the array contains 'value'.
     // O(n)
-    method contains(value: T)->bool
+    mtd contains(value: T)->bool
     {
         loop i: count
         {
@@ -415,26 +415,26 @@ impl Array
     }
 
     // Sort array
-    method sort()
+    mtd sort()
     {
         Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => x <=> y)
     }
 
     // Sort array in reverse order (from biggest to lowest value)
-    method sortReverse()
+    mtd sortReverse()
     {
         Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => y <=> x)
     }
 
     // Sort array
-    method sort(cb: func(T, T)->s32)
+    mtd sort(cb: func(T, T)->s32)
     {
         Debug.assert(cb != null)
         Slice.sort(@mkslice(buffer, count), cb)
     }
 
     // Returns a copy of the last element
-    method back()->T
+    mtd back()->T
     {
         Debug.assert(count > 0, "array is empty")
         var result: retval = buffer[count - 1]
@@ -442,14 +442,14 @@ impl Array
     }
 
     // Returns the address of the last element
-    method backPtr()->*T
+    mtd backPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
         return buffer + count - 1
     }
 
     // Returns a copy of the last element, and remove it from the array
-    method popBack()->T
+    mtd popBack()->T
     {
         Debug.assert(count > 0, "array is empty")
         var result: retval = ?
@@ -459,7 +459,7 @@ impl Array
     }
 
     // Remove the last element
-    method removeBack()
+    mtd removeBack()
     {
         Debug.assert(count > 0, "array is empty")
         @drop(buffer + count - 1)
