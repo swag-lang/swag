@@ -10,6 +10,7 @@ namespace Res
 {
     var image0:     Texture
     var image1:     Texture
+    var image2:     Texture
     var typeface:   const *TypeFace
     var fontSmall:  *Font
     var font40:     *Font
@@ -22,7 +23,7 @@ var g_Renderer:     RenderOglWin32
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 4
+var g_Page:         s32 = 2
 var g_Wnd:          Surface
 const MaxPages = 6
 
@@ -277,6 +278,7 @@ func displayPage2()
     g_Painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     g_Painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
+    g_Painter.drawTexture(220, 500, 150, 150, @{228, 103, 206, 167}, Res.image2)
     g_Painter.drawTexture(50, 700, @{228, 103, 206, 167}, Res.image1)
 
     g_Painter.end()
@@ -587,13 +589,13 @@ func messageLoop()
         display()
 
         keyb.update()
-        if(keyb.isKeyJustPressed(Input.Key.F1))
+        if keyb.isKeyJustPressed(Input.Key.F1)
             g_ModeAA = g_ModeAA ? false : true
-        if(keyb.isKeyJustPressed(Input.Key.F2))
+        if keyb.isKeyJustPressed(Input.Key.F2)
             g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-        if(keyb.isKeyJustPressed(Input.Key.F3))
+        if keyb.isKeyJustPressed(Input.Key.F3)
             g_Pattern = g_Pattern ? false : true
-        if(keyb.isKeyJustPressed(Input.Key.F4))
+        if keyb.isKeyJustPressed(Input.Key.F4)
             g_Page = (g_Page + 1) % MaxPages
     }
 }
@@ -620,6 +622,10 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         img1 := Image.load(imagePath("rgba.bmp"))
         Res.image0 = g_Renderer.addImage(img0)
         Res.image1 = g_Renderer.addImage(img1)
+        Res.image2 = g_Renderer.addImage(img1)
+        img1.grayScale()
+        img1.setAlpha(128)
+        g_Renderer.updateTexture(Res.image2, img1.pixels)
 
         Res.typeface = TypeFace.create(imagePath("arial.ttf"))
         Res.fontSmall = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))

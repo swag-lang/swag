@@ -22,6 +22,13 @@ impl Image
         Alpha
     }
 
+    // Change the alpha channel
+    public func setAlpha(using self, value: u8 = 0)
+    {
+        if pf != .BGRA8 return // unsupported
+        setChannel(Image.ChannelMode.Alpha, Image.ChannelValueMode.Color, value)
+    }
+
     // Change specified color channels
     public func setChannel(using self, mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
     {
