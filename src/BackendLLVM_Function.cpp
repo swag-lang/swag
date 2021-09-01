@@ -1258,9 +1258,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicStrCmp:
+        case ByteCodeOp::IntrinsicStringCmp:
         {
-            localCall(buildParameters, allocR, allocT, "@strcmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            localCall(buildParameters, allocR, allocT, "@stringcmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
@@ -1335,7 +1335,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicCStrLen:
+        case ByteCodeOp::IntrinsicStrLen:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));

@@ -11,5 +11,5 @@ func toto(x: string)-> [100] u8
 #test
 {
     x := toto("toto")
-    @assert(@cstrlen(@dataof(x)) == 4)
+    @assert(@strlen(@dataof(x)) == 4)
 }

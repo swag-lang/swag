@@ -685,7 +685,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IntrinsicCStrLen:
+    case ByteCodeOp::IntrinsicStrLen:
     {
         void* src                  = (void*) registersRC[ip->b.u32].pointer;
         registersRC[ip->a.u32].u64 = strlen((const char*) src);
@@ -1745,7 +1745,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IntrinsicStrCmp:
+    case ByteCodeOp::IntrinsicStringCmp:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atstrcmp);
         context->push(registersRC[ip->d.u32].u64);

@@ -70,7 +70,6 @@
 @ceil
 @cos
 @cosh
-@cstrlen
 @exp
 @exp2
 @floor
@@ -90,7 +89,7 @@
 @sin
 @sinh
 @sqrt
-@strcmp
+@strlen
 @tan
 @tanh
 @trunc
@@ -132,6 +131,7 @@
 @seterr
 @sizeof
 @spread
+@stringcmp
 @stringof
 @typecmp
 @typeof

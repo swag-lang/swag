@@ -329,12 +329,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
-    case TokenId::IntrinsicCStrLen:
+    case TokenId::IntrinsicStrLen:
     {
         auto childSrc = callParams->childs[0];
         emitSafetyNullPointer(context, childSrc->resultRegisterRC, g_E[Err0533]);
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::IntrinsicCStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
         break;
     }
@@ -350,12 +350,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child2);
         break;
     }
-    case TokenId::IntrinsicStrCmp:
+    case TokenId::IntrinsicStringCmp:
     {
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
         node->resultRegisterRC = child1->resultRegisterRC[1];
-        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], child1->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::IntrinsicStringCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], child1->resultRegisterRC[1]);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1->resultRegisterRC[0]);
         break;

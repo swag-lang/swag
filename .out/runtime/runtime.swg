@@ -128,7 +128,7 @@ func __printU64(value: u64)
 {
     var buf: [100] u8
     __utoa(&buf[0], value)
-    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -136,7 +136,7 @@ func __printS64(value: s64)
 {
     var buf: [100] u8
     __itoa(&buf[0], value)
-    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -144,7 +144,7 @@ func __printF64(value: f64)
 {
     var buf: [100] u8
     __ftoa(&buf[0], value)
-    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], @strlen(&buf[0]))
     __printString(str)
 }
 
@@ -192,7 +192,7 @@ func @print(params: ...)
 }
 
 ////////////////////////////////////////////////////////////
-func @strcmp(str1: string, str2: string)->bool
+func @stringcmp(str1: string, str2: string)->bool
 {
     num1 := @countof(str1)
     num2 := @countof(str2)
@@ -265,7 +265,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return true
     }
 
-    return @strcmp(type1.name, type2.name)
+    return @stringcmp(type1.name, type2.name)
 }
 
 ////////////////////////////////////////////////////////////
@@ -274,7 +274,7 @@ func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
-        if @strcmp(structType.interfaces[i].name, itfType.name)
+        if @stringcmp(structType.interfaces[i].name, itfType.name)
             return structType.interfaces[i].value
     }
 
@@ -516,10 +516,10 @@ func @panic(message: string, loc: CompilerSourceLocation)
 func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
     var loc: CompilerSourceLocation
-    loc.fileName = cast(string) @mkslice(file, @cstrlen(file))
+    loc.fileName = cast(string) @mkslice(file, @strlen(file))
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col
 
-    var msg: string = message ? cast(string) @mkslice(message, @cstrlen(message)) : "panic"
+    var msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "panic"
     @panic(msg, loc)
 }

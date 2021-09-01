@@ -145,7 +145,7 @@ void LanguageSpec::setupNames()
     name_atpanic       = "@panic";
     name_aterrormsg    = "@errormsg";
     name_atinterfaceof = "@interfaceof";
-    name_atstrcmp      = "@strcmp";
+    name_atstrcmp      = "@stringcmp";
     name_attypecmp     = "@typecmp";
 
     name_memcpy  = "memcpy";
@@ -330,8 +330,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("@memmove", {TokenId::IntrinsicMemMove, LiteralType::TT_MAX});
     keywords.add("@memset", {TokenId::IntrinsicMemSet, LiteralType::TT_MAX});
     keywords.add("@memcmp", {TokenId::IntrinsicMemCmp, LiteralType::TT_MAX});
-    keywords.add("@cstrlen", {TokenId::IntrinsicCStrLen, LiteralType::TT_MAX});
-    keywords.add("@strcmp", {TokenId::IntrinsicStrCmp, LiteralType::TT_MAX});
+    keywords.add("@strlen", {TokenId::IntrinsicStrLen, LiteralType::TT_MAX});
+    keywords.add("@stringcmp", {TokenId::IntrinsicStringCmp, LiteralType::TT_MAX});
     keywords.add("@typecmp", {TokenId::IntrinsicTypeCmp, LiteralType::TT_MAX});
     keywords.add("@getcontext", {TokenId::IntrinsicGetContext, LiteralType::TT_MAX});
     keywords.add("@setcontext", {TokenId::IntrinsicSetContext, LiteralType::TT_MAX});

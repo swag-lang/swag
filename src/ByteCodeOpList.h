@@ -30,7 +30,7 @@ BYTECODE_OP(IntrinsicErrorMsg, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@
 BYTECODE_OP(IntrinsicPanic, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@panic(_ra_, _rb_, _rc_)", 3)
 BYTECODE_OP(InternalPanic, OPFLAG_READ_VAL64_D, "@panic", 4)
 BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rcu64_)", 4)
-BYTECODE_OP(IntrinsicStrCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @strcmp(_ra_, _rb_, _rc_, _rd_)", 5)
+BYTECODE_OP(IntrinsicStringCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @stringcmp(_ra_, _rb_, _rc_, _rd_)", 5)
 
 BYTECODE_OP(IntrinsicAlloc, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @alloc(_rb_)", 0)
 BYTECODE_OP(IntrinsicRealloc, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_READ_C, "_ra_ = @realloc(_rb_, _rc_)", 0)
@@ -154,7 +154,7 @@ BYTECODE_OP(IntrinsicMemCpy, OPFLAG_IS_MEMCPY | OPFLAG_READ_A | OPFLAG_READ_B | 
 BYTECODE_OP(IntrinsicMemMove, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C, "@memmove(_ra_, _rb_, _rcu64_)", 0)
 BYTECODE_OP(IntrinsicMemSet, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_B | OPFLAG_IMM_C, "@memset(_ra_, _rbu64_, _rcu64_)", 0)
 BYTECODE_OP(IntrinsicMemCmp, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_IMM_D, "_ra_ = @memcmp(_rb_, _rc_, _rdu64_)", 0)
-BYTECODE_OP(IntrinsicCStrLen, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @cstrlen(_rb_)", 2)
+BYTECODE_OP(IntrinsicStrLen, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @strlen(_rb_)", 2)
 
 BYTECODE_OP(CopyRBtoRA8, OPFLAG_IS_COPY_RBRA | OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = _rb_", 0)
 BYTECODE_OP(CopyRBtoRA16, OPFLAG_IS_COPY_RBRA | OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = _rb_", 0)

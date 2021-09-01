@@ -104,7 +104,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|postcopy|postmove|spread|isconstexpr|err)\\b"
+          "match": "(@)\\b(stringcmp|typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|postcopy|postmove|spread|isconstexpr|err)\\b"
         }
       ]
     },
@@ -112,7 +112,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|strcmp|memcmp|cstrlen|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg)\\b"
+          "match": "(@)\\b(byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg)\\b"
         }
       ]
     },

@@ -21,7 +21,7 @@ func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
     //loop i: structType.interfaces
     return structType.interfaces[0].value
     /*{
-        if @strcmp(@dataof(structType.interfaces[i].name),
+        if @stringcmp(@dataof(structType.interfaces[i].name),
                    @dataof(itfType.name),
                    @countof(structType.interfaces[i].name),
                    @countof(itfType.name))

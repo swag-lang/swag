@@ -582,7 +582,7 @@ func @memset(dst: *void, value: u8, size: uint);
 func @memcpy(dst: *void, src: const *void, size: uint);
 func @memmove(dst: *void, src: const *void, size: uint);
 func @memcmp(dst, src: const *void, size: uint)->s32;
-func @cstrlen(value: const *u8)->uint;
+func @strlen(value: const *u8)->uint;
 
 // Atomic operations
 #[Swag.Discardable]
