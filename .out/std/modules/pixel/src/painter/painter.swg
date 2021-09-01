@@ -95,22 +95,26 @@ struct Painter
     commandBuffer:      Array'Command
     vertexBuffer:       Array'VertexLayout
     triangulateIdx:     Array's32
+
     sharedSolidPen:     Pen
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
+
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = Normal
-    drawingBegin:       bool
-    transform:          Transform2
     interpolationMode:  InterpolationMode = Pixel
-    clippingRect:       Rectangle
-    clippingRectOn:     bool
-    lastTexture0Handle: TextureHandle
     lastTexture0Type:   BrushType = SolidColor
-    lastTexture1Handle: TextureHandle
-    canSetTexture0:     bool = true
-    overlapMode:        bool = false
     blendingMode:       BlendingMode = Alpha
+
+    transform:          Transform2
+    clippingRect:       Rectangle
+    lastTexture0Handle: TextureHandle
+    lastTexture1Handle: TextureHandle
+
+    drawingBegin:       bool
+    clippingRectOn:     bool
+    overlapMode:        bool
+    canSetTexture0:     bool = true
 }
 
 impl Painter
@@ -322,15 +326,20 @@ impl Painter
     func begin(using self)
     {
         Debug.assert(drawingBegin == false)
-        drawingBegin = true
-        paintParams = .Default
+
         transform.setIdentity()
         commandBuffer.clear()
         vertexBuffer.clear()
+
         interpolationMode = .Pixel
+        blendingMode      = .Alpha
+
+        drawingBegin   = true
         canSetTexture0 = true
-        overlapMode = false
-        blendingMode = .Alpha
+        overlapMode    = false
+
+        paintParams  = .Default
+        paintQuality = .Normal
     }
 
     // Call this after drawing
