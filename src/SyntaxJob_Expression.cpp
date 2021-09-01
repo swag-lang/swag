@@ -160,11 +160,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doCompilerLoad(parent, result));
         break;
 
-    case TokenId::CompilerHasTag:
-    case TokenId::CompilerGetTag:
-        SWAG_CHECK(doCompilerTag(parent, result));
-        break;
-
     case TokenId::SymLeftParen:
     {
         SWAG_CHECK(eatToken());
@@ -213,6 +208,11 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
     case TokenId::IntrinsicGetErr:
         SWAG_CHECK(doGetErr(parent, result));
+        break;
+
+    case TokenId::IntrinsicHasTag:
+    case TokenId::IntrinsicGetTag:
+        SWAG_CHECK(doIntrinsicTag(parent, result));
         break;
 
     case TokenId::IntrinsicSpread:

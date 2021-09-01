@@ -1,4 +1,4 @@
 #global testerror
-#if #gettag(string, "toto", string) == "yes"
+#if @gettag(string, "toto", string) == "yes"
 {
 }

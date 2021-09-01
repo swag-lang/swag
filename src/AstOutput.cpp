@@ -1298,7 +1298,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addChar(')');
             }
             break;
-
         case TokenId::CompilerOs:
             CONCAT_FIXED_STR(concat, "#os");
             break;
@@ -1313,20 +1312,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         case TokenId::CompilerBuildCfg:
             CONCAT_FIXED_STR(concat, "#cfg");
-            break;
-        case TokenId::CompilerHasTag:
-            CONCAT_FIXED_STR(concat, "#hastag(");
-            SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, ")");
-            break;
-        case TokenId::CompilerGetTag:
-            CONCAT_FIXED_STR(concat, "#gettag(");
-            SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-            CONCAT_FIXED_STR(concat, ", ");
-            SWAG_CHECK(outputNode(context, concat, node->childs[1]));
-            CONCAT_FIXED_STR(concat, ", ");
-            SWAG_CHECK(outputNode(context, concat, node->childs[2]));
-            CONCAT_FIXED_STR(concat, ")");
             break;
         default:
             return node->sourceFile->internalError(node, "Ast::outputNode, unknown compiler function");

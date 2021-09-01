@@ -65,7 +65,7 @@ impl ScratchAllocator
     // Will call 'setCapacity'
     method setup()
     {
-        c := #gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
+        c := @gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
         setCapacity(c)
     }
 

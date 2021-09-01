@@ -7,18 +7,18 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIntrinsicTag(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    node->semanticFct = SemanticJob::resolveIntrinsicTag;
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
-    if (node->token.id == TokenId::CompilerGetTag)
+    if (node->token.id == TokenId::IntrinsicGetTag)
     {
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_CHECK(doTypeExpression(node));

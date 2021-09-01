@@ -15,8 +15,6 @@
 #defined
 #file
 #function
-#gettag
-#hastag
 #line
 #location
 #module
@@ -114,6 +112,8 @@
 @dataof
 @drop
 @err
+@gettag
+@hastag
 @index
 @init
 @isconstexpr

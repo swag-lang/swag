@@ -738,7 +738,6 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
 bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 {
     auto node = context->node;
-
     switch (node->token.id)
     {
     case TokenId::CompilerFunction:
@@ -770,65 +769,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
-
-    case TokenId::CompilerHasTag:
-    {
-        auto front = node->childs.front();
-        SWAG_CHECK(evaluateConstExpression(context, front));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, g_E[Err0248]}));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(g_E[Err0249], front->typeInfo->getDisplayName().c_str())}));
-        auto tag       = g_Workspace->hasTag(front->computedValue->text);
-        node->typeInfo = g_TypeMgr->typeInfoBool;
-        node->setFlagsValueIsComputed();
-        node->computedValue->reg.b = tag ? true : false;
-        return true;
-    }
-
-    case TokenId::CompilerGetTag:
-    {
-        auto nameNode   = node->childs[0];
-        auto typeNode   = node->childs[1];
-        auto defaultVal = node->childs[2];
-        SWAG_CHECK(evaluateConstExpression(context, nameNode));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_CHECK(evaluateConstExpression(context, defaultVal));
-        if (context->result == ContextResult::Pending)
-            return true;
-
-        SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, g_E[Err0250]}));
-        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Err0245]}));
-        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Utf8::format(g_E[Err0251], nameNode->typeInfo->getDisplayName().c_str())}));
-        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Err0283]}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
-
-        node->typeInfo = typeNode->typeInfo;
-        node->setFlagsValueIsComputed();
-
-        auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
-        if (tag)
-        {
-            if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            {
-                Diagnostic diag{typeNode, Utf8::format(g_E[Err0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str())};
-                Diagnostic note{typeNode, Utf8::format(g_E[Nte0038], tag->cmdLine.c_str()), DiagnosticLevel::Note};
-                note.hasFile     = false;
-                note.printSource = false;
-                return context->report(diag, &note);
-            }
-
-            node->typeInfo       = tag->type;
-            *node->computedValue = tag->value;
-        }
-        else
-        {
-            node->computedValue = defaultVal->computedValue;
-        }
-
-        return true;
-    }
 
     case TokenId::CompilerLocation:
     {

@@ -104,7 +104,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|postcopy|postmove|spread|isconstexpr|err)\\b"
+          "match": "(@)\\b(hastag|gettag|init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|postcopy|postmove|spread|isconstexpr|err)\\b"
         }
       ]
     },
@@ -173,7 +173,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(defined|scopefct|file|line|hastag|gettag|cfg|arch|os|abi|module|backend|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
+          "match": "(#)\\b(defined|scopefct|file|line|cfg|arch|os|abi|module|backend|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
         }
       ]
     },

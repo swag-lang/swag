@@ -213,8 +213,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#os", {TokenId::CompilerOs, LiteralType::TT_MAX});
     keywords.add("#abi", {TokenId::CompilerAbi, LiteralType::TT_MAX});
     keywords.add("#backend", {TokenId::CompilerBackend, LiteralType::TT_MAX});
-    keywords.add("#hastag", {TokenId::CompilerHasTag, LiteralType::TT_MAX});
-    keywords.add("#gettag", {TokenId::CompilerGetTag, LiteralType::TT_MAX});
     keywords.add("#module", {TokenId::CompilerModule, LiteralType::TT_MAX});
     keywords.add("#file", {TokenId::CompilerFile, LiteralType::TT_MAX});
     keywords.add("#line", {TokenId::CompilerLine, LiteralType::TT_MAX});
@@ -295,6 +293,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("orelse", {TokenId::KwdOrElse, LiteralType::TT_MAX});
     keywords.add("dref", {TokenId::KwdDeRef, LiteralType::TT_MAX});
 
+    keywords.add("@hastag", {TokenId::IntrinsicHasTag, LiteralType::TT_MAX});
+    keywords.add("@gettag", {TokenId::IntrinsicGetTag, LiteralType::TT_MAX});
     keywords.add("@spread", {TokenId::IntrinsicSpread, LiteralType::TT_MAX});
     keywords.add("@init", {TokenId::IntrinsicInit, LiteralType::TT_MAX});
     keywords.add("@drop", {TokenId::IntrinsicDrop, LiteralType::TT_MAX});
