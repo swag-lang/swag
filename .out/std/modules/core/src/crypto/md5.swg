@@ -193,7 +193,7 @@ public impl Md5
     public alias Digest = [16] u8
 
     // Finalize the computation
-    func final(using self, digest: Digest)
+    mtd final(digest: Digest)
     {
         var bits: [8] u8
         encode(&bits[0], count, 8)
@@ -207,7 +207,7 @@ public impl Md5
     }
 
     // Initialize the hashing sequence
-    func init(using self)
+    mtd init()
     {
         @init(self)
         padding[0] = 0x80
@@ -218,7 +218,7 @@ public impl Md5
     }
 
     // Update the hash value with 'buffer' content
-    func update(using self, data: const [..] u8)
+    mtd update(data: const [..] u8)
     {
         // Only deal with 32 bits size
         Debug.assert(@countof(data) <= Swag.U32.Max)

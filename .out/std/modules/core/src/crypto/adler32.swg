@@ -18,13 +18,13 @@ struct Adler32
 impl Adler32
 {
     // Initialize the hashing sequence
-    func init(using self)
+    mtd init()
     {
         adler = 1
     }
 
     // Update the hash value with 'buffer' content
-    func update(using self, buffer: const [..] u8)
+    mtd update(buffer: const [..] u8)
     {
         s1 := adler & 0xffff
         s2 := (adler >>,safe 16) & 0xffff

@@ -36,7 +36,7 @@ public impl Sha256
 {
     public alias Digest = [8] u32
 
-    private func transform(using self, buf: const *u8)
+    private mtd transform(buf: const *u8)
     {
         var m: [64] u32
 
@@ -90,7 +90,7 @@ public impl Sha256
     }
 
     // Finalize the computation
-    func final(using self, result: Digest)
+    mtd final(result: Digest)
     {
         i := datalen
         if datalen < 56
@@ -131,7 +131,7 @@ public impl Sha256
     }
 
     // Initialize the hashing sequence
-    func init(using self)
+    mtd init()
     {
         @init(self)
         state[0] = 0x6a09e667
@@ -145,7 +145,7 @@ public impl Sha256
     }
 
     // Update the hash value with 'buffer' content
-    func update(using self, buffer: const [..] u8)
+    mtd update(buffer: const [..] u8)
     {
         Debug.assert(@countof(buffer) <= Swag.U32.Max)
         buf := @dataof(buffer)

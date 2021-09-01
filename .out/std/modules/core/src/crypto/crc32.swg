@@ -508,13 +508,13 @@ struct Crc32
 impl Crc32
 {
     // Initialize the hashing sequence
-    func init(using self)
+    mtd init()
     {
         crc = 0
     }
 
     // Update the hash value with 'buffer' content
-    func update(using self, data: const [..] u8)
+    mtd update(data: const [..] u8)
     {
         cur := ~crc
         current := cast(const *u32) @dataof(data)

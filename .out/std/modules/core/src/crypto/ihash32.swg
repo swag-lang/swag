@@ -10,7 +10,7 @@ namespace Hash
 
 impl Hash.IHash32 for String
 {
-    func compute(using const self)->u32
+    mtdc compute()->u32
     {
         return Hash.Crc32.compute(@mkslice(buffer, length))
     }
