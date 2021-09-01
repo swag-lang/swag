@@ -1,3 +1,5 @@
+// Wrapper for Microsoft Gdi32 library.
+
 #dependencies
 {
     #import "win32"

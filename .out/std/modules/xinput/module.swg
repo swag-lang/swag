@@ -1,3 +1,5 @@
+// Wrapper for Microsoft DirectX Input.
+
 #dependencies
 {
     #import "win32"
@@ -10,6 +12,6 @@
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0
         cfg.moduleNamespace = "XInput"
-        cfg.backendKind    = .Export
+        cfg.backendKind = .Export
     }
 }

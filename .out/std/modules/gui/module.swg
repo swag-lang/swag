@@ -1,9 +1,6 @@
 #dependencies
 {
-    #if #os == "windows"
-    {
-        #import "pixel"
-    }
+    #import "pixel"
 
     #run
     {
