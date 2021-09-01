@@ -76,7 +76,7 @@ struct HuffmanTable
 
 impl HuffmanTable
 {
-    func init(using self, codeLengths: const [..] u8) throw
+    mtd init(codeLengths: const [..] u8) throw
     {
         var sizes:    [HuffmanMaxBits + 1] u16
         var nextCode: [HuffmanMaxBits] u16
@@ -140,7 +140,7 @@ public struct DeflateDecoder
 
 impl DeflateDecoder
 {
-    func decode(using self, ht: *HuffmanTable)->u16 throw
+    mtd decode(ht: *HuffmanTable)->u16 throw
     {
         if stream.numBits < 16
         {
@@ -172,7 +172,7 @@ impl DeflateDecoder
         return ht.value[b1]
     }
 
-    func parseBlock(using self, repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
+    mtd parseBlock(repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
         startBufCount := dest.count
         loop
@@ -233,7 +233,7 @@ impl DeflateDecoder
     }
 
     // Initialize the stream
-    public func init(using self, buf: const [..] u8, winSize: uint)
+    public mtd init(buf: const [..] u8, winSize: uint)
     {
         stream.init(buf)
         adler.init()
@@ -241,7 +241,7 @@ impl DeflateDecoder
     }
 
     // Decompress the associated stream
-    public func decompress(using self)->Array'u8 throw
+    public mtd decompress()->Array'u8 throw
     {
         var result:        retval
         var repeatHt:      HuffmanTable

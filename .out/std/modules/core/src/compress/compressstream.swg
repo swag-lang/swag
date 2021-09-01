@@ -11,15 +11,15 @@ public struct CompressStream
 
 public impl CompressStream
 {
-    func init(using self, buf: const [..] u8)
+    mtd init(buf: const [..] u8)
     {
         @init(self)
         stream = buf
     }
 
-    func curPtr(using self) => @dataof(stream) + curByte
+    mtd curPtr() => @dataof(stream) + curByte
 
-    func refill(using self, width = 24'u8)
+    mtd refill(width = 24'u8)
     {
         while numBits <= width
         {
@@ -47,27 +47,27 @@ public impl CompressStream
     }
 
     #[Swag.Inline]
-    func peekBits(using self, width: u8)->u32
+    mtd peekBits(width: u8)->u32
     {
 	    if numBits < width refill()
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
-    func peekBitsNoRefill(using self, width: u8)->u32
+    mtd peekBitsNoRefill(width: u8)->u32
     {
 	    Debug.assert(numBits >= width)
     	return codeBuffer & ~(0xffffffff <<,safe width)
     }
 
     #[Swag.Inline]
-    func readBits(using self, width: u8)->u32
+    mtd readBits(width: u8)->u32
     {
         k := peekBits(width)
         consumeBits(width)
         return k
     }
 
-    func readBitsNoRefill(using self, width: u8)->u32
+    mtd readBitsNoRefill(width: u8)->u32
     {
         k := peekBitsNoRefill(width)
         consumeBits(width)
@@ -75,19 +75,19 @@ public impl CompressStream
     }
 
     #[Swag.Inline]
-    func consumeBits(using self, width: u8)
+    mtd consumeBits(width: u8)
     {
 	    codeBuffer >>=,safe width
 	    numBits -= width
     }
 
     #[Swag.Inline]
-    func discardToNextByte(using self)
+    mtd discardToNextByte()
     {
         consumeBits(cast(u8) numBits & 7)
     }
 
-    func revert(using self)
+    mtd revert()
     {
         Debug.assert(!(numBits & 7))
         curByte -= numBits / 8
@@ -95,7 +95,7 @@ public impl CompressStream
         codeBuffer = 0
     }
 
-    func peekBytes(using self, width: u8, dest: *u8)
+    mtd peekBytes(width: u8, dest: *u8)
     {
         // To optim
         loop i: width
@@ -105,7 +105,7 @@ public impl CompressStream
         }
     }
 
-    func peek32(using self, dest: *u8)
+    mtd peek32(dest: *u8)
     {
         dest[0] = cast(u8) peekBits(8)
         consumeBits(8)
@@ -117,7 +117,7 @@ public impl CompressStream
         consumeBits(8)
     }
 
-    func peek32Be(using self, dest: *u8)
+    mtd peek32Be(dest: *u8)
     {
         #if BIG_ENDIAN
             peek32(dest)
