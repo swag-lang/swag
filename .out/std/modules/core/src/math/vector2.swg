@@ -19,18 +19,18 @@ impl Vector2
     const Min:      Vector2{Swag.F32.Min, Swag.F32.Min}
 
     #[Swag.Complete]
-    func opAffect(using self, value: f32)
+    method opAffect(value: f32)
     {
         x = value
         y = value
     }
 
-    func opEquals(using self, other: Self)->bool
+    method opEquals(other: Self)->bool
     {
         return x == other.x and y == other.y
     }
 
-    func(op: string) opAssign(using self, other: Self)
+    method(op: string) opAssign(other: Self)
     {
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
@@ -38,7 +38,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opAssign(using self, value: f32)
+    method(op: string) opAssign(value: f32)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -46,7 +46,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, other: Self)->Self
+    method(op: string) opBinary(other: Self)->Self
     {
         #if   op == "+" return Vector2{x + other.x, y + other.y}
         #elif op == "-" return Vector2{x - other.x, y - other.y}
@@ -55,7 +55,7 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, value: f32)->Self
+    method(op: string) opBinary(value: f32)->Self
     {
         #if   op == "+" return Vector2{x + value, y + value}
         #elif op == "-" return Vector2{x - value, y - value}
@@ -66,7 +66,7 @@ impl Vector2
 
     // Set content
     #[Swag.Inline]
-    func set(using self, x, y: f32)
+    method set(x, y: f32)
     {
         self.x = #scopefct.x
         self.y = #scopefct.y
@@ -95,33 +95,33 @@ impl Vector2
     }
 
     // Set the vector to zero
-    func clear(using self)
+    method clear()
     {
         x = 0
         y = 0
     }
 
     // Negate the vector
-    func negate(using self)
+    method negate()
     {
         x = -x
         y = -y
     }
 
     // Returns true if this Vector2 is null
-    func isZero(using self)->bool
+    method isZero()->bool
     {
         return x == 0 and y == 0
     }
 
     // Returns true if this Vector2 is null with an epsilon
-    func isZeroEpsilon(using self, eps = cast(f32) ConstF64.Epsilon)->bool
+    method isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns true if this Vector2 is equals to another with an epsilon
-    func isEqualEpsilon(using self, other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
+    method isEqualEpsilon(other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
@@ -143,7 +143,7 @@ impl Vector2
     }
 
     // Normalize this vector (set its length to 1)
-    func normalize(using self)
+    method normalize()
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -162,7 +162,7 @@ impl Vector2
     }
 
     // Set the vector length
-    func setLengthSafe(using self, newLength: f32)
+    method setLengthSafe(newLength: f32)
     {
         normalizeSafe()
         x *= newLength
@@ -170,7 +170,7 @@ impl Vector2
     }
 
     // Set the vector length
-    func setLength(using self, newLength: f32)
+    method setLength(newLength: f32)
     {
         normalize()
         x *= newLength
@@ -178,7 +178,7 @@ impl Vector2
     }
 
     // Normalize this vector (set its length to 1) even if its length is almost null
-    func normalizeSafe(using self)
+    method normalizeSafe()
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
