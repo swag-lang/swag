@@ -50,8 +50,6 @@ func displayPage0()
 
     //////////////////////////////////////
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
 
     {
         g_Painter.resetTransform()
@@ -181,8 +179,6 @@ func displayPage0()
 
     //////////////////////////////////////
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -204,8 +200,6 @@ func displayPage0()
 
     //////////////////////////////////////
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
     brush = Brush.createTiled(Res.image0)
     g_Painter.fillRect(750, 50, 100, 150, brush)
     brush = Brush.createTexture(Res.image1)
@@ -217,8 +211,6 @@ func displayPage0()
 
     //////////////////////////////////////
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
     var lpl: LinePathList
     g_Painter.translateTransform(750, 550)
     p0 := lpl.newPath()
@@ -237,8 +229,6 @@ func displayPage1()
     brush.color = Argb.Black
 
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
     g_Painter.translateTransform(50, 50)
 
     cpt, cptLines := 0
@@ -271,8 +261,6 @@ func displayPage1()
 func displayPage2()
 {
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
 
     g_Painter.drawTexture(200, 0, Res.image1)
 
@@ -300,8 +288,6 @@ func displayPage2()
 func displayPage3()
 {
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
 
     brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
     g_Painter.setClippingRect(0, 0, 100, 100)
@@ -392,8 +378,6 @@ func displayPage3()
 func displayPage4()
 {
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
 
     {
         var format: StringFormat
@@ -464,7 +448,7 @@ func displayPage4()
         var p: LinePathList
         g_Painter.translateTransform(50, 570)
         assume Res.typeface.getStringOutline(&p, "A B C D", 70)
-        p.flatten(PaintQuality.Normal)
+        p.flatten(g_PaintQuality)
         p.offset(4)
         p.clean()
         g_Painter.drawPathList(&p, Argb.Red, 2)
@@ -475,9 +459,10 @@ func displayPage4()
     {
         var p: LinePathList
         g_Painter.translateTransform(50, 670)
-        assume Res.typeface.getStringOutline(&p, "A B C D", 70)
-        p.flatten(PaintQuality.Normal)
-        p.offset(5, JoinStyle.Round)
+        assume Res.typeface.getStringOutline(&p, "E F G H", 70)
+        p.flatten(g_PaintQuality)
+        p.offset(4, JoinStyle.Round)
+        p.clean()
         g_Painter.fillPath(&p, Argb.Red)
         g_Painter.drawPathList(&p, Argb.Black, 2)
 
@@ -492,7 +477,7 @@ func displayPage4()
         p.lineTo(100, 100)
         p.lineTo(0, 100)
         p.close()
-        p.flatten(PaintQuality.Normal)
+        p.flatten(g_PaintQuality)
         g_Painter.drawPath(&p, Argb.Red, 2)
         p.polygon.offset(10, JoinStyle.Miter)
         g_Painter.drawPath(&p, Argb.Green, 2)
@@ -515,8 +500,6 @@ func displayPage4()
 func displayPage5()
 {
     g_Painter.begin()
-    g_Painter.paintParams |= g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
 
     {
         g_Painter.resetTransform()
@@ -570,6 +553,9 @@ func display()
 {
     g_Renderer.begin()
 
+    g_Painter.paintParams  = g_ModeAA ? .Antialiased : .Default
+    g_Painter.paintQuality = g_PaintQuality
+
     g_Painter.begin()
     g_Painter.clear(Color.fromArgb(0xFFEEEEEE))
     g_Painter.end()
@@ -584,13 +570,6 @@ func display()
     case 4: displayPage4()
     case 5: displayPage5()
     }
-
-    /*pt := Input.getMousePos()
-    g_Wnd.screenToSurface(&pt)
-    g_Painter.begin()
-    g_Painter.drawLine(0, 0, pt.x, pt.y, Argb.Red, 4)
-    g_Painter.end()
-    g_Renderer.draw(&g_Painter)*/
 
     g_Renderer.end()
 }

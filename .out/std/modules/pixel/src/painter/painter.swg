@@ -337,9 +337,6 @@ impl Painter
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
-
-        paintParams  = .Default
-        paintQuality = .Normal
     }
 
     // Call this after drawing
