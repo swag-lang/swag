@@ -49,15 +49,13 @@
 #run
 #test
 
-// Intrinsics
-// ----------
+// Intrinsics libc
+// ---------------
 
 @abs
 @acos
 @alloc
-@args
 @asin
-@assert
 @atan
 @atomadd
 @atomand
@@ -65,23 +63,18 @@
 @atomor
 @atomxchg
 @atomxor
-@bcdbg
 @bitcountlz
 @bitcountnz
 @bitcounttz
 @byteswap
 @ceil
-@compiler
 @cos
 @cosh
 @cstrlen
-@errormsg
 @exp
 @exp2
 @floor
 @free
-@getcontext
-@isbytecode
 @log
 @log10
 @log2
@@ -91,13 +84,9 @@
 @memmove
 @memset
 @min
-@panic
 @pow
-@print
 @realloc
 @round
-@setcontext
-@seterr
 @sin
 @sinh
 @sqrt
@@ -105,17 +94,27 @@
 @tan
 @tanh
 @trunc
-@typecmp
+
+// Intrinsics
+// ----------
 
 @alignof
+@args
+@assert
+@bcdbg
+@compiler
 @countof
 @dataof
 @drop
 @err
+@errormsg
+@getcontext
 @gettag
 @hastag
 @index
 @init
+@interfaceof
+@isbytecode
 @isconstexpr
 @kindof
 @mkany
@@ -125,11 +124,16 @@
 @mkslice
 @mkstring
 @offsetof
+@panic
 @postcopy
 @postmove
+@print
+@setcontext
+@seterr
 @sizeof
 @spread
 @stringof
+@typecmp
 @typeof
 
 // Modifiers
