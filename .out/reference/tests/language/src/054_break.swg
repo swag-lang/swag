@@ -17,9 +17,10 @@
         {
             loop 10
             {
-                break   // Exit the inner loop
+                break   // Exit the inner loop...
             }
 
+            // ...and continue execution here
             cpt += 1
         }
 
