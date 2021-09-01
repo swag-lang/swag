@@ -2,32 +2,32 @@
 #global namespace Console
 using Win32
 
-var g_colorToWin: [@countof(Color)] u16 = ?
+var g_ColorToWin: [@countof(Color)] u16 = ?
 
 #[Swag.Compiler]
 func colorToWin()
 {
     using Color
-    g_colorToWin[Black] 		= 0
-    g_colorToWin[White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_colorToWin[Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-    g_colorToWin[Red]  		    = FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_colorToWin[Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_colorToWin[Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[Magenta] 	    = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_colorToWin[Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[DarkRed] 	    = FOREGROUND_RED
-    g_colorToWin[DarkGreen] 	= FOREGROUND_GREEN
-    g_colorToWin[DarkBlue] 	    = FOREGROUND_BLUE
-    g_colorToWin[DarkCyan] 	    = FOREGROUND_BLUE | FOREGROUND_GREEN
-    g_colorToWin[DarkMagenta]   = FOREGROUND_BLUE | FOREGROUND_RED
-    g_colorToWin[DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
+    g_ColorToWin[Black] 		= 0
+    g_ColorToWin[White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+    g_ColorToWin[Red]  		    = FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Magenta] 	    = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[DarkRed] 	    = FOREGROUND_RED
+    g_ColorToWin[DarkGreen] 	= FOREGROUND_GREEN
+    g_ColorToWin[DarkBlue] 	    = FOREGROUND_BLUE
+    g_ColorToWin[DarkCyan] 	    = FOREGROUND_BLUE | FOREGROUND_GREEN
+    g_ColorToWin[DarkMagenta]   = FOREGROUND_BLUE | FOREGROUND_RED
+    g_ColorToWin[DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
 }
 
-var g_stdOutputHandle: HANDLE
-var g_stdOutputInitAttr: u16
-var g_stdOutputCurAttr: u16
+var g_StdOutputHandle: HANDLE
+var g_StdOutputInitAttr: u16
+var g_StdOutputCurAttr: u16
 
 #run
 {
@@ -36,12 +36,12 @@ var g_stdOutputCurAttr: u16
 
 #init
 {
-    g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
+    g_StdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 
     var csbi: CONSOLE_SCREEN_BUFFER_INFO
-    catch GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
-    g_stdOutputInitAttr = csbi.wAttributes
-    g_stdOutputCurAttr = g_stdOutputInitAttr
+    catch GetConsoleScreenBufferInfo(g_StdOutputHandle, &csbi)
+    g_StdOutputInitAttr = csbi.wAttributes
+    g_StdOutputCurAttr = g_StdOutputInitAttr
 }
 
 #drop
@@ -52,25 +52,25 @@ var g_stdOutputCurAttr: u16
 // Set the console foreground color
 public func setTextColor(color: Color)
 {
-    attributes := g_colorToWin[color]
-    g_stdOutputCurAttr &= BACKGROUND_MASK
-    g_stdOutputCurAttr |= attributes
-    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    attributes := g_ColorToWin[color]
+    g_StdOutputCurAttr &= BACKGROUND_MASK
+    g_StdOutputCurAttr |= attributes
+    catch SetConsoleTextAttribute(g_StdOutputHandle, g_StdOutputCurAttr)
 }
 
 // Set the console background color
 public func setBackColor(color: Color)
 {
-    attributes := cast(u16) (g_colorToWin[color] << 4)
-    g_stdOutputCurAttr &= FOREGROUND_MASK
-    g_stdOutputCurAttr |= attributes
-    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    attributes := cast(u16) (g_ColorToWin[color] << 4)
+    g_StdOutputCurAttr &= FOREGROUND_MASK
+    g_StdOutputCurAttr |= attributes
+    catch SetConsoleTextAttribute(g_StdOutputHandle, g_StdOutputCurAttr)
 }
 
 // Restore the console colors to their default values
 public func resetColor()
 {
-    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
+    catch SetConsoleTextAttribute(g_StdOutputHandle, g_StdOutputInitAttr)
 }
 
 // Write a formatted message to the console
@@ -82,19 +82,19 @@ public func printf(message: string, params: ...)
         return true
     }
 {
-    if g_silentMode
+    if g_SilentMode
         return
 
     if @countof(params)
     {
         str := Format.toString(message, params)
         len := cast(u32) @countof(str)
-        catch WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
+        catch WriteFile(g_StdOutputHandle, @dataof(str), len, null, null)
     }
     else
     {
         len := cast(u32) @countof(message)
-        catch WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
+        catch WriteFile(g_StdOutputHandle, @dataof(message), len, null, null)
     }
 }
 

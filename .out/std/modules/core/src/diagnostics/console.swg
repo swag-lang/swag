@@ -21,7 +21,7 @@ enum Color
     DarkMagenta
 }
 
-protected var g_silentMode:   s32
+protected var g_SilentMode:   s32
 protected var g_lock:         Sync.Mutex
 
 // Use to access console with multiple threads.
@@ -36,8 +36,8 @@ func unlock() = g_lock.unlock()
 // => call 'lock' before if necessary, and 'unlock' after
 func silent(value: bool)
 {
-    Debug.assert(value or g_silentMode > 0)
-    g_silentMode += value ? 1 : -1
+    Debug.assert(value or g_SilentMode > 0)
+    g_SilentMode += value ? 1 : -1
 }
 
 // Write a bunch of parameters to the console

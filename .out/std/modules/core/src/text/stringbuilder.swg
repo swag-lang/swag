@@ -9,67 +9,67 @@ struct StringBuilder
 impl StringBuilder
 {
     // Clear the content of the builder
-    func clear(using self)
+    mtd clear()
     {
         buffer.clear()
     }
 
     // Returns the number of characters
-    func count(using self)->uint
+    mtdc count()->uint
     {
         return buffer.count()
     }
 
     // Set sizes of buckets of the string builder
-    func setBucketSize(using self, size: uint)
+    mtd setBucketSize(size: uint)
     {
         buffer.setBucketSize(size)
     }
 
     // Append a string
-    func appendString(using self, value: string)
+    mtd appendString(value: string)
     {
         buffer.addBytes(value)
     }
 
     // Append a end of line
-    func appendEOL(using self)
+    mtd appendEOL()
     {
         buffer.addBytes(Env.EndLine)
     }
 
     // Append a rune
-    func appendRune(using self, value: rune)
+    mtd appendRune(value: rune)
     {
         convertRune(&buffer, value, null)
     }
 
     // Append a value
-    func appendAny(using self, value: any, strFormat: string = null)
+    mtd appendAny(value: any, strFormat: string = null)
     {
         convertAny(&buffer, value, strFormat)
     }
 
     // Append a formatted string
-    func appendFormat(using self, fmt: string, values: ...)
+    mtd appendFormat(fmt: string, values: ...)
     {
         Format.append(&buffer, fmt, values);
     }
 
     // Force a ending 0
-    func zeroTerminated(using self)
+    mtd zeroTerminated()
     {
         buffer.addByte(0)
     }
 
     // Return the content as a string
-    func toString(using self)->String
+    mtdc toString()->String
     {
         return buffer.toString()
     }
 
     // Move the content as a string
-    func moveToString(using self)->String
+    mtd moveToString()->String
     {
         return buffer.moveToString()
     }
