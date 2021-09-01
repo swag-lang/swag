@@ -32,6 +32,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Exceptions**, because this is bad. This is really bad.
 * **Header files**, but who does, nowadays ?
 * **Mandatory semicolons**, yeah...
+* **Tagged unions**, **bitfields**, but who knows...
 
 # Hello mad world !
 
