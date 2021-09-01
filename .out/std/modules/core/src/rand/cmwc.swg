@@ -11,7 +11,7 @@ struct CMWC4096
 
 impl CMWC4096
 {
-    func seedU32(using self, value: u32)
+    mtd seedU32(value: u32)
     {
         var rng: MWC
         rng.seedU32(value)
@@ -22,7 +22,7 @@ impl CMWC4096
     }
 
     #[Swag.Safety("overflow", false)]
-    func nextU32(using self)->u32
+    mtd nextU32()->u32
     {
         const a = 18782'u64
         const r = 0xfffffffe
