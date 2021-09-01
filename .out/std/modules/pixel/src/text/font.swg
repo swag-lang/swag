@@ -93,7 +93,7 @@ impl Font
     }
 
     // Returns the glyph decriptor of a given rune
-    func getGlyphDesc(using self, c: rune)->const *GlyphDesc
+    mtd getGlyphDesc(c: rune)->const *GlyphDesc
     {
         // Already there ?
         if c < 128

@@ -20,7 +20,7 @@ impl FontFamily
 {
     // Get the font correspondig to the style.
     // If not evailable, get another one.
-    func getFont(using self, style: FontFamilyStyle)->*Font
+    mtd getFont(style: FontFamilyStyle)->*Font
     {
         switch style
         {
