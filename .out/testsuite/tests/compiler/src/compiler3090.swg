@@ -1,8 +1,0 @@
-//#[Swag.PrintBc]
-#test
-{
-    g := 0
-    loop i: 6 .. 8
-        g += i
-    @assert(g == 6 + 7 + 8)
-}

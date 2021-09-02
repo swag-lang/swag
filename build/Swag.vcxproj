@@ -62,20 +62,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\.out\</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag_debug</TargetName>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\.out\</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\.out\</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag_devmode</TargetName>
   </PropertyGroup>
@@ -99,7 +99,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/debug/lib;../.out</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../llvm/build/debug/lib;../bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -127,7 +127,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/release/lib;../.out</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -155,7 +155,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/release/lib;../llvm/build/release/lib;../.out</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../llvm/build/release/lib;../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>

@@ -1,4 +1,0 @@
-#global testerror
-impl swag
-{
-}

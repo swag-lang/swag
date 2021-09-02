@@ -1,1 +1,0 @@
-const EndLine = "\r\n"

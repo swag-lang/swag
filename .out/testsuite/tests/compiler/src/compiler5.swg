@@ -1,3 +1,0 @@
-
-#global testerror;
-#toto error

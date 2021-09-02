@@ -1,6 +1,0 @@
-;
-using Swag;
-
-#test
-{
-}

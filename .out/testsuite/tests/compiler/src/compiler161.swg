@@ -1,6 +1,0 @@
-;
-;
-
-func main (argv = true)
-{
-}

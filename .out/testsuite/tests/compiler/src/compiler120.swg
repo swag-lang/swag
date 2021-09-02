@@ -1,4 +1,0 @@
-#global testerror
-namespace Swag
-{
-}

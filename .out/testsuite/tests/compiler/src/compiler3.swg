@@ -1,3 +1,0 @@
-
-#global testerror;
-#unittest tgoito

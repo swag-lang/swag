@@ -1,6 +1,0 @@
-
-#global testerror
-
-interface toto
-{
-}

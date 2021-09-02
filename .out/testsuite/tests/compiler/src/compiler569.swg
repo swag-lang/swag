@@ -1,1 +1,0 @@
-alias ret = {s32, s32}

@@ -1,1 +1,1 @@
-swag test -w:../.out/std --backend:x64 --rebuild %1 %2 %3 %4
+swag test -w:../bin/std --backend:x64 --rebuild %1 %2 %3 %4

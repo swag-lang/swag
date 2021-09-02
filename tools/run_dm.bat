@@ -1,2 +1,2 @@
-swag_devmode get -w:../.out/examples --force
-swag_devmode run -w:../.out/examples --backend:x64 -m:%1 %2 %3 %4
+swag_devmode get -w:../bin/examples --force
+swag_devmode run -w:../bin/examples --backend:x64 -m:%1 %2 %3 %4

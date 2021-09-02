@@ -1,1 +1,1 @@
-swag_devmode test -w:../.out/testsuite --backend:x64 --rebuild %1 %2 %3 %4
+swag_devmode test -w:../bin/testsuite --backend:x64 --rebuild %1 %2 %3 %4

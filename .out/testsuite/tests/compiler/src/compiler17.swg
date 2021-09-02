@@ -1,6 +1,0 @@
-#global testerror;
-#global testpass lexer;
-
-145 18446744073709551615
-
-18446744073709551616
