@@ -38,7 +38,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 
 Here without any additional library, by simply using intrinsic `@print`.
 
-``` csharp
+``` swift
 #main
 {
     @print("Hello mad world !\n")
@@ -46,7 +46,7 @@ Here without any additional library, by simply using intrinsic `@print`.
 ```
 A version that uses the standard *core* module.
 
-``` csharp
+``` swift
 #main
 {
     using Core
@@ -56,7 +56,7 @@ A version that uses the standard *core* module.
 ```
 A *#run* block is executed at compile time, so the famous message will be printed by the compiler.
 
-``` csharp
+``` swift
 #run
 {
     const Msg = "Hello mad world !\n"
@@ -65,7 +65,7 @@ A *#run* block is executed at compile time, so the famous message will be printe
 ```
 A stupid version that generates the code to do the print.
 
-``` csharp
+``` swift
 using Core
 
 #main
@@ -84,7 +84,7 @@ using Core
 
 A version that calls a nested function at compile time (only) to initialize the string constant to print.
 
-``` csharp
+``` swift
 using Core
 
 #main
@@ -99,7 +99,7 @@ using Core
 
 More and more crazy.
 
-``` csharp
+``` swift
 using Core
 
 #main
