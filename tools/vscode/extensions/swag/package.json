@@ -1,8 +1,11 @@
 {
   "name": "swag",
-  "displayName": "swag",
-  "description": "swag language support",
-  "version": "0.0.1",
+  "displayName": "Swag",
+  "description": "Language support for the Swag programming language",
+  "version": "0.1.0",
+  "publisher": "cb",
+  "icon": "images/swag_logo256.png",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.41.0"
   },

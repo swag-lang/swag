@@ -1,10 +1,7 @@
 # Swag Language Extension for [Visual Studio Code](http://code.visualstudio.com)
 
-## Install
+![Syntax Highlighting](https://github.com/zig-lang/vscode-zig/raw/master/./images/example.png)
 
-## Team
+## Features
 
-## Contributing
-
-## License
-
+ - syntax highlighting
