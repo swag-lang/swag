@@ -42,6 +42,7 @@ void Workspace::scriptCommand()
         OS::exit(-1);
     }
 
+
     cacheWorkspace.append("/");
     cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
