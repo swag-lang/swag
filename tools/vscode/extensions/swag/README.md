@@ -1,7 +1,6 @@
-# Swag Language Extension for [Visual Studio Code](http://code.visualstudio.com)
+![Syntax Highlighting](https://github.com/swag-lang/swag/tools/vscode/extensions/swag/images/swag_icon.png)
 
-![Syntax Highlighting](https://github.com/zig-lang/vscode-zig/raw/master/./images/example.png)
-
-## Features
+# Features
 
  - syntax highlighting
+ - new theme 'Swag Dark'

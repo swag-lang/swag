@@ -2,10 +2,14 @@
   "name": "swag",
   "displayName": "Swag",
   "description": "Language support for the Swag programming language",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "publisher": "cb",
-  "icon": "images/swag_logo256.png",
+  "icon": "images/swag_icon.png",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swag-lang/swag"
+  },
   "engines": {
     "vscode": "^1.41.0"
   },
@@ -24,7 +28,7 @@
 				"uiTheme": "vs-dark",
 				"path": "./themes/swag-dark.json"
 			}
-		],    
+		],
     "languages": [
       {
         "id": "swag",

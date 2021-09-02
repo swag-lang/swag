@@ -1,4 +1,4 @@
-![Swag logo](docs/swag_logo256.png)
+![Swag logo](docs/swag_logo.png)
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
