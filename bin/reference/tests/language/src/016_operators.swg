@@ -1,0 +1,124 @@
+#test
+{
+    // Basic binary operators
+    {
+        var x: s32 = 10
+
+        x = x + 1
+        x = x - 1
+        x = x * 2
+        x = x / 2
+        x = x % 2 // Modulo
+        x = x ^ 2 // Xor
+        x = x & 0b0000_0001's32 // Bitmask and
+        x = x | cast(s32) 0b0000_0001 // Bitmask or
+        x = x << 1 // Shift bits left
+        x = x >> 1 // Shift bits right
+    }
+
+    // Affect operators
+    {
+        var x: s32 = 10
+
+        x += 1
+        x -= 1
+        x *= 2
+        x /= 2
+        x %= 2
+        x ^= 2
+        x |= 0b0000_0001's32
+        x &= cast(s32) 0b0000_0001
+        x <<= 1
+        x >>= 1
+    }
+
+    // Unary operator
+    {
+        x := true
+        x = !x      // Invert boolean
+        @assert(x == false)
+
+        y := 0b0000_0001'u8
+        y = ~y      // Invert bits
+        @assert(y == 0b1111_1110)
+
+        z := 1
+        z = -z      // Negative
+        @assert(z == -1)
+    }
+
+    // Ternary operator
+    {
+        var x = true ? 1 : 666
+        @assert(x == 1)
+        var y = (x == 1) ? 1 : 666
+        @assert(y == 1)
+    }
+
+    // Comparison operators
+    {
+        a := false
+
+        a = 1 == 1 ? true : false
+        a = 1 != 1 ? true : false
+        a = 1 <= 1 ? true : false
+        a = 1 >= 1 ? true : false
+        a = 1 < 1 ? true : false
+        a = 1 > 1 ? true : false
+    }
+
+    // Two ways comparison operator, which returns a s32 of -1, 0 or 1
+    // A <=> B == -1 if A < B
+    // A <=> B == 0  if A == B
+    // A <=> B == 1  if A > B
+    {
+        a := -1.5 <=> 2.31
+        @assert(@typeof(a) == s32)
+        @assert(a == -1)
+
+        @assert(-1 <=>  1 == -1)
+        @assert( 1 <=> -1 == 1)
+        @assert( 1 <=>  1 == 0)
+    }
+
+    {
+        x1 := 10 <=> 20
+        @assert(x1 == -1)
+        x2 := 20 <=> 10
+        @assert(x2 == 1)
+        x3 := 20 <=> 20
+        @assert(x3 == 0)
+    }
+
+    // Logic operator. This is not '&&' and '||' like in C++.
+    {
+        a := false
+        a = (1 > 10) and (10 < 1)
+        a = (1 > 10) or (10 < 1)
+    }
+
+    // Null conditional operator
+    // Works with strings, pointers and structures with the 'opData' special function
+    {
+        a := "string1"
+        b := "string2"
+        c := a orelse b     // c = a if a is not null, else c = b
+        @assert(c == "string1")
+
+        a = null
+        c = a orelse b
+        @assert(c == "string2")
+    }
+
+    // Basic comparison operators
+    {
+        x := 5
+        y := 10
+        @assert(x == 5)
+        @assert(x != 10)
+        @assert(x <= 5)
+        @assert(x < 10)
+        @assert(x >= 5)
+        @assert(x > 0)
+    }
+}

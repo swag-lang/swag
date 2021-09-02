@@ -1,0 +1,14 @@
+#[Swag.Macro]
+func toto(x: code)
+{
+    #mixin x
+    #mixin x
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    cpt := 0
+    toto(#code { `cpt += 1; })
+    @assert(cpt == 2)
+}

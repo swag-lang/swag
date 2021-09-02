@@ -1,0 +1,22 @@
+interface Itf
+{
+    toto: func(self)
+}
+
+struct AA
+{
+    v: s32
+}
+
+impl Itf for AA
+{
+    mtd YYY()->s32
+    {
+        return 666
+    }
+
+    mtd toto()
+    {
+        @print(YYY(self))
+    }
+}

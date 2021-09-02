@@ -1,0 +1,12 @@
+using Core, Pixel.Image
+
+#test
+{
+    data := imagePath("rgb.bmp")
+    bytes := catch File.readAllBytes(data)
+    @assert(!@err)
+
+    var dec: Bmp.Decoder
+    img := catch dec.IDecoder.decode(bytes.toSlice(), @{})
+    @assert(!@err)
+}

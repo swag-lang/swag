@@ -18,7 +18,6 @@
 x64/
 x86/
 bld/
-[Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -263,12 +262,8 @@ __pycache__/
 
 # Swag
 *.tlog
-.out/*.exe
-.out/*.lib
-.out/*.iobj
-.out/*.ipdb
-.out/*.bat
-.out/.vs/
+bin/*.exe
+bin/*.pdb
 dependencies/
 **/output/
 **/modules/**/public

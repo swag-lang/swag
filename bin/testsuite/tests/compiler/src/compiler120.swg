@@ -1,0 +1,4 @@
+#global testerror
+namespace Swag
+{
+}

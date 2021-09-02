@@ -1,0 +1,1 @@
+const EndLine = "\r\n"

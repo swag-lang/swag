@@ -1,0 +1,136 @@
+#global namespace Compress
+
+public struct CompressStream
+{
+    stream:         const [..] u8
+    curByte:        uint
+    codeBuffer:     u32
+    numBits:        u8
+    eof:            bool
+}
+
+public impl CompressStream
+{
+    mtd init(buf: const [..] u8)
+    {
+        @init(self)
+        stream = buf
+    }
+
+    mtd curPtr() => @dataof(stream) + curByte
+
+    mtd refill(width = 24'u8)
+    {
+        while numBits <= width
+        {
+            if codeBuffer == 0 and numBits == bitcast(u8) -1
+                numBits = 0
+
+            if codeBuffer >= 1'u32 << numBits
+            {
+                numBits = bitcast(u8) -100
+                return
+            }
+
+            if curByte >= @countof(stream)
+            {
+                eof = true
+                return
+            }
+
+            c := stream[curByte]
+            curByte += 1
+
+            codeBuffer |= cast(u32) c << numBits
+            numBits += 8
+        }
+    }
+
+    #[Swag.Inline]
+    mtd peekBits(width: u8)->u32
+    {
+	    if numBits < width refill()
+    	return codeBuffer & ~(0xffffffff <<,safe width)
+    }
+
+    mtd peekBitsNoRefill(width: u8)->u32
+    {
+	    Debug.assert(numBits >= width)
+    	return codeBuffer & ~(0xffffffff <<,safe width)
+    }
+
+    #[Swag.Inline]
+    mtd readBits(width: u8)->u32
+    {
+        k := peekBits(width)
+        consumeBits(width)
+        return k
+    }
+
+    mtd readBitsNoRefill(width: u8)->u32
+    {
+        k := peekBitsNoRefill(width)
+        consumeBits(width)
+        return k
+    }
+
+    #[Swag.Inline]
+    mtd consumeBits(width: u8)
+    {
+	    codeBuffer >>=,safe width
+	    numBits -= width
+    }
+
+    #[Swag.Inline]
+    mtd discardToNextByte()
+    {
+        consumeBits(cast(u8) numBits & 7)
+    }
+
+    mtd revert()
+    {
+        Debug.assert(!(numBits & 7))
+        curByte -= numBits / 8
+        numBits = 0
+        codeBuffer = 0
+    }
+
+    mtd peekBytes(width: u8, dest: *u8)
+    {
+        // To optim
+        loop i: width
+        {
+            dest[i] = cast(u8) peekBits(8)
+            consumeBits(8)
+        }
+    }
+
+    mtd peek32(dest: *u8)
+    {
+        dest[0] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[1] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[2] = cast(u8) peekBits(8)
+        consumeBits(8)
+        dest[3] = cast(u8) peekBits(8)
+        consumeBits(8)
+    }
+
+    mtd peek32Be(dest: *u8)
+    {
+        #if BIG_ENDIAN
+            peek32(dest)
+        #else
+        {
+            dest[3] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[2] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[1] = cast(u8) peekBits(8)
+            consumeBits(8)
+            dest[0] = cast(u8) peekBits(8)
+            consumeBits(8)
+        }
+    }
+}

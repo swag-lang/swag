@@ -1,0 +1,26 @@
+#test
+{
+    // No need for ';' to end a statement like in C++
+    // A end of line is enough.
+    {
+        var x, y = 0
+        x += 1
+        y += 1
+        @assert(x == 1)
+        @assert(y == x)
+    }
+
+    // But ';' is possible too
+    {
+        var x, y = 0;
+        x += 1;
+        y += 1;
+    }
+
+    // This is usefull if you want to do multiple things on the same line
+    {
+        var x = 0; var y = 0
+        x += 1; y += 1
+        @assert(x == 1); @assert(y == 1)
+    }
+}

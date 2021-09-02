@@ -1,0 +1,7 @@
+
+
+
+#global testerror
+impl toto
+{
+}

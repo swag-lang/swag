@@ -1,0 +1,46 @@
+using Core
+
+impl Image
+{
+    private func doMirror(using self, dstImage: *Image)
+    {
+        f := dstImage
+
+        #[Swag.Mixin]
+        func(BPP: u8) doIt()
+        {
+            visitPixels(f)
+            {
+                dstImage := cast(*Image) userData
+                pixDst := dstImage.pixels + (image.width - x - 1) * image.bpp8
+                pixDst += cast(uint) (y * (image.width * image.bpp8))
+                copyPixel'BPP(pixDst, pix)
+            }
+        }
+
+        switch bpp
+        {
+        case 24: doIt'24()
+        case 32: doIt'32()
+        default: Debug.assert(false)
+        }
+    }
+
+    // Flip image horizontally
+    public func mirror(using self)
+    {
+        Debug.assert(pixels != null)
+        allocWorkingBuffer()
+        doMirror(workingBuffer)
+        applyWorkingBuffer()
+    }
+
+    // Flip image horizontally
+    public func toMirror(using self)->Image
+    {
+        Debug.assert(pixels != null)
+        var result: retval = create(width, height, pf)
+        doMirror(&result)
+        return result
+    }
+}

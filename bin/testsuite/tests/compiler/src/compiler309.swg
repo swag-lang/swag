@@ -1,0 +1,10 @@
+;
+;
+
+//#[Swag.PrintBc]
+#test
+{
+	var c = "toto";
+	@assert(c == "toto");
+	@assert(c != "titi");
+}
