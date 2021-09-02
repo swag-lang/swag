@@ -115,3 +115,35 @@ You should take a look at the `reference/` sub folder in the Swag directory. It 
 It's a good starting point to familiarize yourself with the language.
 
 And as this is a normal Swag workspace, you could also build and test it with `swag test -w:swag/reference`.
+
+# Script file
+Instead of a workspace, Swag can also be used to build and run a simple script file.
+No executable will be generated, the compiler will do all the job.
+To create a new script file with special extension 'swgs':
+
+```
+$ swag new -f:myScript
+=> script file 'myScript.swgs' has been created
+=> type 'swag script -f:myScript.swgs' to run that script
+```
+
+``` csharp
+// Swag script file
+#dependencies
+{
+    // Here you can add your external dependencies
+    // #import "core" location="swag@std"
+}
+
+#run
+{
+    @print("Hello world !\n")
+}
+```
+
+You can then run your script with the 'script' command.
+
+```
+$ swag script -f:myScript
+Hello world !
+```
