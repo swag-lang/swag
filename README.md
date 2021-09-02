@@ -44,7 +44,7 @@ Here without any additional library, by simply using intrinsic `@print`.
 }
 ```
 A version that uses the standard *core* module.
-``` swag
+``` csharp
 #main csharp
 {
     using Core
