@@ -37,6 +37,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 # Hello mad world !
 
 Here without any additional library, by simply using intrinsic `@print`.
+
 ``` csharp
 #main
 {
@@ -44,8 +45,9 @@ Here without any additional library, by simply using intrinsic `@print`.
 }
 ```
 A version that uses the standard *core* module.
+
 ``` csharp
-#main csharp
+#main
 {
     using Core
     Console.print("Hello mad world !, "\n")
@@ -53,6 +55,7 @@ A version that uses the standard *core* module.
 }
 ```
 A *#run* block is executed at compile time, so the famous message will be printed by the compiler.
+
 ``` csharp
 #run
 {
@@ -61,6 +64,7 @@ A *#run* block is executed at compile time, so the famous message will be printe
 }
 ```
 A stupid version that generates the code to do the print.
+
 ``` csharp
 using Core
 
@@ -77,7 +81,9 @@ using Core
     }
 }
 ```
+
 A version that calls a nested function at compile time (only) to initialize the string constant to print.
+
 ``` csharp
 using Core
 
@@ -90,7 +96,9 @@ using Core
     Console.print(Msg)
 }
 ```
+
 More and more crazy.
+
 ``` csharp
 using Core
 
