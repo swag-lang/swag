@@ -562,7 +562,7 @@ bool Workspace::buildTarget()
     // to void wasting some cores
     //////////////////////////////////////////////////
 
-    if (g_CommandLine->numCores != 1)
+    if (g_CommandLine->numCores != 1 && !g_CommandLine->scriptCommand)
     {
         auto enumJob0          = g_Allocator.alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;

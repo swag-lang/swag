@@ -34,7 +34,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<Source
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
-    if (g_CommandLine->numCores == 1)
+    if (g_CommandLine->numCores == 1 || g_CommandLine->scriptCommand)
         allFiles.push_back(file);
     else
     {
@@ -250,15 +250,12 @@ JobResult EnumerateModuleJob::execute()
     // Just scan the files, and load them, as optional jobs, during the build setup stage
     if (readFileMode)
     {
+        SWAG_ASSERT(!g_CommandLine->scriptCommand);
         loadFilesInModules(g_Workspace->dependenciesPath);
-        if (!g_CommandLine->scriptCommand)
-        {
-            loadFilesInModules(g_Workspace->modulesPath);
-            loadFilesInModules(g_Workspace->examplesPath);
-            if (g_CommandLine->test)
-                loadFilesInModules(g_Workspace->testsPath);
-        }
-
+        loadFilesInModules(g_Workspace->modulesPath);
+        loadFilesInModules(g_Workspace->examplesPath);
+        if (g_CommandLine->test)
+            loadFilesInModules(g_Workspace->testsPath);
         return JobResult::ReleaseJob;
     }
 
