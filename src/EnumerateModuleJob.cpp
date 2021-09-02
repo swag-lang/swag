@@ -250,9 +250,9 @@ JobResult EnumerateModuleJob::execute()
     // Just scan the files, and load them, as optional jobs, during the build setup stage
     if (readFileMode)
     {
+        loadFilesInModules(g_Workspace->dependenciesPath);
         if (!g_CommandLine->scriptCommand)
         {
-            loadFilesInModules(g_Workspace->dependenciesPath);
             loadFilesInModules(g_Workspace->modulesPath);
             loadFilesInModules(g_Workspace->examplesPath);
             if (g_CommandLine->test)
@@ -273,6 +273,8 @@ JobResult EnumerateModuleJob::execute()
     }
     else
     {
+        enumerateModules(g_Workspace->dependenciesPath);
+
         // If we are in script mode, then we add one single module with the script file
         auto parentFolder  = fs::path(g_CommandLine->scriptName.c_str()).parent_path().string();
         auto file          = g_Allocator.alloc<SourceFile>();
