@@ -1,4 +1,9 @@
-﻿// https://github.com/golang/go/blob/master/src/hash/crc32/crc32_test.go
+﻿/*
+    :LICENCE
+    This code is based on the Go library (https://github.com/golang/go/blob/master/src/hash/crc32/crc32_test.go)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
 
 using Core.Hash
 

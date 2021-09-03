@@ -1,4 +1,9 @@
-// https://github.com/golang/go/blob/master/src/strconv/decimal.go
+/*
+    :LICENCE
+    This code is based on the Go library (https://github.com/golang/go/blob/master/src/strconv/decimal.go)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
 
 #global namespace StrConv
 #global #[Swag.Safety("overflow", false)]

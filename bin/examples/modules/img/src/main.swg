@@ -1,4 +1,8 @@
-// http://www.schaik.com/pngsuite/
+/*
+    :LICENCE
+    This code uses some PNGs from the PngSuite (http://www.schaik.com/pngsuite/)
+    See LICENCE.md for the corresponding licence.
+*/
 
 #global if #os == "windows"
 using Core, Win32, Ogl, Gdi32, Pixel

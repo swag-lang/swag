@@ -1,4 +1,10 @@
-// https://github.com/odin-lang/Odin/blob/master/core/compress/zlib/zlib.odin
+/*
+    :LICENCE
+    This code is based on the Odin library (https://github.com/odin-lang/Odin/blob/master/core/compress/zlib/zlib.odin)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
+
 #global namespace Compress
 
 const FastBits           = 9

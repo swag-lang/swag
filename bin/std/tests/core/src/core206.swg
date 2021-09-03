@@ -1,4 +1,10 @@
-﻿
+﻿/*
+    :LICENCE
+    This code is based on the Go library (https://github.com/golang/go/blob/master/src/hash/adler32/adler32_test.go)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
+
 using Core.Hash
 
 struct ValidTest
@@ -7,7 +13,6 @@ struct ValidTest
 	in:  string
 }
 
-// https://github.com/golang/go/blob/master/src/hash/adler32/adler32_test.go
 const validTests: [] ValidTest = @[
 	{0x00000001, ""},
 	{0x00620062, "a"},

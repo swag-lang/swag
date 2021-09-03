@@ -1,4 +1,9 @@
-// https://github.com/golang/go/blob/master/src/unicode/utf8/Utf8.go
+/*
+    :LICENCE
+    This code is based on the Go library (https://github.com/golang/go/blob/master/src/unicode/utf8/Utf8.go)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
 
 #global public
 #global namespace Utf8

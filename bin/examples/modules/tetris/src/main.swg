@@ -49,6 +49,7 @@
 
 	Last Updated: 30/03/2017
 */
+
 #global if #os == "windows"
 using Core, Win32
 

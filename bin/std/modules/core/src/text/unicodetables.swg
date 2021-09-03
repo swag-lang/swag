@@ -1,4 +1,10 @@
-//https://golang.org/src/unicode/tables.go
+/*
+    :LICENCE
+    This code is based on the Go library (https://golang.org/src/unicode/tables.go)
+    The original code has been modified for Swag
+    See LICENCE.md for the corresponding licence.
+*/
+
 #global namespace Unicode
 
 const TableWhiteSpace: [] Range =
