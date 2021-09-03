@@ -239,4 +239,5 @@ struct Module
     bool mustFetchDep       = false;
     bool wasAddedDep        = false;
     bool isErrorModule      = false;
+    bool isScriptFile       = false;
 };

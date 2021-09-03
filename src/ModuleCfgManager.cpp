@@ -46,8 +46,9 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     else
         g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
-    auto cfgModule  = g_Allocator.alloc<Module>();
-    cfgModule->kind = ModuleKind::Config;
+    auto cfgModule          = g_Allocator.alloc<Module>();
+    cfgModule->kind         = ModuleKind::Config;
+    cfgModule->isScriptFile = file->isScriptFile;
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 

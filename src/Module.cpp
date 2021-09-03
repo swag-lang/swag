@@ -111,26 +111,32 @@ void Module::computePublicPath()
     publicPath += "/";
     publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
 
-    if (!fs::exists(publicPath.c_str()))
+    if (!isScriptFile && kind != ModuleKind::Script)
     {
-        error_code errorCode;
-        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        if (!fs::exists(publicPath.c_str()))
         {
-            g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
-            OS::exit(-1);
+            error_code errorCode;
+            if (!fs::create_directories(publicPath.c_str(), errorCode))
+            {
+                g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
+                OS::exit(-1);
+            }
         }
     }
 
     publicPath += g_Workspace->getTargetFolder().c_str();
     publicPath += "/";
 
-    if (!fs::exists(publicPath.c_str()))
+    if (!isScriptFile && kind != ModuleKind::Script)
     {
-        error_code errorCode;
-        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        if (!fs::exists(publicPath.c_str()))
         {
-            g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
-            OS::exit(-1);
+            error_code errorCode;
+            if (!fs::create_directories(publicPath.c_str(), errorCode))
+            {
+                g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
+                OS::exit(-1);
+            }
         }
     }
 }
