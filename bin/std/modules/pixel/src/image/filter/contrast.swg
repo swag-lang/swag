@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Change the contrast. 'factor' is [-1, 1]
-    public func contrast(using self, factor: f32 = 0.5)
+    public mtd contrast(factor: f32 = 0.5)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

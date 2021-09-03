@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private func doMirror(using self, dstImage: *Image)
+    private mtd doMirror(dstImage: *Image)
     {
         f := dstImage
 
@@ -27,7 +27,7 @@ impl Image
     }
 
     // Flip image horizontally
-    public func mirror(using self)
+    public mtd mirror()
     {
         Debug.assert(pixels != null)
         allocWorkingBuffer()
@@ -36,7 +36,7 @@ impl Image
     }
 
     // Flip image horizontally
-    public func toMirror(using self)->Image
+    public mtd toMirror()->Image
     {
         Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)

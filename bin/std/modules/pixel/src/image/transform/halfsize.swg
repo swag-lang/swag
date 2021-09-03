@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private func doHalfSize(using self, dstImage: *Image)
+    private mtd doHalfSize(dstImage: *Image)
     {
         f := self
         dstImage.visitPixels(f)
@@ -22,7 +22,7 @@ impl Image
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
-    public func halfSize(using self)
+    public mtd halfSize()
     {
         Debug.assert(width > 1 and height > 1)
         allocWorkingBuffer(width / 2, height / 2, pf)
@@ -31,7 +31,7 @@ impl Image
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
-    public func toHalfSize(using self)->Image
+    public mtd toHalfSize()->Image
     {
         Debug.assert(width > 1 and height > 1)
         var result: retval = create(width / 2, height / 2, pf)

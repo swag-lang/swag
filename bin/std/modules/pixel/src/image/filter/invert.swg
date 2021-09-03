@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Invert colors
-    public func invert(using self)
+    public mtd invert()
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

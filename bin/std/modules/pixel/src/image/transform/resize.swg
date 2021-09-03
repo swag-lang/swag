@@ -15,7 +15,7 @@ public impl Image
     }
 
     // Resize image
-    func resize(using self, newWidth, newHeight: s32, mode = ResizeMode.Raw)
+    mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 and newHeight > 0)
         if newWidth == width and newHeight == height return
@@ -25,7 +25,7 @@ public impl Image
     }
 
     // Resize image
-    func toResize(using self, newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
+    mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 and newHeight > 0)
 

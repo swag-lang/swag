@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Fill image with 'color'
-    public func fill(using self, color: Color)
+    public mtd fill(color: Color)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Transform image to grayscale, with a given factor
-    public func grayScale(using self, factor: f32 = 1)
+    public mtd grayScale(factor: f32 = 1)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

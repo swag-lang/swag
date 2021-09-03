@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private func toRGB8(using self, dstImage: *Image)
+    private mtd toRGB8(dstImage: *Image)
     {
         f := dstImage
 
@@ -32,7 +32,7 @@ impl Image
         }
     }
 
-    private func toRGBA8(using self, dstImage: *Image)
+    private mtd toRGBA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -74,7 +74,7 @@ impl Image
         }
     }
 
-    private func toBGR8(using self, dstImage: *Image)
+    private mtd toBGR8(dstImage: *Image)
     {
         f := dstImage
 
@@ -104,7 +104,7 @@ impl Image
         }
     }
 
-    private func toBGRA8(using self, dstImage: *Image)
+    private mtd toBGRA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -146,7 +146,7 @@ impl Image
         }
     }
 
-    private func doChangePf(using self, dstImage: *Image)
+    private mtd doChangePf(dstImage: *Image)
     {
         #[Swag.Complete]
         switch dstImage.pf
@@ -159,7 +159,7 @@ impl Image
     }
 
     // Change image pixel format
-    public func setPixelFormat(using self, newPf: PixelFormat)
+    public mtd setPixelFormat(newPf: PixelFormat)
     {
         Debug.assert(pixels != null)
 
@@ -170,7 +170,7 @@ impl Image
     }
 
     // Change image pixel format
-    public func toSetPixelFormat(using self, newPf: PixelFormat)->Image
+    public mtd toSetPixelFormat(newPf: PixelFormat)->Image
     {
         Debug.assert(pixels != null)
 

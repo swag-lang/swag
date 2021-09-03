@@ -10,7 +10,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    private func doTurn(using self, dstImage: *Image, angle: TurnAngle)
+    private mtd doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]
         func(BPP: u8) doIt()
@@ -62,7 +62,7 @@ impl Image
     }
 
     // Turn image by a given predefined angle
-    public func turn(using self, angle: TurnAngle)
+    public mtd turn(angle: TurnAngle)
     {
         Debug.assert(pixels != null)
         if angle == .T180
@@ -74,7 +74,7 @@ impl Image
     }
 
     // Turn image by a given predefined angle
-    public func toTurn(using self, angle: TurnAngle)->Image
+    public mtd toTurn(angle: TurnAngle)->Image
     {
         Debug.assert(pixels != null)
 

@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Change the gamma.
-    public func gamma(using self, level: f32 = 2.2)
+    public mtd gamma(level: f32 = 2.2)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

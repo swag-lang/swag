@@ -12,7 +12,7 @@ impl Image
         SaturationLightness
     }
 
-    public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White)
+    public mtd fillHsl(fillType: FillHslType , color: Color = Argb.White)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

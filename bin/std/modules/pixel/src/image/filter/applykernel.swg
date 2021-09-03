@@ -35,7 +35,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
+    private mtd doKernel(dstImage: *Image, kernel: const [..] s32)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8
@@ -108,7 +108,7 @@ impl Image
     }
 
     // Apply a kernel to the image
-    public func applyKernel(using self, kernel: const [..] s32)
+    public mtd applyKernel(kernel: const [..] s32)
     {
         Debug.assert(pixels != null)
         allocWorkingBuffer()
@@ -117,7 +117,7 @@ impl Image
     }
 
     // Apply a kernel to the image
-    public func toApplyKernel(using self, kernel: const [..] s32)->Image
+    public mtd toApplyKernel(kernel: const [..] s32)->Image
     {
         Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)

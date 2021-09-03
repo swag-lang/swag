@@ -70,7 +70,7 @@ impl TypeFace
     }
 
     // Convert a string to its outline, at a given size
-    func getStringOutline(using const self, pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
+    mtdc getStringOutline(pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
     {
         var itf: FT_Outline_Funcs
 

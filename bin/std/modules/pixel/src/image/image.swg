@@ -28,7 +28,7 @@ impl Image
     }
 
     #[Inline]
-    private func free(using self)
+    private mtd free()
     {
         Memory.free(pixels, size, allocator)
         Memory.delete'Image(workingBuffer, allocator)
@@ -70,7 +70,7 @@ impl Image
     // Initialize image informations
     // 'pixels' is set to null, and must be initialized after a call to that function
     // This gives the opportunity to set the pixels with an external buffer
-    func init(using self, width, height: s32, pf: PixelFormat)
+    mtd init(width, height: s32, pf: PixelFormat)
     {
         self.pixels = null
         self.width = #scopefct.width
@@ -84,7 +84,7 @@ impl Image
     }
 
     // Allocate pixels
-    func allocPixels(using self)
+    mtd allocPixels()
     {
         Debug.assert(pixels == null)
         Debug.assert(size != 0)
@@ -93,13 +93,13 @@ impl Image
     }
 
     // Allocate a computing buffer with current image size
-    func allocWorkingBuffer(using self)
+    mtd allocWorkingBuffer()
     {
         allocWorkingBuffer(width, height, pf)
     }
 
     // Allocate a computing buffer with new sizes
-    func allocWorkingBuffer(using self, newWidth, newHeight: s32, newPf: PixelFormat)
+    mtd allocWorkingBuffer(newWidth, newHeight: s32, newPf: PixelFormat)
     {
         if  workingBuffer and
             newWidth == workingBuffer.width and
@@ -113,14 +113,14 @@ impl Image
     }
 
     // Free the working buffer if allocated
-    func freeWorkingBuffer(using self)
+    mtd freeWorkingBuffer()
     {
         Memory.delete(workingBuffer, allocator)
         workingBuffer = null
     }
 
     // Replace the current image content with the working buffer
-    func applyWorkingBuffer(using self)
+    mtd applyWorkingBuffer()
     {
         Debug.assert(workingBuffer != null)
         swap(&pf, &workingBuffer.pf)
@@ -141,7 +141,7 @@ impl Image
     // - index: the pixel index
     // - x, y: the pixel coordinates
     #[Swag.Macro]
-    func visitPixels(using self, userData: *void = null, stride: s32 = 1, stmt: code)
+    mtd visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
     {
         Debug.assert(stride > 0)
 
@@ -165,14 +165,14 @@ impl Image
     }
 
     // Release the content of the image
-    func release(using self)
+    mtd release()
     {
         free()
         @init(self)
     }
 
     // Clear the content of the image
-    func clear(using self)
+    mtd clear()
     {
         Memory.clear(pixels, size)
     }

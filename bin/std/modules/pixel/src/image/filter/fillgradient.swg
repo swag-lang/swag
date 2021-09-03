@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Fill with a gradient from 'color0' to 'color1'
-    public func fillGradient2(using self, color0, color1: Color)
+    public mtd fillGradient2(color0, color1: Color)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8
@@ -42,7 +42,7 @@ impl Image
     }
 
     // Fill with a gradient with a different color at each corner
-    public func fillGradient4(using self, color0, color1, color2, color3: Color)
+    public mtd fillGradient4(color0, color1, color2, color3: Color)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

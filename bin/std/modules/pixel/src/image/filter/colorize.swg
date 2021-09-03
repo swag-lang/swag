@@ -4,7 +4,7 @@ impl Image
 {
     // Colorize the image by setting the hue and saturation.
     #[Swag.Safety("", false)]
-    public func colorize(using self, hue, saturation: f32, strength = 1.0)
+    public mtd colorize(hue, saturation: f32, strength = 1.0)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

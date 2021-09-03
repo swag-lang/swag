@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private func doCrop(using self, dstImage: *Image, x, y, w, h: s32)
+    private mtd doCrop(dstImage: *Image, x, y, w, h: s32)
     {
         f := @{x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)
@@ -15,7 +15,7 @@ impl Image
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
-    public func crop(using self, x, y, w, h: s32)
+    public mtd crop(x, y, w, h: s32)
     {
         cx := Math.clamp(x, 0, width - 1)
         cy := Math.clamp(y, 0, height - 1)
@@ -29,7 +29,7 @@ impl Image
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
-    public func toCrop(using self, x, y, w, h: s32)->Image
+    public mtd toCrop(x, y, w, h: s32)->Image
     {
         cx := Math.clamp(x, 0, width - 1)
         cy := Math.clamp(y, 0, height - 1)
