@@ -138,7 +138,8 @@ impl HashTable
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
-    mtd add(key: K, value: V)
+    #[Swag.Discardable]
+    mtd add(key: K, value: V)->*HashTableEntry
         #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
@@ -152,7 +153,7 @@ impl HashTable
             if table[index].hash == hashVal and table[index].key == key
             {
                 table[index].value = value
-                return
+                return table + index
             }
 
             index = (index + 1) % capacity
@@ -164,6 +165,7 @@ impl HashTable
         table[index].key = key
         table[index].value = value
         count += 1
+        return table + index
     }
 
     // Remove the given key if it exists
@@ -189,7 +191,8 @@ impl HashTable
     // Returns true if the table contains the given key
     mtd contains(key: K)->bool
     {
-        if !table return false
+        if !table
+            return false
 
         hashVal := hashKey(key)
         index := hashVal % capacity
@@ -206,9 +209,10 @@ impl HashTable
 
     // Find the given key, and returns the corresponding entry.
     // Returns null if the key is not there.
-    mtd find(key: K)->const *HashTableEntry
+    mtd find(key: K)->*HashTableEntry
     {
-        if !table return null
+        if !table
+            return null
 
         hashVal := hashKey(key)
         index := hashVal % capacity
@@ -216,7 +220,7 @@ impl HashTable
         while table[index].hash
         {
             if table[index].hash == hashVal and table[index].key == key
-                return &table[index]
+                return table + index
             index = (index + 1) % capacity
         }
 

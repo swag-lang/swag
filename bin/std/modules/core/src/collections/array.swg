@@ -433,6 +433,21 @@ impl Array
         Slice.sort(@mkslice(buffer, count), cb)
     }
 
+    // Returns a copy of the first element
+    mtd front()->T
+    {
+        Debug.assert(count > 0, "array is empty")
+        var result: retval = buffer[0]
+        return result
+    }
+
+    // Returns the address of the first element
+    mtd frontPtr()->*T
+    {
+        Debug.assert(count > 0, "array is empty")
+        return buffer
+    }
+
     // Returns a copy of the last element
     mtd back()->T
     {
