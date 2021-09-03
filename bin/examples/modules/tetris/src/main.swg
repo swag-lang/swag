@@ -279,7 +279,6 @@ func main()
     CloseHandle(hConsole)
 }
 
-//#run main()
 #main
 {
     main()
