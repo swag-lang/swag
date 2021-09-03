@@ -4,9 +4,9 @@ const WINDOWS = true
     namespace std.environment
     {
         {
-            func getProcessorCount() => g_sysInfo
+            func getProcessorCount() => g_SysInfo
         }
 
-        var g_sysInfo: s32
+        var g_SysInfo: s32
     }
 }
