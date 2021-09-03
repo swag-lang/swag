@@ -1,14 +1,15 @@
 // http://www.schaik.com/pngsuite/
 
 #global if #os == "windows"
-using Core, Win32, Ogl, Gdi32
-using Pixel
+using Core, Win32, Ogl, Gdi32, Pixel
 
-var testMode: bool
-var hDC: HDC
-var imageIdx: u32 = 11
-var effectIdx: u32 = 0
-var myImage: Pixel.Image
+var g_TestMode:  bool
+var g_HDC:       HDC
+var g_ImageIdx:  u32 = 11
+var g_EffectIdx: u32 = 0
+var g_MyImage:   Pixel.Image
+var g_TextureID: GLuint
+
 const W = 1024
 const H = 1024
 
@@ -33,31 +34,29 @@ func display()
     glClear(GL_COLOR_BUFFER_BIT)
     glEnable(GL_TEXTURE_2D)
 
-    glBindTexture(GL_TEXTURE_2D, textureID)
+    glBindTexture(GL_TEXTURE_2D, g_TextureID)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     glBegin(GL_QUADS)
-    w := 2 * myImage.width / cast(f32) W
-    h := 2 * myImage.height / cast(f32) H
-    glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0);  // Bottom Left Of The Texture and Quad
-    glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0);  // Bottom Right Of The Texture and Quad
-    glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h);  // Top Right Of The Texture and Quad
-    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0, -1.0 + h);  // Top Left Of The Texture and Quad
+    w := 2 * g_MyImage.width / cast(f32) W
+    h := 2 * g_MyImage.height / cast(f32) H
+    glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0)
+    glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0)
+    glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h)
+    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0, -1.0 + h)
     glEnd()
 
     glFlush()
-    assume SwapBuffers(hDC)
+    assume SwapBuffers(g_HDC)
 }
 
-var textureID: GLuint
-//#[Swag.PrintBc]
 func loadImg()
 {
     using Pixel, Color
 
     imgName := "rgba.bmp"
-    switch imageIdx
+    switch g_ImageIdx
     {
     case 0:     break
     case 1:     imgName = "rgb.bmp"
@@ -86,82 +85,82 @@ func loadImg()
     case 24:    imgName = "basi0g08.png"  // grayscale interlaced 8 bits
     case 25:    imgName = "basi4a08.png"  // grayscale interlaced alpha
     case 26:    imgName = "basi6a08.png"  // color interlaced alpha
-    default:    imageIdx = 0
+    default:    g_ImageIdx = 0
     }
 
     // Load image
     var ti: Time.Stopwatch
     ti.start()
     data := imagePath(imgName)
-    myImage = assume Image.load(data)
+    g_MyImage = assume Image.load(data)
     ti.stop()
-    Console.printf("%: img: % (% x % %) load: %ms ", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds())
-    myImage.resize(512, 512)
+    Console.printf("%: img: % (% x % %) load: %ms ", g_EffectIdx, imgName, g_MyImage.width, g_MyImage.height, g_MyImage.pf, ti.elapsedMilliseconds())
+    g_MyImage.resize(512, 512)
 
     // Apply a filter
     var te: Time.Stopwatch
     te.start()
-    switch effectIdx
+    switch g_EffectIdx
     {
-    case 1:  myImage.halfSize()
-    case 2:  myImage.resize(1024, 1024)
-    case 3:  myImage.resize(myImage.width / 2, myImage.height / 2)
-    case 4:  myImage.flip()
-    case 5:  myImage.mirror()
-    case 6:  myImage.grayScale(0.5)
-    case 7:  myImage.grayScale()
-    case 8:  myImage.fillHsl(Image.FillHslType.SaturationLightness, Argb.Green)
-    case 9:  myImage.fillGradient2(Argb.Green, Argb.Red)
-    case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
-    case 11: myImage.fill(Argb.Cyan)
-    case 12: myImage.resize(1024, 1024, Image.ResizeMode.Bilinear)
-    case 13: myImage.resize(1024, 1024, Image.ResizeMode.Bicubic)
-    case 14: myImage.resize(1024, 1024, Image.ResizeMode.Gaussian)
-    case 15: myImage.resize(1024, 1024, Image.ResizeMode.Hermite)
-    case 16: myImage.resize(1024, 1024, Image.ResizeMode.Hamming)
-    case 17: myImage.resize(1024, 1024, Image.ResizeMode.Catrom)
-    case 18: myImage.resize(1024, 1024, Image.ResizeMode.Quadratic)
-    case 19: myImage.applyKernel(Image.Kernel.EdgeDetect3x3A)
-    case 20: myImage.applyKernel(Image.Kernel.EdgeDetect3x3B)
-    case 21: myImage.applyKernel(Image.Kernel.EdgeDetect3x3C)
-    case 22: myImage.applyKernel(Image.Kernel.EdgeDetect3x3D)
-    case 23: myImage.applyKernel(Image.Kernel.EdgeDetect3x3E)
-    case 24: myImage.applyKernel(Image.Kernel.EdgeDetect3x3F)
-    case 25: myImage.lightness(0.1)
-    case 26: myImage.lightness(0.2)
-    case 27: myImage.lightness(-0.4)
-    case 28: myImage.contrast(0.1)
-    case 29: myImage.contrast(0.2)
-    case 30: myImage.contrast(-0.4)
-    case 31: myImage.invert()
-    case 32: myImage.crop(229, 105, 206, 166)
-    case 33: myImage.setPixelFormat(PixelFormat.BGR8)
-    case 34: myImage.setPixelFormat(PixelFormat.BGRA8)
-    case 35: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MinRGB)
-    case 36: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MaxRGB)
-    case 37: myImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MeanRGB)
-    case 38: myImage.gamma(0.5)
-    case 39: myImage.gamma(1.0)
-    case 40: myImage.gamma(2.2)
-    case 41: myImage.colorize(0.5, 0.2, strength: 0.5)
-    case 42: myImage.turn(Image.TurnAngle.T90)
-    case 43: myImage.turn(Image.TurnAngle.T180)
-    case 44: myImage.turn(Image.TurnAngle.T270)
-    case 45: myImage.setPixelFormat(PixelFormat.RGB8)
-    case 46: myImage.setPixelFormat(PixelFormat.RGBA8)
-    case 47: myImage.setPixelFormat(PixelFormat.BGR8)
-    case 48: myImage.setPixelFormat(PixelFormat.BGRA8)
-    default: effectIdx = 0
+    case 1:  g_MyImage.halfSize()
+    case 2:  g_MyImage.resize(1024, 1024)
+    case 3:  g_MyImage.resize(g_MyImage.width / 2, g_MyImage.height / 2)
+    case 4:  g_MyImage.flip()
+    case 5:  g_MyImage.mirror()
+    case 6:  g_MyImage.grayScale(0.5)
+    case 7:  g_MyImage.grayScale()
+    case 8:  g_MyImage.fillHsl(Image.FillHslType.SaturationLightness, Argb.Green)
+    case 9:  g_MyImage.fillGradient2(Argb.Green, Argb.Red)
+    case 10: g_MyImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
+    case 11: g_MyImage.fill(Argb.Cyan)
+    case 12: g_MyImage.resize(1024, 1024, Image.ResizeMode.Bilinear)
+    case 13: g_MyImage.resize(1024, 1024, Image.ResizeMode.Bicubic)
+    case 14: g_MyImage.resize(1024, 1024, Image.ResizeMode.Gaussian)
+    case 15: g_MyImage.resize(1024, 1024, Image.ResizeMode.Hermite)
+    case 16: g_MyImage.resize(1024, 1024, Image.ResizeMode.Hamming)
+    case 17: g_MyImage.resize(1024, 1024, Image.ResizeMode.Catrom)
+    case 18: g_MyImage.resize(1024, 1024, Image.ResizeMode.Quadratic)
+    case 19: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3A)
+    case 20: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3B)
+    case 21: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3C)
+    case 22: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3D)
+    case 23: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3E)
+    case 24: g_MyImage.applyKernel(Image.Kernel.EdgeDetect3x3F)
+    case 25: g_MyImage.lightness(0.1)
+    case 26: g_MyImage.lightness(0.2)
+    case 27: g_MyImage.lightness(-0.4)
+    case 28: g_MyImage.contrast(0.1)
+    case 29: g_MyImage.contrast(0.2)
+    case 30: g_MyImage.contrast(-0.4)
+    case 31: g_MyImage.invert()
+    case 32: g_MyImage.crop(229, 105, 206, 166)
+    case 33: g_MyImage.setPixelFormat(PixelFormat.BGR8)
+    case 34: g_MyImage.setPixelFormat(PixelFormat.BGRA8)
+    case 35: g_MyImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MinRGB)
+    case 36: g_MyImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MaxRGB)
+    case 37: g_MyImage.setChannel(Image.ChannelMode.RGB, Image.ChannelValueMode.MeanRGB)
+    case 38: g_MyImage.gamma(0.5)
+    case 39: g_MyImage.gamma(1.0)
+    case 40: g_MyImage.gamma(2.2)
+    case 41: g_MyImage.colorize(0.5, 0.2, strength: 0.5)
+    case 42: g_MyImage.turn(Image.TurnAngle.T90)
+    case 43: g_MyImage.turn(Image.TurnAngle.T180)
+    case 44: g_MyImage.turn(Image.TurnAngle.T270)
+    case 45: g_MyImage.setPixelFormat(PixelFormat.RGB8)
+    case 46: g_MyImage.setPixelFormat(PixelFormat.RGBA8)
+    case 47: g_MyImage.setPixelFormat(PixelFormat.BGR8)
+    case 48: g_MyImage.setPixelFormat(PixelFormat.BGRA8)
+    default: g_EffectIdx = 0
     }
 
     te.stop()
-    Console.printf("filter: % %ms\n", effectIdx, te.elapsedMilliseconds())
+    Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
     internal := GL_RGB
 
     #[Swag.Complete]
-    switch myImage.pf
+    switch g_MyImage.pf
     {
     case BGR8:  fmt = GL_BGR
     case BGRA8: fmt = GL_BGRA; internal = GL_RGBA
@@ -169,10 +168,10 @@ func loadImg()
     case RGBA8: fmt = GL_RGBA; internal = GL_RGBA
     }
 
-    glGenTextures(1, &textureID)
-    glBindTexture(GL_TEXTURE_2D, textureID)
+    glGenTextures(1, &g_TextureID)
+    glBindTexture(GL_TEXTURE_2D, g_TextureID)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) myImage.width, cast(s32) myImage.height, 0, fmt, GL_UNSIGNED_BYTE, myImage.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) g_MyImage.width, cast(s32) g_MyImage.height, 0, fmt, GL_UNSIGNED_BYTE, g_MyImage.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
@@ -184,14 +183,11 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     {
     case WM_PAINT:
         display()
-        var ps: PAINTSTRUCT
-        BeginPaint(hWnd, &ps)
-        EndPaint(hWnd, &ps)
-        return 0
+        break
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    assume PostMessageA(hWnd, WM_PAINT, 0, 0)
+        display()
 	    return 0
 
     case WM_DESTROY:
@@ -224,7 +220,7 @@ func createWindow()->HWND
         wc.hInstance,
         null)
 
-    hDC = GetDC(hWnd)
+    g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
     pfd.nSize        = @sizeof(pfd)
@@ -235,12 +231,12 @@ func createWindow()->HWND
 
     assume
     {
-        pf := ChoosePixelFormat(hDC, &pfd)
-        SetPixelFormat(hDC, pf, &pfd)
-        DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+        pf := ChoosePixelFormat(g_HDC, &pfd)
+        SetPixelFormat(g_HDC, pf, &pfd)
+        DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
     }
 
-    ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, g_HDC)
     return hWnd
 }
 
@@ -263,47 +259,46 @@ func messageLoop()
         keyb.update()
         if keyb.isKeyJustPressed(Input.Key.F1)
         {
-            imageIdx += 1
+            g_ImageIdx += 1
             loadImg()
         }
         if keyb.isKeyJustPressed(Input.Key.F2)
         {
-            effectIdx += 1
+            g_EffectIdx += 1
             loadImg()
         }
 
         display()
 
-        if testMode
+        if g_TestMode
         {
-            effectIdx += 1
+            g_EffectIdx += 1
             loadImg()
-            if effectIdx == 0
+            if g_EffectIdx == 0
             {
-                imageIdx += 1
+                g_ImageIdx += 1
                 loadImg()
-                if imageIdx == 0
+                if g_ImageIdx == 0
                     break
             }
         }
     }
 }
 
-//#[Swag.PrintBc]
 #main
 {
     if Slice.contains(@args(), "test")
-        testMode = true
+        g_TestMode = true
 
     try
     {
         hWnd := createWindow()
 
-        hDC = GetDC(hWnd)
-        hRC := wglCreateContext(hDC)
-        wglMakeCurrent(hDC, hRC)
+        g_HDC = GetDC(hWnd)
+        hRC := wglCreateContext(g_HDC)
+        wglMakeCurrent(g_HDC, hRC)
 
-        //Jobs.setNumWorkers()
+        Jobs.setNumWorkers()
         loadImg()
 
         display()
@@ -314,6 +309,6 @@ func messageLoop()
 
         wglMakeCurrent(null, null)
         wglDeleteContext(hRC)
-        ReleaseDC(hWnd, hDC)
+        ReleaseDC(hWnd, g_HDC)
     }
 }
