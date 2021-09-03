@@ -135,6 +135,7 @@ struct TypeManager
     TypeInfoFuncAttr*  typeInfoOpCall2        = nullptr;
     TypeInfoCode*      typeInfoCode           = nullptr;
     TypeInfoNameAlias* typeInfoNameAlias      = nullptr;
+    TypeInfoSlice*     typeInfoSliceRunes     = nullptr;
 
     TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };

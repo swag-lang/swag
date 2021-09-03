@@ -264,6 +264,8 @@ __pycache__/
 *.tlog
 bin/*.exe
 bin/*.pdb
+bin/*.lib
+bin/*.exp
 dependencies/
 **/output/
 **/modules/**/public

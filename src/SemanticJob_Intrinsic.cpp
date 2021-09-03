@@ -274,6 +274,43 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
+{
+    auto node     = context->node;
+    auto expr     = node->childs.front();
+    auto typeInfo = expr->typeInfo;
+
+    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, g_E[Err0798]}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Utf8::format(g_E[Err0084], typeInfo->getDisplayName().c_str())}));
+    node->setFlagsValueIsComputed();
+
+    // Convert
+    vector<uint32_t> runes;
+    const char*      pz  = expr->computedValue->text.c_str();
+    int              cpt = 0;
+    while (cpt < expr->computedValue->text.count)
+    {
+        uint32_t c;
+        uint32_t offset;
+        pz = Utf8::decodeUtf8(pz, c, offset);
+        runes.push_back(c);
+        cpt += offset;
+    }
+
+    // :SliceLiteral
+    uint8_t* ptrArr;
+    auto     storageSegment             = SemanticJob::getConstantSegFromContext(context->node);
+    node->computedValue->storageSegment = storageSegment;
+    node->computedValue->storageOffset  = storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &ptrArr);
+    node->computedValue->reg.u64        = (uint64_t) runes.size();
+
+    // Setup array
+    memcpy(ptrArr, &runes[0], runes.size() * sizeof(uint32_t));
+
+    node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = expression->typeInfo;
@@ -626,6 +663,10 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicStringOf:
         SWAG_CHECK(resolveIntrinsicStringOf(context));
+        return true;
+
+    case TokenId::IntrinsicRunes:
+        SWAG_CHECK(resolveIntrinsicRunes(context));
         return true;
 
     case TokenId::IntrinsicCountOf:

@@ -244,7 +244,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-
     if (node->forceTakeAddress())
         SWAG_CHECK(resolveArrayPointerRef(context));
     else

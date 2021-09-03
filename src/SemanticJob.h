@@ -297,6 +297,7 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression);
     static bool resolveIntrinsicStringOf(SemanticContext* context);
+    static bool resolveIntrinsicRunes(SemanticContext* context);
     static bool resolveIntrinsicSpread(SemanticContext* context);
     static bool resolveIntrinsicKindOf(SemanticContext* context);
     static bool resolveLiteralSuffix(SemanticContext* context);

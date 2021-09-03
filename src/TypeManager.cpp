@@ -97,6 +97,11 @@ void TypeManager::setup()
     typeInfoOpCall2->parameters[1]->typeInfo = typePtr;
     typeInfoOpCall2->computeName();
 
+    typeInfoSliceRunes              = new TypeInfoSlice();
+    typeInfoSliceRunes->pointedType = typeInfoRune;
+    typeInfoSliceRunes->flags |= TYPEINFO_CONST;
+    typeInfoSliceRunes->computeName();
+
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
     g_LiteralTypeToType[(int) LiteralType::TT_UINT]            = typeInfoUInt;
     g_LiteralTypeToType[(int) LiteralType::TT_INT]             = typeInfoInt;

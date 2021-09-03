@@ -308,6 +308,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@kindof", {TokenId::IntrinsicKindOf, LiteralType::TT_MAX});
     keywords.add("@countof", {TokenId::IntrinsicCountOf, LiteralType::TT_MAX});
     keywords.add("@stringof", {TokenId::IntrinsicStringOf, LiteralType::TT_MAX});
+    keywords.add("@runes", {TokenId::IntrinsicRunes, LiteralType::TT_MAX});
     keywords.add("@dataof", {TokenId::IntrinsicDataOf, LiteralType::TT_MAX});
     keywords.add("@mkslice", {TokenId::IntrinsicMakeSlice, LiteralType::TT_MAX});
     keywords.add("@mkstring", {TokenId::IntrinsicMakeString, LiteralType::TT_MAX});

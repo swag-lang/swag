@@ -223,6 +223,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
     case TokenId::IntrinsicStringOf:
+    case TokenId::IntrinsicRunes:
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeString:
