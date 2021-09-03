@@ -16,8 +16,8 @@
         var pt: Point
         using pt
 
-        x = 1
-        y = 2
+        x = 1 // need to specify 'pt'
+        y = 2 // need to specify 'pt'
         @assert(pt.x == 1)
         @assert(pt.y == 2)
     }
@@ -52,8 +52,8 @@
 
         // That way the content of the field can be referenced directly
         var value: Point3
-        value.x = 0 // equivalent to value.base.x = 0
-        value.y = 0 // equivalent to value.base.y = 0
+        value.x = 0 // Equivalent to value.base.x = 0
+        value.y = 0 // Equivalent to value.base.y = 0
         value.z = 0
         @assert(&value.x == &value.base.x)
         @assert(&value.y == &value.base.y)
