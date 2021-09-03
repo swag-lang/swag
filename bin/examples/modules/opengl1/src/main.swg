@@ -1,14 +1,14 @@
 #global if #os == "windows"
 using Core, Win32, Ogl, Gdi32
 
-var hDC:    HDC
-var frame:  Time.FrameTiming
+var g_HDC:    HDC
+var g_Frame:  Time.FrameTiming
 
 func display()
 {
     const SPEED = 100
     glClearColor(0, 0, 0, 0)
-    glRotatef(SPEED * frame.dt, 0.0, 0.0, 1)
+    glRotatef(SPEED * g_Frame.dt, 0.0, 0.0, 1)
     glClear(GL_COLOR_BUFFER_BIT)
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
@@ -19,7 +19,7 @@ func display()
     glVertex2i(1, -1);
     glEnd();
     glFlush()
-    assume SwapBuffers(hDC)
+    assume SwapBuffers(g_HDC)
 }
 
 #[Swag.Callback]
@@ -69,7 +69,7 @@ func createWindow()->HWND
         wc.hInstance,
         null)
 
-    hDC = GetDC(hWnd)
+    g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
     pfd.nSize        = @sizeof(pfd)
@@ -78,11 +78,11 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := assume ChoosePixelFormat(hDC, &pfd)
-    assume SetPixelFormat(hDC, pf, &pfd)
-    assume DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    pf := assume ChoosePixelFormat(g_HDC, &pfd)
+    assume SetPixelFormat(g_HDC, pf, &pfd)
+    assume DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
-    ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, g_HDC)
     return hWnd
 }
 
@@ -91,10 +91,9 @@ func messageLoop()
     var msg: MSG
     loop
     {
-        frame.update()
+        g_Frame.update()
 
-        // Windows messages
-        frame.pause()
+        g_Frame.pause()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
@@ -102,7 +101,7 @@ func messageLoop()
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
         }
-        frame.unpause()
+        g_Frame.unpause()
 
         display()
     }
@@ -112,9 +111,9 @@ func messageLoop()
 {
     hWnd := createWindow()
 
-    hDC = GetDC(hWnd)
-    hRC := try wglCreateContext(hDC)
-    try wglMakeCurrent(hDC, hRC)
+    g_HDC = GetDC(hWnd)
+    hRC := try wglCreateContext(g_HDC)
+    try wglMakeCurrent(g_HDC, hRC)
 
     display()
     ShowWindow(hWnd, SW_SHOW)
@@ -124,5 +123,5 @@ func messageLoop()
 
     try wglMakeCurrent(null, null)
     try wglDeleteContext(hRC)
-    ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, g_HDC)
 }

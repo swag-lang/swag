@@ -1,17 +1,17 @@
 #global if #os == "windows"
 using Core, Win32, Ogl, Gdi32, Time
 
-var hDC:            HDC
-var vertexbuffer:   GLuint
-var programID:      GLuint
+var g_HDC:            HDC
+var g_VertexBuffer:   GLuint
+var g_ProgramID:      GLuint
 
-const g_vertex_buffer_data: [] GLfloat = @[
+const VertexBufferData: [] GLfloat = @[
     -1.0, -1.0, 0.0,
      1.0, -1.0, 0.0,
      0.0,  1.0, 0.0,
 ]
 
-const g_vertex_shader = @"
+const VertexShader = @"
     #version 330 core
     layout(location = 0) in vec3 vertexPosition_modelspace;
     out vec3 vcolor;
@@ -23,7 +23,7 @@ const g_vertex_shader = @"
     }
 "@
 
-const g_pixel_shader = @"
+const PixelShader = @"
     #version 330 core
     in vec3 vcolor;
     out vec3 color;
@@ -38,15 +38,15 @@ func display()
     glClearColor(0, 0, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
 
-    glUseProgram(programID);
+    glUseProgram(g_ProgramID);
     glEnableVertexAttribArray(0)
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
+    glBindBuffer(GL_ARRAY_BUFFER, g_VertexBuffer)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, null)
-    glDrawArrays(GL_TRIANGLES, 0, 3) // Starting from vertex 0; 3 vertices total -> 1 triangle
+    glDrawArrays(GL_TRIANGLES, 0, 3)
     glDisableVertexAttribArray(0)
 
     glFlush()
-    assume SwapBuffers(hDC)
+    assume SwapBuffers(g_HDC)
 }
 
 #[Swag.Callback]
@@ -56,15 +56,12 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     {
     case WM_PAINT:
         display()
-        var ps: PAINTSTRUCT
-        BeginPaint(hWnd, &ps)
-        EndPaint(hWnd, &ps)
-        return 0
+        break
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    assume PostMessageA(hWnd, WM_PAINT, 0, 0)
-	    return 0
+	    display()
+        return 0
 
     case WM_DESTROY:
         PostQuitMessage(0)
@@ -96,7 +93,7 @@ func createWindow()->HWND
         wc.hInstance,
         null)
 
-    hDC = GetDC(hWnd)
+    g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
     pfd.nSize        = @sizeof(pfd)
@@ -105,11 +102,11 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := assume ChoosePixelFormat(hDC, &pfd)
-    assume SetPixelFormat(hDC, pf, &pfd)
-    assume DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    pf := assume ChoosePixelFormat(g_HDC, &pfd)
+    assume SetPixelFormat(g_HDC, pf, &pfd)
+    assume DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
-    ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, g_HDC)
     return hWnd
 }
 
@@ -137,7 +134,7 @@ func createShader()
     var infoLog: String
 
     vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
-    vertexSourcePointer := @dataof(g_vertex_shader)
+    vertexSourcePointer := @dataof(VertexShader)
     glShaderSource(vertexShaderID, 1, &vertexSourcePointer, null)
 	glCompileShader(vertexShaderID)
     glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
@@ -146,7 +143,7 @@ func createShader()
     glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
 
 	fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
-    pixelSourcePointer := @dataof(g_pixel_shader)
+    pixelSourcePointer := @dataof(PixelShader)
     glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, null)
 	glCompileShader(fragmentShaderID)
     glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
@@ -154,16 +151,16 @@ func createShader()
     infoLog.reserve(cast(uint) infoLogLength + 1)
     glGetShaderInfoLog(fragmentShaderID, infoLogLength, null, @dataof(infoLog))
 
-    programID = glCreateProgram()
-	glAttachShader(programID, vertexShaderID)
-	glAttachShader(programID, fragmentShaderID)
-	glLinkProgram(programID)
-    glGetProgramiv(programID, GL_LINK_STATUS, &result)
-	glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength)
-    glGetProgramInfoLog(programID, infoLogLength, null, @dataof(infoLog))
+    g_ProgramID = glCreateProgram()
+	glAttachShader(g_ProgramID, vertexShaderID)
+	glAttachShader(g_ProgramID, fragmentShaderID)
+	glLinkProgram(g_ProgramID)
+    glGetProgramiv(g_ProgramID, GL_LINK_STATUS, &result)
+	glGetProgramiv(g_ProgramID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    glGetProgramInfoLog(g_ProgramID, infoLogLength, null, @dataof(infoLog))
 
-    glDetachShader(programID, vertexShaderID)
-	glDetachShader(programID, fragmentShaderID)
+    glDetachShader(g_ProgramID, vertexShaderID)
+	glDetachShader(g_ProgramID, fragmentShaderID)
 	glDeleteShader(vertexShaderID)
 	glDeleteShader(fragmentShaderID)
 }
@@ -172,14 +169,14 @@ func createShader()
 {
     hWnd := createWindow()
 
-    hDC = GetDC(hWnd)
-    hRC := try wglCreateContext(hDC)
-    try wglMakeCurrent(hDC, hRC)
+    g_HDC = GetDC(hWnd)
+    hRC := try wglCreateContext(g_HDC)
+    try wglMakeCurrent(g_HDC, hRC)
     glInitExtensions()
 
-    glGenBuffers(1, &vertexbuffer)
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glBufferData(GL_ARRAY_BUFFER, @sizeof(g_vertex_buffer_data), @dataof(g_vertex_buffer_data), GL_STATIC_DRAW);
+    glGenBuffers(1, &g_VertexBuffer)
+    glBindBuffer(GL_ARRAY_BUFFER, g_VertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, @sizeof(VertexBufferData), @dataof(VertexBufferData), GL_STATIC_DRAW);
     createShader()
 
     display()
@@ -190,5 +187,5 @@ func createShader()
 
     try wglMakeCurrent(null, null)
     try wglDeleteContext(hRC)
-    ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, g_HDC)
 }
