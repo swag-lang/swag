@@ -1,27 +1,26 @@
 #global export
 using Swag
 
-struct(K, V) HashTableEntry
+struct(K) HashSetEntry
 {
     hash:   u32
     key:    K
-    value:  V
 }
 
-struct(K, V) HashTable
+struct(K) HashSet
 {
     const HASH_FREE = 0'u32
     const HASH_DELETED = 1'u32
     const HASH_FIRST = 2'u32
 
     allocator:  IAllocator
-    table:      *HashTableEntry
+    table:      *HashSetEntry
     count:      uint // Number of valid entries
     capacity:   uint // Number of total entries the table can hold
     deleted:    uint // Number of deleted entries
 }
 
-impl HashTable
+impl HashSet
 {
     mtd opDrop()
     {
@@ -47,12 +46,10 @@ impl HashTable
                 #if `ptr
                 {
                     var @alias0 = &`table[@index].key
-                    var @alias1 = &`table[@index].value
                 }
                 #else
                 {
                     var @alias0 = Reflection.isStruct(K) ? cast(const *K) &`table[@index].key : `table[@index].key
-                    var @alias1 = Reflection.isStruct(V) ? cast(const *V) &`table[@index].value : `table[@index].value
                 }
 
                 #mixin `stmt { break = break Up; continue = break Down; }
@@ -79,19 +76,18 @@ impl HashTable
             return
 
         // Need to drop every structs
-        #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
+        #if Reflection.hasDrop(@typeof(K))
         {
             loop i: capacity
             {
                 if table[i].hash >= HASH_FIRST
                 {
                     @drop(&table[i].key)
-                    @drop(&table[i].value)
                 }
             }
         }
 
-        Memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
+        Memory.free(table, capacity * @sizeof(HashSetEntry), allocator)
     }
 
     mtd grow()
@@ -114,7 +110,7 @@ impl HashTable
         oldTable := table
         count = 0
         deleted = 0
-        newCapacityBytes := reqCapacity * @sizeof(HashTableEntry)
+        newCapacityBytes := reqCapacity * @sizeof(HashSetEntry)
 
         if allocator == null
             allocator = @getcontext().allocator
@@ -128,9 +124,8 @@ impl HashTable
         {
             if oldTable[i].hash >= HASH_FIRST
             {
-                add(self, oldTable[i].key, oldTable[i].value)
+                add(self, oldTable[i].key)
                 @drop(&oldTable[i].key)
-                @drop(&oldTable[i].value)
             }
         }
 
@@ -139,9 +134,8 @@ impl HashTable
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Swag.Discardable]
-    mtd add(key: K, value: V)->*HashTableEntry
-        #selectif Reflection.canCopy(@typeof(K)) and
-                  Reflection.canCopy(@typeof(V))
+    mtd add(key: K)->*HashSetEntry
+        #selectif Reflection.canCopy(@typeof(K))
     {
         grow()
 
@@ -151,11 +145,7 @@ impl HashTable
         while table[index].hash >= HASH_FIRST
         {
             if table[index].hash == hashVal and table[index].key == key
-            {
-                table[index].value = value
                 return table + index
-            }
-
             index = (index + 1) % capacity
         }
 
@@ -163,7 +153,6 @@ impl HashTable
             deleted -= 1
         table[index].hash = hashVal
         table[index].key = key
-        table[index].value = value
         count += 1
         return table + index
     }
@@ -207,26 +196,6 @@ impl HashTable
         return false
     }
 
-    // Find the given key, and returns the corresponding entry.
-    // Returns null if the key is not there.
-    mtd find(key: K)->*HashTableEntry
-    {
-        if !table
-            return null
-
-        hashVal := hashKey(key)
-        index := hashVal % capacity
-
-        while table[index].hash
-        {
-            if table[index].hash == hashVal and table[index].key == key
-                return table + index
-            index = (index + 1) % capacity
-        }
-
-        return null
-    }
-
     // Remove all elements
     mtd clear()
     {
@@ -237,12 +206,11 @@ impl HashTable
             loop capacity
             {
                 hashval := table[@index].hash
-                #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
+                #if Reflection.hasDrop(@typeof(K))
                 {
                     if hashval >= HASH_FIRST
                     {
                         @drop(&table[@index].key)
-                        @drop(&table[@index].value)
                     }
                 }
 

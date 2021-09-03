@@ -613,7 +613,8 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
         return context->report({typeNode, Utf8::format(g_E[Err0031], typeInfo->getDisplayName().c_str())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!exprTypeInfo->isNative(NativeTypeKind::Rune)))
+        (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
+        (exprTypeInfo->kind != TypeInfoKind::Pointer))
         return context->report({exprNode, Utf8::format(g_E[Err0032], exprTypeInfo->getDisplayName().c_str())});
 
     SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Utf8::format(g_E[Err0033], typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));

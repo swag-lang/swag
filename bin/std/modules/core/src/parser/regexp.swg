@@ -12,13 +12,21 @@ struct NfaTable
     nodes:  Array'(*NfaNode)
 }
 
+struct DfaNode
+{
+    table:          HashSet'(*NfaNode)
+    transitions:    HashTable'(rune, *DfaNode)
+    terminal:       bool
+};
+
 #[Swag.Opaque]
 public struct RegExp
 {
     preprocessed:   Array'rune
     m_NfaStack:     Array'(*NfaTable)
     m_Nfa:          Array'(*NfaNode)
-    m_CharSet:      Array'rune  // @set
+    m_Dfa:          Array'(*DfaNode)
+    m_CharSet:      HashSet'rune
     m_OpParen:      Array'u32
     m_OrOpStack:    Array'rune
     m_OrOpLevel:    Array'u32
@@ -37,6 +45,8 @@ impl RegExp
         visit p: m_Nfa
             Memory.delete(p)
         visit p: m_NfaStack
+            Memory.delete(p)
+        visit p: m_Dfa
             Memory.delete(p)
         preprocessed.clear()
         m_NfaStack.clear()
@@ -143,7 +153,7 @@ impl RegExp
         m_NfaStack.add(table)
 
         // Add the character to the list of terminal characters.
-        m_CharSet.addOnce(c)
+        m_CharSet.add(c)
     }
 
     mtd nfaBuild() throw
@@ -198,6 +208,46 @@ impl RegExp
         }
     }
 
+    mtd dfaEClosure(in, out: *HashSet'(*NfaNode))
+    {
+        out.clear()
+
+        var stack: Array'(*NfaNode)
+        visit n: dref in
+            stack.add(n)
+
+        while stack.count
+        {
+            state := stack.popBack()
+            out.add(state)
+
+            find := state.transitions.find(0)
+            if !find continue
+
+            visit to: find.value
+            {
+                if !out.contains(to)
+                    stack.add(to)
+            }
+        }
+    }
+
+    func setTable(node: *DfaNode, tbl: *HashSet'(*NfaNode))
+    {
+        node.table =,move dref tbl
+
+        // A DFA node is terminal if one of the NFA nodes used to construct it is a
+        // terminal too
+        visit n: node.table
+        {
+            if n.terminal
+            {
+                node.terminal = true;
+                break
+            }
+        }
+    }
+
     mtd dfaBuild() throw
     {
         // One table must remain
@@ -205,6 +255,25 @@ impl RegExp
 
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true
+
+        // Build the first state of the DFA table
+        var nfaStart, dfaStart: HashSet'(*NfaNode)
+        nfaStart.add(table.nodes.front())
+        dfaEClosure(&nfaStart, &dfaStart)
+
+        state := Memory.new'DfaNode()
+        state.setTable(&dfaStart)
+        m_Dfa.add(state)
+
+        var stack: Array'(*DfaNode)
+        stack.add(state)
+        while stack.count
+        {
+            state = stack.popBack()
+            visit r: m_CharSet
+            {
+            }
+        }
 
         Memory.delete(table)
     }

@@ -2,24 +2,10 @@
 using Swag
 
 // Hash the given value and returns the corresponding u32
-#[ConstExpr]
+#[ConstExpr, Safety("", false)]
 public func(T) hash32(value: T)->u32
 {
-    #if @sizeof(T) == 4
-    {
-        return bitcast(u32) value
-    }
-    #else #if Reflection.isInteger(T)
-    {
-        #[Swag.Safety("overflow", false)]
-        return cast(u32) value
-    }
-    #elif Reflection.isFloat(T)
-    {
-        val32 := cast(f32) value
-        return bitcast(u32) val32
-    }
-    #elif @typeof(T) == string
+    #if @typeof(T) == string
     {
         return Hash.Crc32.compute(value)
     }
@@ -27,6 +13,39 @@ public func(T) hash32(value: T)->u32
     {
         #assert(Reflection.hasInterface(T, IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'Hash.IHash32' interface")
         #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
+    }
+    #elif @sizeof(T) == 8
+    {
+        val64 := bitcast(u64) value
+        key := (~val64) + (val64 << 18)
+        key = key ^ (key >> 31)
+        key = key * 21
+        key = key ^ (key >> 11)
+        key = key + (key << 6)
+        key = key ^ (key >> 22)
+        return cast(u32) key
+    }
+    #elif @sizeof(T) == 4
+    {
+        val32 := bitcast(u32) value
+        key := (~val32) + (val32 << 15)
+        key = key ^ (key >> 12)
+        key = key + (key << 2)
+        key = key ^ (key >> 4)
+        key = key * 2057
+        key = key ^ (key >> 16)
+        return key
+    }
+    #elif Reflection.isInteger(T)
+    {
+        val32 := cast(u32) value
+        key := (~val32) + (val32 << 15)
+        key = key ^ (key >> 12)
+        key = key + (key << 2)
+        key = key ^ (key >> 4)
+        key = key * 2057
+        key = key ^ (key >> 16)
+        return key
     }
     #else
         #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")
