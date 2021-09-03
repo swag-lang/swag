@@ -31,6 +31,7 @@ impl RegExp
         clear()
     }
 
+    // Clear content
     public mtd clear()
     {
         visit p: m_Nfa
@@ -52,6 +53,7 @@ impl RegExp
         clear()
         try preprocess(str)
         try nfaBuild()
+        try dfaBuild()
     }
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
@@ -141,7 +143,7 @@ impl RegExp
         m_NfaStack.add(table)
 
         // Add the character to the list of terminal characters.
-        m_CharSet.add(c)
+        m_CharSet.addOnce(c)
     }
 
     mtd nfaBuild() throw
@@ -194,6 +196,17 @@ impl RegExp
 
             cpt, pz += 1
         }
+    }
+
+    mtd dfaBuild() throw
+    {
+        // One table must remain
+        table := try nfaPop()
+
+        // Last state of NFA table is a terminal
+        table.nodes.back().terminal = true
+
+        Memory.delete(table)
     }
 
     mtd preprocessInter(pz: const *rune)->const *rune throw

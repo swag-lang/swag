@@ -263,6 +263,17 @@ impl Array
     }
 
     // Add a copy of one element at the end of the array
+    mtd addOnce(value: T)
+        #selectif Reflection.canCopy(@typeof(T))
+    {
+        if contains(value)
+            return
+        grow(count + 1)
+        buffer[count] =,nodrop value
+        count += 1
+    }
+
+    // Add a copy of one element at the end of the array
     mtd add(value: T)
         #selectif Reflection.canCopy(@typeof(T))
     {
