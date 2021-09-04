@@ -73,6 +73,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
+    node->resolvedSymbolName = child->resolvedSymbolName;
 
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
