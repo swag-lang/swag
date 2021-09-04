@@ -350,7 +350,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     literal->computedValue->reg.u64 = 0;
     literal->token.literalType      = LiteralType::TT_S32;
     literal->semanticFct            = SemanticJob::resolveLiteral;
-    literal->inheritTokenLocation(savedToken);
+    literal->token.endLocation = arrayNode->array->token.endLocation;
     arrayNode->access = literal;
 
     if (result)

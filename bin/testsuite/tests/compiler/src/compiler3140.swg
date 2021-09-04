@@ -1,4 +1,4 @@
-/*struct AA
+struct AA
 {
 }
 
@@ -18,4 +18,9 @@ func toto(x: AA)
     {
     }
 }
-*/
+
+#test
+{
+    var x: AA
+    toto(x)
+}

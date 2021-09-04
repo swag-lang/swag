@@ -372,9 +372,23 @@ void AstNode::computeEndLocation()
 
     switch (kind)
     {
+    case AstNodeKind::MakePointer:
+    case AstNodeKind::MakePointerLambda:
+        token.endLocation = childs.back()->token.endLocation;
+        break;
+
     case AstNodeKind::ArrayPointerIndex:
         if (childs.size() < 2)
             break;
+        if (specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+        {
+            token.endLocation = childs.front()->token.endLocation;
+            break;
+        }
+
+        token.endLocation = childs.back()->token.endLocation;
+        token.startLocation = childs.front()->token.startLocation;
+        break;
 
     case AstNodeKind::IdentifierRef:
     case AstNodeKind::ArrayPointerSlicing:
