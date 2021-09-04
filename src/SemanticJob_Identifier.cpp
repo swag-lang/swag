@@ -1473,7 +1473,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                                typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
                                                bi.badSignatureGivenType->getDisplayName().c_str())};
         }
-        else if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF && bi.badSignatureParameterIdx == 0)
+        else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0106],
