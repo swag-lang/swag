@@ -670,6 +670,28 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     else
     {
+        // Special error in case of a pointer
+        if (typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            if (typePtr->pointedType->kind == TypeInfoKind::Enum ||
+                typePtr->pointedType->kind == TypeInfoKind::Variadic ||
+                typePtr->pointedType->kind == TypeInfoKind::TypedVariadic ||
+                typePtr->pointedType->kind == TypeInfoKind::Slice ||
+                typePtr->pointedType->kind == TypeInfoKind::Array ||
+                typePtr->pointedType->kind == TypeInfoKind::Struct ||
+                typePtr->pointedType->isNative(NativeTypeKind::String))
+            {
+                PushErrHint errh(g_E[Hnt0037]);
+                return context->report({node->expression, Utf8::format(g_E[Err0628], typeInfo->getDisplayName().c_str())});
+            }
+            else
+            {
+                PushErrHint errh(g_E[Hnt0036]);
+                return context->report({node->expression, Utf8::format(g_E[Err0628], typeInfo->getDisplayName().c_str())});
+            }
+        }
+
         PushErrHint errh(g_E[Hnt0006]);
         return context->report({node->expression, Utf8::format(g_E[Err0629], typeInfo->getDisplayName().c_str())});
     }
