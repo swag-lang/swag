@@ -248,6 +248,34 @@ impl RegExp
         }
     }
 
+    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, in: *HashSet'(*NfaNode))
+    {
+        out.clear()
+        visit state: dref in
+        {
+            // The real terminal character
+            pfind := state.transitions.find(c)
+            if pfind
+            {
+                visit t: pfind.value
+                    out.add(t)
+            }
+        }
+    }
+
+    func equals(s1, s2: *HashSet'(*NfaNode))->bool
+    {
+        if s1.count != s2.count
+            return false
+        visit t1: dref s1
+        {
+            if !s2.contains(t1)
+                return false
+        }
+
+        return true
+    }
+
     mtd dfaBuild() throw
     {
         // One table must remain
@@ -265,13 +293,40 @@ impl RegExp
         state.setTable(&dfaStart)
         m_Dfa.add(state)
 
+        var moveRes, epsilonRes: HashSet'(*NfaNode)
         var stack: Array'(*DfaNode)
         stack.add(state)
         while stack.count
         {
             state = stack.popBack()
-            visit r: m_CharSet
+            visit c: m_CharSet
             {
+                dfaMoveNode(&moveRes, c, &state.table)
+                if moveRes.count == 0
+                    continue
+                dfaEClosure(&moveRes, &epsilonRes)
+
+                var found: *DfaNode
+                visit tstate: m_Dfa
+                {
+                    if tstate.table.count != epsilonRes.count
+                        continue
+                    if equals(&tstate.table, &epsilonRes)
+                    {
+                        found = tstate
+                        break
+                    }
+                }
+
+                if !found
+                {
+                    found = Memory.new'DfaNode()
+                    found.setTable(&epsilonRes)
+                    stack.add(found)
+                    m_Dfa.add(found)
+                }
+
+                state.transitions.add(c, found)
             }
         }
 
