@@ -18,9 +18,9 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
         auto loc = node->token.startLocation;
         loc.column += (uint32_t) (pz - node->computedValue->text.c_str());
         if (c == '"')
-            return context->report({node->sourceFile, loc, Utf8::format("not enough hexadecimal digit, %s", errMsg)});
+            return context->report({node->sourceFile, loc, Utf8::format(g_E[Err0158], errMsg)});
         else
-            return context->report({node->sourceFile, loc, Utf8::format("invalid hexadecimal digit '%c', %s", c, errMsg)});
+            return context->report({node->sourceFile, loc, Utf8::format(g_E[Err0174], c, errMsg)});
     }
 
     if (c >= 'a' && c <= 'z')
@@ -93,8 +93,8 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
             continue;
         case 'x':
         {
-            int         c1, c2;
-            const char* msg = "'\\x' escape code needs 2 of them";
+            int  c1, c2;
+            auto msg = g_E[Err0184];
             SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
             char32_t cw = (c1 << 4) + c2;
@@ -103,8 +103,8 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         }
         case 'u':
         {
-            int         c1, c2, c3, c4;
-            const char* msg = "'\\u' escape code needs 4 of them";
+            int  c1, c2, c3, c4;
+            auto msg = g_E[Err0224];
             SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
             SWAG_CHECK(getDigitHexa(context, &pz, c3, msg));
@@ -115,8 +115,8 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         }
         case 'U':
         {
-            int         c1, c2, c3, c4, c5, c6, c7, c8;
-            const char* msg = "'\\U' escape code needs 8 of them";
+            int  c1, c2, c3, c4, c5, c6, c7, c8;
+            auto msg = g_E[Err0253];
             SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
             SWAG_CHECK(getDigitHexa(context, &pz, c3, msg));
@@ -132,7 +132,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         }
 
         loc.column += (uint32_t) (pz - start) - 1;
-        return context->report({node->sourceFile, loc, Utf8::format("unrecognized character escape sequence '%c'", c)});
+        return context->report({node->sourceFile, loc, Utf8::format(g_E[Err0259], c)});
     }
 
     node->computedValue->text = result;
@@ -177,7 +177,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         }
 
         if (typeSuffix->nativeType != NativeTypeKind::Bool)
-            return Utf8::format("cannot convert boolean literal to '%s'", typeSuffix->getDisplayName().c_str());
+            return Utf8::format(g_E[Err0261], typeSuffix->getDisplayName().c_str());
         break;
 
     case LiteralType::TT_RAW_STRING:
@@ -187,7 +187,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
         if (uni.size() != 1)
-            return Utf8::format("invalid character literal '%s'; this is a string, not a character", token.text.c_str());
+            return Utf8::format(g_E[Err0262], token.text.c_str());
 
         switch (typeSuffix->nativeType)
         {
@@ -197,13 +197,13 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
         case NativeTypeKind::U8:
             if (uni[0] > UINT8_MAX)
-                return Utf8::format("cannot convert character literal to 'u8', value '%u' is too big", uni[0]);
+                return Utf8::format(g_E[Err0263], uni[0]);
             computedValue.reg.u8 = (uint8_t) uni[0];
             break;
 
         case NativeTypeKind::U16:
             if (uni[0] > UINT16_MAX)
-                return Utf8::format("cannot convert character literal to 'u16', value '%u' is too big", uni[0]);
+                return Utf8::format(g_E[Err0287], uni[0]);
             computedValue.reg.u16 = (uint16_t) uni[0];
             break;
 
@@ -216,7 +216,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
             break;
 
         default:
-            return Utf8::format("cannot convert from 'string' to '%s'", typeSuffix->getDisplayName().c_str());
+            return Utf8::format(g_E[Err0302], typeSuffix->getDisplayName().c_str());
         }
         break;
     }
@@ -234,7 +234,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
                 computedValue.reg.f64 = -computedValue.reg.f64;
             break;
         default:
-            return Utf8::format("cannot convert floating point number '%Lf'", token.literalValue.f64);
+            return Utf8::format(g_E[Err0317], token.literalValue.f64);
         }
         break;
 
@@ -246,15 +246,15 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u8'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0341], computedValue.reg.u64);
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u16'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0357], computedValue.reg.u64);
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u32'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0358], computedValue.reg.u64);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -262,15 +262,15 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
         case NativeTypeKind::S8:
             if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                return Utf8::format("literal number '%I64d' is not in the range of 's8'", computedValue.reg.s64);
+                return Utf8::format(g_E[Err0359], computedValue.reg.s64);
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                return Utf8::format("literal number '%I64d' is not in the range of 's16'", computedValue.reg.s64);
+                return Utf8::format(g_E[Err0360], computedValue.reg.s64);
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                return Utf8::format("literal number '%I64d' is not in the range of 's32'", computedValue.reg.s64);
+                return Utf8::format(g_E[Err0361], computedValue.reg.s64);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
@@ -278,7 +278,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'rune'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0362], computedValue.reg.u64);
             break;
 
         case NativeTypeKind::F32:
@@ -286,7 +286,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
             float   tmpF = static_cast<float>(computedValue.reg.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != computedValue.reg.s64)
-                return Utf8::format("value '%I64d' is truncated in 'f32'", computedValue.reg.s64);
+                return Utf8::format(g_E[Err0363], computedValue.reg.s64);
             computedValue.reg.f32 = tmpF;
             break;
         }
@@ -295,13 +295,13 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
             double  tmpF = static_cast<double>(computedValue.reg.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != computedValue.reg.s64)
-                return Utf8::format("value '%I64d' is truncated in 'f64'", computedValue.reg.s64);
+                return Utf8::format(g_E[Err0372], computedValue.reg.s64);
             computedValue.reg.f64 = tmpF;
             break;
         }
 
         default:
-            return Utf8::format("invalid literal number conversion of '%I64u'", computedValue.reg.u64);
+            return Utf8::format(g_E[Err0387], computedValue.reg.u64);
         }
 
         break;
@@ -314,15 +314,15 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u8'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0394], computedValue.reg.u64);
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u16'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0398], computedValue.reg.u64);
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'u32'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0404], computedValue.reg.u64);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -330,29 +330,29 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
         case NativeTypeKind::S8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 's8'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0415], computedValue.reg.u64);
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 's16'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0422], computedValue.reg.u64);
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 's32'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0429], computedValue.reg.u64);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
-                return Utf8::format("literal number '%I64u' is not in the range of 's64'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0430], computedValue.reg.u64);
             break;
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Utf8::format("literal number '%I64u' is not in the range of 'rune'", computedValue.reg.u64);
+                return Utf8::format(g_E[Err0432], computedValue.reg.u64);
             break;
 
         default:
-            return Utf8::format("invalid literal number conversion of '%I64u'", computedValue.reg.u64);
+            return Utf8::format(g_E[Err0433], computedValue.reg.u64);
         }
 
         break;
@@ -385,7 +385,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 
     auto suffix = node->childs.front();
     SWAG_ASSERT(suffix->typeInfo);
-    SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Utf8::format("literal suffix type must be native ('%s' provided)", suffix->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Utf8::format(g_E[Err0437], suffix->typeInfo->getDisplayName().c_str())}));
 
     switch (suffix->typeInfo->nativeType)
     {
@@ -404,7 +404,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     case NativeTypeKind::F64:
         break;
     default:
-        return context->report({suffix, Utf8::format("invalid literal suffix type ('%s')", suffix->typeInfo->getDisplayName().c_str())});
+        return context->report({suffix, Utf8::format(g_E[Err0439], suffix->typeInfo->getDisplayName().c_str())});
     }
 
     // Check if this is in fact a negative literal. This is important to know now, in order

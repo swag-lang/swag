@@ -1310,7 +1310,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     if (overload->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         refNiceName = "the tuple";
     else
-        refNiceName = Utf8::format("%s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
+        refNiceName = Utf8::format("%s `%s`", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
@@ -2220,7 +2220,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             for (auto match : matches)
             {
                 auto overload     = match->symbolOverload;
-                auto couldBe      = Utf8::format("could be: %s of type '%s'", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
+                auto couldBe      = Utf8::format("could be: %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
                 auto note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                 note->printSource = false;
 

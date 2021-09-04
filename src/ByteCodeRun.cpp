@@ -2716,7 +2716,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     default:
         if (ip->op < ByteCodeOp::End)
-            context->internalError(Utf8::format("unknown bytecode instruction '%s'", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
+            context->internalError(Utf8::format("unknown bytecode instruction `%s`", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
         break;
     }
 

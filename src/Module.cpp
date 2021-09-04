@@ -183,7 +183,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = Utf8::format("invalid module name '%s', ", name.c_str());
+        errorStr = Utf8::format("invalid module name `%s`, ", name.c_str());
         errorStr += reason;
         return false;
     }

@@ -255,7 +255,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (mapItIdxToFunc[idx] == nullptr)
         {
             auto missingNode = typeInterface->fields[idx];
-            notes.push_back(new Diagnostic({missingNode->declNode, Utf8::format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
+            notes.push_back(new Diagnostic({missingNode->declNode, Utf8::format("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
     }
 

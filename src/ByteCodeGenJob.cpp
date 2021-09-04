@@ -766,13 +766,13 @@ JobResult ByteCodeGenJob::execute()
         // Be sure that every used registers have been released
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
         {
-            context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' does not release all registers !", context.bc->node->token.text.c_str()));
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` does not release all registers !", context.bc->node->token.text.c_str()));
             if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 context.bc->print();
         }
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
         {
-            context.sourceFile->internalError(context.bc->node, Utf8::format("function '%s' releases too many registers !", context.bc->node->token.text.c_str()));
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` releases too many registers !", context.bc->node->token.text.c_str()));
             if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 context.bc->print();
         }

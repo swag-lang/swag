@@ -24,7 +24,7 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += Utf8::format(" (path is '%s')", path.string().c_str());
+        errorStr += Utf8::format(" (path is `%s`)", path.string().c_str());
         g_Log.error(errorStr);
         OS::exit(-1);
     }
@@ -213,7 +213,7 @@ void Workspace::setupTarget()
     targetPath.append(getTargetFolder().c_str());
 
     if (g_CommandLine->verbosePath)
-        g_Log.verbose(Utf8::format("target path is '%s'", targetPath.string().c_str()));
+        g_Log.verbose(Utf8::format("target path is `%s`", targetPath.string().c_str()));
 
     // Be sure folders exists
     error_code errorCode;
@@ -246,7 +246,7 @@ void Workspace::setupTarget()
     }
 
     if (g_CommandLine->verbosePath)
-        g_Log.verbose(Utf8::format("cache path is '%s'", cachePath.string().c_str()));
+        g_Log.verbose(Utf8::format("cache path is `%s`", cachePath.string().c_str()));
 
     targetPath += "/";
     cachePath += "/";
@@ -726,7 +726,7 @@ bool Workspace::build()
         if (!g_CommandLine->scriptCommand)
         {
             if (g_CommandLine->verbosePath)
-                g_Log.verbose(Utf8::format("workspace path is '%s'", workspacePath.string().c_str()));
+                g_Log.verbose(Utf8::format("workspace path is `%s`", workspacePath.string().c_str()));
             if (g_CommandLine->listDepCmd || g_CommandLine->getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else

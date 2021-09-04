@@ -163,7 +163,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         if (!context->ffiArgs.back())
         {
             context->hasError = true;
-            context->errorMsg = Utf8::format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
+            context->errorMsg = Utf8::format("ffi failed to convert argument type `%s`", typeParam->name.c_str());
             return;
         }
 
@@ -208,7 +208,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
                 break;
             default:
                 context->hasError = true;
-                context->errorMsg = Utf8::format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
+                context->errorMsg = Utf8::format("ffi failed to convert argument type `%s`", typeParam->name.c_str());
                 return;
             }
 
@@ -245,7 +245,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             if (!typeResult)
             {
                 context->hasError = true;
-                context->errorMsg = Utf8::format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
+                context->errorMsg = Utf8::format("ffi failed to convert return type `%s`", typeInfoFunc->returnType->getDisplayName().c_str());
                 return;
             }
         }
@@ -274,7 +274,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             break;
         default:
             context->hasError = true;
-            context->errorMsg = Utf8::format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
+            context->errorMsg = Utf8::format("ffi failed to get return result of type `%s`", typeInfoFunc->returnType->getDisplayName().c_str());
             return;
         }
     }

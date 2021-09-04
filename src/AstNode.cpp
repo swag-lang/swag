@@ -561,35 +561,35 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
 Utf8 AstFuncDecl::getDisplayName()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
-        return "'#ast' block";
+        return "`#ast` block";
     if (attributeFlags & ATTRIBUTE_RUN_FUNC)
-        return "'#run' block";
+        return "`#run` block";
     if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
-        return "'#selectif' block";
+        return "`#selectif` block";
 
     if (attributeFlags & ATTRIBUTE_TEST_FUNC)
-        return "'#test' block";
+        return "`#test` block";
     if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
-        return "'#main' block";
+        return "`#main` block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        return "'#message' block";
+        return "`#message` block";
     if (attributeFlags & ATTRIBUTE_INIT_FUNC)
-        return "'#init' block";
+        return "`#init` block";
     if (attributeFlags & ATTRIBUTE_DROP_FUNC)
-        return "'#drop' block";
+        return "`#drop` block";
 
     if (flags & AST_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
     if (flags & AST_SPECIAL_COMPILER_FUNC)
-        return Utf8::format("'%s' block", token.text.c_str());
+        return Utf8::format("`%s` block", token.text.c_str());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Utf8::format("mixin '%s'", token.text.c_str());
+        return Utf8::format("mixin `%s`", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Utf8::format("macro '%s'", token.text.c_str());
+        return Utf8::format("macro `%s`", token.text.c_str());
 
-    return Utf8::format("function '%s'", token.text.c_str());
+    return Utf8::format("function `%s`", token.text.c_str());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)

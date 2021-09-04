@@ -37,7 +37,7 @@ void help(CommandLineParser& cmdParser, const string& cmd)
         if (folder.empty())
             g_Log.message("Current folder is NOT DEFINED");
         else
-            g_Log.message(Utf8::format("Current folder is '%s'", folder.c_str()));
+            g_Log.message(Utf8::format("Current folder is `%s`", folder.c_str()));
     }
 
     ////////////////////////////////////////////////////////

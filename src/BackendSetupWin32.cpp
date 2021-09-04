@@ -88,8 +88,8 @@ namespace OS
 
             if (g_CommandLine->verbosePath)
             {
-                g_Log.verbose(Utf8::format("windows sdk path is '%s'\n", winSdkPath.c_str()));
-                g_Log.verbose(Utf8::format("windows sdk version is '%s'\n", winSdkVersion.c_str()));
+                g_Log.verbose(Utf8::format("windows sdk path is `%s`\n", winSdkPath.c_str()));
+                g_Log.verbose(Utf8::format("windows sdk version is `%s`\n", winSdkVersion.c_str()));
             }
 
             const char* target = isArchArm(g_CommandLine->arch) ? "arm64" : "x64";

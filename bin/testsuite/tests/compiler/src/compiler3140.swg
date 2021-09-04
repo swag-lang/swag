@@ -1,4 +1,3 @@
-/*
 struct(T) AA
 {
 
@@ -25,4 +24,3 @@ func toto(x: AA)
     var x: AA's32
     x.toto()
 }
-*/

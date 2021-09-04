@@ -30,7 +30,7 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.message(Utf8::format("=> script file '%s' has been created", g_CommandLine->scriptName.c_str()));
+    g_Log.message(Utf8::format("=> script file `%s` has been created", g_CommandLine->scriptName.c_str()));
     g_Log.message(Utf8::format("=> type 'swag script -f:%s' to run that script", g_CommandLine->scriptName.c_str()));
 }
 
@@ -170,7 +170,7 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        g_Log.message(Utf8::format("=> workspace '%s' has been created", workspacePath.string().c_str()));
+        g_Log.message(Utf8::format("=> workspace `%s` has been created", workspacePath.string().c_str()));
         moduleName = workspacePath.filename().string();
     }
 
@@ -189,7 +189,7 @@ void Workspace::newCommand()
     // Create module
     newModule(moduleName);
 
-    g_Log.message(Utf8::format("=> module '%s' has been created", moduleName.c_str()));
+    g_Log.message(Utf8::format("=> module `%s` has been created", moduleName.c_str()));
     g_Log.message(Utf8::format("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
     OS::exit(0);
 }

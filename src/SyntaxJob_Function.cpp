@@ -276,7 +276,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     if (token.id != TokenId::SymLeftParen)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Utf8::format("to declare function parameters of '%s'", parent->token.text.c_str())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Utf8::format("to declare function parameters of `%s`", parent->token.text.c_str())));
     else
         SWAG_CHECK(eatToken());
 

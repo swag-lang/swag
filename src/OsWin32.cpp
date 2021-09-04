@@ -668,7 +668,7 @@ namespace OS
             OS::exit(-1);
         }
 
-        g_Log.message(Utf8::format("'SWAG_FOLDER' has been changed to '%s'\n", folder.c_str()));
+        g_Log.message(Utf8::format("'SWAG_FOLDER' has been changed to `%s`\n", folder.c_str()));
 
         // PATH
         HKEY hKey;
