@@ -28,7 +28,7 @@ impl HashSet
     }
 
     #[Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtdc(ptr: bool) opVisit(stmt: code)
     {
         if !count
             return

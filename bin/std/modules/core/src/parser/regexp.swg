@@ -66,6 +66,70 @@ impl RegExp
         try dfaBuild()
     }
 
+    // Returns true if 'str' matches the regexp
+    public mtd match(str: string)->bool
+    {
+        uni32 := Unicode.fromUtf8(str)
+        if m_Dfa.isEmpty()
+            return false
+
+        var stack1, stack2: Array'(*DfaNode)
+        stack1.add(m_Dfa[0])
+        pstack1 := &stack1
+        pstack2 := &stack2
+
+        cpt := 0
+        while cpt < uni32.count and !pstack1.isEmpty()
+        {
+            ok := false
+            while !pstack1.isEmpty()
+            {
+                curState := pstack1.popBack()
+                if dfaMatch(pstack2, uni32[cpt], curState)
+                    ok = true
+            }
+
+            if ok
+                cpt += 1
+            swap(&pstack1, &pstack2)
+        }
+
+        if cpt != uni32.count
+            return false
+
+        while !pstack1.isEmpty()
+        {
+            curState := pstack1.popBack()
+            if curState.terminal
+                return true
+        }
+
+        return false
+    }
+
+    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
+    {
+        ok := false
+
+        // Is there a transition with the input character ?
+        find := curState.transitions.find(c)
+        if find
+        {
+            out.add(find.value)
+            ok = true
+        }
+
+        // Is there a transition with the "any" operator ?
+        find = curState.transitions.find(0)
+        if find
+        {
+            out.add(find.value)
+            ok = true
+        }
+
+        return ok
+    }
+
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
     {
         here := node.transitions.find(c)
@@ -206,6 +270,46 @@ impl RegExp
 
             cpt, pz += 1
         }
+
+        // Remaining operators
+        try unionValidate()
+        if !m_OrOpStack.isEmpty()
+            throw "nfabuild"
+
+        // Concat the remaining nodes
+        try operatorConcat(m_NfaStack.count)
+    }
+
+    mtd operatorConcat(cpt: uint) throw
+    {
+        count := cpt
+        while count >= 2
+        {
+            table2 := try nfaPop()
+            table1 := try nfaPop()
+
+            // Update nested level
+            table1.level = cast(u32) m_OpParen.count
+            table2.level = cast(u32) m_OpParen.count
+
+            s1 := table1.nodes.back()
+            s2 := table2.nodes.front()
+            s1.addTransition(0, s2)
+
+            table1.nodes.add(table2.nodes.toSlice())
+            Memory.delete(table2)
+            m_NfaStack.add(table1)
+
+            count -= 1
+        }
+
+        // Update nested level
+        if count == 1
+        {
+            table1 := try nfaPop()
+            table1.level = cast(u32) m_OpParen.count
+            m_NfaStack.add(table1)
+        }
     }
 
     mtd dfaEClosure(in, out: *HashSet'(*NfaNode))
@@ -248,10 +352,10 @@ impl RegExp
         }
     }
 
-    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, in: *HashSet'(*NfaNode))
+    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, in: HashSet'(*NfaNode))
     {
         out.clear()
-        visit state: dref in
+        visit state: in
         {
             // The real terminal character
             pfind := state.transitions.find(c)
@@ -301,7 +405,7 @@ impl RegExp
             state = stack.popBack()
             visit c: m_CharSet
             {
-                dfaMoveNode(&moveRes, c, &state.table)
+                dfaMoveNode(&moveRes, c, state.table)
                 if moveRes.count == 0
                     continue
                 dfaEClosure(&moveRes, &epsilonRes)
@@ -309,12 +413,13 @@ impl RegExp
                 var found: *DfaNode
                 visit tstate: m_Dfa
                 {
-                    if tstate.table.count != epsilonRes.count
-                        continue
-                    if equals(&tstate.table, &epsilonRes)
+                    if tstate.table.count == epsilonRes.count
                     {
-                        found = tstate
-                        break
+                        if equals(&tstate.table, &epsilonRes)
+                        {
+                            found = tstate
+                            break
+                        }
                     }
                 }
 

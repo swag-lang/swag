@@ -9,7 +9,6 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
