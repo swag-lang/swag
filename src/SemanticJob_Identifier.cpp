@@ -1459,6 +1459,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::BadSignature:
     {
+        auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;
+
         SWAG_ASSERT(callParameters);
         if (overload->typeInfo->kind == TypeInfoKind::Struct)
         {
@@ -1469,6 +1471,22 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
+                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+        }
+        else if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF && bi.badSignatureParameterIdx == 0)
+        {
+            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                                  Utf8::format(g_E[Err0106],
+                                               refNiceName.c_str(),
+                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+        }
+        else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
+        {
+            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                                  Utf8::format(g_E[Err0095],
+                                               refNiceName.c_str(),
+                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                bi.badSignatureGivenType->getDisplayName().c_str())};
         }
         else
@@ -1482,10 +1500,13 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         diag->hint = explicitCastHint;
-        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
+        if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
+            note = new Diagnostic{destFuncDecl, destFuncDecl->token, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
             note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         else
             note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+
         result0.push_back(diag);
         result1.push_back(note);
         return;
