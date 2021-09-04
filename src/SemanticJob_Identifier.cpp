@@ -1536,8 +1536,6 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->numTestErrors)
         return;
-    if (node->token.text.length() <= 4)
-        return;
 
     uint32_t bestScore = UINT32_MAX;
 
@@ -1562,6 +1560,14 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
                 continue;
 
             auto score = Utf8::fuzzyCompare(node->token.text, one.symbolName->name);
+
+            // If number of changes is too big considering the size of the text, cancel
+            if (score > (uint32_t) node->token.text.count / 2)
+                score = UINT32_MAX;
+            // If too much changes, cancel
+            if (score > 2)
+                score = UINT32_MAX;
+
             if (score < bestScore)
                 best.clear();
             if (score <= bestScore)
