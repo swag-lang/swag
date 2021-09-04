@@ -1,4 +1,3 @@
-//#global testerror
 /*struct AA
 {
 }
@@ -12,18 +11,11 @@ impl AA
     }
 }
 
+
 func toto(x: AA)
 {
     visit v: dref &x
     {
     }
-}*/
-
-#test
-{
-    var t = @[1, 2]
-    var x: *s32 = &t
-    y := dref &t[1]
-    //@print(@typeof(y).name)
-    @assert(y == 2)
 }
+*/

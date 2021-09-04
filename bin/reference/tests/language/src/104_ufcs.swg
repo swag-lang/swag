@@ -1,6 +1,6 @@
 #test
 {
-    // ufcs stands for "universal function call system"
+    // ufcs stands for "uniform function call syntax"
     // it allows every functions to be called with a 'param.func()' form when the
     // first parameter of func() is of the same type as 'param'
     {

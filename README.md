@@ -12,7 +12,7 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
-* **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (universal function call system), you can have a feeling of object oriented programming without crap like inheritance or encapsulation.
+* **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without crap like inheritance or encapsulation.
 * **Safe** at all cost. You should be the one to make your program safe.
 
 ### Swag has...

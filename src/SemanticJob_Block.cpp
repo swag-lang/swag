@@ -524,39 +524,25 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node->expression, g_E[Err0624]}));
-        AstIdentifierRef* identifierRef = nullptr;
-        bool              cloneParam    = false;
-        if (node->expression->kind == AstNodeKind::IdentifierRef)
-            identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
-        else
-        {
-            cloneParam    = true;
-            identifierRef = Ast::newIdentifierRef(sourceFile, node);
-        }
+        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, sourceFile->internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
-        auto identifier        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
-        identifier->aliasNames = node->aliasNames;
-        identifier->inheritTokenLocation(node);
+        auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
+        auto callVisit        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
+        callVisit->aliasNames = node->aliasNames;
+        callVisit->inheritTokenLocation(node);
 
         // Generic parameters
-        identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);
-        identifier->genericParameters->flags |= AST_NO_BYTECODE;
-        auto child      = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
+        callVisit->genericParameters = Ast::newFuncCallParams(sourceFile, callVisit);
+        callVisit->genericParameters->flags |= AST_NO_BYTECODE;
+        auto child      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child->typeInfo = g_TypeMgr->typeInfoBool;
         child->allocateComputedValue();
         child->computedValue->reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
         child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
 
         // Call with arguments
-        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
-        newExpression              = identifierRef;
-
-        // Need to add parameter
-        if (cloneParam)
-        {
-            auto callParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-            Ast::clone(node->expression, callParam);
-        }
+        callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);
+        newExpression             = identifierRef;
 
         Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);

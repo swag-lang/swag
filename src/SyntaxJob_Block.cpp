@@ -218,6 +218,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 
     // Variable to visit
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, g_E[Err0871]));
+
     {
         PushErrHint errh(g_E[Hnt0009]);
         SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));

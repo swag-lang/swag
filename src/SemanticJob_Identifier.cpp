@@ -2761,7 +2761,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
     if (canDoUfcs)
     {
-        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+        // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
         if (identifierRef->resolvedSymbolName)
         {
             if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||

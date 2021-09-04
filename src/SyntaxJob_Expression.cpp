@@ -342,10 +342,8 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
-    {
-        PushErrHint errh(g_E[Hnt0030]);
-        SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
-    }
+    PushErrHint errh(g_E[Hnt0030]);
+    SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
 
     auto literal = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->setFlagsValueIsComputed();
