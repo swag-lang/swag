@@ -1324,6 +1324,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     // the struct.
     bi.badSignatureRequestedType = TypeManager::concreteReference(bi.badSignatureRequestedType);
 
+    // In case it's generic, and we have real types
+    bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
+
     // See if it would have worked with an explicit cast, to give a hint in the error message
     Utf8 explicitCastHint;
     switch (match.result)
@@ -1665,6 +1668,9 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
         int notFound = 0;
         for (auto overload : overloads)
         {
+            if (overload->overload->typeInfo->flags & TYPEINFO_GENERIC)
+                continue;
+
             if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable && overload->ufcs)
                 notFound++;
         }

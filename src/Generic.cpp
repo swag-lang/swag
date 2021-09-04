@@ -85,6 +85,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
 {
     if (!typeInfo)
         return nullptr;
+    if (replaceTypes.empty())
+        return typeInfo;
     if (!(typeInfo->flags & TYPEINFO_GENERIC))
         return typeInfo;
 
