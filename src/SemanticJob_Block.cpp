@@ -813,24 +813,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
 
 bool SemanticJob::resolveScopeBreakable(SemanticContext* context)
 {
-    // Be sure we don't have ghosting (the same label in a parent)
-    auto node  = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
-    auto check = node->parent;
-    while (check)
-    {
-        if (check->kind == AstNodeKind::ScopeBreakable)
-        {
-            if (check->token.text == node->token.text)
-            {
-                Diagnostic diag{node, Utf8::format(g_E[Err0639], node->token.text.c_str())};
-                Diagnostic note{check, g_E[Nte0036], DiagnosticLevel::Note};
-                context->report(diag, &note);
-            }
-        }
-
-        check = check->parent;
-    }
-
+    auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->allocateExtension();
     node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
     node->block->extension->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
