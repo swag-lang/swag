@@ -1331,8 +1331,14 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericMatch:
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
-        if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            explicitCastHint = Utf8::format(g_E[Hnt0025], bi.badSignatureRequestedType->name.c_str());
+        if (bi.badSignatureRequestedType->kind != TypeInfoKind::Pointer &&
+            bi.badSignatureRequestedType->kind != TypeInfoKind::Reference &&
+            bi.badSignatureGivenType->kind != TypeInfoKind::Pointer &&
+            bi.badSignatureGivenType->kind != TypeInfoKind::Reference)
+        {
+            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                explicitCastHint = Utf8::format(g_E[Hnt0025], bi.badSignatureRequestedType->name.c_str());
+        }
         break;
     }
 

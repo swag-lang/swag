@@ -342,12 +342,6 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
-    if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
-    {
-        PushErrHint errh(g_E[Hnt0008]);
-        return error(token, Utf8::format(g_E[Err0262], token.text.c_str()));
-    }
-    else
     {
         PushErrHint errh(g_E[Hnt0030]);
         SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
