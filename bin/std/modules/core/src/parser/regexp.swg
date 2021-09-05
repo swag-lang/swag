@@ -1,5 +1,27 @@
 #global namespace Parser
 
+// Simple regular expression matcher
+// Supported:
+//
+// *    zero or more
+// ?    zero or one
+// +    one or more
+// .    any rune
+//
+// a|b  a or b
+// 
+// [a-zA-Z] etc.
+//
+// [[:digit:]] or \d
+// [[:hexa:]]  
+// [[:alpha:]]
+// [[:alnum:]]
+// [[:lower:]] or \l
+// [[:upper:]] or \u
+// [[:blank:]]
+// [[:space:]] or \s
+// [[:word:]]  or \w
+
 struct NfaNode
 {
     transitions:    HashTable'(rune, Array'(*NfaNode))
@@ -214,7 +236,6 @@ impl RegExp
             return
 
         // Check if the two tables have the same nested level
-        // @optim
         table2 := try nfaPop()
         table1 := try nfaPop()
         nfaStack.add(table1)
