@@ -38,4 +38,12 @@
         @assert(r.match("aab"))
         @assert(!r.match("b"))
     }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("fe?d")
+        @assert(r.match("fed"))
+        @assert(r.match("fd"))
+        @assert(!r.match("feed"))
+    }
 }

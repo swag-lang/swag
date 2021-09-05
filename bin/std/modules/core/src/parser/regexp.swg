@@ -239,6 +239,15 @@ impl RegExp
         m_NfaStack.add(table)
     }
 
+    mtd operatorQuestion() throw
+    {
+        table := try nfaPop()
+        s1 := table.nodes.front()
+        s2 := table.nodes.back()
+        s1.addTransition(0, s2)
+        m_NfaStack.add(table)
+    }
+
     mtd nfaBuild() throw
     {
         pz  := preprocessed.buffer
@@ -251,22 +260,22 @@ impl RegExp
             {
             case "("'rune:
                 m_OpParen.add(cast(u32) m_NfaStack.count)
-                break
 
             case ")"'rune:
-                Debug.assert(false) // todo
-                break
+                try unionValidate()
+                if m_OpParen.isEmpty()
+                    throw "syntax"
+                op := m_OpParen.popBack()
+                try operatorConcat(m_NfaStack.count - op)
 
             case "*"'rune:
                 try operatorStar()
 
             case "+"'rune:
                 try operatorPlus()
-                break
 
             case "?"'rune:
-                Debug.assert(false) // todo
-                break
+                try operatorQuestion()
 
             case "|"'rune:
                 Debug.assert(false) // todo
