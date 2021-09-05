@@ -220,6 +220,25 @@ impl RegExp
         m_CharSet.add(c)
     }
 
+    mtd operatorStar() throw
+    {
+        table := try nfaPop()
+        s1 := table.nodes.front()
+        s2 := table.nodes.back()
+        s1.addTransition(0, s2)
+        s2.addTransition(0, s1)
+        m_NfaStack.add(table)
+    }
+
+    mtd operatorPlus() throw
+    {
+        table := try nfaPop()
+        s1 := table.nodes.front()
+        s2 := table.nodes.back()
+        s2.addTransition(0, s1)
+        m_NfaStack.add(table)
+    }
+
     mtd nfaBuild() throw
     {
         pz  := preprocessed.buffer
@@ -239,11 +258,10 @@ impl RegExp
                 break
 
             case "*"'rune:
-                Debug.assert(false) // todo
-                break
+                try operatorStar()
 
             case "+"'rune:
-                Debug.assert(false) // todo
+                try operatorPlus()
                 break
 
             case "?"'rune:
