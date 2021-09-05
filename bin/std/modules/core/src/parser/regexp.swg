@@ -512,10 +512,11 @@ impl RegExp
                 preprocessed.add("|"'rune)
             firstExp = false
 
+            subSlice := @mkslice(pz, pzEnd - pz)
+
             // Predefined sets
             if pz[0] == "["'rune
             {
-                subSlice := @mkslice(pz, pzEnd - pz)
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
                     try preprocessInter(@runes("[0-9]"));
@@ -580,7 +581,8 @@ impl RegExp
                 }
             }
 
-            if pz[1] == "-"'rune and pz[2] != "]"'rune
+            // Specified interval
+            if @countof(subSlice) >= 3 and pz[1] == "-"'rune and pz[2] != "]"'rune
             {
                 first := pz[0]
                 end   := pz[2]
@@ -598,6 +600,7 @@ impl RegExp
                 continue
             }
 
+            // This is not an interval
             if isReservedChar(dref pz)
             {
                 preprocessed.add("\\"'rune)
@@ -679,7 +682,7 @@ impl RegExp
         start := cast(const *rune) in32.buffer
         pz    := cast(const *rune) in32.buffer
         pzEnd := pz + in32.count
-        c     := dref pz
+        c     := pz[0]
 
         while c
         {
@@ -698,7 +701,7 @@ impl RegExp
                 break
             }
 
-            c = dref pz
+            c = pz[0]
         }
     }
 }

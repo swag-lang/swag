@@ -29,6 +29,21 @@
 
     {
         var r: Parser.RegExp
+        assume r.compile("\\d")
+        @assert(r.match("0"))
+        @assert(r.match("1"))
+        @assert(r.match("2"))
+        @assert(r.match("3"))
+        @assert(r.match("4"))
+        @assert(r.match("5"))
+        @assert(r.match("6"))
+        @assert(r.match("7"))
+        @assert(r.match("8"))
+        @assert(r.match("9"))
+    }
+
+    {
+        var r: Parser.RegExp
         assume r.compile("[[:hexa:]]")
         @assert(r.match("a"))
         @assert(r.match("A"))
