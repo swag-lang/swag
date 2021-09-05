@@ -495,6 +495,7 @@ impl RegExp
         }
     }
 
+    #[Swag.Discardable]
     mtd preprocessInter(sl: const [..] rune)->const *rune throw
     {
         pz      := @dataof(sl)
@@ -504,62 +505,56 @@ impl RegExp
         preprocessed.add("("'rune)
         pz += 1
 
+        firstExp := true
         while pz != pzEnd and pz[0] != "]"'rune
         {
+            if !firstExp
+                preprocessed.add("|"'rune)
+            firstExp = false
+
             // Predefined sets
             if pz[0] == "["'rune
             {
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:digit:]"), false, 9) == 0
+                subSlice := @mkslice(pz, pzEnd - pz)
+                if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
-                    discard try preprocessInter(@runes("[0-9]"));
+                    try preprocessInter(@runes("[0-9]"));
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:hexa:]"), false, 8) == 0
+                if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
-                    discard try preprocessInter(@runes("[a-fA-F0-9]"));
+                    try preprocessInter(@runes("[a-fA-F0-9]"));
                     pz += 8
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:alpha:]"), false, 9) == 0
+                if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
                 {
-                    discard try preprocessInter(@runes("[a-zA-Z]"));
+                    try preprocessInter(@runes("[a-zA-Z]"));
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:alnum:]"), false, 9) == 0
+                if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    discard try preprocessInter(@runes("[a-zA-Z0-9]"));
+                    try preprocessInter(@runes("[a-zA-Z0-9]"));
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:lower:]"), false, 9) == 0
+                if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
                 {
-                    discard try preprocessInter(@runes("[a-z]"));
+                    try preprocessInter(@runes("[a-z]"));
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:upper:]"), false, 9) == 0
+                if Unicode.compare(subSlice, @runes("[:upper:]"), false, 9) == 0
                 {
-                    discard try preprocessInter(@runes("[A-Z]"));
+                    try preprocessInter(@runes("[A-Z]"));
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
@@ -567,8 +562,6 @@ impl RegExp
                 {
                     preprocessed.add(@runes(" |\t"))
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
@@ -576,17 +569,13 @@ impl RegExp
                 {
                     preprocessed.add(@runes(" |\f|\n|\r|\t|\v"))
                     pz += 9
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    discard try preprocessInter(@runes("[a-zA-Z0-9_]"));
+                    try preprocessInter(@runes("[a-zA-Z0-9_]"));
                     pz += 8
-                    if pz[0] != "]"'rune
-                        preprocessed.add("|"'rune)
                     continue;
                 }
             }
@@ -606,8 +595,6 @@ impl RegExp
 
                 preprocessed.add(first)
                 pz += 3
-                if pz[0] != "]"'rune
-                    preprocessed.add("|"'rune)
                 continue
             }
 
@@ -621,9 +608,6 @@ impl RegExp
             {
                 pz = try preprocessEscape(@mkslice(pz, pz - pzStart))
             }
-
-            if pz[0] != "]"'rune
-                preprocessed.add("|"'rune)
         }
 
         if pz != pzEnd
@@ -648,19 +632,19 @@ impl RegExp
             switch pz[1]
             {
             case "d"'rune:
-                discard try preprocessInter(@runes("[[:digit:]]"))
+                try preprocessInter(@runes("[[:digit:]]"))
                 return pz + 2
             case "w"'rune:
-                discard try preprocessInter(@runes("[[:word:]]"))
+                try preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
             case "s"'rune:
-                discard try preprocessInter(@runes("[[:space:]]"))
+                try preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
             case "l"'rune:
-                discard try preprocessInter(@runes("[[:lower:]]"))
+                try preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
             case "u"'rune:
-                discard try preprocessInter(@runes("[[:upper:]]"))
+                try preprocessInter(@runes("[[:upper:]]"))
                 return pz + 2
             case "a"'rune:
                 preprocessed.add("\a"'rune)
