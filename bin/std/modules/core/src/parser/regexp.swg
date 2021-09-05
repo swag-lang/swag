@@ -73,7 +73,6 @@ impl RegExp
     // Returns true if 'str' matches the regexp
     public mtd match(str: string)->bool
     {
-        uni32 := Unicode.fromUtf8(str)
         if m_Dfa.isEmpty()
             return false
 
@@ -82,23 +81,29 @@ impl RegExp
         pstack1 := &stack1
         pstack2 := &stack2
 
-        cpt := 0
-        while cpt < uni32.count and !pstack1.isEmpty()
+        cpt       := 0
+        srcPtr    := @dataof(str)
+        srcLength := @countof(str)
+
+        while cpt < srcLength and !pstack1.isEmpty()
         {
+            (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength))
+
             ok := false
             while !pstack1.isEmpty()
             {
                 curState := pstack1.popBack()
-                if dfaMatch(pstack2, uni32[cpt], curState)
+                if dfaMatch(pstack2, c, curState)
                     ok = true
             }
 
             if ok
-                cpt += 1
+                cpt, srcPtr += eat
+
             swap(&pstack1, &pstack2)
         }
 
-        if cpt != uni32.count
+        if cpt != srcLength
             return false
 
         while !pstack1.isEmpty()
