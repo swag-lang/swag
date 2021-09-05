@@ -23,6 +23,8 @@
 // [[:space:]] or \s
 // [[:word:]]  or \w
 
+const RuneDigit = cast(rune) 0x8000_0000
+
 struct NfaNode
 {
     transitions:    HashTable'(rune, Array'(*NfaNode))
@@ -143,6 +145,17 @@ impl RegExp
     mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
         ok := false
+
+        // Is there a transition with a specific range ?
+        if Unicode.isDigit(c)
+        {
+            find := curState.transitions.find(RuneDigit)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
 
         // Is there a transition with the input character ?
         find := curState.transitions.find(c)
@@ -541,7 +554,7 @@ impl RegExp
             {
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[0-9]"))
+                    preprocessed.add(RuneDigit)
                     pz += 9
                     continue
                 }
