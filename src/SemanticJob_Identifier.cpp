@@ -1586,10 +1586,10 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
 
             // If number of changes is too big considering the size of the text, cancel
             if (score > (uint32_t) node->token.text.count / 2)
-                score = UINT32_MAX;
+                continue;
             // If too much changes, cancel
             if (score > 2)
-                score = UINT32_MAX;
+                continue;
 
             if (score < bestScore)
                 best.clear();
