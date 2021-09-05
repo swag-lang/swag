@@ -526,6 +526,69 @@ impl RegExp
                         preprocessed.add("|"'rune)
                     continue;
                 }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:alpha:]"), false, 9) == 0
+                {
+                    discard try preprocessInter(@runes("[a-zA-Z]"));
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:alnum:]"), false, 9) == 0
+                {
+                    discard try preprocessInter(@runes("[a-zA-Z0-9]"));
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:lower:]"), false, 9) == 0
+                {
+                    discard try preprocessInter(@runes("[a-z]"));
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:upper:]"), false, 9) == 0
+                {
+                    discard try preprocessInter(@runes("[A-Z]"));
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:blank:]"), false, 9) == 0
+                {
+                    preprocessed.add(@runes(" |\t"))
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
+                {
+                    preprocessed.add(@runes(" |\f|\n|\r|\t|\v"))
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
+                {
+                    discard try preprocessInter(@runes("[a-zA-Z0-9_]"));
+                    pz += 8
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
             }
 
             if pz[1] == "-"'rune and pz[2] != "]"'rune

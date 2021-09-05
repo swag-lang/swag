@@ -37,4 +37,23 @@
         @assert(r.match("9"))
         @assert(!r.match("g"))
     }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("[[:alpha:]]")
+        @assert(r.match("a"))
+        @assert(r.match("z"))
+        @assert(r.match("A"))
+        @assert(r.match("Z"))
+        @assert(!r.match("0"))
+    }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("[[:space:]]")
+        @assert(r.match(" "))
+        @assert(!r.match("z"))
+        @assert(r.match("\t"))
+        @assert(r.match("\n"))
+    }
 }
