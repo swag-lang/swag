@@ -170,11 +170,24 @@ public func makeLower(buffer: [..] rune)
 }
 
 // Compare two unicode strings, and returns -1, 0 or 1
-func compare(src, dst: const [..] rune, ignoreCase = false)->s32
+func compare(src, dst: const [..] rune, ignoreCase = false, len: uint = 0)->s32
 {
     length := @countof(src)
     otherLength := @countof(dst)
-    minLen := Math.min(length, otherLength)
+
+    var minLen: uint = ?
+    if len
+    {
+        if length < len
+            return -1
+        if otherLength < len
+            return 1
+        minLen = len
+    }
+    else
+    {
+        minLen = Math.min(length, otherLength)
+    }
 
     var result: s32
     if ignoreCase
@@ -185,15 +198,19 @@ func compare(src, dst: const [..] rune, ignoreCase = false)->s32
             c1 := toLower(src[i])
             c2 := toLower(dst[i])
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0 return Math.sign(result)
+            if result != 0
+                return Math.sign(result)
         }
     }
     else
     {
-        result = Memory.compare(@dataof(src), @dataof(dst), minLen)
+        result = Memory.compare(@dataof(src), @dataof(dst), minLen * @sizeof(rune))
     }
 
-    if result != 0 return Math.sign(result)
+    if result != 0
+        return Math.sign(result)
+    if len
+        return 0
     return length <=> otherLength
 }
 

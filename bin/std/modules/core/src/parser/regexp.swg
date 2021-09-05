@@ -496,37 +496,109 @@ impl RegExp
         Memory.delete(table)
     }
 
-    mtd preprocessInter(pz: const *rune)->const *rune throw
+    mtd preprocessInter(sl: const [..] rune)->const *rune throw
     {
+        pz      := @dataof(sl)
+        pzStart := pz
+        pzEnd   := pz + @countof(sl)
+
+        preprocessed.add("("'rune)
+        pz += 1
+
+        while pz != pzEnd and pz[0] != "]"'rune
+        {
+            // Predefined sets
+            if pz[0] == "["'rune
+            {
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:digit:]"), false, 9) == 0
+                {
+                    discard try preprocessInter(@runes("[0-9]"));
+                    pz += 9
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:hexa:]"), false, 8) == 0
+                {
+                    discard try preprocessInter(@runes("[a-fA-F0-9]"));
+                    pz += 8
+                    if pz[0] != "]"'rune
+                        preprocessed.add("|"'rune)
+                    continue;
+                }
+            }
+
+            if pz[1] == "-"'rune and pz[2] != "]"'rune
+            {
+                first := pz[0]
+                end   := pz[2]
+                if first > end
+                    swap(&first, &end)
+                while first < end
+                {
+                    preprocessed.add(first)
+                    preprocessed.add("|"'rune)
+                    first += 1
+                }
+
+                preprocessed.add(first)
+                pz += 3
+                if pz[0] != "]"'rune
+                    preprocessed.add("|"'rune)
+                continue
+            }
+
+            if isReservedChar(dref pz)
+            {
+                preprocessed.add("\\"'rune)
+                preprocessed.add(dref pz)
+                pz += 1
+            }
+            else
+            {
+                pz = try preprocessEscape(@mkslice(pz, pz - pzStart))
+            }
+
+            if pz[0] != "]"'rune
+                preprocessed.add("|"'rune)
+        }
+
+        if pz != pzEnd
+            pz += 1
+        preprocessed.add(")"'rune)
+
         return pz
     }
 
-    mtd preprocessEnum(pz: const *rune)->const *rune throw
+    mtd preprocessEnum(sl: const [..] rune)->const *rune throw
     {
+        pz := @dataof(sl)
         return pz
     }
 
-    mtd preprocessEscape(pz: const *rune)->const *rune throw
+    mtd preprocessEscape(sl: const [..] rune)->const *rune throw
     {
+        pz := @dataof(sl)
         c := dref pz
         if c == "\\"'rune
         {
             switch pz[1]
             {
             case "d"'rune:
-                discard try preprocessInter(@dataof(@runes("[[:digit:]]")))
+                discard try preprocessInter(@runes("[[:digit:]]"))
                 return pz + 2
             case "w"'rune:
-                discard try preprocessInter(@dataof(@runes("[[:word:]]")))
+                discard try preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
             case "s"'rune:
-                discard try preprocessInter(@dataof(@runes("[[:space:]]")))
+                discard try preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
             case "l"'rune:
-                discard try preprocessInter(@dataof(@runes("[[:lower:]]")))
+                discard try preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
             case "u"'rune:
-                discard try preprocessInter(@dataof(@runes("[[:upper:]]")))
+                discard try preprocessInter(@runes("[[:upper:]]"))
                 return pz + 2
             case "a"'rune:
                 preprocessed.add("\a"'rune)
@@ -558,22 +630,25 @@ impl RegExp
         in32 := Unicode.fromUtf8(in)
         in32.add(0)
 
-        pz := cast(const *rune) in32.buffer
-        c  := dref pz
+        start := cast(const *rune) in32.buffer
+        pz    := cast(const *rune) in32.buffer
+        pzEnd := pz + in32.count
+        c     := dref pz
+
         while c
         {
             switch c
             {
             case "["'rune:
-                pz = try preprocessInter(pz)
+                pz = try preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
             case "{"'rune:
-                pz = try preprocessEnum(pz)
+                pz = try preprocessEnum(@mkslice(pz, pzEnd - pz))
                 break
 
             default:
-                pz = try preprocessEscape(pz)
+                pz = try preprocessEscape(@mkslice(pz, pzEnd - pz))
                 break
             }
 
