@@ -9,11 +9,11 @@
 // .    any rune
 //
 // a|b  a or b
-// 
+//
 // [a-zA-Z] etc.
 //
 // [[:digit:]] or \d
-// [[:hexa:]]  
+// [[:hexa:]]
 // [[:alpha:]]
 // [[:alnum:]]
 // [[:lower:]] or \l
@@ -39,7 +39,7 @@ struct DfaNode
     table:          HashSet'(*NfaNode)
     transitions:    HashTable'(rune, *DfaNode)
     terminal:       bool
-};
+}
 
 #[Swag.Opaque]
 public struct RegExp
@@ -426,7 +426,7 @@ impl RegExp
         {
             if n.terminal
             {
-                node.terminal = true;
+                node.terminal = true
                 break
             }
         }
@@ -540,65 +540,65 @@ impl RegExp
             {
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[0-9]"));
+                    try preprocessInter(@runes("[0-9]"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
-                    try preprocessInter(@runes("[a-fA-F0-9]"));
+                    try preprocessInter(@runes("[a-fA-F0-9]"))
                     pz += 8
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z]"));
+                    try preprocessInter(@runes("[a-zA-Z]"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z0-9]"));
+                    try preprocessInter(@runes("[a-zA-Z0-9]"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-z]"));
+                    try preprocessInter(@runes("[a-z]"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:upper:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[A-Z]"));
+                    try preprocessInter(@runes("[A-Z]"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:blank:]"), false, 9) == 0
                 {
                     preprocessed.add(@runes(" |\t"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
                 {
                     preprocessed.add(@runes(" |\f|\n|\r|\t|\v"))
                     pz += 9
-                    continue;
+                    continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z0-9_]"));
+                    try preprocessInter(@runes("[a-zA-Z0-9_]"))
                     pz += 8
-                    continue;
+                    continue
                 }
             }
 
