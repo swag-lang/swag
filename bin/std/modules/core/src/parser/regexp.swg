@@ -10,7 +10,8 @@
 //
 // a|b  a or b
 //
-// [a-zA-Z] etc.
+// [abc]     match any in list
+// [a-zA-Z]  match any in range
 //
 // [[:digit:]] or \d
 // [[:hexa:]]
