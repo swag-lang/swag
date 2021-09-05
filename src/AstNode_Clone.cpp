@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "SemanticJob.h"
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 {
@@ -144,6 +145,8 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::If:
     case AstNodeKind::CompilerIf:
         return ((AstIf*) this)->clone(context);
+    case AstNodeKind::SubstBreakContinue:
+        return ((AstSubstBreakContinue*) this)->clone(context);
     case AstNodeKind::Break:
     case AstNodeKind::Continue:
     case AstNodeKind::FallThrough:
@@ -508,6 +511,13 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
     registerIndex1 = from->registerIndex1;
 }
 
+AstNode* AstSubstBreakContinue::clone(CloneContext& context)
+{
+    if (altSubstBreakable == context.ownerBreakable)
+        return altSubst->clone(context);
+    return defaultSubst->clone(context);
+}
+
 AstNode* AstBreakContinue::clone(CloneContext& context)
 {
     // Do the token replacement only if this is a break/continue in the original breakable,
@@ -517,11 +527,20 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         auto it = context.replaceTokens.find(token.id);
         if (it != context.replaceTokens.end())
         {
+            auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
+            newNode->allocateExtension();
+            newNode->extension->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
+
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();
-            auto result = it->second->clone(cloneContext);
+            cloneContext.parent = newNode;
+
+            newNode->defaultSubst      = clone(cloneContext);
+            newNode->altSubst          = it->second->clone(cloneContext);
+            newNode->altSubstBreakable = context.ownerBreakable;
+
             context.propageResult(cloneContext);
-            return result;
+            return newNode;
         }
     }
 

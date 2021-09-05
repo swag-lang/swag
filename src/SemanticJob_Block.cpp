@@ -745,6 +745,18 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::preResolveSubstBreakContinue(SemanticContext* context)
+{
+    auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
+
+    if (node->ownerBreakable == node->altSubstBreakable)
+        node->defaultSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    else
+        node->altSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+
+    return true;
+}
+
 bool SemanticJob::resolveBreak(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);

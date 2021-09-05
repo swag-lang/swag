@@ -268,6 +268,7 @@ struct SemanticJob : public Job
     static void         resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
     AstNode*            backToSemError();
     static Utf8         getCompilerFunctionString(AstNode* node, TokenId id);
+    static bool         preResolveSubstBreakContinue(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

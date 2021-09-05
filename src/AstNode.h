@@ -72,6 +72,7 @@ enum class AstNodeKind : uint8_t
     Switch,
     SwitchCase,
     SwitchCaseBlock,
+    SubstBreakContinue,
     Break,
     FallThrough,
     Continue,
@@ -813,4 +814,12 @@ struct AstMakePointerLambda : public AstNode
 {
     AstNode* clone(CloneContext& context);
     AstNode* lambda = nullptr;
+};
+
+struct AstSubstBreakContinue : public AstNode
+{
+    AstNode*      clone(CloneContext& context);
+    AstNode*      defaultSubst      = nullptr;
+    AstNode*      altSubst          = nullptr;
+    AstBreakable* altSubstBreakable = nullptr;
 };

@@ -114,7 +114,8 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymEqual));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
-            SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
+            if (token.id != TokenId::SymRightCurly)
+                SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightCurly));
