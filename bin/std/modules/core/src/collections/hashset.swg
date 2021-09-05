@@ -129,6 +129,7 @@ impl HashSet
             }
         }
 
+        Memory.free(oldTable, capacity * @sizeof(HashSetEntry), allocator)
         capacity = reqCapacity
     }
 

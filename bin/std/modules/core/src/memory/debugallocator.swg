@@ -207,7 +207,8 @@ public impl IAllocator for DebugAllocator
                 Memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
             // Stats
-            if !prevSize self.count += 1
+            if !prevSize 
+                self.count += 1
             self.size -= prevSize
             self.size += request.size
 

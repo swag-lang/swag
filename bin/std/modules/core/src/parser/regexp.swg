@@ -22,13 +22,14 @@ struct DfaNode
 #[Swag.Opaque]
 public struct RegExp
 {
-    m_Nfa:          Array'(*NfaNode)
-    m_Dfa:          Array'(*DfaNode)
-    m_NfaStack:     Array'(*NfaTable)
-    m_CharSet:      HashSet'rune
-    m_OpParen:      Array'u32
-    m_OrOpStack:    Array'rune
-    m_OrOpLevel:    Array'u32
+    nfaNodes:       Array'(*NfaNode)
+    dfaNodes:       Array'(*DfaNode)
+    nfaStack:       Array'(*NfaTable)
+    nfaTables:      Array'(*NfaTable)
+    charSet:        HashSet'rune
+    openParen:      Array'u32
+    orOpStack:      Array'rune
+    orOpLevel:      Array'u32
     preprocessed:   Array'rune
 }
 
@@ -42,22 +43,22 @@ impl RegExp
     // Clear content
     public mtd clear()
     {
-        visit p: m_Nfa
+        visit p: nfaNodes
             Memory.delete(p)
-        m_Nfa.clear()
+        nfaNodes.clear()
 
-        visit p: m_Dfa
+        visit p: dfaNodes
             Memory.delete(p)
-        m_Dfa.clear()
+        dfaNodes.clear()
 
-        visit p: m_NfaStack
+        visit p: nfaTables
             Memory.delete(p)
-        m_NfaStack.clear()
+        nfaTables.clear()
 
-        m_CharSet.clear()
-        m_OpParen.clear()
-        m_OrOpStack.clear()
-        m_OrOpLevel.clear()
+        charSet.clear()
+        openParen.clear()
+        orOpStack.clear()
+        orOpLevel.clear()
         preprocessed.clear()
     }
 
@@ -73,11 +74,11 @@ impl RegExp
     // Returns true if 'str' matches the regexp
     public mtd match(str: string)->bool
     {
-        if m_Dfa.isEmpty()
+        if dfaNodes.isEmpty()
             return false
 
         var stack1, stack2: Array'(*DfaNode)
-        stack1.add(m_Dfa[0])
+        stack1.add(dfaNodes[0])
         pstack1 := &stack1
         pstack2 := &stack2
 
@@ -153,28 +154,30 @@ impl RegExp
 
     mtd nfaPop()->*NfaTable throw
     {
-        if m_NfaStack.isEmpty()
+        if nfaStack.isEmpty()
             throw "nfaPop"
-        return m_NfaStack.popBack()
+        return nfaStack.popBack()
     }
 
     mtd nfaPush(c: rune)
     {
         // Creates 2 new states, and one transition (by c) between them
-        table        := Memory.new'NfaTable()
-        table.level  = cast(u32) m_OpParen.count
-        s1           := Memory.new'NfaNode()
-        s2           := Memory.new'NfaNode()
-        m_Nfa.add(s1)
-        m_Nfa.add(s2)
+        table := Memory.new'NfaTable()
+        s1    := Memory.new'NfaNode()
+        s2    := Memory.new'NfaNode()
+
+        table.level = cast(u32) openParen.count
+        nfaTables.add(table)
+        nfaNodes.add(s1)
+        nfaNodes.add(s2)
         s1.addTransition(c, s2)
 
         table.nodes.add(s1)
         table.nodes.add(s2)
-        m_NfaStack.add(table)
+        nfaStack.add(table)
 
         // Add the character to the list of terminal characters.
-        m_CharSet.add(c)
+        charSet.add(c)
     }
 
     mtd operatorUnion() throw
@@ -184,8 +187,8 @@ impl RegExp
 
         ns1 := Memory.new'NfaNode()
         ns2 := Memory.new'NfaNode()
-        m_Nfa.add(ns1)
-        m_Nfa.add(ns2)
+        nfaNodes.add(ns1)
+        nfaNodes.add(ns2)
 
         s1 := table1.nodes.front()
         s2 := table1.nodes.back()
@@ -200,33 +203,32 @@ impl RegExp
         table1.nodes.add(table2.nodes.toSlice())
         table1.nodes.insertAt(0, ns1)
         table1.nodes.add(ns2)
-        m_NfaStack.add(table1)
-        Memory.delete(table2)
+        nfaStack.add(table1)
     }
 
     mtd unionValidate() throw
     {
-        if m_OrOpStack.isEmpty()
+        if orOpStack.isEmpty()
             return
-        if m_NfaStack.count < 2
+        if nfaStack.count < 2
             return
 
         // Check if the two tables have the same nested level
         // @optim
         table2 := try nfaPop()
         table1 := try nfaPop()
-        m_NfaStack.add(table1)
-        m_NfaStack.add(table2)
+        nfaStack.add(table1)
+        nfaStack.add(table2)
         if table1.level != table2.level
             return
 
         // Operator must be at the same level
-        if m_OrOpLevel[m_OrOpLevel.count - 1] != table1.level
+        if orOpLevel[orOpLevel.count - 1] != table1.level
             return
 
         // Else validate union
-        m_OrOpStack.removeBack()
-        m_OrOpLevel.removeBack()
+        orOpStack.removeBack()
+        orOpLevel.removeBack()
         try operatorUnion()
     }
 
@@ -237,7 +239,7 @@ impl RegExp
         s2 := table.nodes.back()
         s1.addTransition(0, s2)
         s2.addTransition(0, s1)
-        m_NfaStack.add(table)
+        nfaStack.add(table)
     }
 
     mtd operatorPlus() throw
@@ -246,7 +248,7 @@ impl RegExp
         s1 := table.nodes.front()
         s2 := table.nodes.back()
         s2.addTransition(0, s1)
-        m_NfaStack.add(table)
+        nfaStack.add(table)
     }
 
     mtd operatorQuestion() throw
@@ -255,7 +257,7 @@ impl RegExp
         s1 := table.nodes.front()
         s2 := table.nodes.back()
         s1.addTransition(0, s2)
-        m_NfaStack.add(table)
+        nfaStack.add(table)
     }
 
     func isReservedChar(c: rune)->bool
@@ -282,14 +284,14 @@ impl RegExp
             switch c
             {
             case "("'rune:
-                m_OpParen.add(cast(u32) m_NfaStack.count)
+                openParen.add(cast(u32) nfaStack.count)
 
             case ")"'rune:
                 try unionValidate()
-                if m_OpParen.isEmpty()
+                if openParen.isEmpty()
                     throw "syntax, unexpected right parenthesis"
-                op := m_OpParen.popBack()
-                try operatorConcat(m_NfaStack.count - op)
+                op := openParen.popBack()
+                try operatorConcat(nfaStack.count - op)
 
             case "*"'rune:
                 try operatorStar()
@@ -302,8 +304,8 @@ impl RegExp
 
             case "|"'rune:
                 try unionValidate()
-                m_OrOpStack.add(c)
-                m_OrOpLevel.add(cast(u32) m_OpParen.count)
+                orOpStack.add(c)
+                orOpLevel.add(cast(u32) openParen.count)
 
             case "."'rune:
                 try unionValidate()
@@ -331,11 +333,11 @@ impl RegExp
 
         // Remaining operators
         try unionValidate()
-        if !m_OrOpStack.isEmpty()
+        if !orOpStack.isEmpty()
             throw "syntax"
 
         // Concat the remaining nodes
-        try operatorConcat(m_NfaStack.count)
+        try operatorConcat(nfaStack.count)
     }
 
     mtd operatorConcat(cpt: uint) throw
@@ -347,16 +349,15 @@ impl RegExp
             table1 := try nfaPop()
 
             // Update nested level
-            table1.level = cast(u32) m_OpParen.count
-            table2.level = cast(u32) m_OpParen.count
+            table1.level = cast(u32) openParen.count
+            table2.level = cast(u32) openParen.count
 
             s1 := table1.nodes.back()
             s2 := table2.nodes.front()
             s1.addTransition(0, s2)
 
             table1.nodes.add(table2.nodes.toSlice())
-            Memory.delete(table2)
-            m_NfaStack.add(table1)
+            nfaStack.add(table1)
 
             count -= 1
         }
@@ -365,8 +366,8 @@ impl RegExp
         if count == 1
         {
             table1 := try nfaPop()
-            table1.level = cast(u32) m_OpParen.count
-            m_NfaStack.add(table1)
+            table1.level = cast(u32) openParen.count
+            nfaStack.add(table1)
         }
     }
 
@@ -453,7 +454,7 @@ impl RegExp
 
         state := Memory.new'DfaNode()
         state.setTable(&dfaStart)
-        m_Dfa.add(state)
+        dfaNodes.add(state)
 
         var moveRes, epsilonRes: HashSet'(*NfaNode)
         var stack: Array'(*DfaNode)
@@ -461,7 +462,7 @@ impl RegExp
         while stack.count
         {
             state = stack.popBack()
-            visit c: m_CharSet
+            visit c: charSet
             {
                 dfaMoveNode(&moveRes, c, state.table)
                 if moveRes.count == 0
@@ -469,7 +470,7 @@ impl RegExp
                 dfaEClosure(&moveRes, &epsilonRes)
 
                 var found: *DfaNode
-                visit tstate: m_Dfa
+                visit tstate: dfaNodes
                 {
                     if tstate.table.count == epsilonRes.count
                     {
@@ -486,14 +487,12 @@ impl RegExp
                     found = Memory.new'DfaNode()
                     found.setTable(&epsilonRes)
                     stack.add(found)
-                    m_Dfa.add(found)
+                    dfaNodes.add(found)
                 }
 
                 state.transitions.add(c, found)
             }
         }
-
-        Memory.delete(table)
     }
 
     mtd preprocessInter(sl: const [..] rune)->const *rune throw

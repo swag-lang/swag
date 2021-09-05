@@ -134,6 +134,7 @@ impl HashTable
             }
         }
 
+        Memory.free(oldTable, capacity * @sizeof(HashTableEntry), allocator)
         capacity = reqCapacity
     }
 
