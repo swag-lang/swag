@@ -22,14 +22,14 @@ struct DfaNode
 #[Swag.Opaque]
 public struct RegExp
 {
-    preprocessed:   Array'rune
-    m_NfaStack:     Array'(*NfaTable)
     m_Nfa:          Array'(*NfaNode)
     m_Dfa:          Array'(*DfaNode)
+    m_NfaStack:     Array'(*NfaTable)
     m_CharSet:      HashSet'rune
     m_OpParen:      Array'u32
     m_OrOpStack:    Array'rune
     m_OrOpLevel:    Array'u32
+    preprocessed:   Array'rune
 }
 
 impl RegExp
@@ -44,17 +44,21 @@ impl RegExp
     {
         visit p: m_Nfa
             Memory.delete(p)
-        visit p: m_NfaStack
-            Memory.delete(p)
+        m_Nfa.clear()
+
         visit p: m_Dfa
             Memory.delete(p)
-        preprocessed.clear()
+        m_Dfa.clear()
+
+        visit p: m_NfaStack
+            Memory.delete(p)
         m_NfaStack.clear()
-        m_Nfa.clear()
+
         m_CharSet.clear()
         m_OpParen.clear()
         m_OrOpStack.clear()
         m_OrOpLevel.clear()
+        preprocessed.clear()
     }
 
     // Compile the expression
@@ -142,6 +146,32 @@ impl RegExp
         here.value.add(toNode)
     }
 
+    mtd nfaPop()->*NfaTable throw
+    {
+        if m_NfaStack.isEmpty()
+            throw "nfaPop"
+        return m_NfaStack.popBack()
+    }
+
+    mtd nfaPush(c: rune)
+    {
+        // Creates 2 new states, and one transition (by c) between them
+        table        := Memory.new'NfaTable()
+        table.level  = cast(u32) m_OpParen.count
+        s1           := Memory.new'NfaNode()
+        s2           := Memory.new'NfaNode()
+        m_Nfa.add(s1)
+        m_Nfa.add(s2)
+        s1.addTransition(c, s2)
+
+        table.nodes.add(s1)
+        table.nodes.add(s2)
+        m_NfaStack.add(table)
+
+        // Add the character to the list of terminal characters.
+        m_CharSet.add(c)
+    }
+
     mtd operatorUnion() throw
     {
         table2 := try nfaPop()
@@ -166,6 +196,7 @@ impl RegExp
         table1.nodes.insertAt(0, ns1)
         table1.nodes.add(ns2)
         m_NfaStack.add(table1)
+        Memory.delete(table2)
     }
 
     mtd unionValidate() throw
@@ -192,32 +223,6 @@ impl RegExp
         m_OrOpStack.removeBack()
         m_OrOpLevel.removeBack()
         try operatorUnion()
-    }
-
-    mtd nfaPop()->*NfaTable throw
-    {
-        if m_NfaStack.isEmpty()
-            throw "nfaPop"
-        return m_NfaStack.popBack()
-    }
-
-    mtd nfaPush(c: rune)
-    {
-        // Creates 2 new states, and one transition (by c) between them
-        table        := Memory.new'NfaTable()
-        table.level  = cast(u32) m_OpParen.count
-        s1           := Memory.new'NfaNode()
-        s2           := Memory.new'NfaNode()
-        m_Nfa.add(s1)
-        m_Nfa.add(s2)
-        s1.addTransition(c, s2)
-
-        table.nodes.add(s1)
-        table.nodes.add(s2)
-        m_NfaStack.add(table)
-
-        // Add the character to the list of terminal characters.
-        m_CharSet.add(c)
     }
 
     mtd operatorStar() throw
@@ -248,6 +253,19 @@ impl RegExp
         m_NfaStack.add(table)
     }
 
+    func isReservedChar(c: rune)->bool
+    {
+        switch c
+        {
+        case "\\"'rune, "("'rune, ")"'rune, "*"'rune, "?"'rune,
+             "+"'rune, "."'rune, "|"'rune, "["'rune, "]"'rune,
+             "{"'rune, "}"'rune:
+             return true
+        }
+
+        return false
+    }
+
     mtd nfaBuild() throw
     {
         pz  := preprocessed.buffer
@@ -264,7 +282,7 @@ impl RegExp
             case ")"'rune:
                 try unionValidate()
                 if m_OpParen.isEmpty()
-                    throw "syntax"
+                    throw "syntax, unexpected right parenthesis"
                 op := m_OpParen.popBack()
                 try operatorConcat(m_NfaStack.count - op)
 
@@ -278,15 +296,23 @@ impl RegExp
                 try operatorQuestion()
 
             case "|"'rune:
-                Debug.assert(false) // todo
-                break
+                try unionValidate()
+                m_OrOpStack.add(c)
+                m_OrOpLevel.add(cast(u32) m_OpParen.count)
 
             case "."'rune:
-                Debug.assert(false) // todo
-                break
+                try unionValidate()
+                nfaPush(0)
 
             case "\\"'rune:
-                Debug.assert(false) // todo
+                if isReservedChar(pz[1])
+                {
+                    c = pz[1]
+                    cpt, pz += 1
+                }
+
+                try unionValidate()
+                nfaPush(c)
                 break
 
             default:
@@ -301,7 +327,7 @@ impl RegExp
         // Remaining operators
         try unionValidate()
         if !m_OrOpStack.isEmpty()
-            throw "nfabuild"
+            throw "syntax"
 
         // Concat the remaining nodes
         try operatorConcat(m_NfaStack.count)
