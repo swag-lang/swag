@@ -19,11 +19,17 @@
 // [[:alnum:]]
 // [[:lower:]] or \l
 // [[:upper:]] or \u
-// [[:blank:]]
+// [[:blank:]] or \b
 // [[:space:]] or \s
 // [[:word:]]  or \w
+// [[:ascii:]]
 
-const RuneDigit = cast(rune) 0x8000_0000
+const RuneDigit  = cast(rune) 0x8000_0000
+const RuneLetter = cast(rune) 0x8000_0001
+const RuneLower  = cast(rune) 0x8000_0002
+const RuneUpper  = cast(rune) 0x8000_0003
+const RuneSpace  = cast(rune) 0x8000_0004
+const RuneAscii  = cast(rune) 0x8000_0005
 
 struct NfaNode
 {
@@ -150,6 +156,56 @@ impl RegExp
         if Unicode.isDigit(c)
         {
             find := curState.transitions.find(RuneDigit)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isLetter(c)
+        {
+            find := curState.transitions.find(RuneLetter)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isLower(c)
+        {
+            find := curState.transitions.find(RuneLower)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isUpper(c)
+        {
+            find := curState.transitions.find(RuneUpper)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isSpace(c)
+        {
+            find := curState.transitions.find(RuneSpace)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isAscii(c)
+        {
+            find := curState.transitions.find(RuneAscii)
             if find
             {
                 out.add(find.value)
@@ -561,35 +617,43 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
-                    try preprocessInter(@runes("[a-fA-F0-9]"))
+                    preprocessed.add("("'rune)
+                    try preprocessInter(@runes("[a-fA-F]"))
+                    preprocessed.add("|"'rune)
+                    preprocessed.add(RuneDigit)
+                    preprocessed.add(")"'rune)
                     pz += 8
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z]"))
+                    preprocessed.add(RuneLetter)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z0-9]"))
+                    preprocessed.add("("'rune)
+                    preprocessed.add(RuneLetter)
+                    preprocessed.add("|"'rune)
+                    preprocessed.add(RuneDigit)
+                    preprocessed.add(")"'rune)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[a-z]"))
+                    preprocessed.add(RuneLower)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:upper:]"), false, 9) == 0
                 {
-                    try preprocessInter(@runes("[A-Z]"))
+                    preprocessed.add(RuneUpper)
                     pz += 9
                     continue
                 }
@@ -603,14 +667,27 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
                 {
-                    preprocessed.add(@runes(" |\f|\n|\r|\t|\v"))
+                    preprocessed.add(RuneSpace)
+                    pz += 9
+                    continue
+                }
+
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:ascii:]"), false, 9) == 0
+                {
+                    preprocessed.add(RuneAscii)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    try preprocessInter(@runes("[a-zA-Z0-9_]"))
+                    preprocessed.add("("'rune)
+                    preprocessed.add(RuneLetter)
+                    preprocessed.add("|"'rune)
+                    preprocessed.add(RuneDigit)
+                    preprocessed.add("|"'rune)
+                    preprocessed.add("_"'rune)
+                    preprocessed.add(")"'rune)
                     pz += 8
                     continue
                 }
