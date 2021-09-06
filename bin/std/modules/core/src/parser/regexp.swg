@@ -24,12 +24,12 @@
 // [[:word:]]  or \w
 // [[:ascii:]]
 
-const RuneDigit  = cast(rune) 0x8000_0000
-const RuneLetter = cast(rune) 0x8000_0001
-const RuneLower  = cast(rune) 0x8000_0002
-const RuneUpper  = cast(rune) 0x8000_0003
-const RuneSpace  = cast(rune) 0x8000_0004
-const RuneAscii  = cast(rune) 0x8000_0005
+const RuneAsciiDigit  = cast(rune) 0x8000_0000
+const RuneAsciiLetter = cast(rune) 0x8000_0001
+const RuneAsciiLower  = cast(rune) 0x8000_0002
+const RuneAsciiUpper  = cast(rune) 0x8000_0003
+const RuneAsciiSpace  = cast(rune) 0x8000_0004
+const RuneAscii       = cast(rune) 0x8000_0005
 
 struct NfaNode
 {
@@ -153,58 +153,59 @@ impl RegExp
         ok := false
 
         // Is there a transition with a specific range ?
-        if Unicode.isDigit(c)
-        {
-            find := curState.transitions.find(RuneDigit)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isLetter(c)
-        {
-            find := curState.transitions.find(RuneLetter)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isLower(c)
-        {
-            find := curState.transitions.find(RuneLower)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isUpper(c)
-        {
-            find := curState.transitions.find(RuneUpper)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isSpace(c)
-        {
-            find := curState.transitions.find(RuneSpace)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
         if Unicode.isAscii(c)
         {
+            c8 := cast(u8) c
+            if Latin1.isDigit(c8)
+            {
+                find := curState.transitions.find(RuneAsciiDigit)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
+            }
+
+            if Latin1.isLetter(c8)
+            {
+                find := curState.transitions.find(RuneAsciiLetter)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
+            }
+
+            if Latin1.isLower(c8)
+            {
+                find := curState.transitions.find(RuneAsciiLower)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
+            }
+
+            if Latin1.isUpper(c8)
+            {
+                find := curState.transitions.find(RuneAsciiUpper)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
+            }
+
+            if Latin1.isSpace(c8)
+            {
+                find := curState.transitions.find(RuneAsciiSpace)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
+            }
+
             find := curState.transitions.find(RuneAscii)
             if find
             {
@@ -610,7 +611,7 @@ impl RegExp
             {
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneDigit)
+                    preprocessed.add(RuneAsciiDigit)
                     pz += 9
                     continue
                 }
@@ -620,7 +621,7 @@ impl RegExp
                     preprocessed.add("("'rune)
                     try preprocessInter(@runes("[a-fA-F]"))
                     preprocessed.add("|"'rune)
-                    preprocessed.add(RuneDigit)
+                    preprocessed.add(RuneAsciiDigit)
                     preprocessed.add(")"'rune)
                     pz += 8
                     continue
@@ -628,7 +629,7 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneLetter)
+                    preprocessed.add(RuneAsciiLetter)
                     pz += 9
                     continue
                 }
@@ -636,9 +637,9 @@ impl RegExp
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
                     preprocessed.add("("'rune)
-                    preprocessed.add(RuneLetter)
+                    preprocessed.add(RuneAsciiLetter)
                     preprocessed.add("|"'rune)
-                    preprocessed.add(RuneDigit)
+                    preprocessed.add(RuneAsciiDigit)
                     preprocessed.add(")"'rune)
                     pz += 9
                     continue
@@ -646,14 +647,14 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneLower)
+                    preprocessed.add(RuneAsciiLower)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:upper:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneUpper)
+                    preprocessed.add(RuneAsciiUpper)
                     pz += 9
                     continue
                 }
@@ -667,7 +668,7 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneSpace)
+                    preprocessed.add(RuneAsciiSpace)
                     pz += 9
                     continue
                 }
@@ -682,9 +683,9 @@ impl RegExp
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
                     preprocessed.add("("'rune)
-                    preprocessed.add(RuneLetter)
+                    preprocessed.add(RuneAsciiLetter)
                     preprocessed.add("|"'rune)
-                    preprocessed.add(RuneDigit)
+                    preprocessed.add(RuneAsciiDigit)
                     preprocessed.add("|"'rune)
                     preprocessed.add("_"'rune)
                     preprocessed.add(")"'rune)

@@ -12,12 +12,6 @@
 
     {
         var r: Parser.RegExp
-        assume r.compile("[[:alpha:]]")
-        @assert(r.match("衣"))
-    }
-
-    {
-        var r: Parser.RegExp
         assume r.compile("[[:lower:]]*")
         @assert(r.match("abcde"))
         @assert(!r.match("A"))
