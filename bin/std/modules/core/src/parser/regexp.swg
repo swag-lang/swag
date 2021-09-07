@@ -814,7 +814,7 @@ impl RegExp
             }
 
             if cptParen
-                throw "syntax"
+                throw "syntax, missing '('"
 
             var expr: Array'rune
             while pz1 <= pze
