@@ -733,9 +733,126 @@ impl RegExp
         return pz
     }
 
+    mtd toI32(pz, pzEnd: const *rune, val: *s32)->const *rune throw
+    {
+        var result: retval
+        if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
+            throw "syntax"
+
+        pzStart := pz
+        n := 0
+        while pzStart != pzEnd and Unicode.isLatin1(pzStart[0]) and Latin1.isDigit(cast(u8) pzStart[0])
+        {
+            n *= 10
+            n += cast(u8) pzStart[0] - "0"'u8
+            pzStart += 1
+        }
+
+        val[0] = n
+        return pzStart
+    }
+
     mtd preprocessEnum(sl: const [..] rune)->const *rune throw
     {
-        pz := @dataof(sl)
+        pz      := @dataof(sl)
+        pzStart := pz
+        pzEnd   := pz + @countof(sl)
+
+        if preprocessed.count == 0
+            throw "syntax, { without a previous expression"
+
+        m := -1
+        pz += 1
+
+        // n value
+        var n: s32 = 0
+        pz = try toI32(pz, pzEnd, &n)
+
+        // m value
+        if pz[0] == ","'rune
+        {
+            m = -1
+            pz += 1
+            if pz[0] != "}"'rune
+                pz = try toI32(pz, pzEnd, &m)
+        }
+        else
+        {
+            m = n
+        }
+
+        if pz[0] != "}"'rune
+            throw "syntax, missing '}'"
+        if m != -1 and m < n
+            throw "syntax, m < n in {n,m}"
+        if m == 0 and n == 0
+            throw "syntax, m and n are zero in {n,m}"
+
+        pz += 1
+
+        if n == 0 and m == -1 // {0,}
+            preprocessed.add("*"'rune)
+        else if n == 0 and m == 1 // {0,1}
+            preprocessed.add("?"'rune)
+        else if n == 1 and m == -1 // {1,}
+            preprocessed.add("+"'rune)
+        else if n != 1 or m != 1 // {1,1}
+        {
+            // Isolate expression to duplicate
+            pze := preprocessed.buffer + preprocessed.count - 1
+            pz1 := pze
+            cptParen := 0
+            if pz[1] == ")"'rune
+                cptParen += 1
+            while cptParen and pz1 != preprocessed.buffer
+            {
+                pz1 -= 1
+                if pz1[0] == ")"'rune
+                    cptParen += 1
+                if pz1[0] == "("'rune
+                    cptParen -= 1
+            }
+
+            if cptParen
+                throw "syntax"
+
+            var expr: Array'rune
+            while pz1 <= pze
+            {
+                expr.add(pz1[0])
+                pz1 += 1
+            }
+
+            if n == 0
+                preprocessed.add(cast(const [..] rune) expr.toSlice())
+            else
+            {
+                i := n - 1
+                while i
+                {
+                    preprocessed.add(cast(const [..] rune) expr.toSlice())
+                    i -= 1
+                }
+            }
+
+            if m == -1
+            {
+                preprocessed.add("+"'rune)
+            }
+            else
+            {
+                if n == 0
+                    m -= 1
+                m -= n
+                while m
+                {
+                    preprocessed.add(cast(const [..] rune) expr.toSlice())
+                    preprocessed.add("?"'rune)
+                    m -= 1
+                }
+            }
+        }
+
         return pz
     }
 
