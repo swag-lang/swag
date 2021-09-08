@@ -13,6 +13,10 @@
 // [abc]     match any in list
 // [a-zA-Z]  match any in range
 //
+// Unicode:
+// /pL  letter
+//
+// Ascii only:
 // [[:digit:]] or \d
 // [[:hexa:]]
 // [[:alpha:]]
@@ -24,12 +28,13 @@
 // [[:word:]]  or \w
 // [[:ascii:]]
 
-const RuneAsciiDigit  = cast(rune) 0x8000_0000
-const RuneAsciiLetter = cast(rune) 0x8000_0001
-const RuneAsciiLower  = cast(rune) 0x8000_0002
-const RuneAsciiUpper  = cast(rune) 0x8000_0003
-const RuneAsciiSpace  = cast(rune) 0x8000_0004
-const RuneAscii       = cast(rune) 0x8000_0005
+const RuneAsciiDigit    = cast(rune) 0x8000_0000
+const RuneAsciiLetter   = cast(rune) 0x8000_0001
+const RuneAsciiLower    = cast(rune) 0x8000_0002
+const RuneAsciiUpper    = cast(rune) 0x8000_0003
+const RuneAsciiSpace    = cast(rune) 0x8000_0004
+const RuneAscii         = cast(rune) 0x8000_0005
+const RuneUnicodeLetter = cast(rune) 0x8000_0006
 
 struct NfaNode
 {
@@ -207,6 +212,16 @@ impl RegExp
             }
 
             find := curState.transitions.find(RuneAscii)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isLetter(c)
+        {
+            find := curState.transitions.find(RuneUnicodeLetter)
             if find
             {
                 out.add(find.value)
@@ -824,13 +839,13 @@ impl RegExp
             }
 
             if n == 0
-                preprocessed.add(cast(const [..] rune) expr.toSlice())
+                preprocessed.add(expr.toSlice())
             else
             {
                 i := n - 1
                 while i
                 {
-                    preprocessed.add(cast(const [..] rune) expr.toSlice())
+                    preprocessed.add(expr.toSlice())
                     i -= 1
                 }
             }
@@ -846,11 +861,28 @@ impl RegExp
                 m -= n
                 while m
                 {
-                    preprocessed.add(cast(const [..] rune) expr.toSlice())
+                    preprocessed.add(expr.toSlice())
                     preprocessed.add("?"'rune)
                     m -= 1
                 }
             }
+        }
+
+        return pz
+    }
+
+    mtd preprocessUnicode(sl: const [..] rune)->const *rune throw
+    {
+        pz      := @dataof(sl)
+        pzStart := pz
+        pzEnd   := pz + @countof(sl)
+
+        pz += 2
+        switch pz[0]
+        {
+        case "L"'rune:
+            preprocessed.add(RuneUnicodeLetter)
+            return pz + 1
         }
 
         return pz
@@ -897,6 +929,9 @@ impl RegExp
             case "v"'rune:
                 preprocessed.add("\v"'rune)
                 return pz + 2
+            case "p"'rune:
+                pz = try preprocessUnicode(sl)
+                return pz
             }
         }
 
