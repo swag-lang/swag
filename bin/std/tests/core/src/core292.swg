@@ -15,4 +15,18 @@ using Core
         @assert(r.match("01234෦"))
         @assert(!r.match("a01234"))
     }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("\\p{Ll}*")
+        @assert(r.match("abcdef"))
+        @assert(!r.match("AB"))
+    }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("\\p{Lu}*")
+        @assert(r.match("ABCDE"))
+        @assert(!r.match("ab"))
+    }
 }

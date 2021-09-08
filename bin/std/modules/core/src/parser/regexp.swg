@@ -37,9 +37,9 @@ const RuneAsciiSpace    = cast(rune) 0x8000_0004
 const RuneAscii         = cast(rune) 0x8000_0005
 
 const RuneUnicodeLetter     = cast(rune) 0x8000_0006
-const RuneUnicodeLoLetter   = cast(rune) 0x8000_0006
-const RuneUnicodeUpLetter   = cast(rune) 0x8000_0007
-const RuneUnicodeNumber     = cast(rune) 0x8000_0008
+const RuneUnicodeLoLetter   = cast(rune) 0x8000_0007
+const RuneUnicodeUpLetter   = cast(rune) 0x8000_0008
+const RuneUnicodeNumber     = cast(rune) 0x8000_0009
 
 struct NfaNode
 {
@@ -160,20 +160,22 @@ impl RegExp
 
     mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
-        var find: *HashTableEntry'(rune, *DfaNode)
-
         ok := false
 
         #[Swag.Mixin]
         func checkTr(c: rune)
         {
-            find = curState.transitions.find(c)
-            if find
             {
-                out.add(find.value)
-                ok = true
+                find := curState.transitions.find(c)
+                if find
+                {
+                    out.add(find.value)
+                    ok = true
+                }
             }
         }
+
+        // Should be optimized, because some are exclusive
 
         if Unicode.isLatin1(c)
         {
@@ -827,11 +829,24 @@ impl RegExp
         pzEnd   := pz + @countof(sl)
 
         pz += 2
+        if pz[0] == "{"'rune
+        {
+            if pz[1] == "L"'rune and pz[3] == "}"'rune
+            {
+                switch pz[2]
+                {
+                case "l"'rune:
+                    preprocessed.add(RuneUnicodeLoLetter)
+                    return pz + 4
+                case "u"'rune:
+                    preprocessed.add(RuneUnicodeUpLetter)
+                    return pz + 4
+                }
+            }
+        }
+
         switch pz[0]
         {
-        case "{"'rune:
-            break
-
         case "L"'rune:
             preprocessed.add(RuneUnicodeLetter)
             return pz + 1
