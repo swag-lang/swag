@@ -15,6 +15,7 @@
 //
 // Unicode:
 // /pL  letter
+// /pN  number
 //
 // Ascii only:
 // [[:digit:]] or \d
@@ -34,7 +35,11 @@ const RuneAsciiLower    = cast(rune) 0x8000_0002
 const RuneAsciiUpper    = cast(rune) 0x8000_0003
 const RuneAsciiSpace    = cast(rune) 0x8000_0004
 const RuneAscii         = cast(rune) 0x8000_0005
-const RuneUnicodeLetter = cast(rune) 0x8000_0006
+
+const RuneUnicodeLetter     = cast(rune) 0x8000_0006
+const RuneUnicodeLoLetter   = cast(rune) 0x8000_0006
+const RuneUnicodeUpLetter   = cast(rune) 0x8000_0007
+const RuneUnicodeNumber     = cast(rune) 0x8000_0008
 
 struct NfaNode
 {
@@ -222,6 +227,36 @@ impl RegExp
         if Unicode.isLetter(c)
         {
             find := curState.transitions.find(RuneUnicodeLetter)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isLower(c)
+        {
+            find := curState.transitions.find(RuneUnicodeLoLetter)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isUpper(c)
+        {
+            find := curState.transitions.find(RuneUnicodeUpLetter)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isNumber(c)
+        {
+            find := curState.transitions.find(RuneUnicodeNumber)
             if find
             {
                 out.add(find.value)
@@ -880,8 +915,14 @@ impl RegExp
         pz += 2
         switch pz[0]
         {
+        case "{"'rune:
+            break
+
         case "L"'rune:
             preprocessed.add(RuneUnicodeLetter)
+            return pz + 1
+        case "N"'rune:
+            preprocessed.add(RuneUnicodeNumber)
             return pz + 1
         }
 
