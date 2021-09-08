@@ -160,125 +160,39 @@ impl RegExp
 
     mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
+        var find: *HashTableEntry'(rune, *DfaNode)
+
         ok := false
 
-        // Is there a transition with a specific range ?
-        if Unicode.isAscii(c)
+        #[Swag.Mixin]
+        func checkTr(c: rune)
+        {
+            find = curState.transitions.find(c)
+            if find
+            {
+                out.add(find.value)
+                ok = true
+            }
+        }
+
+        if Unicode.isLatin1(c)
         {
             c8 := cast(u8) c
-            if Latin1.isDigit(c8)
-            {
-                find := curState.transitions.find(RuneAsciiDigit)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
-            }
-
-            if Latin1.isLetter(c8)
-            {
-                find := curState.transitions.find(RuneAsciiLetter)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
-            }
-
-            if Latin1.isLower(c8)
-            {
-                find := curState.transitions.find(RuneAsciiLower)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
-            }
-
-            if Latin1.isUpper(c8)
-            {
-                find := curState.transitions.find(RuneAsciiUpper)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
-            }
-
-            if Latin1.isSpace(c8)
-            {
-                find := curState.transitions.find(RuneAsciiSpace)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
-            }
-
-            find := curState.transitions.find(RuneAscii)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
+            if Latin1.isDigit(c8)   checkTr(RuneAsciiDigit)
+            if Latin1.isLetter(c8)  checkTr(RuneAsciiLetter)
+            if Latin1.isLower(c8)   checkTr(RuneAsciiLower)
+            if Latin1.isUpper(c8)   checkTr(RuneAsciiUpper)
+            if Latin1.isSpace(c8)   checkTr(RuneAsciiSpace)
+            checkTr(RuneAscii)
         }
 
-        if Unicode.isLetter(c)
-        {
-            find := curState.transitions.find(RuneUnicodeLetter)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
+        if Unicode.isLetter(c)  checkTr(RuneUnicodeLetter)
+        if Unicode.isLower(c)   checkTr(RuneUnicodeLoLetter)
+        if Unicode.isUpper(c)   checkTr(RuneUnicodeUpLetter)
+        if Unicode.isNumber(c)  checkTr(RuneUnicodeNumber)
 
-        if Unicode.isLower(c)
-        {
-            find := curState.transitions.find(RuneUnicodeLoLetter)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isUpper(c)
-        {
-            find := curState.transitions.find(RuneUnicodeUpLetter)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        if Unicode.isNumber(c)
-        {
-            find := curState.transitions.find(RuneUnicodeNumber)
-            if find
-            {
-                out.add(find.value)
-                ok = true
-            }
-        }
-
-        // Is there a transition with the input character ?
-        find := curState.transitions.find(c)
-        if find
-        {
-            out.add(find.value)
-            ok = true
-        }
-
-        // Is there a transition with the "any" operator ?
-        find = curState.transitions.find(0)
-        if find
-        {
-            out.add(find.value)
-            ok = true
-        }
+        checkTr(c)
+        checkTr(0)
 
         return ok
     }

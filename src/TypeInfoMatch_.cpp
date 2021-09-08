@@ -405,7 +405,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 
 static bool valueEqualsTo(const ComputedValue* value, AstNode* node)
 {
-    if (!value && !node->computedValue)
+    if (!value || !node->computedValue)
         return true;
 
     // Types
