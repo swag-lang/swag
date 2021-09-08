@@ -160,21 +160,20 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         {
                             // We could have match a non const against a const
                             // We need to instantiate with the const equivalent, so make the call type const
-                            auto trCallTypeInfo = callTypeInfo;
                             if (!callTypeInfo->isConst() && wantedTypeInfo->isConst())
                             {
-                                trCallTypeInfo = callTypeInfo->clone();
-                                trCallTypeInfo->setConst();
+                                callTypeInfo = callTypeInfo->clone();
+                                callTypeInfo->setConst();
                             }
 
                             // Associate the generic type with that concrete one
-                            context.genericReplaceTypes[wantedTypeInfo->name] = trCallTypeInfo;
+                            context.genericReplaceTypes[wantedTypeInfo->name] = callTypeInfo;
 
                             // If this is a valid generic argument, register it at the correct call position
                             auto itIdx = context.mapGenericTypesIndex.find(wantedTypeInfo->name);
                             if (itIdx != context.mapGenericTypesIndex.end())
                             {
-                                context.genericParametersCallTypes[itIdx->second] = trCallTypeInfo;
+                                context.genericParametersCallTypes[itIdx->second] = callTypeInfo;
                             }
                         }
                     }
