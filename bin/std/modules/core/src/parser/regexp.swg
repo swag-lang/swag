@@ -74,6 +74,7 @@ public struct RegExp
     orOpStack:      Array'rune
     orOpLevel:      Array'u32
     preprocessed:   Array'rune
+    ignoreCase:     bool
 }
 
 impl RegExp
@@ -106,9 +107,10 @@ impl RegExp
     }
 
     // Compile the expression
-    public mtd compile(str: string) throw
+    public mtd compile(str: string, ignoreCase: bool = false) throw
     {
         clear()
+        self.ignoreCase = #scopefct.ignoreCase
         try preprocess(str)
         try nfaBuild()
         try dfaBuild()
@@ -132,6 +134,8 @@ impl RegExp
         while cpt < srcLength and !pstack1.isEmpty()
         {
             (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            if ignoreCase
+                c = Unicode.toUpper(c)
 
             ok := false
             while !pstack1.isEmpty()
@@ -220,6 +224,8 @@ impl RegExp
         while cpt < srcLength and !pstack1.isEmpty()
         {
             (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            if ignoreCase
+                c = Unicode.toUpper(c)
 
             ok := false
             endState = false
@@ -1009,7 +1015,10 @@ impl RegExp
         start := cast(const *rune) in32.buffer
         pz    := cast(const *rune) in32.buffer
         pzEnd := pz + in32.count
-        c     := pz[0]
+
+        c := pz[0]
+        if ignoreCase
+            c = Unicode.toUpper(c)
 
         while c
         {
@@ -1029,6 +1038,8 @@ impl RegExp
             }
 
             c = pz[0]
+            if ignoreCase
+                c = Unicode.toUpper(c)
         }
     }
 }
