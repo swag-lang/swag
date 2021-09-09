@@ -27,6 +27,25 @@ impl HashSet
         free()
     }
 
+    mtd opPostCopy()
+    {
+        if table
+        {
+            newTable := cast(*HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
+            #if Reflection.hasPostCopy(K)
+            {
+                loop i: capacity
+                    newTable[i].key =,nodrop table[i].key
+            }
+            #else
+            {
+                Memory.copy(newTable, table, capacity * @sizeof(HashSetEntry))
+            }
+
+            table = newTable
+        }
+    }
+
     #[Macro]
     mtdc(ptr: bool) opVisit(stmt: code)
     {
@@ -120,7 +139,9 @@ impl HashSet
         Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
-        loop i: capacity
+        oldCapacity := capacity
+        capacity = reqCapacity
+        loop i: oldCapacity
         {
             if oldTable[i].hash >= HASH_FIRST
             {
@@ -129,11 +150,10 @@ impl HashSet
             }
         }
 
-        Memory.free(oldTable, capacity * @sizeof(HashSetEntry), allocator)
-        capacity = reqCapacity
+        Memory.free(oldTable, oldCapacity * @sizeof(HashSetEntry), allocator)
     }
 
-    // Add a new key value pair. If the key already exists, then the value will be replaced
+    // Add a new key.
     #[Swag.Discardable]
     mtd add(key: K)->*HashSetEntry
         #selectif Reflection.canCopy(@typeof(K))
@@ -155,6 +175,7 @@ impl HashSet
         table[index].hash = hashVal
         table[index].key = key
         count += 1
+
         return table + index
     }
 

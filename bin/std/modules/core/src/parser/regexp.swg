@@ -14,22 +14,33 @@
 // [a-zA-Z]  match any in range
 //
 // Unicode:
+//
 // /pL      letter
 // /p{Ll}   lower letter
 // /p{Lu}   upper letter
 // /pN      number
 //
 // Ascii only:
-// [[:digit:]] or \d
+//
+// [[:digit:]]
 // [[:hexa:]]
 // [[:alpha:]]
 // [[:alnum:]]
-// [[:lower:]] or \l
-// [[:upper:]] or \u
-// [[:blank:]] or \b
-// [[:space:]] or \s
-// [[:word:]]  or \w
+// [[:lower:]]
+// [[:upper:]]
+// [[:blank:]]
+// [[:space:]]
+// [[:word:]]
 // [[:ascii:]]
+//
+// Special escape characters:
+//
+// \d => [[:digit:]]
+// \l => [[:lower:]]
+// \u => [[:upper:]]
+// \b => [[:blank:]]
+// \s => [[:space:]]
+// \w => [[:word:]]
 
 const RuneAsciiDigit    = cast(rune) 0x8000_0000
 const RuneAsciiLetter   = cast(rune) 0x8000_0001

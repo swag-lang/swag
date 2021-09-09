@@ -124,7 +124,9 @@ impl HashTable
         Memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
-        loop i: capacity
+        oldCapacity := capacity
+        capacity = reqCapacity
+        loop i: oldCapacity
         {
             if oldTable[i].hash >= HASH_FIRST
             {
@@ -134,8 +136,7 @@ impl HashTable
             }
         }
 
-        Memory.free(oldTable, capacity * @sizeof(HashTableEntry), allocator)
-        capacity = reqCapacity
+        Memory.free(oldTable, oldCapacity * @sizeof(HashTableEntry), allocator)
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
