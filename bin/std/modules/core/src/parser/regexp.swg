@@ -114,7 +114,72 @@ impl RegExp
         try dfaBuild()
     }
 
-    // Find the first occurence
+    // Returns true if 'str' matches the regexp
+    public mtd match(str: string)->bool
+    {
+        if dfaNodes.isEmpty()
+            return false
+
+        var stack1, stack2: Array'(*DfaNode)
+        stack1.add(dfaNodes[0])
+        pstack1 := &stack1
+        pstack2 := &stack2
+
+        cpt       := 0
+        srcPtr    := @dataof(str)
+        srcLength := @countof(str)
+
+        while cpt < srcLength and !pstack1.isEmpty()
+        {
+            (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+
+            ok := false
+            while !pstack1.isEmpty()
+            {
+                curState := pstack1.popBack()
+                if dfaMatch(pstack2, c, curState)
+                    ok = true
+            }
+
+            if ok
+                cpt, srcPtr += eat
+
+            swap(&pstack1, &pstack2)
+        }
+
+        if cpt != srcLength
+            return false
+
+        while !pstack1.isEmpty()
+        {
+            curState := pstack1.popBack()
+            if curState.terminal
+                return true
+        }
+
+        return false
+    }
+
+    // Find all the occurences in the string
+    public mtd grepAll(str: string)->Array'string
+    {
+        var result: retval
+        res := str
+        end := @dataof(str) + @countof(str)
+        loop
+        {
+            res = grep(res)
+            if !res
+                break
+            result.add(res)
+            newStart := @dataof(res) + @countof(res)
+            res = @mkstring(newStart, end - newStart)
+        }
+
+        return result
+    }
+
+    // Find the first occurence in the string
     public mtd grep(str: string)->string
     {
         beg   := @dataof(str)
@@ -183,52 +248,6 @@ impl RegExp
         if !endState or srcPtr == @dataof(str)
             return null
         return srcPtr
-    }
-
-    // Returns true if 'str' matches the regexp
-    public mtd match(str: string)->bool
-    {
-        if dfaNodes.isEmpty()
-            return false
-
-        var stack1, stack2: Array'(*DfaNode)
-        stack1.add(dfaNodes[0])
-        pstack1 := &stack1
-        pstack2 := &stack2
-
-        cpt       := 0
-        srcPtr    := @dataof(str)
-        srcLength := @countof(str)
-
-        while cpt < srcLength and !pstack1.isEmpty()
-        {
-            (c, eat) := Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-
-            ok := false
-            while !pstack1.isEmpty()
-            {
-                curState := pstack1.popBack()
-                if dfaMatch(pstack2, c, curState)
-                    ok = true
-            }
-
-            if ok
-                cpt, srcPtr += eat
-
-            swap(&pstack1, &pstack2)
-        }
-
-        if cpt != srcLength
-            return false
-
-        while !pstack1.isEmpty()
-        {
-            curState := pstack1.popBack()
-            if curState.terminal
-                return true
-        }
-
-        return false
     }
 
     mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool

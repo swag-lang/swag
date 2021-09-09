@@ -1,0 +1,20 @@
+using Core
+
+#test
+{
+    {
+        var r: Parser.RegExp
+        assume r.compile("abc")
+        res := r.grepAll("abcggggabcggggabc")
+        @assert(res.count == 3)
+    }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("a+")
+        res := r.grepAll("abcggggaaaa")
+        @assert(res.count == 2)
+        @assert(res[0] == "a")
+        @assert(res[1] == "aaaa")
+    }
+}
