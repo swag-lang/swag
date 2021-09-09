@@ -3084,6 +3084,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         if (!toType->isConst() && fromType->isConst())
         {
             if (!toType->isNative(NativeTypeKind::String) &&
+                (toType != g_TypeMgr->typeInfoNull) &&
                 (!toType->isNative(NativeTypeKind::Bool) || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
                 (!toType->isNative(NativeTypeKind::UInt) || fromType->kind != TypeInfoKind::Pointer))
             {
