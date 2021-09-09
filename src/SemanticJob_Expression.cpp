@@ -649,11 +649,14 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
         return true;
     }
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+
+    // Determin if we should take the type from the "false" expression, or from the "true"
+    if (ifTrue->typeInfo == g_TypeMgr->typeInfoNull)
+        node->typeInfo = ifFalse->typeInfo;
     else
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
         node->typeInfo = ifTrue->typeInfo;
-    }
 
     expression->allocateExtension();
     expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
