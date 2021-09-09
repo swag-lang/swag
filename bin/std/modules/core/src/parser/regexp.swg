@@ -132,8 +132,6 @@ impl RegExp
             }
         }
 
-        if !end and dfaNodes[0].terminal
-            return @mkstring(@dataof(str), 0)
         if !end
             return null
         return @mkstring(beg, end - beg)
