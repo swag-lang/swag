@@ -35,7 +35,10 @@ impl HashSet
             #if Reflection.hasPostCopy(K)
             {
                 loop i: capacity
+                {
+                    newTable[i].hash = table[i].hash
                     newTable[i].key =,nodrop table[i].key
+                }
             }
             #else
             {
