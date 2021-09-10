@@ -65,13 +65,13 @@ impl HashSet
             scope Down
             #macro
             {
-                #if `ptr
+                #if `ptr or Reflection.isStruct(K)
                 {
                     var @alias0 = &`table[@index].key
                 }
                 #else
                 {
-                    var @alias0 = Reflection.isStruct(K) ? cast(const *K) &`table[@index].key : `table[@index].key
+                    var @alias0 = `table[@index].key
                 }
 
                 #mixin `stmt { break = break Up; continue = break Down; }
