@@ -29,4 +29,17 @@ using Core
         @assert(r.match("ABCDE"))
         @assert(!r.match("ab"))
     }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("\\pS*")
+        @assert(r.match("£"))
+        @assert(!r.match("a"))
+    }
+
+    {
+        var r: Parser.RegExp
+        assume r.compile("\\p{Sm}*")
+        @assert(r.match("++"))
+    }
 }

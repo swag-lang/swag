@@ -19,6 +19,8 @@
 // /p{Ll}   lower letter
 // /p{Lu}   upper letter
 // /pN      number
+// /pS      symbol
+// /p{Sm}   symbol math
 //
 // Ascii only:
 //
@@ -49,10 +51,13 @@ const RuneAsciiUpper    = cast(rune) 0x8000_0003
 const RuneAsciiSpace    = cast(rune) 0x8000_0004
 const RuneAscii         = cast(rune) 0x8000_0005
 
-const RuneUnicodeLetter     = cast(rune) 0x8000_0006
-const RuneUnicodeLoLetter   = cast(rune) 0x8000_0007
-const RuneUnicodeUpLetter   = cast(rune) 0x8000_0008
-const RuneUnicodeNumber     = cast(rune) 0x8000_0009
+const RuneUnicodeLetter         = cast(rune) 0x8001_0006
+const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
+const RuneUnicodeLetterUpper    = cast(rune) 0x8001_0008
+const RuneUnicodeNumber         = cast(rune) 0x8001_0009
+const RuneUnicodeSymbol         = cast(rune) 0x8001_000a
+const RuneUnicodeSymbolMath     = cast(rune) 0x8001_000b
+
 
 struct NfaNode
 {
@@ -297,10 +302,12 @@ impl RegExp
             checkTr(RuneAscii)
         }
 
-        if Unicode.isLetter(c)  checkTr(RuneUnicodeLetter)
-        if Unicode.isLower(c)   checkTr(RuneUnicodeLoLetter)
-        if Unicode.isUpper(c)   checkTr(RuneUnicodeUpLetter)
-        if Unicode.isNumber(c)  checkTr(RuneUnicodeNumber)
+        if Unicode.isLetter(c)      checkTr(RuneUnicodeLetter)
+        if Unicode.isLower(c)       checkTr(RuneUnicodeLetterLower)
+        if Unicode.isUpper(c)       checkTr(RuneUnicodeLetterUpper)
+        if Unicode.isNumber(c)      checkTr(RuneUnicodeNumber)
+        if Unicode.isSymbol(c)      checkTr(RuneUnicodeSymbol)
+        if Unicode.isSymbolMath(c)  checkTr(RuneUnicodeSymbolMath)
 
         checkTr(c)
         checkTr(0)
@@ -945,10 +952,19 @@ impl RegExp
                 switch pz[2]
                 {
                 case "l"'rune:
-                    preprocessed.add(RuneUnicodeLoLetter)
+                    preprocessed.add(RuneUnicodeLetterLower)
                     return pz + 4
                 case "u"'rune:
-                    preprocessed.add(RuneUnicodeUpLetter)
+                    preprocessed.add(RuneUnicodeLetterUpper)
+                    return pz + 4
+                }
+            }
+            else if pz[1] == "S"'rune and pz[3] == "}"'rune
+            {
+                switch pz[2]
+                {
+                case "m"'rune:
+                    preprocessed.add(RuneUnicodeSymbolMath)
                     return pz + 4
                 }
             }
@@ -961,6 +977,9 @@ impl RegExp
             return pz + 1
         case "N"'rune:
             preprocessed.add(RuneUnicodeNumber)
+            return pz + 1
+        case "S"'rune:
+            preprocessed.add(RuneUnicodeSymbol)
             return pz + 1
         }
 
