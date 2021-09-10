@@ -29,24 +29,24 @@ impl HashSet
 
     mtd opPostCopy()
     {
-        if table
-        {
-            newTable := cast(*HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
-            #if Reflection.hasPostCopy(K)
-            {
-                loop i: capacity
-                {
-                    newTable[i].hash = table[i].hash
-                    newTable[i].key =,nodrop table[i].key
-                }
-            }
-            #else
-            {
-                Memory.copy(newTable, table, capacity * @sizeof(HashSetEntry))
-            }
+        if !table
+            return
 
-            table = newTable
+        newTable := cast(*HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
+        #if Reflection.hasPostCopy(K)
+        {
+            loop i: capacity
+            {
+                newTable[i].hash = table[i].hash
+                newTable[i].key  =,nodrop table[i].key
+            }
         }
+        #else
+        {
+            Memory.copy(newTable, table, capacity * @sizeof(HashSetEntry))
+        }
+
+        table = newTable
     }
 
     #[Macro]
