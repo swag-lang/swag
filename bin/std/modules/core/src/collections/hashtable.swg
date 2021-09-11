@@ -23,6 +23,12 @@ struct(K, V) HashTable
 
 impl HashTable
 {
+    #[Inline]
+    mtd opCount()->uint
+    {
+        return count
+    }
+
     mtd opDrop()
     {
         free()
@@ -140,7 +146,7 @@ impl HashTable
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
-    #[Swag.Discardable]
+    #[Discardable]
     mtd add(key: K, value: V)->*HashTableEntry
         #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))

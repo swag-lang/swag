@@ -22,6 +22,12 @@ struct(K) HashSet
 
 impl HashSet
 {
+    #[Inline]
+    mtd opCount()->uint
+    {
+        return count
+    }
+
     mtd opDrop()
     {
         free()
@@ -157,7 +163,7 @@ impl HashSet
     }
 
     // Add a new key.
-    #[Swag.Discardable]
+    #[Discardable]
     mtd add(key: K)->*HashSetEntry
         #selectif Reflection.canCopy(@typeof(K))
     {
