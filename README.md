@@ -1,6 +1,6 @@
 ![Swag logo](docs/swag_logo.png)
 
-Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my fourth compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
 It's a toy, but it's a toy which is now more advanced than expected.
 
@@ -8,11 +8,11 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, do not use it to send a rocket on the moon !
 * **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
 * **Statically typed** (what else), but lots of automatic type detection if you want to.
-* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, and **Rust** mostly for the things to avoid (i don't like Rust).
+* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Rust** for the *impl* thing, and so on.
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
-* **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without crap like inheritance or encapsulation.
+* **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
 * **Safe** at all cost. You should be the one to make your program safe.
 
 ### Swag has...
@@ -29,14 +29,14 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
-* **Exceptions**, because this is bad. This is really bad.
+* **Exceptions**, because this is bad.
 * **Header files**, but who does, nowadays ?
 * **Mandatory semicolons**, yeah...
-* **Tagged unions**, **bitfields**, but who knows...
+* **Tagged unions**, **bitfields**, **inline assembly**... But who knows...
 
 # Hello mad world !
 
-Here without any additional library, by simply using intrinsic `@print`.
+Without any additional library, by simply using the intrinsic `@print` :
 
 ``` swift
 #main
@@ -44,7 +44,7 @@ Here without any additional library, by simply using intrinsic `@print`.
     @print("Hello mad world !\n")
 }
 ```
-A version that uses the standard *core* module.
+A version that uses the standard *core* module :
 
 ``` swift
 #main
@@ -54,7 +54,7 @@ A version that uses the standard *core* module.
     Console.printf("%\n", "Hello mad world again !")
 }
 ```
-A *#run* block is executed at compile time, so the famous message will be printed by the compiler.
+A *#run* block is executed at compile time, so the famous message will be printed by the compiler :
 
 ``` swift
 #run
@@ -63,7 +63,7 @@ A *#run* block is executed at compile time, so the famous message will be printe
     Core.Console.print(Msg)
 }
 ```
-A stupid version that generates the code to do the print.
+A stupid version that generates the code to do the print :
 
 ``` swift
 using Core
@@ -82,7 +82,7 @@ using Core
 }
 ```
 
-A version that calls a nested function at compile time (only) to initialize the string constant to print.
+A version that calls a nested function at compile time (only) to initialize the string constant to print :
 
 ``` swift
 using Core
@@ -97,7 +97,7 @@ using Core
 }
 ```
 
-More and more crazy.
+More and more crazy :
 
 ``` swift
 using Core
