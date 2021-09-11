@@ -47,7 +47,7 @@ A module will compile to a dynamic library or an executable.
 To create a fresh new workspace named "first" :
 
 ```
-$ swag new -w:first'
+$ swag new -w:first
 => workspace 'F:/first' has been created
 => module 'first' has been created
 => type 'swag run -w:F:\first' to build and run that module
