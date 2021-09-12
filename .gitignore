@@ -273,4 +273,3 @@ dependencies/
 **/testsuite/**/public
 **/tests/**/public
 **/foreign/**/objs
-llvm/
