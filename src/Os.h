@@ -29,8 +29,6 @@ namespace OS
     void visitFilesRec(const char* folder, function<void(const char*)> user);
 
     uint64_t getFileWriteTime(const char* fileName);
-    bool     getSwagFolder(string& folder);
-    void     setSwagFolder(const string& folder);
     bool     touchFile(const fs::path& path);
     string   getTemporaryFolder();
 

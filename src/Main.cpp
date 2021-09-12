@@ -38,8 +38,7 @@ int main(int argc, const char* argv[])
         command != "list" &&
         command != "get" &&
         command != "version" &&
-        command != "script" &&
-        command != "env")
+        command != "script")
     {
         g_Log.error(Utf8::format(g_E[Err0000], argv[1]));
         OS::exit(-1);
@@ -53,22 +52,8 @@ int main(int argc, const char* argv[])
     }
 
     // Verify that the swag folder has been registered
-    string swagFolder;
-    if (!OS::getSwagFolder(swagFolder))
-    {
-        if (command != "env")
-        {
-            g_Log.message(g_E[Err0165]);
-            OS::exit(-1);
-        }
-    }
-    else
-    {
-        g_CommandLine->exePath = swagFolder;
-        g_CommandLine->exePath += "\\";
-        fs::path pathF = fs::absolute(argv[0]).string();
-        g_CommandLine->exePath += pathF.filename();
-    }
+    fs::path pathF         = fs::absolute(argv[0]).string();
+    g_CommandLine->exePath = pathF.string();
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))
@@ -120,11 +105,6 @@ int main(int argc, const char* argv[])
     else if (command == "version")
     {
         g_Log.message(Utf8::format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    }
-    else if (command == "env")
-    {
-        g_CommandLine->exePath = fs::absolute(argv[0]).string();
-        OS::setSwagFolder(g_CommandLine->exePath.parent_path().string());
     }
     else if (command == "new")
     {

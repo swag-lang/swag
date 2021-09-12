@@ -10,25 +10,6 @@ https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/
 
 It should probably work with a more recent version of the sdk, but this is not guaranteed (sometimes some functions are moved around by Microsoft between the Universal runtime and the Msvc runtime).
 
-##### Swag needs to know its home
-
-The first thing to do is to open a console window, go to the directory where the executable `swag.exe` is located, and call `swag env`.
-
-This will set an environment variable called `SWAG_FOLDER` with the path to the executable, and this will change the system `PATH` variable for the current user.
-
-```
-$ cd swag
-$ swag env
-'SWAG_FOLDER' has been changed to 'F:/swag'
-'PATH' environment variable has been changed
-```
-
-Close and relaunch the console, and you should be able to call *swag.exe* from everywhere.
-
-> If Swag cannot be found, consider restarting your windows session.
-
-This must be done only once, or each time you decide to change the location of the compiler.
-
 ##### Windows Defender realtime protection
 It's activated by default under Windows 10, and runs each time you launch an executable or a process.
 This can take some time, and increase the compile time of Swag **a lot**.

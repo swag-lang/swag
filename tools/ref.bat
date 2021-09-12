@@ -1,1 +1,1 @@
-swag test -w:../bin/reference --backend:x64 --rebuild %1 %2 %3 %4
+..\bin\swag test -w:../bin/reference --backend:x64 --rebuild %1 %2 %3 %4

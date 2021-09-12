@@ -25,22 +25,6 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     }
 
     ////////////////////////////////////////////////////////
-    if (cmd == "env")
-    {
-        g_Log.message("\n");
-        g_Log.message("Command 'env' must be used to set the environnment variable 'SWAG_FOLDER'.\n");
-        g_Log.message("It is mandatory to set that variable before using the swag compiler.\n");
-
-        string folder;
-        OS::getSwagFolder(folder);
-
-        if (folder.empty())
-            g_Log.message("Current folder is NOT DEFINED");
-        else
-            g_Log.message(Utf8::format("Current folder is `%s`", folder.c_str()));
-    }
-
-    ////////////////////////////////////////////////////////
     if (cmd == "build")
     {
         g_Log.message("\n");
@@ -163,7 +147,6 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("\n");
     g_Log.message("Commands:\n");
     g_Log.message("        version      print swag version\n");
-    g_Log.message("        env          creates an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
     g_Log.message("        build        build the specified workspace\n");
     g_Log.message("        run          build and run the specified workspace\n");
     g_Log.message("        test         build and test the specified workspace\n");
