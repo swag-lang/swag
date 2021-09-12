@@ -2,18 +2,18 @@
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
-It's a toy, but it's a toy which is now more advanced than expected.
+For now it's a **toy**, but it's a toy which is more advanced than expected.
 
 ### Swag is...
-* **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, do not use it to send a rocket on the moon !
-* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust (i don't like Rust).
-* **Statically typed** (what else), but lots of automatic type detection if you want to.
-* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (by Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Rust** for the *impl* thing, and so on.
+* **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon !
+* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust.
+* **Statically typed** (what else), but lots of automatic type detection if you want.
+* **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Zig** (Andrew Kelley) for the error system, **Rust** for the *impl* thing, and so on.
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
 * **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
-* **Safe** at all cost. You should be the one to make your program safe.
+* **Safe** at all cost. You should be the one to make your program safe. You should be the one to deal with memory.
 
 ### Swag has...
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
@@ -23,9 +23,9 @@ It's a toy, but it's a toy which is now more advanced than expected.
 * **Interfaces** for dynamic dispatch, inspired by **Go**.
 * **Modules**, compiled as separate dynamic libraries.
 * **Fast compile time** (at least in debug with the x64 backend) thanks to multithreading.
-* **Simple error system**, inspired from **Zig** (by Andrew Kelley).
+* **Simple error system**, inspired by **Zig**.
 * **Generics**, for a simple usage. No template nightmare here...
-* **Powerful macro/mixin** system, without the need of a specific syntax, inspired from **Jai**.
+* **Powerful macro/mixin** system, without the need of a specific syntax, inspired by **Jai**.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
@@ -36,7 +36,8 @@ It's a toy, but it's a toy which is now more advanced than expected.
 
 # Hello mad world !
 
-Without any additional library, by simply using the intrinsic `@print` :
+`#main` is the program entry point, a special compiler function. That's why the name starts with `#`.
+`@print` is an intrinsic, a special built-in function. That's why the name starts with `@`.
 
 ``` swift
 #main
@@ -63,7 +64,7 @@ A *#run* block is executed at compile time, so the famous message will be printe
     Core.Console.print(Msg)
 }
 ```
-A stupid version that generates the code to do the print :
+A stupid version that generates the code to do the print (meta programming) :
 
 ``` swift
 using Core
@@ -85,13 +86,14 @@ using Core
 A version that calls a nested function at compile time (only) to initialize the string constant to print :
 
 ``` swift
-using Core
+using Swag, Core
 
 #main
 {
-    #[Swag.ConstExpr]
+    #[ConstExpr]
     func nestedFunc() => "Hello mad world !\n"
 
+    // nestedFunc() can be called at compile time because it is marked with 'Swag.ConstExpr'
     const Msg = nestedFunc()
     Console.print(Msg)
 }
@@ -104,25 +106,28 @@ using Core
 
 #main
 {
+    // #run will force the call of mySillyFunction() at compile time
     const Msg = #run mySillyFunction()
     Console.print(Msg)
 }
 
+// This is a compile time function only
 #[Swag.Compiler]
 func mySillyFunction()->string
 {
     Console.print("Hello mad world at compile time !\n")
 
+    // This creates a constant named 'MyConst'
     #ast
     {
         sb := StrConv.StringBuilder{}
-        sb.appendString("const Msg = \"Hello ")
+        sb.appendString("const MyConst = \"Hello ")
         sb.appendString("mad world ")
         sb.appendString("at runtime !\"")
         return sb.toString()
     }
 
-    return Msg
+    return MyConst
 }
 ```
 
