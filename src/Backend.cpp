@@ -31,16 +31,21 @@ void Backend::setup()
     if (!g_CommandLine->output)
         return;
 
-    // Compiler
-    switch (g_CommandLine->backendType)
+    LLVM::setup();
+
+    string rtPath;
+
+    // Add the runtime CRT
+    if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
     {
-    case BackendType::LLVM:
-    case BackendType::X64:
-        LLVM::setup();
-        break;
+        if (isArchArm(g_CommandLine->arch))
+            rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-arm64";
+        else
+            rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-x86_64";
     }
 
-    OS::setupBackend();
+    SWAG_ASSERT(!rtPath.empty());
+    g_CommandLine->libPaths.push_back(Utf8::normalizePath(rtPath));
 }
 
 string Backend::getCacheFolder(const BuildParameters& buildParameters)
@@ -293,9 +298,9 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     // Save the export file
     if (passExport == BackendPreCompilePass::GenerateObj)
     {
-        passExport = BackendPreCompilePass::Release;
-        auto job = g_Allocator.alloc<ModuleSaveExportJob>();
-        job->module = module;
+        passExport        = BackendPreCompilePass::Release;
+        auto job          = g_Allocator.alloc<ModuleSaveExportJob>();
+        job->module       = module;
         job->dependentJob = ownerJob;
         ownerJob->jobsToAdd.push_back(job);
         return JobResult::KeepJobAlive;
@@ -341,19 +346,19 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase*
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    int size = (int)moduleToGen->byteCodeFunc.size();
+    int size            = (int) moduleToGen->byteCodeFunc.size();
     int precompileIndex = buildParameters.precompileIndex;
-    int range = size / numPreCompileBuffers;
+    int range           = size / numPreCompileBuffers;
 
     if (precompileIndex == 0)
     {
         start = 0;
-        end = range;
+        end   = range;
     }
     else
     {
         start = precompileIndex * range;
-        end = start + range;
+        end   = start + range;
         if (precompileIndex == numPreCompileBuffers - 1)
             end = size;
     }
@@ -365,23 +370,23 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
 
     // Batch functions between files
     int start = 0;
-    int end = 0;
+    int end   = 0;
     getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
 
     BackendFunctionBodyJobBase* job = newFunctionJob();
-    job->module = moduleToGen;
-    job->dependentJob = ownerJob;
-    job->buildParameters = buildParameters;
-    job->backend = this;
+    job->module                     = moduleToGen;
+    job->dependentJob               = ownerJob;
+    job->buildParameters            = buildParameters;
+    job->backend                    = this;
 
     // Put the bootstrap and the runtime in the first file
     int precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 0)
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);
-        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int)g_Workspace->bootstrapModule->byteCodeFunc.size());
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int) g_Workspace->bootstrapModule->byteCodeFunc.size());
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int)g_Workspace->runtimeModule->byteCodeFunc.size());
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFunc.size());
     }
 
     addFunctionsToJob(moduleToGen, job, start, end);

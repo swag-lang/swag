@@ -8,7 +8,6 @@ struct Module;
 namespace OS
 {
     void setup();
-    void setupBackend();
     void consoleSetColor(LogColor color);
 
     bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);

@@ -250,7 +250,6 @@
     <ClInclude Include="../src/Utf8.h" />
     <ClInclude Include="../src/VectorNative.h" />
     <ClInclude Include="../src/Version.h" />
-    <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
     <ClInclude Include="..\src\ErrorIds.h" />
     <ClInclude Include="..\src\LangHashTable.h" />
@@ -276,7 +275,6 @@
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Function.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Main.cpp" />
-    <ClCompile Include="../src/BackendSetupWin32.cpp" />
     <ClCompile Include="../src/BackendLinker.cpp" />
     <ClCompile Include="../src/BackendLLVM.cpp" />
     <ClCompile Include="../src/BackendX64.cpp" />

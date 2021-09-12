@@ -164,9 +164,6 @@
     <ClCompile Include="../src/BackendLLVMDbg.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendSetupWin32.cpp">
-      <Filter>Main\Os</Filter>
-    </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
       <Filter>Main\Os</Filter>
     </ClCompile>
@@ -559,9 +556,6 @@
     </ClInclude>
     <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ComWin32.hpp">
-      <Filter>Main\Os</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi.h">
       <Filter>ByteCode\FFI</Filter>
