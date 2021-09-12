@@ -1,31 +1,26 @@
-# You first install
+# Your first install
 
-## Windows 10
+You should register the location of the swag compiler in the PATH environment variable to be able to call it from everywhere.
 
-##### Swag needs to know the Sdk
+#### Under windows 10
+You can open a Powershell window, and run the following code :
 
-In order to transform your code in a Windows executable, you will have to install the `Windows Sdk 10.0.19041.0`.
+```
+# You must replace `f:\swag` with the location of your swag folder
 
-https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/
-
-It should probably work with a more recent version of the sdk, but this is not guaranteed (sometimes some functions are moved around by Microsoft between the Universal runtime and the Msvc runtime).
-
-##### Windows Defender realtime protection
-It's activated by default under Windows 10, and runs each time you launch an executable or a process.
-This can take some time, and increase the compile time of Swag **a lot**.
-
-Consider excluding your Swag folder from it !
-
-https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process.
-
-This is due to the fact that, mostly with the **test** and **run** commands, Swag will launch executables by its own, which will trigger Windows Defender on those new processes (i guess...)
+[Environment]::SetEnvironmentVariable(
+   "Path",
+   [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag",
+   "User"
+)
+```
 
 # Your first project
 
 The compile unit of swag is a **workspace** which contains a variable number of **modules**.
 A module will compile to a dynamic library or an executable.
 
-To create a fresh new workspace named "first" :
+To create a fresh new workspace named *first* :
 
 ```
 $ swag new -w:first
@@ -58,7 +53,7 @@ A module is also organized in a predefined way :
 * `public/` (generated) will contain all the exports needed by other modules to use that one (in case of a dynamic library).
 * `publish/` contains additional files to use that module (like an external C dll).
 
-A module also always contains a special file named `module.swg`. This file is used to configure the module, and is **mandatory**.
+A module always contains a special file named `module.swg`. This file is used to configure the module, and is **mandatory**.
 
 #### To compile your workspace
 ```
@@ -81,6 +76,12 @@ $ swag run -w:first
 Hello world!
                  Done 0.093s
 ```
+
+#### Note on Windows Defender realtime protection
+It's activated by default under Windows 10, and runs each time you launch an executable or a process.
+This can increase the compile time of your project, so consider excluding your Swag folder from it !
+
+https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process.
 
 # Content of the Swag folder
 The Swag folder contains the compiler `swag.exe`, but also a bunch of sub folders.
