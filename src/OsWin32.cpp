@@ -363,6 +363,13 @@ namespace OS
         SetErrorMode(errmode);
     }
 
+    Utf8 getExePath()
+    {
+        char az[_MAX_PATH];
+        GetModuleFileNameA(NULL, az, _MAX_PATH);
+        return az;
+    }
+
     Utf8 getLastErrorAsString()
     {
         // Get the error message, if any.

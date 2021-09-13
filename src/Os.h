@@ -18,6 +18,7 @@ namespace OS
     void* getProcAddress(void* handle, const char* name);
     bool  isDebuggerAttached();
 
+    Utf8 getExePath();
     Utf8 getLastErrorAsString();
     void errorBox(const char* expr, const char* title);
     void assertBox(const char* expr, const char* file, int line);

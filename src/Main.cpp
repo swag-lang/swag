@@ -52,7 +52,7 @@ int main(int argc, const char* argv[])
     }
 
     // Verify that the swag folder has been registered
-    fs::path pathF         = fs::absolute(argv[0]).string();
+    fs::path pathF         = fs::absolute(OS::getExePath().c_str()).string();
     g_CommandLine->exePath = pathF.string();
 
     // Process all arguments
