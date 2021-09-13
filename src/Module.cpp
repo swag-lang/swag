@@ -105,6 +105,8 @@ void Module::computePublicPath()
 {
     if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
         return;
+    if (path.empty())
+        return;
 
     publicPath = path + "/";
     publicPath += SWAG_PUBLIC_FOLDER;
@@ -560,6 +562,19 @@ bool Module::hasDependencyTo(Module* module)
         if (dep->module == module)
             return true;
         if (dep->module->hasDependencyTo(module))
+            return true;
+    }
+
+    return false;
+}
+
+bool Module::hasDependencyTo(const char* moduleName)
+{
+    for (auto dep : moduleDependencies)
+    {
+        if (dep->module->name == moduleName)
+            return true;
+        if (dep->module->hasDependencyTo(moduleName))
             return true;
     }
 
