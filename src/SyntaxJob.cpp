@@ -361,6 +361,10 @@ JobResult SyntaxJob::execute()
         sourceFile->astRoot->ownerScope = currentScope;
     }
 
+    // Error reading file ?
+    if (sourceFile->numErrors)
+        return JobResult::ReleaseJob;
+
     // Then load the file
     if (!sourceFile->buffer)
     {

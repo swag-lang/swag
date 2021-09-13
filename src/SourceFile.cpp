@@ -69,7 +69,11 @@ bool SourceFile::load()
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
     if (!openFile(&handle, path.c_str(), "rbN"))
+    {
+        numErrors++;
+        module->numErrors++;
         return false;
+    }
 
     // Get file length
     fseek(handle, 0, SEEK_END);
@@ -82,6 +86,8 @@ bool SourceFile::load()
 
     if (fread(buffer, 1, bufferSize, handle) != bufferSize)
     {
+        numErrors++;
+        module->numErrors++;
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);

@@ -3,7 +3,6 @@
 #include "Diagnostic.h"
 #include "File.h"
 #include "ErrorIds.h"
-#include "Log.h"
 
 bool openFile(FILE** fileHandle, const char* path, const char* mode)
 {
