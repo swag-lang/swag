@@ -568,19 +568,6 @@ bool Module::hasDependencyTo(Module* module)
     return false;
 }
 
-bool Module::hasDependencyTo(const char* moduleName)
-{
-    for (auto dep : moduleDependencies)
-    {
-        if (dep->module->name == moduleName)
-            return true;
-        if (dep->module->hasDependencyTo(moduleName))
-            return true;
-    }
-
-    return false;
-}
-
 bool Module::waitForDependenciesDone(Job* job)
 {
     if (dependenciesDone)

@@ -482,6 +482,12 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     return Swag.UInt.Max
 }
 
+// Returns true if 'src' contains the string 'what'
+func contains(src: const [..] u8, what: string)->bool
+{
+    return indexOf(src, what) != Swag.UInt.Max
+}
+
 // Find the given string, and returns the byte index of it
 // Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint

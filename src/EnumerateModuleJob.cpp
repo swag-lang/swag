@@ -226,22 +226,6 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
     // Scan source folder
     OS::visitFolders(path.string().c_str(), [&](const char* cFolderName)
                      {
-                        // In script mode, just compile modules we depend on
-                         if (g_CommandLine->scriptCommand)
-                         {
-                             bool canAdd = false;
-                             for (auto mod : g_ModuleCfgMgr->allModules)
-                             {
-                                 auto scriptModule = mod.second;
-                                 if (!scriptModule->isScriptFile)
-                                     continue;
-                                 canAdd = scriptModule->hasDependencyTo(cFolderName);
-                             }
-
-                             if (!canAdd)
-                                 return;
-                         }
-
                          // If we have only one core, then we will sort modules in alphabetical order to always
                          // treat them in a reliable order. That way, --randomize and --seed can work.
                          if (g_CommandLine->numCores == 1)

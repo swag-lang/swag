@@ -398,8 +398,6 @@ bool ModuleCfgManager::execute()
     // When this is a simple script, then register the script file as the configuration file
     else
     {
-        //enumerateCfgFiles(g_Workspace->dependenciesPath);
-
         auto file          = g_Allocator.alloc<SourceFile>();
         file->name         = fs::path(g_CommandLine->scriptName.c_str()).filename().string().c_str();
         file->isCfgFile    = true;
@@ -412,6 +410,14 @@ bool ModuleCfgManager::execute()
     g_Workspace->checkPendingJobs();
     if (g_Workspace->numErrors)
         return false;
+
+    if (g_CommandLine->scriptCommand)
+    {
+        enumerateCfgFiles(g_Workspace->dependenciesPath);
+        g_ThreadMgr.waitEndJobs();
+        if (g_Workspace->numErrors)
+            return false;
+    }
 
     // Remember the configuration of the local modules
     //////////////////////////////////////////////////

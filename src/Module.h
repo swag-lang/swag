@@ -136,7 +136,6 @@ struct Module
     bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
-    bool hasDependencyTo(const char* moduleName);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
     bool waitForDependenciesDone(Job* job);
 

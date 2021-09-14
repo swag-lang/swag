@@ -1,0 +1,56 @@
+using Core, Directory
+
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+func filter(file: File.FileInfo)->bool
+{
+    if Utf8.contains(file.fullname, "/foreign/")
+        return false
+    if Utf8.contains(file.fullname, "/output/")
+        return false
+    if Utf8.contains(file.fullname, "/dependencies/")
+        return false
+    if Utf8.contains(file.fullname, "/public/")
+        return false
+
+    ext := Path.getExtensionLowerCase(file.fullname)
+    switch ext
+    {
+    case ".exe":
+        return Utf8.contains(file.fullname, "swag.exe")
+    case ".dll", ".lib", ".swg":
+        return true
+    }
+
+    return false
+}
+
+#run
+{
+    dataPath := Path.getDirectoryName(Path.getDirectoryName(#location.fileName))
+    binPath  := Path.combine(dataPath, "bin")
+
+    // Enumerate list of files to release
+    var options: EnumerationOptions
+    options.matchPattern    = "*"
+    options.wantDirectories = false
+    options.recurse         = true
+    options.filterLambda    = &filter
+    allFiles := try enumerate(binPath, options)
+
+    // Generate list of files
+    var allLines: Array'string
+    visit f: allFiles
+        allLines.add(cast(string) f.fullname)
+    catch File.delete("list.txt")
+    try File.writeAllLines("list.txt", allLines)
+    defer catch File.delete("list.txt")
+
+    // Zip them
+    catch File.delete("release.zip")
+    h := try Env.startProcess("7z.exe", " a release.zip -spf2 @list.txt")
+    try Win32.WaitForSingleObject(h.handle, Win32.INFINITE)
+}

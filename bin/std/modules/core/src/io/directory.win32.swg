@@ -81,7 +81,8 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
                     catch FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
                     fi.lastWriteTime.setSYSTEMTIME(fileTime)
 
-                    result.emplace(&fi)
+                    if !options.filterLambda or options.filterLambda(fi)
+                        result.emplace(&fi)
                 }
             }
 
