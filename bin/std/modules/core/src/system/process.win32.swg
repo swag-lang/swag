@@ -34,3 +34,12 @@ func startProcess(info: StartInfo)->Process throw
     result.handle = pi.hProcess
     return result
 }
+
+impl Process
+{
+    // For for the process to be done
+    mtd waitForExit()
+    {
+        catch WaitForSingleObject(handle, Win32.INFINITE)
+    }
+}
