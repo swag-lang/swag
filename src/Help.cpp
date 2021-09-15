@@ -74,12 +74,13 @@ void help(CommandLineParser& cmdParser, const string& cmd)
     {
         g_Log.message("\n");
         g_Log.message("Command 'script' compiles and run the given script file.\n");
-        g_Log.message("All dependencies will be compiled in the cache folder.\n");
-        g_Log.message("Type 'swag clean --script' to clean the cache used by script execution.\n");
+        g_Log.message("All dependencies will be compiled in a cache folder.\n");
+        g_Log.message("Type 'swag clean --script' to clean all caches used by script execution.\n");
 
         printExamples();
         g_Log.message("swag script -f:myScript.swgs\n");
         g_Log.message("swag script -file:c:/myScript.swgs\n");
+        g_Log.message("swag myScript.swgs\n");
         g_Log.message("\n");
         cmdParser.logArguments(cmd);
     }

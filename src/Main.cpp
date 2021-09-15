@@ -28,8 +28,16 @@ int main(int argc, const char* argv[])
         OS::exit(0);
     }
 
+    // Special mode if the first argument is a script file with ".swgs" extension
+    string   command = argv[1];
+    fs::path p       = argv[1];
+    if (p.extension() == ".swgs")
+    {
+        command                   = "script";
+        g_CommandLine->scriptName = argv[1];
+    }
+
     // Command
-    string command = argv[1];
     if (command != "build" &&
         command != "run" &&
         command != "test" &&

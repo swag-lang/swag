@@ -129,3 +129,10 @@ You can then run your script with the 'script' command.
 $ swag script -f:myScript
 Hello world !
 ```
+
+You can also just specify the script file as a command, with the extension.
+
+```
+$ swag myScript.swgs
+Hello world !
+```
