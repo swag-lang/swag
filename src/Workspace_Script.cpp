@@ -30,6 +30,10 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     // This is it. Build and run !
     g_CommandLine->workspacePath = cacheWorkspace.string();
     setupPaths();
+
+    // Now that we have the workspace name, we can clean dependencies and temp
+    if (g_CommandLine->cleanDep)
+        cleanScript(false);
 }
 
 void Workspace::scriptCommand()

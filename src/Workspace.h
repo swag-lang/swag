@@ -65,10 +65,10 @@ struct Workspace
     void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);
+    void cleanScript(bool all);
     void cleanCommand();
     void newModule(string moduleName);
     void newCommand();
-    bool watchCommand();
     void scriptCommand();
 
     fs::path              workspacePath;

@@ -66,7 +66,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "llvm|x64", "the type of backend to use");
     addArg("bu cl", "--script", nullptr, CommandLineType::Bool, &cmdLine->scriptMode, nullptr, "run full bytecode");
 
-    addArg("cl", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
+    addArg("cl sc", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
     addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
 }
 
