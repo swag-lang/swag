@@ -1,4 +1,4 @@
-using Core, Directory
+using Core
 
 #dependencies
 {
@@ -34,12 +34,12 @@ func filter(file: File.FileInfo)->bool
     binPath  := Path.combine(dataPath, "bin")
 
     // Enumerate list of files to release
-    var options: EnumerationOptions
+    var options: Directory.EnumerationOptions
     options.matchPattern    = "*"
     options.wantDirectories = false
     options.recurse         = true
     options.filterLambda    = &filter
-    allFiles := try enumerate(binPath, options)
+    allFiles := try Directory.enumerate(binPath, options)
 
     // Generate list of files
     var allLines: Array'string
@@ -51,5 +51,5 @@ func filter(file: File.FileInfo)->bool
 
     // Zip them
     catch File.delete("release.zip")
-    try Env.doSyncProcess("7z.exe", " a release.zip -spf2 @list.txt")
+    try Env.doSyncProcess("7z.exe", "a release.zip -spf2 @list.txt")
 }
