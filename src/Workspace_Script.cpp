@@ -3,6 +3,35 @@
 #include "Os.h"
 #include "ErrorIds.h"
 
+void Workspace::setScriptWorkspace(const Utf8& name)
+{
+    // Cache directory
+    setupCachePath();
+
+    // Compute workspace folder and name
+    // Will be shared between all scripts, in the cache folder
+    auto cacheWorkspace = g_Workspace->cachePath;
+    cacheWorkspace.append(SWAG_CACHE_FOLDER);
+    error_code errorCode;
+    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    {
+        g_Log.errorOS(Utf8::format(g_E[Err0547], cacheWorkspace.c_str()));
+        OS::exit(-1);
+    }
+
+    cacheWorkspace.append("/");
+    cacheWorkspace.append(name.c_str());
+    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    {
+        g_Log.errorOS(Utf8::format(g_E[Err0547], cacheWorkspace.c_str()));
+        OS::exit(-1);
+    }
+
+    // This is it. Build and run !
+    g_CommandLine->workspacePath = cacheWorkspace.string();
+    setupPaths();
+}
+
 void Workspace::scriptCommand()
 {
     if (g_CommandLine->scriptName.empty())
@@ -12,7 +41,7 @@ void Workspace::scriptCommand()
     }
 
     // Script filename
-    fs::path pathF           = fs::absolute(g_CommandLine->scriptName).string();
+    fs::path pathF            = fs::absolute(g_CommandLine->scriptName).string();
     g_CommandLine->scriptName = Utf8::normalizePath(pathF.string());
     if (!fs::exists(g_CommandLine->scriptName))
     {
@@ -24,8 +53,6 @@ void Workspace::scriptCommand()
     g_CommandLine->scriptMode    = true;
     g_CommandLine->scriptCommand = true;
 
-    // Compute workspace folder and name
-    // Will be shared between all scripts, in the cache folder
     g_Workspace->setupCachePath();
     if (!fs::exists(g_Workspace->cachePath))
     {
@@ -33,25 +60,6 @@ void Workspace::scriptCommand()
         OS::exit(-1);
     }
 
-    auto cacheWorkspace = g_Workspace->cachePath.string();
-    cacheWorkspace.append(SWAG_CACHE_FOLDER);
-    error_code errorCode;
-    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
-    {
-        g_Log.errorOS(Utf8::format(g_E[Err0547], cacheWorkspace.c_str()));
-        OS::exit(-1);
-    }
-
-
-    cacheWorkspace.append("/");
-    cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
-    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
-    {
-        g_Log.errorOS(Utf8::format(g_E[Err0547], cacheWorkspace.c_str()));
-        OS::exit(-1);
-    }
-
     // This is it. Build and run !
-    g_CommandLine->workspacePath = cacheWorkspace;
     g_Workspace->build();
 }

@@ -411,8 +411,24 @@ bool ModuleCfgManager::execute()
     if (g_Workspace->numErrors)
         return false;
 
+    // Script mode. We need to have a workspace in that cache to store
+    // the dependencies.
     if (g_CommandLine->scriptCommand)
     {
+        Utf8 strCrc;
+        for (auto mod : allModules)
+        {
+            for (auto dep : mod.second->moduleDependencies)
+            {
+                strCrc += dep->name;
+                strCrc += Utf8::format("%d.%d.%d", dep->verNum, dep->revNum, dep->buildNum);
+            }
+        }
+
+        auto crc = strCrc.hash();
+        g_Workspace->setScriptWorkspace(Utf8::format("%s-%08x", SWAG_SCRIPT_WORKSPACE, crc));
+        g_Workspace->setupTarget();
+
         enumerateCfgFiles(g_Workspace->dependenciesPath);
         g_ThreadMgr.waitEndJobs();
         if (g_Workspace->numErrors)

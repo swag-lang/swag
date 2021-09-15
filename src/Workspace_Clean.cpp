@@ -75,18 +75,7 @@ void Workspace::cleanCommand()
         if (!fs::exists(cacheFolder))
             return;
 
-        // Clean the cache workspace SWAG_SCRIPT_WORKSPACE
-        auto cacheWorkspace = cacheFolder;
-        cacheWorkspace.append("/");
-        cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
-        if (fs::exists(cacheWorkspace))
-        {
-            cacheWorkspace = Utf8::normalizePath(cacheWorkspace);
-            g_Log.messageHeaderCentered("Cleaning", cacheWorkspace);
-            cleanFolderContent(cacheWorkspace);
-        }
-
-        // Clean all folders of the form 'SWAG_SCRIPT_WORKSPACE-??' (all targets)
+        // Clean all folders of the form 'SWAG_SCRIPT_WORKSPACE-??'
         OS::visitFolders(
             cacheFolder.c_str(), [&](const char* folder)
             {

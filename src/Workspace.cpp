@@ -10,27 +10,6 @@
 
 Workspace* g_Workspace = nullptr;
 
-void Workspace::setupPaths()
-{
-    workspacePath = fs::absolute(g_CommandLine->workspacePath);
-
-    testsPath = workspacePath;
-    testsPath.append(SWAG_TESTS_FOLDER);
-    testsPath.append("/");
-
-    examplesPath = workspacePath;
-    examplesPath.append(SWAG_EXAMPLES_FOLDER);
-    examplesPath.append("/");
-
-    modulesPath = workspacePath;
-    modulesPath.append(SWAG_MODULES_FOLDER);
-    modulesPath.append("/");
-
-    dependenciesPath = workspacePath;
-    dependenciesPath.append(SWAG_DEPENDENCIES_FOLDER);
-    dependenciesPath.append("/");
-}
-
 void Workspace::setupUserTags()
 {
     // Command line tags
@@ -172,6 +151,27 @@ void Workspace::setup()
     }
 
     g_ThreadMgr.init();
+}
+
+void Workspace::setupPaths()
+{
+    workspacePath = fs::absolute(g_CommandLine->workspacePath);
+
+    testsPath = workspacePath;
+    testsPath.append(SWAG_TESTS_FOLDER);
+    testsPath.append("/");
+
+    examplesPath = workspacePath;
+    examplesPath.append(SWAG_EXAMPLES_FOLDER);
+    examplesPath.append("/");
+
+    modulesPath = workspacePath;
+    modulesPath.append(SWAG_MODULES_FOLDER);
+    modulesPath.append("/");
+
+    dependenciesPath = workspacePath;
+    dependenciesPath.append(SWAG_DEPENDENCIES_FOLDER);
+    dependenciesPath.append("/");
 }
 
 void Workspace::setupCachePath()
