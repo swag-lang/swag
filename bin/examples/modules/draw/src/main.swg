@@ -131,7 +131,6 @@ func displayPage0()
 
     path.start(0, 0)
     path.bezierTo(100, 0, 50, -50)
-
     g_Painter.resetTransform()
     g_Painter.translateTransform(250, 500)
     g_Painter.drawPath(&path, pen)
@@ -140,7 +139,6 @@ func displayPage0()
     path.lineTo(50, 0)
     path.bezierTo(100, 50, 100, 0, 50, 50)
     path.lineTo(200, 50)
-
     g_Painter.resetTransform()
     g_Painter.translateTransform(400, 500)
     g_Painter.drawPath(&path, pen)
