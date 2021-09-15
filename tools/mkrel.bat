@@ -1,1 +1,0 @@
-swag script -f:mkrel.swgs

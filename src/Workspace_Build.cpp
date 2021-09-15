@@ -735,7 +735,8 @@ bool Workspace::build()
 
         addBootstrap();
         addRuntime();
-        setupTarget();
+        if (!g_CommandLine->scriptCommand)
+            setupTarget();
         result = buildTarget();
     }
 
