@@ -415,6 +415,8 @@ bool ModuleCfgManager::execute()
     // the dependencies.
     if (g_CommandLine->scriptCommand)
     {
+        // We want each script with the same set of dependencies to have the same 
+        // cache folder. So we compute a CRC that will be used in the workspace name.
         Utf8 strCrc;
         for (auto mod : allModules)
         {

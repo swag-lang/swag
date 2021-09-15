@@ -22,3 +22,10 @@ func startProcess(fileName: string, arguments: string = null)->Process throw
     info.arguments = arguments
     return try startProcess(info)
 }
+
+// Starts a new process with arguments, and wait for it to be done
+func doSyncProcess(fileName: string, arguments: string = null) throw
+{
+    h := try startProcess(fileName, arguments)
+    h.waitForExit()
+}

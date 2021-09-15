@@ -51,6 +51,5 @@ func filter(file: File.FileInfo)->bool
 
     // Zip them
     catch File.delete("release.zip")
-    h := try Env.startProcess("7z.exe", " a release.zip -spf2 @list.txt")
-    h.waitForExit()
+    try Env.doSyncProcess("7z.exe", " a release.zip -spf2 @list.txt")
 }
