@@ -620,6 +620,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerGlobal:
         SWAG_CHECK(doCompilerGlobal(parent, result));
         break;
+    case TokenId::CompilerForeignLib:
+        SWAG_CHECK(doCompilerForeignLib(parent, result));
+        break;
     case TokenId::Identifier:
     {
         AstNode* identifierRef = nullptr;

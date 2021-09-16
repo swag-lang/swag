@@ -2,7 +2,7 @@
 
 #global if #swagos == "windows"
 #global if #os == "windows" and #abi == "msvc"
-#global foreignlib "ucrt"
+#foreignlib "ucrt"
 
 private
 {

@@ -1,5 +1,5 @@
 #global export
-#global foreignlib "ucrt.lib"
+#foreignlib "ucrt.lib"
 
 const XX = "ucrtbase"
 #[Swag.Foreign(XX)]

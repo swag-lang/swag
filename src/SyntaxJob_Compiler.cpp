@@ -359,6 +359,25 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerForeignLib;
+
+    SWAG_CHECK(eatToken());
+    SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, g_E[Err0371]));
+
+    AstNode* literal;
+    SWAG_CHECK(doLiteral(node, &literal));
+    if (literal->token.literalType != LiteralType::TT_STRING &&
+        literal->token.literalType != LiteralType::TT_RAW_STRING &&
+        literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
+        return error(literal->token, g_E[Err0371]);
+    SWAG_CHECK(eatSemiCol("'#foreignlib'"));
+}
+
 bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(!afterGlobal, error(token, g_E[Err0369]));
@@ -386,26 +405,6 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("'#global generated'"));
-    }
-
-    /////////////////////////////////
-    else if (token.text == g_LangSpec->name_foreignlib)
-    {
-        auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
-        if (result)
-            *result = node;
-        node->semanticFct = SemanticJob::resolveCompilerForeignLib;
-
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, g_E[Err0371]));
-
-        AstNode* literal;
-        SWAG_CHECK(doLiteral(node, &literal));
-        if (literal->token.literalType != LiteralType::TT_STRING &&
-            literal->token.literalType != LiteralType::TT_RAW_STRING &&
-            literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
-            return error(literal->token, g_E[Err0371]);
-        SWAG_CHECK(eatSemiCol("'#global foreignlib'"));
     }
 
     /////////////////////////////////

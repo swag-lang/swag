@@ -1,5 +1,5 @@
 #global export
-#global foreignlib "user32"
+#foreignlib "user32"
 using Swag
 
 #[Swag.Strict]

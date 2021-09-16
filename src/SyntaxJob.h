@@ -105,6 +105,7 @@ struct SyntaxJob : public Job
     bool doCompilerSelectIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerForeignLib(AstNode* parent, AstNode** result);
     bool doCompilerGlobal(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerLocation(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);

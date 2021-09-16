@@ -99,7 +99,6 @@ void LanguageSpec::setupNames()
 
     name_export       = "export";
     name_generated    = "generated";
-    name_foreignlib   = "foreignlib";
     name_skip         = "skip";
     name_testpass     = "testpass";
     name_lexer        = "lexer";
@@ -201,6 +200,7 @@ void LanguageSpec::setupNames()
 void LanguageSpec::setupKeywords()
 {
     keywords.add("#global", {TokenId::CompilerGlobal, LiteralType::TT_MAX});
+    keywords.add("#foreignlib", {TokenId::CompilerForeignLib, LiteralType::TT_MAX});
     keywords.add("#assert", {TokenId::CompilerAssert, LiteralType::TT_MAX});
     keywords.add("#semerror", {TokenId::CompilerSemError, LiteralType::TT_MAX});
     keywords.add("#print", {TokenId::CompilerPrint, LiteralType::TT_MAX});

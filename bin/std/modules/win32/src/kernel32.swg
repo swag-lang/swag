@@ -1,5 +1,5 @@
 #global export
-#global foreignlib "kernel32"
+#foreignlib "kernel32"
 using Swag
 
 alias HANDLE = 			const *void

@@ -25,4 +25,4 @@
 #global export
 
 // Link with a given external library
-#global foreignlib "windows.lib"
+#foreignlib "windows.lib"

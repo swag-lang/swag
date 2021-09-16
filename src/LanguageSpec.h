@@ -121,7 +121,6 @@ struct LanguageSpec
 
     Utf8 name_export;
     Utf8 name_generated;
-    Utf8 name_foreignlib;
     Utf8 name_skip;
     Utf8 name_testpass;
     Utf8 name_lexer;
