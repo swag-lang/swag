@@ -1,8 +1,16 @@
 #global export
-#foreignlib "ucrt.lib"
 
-const XX = "ucrtbase"
-#[Swag.Foreign(XX)]
+#if #os == "windows" and #swagos == "windows"
+{
+    #foreignlib "ucrt.lib"
+    const ForeignLib = "ucrtbase"
+}
+#else
+{
+    #assert(false, "unsupported os")
+}
+
+#[Swag.Foreign(ForeignLib)]
 {
     func memcpy(destination: *void, source: const *void, num: uint)->*void;
     func memmove(destination: *void, source: const *void, num: uint)->*void;
