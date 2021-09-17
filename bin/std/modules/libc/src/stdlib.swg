@@ -1,0 +1,55 @@
+#global export
+using Swag
+
+struct div_t   { quot, rem: s32; }
+struct ldiv_t  { quot, rem: s32; }
+struct lldiv_t { quot, rem: s64; }
+
+#[Foreign(ForeignLib)]
+{
+	func atof(nptr: const *u8)->f64;
+	func atoi(nptr: const *u8)->s32;
+	func atol(nptr: const *u8)->s32;
+	func atoll(nptr: const *u8)->s64;
+	func strtod(nptr: const *u8, endptr: **u8)->f64;
+	func strtof(nptr: const *u8, endptr: **u8)->f32;
+	func strtol(nptr: const *u8, endptr: **u8, base: s32)->s32;
+	func strtoll(nptr: const *u8, endptr: **u8, base: s32)->s64;
+	func strtoul(nptr: const *u8, endptr: **u8, base: s32)->u32;
+	func strtoull(nptr: const *u8, endptr: **u8, base: s32)->u64;
+
+	func rand()->s32;
+	func srand(seed: u32);
+
+	func aligned_alloc(aligment, size: size_t)->*void;
+	func calloc(nmemb, size: size_t)->*void;
+	func free(ptr: *void);
+	func malloc(size: size_t)->*void;
+	func realloc(ptr: *void, size: size_t)->*void;
+
+	func abort();
+	/*func atexit        (func: proc "c" ())->s32;
+	func at_quick_exit (func: proc "c" ())->s32;*/
+	func exit(status: s32);
+	func _Exit(status: s32);
+	func getenv(name: const *u8)->*u8;
+	func quick_exit(status: s32);
+	func system(cmd: const *u8)->s32;
+
+	/*func bsearch       (key, base: *void, nmemb, size: size_t, compar: proc "c" (lhs, rhs: *void)->s32)->*void;
+	func qsort         (base: *void, nmemb, size: size_t, compar: proc "c" (lhs, rhs: *void)->s32);*/
+
+	func abs(j: s32)->s32;
+	func labs(j: s32)->s32;
+	func llabs(j: s64)->s64;
+	func div(numer, denom: s32)->div_t;
+	func ldiv(numer, denom: s32)->ldiv_t;
+	func lldiv(numer, denom: s64)->lldiv_t;
+
+	/*func mblen(s: const *u8, n: size_t)->s32;
+	func mbtowc(pwc: ^wchar_t, s: const *u8, n: size_t)->s32;
+	func wctomb(s: [^]u8, wc: wchar_t)->s32;
+
+	func mbstowcs(pwcs: ^wchar_t, s: const *u8, n: size_t)->size_t;
+	func wcstombs(s: [^]u8, pwcs: ^wchar_t, n: size_t)->size_t;*/
+}
