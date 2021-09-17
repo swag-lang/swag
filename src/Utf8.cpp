@@ -317,6 +317,12 @@ void Utf8::makeUpper()
         buffer[i] = (char) toupper(buffer[i]);
 }
 
+void Utf8::makeLower()
+{
+    for (int i = 0; i < count; i++)
+        buffer[i] = (char) tolower(buffer[i]);
+}
+
 bool Utf8::compareNoCase(const Utf8& txt1)
 {
     if (count != txt1.count)
@@ -825,6 +831,17 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     }
 
     auto result = column[s1len];
+    return result;
+}
+
+Utf8 Utf8::getExtension(const Utf8& name)
+{
+    auto pz = strrchr(name.c_str(), '.');
+    if (!pz)
+        return "";
+
+    Utf8 result = pz;
+    result.makeLower();
     return result;
 }
 

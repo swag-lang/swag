@@ -376,6 +376,7 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
         literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
         return error(literal->token, g_E[Err0371]);
     SWAG_CHECK(eatSemiCol("'#foreignlib'"));
+    return true;
 }
 
 bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)

@@ -93,7 +93,8 @@ namespace BackendLinker
         for (auto fl : buildParameters.foreignLibs)
         {
             one = fl;
-            one += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib))
+                one += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
             arguments.push_back(one);
         }
 
@@ -101,7 +102,8 @@ namespace BackendLinker
         for (const auto& dep : module->moduleDependencies)
         {
             auto libName = dep->name;
-            libName += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib))
+                libName += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
             auto fullName = g_Workspace->targetPath.string();
             fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
