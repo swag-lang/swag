@@ -124,3 +124,65 @@ using Swag
 	func fma(x, y, z: f64)->f64;
 	func fmaf(x, y, z: f32)->f32;
 }
+
+const FP_NAN        = 0
+const FP_INFINITE   = 1
+const FP_ZERO       = 2
+const FP_NORMAL     = 3
+const FP_SUBNORMAL  = 4
+
+#[Inline]
+func fpclassify(x: f64)->s32
+{
+	u := bitcast(u64) x
+    e := (u >>,safe 52) & 0x7ff
+	switch e
+    {
+	case 0:
+        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
+	case 0x7ff:
+        return (u << 12) ? FP_NAN : FP_INFINITE
+	}
+
+	return FP_NORMAL
+}
+
+#[Inline]
+func fpclassifyf(x: f32)->s32
+{
+	u := bitcast(u32) x
+    e := (u >>,safe 23) & 0xff
+	switch e
+    {
+	case 0:
+        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
+	case 0x7ff:
+        return (u << 9) ? FP_NAN : FP_INFINITE
+	}
+
+	return FP_NORMAL
+}
+
+#[Inline]
+func signbit(x: f64)->s32
+{
+	return cast(s32) bitcast(u64) (x) >>,safe 63
+}
+
+#[Inline]
+func signbitf(x: f32)->s32
+{
+	return cast(s32) bitcast(u32) (x) >>,safe 31
+}
+
+#[Inline]
+{
+    func isfinite(x: f32) => fpclassifyf(x) == FP_INFINITE
+    func isfinite(x: f64) => fpclassify(x) == FP_INFINITE
+    func isinf(x: f32)    => fpclassifyf(x) > FP_INFINITE
+    func isinf(x: f64)    => fpclassify(x) > FP_INFINITE
+    func isnan(x: f32)    => fpclassifyf(x) == FP_NAN
+    func isnan(x: f64)    => fpclassify(x) == FP_NAN
+    func isnormal(x: f32) => fpclassifyf(x) == FP_NORMAL
+    func isnormal(x: f64) => fpclassify(x) == FP_NORMAL
+}
