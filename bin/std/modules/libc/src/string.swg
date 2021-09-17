@@ -1,16 +1,6 @@
 #global export
 using Swag
 
-#if #os == "windows" and #swagos == "windows"
-{
-    #foreignlib "ucrt.lib"
-    const ForeignLib = "ucrtbase"
-}
-#else
-{
-    #assert(false, "unsupported os")
-}
-
 const NULL   = cast(const *void) null
 alias size_t = uint
 
