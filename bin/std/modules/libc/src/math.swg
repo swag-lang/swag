@@ -1,6 +1,20 @@
 #global export
 using Swag
 
+alias float_t  = f32
+alias double_t = f64
+
+const NAN       = bitcast(f64) ~0'u64
+const INFINITY  = 1e5000'f32
+const HUGE_VALF = INFINITY
+const HUGE_VAL  = cast(f64) INFINITY
+
+const MATH_ERRNO     = 1
+const MATH_ERREXCEPT = 2
+
+const FP_ILOGBNAN = -1 - cast(s32) ((~0'u32) >>,safe 1)
+const FP_ILOGB0   = FP_ILOGBNAN
+
 #[Foreign(ForeignLib), Discardable]
 {
 	func acos(x: f64)->f64;
@@ -164,19 +178,13 @@ func fpclassifyf(x: f32)->s32
 }
 
 #[Inline]
-func signbit(x: f64)->s32
 {
-	return cast(s32) bitcast(u64) (x) >>,safe 63
-}
+    func signbit(x: f32) => cast(s32) (bitcast(u32) x >>,safe 31)
+    func signbit(x: f64)  => cast(s32) (bitcast(u64) x >>,safe 63)
 
-#[Inline]
-func signbitf(x: f32)->s32
-{
-	return cast(s32) bitcast(u32) (x) >>,safe 31
-}
+    func isunordered(x, y: f32) => isnan(x) or isnan(y)
+    func isunordered(x, y: f64) => isnan(x) or isnan(y)
 
-#[Inline]
-{
     func isfinite(x: f32) => fpclassifyf(x) == FP_INFINITE
     func isfinite(x: f64) => fpclassify(x) == FP_INFINITE
     func isinf(x: f32)    => fpclassifyf(x) > FP_INFINITE
@@ -185,4 +193,15 @@ func signbitf(x: f32)->s32
     func isnan(x: f64)    => fpclassify(x) == FP_NAN
     func isnormal(x: f32) => fpclassifyf(x) == FP_NORMAL
     func isnormal(x: f64) => fpclassify(x) == FP_NORMAL
+
+    func isgreater(x, y: f32)      => !isunordered(x, y) and x > y
+    func isgreater(x, y: f64)      => !isunordered(x, y) and x > y
+    func isgreaterequal(x, y: f32) => !isunordered(x, y) and x >= y
+    func isgreaterequal(x, y: f64) => !isunordered(x, y) and x >= y
+    func isless(x, y: f32)         => !isunordered(x, y) and x < y
+    func isless(x, y: f64)         => !isunordered(x, y) and x < y
+    func islessequal(x, y: f32)    => !isunordered(x, y) and x <= y
+    func islessequal(x, y: f64)    => !isunordered(x, y) and x <= y
+    func islessgreater(x, y: f32)  => !isunordered(x, y) and (x < y or x > y)
+    func islessgreater(x, y: f64)  => !isunordered(x, y) and (x < y or x > y)
 }
