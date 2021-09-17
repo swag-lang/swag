@@ -2,7 +2,7 @@
 
 #if #os == "windows" and #swagos == "windows"
 {
-    #foreignlib "ucrt.lib"
+    #foreignlib "ucrt"
     const ForeignLib = "ucrtbase"
 }
 #else

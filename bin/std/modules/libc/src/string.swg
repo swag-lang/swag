@@ -1,9 +1,6 @@
 #global export
 using Swag
 
-const NULL   = cast(const *void) null
-alias size_t = uint
-
 #[Foreign(ForeignLib), Discardable]
 {
     func memcpy(destination: *void, source: const *void, num: size_t)->*void;

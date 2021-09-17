@@ -1,6 +1,13 @@
 #global export
 using Swag
 
+const NULL = cast(const *void) null
+const EXIT_SUCCESS = 0
+const EXIT_FAILURE = 1
+
+alias size_t  = uint
+alias wchar_t = u16
+
 struct div_t   { quot, rem: s32; }
 struct ldiv_t  { quot, rem: s32; }
 struct lldiv_t { quot, rem: s64; }
@@ -28,16 +35,16 @@ struct lldiv_t { quot, rem: s64; }
 	func realloc(ptr: *void, size: size_t)->*void;
 
 	func abort();
-	/*func atexit        (func: proc "c" ())->s32;
-	func at_quick_exit (func: proc "c" ())->s32;*/
+	//func atexit(fn: *void)->s32;
+	//func at_quick_exit(fn: *void)->s32;
 	func exit(status: s32);
 	func _Exit(status: s32);
 	func getenv(name: const *u8)->*u8;
 	func quick_exit(status: s32);
 	func system(cmd: const *u8)->s32;
 
-	/*func bsearch       (key, base: *void, nmemb, size: size_t, compar: proc "c" (lhs, rhs: *void)->s32)->*void;
-	func qsort         (base: *void, nmemb, size: size_t, compar: proc "c" (lhs, rhs: *void)->s32);*/
+	func bsearch(key, base: *void, nmemb, size: size_t, compar: *void)->*void;
+	func qsort(base: *void, num, size: size_t, compar: *void);
 
 	func abs(j: s32)->s32;
 	func labs(j: s32)->s32;
@@ -46,10 +53,10 @@ struct lldiv_t { quot, rem: s64; }
 	func ldiv(numer, denom: s32)->ldiv_t;
 	func lldiv(numer, denom: s64)->lldiv_t;
 
-	/*func mblen(s: const *u8, n: size_t)->s32;
-	func mbtowc(pwc: ^wchar_t, s: const *u8, n: size_t)->s32;
-	func wctomb(s: [^]u8, wc: wchar_t)->s32;
+	func mblen(s: const *u8, n: size_t)->s32;
+	func mbtowc(pwc: *wchar_t, s: const *u8, n: size_t)->s32;
+	func wctomb(s: *u8, wc: wchar_t)->s32;
 
-	func mbstowcs(pwcs: ^wchar_t, s: const *u8, n: size_t)->size_t;
-	func wcstombs(s: [^]u8, pwcs: ^wchar_t, n: size_t)->size_t;*/
+	func mbstowcs(pwcs: *wchar_t, s: const *u8, n: size_t)->size_t;
+	func wcstombs(s: *u8, pwcs: *wchar_t, n: size_t)->size_t;
 }
