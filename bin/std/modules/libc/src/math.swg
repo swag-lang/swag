@@ -153,9 +153,9 @@ func fpclassify(x: f64)->s32
 	switch e
     {
 	case 0:
-        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
+        return (u <<,safe 1) ? FP_SUBNORMAL : FP_ZERO
 	case 0x7ff:
-        return (u << 12) ? FP_NAN : FP_INFINITE
+        return (u <<,safe 12) ? FP_NAN : FP_INFINITE
 	}
 
 	return FP_NORMAL
@@ -169,9 +169,9 @@ func fpclassifyf(x: f32)->s32
 	switch e
     {
 	case 0:
-        return (u << 1) ? FP_SUBNORMAL : FP_ZERO
+        return (u <<,safe 1) ? FP_SUBNORMAL : FP_ZERO
 	case 0x7ff:
-        return (u << 9) ? FP_NAN : FP_INFINITE
+        return (u <<,safe 9) ? FP_NAN : FP_INFINITE
 	}
 
 	return FP_NORMAL
