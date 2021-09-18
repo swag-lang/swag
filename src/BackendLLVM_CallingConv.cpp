@@ -34,17 +34,17 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (pp.dbg)
         pp.dbg->startWrapperFunction(pp, bc, node, func);
 
-    // Total number of registers to store results and parameters
-    auto numTotalRegisters = typeFunc->numTotalRegisters();
-    auto allocRR           = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegisters));
-
+    auto numTotalRegs  = typeFunc->numTotalRegisters();
+    auto numReturnRegs = typeFunc->numReturnRegisters();
     auto returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
     bool returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
-    auto numReturnRegs = typeFunc->numReturnRegisters();
+
+    // Storage for the registers
+    auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegs));
 
     // Set all registers
     int argIdx = 0;
-    for (int i = 0; i < numTotalRegisters; i++)
+    for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
         {
@@ -120,7 +120,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     // Set all parameters
     VectorNative<llvm::Value*> args;
-    for (int i = 0; i < numTotalRegisters; i++)
+    for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
         {

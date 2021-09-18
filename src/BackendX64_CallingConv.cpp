@@ -35,16 +35,18 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         coffFct->dbgLines.push_back(dbgLines);
     }
 
-    // Total number of registers
-    auto     numTotalRegisters = typeFunc->numTotalRegisters();
-    uint32_t sizeStack         = (uint32_t) numTotalRegisters * sizeof(Register);
+    auto numTotalRegs  = typeFunc->numTotalRegisters();
+    auto numReturnRegs = typeFunc->numReturnRegisters();
+    auto returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    bool returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+
+    // Storage for the registers
+    uint32_t sizeStack = (uint32_t) numTotalRegs * sizeof(Register);
 
     // When return by copy, the register needs to contain the "address to the address" where
     // the copy will be stored. So we add one more temporary storage at the end of the stack,
     // after the registers, to store the result address.
     uint32_t offsetRetCopy = 0;
-    auto     returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    bool     returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         offsetRetCopy = sizeStack;
@@ -83,18 +85,17 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // so that we will always get it by the stack address.
     // See :ReturnRegister2
     // If the return address is not a register, then it's already in the stack, at the right place.
-    auto numReturnRegs = typeFunc->numReturnRegisters();
-    if (numReturnRegs == 2 && numTotalRegisters <= 5)
+    if (numReturnRegs == 2 && numTotalRegs <= 5)
     {
         SWAG_ASSERT(!returnByCopy);
         SWAG_ASSERT(sizeStack);
-        int            offset    = (int) numTotalRegisters - 2;
+        int            offset    = (int) numTotalRegs - 2;
         static uint8_t x64regs[] = {RCX, RDX, R8, R9};
         BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + (offset * 8), x64regs[offset], RDI);
     }
 
     // Set all registers
-    for (int i = 0; i < numTotalRegisters; i++)
+    for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
         {
@@ -104,7 +105,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
                 // Store the result address in the temporary storage
-                storeCDeclParamToRegister(pp, returnType, numTotalRegisters - numReturnRegs, offsetRetCopy, sizeStack);
+                storeCDeclParamToRegister(pp, returnType, numTotalRegs - numReturnRegs, offsetRetCopy, sizeStack);
             }
             else
             {
@@ -146,8 +147,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
             // We get the return address from the stack, it's always there, even if that address
             // has been passed by register because we have made a copy at the start
             // :ReturnRegister2
-            SWAG_ASSERT(numTotalRegisters >= 2);
-            int offset = numTotalRegisters - 2;
+            SWAG_ASSERT(numTotalRegs >= 2);
+            int offset = numTotalRegs - 2;
             offset *= sizeof(Register);
             offset += sizeStack + 16;
             BackendX64Inst::emit_Load64_Indirect(pp, offset, RDX, RDI);
