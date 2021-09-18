@@ -297,7 +297,12 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
     else if (typeFunc->numReturnRegisters() == 1)
     {
-        BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
+        if (typeFunc->returnType->isNative(NativeTypeKind::F32))
+            BackendX64Inst::emit_LoadF32_Indirect(pp, 0, XMM0, RDI);
+        else if (typeFunc->returnType->isNative(NativeTypeKind::F64))
+            BackendX64Inst::emit_LoadF64_Indirect(pp, 0, XMM0, RDI);
+        else
+            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
     }
     else if (typeFunc->numReturnRegisters() == 2)
     {
@@ -2766,6 +2771,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+
         case ByteCodeOp::CopyRTtoRC2:
             BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -3912,6 +3918,10 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
             // Return by parameter
+        }
+        else if (returnType->isNativeFloat())
+        {
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
         }
         else
         {

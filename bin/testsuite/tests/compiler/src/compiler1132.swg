@@ -1,3 +1,4 @@
+//#[Swag.PrintBc]
 func clamp(x: f32, min: f32, max: f32)->f32
 {
 	return (x < min) ? (min) : ((x > max) ? (max) : (x));

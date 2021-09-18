@@ -370,3 +370,14 @@ public func tcf_print(params: ...)
         @assert(cast(string) c == "this is a string")
     }
 }
+
+//#[Swag.PrintBc]
+public func tcf_double()->f64
+{
+    return 3.14
+}
+
+public func tcf_float()->f32
+{
+    return 3.14
+}
