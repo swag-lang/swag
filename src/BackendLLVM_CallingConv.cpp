@@ -38,6 +38,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto numTotalRegisters = typeFunc->numTotalRegisters();
     auto allocRR           = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegisters));
 
+    // Set all registers
+
     // Return by copy
     auto returnType   = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -51,9 +53,10 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     auto numParams = typeFunc->parameters.size();
 
-    // Variadic must be pushed first
-    int idx    = typeFunc->numReturnRegisters();
-    int argIdx = 0;
+    // Variadics
+    auto numReturnRegs = typeFunc->numReturnRegisters();
+    int  idx           = numReturnRegs;
+    int  argIdx        = 0;
     if (numParams)
     {
         auto param     = typeFunc->parameters.back();
@@ -73,7 +76,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
     }
 
-    // Set all registers
+    // Parameters
     for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
@@ -127,7 +130,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     // Set all parameters
     VectorNative<llvm::Value*> args;
-    auto                       numReturnRegs = typeFunc->numReturnRegisters();
     for (int i = 0; i < numTotalRegisters; i++)
     {
         if (i < numReturnRegs)
