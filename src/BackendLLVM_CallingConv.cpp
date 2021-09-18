@@ -34,14 +34,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (pp.dbg)
         pp.dbg->startWrapperFunction(pp, bc, node, func);
 
-    // Total number of registers
-    auto n = typeFunc->numReturnRegisters();
-    for (auto param : typeFunc->parameters)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        n += typeParam->numRegisters();
-    }
-
+    // Total number of registers to store results and parameters
+    auto n       = typeFunc->numTotalRegisters();
     auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(n));
 
     // Return by copy
