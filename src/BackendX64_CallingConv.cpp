@@ -84,27 +84,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // See :ReturnRegister2
     // If the return address is not a register, then it's already in the stack, at the right place.
     auto numReturnRegs = typeFunc->numReturnRegisters();
-    if (numReturnRegs == 2)
+    if (numReturnRegs == 2 && numTotalRegisters <= 5)
     {
         SWAG_ASSERT(!returnByCopy);
         SWAG_ASSERT(sizeStack);
-        SWAG_ASSERT(numTotalRegisters >= 2);
-        int offset = (int) numTotalRegisters - 2;
-        switch (offset)
-        {
-        case 0:
-            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16, RCX, RDI);
-            break;
-        case 1:
-            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 8, RDX, RDI);
-            break;
-        case 2:
-            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 16, R8, RDI);
-            break;
-        case 3:
-            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 24, R9, RDI);
-            break;
-        }
+        int            offset    = (int) numTotalRegisters - 2;
+        static uint8_t x64regs[] = {RCX, RDX, R8, R9};
+        BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + (offset * 8), x64regs[offset], RDI);
     }
 
     // Set all registers
