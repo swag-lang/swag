@@ -12,9 +12,9 @@
     {
         itf := @compiler()
         cfg := itf.getBuildCfg()
-        cfg.moduleVersion = 2
-        cfg.moduleRevision = 10
-        cfg.moduleBuildNum = 4
+        cfg.moduleVersion = #swagversion
+        cfg.moduleRevision = #swagrevision
+        cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "FreeType"
         cfg.backendKind = .Export
     }
