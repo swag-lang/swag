@@ -140,7 +140,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         else if (numReturnRegs == 2)
         {
             // Get the results in rax & rcx
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(0), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(1), RCX, RDI);
 
             // Get the pointer to store the result

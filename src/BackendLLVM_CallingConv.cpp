@@ -172,14 +172,14 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         {
             //*((void **) result) = rr0.pointer
             auto loadInst = builder.CreateLoad(allocRR);
-            auto arg0     = TO_PTR_I64(func->getArg((int) func->arg_size() - 1));
-            builder.CreateStore(loadInst, arg0);
+            auto result0  = TO_PTR_I64(func->getArg((int) func->arg_size() - 1));
+            builder.CreateStore(loadInst, result0);
 
             //*((void **) result + 1) = rr1.pointer
-            auto rr1  = builder.CreateInBoundsGEP(allocRR, pp.cst1_i32);
-            auto arg1 = builder.CreateInBoundsGEP(arg0, pp.cst1_i32);
-            loadInst  = builder.CreateLoad(rr1);
-            builder.CreateStore(loadInst, arg1);
+            auto rr1     = builder.CreateInBoundsGEP(allocRR, pp.cst1_i32);
+            auto result1 = builder.CreateInBoundsGEP(result0, pp.cst1_i32);
+            loadInst     = builder.CreateLoad(rr1);
+            builder.CreateStore(loadInst, result1);
 
             builder.CreateRetVoid();
         }
