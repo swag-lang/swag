@@ -35,8 +35,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         pp.dbg->startWrapperFunction(pp, bc, node, func);
 
     // Total number of registers to store results and parameters
-    auto n       = typeFunc->numTotalRegisters();
-    auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(n));
+    auto numTotalRegisters = typeFunc->numTotalRegisters();
+    auto allocRR           = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegisters));
 
     // Return by copy
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -72,7 +72,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
     }
 
-    // Affect registers
+    // Set all registers
     for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
@@ -124,20 +124,21 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         argIdx += typeParam->numRegisters();
     }
 
-    // Make the call
+    // Set all parameters
     VectorNative<llvm::Value*> args;
-    for (int i = 0; i < n; i++)
+    auto                       numReturnRegs = typeFunc->numReturnRegisters();
+    for (int i = 0; i < numTotalRegisters; i++)
     {
-        if (i < typeFunc->numReturnRegisters())
+        if (i < numReturnRegs)
         {
             auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
             args.push_back(rr0);
         }
         else
         {
-            auto typeParam = typeFunc->registerIdxToType(i - typeFunc->numReturnRegisters());
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
             if (passByValue(typeParam))
-                args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
+                args.push_back(func->getArg(i - numReturnRegs));
             else
             {
                 auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
@@ -146,11 +147,14 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
     }
 
+    // Make the call
     auto fcc = modu.getFunction(bc->getCallName().c_str());
     builder.CreateCall(fcc, {args.begin(), args.end()});
 
-    // Return
-    if (typeFunc->numReturnRegisters() && !returnByCopy)
+    // Return value
+    // If we return by copy, then this has already been copied to the correct
+    // destination address, so nothing to do.
+    if (numReturnRegs && !returnByCopy)
     {
         auto rr0        = allocRR;
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);

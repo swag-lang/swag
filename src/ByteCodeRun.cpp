@@ -527,8 +527,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::ForeignCall:
     {
-        if (ip->node->token.text == "tcf_double")
-            int a = 0;
         context->bc->addCallStack(context);
         ffiCall(context, ip);
         g_ByteCodeStack.pop();

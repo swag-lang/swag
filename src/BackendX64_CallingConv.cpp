@@ -35,67 +35,16 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         coffFct->dbgLines.push_back(dbgLines);
     }
 
-    VectorNative<TypeInfo*> pushRAParams;
-
     // Total number of registers
-    auto numCallRegisters = 0;
-    for (auto param : typeFunc->parameters)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        numCallRegisters += typeParam->numRegisters();
-    }
-
-    // First we have return values
-    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
-    if (returnByCopy)
-    {
-        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
-    }
-    else if (typeFunc->returnType->numRegisters() == 1)
-    {
-        pushRAParams.push_back(typeFunc->returnType);
-    }
-    else if (typeFunc->returnType->numRegisters() == 2)
-    {
-        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
-        pushRAParams.push_back(g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void]);
-    }
-
-    // Then variadic
-    int numParams = (int) typeFunc->parameters.size();
-    if (numParams)
-    {
-        auto param     = typeFunc->parameters.back();
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
-        {
-            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
-            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
-            numParams--;
-        }
-    }
-
-    // Then parameters
-    for (int i = 0; i < numParams; i++)
-    {
-        auto param     = typeFunc->parameters[i];
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->numRegisters() == 1)
-        {
-            pushRAParams.push_back(typeParam);
-        }
-        else
-        {
-            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
-            pushRAParams.push_back(g_TypeMgr->typeInfoU64);
-        }
-    }
+    auto     numTotalRegisters = typeFunc->numTotalRegisters();
+    uint32_t sizeStack         = (uint32_t) numTotalRegisters * sizeof(Register);
 
     // When return by copy, the register needs to contain the "address to the address" where
     // the copy will be stored. So we add one more temporary storage at the end of the stack,
     // after the registers, to store the result address.
     uint32_t offsetRetCopy = 0;
-    uint32_t sizeStack     = (uint32_t) pushRAParams.size() * sizeof(Register);
+    auto     returnType    = TypeManager::concreteReferenceType(typeFunc->returnType);
+    bool     returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         offsetRetCopy = sizeStack;
@@ -134,12 +83,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // so that we will always get it by the stack address.
     // See :ReturnRegister2
     // If the return address is not a register, then it's already in the stack, at the right place.
-    if (typeFunc->numReturnRegisters() == 2)
+    auto numReturnRegs = typeFunc->numReturnRegisters();
+    if (numReturnRegs == 2)
     {
         SWAG_ASSERT(!returnByCopy);
         SWAG_ASSERT(sizeStack);
-        SWAG_ASSERT(pushRAParams.size() >= 2);
-        int offset = (int) pushRAParams.size() - 2;
+        SWAG_ASSERT(numTotalRegisters >= 2);
+        int offset = (int) numTotalRegisters - 2;
         switch (offset)
         {
         case 0:
@@ -158,10 +108,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     // Set all registers
-    auto numReturnRegs = typeFunc->numReturnRegisters();
-    for (int i = 0; i < (int) pushRAParams.size(); i++)
+    for (int i = 0; i < numTotalRegisters; i++)
     {
-        auto typeParam = pushRAParams[i];
         if (i < numReturnRegs)
         {
             if (returnByCopy)
@@ -170,7 +118,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
                 // Store the result address in the temporary storage
-                storeCDeclParamToRegister(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
+                storeCDeclParamToRegister(pp, returnType, numTotalRegisters - numReturnRegs, offsetRetCopy, sizeStack);
             }
             else
             {
@@ -180,28 +128,29 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
         else
         {
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
             storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
         }
     }
 
-    // Call
+    // Make the call
     emitCall(pp, bc->getCallName());
 
     // Return value
     // If we return by copy, then this has already been copied to the correct
     // destination address, so nothing to do.
-    if (!returnByCopy)
+    if (numReturnRegs && !returnByCopy)
     {
-        if (typeFunc->numReturnRegisters() == 1)
+        if (numReturnRegs == 1)
         {
-            if (typeFunc->returnType->isNative(NativeTypeKind::F32))
+            if (returnType->isNative(NativeTypeKind::F32))
                 BackendX64Inst::emit_LoadF32_Indirect(pp, 0, XMM0, RDI);
-            else if (typeFunc->returnType->isNative(NativeTypeKind::F64))
+            else if (returnType->isNative(NativeTypeKind::F64))
                 BackendX64Inst::emit_LoadF64_Indirect(pp, 0, XMM0, RDI);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
         }
-        else if (typeFunc->numReturnRegisters() == 2)
+        else if (numReturnRegs == 2)
         {
             // Get the results in rax & rcx
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
@@ -211,8 +160,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
             // We get the return address from the stack, it's always there, even if that address
             // has been passed by register because we have made a copy at the start
             // :ReturnRegister2
-            SWAG_ASSERT(pushRAParams.size() >= 2);
-            int offset = (int) pushRAParams.size() - 2;
+            SWAG_ASSERT(numTotalRegisters >= 2);
+            int offset = numTotalRegisters - 2;
             offset *= sizeof(Register);
             offset += sizeStack + 16;
             BackendX64Inst::emit_Load64_Indirect(pp, offset, RDX, RDI);
