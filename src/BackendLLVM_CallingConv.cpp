@@ -38,94 +38,84 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto numTotalRegisters = typeFunc->numTotalRegisters();
     auto allocRR           = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegisters));
 
-    // Set all registers
-
-    // Return by copy
-    auto returnType   = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
-    if (returnByCopy)
-    {
-        // rr0 = result
-        auto rr0  = TO_PTR_PTR_I8(allocRR);
-        auto cst0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
-        builder.CreateStore(cst0, rr0);
-    }
-
-    auto numParams = typeFunc->parameters.size();
-
-    // Variadics
+    auto returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    bool returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     auto numReturnRegs = typeFunc->numReturnRegisters();
-    int  idx           = numReturnRegs;
-    int  argIdx        = 0;
-    if (numParams)
+
+    // Set all registers
+    int idx    = numReturnRegs;
+    int argIdx = 0;
+    for (int i = 0; i < numTotalRegisters; i++)
     {
-        auto param     = typeFunc->parameters.back();
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
+        if (i < numReturnRegs)
         {
-            auto rr0  = TO_PTR_PTR_I8(GEP_I32(allocRR, idx));
-            auto cst0 = TO_PTR_I8(func->getArg(0));
-            builder.CreateStore(cst0, rr0);
-
-            auto rr1 = GEP_I32(allocRR, idx + 1);
-            builder.CreateStore(func->getArg(1), rr1);
-
-            idx += 2;
-            argIdx += 2;
-            numParams--;
-        }
-    }
-
-    // Parameters
-    for (int i = 0; i < numParams; i++)
-    {
-        auto param     = typeFunc->parameters[i];
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
-        auto rr0       = GEP_I32(allocRR, idx);
-
-        if (typeParam->kind == TypeInfoKind::Pointer ||
-            typeParam->kind == TypeInfoKind::Lambda ||
-            typeParam->kind == TypeInfoKind::Struct ||
-            typeParam->kind == TypeInfoKind::Array ||
-            typeParam->kind == TypeInfoKind::Reference)
-        {
-            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
-            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
-        }
-        else if (typeParam->isNative(NativeTypeKind::String) ||
-                 typeParam->kind == TypeInfoKind::Slice)
-        {
-            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
-            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
-            auto rr1 = GEP_I32(allocRR, idx + 1);
-            builder.CreateStore(func->getArg(argIdx + 1), rr1);
-        }
-        else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface)
-        {
-            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
-            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
-            auto cst1 = TO_PTR_I8(func->getArg(argIdx + 1));
-            auto rr1  = GEP_I32(allocRR, idx + 1);
-            builder.CreateStore(cst1, TO_PTR_PTR_I8(rr1));
-        }
-        else if (typeParam->kind == TypeInfoKind::Native)
-        {
-            if (!passByValue(typeParam))
+            if (returnByCopy)
             {
-                auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
-                if (!r)
-                    return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
-                builder.CreateStore(func->getArg(argIdx), r);
+                auto rr0  = TO_PTR_PTR_I8(allocRR);
+                auto cst0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+                builder.CreateStore(cst0, rr0);
             }
         }
         else
         {
-            return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid param type `%s`", typeParam->name.c_str()));
-        }
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+            auto rr0       = GEP_I32(allocRR, idx);
 
-        idx += typeParam->numRegisters();
-        argIdx += typeParam->numRegisters();
+            if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
+            {
+                rr0       = TO_PTR_PTR_I8(rr0);
+                auto cst0 = TO_PTR_I8(func->getArg(0));
+                builder.CreateStore(cst0, rr0);
+                auto rr1 = GEP_I32(allocRR, idx + 1);
+                builder.CreateStore(func->getArg(1), rr1);
+                i += 1;
+            }
+            else if (typeParam->kind == TypeInfoKind::Pointer ||
+                     typeParam->kind == TypeInfoKind::Lambda ||
+                     typeParam->kind == TypeInfoKind::Struct ||
+                     typeParam->kind == TypeInfoKind::Array ||
+                     typeParam->kind == TypeInfoKind::Reference)
+            {
+                auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+                builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
+            }
+            else if (typeParam->isNative(NativeTypeKind::String) ||
+                     typeParam->kind == TypeInfoKind::Slice)
+            {
+                auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+                builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
+                auto rr1 = GEP_I32(allocRR, idx + 1);
+                builder.CreateStore(func->getArg(argIdx + 1), rr1);
+                i += 1;
+            }
+            else if (typeParam->isNative(NativeTypeKind::Any) ||
+                     typeParam->kind == TypeInfoKind::Interface)
+            {
+                auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+                builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
+                auto cst1 = TO_PTR_I8(func->getArg(argIdx + 1));
+                auto rr1  = GEP_I32(allocRR, idx + 1);
+                builder.CreateStore(cst1, TO_PTR_PTR_I8(rr1));
+                i += 1;
+            }
+            else if (typeParam->kind == TypeInfoKind::Native)
+            {
+                if (!passByValue(typeParam))
+                {
+                    auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
+                    if (!r)
+                        return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
+                    builder.CreateStore(func->getArg(argIdx), r);
+                }
+            }
+            else
+            {
+                return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid param type `%s`", typeParam->name.c_str()));
+            }
+
+            idx += typeParam->numRegisters();
+            argIdx += typeParam->numRegisters();
+        }
     }
 
     // Set all parameters
