@@ -39,7 +39,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto allocRR           = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegisters));
 
     // Return by copy
-    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    auto returnType   = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         // rr0 = result
@@ -156,16 +157,29 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // destination address, so nothing to do.
     if (numReturnRegs && !returnByCopy)
     {
-        auto rr0        = allocRR;
-        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-
-        if (returnType->kind == TypeInfoKind::Slice ||
-            returnType->kind == TypeInfoKind::Interface ||
-            returnType->isNative(NativeTypeKind::Any) ||
-            returnType->isNative(NativeTypeKind::String))
+        if (numReturnRegs == 1)
+        {
+            if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Reference)
+            {
+                auto loadInst = builder.CreateLoad(allocRR);
+                auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, funcType->getReturnType());
+                builder.CreateRet(arg0);
+            }
+            else if (returnType->kind == TypeInfoKind::Native)
+            {
+                auto r        = TO_PTR_NATIVE(allocRR, returnType->nativeType);
+                auto loadInst = builder.CreateLoad(r);
+                builder.CreateRet(loadInst);
+            }
+            else
+            {
+                return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayName().c_str()));
+            }
+        }
+        else if (numReturnRegs == 2)
         {
             //*((void **) result) = rr0.pointer
-            auto loadInst = builder.CreateLoad(rr0);
+            auto loadInst = builder.CreateLoad(allocRR);
             auto arg0     = TO_PTR_I64(func->getArg((int) func->arg_size() - 1));
             builder.CreateStore(loadInst, arg0);
 
@@ -176,24 +190,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             builder.CreateStore(loadInst, arg1);
 
             builder.CreateRetVoid();
-        }
-        else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Reference)
-        {
-            auto loadInst = builder.CreateLoad(rr0);
-            auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, funcType->getReturnType());
-            builder.CreateRet(arg0);
-        }
-        else if (returnType->kind == TypeInfoKind::Native)
-        {
-            auto r = TO_PTR_NATIVE(rr0, returnType->nativeType);
-            if (!r)
-                return moduleToGen->internalError("emitFuncWrapperPublic, invalid return type");
-            auto loadInst = builder.CreateLoad(r);
-            builder.CreateRet(loadInst);
-        }
-        else
-        {
-            return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayName().c_str()));
         }
     }
     else

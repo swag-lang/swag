@@ -43,7 +43,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // the copy will be stored. So we add one more temporary storage at the end of the stack,
     // after the registers, to store the result address.
     uint32_t offsetRetCopy = 0;
-    auto     returnType    = TypeManager::concreteReferenceType(typeFunc->returnType);
+    auto     returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
     bool     returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
@@ -170,6 +170,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
+    // Epilogue, exit
     if (sizeStack)
     {
         BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
