@@ -482,6 +482,9 @@
     <ClCompile Include="..\src\BackendX64_CallingConv.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendLLVM_CallingConv.cpp">
+      <Filter>Backend\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

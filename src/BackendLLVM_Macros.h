@@ -80,3 +80,115 @@
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0)); \
     llvm::Value* r2 = MK_IMMB_F64();
+
+#define OPEQ_OVERFLOW(__intr, __inst, __type, __msg)                                                                                \
+    if (module->mustEmitSafetyOF(ip->node))                                                                                         \
+    {                                                                                                                               \
+        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {builder.CreateLoad(r1), r2}); \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                                                              \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                                                              \
+                                                                                                                                    \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                                   \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                                   \
+                                                                                                                                    \
+        auto v2 = builder.CreateIsNull(v1);                                                                                         \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
+        builder.SetInsertPoint(blockErr);                                                                                           \
+        emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                                        \
+        builder.CreateBr(blockOk);                                                                                                  \
+        builder.SetInsertPoint(blockOk);                                                                                            \
+        builder.CreateStore(v0, r1);                                                                                                \
+    }                                                                                                                               \
+    else                                                                                                                            \
+    {                                                                                                                               \
+        auto v0 = builder.__inst(builder.CreateLoad(r1), r2);                                                                       \
+        builder.CreateStore(v0, r1);                                                                                                \
+    }
+
+#define OP_OVERFLOW(__intr, __inst, __cast, __type, __msg)                                                      \
+    if (module->mustEmitSafetyOF(ip->node))                                                                     \
+    {                                                                                                           \
+        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {r1, r2}); \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                                          \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                                          \
+                                                                                                                \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                               \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                               \
+                                                                                                                \
+        auto v2 = builder.CreateIsNull(v1);                                                                     \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
+        builder.SetInsertPoint(blockErr);                                                                       \
+        emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                    \
+        builder.CreateBr(blockOk);                                                                              \
+        builder.SetInsertPoint(blockOk);                                                                        \
+        builder.CreateStore(v0, __cast(r0));                                                                    \
+    }                                                                                                           \
+    else                                                                                                        \
+    {                                                                                                           \
+        auto v0 = builder.__inst(r1, r2);                                                                       \
+        builder.CreateStore(v0, __cast(r0));                                                                    \
+    }
+
+inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
+{
+    switch (k)
+    {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
+        return TO_PTR_I8(v);
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        return TO_PTR_I16(v);
+    case NativeTypeKind::S32:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Rune:
+        return TO_PTR_I32(v);
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
+        return TO_PTR_I64(v);
+    case NativeTypeKind::F32:
+        return TO_PTR_F32(v);
+    case NativeTypeKind::F64:
+        return TO_PTR_F64(v);
+    }
+
+    SWAG_ASSERT(false);
+    return nullptr;
+}
+
+inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
+{
+    switch (k)
+    {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::Void:
+        return TO_PTR_PTR_I8(v);
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        return TO_PTR_PTR_I16(v);
+    case NativeTypeKind::S32:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Rune:
+        return TO_PTR_PTR_I32(v);
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
+        return TO_PTR_PTR_I64(v);
+    case NativeTypeKind::F32:
+        return TO_PTR_PTR_F32(v);
+    case NativeTypeKind::F64:
+        return TO_PTR_PTR_F64(v);
+    }
+
+    SWAG_ASSERT(false);
+    return nullptr;
+}
+
+#define TO_PTR_NATIVE(__value, __kind) toPtrNative(context, builder, __value, __kind)
+#define TO_PTR_PTR_NATIVE(__value, __kind) toPtrPtrNative(context, builder, __value, __kind)

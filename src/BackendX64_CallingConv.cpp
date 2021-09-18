@@ -327,31 +327,6 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     SWAG_ASSERT(offset == 0);
 }
 
-void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
-{
-    // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (returnType->isNativeFloat())
-        {
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
-        }
-        else
-        {
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
-        }
-    }
-}
-
 bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
@@ -387,6 +362,31 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
     return true;
+}
+
+void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+{
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr->typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (returnType->isNativeFloat())
+        {
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
+        }
+        else
+        {
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
+        }
+    }
 }
 
 bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
