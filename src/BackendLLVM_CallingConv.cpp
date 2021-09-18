@@ -43,7 +43,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto numReturnRegs = typeFunc->numReturnRegisters();
 
     // Set all registers
-    int idx    = numReturnRegs;
     int argIdx = 0;
     for (int i = 0; i < numTotalRegisters; i++)
     {
@@ -55,18 +54,20 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 auto cst0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
                 builder.CreateStore(cst0, rr0);
             }
+
+            i = numReturnRegs - 1;
         }
         else
         {
             auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            auto rr0       = GEP_I32(allocRR, idx);
+            auto rr0       = GEP_I32(allocRR, i);
 
             if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
             {
                 rr0       = TO_PTR_PTR_I8(rr0);
                 auto cst0 = TO_PTR_I8(func->getArg(0));
                 builder.CreateStore(cst0, rr0);
-                auto rr1 = GEP_I32(allocRR, idx + 1);
+                auto rr1 = GEP_I32(allocRR, i + 1);
                 builder.CreateStore(func->getArg(1), rr1);
                 i += 1;
             }
@@ -84,7 +85,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             {
                 auto cst0 = TO_PTR_I8(func->getArg(argIdx));
                 builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
-                auto rr1 = GEP_I32(allocRR, idx + 1);
+                auto rr1 = GEP_I32(allocRR, i + 1);
                 builder.CreateStore(func->getArg(argIdx + 1), rr1);
                 i += 1;
             }
@@ -94,7 +95,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 auto cst0 = TO_PTR_I8(func->getArg(argIdx));
                 builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
                 auto cst1 = TO_PTR_I8(func->getArg(argIdx + 1));
-                auto rr1  = GEP_I32(allocRR, idx + 1);
+                auto rr1  = GEP_I32(allocRR, i + 1);
                 builder.CreateStore(cst1, TO_PTR_PTR_I8(rr1));
                 i += 1;
             }
@@ -113,7 +114,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid param type `%s`", typeParam->name.c_str()));
             }
 
-            idx += typeParam->numRegisters();
             argIdx += typeParam->numRegisters();
         }
     }
