@@ -713,6 +713,28 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
     return TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
 }
 
+int TypeInfoFuncAttr::numParamsRegisters()
+{
+    int total = 0;
+    for (auto param : parameters)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        total += typeParam->numRegisters();
+    }
+
+    return total;
+}
+
+int TypeInfoFuncAttr::numReturnRegisters()
+{
+    return returnType ? returnType->numRegisters() : 0;
+}
+
+int TypeInfoFuncAttr::numTotalRegisters()
+{
+    return numReturnRegisters() + numParamsRegisters();
+}
+
 TypeInfo* TypeInfoStruct::clone()
 {
     auto newType               = allocType<TypeInfoStruct>();

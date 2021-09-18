@@ -312,19 +312,6 @@ struct TypeInfoFuncAttr : public TypeInfo
     {
     }
 
-    int numParamsRegisters()
-    {
-        int total = 0;
-        for (auto param : parameters)
-            total += param->numRegisters();
-        return total;
-    }
-
-    int numReturnRegisters()
-    {
-        return returnType ? returnType->numRegisters() : 0;
-    }
-
     bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
@@ -332,6 +319,9 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
     uint32_t  registerIdxToParamIdx(int argIdx);
     TypeInfo* registerIdxToType(int argIdx);
+    int       numParamsRegisters();
+    int       numReturnRegisters();
+    int       numTotalRegisters();
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
