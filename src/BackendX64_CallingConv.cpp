@@ -91,9 +91,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
-    // When returning by copy, the register needs to contain the address to the address where
+    // When return by copy, the register needs to contain the "address to the address" where
     // the copy will be stored. So we add one more temporary storage at the end of the stack,
-    // after the registers, to store the result address
+    // after the registers, to store the result address.
     uint32_t offsetRetCopy = 0;
     uint32_t sizeStack     = (uint32_t) pushRAParams.size() * sizeof(Register);
     if (returnByCopy)
@@ -129,7 +129,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         computeUnwindStack(5 * sizeof(Register), sizeProlog, unwind);
     }
 
-    // Need to save return register if needed
+    // Need to save the return address if needed
+    // If the return address is in a register, then we store it at its "normal" place in the stack,
+    // so that we will always get it by the stack address.
+    // See :ReturnRegister2
+    // If the return address is not a register, then it's already in the stack, at the right place.
     if (typeFunc->numReturnRegisters() == 2)
     {
         SWAG_ASSERT(!returnByCopy);
@@ -153,7 +157,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
-    // Push all
+    // Set all registers
     auto numReturnRegs = typeFunc->numReturnRegisters();
     for (int i = 0; i < (int) pushRAParams.size(); i++)
     {
@@ -166,7 +170,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
                 // Store the result address in the temporary storage
-                setCalleeParameter(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
+                storeCDeclParamToRegister(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
             }
             else
             {
@@ -176,40 +180,45 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
         else
         {
-            setCalleeParameter(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
+            storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
         }
     }
 
+    // Call
     emitCall(pp, bc->getCallName());
 
-    // Return
-    if (returnByCopy)
+    // Return value
+    // If we return by copy, then this has already been copied to the correct
+    // destination address, so nothing to do.
+    if (!returnByCopy)
     {
-        // Done
-    }
-    else if (typeFunc->numReturnRegisters() == 1)
-    {
-        if (typeFunc->returnType->isNative(NativeTypeKind::F32))
-            BackendX64Inst::emit_LoadF32_Indirect(pp, 0, XMM0, RDI);
-        else if (typeFunc->returnType->isNative(NativeTypeKind::F64))
-            BackendX64Inst::emit_LoadF64_Indirect(pp, 0, XMM0, RDI);
-        else
+        if (typeFunc->numReturnRegisters() == 1)
+        {
+            if (typeFunc->returnType->isNative(NativeTypeKind::F32))
+                BackendX64Inst::emit_LoadF32_Indirect(pp, 0, XMM0, RDI);
+            else if (typeFunc->returnType->isNative(NativeTypeKind::F64))
+                BackendX64Inst::emit_LoadF64_Indirect(pp, 0, XMM0, RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
+        }
+        else if (typeFunc->numReturnRegisters() == 2)
+        {
+            // Get the results in rax & rcx
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
-    }
-    else if (typeFunc->numReturnRegisters() == 2)
-    {
-        // Get the results in rax & rcx
-        BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
-        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(1), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(1), RCX, RDI);
 
-        // Get the pointer to store the result
-        SWAG_ASSERT(pushRAParams.size() >= 2);
-        int offset = (int) pushRAParams.size() - 2;
-        offset *= sizeof(Register);
-        offset += sizeStack + 16;
-        BackendX64Inst::emit_Load64_Indirect(pp, offset, RDX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RDX);
-        BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RDX);
+            // Get the pointer to store the result
+            // We get the return address from the stack, it's always there, even if that address
+            // has been passed by register because we have made a copy at the start
+            // :ReturnRegister2
+            SWAG_ASSERT(pushRAParams.size() >= 2);
+            int offset = (int) pushRAParams.size() - 2;
+            offset *= sizeof(Register);
+            offset += sizeStack + 16;
+            BackendX64Inst::emit_Load64_Indirect(pp, offset, RDX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RDX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RDX);
+        }
     }
 
     if (sizeStack)
@@ -229,7 +238,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
-void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
+void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
 {
     if (calleeIndex < 4)
     {
@@ -268,6 +277,7 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
         offset += sizeStack;
         offset += 16;
         BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
+
         BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
     }
 }
