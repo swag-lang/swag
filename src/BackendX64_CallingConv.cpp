@@ -91,6 +91,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
+    // When returning by copy, the register needs to contain the address to the address where
+    // the copy will be stored. So we add one more temporary storage at the end of the stack,
+    // after the registers, to store the result address
     uint32_t offsetRetCopy = 0;
     uint32_t sizeStack     = (uint32_t) pushRAParams.size() * sizeof(Register);
     if (returnByCopy)
@@ -127,8 +130,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     // Need to save return register if needed
-    if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
+    if (typeFunc->numReturnRegisters() == 2)
     {
+        SWAG_ASSERT(!returnByCopy);
         SWAG_ASSERT(sizeStack);
         SWAG_ASSERT(pushRAParams.size() >= 2);
         int offset = (int) pushRAParams.size() - 2;
@@ -158,8 +162,10 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         {
             if (returnByCopy)
             {
+                // Set the register to the temporary storage where we will store the result address
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                // Store the result address in the temporary storage
                 setCalleeParameter(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
             }
             else

@@ -13,4 +13,7 @@ using tests_foreign
     tcf_toto()
     tcf_toto1(64)
     tcf_toto2(1,2,3,4)
+
+    x := tcf_toto4()
+    @assert(@countof(x) == 4)
 }
