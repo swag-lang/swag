@@ -417,17 +417,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // All registers:       bc->maxReservedRegisterRC
     // offsetRT:            bc->maxCallResults
     // offsetStack:         stackSize, function local stack
-    // offsetRR:            2 * sizeof(Register), the result registers of a function call
     // offsetFLT:           sizeof(Register)
     // ...padding to 16... => total is sizeStack
 
     uint32_t offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
     uint32_t offsetStack = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetRR    = offsetStack + typeFunc->stackSize;
 
-    // For float load
-    // (should be reserved only if we have floating point operations in that function)
-    uint32_t offsetFLT = offsetRR + 2 * sizeof(Register);
+    // For float load (should be reserved only if we have floating point operations in that function)
+    uint32_t offsetFLT = offsetStack + typeFunc->stackSize;
 
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
