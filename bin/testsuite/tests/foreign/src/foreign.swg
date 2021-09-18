@@ -43,6 +43,11 @@ public func tcf_toto5(x: s64)->s64
     return x
 }
 
+public func tcf_toto55(x: f64)->f64
+{
+    return x
+}
+
 public func tcf_toto6(x: string)->string
 {
     return x

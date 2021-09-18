@@ -179,32 +179,15 @@ void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam
 {
     if (calleeIndex < 4)
     {
-        switch (calleeIndex)
+        if (typeParam->isNativeFloat())
         {
-        case 0:
-            if (typeParam->isNativeFloat())
-                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM0, RDI);
-            else
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RCX, RDI);
-            break;
-        case 1:
-            if (typeParam->isNativeFloat())
-                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM1, RDI);
-            else
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RDX, RDI);
-            break;
-        case 2:
-            if (typeParam->isNativeFloat())
-                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM2, RDI);
-            else
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R8, RDI);
-            break;
-        case 3:
-            if (typeParam->isNativeFloat())
-                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM3, RDI);
-            else
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R9, RDI);
-            break;
+            static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
+            BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, x64Reg[calleeIndex], RDI);
+        }
+        else
+        {
+            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, x64Reg[calleeIndex], RDI);
         }
     }
     else
@@ -215,6 +198,7 @@ void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam
         offset += 16;
         BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
 
+        // Store it in the register
         BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
     }
 }

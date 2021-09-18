@@ -16,4 +16,6 @@ using tests_foreign
 
     x := tcf_toto4()
     @assert(@countof(x) == 4)
+
+    @assert(tcf_toto55(5) == 5)
 }
