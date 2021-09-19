@@ -303,7 +303,18 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     }
 
     int numReturnRegs = typeFuncBC->numReturnRegisters();
-    int callerIndex   = (int) pushRAParams.size() + numReturnRegs - 1;
+    //    int callerIndex   = (int) pushRAParams.size() + numReturnRegs - 1;
+
+    // Return value
+    int callerIndex = 0;
+    for (int j = 0; j < numReturnRegs; j++)
+    {
+        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(j), RAX, RSP);
+
+        // :CConvLocal
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+    }
 
     // Emit all push params
     for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
@@ -313,26 +324,12 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
 
         // :CConvLocal
-       // auto typeParam = typeFuncBC->registerIdxToType(callerIndex - numReturnRegs);
-       // if (!passByValue(typeParam))
-       //     BackendX64Inst::emit_LoadAddress_Indirect(pp, offset, RAX, RSP);
-       // storeRAXToCDeclParam(pp, typeParam, callerIndex);
-        callerIndex--;
+        // auto typeParam = typeFuncBC->registerIdxToType(callerIndex - numReturnRegs);
+        // if (!passByValue(typeParam))
+        //     BackendX64Inst::emit_LoadAddress_Indirect(pp, offset, RAX, RSP);
+        // storeRAXToCDeclParam(pp, typeParam, callerIndex);
+        //callerIndex--;
     }
-
-    // Return registers are push first
-    for (int j = numReturnRegs - 1; j >= 0; j--)
-    {
-        offset -= 8;
-        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
-
-        // :CConvLocal
-        //storeRAXToCDeclParam(pp, nullptr, callerIndex);
-        callerIndex--;
-    }
-
-    SWAG_ASSERT(offset == 0);
 }
 
 void BackendX64::emitParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack)

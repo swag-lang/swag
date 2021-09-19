@@ -208,6 +208,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     int   popRAidx        = (int) pushRAParams.size() - 1;
     int   numCallParams   = (int) typeFuncBC->parameters.size();
 
+    // Return value
     // Normal user case
     if (allocRR)
     {
