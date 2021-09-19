@@ -413,7 +413,7 @@ void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, in
     }
 }
 
-void BackendX64::emitParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeStack)
+void BackendX64::emitLocalParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeStack)
 {
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function

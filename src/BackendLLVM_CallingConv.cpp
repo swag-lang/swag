@@ -312,7 +312,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     }
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, int numParams)
+llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, int numParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -326,7 +326,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
+llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -649,7 +649,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     return true;
 }
 
-bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeInBytes)
+bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -663,7 +663,7 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     if (passByValue(param))
     {
         // This can be casted to an integer
-        if (sizeInBytes)
+        if (sizeOf)
         {
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
         }
@@ -679,10 +679,24 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     }
     else
     {
-        SWAG_ASSERT(sizeInBytes == 0);
+        SWAG_ASSERT(sizeOf == 0);
         builder.CreateStore(builder.CreateLoad(arg), r0);
     }
 
+    return true;
+}
+
+bool BackendLLVM::storeLocalParamAddr(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
+    auto offArg = idx + typeFunc->numReturnRegisters();
+    auto r1     = func->getArg(offArg);
+    r0          = builder.CreatePointerCast(r0, r1->getType()->getPointerTo());
+    builder.CreateStore(r1, r0);
     return true;
 }
 
@@ -695,7 +709,7 @@ void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::Alloca
     auto& modu            = *pp.module;
 
     auto typeFuncBC = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    auto FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
+    auto FT         = createFunctionTypeLocal(buildParameters, typeFuncBC);
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;

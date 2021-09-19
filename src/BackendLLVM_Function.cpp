@@ -369,7 +369,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     bool  ok              = true;
 
     // Function prototype
-    llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
+    llvm::FunctionType* funcType = createFunctionTypeLocal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->getCallName().c_str(), funcType).getCallee();
     setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
@@ -3509,10 +3509,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeStackPointerParam:
         {
-            auto offArg = ip->c.u32 + typeFunc->numReturnRegisters();
-            auto r1     = func->getArg(offArg);
-            auto r0     = builder.CreatePointerCast(GEP_I32(allocR, ip->a.u32), r1->getType()->getPointerTo());
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParamAddr(buildParameters, func, typeFunc, ip->c.u32, r0));
             break;
         }
 
@@ -3716,7 +3714,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
 
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
+                auto T  = createFunctionTypeLocal(buildParameters, typeFuncLambda);
                 auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->getCallName().c_str(), T).getCallee();
                 builder.CreateStore(TO_PTR_I8(F), r0);
             }
@@ -3811,7 +3809,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockLambdaLocal);
             {
                 auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
+                auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
                 auto                       PT = llvm::PointerType::getUnqual(FT);
                 auto                       r1 = builder.CreatePointerCast(r0, PT);
                 VectorNative<llvm::Value*> fctParams;
@@ -3849,7 +3847,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
+            auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
             getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
             builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});
