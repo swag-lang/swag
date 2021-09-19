@@ -662,14 +662,17 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
 
     if (passByValue(param))
     {
-        llvm::Type* ty = nullptr;
-        SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
+        // This can be casted to an integer
         if (sizeInBytes)
         {
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
         }
+
+        // Real type
         else
         {
+            llvm::Type* ty = nullptr;
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
             r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
         }
