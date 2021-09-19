@@ -78,8 +78,14 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (!timeExportFile)
         return false;
+
     if (g_CommandLine->rebuild)
-        return false;
+    {
+        if (g_CommandLine->moduleName.empty())
+            return false;
+        if (g_CommandLine->moduleName == module->name)
+            return false;
+    }
 
     auto timeToTest = timeExportFile;
     if (module->areAllFilesExported())
