@@ -1,3 +1,5 @@
+#global testerror
+
 struct AA
 {
     x, y: s32 = 666

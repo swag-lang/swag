@@ -223,20 +223,6 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     return true;
 }
 
-bool BackendLLVM::storeLocalParamAddr(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& builder         = *pp.builder;
-
-    auto offArg = idx + typeFunc->numReturnRegisters();
-    auto r1     = func->getArg(offArg);
-    r0          = builder.CreatePointerCast(r0, r1->getType()->getPointerTo());
-    builder.CreateStore(r1, r0);
-    return true;
-}
-
 void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
 {
     int   ct              = buildParameters.compileType;

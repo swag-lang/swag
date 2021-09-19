@@ -3507,13 +3507,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MakeStackPointerParam:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParamAddr(buildParameters, func, typeFunc, ip->c.u32, r0));
-            break;
-        }
-
         case ByteCodeOp::LowerZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);

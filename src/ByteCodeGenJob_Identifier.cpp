@@ -87,11 +87,21 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst->b.u64 = resolved->computedValue.storageOffset;
                 inst->c.u64 = resolved->storageIndex;
             }
-            else
+            else if (typeInfo->kind == TypeInfoKind::Slice)
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
+                reserveLinearRegisterRC2(context, node->resultRegisterRC);
+
+                auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[0]);
                 inst->b.u64 = resolved->computedValue.storageOffset;
                 inst->c.u64 = resolved->storageIndex;
+
+                inst        = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[1]);
+                inst->b.u64 = resolved->computedValue.storageOffset;
+                inst->c.u64 = resolved->storageIndex + 1;
+            }
+            else
+            {
+                return context->report({node, Utf8::format(g_E[Err0462], typeInfo->getDisplayName().c_str())});
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))

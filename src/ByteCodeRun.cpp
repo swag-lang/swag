@@ -894,7 +894,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
 
     case ByteCodeOp::MakeStackPointer:
-    case ByteCodeOp::MakeStackPointerParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
     case ByteCodeOp::MakeStackPointerRT:

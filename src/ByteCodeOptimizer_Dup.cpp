@@ -326,7 +326,6 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
 {
     optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeStackPointerParam);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeMutableSegPointer);

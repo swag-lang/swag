@@ -33,7 +33,6 @@ bool ByteCodeOptimizer::optimizePassSafetyNullPointer(ByteCodeOptContext* contex
                       paramNPIdx = ip[0].c.u32;
                   }
                   else if (ip[0].op == ByteCodeOp::MakeStackPointer ||
-                           ip[0].op == ByteCodeOp::MakeStackPointerParam ||
                            ip[0].op == ByteCodeOp::MakeConstantSegPointer ||
                            ip[0].op == ByteCodeOp::MakeMutableSegPointer ||
                            ip[0].op == ByteCodeOp::MakeCompilerSegPointer ||

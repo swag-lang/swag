@@ -1,3 +1,5 @@
+#global testerror
+
 func level0()
 {
     titi := 666's64

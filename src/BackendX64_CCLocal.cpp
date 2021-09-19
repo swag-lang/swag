@@ -195,17 +195,6 @@ void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, in
     }
 }
 
-void BackendX64::emitLocalParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeStack)
-{
-    // We need to add 8 because the call has pushed one register on the stack
-    // We need to add 8 again, because of the first 'push edi' at the start of the function
-    // Se we add 16 in total to get the offset of the parameter in the stack
-    int stackOffset = 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters());
-
-    BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
-    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
-}
-
 void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     int idxReg = 0;

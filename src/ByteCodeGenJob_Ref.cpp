@@ -109,10 +109,13 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
         node->access->doneFlags |= AST_DONE_CAST1;
     }
 
-    SWAG_ASSERT(node->array->resultRegisterRC.size() != 2);
-    node->array->resultRegisterRC += reserveRegisterRC(context);
+    // Slice is already dereferenced ? (from function parameter)
+    if (node->array->resultRegisterRC.size() != 2)
+    {
+        node->array->resultRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+    }
 
-    emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
     emitSafetyNullPointer(context, node->array->resultRegisterRC, g_E[Err0859]);
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
