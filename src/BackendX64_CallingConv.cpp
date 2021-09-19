@@ -347,7 +347,27 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         numCallParams--;
     }
 
-    // Emit all push params
+    // Func call parameters
+    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteReferenceType(typeParam);
+        for (int j = 0; j < typeParam->numRegisters(); j++)
+        {
+            auto index = pushRAParams[popRAidx--];
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            offsetStack += 8;
+
+            // :CConvLocal
+            if (!passByValue(typeParam))
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(index), RAX, RSP);
+            storeRAXToCDeclParam(pp, typeParam, callerIndex);
+            callerIndex++;
+        }
+    }
+
+    // Emit the rest
     for (int iParam = 0; iParam <= popRAidx; iParam++)
     {
         offset -= 8;
