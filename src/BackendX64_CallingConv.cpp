@@ -383,7 +383,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     }
 }
 
-void BackendX64::emitParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack)
+void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack)
 {
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function

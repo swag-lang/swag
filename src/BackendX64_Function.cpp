@@ -2613,16 +2613,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::GetFromStackParam8:
-            emitParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, sizeStack);
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, sizeStack);
             break;
         case ByteCodeOp::GetFromStackParam16:
-            emitParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, sizeStack);
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, sizeStack);
             break;
         case ByteCodeOp::GetFromStackParam32:
-            emitParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, sizeStack);
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, sizeStack);
             break;
         case ByteCodeOp::GetFromStackParam64:
-            emitParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, sizeStack);
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, sizeStack);
             break;
         case ByteCodeOp::MakeStackPointerParam:
             emitParamAddr(pp, typeFunc, ip->a.u32, ip->c.u32, sizeStack);
