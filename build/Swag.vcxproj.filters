@@ -479,11 +479,17 @@
     <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
       <Filter>ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_CallingConv.cpp">
+    <ClCompile Include="..\src\BackendX64_CCForeign.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_CallingConv.cpp">
+    <ClCompile Include="..\src\BackendLLVM_CCForeign.cpp">
       <Filter>Backend\LLVM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BackendLLVM_CCLocal.cpp">
+      <Filter>Backend\LLVM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BackendX64_CCLocal.cpp">
+      <Filter>Backend\X64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

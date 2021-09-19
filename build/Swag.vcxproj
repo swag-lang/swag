@@ -270,7 +270,8 @@
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
     <ClCompile Include="..\src\AstNode_Clone.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_CallingConv.cpp" />
+    <ClCompile Include="..\src\BackendLLVM_CCForeign.cpp" />
+    <ClCompile Include="..\src\BackendLLVM_CCLocal.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Data.cpp" />
     <ClCompile Include="../src/BackendLLVMDbg.cpp" />
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp" />
@@ -279,7 +280,8 @@
     <ClCompile Include="../src/BackendLinker.cpp" />
     <ClCompile Include="../src/BackendLLVM.cpp" />
     <ClCompile Include="../src/BackendX64.cpp" />
-    <ClCompile Include="..\src\BackendX64_CallingConv.cpp" />
+    <ClCompile Include="..\src\BackendX64_CCForeign.cpp" />
+    <ClCompile Include="..\src\BackendX64_CCLocal.cpp" />
     <ClCompile Include="..\src\BackendX64_Data.cpp" />
     <ClCompile Include="..\src\BackendX64_Dbg.cpp" />
     <ClCompile Include="../src/BackendX64FunctionBodyJob.cpp" />
