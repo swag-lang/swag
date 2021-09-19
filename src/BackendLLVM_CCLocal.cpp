@@ -124,26 +124,18 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     }
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, int numParams)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-
-    VectorNative<llvm::Type*> params;
-    for (int i = 0; i < numParams; i++)
-        params.push_back(llvm::Type::getInt64PtrTy(context));
-
-    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
-}
-
 llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
+
+    if (!typeFuncBC)
+    {
+        VectorNative<llvm::Type*> params;
+        return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
+    }
 
     // Already done ?
     auto it = pp.mapFctTypeInternal.find(typeFuncBC);
