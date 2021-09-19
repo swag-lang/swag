@@ -307,17 +307,48 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
 
     // Return value
     int callerIndex = 0;
+    int offsetStack = 0;
     for (int j = 0; j < numReturnRegs; j++)
     {
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(j), RAX, RSP);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        offsetStack += 8;
 
         // :CConvLocal
         storeRAXToCDeclParam(pp, nullptr, callerIndex);
     }
 
+    int popRAidx      = (int) pushRAParams.size() - 1;
+    int numCallParams = (int) typeFuncBC->parameters.size();
+
+    // Two registers for variadics first
+    if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    {
+        auto index = pushRAParams[popRAidx--];
+        SWAG_ASSERT(index != UINT32_MAX);
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        offsetStack += 8;
+
+        // :CConvLocal
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        callerIndex++;
+
+        index = pushRAParams[popRAidx--];
+        SWAG_ASSERT(index != UINT32_MAX);
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        offsetStack += 8;
+
+        // :CConvLocal
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        callerIndex++;
+
+        numCallParams--;
+    }
+
     // Emit all push params
-    for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
+    for (int iParam = 0; iParam <= popRAidx; iParam++)
     {
         offset -= 8;
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[iParam]), RAX, RDI);

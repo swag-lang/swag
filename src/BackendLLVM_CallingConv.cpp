@@ -239,7 +239,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         }
     }
 
-    // 2 registers for variadics first
+    // Two registers for variadics first
     if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         auto index = pushRAParams[popRAidx--];
