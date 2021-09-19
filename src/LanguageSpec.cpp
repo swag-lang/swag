@@ -7,7 +7,6 @@ LanguageSpec* g_LangSpec = nullptr;
 void LanguageSpec::setupNames()
 {
     name__setupRuntime   = "__setupRuntime";
-    name__checkBackend   = "__checkBackend";
     name__panic          = "__panic";
     name__clearerr       = "__clearerr";
     name__pusherr        = "__pusherr";

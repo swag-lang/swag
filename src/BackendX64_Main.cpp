@@ -249,16 +249,6 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, g_LangSpec->name_memcpy);
 
-    // Check backend
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_backendKind, 0);
-    BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RCX);
-    BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-    BackendX64Inst::emit_Load64_Immediate(pp, module->name.length(), RAX);
-    BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-    emitGlobalString(pp, precompileIndex, module->name, RAX);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-    emitCall(pp, g_LangSpec->name__checkBackend);
-
     // Thread local storage
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTls_threadLocalId, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);

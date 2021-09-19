@@ -332,30 +332,6 @@ func __setupRuntime()
     @getcontext().tempAllocator.setup()
 }
 
-func __checkBackend(moduleName: string, kind: BackendType)
-{
-    /*func getBackendName(kind: BackendType)->string
-    {
-        switch kind
-        {
-        case LLVM: return "LLVM"
-        case X64:  return "X64"
-        }
-
-        return ""
-    }
-
-    if kind == .ByteCode or kind == #backend
-        return
-    @print("fatal error: backend mismatch between modules !\n")
-    @print("note: you cannot mix (yet?) modules compiled with different backends\n")
-    @print("note: you should rebuild everything with the same backend\n")
-    @print("=> the module that has failed is '", moduleName, "'\n")
-    @print("=> the backend used to compile this module is '", getBackendName(cast(BackendType) #backend), "'\n")
-    @print("=> the backend used to compile the executable is '", getBackendName(kind), "'\n")
-    __exit()*/
-}
-
 ////////////////////////////////////////////////////////////
 func @seterr(value: string)
 {

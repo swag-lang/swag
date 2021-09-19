@@ -260,14 +260,6 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
     }
 
-    // Check backend
-    {
-        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
-        auto ptrStr = builder.CreateGlobalStringPtr(module->name.c_str());
-        auto v0     = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32})));
-        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__checkBackend, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(module->name.length()), v0});
-    }
-
     // Init thread local storage id
     {
         auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
