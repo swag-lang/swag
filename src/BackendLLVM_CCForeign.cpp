@@ -103,8 +103,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 if (!passByValue(typeParam))
                 {
                     auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
-                    if (!r)
-                        return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
                     builder.CreateStore(func->getArg(argIdx), r);
                 }
             }
@@ -134,7 +132,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             else
             {
                 auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
-                args.push_back(rr0);
+                args.push_back(builder.CreateLoad(rr0));
             }
         }
     }

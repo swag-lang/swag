@@ -104,8 +104,6 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
             BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
 
             // :CConvLocal
-            if (!passByValue(typeParam))
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack, RAX, RSP);
             storeRAXToCDeclParam(pp, typeParam, callerIndex);
             callerIndex++;
 
@@ -211,43 +209,21 @@ void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* ty
         }
     }
 
-    // When calling a bytecode callback in x64, we must respect the passByValue convention, even if it's not
-    // the case internaly for local calls.
     uint32_t stackOffset = 0;
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
-        auto typeParam = typeFuncBC->registerIdxToType(idxReg - typeFuncBC->numReturnRegisters());
-
         static const uint8_t idxToReg[4] = {RDX, R8, R9};
 
         // Pass by value
-        if (passByValue(typeParam))
+        stackOffset += sizeof(Register);
+        if (idxReg <= 2)
         {
-            stackOffset += sizeof(Register);
-            if (idxReg <= 2)
-            {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
-            }
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
         }
-
-        // Pass by register pointer
         else
         {
-            stackOffset += sizeof(Register);
-            if (idxReg <= 2)
-            {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
-            }
-            else
-            {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
-            }
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
         }
     }
 }

@@ -57,11 +57,11 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         auto r0 = GEP_I32(allocR, index);
-        params.push_back(r0);
+        params.push_back(builder.CreateLoad(r0));
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         r0 = GEP_I32(allocR, index);
-        params.push_back(r0);
+        params.push_back(builder.CreateLoad(r0));
         numCallParams--;
     }
 
@@ -94,20 +94,20 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                 continue;
             }
 
-            // By register pointer. If we have a value and not a register, store the value in a temporary register
+            // By register value. If we have a value and not a register, store the value in a temporary register
             if (index == UINT32_MAX)
             {
                 auto v0 = values[popRAidx + 1];
                 SWAG_ASSERT(v0);
                 if (allocT)
                 {
-                    auto p0 = GEP_I32(allocT, allocTidx++);
+                    //auto p0 = GEP_I32(allocT, allocTidx++);
                     if (v0->getType()->isPointerTy())
                         v0 = builder.CreatePtrToInt(v0, builder.getInt64Ty());
                     else if (v0->getType()->isIntegerTy())
                         v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
-                    builder.CreateStore(v0, p0);
-                    params.push_back(p0);
+                    //builder.CreateStore(v0, p0);
+                    params.push_back(v0);
                 }
                 else
                 {
@@ -115,10 +115,11 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                 }
             }
 
-            // By register pointer.
+            // By register value.
             else
             {
-                params.push_back(GEP_I32(allocR, index));
+                auto v0 = builder.CreateLoad(GEP_I32(allocR, index));
+                params.push_back(v0);
             }
         }
     }
@@ -151,8 +152,8 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
     int numParams = (int) typeFuncBC->parameters.size();
     if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
-        params.push_back(llvm::Type::getInt64PtrTy(context));
-        params.push_back(llvm::Type::getInt64PtrTy(context));
+        params.push_back(llvm::Type::getInt64Ty(context));
+        params.push_back(llvm::Type::getInt64Ty(context));
         numParams--;
     }
 
@@ -169,7 +170,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         else
         {
             for (int r = 0; r < typeParam->numRegisters(); r++)
-                params.push_back(llvm::Type::getInt64PtrTy(context));
+                params.push_back(llvm::Type::getInt64Ty(context));
         }
     }
 
@@ -209,7 +210,7 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     else
     {
         SWAG_ASSERT(sizeOf == 0);
-        builder.CreateStore(builder.CreateLoad(arg), r0);
+        builder.CreateStore(arg, r0);
     }
 
     return true;

@@ -47,28 +47,15 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     }
 
     // Parameters
+    // As we have values/registers values, we need to make a copy in a temporary register
+    fakeRegisters.reserve(typeFunc->numParamsRegisters());
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
     {
         auto typeParam = typeFunc->registerIdxToType(i - typeFunc->numReturnRegisters());
-
-        // We are called from native code, which must respect the passByValue calling convention when calling
-        // a bytecode callback.
-        // In that case, we store the value in a fakeRegister, because bytecode execution is all about
-        // registers.
-        if (!forCallback && Backend::passByValue(typeParam))
-        {
-            fakeRegisters.reserve(typeFunc->numParamsRegisters());
-            fakeRegisters.count++;
-
-            auto& r = fakeRegisters.back();
-            r.u64   = va_arg(valist, uint64_t);
-            paramRegisters.push_back(&fakeRegisters.back());
-        }
-        else
-        {
-            auto r = va_arg(valist, Register*);
-            paramRegisters.push_back(r);
-        }
+        fakeRegisters.count++;
+        auto& r = fakeRegisters.back();
+        r.u64   = va_arg(valist, uint64_t);
+        paramRegisters.push_back(&fakeRegisters.back());
     }
 
     auto saveSp      = g_RunContext.sp;
@@ -203,9 +190,9 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
     if (typeFunc->numReturnRegisters())
-        byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4, &p5, &p6);
+        byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, p1, p2, p3, p4, p5, p6);
     else
-        byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4, &p5, &p6);
+        byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, p1, p2, p3, p4, p5, p6);
 
     return result;
 }
