@@ -386,3 +386,8 @@ public func tcf_float()->f32
 {
     return 3.14
 }
+
+public func tcf_toto23(x: string, fct: func(string))
+{
+    fct(x)
+}

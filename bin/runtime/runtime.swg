@@ -334,7 +334,7 @@ func __setupRuntime()
 
 func __checkBackend(moduleName: string, kind: BackendType)
 {
-    func getBackendName(kind: BackendType)->string
+    /*func getBackendName(kind: BackendType)->string
     {
         switch kind
         {
@@ -353,7 +353,7 @@ func __checkBackend(moduleName: string, kind: BackendType)
     @print("=> the module that has failed is '", moduleName, "'\n")
     @print("=> the backend used to compile this module is '", getBackendName(cast(BackendType) #backend), "'\n")
     @print("=> the backend used to compile the executable is '", getBackendName(kind), "'\n")
-    __exit()
+    __exit()*/
 }
 
 ////////////////////////////////////////////////////////////

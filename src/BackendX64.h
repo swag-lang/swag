@@ -314,6 +314,7 @@ struct BackendX64 : public Backend
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
     void     storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack);
+    void     storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex);
     uint16_t computeUnwindPushRDI(uint32_t offsetSubRSP);
     void     computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
@@ -370,6 +371,8 @@ struct BackendX64 : public Backend
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
+    void emitParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack);
+    void emitParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeStack);
     void emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams);
     void emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void emitCall(X64PerThread& pp, const Utf8& name);

@@ -120,6 +120,25 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
+    // :CConvLocal
+    for (int i = 0; i < numTotalRegs; i++)
+    {
+        if (i < numReturnRegs)
+        {
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+            storeRAXToCDeclParam(pp, nullptr, i);
+        }
+        else
+        {
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+            if (passByValue(typeParam))
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(i), RAX, RDI);
+            else
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+            storeRAXToCDeclParam(pp, typeParam, i);
+        }
+    }
+
     // Make the call
     emitCall(pp, bc->getCallName());
 
@@ -203,6 +222,44 @@ void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam
     }
 }
 
+void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex)
+{
+    if (callerIndex < 4)
+    {
+        if (typeParam && typeParam->isNativeFloat())
+        {
+            static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
+            BackendX64Inst::emit_CopyF64(pp, RAX, x64Reg[callerIndex]);
+        }
+        else if (!typeParam)
+        {
+            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+            BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
+        }
+        else
+        {
+            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+            switch (typeParam->sizeOf)
+            {
+            case 1:
+                BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
+                BackendX64Inst::emit_Copy8(pp, RAX, x64Reg[callerIndex]);
+                break;
+            case 2:
+                BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
+                BackendX64Inst::emit_Copy16(pp, RAX, x64Reg[callerIndex]);
+                break;
+            case 4:
+                BackendX64Inst::emit_Copy32(pp, RAX, x64Reg[callerIndex]);
+                break;
+            default:
+                BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
+                break;
+            }
+        }
+    }
+}
+
 void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
 {
     uint32_t sizeStack = (uint32_t) (pushRAParams.size() * sizeof(Register));
@@ -245,23 +302,74 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         }
     }
 
+    int numReturnRegs = typeFuncBC->numReturnRegisters();
+    int callerIndex   = (int) pushRAParams.size() + numReturnRegs - 1;
+
     // Emit all push params
     for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
     {
         offset -= 8;
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[iParam]), RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+
+        // :CConvLocal
+       // auto typeParam = typeFuncBC->registerIdxToType(callerIndex - numReturnRegs);
+       // if (!passByValue(typeParam))
+       //     BackendX64Inst::emit_LoadAddress_Indirect(pp, offset, RAX, RSP);
+       // storeRAXToCDeclParam(pp, typeParam, callerIndex);
+        callerIndex--;
     }
 
     // Return registers are push first
-    for (int j = (int) typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
+    for (int j = numReturnRegs - 1; j >= 0; j--)
     {
         offset -= 8;
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+
+        // :CConvLocal
+        //storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        callerIndex--;
     }
 
     SWAG_ASSERT(offset == 0);
+}
+
+void BackendX64::emitParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack)
+{
+    // We need to add 8 because the call has pushed one register on the stack
+    // We need to add 8 again, because of the first 'push edi' at the start of the function
+    // Se we add 16 in total to get the offset of the parameter in the stack
+    switch (sizeOf)
+    {
+    case 1:
+        BackendX64Inst::emit_Clear32(pp, RAX);
+        BackendX64Inst::emit_Load8_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
+        break;
+    case 2:
+        BackendX64Inst::emit_Clear32(pp, RAX);
+        BackendX64Inst::emit_Load16_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
+        break;
+    case 4:
+        BackendX64Inst::emit_Load32_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
+        break;
+    default:
+        BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
+        break;
+    }
+}
+
+void BackendX64::emitParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeStack)
+{
+    // We need to add 8 because the call has pushed one register on the stack
+    // We need to add 8 again, because of the first 'push edi' at the start of the function
+    // Se we add 16 in total to get the offset of the parameter in the stack
+    BackendX64Inst::emit_LoadAddress_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
 bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)

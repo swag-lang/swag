@@ -208,6 +208,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     int   popRAidx        = (int) pushRAParams.size() - 1;
     int   numCallParams   = (int) typeFuncBC->parameters.size();
 
+    // Normal user case
     if (allocRR)
     {
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
@@ -216,6 +217,8 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             params.push_back(r0);
         }
     }
+
+    // Special case when calling an internal function
     else
     {
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
@@ -298,6 +301,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                     params.push_back(v0);
                 }
             }
+
             // By register pointer.
             else
             {

@@ -1,5 +1,10 @@
 using tests_foreign
 
+func thisFunc0(v: string)
+{
+    @assert(v == "666")
+}
+
 func thisFunc1(v, w, x, y, z: s64)
 {
     @assert(v == 333)
@@ -20,6 +25,8 @@ func thisFunc2(v: s8, w: s16, x: s32, y: string, z: s64)
 
 #test
 {
+    tcf_toto23("666", &thisFunc0)
+
     ptr3 := &tcf_toto19
     ptr3(333, 444, 555, 666, 777, &thisFunc1)
 

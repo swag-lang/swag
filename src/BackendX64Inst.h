@@ -458,22 +458,28 @@ namespace BackendX64Inst
 
     inline void emit_Copy8(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
-        SWAG_ASSERT(regDst < R8 && regSrc < R8);
+        SWAG_ASSERT(regDst <= R9 && regSrc < R8);
+        if (regDst >= R8)
+            pp.concat.addU8(0x41);
         pp.concat.addU8(0x88);
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
     inline void emit_Copy16(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
-        SWAG_ASSERT(regDst < R8 && regSrc < R8);
+        SWAG_ASSERT(regDst <= R9 && regSrc < R8);
         pp.concat.addU8(0x66);
+        if (regDst >= R8)
+            pp.concat.addU8(0x41);
         pp.concat.addU8(0x89);
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
     inline void emit_Copy32(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
-        SWAG_ASSERT(regDst < R8 && regSrc < R8);
+        SWAG_ASSERT(regDst <= R9 && regSrc < R8);
+        if (regDst >= R8)
+            pp.concat.addU8(0x41);
         pp.concat.addU8(0x89);
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
@@ -481,7 +487,7 @@ namespace BackendX64Inst
     inline void emit_CopyF32(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
         SWAG_ASSERT(regSrc == RAX);
-        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1);
+        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x6E);
@@ -491,7 +497,7 @@ namespace BackendX64Inst
     inline void emit_CopyF64(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
         SWAG_ASSERT(regSrc == RAX);
-        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1);
+        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x48);
         pp.concat.addU8(0x0F);
