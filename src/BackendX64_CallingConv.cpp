@@ -388,24 +388,26 @@ void BackendX64::emitParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function
     // Se we add 16 in total to get the offset of the parameter in the stack
+    int stackOffset = 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters());
+
     switch (sizeOf)
     {
     case 1:
         BackendX64Inst::emit_Clear32(pp, RAX);
-        BackendX64Inst::emit_Load8_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Load8_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     case 2:
         BackendX64Inst::emit_Clear32(pp, RAX);
-        BackendX64Inst::emit_Load16_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Load16_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     case 4:
-        BackendX64Inst::emit_Load32_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Load32_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     default:
-        BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+        BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     }
@@ -416,7 +418,9 @@ void BackendX64::emitParamAddr(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function
     // Se we add 16 in total to get the offset of the parameter in the stack
-    BackendX64Inst::emit_LoadAddress_Indirect(pp, 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters()), RAX, RDI);
+    int stackOffset = 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters());
+
+    BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
     BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
