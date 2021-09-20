@@ -125,16 +125,21 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     {
         if (i < numReturnRegs)
         {
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
-            storeRAXToCDeclParam(pp, nullptr, i);
+            if (returnByCopy)
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
+                storeRAXToCDeclParam(pp, nullptr, i);
+            }
+            else
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+                storeRAXToCDeclParam(pp, nullptr, i);
+            }
         }
         else
         {
             auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            if (passByValue(typeParam))
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(i), RAX, RDI);
-            else
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(i), RAX, RDI);
             storeRAXToCDeclParam(pp, typeParam, i);
         }
     }

@@ -929,10 +929,13 @@ namespace BackendX64Inst
     inline void emit_Symbol_RelocationAddr(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
         auto& concat = pp.concat;
-
-        concat.addU8(0x48);
+        SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
+        if (reg == R8 || reg == R9)
+            concat.addU8(0x4C);
+        else
+            concat.addU8(0x48);
         concat.addU8(0x8D);
-        concat.addU8(0x05 | (reg << 3));
+        concat.addU8(0x05 | ((reg & 0b111) << 3));
 
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
@@ -945,10 +948,14 @@ namespace BackendX64Inst
     inline void emit_Symbol_RelocationValue(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
         auto& concat = pp.concat;
+        SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
 
-        concat.addU8(0x48);
+        if (reg == R8 || reg == R9)
+            concat.addU8(0x4C);
+        else
+            concat.addU8(0x48);
         concat.addU8(0x8B);
-        concat.addU8(0x05 | (reg << 3));
+        concat.addU8(0x05 | ((reg & 0b111) << 3));
 
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;

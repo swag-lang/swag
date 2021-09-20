@@ -82,8 +82,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store64_Immediate(pp, 0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_contextTlsId, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
 
     // Set main context
@@ -96,10 +95,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store32_Immediate(pp, 0, (uint32_t) SwagBackendType::X64, RCX);
 
     // Set default context in TLS
-    BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-    BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_defaultContext, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+    BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
+    BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symPI_defaultContext, 0);
     emitCall(pp, g_LangSpec->name__tlsSetValue);
 
     // Setup runtime
@@ -115,10 +112,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
         nameLib += Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
-        emitGlobalString(pp, precompileIndex, nameLib, RAX);
-        BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-        BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RAX);
-        BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+        emitGlobalString(pp, precompileIndex, nameLib, RCX);
+        BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RDX);
         emitCall(pp, g_LangSpec->name__loaddll);
     }
 
@@ -244,14 +239,12 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Copy process infos
     BackendX64Inst::emit_Copy64(pp, RCX, RDX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_processInfos, 0);
-    BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, g_LangSpec->name_memcpy);
 
     // Thread local storage
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTls_threadLocalId, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symTls_threadLocalId, 0);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
 
     // Reloc functions

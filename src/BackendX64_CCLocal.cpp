@@ -134,7 +134,12 @@ void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int
             static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
             BackendX64Inst::emit_CopyF64(pp, RAX, x64Reg[callerIndex]);
         }
-        else if (!typeParam)
+        else if (!typeParam ||
+                 typeParam->kind == TypeInfoKind::Struct ||
+                 typeParam->kind == TypeInfoKind::Array ||
+                 typeParam->kind == TypeInfoKind::TypeListArray ||
+                 typeParam->kind == TypeInfoKind::TypedVariadic ||
+                 typeParam->kind == TypeInfoKind::TypeListTuple)
         {
             static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
             BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
@@ -163,12 +168,23 @@ void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int
     }
 }
 
-void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int sizeStack)
+void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack)
 {
+    auto numReturnRegs = typeFunc->numReturnRegisters();
+
+    // Value from the caller stack
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function
     // Se we add 16 in total to get the offset of the parameter in the stack
-    int stackOffset = 16 + sizeStack + regOffset(paramIdx) + regOffset(typeFunc->numReturnRegisters());
+    int stackOffset = 16 + sizeStack + regOffset(paramIdx) + regOffset(numReturnRegs);
+
+    // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+    // instead of value from the stack
+    if (paramIdx + numReturnRegs < 4)
+    {
+        paramIdx += numReturnRegs;
+        stackOffset = storeS4 + regOffset(paramIdx);
+    }
 
     switch (sizeOf)
     {
