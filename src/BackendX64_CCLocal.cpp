@@ -54,10 +54,8 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     for (int j = 0; j < numReturnRegs; j++)
     {
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-
-        // :CConvLocal
-        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
         callerIndex++;
 
         offsetStack += 8;
@@ -72,20 +70,16 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-
-        // :CConvLocal
-        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
         callerIndex++;
 
         offsetStack += 8;
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-
-        // :CConvLocal
-        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
         callerIndex++;
 
         offsetStack += 8;
@@ -101,10 +95,8 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         {
             auto index = pushRAParams[popRAidx--];
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-
-            // :CConvLocal
-            storeRAXToCDeclParam(pp, typeParam, callerIndex);
+            if (!storeRAXToCDeclParam(pp, typeParam, callerIndex))
+                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
             callerIndex++;
 
             offsetStack += 8;
@@ -116,56 +108,57 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     {
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[j]), RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-
-        // :CConvLocal
         storeRAXToCDeclParam(pp, nullptr, callerIndex);
+
         callerIndex++;
 
         offsetStack += 8;
     }
 }
 
-void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex)
+bool BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex)
 {
-    if (callerIndex < 4)
+    if (callerIndex >= 4)
+        return false;
+
+    if (typeParam && typeParam->isNativeFloat())
     {
-        if (typeParam && typeParam->isNativeFloat())
+        static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
+        BackendX64Inst::emit_CopyF64(pp, RAX, x64Reg[callerIndex]);
+    }
+    else if (!typeParam ||
+             typeParam->kind == TypeInfoKind::Struct ||
+             typeParam->kind == TypeInfoKind::Array ||
+             typeParam->kind == TypeInfoKind::TypeListArray ||
+             typeParam->kind == TypeInfoKind::TypedVariadic ||
+             typeParam->kind == TypeInfoKind::TypeListTuple)
+    {
+        static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+        BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
+    }
+    else
+    {
+        static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+        switch (typeParam->sizeOf)
         {
-            static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
-            BackendX64Inst::emit_CopyF64(pp, RAX, x64Reg[callerIndex]);
-        }
-        else if (!typeParam ||
-                 typeParam->kind == TypeInfoKind::Struct ||
-                 typeParam->kind == TypeInfoKind::Array ||
-                 typeParam->kind == TypeInfoKind::TypeListArray ||
-                 typeParam->kind == TypeInfoKind::TypedVariadic ||
-                 typeParam->kind == TypeInfoKind::TypeListTuple)
-        {
-            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+        case 1:
+            BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
+            BackendX64Inst::emit_Copy8(pp, RAX, x64Reg[callerIndex]);
+            break;
+        case 2:
+            BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
+            BackendX64Inst::emit_Copy16(pp, RAX, x64Reg[callerIndex]);
+            break;
+        case 4:
+            BackendX64Inst::emit_Copy32(pp, RAX, x64Reg[callerIndex]);
+            break;
+        default:
             BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
-        }
-        else
-        {
-            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
-            switch (typeParam->sizeOf)
-            {
-            case 1:
-                BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
-                BackendX64Inst::emit_Copy8(pp, RAX, x64Reg[callerIndex]);
-                break;
-            case 2:
-                BackendX64Inst::emit_Clear64(pp, x64Reg[callerIndex]);
-                BackendX64Inst::emit_Copy16(pp, RAX, x64Reg[callerIndex]);
-                break;
-            case 4:
-                BackendX64Inst::emit_Copy32(pp, RAX, x64Reg[callerIndex]);
-                break;
-            default:
-                BackendX64Inst::emit_Copy64(pp, RAX, x64Reg[callerIndex]);
-                break;
-            }
+            break;
         }
     }
+
+    return true;
 }
 
 void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack)

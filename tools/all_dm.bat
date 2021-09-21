@@ -1,3 +1,8 @@
+..\bin\swag_devmode test -w:../bin/testsuite --backend:x64  --rebuild --cfg:debug -m:tests_foreign
+..\bin\swag_devmode test -w:../bin/testsuite --backend:llvm --rebuild --cfg:debug -m:tests_call
+..\bin\swag_devmode test -w:../bin/testsuite --backend:llvm --rebuild --cfg:debug -m:tests_foreign
+..\bin\swag_devmode test -w:../bin/testsuite --backend:x64  --rebuild --cfg:debug -m:tests_call
+
 call x64_dm.bat --cfg:fast-compile
 call x64_dm.bat --cfg:debug
 call x64_dm.bat --cfg:fast-debug
