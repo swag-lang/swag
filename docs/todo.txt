@@ -56,12 +56,6 @@ script, si #main resoud pas, erreur bizarre
 -------------------------------------
 debugger : print
 -------------------------------------
-
-BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
-llvm/x64 compatibilité
-si llvm appel une lambda local x64 ou l'inverse, abi non compatible
-
--------------------------------------
 slice/cstrings and foreign
 -------------------------------------
 cast interface vers struct (avec safety)
@@ -77,6 +71,8 @@ llvm debug, pas à jour
 ****************************************
 OPTIMS
 ****************************************
+-------------------------------------
+pass de clean wrapper public nouvelle call conv
 -------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------

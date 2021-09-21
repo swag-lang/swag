@@ -14,6 +14,7 @@ For now it's a **toy**, but it's a toy which is more advanced than expected.
 ### Swag is not...
 * **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
 * **Safe** at all cost. You should be the one to make your program safe. You should be the one to deal with memory.
+* **32 bits**. Only 64 bits compile is supported.
 
 ### Swag has...
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
