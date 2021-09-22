@@ -127,7 +127,6 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
             }
         }
 
-        // :CConvLocal
         for (int i = 0; i < numTotalRegs; i++)
         {
             if (i < numReturnRegs)
