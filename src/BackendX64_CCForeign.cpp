@@ -43,33 +43,32 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // Storage for the registers
     uint32_t sizeStack = (uint32_t) numTotalRegs * sizeof(Register);
 
-    // When return by copy, the register needs to contain the "address to the address" where
-    // the copy will be stored. So we add one more temporary storage at the end of the stack,
-    // after the registers, to store the result address.
-    uint32_t offsetRetCopy = 0;
-    if (returnByCopy)
-    {
-        offsetRetCopy = sizeStack;
-        sizeStack += sizeof(Register);
-    }
-
     // Prolog
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
-    auto                   sizeProlog   = 0;
+    auto                   beforeProlog  = concat.totalCount();
+    uint32_t               offsetRetCopy = 0;
+    auto                   sizeProlog    = 0;
     if (sizeStack)
     {
+        // When return by copy, the register needs to contain the "address to the address" where
+        // the copy will be stored. So we add one more temporary storage at the end of the stack,
+        // after the registers, to store the result address.
+        if (returnByCopy)
+        {
+            offsetRetCopy = sizeStack;
+            sizeStack += sizeof(Register);
+        }
+
         BackendX64Inst::emit_Push(pp, RDI);
         sizeProlog       = concat.totalCount() - beforeProlog;
         uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
         MK_ALIGN16(sizeStack);
         sizeStack += 4 * sizeof(Register);
+
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
         sizeProlog = concat.totalCount() - beforeProlog;
         computeUnwindStack(sizeStack, sizeProlog, unwind);
-        BackendX64Inst::emit_Copy64(pp, RSP, RDI);
-
         // At the end because array must be sorted in 'offset in prolog' descending order
         unwind.push_back(unwind0);
     }
@@ -80,67 +79,76 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         computeUnwindStack(5 * sizeof(Register), sizeProlog, unwind);
     }
 
-    // Need to save the return address if needed
-    // If the return address is in a register, then we store it at its "normal" place in the stack,
-    // so that we will always get it by the stack address.
-    // See :ReturnRegister2
-    // If the return address is not a register, then it's already in the stack, at the right place.
-    if (numReturnRegs == 2 && numTotalRegs <= 5)
+    if ((numReturnRegs == 0 && numTotalRegs < 4) || !numTotalRegs)
     {
-        SWAG_ASSERT(!returnByCopy);
-        SWAG_ASSERT(sizeStack);
-        int            offset    = (int) numTotalRegs - 2;
-        static uint8_t x64regs[] = {RCX, RDX, R8, R9};
-        BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + (offset * 8), x64regs[offset], RDI);
+        // Simple case, pass only by registers
     }
-
-    // Set all registers
-    for (int i = 0; i < numTotalRegs; i++)
+    else
     {
-        if (i < numReturnRegs)
+        BackendX64Inst::emit_Copy64(pp, RSP, RDI);
+
+        // Need to save the return address if needed
+        // If the return address is in a register, then we store it at its "normal" place in the stack,
+        // so that we will always get it by the stack address.
+        // See :ReturnRegister2
+        // If the return address is not a register, then it's already in the stack, at the right place.
+        if (numReturnRegs == 2 && numTotalRegs <= 5)
         {
-            if (returnByCopy)
+            SWAG_ASSERT(!returnByCopy);
+            SWAG_ASSERT(sizeStack);
+            int            offset    = (int) numTotalRegs - 2;
+            static uint8_t x64regs[] = {RCX, RDX, R8, R9};
+            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + (offset * 8), x64regs[offset], RDI);
+        }
+
+        // Set all registers
+        for (int i = 0; i < numTotalRegs; i++)
+        {
+            if (i < numReturnRegs)
             {
-                // Set the register to the temporary storage where we will store the result address
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
-                // Store the result address in the temporary storage
-                storeCDeclParamToRegister(pp, returnType, numTotalRegs - numReturnRegs, offsetRetCopy, sizeStack);
+                if (returnByCopy)
+                {
+                    // Set the register to the temporary storage where we will store the result address
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                    // Store the result address in the temporary storage
+                    storeCDeclParamToRegister(pp, returnType, numTotalRegs - numReturnRegs, offsetRetCopy, sizeStack);
+                }
+                else
+                {
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                }
             }
             else
             {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+                storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
             }
         }
-        else
-        {
-            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
-        }
-    }
 
-    // :CConvLocal
-    for (int i = 0; i < numTotalRegs; i++)
-    {
-        if (i < numReturnRegs)
+        // :CConvLocal
+        for (int i = 0; i < numTotalRegs; i++)
         {
-            if (returnByCopy)
+            if (i < numReturnRegs)
             {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
-                storeRAXToCDeclParam(pp, nullptr, i);
+                if (returnByCopy)
+                {
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
+                    storeRAXToCDeclParam(pp, nullptr, i);
+                }
+                else
+                {
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
+                    storeRAXToCDeclParam(pp, nullptr, i);
+                }
             }
             else
             {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
-                storeRAXToCDeclParam(pp, nullptr, i);
+                auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(i), RAX, RDI);
+                storeRAXToCDeclParam(pp, typeParam, i);
             }
-        }
-        else
-        {
-            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(i), RAX, RDI);
-            storeRAXToCDeclParam(pp, typeParam, i);
         }
     }
 
