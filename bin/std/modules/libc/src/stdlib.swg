@@ -1,11 +1,9 @@
 #global export
 using Swag
 
-const NULL = cast(const *void) null
 const EXIT_SUCCESS = 0
 const EXIT_FAILURE = 1
 
-alias size_t  = uint
 alias wchar_t = u16
 
 struct div_t   { quot, rem: s32; }
