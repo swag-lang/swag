@@ -41,7 +41,9 @@ v.add(#code @print(a))
 #mixin v[1]
 -------------------------------------
 "toto"'raw instead of @"toto"@ ?
-
+-------------------------------------
+[*] type (pointeur sur zone mémoire, et pas sur element)
+-------------------------------------
 
 
 

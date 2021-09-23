@@ -54,8 +54,8 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     for (int j = 0; j < numReturnRegs; j++)
     {
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
-        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
         callerIndex++;
 
         offsetStack += 8;
@@ -70,16 +70,16 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
         callerIndex++;
 
         offsetStack += 8;
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-        if (!storeRAXToCDeclParam(pp, nullptr, callerIndex))
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
         callerIndex++;
 
         offsetStack += 8;
@@ -95,8 +95,8 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         {
             auto index = pushRAParams[popRAidx--];
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-            if (!storeRAXToCDeclParam(pp, typeParam, callerIndex))
-                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            storeRAXToCDeclParam(pp, typeParam, callerIndex);
             callerIndex++;
 
             offsetStack += 8;
@@ -116,10 +116,10 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     }
 }
 
-bool BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex)
+void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex)
 {
     if (callerIndex >= 4)
-        return false;
+        return;
 
     if (typeParam && typeParam->isNativeFloat())
     {
@@ -157,8 +157,6 @@ bool BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int
             break;
         }
     }
-
-    return true;
 }
 
 void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack)
