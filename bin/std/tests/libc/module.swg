@@ -1,5 +1,6 @@
 #dependencies
 {
+    #import "core"
     #import "libc"
 
     #run
