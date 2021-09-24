@@ -33,9 +33,9 @@ const TMP_MAX      = 32767
 	func setvbuf(stream: *FILE, buf: *u8, mode: int, size: size_t)->int;
 
 	/*func fprintf(stream: *FILE, format: const *u8, #c_vararg args: ..any)->int;
-	func fscanf(stream: *FILE, format: const *u8, #c_vararg args: ..any)->int;*/
+	func fscanf(stream: *FILE, format: const *u8, #c_vararg args: ..any)->int;
 	func printf(format: const *u8, args: ...)->int;
-	/*func scanf(format: const *u8, #c_vararg args: ..any)->int;
+	func scanf(format: const *u8, #c_vararg args: ..any)->int;
 	func snprintf(s: *u8, format: const *u8, #c_vararg args: ..any)->int;
 	func sscanf(s, format: const *u8, #c_vararg args: ..any)->int;
 	func vfprintf(stream: *FILE, format: const *u8, arg: ^va_list)->int;

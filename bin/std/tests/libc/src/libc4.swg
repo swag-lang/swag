@@ -2,5 +2,5 @@ using Libc
 
 #test
 {
-    discard printf(@dataof("toto %d"), 6)
+    //discard printf(@dataof("toto %d"), 6)
 }
