@@ -1,19 +1,21 @@
 ![Swag logo](docs/swag_logo.png)
 
+> Work in progress ! There's no "official" release yet.
+
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
 For now it's a **toy**, but it's a toy which is more advanced than expected.
 
 ### Swag is...
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon !
-* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no weird ownership like in Rust.
+* **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no ownership like in Rust.
 * **Statically typed** (what else), but lots of automatic type detection if you want.
 * **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Zig** (Andrew Kelley) for the error system, **Rust** for the *impl* thing, and so on.
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
 * **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
-* **Safe** at all cost. You should be the one to make your program safe. You should be the one to deal with memory.
+* **Safe** at all cost. You should be the one to make your program safe. You should be the one to deal with memory. But Swag can help...
 * **32 bits**. Only 64 bits compile is supported.
 
 ### Swag has...
@@ -23,14 +25,14 @@ For now it's a **toy**, but it's a toy which is more advanced than expected.
 * **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by **Go**.
 * **Modules**, compiled as separate dynamic libraries.
-* **Fast compile time** (at least in debug with the x64 backend) thanks to multithreading.
+* **Fast compile time** (at least in debug with the x64 backend) thanks to heavy multithreading.
 * **Simple error system**, inspired by **Zig**.
 * **Generics**, for a simple usage. No template nightmare here...
 * **Powerful macro/mixin** system, without the need of a specific syntax, inspired by **Jai**.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
-* **Exceptions**, because this is bad.
+* **Exceptions**, because i don't like them.
 * **Header files**, but who does, nowadays ?
 * **Mandatory semicolons**, yeah...
 * **Tagged unions**, **bitfields**, **inline assembly**... But who knows...
@@ -92,7 +94,7 @@ using Swag, Core
 #main
 {
     #[ConstExpr]
-    func nestedFunc() => "Hello mad world !\n"
+    func nestedFunc() => "Hello mad world !\n"   // Function short syntax
 
     // nestedFunc() can be called at compile time because it is marked with 'Swag.ConstExpr'
     const Msg = nestedFunc()
