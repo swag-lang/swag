@@ -163,6 +163,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A pointer, whatever type
     if Reflection.isPointer(type)
     {
+        if type.flags & TypeInfoFlags.CString
+        {
+            ptr := dref cast(const **u8) valueData
+            len := @strlen(ptr)
+            buf.addBytes(@mkslice(ptr, len));
+            return
+        }
+
         var fmt: ConvertFormatInt
         fmt.base = 16
         fmt.width = 16
