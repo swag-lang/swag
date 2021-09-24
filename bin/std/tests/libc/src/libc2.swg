@@ -1,4 +1,4 @@
-using Libc
+using Core, Libc
 
 #test
 {
@@ -23,7 +23,15 @@ using Libc
     }
 
     {
-        var str: Core.String = "666"
+        var str: String = "666"
         x := atoi(str)
+        @assert(x == 666)
+    }
+
+    {
+        x := "16661"
+        y := x[1..3]
+        z := atoi(String.from(y))
+        @assert(z == 666)
     }
 }
