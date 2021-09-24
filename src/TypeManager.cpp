@@ -45,6 +45,13 @@ void TypeManager::setup()
     typeInfoNull->name.setView("null", 4);
     typeInfoNull->sizeOf = sizeof(Register);
 
+    typeInfoCString         = new TypeInfoPointer();
+    typeInfoCString->sizeOf = sizeof(Register);
+    typeInfoCString->setConst();
+    typeInfoCString->flags |= TYPEINFO_CSTRING;
+    typeInfoCString->pointedType = typeInfoU8;
+    typeInfoCString->name.setView("cstring", 7);
+
 #define MAKE_PTR(__r, __p)                                                            \
     typeInfoPointers[(int) __r]              = new TypeInfoPointer();                 \
     typeInfoPointers[(int) __r]->pointedType = __p;                                   \
@@ -126,6 +133,7 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]     = typeInfoUntypedInt;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]   = typeInfoUntypedFloat;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA] = typeInfoUntypedBinHexa;
+    g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]         = typeInfoCString;
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE]            = nullptr; // will be done with registerTypeType
 
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U8]   = typeInfoU32;

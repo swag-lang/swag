@@ -65,7 +65,6 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         numCallParams--;
     }
 
-    int allocTidx = 0;
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;

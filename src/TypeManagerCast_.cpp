@@ -1818,7 +1818,6 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     case NativeTypeKind::UInt:
         SWAG_CHECK(castToNativeUInt(context, fromType, fromNode, castFlags));
         break;
-
     case NativeTypeKind::S8:
         SWAG_CHECK(castToNativeS8(context, fromType, fromNode, castFlags));
         break;
@@ -2208,6 +2207,22 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+
+    if (toType->isCString())
+    {
+        if (fromType->isNative(NativeTypeKind::String))
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo = toType;
+            }
+
+            return true;
+        }
+
+        return castError(context, toType, fromType, fromNode, castFlags);
+    }
 
     // Pointer to struct to pointer to struct. Take care of using
     if (fromType->kind == TypeInfoKind::Pointer && toTypePointer->pointedType->kind == TypeInfoKind::Struct)

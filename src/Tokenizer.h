@@ -38,6 +38,7 @@ enum class LiteralType : uint8_t
     TT_ANY,
     TT_VOID,
     TT_TYPE,
+    TT_CSTRING,
     TT_UNTYPED_BINHEXA,
     TT_UNTYPED_INT,
     TT_UNTYPED_FLOAT,

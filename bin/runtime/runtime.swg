@@ -162,6 +162,15 @@ func @print(params: ...)
             continue
         }
 
+        if ko.flags & TypeInfoFlags.CString
+        {
+            #[Safety("castany", false)]
+            ptr := cast(const *u8) v
+            len := @strlen(ptr)
+            __printString(@mkstring(ptr, len))
+            continue
+        }
+
         if ko.kind == .Pointer
         {
             #[Safety("castany", false)]

@@ -211,6 +211,7 @@ enum class NativeTypeKind : uint8_t
     Rune,
     String,
     Any,
+    CString,
     Undefined,
     UInt,
     Int,
@@ -230,6 +231,7 @@ enum class TypeInfoFlags : uint16_t
     Strict      = 0x0080,
     CanCopy     = 0x0100,
     Tuple       = 0x0200,
+    CString     = 0x0400,
 };
 
 struct ConcreteTypeInfo

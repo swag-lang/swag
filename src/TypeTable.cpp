@@ -139,6 +139,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     concreteTypeInfoValue->flags = (uint16_t) TypeInfoFlags::None;
     if (typeInfo->isPointerToTypeInfo())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::TypeInfoPtr;
+    if (typeInfo->isCString())
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CString;
     if (typeInfo->isNativeInteger())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Integer;
     if (typeInfo->isNativeFloat())

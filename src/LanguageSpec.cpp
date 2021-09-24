@@ -393,6 +393,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("any", {TokenId::NativeType, LiteralType::TT_ANY});
     keywords.add("void", {TokenId::NativeType, LiteralType::TT_VOID});
     keywords.add("typeinfo", {TokenId::NativeType, LiteralType::TT_TYPE});
+    keywords.add("cstring", {TokenId::NativeType, LiteralType::TT_CSTRING});
 }
 
 void LanguageSpec::setupAttributesFlags()
@@ -441,6 +442,7 @@ void LanguageSpec::setupNativeTypes()
     nativeTypes.add("any", LiteralType::TT_ANY);
     nativeTypes.add("void", LiteralType::TT_VOID);
     nativeTypes.add("typeinfo", LiteralType::TT_TYPE);
+    nativeTypes.add("cstring", LiteralType::TT_CSTRING);
 }
 
 void LanguageSpec::setup()

@@ -259,6 +259,13 @@ bool TypeInfo::isPointerToTypeInfo()
     return ptr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
+bool TypeInfo::isCString()
+{
+    if (kind != TypeInfoKind::Pointer)
+        return false;
+    return flags & TYPEINFO_CSTRING;
+}
+
 bool TypeInfo::isInitializerList()
 {
     if (kind != TypeInfoKind::TypeListTuple)

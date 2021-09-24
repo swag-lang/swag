@@ -317,6 +317,7 @@ namespace Swag
         Char
         String
         Any
+        CString
     }
 
     #[Swag.EnumFlags]
@@ -333,6 +334,7 @@ namespace Swag
         Strict      = 0x0080
         CanCopy     = 0x0100
         Tuple       = 0x0200
+        CString     = 0x0400
     }
 
     struct TypeInfo

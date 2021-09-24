@@ -51,7 +51,6 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     fakeRegisters.reserve(typeFunc->numParamsRegisters());
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
     {
-        auto typeParam = typeFunc->registerIdxToType(i - typeFunc->numReturnRegisters());
         fakeRegisters.count++;
         auto& r = fakeRegisters.back();
         r.u64   = va_arg(valist, uint64_t);

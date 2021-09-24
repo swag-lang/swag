@@ -123,6 +123,7 @@ struct TypeManager
     TypeInfoNative* typeInfoInt       = nullptr;
 
     TypeInfoPointer* typeInfoNull                                       = nullptr;
+    TypeInfoPointer* typeInfoCString                                    = nullptr;
     TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count] = {0};
     TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]      = {0};
 

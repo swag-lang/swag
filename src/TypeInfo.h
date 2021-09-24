@@ -61,6 +61,7 @@ static const uint64_t TYPEINFO_STRUCT_NO_COPY           = 0x00000000'80000000;
 static const uint64_t TYPEINFO_CAN_THROW                = 0x00000001'00000000;
 static const uint64_t TYPEINFO_HAD_DROP                 = 0x00000002'00000000;
 static const uint64_t TYPEINFO_SHARED                   = 0x00000004'00000000;
+static const uint64_t TYPEINFO_CSTRING                  = 0x00000008'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
@@ -172,6 +173,7 @@ struct TypeInfo
     bool isPointerVoid();
     bool isPointerConstVoid();
     bool isPointerToTypeInfo();
+    bool isCString();
     bool isInitializerList();
     bool isArrayOfStruct();
     bool isMethod();
