@@ -129,6 +129,7 @@ struct TypeManager
 
     TypeInfoPointer*   typeInfoTypeType       = nullptr;
     TypeInfoVariadic*  typeInfoVariadic       = nullptr;
+    TypeInfoVariadic*  typeInfoCVariadic      = nullptr;
     TypeInfoNative*    typeInfoUntypedInt     = nullptr;
     TypeInfoNative*    typeInfoUntypedBinHexa = nullptr;
     TypeInfoNative*    typeInfoUntypedFloat   = nullptr;

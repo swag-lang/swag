@@ -292,6 +292,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("or", {TokenId::KwdOr, LiteralType::TT_MAX});
     keywords.add("orelse", {TokenId::KwdOrElse, LiteralType::TT_MAX});
     keywords.add("dref", {TokenId::KwdDeRef, LiteralType::TT_MAX});
+    keywords.add("cvarargs", {TokenId::KwdCVarArgs, LiteralType::TT_MAX});
 
     keywords.add("@hastag", {TokenId::IntrinsicHasTag, LiteralType::TT_MAX});
     keywords.add("@gettag", {TokenId::IntrinsicGetTag, LiteralType::TT_MAX});

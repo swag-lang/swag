@@ -220,6 +220,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
                 newTypeExpression->literalType = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
             }
+            // cvarargs
+            else if (token.id == TokenId::KwdCVarArgs)
+            {
+                auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                = newTypeExpression;
+                newTypeExpression->literalType = g_TypeMgr->typeInfoCVariadic;
+                SWAG_CHECK(eatToken());
+            }
             else
             {
                 AstNode* typeExpression;

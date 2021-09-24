@@ -160,8 +160,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Code
     if (typeNode->typeFlags & TYPEFLAG_ISCODE)
     {
+        auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0736]}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
+    }
+
+    // cvarargs
+    if (typeNode->literalType && typeNode->literalType->flags & TYPEINFO_CVARARGS)
+    {
+        auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0735]}));
+        SWAG_VERIFY(typeNode->ownerFct->attributeFlags & ATTRIBUTE_FOREIGN, context->report({typeNode, g_E[Err0048]}));
     }
 
     // NameAlias
