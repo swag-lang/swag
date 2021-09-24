@@ -124,8 +124,8 @@ const FP_ILOGB0   = FP_ILOGBNAN
 
 	func copysign(x: f64, y: f64)->f64;
 	func copysignf(x: f32, y: f32)->f32;
-	func nan(tagp: const *u8)->f64;
-	func nanf(tagp: const *u8)->f32;
+	func nan(tagp: cstring)->f64;
+	func nanf(tagp: cstring)->f32;
 	func nextafter(x: f64, y: f64)->f64;
 	func nextafterf(x: f32, y: f32)->f32;
 

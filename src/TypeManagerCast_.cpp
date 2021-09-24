@@ -2220,8 +2220,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
             return true;
         }
-
-        return castError(context, toType, fromType, fromNode, castFlags);
     }
 
     // Pointer to struct to pointer to struct. Take care of using

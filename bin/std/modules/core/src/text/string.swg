@@ -34,6 +34,12 @@ impl String
     }
 
     #[Implicit]
+    func opCast(using const self)->cstring
+    {
+        return buffer
+    }
+
+    #[Implicit]
     func opCast(using const self)->string
     {
         return @mkstring(buffer, length)
