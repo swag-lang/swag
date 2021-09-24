@@ -54,11 +54,7 @@ TODO
 sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
 oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
 -------------------------------------
-script, si #main resoud pas, erreur bizarre
--------------------------------------
-debugger : print
--------------------------------------
-slice/cstrings and foreign
+debugger : print divers (memoire ?)
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
@@ -73,8 +69,6 @@ llvm debug, pas à jour
 ****************************************
 OPTIMS
 ****************************************
--------------------------------------
-pass de clean wrapper public nouvelle call conv
 -------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
