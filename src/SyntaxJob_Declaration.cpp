@@ -399,6 +399,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSetErr:
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
+    case TokenId::IntrinsicCVaArg:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
         SWAG_CHECK(doAffectExpression(parent, result));

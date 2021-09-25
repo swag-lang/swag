@@ -2414,8 +2414,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
         }
-
         case ByteCodeOp::IntrinsicCVaEnd:
+            break;
+        case ByteCodeOp::IntrinsicCVaArg:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, 0, RCX, RAX);
+            switch (ip->c.u32)
+            {
+            case 1:
+                BackendX64Inst::emit_Clear64(pp, RDX);
+                BackendX64Inst::emit_Load8_Indirect(pp, 0, RDX, RCX);
+                break;
+            case 2:
+                BackendX64Inst::emit_Clear64(pp, RDX);
+                BackendX64Inst::emit_Load16_Indirect(pp, 0, RDX, RCX);
+                break;
+            case 4:
+                BackendX64Inst::emit_Load32_Indirect(pp, 0, RDX, RCX);
+                break;
+            case 8:
+                BackendX64Inst::emit_Load64_Indirect(pp, 0, RDX, RCX);
+                break;
+            }
+
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Immediate(pp, 8, RCX);
+            BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RCX, RAX, X64Op::ADD);
             break;
 
         case ByteCodeOp::IntrinsicArguments:

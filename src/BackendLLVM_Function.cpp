@@ -3068,11 +3068,34 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateIntrinsic(llvm::Intrinsic::vastart, {}, {r0});
             break;
         }
-
         case ByteCodeOp::IntrinsicCVaEnd:
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, { r0 });
+            builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, {r0});
+            break;
+        }
+        case ByteCodeOp::IntrinsicCVaArg:
+        {
+            auto         r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            llvm::Value* v0 = builder.CreateVAArg(r0, builder.getInt64Ty());
+            switch (ip->c.u32)
+            {
+            case 1:
+                v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+                builder.CreateStore(v0, TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+                break;
+            case 2:
+                v0 = builder.CreateIntCast(v0, builder.getInt16Ty(), false);
+                builder.CreateStore(v0, TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+                break;
+            case 4:
+                v0 = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+                builder.CreateStore(v0, TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+                break;
+            case 8:
+                builder.CreateStore(v0, GEP_I32(allocR, ip->b.u32));
+                break;
+            }
             break;
         }
 

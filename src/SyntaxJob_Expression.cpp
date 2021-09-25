@@ -122,6 +122,14 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
 
+    // Two parameters
+    else if (node->token.id == TokenId::IntrinsicCVaArg)
+    {
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doTypeExpression(node));
+    }
+
     // One single parameter
     else
     {
@@ -247,9 +255,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::IntrinsicIsConstExpr:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-
+    case TokenId::IntrinsicCVaArg:
     case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
@@ -1116,6 +1122,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSetErr:
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
+    case TokenId::IntrinsicCVaArg:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
     case TokenId::SymLeftParen:

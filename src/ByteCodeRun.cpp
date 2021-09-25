@@ -1557,9 +1557,30 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *ptr     = context->bp + ip->b.u32;
         break;
     }
-
     case ByteCodeOp::IntrinsicCVaEnd:
         break;
+    case ByteCodeOp::IntrinsicCVaArg:
+    {
+        auto ptr = *(uint64_t**) registersRC[ip->a.u32].pointer;
+        switch (ip->c.u32)
+        {
+        case 1:
+            registersRC[ip->b.u32].u64 = *(uint8_t*) ptr;
+            break;
+        case 2:
+            registersRC[ip->b.u32].u64 = *(uint16_t*) ptr;
+            break;
+        case 4:
+            registersRC[ip->b.u32].u64 = *(uint32_t*) ptr;
+            break;
+        case 8:
+            registersRC[ip->b.u32].u64 = *ptr;
+            break;
+        }
+        ptr += 1;
+        *(uint64_t**) registersRC[ip->a.u32].pointer = ptr;
+        break;
+    }
 
     case ByteCodeOp::IntrinsicSetErr:
     {

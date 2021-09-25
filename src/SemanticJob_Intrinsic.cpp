@@ -734,6 +734,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
+    case TokenId::IntrinsicCVaArg:
     {
         auto typeInfo = node->childs[0]->typeInfo;
         typeInfo->computeScopedName();
@@ -746,9 +747,15 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, g_E[Err0442]}));
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
         }
-        else
+        else if (node->token.id == TokenId::IntrinsicCVaEnd)
         {
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaEnd;
+        }
+        else
+        {
+            node->typeInfo = node->childs[1]->typeInfo;
+            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str())}));
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaArg;
         }
 
         break;
