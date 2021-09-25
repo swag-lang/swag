@@ -733,11 +733,24 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     }
 
     case TokenId::IntrinsicCVaStart:
+    case TokenId::IntrinsicCVaEnd:
     {
-        SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, g_E[Err0442]}));
-        auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
-        SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, g_E[Err0442]}));
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
+        auto typeInfo = node->childs[0]->typeInfo;
+        typeInfo->computeScopedName();
+        SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Utf8::format(g_E[Err0048], typeInfo->getDisplayName().c_str())}));
+
+        if (node->token.id == TokenId::IntrinsicCVaStart)
+        {
+            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, g_E[Err0442]}));
+            auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
+            SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, g_E[Err0442]}));
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaEnd;
+        }
+
         break;
     }
     }

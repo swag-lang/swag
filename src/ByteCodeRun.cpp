@@ -1558,6 +1558,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::IntrinsicCVaEnd:
+        break;
+
     case ByteCodeOp::IntrinsicSetErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atseterr);

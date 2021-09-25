@@ -3069,6 +3069,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicCVaEnd:
+        {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, { r0 });
+            break;
+        }
+
         case ByteCodeOp::IntrinsicArguments:
         {
             localCall(buildParameters, allocR, allocT, g_LangSpec->name_atargs, {ip->a.u32, ip->b.u32}, {});

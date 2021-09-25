@@ -247,6 +247,7 @@ struct ByteCodeGenJob : public Job
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static bool emitIntrinsicCVaStart(ByteCodeGenContext* context);
+    static bool emitIntrinsicCVaEnd(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);

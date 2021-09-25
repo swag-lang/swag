@@ -155,6 +155,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     case TokenId::IntrinsicMakeForeign:
     case TokenId::IntrinsicIsConstExpr:
     case TokenId::IntrinsicCVaStart:
+    case TokenId::IntrinsicCVaEnd:
         SWAG_CHECK(doIntrinsicProp(identifierRef));
         break;
 

@@ -19,6 +19,8 @@ func toto(x: cvarargs)
     @assert(buf[1] == " "'u8)
     @assert(buf[2] == "2"'u8)
     @assert(buf[3] == 0)
+
+    @cvaend(&valist)
 }
 
 #test

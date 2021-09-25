@@ -217,6 +217,15 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
+{
+    auto node      = context->node;
+    auto childDest = node->childs[0];
+    emitInstruction(context, ByteCodeOp::IntrinsicCVaEnd, childDest->resultRegisterRC);
+    freeRegisterRC(context, childDest);
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
