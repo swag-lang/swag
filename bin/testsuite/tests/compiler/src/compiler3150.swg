@@ -1,17 +1,19 @@
 #global if #os == "windows" and #arch == "x86_64"
+#global if #backend == Swag.BackendType.X64
 
-func toto(x: cvarargs)
+func toto(str: string, x: cvarargs)
 {
     var valist: Swag.CVaList
     @cvastart(&valist)
 
     ptr := dref cast(**s64) &valist
-    //@assert(ptr[0] == 111)
-    //@assert(ptr[1] == 222)
+    //@print(bitcast(s32) ptr[0], " ", bitcast(s32) ptr[1], "\n")
+    @assert(bitcast(s32) ptr[0] == 111)
+    @assert(bitcast(s32) ptr[1] == 222)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    toto(111, 222)
+    toto("oula", 111, 222)
 }

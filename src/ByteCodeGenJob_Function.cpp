@@ -210,7 +210,9 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     SWAG_ASSERT(param->typeInfo->kind == TypeInfoKind::CVariadic);
     auto storageOffset = param->resolvedSymbolOverload->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
-    inst->b.u64 = storageOffset;
+    inst->b.u64   = storageOffset;
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32   = typeInfo->numTotalRegisters();
     freeRegisterRC(context, childDest);
     return true;
 }
