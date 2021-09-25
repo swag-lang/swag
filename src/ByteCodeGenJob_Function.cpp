@@ -198,6 +198,23 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
+{
+    auto node      = context->node;
+    auto childDest = node->childs[0];
+    auto inst      = emitInstruction(context, ByteCodeOp::IntrinsicCVaStart, childDest->resultRegisterRC);
+    SWAG_ASSERT(node->ownerFct);
+    SWAG_ASSERT(node->ownerFct->parameters);
+    SWAG_ASSERT(!node->ownerFct->parameters->childs.empty());
+    auto param = node->ownerFct->parameters->childs.back();
+    SWAG_ASSERT(param->typeInfo->kind == TypeInfoKind::CVariadic);
+    auto storageOffset = param->resolvedSymbolOverload->computedValue.storageOffset;
+    SWAG_ASSERT(storageOffset != UINT32_MAX);
+    inst->b.u64 = storageOffset;
+    freeRegisterRC(context, childDest);
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);

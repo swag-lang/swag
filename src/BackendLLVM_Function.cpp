@@ -3058,6 +3058,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
+
+        case ByteCodeOp::IntrinsicCVaStart:
+        {
+            break;
+        }
+
         case ByteCodeOp::IntrinsicArguments:
         {
             localCall(buildParameters, allocR, allocT, g_LangSpec->name_atargs, {ip->a.u32, ip->b.u32}, {});

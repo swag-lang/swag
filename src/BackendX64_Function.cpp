@@ -2403,6 +2403,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, g_LangSpec->name__tlsSetValue);
             break;
 
+        case ByteCodeOp::IntrinsicCVaStart:
+            break;
+
         case ByteCodeOp::IntrinsicArguments:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);

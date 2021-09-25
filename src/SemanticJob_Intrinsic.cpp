@@ -731,6 +731,12 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(resolveIntrinsicMakeInterface(context));
         break;
     }
+
+    case TokenId::IntrinsicCVaStart:
+    {
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
+        break;
+    }
     }
 
     return true;

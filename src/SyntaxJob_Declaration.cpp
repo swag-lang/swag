@@ -397,6 +397,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::IntrinsicSetErr:
+    case TokenId::IntrinsicCVaStart:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
         SWAG_CHECK(doAffectExpression(parent, result));

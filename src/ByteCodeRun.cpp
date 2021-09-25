@@ -1551,6 +1551,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::IntrinsicCVaStart:
+    {
+        auto ptr = (void**) registersRC[ip->a.u32].pointer;
+        *ptr     = context->bp + ip->b.u32;
+        break;
+    }
+
     case ByteCodeOp::IntrinsicSetErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atseterr);

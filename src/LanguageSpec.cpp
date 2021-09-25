@@ -347,6 +347,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@atomxor", {TokenId::IntrinsicAtomicXor, LiteralType::TT_MAX});
     keywords.add("@atomxchg", {TokenId::IntrinsicAtomicXchg, LiteralType::TT_MAX});
     keywords.add("@atomcmpxchg", {TokenId::IntrinsicAtomicCmpXchg, LiteralType::TT_MAX});
+    keywords.add("@cvastart", {TokenId::IntrinsicCVaStart, LiteralType::TT_MAX});
 
     keywords.add("@sqrt", {TokenId::IntrinsicSqrt, LiteralType::TT_MAX});
     keywords.add("@sin", {TokenId::IntrinsicSin, LiteralType::TT_MAX});

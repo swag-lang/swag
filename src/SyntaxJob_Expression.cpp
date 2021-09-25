@@ -1114,6 +1114,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::IntrinsicSetErr:
+    case TokenId::IntrinsicCVaStart:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
     case TokenId::SymLeftParen:
