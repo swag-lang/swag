@@ -185,6 +185,7 @@ enum class TypeInfoKind : uint8_t
     TypeListArray,
     Variadic,
     TypedVariadic,
+    CVariadic,
     Struct,
     Generic,
     Alias,

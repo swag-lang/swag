@@ -291,6 +291,7 @@ namespace Swag
         TypeListArray
         Variadic
         TypedVariadic
+        CVariadic
         Struct
         Generic
         Alias

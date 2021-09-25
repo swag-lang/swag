@@ -171,7 +171,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0735]}));
-        SWAG_VERIFY(typeNode->ownerFct->attributeFlags & ATTRIBUTE_FOREIGN, context->report({typeNode, g_E[Err0048]}));
+        typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
+        return true;
     }
 
     // NameAlias

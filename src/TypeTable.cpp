@@ -101,6 +101,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         break;
     case TypeInfoKind::Variadic:
     case TypeInfoKind::TypedVariadic:
+    case TypeInfoKind::CVariadic:
         typeStruct = swagScope.regTypeInfoVariadic;
         break;
     case TypeInfoKind::Array:

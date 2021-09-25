@@ -137,6 +137,7 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "an array";
     case TypeInfoKind::Variadic:
     case TypeInfoKind::TypedVariadic:
+    case TypeInfoKind::CVariadic:
         return "a variadic";
     case TypeInfoKind::Struct:
         return "a struct";
@@ -179,6 +180,7 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "array";
     case TypeInfoKind::Variadic:
     case TypeInfoKind::TypedVariadic:
+    case TypeInfoKind::CVariadic:
         return "variadic";
     case TypeInfoKind::Struct:
         return "struct";

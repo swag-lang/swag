@@ -48,7 +48,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
         auto wantedTypeInfo  = wantedParameter->typeInfo;
 
-        if (wantedTypeInfo->kind == TypeInfoKind::Variadic)
+        if (wantedTypeInfo->kind == TypeInfoKind::Variadic || wantedTypeInfo->kind == TypeInfoKind::CVariadic)
         {
             context.cptResolved = (int) context.parameters.size();
             return;
@@ -731,7 +731,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (context.cptResolved < firstDefault && parameters.size())
     {
         auto back = parameters.back()->typeInfo;
-        if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic)
+        if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic && back->kind != TypeInfoKind::CVariadic)
         {
             context.result = MatchResult::NotEnoughParameters;
             return;
