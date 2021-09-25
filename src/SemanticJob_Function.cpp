@@ -93,7 +93,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         if (paramType->kind == TypeInfoKind::Variadic)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, g_E[Err0733]}));
-
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
                 return context->report({nodeParam, g_E[Err0734]});
@@ -101,8 +100,14 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         else if (paramType->kind == TypeInfoKind::TypedVariadic)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, g_E[Err0733]}));
-
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
+            if (index != parameters->childs.size())
+                return context->report({nodeParam, g_E[Err0734]});
+        }
+        else if (paramType->kind == TypeInfoKind::CVariadic)
+        {
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, g_E[Err0733]}));
+            typeInfo->flags |= TYPEINFO_C_VARIADIC;
             if (index != parameters->childs.size())
                 return context->report({nodeParam, g_E[Err0734]});
         }

@@ -2922,7 +2922,9 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             // Variadic parameter must be the last one
             if (i != childCount - 1)
             {
-                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic ||
+                    oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic ||
+                    oneParam->typeInfo->kind == TypeInfoKind::CVariadic)
                 {
                     return context->report({oneParam, g_E[Err0734]});
                 }

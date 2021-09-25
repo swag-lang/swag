@@ -43,7 +43,7 @@ void TypeManager::setup()
     typeInfoCVariadic       = new TypeInfoVariadic();
     typeInfoCVariadic->kind = TypeInfoKind::CVariadic;
     typeInfoCVariadic->name.setView("cvarargs", 8);
-    typeInfoCVariadic->flags |= TYPEINFO_CVARARGS;
+    typeInfoCVariadic->flags |= TYPEINFO_C_VARIADIC;
     typeInfoCVariadic->sizeOf = 0;
 
     // Some default pointers

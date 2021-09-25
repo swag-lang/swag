@@ -167,7 +167,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // cvarargs
-    if (typeNode->literalType && typeNode->literalType->flags & TYPEINFO_CVARARGS)
+    if (typeNode->literalType && typeNode->literalType->flags & TYPEINFO_C_VARIADIC)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0735]}));
