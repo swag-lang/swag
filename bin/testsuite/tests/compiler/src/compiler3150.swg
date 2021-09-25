@@ -1,5 +1,4 @@
 #global if #os == "windows" and #arch == "x86_64"
-#global if #backend == Swag.BackendType.X64
 
 func toto(str: string, x: cvarargs)
 {

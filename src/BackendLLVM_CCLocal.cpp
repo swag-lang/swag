@@ -64,6 +64,10 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         params.push_back(builder.CreateLoad(r0));
         numCallParams--;
     }
+    else if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    {
+        numCallParams--;
+    }
 
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
@@ -100,12 +104,10 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                 SWAG_ASSERT(v0);
                 if (allocT)
                 {
-                    //auto p0 = GEP_I32(allocT, allocTidx++);
                     if (v0->getType()->isPointerTy())
                         v0 = builder.CreatePtrToInt(v0, builder.getInt64Ty());
                     else if (v0->getType()->isIntegerTy())
                         v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
-                    //builder.CreateStore(v0, p0);
                     params.push_back(v0);
                 }
                 else
@@ -120,6 +122,18 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, index));
                 params.push_back(v0);
             }
+        }
+    }
+
+    // C variadic arguments
+    if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    {
+        auto numVariadics = popRAidx + 1;
+        for (int idxCall = 0; idxCall < numVariadics; idxCall++)
+        {
+            auto index = pushRAParams[popRAidx--];
+            auto v0    = builder.CreateLoad(GEP_I32(allocR, index));
+            params.push_back(v0);
         }
     }
 }

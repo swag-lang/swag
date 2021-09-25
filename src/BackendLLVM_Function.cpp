@@ -2997,8 +2997,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
-                auto r1 = GEP_I32(allocT, 0);
-                for (int iparam = 0; iparam < typeFunc->parameters.size(); iparam++)
+                auto r1        = GEP_I32(allocT, 0);
+                auto numParams = typeFunc->parameters.size();
+                if (typeFunc->flags & TYPEINFO_C_VARIADIC)
+                    numParams--;
+                for (int iparam = 0; iparam < numParams; iparam++)
                 {
                     SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, iparam, r1));
                 }
