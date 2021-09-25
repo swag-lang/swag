@@ -51,6 +51,8 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+foreign a cvarargs
+-------------------------------------
 pourquoi #os, #abi etc... sont des strings, et #backend est un enum ?
 -------------------------------------
 sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)

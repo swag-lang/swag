@@ -434,6 +434,10 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             idxParam += 2;
             countParams--;
         }
+        else if (typeFunc->flags & TYPEINFO_C_VARIADIC)
+        {
+            countParams--;
+        }
 
         for (int i = 0; i < countParams; i++)
         {

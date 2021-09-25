@@ -3061,6 +3061,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicCVaStart:
         {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateIntrinsic(llvm::Intrinsic::vastart, {}, {r0});
             break;
         }
 

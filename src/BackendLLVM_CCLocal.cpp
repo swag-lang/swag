@@ -148,11 +148,17 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         params.push_back(llvm::Type::getInt64PtrTy(context));
 
     // Variadics first
-    int numParams = (int) typeFuncBC->parameters.size();
+    int  numParams = (int) typeFuncBC->parameters.size();
+    bool isVarArg  = false;
     if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         params.push_back(llvm::Type::getInt64Ty(context));
         params.push_back(llvm::Type::getInt64Ty(context));
+        numParams--;
+    }
+    else if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    {
+        isVarArg = true;
         numParams--;
     }
 
@@ -173,7 +179,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         }
     }
 
-    auto result                       = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
+    auto result                       = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, isVarArg);
     pp.mapFctTypeInternal[typeFuncBC] = result;
     return result;
 }
