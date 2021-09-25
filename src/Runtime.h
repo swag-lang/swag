@@ -75,6 +75,11 @@ struct SwagCompilerSourceLocation
     uint32_t  lineEnd, colEnd;
 };
 
+struct SwagCVaList
+{
+    uint8_t buf[2048];
+};
+
 static const auto MAX_LEN_ERROR_MSG = 128;
 static const auto MAX_TRACE         = 32;
 typedef struct SwagContext

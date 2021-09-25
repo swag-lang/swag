@@ -22,4 +22,5 @@ struct SwagScope
     TypeInfoStruct* regTypeInfoGeneric   = nullptr;
     TypeInfoStruct* regTypeInfoAlias     = nullptr;
     TypeInfoStruct* regTypeInfoSourceLoc = nullptr;
+    TypeInfoStruct* regTypeInfoCVaList   = nullptr;
 };

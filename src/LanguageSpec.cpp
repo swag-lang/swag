@@ -94,6 +94,7 @@ void LanguageSpec::setupNames()
     name_CompilerSourceLocation = "CompilerSourceLocation";
     name_BuildCfg               = "BuildCfg";
     name_AttributeUsage         = "AttributeUsage";
+    name_CVaList                = "CVaList";
     name_Swag_CompilerMsgMask   = "Swag.CompilerMsgMask";
 
     name_export       = "export";

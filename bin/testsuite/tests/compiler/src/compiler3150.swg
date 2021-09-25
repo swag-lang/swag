@@ -2,7 +2,7 @@ func toto(x: cvarargs)
 {
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     toto(1, 2)

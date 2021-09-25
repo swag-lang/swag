@@ -391,6 +391,12 @@ TypeInfo* TypeInfoVariadic::clone()
 
 void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
+    if (kind == TypeInfoKind::CVariadic)
+    {
+        resName = "cvarargs";
+        return;
+    }
+
     if (rawType)
         resName += rawType->computeWhateverName(nameType);
     resName += "...";

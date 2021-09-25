@@ -565,6 +565,11 @@ namespace Swag
         lineStart, colStart:    u32
         lineEnd, colEnd:        u32
     }
+
+    struct CVaList
+    {
+        buf: [2048] u8
+    }
 }
 
 //

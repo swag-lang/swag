@@ -107,6 +107,13 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoSourceLoc->flags |= TYPEINFO_STRUCT_TYPEINFO;
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(SwagCompilerSourceLocation));
     }
+    else if (typeInfo->name == g_LangSpec->name_CVaList)
+    {
+        SWAG_ASSERT(!regTypeInfoCVaList);
+        regTypeInfoCVaList = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeInfoCVaList->flags |= TYPEINFO_STRUCT_TYPEINFO;
+        SWAG_ASSERT(typeInfo->sizeOf == sizeof(SwagCVaList));
+    }
     else if (typeInfo->name == g_LangSpec->name_BuildCfg)
     {
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(BuildCfg));
