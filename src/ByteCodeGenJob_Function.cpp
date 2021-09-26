@@ -1232,7 +1232,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 // Empty variadic parameter
                 auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic && defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
+                if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic &&
+                    defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic &&
+                    defaultParam->typeInfo->kind != TypeInfoKind::CVariadic)
                 {
                     SWAG_ASSERT(defaultParam->assignment);
 
