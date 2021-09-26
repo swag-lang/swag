@@ -2,5 +2,5 @@ using Core, Libc
 
 #test
 {
-    printf("toto %d\n", 666)
+    printf("toto %d %f\n", -1's8, 3.14)
 }

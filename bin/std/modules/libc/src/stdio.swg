@@ -69,27 +69,32 @@ const TMP_MAX      = 32767
 	func perror(s: cstring);
 }
 
-#[Foreign(ForeignLib, "__stdio_common_vfprintf"), Discardable]
-func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
+var stdin:  *FILE
+var stdout: *FILE
+var stderr: *FILE
 
-#[Foreign(ForeignLib, "__acrt_iob_func")]
-func acrt_iob_func(index: u32)->*FILE;
-
-//var stdin  = acrt_iob_func(0)
-//var stdout = acrt_iob_func(1)
-//var stderr = acrt_iob_func(2)
-
-#[Discardable]
-func printf(format: cstring, args: cvarargs)->int
+#if #os == "windows"
 {
-    //var stdout = acrt_iob_func(1)
+    #[Foreign(ForeignLib, "__stdio_common_vfprintf"), Discardable]
+    func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
 
-    var valist: Swag.CVaList
-    @cvastart(&valist)
-    x := @cvaarg(&valist, s32)
-    @print(x)
-    res := 0
-    //res := stdio_common_vfprintf(0x26, stdout, format, null, dref cast(**void) &valist)
-    @cvaend(&valist)
-    return res
+    #[Foreign(ForeignLib, "__acrt_iob_func")]
+    func acrt_iob_func(index: u32)->*FILE;
+
+    #init
+    {
+        stdin  = acrt_iob_func(0)
+        stdout = acrt_iob_func(1)
+        stderr = acrt_iob_func(2)
+    }
+
+    #[Discardable]
+    func printf(format: cstring, args: cvarargs)->int
+    {
+        var valist: Swag.CVaList
+        @cvastart(&valist)
+        res := stdio_common_vfprintf(0x26, stdout, format, null, dref cast(**void) &valist)
+        @cvaend(&valist)
+        return res
+    }
 }

@@ -1219,7 +1219,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 }
             }
 
-            // If not covered, then this is a default value
+            // If not covered, then this is a default value, or a variadic parameter
             if (!covered)
             {
                 // funcnode can be null in case of a lambda, so we need to retrieve the function description from the type
@@ -1279,9 +1279,37 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic && !(param->typeInfo->flags & TYPEINFO_SPREAD))
             {
+                bool done = false;
+
+                // If this is a variadic parameter of a cvarargs, we need to promote the value
+                if ((typeInfoFunc->flags & TYPEINFO_C_VARIADIC) &&
+                    i >= numTypeParams - 1 &&
+                    param->typeInfo->kind == TypeInfoKind::Native &&
+                    param->typeInfo->sizeOf < sizeof(Register))
+                {
+                    switch (param->typeInfo->nativeType)
+                    {
+                    case NativeTypeKind::S8:
+                        emitInstruction(context, ByteCodeOp::CastS8S32, param->resultRegisterRC);
+                        break;
+                    case NativeTypeKind::S16:
+                        emitInstruction(context, ByteCodeOp::CastS16S32, param->resultRegisterRC);
+                        break;
+                    case NativeTypeKind::U8:
+                    case NativeTypeKind::Bool:
+                        emitInstruction(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x000000FF;
+                        break;
+                    case NativeTypeKind::U16:
+                        emitInstruction(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x0000FFFF;
+                        break;
+                    case NativeTypeKind::F32:
+                        emitInstruction(context, ByteCodeOp::CastF32F64, param->resultRegisterRC);
+                        break;
+                    }
+                }
+
                 // If we push a something to a typed variadic, we need to push PushRVParam and not PushRAParam if the size
                 // is less than a register, because we want the typed variadic to be a real slice (not always a slice of registers)
-                bool done = false;
                 if (typeRawVariadic && i >= numTypeParams - 1)
                 {
                     if (typeRawVariadic->kind == TypeInfoKind::Native && typeRawVariadic->sizeOf < sizeof(Register))

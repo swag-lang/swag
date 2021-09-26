@@ -85,6 +85,10 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         offsetStack += 8;
         numCallParams--;
     }
+    else if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    {
+        numCallParams--;
+    }
 
     // Func call parameters
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
