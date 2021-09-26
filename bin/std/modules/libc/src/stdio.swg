@@ -93,7 +93,17 @@ var stderr: *FILE
     {
         var valist: va_list
         va_start(&valist, 0)
-        res := stdio_common_vfprintf(0x26, stdout, format, null, dref cast(**void) &valist)
+        res := stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) &valist)
+        va_end(&valist)
+        return res
+    }
+
+    #[Discardable]
+    func sprintf(s: *u8, format: cstring, args: cvarargs)->int
+    {
+        var valist: va_list
+        va_start(&valist, 0)
+        res := stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
     }
@@ -101,6 +111,6 @@ var stderr: *FILE
     #[Discardable]
     func vsprintf(s: *u8, format: cstring, arg: *va_list)->int
     {
-        return stdio_common_vsprintf(0x26, s, SIZE_MAX, format, null, dref cast(**void) arg)
+        return stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) arg)
     }
 }

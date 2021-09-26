@@ -40,6 +40,7 @@ struct LanguageSpec
     Utf8 name_memmove;
     Utf8 name_memcmp;
     Utf8 name_strlen;
+    Utf8 name_strcmp;
     Utf8 name_malloc;
     Utf8 name_realloc;
     Utf8 name_free;

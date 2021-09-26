@@ -687,8 +687,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicStrLen:
     {
-        void* src                  = (void*) registersRC[ip->b.u32].pointer;
-        registersRC[ip->a.u32].u64 = strlen((const char*) src);
+        auto src                   = (const char*) registersRC[ip->b.u32].pointer;
+        registersRC[ip->a.u32].u64 = strlen(src);
+        break;
+    }
+    case ByteCodeOp::IntrinsicStrCmp:
+    {
+        auto src0                  = (const char*) registersRC[ip->b.u32].pointer;
+        auto src1                  = (const char*) registersRC[ip->c.u32].pointer;
+        registersRC[ip->a.u32].u64 = strcmp(src0, src1);
         break;
     }
 
@@ -2649,6 +2656,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::ZeroToTrue:
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 == 0 ? true : false;
+        break;
     case ByteCodeOp::LowerZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0 ? true : false;
         break;

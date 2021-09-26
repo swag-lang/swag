@@ -70,6 +70,9 @@
 @ceil
 @cos
 @cosh
+@cvaarg
+@cvaend
+@cvastart
 @exp
 @exp2
 @floor
@@ -89,6 +92,7 @@
 @sin
 @sinh
 @sqrt
+@strcmp
 @strlen
 @tan
 @tanh
@@ -201,6 +205,8 @@ while
 any
 bool
 code
+cstring
+cvarargs
 f32
 f64
 int

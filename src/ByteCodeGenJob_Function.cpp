@@ -202,7 +202,9 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto childDest = node->childs[0];
-    auto inst      = emitInstruction(context, ByteCodeOp::IntrinsicCVaStart, childDest->resultRegisterRC);
+
+    emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0544]);
+    auto inst = emitInstruction(context, ByteCodeOp::IntrinsicCVaStart, childDest->resultRegisterRC);
     SWAG_ASSERT(node->ownerFct);
     SWAG_ASSERT(node->ownerFct->parameters);
     SWAG_ASSERT(!node->ownerFct->parameters->childs.empty());
@@ -221,6 +223,8 @@ bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto childDest = node->childs[0];
+
+    emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0544]);
     emitInstruction(context, ByteCodeOp::IntrinsicCVaEnd, childDest->resultRegisterRC);
     freeRegisterRC(context, childDest);
     return true;
@@ -228,8 +232,10 @@ bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 {
-    auto node              = context->node;
-    auto childDest         = node->childs[0];
+    auto node      = context->node;
+    auto childDest = node->childs[0];
+
+    emitSafetyNullPointer(context, childDest->resultRegisterRC, g_E[Err0544]);
     node->resultRegisterRC = reserveRegisterRC(context);
     auto inst              = emitInstruction(context, ByteCodeOp::IntrinsicCVaArg, childDest->resultRegisterRC, node->resultRegisterRC);
     inst->c.u64            = node->typeInfo->sizeOf;
@@ -375,6 +381,18 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
+        break;
+    }
+    case TokenId::IntrinsicStrCmp:
+    {
+        auto childSrc0 = callParams->childs[0];
+        auto childSrc1 = callParams->childs[1];
+        emitSafetyNullPointer(context, childSrc0->resultRegisterRC, g_E[Err0550]);
+        emitSafetyNullPointer(context, childSrc1->resultRegisterRC, g_E[Err0551]);
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, node->resultRegisterRC, childSrc0->resultRegisterRC, childSrc1->resultRegisterRC);
+        freeRegisterRC(context, childSrc0);
+        freeRegisterRC(context, childSrc1);
         break;
     }
     case TokenId::IntrinsicTypeCmp:

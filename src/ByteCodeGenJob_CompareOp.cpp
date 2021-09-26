@@ -239,9 +239,18 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             freeRegisterRC(context, rflags);
         }
 
+        // CString compare
+        else if (leftTypeInfo->flags & TYPEINFO_CSTRING)
+        {
+            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
+            emitInstruction(context, ByteCodeOp::ZeroToTrue, r2);
+        }
+
         // Simple pointer compare
         else
+        {
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Lambda)
     {

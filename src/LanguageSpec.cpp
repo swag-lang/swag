@@ -152,6 +152,7 @@ void LanguageSpec::setupNames()
     name_memmove = "memmove";
     name_memcmp  = "memcmp";
     name_strlen  = "strlen";
+    name_strcmp  = "strcmp";
     name_malloc  = "malloc";
     name_realloc = "realloc";
     name_free    = "free";
@@ -334,6 +335,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@memset", {TokenId::IntrinsicMemSet, LiteralType::TT_MAX});
     keywords.add("@memcmp", {TokenId::IntrinsicMemCmp, LiteralType::TT_MAX});
     keywords.add("@strlen", {TokenId::IntrinsicStrLen, LiteralType::TT_MAX});
+    keywords.add("@strcmp", {TokenId::IntrinsicStrCmp, LiteralType::TT_MAX});
     keywords.add("@stringcmp", {TokenId::IntrinsicStringCmp, LiteralType::TT_MAX});
     keywords.add("@typecmp", {TokenId::IntrinsicTypeCmp, LiteralType::TT_MAX});
     keywords.add("@getcontext", {TokenId::IntrinsicGetContext, LiteralType::TT_MAX});

@@ -1030,6 +1030,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateCall(pp.fn_strlen, {r1}), r0);
             break;
         }
+        case ByteCodeOp::IntrinsicStrCmp:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
+            builder.CreateStore(builder.CreateCall(pp.fn_strcmp, {r1, r2}), r0);
+            break;
+        }
 
         case ByteCodeOp::IntrinsicAlloc:
         {
@@ -3548,6 +3556,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::ZeroToTrue:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
+            auto a0 = builder.CreateIntCast(builder.CreateICmpEQ(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            builder.CreateStore(a0, TO_PTR_I8(r0));
+            break;
+        }
         case ByteCodeOp::LowerZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
