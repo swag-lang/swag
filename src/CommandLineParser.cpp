@@ -20,6 +20,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu ne cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "script file name");
+    addArg("ne", "--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "create a test module");
 
     addArg("all", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("all", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");

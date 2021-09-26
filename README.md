@@ -136,7 +136,8 @@ func mySillyFunction()->string
 
 # For the braves
 
-* [Start](docs/getting_started.md) your first project, compile it, run it !
+* [Start](docs/getting_started.md) your first project, compile it, run it.
+* [Contribute](docs/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 

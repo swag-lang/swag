@@ -39,7 +39,7 @@ void Workspace::newModule(string moduleName)
     error_code errorCode;
 
     // Create one module folder
-    auto modulePath = modulesPath;
+    auto modulePath = g_CommandLine->test ? testsPath : modulesPath;
     modulePath.append(moduleName);
 
     if (fs::exists(modulePath))
@@ -93,22 +93,35 @@ void Workspace::newModule(string moduleName)
         OS::exit(-1);
     }
 
-    modulePath.append("main.swg");
-    ofstream file(modulePath);
-    if (!file.is_open())
-    {
-        g_Log.errorOS(Utf8::format(g_E[Err0824], modulePath.string().c_str()));
-        OS::exit(-1);
-    }
-
-    const char* oneMain = R"(
+    const char* contentMain = R"(
 #main
 {
 	@print("Hello world!\n")
 }
 )";
 
-    file << oneMain;
+    const char* contentTest = R"(
+#test
+{
+	const X = (2 * 5) + 3
+    @assert(X == 13)
+}
+)";
+
+    if (g_CommandLine->test)
+        modulePath.append("test1.swg");
+    else
+        modulePath.append("main.swg");
+    ofstream file(modulePath);
+    if (!file.is_open())
+    {
+        g_Log.errorOS(Utf8::format(g_E[Err0824], modulePath.string().c_str()));
+        OS::exit(-1);
+    }
+    if (g_CommandLine->test)
+        file << contentTest;
+    else
+        file << contentMain;
 }
 
 void Workspace::newCommand()
@@ -189,7 +202,17 @@ void Workspace::newCommand()
     // Create module
     newModule(moduleName);
 
-    g_Log.message(Utf8::format("=> module `%s` has been created", moduleName.c_str()));
-    g_Log.message(Utf8::format("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
+    if (g_CommandLine->test)
+    {
+        g_Log.message(Utf8::format("=> test module `%s` has been created", moduleName.c_str()));
+        g_Log.message(Utf8::format("=> type 'swag test -w:%s -m:%s' to test that module only", workspacePath.string().c_str(), moduleName.c_str()));
+        g_Log.message(Utf8::format("=> type 'swag test -w:%s to test all modules", workspacePath.string().c_str(), moduleName.c_str()));
+    }
+    else
+    {
+        g_Log.message(Utf8::format("=> module `%s` has been created", moduleName.c_str()));
+        g_Log.message(Utf8::format("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
+    }
+
     OS::exit(0);
 }
