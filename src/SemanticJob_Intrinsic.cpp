@@ -754,7 +754,16 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         else
         {
             node->typeInfo = node->childs[1]->typeInfo;
-            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str())}));
+
+            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({ node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str()) }));
+
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "f64")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::Bool), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaArg;
         }
 

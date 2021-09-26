@@ -437,7 +437,7 @@ SWAG_ERROR(Err0441, "implementation block kind (%s) does not match the type of `
 SWAG_ERROR(Err0442, "`@cvastart` intrinsic can only be used in a function with a last argument of type `cvarargs`")
 SWAG_ERROR(Err0443, "`@cvaarg` unsupported type `%s`")
 SWAG_ERROR(Err0444, "expected a struct name, found `%s`")
-SWAG_ERROR(Err0445, nullptr)
+SWAG_ERROR(Err0445, "`@cvaarg` unsupported type `%s` (type has been promoted to '%s' at the call site)")
 SWAG_ERROR(Err0446, "parameter of type `cvarargs` cannot be passed from function to function")
 SWAG_ERROR(Err0447, "empty tuple definition")
 SWAG_ERROR(Err0448, "identifier expected")
