@@ -1,16 +1,17 @@
 # Your first install
-
-You should register the location of the swag compiler in the PATH environment variable to be able to call it from everywhere.
+Download the latest release from github, and unzip it in a folder. Of course SSD is better.
 
 #### Under windows 10
+You should register the location of the swag compiler (`swag.exe`) in the PATH environment variable to be able to call it from everywhere.
+
 You can open a Powershell window, and run the following code :
 
 ```
-# You must replace `f:\swag` with the location of your swag folder
+# You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
 
 [Environment]::SetEnvironmentVariable(
    "Path",
-   [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag",
+   [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
    "User"
 )
 ```
@@ -63,7 +64,7 @@ $ swag build -w:first
                  Done 0.067s
 ```
 
-You can omit the workspace name (`-w:first` or `--workspace:first`) if you call swag directly from the workspace folder.
+You can omit the workspace name (`-w:first` or `--workspace:first`) if you call the compiler directly from the workspace folder.
 This command will compile all modules in `modules/` and `examples/`.
 
 You can also build and run your workspace.
