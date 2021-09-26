@@ -33,7 +33,7 @@ alias ptrdiff_t = s64
 alias intmax_t  = s64
 alias uintmax_t = u64
 
-const SIZE_MAX    = Swag.S64.Max
+const SIZE_MAX    = Swag.U64.Max
 const PTRDIFF_MIN = Swag.S64.Min
 const PTRDIFF_MAX = Swag.S64.Max
 

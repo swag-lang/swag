@@ -42,7 +42,6 @@ const TMP_MAX      = 32767
 	func vprintf(format: cstring, arg: ^va_list)->int;
 	func vscanf(format: cstring, arg: ^va_list)->int;
 	func vsnprintf(s: *u8, n: size_t, format: cstring, arg: ^va_list)->int;
-	func vsprintf(s: *u8, format: cstring, arg: ^va_list)->int;
 	func vsscanf(s, format: cstring, arg: ^va_list)->int;*/
 
 	func fgetc(stream: *FILE)->int;
@@ -77,7 +76,8 @@ var stderr: *FILE
 {
     #[Foreign(ForeignLib, "__stdio_common_vfprintf"), Discardable]
     func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
-
+    #[Foreign(ForeignLib, "__stdio_common_vsprintf"), Discardable]
+    func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: size_t, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
     #[Foreign(ForeignLib, "__acrt_iob_func")]
     func acrt_iob_func(index: u32)->*FILE;
 
@@ -91,10 +91,16 @@ var stderr: *FILE
     #[Discardable]
     func printf(format: cstring, args: cvarargs)->int
     {
-        var valist: Swag.CVaList
-        @cvastart(&valist)
+        var valist: va_list
+        va_start(&valist, 0)
         res := stdio_common_vfprintf(0x26, stdout, format, null, dref cast(**void) &valist)
-        @cvaend(&valist)
+        va_end(&valist)
         return res
+    }
+
+    #[Discardable]
+    func vsprintf(s: *u8, format: cstring, arg: *va_list)->int
+    {
+        return stdio_common_vsprintf(0x26, s, SIZE_MAX, format, null, dref cast(**void) arg)
     }
 }
