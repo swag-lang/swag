@@ -2408,7 +2408,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
-            int stackOffset = 16 + sizeStack + regOffset(ip->c.u32) + regOffset(typeFunc->numReturnRegisters());
+            int stackOffset = 16 + sizeStack + regOffset(ip->c.u32);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
