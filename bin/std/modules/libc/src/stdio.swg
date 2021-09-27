@@ -35,11 +35,9 @@ const TMP_MAX      = 32767
 	/*func fprintf(stream: *FILE, format: cstring, #c_vararg args: ..any)->int;
 	func fscanf(stream: *FILE, format: cstring, #c_vararg args: ..any)->int;
 	func scanf(format: cstring, #c_vararg args: ..any)->int;
-	func snprintf(s: *u8, format: cstring, #c_vararg args: ..any)->int;
 	func vfprintf(stream: *FILE, format: cstring, arg: ^va_list)->int;
 	func vfscanf(stream: *FILE, format: cstring, arg: ^va_list)->int;
 	func vscanf(format: cstring, arg: ^va_list)->int;
-	func vsnprintf(s: *u8, n: size_t, format: cstring, arg: ^va_list)->int;
 	func vsscanf(s, format: cstring, arg: ^va_list)->int;*/
 
 	func fgetc(stream: *FILE)->int;
@@ -112,6 +110,16 @@ var stderr: *FILE
     }
 
     #[Discardable]
+    func snprintf(s: *u8, count: size_t, format: cstring, args: cvarargs)->int
+    {
+        var valist: va_list
+        va_start(&valist, 0)
+        res := stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) &valist)
+        va_end(&valist)
+        return res
+    }
+
+    #[Discardable]
     func vprintf(format: cstring, args: *va_list)->int
     {
         return stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) args)
@@ -124,6 +132,12 @@ var stderr: *FILE
     }
 
     #[Discardable]
+    func vsnprintf(s: *u8, count: size_t, format: cstring, args: *va_list)->int
+    {
+        return stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) args)
+    }
+
+    #[Discardable]
     func sscanf(s, format: cstring, args: cvarargs)->int
     {
         var valist: va_list
@@ -131,5 +145,11 @@ var stderr: *FILE
         res := stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
         va_end(&valist)
         return res
+    }
+
+    #[Discardable]
+    func vsscanf(s, format: cstring, args: *va_list)->int
+    {
+        return stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
     }
 }
