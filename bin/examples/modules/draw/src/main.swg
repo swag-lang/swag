@@ -21,7 +21,7 @@ var g_Renderer:     RenderOglWin32
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 2
+var g_Page:         s32 = 0
 var g_Wnd:          Surface
 const MaxPages = 6
 
@@ -568,6 +568,15 @@ func display()
     case 4: displayPage4()
     case 5: displayPage5()
     }
+
+    g_Painter.begin()
+    g_Painter.translateTransform(680, 780)
+    g_Painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
+    g_Painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
+    g_Painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
+    g_Painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
+    g_Painter.end()
+    g_Renderer.draw(&g_Painter)
 
     g_Renderer.end()
 }
