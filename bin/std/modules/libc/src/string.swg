@@ -3,14 +3,14 @@ using Swag
 
 #[Foreign(ForeignLib), Discardable]
 {
-    func memcpy(destination: *void, source: const *void, num: size_t)->*void;
-    func memmove(destination: *void, source: const *void, num: size_t)->*void;
+    func memcpy(dst: *void, src: const *void, num: size_t)->*void;
+    func memmove(dst: *void, src: const *void, num: size_t)->*void;
     func memset(ptr: *void, value: s32, num: size_t)->*void;
 
-    func strcpy(destination: *u8, source: cstring)->*u8;
-    func strncpy(destination: *u8, source: cstring, num: size_t)->*u8;
-    func strcat(destination: *u8, source: cstring)->*u8;
-    func strncat(destination: *u8, source: cstring, num: size_t)->*u8;
+    func strcpy(dst: *u8, src: cstring)->*u8;
+    func strncpy(dst: *u8, src: cstring, num: size_t)->*u8;
+    func strcat(dst: *u8, src: cstring)->*u8;
+    func strncat(dst: *u8, src: cstring, num: size_t)->*u8;
 }
 
 #[Foreign(ForeignLib)]
@@ -28,7 +28,7 @@ using Swag
     func strcmp(str1, str2: cstring)->s32;
     func strcoll(str1, str2: cstring)->s32;
     func strncmp(str1, str2: cstring, num: uint)->s32;
-    func strxfrm(destination: *u8, source: cstring, num: size_t)->size_t;
+    func strxfrm(dst: *u8, src: cstring, num: size_t)->size_t;
     func strerror(errnum: s32)->cstring;
 	func strlen(s: cstring)->size_t;
 }
