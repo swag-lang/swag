@@ -16,12 +16,15 @@ func filter(file: File.FileInfo)->bool
     if Utf8.contains(file.fullname, "/public/")
         return false
 
+    if Utf8.contains(file.fullname, "/pixel/datas/")
+        return true
+
     ext := Path.getExtensionLowerCase(file.fullname)
     switch ext
     {
     case ".exe":
         return Utf8.contains(file.fullname, "swag.exe")
-    case ".dll", ".lib", ".swg":
+    case ".dll", ".lib", ".swg", ".glsl":
         return true
     }
 
