@@ -36,10 +36,8 @@ const TMP_MAX      = 32767
 	func fscanf(stream: *FILE, format: cstring, #c_vararg args: ..any)->int;
 	func scanf(format: cstring, #c_vararg args: ..any)->int;
 	func snprintf(s: *u8, format: cstring, #c_vararg args: ..any)->int;
-	func sscanf(s, format: cstring, #c_vararg args: ..any)->int;
 	func vfprintf(stream: *FILE, format: cstring, arg: ^va_list)->int;
 	func vfscanf(stream: *FILE, format: cstring, arg: ^va_list)->int;
-	func vprintf(format: cstring, arg: ^va_list)->int;
 	func vscanf(format: cstring, arg: ^va_list)->int;
 	func vsnprintf(s: *u8, n: size_t, format: cstring, arg: ^va_list)->int;
 	func vsscanf(s, format: cstring, arg: ^va_list)->int;*/
@@ -78,6 +76,11 @@ var stderr: *FILE
     func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
     #[Foreign(ForeignLib, "__stdio_common_vsprintf"), Discardable]
     func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: size_t, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
+    #[Foreign(ForeignLib, "__stdio_common_vfscanf"), Discardable]
+    func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
+    #[Foreign(ForeignLib, "__stdio_common_vsscanf"), Discardable]
+    func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: size_t, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;
+
     #[Foreign(ForeignLib, "__acrt_iob_func")]
     func acrt_iob_func(index: u32)->*FILE;
 
@@ -109,8 +112,24 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vsprintf(s: *u8, format: cstring, arg: *va_list)->int
+    func vprintf(format: cstring, args: *va_list)->int
     {
-        return stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) arg)
+        return stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) args)
+    }
+
+    #[Discardable]
+    func vsprintf(s: *u8, format: cstring, args: *va_list)->int
+    {
+        return stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
+    }
+
+    #[Discardable]
+    func sscanf(s, format: cstring, args: cvarargs)->int
+    {
+        var valist: va_list
+        va_start(&valist, 0)
+        res := stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) &valist)
+        va_end(&valist)
+        return res
     }
 }
