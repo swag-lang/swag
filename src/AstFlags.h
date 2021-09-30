@@ -57,6 +57,7 @@ static const uint64_t AST_SILENT_CHECK               = 0x00400000'00000000;
 static const uint64_t AST_IS_NAMED                   = 0x00800000'00000000;
 static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x01000000'00000000;
 static const uint64_t AST_EMPTY_FCT                  = 0x02000000'00000000;
+static const uint64_t AST_IN_FUNC_DECL_PARAMS         = 0x04000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;

@@ -312,6 +312,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             paramNode->type      = typeNode;
         }
 
+        ScopedFlags sf(this, AST_IN_FUNC_DECL_PARAMS);
         while (token.id != TokenId::SymRightParen)
         {
             SWAG_CHECK(doFuncDeclParameter(allParams, acceptMissingType));

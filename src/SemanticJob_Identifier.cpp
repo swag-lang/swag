@@ -843,7 +843,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // A struct with parameters is in fact the creation of a temporary variable
-        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
+        if (identifier->callParameters &&
+            !(identifier->flags & AST_GENERATED) &&
+            !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) &&
+            !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
         {
             if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
             {
