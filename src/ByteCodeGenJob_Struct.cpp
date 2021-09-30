@@ -80,7 +80,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->opInit)
+    {
+        context->job->dependentNodes.append(typeInfoStruct->opInit->dependentCalls);
         return true;
+    }
 
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
@@ -137,7 +140,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->isCompilerGenerated   = true;
-    typeInfoStruct->opInit        = opInit;
+    opInit->dependentCalls.append(context->job->dependentNodes);
+    typeInfoStruct->opInit = opInit;
 
     // Export generated function if necessary
     if (!(structNode->flags & AST_FROM_GENERIC))
@@ -474,7 +478,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
     if (typeInfoStruct->opPostMove)
+    {
+        context->job->dependentNodes.append(typeInfoStruct->opPostMove->dependentCalls);
         return true;
+    }
 
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -543,6 +550,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->isCompilerGenerated   = true;
+    opPostMove->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -606,7 +614,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
         return true;
     if (typeInfoStruct->opPostCopy)
+    {
+        context->job->dependentNodes.append(typeInfoStruct->opPostCopy->dependentCalls);
         return true;
+    }
 
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -675,6 +686,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->isCompilerGenerated   = true;
+    opPostCopy->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))

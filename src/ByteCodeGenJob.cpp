@@ -620,13 +620,15 @@ JobResult ByteCodeGenJob::execute()
 
     // Wait for other dependent nodes to be generated
     // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed
-    // for the new pass
+    // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
         while (!dependentNodesTmp.empty())
         {
             auto node = dependentNodesTmp.back();
+            SWAG_ASSERT(node->extension && node->extension->bc);
 
+            // Wait for the node if not generated
             {
                 ScopedLock lk(node->mutex);
                 if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
@@ -639,19 +641,17 @@ JobResult ByteCodeGenJob::execute()
                 }
             }
 
+            // Deal with registered dependent nodes, by adding them to the list
             dependentNodesTmp.pop_back();
-            if (node->extension && node->extension->bc)
+            for (auto dep : node->extension->bc->dependentCalls)
             {
-                for (auto dep : node->extension->bc->dependentCalls)
+                ScopedLock lk1(dep->mutex);
+                if (!(dep->semFlags & AST_SEM_BYTECODE_GENERATED))
                 {
-                    ScopedLock lk1(dep->mutex);
-                    if (!(dep->semFlags & AST_SEM_BYTECODE_GENERATED))
+                    if (!dependentNodesTmp.contains(dep))
                     {
-                        if (!dependentNodesTmp.contains(dep))
-                        {
-                            dependentNodes.push_back(dep);
-                            dependentNodesTmp.push_back(dep);
-                        }
+                        dependentNodes.push_back(dep);
+                        dependentNodesTmp.push_back(dep);
                     }
                 }
             }
