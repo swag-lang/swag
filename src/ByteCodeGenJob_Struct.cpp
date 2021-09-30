@@ -36,6 +36,11 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     if (!funcDecl && !bc)
         return;
 
+    if (funcDecl)
+        askForByteCode(context->job, funcDecl, ASKBC_ADD_DEP_NODE);
+    else if (bc && bc->node)
+        askForByteCode(context->job, bc->node, ASKBC_ADD_DEP_NODE);
+
     if (pushParam)
     {
         SWAG_ASSERT(numParams == 1);
@@ -154,6 +159,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
+    if (cxt.bc->node)
+        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
     // All fields are explicitly not initialized, so we are done, function is empty
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
@@ -329,7 +336,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
     if (typeInfoStruct->opDrop)
+    {
+        context->job->dependentNodes.append(typeInfoStruct->opDrop->dependentCalls);
         return true;
+    }
 
     SWAG_ASSERT(typeInfoStruct->declNode);
     auto sourceFile = context->sourceFile;
@@ -399,6 +409,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->isCompilerGenerated   = true;
+    opDrop->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -417,6 +428,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
+    if (cxt.bc->node)
+        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
     // Call user function if defined
     if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserDropFct))
@@ -548,6 +561,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
+    if (cxt.bc->node)
+        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
     for (auto typeParam : typeInfoStruct->fields)
     {
@@ -678,6 +693,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
+    if (cxt.bc->node)
+        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
     for (auto typeParam : typeInfoStruct->fields)
     {

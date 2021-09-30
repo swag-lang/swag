@@ -608,6 +608,8 @@ JobResult ByteCodeGenJob::execute()
         {
             ScopedLock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
+            if (context.bc)
+                context.bc->dependentCalls = dependentNodes;
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -623,19 +625,36 @@ JobResult ByteCodeGenJob::execute()
     {
         while (!dependentNodesTmp.empty())
         {
-            auto       node = dependentNodesTmp.back();
-            ScopedLock lk(node->mutex);
-            if (node->semFlags & AST_SEM_BYTECODE_GENERATED)
+            auto node = dependentNodesTmp.back();
+
             {
-                dependentNodesTmp.pop_back();
-                continue;
+                ScopedLock lk(node->mutex);
+                if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
+                {
+                    ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
+                    waitingKind   = JobWaitKind::SemByteCodeGenerated;
+                    waitingIdNode = node;
+                    node->extension->byteCodeJob->dependentJobs.add(this);
+                    return JobResult::KeepJobAlive;
+                }
             }
 
-            ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-            waitingKind   = JobWaitKind::SemByteCodeGenerated;
-            waitingIdNode = node;
-            node->extension->byteCodeJob->dependentJobs.add(this);
-            return JobResult::KeepJobAlive;
+            dependentNodesTmp.pop_back();
+            if (node->extension && node->extension->bc)
+            {
+                for (auto dep : node->extension->bc->dependentCalls)
+                {
+                    ScopedLock lk1(dep->mutex);
+                    if (!(dep->semFlags & AST_SEM_BYTECODE_GENERATED))
+                    {
+                        if (!dependentNodesTmp.contains(dep))
+                        {
+                            dependentNodes.push_back(dep);
+                            dependentNodesTmp.push_back(dep);
+                        }
+                    }
+                }
+            }
         }
 
         pass = Pass::ComputeDependenciesResolved;
@@ -713,7 +732,7 @@ JobResult ByteCodeGenJob::execute()
             }
 
             ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-            waitingKind     = JobWaitKind::SemByteCodeResolved;
+            waitingKind   = JobWaitKind::SemByteCodeResolved;
             waitingIdNode = node;
             node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;

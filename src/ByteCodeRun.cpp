@@ -53,8 +53,12 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
+#pragma optimize("", off)
 void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnReg)
 {
+    SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_GENERATED);
+    SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_RESOLVED);
+
     context->bc->addCallStack(context);
     context->push(context->bp);
     context->push(context->bc);

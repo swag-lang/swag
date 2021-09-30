@@ -133,6 +133,7 @@ struct ByteCode
     Utf8                   name;
     Utf8                   callName;
     VectorNative<AstNode*> localVars;
+    VectorNative<AstNode*> dependentCalls;
 
     ByteCodeInstruction* out          = nullptr;
     SourceFile*          sourceFile   = nullptr;

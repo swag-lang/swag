@@ -403,8 +403,8 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
             loopNode->seekJumpBeforeContinue                                                     = loopNode->seekJumpBeforeExpression;
             emitInstruction(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
-            auto inst = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
+            auto inst                    = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst->c.u64                  = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP))
                 inst->c.u64--;
             inst->flags |= BCI_IMM_C;
