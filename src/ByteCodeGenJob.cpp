@@ -283,8 +283,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         ins.flags |= BCI_TRYCATCH;
     ins.node = context->forceNode ? context->forceNode : node;
 #if defined SWAG_DEV_MODE && !defined __clang__
-    ins.sourceFile = location.file_name();
-    ins.sourceLine = location.line();
+    ins.sourceFile            = location.file_name();
+    ins.sourceLine            = location.line();
+    static atomic<int> serial = 0;
+    ins.serial                = serial++;
 #endif
 
     if (context->noLocation)

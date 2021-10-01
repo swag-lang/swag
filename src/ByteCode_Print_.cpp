@@ -320,6 +320,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.setColor(LogColor::Magenta);
     while (g_Log.length < ALIGN_SOURCE)
         g_Log.print(" ");
+    g_Log.print(Utf8::format("%08d ", ip->serial));
     if (ip->sourceFile)
     {
         Utf8 sf = Utf8::normalizePath(ip->sourceFile);

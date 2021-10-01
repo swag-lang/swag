@@ -43,6 +43,7 @@ struct ByteCodeInstruction
 #ifdef SWAG_DEV_MODE
     const char* sourceFile;
     int         sourceLine;
+    int         serial;
 #endif
 };
 
