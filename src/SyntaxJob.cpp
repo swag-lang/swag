@@ -164,6 +164,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
+#pragma optimize("", off)
 bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";
@@ -179,6 +180,10 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             auto publicPath = modl->publicPath;
             tmpFilePath     = publicPath;
             tmpFileName     = modl->name + ".gwg";
+
+            if (modl->name == "core")
+                int a = 0;
+
             publicPath += tmpFileName;
 
             uint32_t    countEol = 0;
@@ -216,7 +221,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             modl->countLinesGeneratedFile += countEol;
 
             static const char* eol = "\n\n";
-            fwrite(&eol, 2, 2, modl->handleGeneratedFile);
+            fwrite(eol, 1, 2, modl->handleGeneratedFile);
             modl->countLinesGeneratedFile += 2;
         }
     }
