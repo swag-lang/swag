@@ -74,6 +74,10 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     hasError = false;
     errorLoc = nullptr;
     errorMsg.clear();
+
+    popParamsOnRet.clear();
+    returnRegOnRet.clear();
+    returnRegOnRetRR.clear();
 }
 
 void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
