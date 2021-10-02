@@ -473,6 +473,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 cloneContext.parent        = varNode;
                 cloneContext.forceLocation = &identifier->token;
                 cloneContext.parentScope   = identifier->ownerScope;
+                cloneContext.removeFlags   = AST_IN_FUNC_DECL_PARAMS;
 
                 if (funcParam->type)
                     varNode->type = funcParam->type->clone(cloneContext);
@@ -822,7 +823,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (!(overload->flags & OVERLOAD_IMPL))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
-        identifier->flags |= AST_CONST_EXPR;
+
+        if (!identifier->callParameters)
+            identifier->flags |= AST_CONST_EXPR;
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
@@ -843,40 +846,41 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // A struct with parameters is in fact the creation of a temporary variable
-        if (identifier->callParameters &&
-            !(identifier->flags & AST_GENERATED) &&
-            !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) &&
-            !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED))
         {
-            if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+            //identifier->flags |= AST_R_VALUE;
+            if (!(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) && !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
             {
-                // Optim if we have var = Struct{}
-                // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-                // of 'var'
-                auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                if (varNode->assignment == identifier->parent)
+                if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
                 {
-                    if (!varNode->type)
+                    // Optim if we have var = Struct{}
+                    // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+                    // of 'var'
+                    auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                    if (varNode->assignment == identifier->parent)
                     {
-                        auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
-                        varNode->type       = typeNode;
-                        varNode->assignment = nullptr;
-                        typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-                        identifier->semFlags |= AST_SEM_ONCE;
-                        Ast::removeFromParent(identifier->parent);
-                        Ast::addChildBack(typeNode, identifier->parent);
-                        typeNode->identifier = identifier->parent;
-                        context->job->nodes.pop_back();
-                        context->job->nodes.pop_back();
-                        context->job->nodes.push_back(typeNode);
-                        context->result = ContextResult::NewChilds;
-                        return true;
+                        if (!varNode->type)
+                        {
+                            auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
+                            varNode->type       = typeNode;
+                            varNode->assignment = nullptr;
+                            typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+                            identifier->semFlags |= AST_SEM_ONCE;
+                            Ast::removeFromParent(identifier->parent);
+                            Ast::addChildBack(typeNode, identifier->parent);
+                            typeNode->identifier = identifier->parent;
+                            context->job->nodes.pop_back();
+                            context->job->nodes.pop_back();
+                            context->job->nodes.push_back(typeNode);
+                            context->result = ContextResult::NewChilds;
+                            return true;
+                        }
                     }
                 }
-            }
 
-            SWAG_CHECK(createTmpVarStruct(context, identifier));
-            return true;
+                SWAG_CHECK(createTmpVarStruct(context, identifier));
+                return true;
+            }
         }
 
         break;

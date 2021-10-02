@@ -181,9 +181,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             tmpFilePath     = publicPath;
             tmpFileName     = modl->name + ".gwg";
 
-            if (modl->name == "core")
-                int a = 0;
-
             publicPath += tmpFileName;
 
             uint32_t    countEol = 0;
