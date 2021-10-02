@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #global namespace CommandLine
 
 struct(T) IsSet
@@ -13,22 +13,29 @@ struct(T) IsSet
     }
 }
 
+struct(T) Result
+{
+    isSet: IsSet
+}
+
 struct ParseOptions
 {
     argumentMarker = "-"'u8
 }
 
-func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->IsSet
+func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
 {
-    var x: IsSet
+    var result: retval
 
     typeof := @typeof(T)
 
     for itp := 0; itp < @countof(args); itp += 1
     {
-        oneArg := args[itp]
+        oneArg := Tokenize.eatSpaces(args[itp])
+        if !@countof(oneArg)
+            continue
 
-        if !@countof(oneArg) or oneArg[0] != "-"'u8//options.argumentMarker
+        if oneArg[0] != options.argumentMarker
             continue
         oneArg = Tokenize.eatCount(oneArg, 1)
 
@@ -39,38 +46,38 @@ func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->IsSet
         addr := cast(*u8) st
         addr += typeField.offset
 
-        itpField := itp
         switch typeField.pointedType
         {
-        case s32, f32:
-            discard catch Parse.pokeValue(addr, typeField.pointedType, args[itp + 1])
+        case s8, s32, f32:
+            rest := catch Parse.pokeValue(addr, typeField.pointedType, args[itp + 1])
+            if @err @print(@err)
+            if @countof(rest) @print("rest: ", rest, "\n")
             itp += 1
         }
 
-        typeFieldIsSet := Reflection.getField(@typeof(x), args[itpField])
+        typeFieldIsSet := Reflection.getField(@typeof(result.isSet), oneArg)
         if typeFieldIsSet
         {
-            addrIsSet := cast(*bool) &x
+            addrIsSet := cast(*bool) &result.isSet
             addrIsSet += typeFieldIsSet.offset
             dref addrIsSet = true
         }
     }
 
-    return x
+    return result
 }
 
 #run
 {
     struct TT
     {
-        _s32: s32
-        _f32: f32
+        value: s8
+        diff:  f32
     }
 
     var x: TT
-    params := @["-_s32", "10", "-_f32", "3.14"]
+    params := @["-value", "1.1", "-diff", "3.14"]
     a := parse(&x, params)
 
-    Console.print(x)
-    Console.print(a)
+    Console.print(x, "\n", a, "\n")
 }
