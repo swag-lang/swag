@@ -437,11 +437,24 @@ void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
 
 void ByteCodeGenJob::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep)
 {
+    // Normal function
     if (depNode->extension->bc)
+    {
         dep.append(depNode->extension->bc->dependentCalls);
+    }
+
+    // Struct: special functions
     else
     {
-        SWAG_ASSERT(depNode->typeInfo->kind == TypeInfoKind::Struct);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(depNode->typeInfo, TypeInfoKind::Struct);
+        if (typeStruct->opInit)
+            dep.append(typeStruct->opInit->dependentCalls);
+        if (typeStruct->opDrop)
+            dep.append(typeStruct->opDrop->dependentCalls);
+        if (typeStruct->opPostCopy)
+            dep.append(typeStruct->opPostCopy->dependentCalls);
+        if (typeStruct->opPostMove)
+            dep.append(typeStruct->opPostMove->dependentCalls);
     }
 }
 
@@ -650,15 +663,15 @@ JobResult ByteCodeGenJob::execute()
             // Deal with registered dependent nodes, by adding them to the list
             dependentNodesTmp.pop_back();
 
+            // Register the full dependency tree
             VectorNative<AstNode*> depNodes;
             getDependantCalls(node, depNodes);
             for (auto dep : depNodes)
             {
-                ScopedLock lk1(dep->mutex);
-                if (!(dep->semFlags & AST_SEM_BYTECODE_GENERATED))
+                if (!dependentNodes.contains(dep))
                 {
-                    dependentNodes.push_back_once(dep);
-                    dependentNodesTmp.push_back_once(dep);
+                    dependentNodes.push_back(dep);
+                    dependentNodesTmp.push_back(dep);
                 }
             }
         }
@@ -701,10 +714,7 @@ JobResult ByteCodeGenJob::execute()
                     break;
                 }
 
-                if (dep->extension->bc->dependentCalls.empty())
-                    continue;
-
-                SharedLock             lk1(dep->extension->byteCodeJob->mutexDependent);
+                //SharedLock             lk1(dep->mutex);
                 VectorNative<AstNode*> depNodes;
                 getDependantCalls(dep, depNodes);
                 for (auto newDep : depNodes)
