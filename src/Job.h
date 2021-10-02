@@ -126,7 +126,6 @@ struct Job
     shared_mutex           executeMutex;
     shared_mutex           mutexDependent;
     DependentJobs          dependentJobs;
-    VectorNative<AstNode*> dependentNodes;
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;
 

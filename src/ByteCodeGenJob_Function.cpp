@@ -252,7 +252,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     // to be generated
     if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
     {
-        askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -1051,7 +1051,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Be sure referenced function has bytecode
-    askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+    askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     if (context->result == ContextResult::Pending)
         return true;
 

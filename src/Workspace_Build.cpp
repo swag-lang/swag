@@ -474,8 +474,6 @@ void Workspace::checkPendingJobs()
         AstNode* node = nullptr;
         if (!pendingJob->nodes.empty())
             node = pendingJob->nodes.back();
-        else if (!pendingJob->dependentNodes.empty())
-            node = pendingJob->dependentNodes.back();
         if (!node)
             continue;
 

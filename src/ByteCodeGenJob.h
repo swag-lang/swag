@@ -177,7 +177,6 @@ struct PushICFlags
 static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
 static const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
 static const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
-static const uint32_t ASKBC_ADD_DEP_NODE           = 0x00000008;
 
 struct ByteCodeGenJob : public Job
 {
@@ -188,9 +187,10 @@ struct ByteCodeGenJob : public Job
         g_Allocator.free<ByteCodeGenJob>(this);
     }
 
-    static void askForByteCode(Job* job, AstNode* node, uint32_t flags);
+    static void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
 
+    static void getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep);
     static void inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     static void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
@@ -417,6 +417,7 @@ struct ByteCodeGenJob : public Job
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;
     VectorNative<Scope*>   collectScopes;
+    VectorNative<AstNode*> dependentNodes;
     VectorNative<AstNode*> dependentNodesTmp;
 
     enum class Pass

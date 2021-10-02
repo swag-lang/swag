@@ -462,7 +462,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     if (!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN))
     {
         // Need to generate bytecode, if not already done or running
-        askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }

@@ -56,6 +56,13 @@ struct VectorNative
         buffer[count++] = val;
     }
 
+    void push_back_once(const T& val)
+    {
+        if (contains(val))
+            return;
+        push_back(val);
+    }
+
     void push_front(const T& val)
     {
         if (count + 1 > allocated)

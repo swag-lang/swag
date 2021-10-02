@@ -37,9 +37,9 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         return;
 
     if (funcDecl)
-        askForByteCode(context->job, funcDecl, ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, funcDecl, 0, context->bc);
     else if (bc && bc->node)
-        askForByteCode(context->job, bc->node, ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, bc->node, 0, context->bc);
 
     if (pushParam)
     {
@@ -80,10 +80,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->opInit)
-    {
-        context->job->dependentNodes.append(typeInfoStruct->opInit->dependentCalls);
         return true;
-    }
 
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
@@ -106,7 +103,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to wait for user function full semantic resolve
     if (typeInfoStruct->opUserInitFct)
     {
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -140,8 +137,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->isCompilerGenerated   = true;
-    opInit->dependentCalls.append(context->job->dependentNodes);
-    typeInfoStruct->opInit = opInit;
+    typeInfoStruct->opInit        = opInit;
 
     // Export generated function if necessary
     if (!(structNode->flags & AST_FROM_GENERIC))
@@ -340,10 +336,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
     if (typeInfoStruct->opDrop)
-    {
-        context->job->dependentNodes.append(typeInfoStruct->opDrop->dependentCalls);
         return true;
-    }
 
     SWAG_ASSERT(typeInfoStruct->declNode);
     auto sourceFile = context->sourceFile;
@@ -370,7 +363,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -413,7 +406,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->isCompilerGenerated   = true;
-    opDrop->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -478,10 +470,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
     if (typeInfoStruct->opPostMove)
-    {
-        context->job->dependentNodes.append(typeInfoStruct->opPostMove->dependentCalls);
         return true;
-    }
 
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -507,7 +496,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -550,7 +539,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->isCompilerGenerated   = true;
-    opPostMove->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
@@ -614,10 +602,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
         return true;
     if (typeInfoStruct->opPostCopy)
-    {
-        context->job->dependentNodes.append(typeInfoStruct->opPostCopy->dependentCalls);
         return true;
-    }
 
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -643,7 +628,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -686,7 +671,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->isCompilerGenerated   = true;
-    opPostCopy->dependentCalls.append(context->job->dependentNodes);
 
     // Export generated function if necessary
     if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))

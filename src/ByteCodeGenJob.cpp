@@ -310,7 +310,7 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
     inst->node = node;
 }
 
-void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
+void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller)
 {
     if (!node)
         return;
@@ -356,15 +356,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         }
     }
 
-    ScopedLock lk(node->mutex);
+    if (caller)
+        caller->dependentCalls.push_back_once(node);
 
-    // Register the node dependency
-    if (flags & ASKBC_ADD_DEP_NODE)
-    {
-        SWAG_ASSERT(job);
-        ScopedLock lk1(job->mutexDependent);
-        job->dependentNodes.push_back(node);
-    }
+    ScopedLock lk(node->mutex);
 
     // Need to generate bytecode, if not already done or running
     if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
@@ -438,6 +433,16 @@ void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
     ScopedLock lk(node->mutex);
     node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
     node->extension->byteCodeJob = nullptr;
+}
+
+void ByteCodeGenJob::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep)
+{
+    if (depNode->extension->bc)
+        dep.append(depNode->extension->bc->dependentCalls);
+    else
+    {
+        SWAG_ASSERT(depNode->typeInfo->kind == TypeInfoKind::Struct);
+    }
 }
 
 JobResult ByteCodeGenJob::execute()
@@ -610,14 +615,12 @@ JobResult ByteCodeGenJob::execute()
         {
             ScopedLock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
-            if (context.bc)
-                context.bc->dependentCalls = dependentNodes;
+            getDependantCalls(originalNode, dependentNodes);
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
 
-        pass              = Pass::WaitForDependenciesGenerated;
-        dependentNodesTmp = dependentNodes;
+        pass = Pass::WaitForDependenciesGenerated;
     }
 
     // Wait for other dependent nodes to be generated
@@ -625,6 +628,7 @@ JobResult ByteCodeGenJob::execute()
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
+        dependentNodesTmp = dependentNodes;
         while (!dependentNodesTmp.empty())
         {
             auto node = dependentNodesTmp.back();
@@ -645,16 +649,16 @@ JobResult ByteCodeGenJob::execute()
 
             // Deal with registered dependent nodes, by adding them to the list
             dependentNodesTmp.pop_back();
-            for (auto dep : node->extension->bc->dependentCalls)
+
+            VectorNative<AstNode*> depNodes;
+            getDependantCalls(node, depNodes);
+            for (auto dep : depNodes)
             {
                 ScopedLock lk1(dep->mutex);
                 if (!(dep->semFlags & AST_SEM_BYTECODE_GENERATED))
                 {
-                    if (!dependentNodesTmp.contains(dep))
-                    {
-                        dependentNodes.push_back(dep);
-                        dependentNodesTmp.push_back(dep);
-                    }
+                    dependentNodes.push_back_once(dep);
+                    dependentNodesTmp.push_back_once(dep);
                 }
             }
         }
@@ -681,7 +685,6 @@ JobResult ByteCodeGenJob::execute()
             // Compute the full dependency list
             bool mustWait = true;
 
-            set<AstNode*>          done;
             VectorNative<AstNode*> tmp;
             tmp.push_back(node);
             for (int toScan = 0; toScan < tmp.size(); toScan++)
@@ -698,18 +701,14 @@ JobResult ByteCodeGenJob::execute()
                     break;
                 }
 
-                if (dep->extension->byteCodeJob->dependentNodes.empty())
+                if (dep->extension->bc->dependentCalls.empty())
                     continue;
 
-                SharedLock lk1(dep->extension->byteCodeJob->mutexDependent);
-                for (auto newDep : dep->extension->byteCodeJob->dependentNodes)
-                {
-                    auto it = done.find(newDep);
-                    if (it != done.end())
-                        continue;
-                    done.insert(newDep);
-                    tmp.push_back(newDep);
-                }
+                SharedLock             lk1(dep->extension->byteCodeJob->mutexDependent);
+                VectorNative<AstNode*> depNodes;
+                getDependantCalls(dep, depNodes);
+                for (auto newDep : depNodes)
+                    tmp.push_back_once(newDep);
             }
 
             if (mustWait)
