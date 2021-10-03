@@ -1,6 +1,16 @@
 #global public
 #global namespace Tokenize
 
+// Remove ""
+func eatQuotes(str: string)->string
+{
+    countof := @countof(str)
+    if countof < 2 return str
+    if str[0] == "\""'u8 and str[countof - 1] == "\""'u8
+        return @mkstring(@dataof(str) + 1, countof - 2)
+    return str
+}
+
 // Eat 'count' bytes, and returns the remaining string
 func eatCount(str: string, count: uint)->string
 {

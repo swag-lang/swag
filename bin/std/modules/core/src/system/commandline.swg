@@ -111,7 +111,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         else if typeField == @typeof(Core.String)
         {
             try checkNext()
-            dref cast(*String) addr = allArgs[itp + 1]
+            other := Tokenize.eatQuotes(allArgs[itp + 1])
+            dref cast(*String) addr = other
             itp += 1
         }
 
@@ -119,7 +120,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         else if Reflection.isString(typeField)
         {
             try checkNext()
-            dref cast(*string) addr = allArgs[itp + 1]
+            other := Tokenize.eatQuotes(allArgs[itp + 1])
+            dref cast(*string) addr = other
             itp += 1
         }
 
