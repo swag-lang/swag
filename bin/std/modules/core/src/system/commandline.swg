@@ -120,10 +120,11 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             itp += 1
         }
 
-        // Integer/Float/Bool
+        // All types supported by `Parse.pokeValue`
         else if Reflection.isInteger(typeField) or
                 Reflection.isFloat(typeField) or
-                Reflection.isBool(typeField)
+                Reflection.isBool(typeField) or
+                Reflection.isEnum(typeField)
         {
             try checkNext()
             rest := catch Parse.pokeValue(addr, typeField, allArgs[itp + 1])
@@ -136,7 +137,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
         else
         {
-            throw Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
+            throw Format.toString("unsupported type '%' for option '%'", typeField.flatName, oneArg)
         }
 
         // Set the associated 'isSet' boolean to true

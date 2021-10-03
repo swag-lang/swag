@@ -48,7 +48,7 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 // 'addr' must point to an initialized memory location that can hold type 'type'
 //
 // Accepted types are :
-// - s8,s16,s32,s64,int,u8,u16,u32,u64,uint,char,bool,f32,f64
+// - s8,s16,s32,s64,int,u8,u16,u32,u64,uint,rune,bool,f32,f64
 // - 'Core.String'  literal strings are not supported as 'buf' is supposed to be transient
 // - enum           with or without 'Swag.EnumFlags' attribute
 //
@@ -97,6 +97,9 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     if Reflection.isEnum(type)
     {
         enumType := cast(const *TypeInfoEnum) type
+        if enumType.rawType != string and enumType.sizeof > 8
+            throw Format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+
         enumFlags := Reflection.hasAttribute(enumType, "Swag.EnumFlags")
 
         loop
@@ -107,16 +110,27 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             if !v throw Format.toString("unknown enum value '%'", id)
 
             if enumType.rawType == string
+            {
                 dref cast(*string) patch = dref cast(const *string) v.value
+            }
+            else if !enumFlags
+            {
+                switch enumType.sizeof
+                {
+                case 1: dref cast(*u8)  patch = dref cast(const *u8) v.value
+                case 2: dref cast(*u16) patch = dref cast(const *u16) v.value
+                case 4: dref cast(*u32) patch = dref cast(const *u32) v.value
+                case 8: dref cast(*u64) patch = dref cast(const *u64) v.value
+                }
+            }
             else
             {
                 switch enumType.sizeof
                 {
-                case 1:     dref cast(*u8) patch |= dref cast(const *u8) v.value
-                case 2:     dref cast(*u16) patch |= dref cast(const *u16) v.value
-                case 4:     dref cast(*u32) patch |= dref cast(const *u32) v.value
-                case 8:     dref cast(*u64) patch |= dref cast(const *u64) v.value
-                default:    throw Format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+                case 1: dref cast(*u8)  patch |= dref cast(const *u8) v.value
+                case 2: dref cast(*u16) patch |= dref cast(const *u16) v.value
+                case 4: dref cast(*u32) patch |= dref cast(const *u32) v.value
+                case 8: dref cast(*u64) patch |= dref cast(const *u64) v.value
                 }
             }
 
