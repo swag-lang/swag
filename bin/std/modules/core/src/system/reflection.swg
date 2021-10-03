@@ -111,8 +111,41 @@ using Swag
         return false
     }
 
+    // Returns the given attribute value
+    func getAttributeValue(type: const *Swag.TypeInfoParam, attribute, value: string)->{found: bool, value: any}
+    {
+        var result: retval
+
+        attrib := getAttribute(type, attribute)
+        if !attrib return result
+
+        visit p: attrib.params
+        {
+            if p.name == value
+            {
+                result.found = true
+                result.value = p.value
+                break
+            }
+        }
+
+        return result
+    }
+
     // Returns true if the given 'type' has the associated 'attribute'
-    func hasAttribute(type: typeinfo, attribute: string)->bool
+    func getAttribute(type: const *Swag.TypeInfoParam, attribute: string)->const *Swag.TypeInfoAttribute
+    {
+        visit it: type.attributes
+        {
+            if attribute == it.name
+                return it
+        }
+
+        return null
+    }
+
+    // Returns true if the given 'type' has the associated 'attribute'
+    func getAttribute(type: typeinfo, attribute: string)->const *Swag.TypeInfoAttribute
     {
         switch type.kind
         {
@@ -121,7 +154,7 @@ using Swag
             visit it: typeFunc.attributes
             {
                 if attribute == it.name
-                    return true
+                    return it
             }
 
         case TypeInfoKind.Struct:
@@ -129,7 +162,7 @@ using Swag
             visit it: typeStruct.attributes
             {
                 if attribute == it.name
-                    return true
+                    return it
             }
 
         case TypeInfoKind.Enum:
@@ -137,11 +170,17 @@ using Swag
             visit it: typeEnum.attributes
             {
                 if attribute == it.name
-                    return true
+                    return it
             }
         }
 
-        return false
+        return null
+    }
+
+    // Returns true if the given 'type' has the associated 'attribute'
+    func hasAttribute(type: typeinfo, attribute: string)->bool
+    {
+        return getAttribute(type, attribute) != null
     }
 
     // Get information about a specific value in a given enum

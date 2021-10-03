@@ -1,6 +1,8 @@
 #global export
 #global namespace CommandLine
 
+attr ArgParams(nameAlias: string = null);
+
 struct(T) IsSet
 {
     #ast
@@ -66,6 +68,23 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     return allArgs
 }
 
+func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->const *Swag.TypeInfoParam
+{
+    visit it: typeStruct.fields
+    {
+        // Test normal name (field)
+        if it.name == name
+            return it
+
+        // Test name alias
+        (found, val) := Reflection.getAttributeValue(it, "Core.CommandLine.ArgParams", "nameAlias")
+        if found and cast(string) val == name
+            return it
+    }
+
+    return null
+}
+
 // Parse all the arguments and fill the result
 func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})->Result throw
 {
@@ -91,7 +110,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             continue
         oneArg = Tokenize.eatCount(oneArg, 1)
 
-        typeParam := Reflection.getField(typeof, oneArg)
+        typeParam := getField(typeof, oneArg)
         if !typeParam
             throw Format.toString("unknown option '%'", oneArg)
         typeField := typeParam.pointedType
@@ -167,7 +186,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Set the associated 'isSet' boolean to true
-        typeFieldIsSet := Reflection.getField(@typeof(result.isSet), oneArg)
+        typeFieldIsSet := Reflection.getField(@typeof(result.isSet), typeParam.name)
         Debug.assert(typeFieldIsSet != null)
         addrIsSet := cast(*bool) &result.isSet
         addrIsSet += typeFieldIsSet.offset
