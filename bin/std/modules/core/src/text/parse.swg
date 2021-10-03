@@ -261,23 +261,35 @@ func getIdentifier(str: string)->string throw
 }
 
 // Convert an utf8 buffer to a string
-// String in the buffer must be quoted
+// String in the buffer can be quoted (but the result will not be in that case)
 func getString(str: string) -> {value: String, eat: u32} throw
 {
     var result: retval
 
     countof := @countof(str)
-    if countof < 2 throw "invalid"
-    if str[0] != "\""'u8 throw "missing start delimiter"
+    if !countof
+        throw "invalid"
 
-    cpt := 1
-    while cpt < countof and str[cpt] != "\""'u8
+    isQuoted := false
+    cpt := 0
+    if str[0] == "\""'u8
     {
+        isQuoted = true
+        cpt += 1
+    }
+
+    while cpt < countof
+    {
+        // End dilimiter
+        if str[cpt] == "\""'u8 and isQuoted
+            break
+
         // Escape character
         if str[cpt] == "\\"'u8
         {
             cpt += 1
-            if cpt == countof throw "invalid"
+            if cpt == countof
+                throw "invalid"
             switch str[cpt]
             {
             case "t"'u8:    result.value += "\t"'u8
@@ -291,8 +303,10 @@ func getString(str: string) -> {value: String, eat: u32} throw
         cpt += 1
     }
 
-    if cpt == countof throw "missing end delimiter"
-    cpt += 1
+    if cpt == countof and isQuoted
+        throw "missing end delimiter"
+    if isQuoted
+        cpt += 1
     result.eat = cpt
     return result
 }

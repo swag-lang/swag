@@ -106,27 +106,9 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             dref cast(*bool) addr = true
         }
 
-        // Core.String
-        // We do not use pokeValue because the value is not necessary quoted here
-        else if typeField == @typeof(Core.String)
-        {
-            try checkNext()
-            other := Tokenize.eatQuotes(allArgs[itp + 1])
-            dref cast(*String) addr = other
-            itp += 1
-        }
-
-        // String literal
-        else if Reflection.isString(typeField)
-        {
-            try checkNext()
-            other := Tokenize.eatQuotes(allArgs[itp + 1])
-            dref cast(*string) addr = other
-            itp += 1
-        }
-
         // All types supported by `Parse.pokeValue`
-        else if Reflection.isInteger(typeField) or
+        else if typeField == @typeof(Core.String) or
+                Reflection.isInteger(typeField) or
                 Reflection.isFloat(typeField) or
                 Reflection.isBool(typeField) or
                 Reflection.isRune(typeField) or
@@ -147,11 +129,29 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         {
             try checkNext()
 
+            // If it's an array of strings, we will need to add string delimiters
+            // to each value
+            typeStruct := cast(const *Swag.TypeInfoStruct) typeField
+            isString := false
+            if typeStruct.generics[0].pointedType == Core.String
+                isString = true
+
             // Make one single string with all values, for pokeValue
             var collect: String
             while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
             {
-                collect.append(allArgs[itp + 1])
+                other := allArgs[itp + 1]
+                if isString
+                {
+                    other = Tokenize.eatQuotes(other)
+                    collect.append("\"")
+                }
+
+                collect.append(other)
+
+                if isString
+                    collect.append("\"")
+
                 collect.append(" ")
                 itp += 1
             }
