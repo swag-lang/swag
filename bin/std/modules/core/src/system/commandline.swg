@@ -106,13 +106,16 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             dref cast(*bool) addr = true
         }
 
-        // String
+        // Core.String
+        // We do not use pokeValue because the value is not necessary quoted here
         else if typeField == @typeof(Core.String)
         {
             try checkNext()
             dref cast(*String) addr = allArgs[itp + 1]
             itp += 1
         }
+
+        // String literal
         else if Reflection.isString(typeField)
         {
             try checkNext()
