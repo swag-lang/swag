@@ -66,8 +66,16 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     return allArgs
 }
 
+// Parse all the arguments and fill the result
 func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})->Result throw
 {
+    #[Swag.Mixin]
+    func checkNext() throw
+    {
+        if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
+            throw Format.toString("missing value for option '%'", oneArg)
+    }
+
     var result:  retval
 
     // First pass
@@ -83,57 +91,60 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             continue
         oneArg = Tokenize.eatCount(oneArg, 1)
 
-        typeField := Reflection.getField(typeof, oneArg)
-        if !typeField
+        typeParam := Reflection.getField(typeof, oneArg)
+        if !typeParam
             throw Format.toString("unknown option '%'", oneArg)
+        typeField := typeParam.pointedType
 
         addr := cast(*u8) st
-        addr += typeField.offset
+        addr += typeParam.offset
 
         // Bool: Result is true if the option does not have an associated value
-        if Reflection.isBool(typeField.pointedType)
+        if Reflection.isBool(typeField) and
+           (itp + 1 == maxItp or isOption(allArgs[itp + 1], options))
         {
-            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
-            {
-                dref cast(*bool) addr = true
-                continue
-            }
+            dref cast(*bool) addr = true
         }
 
         // String
-        if Reflection.isString(typeField.pointedType)
+        else if typeField == @typeof(Core.String)
         {
-            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
-                throw Format.toString("missing value for option '%'", oneArg)
-
+            try checkNext()
+            dref cast(*String) addr = allArgs[itp + 1]
+            itp += 1
+        }
+        else if Reflection.isString(typeField)
+        {
+            try checkNext()
             dref cast(*string) addr = allArgs[itp + 1]
             itp += 1
         }
 
         // Integer/Float/Bool
-        else if Reflection.isInteger(typeField.pointedType) or
-                Reflection.isFloat(typeField.pointedType) or
-                Reflection.isBool(typeField.pointedType)
+        else if Reflection.isInteger(typeField) or
+                Reflection.isFloat(typeField) or
+                Reflection.isBool(typeField)
         {
-            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
-                throw Format.toString("missing value for option '%'", oneArg)
-
-            rest := catch Parse.pokeValue(addr, typeField.pointedType, allArgs[itp + 1])
+            try checkNext()
+            rest := catch Parse.pokeValue(addr, typeField, allArgs[itp + 1])
+            itp += 1
 
             if @err
                 throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
             if @countof(rest)
                 throw Format.toString("invalid value for option '%'", oneArg)
-            itp += 1
+        }
+        else
+        {
+            throw Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
         }
 
+        // Set the associated 'isSet' boolean to true
         typeFieldIsSet := Reflection.getField(@typeof(result.isSet), oneArg)
-        if typeFieldIsSet
-        {
-            addrIsSet := cast(*bool) &result.isSet
-            addrIsSet += typeFieldIsSet.offset
-            dref addrIsSet = true
-        }
+        Debug.assert(typeFieldIsSet != null)
+        addrIsSet := cast(*bool) &result.isSet
+        addrIsSet += typeFieldIsSet.offset
+        dref addrIsSet = true
     }
 
     return result
