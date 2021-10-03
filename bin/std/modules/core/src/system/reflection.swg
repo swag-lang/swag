@@ -18,21 +18,24 @@ using Swag
 
         func isRune(t: typeinfo)->bool
         {
-            if t.kind != .Native return false
+            if t.kind != .Native
+                return false
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == TypeInfoNativeKind.Rune
         }
 
         func isBool(t: typeinfo)->bool
         {
-            if t.kind != .Native return false
+            if t.kind != .Native
+                return false
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == TypeInfoNativeKind.Bool
         }
 
         func isString(t: typeinfo)->bool
         {
-            if t.kind != .Native return false
+            if t.kind != .Native
+                return false
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == TypeInfoNativeKind.String
         }

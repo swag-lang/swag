@@ -10,7 +10,8 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
     sizeValue := valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if Reflection.isStruct(valueType) valueTypeStruct = acast valueType
+    if Reflection.isStruct(valueType)
+        valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
     // structures specials functions
@@ -39,7 +40,8 @@ private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: ty
 
     result := arr.buffer + (arr.count * valueType.sizeof)
     arr.count += 1
-    if valueTypeStruct valueTypeStruct.opInit(result)
+    if valueTypeStruct
+        valueTypeStruct.opInit(result)
 
     return result
 }
@@ -60,8 +62,8 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     patch := cast(*u8) addr
     one := Tokenize.eatSpaces(buf)
 
-    // Array
-    if Reflection.isStructOfName(type, "Array")
+    // Dynamic Core.Array
+    if Utf8.startsWith(type.name, "Core.Array")
     {
         structType := cast(const *TypeInfoStruct) type
         valueType := structType.generics[0].pointedType

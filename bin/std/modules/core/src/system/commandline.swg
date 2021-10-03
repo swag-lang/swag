@@ -129,6 +129,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         else if Reflection.isInteger(typeField) or
                 Reflection.isFloat(typeField) or
                 Reflection.isBool(typeField) or
+                Reflection.isRune(typeField) or
                 Reflection.isEnum(typeField)
         {
             try checkNext()
@@ -140,6 +141,26 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             if @countof(rest)
                 throw Format.toString("invalid value for option '%'", oneArg)
         }
+
+        // Dynamic array of values
+        else if Utf8.startsWith(typeField.name, "Core.Array")
+        {
+            try checkNext()
+
+            // Make one single string with all values, for pokeValue
+            var collect: String
+            while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
+            {
+                collect.append(allArgs[itp + 1])
+                collect.append(" ")
+                itp += 1
+            }
+
+            rest := catch Parse.pokeValue(addr, typeField, collect.toString())
+            if @err
+                throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
+        }
+
         else
         {
             throw Format.toString("unsupported type '%' for option '%'", typeField.flatName, oneArg)
