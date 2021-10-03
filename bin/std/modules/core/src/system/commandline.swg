@@ -23,10 +23,19 @@ struct ParseOptions
     optionDelimiter = "-"'u8
 }
 
-func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
+// Returns true if `oneArg` is a valid option (starting with a delimiter)
+func isOption(oneArg: string, options: ParseOptions)->bool
 {
-    var result:  retval
-    var allArgs: Array'string
+    if @countof(oneArg) == 0
+        return false
+    return oneArg[0] == options.optionDelimiter
+}
+
+// Clean and split a list of arguments
+// -option:value or -option=value => -option value
+func splitArguments(args: const [..] string, options: ParseOptions)->Array'string
+{
+    var allArgs: retval
 
     // Clean all arguments
     visit oneArg: args
@@ -34,15 +43,43 @@ func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
         oneArg = Tokenize.eatSpaces(oneArg)
         if !@countof(oneArg)
             continue
-        allArgs.add(oneArg)
+
+        if !isOption(oneArg, options)
+        {
+            allArgs.add(oneArg)
+            continue
+        }
+
+        split := Tokenize.split(oneArg, @[":"'rune, "="'rune], 1)
+        if split.count == 2
+        {
+            allArgs.add(split[0])
+            other := Tokenize.eatSpaces(split[1])
+            if @countof(other) allArgs.add(other)
+        }
+        else
+        {
+            allArgs.add(oneArg)
+        }
     }
+
+    return allArgs
+}
+
+func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result throw
+{
+    var result:  retval
+
+    // First pass
+    allArgs := splitArguments(args, options)
 
     // Parse all
     typeof := @typeof(T)
-    for itp := 0; itp < @countof(allArgs); itp += 1
+    maxItp := @countof(allArgs)
+    for itp := 0; itp < maxItp; itp += 1
     {
         oneArg := allArgs[itp]
-        if oneArg[0] != options.optionDelimiter
+        if !isOption(oneArg, options)
             continue
         oneArg = Tokenize.eatCount(oneArg, 1)
 

@@ -10,8 +10,7 @@ using Core, CommandLine
     }
 
     var x: TT
-    params := @["-value", "1", "-diff", "3.14"]
-    a := parse(&x, params)
+    a := try parse(&x, @["-value", "1", "-diff", "3.14"])
 
     @assert(a.isSet.value)
     @assert(a.isSet.diff)

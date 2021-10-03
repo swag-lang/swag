@@ -19,3 +19,12 @@ using Core, Utf8, Tokenize
     @assert(arr[0] == "This")
     @assert(arr[14] == "character")
 }
+
+#test
+{
+    var x: String = "This is a list of words"
+    arr := x.split(@[" "'rune], 1)
+    @assert(arr.count == 2)
+    @assert(arr[0] == "This")
+    @assert(arr[1] == "is a list of words")
+}
