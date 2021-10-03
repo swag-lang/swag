@@ -28,9 +28,9 @@ impl MyStruct
 {
     // 'self' is an alias for 'var self: Self'
     func returnX(using self) => x
-    func returnY(self) => self.y
+    func returnY(self)       => self.y
     // 'Self' is the corresponding type
-    func returnZ(me: Self) => me.z
+    func returnZ(me: Self)   => me.z
 }
 
 // If you declare your function with 'mtd' (method) instead of 'func', then
@@ -57,7 +57,8 @@ impl MyStruct
     @assert(c.returnZ() == 20)
 }
 
-// All functions in an impl block can be retreived by reflection
+// All functions in an impl block can be retreived by reflection, as long as the struct
+// is declared with #[Swag.ExportType("methods")] (by default, methods are not exported)
 #test
 {
     alias Lambda = func(MyStruct)->s32

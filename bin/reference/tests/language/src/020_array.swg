@@ -2,7 +2,7 @@
 {
     // A static array is declared with [] followed by the type
     {
-        var array: [2] s32
+        var array: [2] s32  // Static array of two s32
         array[0] = 1
         array[1] = 2
     }
@@ -71,17 +71,17 @@
         array1 := @[[1, 2], [3, 4]]
     }
 
-    // An array can be stored as a constant
+    // A static array (with compile time values) can be stored as a constant
     {
         const array = @[1, 2, 3, 4]
         #assert(array[0] == 1)
         #assert(array[3] == 4)
     }
 
-    // If type is not specified, the type of the first literal value will be used
+    // If the type is not specified, the type of the first literal value will be used
     // for all other members
     {
-        arr := @[1'f64, 2, 3, 4]
+        arr := @[1'f64, 2, 3, 4]    // Every values are 'f64'
         @assert(@countof(arr) == 4)
         @assert(@typeof(arr) == [4] f64)
         @assert(arr[3] == 4.0)

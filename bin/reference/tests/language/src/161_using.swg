@@ -14,10 +14,11 @@
         struct Point { x: s32; y: s32; }
 
         var pt: Point
-        using pt
 
-        x = 1 // need to specify 'pt'
-        y = 2 // need to specify 'pt'
+        using pt
+        x = 1 // no need to specify 'pt'
+        y = 2 // no need to specify 'pt'
+
         @assert(pt.x == 1)
         @assert(pt.y == 2)
     }

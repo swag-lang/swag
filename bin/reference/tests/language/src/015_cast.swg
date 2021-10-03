@@ -11,7 +11,7 @@
     // use 'acast' to automatically cast to the left expression
     {
         var x: f32 = 1.0
-        var y: s32 = acast x
+        var y: s32 = acast x    // cast to 's32'
         @assert(@typeof(y) == s32)
         @assert(y == 1)
     }

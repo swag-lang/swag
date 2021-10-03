@@ -43,7 +43,7 @@
         @assert(isNull(0.001'f32))
     }
 
-    // #selectif can be followed by a block that returns a bool instead of an expression
+    // #selectif can also be followed by a block that returns a bool instead of an expression
     {
         func(T) sum(x: T...)->T
             #selectif
@@ -100,7 +100,7 @@
         // Fine
         x1 := div(1, 1)
 
-        // Error, division by zero
+        // Error at compile time, division by zero
         //x2 := div(1, 0)
     }
 

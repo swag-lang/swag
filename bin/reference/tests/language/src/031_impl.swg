@@ -3,7 +3,7 @@
 enum RGB { R; G; B; }
 impl enum RGB
 {
-    func isRed(self) => self == R
+    func isRed(self)       => self == R
     func isRedOrBlue(self) => self == R or self == B
 }
 
@@ -11,6 +11,7 @@ impl enum RGB
 {
     @assert(RGB.isRed(RGB.R))
     @assert(RGB.isRedOrBlue(RGB.B))
+
     using RGB
     @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))

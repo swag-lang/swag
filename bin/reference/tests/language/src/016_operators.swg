@@ -97,7 +97,7 @@
         a = (1 > 10) or (10 < 1)
     }
 
-    // Null conditional operator
+    // Null conditional operator 'orelse'
     // Works with strings, pointers and structures with the 'opData' special function
     {
         a := "string1"

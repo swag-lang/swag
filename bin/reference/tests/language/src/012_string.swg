@@ -1,6 +1,6 @@
 #test
 {
-    // Strings are UTF8
+    // Strings are UTF8, and can be compared
     {
         const a = "this is a chinese character: 是"
         @assert(a == "this is a chinese character: 是")
@@ -34,7 +34,7 @@
     // Multiple strings are compiled as one
     {
         const a = "this is "   "a"   " string"
-        #assert(a == "this is a string")
+        #assert(a == "this is a string")    // Compile time assertion
     }
 
     // You can concatenate some values if the values are known at compile time. Use the '~' character for that

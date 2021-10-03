@@ -11,7 +11,7 @@
         #ast
         {
             const INC = 5
-            return "cpt += " ~INC
+            return "cpt += " ~INC   // Equivalent to 'cpt += 5'
         }
 
         @assert(cpt == 7)

@@ -47,14 +47,13 @@
         @assert(cpt == 10+20+30+40)
     }
 
-    // On a string, it will loop for each byte, not character (if a character is more than one byte)
+    // On a string, it will loop for each byte, not runes (if a rune is encoded in more than one byte)
     {
         cpt := 0
         loop "⻘"
-        {
             cpt += 1
-        }
 
+        // cpt is equal to 3 because '⻘' is endoded in 3 bytes
         @assert(cpt == 3)
     }
 
@@ -88,7 +87,7 @@
     // Syntax is <lower bound>..<upper bound>
     {
         count := 0
-        sum := 0
+        sum   := 0
         loop i: -1..1   // loop from -1 to 1, all included
         {
             count += 1

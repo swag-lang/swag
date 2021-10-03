@@ -40,6 +40,7 @@
     }
 
     // switch works with every types that accept the '==' operator
+    // So you can switch on strings for example
     {
         value := "myString"
         switch value
@@ -120,8 +121,7 @@
         }
     }
 
-    // When used on an 'any' variable, switch is done on the
-    // underlying variable type
+    // When used on an 'any' variable, switch is done on the underlying variable type
     {
         var x: any = "value"
         switch x

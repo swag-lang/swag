@@ -2,9 +2,9 @@
 {
     // Integers in decimal, hexadecimal or binary forms
     {
-        const a: u32 = 123456
-        const b: u32 = 0xFFFF
-        const c: u32 = 0b00001111
+        const a: u32 = 123456           // Decimal
+        const b: u32 = 0xFFFF           // Hexadecimal
+        const c: u32 = 0b00001111       // Binary
         @assert(a == 123456)
         @assert(b == 65535)
         @assert(c == 15)

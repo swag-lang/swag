@@ -8,7 +8,7 @@
 #assert #defined(Global)
 var Global = 0
 
-// static #if/#else, with an expression that can be evaluated at compiler time
+// static #if/#else, with an expression that can be evaluated at compile time
 const DEBUG = 1
 const RELEASE = 0
 #if DEBUG
@@ -39,4 +39,4 @@ func factorial(x: s32)->s32
     return x * factorial(x - 1)
 }
 
-#assert factorial(4) == 24
+#assert factorial(4) == 24 // Evaluated at compile time

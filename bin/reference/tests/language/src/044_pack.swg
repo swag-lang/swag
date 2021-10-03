@@ -2,14 +2,14 @@
 
 #test
 {
-    // The default struct packing is the same as in C : each field is aligned to the size of the type.
+    // The default struct packing is the same as in C: each field is aligned to the size of the type.
     // This is the equivalent of #[Swag.Pack(0)]
     {
         struct MyStruct
         {
-            x: bool     // 0: aligned to 1 byte
-            y: s32      // 4: s32 is aligned to 4 bytes (so here there's 3 bytes of padding before)
-            z: s64      // 8: aligned to 8 bytes
+            x: bool     // offset 0: aligned to 1 byte
+            y: s32      // offset 4: s32 is aligned to 4 bytes (so here there's 3 bytes of padding before)
+            z: s64      // offset 8: aligned to 8 bytes
         }
 
         #assert @offsetof(MyStruct.x) == 0
@@ -23,8 +23,8 @@
         #[Swag.Pack(1)]
         struct MyStruct1
         {
-            x: bool // 0: 1 byte
-            y: s32  // 1: 4 bytes (no padding)
+            x: bool // offset 0: 1 byte
+            y: s32  // offset 1: 4 bytes (no padding)
         }
 
         #assert @offsetof(MyStruct1.x) == 0
@@ -34,8 +34,8 @@
         #[Swag.Pack(2)]
         struct MyStruct2
         {
-            x: bool // 0: 1 byte
-            y: s32  // 2: 4 bytes (1 byte of padding before)
+            x: bool // offset 0: 1 byte
+            y: s32  // offset 2: 4 bytes (1 byte of padding before)
         }
 
         #assert @offsetof(MyStruct2.x) == 0
@@ -45,8 +45,8 @@
         #[Swag.Pack(4)]
         struct MyStruct3
         {
-            x: bool // 0: 1 byte
-            y: s64  // 4: 8 bytes (3 bytes of padding before)
+            x: bool // offset 0: 1 byte
+            y: s64  // offset 4: 8 bytes (3 bytes of padding before)
         }
 
         #assert @offsetof(MyStruct3.x) == 0
@@ -95,9 +95,9 @@
     {
         struct MyStruct1
         {
-            x: bool // 0: 1 byte
+            x: bool // offset 0: 1 byte
             #[Swag.Align(8)]
-            y: bool // 8: aligned to 8 (7 bytes of padding before)
+            y: bool // offset 8: aligned to 8 (7 bytes of padding before)
         }
 
         #assert @sizeof(MyStruct1) == 9
@@ -105,9 +105,9 @@
         #[Swag.Align(8)]
         struct MyStruct2
         {
-            x: bool // 0: 1 byte
+            x: bool // offset 0: 1 byte
             #[Swag.Align(4)]
-            y: bool // 4: aligned to 4 (3 bytes of padding before)
+            y: bool // offset 4: aligned to 4 (3 bytes of padding before)
             // 3 bytes of padding to be a multiple of 8
         }
 

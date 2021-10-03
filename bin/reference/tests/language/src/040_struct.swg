@@ -52,7 +52,7 @@
         @assert(v0.x == 0)
         @assert(v0.y == 0)
 
-        // Init in order of the fields
+        // Init in the order of the fields
         var v1: MyStruct{10, 20}
         @assert(v1.x == 10)
         @assert(v1.y == 20)
@@ -72,8 +72,8 @@
     {
         struct MyStruct
         {
-            x: s32      = 666
-            y: string   = "454"
+            x: s32    = 666
+            y: string = "454"
         }
 
         v := MyStruct{}
@@ -85,8 +85,8 @@
     {
         struct MyStruct
         {
-            x: s32      = 666
-            y: string   = "454"
+            x: s32    = 666
+            y: string = "454"
         }
 
         const X: MyStruct{50, "value"}

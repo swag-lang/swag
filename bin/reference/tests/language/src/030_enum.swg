@@ -11,7 +11,6 @@
 
     // By default, an enum is of type 's32'
     {
-        using Swag
         enum Values { A; B; }
         type := @typeof(Values)
         @assert(type.rawType == s32)
@@ -35,7 +34,7 @@
         @assert(@kindof(RGB) == u32)
     }
 
-    // Each value, if not specified, starts with 0 and increase at each new value
+    // Enum values, if not specified, start at 0 and are increased by 1 at each new value
     {
         enum Value: s64
         {
@@ -68,8 +67,8 @@
         enum Value: u32
         {
             A = 10
-            B
-            C
+            B // 11
+            C // 12
         }
 
         @assert(Value.A == 10)
@@ -125,7 +124,7 @@
         }
 
         using Value
-        @assert(A == 0)
+        @assert(A == 0) // No need for Value.A thanks to the 'using'
         @assert(B == 1)
         @assert(C == 2)
         @assert(Value.A == 0)

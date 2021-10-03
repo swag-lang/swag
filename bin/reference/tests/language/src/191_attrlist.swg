@@ -1,7 +1,7 @@
 #global skip
 
 // This is the list of predefined attributes
-// All are located in the reserved 'swag' namespace
+// All are located in the reserved 'Swag' namespace
 
 #[AttrUsage(AttributeUsage.Function)]
 attr ConstExpr()

@@ -23,7 +23,7 @@
         @assert(b == 1.5)
     }
 
-    // If you don't assign a value, then the variable will be initialized with its default value
+    // If you don't assign a value, then the variable will be initialized with its default value (0)
     {
         var a: bool
         @assert(a == false)

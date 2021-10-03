@@ -5,7 +5,7 @@
         func myFunction0() {}
         func myFunction1(x: s32) => x * x
 
-        // 'ptr0' is a pointer to a function that takes no parameter, and returns nothing
+        // 'ptr0' is declared as a pointer to a function that takes no parameter, and returns nothing
         var ptr0: func() = &myFunction0
         ptr0()
 
