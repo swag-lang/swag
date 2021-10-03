@@ -629,6 +629,7 @@ JobResult ByteCodeGenJob::execute()
             ScopedLock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
             getDependantCalls(originalNode, dependentNodes);
+            dependentNodesTmp = dependentNodes;
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -641,7 +642,7 @@ JobResult ByteCodeGenJob::execute()
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
-        dependentNodesTmp = dependentNodes;
+        VectorNative<AstNode*> done;
         while (!dependentNodesTmp.empty())
         {
             auto node = dependentNodesTmp.back();
@@ -668,11 +669,14 @@ JobResult ByteCodeGenJob::execute()
             getDependantCalls(node, depNodes);
             for (auto dep : depNodes)
             {
-                if (!dependentNodes.contains(dep))
+                ScopedLock lk(dep->mutex);
+                if (!done.contains(dep))
                 {
-                    dependentNodes.push_back(dep);
-                    dependentNodesTmp.push_back(dep);
+                    dependentNodesTmp.push_back_once(dep);
+                    done.push_back(dep);
                 }
+
+                dependentNodes.push_back_once(dep);
             }
         }
 
@@ -714,7 +718,6 @@ JobResult ByteCodeGenJob::execute()
                     break;
                 }
 
-                //SharedLock             lk1(dep->mutex);
                 VectorNative<AstNode*> depNodes;
                 getDependantCalls(dep, depNodes);
                 for (auto newDep : depNodes)
