@@ -67,6 +67,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     // Two registers for variadics first
     if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
+        SWAG_ASSERT(popRAidx >= 0);
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
@@ -75,6 +76,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         callerIndex++;
 
         offsetStack += 8;
+        SWAG_ASSERT(popRAidx >= 0);
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
@@ -97,6 +99,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         typeParam      = TypeManager::concreteReferenceType(typeParam);
         for (int j = 0; j < typeParam->numRegisters(); j++)
         {
+            SWAG_ASSERT(popRAidx >= 0);
             auto index = pushRAParams[popRAidx--];
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);

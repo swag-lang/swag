@@ -156,7 +156,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                 itp += 1
             }
 
-            rest := catch Parse.pokeValue(addr, typeField, collect.toString())
+            discard catch Parse.pokeValue(addr, typeField, collect.toString())
             if @err
                 throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
         }

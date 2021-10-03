@@ -177,28 +177,42 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
 bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-    ScopedFlags sf(this, AST_DISCARD);
 
+    AstNode* idRef;
     switch (token.id)
     {
     case TokenId::Identifier:
-        SWAG_CHECK(doIdentifierRef(parent));
+        SWAG_CHECK(doIdentifierRef(parent, &idRef));
         break;
     case TokenId::KwdTry:
     case TokenId::KwdAssume:
-        SWAG_CHECK(doTryAssume(parent, result));
+        SWAG_CHECK(doTryAssume(parent, &idRef, true));
         break;
     case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(parent, result));
+        SWAG_CHECK(doCatch(parent, &idRef));
         break;
     default:
         return error(token, Utf8::format(g_E[Err0841], token.text.c_str()));
     }
 
+    if (result)
+        *result = idRef;
+
+    // Mark the identifier with AST_DISCARD
+    while (idRef && idRef->kind != AstNodeKind::IdentifierRef)
+        idRef = idRef->childs.front();
+    SWAG_ASSERT(idRef);
+    for (auto c : idRef->childs)
+    {
+        if (c->kind != AstNodeKind::Identifier)
+            break;
+        c->flags |= AST_DISCARD;
+    }
+
     return true;
 }
 
-bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool single)
 {
     AstNode* node = nullptr;
     if (token.id == TokenId::KwdTry)
