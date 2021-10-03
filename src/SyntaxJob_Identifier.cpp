@@ -212,7 +212,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool single)
+bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool afterDiscard)
 {
     AstNode* node = nullptr;
     if (token.id == TokenId::KwdTry)
@@ -235,6 +235,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool single)
 
     if (token.id == TokenId::SymLeftCurly)
     {
+        SWAG_VERIFY(!afterDiscard, error(token, g_E[Err0847]));
         SWAG_CHECK(doCurlyStatement(node));
         if (node->semanticFct == SemanticJob::resolveTry)
             node->semanticFct = SemanticJob::resolveTryBlock;
