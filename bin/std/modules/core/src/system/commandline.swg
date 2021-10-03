@@ -66,7 +66,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     return allArgs
 }
 
-func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result throw
+func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})->Result throw
 {
     var result:  retval
 
@@ -85,21 +85,33 @@ func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
 
         typeField := Reflection.getField(typeof, oneArg)
         if !typeField
-            continue
+            throw Format.toString("unknown option '%'", oneArg)
 
         addr := cast(*u8) st
         addr += typeField.offset
 
+        // String
         if Reflection.isString(typeField.pointedType)
         {
+            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
+                throw Format.toString("missing value for option '%'", oneArg)
+
             dref cast(*string) addr = allArgs[itp + 1]
             itp += 1
         }
+
+        // Integer or float
         else if Reflection.isInteger(typeField.pointedType) or Reflection.isFloat(typeField.pointedType)
         {
+            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
+                throw Format.toString("missing value for option '%'", oneArg)
+
             rest := catch Parse.pokeValue(addr, typeField.pointedType, allArgs[itp + 1])
-            if @err @print(@err)
-            if @countof(rest) @print("rest: ", rest, "\n")
+
+            if @err
+                throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
+            if @countof(rest)
+                throw Format.toString("invalid value for option '%'", oneArg)
             itp += 1
         }
 

@@ -1,4 +1,4 @@
-using Core, CommandLine
+using Core
 
 #test
 {
@@ -8,10 +8,10 @@ using Core, CommandLine
     }
 
     var x: TT
-    a0 := try parse(&x, @["-value:1"])
+    a0 := try CommandLine.parse(&x, @["-value:1"])
     @assert(x.value == 1)
-    a1 := try parse(&x, @["-value=10"])
+    a1 := try CommandLine.parse(&x, @["-value=10"])
     @assert(x.value == 10)
-    a2 := try parse(&x, @["-value= 20"])
+    a2 := try CommandLine.parse(&x, @["-value= 20"])
     @assert(x.value == 20)
 }
