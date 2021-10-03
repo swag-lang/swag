@@ -315,7 +315,7 @@ namespace Swag
         F32
         F64
         Bool
-        Char
+        Rune
         String
         Any
         CString

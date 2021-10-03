@@ -1,4 +1,4 @@
-//#global skip
+#global export
 #global namespace CommandLine
 
 struct(T) IsSet
@@ -20,22 +20,29 @@ struct(T) Result
 
 struct ParseOptions
 {
-    argumentMarker = "-"'u8
+    optionDelimiter = "-"'u8
 }
 
 func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
 {
-    var result: retval
+    var result:  retval
+    var allArgs: Array'string
 
-    typeof := @typeof(T)
-
-    for itp := 0; itp < @countof(args); itp += 1
+    // Clean all arguments
+    visit oneArg: args
     {
-        oneArg := Tokenize.eatSpaces(args[itp])
+        oneArg = Tokenize.eatSpaces(oneArg)
         if !@countof(oneArg)
             continue
+        allArgs.add(oneArg)
+    }
 
-        if oneArg[0] != options.argumentMarker
+    // Parse all
+    typeof := @typeof(T)
+    for itp := 0; itp < @countof(allArgs); itp += 1
+    {
+        oneArg := allArgs[itp]
+        if oneArg[0] != options.optionDelimiter
             continue
         oneArg = Tokenize.eatCount(oneArg, 1)
 
@@ -46,10 +53,14 @@ func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
         addr := cast(*u8) st
         addr += typeField.offset
 
-        switch typeField.pointedType
+        if Reflection.isString(typeField.pointedType)
         {
-        case s8, s32, f32:
-            rest := catch Parse.pokeValue(addr, typeField.pointedType, args[itp + 1])
+            dref cast(*string) addr = allArgs[itp + 1]
+            itp += 1
+        }
+        else if Reflection.isInteger(typeField.pointedType) or Reflection.isFloat(typeField.pointedType)
+        {
+            rest := catch Parse.pokeValue(addr, typeField.pointedType, allArgs[itp + 1])
             if @err @print(@err)
             if @countof(rest) @print("rest: ", rest, "\n")
             itp += 1
@@ -65,19 +76,4 @@ func(T) parse(st: *T, args: const [..] string, options = ParseOptions{})->Result
     }
 
     return result
-}
-
-#run
-{
-    struct TT
-    {
-        value: s8
-        diff:  f32
-    }
-
-    var x: TT
-    params := @["-value", "1.1", "-diff", "3.14"]
-    a := parse(&x, params)
-
-    Console.print(x, "\n", a, "\n")
 }

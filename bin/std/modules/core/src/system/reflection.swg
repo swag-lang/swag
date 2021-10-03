@@ -15,6 +15,27 @@ using Swag
         func isArray(t: typeinfo)       => t.kind == .Array
         func isSlice(t: typeinfo)       => t.kind == .Slice
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
+
+        func isRune(t: typeinfo)->bool
+        {
+            if t.kind != .Native return false
+            tt := cast(const *TypeInfoNative) t
+            return tt.nativeKind == TypeInfoNativeKind.Rune
+        }
+
+        func isBool(t: typeinfo)->bool
+        {
+            if t.kind != .Native return false
+            tt := cast(const *TypeInfoNative) t
+            return tt.nativeKind == TypeInfoNativeKind.Bool
+        }
+
+        func isString(t: typeinfo)->bool
+        {
+            if t.kind != .Native return false
+            tt := cast(const *TypeInfoNative) t
+            return tt.nativeKind == TypeInfoNativeKind.String
+        }
     }
 
     // Returns true if this is a struct of the given name
