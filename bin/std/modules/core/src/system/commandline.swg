@@ -90,6 +90,16 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         addr := cast(*u8) st
         addr += typeField.offset
 
+        // Bool: Result is true if the option does not have an associated value
+        if Reflection.isBool(typeField.pointedType)
+        {
+            if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
+            {
+                dref cast(*bool) addr = true
+                continue
+            }
+        }
+
         // String
         if Reflection.isString(typeField.pointedType)
         {
@@ -100,8 +110,10 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             itp += 1
         }
 
-        // Integer or float
-        else if Reflection.isInteger(typeField.pointedType) or Reflection.isFloat(typeField.pointedType)
+        // Integer/Float/Bool
+        else if Reflection.isInteger(typeField.pointedType) or
+                Reflection.isFloat(typeField.pointedType) or
+                Reflection.isBool(typeField.pointedType)
         {
             if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
                 throw Format.toString("missing value for option '%'", oneArg)
