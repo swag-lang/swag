@@ -112,24 +112,19 @@ using Swag
     }
 
     // Returns the given attribute value
-    func getAttributeValue(type: const *Swag.TypeValue, attribute, value: string)->{found: bool, value: any}
+    func getAttributeValue(type: const *Swag.TypeValue, attribute, value: string)->any
     {
-        var result: retval
-
         attrib := getAttribute(type, attribute)
-        if !attrib return result
+        if !attrib
+            return null
 
         visit p: attrib.params
         {
             if p.name == value
-            {
-                result.found = true
-                result.value = p.value
-                break
-            }
+                return p.value
         }
 
-        return result
+        return null
     }
 
     // Returns true if the given 'type' has the associated 'attribute'

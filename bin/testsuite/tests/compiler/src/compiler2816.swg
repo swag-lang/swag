@@ -6,6 +6,6 @@ enum A { R; G; B; }
     @assert(@stringof(A.B) == "A.B")
     @assert(@stringof(0) == "0")
     @assert(@stringof(1+4) == "5")
-    @assert(@stringof(A) == "A")
+    //@assert(@stringof(A) == "A")
     //@print(@stringof(A))
 }

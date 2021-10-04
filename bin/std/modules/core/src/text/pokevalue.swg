@@ -102,7 +102,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         if enumType.rawType != string and enumType.sizeof > 8
             throw Format.toString("unsupported enum type '%'", enumType.rawType.flatName)
 
-        enumFlags := Reflection.hasAttribute(enumType, "Swag.EnumFlags")
+        enumFlags := Reflection.hasAttribute(enumType, @stringof(EnumFlags))
 
         loop
         {

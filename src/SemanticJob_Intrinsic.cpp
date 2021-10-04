@@ -278,11 +278,11 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else if (expr->resolvedSymbolName)
     {
-        node->computedValue->text = expr->resolvedSymbolName->name;
+        node->computedValue->text = expr->resolvedSymbolName->getFullName();
     }
     else if (expr->resolvedSymbolOverload)
     {
-        node->computedValue->text = expr->resolvedSymbolOverload->symbol->name;
+        node->computedValue->text = expr->resolvedSymbolOverload->symbol->getFullName();
     }
     else
     {
