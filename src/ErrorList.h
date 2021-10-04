@@ -790,7 +790,7 @@ SWAG_ERROR(Err0795, "`@mkinterface` should have an interface as a third paramete
 SWAG_ERROR(Err0796, "`@dataof` cannot be used on a tuple type")
 SWAG_ERROR(Err0797, "`@dataof` cannot be applied to expression of type `%s`")
 SWAG_ERROR(Err0798, "expression cannot be evaluated at compile time")
-SWAG_ERROR(Err0799, nullptr)
+SWAG_ERROR(Err0799, "unsupported `@stringof` expression")
 SWAG_ERROR(Err0800, "`@countof` cannot be used on a tuple type")
 SWAG_ERROR(Err0801, "`@countof` cannot be used on type `%s`")
 SWAG_ERROR(Err0802, "constant value should be unsigned, but is `%d`")

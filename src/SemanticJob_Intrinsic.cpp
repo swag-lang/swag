@@ -273,6 +273,12 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
             node->computedValue->text = Ast::literalToString(typeInfo, *expr->computedValue);
         else if (typeInfo->kind == TypeInfoKind::Enum)
             node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
+        else
+            return context->report({expr, g_E[Err0799]});
+    }
+    else if (expr->resolvedSymbolName)
+    {
+        node->computedValue->text = expr->resolvedSymbolName->name;
     }
     else if (expr->resolvedSymbolOverload)
     {
@@ -280,7 +286,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else
     {
-        node->computedValue->text = typeInfo->name;
+        return context->report({expr, g_E[Err0799]});
     }
 
     node->typeInfo = g_TypeMgr->typeInfoString;
