@@ -59,6 +59,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::TypeAlias) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Interface) ||
+        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Attribute) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Enum))
     {
         TypeInfo* result = nullptr;
