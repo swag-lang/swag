@@ -52,7 +52,7 @@ using Swag
 
     // Get information about a specific mtd in a given struct
     // Returns null if the mtd does not exist
-    func getMethod(type: typeinfo, name: string)->const* TypeInfoParam
+    func getMethod(type: typeinfo, name: string)->const* TypeValue
     {
         if type.kind != TypeInfoKind.Struct
             return null
@@ -69,7 +69,7 @@ using Swag
 
     // Get information about a specific field in a given struct
     // Returns null if the field does not exist
-    func getField(type: typeinfo, name: string)->const* TypeInfoParam
+    func getField(type: typeinfo, name: string)->const* TypeValue
     {
         if type.kind == TypeInfoKind.Struct
         {
@@ -112,7 +112,7 @@ using Swag
     }
 
     // Returns the given attribute value
-    func getAttributeValue(type: const *Swag.TypeInfoParam, attribute, value: string)->{found: bool, value: any}
+    func getAttributeValue(type: const *Swag.TypeValue, attribute, value: string)->{found: bool, value: any}
     {
         var result: retval
 
@@ -133,7 +133,7 @@ using Swag
     }
 
     // Returns true if the given 'type' has the associated 'attribute'
-    func getAttribute(type: const *Swag.TypeInfoParam, attribute: string)->const *Swag.TypeInfoAttribute
+    func getAttribute(type: const *Swag.TypeValue, attribute: string)->const *Swag.Attribute
     {
         visit it: type.attributes
         {
@@ -145,7 +145,7 @@ using Swag
     }
 
     // Returns true if the given 'type' has the associated 'attribute'
-    func getAttribute(type: typeinfo, attribute: string)->const *Swag.TypeInfoAttribute
+    func getAttribute(type: typeinfo, attribute: string)->const *Swag.Attribute
     {
         switch type.kind
         {
@@ -185,7 +185,7 @@ using Swag
 
     // Get information about a specific value in a given enum
     // Returns null if the value does not exist
-    func getEnumValue(type: typeinfo, name: string)->const* TypeInfoParam
+    func getEnumValue(type: typeinfo, name: string)->const* TypeValue
     {
         if type.kind == TypeInfoKind.Enum
         {

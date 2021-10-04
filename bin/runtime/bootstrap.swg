@@ -338,6 +338,28 @@ namespace Swag
         CString     = 0x0400
     }
 
+    struct AttributeParam
+    {
+        name:	string
+        value:	any
+    }
+
+    struct Attribute
+    {
+        name:		string
+        params:		const [..] AttributeParam
+    }
+
+    struct TypeValue
+    {
+        name:		    string
+        pointedType:	const *TypeInfo
+        value:			const *void
+        attributes:	    const [..] Attribute
+        offset:			u32
+        padding:		u32
+    }
+
     struct TypeInfo
     {
         name:	    string
@@ -351,18 +373,6 @@ namespace Swag
     {
         using base:     TypeInfo
         nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
-    }
-
-    struct TypeInfoAttributeParameter
-    {
-        name:	string
-        value:	any
-    }
-
-    struct TypeInfoAttribute
-    {
-        name:		string
-        params:		const [..] TypeInfoAttributeParameter
     }
 
     struct TypeInfoPointer
@@ -383,16 +393,6 @@ namespace Swag
         rawType:		const *TypeInfo
     }
 
-    struct TypeInfoParam
-    {
-        name:		    string
-        pointedType:	const *TypeInfo
-        value:			const *void
-        attributes:	    const [..] TypeInfoAttribute
-        offset:			u32
-        padding:		u32
-    }
-
     struct TypeInfoStruct
     {
         using base: 	TypeInfo
@@ -401,28 +401,28 @@ namespace Swag
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
         structName:	    string
-        generics:		const [..] TypeInfoParam
-        fields:		    const [..] TypeInfoParam
-        methods:	    const [..] TypeInfoParam
-        interfaces:     const [..] TypeInfoParam
-        attributes:	    const [..] TypeInfoAttribute
+        generics:		const [..] TypeValue
+        fields:		    const [..] TypeValue
+        methods:	    const [..] TypeValue
+        interfaces:     const [..] TypeValue
+        attributes:	    const [..] Attribute
     }
 
     struct TypeInfoFunc
     {
         using base: 	TypeInfo
-        generics:		const [..] TypeInfoParam
-        parameters:		const [..] TypeInfoParam
+        generics:		const [..] TypeValue
+        parameters:		const [..] TypeValue
         returnType:		const *TypeInfo
-        attributes:	    const [..] TypeInfoAttribute
+        attributes:	    const [..] Attribute
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:		    const [..] TypeInfoParam
+        values:		    const [..] TypeValue
         rawType:	    const *TypeInfo
-        attributes:	    const [..] TypeInfoAttribute
+        attributes:	    const [..] Attribute
     }
 
     struct TypeInfoArray

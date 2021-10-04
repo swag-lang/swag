@@ -15,7 +15,7 @@ struct Point
 #test
 {
 	t := cast(const *TypeInfoStruct) @typeof(Point)
-	p := cast(const *TypeInfoParam) t.fields[0]
+	p := cast(const *TypeValue) t.fields[0]
 
     //@print(cast(s64) @countof(p.attributes))
 

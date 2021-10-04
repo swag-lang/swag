@@ -12,7 +12,7 @@ enum A
 #test
 {
 	ptr := cast(const *TypeInfoEnum) @typeof(A.VAL)
-	ptr1 := cast(const *TypeInfoParam) ptr.values[0]
+	ptr1 := cast(const *TypeValue) ptr.values[0]
 
 	//@print(ptr1.attributes[0].item0)
 	@assert(ptr1.attributes[0].name == "__compiler1013.NC1")

@@ -15,7 +15,7 @@ enum A
 	@assert(@countof(ptr.values) == 1)
 	@assert(@countof(ptr.attributes) == 0)
 
-	ptr1 := cast(const *TypeInfoParam) ptr.values[0]
+	ptr1 := cast(const *TypeValue) ptr.values[0]
 	@assert(@countof(ptr1.attributes) == 1)
 	@assert(ptr1.attributes[0].name == "__compiler995.NC1")
 	@assert(ptr1.attributes[0].params[0].name == "x")
