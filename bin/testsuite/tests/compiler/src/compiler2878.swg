@@ -11,7 +11,7 @@ impl AA
 #test
 {
     //x := &AA.toto
-    @assert(@stringof(AA.toto) == "(*AA)->s32")
+    @assert(@stringof(@typeof(AA.toto)) == "(*AA)->s32")
     //var v: AA
     //@assert(v.x() == 10)
 }

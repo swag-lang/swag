@@ -52,9 +52,9 @@
 
     // You can also use '@stringof' to return the result of a constant expression as a string
     {
-        const x = 1
-        @assert(@stringof(x) == "1")
-        @assert(@stringof(x + 10) == "11")
+        const X = 1
+        @assert(@stringof(X) == "1")
+        @assert(@stringof(X + 10) == "11")
     }
 
     // A string and a character can contain escape sequences for special characters

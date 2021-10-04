@@ -259,16 +259,29 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     auto typeInfo = expr->typeInfo;
 
     node->setFlagsValueIsComputed();
-    if (!expr->computedValue)
-        node->computedValue->text = typeInfo->name;
-    else if (typeInfo->isNative(NativeTypeKind::String))
-        node->computedValue->text = expr->computedValue->text;
-    else if (typeInfo->kind == TypeInfoKind::Native)
-        node->computedValue->text = Ast::literalToString(typeInfo, *expr->computedValue);
-    else if (typeInfo->kind == TypeInfoKind::Enum)
-        node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
+    if (expr->computedValue)
+    {
+        if (expr->flags & AST_VALUE_IS_TYPEINFO)
+        {
+            auto addr                 = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+            auto newTypeInfo          = context->sourceFile->module->typeTable.getRealType(expr->computedValue->storageSegment, (ConcreteTypeInfo*) addr);
+            node->computedValue->text = newTypeInfo->name;
+        }
+        else if (typeInfo->isNative(NativeTypeKind::String))
+            node->computedValue->text = expr->computedValue->text;
+        else if (typeInfo->kind == TypeInfoKind::Native)
+            node->computedValue->text = Ast::literalToString(typeInfo, *expr->computedValue);
+        else if (typeInfo->kind == TypeInfoKind::Enum)
+            node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
+    }
+    else if (expr->resolvedSymbolOverload)
+    {
+        node->computedValue->text = expr->resolvedSymbolOverload->symbol->name;
+    }
     else
+    {
         node->computedValue->text = typeInfo->name;
+    }
 
     node->typeInfo = g_TypeMgr->typeInfoString;
     return true;
@@ -755,7 +768,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             node->typeInfo = node->childs[1]->typeInfo;
 
-            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({ node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str()) }));
+            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str())}));
 
             SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "f64")}));
             SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));

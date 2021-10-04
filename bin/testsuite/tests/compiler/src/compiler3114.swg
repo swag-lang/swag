@@ -21,6 +21,6 @@ func totoXXX()->AA
 #test
 {
     vvv := totoXXX()
-    @assert(@stringof(vvv) == "AA")
+    @assert(@stringof(@typeof(vvv)) == "AA")
     test(vvv)
 }
