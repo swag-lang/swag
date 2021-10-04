@@ -808,6 +808,22 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     switch (node->kind)
     {
+    case AstNodeKind::Throw:
+        concat.addString(node->token.text);
+        concat.addChar(' ');
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        break;
+
+    case AstNodeKind::Catch:
+    case AstNodeKind::Try:
+    case AstNodeKind::Assume:
+        if(node->flags & AST_DISCARD)
+            CONCAT_FIXED_STR(concat, "discard ");
+        concat.addString(node->token.text);
+        concat.addChar(' ');
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        break;
+
     case AstNodeKind::FuncDeclType:
         if (!node->childs.empty())
         {
@@ -1458,6 +1474,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::IdentifierRef:
     {
+        if (node->flags & AST_DISCARD)
+            CONCAT_FIXED_STR(concat, "discard ");
         if (node->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             CONCAT_FIXED_STR(concat, ".");
         auto back = node->childs.back();

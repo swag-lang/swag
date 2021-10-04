@@ -198,10 +198,15 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
     if (result)
         *result = idRef;
 
+    // For export
+    idRef->flags |= AST_DISCARD;
+
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->kind != AstNodeKind::IdentifierRef)
         idRef = idRef->childs.front();
     SWAG_ASSERT(idRef);
+
+    // This is where AST_DISCARD will be really used
     for (auto c : idRef->childs)
     {
         if (c->kind != AstNodeKind::Identifier)
