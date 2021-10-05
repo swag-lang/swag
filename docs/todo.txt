@@ -51,12 +51,18 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
+-------------------------------------
+revamp global using ? pour pouvoir les exporter ? #global using et using toto {}
+comme ça plus la peine d'exporter les symboles scopés, donc plus la peine de passer par les types ?
+lié à :
+---
+sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
+oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
+-------------------------------------
 foreign a cvarargs
 -------------------------------------
 pourquoi #os, #abi etc... sont des strings, et #backend est un enum ?
--------------------------------------
-sub func avec param x := Enum.Val (sub func pas exporté comme func, faut faire qqchose !)
-oui mais quoi ? les sous trucs sont pas forcément passés par la sémantique (par example si macro)
 -------------------------------------
 debugger : print divers (memoire ?)
 -------------------------------------
