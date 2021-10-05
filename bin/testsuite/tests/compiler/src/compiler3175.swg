@@ -17,3 +17,8 @@ public func tata3175()
     func x() => 0
     discard x()
 }
+
+public func(T) txtx3175()
+{
+    func x() => 0
+}

@@ -817,7 +817,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Catch:
     case AstNodeKind::Try:
     case AstNodeKind::Assume:
-        if(node->flags & AST_DISCARD)
+        if (node->flags & AST_DISCARD)
             CONCAT_FIXED_STR(concat, "discard ");
         concat.addString(node->token.text);
         concat.addChar(' ');
@@ -859,10 +859,20 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "()");
         else
             SWAG_CHECK(outputNode(context, concat, nodeFunc->parameters));
+
         if (nodeFunc->returnType)
             SWAG_CHECK(outputNode(context, concat, nodeFunc->returnType));
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, nodeFunc->content));
+
+        if (nodeFunc->flags & AST_SHORT_LAMBDA)
+        {
+            CONCAT_FIXED_STR(concat, " => ");
+            SWAG_CHECK(outputNode(context, concat, nodeFunc->content->childs.front()));
+        }
+        else
+        {
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(outputNode(context, concat, nodeFunc->content));
+        }
         break;
     }
 
