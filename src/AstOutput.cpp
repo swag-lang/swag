@@ -194,7 +194,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributes(context, concat, typeFunc));
+    SWAG_CHECK(outputAttributes(context, concat, node, typeFunc));
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "func");
 
@@ -304,7 +304,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum*
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributes(context, concat, typeEnum));
+    SWAG_CHECK(outputAttributes(context, concat, node, typeEnum));
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
@@ -384,8 +384,30 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, Attribu
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
+    bool one = false;
+    for (const auto& p : node->sourceFile->globalUsings)
+    {
+        if (p == "Swag")
+            continue;
+
+        if (!one)
+        {
+            CONCAT_FIXED_STR(concat, "// #[Using(");
+            one = true;
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, ", ");
+        }
+
+        concat.addString(p);
+    }
+
+    if (one)
+        CONCAT_FIXED_STR(concat, ")]\n");
+
     AttributeList* attr = nullptr;
     switch (typeInfo->kind)
     {
@@ -581,7 +603,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributes(context, concat, typeStruct));
+    SWAG_CHECK(outputAttributes(context, concat, node, typeStruct));
 
     if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         concat.addIndent(context.indent);
@@ -1940,7 +1962,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             // Remape special functions to their generated equivalent
             concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
             concat.addEol();
-            SWAG_CHECK(outputAttributes(context, concat, typeFunc));
+            SWAG_CHECK(outputAttributes(context, concat, node, typeFunc));
             concat.addIndent(context.indent);
 
             if (node->token.text == g_LangSpec->name_opInitGenerated)

@@ -444,6 +444,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
+#pragma optimize("", off)
 bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
 {
     if (attributes.empty())
@@ -480,6 +481,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
             auto     ptrStorageAllParams = (uint8_t*) makeConcreteSlice(context, count * sizeof(ConcreteAttributeParameter), storageSegment, curOffsetAttributes, &ptrParamsAttribute->buffer, storageOffsetParams);
 
             uint32_t curOffsetParams = storageOffsetParams;
+            uint32_t cptParam        = 0;
             for (auto& oneParam : one.parameters)
             {
                 // Name of the parameter
@@ -488,11 +490,20 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
                 curOffsetParams += sizeof(SwagSlice);
                 ptrStorageAllParams += sizeof(SwagSlice);
 
+                // This is variadic
+                auto typeValue = oneParam.typeInfo;
+                if (one.typeFunc && one.typeFunc->flags & TYPEINFO_TYPED_VARIADIC && cptParam >= one.typeFunc->parameters.size() - 1)
+                {
+                    auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+                    typeValue         = typeVariadic->rawType;
+                }
+
                 // Value of the parameter
-                makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, oneParam.typeInfo, cflags);
+                makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
 
                 curOffsetParams += sizeof(ConcreteAny);
                 ptrStorageAllParams += sizeof(ConcreteAny);
+                cptParam++;
             }
         }
 

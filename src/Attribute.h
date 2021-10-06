@@ -64,7 +64,8 @@ struct OneAttribute
 {
     Utf8                       name;
     vector<AttributeParameter> parameters;
-    AstNode*                   node = nullptr;
+    AstNode*                   node     = nullptr;
+    TypeInfoFuncAttr*          typeFunc = nullptr;
 };
 
 struct AttributeList

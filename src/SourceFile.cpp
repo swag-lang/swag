@@ -348,3 +348,18 @@ bool SourceFile::internalError(AstNode* node, const char* msg)
     report({node, Utf8::format("[compiler internal] %s", msg)});
     return false;
 }
+
+void SourceFile::addGlobalUsing(AstIdentifierRef* idRef)
+{
+    if (idRef->ownerFct)
+        return;
+
+    for (auto const& p : globalUsings)
+    {
+        idRef->computeName();
+        if (p == idRef->token.text)
+            return;
+    }
+
+    globalUsings.push_back(idRef->token.text);
+}

@@ -83,8 +83,20 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
-            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+
+            if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
+                funcParam->typeInfo->kind != TypeInfoKind::Enum &&
+                funcParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
+            {
+                return context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())});
+            }
+
+            if (funcParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+            {
+                auto typeVar = CastTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
+                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+            }
         }
 
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);

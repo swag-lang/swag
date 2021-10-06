@@ -65,6 +65,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         scope         = typeInfo->scope;
         node->parent->allocateExtension();
         node->parent->extension->alternativeScopes.push_back(scope);
+        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     case TypeInfoKind::Enum:
@@ -73,6 +74,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         scope         = typeInfo->scope;
         node->parent->allocateExtension();
         node->parent->extension->alternativeScopes.push_back(scope);
+        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     case TypeInfoKind::Struct:
@@ -81,6 +83,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         scope         = typeInfo->scope;
         node->parent->allocateExtension();
         node->parent->extension->alternativeScopes.push_back(scope);
+        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     default:

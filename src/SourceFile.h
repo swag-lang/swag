@@ -7,6 +7,7 @@ struct Diagnostic;
 struct Scope;
 struct Token;
 struct AstAttrUse;
+struct AstIdentifierRef;
 
 struct SourceFile
 {
@@ -21,6 +22,7 @@ struct SourceFile
     bool checkFormat();
     void setExternalBuffer(char* buf, uint32_t size);
     void computePrivateScopeName();
+    void addGlobalUsing(AstIdentifierRef* idRef);
 
     shared_mutex mutex;
     Utf8         name;
@@ -35,6 +37,7 @@ struct SourceFile
     Utf8           scopeName;
     bool           isExternal            = false;
     SourceFile*    fileForSourceLocation = nullptr;
+    vector<Utf8>   globalUsings;
 
     uint64_t    writeTime            = 0;
     int         numErrors            = 0;

@@ -505,6 +505,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             oneAttribute.parameters.emplace_back(move(attrParam));
         }
 
+        oneAttribute.typeFunc = typeFunc;
         node->attributes.emplace(oneAttribute);
     }
 
