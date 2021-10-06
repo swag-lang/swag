@@ -452,8 +452,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->ownerFct)
         funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
 
-    if (!(funcNode->flags & AST_FROM_GENERIC))
+    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->doneFlags & AST_DONE_CHECK_ATTR))
     {
+        // Can be called multiple times in case of a mixin/macro inside another inlined function
+        funcNode->doneFlags |= AST_DONE_CHECK_ATTR;
+
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Utf8::format(g_E[Err0757], funcNode->getDisplayName().c_str())}));

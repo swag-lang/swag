@@ -203,6 +203,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     }
 
     // Be sure this is done only once
+    // :EmitInlineOnce
     node->flags |= AST_NO_BYTECODE_CHILDS;
     return true;
 }

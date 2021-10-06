@@ -1145,9 +1145,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         if (overload->node->mustInline() && !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE))
         {
+            // Mixin and macros must be inlined here, because no call is possible
+            bool forceInline = false;
+            if (overload->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+                forceInline = true;
+
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
-            if (!identifier->ownerFct || !identifier->ownerFct->mustInline())
+            if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
             {
                 // Need to wait for function full semantic resolve
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);

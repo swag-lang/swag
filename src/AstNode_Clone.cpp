@@ -17,6 +17,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     // Copy some specific flags
     doneFlags |= from->doneFlags & AST_DONE_INLINED;
+    doneFlags |= from->doneFlags & AST_DONE_CHECK_ATTR;
     semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
@@ -922,6 +923,13 @@ AstNode* AstInline::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstInline>();
     newNode->copyFrom(context, this, false);
+
+    // If we clone an inline block after bytecode generation (this happens if we have a mixin inside an inline function
+    // for example), then we do not want to copy the AST_NO_BYTECODE_CHILDS (because we want the inline block to be 
+    // generated).
+    // :EmitInlineOnce
+    newNode->flags &= ~AST_NO_BYTECODE_CHILDS;
+
     newNode->func = func;
 
     // Is this correct ? Seems a little wierd, but that way we do not have to copy the parametersScope

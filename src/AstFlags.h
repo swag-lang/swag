@@ -84,6 +84,7 @@ static const uint32_t AST_DONE_STACK_TRACE               = 0x00200000;
 static const uint32_t AST_DONE_STACK_TRACE1              = 0x00400000;
 static const uint32_t AST_DONE_STRUCT_CONVERT            = 0x00800000;
 static const uint32_t AST_DONE_NEG_EATEN                 = 0x01000000;
+static const uint32_t AST_DONE_CHECK_ATTR                = 0x02000000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS      = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS   = 0x00000002;
