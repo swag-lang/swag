@@ -1,4 +1,4 @@
-//#global testerror
+#global testerror
 
-//using X
-//alias X = s32
+using X
+alias X = s32
