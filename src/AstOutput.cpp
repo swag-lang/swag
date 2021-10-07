@@ -386,28 +386,6 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, Attribu
 
 bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
-    bool one = false;
-    for (const auto& p : node->sourceFile->globalUsings)
-    {
-        if (p == "Swag")
-            continue;
-
-        if (!one)
-        {
-            CONCAT_FIXED_STR(concat, "// #[Using(");
-            one = true;
-        }
-        else
-        {
-            CONCAT_FIXED_STR(concat, ", ");
-        }
-
-        concat.addString(p);
-    }
-
-    if (one)
-        CONCAT_FIXED_STR(concat, ")]\n");
-
     AttributeList* attr = nullptr;
     switch (typeInfo->kind)
     {
@@ -1874,6 +1852,48 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     return true;
 }
 
+void AstOutput::enterSourceFile(OutputContext& context, Concat& concat, AstNode* node)
+{
+    if (node->sourceFile == context.currentSourceFile)
+        return;
+    leaveSourceFile(context, concat);
+
+    bool one = false;
+    for (const auto& p : node->sourceFile->globalUsings)
+    {
+        if (p == "Swag")
+            continue;
+
+        if (!one)
+        {
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "// scope using ");
+            one = true;
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, ", ");
+        }
+
+        concat.addString(p);
+    }
+
+    if (one)
+    {
+        context.currentSourceFile = node->sourceFile;
+        CONCAT_FIXED_STR(concat, " {\n");
+    }
+}
+
+void AstOutput::leaveSourceFile(OutputContext& context, Concat& concat)
+{
+    if (!context.currentSourceFile)
+        return;
+    context.currentSourceFile = nullptr;
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "// }\n");
+}
+
 bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
 {
     auto publicSet = scope->publicSet;
@@ -1885,6 +1905,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicConst)
         {
+            enterSourceFile(context, concat, one);
             AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
             SWAG_CHECK(outputVar(context, concat, "const ", node));
             concat.addEol();
@@ -1896,6 +1917,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicNodes)
         {
+            enterSourceFile(context, concat, one);
             concat.addIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
@@ -1907,6 +1929,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicStruct)
         {
+            enterSourceFile(context, concat, one);
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
@@ -1917,6 +1940,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicInterface)
         {
+            enterSourceFile(context, concat, one);
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
             SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
@@ -1928,6 +1952,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicEnum)
         {
+            enterSourceFile(context, concat, one);
             TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
             SWAG_CHECK(outputEnum(context, concat, typeEnum, one));
         }
@@ -1936,9 +1961,10 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     // Generic functions
     if (!publicSet->publicInlinedFunc.empty())
     {
-        for (auto func : publicSet->publicInlinedFunc)
+        for (auto one : publicSet->publicInlinedFunc)
         {
-            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            enterSourceFile(context, concat, one);
+            AstFuncDecl*      node     = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputFunc(context, concat, typeFunc, node));
         }
@@ -1947,9 +1973,10 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     // Functions
     if (!publicSet->publicFunc.empty())
     {
-        for (auto func : publicSet->publicFunc)
+        for (auto one : publicSet->publicFunc)
         {
-            AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            enterSourceFile(context, concat, one);
+            AstFuncDecl* node = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
 
             // Can be removed in case of special functions
             if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -2000,9 +2027,10 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     // Attributes
     if (!publicSet->publicAttr.empty())
     {
-        for (auto func : publicSet->publicAttr)
+        for (auto one : publicSet->publicAttr)
         {
-            auto              node     = CastAst<AstAttrDecl>(func, AstNodeKind::AttrDecl);
+            enterSourceFile(context, concat, one);
+            auto              node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);
@@ -2010,6 +2038,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         }
     }
 
+    leaveSourceFile(context, concat);
     return true;
 }
 
