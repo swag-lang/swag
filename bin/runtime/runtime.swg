@@ -1,5 +1,12 @@
 using Swag
 
+// Special attribute that cannot be defined in the boostrap, because
+// we need typeinfo to be defined
+namespace Swag
+{
+    attr Using(what: typeinfo...)
+}
+
 ////////////////////////////////////////////////////////////
 #[Discardable]
 #[Safety("", false)]

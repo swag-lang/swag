@@ -42,7 +42,6 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
 
 bool SemanticJob::resolveUsing(SemanticContext* context)
 {
-    auto job   = context->job;
     auto node  = context->node;
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
 
@@ -63,32 +62,27 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->allocateExtension();
-        node->parent->extension->alternativeScopes.push_back(scope);
-        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     case TypeInfoKind::Enum:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->allocateExtension();
-        node->parent->extension->alternativeScopes.push_back(scope);
-        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     case TypeInfoKind::Struct:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->allocateExtension();
-        node->parent->extension->alternativeScopes.push_back(scope);
-        node->parent->sourceFile->addGlobalUsing(idref);
         break;
     }
     default:
-        return job->error(context, Utf8::format(g_E[Err0695], TypeInfo::getNakedKindName(typeResolved)));
+        return context->report({node, Utf8::format(g_E[Err0695], typeResolved->getDisplayName().c_str())});
     }
+
+    node->parent->allocateExtension();
+    node->parent->extension->alternativeScopes.push_back(scope);
+    node->parent->sourceFile->addGlobalUsing(idref);
 
     return true;
 }
