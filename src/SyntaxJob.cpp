@@ -164,7 +164,6 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
-#pragma optimize("", off)
 bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";

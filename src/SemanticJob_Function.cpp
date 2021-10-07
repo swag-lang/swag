@@ -87,6 +87,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 
             if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
                 funcParam->typeInfo->kind != TypeInfoKind::Enum &&
+                !funcParam->typeInfo->isPointerToTypeInfo() &&
                 funcParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
                 return context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())});

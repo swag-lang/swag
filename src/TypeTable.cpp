@@ -444,7 +444,6 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
-#pragma optimize("", off)
 bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
 {
     if (attributes.empty())
@@ -490,12 +489,24 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
                 curOffsetParams += sizeof(SwagSlice);
                 ptrStorageAllParams += sizeof(SwagSlice);
 
-                // This is variadic
                 auto typeValue = oneParam.typeInfo;
+
+                // This is a typed variadic
                 if (one.typeFunc && one.typeFunc->flags & TYPEINFO_TYPED_VARIADIC && cptParam >= one.typeFunc->parameters.size() - 1)
                 {
                     auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
                     typeValue         = typeVariadic->rawType;
+                }
+
+                // typeinfo
+                if (typeValue->isPointerToTypeInfo())
+                {
+                    auto addr = oneParam.value.storageSegment->address(oneParam.value.storageOffset);
+
+                    auto& mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
+                    auto  it        = mapPerSeg.concreteTypesReverse.find((ConcreteTypeInfo*) addr);
+                    SWAG_ASSERT(it != mapPerSeg.concreteTypesReverse.end());
+                    typeValue = it->second;
                 }
 
                 // Value of the parameter
