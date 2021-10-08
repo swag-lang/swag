@@ -349,17 +349,13 @@ bool SourceFile::internalError(AstNode* node, const char* msg)
     return false;
 }
 
-void SourceFile::addGlobalUsing(AstIdentifierRef* idRef)
+void SourceFile::addGlobalUsing(Scope* scope)
 {
-    if (idRef->ownerFct)
-        return;
-
-    for (auto const& p : globalUsings)
+    for (auto p : globalUsings)
     {
-        idRef->computeName();
-        if (p == idRef->token.text)
+        if (p->getFullName() == scope->getFullName())
             return;
     }
 
-    globalUsings.push_back(idRef->token.text);
+    globalUsings.push_back(scope);
 }

@@ -203,6 +203,7 @@ struct Module
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;
     JobGroup                        syntaxGroup;
+    Utf8                            namespaceName;
 
     AstNode*          astRoot             = nullptr;
     Scope*            scopeRoot           = nullptr;

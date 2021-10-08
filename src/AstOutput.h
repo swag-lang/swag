@@ -13,17 +13,14 @@ struct AstOutput
 {
     struct OutputContext : public JobContext
     {
-        int         indent            = 0;
-        bool        forExport         = false;
-        AstNode*    exportedNode      = nullptr;
-        SourceFile* currentSourceFile = nullptr;
+        int      indent       = 0;
+        bool     forExport    = false;
+        AstNode* exportedNode = nullptr;
     };
 
     static bool checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode);
     static void incIndentStatement(AstNode* node, int& indent);
     static void decIndentStatement(AstNode* node, int& indent);
-    static void enterSourceFile(OutputContext& context, Concat& concat, AstNode* node);
-    static void leaveSourceFile(OutputContext& context, Concat& concat);
 
     static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node);

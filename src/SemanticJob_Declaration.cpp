@@ -82,7 +82,8 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
 
     node->parent->allocateExtension();
     node->parent->extension->alternativeScopes.push_back(scope);
-    node->parent->sourceFile->addGlobalUsing(idref);
+    if (!idref->ownerFct)
+        node->parent->sourceFile->addGlobalUsing(scope);
 
     return true;
 }
