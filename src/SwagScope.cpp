@@ -100,6 +100,13 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoAlias->flags |= TYPEINFO_STRUCT_TYPEINFO;
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ConcreteTypeInfoAlias));
     }
+    else if (typeInfo->name == g_LangSpec->name_TypeInfoNamespace)
+    {
+        SWAG_ASSERT(!regTypeInfoNamespace);
+        regTypeInfoNamespace = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeInfoNamespace->flags |= TYPEINFO_STRUCT_TYPEINFO;
+        SWAG_ASSERT(typeInfo->sizeOf == sizeof(ConcreteTypeInfoNamespace));
+    }
     else if (typeInfo->name == g_LangSpec->name_CompilerSourceLocation)
     {
         SWAG_ASSERT(!regTypeInfoSourceLoc);

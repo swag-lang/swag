@@ -1,0 +1,4 @@
+#test
+{
+    ptr := @typeof(Swag)
+}

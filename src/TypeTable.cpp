@@ -118,6 +118,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     case TypeInfoKind::Alias:
         typeStruct = swagScope.regTypeInfoAlias;
         break;
+    case TypeInfoKind::Namespace:
+        typeStruct = swagScope.regTypeInfoNamespace;
+        break;
     default:
     {
         auto node = context->node;

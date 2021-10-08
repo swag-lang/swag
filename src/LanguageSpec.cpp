@@ -90,6 +90,7 @@ void LanguageSpec::setupNames()
     name_TypeInfoSlice     = "TypeInfoSlice";
     name_TypeInfoGeneric   = "TypeInfoGeneric";
     name_TypeInfoAlias     = "TypeInfoAlias";
+    name_TypeInfoNamespace = "TypeInfoNamespace";
 
     name_SystemAllocator        = "SystemAllocator";
     name_CompilerSourceLocation = "CompilerSourceLocation";

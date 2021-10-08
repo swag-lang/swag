@@ -291,6 +291,11 @@ struct ConcreteTypeInfoAlias
     ConcreteTypeInfo* rawType;
 };
 
+struct ConcreteTypeInfoNamespace
+{
+    ConcreteTypeInfo  base;
+};
+
 struct ConcreteTypeInfoParam
 {
     SwagSlice         name;

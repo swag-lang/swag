@@ -452,6 +452,11 @@ namespace Swag
         rawType:	const *TypeInfo
     }
 
+    struct TypeInfoNamespace
+    {
+        using base: TypeInfo
+    }
+
     // #########################################################
     // Build configuration
     // #########################################################
