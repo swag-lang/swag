@@ -532,7 +532,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     {
         if (token.id == TokenId::SymMinusGreat)
         {
-            typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+            typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
@@ -550,7 +550,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
     else if (typeFuncId == TokenId::CompilerAst)
     {
-        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
@@ -558,7 +558,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
     else if (typeFuncId == TokenId::CompilerSelectIf || typeFuncId == TokenId::CompilerCheckIf)
     {
-        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
@@ -684,7 +684,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         Ast::setForceConstType(typeExpression);
-        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
     }
 
     // Body

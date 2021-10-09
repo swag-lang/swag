@@ -250,7 +250,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
         SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
     }
 
-    if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->flags & AST_FUNC_RETURN_DEFINED))
+    if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->kind == AstNodeKind::Return);

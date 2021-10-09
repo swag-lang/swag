@@ -551,7 +551,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // In that case, symbol registration will not be done at the end of that function but once the return expression
     // has been evaluated, and the type deduced
     bool shortLambda = false;
-    if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+    if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
         shortLambda = true;
 
     // No semantic on content if function is generic
@@ -954,7 +954,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
-        if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+        if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
         {
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
             typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
