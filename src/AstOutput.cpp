@@ -300,16 +300,21 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
     return true;
 }
 
-bool AstOutput::outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node)
+bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstNode* node)
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributes(context, concat, node, typeEnum));
-    concat.addIndent(context.indent);
+    SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
-    CONCAT_FIXED_STR(concat, " : ");
-    SWAG_CHECK(outputType(context, concat, typeEnum->rawType));
+
+    // Raw type
+    if (!node->childs.front()->childs.empty())
+    {
+        CONCAT_FIXED_STR(concat, " : ");
+        SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::EnumType);
+        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+    }
 
     concat.addEolIndent(context.indent);
     CONCAT_FIXED_STR(concat, "{");
@@ -384,8 +389,9 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, Attribu
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
+bool AstOutput::outputAttributesGlobalUsing(OutputContext& context, Concat& concat, AstNode* node)
 {
+    // Global using
     bool one         = false;
     bool outputUsing = true;
     if (node->flags & AST_STRUCT_MEMBER)
@@ -415,9 +421,17 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
 
         if (one)
         {
-            CONCAT_FIXED_STR(concat, ")]\n");
+            CONCAT_FIXED_STR(concat, ")]");
+            concat.addEolIndent(context.indent);
         }
     }
+
+    return true;
+}
+
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
 
     AttributeList* attr = nullptr;
     switch (typeInfo->kind)
@@ -954,20 +968,27 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
         bool first    = true;
-        CONCAT_FIXED_STR(concat, "#[");
         for (auto s : nodeAttr->childs)
         {
             if (s == nodeAttr->content)
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
+            else
+            {
+                concat.addIndent(context.indent);
+                CONCAT_FIXED_STR(concat, "#[");
+            }
             first = false;
             SWAG_CHECK(outputNode(context, concat, s));
         }
 
-        concat.addChar(']');
-        concat.addEol();
-        concat.addIndent(context.indent);
+        if (!first)
+        {
+            concat.addChar(']');
+            concat.addEolIndent(context.indent);
+        }
+
         SWAG_CHECK(outputNode(context, concat, nodeAttr->content));
         break;
     }
@@ -1878,6 +1899,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         break;
 
+    case AstNodeKind::EnumDecl:
+        SWAG_CHECK(outputEnum(context, concat, node));
+        break;
+    case AstNodeKind::EnumType:
+        if (!node->childs.empty())
+            SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        break;
+
     default:
         return node->sourceFile->internalError(node, "Ast::outputNode, unknown node");
     }
@@ -1939,8 +1968,9 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicEnum)
         {
-            TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
-            SWAG_CHECK(outputEnum(context, concat, typeEnum, one));
+            while (one->parent && one->parent->kind == AstNodeKind::AttrUse)
+                one = one->parent;
+            SWAG_CHECK(outputNode(context, concat, one));
         }
     }
 

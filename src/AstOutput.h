@@ -23,12 +23,13 @@ struct AstOutput
     static void decIndentStatement(AstNode* node, int& indent);
 
     static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
-    static bool outputEnum(OutputContext& context, Concat& concat, TypeInfoEnum* typeEnum, AstNode* node);
+    static bool outputEnum(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     static bool outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf);
     static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
     static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
+    static bool outputAttributesGlobalUsing(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     static bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
