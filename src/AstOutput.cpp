@@ -608,7 +608,7 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
         if (varDecl->type)
         {
             CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputType(context, concat, varDecl->type->typeInfo));
+            SWAG_CHECK(outputNode(context, concat, varDecl->type));
         }
 
         if (varDecl->assignment)
