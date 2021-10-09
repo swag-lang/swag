@@ -174,7 +174,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
         SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
     }
 
-    if (typeFunc->flags & TYPEINFO_CAN_THROW)
+    if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
         CONCAT_FIXED_STR(concat, " throw");
 
     if (selectIf)

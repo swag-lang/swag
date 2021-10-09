@@ -544,6 +544,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::KwdThrow)
         {
             SWAG_CHECK(eatToken(TokenId::KwdThrow));
+            funcNode->specFlags |= AST_SPEC_FUNCDECL_THROW;
             funcNode->typeInfo->flags |= TYPEINFO_CAN_THROW;
         }
     }
