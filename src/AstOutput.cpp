@@ -81,39 +81,6 @@ void AstOutput::decIndentStatement(AstNode* node, int& indent)
         indent--;
 }
 
-bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
-{
-    bool first = true;
-    concat.addIndent(context.indent);
-    concat.addString("#[AttrUsage(");
-
-#define ADD_ATTRUSAGE(__f, __n)                      \
-    if (typeFunc->attributeUsage & (int) __f)        \
-    {                                                \
-        if (!first)                                  \
-            CONCAT_FIXED_STR(concat, "|");           \
-        first = false;                               \
-        CONCAT_FIXED_STR(concat, "AttributeUsage."); \
-        CONCAT_FIXED_STR(concat, __n);               \
-    }
-
-    if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
-        CONCAT_FIXED_STR(concat, "AttributeUsage.All");
-    else
-    {
-        ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
-        ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
-        ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
-        ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-        ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
-        ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
-    }
-
-    concat.addString(")]");
-    concat.addEol();
-    return true;
-}
-
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
 {
     ScopeExportNode sen(context, node);
@@ -273,6 +240,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstNode* node
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
     SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
+    concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
 
@@ -310,6 +278,39 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstNode* node
     concat.addEol();
 
     context.expansionNode.pop_back();
+    return true;
+}
+
+bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
+{
+    bool first = true;
+    concat.addIndent(context.indent);
+    concat.addString("#[AttrUsage(");
+
+#define ADD_ATTRUSAGE(__f, __n)                      \
+    if (typeFunc->attributeUsage & (int) __f)        \
+    {                                                \
+        if (!first)                                  \
+            CONCAT_FIXED_STR(concat, "|");           \
+        first = false;                               \
+        CONCAT_FIXED_STR(concat, "AttributeUsage."); \
+        CONCAT_FIXED_STR(concat, __n);               \
+    }
+
+    if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
+        CONCAT_FIXED_STR(concat, "AttributeUsage.All");
+    else
+    {
+        ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
+        ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
+        ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
+        ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
+        ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
+        ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
+    }
+
+    concat.addString(")]");
+    concat.addEol();
     return true;
 }
 
@@ -388,7 +389,7 @@ bool AstOutput::outputAttributesGlobalUsing(OutputContext& context, Concat& conc
         if (one)
         {
             CONCAT_FIXED_STR(concat, ")]");
-            concat.addEolIndent(context.indent);
+            concat.addEol();
         }
     }
 
@@ -952,7 +953,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (!first)
         {
             concat.addChar(']');
-            concat.addEolIndent(context.indent);
+            concat.addEol();
         }
 
         SWAG_CHECK(outputNode(context, concat, nodeAttr->content));
