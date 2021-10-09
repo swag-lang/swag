@@ -323,8 +323,6 @@ JobResult SyntaxJob::execute()
 
         if (!npName.empty())
         {
-            module->namespaceName = npName;
-
             auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
             namespaceNode->token.text = npName;
 
