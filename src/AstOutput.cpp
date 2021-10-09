@@ -124,43 +124,11 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
         CONCAT_FIXED_STR(concat, "func ");
 
     concat.addString(node->token.text);
-    CONCAT_FIXED_STR(concat, "(");
 
     if (parameters)
-    {
-        uint32_t idx = 0;
-        for (auto p : typeFunc->parameters)
-        {
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
-
-            // Name
-            bool isSelf = varDecl->token.text == g_LangSpec->name_self;
-            if (isSelf && p->typeInfo->isConst())
-                concat.addString("const ");
-
-            concat.addString(varDecl->token.text);
-
-            // Type
-            if (!isSelf)
-            {
-                CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputType(context, concat, p->typeInfo, p->declNode->childs.front()));
-            }
-
-            // Assignment
-            if (varDecl->assignment)
-            {
-                CONCAT_FIXED_STR(concat, " = ");
-                SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
-            }
-
-            if (idx != parameters->childs.size() - 1)
-                CONCAT_FIXED_STR(concat, ", ");
-            idx++;
-        }
-    }
-
-    CONCAT_FIXED_STR(concat, ")");
+        SWAG_CHECK(outputNode(context, concat, parameters));
+    else
+        CONCAT_FIXED_STR(concat, "()");
 
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
@@ -401,8 +369,6 @@ bool AstOutput::outputAttributesGlobalUsing(OutputContext& context, Concat& conc
         for (const auto& p : node->sourceFile->globalUsings)
         {
             if (p->getFullName() == "Swag")
-                continue;
-            if (p->getFullName() == node->sourceFile->module->namespaceName)
                 continue;
 
             if (!one)
@@ -850,7 +816,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
     if (node->extension && node->extension->exportNode)
         node = node->extension->exportNode;
-    if (node->flags & AST_GENERATED)
+    if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 
     switch (node->kind)
@@ -1426,17 +1392,23 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam)
             CONCAT_FIXED_STR(concat, "var ");
 
+        if (varDecl->token.text == "self" && varDecl->type && ((AstTypeExpression*) varDecl->type)->typeFlags & TYPEFLAG_ISCONST)
+            CONCAT_FIXED_STR(concat, "const ");
+
+        if (!varDecl->publicName.empty())
+            concat.addString(varDecl->publicName);
+        else
+            concat.addString(varDecl->token.text);
+
         if (varDecl->type)
         {
-            if (!varDecl->publicName.empty())
-                concat.addString(varDecl->publicName);
-            else
-                concat.addString(varDecl->token.text);
-
-            if (!(varDecl->type->flags & AST_GENERATED))
+            if (!(varDecl->type->flags & AST_GENERATED) || (varDecl->type->flags & AST_GENERATED_USER))
             {
-                CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputNode(context, concat, varDecl->type));
+                if (varDecl->token.text != "self")
+                {
+                    CONCAT_FIXED_STR(concat, ": ");
+                    SWAG_CHECK(outputNode(context, concat, varDecl->type));
+                }
             }
             else
             {
@@ -1459,11 +1431,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
         else
         {
-            if (!varDecl->publicName.empty())
-                concat.addString(varDecl->publicName);
+            if (node->kind == AstNodeKind::FuncDeclParam)
+                CONCAT_FIXED_STR(concat, " = ");
             else
-                concat.addString(varDecl->token.text);
-            CONCAT_FIXED_STR(concat, " := ");
+                CONCAT_FIXED_STR(concat, " := ");
             if (varDecl->assignment)
                 SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
         }
@@ -1542,27 +1513,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "discard ");
         if (node->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             CONCAT_FIXED_STR(concat, ".");
-        auto back = node->childs.back();
-        if (back->resolvedSymbolName)
-        {
-            auto symbol = back->resolvedSymbolName;
-            if (symbol && symbol->ownerTable->scope->isGlobal())
-            {
-                SWAG_CHECK(outputNode(context, concat, back));
-                break;
-            }
-        }
-
         int idx = 0;
         for (auto child : node->childs)
         {
-            // No need to output some scope names because the identifier will be generated with a full name
-            if (child->resolvedSymbolName &&
-                child->resolvedSymbolName->kind == SymbolKind::Namespace &&
-                child == node->childs.front() &&
-                node->childs.size() > 1)
-                continue;
-
             if (idx)
                 CONCAT_FIXED_STR(concat, ".");
             SWAG_CHECK(outputNode(context, concat, child));
@@ -1581,12 +1534,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(checkIsPublic(context, node, node));
 
         auto identifier = static_cast<AstIdentifier*>(node);
-        auto symbol     = identifier->resolvedSymbolName;
-
-        if (symbol && symbol->ownerTable->scope->isGlobal())
-            concat.addString(symbol->getFullName());
-        else
-            concat.addString(node->token.text);
+        concat.addString(node->token.text);
 
         if (identifier->genericParameters)
         {
@@ -1906,6 +1854,21 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (!node->childs.empty())
             SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         break;
+    case AstNodeKind::TypeLambda:
+    {
+        AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);
+        CONCAT_FIXED_STR(concat, "func");
+        if (!typeNode->parameters)
+            CONCAT_FIXED_STR(concat, "()");
+        else
+            SWAG_CHECK(outputNode(context, concat, typeNode->parameters));
+        if (typeNode->returnType)
+        {
+            CONCAT_FIXED_STR(concat, "->");
+            SWAG_CHECK(outputNode(context, concat, typeNode->returnType));
+        }
+        break;
+    }
 
     default:
         return node->sourceFile->internalError(node, "Ast::outputNode, unknown node");

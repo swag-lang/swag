@@ -249,7 +249,11 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         tokenizer.location                = parent->token.startLocation;
     }
 
-    ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
+    auto sflags = parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND);
+    sflags |= AST_GENERATED;
+    if (logGenerated)
+        sflags |= AST_GENERATED_USER;
+    ScopedFlags scopedFlags(this, sflags);
     SWAG_CHECK(eatToken());
     while (true)
     {

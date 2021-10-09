@@ -203,7 +203,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
             typeVariadic->rawType = typeNode->childs.front()->typeInfo;
             typeVariadic->flags |= (typeVariadic->rawType->flags & TYPEINFO_GENERIC);
             typeVariadic->forceComputeName();
-            typeNode->typeInfo = typeVariadic;
+            typeNode->literalType = typeVariadic;
+            typeNode->typeInfo    = typeVariadic;
         }
     }
 
