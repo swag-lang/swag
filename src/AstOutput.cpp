@@ -1363,13 +1363,16 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
     }
 
+    case AstNodeKind::ConstDecl:
     case AstNodeKind::VarDecl:
     case AstNodeKind::FuncDeclParam:
     {
         AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
         if (varDecl->flags & AST_DECL_USING)
             CONCAT_FIXED_STR(concat, "using ");
-        if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
+        if (node->kind == AstNodeKind::ConstDecl)
+            CONCAT_FIXED_STR(concat, "const ");
+        else if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
             CONCAT_FIXED_STR(concat, "var ");
 
         bool isSelf = varDecl->token.text == "self";
@@ -1414,30 +1417,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
         }
 
-        break;
-    }
-
-    case AstNodeKind::ConstDecl:
-    {
-        AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-        CONCAT_FIXED_STR(concat, "const ");
-
-        if (!varDecl->publicName.empty())
-            concat.addString(varDecl->publicName);
-        else
-            concat.addString(varDecl->token.text);
-
-        if (varDecl->type)
-        {
-            CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputNode(context, concat, varDecl->type));
-        }
-
-        if (varDecl->assignment)
-        {
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
-        }
         break;
     }
 
