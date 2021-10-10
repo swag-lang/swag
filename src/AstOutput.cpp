@@ -589,7 +589,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const char* ki
     return true;
 }
 
-bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node)
+bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* node)
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
@@ -626,6 +626,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
         CONCAT_FIXED_STR(concat, "{");
         concat.addEol();
 
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
 
         // We initialize one field with a dummy value to force the compiler to acknowledge that the
@@ -683,7 +684,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
     {
-        SWAG_CHECK(outputStruct(context, concat, typeStruct, (AstStruct*) typeStruct->declNode));
+        SWAG_CHECK(outputStruct(context, concat, (AstStruct*) typeStruct->declNode));
         return true;
     }
 
@@ -1903,7 +1904,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
-            SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
+            SWAG_CHECK(outputStruct(context, concat, node));
         }
     }
 
@@ -1914,7 +1915,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
             SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
-            SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
+            SWAG_CHECK(outputStruct(context, concat, node));
         }
     }
 

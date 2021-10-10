@@ -33,7 +33,7 @@ struct AstOutput
     static bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     static bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
-    static bool outputStruct(OutputContext& context, Concat& concat, TypeInfoStruct* typeStruct, AstStruct* node);
+    static bool outputStruct(OutputContext& context, Concat& concat, AstStruct* node);
     static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
     static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo, AstNode* node = nullptr);
     static bool outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
