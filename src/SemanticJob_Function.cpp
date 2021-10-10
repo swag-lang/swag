@@ -262,7 +262,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
     {
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
-            node->ownerScope->addPublicInlinedFunc(node);
+            node->ownerScope->addPublicNode(node);
         return true;
     }
 
@@ -282,14 +282,14 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_MACRO)
     {
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED) && !(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicInlinedFunc(node);
+            node->ownerScope->addPublicNode(node);
         SWAG_CHECK(setFullResolve(context, node));
         return true;
     }
 
     // An inline function will not have bytecode, so need to register public by hand now
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE) && !(node->flags & AST_FROM_GENERIC))
-        node->ownerScope->addPublicInlinedFunc(node);
+        node->ownerScope->addPublicNode(node);
 
     node->byteCodeFct   = ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;

@@ -1844,17 +1844,6 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         }
     }
 
-    // Generic functions
-    if (!publicSet->publicInlinedFunc.empty())
-    {
-        for (auto one : publicSet->publicInlinedFunc)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(one->typeInfo, TypeInfoKind::FuncAttr);
-            SWAG_CHECK(outputAttributes(context, concat, one, typeFunc));
-            SWAG_CHECK(outputNode(context, concat, one));
-        }
-    }
-
     // Functions
     if (!publicSet->publicFunc.empty())
     {

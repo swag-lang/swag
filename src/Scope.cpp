@@ -136,14 +136,6 @@ void Scope::addPublicAttribute(AstNode* node)
     setHasExports();
 }
 
-void Scope::addPublicInlinedFunc(AstNode* node)
-{
-    ScopedLock lk(mutex);
-    allocPublicSet();
-    publicSet->publicInlinedFunc.insert(node);
-    setHasExports();
-}
-
 void Scope::addPublicStruct(AstNode* node)
 {
     ScopedLock lk(mutex);
