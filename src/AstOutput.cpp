@@ -541,48 +541,66 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     return true;
 }
 
-bool AstOutput::outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node)
+bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* node)
 {
-    concat.addIndent(context.indent);
     if (node->flags & AST_DECL_USING)
         CONCAT_FIXED_STR(concat, "using ");
-    if (kindName)
-        concat.addString(kindName);
+
+    bool kindSpecified = false;
+    if (node->kind == AstNodeKind::ConstDecl)
+    {
+        kindSpecified = true;
+        CONCAT_FIXED_STR(concat, "const ");
+    }
+    else if (node->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
+    {
+        kindSpecified = true;
+        CONCAT_FIXED_STR(concat, "var ");
+    }
+
+    bool isSelf = node->token.text == "self";
+    if (isSelf && node->type && ((AstTypeExpression*) node->type)->typeFlags & TYPEFLAG_ISCONST)
+        CONCAT_FIXED_STR(concat, "const ");
 
     if (!(node->flags & AST_AUTO_NAME))
     {
-        concat.addString(node->token.text);
-        if (node->type)
-        {
-            ScopeExportNode sen(context, node);
-            CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputType(context, concat, node->typeInfo, node->type));
+        if (!node->publicName.empty())
+            concat.addString(node->publicName);
+        else
+            concat.addString(node->token.text);
+    }
 
-            // Type with parameters
-            if (node->type->kind == AstNodeKind::TypeExpression)
+    if (node->type)
+    {
+        if (!(node->type->flags & AST_GENERATED) || (node->type->flags & AST_GENERATED_USER))
+        {
+            if (!isSelf)
             {
-                auto typeNode = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-                if (typeNode->identifier && typeNode->identifier->childs.back()->kind == AstNodeKind::Identifier)
-                {
-                    auto typeId = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-                    if (typeId->callParameters)
-                    {
-                        concat.addChar('{');
-                        SWAG_CHECK(outputNode(context, concat, typeId->callParameters));
-                        concat.addChar('}');
-                    }
-                }
+                if (!(node->flags & AST_AUTO_NAME))
+                    CONCAT_FIXED_STR(concat, ": ");
+                SWAG_CHECK(outputNode(context, concat, node->type));
             }
         }
-    }
-    else
-    {
-        SWAG_CHECK(outputType(context, concat, node->typeInfo));
+        else
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+            SWAG_ASSERT(!node->assignment);
+            SWAG_ASSERT(typeExpr->identifier);
+            SWAG_ASSERT(node->type->typeInfo && (node->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
+            auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
+            CONCAT_FIXED_STR(concat, "@{");
+            SWAG_CHECK(outputNode(context, concat, id->callParameters));
+            CONCAT_FIXED_STR(concat, "}");
+        }
     }
 
     if (node->assignment)
     {
-        CONCAT_FIXED_STR(concat, " = ");
+        if (node->type || kindSpecified || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
+            CONCAT_FIXED_STR(concat, " = ");
+        else
+            CONCAT_FIXED_STR(concat, " := ");
         SWAG_CHECK(outputNode(context, concat, node->assignment));
     }
 
@@ -700,7 +718,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
             auto varDecl    = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
             auto saveIndent = context.indent;
             context.indent  = 0;
-            SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
+            SWAG_CHECK(outputVar(context, concat, varDecl));
             context.indent = saveIndent;
         }
         else
@@ -1368,63 +1386,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::FuncDeclParam:
     {
         AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-        if (varDecl->flags & AST_DECL_USING)
-            CONCAT_FIXED_STR(concat, "using ");
-
-        bool kindSpecified = false;
-        if (node->kind == AstNodeKind::ConstDecl)
-        {
-            kindSpecified = true;
-            CONCAT_FIXED_STR(concat, "const ");
-        }
-        else if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
-        {
-            kindSpecified = true;
-            CONCAT_FIXED_STR(concat, "var ");
-        }
-
-        bool isSelf = varDecl->token.text == "self";
-        if (isSelf && varDecl->type && ((AstTypeExpression*) varDecl->type)->typeFlags & TYPEFLAG_ISCONST)
-            CONCAT_FIXED_STR(concat, "const ");
-
-        if (!varDecl->publicName.empty())
-            concat.addString(varDecl->publicName);
-        else
-            concat.addString(varDecl->token.text);
-
-        if (varDecl->type)
-        {
-            if (!(varDecl->type->flags & AST_GENERATED) || (varDecl->type->flags & AST_GENERATED_USER))
-            {
-                if (!isSelf)
-                {
-                    CONCAT_FIXED_STR(concat, ": ");
-                    SWAG_CHECK(outputNode(context, concat, varDecl->type));
-                }
-            }
-            else
-            {
-                CONCAT_FIXED_STR(concat, " = ");
-                auto typeExpr = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
-                SWAG_ASSERT(!varDecl->assignment);
-                SWAG_ASSERT(typeExpr->identifier);
-                SWAG_ASSERT(varDecl->type->typeInfo && (varDecl->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
-                auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
-                CONCAT_FIXED_STR(concat, "@{");
-                SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                CONCAT_FIXED_STR(concat, "}");
-            }
-        }
-
-        if (varDecl->assignment)
-        {
-            if (varDecl->type || kindSpecified || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
-                CONCAT_FIXED_STR(concat, " = ");
-            else
-                CONCAT_FIXED_STR(concat, " := ");
-            SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
-        }
-
+        SWAG_CHECK(outputVar(context, concat, varDecl));
         break;
     }
 

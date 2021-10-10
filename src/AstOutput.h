@@ -32,7 +32,7 @@ struct AstOutput
     static bool outputAttributesGlobalUsing(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    static bool outputVar(OutputContext& context, Concat& concat, const char* kindName, AstVarDecl* node);
+    static bool outputVar(OutputContext& context, Concat& concat, AstVarDecl* node);
     static bool outputStruct(OutputContext& context, Concat& concat, AstStruct* node);
     static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
     static bool outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo, AstNode* node = nullptr);
