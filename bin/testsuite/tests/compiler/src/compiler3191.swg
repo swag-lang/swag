@@ -1,9 +1,9 @@
 #[Swag.Macro]
-public func(T) x3191()
+public func(T) x3191() throw
 {
 }
 
 #test
 {
-    x3191's32()
+    catch x3191's32()
 }

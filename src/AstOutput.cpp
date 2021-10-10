@@ -119,9 +119,9 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
         CONCAT_FIXED_STR(concat, "attr ");
     else
         CONCAT_FIXED_STR(concat, "func ");
-
     concat.addString(node->token.text);
 
+    // Parameters
     if (parameters)
         SWAG_CHECK(outputNode(context, concat, parameters));
     else
@@ -149,13 +149,15 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
         }
     }
 
+    // Throw
     if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
         CONCAT_FIXED_STR(concat, " throw");
 
+    // Select if must be exported
     if (selectIf)
     {
-        concat.addEolIndent(context.indent + 1);
         context.indent++;
+        concat.addEolIndent(context.indent);
         SWAG_CHECK(outputNode(context, concat, selectIf));
         context.indent--;
     }
@@ -167,7 +169,6 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
 bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
     concat.addIndent(context.indent);
@@ -180,6 +181,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
             SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
     }
 
+    // Name
     CONCAT_FIXED_STR(concat, " ");
     concat.addString(node->token.text);
 
@@ -193,6 +195,8 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     auto returnNode = node->returnType;
     if (returnNode && !returnNode->childs.empty())
         returnNode = returnNode->childs.front();
+
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
@@ -203,6 +207,10 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputNode(context, concat, returnNode));
     }
+
+    // Throw
+    if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
+        CONCAT_FIXED_STR(concat, " throw");
 
     // Content, short lambda
     if (node->flags & AST_SHORT_LAMBDA)
