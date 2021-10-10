@@ -843,6 +843,15 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
     }
 
+    case AstNodeKind::EnumType:
+        if (!node->childs.empty())
+            SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        break;
+
+    case AstNodeKind::EnumDecl:
+        SWAG_CHECK(outputEnum(context, concat, node));
+        break;
+
     case AstNodeKind::StructContent:
     case AstNodeKind::TupleContent:
         CONCAT_FIXED_STR(concat, "{ ");
@@ -1830,15 +1839,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         CONCAT_FIXED_STR(concat, "..");
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
-        break;
-
-    case AstNodeKind::EnumDecl:
-        SWAG_CHECK(outputEnum(context, concat, node));
-        break;
-
-    case AstNodeKind::EnumType:
-        if (!node->childs.empty())
-            SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         break;
 
     case AstNodeKind::TypeLambda:
