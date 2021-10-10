@@ -267,7 +267,6 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
 
@@ -301,7 +300,6 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
 
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "}");
-    concat.addEol();
     concat.addEol();
 
     context.expansionNode.pop_back();
@@ -932,10 +930,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
             else
-            {
-                concat.addIndent(context.indent);
                 CONCAT_FIXED_STR(concat, "#[");
-            }
             first = false;
             SWAG_CHECK(outputNode(context, concat, s));
         }
@@ -943,7 +938,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (!first)
         {
             concat.addChar(']');
-            concat.addEol();
+            concat.addEolIndent(context.indent);
         }
 
         SWAG_CHECK(outputNode(context, concat, nodeAttr->content));
