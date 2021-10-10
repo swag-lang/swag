@@ -81,6 +81,36 @@ void AstOutput::decIndentStatement(AstNode* node, int& indent)
         indent--;
 }
 
+bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
+{
+    CONCAT_FIXED_STR(concat, "(");
+    int idx = 0;
+    for (auto p : node->childs)
+    {
+        if (idx)
+            CONCAT_FIXED_STR(concat, ", ");
+        concat.addString(p->token.text);
+
+        AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        if (varDecl->type)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            SWAG_CHECK(outputNode(context, concat, varDecl->type));
+        }
+
+        if (varDecl->assignment)
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
+        }
+
+        idx++;
+    }
+
+    CONCAT_FIXED_STR(concat, ")");
+    return true;
+}
+
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
 {
     ScopeExportNode sen(context, node);
@@ -142,42 +172,11 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
 
     CONCAT_FIXED_STR(concat, " ");
     concat.addString(node->token.text);
-    CONCAT_FIXED_STR(concat, "(");
 
-    uint32_t idx = 0;
     if (node->parameters)
-    {
-        for (auto p : node->parameters->childs)
-        {
-            if (p->flags & AST_DECL_USING)
-                CONCAT_FIXED_STR(concat, "using ");
-
-            bool isSelf = p->token.text == g_LangSpec->name_self;
-            if (isSelf && p->typeInfo->isConst())
-                concat.addString("const ");
-
-            concat.addString(p->token.text);
-
-            if (!isSelf)
-            {
-                CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputType(context, concat, p->typeInfo));
-            }
-
-            auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-            if (param->assignment)
-            {
-                CONCAT_FIXED_STR(concat, " = ");
-                SWAG_CHECK(outputNode(context, concat, param->assignment));
-            }
-
-            if (idx != typeFunc->parameters.size() - 1)
-                CONCAT_FIXED_STR(concat, ", ");
-            idx++;
-        }
-    }
-
-    CONCAT_FIXED_STR(concat, ")");
+        SWAG_CHECK(outputNode(context, concat, node->parameters));
+    else
+        CONCAT_FIXED_STR(concat, "()");
 
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
@@ -558,36 +557,6 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const char* ki
         SWAG_CHECK(outputNode(context, concat, node->assignment));
     }
 
-    return true;
-}
-
-bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
-{
-    CONCAT_FIXED_STR(concat, "(");
-    int idx = 0;
-    for (auto p : node->childs)
-    {
-        if (idx)
-            CONCAT_FIXED_STR(concat, ", ");
-        concat.addString(p->token.text);
-
-        AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-        if (varDecl->type)
-        {
-            CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputNode(context, concat, varDecl->type));
-        }
-
-        if (varDecl->assignment)
-        {
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
-        }
-
-        idx++;
-    }
-
-    CONCAT_FIXED_STR(concat, ")");
     return true;
 }
 
@@ -1774,6 +1743,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (typeNode->typeFlags & TYPEFLAG_RETVAL)
         {
             CONCAT_FIXED_STR(concat, "retval");
+            break;
+        }
+
+        if (typeNode->typeInfo)
+        {
+            SWAG_CHECK(outputType(context, concat, typeNode->typeInfo, typeNode));
             break;
         }
 
