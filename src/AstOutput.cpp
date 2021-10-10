@@ -264,7 +264,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     return true;
 }
 
-bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstNode* node)
+bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
@@ -850,8 +850,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::EnumDecl:
-        SWAG_CHECK(outputEnum(context, concat, node));
+    {
+        auto nodeEnum = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        SWAG_CHECK(outputEnum(context, concat, nodeEnum));
         break;
+    }
 
     case AstNodeKind::StructContent:
     case AstNodeKind::TupleContent:
@@ -875,19 +878,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::InterfaceDecl:
     {
         auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-        concat.addIndent(context.indent);
-        switch (node->kind)
-        {
-        case AstNodeKind::StructDecl:
-            CONCAT_FIXED_STR(concat, "struct ");
-            break;
-        case AstNodeKind::InterfaceDecl:
-            CONCAT_FIXED_STR(concat, "interface ");
-            break;
-        }
-        concat.addString(nodeStruct->token.text);
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, nodeStruct->content));
+        SWAG_CHECK(outputStruct(context, concat, nodeStruct));
         break;
     }
 
