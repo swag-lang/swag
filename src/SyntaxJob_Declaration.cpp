@@ -306,15 +306,73 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     subDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
     subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL;
 
-    // Move to the root
+    AstAttrUse* newAttrUse = nullptr;
+
+    // If parent is an attribute, then we will move it with the subdecl
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
         subDecl = subDecl->parent;
+
+    // Else if we are in an attruse block, we need to duplicate each of them, in order
+    // for the subdecl to have its own attruse
+    else if (subDecl->parent->kind == AstNodeKind::Statement)
+    {
+        auto testParent = subDecl->parent;
+        while (testParent)
+        {
+            while (testParent && testParent->kind == AstNodeKind::Statement)
+                testParent = testParent->parent;
+            if (!testParent)
+                break;
+            if (testParent->kind != AstNodeKind::AttrUse)
+                break;
+            if (!newAttrUse)
+                newAttrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, subDecl->sourceFile, subDecl->parent);
+
+            // Clone all attributes
+            CloneContext cloneContext;
+            for (int i = 0; i < testParent->childs.size() - 1; i++) // Do not clone content
+            {
+                cloneContext.parent = newAttrUse;
+                auto child          = testParent->childs[i]->clone(cloneContext);
+
+                // Only the last attribute of the block needs to have a semanticAfterFct, so
+                // we rest it, and we will set it later for the last child
+                // :AttrUseLastChild
+                if (child->extension)
+                    child->extension->semanticAfterFct = nullptr;
+
+                // Need to add attributes in the correct order (top level first)
+                Ast::removeFromParent(child);
+                Ast::addChildFront(newAttrUse, child);
+            }
+
+            testParent = testParent->parent;
+        }
+    }
+
     auto newParent = subDecl->parent;
     Ast::removeFromParent(subDecl);
 
     // :SubDeclParent
     while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
         newParent = newParent->parent;
+
+    // Force the parent to be the new attribute, if defined
+    if (newAttrUse)
+    {
+        // The last child must have the semanticAfterFct set
+        // :AttrUseLastChild
+        auto back = newAttrUse->childs.back();
+        back->allocateExtension();
+        SWAG_ASSERT(!back->extension->semanticAfterFct);
+        back->extension->semanticAfterFct = SemanticJob::resolveAttrUse;
+
+        Ast::removeFromParent(newAttrUse);
+        Ast::addChildBack(newParent, newAttrUse);
+        newAttrUse->content = subDecl;
+        subDecl->setOwnerAttrUse(newAttrUse);
+        newParent = newAttrUse;
+    }
 
     Ast::addChildBack(newParent, subDecl);
 }

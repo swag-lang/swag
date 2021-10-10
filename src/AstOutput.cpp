@@ -241,7 +241,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     {
         for (auto c : node->subDecls)
         {
-            while (c->parent && c->parent->kind == AstNodeKind::AttrUse)
+            if (c->parent && c->parent->kind == AstNodeKind::AttrUse)
                 c = c->parent;
             SWAG_CHECK(outputNode(context, concat, c));
             concat.addEol();
@@ -910,7 +910,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::AttrUse:
     {
         auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
-        bool first    = true;
+        //if (nodeAttr->content->kind == AstNodeKind::Statement && nodeAttr->content->childs.empty())
+        //    break;
+        bool first = true;
         for (auto s : nodeAttr->childs)
         {
             if (s == nodeAttr->content)

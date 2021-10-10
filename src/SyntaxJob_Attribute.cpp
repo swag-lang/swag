@@ -169,10 +169,12 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             break;
     }
 
+    // :AttrUseLastChild
     SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, g_E[Err0356]));
     auto back = attrBlockNode->childs.back();
     back->allocateExtension();
     SWAG_ASSERT(!back->extension->semanticAfterFct);
     back->extension->semanticAfterFct = SemanticJob::resolveAttrUse;
+
     return true;
 }
