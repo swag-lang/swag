@@ -171,7 +171,6 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "func");
 
     // Emit generic parameter, except if the function is an instance
@@ -611,9 +610,6 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-        concat.addIndent(context.indent);
-
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(concat, "interface");
     else
@@ -686,9 +682,6 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     {
         SWAG_CHECK(outputNode(context, concat, node->content));
     }
-
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
-        concat.addEol();
 
     context.expansionNode.pop_back();
     return true;
@@ -1814,8 +1807,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicNodes)
         {
-            concat.addIndent(context.indent);
             SWAG_CHECK(outputAttributes(context, concat, one, one->typeInfo));
+            concat.addIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
         }
