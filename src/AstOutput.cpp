@@ -165,8 +165,9 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     return true;
 }
 
-bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
     SWAG_CHECK(outputAttributes(context, concat, node, typeFunc));
@@ -183,17 +184,28 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, TypeInfoFuncA
     CONCAT_FIXED_STR(concat, " ");
     concat.addString(node->token.text);
 
+    // Parameters
     if (node->parameters)
         SWAG_CHECK(outputNode(context, concat, node->parameters));
     else
         CONCAT_FIXED_STR(concat, "()");
 
+    // Return type
+    auto returnNode = node->returnType;
+    if (returnNode && !returnNode->childs.empty())
+        returnNode = returnNode->childs.front();
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
-        SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
+        SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
+    }
+    else if (node->returnType && node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        SWAG_CHECK(outputNode(context, concat, returnNode));
     }
 
+    // Content
     if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, " => ");
@@ -1928,9 +1940,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicInlinedFunc)
         {
-            AstFuncDecl*      node     = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            SWAG_CHECK(outputFunc(context, concat, typeFunc, node));
+            AstFuncDecl* node = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            SWAG_CHECK(outputFunc(context, concat, node));
         }
     }
 
