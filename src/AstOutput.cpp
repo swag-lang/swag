@@ -205,7 +205,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     }
 
     // Content, short lambda
-    if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+    if (node->flags & AST_SHORT_LAMBDA)
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
