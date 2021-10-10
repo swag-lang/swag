@@ -136,22 +136,6 @@ void Scope::addPublicAttribute(AstNode* node)
     setHasExports();
 }
 
-void Scope::addPublicStruct(AstNode* node)
-{
-    ScopedLock lk(mutex);
-    allocPublicSet();
-    publicSet->publicStruct.insert(node);
-    setHasExports();
-}
-
-void Scope::addPublicInterface(AstNode* node)
-{
-    ScopedLock lk(mutex);
-    allocPublicSet();
-    publicSet->publicInterface.insert(node);
-    setHasExports();
-}
-
 void Scope::addPublicNode(AstNode* node)
 {
     ScopedLock lk(mutex);

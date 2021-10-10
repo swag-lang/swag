@@ -1809,7 +1809,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     if (!publicSet)
         return true;
 
-    // Stuff (enum/const/alias)
+    // Stuff
     if (!publicSet->publicNodes.empty())
     {
         for (auto one : publicSet->publicNodes)
@@ -1818,29 +1818,6 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             SWAG_CHECK(outputAttributes(context, concat, one, one->typeInfo));
             SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
-        }
-    }
-
-    // Structures
-    if (!publicSet->publicStruct.empty())
-    {
-        for (auto one : publicSet->publicStruct)
-        {
-            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
-            SWAG_CHECK(outputStruct(context, concat, node));
-        }
-    }
-
-    if (!publicSet->publicInterface.empty())
-    {
-        for (auto one : publicSet->publicInterface)
-        {
-            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
-            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-            SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
-            SWAG_CHECK(outputStruct(context, concat, node));
         }
     }
 

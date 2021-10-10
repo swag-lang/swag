@@ -45,8 +45,6 @@ struct ScopePublicSet
 {
     set<AstNode*> publicFunc;
     set<AstNode*> publicAttr;
-    set<AstNode*> publicStruct;
-    set<AstNode*> publicInterface;
     set<AstNode*> publicNodes;
 };
 
@@ -60,8 +58,6 @@ struct Scope
     void               setHasExports();
     void               addPublicFunc(AstNode* node);
     void               addPublicAttribute(AstNode* node);
-    void               addPublicStruct(AstNode* node);
-    void               addPublicInterface(AstNode* node);
     void               addPublicNode(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();

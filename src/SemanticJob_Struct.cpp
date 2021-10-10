@@ -907,7 +907,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (!node->ownerScope->isGlobalOrImpl())
             return context->report({node, Utf8::format(g_E[Err0675], node->token.text.c_str())});
         if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicStruct(node);
+            node->ownerScope->addPublicNode(node);
     }
 
     // Need to recompute it if it's from generic
@@ -1072,7 +1072,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             return context->report({node, Utf8::format(g_E[Err0684], node->token.text.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicInterface(node);
+            node->ownerScope->addPublicNode(node);
     }
 
     // Register symbol with its type
