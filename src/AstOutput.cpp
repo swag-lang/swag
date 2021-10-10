@@ -1370,10 +1370,18 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
         if (varDecl->flags & AST_DECL_USING)
             CONCAT_FIXED_STR(concat, "using ");
+
+        bool kindSpecified = false;
         if (node->kind == AstNodeKind::ConstDecl)
+        {
+            kindSpecified = true;
             CONCAT_FIXED_STR(concat, "const ");
+        }
         else if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
+        {
+            kindSpecified = true;
             CONCAT_FIXED_STR(concat, "var ");
+        }
 
         bool isSelf = varDecl->token.text == "self";
         if (isSelf && varDecl->type && ((AstTypeExpression*) varDecl->type)->typeFlags & TYPEFLAG_ISCONST)
@@ -1410,7 +1418,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         if (varDecl->assignment)
         {
-            if (varDecl->type || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
+            if (varDecl->type || kindSpecified || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
                 CONCAT_FIXED_STR(concat, " = ");
             else
                 CONCAT_FIXED_STR(concat, " := ");
@@ -1844,8 +1852,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicConst)
         {
-            AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
-            SWAG_CHECK(outputVar(context, concat, "const ", node));
+            concat.addIndent(context.indent);
+            SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
         }
     }
