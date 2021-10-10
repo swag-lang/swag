@@ -49,7 +49,6 @@ struct ScopePublicSet
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
     set<AstNode*> publicEnum;
-    set<AstNode*> publicConst;
     set<AstNode*> publicNodes;
 };
 
@@ -67,7 +66,6 @@ struct Scope
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);
     void               addPublicEnum(AstNode* node);
-    void               addPublicConst(AstNode* node);
     void               addPublicNode(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();

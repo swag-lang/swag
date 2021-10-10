@@ -635,7 +635,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
         if (node->ownerScope->isGlobalOrImpl() && (node->type || node->assignment))
-            node->ownerScope->addPublicConst(node);
+            node->ownerScope->addPublicNode(node);
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)

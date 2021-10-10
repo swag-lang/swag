@@ -1809,19 +1809,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     if (!publicSet)
         return true;
 
-    // Consts
-    if (!publicSet->publicConst.empty())
-    {
-        for (auto one : publicSet->publicConst)
-        {
-            concat.addIndent(context.indent);
-            SWAG_CHECK(outputAttributes(context, concat, one, one->typeInfo));
-            SWAG_CHECK(outputNode(context, concat, one));
-            concat.addEol();
-        }
-    }
-
-    // Stuff (alias)
+    // Stuff (const/alias)
     if (!publicSet->publicNodes.empty())
     {
         for (auto one : publicSet->publicNodes)
