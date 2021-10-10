@@ -204,52 +204,53 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         SWAG_CHECK(outputNode(context, concat, returnNode));
     }
 
-    // Content
+    // Content, short lambda
     if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
         SWAG_CHECK(outputNode(context, concat, node->content->childs.front()));
         concat.addEol();
+        context.expansionNode.pop_back();
+        return true;
+    }
+
+    // Content, normal function
+    concat.addEolIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "{");
+    context.indent++;
+    concat.addEol();
+
+    if (node->content->kind != AstNodeKind::Statement)
+    {
+        concat.addIndent(context.indent);
+        context.indent--;
+        SWAG_CHECK(outputNode(context, concat, node->content));
+        context.indent++;
+        concat.addEol();
     }
     else
     {
-        concat.addEolIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "{");
-        context.indent++;
-        concat.addEol();
-
-        if (node->content->kind != AstNodeKind::Statement)
+        for (auto c : node->subDecls)
         {
-            concat.addIndent(context.indent);
-            context.indent--;
-            SWAG_CHECK(outputNode(context, concat, node->content));
-            context.indent++;
+            while (c->parent && c->parent->kind == AstNodeKind::AttrUse)
+                c = c->parent;
+            SWAG_CHECK(outputNode(context, concat, c));
             concat.addEol();
         }
-        else
+
+        for (auto c : node->content->childs)
         {
-            for (auto c : node->subDecls)
-            {
-                while (c->parent && c->parent->kind == AstNodeKind::AttrUse)
-                    c = c->parent;
-                SWAG_CHECK(outputNode(context, concat, c));
-                concat.addEol();
-            }
-
-            for (auto c : node->content->childs)
-            {
-                concat.addIndent(context.indent);
-                SWAG_CHECK(outputNode(context, concat, c));
-                concat.addEol();
-            }
+            concat.addIndent(context.indent);
+            SWAG_CHECK(outputNode(context, concat, c));
+            concat.addEol();
         }
-
-        context.indent--;
-        concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
-        concat.addEol();
     }
+
+    context.indent--;
+    concat.addIndent(context.indent);
+    CONCAT_FIXED_STR(concat, "}");
+    concat.addEol();
 
     context.expansionNode.pop_back();
     return true;
@@ -259,7 +260,6 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstNode* node
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
@@ -1906,8 +1906,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (auto one : publicSet->publicEnum)
         {
-            while (one->parent && one->parent->kind == AstNodeKind::AttrUse)
-                one = one->parent;
+            auto typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
+            SWAG_CHECK(outputAttributes(context, concat, one, typeEnum));
             SWAG_CHECK(outputNode(context, concat, one));
         }
     }
