@@ -1833,10 +1833,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::EnumDecl:
         SWAG_CHECK(outputEnum(context, concat, node));
         break;
+
     case AstNodeKind::EnumType:
         if (!node->childs.empty())
             SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         break;
+
     case AstNodeKind::TypeLambda:
     {
         AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);

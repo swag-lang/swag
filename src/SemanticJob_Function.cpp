@@ -932,7 +932,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // For a return inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
     auto funcNode = node->ownerFct;
-    if (node->ownerInline)
+    if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
         {
