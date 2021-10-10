@@ -925,7 +925,7 @@ AstNode* AstInline::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
 
     // If we clone an inline block after bytecode generation (this happens if we have a mixin inside an inline function
-    // for example), then we do not want to copy the AST_NO_BYTECODE_CHILDS (because we want the inline block to be 
+    // for example), then we do not want to copy the AST_NO_BYTECODE_CHILDS (because we want the inline block to be
     // generated).
     // :EmitInlineOnce
     newNode->flags &= ~AST_NO_BYTECODE_CHILDS;
@@ -938,12 +938,13 @@ AstNode* AstInline::clone(CloneContext& context)
     // For example because of createTmpVarStruct, with inline calls as parameters: titi(A{round(6)}) => round already inlined.
     // I guess one day this will hit me in the face...
     newNode->parametersScope = parametersScope;
-    //newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
     cloneContext.ownerInline = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
+
+    if (scope && scope->kind == ScopeKind::Inline)
+        cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
 
     newNode->scope = cloneContext.parentScope;
     newNode->cloneChilds(cloneContext, this);
