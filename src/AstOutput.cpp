@@ -1825,16 +1825,14 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
                 continue;
 
-            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            // Remape special functions to their generated equivalent
             node->computeFullNameForeign(true);
             concat.addIndent(context.indent);
-
-            // Remape special functions to their generated equivalent
             concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
             concat.addEol();
-            SWAG_CHECK(outputAttributes(context, concat, node, typeFunc));
-            concat.addIndent(context.indent);
+            SWAG_CHECK(outputAttributes(context, concat, node, node->typeInfo));
 
+            concat.addIndent(context.indent);
             if (node->token.text == g_LangSpec->name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opInit(using self);");
