@@ -1815,6 +1815,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         for (auto one : publicSet->publicConst)
         {
             concat.addIndent(context.indent);
+            SWAG_CHECK(outputAttributes(context, concat, one, one->typeInfo));
             SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
         }
@@ -1826,6 +1827,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         for (auto one : publicSet->publicNodes)
         {
             concat.addIndent(context.indent);
+            SWAG_CHECK(outputAttributes(context, concat, one, one->typeInfo));
             SWAG_CHECK(outputNode(context, concat, one));
             concat.addEol();
         }
