@@ -1369,10 +1369,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
         if (varDecl->flags & AST_DECL_USING)
             CONCAT_FIXED_STR(concat, "using ");
-        if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam)
+        if (varDecl->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
             CONCAT_FIXED_STR(concat, "var ");
 
-        if (varDecl->token.text == "self" && varDecl->type && ((AstTypeExpression*) varDecl->type)->typeFlags & TYPEFLAG_ISCONST)
+        bool isSelf = varDecl->token.text == "self";
+        if (isSelf && varDecl->type && ((AstTypeExpression*) varDecl->type)->typeFlags & TYPEFLAG_ISCONST)
             CONCAT_FIXED_STR(concat, "const ");
 
         if (!varDecl->publicName.empty())
@@ -1384,7 +1385,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             if (!(varDecl->type->flags & AST_GENERATED) || (varDecl->type->flags & AST_GENERATED_USER))
             {
-                if (varDecl->token.text != "self")
+                if (!isSelf)
                 {
                     CONCAT_FIXED_STR(concat, ": ");
                     SWAG_CHECK(outputNode(context, concat, varDecl->type));
@@ -1402,21 +1403,15 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 SWAG_CHECK(outputNode(context, concat, id->callParameters));
                 CONCAT_FIXED_STR(concat, "}");
             }
-
-            if (varDecl->assignment)
-            {
-                CONCAT_FIXED_STR(concat, " = ");
-                SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
-            }
         }
-        else
+
+        if (varDecl->assignment)
         {
-            if (node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
+            if (varDecl->type || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
                 CONCAT_FIXED_STR(concat, " = ");
             else
                 CONCAT_FIXED_STR(concat, " := ");
-            if (varDecl->assignment)
-                SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
+            SWAG_CHECK(outputNode(context, concat, varDecl->assignment));
         }
 
         break;
