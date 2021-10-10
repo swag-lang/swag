@@ -910,8 +910,28 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::AttrUse:
     {
         auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
-        //if (nodeAttr->content->kind == AstNodeKind::Statement && nodeAttr->content->childs.empty())
-        //    break;
+
+        // Be sure this is not an empty attribute block (empty or that contains
+        // other empty blocks)
+        bool hasSomething = true;
+        auto scanAttr     = nodeAttr;
+        while (scanAttr->content->kind == AstNodeKind::Statement)
+        {
+            if (scanAttr->content->childs.empty())
+            {
+                hasSomething = false;
+                break;
+            }
+            if (scanAttr->content->childs.size() > 1)
+                break;
+            if (scanAttr->content->childs[0]->kind != AstNodeKind::AttrUse)
+                break;
+            scanAttr = (AstAttrUse*) scanAttr->content->childs[0];
+        }
+
+        if (!hasSomething)
+            break;
+
         bool first = true;
         for (auto s : nodeAttr->childs)
         {

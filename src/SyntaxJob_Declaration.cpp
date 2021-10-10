@@ -316,7 +316,8 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     // for the subdecl to have its own attruse
     else if (subDecl->parent->kind == AstNodeKind::Statement)
     {
-        auto testParent = subDecl->parent;
+        auto testParent  = subDecl->parent;
+        int  idxToInsert = 0;
         while (testParent)
         {
             while (testParent && testParent->kind == AstNodeKind::Statement)
@@ -343,10 +344,11 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
 
                 // Need to add attributes in the correct order (top level first)
                 Ast::removeFromParent(child);
-                Ast::addChildFront(newAttrUse, child);
+                Ast::insertChild(newAttrUse, child, idxToInsert++);
             }
 
-            testParent = testParent->parent;
+            idxToInsert = 0;
+            testParent  = testParent->parent;
         }
     }
 
