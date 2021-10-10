@@ -504,7 +504,10 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     else
         newFunc->content->flags &= ~AST_NO_SEMANTIC;
 
-    Ast::addChildBack(funcNode->parent, newFunc);
+    auto p = funcNode->parent;
+    while (p && p->kind == AstNodeKind::AttrUse)
+        p = p->parent;
+    Ast::addChildBack(p, newFunc);
 
     // If we are calling the function in a struct context (struct.func), then add the struct as
     // an alternative scope

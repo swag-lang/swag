@@ -1,7 +1,7 @@
-func toto(x: s64)->s64 => 0
-func toto(x: bool)->bool => true
+public func toto2775(x: s64)->s64 => 0
+public func toto2775(x: bool)->bool => true
 
-public func(T) titi2775(x: T) => toto(x)
+public func(T) titi2775(x: T) => toto2775(x)
 
 #test
 {
