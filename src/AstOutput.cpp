@@ -617,15 +617,17 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
         concat.addString(node->token.text);
     }
 
-    concat.addEol();
-    concat.addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "{");
-    concat.addEol();
+    concat.addEolIndent(context.indent);
 
     // Opaque export. Just simulate structure with the correct size.
     // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
     if (node->attributeFlags & ATTRIBUTE_OPAQUE)
     {
+        CONCAT_FIXED_STR(concat, "{");
+        concat.addEol();
+
+        SWAG_ASSERT(typeStruct);
+
         // We initialize one field with a dummy value to force the compiler to acknowledge that the
         // struct has some initialized fields (not all to zero)
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
@@ -657,40 +659,17 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
             concat.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
             concat.addEol();
         }
+
+        concat.addIndent(context.indent);
+        CONCAT_FIXED_STR(concat, "}");
     }
     else
     {
-        context.indent++;
-        for (auto p : typeStruct->fields)
-        {
-            SWAG_CHECK(outputAttributes(context, concat, p->attributes));
-
-            // Struct/interface content
-            if (p->declNode->kind == AstNodeKind::VarDecl)
-            {
-                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
-                SWAG_CHECK(outputVar(context, concat, nullptr, varDecl));
-                concat.addEol();
-            }
-        }
-
-        for (auto p : typeStruct->consts)
-        {
-            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
-            SWAG_CHECK(outputAttributes(context, concat, p->attributes));
-            SWAG_CHECK(outputVar(context, concat, "const ", varDecl));
-            concat.addEol();
-        }
-
-        context.indent--;
+        SWAG_CHECK(outputNode(context, concat, node->content));
     }
-
-    concat.addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "}");
 
     if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         concat.addEol();
-    concat.addEol();
 
     context.expansionNode.pop_back();
     return true;
@@ -865,16 +844,18 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::StructContent:
-        concat.addEolIndent(context.indent);
+    case AstNodeKind::TupleContent:
         CONCAT_FIXED_STR(concat, "{ ");
         concat.addEol();
+        context.indent++;
         for (auto c : node->childs)
         {
-            concat.addIndent(context.indent + 1);
+            concat.addIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, c));
             concat.addEol();
         }
 
+        context.indent--;
         concat.addIndent(context.indent);
         CONCAT_FIXED_STR(concat, "}");
         concat.addEol();
@@ -895,6 +876,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         }
         concat.addString(nodeStruct->token.text);
+        concat.addEolIndent(context.indent);
         SWAG_CHECK(outputNode(context, concat, nodeStruct->content));
         break;
     }
@@ -1428,7 +1410,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
         else
         {
-            if (node->kind == AstNodeKind::FuncDeclParam)
+            if (node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
                 CONCAT_FIXED_STR(concat, " = ");
             else
                 CONCAT_FIXED_STR(concat, " := ");
@@ -1872,6 +1854,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "->");
             SWAG_CHECK(outputNode(context, concat, typeNode->returnType));
         }
+
+        if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
+            CONCAT_FIXED_STR(concat, " throw");
         break;
     }
 
