@@ -111,7 +111,7 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
     return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf)
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* parameters, AstNode* selectIf)
 {
     ScopeExportNode sen(context, node);
 
@@ -127,16 +127,26 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, Type
     else
         CONCAT_FIXED_STR(concat, "()");
 
-    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+    // Return type, in case of function (not attr)
+    if (node->kind == AstNodeKind::FuncDecl)
     {
-        CONCAT_FIXED_STR(concat, "->");
+        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-        SWAG_ASSERT(node->kind == AstNodeKind::FuncDecl);
-        auto returnNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)->returnType;
+        auto returnNode = funcNode->returnType;
         if (returnNode && !returnNode->childs.empty())
             returnNode = returnNode->childs.front();
 
-        SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
+        if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
+        {
+            CONCAT_FIXED_STR(concat, "->");
+            SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
+        }
+        else if (funcNode->returnType && funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
+        {
+            CONCAT_FIXED_STR(concat, "->");
+            SWAG_CHECK(outputNode(context, concat, returnNode));
+        }
     }
 
     if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
@@ -1971,7 +1981,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
                 concat.addEol();
             }
             else
-                SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, node->selectIf));
+                SWAG_CHECK(outputFuncSignature(context, concat, node, node->parameters, node->selectIf));
 
             node->exportForeignLine = concat.eolCount;
         }
@@ -1986,7 +1996,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);
-            SWAG_CHECK(outputFuncSignature(context, concat, typeFunc, node, node->parameters, nullptr));
+            SWAG_CHECK(outputFuncSignature(context, concat, node, node->parameters, nullptr));
         }
     }
 
