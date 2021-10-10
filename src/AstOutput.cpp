@@ -593,8 +593,6 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, TypeInfoStr
 {
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
-    SWAG_CHECK(outputAttributes(context, concat, node, typeStruct));
-
     if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         concat.addIndent(context.indent);
 
@@ -886,6 +884,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::InterfaceDecl:
     {
         auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        concat.addIndent(context.indent);
         switch (node->kind)
         {
         case AstNodeKind::StructDecl:
@@ -896,7 +895,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         }
         concat.addString(nodeStruct->token.text);
-        concat.addIndent(context.indent);
         SWAG_CHECK(outputNode(context, concat, nodeStruct->content));
         break;
     }
@@ -1919,6 +1917,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
             SWAG_CHECK(outputStruct(context, concat, typeStruct, node));
         }
     }
@@ -1929,6 +1928,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+            SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
             SWAG_CHECK(outputStruct(context, concat, typeStruct->itable, node));
         }
     }
