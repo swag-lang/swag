@@ -47,7 +47,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     {
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            node->ownerScope->addPublicEnum(node);
+            node->ownerScope->addPublicNode(node);
         }
     }
 
@@ -299,14 +299,14 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     valNode->typeInfo               = typeEnum;
     valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context,
-                                                           valNode,
-                                                           valNode->typeInfo,
-                                                           SymbolKind::EnumValue,
-                                                           enumNode->computedValue,
-                                                           0,
-                                                           nullptr,
-                                                           storageOffset,
-                                                           storageSegment);
+                                                                                  valNode,
+                                                                                  valNode->typeInfo,
+                                                                                  SymbolKind::EnumValue,
+                                                                                  enumNode->computedValue,
+                                                                                  0,
+                                                                                  nullptr,
+                                                                                  storageOffset,
+                                                                                  storageSegment);
     SWAG_CHECK(valNode->resolvedSymbolOverload);
 
     // Store each value in the enum type

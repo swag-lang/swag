@@ -1809,7 +1809,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     if (!publicSet)
         return true;
 
-    // Stuff (const/alias)
+    // Stuff (enum/const/alias)
     if (!publicSet->publicNodes.empty())
     {
         for (auto one : publicSet->publicNodes)
@@ -1841,17 +1841,6 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
             SWAG_CHECK(outputAttributes(context, concat, one, typeStruct));
             SWAG_CHECK(outputStruct(context, concat, node));
-        }
-    }
-
-    // Enums
-    if (!publicSet->publicEnum.empty())
-    {
-        for (auto one : publicSet->publicEnum)
-        {
-            auto typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
-            SWAG_CHECK(outputAttributes(context, concat, one, typeEnum));
-            SWAG_CHECK(outputNode(context, concat, one));
         }
     }
 

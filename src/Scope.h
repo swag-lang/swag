@@ -48,7 +48,6 @@ struct ScopePublicSet
     set<AstNode*> publicInlinedFunc;
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
-    set<AstNode*> publicEnum;
     set<AstNode*> publicNodes;
 };
 
@@ -65,7 +64,6 @@ struct Scope
     void               addPublicInlinedFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);
-    void               addPublicEnum(AstNode* node);
     void               addPublicNode(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();

@@ -160,14 +160,6 @@ void Scope::addPublicInterface(AstNode* node)
     setHasExports();
 }
 
-void Scope::addPublicEnum(AstNode* node)
-{
-    ScopedLock lk(mutex);
-    allocPublicSet();
-    publicSet->publicEnum.insert(node);
-    setHasExports();
-}
-
 void Scope::addPublicNode(AstNode* node)
 {
     ScopedLock lk(mutex);
