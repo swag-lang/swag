@@ -240,6 +240,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     {
         for (auto c : node->subDecls)
         {
+            concat.addIndent(context.indent);
             if (c->parent && c->parent->kind == AstNodeKind::AttrUse)
                 c = c->parent;
             SWAG_CHECK(outputNode(context, concat, c));
