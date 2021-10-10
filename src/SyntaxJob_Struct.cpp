@@ -286,7 +286,6 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
-        ScopedFlags  scopedFlags(this, AST_STRUCT_MEMBER);
 
         auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content = contentNode;
@@ -448,6 +447,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     // Using on a struct member
     case TokenId::KwdUsing:
     {
+        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, g_E[Err0451]}));
         SWAG_CHECK(eatToken());
 
@@ -466,9 +466,12 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     }
 
     case TokenId::KwdConst:
+    {
+        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl));
         break;
+    }
 
     case TokenId::KwdVar:
     {
@@ -478,8 +481,11 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
 
     // A normal declaration
     default:
+    {
+        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
         break;
+    }
     }
 
     return true;
