@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "Backend.h"
 #include "LanguageSpec.h"
 
 ModuleManager* g_ModuleMgr = nullptr;
@@ -40,7 +41,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // First try in the target folder (local modules)
     fs::path path = g_Workspace->targetPath;
     path += name.c_str();
-    path += ".dll";
+    path += Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
 
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
@@ -49,7 +50,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         if (canBeSystem)
         {
             path = name.c_str();
-            path += ".dll";
+            path += Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
             h = OS::loadLibrary(path.string().c_str());
         }
 
