@@ -140,7 +140,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
         if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
         {
             CONCAT_FIXED_STR(concat, "->");
-            SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
+            SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
         }
         else if (funcNode->returnType && funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
         {
@@ -199,7 +199,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
-        SWAG_CHECK(outputType(context, concat, typeFunc->returnType, returnNode));
+        SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
     }
     else if (node->returnType && node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
     {
@@ -724,7 +724,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
                 concat.addString(":");
             }
 
-            SWAG_CHECK(outputType(context, concat, field->typeInfo));
+            SWAG_CHECK(outputType(context, concat, nullptr, field->typeInfo));
         }
 
         idx++;
@@ -734,26 +734,14 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     return true;
 }
 
-bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typeInfo, AstNode* node)
+bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
-        CONCAT_FIXED_STR(concat, "func(");
-        for (auto p : typeFunc->parameters)
-        {
-            if (p != typeFunc->parameters[0])
-                CONCAT_FIXED_STR(concat, ", ");
-            SWAG_CHECK(outputType(context, concat, p->typeInfo));
-        }
-
-        CONCAT_FIXED_STR(concat, ")->");
-        SWAG_CHECK(outputType(context, concat, typeFunc->returnType));
-
-        if (typeInfo->flags & TYPEINFO_CAN_THROW)
-            CONCAT_FIXED_STR(concat, " throw");
+        SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->kind == AstNodeKind::TypeLambda);
+        SWAG_CHECK(outputNode(context, concat, typeInfo->declNode));
         return true;
     }
 
@@ -786,6 +774,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, TypeInfo* typ
         return true;
     }
 
+    // Check is public
     auto typeExport = typeInfo;
     if (typeExport->kind == TypeInfoKind::Array)
         typeExport = ((TypeInfoArray*) typeExport)->finalType;
@@ -1694,7 +1683,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         if (typeNode->typeInfo)
         {
-            SWAG_CHECK(outputType(context, concat, typeNode->typeInfo, typeNode));
+            SWAG_CHECK(outputType(context, concat, typeNode, typeNode->typeInfo));
             break;
         }
 
