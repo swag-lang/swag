@@ -28,7 +28,6 @@ void LanguageSpec::setupNames()
 
     name_opInitGenerated     = "opInitGenerated";
     name_opDropGenerated     = "opDropGenerated";
-    name_opRelocGenerated    = "opRelocGenerated";
     name_opPostCopyGenerated = "opPostCopyGenerated";
     name_opPostMoveGenerated = "opPostMoveGenerated";
 

@@ -1839,11 +1839,6 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
                 CONCAT_FIXED_STR(concat, "func opDrop(using self);");
                 concat.addEol();
             }
-            else if (node->token.text == g_LangSpec->name_opRelocGenerated)
-            {
-                CONCAT_FIXED_STR(concat, "func opReloc(using self);");
-                concat.addEol();
-            }
             else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");

@@ -79,7 +79,6 @@ struct LanguageSpec
 
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;
-    Utf8 name_opRelocGenerated;
     Utf8 name_opPostCopyGenerated;
     Utf8 name_opPostMoveGenerated;
     Utf8 name_opBinary;
