@@ -734,6 +734,58 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     return true;
 }
 
+bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
+{
+    if (node->typeFlags & TYPEFLAG_RETVAL)
+    {
+        CONCAT_FIXED_STR(concat, "retval");
+        return true;
+    }
+
+    if (node->typeInfo)
+    {
+        SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
+        return true;
+    }
+
+    if (node->typeFlags & TYPEFLAG_ISCONST)
+        CONCAT_FIXED_STR(concat, "const ");
+    if (node->typeFlags & TYPEFLAG_ISSLICE)
+        CONCAT_FIXED_STR(concat, "[..] ");
+    if (node->arrayDim == UINT8_MAX)
+        CONCAT_FIXED_STR(concat, "[] ");
+    else if (node->arrayDim)
+    {
+        CONCAT_FIXED_STR(concat, "[");
+        for (int i = 0; i < node->arrayDim; i++)
+        {
+            if (i)
+                CONCAT_FIXED_STR(concat, ", ");
+            SWAG_CHECK(outputNode(context, concat, node->childs[i]));
+        }
+
+        CONCAT_FIXED_STR(concat, "] ");
+    }
+
+    for (int i = 0; i < node->ptrCount; i++)
+        concat.addChar('*');
+    if (node->identifier)
+    {
+        SWAG_CHECK(outputNode(context, concat, node->identifier));
+    }
+    else
+    {
+        auto literalType = node->literalType;
+        if (!literalType)
+            literalType = TypeManager::literalTypeToType(node->token);
+        SWAG_ASSERT(literalType);
+        SWAG_ASSERT(!literalType->name.empty());
+        concat.addString(literalType->name);
+    }
+
+    return true;
+}
+
 bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
     // Lambda
@@ -1675,53 +1727,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeExpression:
     {
         AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
-        if (typeNode->typeFlags & TYPEFLAG_RETVAL)
-        {
-            CONCAT_FIXED_STR(concat, "retval");
-            break;
-        }
-
-        if (typeNode->typeInfo)
-        {
-            SWAG_CHECK(outputType(context, concat, typeNode, typeNode->typeInfo));
-            break;
-        }
-
-        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
-            CONCAT_FIXED_STR(concat, "const ");
-        if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
-            CONCAT_FIXED_STR(concat, "[..] ");
-        if (typeNode->arrayDim == UINT8_MAX)
-            CONCAT_FIXED_STR(concat, "[] ");
-        else if (typeNode->arrayDim)
-        {
-            CONCAT_FIXED_STR(concat, "[");
-            for (int i = 0; i < typeNode->arrayDim; i++)
-            {
-                if (i)
-                    CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputNode(context, concat, node->childs[i]));
-            }
-
-            CONCAT_FIXED_STR(concat, "] ");
-        }
-
-        for (int i = 0; i < typeNode->ptrCount; i++)
-            concat.addChar('*');
-        if (typeNode->identifier)
-        {
-            SWAG_CHECK(outputNode(context, concat, typeNode->identifier));
-        }
-        else
-        {
-            auto literalType = typeNode->literalType;
-            if (!literalType)
-                literalType = TypeManager::literalTypeToType(typeNode->token);
-            SWAG_ASSERT(literalType);
-            SWAG_ASSERT(!literalType->name.empty());
-            concat.addString(literalType->name);
-        }
-
+        SWAG_CHECK(outputType(context, concat, typeNode));
         break;
     }
 
