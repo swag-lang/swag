@@ -695,9 +695,10 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+
     if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
     {
-        SWAG_CHECK(outputStruct(context, concat, (AstStruct*) typeStruct->declNode));
+        SWAG_CHECK(outputStruct(context, concat, nodeStruct));
         return true;
     }
 
