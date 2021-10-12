@@ -55,8 +55,6 @@ PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
 foreign a cvarargs
 -------------------------------------
-pourquoi #os, #abi etc... sont des strings, et #backend est un enum ?
--------------------------------------
 debugger : print divers (memoire ?)
 -------------------------------------
 cast interface vers struct (avec safety)
