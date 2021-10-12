@@ -750,10 +750,10 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         switch (g_CommandLine->backendGenType)
         {
         case BackendGenType::X64:
-            node->computedValue->reg.u64 = (uint64_t) SwagBackendType::X64;
+            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::X64;
             break;
         case BackendGenType::LLVM:
-            node->computedValue->reg.u64 = (uint64_t) SwagBackendType::LLVM;
+            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::LLVM;
             break;
         }
         node->typeInfo = g_TypeMgr->typeInfoU32;

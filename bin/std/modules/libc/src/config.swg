@@ -1,6 +1,6 @@
 #global export
 
-#if #os == "windows" and #swagos == "windows"
+#if #os == "windows"
 {
     #foreignlib "ucrt"
     const ForeignLib = "ucrtbase"

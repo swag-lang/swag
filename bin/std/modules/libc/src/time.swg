@@ -9,7 +9,7 @@ using Swag
     func strftime(s: *u8, maxsize: size_t, format: const *u8, timeptr: *tm)->size_t;
 }
 
-#if #swagos == "windows"
+#if #os == "windows"
 {
     #[Foreign(ForeignLib, "_difftime64")]   func difftime(time1, time2: time_t)->f64;
     #[Foreign(ForeignLib, "_time64")]       func time(timer: *time_t)->time_t;

@@ -101,21 +101,33 @@ typedef void (*SwagBytecodeRun)(void*, ...);
 typedef void (*SwagThreadRun)(void*);
 typedef void* (*SwagMakeCallback)(void*);
 
-enum class SwagBackendType : uint32_t
+enum class SwagBackendGenType : uint32_t
 {
     ByteCode,
     X64,
     LLVM
 };
 
+enum class SwagTargetArch : uint32_t
+{
+    X86_64,
+};
+
+enum class SwagTargetOs : uint32_t
+{
+    Windows,
+    Linux,
+    MacOSX,
+};
+
 typedef struct SwagProcessInfos
 {
-    SwagSlice        arguments;
-    uint64_t         contextTlsId;
-    SwagContext*     defaultContext;
-    SwagBytecodeRun  byteCodeRun;
-    SwagMakeCallback makeCallback;
-    SwagBackendType  backendKind;
+    SwagSlice          arguments;
+    uint64_t           contextTlsId;
+    SwagContext*       defaultContext;
+    SwagBytecodeRun    byteCodeRun;
+    SwagMakeCallback   makeCallback;
+    SwagBackendGenType backendKind;
 } SwagProcessInfos;
 
 struct BuildCfgBackendLLVM
@@ -293,7 +305,7 @@ struct ConcreteTypeInfoAlias
 
 struct ConcreteTypeInfoNamespace
 {
-    ConcreteTypeInfo  base;
+    ConcreteTypeInfo base;
 };
 
 struct ConcreteTypeInfoParam

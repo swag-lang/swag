@@ -36,7 +36,7 @@ void Backend::setup()
     string rtPath;
 
     // Add the runtime CRT
-    if (g_CommandLine->target.os == TargetOs::Windows)
+    if (g_CommandLine->target.os == SwagTargetOs::Windows)
     {
         if (isArchArm(g_CommandLine->target.arch))
             rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-arm64";
@@ -148,17 +148,17 @@ string Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBack
     switch (type)
     {
     case BuildCfgBackendKind::Executable:
-        if (target.os == TargetOs::Windows)
+        if (target.os == SwagTargetOs::Windows)
             return ".exe";
         return "";
 
     case BuildCfgBackendKind::StaticLib:
-        if (target.os == TargetOs::Windows)
+        if (target.os == SwagTargetOs::Windows)
             return ".lib";
         return ".a";
 
     case BuildCfgBackendKind::DynamicLib:
-        if (target.os == TargetOs::Windows)
+        if (target.os == SwagTargetOs::Windows)
             return ".dll";
         if (isOsDarwin(target.os))
             return ".dylib";
@@ -172,7 +172,7 @@ string Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBack
 
 string Backend::getObjectFileExtension(const BackendTarget& target)
 {
-    if (target.os == TargetOs::Windows)
+    if (target.os == SwagTargetOs::Windows)
         return ".obj";
     return ".o";
 }
@@ -181,9 +181,9 @@ BackendObjType Backend::getObjType(const BackendTarget& target)
 {
     switch (target.os)
     {
-    case TargetOs::Windows:
+    case SwagTargetOs::Windows:
         return BackendObjType::Coff;
-    case TargetOs::MacOSX:
+    case SwagTargetOs::MacOSX:
         return BackendObjType::MachO;
     default:
         return BackendObjType::Elf;
@@ -194,7 +194,7 @@ const char* Backend::GetArchName(const BackendTarget& target)
 {
     switch (target.arch)
     {
-    case TargetArch::X86_64:
+    case SwagTargetArch::X86_64:
         return "x86_64";
     default:
         return "?";
@@ -205,11 +205,11 @@ const char* Backend::GetOsName(const BackendTarget& target)
 {
     switch (target.os)
     {
-    case TargetOs::Windows:
+    case SwagTargetOs::Windows:
         return "windows";
-    case TargetOs::Linux:
+    case SwagTargetOs::Linux:
         return "linux";
-    case TargetOs::MacOSX:
+    case SwagTargetOs::MacOSX:
         return "osx";
     default:
         return "?";

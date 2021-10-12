@@ -18,7 +18,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
-    if (g_CommandLine->target.os == TargetOs::Windows)
+    if (g_CommandLine->target.os == SwagTargetOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         {
@@ -35,7 +35,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 
         // Stack probing. Must do it by end to avoid linking with vc runtime on windows.
         // void __chkstk()
-        if (g_CommandLine->target.arch == TargetArch::X86_64)
+        if (g_CommandLine->target.arch == SwagTargetArch::X86_64)
         {
             Utf8 in;
             in.append(R"(
@@ -89,7 +89,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     const char* entryPoint = nullptr;
     switch (g_CommandLine->target.os)
     {
-    case TargetOs::Windows:
+    case SwagTargetOs::Windows:
         entryPoint = "mainCRTStartup";
         break;
     default:
@@ -142,7 +142,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Set current backend as LLVM
     {
         auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32}));
-        builder.CreateStore(builder.getInt32((uint32_t) SwagBackendType::LLVM), toBackendKind);
+        builder.CreateStore(builder.getInt32((uint32_t) SwagBackendGenType::LLVM), toBackendKind);
     }
 
     // Set default context in TLS

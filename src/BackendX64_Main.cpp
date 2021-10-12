@@ -18,7 +18,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 
     concat.align(16);
 
-    if (g_CommandLine->target.os == TargetOs::Windows)
+    if (g_CommandLine->target.os == SwagTargetOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
@@ -46,7 +46,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     const char* entryPoint = nullptr;
     switch (g_CommandLine->target.os)
     {
-    case TargetOs::Windows:
+    case SwagTargetOs::Windows:
         entryPoint = "mainCRTStartup";
         break;
     default:
@@ -92,7 +92,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     // Set current backend as X64
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_backendKind, 0);
-    BackendX64Inst::emit_Store32_Immediate(pp, 0, (uint32_t) SwagBackendType::X64, RCX);
+    BackendX64Inst::emit_Store32_Immediate(pp, 0, (uint32_t) SwagBackendGenType::X64, RCX);
 
     // Set default context in TLS
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);

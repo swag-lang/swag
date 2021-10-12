@@ -461,7 +461,19 @@ namespace Swag
     // Build configuration
     // #########################################################
 
-    enum BackendType
+    enum TargetArch
+    {
+        X86_64
+    }
+
+    enum TargetOs
+    {
+        Windows
+        Linux
+        MaxOSX
+    }
+
+    enum BackendGenType
     {
         ByteCode
         X64

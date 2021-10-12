@@ -1,4 +1,4 @@
-#global if #swagos == "windows" and #os == "windows"
+#global if #os == "windows"
 
 using Swag
 #foreignlib "ucrt"

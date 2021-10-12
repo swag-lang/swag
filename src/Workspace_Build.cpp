@@ -187,7 +187,7 @@ void Workspace::setupInternalTags()
     // Swag.Endian = "little" or "big" depending on the architecture
     switch (g_CommandLine->target.arch)
     {
-    case TargetArch::X86_64:
+    case SwagTargetArch::X86_64:
         oneTag.type       = g_TypeMgr->typeInfoString;
         oneTag.value.text = "little";
         oneTag.name       = "Swag.Endian";

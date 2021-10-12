@@ -229,7 +229,7 @@ void initDefaultContext()
     g_ProcessInfos.defaultContext   = &g_DefaultContext;
     g_ProcessInfos.byteCodeRun      = byteCodeRun;
     g_ProcessInfos.makeCallback     = makeCallback;
-    g_ProcessInfos.backendKind      = SwagBackendType::ByteCode;
+    g_ProcessInfos.backendKind      = SwagBackendGenType::ByteCode;
 }
 
 uint64_t getDefaultContextFlags(Module* module)

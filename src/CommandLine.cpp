@@ -34,13 +34,13 @@ bool CommandLine::check()
     // Check special backend X64
     if (backendGenType == BackendGenType::X64)
     {
-        if (target.os != TargetOs::Windows)
+        if (target.os != SwagTargetOs::Windows)
         {
             g_Log.error(Utf8::format(g_E[Err0522], Backend::GetOsName(target)));
             return false;
         }
 
-        if (target.arch != TargetArch::X86_64)
+        if (target.arch != SwagTargetArch::X86_64)
         {
             g_Log.error(Utf8::format(g_E[Err0523], Backend::GetArchName(target)));
             return false;
