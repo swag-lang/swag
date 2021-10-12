@@ -60,7 +60,7 @@ var stdin:  *FILE
 var stdout: *FILE
 var stderr: *FILE
 
-#if #os == "windows"
+#if #os == Swag.TargetOs.Windows
 {
     #[Foreign(ForeignLib, "__stdio_common_vfprintf"), Discardable]
     func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: *void, _ArgList: *void)->s32;

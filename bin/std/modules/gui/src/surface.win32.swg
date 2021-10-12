@@ -1,5 +1,5 @@
 #global public
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 using Core, Win32
 
 #[Swag.NoCopy]

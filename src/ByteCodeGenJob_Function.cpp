@@ -953,10 +953,33 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
             break;
         }
+
+        case TokenId::CompilerArch:
+        {
+            regList     = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            inst->b.u64 = (uint64_t) g_CommandLine->target.arch;
+            break;
+        }
+
+        case TokenId::CompilerOs:
+        {
+            regList     = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            inst->b.u64 = (uint64_t) g_CommandLine->target.os;
+            break;
+        }
+
+        case TokenId::CompilerBackend:
+        {
+            regList     = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            inst->b.u64 = (uint64_t) g_CommandLine->backendGenType;
+            break;
+        }
+
         case TokenId::CompilerCallerFunction:
         case TokenId::CompilerBuildCfg:
-        case TokenId::CompilerArch:
-        case TokenId::CompilerOs:
         {
             reserveLinearRegisterRC2(context, regList);
             auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->token.id);

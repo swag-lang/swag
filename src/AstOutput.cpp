@@ -1376,14 +1376,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addChar(')');
             }
             break;
+        case TokenId::CompilerArch:
+            CONCAT_FIXED_STR(concat, "#arch");
+            break;
         case TokenId::CompilerOs:
             CONCAT_FIXED_STR(concat, "#os");
             break;
         case TokenId::CompilerBackend:
             CONCAT_FIXED_STR(concat, "#backend");
-            break;
-        case TokenId::CompilerArch:
-            CONCAT_FIXED_STR(concat, "#arch");
             break;
         case TokenId::CompilerBuildCfg:
             CONCAT_FIXED_STR(concat, "#cfg");

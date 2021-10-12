@@ -36,7 +36,7 @@
     Last Updated: 24/06/2017
 */
 
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 using Win32, Core.Input
 
 var nScreenWidth  = 120'u32

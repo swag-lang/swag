@@ -1,6 +1,6 @@
 // Contains ucrt.lib missing functions from libc
 
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 #foreignlib "ucrt"
 
 private

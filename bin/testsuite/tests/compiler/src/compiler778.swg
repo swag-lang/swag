@@ -1,4 +1,4 @@
-#if #os == "windows"
+#if #os == Swag.TargetOs.Windows
 {
     namespace Windows
     {

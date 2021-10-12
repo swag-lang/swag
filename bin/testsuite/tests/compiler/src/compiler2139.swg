@@ -1,11 +1,11 @@
 //#global testerror
 
 //#[Swag.Inline]
-func toto(a: string = #os)
+func toto(a: Swag.TargetOs = #os)
 {
 }
 
-func toto1(a: string = #arch)
+func toto1(a: Swag.TargetArch = #arch)
 {
 }
 

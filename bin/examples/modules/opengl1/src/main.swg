@@ -1,4 +1,4 @@
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 using Core, Win32, Ogl, Gdi32
 
 var g_HDC:    HDC

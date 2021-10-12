@@ -1,6 +1,6 @@
 #global export
 
-#if #os == "windows"
+#if #os == Swag.TargetOs.Windows
 {
     #foreignlib "ucrt"
     const ForeignLib = "ucrtbase"

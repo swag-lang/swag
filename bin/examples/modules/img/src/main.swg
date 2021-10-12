@@ -4,7 +4,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_TestMode:  bool

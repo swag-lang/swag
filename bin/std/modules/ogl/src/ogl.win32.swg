@@ -1,5 +1,5 @@
 #global export
-#global if #os == "windows"
+#global if #os == Swag.TargetOs.Windows
 #foreignlib "opengl32"
 using Swag, Win32
 
