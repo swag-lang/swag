@@ -1379,9 +1379,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case TokenId::CompilerOs:
             CONCAT_FIXED_STR(concat, "#os");
             break;
-        case TokenId::CompilerAbi:
-            CONCAT_FIXED_STR(concat, "#abi");
-            break;
         case TokenId::CompilerBackend:
             CONCAT_FIXED_STR(concat, "#backend");
             break;

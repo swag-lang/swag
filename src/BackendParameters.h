@@ -21,23 +21,10 @@ enum class TargetOs
     MacOSX,
 };
 
-enum class TargetVendor
-{
-    Pc,
-};
-
-enum class TargetAbi
-{
-    Msvc,
-    Gnu,
-};
-
 struct BackendTarget
 {
-    TargetArch   arch   = TargetArch::X86_64;
-    TargetVendor vendor = TargetVendor::Pc;
-    TargetOs     os     = TargetOs::Windows;
-    TargetAbi    abi    = TargetAbi::Msvc;
+    TargetArch arch = TargetArch::X86_64;
+    TargetOs   os   = TargetOs::Windows;
 };
 
 enum class BackendGenType
@@ -61,17 +48,6 @@ enum BackendCompileType
     Example,
     Count,
 };
-
-inline bool isAbiGnu(TargetAbi abi)
-{
-    switch (abi)
-    {
-    case TargetAbi::Gnu:
-        return true;
-    }
-
-    return false;
-}
 
 inline bool isOsDarwin(TargetOs os)
 {

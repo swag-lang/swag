@@ -74,6 +74,4 @@ struct Backend
     static BackendObjType getObjType(const BackendTarget& target);
     static const char*    GetArchName(const BackendTarget& target);
     static const char*    GetOsName(const BackendTarget& target);
-    static const char*    GetAbiName(const BackendTarget& target);
-    static const char*    GetVendorName(const BackendTarget& target);
 };

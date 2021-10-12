@@ -725,8 +725,6 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
         return Backend::GetArchName(g_CommandLine->target);
     case TokenId::CompilerOs:
         return Backend::GetOsName(g_CommandLine->target);
-    case TokenId::CompilerAbi:
-        return Backend::GetAbiName(g_CommandLine->target);
     default:
         SWAG_ASSERT(false);
         break;
@@ -764,7 +762,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:
-    case TokenId::CompilerAbi:
         node->setFlagsValueIsComputed();
         node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
         node->typeInfo            = g_TypeMgr->typeInfoString;

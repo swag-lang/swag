@@ -34,18 +34,6 @@ bool CommandLine::check()
     // Check special backend X64
     if (backendGenType == BackendGenType::X64)
     {
-        if (target.abi != TargetAbi::Msvc)
-        {
-            g_Log.error(Utf8::format(g_E[Err0520], Backend::GetAbiName(target)));
-            return false;
-        }
-
-        if (target.vendor != TargetVendor::Pc)
-        {
-            g_Log.error(Utf8::format(g_E[Err0521], Backend::GetVendorName(target)));
-            return false;
-        }
-
         if (target.os != TargetOs::Windows)
         {
             g_Log.error(Utf8::format(g_E[Err0522], Backend::GetOsName(target)));

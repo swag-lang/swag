@@ -5,7 +5,6 @@
 // Compiler keywords
 // -----------------
 
-#abi
 #arch
 #backend
 #callerfunction

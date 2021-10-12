@@ -54,8 +54,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu cl sc", "--arch", nullptr, CommandLineType::EnumInt, &cmdLine->target.arch, "x86_64", "set the target architecture");
     addArg("bu cl sc", "--os", nullptr, CommandLineType::EnumInt, &cmdLine->target.os, "windows", "set the target operating system");
-    addArg("bu cl sc", "--abi", nullptr, CommandLineType::EnumInt, &cmdLine->target.abi, "msvc", "set the target abi");
-    addArg("bu cl sc", "--vendor", nullptr, CommandLineType::EnumInt, &cmdLine->target.vendor, "pc", "set the target vendoor");
 
     addArg("bu sc", "--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
     addArg("bu sc", "--args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");

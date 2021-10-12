@@ -268,39 +268,19 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    string vendorName;
-    switch (g_CommandLine->target.vendor)
-    {
-    case TargetVendor::Pc:
-        vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    string osName;
+    string vendorName, osName, abiName;
     switch (g_CommandLine->target.os)
     {
     case TargetOs::Windows:
-        osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
+        osName     = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
+        vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
+        abiName    = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();
         break;
     case TargetOs::Linux:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin();
         break;
     case TargetOs::MacOSX:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin();
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    string abiName;
-    switch (g_CommandLine->target.abi)
-    {
-    case TargetAbi::Msvc:
-        abiName = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();
         break;
     default:
         SWAG_ASSERT(false);

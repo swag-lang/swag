@@ -154,7 +154,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 case TokenId::CompilerBuildCfg:
                 case TokenId::CompilerArch:
                 case TokenId::CompilerOs:
-                case TokenId::CompilerAbi:
                     break;
 
                 default:

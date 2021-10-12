@@ -213,7 +213,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#cfg", {TokenId::CompilerBuildCfg, LiteralType::TT_MAX});
     keywords.add("#arch", {TokenId::CompilerArch, LiteralType::TT_MAX});
     keywords.add("#os", {TokenId::CompilerOs, LiteralType::TT_MAX});
-    keywords.add("#abi", {TokenId::CompilerAbi, LiteralType::TT_MAX});
     keywords.add("#backend", {TokenId::CompilerBackend, LiteralType::TT_MAX});
     keywords.add("#module", {TokenId::CompilerModule, LiteralType::TT_MAX});
     keywords.add("#file", {TokenId::CompilerFile, LiteralType::TT_MAX});

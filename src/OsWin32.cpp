@@ -15,10 +15,8 @@ namespace OS
     void setup()
     {
         // Current target
-        nativeTarget.os     = TargetOs::Windows;
-        nativeTarget.arch   = TargetArch::X86_64;
-        nativeTarget.abi    = TargetAbi::Msvc;
-        nativeTarget.vendor = TargetVendor::Pc;
+        nativeTarget.os   = TargetOs::Windows;
+        nativeTarget.arch = TargetArch::X86_64;
 
         // We do not want assert, but just reports of the CRT
         if (!IsDebuggerPresent())

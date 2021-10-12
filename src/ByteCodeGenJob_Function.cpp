@@ -957,7 +957,6 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerBuildCfg:
         case TokenId::CompilerArch:
         case TokenId::CompilerOs:
-        case TokenId::CompilerAbi:
         {
             reserveLinearRegisterRC2(context, regList);
             auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->token.id);
