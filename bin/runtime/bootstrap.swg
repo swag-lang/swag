@@ -473,7 +473,7 @@ namespace Swag
         MaxOSX
     }
 
-    enum BackendGenType
+    enum Backend
     {
         ByteCode
         X64

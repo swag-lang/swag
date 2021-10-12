@@ -756,7 +756,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::LLVM;
             break;
         }
-        node->typeInfo = g_TypeMgr->typeInfoU32;
+        node->typeInfo = g_Workspace->swagScope.regTypeInfoBackendGenType;
+        SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerBuildCfg:

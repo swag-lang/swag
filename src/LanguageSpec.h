@@ -120,6 +120,9 @@ struct LanguageSpec
     Utf8 name_AttributeUsage;
     Utf8 name_Swag_CompilerMsgMask;
     Utf8 name_CVaList;
+    Utf8 name_TargetArch;
+    Utf8 name_TargetOs;
+    Utf8 name_BackendGenType;
 
     Utf8 name_export;
     Utf8 name_generated;

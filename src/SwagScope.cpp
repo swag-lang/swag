@@ -5,7 +5,7 @@
 
 void SwagScope::registerType(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
         return;
 
     if (typeInfo->name == g_LangSpec->name_TypeInfo)
@@ -113,6 +113,21 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoSourceLoc = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         regTypeInfoSourceLoc->flags |= TYPEINFO_STRUCT_TYPEINFO;
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(SwagCompilerSourceLocation));
+    }
+    else if (typeInfo->name == g_LangSpec->name_TargetArch)
+    {
+        SWAG_ASSERT(!regTypeInfoTargetArch);
+        regTypeInfoTargetArch = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    }
+    else if (typeInfo->name == g_LangSpec->name_TargetOs)
+    {
+        SWAG_ASSERT(!regTypeInfoTargetOs);
+        regTypeInfoTargetOs = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    }
+    else if (typeInfo->name == g_LangSpec->name_BackendGenType)
+    {
+        SWAG_ASSERT(!regTypeInfoBackendGenType);
+        regTypeInfoBackendGenType = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     }
     else if (typeInfo->name == g_LangSpec->name_BuildCfg)
     {

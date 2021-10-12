@@ -10,6 +10,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Workspace.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
@@ -50,6 +51,10 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
             node->ownerScope->addPublicNode(node);
         }
     }
+
+    // We are parsing the swag module
+    if (node->sourceFile->isBootstrapFile)
+        g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
 }
