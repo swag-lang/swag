@@ -61,7 +61,7 @@ struct Workspace
     OneTag*     hasTag(const Utf8& name);
     void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
-    Utf8        getTargetFolder();
+    Utf8        getTargetFullName();
     void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);

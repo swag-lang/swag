@@ -39,7 +39,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         return false;
 
     // First try in the target folder (local modules)
-    auto     ext  = Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
+    auto     ext  = Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgBackendKind::DynamicLib);
     fs::path path = g_Workspace->targetPath;
     path += name.c_str();
     path += ext;

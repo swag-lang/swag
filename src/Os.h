@@ -4,11 +4,13 @@
 struct OutputFile;
 struct BuildParameters;
 struct Module;
+struct BackendTarget;
 
 namespace OS
 {
-    void setup();
-    void consoleSetColor(LogColor color);
+    void                 setup();
+    void                 consoleSetColor(LogColor color);
+    const BackendTarget& getNativeTarget();
 
     bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
     void  doRunProcess(const Utf8& cmdline, const string& currentDirectory);

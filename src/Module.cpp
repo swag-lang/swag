@@ -126,7 +126,7 @@ void Module::computePublicPath()
         }
     }
 
-    publicPath += g_Workspace->getTargetFolder().c_str();
+    publicPath += g_Workspace->getTargetFullName().c_str();
     publicPath += "/";
 
     if (!isScriptFile && kind != ModuleKind::Script)

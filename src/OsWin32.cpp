@@ -8,11 +8,18 @@
 
 namespace OS
 {
-    static HANDLE consoleHandle     = NULL;
-    static WORD   defaultAttributes = 0;
+    static BackendTarget nativeTarget;
+    static HANDLE        consoleHandle     = NULL;
+    static WORD          defaultAttributes = 0;
 
     void setup()
     {
+        // Current target
+        nativeTarget.os     = TargetOs::Windows;
+        nativeTarget.arch   = TargetArch::X86_64;
+        nativeTarget.abi    = TargetAbi::Msvc;
+        nativeTarget.vendor = TargetVendor::Pc;
+
         // We do not want assert, but just reports of the CRT
         if (!IsDebuggerPresent())
         {
@@ -27,6 +34,11 @@ namespace OS
         CONSOLE_SCREEN_BUFFER_INFO info;
         GetConsoleScreenBufferInfo(consoleHandle, &info);
         defaultAttributes = info.wAttributes;
+    }
+
+    const BackendTarget& getNativeTarget()
+    {
+        return nativeTarget;
     }
 
     void consoleSetColor(LogColor color)
