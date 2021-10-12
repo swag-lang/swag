@@ -1,6 +1,7 @@
 #global if #os == Swag.TargetOs.Windows
 #foreignlib "kernel32"
 #foreignlib "user32"
+#foreignlib "ucrt"
 
 ////////////////////////////////////////////////////////////
 private
@@ -16,6 +17,10 @@ private
 
     #[Swag.Foreign("kernel32")]
     {
+        func RtlCopyMemory(destination: *void, source: const *void, length: uint);
+        func RtlMoveMemory(destination: *void, source: const *void, length: uint);
+        func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
+        func RtlFillMemory(destination: *void, length: uint, fill: s32);
         func GetStdHandle(nStdHandle: u32)->HANDLE;
         func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
         func ExitProcess(uExitCode: u32);
@@ -31,6 +36,34 @@ private
     #[Swag.Foreign("user32")]
     {
         func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
+    }
+}
+
+////////////////////////////////////////////////////////////
+#[Swag.Callback]
+{
+    func memset(dst: *void, value: s32, size: uint)
+    {
+        RtlFillMemory(dst, size, value)
+    }
+
+    func memcpy(dst: *void, src: const *void, size: uint)
+    {
+        RtlCopyMemory(dst, src, size)
+    }
+
+    func memmove(dst: *void, src: const *void, size: uint)
+    {
+        RtlMoveMemory(dst, src, size)
+    }
+
+    func memcmp(dst, src: const *void, size: uint)->s32
+    {
+        len := RtlCompareMemory(dst, src, size)
+        if len == size return 0
+        p1 := cast(const *s8) dst
+        p2 := cast(const *s8) src
+        return p1[len] - p2[len]
     }
 }
 
