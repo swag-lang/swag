@@ -124,10 +124,10 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         SWAG_ASSERT(!regTypeInfoTargetOs);
         regTypeInfoTargetOs = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     }
-    else if (typeInfo->name == g_LangSpec->name_BackendGenType)
+    else if (typeInfo->name == g_LangSpec->name_Backend)
     {
-        SWAG_ASSERT(!regTypeInfoBackendGenType);
-        regTypeInfoBackendGenType = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        SWAG_ASSERT(!regTypeInfoBackend);
+        regTypeInfoBackend = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     }
     else if (typeInfo->name == g_LangSpec->name_BuildCfg)
     {

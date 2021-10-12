@@ -98,7 +98,7 @@ void LanguageSpec::setupNames()
     name_CVaList                = "CVaList";
     name_TargetArch             = "TargetArch";
     name_TargetOs               = "TargetOs";
-    name_BackendGenType         = "BackendGenType";
+    name_Backend                = "Backend";
     name_Swag_CompilerMsgMask   = "Swag.CompilerMsgMask";
 
     name_export       = "export";

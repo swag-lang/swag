@@ -26,5 +26,5 @@ struct SwagScope
     TypeInfoStruct* regTypeInfoSourceLoc      = nullptr;
     TypeInfoEnum*   regTypeInfoTargetArch     = nullptr;
     TypeInfoEnum*   regTypeInfoTargetOs       = nullptr;
-    TypeInfoEnum*   regTypeInfoBackendGenType = nullptr;
+    TypeInfoEnum*   regTypeInfoBackend = nullptr;
 };
