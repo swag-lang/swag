@@ -71,7 +71,7 @@ struct Backend
 
     static string         getObjectFileExtension();
     static string         getOutputFileExtension(BuildCfgBackendKind type);
-    static BackendObjType getObjType(BackendOs os);
+    static BackendObjType getObjType(TargetOs os);
     static const char*    GetArchName();
     static const char*    GetOsName();
     static const char*    GetAbiName();

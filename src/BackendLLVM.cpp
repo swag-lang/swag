@@ -258,9 +258,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     // Target triple
     string archName;
-    switch (g_CommandLine->arch)
+    switch (g_CommandLine->target.arch)
     {
-    case BackendArch::X86_64:
+    case TargetArch::X86_64:
         archName = (const char*) llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin();
         break;
     default:
@@ -269,9 +269,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string vendorName;
-    switch (g_CommandLine->vendor)
+    switch (g_CommandLine->target.vendor)
     {
-    case BackendVendor::Pc:
+    case TargetVendor::Pc:
         vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
         break;
     default:
@@ -280,15 +280,15 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string osName;
-    switch (g_CommandLine->os)
+    switch (g_CommandLine->target.os)
     {
-    case BackendOs::Windows:
+    case TargetOs::Windows:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
         break;
-    case BackendOs::Linux:
+    case TargetOs::Linux:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin();
         break;
-    case BackendOs::MacOSX:
+    case TargetOs::MacOSX:
         osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin();
         break;
     default:
@@ -297,9 +297,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string abiName;
-    switch (g_CommandLine->abi)
+    switch (g_CommandLine->target.abi)
     {
-    case BackendAbi::Msvc:
+    case TargetAbi::Msvc:
         abiName = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();
         break;
     default:

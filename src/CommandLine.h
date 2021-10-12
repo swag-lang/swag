@@ -79,10 +79,7 @@ struct CommandLine
     string buildCfgOptimSize  = "default";
     string buildCfgStackTrace = "default";
 
-    BackendArch   arch   = BackendArch::X86_64;
-    BackendVendor vendor = BackendVendor::Pc;
-    BackendOs     os     = BackendOs::Windows;
-    BackendAbi    abi    = BackendAbi::Msvc;
+    BackendTarget target;
 
     set<string>  tags;
     vector<Utf8> libPaths;

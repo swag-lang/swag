@@ -18,7 +18,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 
     concat.align(16);
 
-    if (g_CommandLine->os == BackendOs::Windows)
+    if (g_CommandLine->target.os == TargetOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
@@ -44,9 +44,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
-    switch (g_CommandLine->os)
+    switch (g_CommandLine->target.os)
     {
-    case BackendOs::Windows:
+    case TargetOs::Windows:
         entryPoint = "mainCRTStartup";
         break;
     default:

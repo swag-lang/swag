@@ -121,7 +121,7 @@ namespace BackendLinker
         arguments.push_back("/NODEFAULTLIB");
         arguments.push_back("/ERRORLIMIT:0");
 
-        if (isArchArm(g_CommandLine->arch))
+        if (isArchArm(g_CommandLine->target.arch))
             arguments.push_back("/MACHINE:ARM64");
         else
             arguments.push_back("/MACHINE:X64");
@@ -140,7 +140,7 @@ namespace BackendLinker
 
     void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool forCmdLine)
     {
-        auto objFileType = Backend::getObjType(g_CommandLine->os);
+        auto objFileType = Backend::getObjType(g_CommandLine->target.os);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -205,7 +205,7 @@ namespace BackendLinker
             this_thread::yield();
         }
 
-        auto objFileType = Backend::getObjType(g_CommandLine->os);
+        auto objFileType = Backend::getObjType(g_CommandLine->target.os);
         bool result      = true;
         switch (objFileType)
         {

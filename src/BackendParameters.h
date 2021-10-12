@@ -9,27 +9,35 @@ const uint32_t SWAG_LIMIT_MIN_STACK     = 1024;
 const uint32_t SWAG_LIMIT_MAX_STACK     = 16 * 1024 * 1024;
 const uint32_t SWAG_LIMIT_CB_MAX_PARAMS = 6;
 
-enum class BackendArch
+enum class TargetArch
 {
     X86_64,
 };
 
-enum class BackendOs
+enum class TargetOs
 {
     Windows,
     Linux,
     MacOSX,
 };
 
-enum class BackendVendor
+enum class TargetVendor
 {
     Pc,
 };
 
-enum class BackendAbi
+enum class TargetAbi
 {
     Msvc,
     Gnu,
+};
+
+struct BackendTarget
+{
+    TargetArch   arch   = TargetArch::X86_64;
+    TargetVendor vendor = TargetVendor::Pc;
+    TargetOs     os     = TargetOs::Windows;
+    TargetAbi    abi    = TargetAbi::Msvc;
 };
 
 enum class BackendGenType
@@ -54,33 +62,33 @@ enum BackendCompileType
     Count,
 };
 
-inline bool isAbiGnu(BackendAbi abi)
+inline bool isAbiGnu(TargetAbi abi)
 {
     switch (abi)
     {
-    case BackendAbi::Gnu:
+    case TargetAbi::Gnu:
         return true;
     }
 
     return false;
 }
 
-inline bool isOsDarwin(BackendOs os)
+inline bool isOsDarwin(TargetOs os)
 {
     switch (os)
     {
-    case BackendOs::MacOSX:
+    case TargetOs::MacOSX:
         return true;
     }
 
     return false;
 }
 
-inline bool isArchArm(BackendArch arch)
+inline bool isArchArm(TargetArch arch)
 {
     switch (arch)
     {
-    case BackendArch::X86_64:
+    case TargetArch::X86_64:
         return false;
     }
 

@@ -36,9 +36,9 @@ void Backend::setup()
     string rtPath;
 
     // Add the runtime CRT
-    if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
+    if (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi))
     {
-        if (isArchArm(g_CommandLine->arch))
+        if (isArchArm(g_CommandLine->target.arch))
             rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-arm64";
         else
             rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-x86_64";
@@ -138,19 +138,19 @@ string Backend::getOutputFileExtension(BuildCfgBackendKind type)
     switch (type)
     {
     case BuildCfgBackendKind::Executable:
-        if (g_CommandLine->os == BackendOs::Windows)
+        if (g_CommandLine->target.os == TargetOs::Windows)
             return ".exe";
         return "";
 
     case BuildCfgBackendKind::StaticLib:
-        if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
+        if (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi))
             return ".lib";
         return ".a";
 
     case BuildCfgBackendKind::DynamicLib:
-        if (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi))
+        if (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi))
             return ".dll";
-        if (isOsDarwin(g_CommandLine->os))
+        if (isOsDarwin(g_CommandLine->target.os))
             return ".dylib";
         return ".so";
 
@@ -162,19 +162,19 @@ string Backend::getOutputFileExtension(BuildCfgBackendKind type)
 
 string Backend::getObjectFileExtension()
 {
-    if (g_CommandLine->abi == BackendAbi::Msvc ||
-        (g_CommandLine->os == BackendOs::Windows && !isAbiGnu(g_CommandLine->abi)))
+    if (g_CommandLine->target.abi == TargetAbi::Msvc ||
+        (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi)))
         return ".obj";
     return ".o";
 }
 
-BackendObjType Backend::getObjType(BackendOs os)
+BackendObjType Backend::getObjType(TargetOs os)
 {
     switch (os)
     {
-    case BackendOs::Windows:
+    case TargetOs::Windows:
         return BackendObjType::Coff;
-    case BackendOs::MacOSX:
+    case TargetOs::MacOSX:
         return BackendObjType::MachO;
     default:
         return BackendObjType::Elf;
@@ -193,9 +193,9 @@ Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
 
 const char* Backend::GetArchName()
 {
-    switch (g_CommandLine->arch)
+    switch (g_CommandLine->target.arch)
     {
-    case BackendArch::X86_64:
+    case TargetArch::X86_64:
         return "x86_64";
     default:
         return "?";
@@ -204,13 +204,13 @@ const char* Backend::GetArchName()
 
 const char* Backend::GetOsName()
 {
-    switch (g_CommandLine->os)
+    switch (g_CommandLine->target.os)
     {
-    case BackendOs::Windows:
+    case TargetOs::Windows:
         return "windows";
-    case BackendOs::Linux:
+    case TargetOs::Linux:
         return "linux";
-    case BackendOs::MacOSX:
+    case TargetOs::MacOSX:
         return "osx";
     default:
         return "?";
@@ -219,11 +219,11 @@ const char* Backend::GetOsName()
 
 const char* Backend::GetAbiName()
 {
-    switch (g_CommandLine->abi)
+    switch (g_CommandLine->target.abi)
     {
-    case BackendAbi::Msvc:
+    case TargetAbi::Msvc:
         return "msvc";
-    case BackendAbi::Gnu:
+    case TargetAbi::Gnu:
         return "gnu";
     default:
         return "?";
@@ -232,9 +232,9 @@ const char* Backend::GetAbiName()
 
 const char* Backend::GetVendorName()
 {
-    switch (g_CommandLine->vendor)
+    switch (g_CommandLine->target.vendor)
     {
-    case BackendVendor::Pc:
+    case TargetVendor::Pc:
         return "pc";
     default:
         return "?";
