@@ -83,7 +83,7 @@ void Stats::print()
         g_Log.messageHeaderDot("mem utf8", Utf8::format("%s", Utf8::toNiceSize(memUtf8.load()).c_str()));
         g_Log.messageHeaderDot("mem new", Utf8::format("%s", Utf8::toNiceSize(memNew.load()).c_str()));
 
-        if (g_CommandLine->backendType == BackendType::X64)
+        if (g_CommandLine->backendGenType == BackendGenType::X64)
         {
             g_Log.print("\n");
             g_Log.messageHeaderDot("mem x64 dbg", Utf8::format("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));

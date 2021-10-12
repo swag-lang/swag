@@ -35,7 +35,7 @@ JobResult ModuleOutputJob::execute()
         int minPerFile = 1024;
         int maxPerFile = 1024;
 
-        if (g_CommandLine->backendType == BackendType::LLVM)
+        if (g_CommandLine->backendGenType == BackendGenType::LLVM)
         {
             minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;

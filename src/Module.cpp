@@ -252,12 +252,12 @@ void Module::allocateBackend()
     // to know if a build is necessary
     if (!numTestErrors && !numTestWarnings && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
     {
-        switch (g_CommandLine->backendType)
+        switch (g_CommandLine->backendGenType)
         {
-        case BackendType::LLVM:
+        case BackendGenType::LLVM:
             backend = new BackendLLVM(this);
             break;
-        case BackendType::X64:
+        case BackendGenType::X64:
             backend = new BackendX64(this);
             break;
         default:

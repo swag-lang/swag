@@ -32,7 +32,7 @@ enum class BackendAbi
     Gnu,
 };
 
-enum class BackendType
+enum class BackendGenType
 {
     LLVM,
     X64,

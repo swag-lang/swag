@@ -32,7 +32,7 @@ bool CommandLine::check()
         stats = true;
 
     // Check special backend X64
-    if (backendType == BackendType::X64)
+    if (backendGenType == BackendGenType::X64)
     {
         if (abi != BackendAbi::Msvc)
         {

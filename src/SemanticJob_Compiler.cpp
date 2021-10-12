@@ -749,12 +749,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerBackend:
         node->setFlagsValueIsComputed();
-        switch (g_CommandLine->backendType)
+        switch (g_CommandLine->backendGenType)
         {
-        case BackendType::X64:
+        case BackendGenType::X64:
             node->computedValue->reg.u64 = (uint64_t) SwagBackendType::X64;
             break;
-        case BackendType::LLVM:
+        case BackendGenType::LLVM:
             node->computedValue->reg.u64 = (uint64_t) SwagBackendType::LLVM;
             break;
         }
