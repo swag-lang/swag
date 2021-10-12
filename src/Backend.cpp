@@ -191,9 +191,9 @@ Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
     return destFile;
 }
 
-const char* Backend::GetArchName()
+const char* Backend::GetArchName(const BackendTarget& target)
 {
-    switch (g_CommandLine->target.arch)
+    switch (target.arch)
     {
     case TargetArch::X86_64:
         return "x86_64";
@@ -202,9 +202,9 @@ const char* Backend::GetArchName()
     }
 }
 
-const char* Backend::GetOsName()
+const char* Backend::GetOsName(const BackendTarget& target)
 {
-    switch (g_CommandLine->target.os)
+    switch (target.os)
     {
     case TargetOs::Windows:
         return "windows";
@@ -217,9 +217,9 @@ const char* Backend::GetOsName()
     }
 }
 
-const char* Backend::GetAbiName()
+const char* Backend::GetAbiName(const BackendTarget& target)
 {
-    switch (g_CommandLine->target.abi)
+    switch (target.abi)
     {
     case TargetAbi::Msvc:
         return "msvc";
@@ -230,9 +230,9 @@ const char* Backend::GetAbiName()
     }
 }
 
-const char* Backend::GetVendorName()
+const char* Backend::GetVendorName(const BackendTarget& target)
 {
-    switch (g_CommandLine->target.vendor)
+    switch (target.vendor)
     {
     case TargetVendor::Pc:
         return "pc";

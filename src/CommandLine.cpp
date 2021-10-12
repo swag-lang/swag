@@ -36,25 +36,25 @@ bool CommandLine::check()
     {
         if (target.abi != TargetAbi::Msvc)
         {
-            g_Log.error(Utf8::format(g_E[Err0520], Backend::GetAbiName()));
+            g_Log.error(Utf8::format(g_E[Err0520], Backend::GetAbiName(target)));
             return false;
         }
 
         if (target.vendor != TargetVendor::Pc)
         {
-            g_Log.error(Utf8::format(g_E[Err0521], Backend::GetVendorName()));
+            g_Log.error(Utf8::format(g_E[Err0521], Backend::GetVendorName(target)));
             return false;
         }
 
         if (target.os != TargetOs::Windows)
         {
-            g_Log.error(Utf8::format(g_E[Err0522], Backend::GetOsName()));
+            g_Log.error(Utf8::format(g_E[Err0522], Backend::GetOsName(target)));
             return false;
         }
 
         if (target.arch != TargetArch::X86_64)
         {
-            g_Log.error(Utf8::format(g_E[Err0523], Backend::GetArchName()));
+            g_Log.error(Utf8::format(g_E[Err0523], Backend::GetArchName(target)));
             return false;
         }
     }

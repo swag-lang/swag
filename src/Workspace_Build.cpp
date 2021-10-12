@@ -201,7 +201,7 @@ void Workspace::setupInternalTags()
 
 Utf8 Workspace::getTargetFolder()
 {
-    return g_CommandLine->buildCfg + "-" + Backend::GetOsName() + "-" + Backend::GetArchName();
+    return g_CommandLine->buildCfg + "-" + Backend::GetOsName(g_CommandLine->target) + "-" + Backend::GetArchName(g_CommandLine->target);
 }
 
 void Workspace::setupTarget()

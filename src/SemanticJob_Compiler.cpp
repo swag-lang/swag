@@ -722,11 +722,11 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
     case TokenId::CompilerBuildCfg:
         return g_CommandLine->buildCfg;
     case TokenId::CompilerArch:
-        return Backend::GetArchName();
+        return Backend::GetArchName(g_CommandLine->target);
     case TokenId::CompilerOs:
-        return Backend::GetOsName();
+        return Backend::GetOsName(g_CommandLine->target);
     case TokenId::CompilerAbi:
-        return Backend::GetAbiName();
+        return Backend::GetAbiName(g_CommandLine->target);
     default:
         SWAG_ASSERT(false);
         break;
