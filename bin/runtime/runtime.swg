@@ -225,6 +225,54 @@ func @stringcmp(str1: string, str2: string)->bool
 }
 
 ////////////////////////////////////////////////////////////
+func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
+{
+    cxt := @getcontext()
+    contextFlags := cxt.flags
+    if contextFlags & Swag.ContextFlags.ByteCode
+    {
+        __raiseException666(message, loc)
+        return
+    }
+
+    // Construct error message, to print it in one instruction
+    var msg: [1024] u8
+    ptr := &msg[0]
+
+    @memcpy(ptr, @dataof("error: "), 7)
+    ptr += 7
+
+    @memcpy(ptr, @dataof(loc.fileName), @countof(loc.fileName))
+    ptr += @countof(loc.fileName)
+
+    ptr[0] = ":"'u8
+    ptr += 1
+    ptr = __itoa(ptr, cast(s64) loc.lineStart + 1)
+    ptr[0] = ":"'u8
+    ptr += 1
+    ptr = __itoa(ptr, cast(s64) loc.colStart + 1)
+    ptr[0] = ":"'u8
+    ptr[1] = " "'u8
+    ptr += 2
+
+    lenMsg := @countof(message)
+    if lenMsg > 512 lenMsg = 512
+    if lenMsg
+    {
+        @memcpy(ptr, @dataof(message), lenMsg)
+        ptr += lenMsg
+    }
+
+    ptr[0] = "\n"'u8
+    ptr[1] = 0
+    ptr += 1
+
+    lenTotal := ptr - @dataof(msg)
+    @assert(lenTotal < @countof(msg))
+    @print(@mkstring(&msg[0], lenTotal))
+}
+
+////////////////////////////////////////////////////////////
 private func concreteAlias(type1: typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict

@@ -41,30 +41,31 @@ private
 
 ////////////////////////////////////////////////////////////
 #[Swag.Callback]
+func memset(dst: *void, value: s32, size: uint)
 {
-    func memset(dst: *void, value: s32, size: uint)
-    {
-        RtlFillMemory(dst, size, value)
-    }
+    RtlFillMemory(dst, size, value)
+}
 
-    func memcpy(dst: *void, src: const *void, size: uint)
-    {
-        RtlCopyMemory(dst, src, size)
-    }
+#[Swag.Callback]
+func memcpy(dst: *void, src: const *void, size: uint)
+{
+    RtlCopyMemory(dst, src, size)
+}
 
-    func memmove(dst: *void, src: const *void, size: uint)
-    {
-        RtlMoveMemory(dst, src, size)
-    }
+#[Swag.Callback]
+func memmove(dst: *void, src: const *void, size: uint)
+{
+    RtlMoveMemory(dst, src, size)
+}
 
-    func memcmp(dst, src: const *void, size: uint)->s32
-    {
-        len := RtlCompareMemory(dst, src, size)
-        if len == size return 0
-        p1 := cast(const *s8) dst
-        p2 := cast(const *s8) src
-        return p1[len] - p2[len]
-    }
+#[Swag.Callback]
+func memcmp(dst, src: const *void, size: uint)->s32
+{
+    len := RtlCompareMemory(dst, src, size)
+    if len == size return 0
+    p1 := cast(const *s8) dst
+    p2 := cast(const *s8) src
+    return p1[len] - p2[len]
 }
 
 ////////////////////////////////////////////////////////////
@@ -77,55 +78,14 @@ func __printString(message: string)
 }
 
 ////////////////////////////////////////////////////////////
-func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
+func __raiseException666(message: string, loc: Swag.CompilerSourceLocation)
 {
     cxt := @getcontext()
-    contextFlags := cxt.flags
-    if contextFlags & Swag.ContextFlags.ByteCode
-    {
-        cxt.exceptionLoc = loc
-        cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
-        cxt.exceptionParams[1] = cast(const *void) @dataof(message)
-        cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
-        RaiseException(666, 0, 3, &cxt.exceptionParams[0])
-        return
-    }
-
-    // Construct error message, to print it in one instruction
-    var msg: [1024] u8
-    ptr := &msg[0]
-
-    @memcpy(ptr, @dataof("error: "), 7)
-    ptr += 7
-
-    @memcpy(ptr, @dataof(loc.fileName), @countof(loc.fileName))
-    ptr += @countof(loc.fileName)
-
-    ptr[0] = ":"'u8
-    ptr += 1
-    ptr = __itoa(ptr, cast(s64) loc.lineStart + 1)
-    ptr[0] = ":"'u8
-    ptr += 1
-    ptr = __itoa(ptr, cast(s64) loc.colStart + 1)
-    ptr[0] = ":"'u8
-    ptr[1] = " "'u8
-    ptr += 2
-
-    lenMsg := @countof(message)
-    if lenMsg > 512 lenMsg = 512
-    if lenMsg
-    {
-        @memcpy(ptr, @dataof(message), lenMsg)
-        ptr += lenMsg
-    }
-
-    ptr[0] = "\n"'u8
-    ptr[1] = 0
-    ptr += 1
-
-    lenTotal := ptr - @dataof(msg)
-    @assert(lenTotal < @countof(msg))
-    @print(@mkstring(&msg[0], lenTotal))
+    cxt.exceptionLoc = loc
+    cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
+    cxt.exceptionParams[1] = cast(const *void) @dataof(message)
+    cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
+    RaiseException(666, 0, 3, &cxt.exceptionParams[0])
 }
 
 ////////////////////////////////////////////////////////////

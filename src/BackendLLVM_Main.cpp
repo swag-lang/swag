@@ -11,15 +11,15 @@
 
 bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-    auto& builder         = *pp.builder;
-    auto& modu            = *pp.module;
-
     if (g_CommandLine->target.os == SwagTargetOs::Windows)
     {
+        int   ct              = buildParameters.compileType;
+        int   precompileIndex = buildParameters.precompileIndex;
+        auto& pp              = *perThread[ct][precompileIndex];
+        auto& context         = *pp.context;
+        auto& builder         = *pp.builder;
+        auto& modu            = *pp.module;
+
         // int _DllMainCRTStartup(void*, int, void*)
         {
             VectorNative<llvm::Type*> params;
@@ -33,7 +33,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
             builder.CreateRet(builder.getInt32(1));
         }
 
-        // Stack probing. Must do it by end to avoid linking with vc runtime on windows.
+        // Stack probing. Must do it by hand to avoid linking with vc runtime on windows.
         // void __chkstk()
         if (g_CommandLine->target.arch == SwagTargetArch::X86_64)
         {
@@ -65,14 +65,9 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 
         // int _fltused = 0;
         new llvm::GlobalVariable(modu, builder.getInt32Ty(), false, llvm::GlobalValue::ExternalLinkage, builder.getInt32(0), "_fltused");
+    }
 
-        return true;
-    }
-    else
-    {
-        module->error(Utf8::format(g_E[Err0034], Backend::GetOsName(g_CommandLine->target)));
-        return false;
-    }
+    return true;
 }
 
 bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
@@ -93,8 +88,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Utf8::format(g_E[Err0034], Backend::GetOsName(g_CommandLine->target)));
-        return false;
+        entryPoint = "main";
+        break;
     }
 
     // void mainCRTStartup()
