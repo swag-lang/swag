@@ -69,9 +69,9 @@ struct Backend
     static Utf8   getOutputFileName(const BuildParameters& buildParameters);
     static bool   passByValue(TypeInfo* typeInfo);
 
-    static string         getObjectFileExtension();
-    static string         getOutputFileExtension(BuildCfgBackendKind type);
-    static BackendObjType getObjType(TargetOs os);
+    static string         getObjectFileExtension(const BackendTarget& target);
+    static string         getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type);
+    static BackendObjType getObjType(const BackendTarget& target);
     static const char*    GetArchName(const BackendTarget& target);
     static const char*    GetOsName(const BackendTarget& target);
     static const char*    GetAbiName(const BackendTarget& target);

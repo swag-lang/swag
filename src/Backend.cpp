@@ -133,24 +133,34 @@ bool Backend::passByValue(TypeInfo* typeInfo)
     return typeInfo->numRegisters() == 1;
 }
 
-string Backend::getOutputFileExtension(BuildCfgBackendKind type)
+Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
+{
+    SWAG_ASSERT(!buildParameters.outputFileName.empty());
+    Utf8 destFile = g_Workspace->targetPath.string();
+    destFile += buildParameters.outputFileName;
+    destFile += getOutputFileExtension(g_CommandLine->target, buildParameters.buildCfg->backendKind);
+    destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
+    return destFile;
+}
+
+string Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type)
 {
     switch (type)
     {
     case BuildCfgBackendKind::Executable:
-        if (g_CommandLine->target.os == TargetOs::Windows)
+        if (target.os == TargetOs::Windows)
             return ".exe";
         return "";
 
     case BuildCfgBackendKind::StaticLib:
-        if (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi))
+        if (target.os == TargetOs::Windows && !isAbiGnu(target.abi))
             return ".lib";
         return ".a";
 
     case BuildCfgBackendKind::DynamicLib:
-        if (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi))
+        if (target.os == TargetOs::Windows && !isAbiGnu(target.abi))
             return ".dll";
-        if (isOsDarwin(g_CommandLine->target.os))
+        if (isOsDarwin(target.os))
             return ".dylib";
         return ".so";
 
@@ -160,17 +170,16 @@ string Backend::getOutputFileExtension(BuildCfgBackendKind type)
     }
 }
 
-string Backend::getObjectFileExtension()
+string Backend::getObjectFileExtension(const BackendTarget& target)
 {
-    if (g_CommandLine->target.abi == TargetAbi::Msvc ||
-        (g_CommandLine->target.os == TargetOs::Windows && !isAbiGnu(g_CommandLine->target.abi)))
+    if (target.abi == TargetAbi::Msvc || (target.os == TargetOs::Windows && !isAbiGnu(target.abi)))
         return ".obj";
     return ".o";
 }
 
-BackendObjType Backend::getObjType(TargetOs os)
+BackendObjType Backend::getObjType(const BackendTarget& target)
 {
-    switch (os)
+    switch (target.os)
     {
     case TargetOs::Windows:
         return BackendObjType::Coff;
@@ -179,16 +188,6 @@ BackendObjType Backend::getObjType(TargetOs os)
     default:
         return BackendObjType::Elf;
     }
-}
-
-Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
-{
-    SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    Utf8 destFile = g_Workspace->targetPath.string();
-    destFile += buildParameters.outputFileName;
-    destFile += getOutputFileExtension(buildParameters.buildCfg->backendKind);
-    destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
-    return destFile;
 }
 
 const char* Backend::GetArchName(const BackendTarget& target)

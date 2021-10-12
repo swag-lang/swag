@@ -93,8 +93,8 @@ namespace BackendLinker
         for (auto fl : buildParameters.foreignLibs)
         {
             one = fl;
-            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib))
-                one += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
+                one += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
             arguments.push_back(one);
         }
 
@@ -102,8 +102,8 @@ namespace BackendLinker
         for (const auto& dep : module->moduleDependencies)
         {
             auto libName = dep->name;
-            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib))
-                libName += Backend::getOutputFileExtension(BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
+                libName += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
             auto fullName = g_Workspace->targetPath.string();
             fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
@@ -140,7 +140,7 @@ namespace BackendLinker
 
     void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool forCmdLine)
     {
-        auto objFileType = Backend::getObjType(g_CommandLine->target.os);
+        auto objFileType = Backend::getObjType(g_CommandLine->target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -205,7 +205,7 @@ namespace BackendLinker
             this_thread::yield();
         }
 
-        auto objFileType = Backend::getObjType(g_CommandLine->target.os);
+        auto objFileType = Backend::getObjType(g_CommandLine->target);
         bool result      = true;
         switch (objFileType)
         {

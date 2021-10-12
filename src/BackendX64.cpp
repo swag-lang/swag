@@ -321,7 +321,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         pp.filename = Utf8::format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += Backend::getObjectFileExtension();
+        pp.filename += Backend::getObjectFileExtension(g_CommandLine->target);
 
         emitHeader(buildParameters);
         createRuntime(buildParameters);

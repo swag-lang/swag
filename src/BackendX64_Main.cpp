@@ -111,7 +111,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
+        nameLib += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
         emitGlobalString(pp, precompileIndex, nameLib, RCX);
         BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RDX);
         emitCall(pp, g_LangSpec->name__loaddll);
