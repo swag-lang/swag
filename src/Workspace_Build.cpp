@@ -204,19 +204,25 @@ Utf8 Workspace::getTargetFullName(const string& buildCfg, const BackendTarget& t
     return buildCfg + "-" + Backend::GetOsName(target) + "-" + Backend::GetArchName(target);
 }
 
+fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& target)
+{
+    fs::path p;
+    p = workspacePath;
+    p.append(SWAG_OUTPUT_FOLDER);
+    p.append("/");
+    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+    p.append(targetFullName.c_str());
+    p += "/";
+    return p;
+}
+
 void Workspace::setupTarget()
 {
-    targetPath = workspacePath;
-
-    targetPath.append(SWAG_OUTPUT_FOLDER);
-    targetPath.append("/");
-    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
-    targetPath.append(targetFullName.c_str());
-
+    // Target directory
+    targetPath = getTargetPath(g_CommandLine->buildCfg, g_CommandLine->target);
     if (g_CommandLine->verbosePath)
         g_Log.verbose(Utf8::format("target path is `%s`", targetPath.string().c_str()));
 
-    // Be sure folders exists
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
@@ -239,6 +245,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
+    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
@@ -249,7 +256,6 @@ void Workspace::setupTarget()
     if (g_CommandLine->verbosePath)
         g_Log.verbose(Utf8::format("cache path is `%s`", cachePath.string().c_str()));
 
-    targetPath += "/";
     cachePath += "/";
 }
 

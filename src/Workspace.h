@@ -63,6 +63,7 @@ struct Workspace
     void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
     Utf8        getTargetFullName(const string& buildCfg, const BackendTarget& target);
+    fs::path    getTargetPath(const string& buildCfg, const BackendTarget& target);
     void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);
