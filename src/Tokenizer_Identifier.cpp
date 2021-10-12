@@ -3,6 +3,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Version.h"
+#include "Backend.h"
 
 void Tokenizer::relaxIdentifier(Token& token)
 {
@@ -86,11 +87,7 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
     case TokenId::CompilerSwagOs:
         token.id          = TokenId::LiteralNumber;
         token.literalType = LiteralType::TT_STRING;
-#ifdef _WIN32
-        token.text = "windows";
-#else
-        token.text = "?";
-#endif
+        token.text        = Backend::GetOsName(OS::getNativeTarget());
         return;
     }
 }
