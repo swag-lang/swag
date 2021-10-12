@@ -199,9 +199,9 @@ void Workspace::setupInternalTags()
     }
 }
 
-Utf8 Workspace::getTargetFullName()
+Utf8 Workspace::getTargetFullName(const string& buildCfg, const BackendTarget& target)
 {
-    return g_CommandLine->buildCfg + "-" + Backend::GetOsName(g_CommandLine->target) + "-" + Backend::GetArchName(g_CommandLine->target);
+    return buildCfg + "-" + Backend::GetOsName(target) + "-" + Backend::GetArchName(target);
 }
 
 void Workspace::setupTarget()
@@ -210,7 +210,8 @@ void Workspace::setupTarget()
 
     targetPath.append(SWAG_OUTPUT_FOLDER);
     targetPath.append("/");
-    targetPath.append(getTargetFullName().c_str());
+    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+    targetPath.append(targetFullName.c_str());
 
     if (g_CommandLine->verbosePath)
         g_Log.verbose(Utf8::format("target path is `%s`", targetPath.string().c_str()));
@@ -238,7 +239,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
-    cachePath.append(workspacePath.filename().string() + "-" + g_Workspace->getTargetFullName().c_str());
+    cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.errorOS(Utf8::format(g_E[Err0547], cachePath.string().c_str()));
@@ -720,7 +721,10 @@ bool Workspace::build()
             if (g_CommandLine->listDepCmd || g_CommandLine->getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else
-                g_Log.messageHeaderCentered("Workspace", Utf8::format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace->getTargetFullName().c_str()));
+            {
+                auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+                g_Log.messageHeaderCentered("Workspace", Utf8::format("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
+            }
         }
 
         addBootstrap();

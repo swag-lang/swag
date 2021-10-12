@@ -6,6 +6,7 @@ struct Module;
 struct Scope;
 struct SourceFile;
 struct AstNode;
+struct BackendTarget;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
@@ -61,7 +62,7 @@ struct Workspace
     OneTag*     hasTag(const Utf8& name);
     void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
-    Utf8        getTargetFullName();
+    Utf8        getTargetFullName(const string& buildCfg, const BackendTarget& target);
     void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);
