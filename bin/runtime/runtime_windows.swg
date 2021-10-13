@@ -113,11 +113,11 @@ func __panicBox(msg, title: string)
     result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result
     {
-        case IDCANCEL:
-            ExitProcess(bitcast(u32) -666)
-        case IDTRYAGAIN:
-            DebugBreak();
-        case IDCONTINUE:
-            break
+    case IDCANCEL:
+        ExitProcess(bitcast(u32) -666)
+    case IDTRYAGAIN:
+        DebugBreak();
+    case IDCONTINUE:
+        break
     }
 }
