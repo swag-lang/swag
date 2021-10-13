@@ -84,10 +84,5 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
         token.literalType      = LiteralType::TT_S32;
         token.literalValue.s32 = SWAG_BUILD_NUM;
         return;
-    case TokenId::CompilerSwagOs:
-        token.id          = TokenId::LiteralNumber;
-        token.literalType = LiteralType::TT_STRING;
-        token.text        = Backend::GetOsName(OS::getNativeTarget());
-        return;
     }
 }

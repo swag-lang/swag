@@ -770,6 +770,13 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_ASSERT(node->typeInfo);
         return true;
 
+    case TokenId::CompilerSwagOs:
+        node->setFlagsValueIsComputed();
+        node->computedValue->reg.u64 = (uint64_t) OS::getNativeTarget().os;
+        node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
+        SWAG_ASSERT(node->typeInfo);
+        return true;
+
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
         node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);

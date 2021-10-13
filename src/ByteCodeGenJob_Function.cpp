@@ -970,6 +970,14 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             break;
         }
 
+        case TokenId::CompilerSwagOs:
+        {
+            regList     = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            inst->b.u64 = (uint64_t) OS::getNativeTarget().os;
+            break;
+        }
+
         case TokenId::CompilerBackend:
         {
             regList     = reserveRegisterRC(context);
