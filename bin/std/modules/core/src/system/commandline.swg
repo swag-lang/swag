@@ -1,7 +1,7 @@
 #global export
 #global namespace CommandLine
 
-attr ArgParams(nameAlias: string = null);
+attr ArgParams(nameAlias: string = null)
 
 struct(T) IsSet
 {
@@ -22,7 +22,6 @@ struct(T) Result
 
 struct ParseOptions
 {
-    optionDelimiter = "-"'u8
 }
 
 // Returns true if `oneArg` is a valid option (starting with a delimiter)
@@ -30,7 +29,7 @@ func isOption(oneArg: string, options: ParseOptions)->bool
 {
     if @countof(oneArg) == 0
         return false
-    return oneArg[0] == options.optionDelimiter
+    return oneArg[0] == "-"'u8
 }
 
 // Clean and split a list of arguments
@@ -107,12 +106,14 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     {
         oneArg := allArgs[itp]
         if !isOption(oneArg, options)
-            continue
+            throw Format.toString("invalid option '%'", oneArg)
+
         oneArg = Tokenize.eatCount(oneArg, 1)
 
         typeParam := getField(typeof, oneArg)
         if !typeParam
             throw Format.toString("unknown option '%'", oneArg)
+
         typeField := typeParam.pointedType
 
         addr := cast(*u8) st
