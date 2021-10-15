@@ -5,8 +5,8 @@ using Core, Win32
 #[Swag.NoCopy]
 struct Surface
 {
+    using base: SurfaceBase
     hWnd: HWND
-    proc: func(Surface, SurfaceMessage)
 }
 
 #[Swag.Callback]
@@ -118,7 +118,7 @@ impl Surface
         if flags & .PopupWindow winFlags |= WS_POPUP | WS_BORDER | WS_SYSMENU
 
         // Create window
-        result.hWnd = CreateWindowExW(
+        result.hWnd = cast(const *void) CreateWindowExW(
             winExFlags,
             wc.lpszClassName,
             @dataof(utf16.toZeroTerminated(title)),

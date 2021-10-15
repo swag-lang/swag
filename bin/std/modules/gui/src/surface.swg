@@ -1,5 +1,11 @@
 #global public
 
+#[Swag.NoCopy]
+struct SurfaceBase
+{
+    proc: func(Surface, SurfaceMessage)
+}
+
 enum SurfaceMessageKind
 {
     None
