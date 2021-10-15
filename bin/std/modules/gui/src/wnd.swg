@@ -1,3 +1,4 @@
+#global public
 using Core, Pixel
 
 interface IWnd

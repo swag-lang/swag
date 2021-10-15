@@ -1,3 +1,4 @@
+#global public
 using Core.Math
 
 struct PaintContext

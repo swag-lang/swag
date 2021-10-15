@@ -1,9 +1,10 @@
 #global public
 
-#[Swag.NoCopy]
-struct SurfaceBase
+struct Surface
 {
-    proc: func(Surface, SurfaceMessage)
+    using native:   NativeSurface
+    wnd:            SurfaceWnd
+    proc:           func(Surface, SurfaceMessage)
 }
 
 enum SurfaceMessageKind

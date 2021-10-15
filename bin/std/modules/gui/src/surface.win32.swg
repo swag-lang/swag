@@ -3,9 +3,8 @@
 using Core, Win32
 
 #[Swag.NoCopy]
-struct Surface
+struct NativeSurface
 {
-    using base: SurfaceBase
     hWnd: HWND
 }
 
@@ -42,7 +41,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     return DefWindowProcW(hWnd, msg, wParam, lParam)
 }
 
-impl Surface
+impl NativeSurface
 {
     // Show the surface
     mtd show()
