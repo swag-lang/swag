@@ -272,14 +272,31 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 Utf8      content;
                 content += "func ";
                 content += missingNode->namedParam;
+
                 content += "(using self";
-                content += ") => ";
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::Lambda);
+                for (int i = 1; i < typeFunc->parameters.size(); i++)
+                {
+                    content += ",";
+                    content += Utf8::format("p%d: %s", i, typeFunc->parameters[i]->typeInfo->name.c_str());
+                }
+                content += ")";
+
+                content += " => ";
                 content += itfRef.fieldRef;
                 content += ".";
                 content += typeBaseInterface->name;
                 content += ".";
                 content += missingNode->namedParam;
-                content += "()";
+
+                content += "(";
+                for (int i = 1; i < typeFunc->parameters.size(); i++)
+                {
+                    if (i != 1)
+                        content += ",";
+                    content += Utf8::format("p%d", i);
+                }
+                content += ")";
 
                 SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, false));
                 context->job->nodes.push_back(node->childs.back());
