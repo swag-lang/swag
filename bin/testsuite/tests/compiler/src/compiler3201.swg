@@ -1,0 +1,37 @@
+struct XX
+{
+    x: s32 = 666
+}
+
+struct AA
+{
+    x: s32 = 555
+    using xx0: XX
+}
+
+struct BB
+{
+    xx: f64
+    using aa0: AA
+}
+
+interface I
+{
+    toto: func(self)
+}
+
+impl I for XX
+{
+    mtd toto()
+    {
+        @assert(x == 666)
+    }
+}
+
+//#[Swag.PrintBc, Swag.Optim("", false)]
+#test
+{
+    var x: BB
+    ptr := cast(I) x
+    ptr.toto()
+}
