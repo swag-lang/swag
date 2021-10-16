@@ -570,7 +570,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
             return true;
     }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING));
     if (context->result == ContextResult::Pending)
         return true;
 

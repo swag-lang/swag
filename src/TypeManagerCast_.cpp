@@ -2154,6 +2154,118 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     return true;
 }
 
+bool TypeManager::getInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, TypeInfoParam** itf, uint32_t* stoffset)
+{
+    *itf      = nullptr;
+    *stoffset = 0;
+
+    VectorNative<pair<TypeInfoStruct*, uint32_t>> stack;
+    stack.push_back({fromTypeStruct, 0});
+    while (!stack.empty())
+    {
+        auto it        = stack.back();
+        fromTypeStruct = it.first;
+        auto offset    = it.second;
+        stack.pop_back();
+
+        auto res = fromTypeStruct->hasInterface(toTypeItf);
+        if (res)
+        {
+            *itf      = res;
+            *stoffset = offset;
+            return true;
+        }
+
+        auto structNode = CastAst<AstStruct>(fromTypeStruct->declNode, AstNodeKind::StructDecl);
+        if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
+            continue;
+
+        context->job->waitOverloadCompleted(fromTypeStruct->declNode->resolvedSymbolOverload);
+        if (context->result != ContextResult::Done)
+            return true;
+
+        for (auto field : fromTypeStruct->fields)
+        {
+            if (!(field->flags & TYPEINFO_HAS_USING))
+                continue;
+            if (field->typeInfo->kind != TypeInfoKind::Struct)
+                continue;
+
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
+            if (typeStruct == fromTypeStruct)
+                continue;
+
+            context->job->waitAllStructInterfaces(typeStruct);
+            if (context->result != ContextResult::Done)
+                return true;
+
+            stack.push_back({typeStruct, offset + field->offset});
+        }
+    }
+
+    return true;
+}
+
+bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
+
+    if (fromType == g_TypeMgr->typeInfoNull)
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            // We will copy the value to the stack to be sure/ that the memory layout is correct, without relying on
+            // registers being contiguous, and not being reallocated (by an optimize pass).
+            // This is the same problem when casting to 'any'.
+            // See ByteCodeGenJob::emitCastToNativeAny
+            if (fromNode->ownerFct)
+            {
+                fromNode->allocateExtension();
+                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
+                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            }
+
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+        }
+
+        return true;
+    }
+
+    // Struct to interface
+    // We need to take care of "using" fields.
+    if (fromType->kind == TypeInfoKind::Struct)
+    {
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+
+        TypeInfoParam* itf    = nullptr;
+        uint32_t       offset = 0;
+        SWAG_CHECK(getInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        if (context->result != ContextResult::Done)
+        {
+            SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+            return true;
+        }
+
+        if (itf)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->allocateExtension();
+                fromNode->extension->castOffset = offset;
+                fromNode->extension->castItf    = itf;
+                fromNode->castedTypeInfo        = fromType;
+                fromNode->typeInfo              = toTypeItf;
+            }
+
+            return true;
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto toTypeReference = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
@@ -2215,7 +2327,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo = toType;
+                fromNode->typeInfo       = toType;
             }
 
             return true;
@@ -2387,25 +2499,38 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
         auto toTypeItf       = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
         auto fromTypeStruct  = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-        if (!fromTypeStruct->hasInterface(toTypeItf))
+
+        TypeInfoParam* itf    = nullptr;
+        uint32_t       offset = 0;
+        SWAG_CHECK(getInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        if (context->result != ContextResult::Done)
+        {
+            SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+            return true;
+        }
+
+        if (!itf)
             return castError(context, toType, fromType, fromNode, castFlags);
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            fromNode->allocateExtension();
+
             // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
             // registers being contiguous, and not being reallocated (by an optimize pass).
             // This is the same problem when casting to 'any'.
             // See ByteCodeGenJob::emitCastToInterface
             if (fromNode->ownerFct)
             {
-                fromNode->allocateExtension();
                 fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toTypeItf;
+            fromNode->castedTypeInfo        = fromType;
+            fromNode->typeInfo              = toTypeItf;
+            fromNode->extension->castOffset = offset;
+            fromNode->extension->castItf    = itf;
         }
 
         return true;
@@ -2486,53 +2611,6 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
             return true;
         }
-    }
-
-    return castError(context, toType, fromType, fromNode, castFlags);
-}
-
-bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
-{
-    if (fromType == g_TypeMgr->typeInfoNull)
-    {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            // We will copy the value to the stack to be sure/ that the memory layout is correct, without relying on
-            // registers being contiguous, and not being reallocated (by an optimize pass).
-            // This is the same problem when casting to 'any'.
-            // See ByteCodeGenJob::emitCastToNativeAny
-            if (fromNode->ownerFct)
-            {
-                fromNode->allocateExtension();
-                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
-                fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
-                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
-            }
-
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
-        }
-
-        return true;
-    }
-
-    // Struct to interface
-    if (fromType->kind == TypeInfoKind::Struct)
-    {
-        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        if (!fromTypeStruct->hasInterface(toTypeItf))
-        {
-            return castError(context, toType, fromType, fromNode, castFlags);
-        }
-
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toTypeItf;
-        }
-
-        return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);

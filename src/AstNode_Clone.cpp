@@ -68,6 +68,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->collectTypeInfo              = from->extension->collectTypeInfo;
         extension->exportNode                   = from->extension->exportNode;
         extension->castOffset                   = from->extension->castOffset;
+        extension->castItf                      = from->extension->castItf;
         extension->stackOffset                  = from->extension->stackOffset;
         extension->anyTypeSegment               = from->extension->anyTypeSegment;
         extension->anyTypeOffset                = from->extension->anyTypeOffset;

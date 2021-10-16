@@ -66,9 +66,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
-    auto node      = context->node;
-    auto toTypeItf = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Interface);
-
+    auto node = context->node;
     if (fromTypeInfo == g_TypeMgr->typeInfoNull)
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -93,14 +91,22 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     }
 
     SWAG_ASSERT(fromTypeStruct->cptRemainingInterfaces == 0);
+    SWAG_ASSERT(exprNode->extension);
+    SWAG_ASSERT(exprNode->extension->castItf);
 
-    auto itf = fromTypeStruct->hasInterface(toTypeItf);
-    SWAG_ASSERT(itf);
     transformResultToLinear2(context, exprNode);
 
+    // Need to make the pointer on the data
+    if (exprNode->extension->castOffset)
+    {
+        auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
+        SWAG_ASSERT(exprNode->extension && exprNode->extension->castOffset != UINT32_MAX);
+        inst->b.u64 = exprNode->extension->castOffset;
+        inst->flags |= BCI_IMM_B;
+    }
+
     // :ItfIsConstantSeg
-    SWAG_ASSERT(itf->offset != UINT32_MAX);
-    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, itf->offset, exprNode->resultRegisterRC[1]);
+    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->extension->castItf->offset, exprNode->resultRegisterRC[1]);
 
     // We need to emit a pointer, so we emit a pointer to the interface that is stored in the 2 contiguous registers
     if (fromPointer)

@@ -257,6 +257,7 @@ struct AstNode
         DataSegment*       anyTypeSegment               = nullptr;
         AstAttrUse*        ownerAttrUse                 = nullptr;
         AstTryCatchAssume* ownerTryCatchAssume          = nullptr;
+        TypeInfoParam*     castItf                      = nullptr;
 
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;
