@@ -957,7 +957,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerArch:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine->target.arch;
             break;
         }
@@ -965,7 +965,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerOs:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine->target.os;
             break;
         }
@@ -973,7 +973,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerSwagOs:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) OS::getNativeTarget().os;
             break;
         }
@@ -981,7 +981,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerBackend:
         {
             regList     = reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
             inst->b.u64 = (uint64_t) g_CommandLine->backendGenType;
             break;
         }

@@ -13,12 +13,14 @@ interface I
 {
     init:  func(self, s32)->s32
     close: func(self)->s32
+    data:  func(self)
 }
 
 impl I for Base
 {
     mtd init(param: s32) => param
     mtd close()->s32 => 2
+    mtd data() {}
 }
 
 impl I for BB
