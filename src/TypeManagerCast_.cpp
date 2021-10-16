@@ -2188,6 +2188,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             *itf       = foundItf;
             *stoffset  = it.offset;
             foundField = it.field;
+            continue;
         }
 
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
