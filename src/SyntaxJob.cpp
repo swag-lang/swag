@@ -236,6 +236,13 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     currentFct          = parent->ownerFct;
     currentInline       = parent->ownerInline;
 
+    if (kind == CompilerAstKind::MissingInterfaceMtd)
+    {
+        auto impl          = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        currentScope       = impl->scope;
+        currentStructScope = impl->structScope;
+    }
+
     tokenizer.setFile(sourceFile);
     if (logGenerated)
     {
@@ -265,6 +272,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             SWAG_CHECK(doEmbeddedInstruction(parent));
             break;
         case CompilerAstKind::TopLevelInstruction:
+        case CompilerAstKind::MissingInterfaceMtd:
             SWAG_CHECK(doTopLevelInstruction(parent));
             break;
         case CompilerAstKind::StructVarDecl:

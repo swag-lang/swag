@@ -250,14 +250,50 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure every functions of the interface has been covered
     vector<const Diagnostic*> notes;
+    InterfaceRef              itfRef;
+    bool                      doneItfRef = false;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
         if (mapItIdxToFunc[idx] == nullptr)
         {
             auto missingNode = typeInterface->fields[idx];
+
+            if (!doneItfRef)
+            {
+                doneItfRef = true;
+                SWAG_CHECK(TypeManager::collectInterface(context, typeStruct, typeBaseInterface, itfRef, true));
+                if (context->result != ContextResult::Done)
+                    return true;
+            }
+
+            if (itfRef.itf)
+            {
+                SyntaxJob syntaxJob;
+                Utf8      content;
+                content += "func ";
+                content += missingNode->namedParam;
+                content += "(using self";
+                content += ") => ";
+                content += itfRef.fieldRef;
+                content += ".";
+                content += typeBaseInterface->name;
+                content += ".";
+                content += missingNode->namedParam;
+                content += "()";
+
+                SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, false));
+                context->job->nodes.push_back(node->childs.back());
+                context->result = ContextResult::NewChilds;
+                continue;
+            }
+
             notes.push_back(new Diagnostic({missingNode->declNode, Utf8::format("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
     }
+
+    // We have generated methods, so restart
+    if (context->result == ContextResult::NewChilds)
+        return true;
 
     if (!notes.empty())
     {

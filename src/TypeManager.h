@@ -37,6 +37,13 @@ static const uint32_t CONCRETE_GENERIC    = 0x00000004;
 static const uint32_t CONCRETE_ALIAS      = 0x00000008;
 static const uint32_t CONCRETE_FORCEALIAS = 0x00000010;
 
+struct InterfaceRef
+{
+    TypeInfoParam* itf         = nullptr;
+    uint32_t       fieldOffset = 0;
+    Utf8           fieldRef;
+};
+
 struct TypeManager
 {
     void setup();
@@ -82,7 +89,7 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
-    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, TypeInfoParam** itf, uint32_t* stoffset);
+    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);

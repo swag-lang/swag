@@ -2154,43 +2154,52 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     return true;
 }
 
-bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, TypeInfoParam** itf, uint32_t* stoffset)
+bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst)
 {
-    struct oneField
+    struct OneField
     {
         TypeInfoStruct* typeStruct;
         uint32_t        offset;
         TypeInfoParam*  field;
     };
 
-    *itf                      = nullptr;
-    *stoffset                 = 0;
     TypeInfoParam* foundField = nullptr;
 
-    VectorNative<oneField> stack;
+    VectorNative<OneField> stack;
     stack.push_back({fromTypeStruct, 0, nullptr});
     while (!stack.empty())
     {
         auto it = stack.back();
         stack.pop_back();
 
-        auto foundItf = it.typeStruct->hasInterface(toTypeItf);
-        if (foundItf)
+        if (!skipFirst)
         {
-            if (foundField)
+            auto foundItf = it.typeStruct->hasInterface(toTypeItf);
+            if (foundItf)
             {
-                Diagnostic diag{context->node, Utf8::format(g_E[Err0034], fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                Diagnostic note1{it.field->declNode, g_E[Nte0006], DiagnosticLevel::Note};
-                Diagnostic note2{foundField->declNode, g_E[Nte0006], DiagnosticLevel::Note};
-                return context->report(diag, &note1, &note2);
-            }
+                if (foundField)
+                {
+                    Diagnostic diag{context->node, Utf8::format(g_E[Err0034], fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    Diagnostic note1{it.field->declNode, g_E[Nte0006], DiagnosticLevel::Note};
+                    Diagnostic note2{foundField->declNode, g_E[Nte0006], DiagnosticLevel::Note};
+                    return context->report(diag, &note1, &note2);
+                }
 
-            *itf       = foundItf;
-            *stoffset  = it.offset;
-            foundField = it.field;
-            continue;
+                ref.itf         = foundItf;
+                ref.fieldOffset = it.offset;
+                if (it.field)
+                {
+                    if (!ref.fieldRef.empty())
+                        ref.fieldRef += ".";
+                    ref.fieldRef += it.field->namedParam;
+                }
+
+                foundField = it.field;
+                continue;
+            }
         }
 
+        skipFirst       = false;
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
         if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
             continue;
@@ -2254,22 +2263,21 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     {
         auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
 
-        TypeInfoParam* itf    = nullptr;
-        uint32_t       offset = 0;
-        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        InterfaceRef itfRef;
+        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, itfRef));
         if (context->result != ContextResult::Done)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
             return true;
         }
 
-        if (itf)
+        if (itfRef.itf)
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->allocateExtension();
-                fromNode->extension->castOffset = offset;
-                fromNode->extension->castItf    = itf;
+                fromNode->extension->castOffset = itfRef.fieldOffset;
+                fromNode->extension->castItf    = itfRef.itf;
                 fromNode->castedTypeInfo        = fromType;
                 fromNode->typeInfo              = toTypeItf;
             }
@@ -2515,16 +2523,15 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         auto toTypeItf       = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
         auto fromTypeStruct  = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
 
-        TypeInfoParam* itf    = nullptr;
-        uint32_t       offset = 0;
-        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        InterfaceRef itfRef;
+        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, itfRef));
         if (context->result != ContextResult::Done)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
             return true;
         }
 
-        if (!itf)
+        if (!itfRef.itf)
             return castError(context, toType, fromType, fromNode, castFlags);
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2544,8 +2551,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
             fromNode->castedTypeInfo        = fromType;
             fromNode->typeInfo              = toTypeItf;
-            fromNode->extension->castOffset = offset;
-            fromNode->extension->castItf    = itf;
+            fromNode->extension->castOffset = itfRef.fieldOffset;
+            fromNode->extension->castItf    = itfRef.itf;
         }
 
         return true;

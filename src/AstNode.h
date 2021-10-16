@@ -766,6 +766,7 @@ enum class CompilerAstKind
     TopLevelInstruction,
     StructVarDecl,
     EnumValue,
+    MissingInterfaceMtd,
 };
 
 struct AstCompilerSpecFunc : public AstNode
