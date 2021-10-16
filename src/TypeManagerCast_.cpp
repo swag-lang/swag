@@ -2154,37 +2154,51 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     return true;
 }
 
-bool TypeManager::getInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, TypeInfoParam** itf, uint32_t* stoffset)
+bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, TypeInfoParam** itf, uint32_t* stoffset)
 {
-    *itf      = nullptr;
-    *stoffset = 0;
+    struct oneField
+    {
+        TypeInfoStruct* typeStruct;
+        uint32_t        offset;
+        TypeInfoParam*  field;
+    };
 
-    VectorNative<pair<TypeInfoStruct*, uint32_t>> stack;
-    stack.push_back({fromTypeStruct, 0});
+    *itf                      = nullptr;
+    *stoffset                 = 0;
+    TypeInfoParam* foundField = nullptr;
+
+    VectorNative<oneField> stack;
+    stack.push_back({fromTypeStruct, 0, nullptr});
     while (!stack.empty())
     {
-        auto it        = stack.back();
-        fromTypeStruct = it.first;
-        auto offset    = it.second;
+        auto it = stack.back();
         stack.pop_back();
 
-        auto res = fromTypeStruct->hasInterface(toTypeItf);
-        if (res)
+        auto foundItf = it.typeStruct->hasInterface(toTypeItf);
+        if (foundItf)
         {
-            *itf      = res;
-            *stoffset = offset;
-            return true;
+            if (foundField)
+            {
+                Diagnostic diag{context->node, Utf8::format(g_E[Err0034], fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                Diagnostic note1{it.field->declNode, g_E[Nte0006], DiagnosticLevel::Note};
+                Diagnostic note2{foundField->declNode, g_E[Nte0006], DiagnosticLevel::Note};
+                return context->report(diag, &note1, &note2);
+            }
+
+            *itf       = foundItf;
+            *stoffset  = it.offset;
+            foundField = it.field;
         }
 
-        auto structNode = CastAst<AstStruct>(fromTypeStruct->declNode, AstNodeKind::StructDecl);
+        auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
         if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
             continue;
 
-        context->job->waitOverloadCompleted(fromTypeStruct->declNode->resolvedSymbolOverload);
+        context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
         if (context->result != ContextResult::Done)
             return true;
 
-        for (auto field : fromTypeStruct->fields)
+        for (auto field : it.typeStruct->fields)
         {
             if (!(field->flags & TYPEINFO_HAS_USING))
                 continue;
@@ -2192,14 +2206,14 @@ bool TypeManager::getInterface(SemanticContext* context, TypeInfoStruct* fromTyp
                 continue;
 
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
-            if (typeStruct == fromTypeStruct)
+            if (typeStruct == it.typeStruct)
                 continue;
 
             context->job->waitAllStructInterfaces(typeStruct);
             if (context->result != ContextResult::Done)
                 return true;
 
-            stack.push_back({typeStruct, offset + field->offset});
+            stack.push_back({typeStruct, it.offset + field->offset, field});
         }
     }
 
@@ -2241,7 +2255,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
         TypeInfoParam* itf    = nullptr;
         uint32_t       offset = 0;
-        SWAG_CHECK(getInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
         if (context->result != ContextResult::Done)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
@@ -2502,7 +2516,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
         TypeInfoParam* itf    = nullptr;
         uint32_t       offset = 0;
-        SWAG_CHECK(getInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
+        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, &itf, &offset));
         if (context->result != ContextResult::Done)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
