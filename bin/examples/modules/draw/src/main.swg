@@ -22,7 +22,7 @@ var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
 var g_Page:         s32 = 0
-var g_Wnd:          Surface
+var g_RC:           RenderingContext
 const MaxPages = 6
 
 func dataPath()->String
@@ -549,7 +549,7 @@ func displayPage5()
 
 func display()
 {
-    g_Renderer.begin()
+    g_Renderer.begin(g_RC)
 
     g_Painter.paintParams  = g_ModeAA ? .Antialiased : .Default
     g_Painter.paintQuality = g_PaintQuality
@@ -612,7 +612,8 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
     case Paint:
         display()
     case Resize:
-        g_Renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
+        g_RC.width = cast(s32) msg.param0
+        g_RC.height = cast(s32) msg.param1
     }
 }
 
@@ -620,8 +621,8 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        g_Wnd = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
-        g_Renderer.init(g_Wnd.hWnd, W, H)
+        surface := Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        g_RC = g_Renderer.createContext(surface.hWnd)
 
         img0 := Image.load(imagePath("basn0g01.png"))
         img1 := Image.load(imagePath("rgba.bmp"))
@@ -642,7 +643,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
-        g_Wnd.show()
+        surface.show()
         messageLoop()
 
         g_Renderer.drop()

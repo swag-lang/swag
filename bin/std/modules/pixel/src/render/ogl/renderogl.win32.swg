@@ -4,25 +4,33 @@ using Core, Win32, Ogl, Gdi32
 public struct RenderOglWin32
 {
     using base: RenderOgl
-    hDC:        HDC
-    hRC:        HGLRC
+}
+
+public struct RenderingContext
+{
+    hDC:    HDC
+    hRC:    HGLRC
+    width:  s32
+    height: s32
 }
 
 public impl RenderOglWin32
 {
     // Initialize the renderer
-    func init(using self, hWnd: HWND, w, h: s32) throw
+    func createContext(using self, hWnd: HWND)->RenderingContext throw
     {
+        var result: retval
         hdc := GetDC(hWnd)
-        try init(hdc, w, h)
+        result = try createContext(hdc)
         ReleaseDC(hWnd, hdc)
+        return result
     }
 
     // Initialize the renderer
-    func init(using self, hdc: HDC, w, h: s32) throw
+    func createContext(using self, hdc: HDC)->RenderingContext throw
     {
-        Debug.assert(hDC == null)
-        hDC = hdc
+        var result: retval
+        result.hDC = hdc
 
         var pfd: PIXELFORMATDESCRIPTOR
         pfd.nSize        = @sizeof(pfd)
@@ -32,24 +40,32 @@ public impl RenderOglWin32
         pfd.cStencilBits = 8
         pfd.cColorBits   = 24
         pfd.cAlphaBits   = 8
-        pf := try ChoosePixelFormat(hDC, &pfd)
-        try SetPixelFormat(hDC, pf, &pfd)
+        pf := try ChoosePixelFormat(hdc, &pfd)
+        try SetPixelFormat(hdc, pf, &pfd)
 
-        hRC = try wglCreateContext(hdc)
-        try wglMakeCurrent(hDC, hRC)
-        base.init(w, h)
+        result.hRC = try wglCreateContext(hdc)
+        try wglMakeCurrent(result.hDC, result.hRC)
+        base.init()
+
+        return result
+    }
+
+    mtd dropContext(rc: RenderingContext)
+    {
+        catch wglMakeCurrent(null, null)
+        catch wglDeleteContext(rc.hRC)
     }
 
     mtd drop()
     {
-        catch wglMakeCurrent(null, null)
-        catch wglDeleteContext(hRC)
+        dropContext(base.mainRC)
     }
 
     // To be called before rendering
-    func begin(using self)
+    func begin(using self, rc: RenderingContext)
     {
-        catch wglMakeCurrent(hDC, hRC)
+        base.curRC = rc
+        catch wglMakeCurrent(base.curRC.hDC, base.curRC.hRC)
         base.start()
     }
 
@@ -58,6 +74,6 @@ public impl RenderOglWin32
     {
         glFlush()
         glFinish()
-        assume SwapBuffers(hDC)
+        assume SwapBuffers(base.curRC.hDC)
     }
 }

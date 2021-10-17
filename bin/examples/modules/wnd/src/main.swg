@@ -6,11 +6,11 @@ const H = 1024
 
 var g_Painter:      Painter
 var g_Renderer:     RenderOglWin32
-var g_Wnd:          Surface
+var g_RC:           RenderingContext
 
 func display()
 {
-    g_Renderer.begin()
+    g_Renderer.begin(g_RC)
 
     g_Painter.paintParams  = .Antialiased
     g_Painter.paintQuality = .Normal
@@ -45,7 +45,8 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
     case Paint:
         display()
     case Resize:
-        g_Renderer.resize(cast(s32) msg.param0, cast(s32) msg.param1)
+        g_RC.width = cast(s32) msg.param0
+        g_RC.height = cast(s32) msg.param1
     }
 }
 
@@ -53,9 +54,9 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        g_Wnd = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
-        g_Renderer.init(g_Wnd.hWnd, W, H)
-        g_Wnd.show()
+        surface := Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        g_RC = g_Renderer.createContext(surface.hWnd)
+        surface.show()
         messageLoop()
         g_Renderer.drop()
     }

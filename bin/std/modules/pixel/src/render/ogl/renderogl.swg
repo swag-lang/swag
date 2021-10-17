@@ -9,12 +9,13 @@ public struct RenderOgl
 {
     vertexbuffer:       GLuint
     shaderImage:        GLuint
-    width, height:      s32
     worldTransform:     Transform2
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
+    mainRC:             RenderingContext
+    curRC:              RenderingContext
 }
 
 impl RenderOgl
@@ -34,11 +35,8 @@ impl RenderOgl
         return result
     }
 
-    protected mtd init(w, h: s32)
+    protected mtd init()
     {
-        width = w
-        height = h
-
         glInitExtensions()
         createShaders()
 
@@ -114,12 +112,6 @@ impl RenderOgl
         glClearStencil(0)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
-    }
-
-    mtd resize(width, height: s32)
-    {
-        self.width = #scopefct.width
-        self.height = #scopefct.height
     }
 
     private func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
@@ -298,7 +290,7 @@ impl RenderOgl
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
-        if height == 0 or width == 0
+        if curRC.height == 0 or curRC.width == 0
             return
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
@@ -309,9 +301,9 @@ impl RenderOgl
         // View, ortho projection
         mvp := glGetUniformLocation(shaderImage, @dataof("mvp"))
         var orthoMatrix: Matrix4x4
-        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
+        ortho(cast(f32) curRC.height, 0, 0, cast(f32) curRC.width, 0, 1.0, orthoMatrix.m)
         glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-	    glViewport(0, 0, width, height)
+	    glViewport(0, 0, curRC.width, curRC.height)
 
         // Draw matrix
         mdl := glGetUniformLocation(shaderImage, @dataof("mdl"))
@@ -382,7 +374,7 @@ impl RenderOgl
             case SetClippingRect:
                 params := &cmd.clippingRect
                 glEnable(GL_SCISSOR_TEST)
-                glScissor(cast(GLint) params.rect.x, cast(GLint) (self.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
+                glScissor(cast(GLint) params.rect.x, cast(GLint) (curRC.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
             case ResetClippingRect:
                 glDisable(GL_SCISSOR_TEST)
