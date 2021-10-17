@@ -337,6 +337,8 @@ impl Painter
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
+
+        setTransform(transform)
     }
 
     // Call this after drawing
