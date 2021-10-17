@@ -465,8 +465,8 @@ impl Painter
             patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
 
-        repeatCount := cast(s32) (path.totalLen / patternTotalLen)
-        error = path.totalLen - (repeatCount * patternTotalLen)
+        repeatCount := cast(s32) (path.polygon.totalLen / patternTotalLen)
+        error = path.polygon.totalLen - (repeatCount * patternTotalLen)
 
         // We must dispatch error at each blank in the pattern. So "divError" is the
         // number of blanks to add at each 'move', between solid patterns
@@ -641,7 +641,7 @@ impl Painter
     mtd drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(paintQuality)
-        if Math.isZeroEpsilon(path.totalLen)
+        if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
         var cxt: Context
@@ -809,7 +809,7 @@ impl Painter
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
-        if Math.isZeroEpsilon(path.totalLen)
+        if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
         // Add a little offset in case of AA

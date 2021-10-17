@@ -11,6 +11,7 @@ struct Polygon
     isClockwise:    bool
     isConvex:       bool
     area:           f32
+    totalLen:       f32
 }
 
 impl Polygon
@@ -64,6 +65,7 @@ impl Polygon
         area = 0
         isClockwise = false
         isConvex = true
+        totalLen = 0
         points.clear()
     }
 
@@ -172,6 +174,7 @@ impl Polygon
         area = 0
         isClockwise = false
         isConvex = true
+        totalLen = 0
 
         if !points.count
             return
@@ -179,6 +182,10 @@ impl Polygon
         n := points.count
         q := 0
         p := n - 1
+
+        isClosed := points[0].isEqualEpsilon(points.back())
+        if !isClosed
+            n -= 1
 
         first := true
         lastC := 0'f32
@@ -200,6 +207,7 @@ impl Polygon
 
             // Area
             area += points[p].x * points[q].y - points[q].x * points[p].y
+            totalLen += v1.length()
             p = q
             q += 1
         }

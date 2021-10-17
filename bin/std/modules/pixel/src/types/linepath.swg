@@ -30,7 +30,6 @@ public struct LinePath
     isFlatten:      bool
     bvMin:          Vector2
     bvMax:          Vector2
-    totalLen:       f32
     endPosBuffer:   Vector2
     polygon:        Polygon
 }
@@ -328,7 +327,6 @@ public impl LinePath
 
     private mtd flattenLine(pos: Vector2)
     {
-        totalLen += endPosBuffer.distance(pos)
         bvMin = Vector2.min(bvMin, pos)
         bvMax = Vector2.max(bvMax, pos)
         polygon.add(pos)
@@ -348,7 +346,6 @@ public impl LinePath
 
         bvMin, bvMax = startPoint
         polygon.clear()
-        totalLen = 0
 
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
