@@ -975,7 +975,7 @@ impl Painter
                 flush = false
             }
 
-            if !Math.isZeroEpsilon(p.totalLen)
+            if p.polygon.points.count >= 3
             {
                 flush = true
                 t.startPolyLine()
