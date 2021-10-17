@@ -180,6 +180,7 @@ impl Polygon
         q := 0
         p := n - 1
 
+        first := true
         lastC := 0'f32
         while q < n
         {
@@ -187,10 +188,15 @@ impl Polygon
             v  := points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
             v1 := points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
             c  := v.cross(v1)
-            if lastC == 0
+            if first
+            {
                 lastC = c
+                first = false
+            }
             else if !Math.isZeroEpsilon(c) and !Math.isZeroEpsilon(lastC) and Math.sign(c) != Math.sign(lastC)
+            {
                 isConvex = false
+            }
 
             // Area
             area += points[p].x * points[q].y - points[q].x * points[p].y
