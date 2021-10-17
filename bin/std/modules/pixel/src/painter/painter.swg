@@ -90,6 +90,13 @@ struct Command
     }
 }
 
+struct PaintState
+{
+    transform:          Transform2
+    blendingMode:       BlendingMode = Alpha
+    interpolationMode:  InterpolationMode = Pixel
+}
+
 struct Painter
 {
     commandBuffer:      Array'Command
@@ -100,13 +107,11 @@ struct Painter
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
 
+    curState:           PaintState
     paintParams:        PaintParams = Default
     paintQuality:       PaintQuality = Normal
-    interpolationMode:  InterpolationMode = Pixel
     lastTexture0Type:   BrushType = SolidColor
-    blendingMode:       BlendingMode = Alpha
 
-    transform:          Transform2
     clippingRect:       Rectangle
     lastTexture0Handle: TextureHandle
     lastTexture1Handle: TextureHandle
@@ -195,7 +200,7 @@ impl Painter
         params.hatch   = brush.hatch
         params.texture = brush.texture
         params.uvMode  = brush.uvMode
-        params.interpolationMode = interpolationMode
+        params.interpolationMode = curState.interpolationMode
 
         lastTexture0Handle = brush.texture.handle
         lastTexture0Type   = brush.type
@@ -306,7 +311,7 @@ impl Painter
             alpha = true
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
             alpha = true
-        if alpha and blendingMode == .Alpha
+        if alpha and curState.blendingMode == .Alpha
         {
             overlapMode = true
             discard newCommand(CommandId.StartNoOverlap, true)
@@ -322,23 +327,29 @@ impl Painter
         }
     }
 
+    // Reset the current painting state
+    mtd resetState()
+    {
+        curState.transform.setIdentity()
+        curState.interpolationMode = .Pixel
+        curState.blendingMode = .Alpha
+        setTransform(curState.transform)
+        setBlendingMode(curState.blendingMode)
+    }
+
     // Call this before drawing
-    func begin(using self)
+    mtd begin()
     {
         Debug.assert(drawingBegin == false)
 
-        transform.setIdentity()
         commandBuffer.clear()
         vertexBuffer.clear()
-
-        interpolationMode = .Pixel
-        blendingMode      = .Alpha
 
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
 
-        setTransform(transform)
+        resetState()
     }
 
     // Call this after drawing
@@ -359,8 +370,8 @@ impl Painter
     mtd translateTransform(x, y: f32)
     {
         tr := Transform2.createTranslation(x, y)
-        transform.multiply(tr)
-        setTransform(transform)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
     }
 
     // Set the paint rotation, in degrees
@@ -368,8 +379,8 @@ impl Painter
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
-        transform.multiply(tr)
-        setTransform(transform)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
     }
 
     // Set the paint rotation, in degrees
@@ -377,30 +388,29 @@ impl Painter
     {
         rad := Math.toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
-        transform.multiply(tr)
-        setTransform(transform)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
     }
 
     // Set the paint scale
     mtd scaleTransform(x, y: f32)
     {
         tr := Transform2.createScale(x, y, 0, 0)
-        transform.multiply(tr)
-        setTransform(transform)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
     }
 
     // Reset the paint position, rotation, scale
     mtd resetTransform()
     {
-        transform.setIdentity()
-        setTransform(transform)
+        curState.transform.setIdentity()
+        setTransform(curState.transform)
     }
 
     // Set the paint transformation
     mtd setTransform(tr: Transform2)
     {
-        transform = tr
-
+        curState.transform = tr
         cmd := newCommand(CommandId.Transform, true)
         cmd.transform.tr = tr
     }
@@ -408,7 +418,7 @@ impl Painter
     // Set the texture interpolation mode
     mtd setInterpolationMode(mode: InterpolationMode)
     {
-        interpolationMode = mode
+        curState.interpolationMode = mode
     }
 
     // Set the current clipping rectangle
@@ -458,6 +468,6 @@ impl Painter
     {
         cmd := newCommand(CommandId.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
-        blendingMode = mode
+        curState.blendingMode = mode
     }
 }
