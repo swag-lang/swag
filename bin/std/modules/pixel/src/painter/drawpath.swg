@@ -162,7 +162,8 @@ impl Painter
 
     private mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
     {
-        if penSize < 3 return
+        if penSize < 3
+            return
 
         #[Swag.Complete]
         switch capStyle
@@ -336,7 +337,8 @@ impl Painter
 
     private mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
     {
-        if beginLine or lastLineInvalid return
+        if beginLine or lastLineInvalid
+            return
 
         // Cap is defined
         if pen.dashEndCapStyle != DashCapStyle.None
@@ -552,8 +554,8 @@ impl Painter
 
     private mtd drawLineBeginCap(using cxt: *Context)
     {
-        if pen.beginCapStyle == .None return
-        if penSize < 3 return
+        if pen.beginCapStyle == .None or penSize < 3
+            return
 
         v1 := path.polygon.getPoint(0, cxt.offsetPath)
         v2 := path.polygon.getPoint(1, cxt.offsetPath)
@@ -566,8 +568,8 @@ impl Painter
 
     private mtd drawLineEndCap(using cxt: *Context)
     {
-        if pen.endCapStyle == .None return
-        if penSize < 3 return
+        if pen.endCapStyle == .None or penSize < 3
+            return
 
         v1 := path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         v2 := path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
@@ -807,7 +809,8 @@ impl Painter
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(paintQuality)
-        if Math.isZeroEpsilon(path.totalLen) return
+        if Math.isZeroEpsilon(path.totalLen)
+            return
 
         // Add a little offset in case of AA
         offsetPath := paintParams & .Antialiased ? 0.25 : 0
