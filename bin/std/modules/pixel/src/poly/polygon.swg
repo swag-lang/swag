@@ -61,6 +61,9 @@ impl Polygon
     // Clear all points
     mtd clear()
     {
+        area = 0
+        isClockwise = false
+        isConvex = true
         points.clear()
     }
 
@@ -166,11 +169,12 @@ impl Polygon
     // Call it once the polygon contains all its points
     mtd compute()
     {
-        if !points.count return
-
         area = 0
         isClockwise = false
-        isConvex  = true
+        isConvex = true
+
+        if !points.count
+            return
 
         n := points.count
         q := 0
@@ -185,7 +189,7 @@ impl Polygon
             c  := v.cross(v1)
             if lastC == 0
                 lastC = c
-            else if Math.sign(c) != Math.sign(lastC)
+            else if !Math.isZeroEpsilon(c) and !Math.isZeroEpsilon(lastC) and Math.sign(c) != Math.sign(lastC)
                 isConvex = false
 
             // Area
