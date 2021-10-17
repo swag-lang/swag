@@ -16,13 +16,11 @@ namespace Res
     var fontFam:    FontFamily
 }
 
-var g_Painter:      Painter
-var g_Renderer:     RenderOglWin32
+var g_Surface:      Surface
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
 var g_Page:         s32 = 0
-var g_RC:           RenderingContext
 const MaxPages = 6
 
 func dataPath()->String
@@ -40,7 +38,7 @@ func imagePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
-func displayPage0()
+func displayPage0(painter: *Pixel.Painter)
 {
     pen := Pen.createSolid(Argb.Black, 20)
 
@@ -48,53 +46,51 @@ func displayPage0()
         pen.dashStyle = .Dot
 
     //////////////////////////////////////
-    g_Painter.begin()
-
     {
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(50, 50)
+        painter.resetTransform()
+        painter.translateTransform(50, 50)
         pen.brush.color = Argb.Black
         pen.beginCapStyle = .None
         pen.endCapStyle = .None
-        g_Painter.drawLine(0, 0, 0, 150, pen)
+        painter.drawLine(0, 0, 0, 150, pen)
 
         pen.beginCapStyle = .Square
         pen.endCapStyle = .Square
-        g_Painter.drawLine(100, 0, 150, 150, pen)
+        painter.drawLine(100, 0, 150, 150, pen)
 
         pen.beginCapStyle = .Round
         pen.endCapStyle = .Round
-        g_Painter.drawLine(200, 0, 250, 150, pen)
+        painter.drawLine(200, 0, 250, 150, pen)
 
         pen.beginCapStyle = .ArrowAnchor
         pen.endCapStyle = .ArrowAnchor
         pen.dashBeginCapStyle = .Round
         pen.dashEndCapStyle = .Round
-        g_Painter.drawLine(300, 0, 350, 150, pen)
+        painter.drawLine(300, 0, 350, 150, pen)
 
         pen.beginCapStyle = .SquareAnchor
         pen.endCapStyle = .SquareAnchor
         pen.dashBeginCapStyle = .Triangle
         pen.dashEndCapStyle = .Triangle
         pen.brush.color = Color.fromArgb(0x5f, Argb.Black)
-        g_Painter.drawLine(400, 0, 450, 150, pen)
+        painter.drawLine(400, 0, 450, 150, pen)
     }
 
-    g_Painter.drawLine(500, 0, 550, 150, Argb.Brown, 2)
+    painter.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(50, 250)
+    painter.resetTransform()
+    painter.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
     pen.joinStyle = .None
-    g_Painter.drawRect(0, 0, 100, 100, pen)
+    painter.drawRect(0, 0, 100, 100, pen)
     pen.joinStyle = .Bevel
-    g_Painter.drawRect(150, 0, 100, 100, pen)
+    painter.drawRect(150, 0, 100, 100, pen)
     pen.joinStyle = .Round
-    g_Painter.drawRect(300, 0, 100, 100, pen)
+    painter.drawRect(300, 0, 100, 100, pen)
     pen.joinStyle = .Miter
-    g_Painter.drawRect(450, 0, 100, 100, pen)
+    painter.drawRect(450, 0, 100, 100, pen)
 
     pen.brush.color = Argb.Red
     var path: LinePath
@@ -103,19 +99,19 @@ func displayPage0()
     path.lineTo(200, 50)
     pen.joinStyle = .Miter
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(50, 400)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(50, 400)
+    painter.drawPath(&path, pen)
     pen.joinStyle = .Bevel
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(250, 400)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(250, 400)
+    painter.drawPath(&path, pen)
     pen.joinStyle = .Round
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(450, 400)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(450, 400)
+    painter.drawPath(&path, pen)
 
     pen.brush.color = Argb.Green
     path.start(0, 0)
@@ -125,23 +121,23 @@ func displayPage0()
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(50, 500)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(50, 500)
+    painter.drawPath(&path, pen)
 
     path.start(0, 0)
     path.bezierTo(100, 0, 50, -50)
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(250, 500)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(250, 500)
+    painter.drawPath(&path, pen)
 
     path.start(0, 0)
     path.lineTo(50, 0)
     path.bezierTo(100, 50, 100, 0, 50, 50)
     path.lineTo(200, 50)
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(400, 500)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(400, 500)
+    painter.drawPath(&path, pen)
 
     path.start(0, 0)
     pen.brush.color = Argb.Purple
@@ -149,33 +145,31 @@ func displayPage0()
     path.lineTo(100, 50)
     path.arcTo(150, 50, 50, 50, -90, 0)
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(50, 600)
-    g_Painter.drawPath(&path, pen)
+    painter.resetTransform()
+    painter.translateTransform(50, 600)
+    painter.drawPath(&path, pen)
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(250, 600)
+    painter.resetTransform()
+    painter.translateTransform(250, 600)
     pen = Pen.createSolid(Argb.Blue, 10)
-    g_Painter.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
+    painter.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(400, 600)
+    painter.resetTransform()
+    painter.translateTransform(400, 600)
     pen.size = 4
-    g_Painter.drawCircle(50, 50, 50, pen)
+    painter.drawCircle(50, 50, 50, pen)
 
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(500, 600)
-    g_Painter.drawEllipse(50, 50, 25, 50, pen)
+    painter.resetTransform()
+    painter.translateTransform(500, 600)
+    painter.drawEllipse(50, 50, 25, 50, pen)
 
     brush := Brush.createSolid(Argb.Black)
-    g_Painter.resetTransform()
-    g_Painter.translateTransform(600, 600)
-    g_Painter.fillCircle(50, 50, 50, brush)
-    g_Painter.end()
-    g_Renderer.draw(&g_Painter)
+    painter.resetTransform()
+    painter.translateTransform(600, 600)
+    painter.fillCircle(50, 50, 50, brush)
 
     //////////////////////////////////////
-    g_Painter.begin()
+    painter.resetState()
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -185,48 +179,38 @@ func displayPage0()
     path.lineTo(0, 100)
     path.close()
     brush.color = Argb.Red
-    g_Painter.fillPath(&path, brush)
+    painter.fillPath(&path, brush)
     path.polygon.offset(-10)
     brush.color = Argb.Blue
-    g_Painter.fillPath(&path, brush)
-    g_Painter.end()
+    painter.fillPath(&path, brush)
 
-    g_Renderer.resetTransform()
-    g_Renderer.translateTransform(625, 50)
-    g_Renderer.draw(&g_Painter)
+//    g_Renderer.resetTransform()
+//    g_Renderer.translateTransform(625, 50)
+//    g_Renderer.draw(&g_Painter)
 
     //////////////////////////////////////
-    g_Painter.begin()
     brush = Brush.createTiled(Res.image0)
-    g_Painter.fillRect(750, 50, 100, 150, brush)
+    painter.fillRect(750, 50, 100, 150, brush)
     brush = Brush.createTexture(Res.image1)
-    g_Painter.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
-    g_Painter.fillCircle(850, 450, 50, brush)
-    g_Painter.end()
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
+    painter.fillRoundRect(750, 250, 150, 150, 20, 20, brush)
+    painter.fillCircle(850, 450, 50, brush)
 
     //////////////////////////////////////
-    g_Painter.begin()
     var lpl: LinePathList
-    g_Painter.translateTransform(750, 550)
+    painter.translateTransform(750, 550)
     p0 := lpl.newPath()
     p0.setRect(0, 0, 100, 100)
     p1 := lpl.newPath()
     p1.setCircle(50, 160, 50)
-    g_Painter.fillPath(&lpl, Argb.Red)
-    g_Painter.end()
-
-    g_Renderer.draw(&g_Painter)
+    painter.fillPath(&lpl, Argb.Red)
 }
 
-func displayPage1()
+func displayPage1(painter: *Pixel.Painter)
 {
     var brush: Brush
     brush.color = Argb.Black
 
-    g_Painter.begin()
-    g_Painter.translateTransform(50, 50)
+    painter.translateTransform(50, 50)
 
     cpt, cptLines := 0
     visit e: HatchStyle
@@ -234,94 +218,80 @@ func displayPage1()
         brush.type   = .Hatch
         brush.hatch  = e
         brush.uvMode = .Fill
-        g_Painter.fillRect(0, 0, 48, 48, brush)
+        painter.fillRect(0, 0, 48, 48, brush)
         brush.uvMode = .Tile
-        g_Painter.fillRect(0, 75, 48, 48, brush)
+        painter.fillRect(0, 75, 48, 48, brush)
 
-        g_Painter.translateTransform(75, 0)
+        painter.translateTransform(75, 0)
         cpt += 1
         if cpt == 12
         {
             cptLines += 1
             cpt = 0
-            g_Painter.resetTransform()
-            g_Painter.translateTransform(50, 50 + 150.0 * cptLines)
+            painter.resetTransform()
+            painter.translateTransform(50, 50 + 150.0 * cptLines)
         }
     }
-
-    g_Painter.end()
-
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
 }
 
-func displayPage2()
+func displayPage2(painter: *Pixel.Painter)
 {
-    g_Painter.begin()
+    painter.drawTexture(200, 0, Res.image1)
 
-    g_Painter.drawTexture(200, 0, Res.image1)
+    painter.setInterpolationMode(InterpolationMode.Pixel)
+    painter.drawTexture(50, 0, 96, 96, Res.image0)
+    painter.setInterpolationMode(InterpolationMode.Linear)
+    painter.drawTexture(50, 110, 96, 96, Res.image0)
 
-    g_Painter.setInterpolationMode(InterpolationMode.Pixel)
-    g_Painter.drawTexture(50, 0, 96, 96, Res.image0)
-    g_Painter.setInterpolationMode(InterpolationMode.Linear)
-    g_Painter.drawTexture(50, 110, 96, 96, Res.image0)
+    painter.rotateTransform(45, 100, 300)
+    painter.drawTexture(50, 250, 96, 96, Res.image0)
 
-    g_Painter.rotateTransform(45, 100, 300)
-    g_Painter.drawTexture(50, 250, 96, 96, Res.image0)
-
-    g_Painter.resetTransform()
+    painter.resetTransform()
     pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
-    g_Painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
+    painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    g_Painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
-    g_Painter.drawTexture(220, 500, 150, 150, @{228, 103, 206, 167}, Res.image2)
-    g_Painter.drawTexture(50, 700, @{228, 103, 206, 167}, Res.image1)
-
-    g_Painter.end()
-
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
+    painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
+    painter.drawTexture(220, 500, 150, 150, @{228, 103, 206, 167}, Res.image2)
+    painter.drawTexture(50, 700, @{228, 103, 206, 167}, Res.image1)
 }
 
-func displayPage3()
+func displayPage3(painter: *Pixel.Painter)
 {
-    g_Painter.begin()
-
     brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
-    g_Painter.setClippingRect(0, 0, 100, 100)
-    g_Painter.fillCircle(100, 100, 100, brush)
-    g_Painter.drawCircle(100, 100, 100, Argb.Red, 4)
-    g_Painter.resetClippingRect()
+    painter.setClippingRect(0, 0, 100, 100)
+    painter.fillCircle(100, 100, 100, brush)
+    painter.drawCircle(100, 100, 100, Argb.Red, 4)
+    painter.resetClippingRect()
 
-    g_Painter.startClippingRegion(ClippingMode.Set)
-    g_Painter.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
-    g_Painter.setClippingRegionMode(ClippingMode.Clear)
-    g_Painter.fillCircle(200, 50, 50, Argb.White)
-    g_Painter.endClippingRegion()
+    painter.startClippingRegion(ClippingMode.Set)
+    painter.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
+    painter.setClippingRegionMode(ClippingMode.Clear)
+    painter.fillCircle(200, 50, 50, Argb.White)
+    painter.endClippingRegion()
 
-    g_Painter.fillRect(0, 0, 1000, 1000, Argb.Red)
-    g_Painter.resetClippingRegion()
+    painter.fillRect(0, 0, 1000, 1000, Argb.Red)
+    painter.resetClippingRegion()
 
     {
-        g_Painter.drawCircle(500, 500, 400, Argb.Red, 1)
+        painter.drawCircle(500, 500, 400, Argb.Red, 1)
     }
 
     {
-        g_Painter.drawRoundRect(500, 500, 200, 200, 10, 10, Color.fromArgb(0x51, Argb.Blue), 15)
+        painter.drawRoundRect(500, 500, 200, 200, 10, 10, Color.fromArgb(0x51, Argb.Blue), 15)
     }
 
     {
         var lp1: LinePath
         lp1.start(800, 800)
         lp1.bezierTo(150, 150, 250, 50)
-        g_Painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
+        painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Red), 50))
     }
 
     {
         var lp: LinePath
         lp.start(50, 800)
         lp.bezierTo(800, 50, 250, 50)
-        g_Painter.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
+        painter.drawPath(&lp, Pen.createSolid(Color.fromArgb(0x51, Argb.Black), 50))
     }
 
     {
@@ -329,17 +299,17 @@ func displayPage3()
         lp1.start(400, 400)
         lp1.lineTo(500, 450)
         lp1.lineTo(400, 500)
-        g_Painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Blue), 50))
+        painter.drawPath(&lp1, Pen.createSolid(Color.fromArgb(0x51, Argb.Blue), 50))
     }
 
     {
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(400, 200)
-        g_Painter.setBlendingMode(BlendingMode.Add)
-        g_Painter.fillRect(0, 0, 150, 150, Argb.Blue)
-        g_Painter.setBlendingMode(BlendingMode.Max)
-        g_Painter.fillRect(50, 50, 150, 150, Argb.Red)
-        g_Painter.setBlendingMode(BlendingMode.Alpha)
+        painter.resetTransform()
+        painter.translateTransform(400, 200)
+        painter.setBlendingMode(BlendingMode.Add)
+        painter.fillRect(0, 0, 150, 150, Argb.Blue)
+        painter.setBlendingMode(BlendingMode.Max)
+        painter.fillRect(50, 50, 150, 150, Argb.Red)
+        painter.setBlendingMode(BlendingMode.Alpha)
     }
 
     {
@@ -352,39 +322,33 @@ func displayPage3()
         lp.lineTo(100, 50)
 
         pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(700, 200)
-        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Separate)
+        painter.resetTransform()
+        painter.translateTransform(700, 200)
+        painter.drawPathList(&lp1, pen, DrawPathListMode.Separate)
 
-        g_Painter.translateTransform(0, 150)
-        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
-        g_Painter.translateTransform(150, 0)
+        painter.translateTransform(0, 150)
+        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.translateTransform(150, 0)
         pen.brush = Brush.createTexture(Res.image1)
-        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
 
-        g_Painter.translateTransform(0, 150)
+        painter.translateTransform(0, 150)
         pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
         pen.dashStyle = .Dash
-        g_Painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
     }
-
-    g_Painter.end()
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
 }
 
-func displayPage4()
+func displayPage4(painter: *Pixel.Painter)
 {
-    g_Painter.begin()
-
     {
         var format: StringFormat
         var rect:   Rectangle{350, 50, 100, 100}
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.lineGap = 1
-        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        g_Painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontSmall, Argb.Black, format)
+        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontSmall, Argb.Black, format)
     }
 
     {
@@ -393,115 +357,109 @@ func displayPage4()
         format.flags |= .WordWrap
         format.underline = .Underline
         format.lineGap = 1
-        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        g_Painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontSmall, Argb.Black, format)
+        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontSmall, Argb.Black, format)
     }
 
     {
         format := StringFormat{flags: StringFormatFlags.WordWrap}
         format.horzAlignment = .Center
         rect := Rectangle{650, 50, 200, 700}
-        g_Painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
+        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        g_Painter.drawString(rect, TXT, Res.fontSmall, Argb.Black, format)
+        painter.drawString(rect, TXT, Res.fontSmall, Argb.Black, format)
     }
 
     {
-        g_Painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontSmall, Argb.Black)
+        painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontSmall, Argb.Black)
     }
 
     {
         fnt := Res.fontFam.getFont(FontFamilyStyle.Regular)
-        g_Painter.fillCircle(100, 100, 5, Argb.Red)
-        g_Painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
+        painter.fillCircle(100, 100, 5, Argb.Red)
+        painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }
 
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
         brush := Brush.createTexture(Res.image1)
-        rect := g_Painter.measureString(100, 300, str, Res.font40)
-        g_Painter.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        g_Painter.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
-        g_Painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
-        g_Painter.drawString(100, 350, str, Res.font40, Argb.Black)
+        rect := painter.measureString(100, 300, str, Res.font40)
+        painter.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
+        painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
+        painter.drawString(100, 350, str, Res.font40, Argb.Black)
     }
 
     {
         var pathl: LinePathList
-        g_Painter.translateTransform(50, 470)
+        painter.translateTransform(50, 470)
 
         pen := Pen.createSolid(Argb.Red, 5)
         pen.joinStyle = .Round
         pen.plotOffset = 2
 
         assume Res.typeface.getStringOutline(&pathl, str, 70)
-        g_Painter.drawPathList(&pathl, pen)
-        g_Painter.fillPath(&pathl, Argb.Black)
+        painter.drawPathList(&pathl, pen)
+        painter.fillPath(&pathl, Argb.Black)
 
-        g_Painter.resetTransform()
+        painter.resetTransform()
     }
 
     {
         var p: LinePathList
-        g_Painter.translateTransform(50, 570)
+        painter.translateTransform(50, 570)
         assume Res.typeface.getStringOutline(&p, "A B C D", 70)
         p.flatten(g_PaintQuality)
         p.offset(4)
         p.clean()
-        g_Painter.drawPathList(&p, Argb.Red, 2)
+        painter.drawPathList(&p, Argb.Red, 2)
 
-        g_Painter.resetTransform()
+        painter.resetTransform()
     }
 
     {
         var p: LinePathList
-        g_Painter.translateTransform(50, 670)
+        painter.translateTransform(50, 670)
         assume Res.typeface.getStringOutline(&p, "E F G H", 70)
         p.flatten(g_PaintQuality)
         p.offset(4, JoinStyle.Round)
         p.clean()
-        g_Painter.fillPath(&p, Argb.Red)
-        g_Painter.drawPathList(&p, Argb.Black, 2)
+        painter.fillPath(&p, Argb.Red)
+        painter.drawPathList(&p, Argb.Black, 2)
 
-        g_Painter.resetTransform()
+        painter.resetTransform()
     }
 
     {
         var p: LinePath
-        g_Painter.translateTransform(500, 570)
+        painter.translateTransform(500, 570)
         p.start(0, 0)
         p.lineTo(100, 0)
         p.lineTo(100, 100)
         p.lineTo(0, 100)
         p.close()
         p.flatten(g_PaintQuality)
-        g_Painter.drawPath(&p, Argb.Red, 2)
+        painter.drawPath(&p, Argb.Red, 2)
         p.polygon.offset(10, JoinStyle.Miter)
-        g_Painter.drawPath(&p, Argb.Green, 2)
+        painter.drawPath(&p, Argb.Green, 2)
         p.polygon.offset(10, JoinStyle.Bevel)
-        g_Painter.drawPath(&p, Argb.Green, 2)
+        painter.drawPath(&p, Argb.Green, 2)
         p.polygon.offset(10, JoinStyle.Round)
-        g_Painter.drawPath(&p, Argb.Green, 4)
+        painter.drawPath(&p, Argb.Green, 4)
 
-        g_Painter.resetTransform()
+        painter.resetTransform()
     }
 
     // Draw font page
-    //g_Painter.drawTexture(100, 400, font80.atlases[0].texture)
-
-    g_Painter.end()
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
+    //painter.drawTexture(100, 400, font80.atlases[0].texture)
 }
 
-func displayPage5()
+func displayPage5(painter: *Pixel.Painter)
 {
-    g_Painter.begin()
-
     {
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(500, 300)
+        painter.resetTransform()
+        painter.translateTransform(500, 300)
 
         var lp: LinePath
         lp.start(0, 100)
@@ -509,12 +467,12 @@ func displayPage5()
         lp.curveTo(100, 20)
         lp.curveTo(150, 80)
         lp.curveTo(200, 100)
-        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+        painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
     }
 
     {
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(500, 400)
+        painter.resetTransform()
+        painter.translateTransform(500, 400)
 
         var lp: LinePath
         lp.start(20, 50)
@@ -522,12 +480,12 @@ func displayPage5()
         lp.curveTo(200, 100)
         lp.curveTo(300, 50)
         lp.curveTo(400, 80)
-        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
+        painter.drawPath(&lp, Pen.createSolid(Argb.Black, 2))
     }
 
     {
-        g_Painter.resetTransform()
-        g_Painter.translateTransform(500, 500)
+        painter.resetTransform()
+        painter.translateTransform(500, 500)
 
         var lp: LinePath
         lp.start(60, 60)
@@ -538,47 +496,39 @@ func displayPage5()
         lp.curveTo(80, 160)
         lp.curveTo(40, 140)
         lp.close()
-        g_Painter.fillPath(&lp, Argb.Blue)
-        g_Painter.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
+        painter.fillPath(&lp, Argb.Blue)
+        painter.drawPath(&lp, Pen.createSolid(Argb.Red, 4))
     }
-
-    g_Painter.end()
-    g_Renderer.resetTransform()
-    g_Renderer.draw(&g_Painter)
 }
 
-func display()
+func display(wnd: *Surface)
 {
-    g_Renderer.begin(g_RC)
+    painter := &wnd.painter
+    painter.paintParams = g_ModeAA ? .Antialiased : .Default
+    painter.paintQuality = g_PaintQuality
 
-    g_Painter.paintParams  = g_ModeAA ? .Antialiased : .Default
-    g_Painter.paintQuality = g_PaintQuality
+    wnd.beginRender()
 
-    g_Painter.begin()
-    g_Painter.clear(Color.fromArgb(0xFFEEEEEE))
-    g_Painter.end()
-    g_Renderer.draw(&g_Painter)
+    painter.clear(Color.fromArgb(0xFFEEEEEE))
 
     switch g_Page
     {
-    case 0: displayPage0()
-    case 1: displayPage1()
-    case 2: displayPage2()
-    case 3: displayPage3()
-    case 4: displayPage4()
-    case 5: displayPage5()
+    case 0: displayPage0(painter)
+    case 1: displayPage1(painter)
+    case 2: displayPage2(painter)
+    case 3: displayPage3(painter)
+    case 4: displayPage4(painter)
+    case 5: displayPage5(painter)
     }
 
-    g_Painter.begin()
-    g_Painter.translateTransform(680, 780)
-    g_Painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
-    g_Painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
-    g_Painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
-    g_Painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
-    g_Painter.end()
-    g_Renderer.draw(&g_Painter)
+    painter.resetState()
+    painter.translateTransform(680, 780)
+    painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
+    painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
+    painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
+    painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
 
-    g_Renderer.end()
+    wnd.endRender()
 }
 
 func messageLoop()
@@ -591,7 +541,6 @@ func messageLoop()
             return
 
         Memory.freeTemp()
-        display()
 
         keyb.update()
         if keyb.isKeyJustPressed(Input.Key.F1)
@@ -602,18 +551,17 @@ func messageLoop()
             g_Pattern = g_Pattern ? false : true
         if keyb.isKeyJustPressed(Input.Key.F4)
             g_Page = (g_Page + 1) % MaxPages
+
+        g_Surface.invalidate()
     }
 }
 
-func winProc(wnd: Surface, msg: SurfaceMessage)
+func winProc(wnd: *Surface, msg: SurfaceMessage)
 {
     switch msg.kind
     {
-    case Paint:
-        display()
-    case Resize:
-        g_RC.width = cast(s32) msg.param0
-        g_RC.height = cast(s32) msg.param1
+    case Paint, Resize:
+        display(wnd)
     }
 }
 
@@ -621,17 +569,17 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
 {
     try
     {
-        surface := Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
-        g_RC = g_Renderer.createContext(surface.hWnd)
+        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
 
+        rdr := Gui.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))
         img1 := Image.load(imagePath("rgba.bmp"))
-        Res.image0 = g_Renderer.addImage(img0)
-        Res.image1 = g_Renderer.addImage(img1)
-        Res.image2 = g_Renderer.addImage(img1)
+        Res.image0 = rdr.addImage(img0)
+        Res.image1 = rdr.addImage(img1)
+        Res.image2 = rdr.addImage(img1)
         img1.grayScale()
         img1.setAlpha(128)
-        g_Renderer.updateTexture(Res.image2, img1.pixels)
+        rdr.updateTexture(Res.image2, img1.pixels)
 
         Res.typeface = TypeFace.create(imagePath("arial.ttf"))
         Res.fontSmall = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
@@ -643,9 +591,7 @@ func winProc(wnd: Surface, msg: SurfaceMessage)
         Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
 
-        surface.show()
+        g_Surface.show()
         messageLoop()
-
-        g_Renderer.drop()
     }
 }

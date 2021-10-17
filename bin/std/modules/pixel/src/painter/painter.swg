@@ -335,6 +335,8 @@ impl Painter
         curState.blendingMode = .Alpha
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
+        resetTexture0()
+        resetTexture1()
     }
 
     // Call this before drawing

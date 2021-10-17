@@ -2,6 +2,9 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32
 
+// Global renderer
+protected var g_Renderer: Pixel.RenderOglWin32
+
 #[Swag.NoCopy]
 struct NativeSurface
 {
@@ -20,7 +23,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
     // Get 'Surface' pointer
     surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
-    if surface and surface.proc
+    if surface
     {
         message := SurfaceMessage{}
         switch msg
@@ -28,21 +31,35 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_PAINT:
             message.kind = .Paint
         case WM_SIZE:
+            surface.rc.width = LOWORD(lParam)
+            surface.rc.height = HIWORD(lParam)
             message.kind = .Resize
-            message.param0 = LOWORD(lParam)
-            message.param1 = HIWORD(lParam)
+            message.param0 = surface.rc.width
+            message.param1 = surface.rc.height
         case WM_DESTROY:
             PostQuitMessage(0)
         }
 
-        surface.proc(dref surface, message)
+        if surface.proc
+            surface.proc(surface, message)
     }
 
     return DefWindowProcW(hWnd, msg, wParam, lParam)
 }
 
+func getRenderer()->*Pixel.RenderOglWin32
+{
+    return &g_Renderer
+}
+
 impl NativeSurface
 {
+    // Force the surface to paint
+    mtd invalidate()
+    {
+        InvalidateRect(hWnd)
+    }
+
     // Show the surface
     mtd show()
     {
@@ -86,7 +103,7 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(Surface, SurfaceMessage))->Surface throw
+    func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(*Surface, SurfaceMessage))->Surface throw
     {
         var result: retval
 
@@ -131,6 +148,10 @@ impl NativeSurface
             wc.hInstance,
             &result
         )
+
+        result.rc = try g_Renderer.createContext(result.hWnd)
+        result.rc.width = width
+        result.rc.height = height
 
         return result
     }
