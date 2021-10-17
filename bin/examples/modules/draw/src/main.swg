@@ -184,10 +184,6 @@ func displayPage0(painter: *Pixel.Painter)
     brush.color = Argb.Blue
     painter.fillPath(&path, brush)
 
-//    g_Renderer.resetTransform()
-//    g_Renderer.translateTransform(625, 50)
-//    g_Renderer.draw(&g_Painter)
-
     //////////////////////////////////////
     brush = Brush.createTiled(Res.image0)
     painter.fillRect(750, 50, 100, 150, brush)
