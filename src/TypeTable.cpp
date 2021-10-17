@@ -504,12 +504,15 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
                 // typeinfo
                 if (typeValue->isPointerToTypeInfo())
                 {
-                    auto addr = oneParam.value.storageSegment->address(oneParam.value.storageOffset);
-
+                    auto  addr      = oneParam.value.storageSegment->address(oneParam.value.storageOffset);
                     auto& mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
-                    auto  it        = mapPerSeg.concreteTypesReverse.find((ConcreteTypeInfo*) addr);
+                    if (oneParam.value.storageSegment != storageSegment)
+                        mapPerSeg.mutex.lock();
+                    auto it = mapPerSeg.concreteTypesReverse.find((ConcreteTypeInfo*) addr);
                     SWAG_ASSERT(it != mapPerSeg.concreteTypesReverse.end());
                     typeValue = it->second;
+                    if (oneParam.value.storageSegment != storageSegment)
+                        mapPerSeg.mutex.unlock();
                 }
 
                 // Value of the parameter
