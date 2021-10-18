@@ -25,21 +25,29 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
-        itf := cast(IWnd) surface.wnd
+        var baseEvt: *Event
         switch msg
         {
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
             evt.surface = surface
-            itf.onEvent(evt)
+            baseEvt = &evt
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
             evt := ResizeEvent{kind: EventKind.Resize}
-            evt.surface = surface
-            itf.onEvent(evt)
+            baseEvt = &evt
         case WM_DESTROY:
             PostQuitMessage(0)
+        }
+
+        if baseEvt
+        {
+            baseEvt.surface = surface
+            if surface.wnd.hookOnEvent
+                surface.wnd.hookOnEvent(baseEvt)
+            else
+                surface.wnd.IWnd.onEvent(baseEvt)
         }
     }
 

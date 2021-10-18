@@ -31,7 +31,7 @@ func messageLoop()
     }
 }
 
-func onEvent(wnd: *IWnd, event: *Event)
+func onEvent(wnd: *Wnd, event: *Event)
 {
     switch event.kind
     {

@@ -9,16 +9,12 @@ interface IWnd
 struct Wnd
 {
     rect: Math.Rectangle
-    hookOnEvent: func(*IWnd, *Event)
+    hookOnEvent: func(*Wnd, *Event)
 }
 
 impl IWnd for Wnd
 {
     mtd onEvent(event: *Event)
     {
-        if hookOnEvent
-        {
-            hookOnEvent(self, event)
-        }
     }
 }
