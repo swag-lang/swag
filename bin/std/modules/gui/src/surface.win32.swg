@@ -14,12 +14,6 @@ struct NativeSurface
 #[Swag.Callback]
 private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
-    func sendEvent(surface: *Surface, event: *Event)
-    {
-        event.surface = surface
-        surface.wnd.sendEvent(event)
-    }
-
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
     {
@@ -35,12 +29,12 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
-            sendEvent(surface, evt)
+            surface.wnd.sendEvent(evt)
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
             evt := ResizeEvent{kind: EventKind.Resize}
-            sendEvent(surface, evt)
+            surface.wnd.sendEvent(evt)
         case WM_DESTROY:
             PostQuitMessage(0)
         }
