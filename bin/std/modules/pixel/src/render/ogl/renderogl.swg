@@ -25,7 +25,7 @@ impl RenderOgl
     func begin(using self, rc: RenderingContext)
     {
         curRC = rc
-        native.begin(curRC)
+        native.setCurrentContext(curRC)
         resetTransform()
         glClearStencil(0)
         glClearColor(0, 0, 0, 0)
@@ -37,7 +37,7 @@ impl RenderOgl
     {
         glFlush()
         glFinish()
-        native.end(curRC)
+        native.swagBuffers(curRC)
     }
 
     private func generateTexture(datas: const [..] u8, w, h: s32)->GLuint

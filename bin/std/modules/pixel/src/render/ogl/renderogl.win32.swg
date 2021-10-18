@@ -15,7 +15,6 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    // Initialize the renderer
     func createContext(using self, hWnd: HWND)->RenderingContext throw
     {
         hdc := GetDC(hWnd)
@@ -23,7 +22,6 @@ public impl NativeRenderOgl
         return try createContext(hdc)
     }
 
-    // Initialize the renderer
     func createContext(using self, hdc: HDC)->RenderingContext throw
     {
         var result: retval
@@ -41,23 +39,21 @@ public impl NativeRenderOgl
         try SetPixelFormat(hdc, pf, &pfd)
 
         result.hRC = try wglCreateContext(hdc)
-        try wglMakeCurrent(result.hDC, result.hRC)
-
         return result
     }
 
-    protected mtd dropContext(rc: RenderingContext)
+    mtd dropContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(rc.hRC)
     }
 
-    protected func begin(using self, rc: RenderingContext)
+    func setCurrentContext(using self, rc: RenderingContext)
     {
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    protected func end(using self, rc: RenderingContext)
+    func swagBuffers(using self, rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)
     }
