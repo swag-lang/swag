@@ -552,25 +552,11 @@ func messageLoop()
     }
 }
 
-func onEvent(wnd: *Wnd, event: *Event)
+func setup(wnd: *Wnd)
 {
-    switch event.kind
+    assume
     {
-    case Paint:
-        display(wnd.surface)
-    default:
-        wnd.IWnd.onEvent(event)
-    }
-}
-
-#main
-{
-    try
-    {
-        var app: Gui.Application
-        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
-
-        rdr := app.getRenderer()
+        rdr := wnd.surface.app.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))
         img1 := Image.load(imagePath("rgba.bmp"))
         Res.image0 = rdr.addImage(img0)
@@ -589,7 +575,28 @@ func onEvent(wnd: *Wnd, event: *Event)
         Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 30)
         Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
         Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
+    }
+}
 
+func onEvent(wnd: *Wnd, event: *Event)
+{
+    switch event.kind
+    {
+    case Create:
+        setup(wnd)
+    case Paint:
+        display(wnd.surface)
+    default:
+        wnd.IWnd.onEvent(event)
+    }
+}
+
+#main
+{
+    try
+    {
+        var app: Gui.Application
+        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
         g_Surface.show()
         messageLoop()
     }

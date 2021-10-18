@@ -4,6 +4,7 @@ using Core
 enum EventKind
 {
     None
+    Create
     Resize
     Paint
 }
@@ -11,6 +12,11 @@ enum EventKind
 struct Event
 {
     kind: EventKind = None
+}
+
+struct CreateEvent
+{
+    using base: Event
 }
 
 struct PaintEvent

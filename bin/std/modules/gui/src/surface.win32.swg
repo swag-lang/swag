@@ -93,7 +93,7 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event))->*Surface throw
+    protected func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event))->*Surface throw
     {
         result := Memory.new'Surface()
         result.app = app
