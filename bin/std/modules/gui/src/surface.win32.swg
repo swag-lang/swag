@@ -26,14 +26,16 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
-            surface.wnd.sendEvent(evt)
+            evt.target = &surface.wnd
+            surface.app.sendEvent(evt)
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
             evt := ResizeEvent{kind: EventKind.Resize}
+            evt.target = &surface.wnd
             evt.rect.width = surface.rc.width
             evt.rect.height = surface.rc.height
-            surface.wnd.sendEvent(evt)
+            surface.app.sendEvent(evt)
         case WM_DESTROY:
             PostQuitMessage(0)
         }

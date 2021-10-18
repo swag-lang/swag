@@ -26,6 +26,7 @@ impl Application
 
     protected mtd sendEvent(event: *Event)
     {
+        Debug.assert(event.target != null)
         event.target.sendEvent(event)
     }
 
