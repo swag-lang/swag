@@ -111,6 +111,25 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
     free(ptr, @sizeof(T), allocator, userHint, loc)
 }
 
+// Drop and release memory of the given type
+func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+{
+    if !ptr
+        return
+
+    Debug.assert(type != null)
+    userHint := hint orelse type.flatName
+
+    if type.kind == TypeInfoKind.Struct
+    {
+        typest := cast(const *Swag.TypeInfoStruct) type
+        if typest.opDrop
+            typest.opDrop(ptr)
+    }
+
+    free(ptr, type.sizeof, allocator, userHint, loc)
+}
+
 // Allocate and initialize an array of the given type
 func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {

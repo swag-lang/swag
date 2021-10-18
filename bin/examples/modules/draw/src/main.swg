@@ -178,12 +178,15 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(0, 100)
     path.close()
     brush.color = Argb.Red
+    painter.resetTransform()
+    painter.translateTransform(10, 750)
     painter.fillPath(&path, brush)
     path.polygon.offset(-10)
     brush.color = Argb.Blue
     painter.fillPath(&path, brush)
 
     //////////////////////////////////////
+    painter.resetTransform()
     brush = Brush.createTiled(Res.image0)
     painter.fillRect(750, 50, 100, 150, brush)
     brush = Brush.createTexture(Res.image1)
@@ -192,6 +195,7 @@ func displayPage0(painter: *Pixel.Painter)
 
     //////////////////////////////////////
     var lpl: LinePathList
+    painter.resetTransform()
     painter.translateTransform(750, 550)
     p0 := lpl.newPath()
     p0.setRect(0, 0, 100, 100)

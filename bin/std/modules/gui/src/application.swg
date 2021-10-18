@@ -31,18 +31,17 @@ impl Application
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
-        evt := Memory.new'QuitEvent()
-        evt.kind = .Quit
+        evt := Event.alloc'QuitEvent(EventKind.Quit)
         evt.quitCode = #scopefct.quitCode
         postEvent(evt)
     }
 
-    protected mtd postEvent(event: *Event)
+    mtd postEvent(event: *Event)
     {
         postedEvents.add(event)
     }
 
-    protected mtd sendEvent(event: *Event)
+    mtd sendEvent(event: *Event)
     {
         if event.kind == .Quit
         {
@@ -88,7 +87,7 @@ impl Application
         visit evt: postedEvents
         {
             sendEvent(evt)
-            Memory.delete(evt)
+            Memory.delete(evt, evt.type)
         }
 
         postedEvents.clear()

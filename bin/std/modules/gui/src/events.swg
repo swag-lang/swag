@@ -15,8 +15,20 @@ enum EventKind
 
 struct Event
 {
-    kind: EventKind = None
+    kind:   EventKind = None
+    type:   typeinfo
     target: *Wnd
+}
+
+impl Event
+{
+    func(T) alloc(kind: EventKind)->*T
+    {
+        res := Memory.new'T()
+        res.type = @typeof(T)
+        res.kind = kind
+        return res
+    }
 }
 
 struct CreateEvent
