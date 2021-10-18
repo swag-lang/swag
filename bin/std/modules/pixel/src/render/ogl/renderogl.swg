@@ -7,6 +7,7 @@ const InvalidTextureHandle: TextureHandle = acast 0
 
 public struct RenderOgl
 {
+    using native:       NativeRenderOgl
     vertexbuffer:       GLuint
     shaderImage:        GLuint
     worldTransform:     Transform2
@@ -20,6 +21,25 @@ public struct RenderOgl
 
 impl RenderOgl
 {
+    // To be called before rendering
+    func begin(using self, rc: RenderingContext)
+    {
+        curRC = rc
+        native.begin(curRC)
+        resetTransform()
+        glClearStencil(0)
+        glClearColor(0, 0, 0, 0)
+        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
+    }
+
+    // To be called after rendering
+    func end(using self)
+    {
+        glFlush()
+        glFinish()
+        native.end(curRC)
+    }
+
     private func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
     {
         Debug.assert(@countof(datas) <= 8*8)
@@ -35,7 +55,7 @@ impl RenderOgl
         return result
     }
 
-    protected mtd init()
+    mtd init()
     {
         glInitExtensions()
         createShaders()
@@ -104,14 +124,6 @@ impl RenderOgl
         hatchTextures[DiagonalBackward] = generateTexture(Hatch.DiagonalBackward, 8, 8)
         hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
-    }
-
-    protected mtd start()
-    {
-        resetTransform()
-        glClearStencil(0)
-        glClearColor(0, 0, 0, 0)
-        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
     private func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)

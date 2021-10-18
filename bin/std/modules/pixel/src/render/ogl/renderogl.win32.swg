@@ -1,9 +1,8 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, Ogl, Gdi32
 
-public struct RenderOglWin32
+public struct NativeRenderOgl
 {
-    using base: RenderOgl
 }
 
 public struct RenderingContext
@@ -14,7 +13,7 @@ public struct RenderingContext
     height: s32
 }
 
-public impl RenderOglWin32
+public impl NativeRenderOgl
 {
     // Initialize the renderer
     func createContext(using self, hWnd: HWND)->RenderingContext throw
@@ -43,35 +42,23 @@ public impl RenderOglWin32
 
         result.hRC = try wglCreateContext(hdc)
         try wglMakeCurrent(result.hDC, result.hRC)
-        base.init()
 
         return result
     }
 
-    mtd dropContext(rc: RenderingContext)
+    protected mtd dropContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(rc.hRC)
     }
 
-    mtd drop()
+    protected func begin(using self, rc: RenderingContext)
     {
-        dropContext(base.mainRC)
+        catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    // To be called before rendering
-    func begin(using self, rc: RenderingContext)
+    protected func end(using self, rc: RenderingContext)
     {
-        base.curRC = rc
-        catch wglMakeCurrent(base.curRC.hDC, base.curRC.hRC)
-        base.start()
-    }
-
-    // To be called after rendering
-    func end(using self)
-    {
-        glFlush()
-        glFinish()
-        assume SwapBuffers(base.curRC.hDC)
+        assume SwapBuffers(rc.hDC)
     }
 }

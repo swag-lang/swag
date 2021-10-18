@@ -3,6 +3,7 @@
 struct Surface
 {
     using native:   NativeSurface
+    app:            *Application
     wnd:            Wnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
@@ -28,14 +29,14 @@ impl Surface
 {
     mtd beginRender()
     {
-        g_Renderer.begin(rc)
+        app.renderer.begin(rc)
         painter.begin()
     }
 
     mtd endRender()
     {
         painter.end()
-        g_Renderer.draw(&painter)
-        g_Renderer.end()
+        app.renderer.draw(&painter)
+        app.renderer.end()
     }
 }

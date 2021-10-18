@@ -567,10 +567,11 @@ func onEvent(wnd: *Wnd, event: *Event)
 {
     try
     {
-        g_Surface = Surface.create("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow)
+        var app: Gui.Application
+        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow)
         g_Surface.wnd.hookOnEvent = &onEvent
 
-        rdr := Gui.getRenderer()
+        rdr := app.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))
         img1 := Image.load(imagePath("rgba.bmp"))
         Res.image0 = rdr.addImage(img0)

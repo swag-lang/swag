@@ -2,9 +2,6 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32
 
-// Global renderer
-protected var g_Renderer: Pixel.RenderOglWin32
-
 #[Swag.NoCopy]
 struct NativeSurface
 {
@@ -43,11 +40,6 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     }
 
     return DefWindowProcW(hWnd, msg, wParam, lParam)
-}
-
-func getRenderer()->*Pixel.RenderOglWin32
-{
-    return &g_Renderer
 }
 
 impl NativeSurface
@@ -101,9 +93,10 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(title: string, x, y, width, height: s32, flags: SurfaceFlags)->*Surface throw
+    func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags)->*Surface throw
     {
         result := Memory.new'Surface()
+        result.app = app
         result.wnd.surface = result
 
         // Create class
@@ -146,9 +139,10 @@ impl NativeSurface
             result
         )
 
-        result.rc = try g_Renderer.createContext(result.hWnd)
+        result.rc = try app.renderer.createContext(result.hWnd)
         result.rc.width = width
         result.rc.height = height
+        app.renderer.init()
 
         return result
     }
