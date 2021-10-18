@@ -57,7 +57,7 @@ impl NativeSurface
     // Force the surface to paint
     mtd invalidate()
     {
-        InvalidateRect(hWnd)
+        InvalidateRect(hWnd, null, FALSE)
     }
 
     // Show the surface

@@ -514,6 +514,7 @@ struct PAINTSTRUCT
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
     func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
+    func InvalidateRect(hWnd: HWND, lpRect: const *RECT, bErase: BOOL)->BOOL;
 
     func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL;
     func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL;
