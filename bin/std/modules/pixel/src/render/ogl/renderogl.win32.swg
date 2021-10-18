@@ -19,11 +19,9 @@ public impl RenderOglWin32
     // Initialize the renderer
     func createContext(using self, hWnd: HWND)->RenderingContext throw
     {
-        var result: retval
         hdc := GetDC(hWnd)
-        result = try createContext(hdc)
-        ReleaseDC(hWnd, hdc)
-        return result
+        defer ReleaseDC(hWnd, hdc)
+        return try createContext(hdc)
     }
 
     // Initialize the renderer

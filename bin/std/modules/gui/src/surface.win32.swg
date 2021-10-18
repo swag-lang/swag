@@ -25,23 +25,22 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
-        message := SurfaceMessage{}
+        itf := cast(IWnd) surface.wnd
         switch msg
         {
         case WM_PAINT:
-            message.kind = .Paint
+            evt := PaintEvent{kind: EventKind.Paint}
+            evt.surface = surface
+            itf.onEvent(evt)
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
-            message.kind = .Resize
-            message.param0 = surface.rc.width
-            message.param1 = surface.rc.height
+            evt := ResizeEvent{kind: EventKind.Resize}
+            evt.surface = surface
+            itf.onEvent(evt)
         case WM_DESTROY:
             PostQuitMessage(0)
         }
-
-        if surface.proc
-            surface.proc(surface, message)
     }
 
     return DefWindowProcW(hWnd, msg, wParam, lParam)
@@ -103,11 +102,9 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(title: string, width, height: s32, flags: SurfaceFlags, cb: func(*Surface, SurfaceMessage))->Surface throw
+    func create(title: string, width, height: s32, flags: SurfaceFlags)->*Surface throw
     {
-        var result: retval
-
-        result.proc = cb
+        result := Memory.new'Surface()
 
         // Create class
         var wc: WNDCLASSW
@@ -146,7 +143,7 @@ impl NativeSurface
             null,
             null,
             wc.hInstance,
-            &result
+            result
         )
 
         result.rc = try g_Renderer.createContext(result.hWnd)

@@ -16,7 +16,7 @@ namespace Res
     var fontFam:    FontFamily
 }
 
-var g_Surface:      Surface
+var g_Surface:      *Surface
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
@@ -497,13 +497,13 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
-func display(wnd: *Surface)
+func display(surface: *Surface)
 {
-    painter := &wnd.painter
+    painter := &surface.painter
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
     painter.paintQuality = g_PaintQuality
 
-    wnd.beginRender()
+    surface.beginRender()
 
     painter.clear(Color.fromArgb(0xFFEEEEEE))
 
@@ -524,7 +524,7 @@ func display(wnd: *Surface)
     painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
     painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
 
-    wnd.endRender()
+    surface.endRender()
 }
 
 func messageLoop()
@@ -552,12 +552,12 @@ func messageLoop()
     }
 }
 
-func winProc(wnd: *Surface, msg: SurfaceMessage)
+func onEvent(wnd: *IWnd, event: *Event)
 {
-    switch msg.kind
+    switch event.kind
     {
     case Paint, Resize:
-        display(wnd)
+        display(event.surface)
     }
 }
 
@@ -565,7 +565,8 @@ func winProc(wnd: *Surface, msg: SurfaceMessage)
 {
     try
     {
-        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow)
+        g_Surface.wnd.hookOnEvent = &onEvent
 
         rdr := Gui.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))

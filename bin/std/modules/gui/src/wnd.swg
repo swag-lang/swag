@@ -3,18 +3,22 @@ using Core, Pixel
 
 interface IWnd
 {
-    paint: func(self, PaintContext)
+    onEvent: func(self, *Event)
 }
 
 struct Wnd
 {
     rect: Math.Rectangle
+    hookOnEvent: func(*IWnd, *Event)
 }
 
 impl IWnd for Wnd
 {
-    mtd paint(context: PaintContext)
+    mtd onEvent(event: *Event)
     {
-        context.painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.Red)
+        if hookOnEvent
+        {
+            hookOnEvent(self, event)
+        }
     }
 }

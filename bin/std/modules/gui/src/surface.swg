@@ -3,24 +3,9 @@
 struct Surface
 {
     using native:   NativeSurface
-    wnd:            SurfaceWnd
-    proc:           func(*Surface, SurfaceMessage)
+    wnd:            Wnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
-}
-
-enum SurfaceMessageKind
-{
-    None
-    Resize
-    Paint
-}
-
-struct SurfaceMessage
-{
-    kind:   SurfaceMessageKind = .None
-    param0: u64
-    param1: u64
 }
 
 #[Swag.EnumFlags]

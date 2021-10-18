@@ -4,16 +4,16 @@ using Core, Win32, Ogl, Gdi32, Pixel, Gui, Math
 const W = 1024
 const H = 1024
 
-var g_Surface: Surface
+var g_Surface: *Surface
 
-func display(wnd: *Surface)
+func display(surface: *Surface)
 {
-    wnd.painter.paintParams  = .Antialiased
-    wnd.painter.paintQuality = .Normal
+    surface.painter.paintParams  = .Antialiased
+    surface.painter.paintQuality = .Normal
 
-    wnd.beginRender()
-    wnd.painter.clear(Color.fromArgb(0xFFEEEEEE))
-    wnd.endRender()
+    surface.beginRender()
+    surface.painter.clear(Color.fromArgb(0xFFEEEEEE))
+    surface.endRender()
 }
 
 func messageLoop()
@@ -31,12 +31,12 @@ func messageLoop()
     }
 }
 
-func winProc(wnd: *Surface, msg: SurfaceMessage)
+func onEvent(wnd: *IWnd, event: *Event)
 {
-    switch msg.kind
+    switch event.kind
     {
     case Paint, Resize:
-        display(wnd)
+        display(event.surface)
     }
 }
 
@@ -44,7 +44,8 @@ func winProc(wnd: *Surface, msg: SurfaceMessage)
 {
     try
     {
-        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow, &winProc)
+        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow)
+        g_Surface.wnd.hookOnEvent = &onEvent
         g_Surface.show()
         messageLoop()
     }
