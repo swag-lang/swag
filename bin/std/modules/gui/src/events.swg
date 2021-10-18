@@ -1,4 +1,5 @@
 #global public
+using Core
 
 enum EventKind
 {
@@ -20,4 +21,5 @@ struct PaintEvent
 struct ResizeEvent
 {
     using base: Event
+    rect: Math.Rectangle
 }

@@ -34,6 +34,8 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
             evt := ResizeEvent{kind: EventKind.Resize}
+            evt.rect.width = surface.rc.width
+            evt.rect.height = surface.rc.height
             surface.wnd.sendEvent(evt)
         case WM_DESTROY:
             PostQuitMessage(0)
@@ -99,7 +101,7 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(title: string, width, height: s32, flags: SurfaceFlags)->*Surface throw
+    func create(title: string, x, y, width, height: s32, flags: SurfaceFlags)->*Surface throw
     {
         result := Memory.new'Surface()
         result.wnd.surface = result
@@ -134,8 +136,8 @@ impl NativeSurface
             wc.lpszClassName,
             @dataof(utf16.toZeroTerminated(title)),
             winFlags | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-            100,
-            100,
+            x,
+            y,
             width,
             height,
             null,

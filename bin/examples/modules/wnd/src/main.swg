@@ -35,8 +35,10 @@ func onEvent(wnd: *Wnd, event: *Event)
 {
     switch event.kind
     {
-    case Paint, Resize:
+    case Paint:
         display(wnd.surface)
+    default:
+        wnd.IWnd.onEvent(event)
     }
 }
 
@@ -44,7 +46,7 @@ func onEvent(wnd: *Wnd, event: *Event)
 {
     try
     {
-        g_Surface = Surface.create("Example", W, H, SurfaceFlags.OverlappedWindow)
+        g_Surface = Surface.create("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow)
         g_Surface.wnd.hookOnEvent = &onEvent
         g_Surface.show()
         messageLoop()

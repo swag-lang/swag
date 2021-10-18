@@ -17,6 +17,13 @@ impl IWnd for Wnd
 {
     mtd onEvent(event: *Event)
     {
+        switch event.kind
+        {
+        case Resize:
+            evt := cast(*ResizeEvent) event
+            rect.width = evt.rect.width
+            rect.height = evt.rect.height
+        }
     }
 }
 
