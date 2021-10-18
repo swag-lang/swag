@@ -6,7 +6,7 @@ struct Application
     renderer:       Pixel.RenderOgl
     keyb:           Input.Keyboard
     mainSurface:    *Surface
-    events:         Array'(*Event)
+    postedEvents:   Array'(*Event)
     mustQuit:       bool
     quitCode:       s32
 }
@@ -23,7 +23,8 @@ impl Application
         surface := try Surface.create(self, title, x, y, width, height, flags, onEvent)
         mainSurface = surface
         evt := CreateEvent{kind: EventKind.Create}
-        surface.wnd.sendEvent(evt)
+        evt.target = &surface.wnd
+        sendEvent(evt)
         return surface
     }
 
@@ -38,7 +39,7 @@ impl Application
 
     protected mtd postEvent(event: *Event)
     {
-        events.add(event)
+        postedEvents.add(event)
     }
 
     protected mtd sendEvent(event: *Event)
@@ -84,13 +85,13 @@ impl Application
 
     protected mtd sendPostedEvents()
     {
-        visit evt: events
+        visit evt: postedEvents
         {
             sendEvent(evt)
             Memory.delete(evt)
         }
 
-        events.clear()
+        postedEvents.clear()
     }
 
     // Run until exit
