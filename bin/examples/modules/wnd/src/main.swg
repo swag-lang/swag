@@ -27,25 +27,10 @@ func onEvent(wnd: *Wnd, event: *Event)
     }
 }
 
-func messageLoop()
-{
-    var keyb: Input.Keyboard
-
-    loop
-    {
-        if !Surface.messageLoop()
-            return
-
-        Memory.freeTemp()
-        keyb.update()
-        g_Surface.invalidate()
-    }
-}
-
 #main
 {
     var app: Gui.Application
-    g_Surface = try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
-    g_Surface.show()
-    messageLoop()
+    surface := try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    surface.show()
+    app.run()
 }

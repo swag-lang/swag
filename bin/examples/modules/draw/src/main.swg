@@ -16,7 +16,6 @@ namespace Res
     var fontFam:    FontFamily
 }
 
-var g_Surface:      *Surface
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
@@ -527,9 +526,9 @@ func display(surface: *Surface)
     surface.endRender()
 }
 
-func setup(wnd: *Wnd)
+func setup(wnd: *Wnd) throw
 {
-    assume
+    try
     {
         rdr := wnd.surface.app.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))
@@ -558,43 +557,41 @@ func onEvent(wnd: *Wnd, event: *Event)
     switch event.kind
     {
     case Create:
-        setup(wnd)
+        assume setup(wnd)
+
     case Paint:
         display(wnd.surface)
+
+    case Keyboard:
+        kbdEvt := cast(*KeyboardEvent) event
+        if kbdEvt.pressed
+        {
+            switch kbdEvt.key
+            {
+            case Input.Key.F1:
+                g_ModeAA = g_ModeAA ? false : true
+                wnd.surface.invalidate()
+            case Input.Key.F2:
+                g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
+                wnd.surface.invalidate()
+            case Input.Key.F3:
+                g_Pattern = g_Pattern ? false : true
+                wnd.surface.invalidate()
+            case Input.Key.F4:
+                g_Page = (g_Page + 1) % MaxPages
+                wnd.surface.invalidate()
+            }
+        }
+
     default:
         wnd.IWnd.onEvent(event)
-    }
-}
-
-func messageLoop()
-{
-    var keyb: Input.Keyboard
-
-    loop
-    {
-        if !Surface.messageLoop()
-            return
-
-        Memory.freeTemp()
-
-        keyb.update()
-        if keyb.isKeyJustPressed(Input.Key.F1)
-            g_ModeAA = g_ModeAA ? false : true
-        if keyb.isKeyJustPressed(Input.Key.F2)
-            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-        if keyb.isKeyJustPressed(Input.Key.F3)
-            g_Pattern = g_Pattern ? false : true
-        if keyb.isKeyJustPressed(Input.Key.F4)
-            g_Page = (g_Page + 1) % MaxPages
-
-        g_Surface.invalidate()
     }
 }
 
 #main
 {
     var app: Gui.Application
-    g_Surface = try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
-    g_Surface.show()
-    messageLoop()
+    surface := try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    surface.show()
+    app.run()
 }

@@ -34,7 +34,7 @@ impl Keyboard
                 pressedRepeat[i] = false
                 pressedTime[i] = 0
             }
-            else if(canRepeat)
+            else if canRepeat
             {
                 // First pressed time
                 if !pressedTime[i]
@@ -64,8 +64,8 @@ impl Keyboard
     {
         previousState.clear()
         currentState.clear()
-        Memory.clear(&pressedRepeat, cast(uint) @sizeof(pressedRepeat))
-        Memory.clear(&pressedTime, cast(uint) @sizeof(pressedTime))
+        Memory.clear(&pressedRepeat, @sizeof(pressedRepeat))
+        Memory.clear(&pressedTime, @sizeof(pressedTime))
     }
 
     // Determines whether given key is currently being pressed
