@@ -391,3 +391,14 @@ public func tcf_toto23(x: string, fct: func(string))
 {
     fct(x)
 }
+
+public struct T3209
+{
+    m11: s32
+    m12: s32
+}
+
+public impl T3209
+{
+    const Identity: T3209{1, 10}
+}

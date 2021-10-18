@@ -746,6 +746,18 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     if (node->typeInfo)
     {
         SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
+
+        if (node->identifier)
+        {
+            auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+            if (id->callParameters)
+            {
+                concat.addChar('{');
+                SWAG_CHECK(outputNode(context, concat, id->callParameters));
+                concat.addChar('}');
+            }
+        }
+
         return true;
     }
 
