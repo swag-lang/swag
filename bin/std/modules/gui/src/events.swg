@@ -50,7 +50,7 @@ struct ResizeEvent
 #[Swag.EnumFlags]
 enum KeyModifiers
 {
-    None
+    None = 0
     Shift
     Control
     Alt
@@ -59,7 +59,7 @@ enum KeyModifiers
 struct KeyEvent
 {
     using base: Event
-    modifiers:  KeyModifiers = ?//.None
+    modifiers:  KeyModifiers = .None
     key:        Input.Key = ?
 }
 

@@ -217,7 +217,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
 
         // User initialization
-        if (varDecl->assignment)
+        if (varDecl->assignment && varDecl->assignment->kind != AstNodeKind::ExplicitNoInit)
         {
             if (typeVar->kind == TypeInfoKind::Array)
             {
