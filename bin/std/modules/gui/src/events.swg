@@ -9,8 +9,7 @@ enum EventKind
 
 struct Event
 {
-    kind:    EventKind = None
-    surface: *Surface
+    kind: EventKind = None
 }
 
 struct PaintEvent

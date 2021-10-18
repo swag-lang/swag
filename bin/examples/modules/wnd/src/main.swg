@@ -36,7 +36,7 @@ func onEvent(wnd: *Wnd, event: *Event)
     switch event.kind
     {
     case Paint, Resize:
-        display(event.surface)
+        display(wnd.surface)
     }
 }
 

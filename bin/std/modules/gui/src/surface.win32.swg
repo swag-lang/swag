@@ -14,6 +14,12 @@ struct NativeSurface
 #[Swag.Callback]
 private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
+    func sendEvent(surface: *Surface, event: *Event)
+    {
+        event.surface = surface
+        surface.wnd.sendEvent(event)
+    }
+
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
     {
@@ -25,29 +31,18 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
-        var baseEvt: *Event
         switch msg
         {
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
-            evt.surface = surface
-            baseEvt = &evt
+            sendEvent(surface, evt)
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
             surface.rc.height = HIWORD(lParam)
             evt := ResizeEvent{kind: EventKind.Resize}
-            baseEvt = &evt
+            sendEvent(surface, evt)
         case WM_DESTROY:
             PostQuitMessage(0)
-        }
-
-        if baseEvt
-        {
-            baseEvt.surface = surface
-            if surface.wnd.hookOnEvent
-                surface.wnd.hookOnEvent(baseEvt)
-            else
-                surface.wnd.IWnd.onEvent(baseEvt)
         }
     }
 
@@ -113,6 +108,7 @@ impl NativeSurface
     func create(title: string, width, height: s32, flags: SurfaceFlags)->*Surface throw
     {
         result := Memory.new'Surface()
+        result.wnd.surface = result
 
         // Create class
         var wc: WNDCLASSW
