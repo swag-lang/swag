@@ -379,23 +379,13 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     Ast::addChildBack(newParent, subDecl);
 }
 
-bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
+bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
 {
-    Tokenizer::relaxIdentifier(token);
     switch (token.id)
     {
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
-        break;
-    case TokenId::SymSemiColon:
-        SWAG_CHECK(eatToken());
-        break;
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent, result));
         SWAG_CHECK(eatSemiCol("return expression"));
-        break;
-    case TokenId::KwdUsing:
-        SWAG_CHECK(doUsing(parent, result));
         break;
     case TokenId::KwdIf:
         SWAG_CHECK(doIf(parent, result));
@@ -415,14 +405,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdVisit:
         SWAG_CHECK(doVisit(parent, result));
         break;
-    case TokenId::KwdVar:
-    case TokenId::KwdConst:
-        SWAG_CHECK(doVarDecl(parent, result));
-        break;
-    case TokenId::KwdDefer:
-    case TokenId::KwdErrDefer:
-        SWAG_CHECK(doDefer(parent, result));
-        break;
     case TokenId::KwdTry:
     case TokenId::KwdAssume:
         SWAG_CHECK(doTryAssume(parent, result));
@@ -435,6 +417,14 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdDiscard:
         SWAG_CHECK(doDiscard(parent, result));
+        break;
+    case TokenId::IntrinsicInit:
+        SWAG_CHECK(doInit(parent, result));
+        break;
+    case TokenId::IntrinsicDrop:
+    case TokenId::IntrinsicPostCopy:
+    case TokenId::IntrinsicPostMove:
+        SWAG_CHECK(doDropCopyMove(parent, result));
         break;
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:
@@ -464,13 +454,77 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdDeRef:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
+{
+    Tokenizer::relaxIdentifier(token);
+    switch (token.id)
+    {
+    case TokenId::KwdReturn:
+    case TokenId::KwdIf:
+    case TokenId::KwdWhile:
+    case TokenId::KwdFor:
+    case TokenId::KwdSwitch:
+    case TokenId::KwdLoop:
+    case TokenId::KwdVisit:
+    case TokenId::KwdTry:
+    case TokenId::KwdAssume:
+    case TokenId::KwdCatch:
+    case TokenId::KwdThrow:
+    case TokenId::KwdDiscard:
     case TokenId::IntrinsicInit:
-        SWAG_CHECK(doInit(parent, result));
-        break;
     case TokenId::IntrinsicDrop:
     case TokenId::IntrinsicPostCopy:
     case TokenId::IntrinsicPostMove:
-        SWAG_CHECK(doDropCopyMove(parent, result));
+    case TokenId::SymBackTick:
+    case TokenId::CompilerScopeFct:
+    case TokenId::Identifier:
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicBcDbg:
+    case TokenId::IntrinsicPanic:
+    case TokenId::IntrinsicErrorMsg:
+    case TokenId::IntrinsicFree:
+    case TokenId::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemMove:
+    case TokenId::IntrinsicMemSet:
+    case TokenId::IntrinsicSetContext:
+    case TokenId::IntrinsicGetContext:
+    case TokenId::IntrinsicAtomicAdd:
+    case TokenId::IntrinsicAtomicAnd:
+    case TokenId::IntrinsicAtomicOr:
+    case TokenId::IntrinsicAtomicXor:
+    case TokenId::IntrinsicAtomicXchg:
+    case TokenId::IntrinsicAtomicCmpXchg:
+    case TokenId::IntrinsicSetErr:
+    case TokenId::IntrinsicCVaStart:
+    case TokenId::IntrinsicCVaEnd:
+    case TokenId::IntrinsicCVaArg:
+    case TokenId::SymLeftParen:
+    case TokenId::KwdDeRef:
+        SWAG_CHECK(doLeftInstruction(parent, result));
+        break;
+
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
+        break;
+    case TokenId::SymSemiColon:
+        SWAG_CHECK(eatToken());
+        break;
+    case TokenId::KwdUsing:
+        SWAG_CHECK(doUsing(parent, result));
+        break;
+    case TokenId::KwdVar:
+    case TokenId::KwdConst:
+        SWAG_CHECK(doVarDecl(parent, result));
+        break;
+    case TokenId::KwdDefer:
+    case TokenId::KwdErrDefer:
+        SWAG_CHECK(doDefer(parent, result));
         break;
     case TokenId::KwdBreak:
         SWAG_CHECK(doBreak(parent, result));

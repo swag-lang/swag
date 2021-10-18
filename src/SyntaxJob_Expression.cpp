@@ -1037,7 +1037,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
         SWAG_CHECK(doScopedCurlyStatement(node));
     else
-        SWAG_CHECK(doAffectExpression(node));
+        SWAG_CHECK(doLeftInstruction(node));
 
     return true;
 }
@@ -1099,7 +1099,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
     return true;
 }
 
-bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
@@ -1156,7 +1156,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doLeftExpression(parent, &leftNode));
+    SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode));
     Ast::removeFromParent(leftNode);
 
     // Variable declaration and initialization by ':='

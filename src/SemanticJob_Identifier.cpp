@@ -521,6 +521,7 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
         checkParent = checkParent->parent;
     if (checkParent->kind == AstNodeKind::Statement ||
         checkParent->kind == AstNodeKind::StatementNoScope ||
+        checkParent->kind == AstNodeKind::Defer ||
         checkParent->kind == AstNodeKind::SwitchCaseBlock)
     {
         // If this is the last identifier
