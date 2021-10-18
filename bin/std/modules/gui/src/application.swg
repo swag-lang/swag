@@ -24,7 +24,7 @@ impl Application
         mainSurface = surface
         evt := CreateEvent{kind: EventKind.Create}
         evt.target = &surface.wnd
-        sendEvent(evt)
+        sendEvent(&evt)
         return surface
     }
 
@@ -71,14 +71,14 @@ impl Application
                 evt := KeyEvent{kind: EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
                 evt.target = target
-                sendEvent(evt)
+                sendEvent(&evt)
             }
             else if lastP and !curP
             {
                 evt := KeyEvent{kind: EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
                 evt.target = target
-                sendEvent(evt)
+                sendEvent(&evt)
             }
         }
     }

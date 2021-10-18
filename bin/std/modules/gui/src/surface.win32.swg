@@ -27,7 +27,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
             evt.target = &surface.wnd
-            surface.app.sendEvent(evt)
+            surface.app.sendEvent(&evt)
 
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)
@@ -36,7 +36,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             evt.target = &surface.wnd
             evt.rect.width = surface.rc.width
             evt.rect.height = surface.rc.height
-            surface.app.sendEvent(evt)
+            surface.app.sendEvent(&evt)
 
         case WM_DESTROY:
             evt := Event{kind: EventKind.Close}
@@ -146,7 +146,7 @@ impl NativeSurface
             result
         )
 
-        result.rc = try app.renderer.createContext(result.hWnd)
+        result.rc = try app.renderer.native.createContext(result.hWnd)
         result.rc.width = width
         result.rc.height = height
         app.renderer.init()
