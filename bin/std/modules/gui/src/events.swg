@@ -40,3 +40,9 @@ struct KeyEvent
     using base: Event
     key:        Input.Key = ?
 }
+
+struct QuitEvent
+{
+    using base: Event
+    quitCode: s32
+}

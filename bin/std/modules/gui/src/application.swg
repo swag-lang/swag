@@ -7,7 +7,8 @@ struct Application
     keyb:           Input.Keyboard
     mainSurface:    *Surface
     events:         Array'(*Event)
-    mustExit:       bool
+    mustQuit:       bool
+    quitCode:       s32
 }
 
 impl Application
@@ -26,24 +27,32 @@ impl Application
         return surface
     }
 
-    mtd postQuitEvent()
+    // Ask to exit the application
+    mtd postQuitEvent(quitCode: s32 = 0)
     {
-        evt := Memory.new'Event()
+        evt := Memory.new'QuitEvent()
         evt.kind = .Quit
-        events.add(evt)
+        evt.quitCode = #scopefct.quitCode
+        postEvent(evt)
+    }
+
+    protected mtd postEvent(event: *Event)
+    {
+        events.add(event)
     }
 
     protected mtd sendEvent(event: *Event)
     {
         if event.kind == .Quit
         {
-            mustExit = true
+            evt := cast(*QuitEvent) event
+            mustQuit = true
+            quitCode = evt.quitCode
             return
         }
 
         Debug.assert(event.target != null)
         event.target.sendEvent(event)
-
     }
 
     protected mtd sendKeyboardEvents()
@@ -73,7 +82,7 @@ impl Application
         }
     }
 
-    protected mtd sendPostEvents()
+    protected mtd sendPostedEvents()
     {
         visit evt: events
         {
@@ -85,17 +94,20 @@ impl Application
     }
 
     // Run until exit
-    mtd run()
+    #[Swag.Discardable]
+    mtd run()->s32
     {
-        while !mustExit
+        while !mustQuit
         {
             Memory.freeTemp()
 
             sendSystemEvents()
             sendKeyboardEvents()
-            sendPostEvents()
+            sendPostedEvents()
 
             mainSurface.invalidate()
         }
+
+        return quitCode
     }
 }
