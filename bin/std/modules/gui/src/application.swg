@@ -33,6 +33,9 @@ impl Application
     protected mtd sendKeyboardEvents()
     {
         keyb.update()
+
+        target := &mainSurface.wnd
+
         loop i: keyb.previousState.pressed
         {
             lastP := keyb.previousState.pressed[i]
@@ -41,14 +44,14 @@ impl Application
             {
                 evt := KeyEvent{kind: EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
-                evt.target = &mainSurface.wnd
+                evt.target = target
                 sendEvent(evt)
             }
             else if lastP and !curP
             {
                 evt := KeyEvent{kind: EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
-                evt.target = &mainSurface.wnd
+                evt.target = target
                 sendEvent(evt)
             }
         }
@@ -61,10 +64,10 @@ impl Application
         {
             Memory.freeTemp()
 
-            if !Surface.messageLoop()
+            if !sendSystemEvents()
                 return
-
             sendKeyboardEvents()
+
             mainSurface.invalidate()
         }
     }

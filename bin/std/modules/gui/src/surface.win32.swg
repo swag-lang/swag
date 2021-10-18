@@ -149,19 +149,4 @@ impl NativeSurface
 
         return result
     }
-
-    // Returns 'false' when need to quit
-    func messageLoop()->bool
-    {
-        var msg: MSG
-        while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
-        {
-            if msg.message == WM_QUIT
-                return false
-            TranslateMessage(&msg)
-            DispatchMessageW(&msg)
-        }
-
-        return true
-    }
 }
