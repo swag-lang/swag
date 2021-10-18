@@ -16,6 +16,7 @@ enum SurfaceFlags
     SysMenu
     MinimizeBox
     MaximizeBox
+    ToolWindow
 
     DlgFrame
     SizeFrame

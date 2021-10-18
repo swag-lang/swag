@@ -11,13 +11,14 @@ alias getExtensionAddress = wglGetProcAddress
     func wglGetProcAddress(arg1: LPCSTR)->const *void;
 }
 
-namespace oglpriv
+namespace PrivOgl
 {
     #[Foreign("opengl32")]
     {
         func wglCreateContext(hDc: HDC)->HGLRC;
         func wglDeleteContext(hRc: HGLRC)->BOOL;
         func wglMakeCurrent(hDc: HDC, hRc: HGLRC)->BOOL;
+        func wglShareLists(hRc0, hRc1: HGLRC)->BOOL;
     }
 }
 
@@ -25,7 +26,7 @@ namespace oglpriv
 {
     func wglCreateContext(hDc: HDC)->HGLRC throw
     {
-        res := oglpriv.wglCreateContext(hDc)
+        res := PrivOgl.wglCreateContext(hDc)
         if !res
             try setError(GetLastError())
         return res
@@ -33,13 +34,19 @@ namespace oglpriv
 
     func wglDeleteContext(hRc: HGLRC) throw
     {
-        if !oglpriv.wglDeleteContext(hRc)
+        if !PrivOgl.wglDeleteContext(hRc)
             try setError(GetLastError())
     }
 
     func wglMakeCurrent(hDc: HDC, hRc: HGLRC) throw
     {
-        if !oglpriv.wglMakeCurrent(hDc, hRc)
+        if !PrivOgl.wglMakeCurrent(hDc, hRc)
+            try setError(GetLastError())
+    }
+
+    func wglShareLists(hRc0, hRc1: HGLRC) throw
+    {
+        if !PrivOgl.wglShareLists(hRc0, hRc1)
             try setError(GetLastError())
     }
 }

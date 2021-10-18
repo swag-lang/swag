@@ -110,17 +110,25 @@ impl NativeSurface
         result.wnd.hookOnEvent = onEvent
 
         // Create class
-        var wc: WNDCLASSW
-        wc.style         = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS
-        wc.lpfnWndProc   = acast @mkcallback(&winProc)
-        wc.hInstance     = GetModuleHandleW(null)
-        wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
-        wc.lpszClassName = @dataof(utf16.toZeroTerminated("Swag.Gui.Surface"))
-        try RegisterClassW(wc)
+        #[Swag.Global]
+        var doneClass: bool
+        className := @dataof(utf16.toZeroTerminated("Swag.Gui.Surface"))
+        if !doneClass
+        {
+            doneClass = true
+            var wc: WNDCLASSW
+            wc.style         = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS
+            wc.lpfnWndProc   = acast @mkcallback(&winProc)
+            wc.hInstance     = GetModuleHandleW(null)
+            wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
+            wc.lpszClassName = className
+            try RegisterClassW(wc)
+        }
 
         // Win ex flags
         var winExFlags: DWORD
         if flags & .PaletteWindow winExFlags |= WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST
+        if flags & .ToolWindow winExFlags |= WS_EX_TOOLWINDOW
 
         // Win flags
         var winFlags: DWORD
@@ -136,7 +144,7 @@ impl NativeSurface
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
             winExFlags,
-            wc.lpszClassName,
+            className,
             @dataof(utf16.toZeroTerminated(title)),
             winFlags | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
             x,
@@ -145,7 +153,7 @@ impl NativeSurface
             height,
             null,
             null,
-            wc.hInstance,
+            GetModuleHandleW(null),
             result
         )
 

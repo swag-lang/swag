@@ -7,6 +7,7 @@ struct Application
     keyb:           Input.Keyboard
     mainSurface:    *Surface
     postedEvents:   Array'(*Event)
+    surfaces:       Array'(*Surface)
     mustQuit:       bool
     quitCode:       s32
 }
@@ -21,7 +22,10 @@ impl Application
     mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event) = null)->*Surface throw
     {
         surface := try Surface.create(self, title, x, y, width, height, flags, onEvent)
-        mainSurface = surface
+        if !mainSurface
+            mainSurface = surface
+        surfaces.add(surface)
+
         evt := CreateEvent{kind: EventKind.Create}
         evt.target = &surface.wnd
         sendEvent(&evt)
