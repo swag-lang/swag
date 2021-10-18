@@ -450,18 +450,13 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, g_E[Err0451]}));
         SWAG_CHECK(eatToken());
-
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->specFlags |= AST_SPEC_STRUCTDECL_HAS_USING;
-
-        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        structNode->flags |= AST_STRUCT_COMPOUND;
-        if (result)
-            *result = stmt;
-
         AstNode* varDecl;
-        SWAG_CHECK(doVarDecl(stmt, &varDecl, AstNodeKind::VarDecl));
+        SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
         varDecl->flags |= AST_DECL_USING;
+        if (result)
+            *result = varDecl;
         break;
     }
 
