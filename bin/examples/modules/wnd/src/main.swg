@@ -20,6 +20,8 @@ func onEvent(wnd: *Wnd, event: *Event)
 {
     switch event.kind
     {
+    case Close:
+        wnd.surface.app.postQuitEvent()
     case Paint:
         display(wnd.surface)
     default:

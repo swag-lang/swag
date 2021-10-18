@@ -37,7 +37,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             evt.rect.height = surface.rc.height
             surface.app.sendEvent(evt)
         case WM_DESTROY:
-            PostQuitMessage(0)
+            evt := Event{kind: EventKind.Close}
+            evt.target = &surface.wnd
+            surface.app.sendEvent(&evt)
         }
     }
 

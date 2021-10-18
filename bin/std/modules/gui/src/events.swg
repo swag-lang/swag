@@ -9,6 +9,8 @@ enum EventKind
     Paint
     KeyPressed
     KeyReleased
+    Close
+    Quit
 }
 
 struct Event

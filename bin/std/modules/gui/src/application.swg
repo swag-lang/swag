@@ -6,6 +6,8 @@ struct Application
     renderer:       Pixel.RenderOgl
     keyb:           Input.Keyboard
     mainSurface:    *Surface
+    events:         Array'(*Event)
+    mustExit:       bool
 }
 
 impl Application
@@ -24,10 +26,24 @@ impl Application
         return surface
     }
 
+    mtd postQuitEvent()
+    {
+        evt := Memory.new'Event()
+        evt.kind = .Quit
+        events.add(evt)
+    }
+
     protected mtd sendEvent(event: *Event)
     {
+        if event.kind == .Quit
+        {
+            mustExit = true
+            return
+        }
+
         Debug.assert(event.target != null)
         event.target.sendEvent(event)
+
     }
 
     protected mtd sendKeyboardEvents()
@@ -57,16 +73,27 @@ impl Application
         }
     }
 
+    protected mtd sendPostEvents()
+    {
+        visit evt: events
+        {
+            sendEvent(evt)
+            Memory.delete(evt)
+        }
+
+        events.clear()
+    }
+
     // Run until exit
     mtd run()
     {
-        loop
+        while !mustExit
         {
             Memory.freeTemp()
 
-            if !sendSystemEvents()
-                return
+            sendSystemEvents()
             sendKeyboardEvents()
+            sendPostEvents()
 
             mainSurface.invalidate()
         }
