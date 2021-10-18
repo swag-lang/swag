@@ -93,11 +93,12 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags)->*Surface throw
+    func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event))->*Surface throw
     {
         result := Memory.new'Surface()
         result.app = app
         result.wnd.surface = result
+        result.wnd.hookOnEvent = onEvent
 
         // Create class
         var wc: WNDCLASSW

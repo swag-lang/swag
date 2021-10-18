@@ -47,8 +47,7 @@ func onEvent(wnd: *Wnd, event: *Event)
     try
     {
         var app: Gui.Application
-        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow)
-        g_Surface.wnd.hookOnEvent = &onEvent
+        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
         g_Surface.show()
         messageLoop()
     }
