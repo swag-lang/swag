@@ -10,7 +10,9 @@ struct Application
 
 impl Application
 {
+    // Get application variables
     mtd getRenderer() => &renderer
+    mtd getKeyboard() => &keyb
 
     // Creates a new surface
     mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event) = null)->*Surface throw
@@ -22,16 +24,31 @@ impl Application
         return surface
     }
 
+    protected mtd sendEvent(event: *Event)
+    {
+        event.target.sendEvent(event)
+    }
+
     protected mtd sendKeyboardEvents()
     {
         keyb.update()
         loop i: keyb.previousState.pressed
         {
-            if !keyb.previousState.pressed[i] and keyb.currentState.pressed[i]
+            lastP := keyb.previousState.pressed[i]
+            curP  := keyb.currentState.pressed[i]
+            if !lastP and curP
             {
-                evt := KeyboardEvent{kind: EventKind.Keyboard, pressed: true}
+                evt := KeyEvent{kind: EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
-                mainSurface.wnd.sendEvent(evt)
+                evt.target = &mainSurface.wnd
+                sendEvent(evt)
+            }
+            else if lastP and !curP
+            {
+                evt := KeyEvent{kind: EventKind.KeyReleased}
+                evt.key = cast(Input.Key) i
+                evt.target = &mainSurface.wnd
+                sendEvent(evt)
             }
         }
     }

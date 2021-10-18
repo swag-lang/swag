@@ -7,12 +7,14 @@ enum EventKind
     Create
     Resize
     Paint
-    Keyboard
+    KeyPressed
+    KeyReleased
 }
 
 struct Event
 {
     kind: EventKind = None
+    target: *Wnd
 }
 
 struct CreateEvent
@@ -31,9 +33,8 @@ struct ResizeEvent
     rect: Math.Rectangle
 }
 
-struct KeyboardEvent
+struct KeyEvent
 {
     using base: Event
-    pressed:    bool
     key:        Input.Key = ?
 }

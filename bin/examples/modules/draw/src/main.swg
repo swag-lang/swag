@@ -562,25 +562,22 @@ func onEvent(wnd: *Wnd, event: *Event)
     case Paint:
         display(wnd.surface)
 
-    case Keyboard:
-        kbdEvt := cast(*KeyboardEvent) event
-        if kbdEvt.pressed
+    case KeyPressed:
+        evt := cast(*KeyEvent) event
+        switch evt.key
         {
-            switch kbdEvt.key
-            {
-            case Input.Key.F1:
-                g_ModeAA = g_ModeAA ? false : true
-                wnd.surface.invalidate()
-            case Input.Key.F2:
-                g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-                wnd.surface.invalidate()
-            case Input.Key.F3:
-                g_Pattern = g_Pattern ? false : true
-                wnd.surface.invalidate()
-            case Input.Key.F4:
-                g_Page = (g_Page + 1) % MaxPages
-                wnd.surface.invalidate()
-            }
+        case Input.Key.F1:
+            g_ModeAA = g_ModeAA ? false : true
+            wnd.surface.invalidate()
+        case Input.Key.F2:
+            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
+            wnd.surface.invalidate()
+        case Input.Key.F3:
+            g_Pattern = g_Pattern ? false : true
+            wnd.surface.invalidate()
+        case Input.Key.F4:
+            g_Page = (g_Page + 1) % MaxPages
+            wnd.surface.invalidate()
         }
 
     default:
