@@ -571,6 +571,7 @@ func onEvent(wnd: *Wnd, event: *Event)
 
     case KeyPressed:
         evt := cast(*KeyEvent) event
+        if evt.modifiers & .Alt break
         switch evt.key
         {
         case Input.Key.F1:

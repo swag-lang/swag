@@ -61,6 +61,16 @@ impl Application
 
         target := &mainSurface.wnd
 
+        // Modifiers
+        var modifiers: KeyModifiers = .None
+        if keyb.isKeyPressed(Input.Key.LShift)   modifiers |= .Shift
+        if keyb.isKeyPressed(Input.Key.RShift)   modifiers |= .Shift
+        if keyb.isKeyPressed(Input.Key.LControl) modifiers |= .Control
+        if keyb.isKeyPressed(Input.Key.RControl) modifiers |= .Control
+        if keyb.isKeyPressed(Input.Key.LMenu)    modifiers |= .Alt
+        if keyb.isKeyPressed(Input.Key.RMenu)    modifiers |= .Alt
+
+        // Detect changes
         loop i: keyb.previousState.pressed
         {
             lastP := keyb.previousState.pressed[i]
@@ -70,6 +80,7 @@ impl Application
                 evt := KeyEvent{kind: EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
                 evt.target = target
+                evt.modifiers = modifiers
                 sendEvent(&evt)
             }
             else if lastP and !curP
@@ -77,6 +88,7 @@ impl Application
                 evt := KeyEvent{kind: EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
                 evt.target = target
+                evt.modifiers = modifiers
                 sendEvent(&evt)
             }
         }

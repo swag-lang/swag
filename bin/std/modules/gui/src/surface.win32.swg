@@ -24,10 +24,14 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     {
         switch msg
         {
+        case WM_SYSKEYDOWN, WM_SYSKEYUP:
+            return 0
+
         case WM_PAINT:
             evt := PaintEvent{kind: EventKind.Paint}
             evt.target = &surface.wnd
             surface.app.sendEvent(&evt)
+            return 0
 
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)

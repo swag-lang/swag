@@ -26,7 +26,7 @@ public enum Key
     Capital
     CapsLock
     Clear
-    ControlKey
+    Control
     Crsel
     D
     D0
@@ -97,9 +97,9 @@ public enum Key
     KanjiMode
     L
     LButton
-    LControlKey
+    LControl
     LMenu
-    LShiftKey
+    LShift
     LWin
     LaunchApplication1
     LaunchApplication2
@@ -161,13 +161,13 @@ public enum Key
     Print
     PrintScreen
     Prior
-    ProcessKey
+    Process
     Q
     R
     RButton
-    RControlKey
+    RControl
     RMenu
-    RShiftKey
+    RShift
     RWin
     Return
     Right
@@ -176,7 +176,7 @@ public enum Key
     Select
     SelectMedia
     Separator
-    ShiftKey
+    Shift
     Sleep
     Snapshot
     Space

@@ -47,9 +47,19 @@ struct ResizeEvent
     rect: Math.Rectangle
 }
 
+#[Swag.EnumFlags]
+enum KeyModifiers
+{
+    None
+    Shift
+    Control
+    Alt
+}
+
 struct KeyEvent
 {
     using base: Event
+    modifiers:  KeyModifiers = ?//.None
     key:        Input.Key = ?
 }
 
