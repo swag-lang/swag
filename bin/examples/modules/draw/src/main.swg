@@ -571,7 +571,6 @@ func onEvent(wnd: *Wnd, event: *Event)
 
     case KeyPressed:
         evt := cast(*KeyEvent) event
-        if evt.modifiers & .Alt break
         switch evt.key
         {
         case Input.Key.F1:
@@ -584,6 +583,8 @@ func onEvent(wnd: *Wnd, event: *Event)
             g_Pattern = g_Pattern ? false : true
             wnd.surface.invalidate()
         case Input.Key.F4:
+            if evt.modifiers & .Alt
+                wnd.surface.app.postQuitEvent()
             g_Page = (g_Page + 1) % MaxPages
             wnd.surface.invalidate()
         }
