@@ -527,31 +527,6 @@ func display(surface: *Surface)
     surface.endRender()
 }
 
-func messageLoop()
-{
-    var keyb: Input.Keyboard
-
-    loop
-    {
-        if !Surface.messageLoop()
-            return
-
-        Memory.freeTemp()
-
-        keyb.update()
-        if keyb.isKeyJustPressed(Input.Key.F1)
-            g_ModeAA = g_ModeAA ? false : true
-        if keyb.isKeyJustPressed(Input.Key.F2)
-            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-        if keyb.isKeyJustPressed(Input.Key.F3)
-            g_Pattern = g_Pattern ? false : true
-        if keyb.isKeyJustPressed(Input.Key.F4)
-            g_Page = (g_Page + 1) % MaxPages
-
-        g_Surface.invalidate()
-    }
-}
-
 func setup(wnd: *Wnd)
 {
     assume
@@ -591,13 +566,35 @@ func onEvent(wnd: *Wnd, event: *Event)
     }
 }
 
+func messageLoop()
+{
+    var keyb: Input.Keyboard
+
+    loop
+    {
+        if !Surface.messageLoop()
+            return
+
+        Memory.freeTemp()
+
+        keyb.update()
+        if keyb.isKeyJustPressed(Input.Key.F1)
+            g_ModeAA = g_ModeAA ? false : true
+        if keyb.isKeyJustPressed(Input.Key.F2)
+            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
+        if keyb.isKeyJustPressed(Input.Key.F3)
+            g_Pattern = g_Pattern ? false : true
+        if keyb.isKeyJustPressed(Input.Key.F4)
+            g_Page = (g_Page + 1) % MaxPages
+
+        g_Surface.invalidate()
+    }
+}
+
 #main
 {
-    try
-    {
-        var app: Gui.Application
-        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
-        g_Surface.show()
-        messageLoop()
-    }
+    var app: Gui.Application
+    g_Surface = try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    g_Surface.show()
+    messageLoop()
 }

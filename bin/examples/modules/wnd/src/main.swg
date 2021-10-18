@@ -16,6 +16,17 @@ func display(surface: *Surface)
     surface.endRender()
 }
 
+func onEvent(wnd: *Wnd, event: *Event)
+{
+    switch event.kind
+    {
+    case Paint:
+        display(wnd.surface)
+    default:
+        wnd.IWnd.onEvent(event)
+    }
+}
+
 func messageLoop()
 {
     var keyb: Input.Keyboard
@@ -31,24 +42,10 @@ func messageLoop()
     }
 }
 
-func onEvent(wnd: *Wnd, event: *Event)
-{
-    switch event.kind
-    {
-    case Paint:
-        display(wnd.surface)
-    default:
-        wnd.IWnd.onEvent(event)
-    }
-}
-
 #main
 {
-    try
-    {
-        var app: Gui.Application
-        g_Surface = app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
-        g_Surface.show()
-        messageLoop()
-    }
+    var app: Gui.Application
+    g_Surface = try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    g_Surface.show()
+    messageLoop()
 }
