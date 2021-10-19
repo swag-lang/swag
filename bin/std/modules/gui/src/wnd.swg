@@ -3,7 +3,10 @@ using Core, Pixel
 
 interface IWnd
 {
-    onEvent: func(self, *Event)
+    onEvent:        func(self, *Event)
+    onResizeEvent:  func(self, *ResizeEvent)
+    onPaintEvent:   func(self, *PaintEvent)
+    onKeyEvent:     func(self, *KeyEvent)
 }
 
 struct Wnd
@@ -15,15 +18,31 @@ struct Wnd
 
 impl IWnd for Wnd
 {
-    mtd onEvent(event: *Event)
+    mtd onEvent(evt: *Event)
     {
-        switch event.kind
+        switch evt.kind
         {
         case Resize:
-            evt := cast(*ResizeEvent) event
-            rect.width = evt.rect.width
-            rect.height = evt.rect.height
+            onResizeEvent(cast(*ResizeEvent) evt)
+        case Paint:
+            onPaintEvent(cast(*PaintEvent) evt)
+        case KeyPressed, KeyReleased:
+            onKeyEvent(cast(*KeyEvent) evt)
         }
+    }
+
+    mtd onResizeEvent(evt: *ResizeEvent)
+    {
+        rect.width = evt.rect.width
+        rect.height = evt.rect.height
+    }
+
+    mtd onPaintEvent(evt: *PaintEvent)
+    {
+    }
+
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
     }
 }
 
