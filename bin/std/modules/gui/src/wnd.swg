@@ -11,9 +11,13 @@ interface IWnd
 
 struct Wnd
 {
-    rect:           Math.Rectangle
-    surface:        *Surface
-    hookOnEvent:    func(*Wnd, *Event)
+    rect:     Math.Rectangle
+    surface:  *Surface
+
+    hookOnEvent:        func(*Wnd, *Event)
+    hookOnResizeEvent:  func(*Wnd, *ResizeEvent)
+    hookOnPaintEvent:   func(*Wnd, *PaintEvent)
+    hookOnKeyEvent:     func(*Wnd, *KeyEvent)
 }
 
 impl IWnd for Wnd
@@ -23,11 +27,22 @@ impl IWnd for Wnd
         switch evt.kind
         {
         case Resize:
-            onResizeEvent(cast(*ResizeEvent) evt)
+            if hookOnResizeEvent
+                hookOnResizeEvent(self, cast(*ResizeEvent) evt)
+            else
+                onResizeEvent(cast(*ResizeEvent) evt)
+
         case Paint:
-            onPaintEvent(cast(*PaintEvent) evt)
+            if hookOnPaintEvent
+                hookOnPaintEvent(self, cast(*PaintEvent) evt)
+            else
+                onPaintEvent(cast(*PaintEvent) evt)
+
         case KeyPressed, KeyReleased:
-            onKeyEvent(cast(*KeyEvent) evt)
+            if hookOnKeyEvent
+                hookOnKeyEvent(self, cast(*KeyEvent) evt)
+            else
+                onKeyEvent(cast(*KeyEvent) evt)
         }
     }
 

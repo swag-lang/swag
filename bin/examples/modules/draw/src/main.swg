@@ -500,7 +500,7 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
-func display(event: *PaintEvent)
+func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 {
     painter := event.painter
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
@@ -531,6 +531,40 @@ func display(event: *PaintEvent)
     event.renderer.draw(painter)
 }
 
+func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
+{
+    if evt.kind != EventKind.KeyPressed
+        return
+    switch evt.key
+    {
+    case Input.Key.F1:
+        g_ModeAA = g_ModeAA ? false : true
+        wnd.surface.invalidate()
+    case Input.Key.F2:
+        g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
+        wnd.surface.invalidate()
+    case Input.Key.F3:
+        g_Pattern = g_Pattern ? false : true
+        wnd.surface.invalidate()
+    case Input.Key.F4:
+        if evt.modifiers & .Alt
+            wnd.surface.app.postQuitEvent()
+        g_Page = (g_Page + 1) % MaxPages
+        wnd.surface.invalidate()
+    }
+}
+
+func onEvent(wnd: *Wnd, event: *Event)
+{
+    switch event.kind
+    {
+    case Close:
+        wnd.surface.app.postQuitEvent()
+    default:
+        wnd.IWnd.onEvent(event)
+    }
+}
+
 func setup(wnd: *Wnd) throw
 {
     try
@@ -557,48 +591,13 @@ func setup(wnd: *Wnd) throw
     }
 }
 
-func onEvent(wnd: *Wnd, event: *Event)
-{
-    switch event.kind
-    {
-    case Close:
-        wnd.surface.app.postQuitEvent()
-
-    case Create:
-        assume setup(wnd)
-
-    case Paint:
-        display(cast(*PaintEvent) event)
-
-    case KeyPressed:
-        evt := cast(*KeyEvent) event
-        switch evt.key
-        {
-        case Input.Key.F1:
-            g_ModeAA = g_ModeAA ? false : true
-            wnd.surface.invalidate()
-        case Input.Key.F2:
-            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-            wnd.surface.invalidate()
-        case Input.Key.F3:
-            g_Pattern = g_Pattern ? false : true
-            wnd.surface.invalidate()
-        case Input.Key.F4:
-            if evt.modifiers & .Alt
-                wnd.surface.app.postQuitEvent()
-            g_Page = (g_Page + 1) % MaxPages
-            wnd.surface.invalidate()
-        }
-
-    default:
-        wnd.IWnd.onEvent(event)
-    }
-}
-
 #main
 {
     var app: Gui.Application
     surface := try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    surface.wnd.hookOnPaintEvent = &onPaintEvent
+    surface.wnd.hookOnKeyEvent = &onKeyEvent
+    try setup(&surface.wnd)
     surface.show()
     app.run()
 }
