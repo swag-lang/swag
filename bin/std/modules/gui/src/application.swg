@@ -19,9 +19,9 @@ impl Application
     mtd getKeyboard() => &keyb
 
     // Creates a new surface
-    mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags, onEvent: func(*Wnd, *Event) = null)->*Surface throw
+    mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.OverlappedWindow)->*Surface throw
     {
-        surface := try Surface.create(self, title, x, y, width, height, flags, onEvent)
+        surface := try Surface.create(self, title, x, y, width, height, flags)
         if !mainSurface
             mainSurface = surface
         surfaces.add(surface)

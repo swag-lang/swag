@@ -554,15 +554,9 @@ func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
     }
 }
 
-func onEvent(wnd: *Wnd, event: *Event)
+func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
 {
-    switch event.kind
-    {
-    case Close:
-        wnd.surface.app.postQuitEvent()
-    default:
-        wnd.IWnd.onEvent(event)
-    }
+    wnd.surface.app.postQuitEvent()
 }
 
 func setup(wnd: *Wnd) throw
@@ -594,7 +588,8 @@ func setup(wnd: *Wnd) throw
 #main
 {
     var app: Gui.Application
-    surface := try app.createSurface("Example", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent)
+    surface := try app.createSurface("Example", 100, 100, W, H)
+    surface.wnd.hookOnCloseEvent = &onCloseEvent
     surface.wnd.hookOnPaintEvent = &onPaintEvent
     surface.wnd.hookOnKeyEvent = &onKeyEvent
     try setup(&surface.wnd)

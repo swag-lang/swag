@@ -36,6 +36,11 @@ struct CreateEvent
     using base: Event
 }
 
+struct CloseEvent
+{
+    using base: Event
+}
+
 struct PaintEvent
 {
     using base: Event

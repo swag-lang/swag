@@ -3,6 +3,8 @@ using Core, Pixel
 
 interface IWnd
 {
+    onCreateEvent:  func(self, *CreateEvent)
+    onCloseEvent:   func(self, *CloseEvent)
     onEvent:        func(self, *Event)
     onResizeEvent:  func(self, *ResizeEvent)
     onPaintEvent:   func(self, *PaintEvent)
@@ -11,10 +13,13 @@ interface IWnd
 
 struct Wnd
 {
-    rect:     Math.Rectangle
-    surface:  *Surface
+    itf:        IWnd
+    surface:    *Surface
+    rect:       Math.Rectangle
 
     hookOnEvent:        func(*Wnd, *Event)
+    hookOnCreateEvent:  func(*Wnd, *CreateEvent)
+    hookOnCloseEvent:   func(*Wnd, *CloseEvent)
     hookOnResizeEvent:  func(*Wnd, *ResizeEvent)
     hookOnPaintEvent:   func(*Wnd, *PaintEvent)
     hookOnKeyEvent:     func(*Wnd, *KeyEvent)
@@ -26,23 +31,35 @@ impl IWnd for Wnd
     {
         switch evt.kind
         {
+        case Create:
+            if hookOnCreateEvent
+                hookOnCreateEvent(self, cast(*CreateEvent) evt)
+            else
+                itf.onCreateEvent(cast(*CreateEvent) evt)
+
+        case Close:
+            if hookOnCloseEvent
+                hookOnCloseEvent(self, cast(*CloseEvent) evt)
+            else
+                itf.onCloseEvent(cast(*CloseEvent) evt)
+
         case Resize:
             if hookOnResizeEvent
                 hookOnResizeEvent(self, cast(*ResizeEvent) evt)
             else
-                onResizeEvent(cast(*ResizeEvent) evt)
+                itf.onResizeEvent(cast(*ResizeEvent) evt)
 
         case Paint:
             if hookOnPaintEvent
                 hookOnPaintEvent(self, cast(*PaintEvent) evt)
             else
-                onPaintEvent(cast(*PaintEvent) evt)
+                itf.onPaintEvent(cast(*PaintEvent) evt)
 
         case KeyPressed, KeyReleased:
             if hookOnKeyEvent
                 hookOnKeyEvent(self, cast(*KeyEvent) evt)
             else
-                onKeyEvent(cast(*KeyEvent) evt)
+                itf.onKeyEvent(cast(*KeyEvent) evt)
         }
     }
 
@@ -59,6 +76,14 @@ impl IWnd for Wnd
     mtd onKeyEvent(evt: *KeyEvent)
     {
     }
+
+    mtd onCreateEvent(evt: *CreateEvent)
+    {
+    }
+
+    mtd onCloseEvent(evt: *CloseEvent)
+    {
+    }
 }
 
 impl Wnd
@@ -68,6 +93,6 @@ impl Wnd
         if hookOnEvent
             hookOnEvent(self, event)
         else
-            self.IWnd.onEvent(event)
+            itf.onEvent(event)
     }
 }
