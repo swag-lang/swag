@@ -2372,6 +2372,18 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
+    // Struct to pointer to struct
+    // Accept only if this is ufcs, to simulate calling a method of a base 'class'
+    if ((castFlags & CASTFLAG_UFCS) && fromType->kind == TypeInfoKind::Struct && toTypePointer->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool ok         = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok || context->result == ContextResult::Pending)
+            return true;
+    }
+
     // Lambda to *void
     if (fromType->kind == TypeInfoKind::Lambda)
     {
