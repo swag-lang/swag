@@ -500,13 +500,13 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
-func display(surface: *Surface)
+func display(event: *PaintEvent)
 {
-    painter := &surface.painter
+    painter := event.painter
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
     painter.paintQuality = g_PaintQuality
 
-    surface.beginRender()
+    painter.begin()
 
     painter.clear(Color.fromArgb(0xFFEEEEEE))
 
@@ -527,7 +527,8 @@ func display(surface: *Surface)
     painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
     painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
 
-    surface.endRender()
+    painter.end()
+    event.renderer.draw(painter)
 }
 
 func setup(wnd: *Wnd) throw
@@ -567,7 +568,7 @@ func onEvent(wnd: *Wnd, event: *Event)
         assume setup(wnd)
 
     case Paint:
-        display(wnd.surface)
+        display(cast(*PaintEvent) event)
 
     case KeyPressed:
         evt := cast(*KeyEvent) event

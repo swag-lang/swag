@@ -25,19 +25,3 @@ enum SurfaceFlags
     PopupWindow
     PaletteWindow
 }
-
-impl Surface
-{
-    mtd beginRender()
-    {
-        app.renderer.begin(rc)
-        painter.begin()
-    }
-
-    mtd endRender()
-    {
-        painter.end()
-        app.renderer.draw(&painter)
-        app.renderer.end()
-    }
-}

@@ -6,26 +6,17 @@ const H = 1024
 
 var g_Surface: *Surface
 
-func display0(surface: *Surface)
+func display0(event: *PaintEvent)
 {
-    surface.painter.paintParams  = .Antialiased
-    surface.painter.paintQuality = .Normal
+    event.painter.paintParams  = .Antialiased
+    event.painter.paintQuality = .Normal
 
-    surface.beginRender()
-    surface.painter.clear(Color.fromArgb(0xFFEEEEEE))
-    surface.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
-    surface.endRender()
-}
+    event.painter.begin()
+    event.painter.clear(Color.fromArgb(0xFFEEEEEE))
+    event.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
+    event.painter.end()
 
-func display1(surface: *Surface)
-{
-    surface.painter.paintParams  = .Antialiased
-    surface.painter.paintQuality = .Normal
-
-    surface.beginRender()
-    surface.painter.clear(Color.fromArgb(0xFFEEEEEE))
-    surface.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Blue)
-    surface.endRender()
+    event.renderer.draw(event.painter)
 }
 
 func onEvent0(wnd: *Wnd, event: *Event)
@@ -35,20 +26,7 @@ func onEvent0(wnd: *Wnd, event: *Event)
     case Close:
         wnd.surface.app.postQuitEvent()
     case Paint:
-        display0(wnd.surface)
-    default:
-        wnd.IWnd.onEvent(event)
-    }
-}
-
-func onEvent1(wnd: *Wnd, event: *Event)
-{
-    switch event.kind
-    {
-    case Close:
-        wnd.surface.app.postQuitEvent()
-    case Paint:
-        display1(wnd.surface)
+        display0(cast(*PaintEvent) event)
     default:
         wnd.IWnd.onEvent(event)
     }
@@ -58,7 +36,7 @@ func onEvent1(wnd: *Wnd, event: *Event)
 {
     var app: Gui.Application
     surface0 := try app.createSurface("Example0", 100, 100, W, H, SurfaceFlags.OverlappedWindow, &onEvent0)
-    surface1 := try app.createSurface("Example1", 100+W, 100, W, H, SurfaceFlags.OverlappedWindow | SurfaceFlags.ToolWindow, &onEvent1)
+    surface1 := try app.createSurface("Example1", 100+W, 100, W, H, SurfaceFlags.OverlappedWindow | SurfaceFlags.ToolWindow)
     surface0.show()
     surface1.show()
 

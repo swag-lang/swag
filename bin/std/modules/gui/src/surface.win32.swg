@@ -28,9 +28,13 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             return 0
 
         case WM_PAINT:
+            surface.app.renderer.begin(surface.rc)
             evt := PaintEvent{kind: EventKind.Paint}
             evt.target = &surface.wnd
+            evt.painter = &surface.painter
+            evt.renderer = &surface.app.renderer
             surface.app.sendEvent(&evt)
+            surface.app.renderer.end()
 
         case WM_SIZE:
             surface.rc.width = LOWORD(lParam)

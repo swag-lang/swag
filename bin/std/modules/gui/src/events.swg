@@ -39,6 +39,8 @@ struct CreateEvent
 struct PaintEvent
 {
     using base: Event
+    painter:    *Pixel.Painter
+    renderer:   *Pixel.RenderOgl
 }
 
 struct ResizeEvent
