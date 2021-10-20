@@ -277,7 +277,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::Lambda);
                 for (int i = 1; i < typeFunc->parameters.size(); i++)
                 {
-                    content += ",";
+                    content += ", ";
                     content += Utf8::format("p%d: %s", i, typeFunc->parameters[i]->typeInfo->name.c_str());
                 }
                 content += ")";

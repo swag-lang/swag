@@ -2161,11 +2161,12 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
         TypeInfoStruct* typeStruct;
         uint32_t        offset;
         TypeInfoParam*  field;
+        Utf8            fieldAccessName;
     };
 
     TypeInfoParam* foundField = nullptr;
 
-    VectorNative<OneField> stack;
+    vector<OneField> stack;
     stack.push_back({fromTypeStruct, 0, nullptr});
     while (!stack.empty())
     {
@@ -2187,14 +2188,8 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
 
                 ref.itf         = foundItf;
                 ref.fieldOffset = it.offset;
-                if (it.field)
-                {
-                    if (!ref.fieldRef.empty())
-                        ref.fieldRef += ".";
-                    ref.fieldRef += it.field->namedParam;
-                }
-
-                foundField = it.field;
+                ref.fieldRef    = it.fieldAccessName;
+                foundField      = it.field;
                 continue;
             }
         }
@@ -2223,7 +2218,12 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             if (context->result != ContextResult::Done)
                 return true;
 
-            stack.push_back({typeStruct, it.offset + field->offset, field});
+            auto accessName = it.fieldAccessName;
+            if (!accessName.empty())
+                accessName += ".";
+            accessName += field->namedParam;
+
+            stack.push_back({typeStruct, it.offset + field->offset, field, accessName});
         }
     }
 

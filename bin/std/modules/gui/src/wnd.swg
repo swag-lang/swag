@@ -16,6 +16,8 @@ struct Wnd
     itf:        IWnd
     surface:    *Surface
     rect:       Math.Rectangle
+    parent:     *Wnd
+    childs:     Array'(*Wnd)
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)
@@ -71,6 +73,8 @@ impl IWnd for Wnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        visit c: childs
+            c.itf.onPaintEvent(evt)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
