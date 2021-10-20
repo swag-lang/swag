@@ -1,4 +1,4 @@
-struct Widget
+public struct Widget
 {
     using wnd: Wnd
 }

@@ -29,6 +29,15 @@ impl Painter
     }
 
     // Draw a filled rectangle
+    func fillRect(using self, rect: Math.Rectangle, color: Color)
+    {
+        sharedLinePath.setRect(rect.x, rect.y, rect.width, rect.height)
+        sharedSolidBrush.color = color
+        sharedSolidBrush.type = .SolidColor
+        fillPath(&sharedLinePath, sharedSolidBrush)
+    }
+
+    // Draw a filled rectangle
     func fillRect(using self, left, top, width, height: f32, brush: Brush)
     {
         sharedLinePath.setRect(left, top, width, height)

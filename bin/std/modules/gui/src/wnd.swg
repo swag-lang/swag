@@ -15,7 +15,7 @@ struct Wnd
 {
     itf:        IWnd
     surface:    *Surface
-    rect:       Math.Rectangle
+    position:   Math.Rectangle
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
@@ -67,8 +67,8 @@ impl IWnd for Wnd
 
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        rect.width = evt.rect.width
-        rect.height = evt.rect.height
+        position.width = evt.rect.width
+        position.height = evt.rect.height
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
