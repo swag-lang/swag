@@ -118,6 +118,7 @@ struct Painter
 
     clippingRect:       Rectangle
     lastTexture0Handle: TextureHandle
+    hasTextureFont:     bool
 
     drawingBegin:       bool
     clippingRectOn:     bool
@@ -202,6 +203,9 @@ impl Painter
 
     protected mtd resetTextureFont()
     {
+        if !hasTextureFont
+            return
+        hasTextureFont = false
         discard newCommand(CommandId.ResetTextureFont, true)
     }
 
@@ -211,6 +215,7 @@ impl Painter
         params := &cmd.textureFont
         params.font = font
         params.atlasIndex = atlasIndex
+        hasTextureFont = true
     }
 
     protected mtd pushTriangleCmd()->*Command
