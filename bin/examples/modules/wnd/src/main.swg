@@ -1,5 +1,5 @@
 #global if #os == Swag.TargetOs.Windows
-using Core, Win32, Ogl, Gdi32, Pixel, Gui, Math
+using Core, Pixel, Gui
 
 const W = 1024
 const H = 1024
@@ -21,7 +21,7 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 
 func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
 {
-    wnd.surface.app.postQuitEvent()
+    wnd.postQuitEvent()
 }
 
 #main

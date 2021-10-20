@@ -88,6 +88,11 @@ impl IWnd for Wnd
 
 impl Wnd
 {
+    mtd postQuitEvent()
+    {
+        surface.app.postQuitEvent()
+    }
+
     mtd sendEvent(event: *Event)
     {
         if hookOnEvent

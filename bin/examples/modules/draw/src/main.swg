@@ -1,5 +1,5 @@
 #global if #os == Swag.TargetOs.Windows
-using Core, Win32, Ogl, Gdi32, Pixel, Gui, Math
+using Core, Pixel, Gui, Math
 
 const W = 1024
 const H = 1024
@@ -533,22 +533,24 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 
 func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
 {
-    if evt.kind != EventKind.KeyPressed
+    if evt.kind != .KeyPressed
         return
+
+    using Input.Key
     switch evt.key
     {
-    case Input.Key.F1:
+    case F1:
         g_ModeAA = g_ModeAA ? false : true
         wnd.surface.invalidate()
-    case Input.Key.F2:
+    case F2:
         g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
         wnd.surface.invalidate()
-    case Input.Key.F3:
+    case F3:
         g_Pattern = g_Pattern ? false : true
         wnd.surface.invalidate()
-    case Input.Key.F4:
+    case F4:
         if evt.modifiers & .Alt
-            wnd.surface.app.postQuitEvent()
+            wnd.postQuitEvent()
         g_Page = (g_Page + 1) % MaxPages
         wnd.surface.invalidate()
     }
