@@ -136,7 +136,7 @@ impl Painter
 
         visit ref: arr
         {
-            setTexture1(font.atlases[ref.atlasIndex].texture)
+            setTextureFont(font, ref.atlasIndex)
 
             x1  := x + ref.shiftX
             y1  := y - ref.shiftY

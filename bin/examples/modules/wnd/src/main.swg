@@ -4,8 +4,6 @@ using Core, Pixel, Gui
 const W = 1024
 const H = 1024
 
-var g_Surface: *Surface
-
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 {
     event.painter.paintParams  = .Antialiased

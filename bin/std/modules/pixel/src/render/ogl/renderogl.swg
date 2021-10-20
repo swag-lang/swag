@@ -445,10 +445,6 @@ impl RenderOgl
                 glActiveTexture(GL_TEXTURE0)
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
-            case ResetTexture1:
-                glActiveTexture(GL_TEXTURE1)
-                glBindTexture(GL_TEXTURE_2D, whiteTexture)
-
             case BindTexture0:
                 params := &cmd.texture0
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
@@ -489,14 +485,19 @@ impl RenderOgl
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
                 }
 
-            case BindTexture1:
-                params := &cmd.texture1
+            case BindTextureFont:
+                params := &cmd.textureFont
                 glActiveTexture(GL_TEXTURE1)
-                glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
+                texture := params.font.atlases[params.atlasIndex].texture.handle
+                glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+
+            case ResetTextureFont:
+                glActiveTexture(GL_TEXTURE1)
+                glBindTexture(GL_TEXTURE_2D, whiteTexture)
             }
         }
 

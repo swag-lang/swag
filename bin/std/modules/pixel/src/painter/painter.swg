@@ -17,9 +17,9 @@ enum CommandId
     Transform
     DrawTriangles
     BindTexture0
-    BindTexture1
     ResetTexture0
-    ResetTexture1
+    BindTextureFont
+    ResetTextureFont
     SetClippingRect
     ResetClippingRect
     StartClippingRegion
@@ -74,7 +74,6 @@ struct Command
         clippingRect:   struct{rect: Rectangle; }
         clippingRegion: struct{mode: ClippingMode = ?; }
         font:           struct{fontRef: *Font; }
-        texture1:       struct{texture: Texture; }
         blendingMode:   struct{mode: BlendingMode = ?; }
 
         texture0: struct
@@ -86,6 +85,11 @@ struct Command
                     uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
                     texture:            Texture
+                }
+        textureFont: struct
+                {
+                    font:       *Font
+                    atlasIndex: s32
                 }
     }
 }
@@ -114,7 +118,6 @@ struct Painter
 
     clippingRect:       Rectangle
     lastTexture0Handle: TextureHandle
-    lastTexture1Handle: TextureHandle
 
     drawingBegin:       bool
     clippingRectOn:     bool
@@ -150,15 +153,6 @@ impl Painter
             lastTexture0Handle = cast(TextureHandle) 0
             lastTexture0Type = .SolidColor
             discard newCommand(CommandId.ResetTexture0, true)
-        }
-    }
-
-    protected mtd resetTexture1()
-    {
-        if lastTexture1Handle
-        {
-            lastTexture1Handle = cast(TextureHandle) 0
-            discard newCommand(CommandId.ResetTexture1, true)
         }
     }
 
@@ -206,14 +200,17 @@ impl Painter
         lastTexture0Type   = brush.type
     }
 
-    protected mtd setTexture1(texture: Texture)
+    protected mtd resetTextureFont()
     {
-        if lastTexture1Handle == texture.handle
-            return
-        cmd := newCommand(CommandId.BindTexture1, true)
-        params := &cmd.texture1
-        params.texture = texture
-        lastTexture1Handle = texture.handle
+        discard newCommand(CommandId.ResetTextureFont, true)
+    }
+
+    protected mtd setTextureFont(font: *Font, atlasIndex: s32)
+    {
+        cmd := newCommand(CommandId.BindTextureFont, true)
+        params := &cmd.textureFont
+        params.font = font
+        params.atlasIndex = atlasIndex
     }
 
     protected mtd pushTriangleCmd()->*Command
@@ -336,7 +333,7 @@ impl Painter
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
         resetTexture0()
-        resetTexture1()
+        resetTextureFont()
     }
 
     // Call this before drawing

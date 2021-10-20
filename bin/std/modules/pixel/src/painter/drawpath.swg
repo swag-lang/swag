@@ -655,7 +655,7 @@ impl Painter
         bvMin -= pen.size / 2
         bvMax += pen.size / 2
         setTexture0(bvMin, bvMax, pen.brush)
-        resetTexture1()
+        resetTextureFont()
 
         startOverlapMode(pen)
         drawPath(&cxt)
@@ -679,7 +679,7 @@ impl Painter
         bvMin -= pen.size / 2
         bvMax += pen.size / 2
         setTexture0(bvMin, bvMax, pen.brush)
-        resetTexture1()
+        resetTextureFont()
 
         startOverlapMode(pen)
 
@@ -817,7 +817,7 @@ impl Painter
 
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)
-        resetTexture1()
+        resetTextureFont()
 
         // Convex shape: just add a triangle from the center of the shape to each pair of
         // vertices
@@ -912,7 +912,7 @@ impl Painter
     private mtd triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
-        resetTexture1()
+        resetTextureFont()
 
         t.triangulate()
         res := t.getTriangles()

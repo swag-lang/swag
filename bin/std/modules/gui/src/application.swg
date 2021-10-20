@@ -121,7 +121,7 @@ impl Application
             sendKeyboardEvents()
             sendPostedEvents()
 
-            mainSurface.invalidate()
+            //mainSurface.invalidate()
         }
 
         return quitCode

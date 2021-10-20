@@ -536,7 +536,6 @@ func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
     if evt.kind != .KeyPressed
         return
 
-    using Input.Key
     switch evt.key
     {
     case F1:
