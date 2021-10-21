@@ -10,10 +10,7 @@ impl IWnd for Static
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        evt.painter.begin()
-        evt.painter.fillRect(self.base.wnd.position, Argb.Blue)
-        evt.painter.end()
-        evt.renderer.draw(evt.painter)
+        evt.painter.fillRoundRect(self.position, 10, 10, Argb.Blue)
     }
 }
 

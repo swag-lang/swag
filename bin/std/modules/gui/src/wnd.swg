@@ -73,8 +73,13 @@ impl IWnd for Wnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        evt.painter.begin()
+
         visit c: childs
             c.itf.onPaintEvent(evt)
+
+        evt.painter.end()
+        evt.renderer.draw(evt.painter)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
