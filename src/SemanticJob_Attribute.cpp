@@ -437,8 +437,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Remember attributes that's here
-            isHereTmp.insert(typeInfo);
-            isHereGlobal.insert(typeInfo);
+            isHereTmp.push_back_once(typeInfo);
+            isHereGlobal.push_back_once(typeInfo);
         }
 
         // Merge the result

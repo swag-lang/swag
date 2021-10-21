@@ -22,10 +22,10 @@ impl Static
     func new(parent: *Wnd)->*Static
     {
         res := Memory.new'Static()
-        res.base.wnd.itf = cast(IWnd) dref res
-        res.base.wnd.surface = parent.surface
-        res.base.wnd.parent = parent
-        parent.childs.add(&res.base.wnd)
+        res.itf = cast(IWnd) dref res
+        res.surface = parent.surface
+        res.parent = parent
+        parent.childs.add(&res.wnd)
 
         return res
     }

@@ -190,12 +190,6 @@ struct VectorNative
         return false;
     }
 
-    void insert(const T& val)
-    {
-        if (!contains(val))
-            push_back(val);
-    }
-
     size_t capacity() const
     {
         return allocated;
