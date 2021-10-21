@@ -16,14 +16,9 @@ impl IWnd for Static
 
 impl Static
 {
-    func new(parent: *Wnd)->*Static
+    func create(parent: *Wnd)->*Static
     {
-        res := Memory.new'Static()
-        res.itf = cast(IWnd) dref res
-        res.surface = parent.surface
-        res.parent = parent
-        parent.childs.add(&res.wnd)
-
+        res := Wnd.create'Static(parent)
         return res
     }
 }

@@ -27,15 +27,14 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     var app: Gui.Application
 
     surface0 := try app.createSurface("Example0", 100, 100, W, H)
-    //surface0.wnd.hookOnPaintEvent = &onPaintEvent
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
     surface1 := try app.createSurface("Example1", 100+W, 100, W, H, SurfaceFlags.OverlappedWindow | SurfaceFlags.ToolWindow)
     surface1.wnd.hookOnPaintEvent = &onPaintEvent
     surface1.wnd.hookOnCloseEvent = &onCloseEvent
 
-    widget := Static.new(&surface0.wnd)
-    widget.base.wnd.position = Math.Rectangle{0, 0, 100, 100}
+    widget := Static.create(&surface0.wnd)
+    widget.position = Math.Rectangle{0, 0, 100, 100}
 
     surface0.show()
     surface1.show()

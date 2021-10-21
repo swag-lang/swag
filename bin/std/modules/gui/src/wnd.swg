@@ -97,6 +97,23 @@ impl IWnd for Wnd
 
 impl Wnd
 {
+    func(T) create(parent: *Wnd)->*T
+    {
+        Debug.assert(parent != null)
+
+        res := Memory.new'T()
+        res.itf = cast(IWnd) dref res
+        res.surface = parent.surface
+        res.parent = parent
+        parent.childs.add(&res.wnd)
+
+        evt := CreateEvent{kind: EventKind.Create}
+        evt.target = cast(*Wnd) res
+        parent.surface.app.sendEvent(&evt)
+
+        return res
+    }
+
     mtd postQuitEvent()
     {
         surface.app.postQuitEvent()
