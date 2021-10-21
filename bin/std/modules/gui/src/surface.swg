@@ -4,7 +4,7 @@ struct Surface
 {
     using native:   NativeSurface
     app:            *Application
-    wnd:            Wnd
+    wnd:            SurfaceWnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
 }

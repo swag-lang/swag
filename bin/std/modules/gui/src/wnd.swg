@@ -73,13 +73,9 @@ impl IWnd for Wnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        evt.painter.begin()
-
-        visit c: childs
+        evt.painter.fillRect(self.position, Color.fromArgb(0xFFEEEEEE))
+        visit c: self.childs
             c.itf.onPaintEvent(evt)
-
-        evt.painter.end()
-        evt.renderer.draw(evt.painter)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
