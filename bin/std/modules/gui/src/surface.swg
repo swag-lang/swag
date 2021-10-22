@@ -1,4 +1,5 @@
 #global public
+using Core
 
 struct Surface
 {
@@ -7,6 +8,7 @@ struct Surface
     wnd:            SurfaceWnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
+    pos:            Math.Rectangle
 }
 
 #[Swag.EnumFlags]

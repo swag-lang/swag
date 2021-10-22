@@ -71,7 +71,7 @@ impl IWnd for Wnd
             else
                 itf.onKeyEvent(cast(*KeyEvent) evt)
 
-        case MousePressed, MouseReleased:
+        case MousePressed, MouseReleased, MouseMove:
             if hookOnMouseEvent
                 hookOnMouseEvent(self, cast(*MouseEvent) evt)
             else
@@ -104,6 +104,7 @@ impl IWnd for Wnd
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        //Console.print(evt.surfacePos)
     }
 }
 

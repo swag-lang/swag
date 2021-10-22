@@ -166,6 +166,7 @@ impl NativeSurface
         result.rc = try app.renderer.native.createContext(result.hWnd)
         result.rc.width = width
         result.rc.height = height
+        result.pos = @{x, y, width, height}
 
         app.renderer.native.setCurrentContext(result.rc)
         app.renderer.init()

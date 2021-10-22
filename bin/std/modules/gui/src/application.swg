@@ -33,6 +33,18 @@ impl Application
         return surface
     }
 
+    // Returns the surface under the given point
+    mtd getSurfaceAt(x, y: f32)->*Surface
+    {
+        visit s: surfaces
+        {
+            if s.pos.contains(x, y)
+                return s
+        }
+
+        return null
+    }
+
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
@@ -65,6 +77,17 @@ impl Application
         mouse.update()
 
         target := &mainSurface.wnd
+
+        // Move
+        move := mouse.getMove()
+        if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
+        {
+            evt := MouseEvent{kind: EventKind.MouseMove}
+            evt.target = target
+            evt.surfacePos = mouse.getPosition()
+            mainSurface.screenToSurface(&evt.surfacePos)
+            sendEvent(&evt)
+        }
 
         // Detect changes
         loop i: mouse.previousState.pressed

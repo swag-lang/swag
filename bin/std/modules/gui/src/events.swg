@@ -11,6 +11,7 @@ enum EventKind
     KeyReleased
     MousePressed
     MouseReleased
+    MouseMove
     Close
     Quit
 }
@@ -74,8 +75,9 @@ struct KeyEvent
 
 struct MouseEvent
 {
-    using base: Event
-    button:     Input.MouseButton = ?
+    using base:     Event
+    button:         Input.MouseButton = ?
+    surfacePos:     Math.Point
 }
 
 struct QuitEvent
