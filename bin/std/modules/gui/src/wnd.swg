@@ -9,6 +9,7 @@ interface IWnd
     onResizeEvent:  func(self, *ResizeEvent)
     onPaintEvent:   func(self, *PaintEvent)
     onKeyEvent:     func(self, *KeyEvent)
+    onMouseEvent:   func(self, *MouseEvent)
 }
 
 struct PaintContext
@@ -31,6 +32,7 @@ struct Wnd
     hookOnResizeEvent:  func(*Wnd, *ResizeEvent)
     hookOnPaintEvent:   func(*Wnd, *PaintEvent)
     hookOnKeyEvent:     func(*Wnd, *KeyEvent)
+    hookOnMouseEvent:   func(*Wnd, *MouseEvent)
 }
 
 impl IWnd for Wnd
@@ -68,7 +70,21 @@ impl IWnd for Wnd
                 hookOnKeyEvent(self, cast(*KeyEvent) evt)
             else
                 itf.onKeyEvent(cast(*KeyEvent) evt)
+
+        case MousePressed, MouseReleased:
+            if hookOnMouseEvent
+                hookOnMouseEvent(self, cast(*MouseEvent) evt)
+            else
+                itf.onMouseEvent(cast(*MouseEvent) evt)
         }
+    }
+
+    mtd onCreateEvent(evt: *CreateEvent)
+    {
+    }
+
+    mtd onCloseEvent(evt: *CloseEvent)
+    {
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)
@@ -86,11 +102,7 @@ impl IWnd for Wnd
     {
     }
 
-    mtd onCreateEvent(evt: *CreateEvent)
-    {
-    }
-
-    mtd onCloseEvent(evt: *CloseEvent)
+    mtd onMouseEvent(evt: *MouseEvent)
     {
     }
 }

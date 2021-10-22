@@ -5,6 +5,7 @@ struct Application
 {
     renderer:       Pixel.RenderOgl
     keyb:           Input.Keyboard
+    mouse:          Input.Mouse
     mainSurface:    *Surface
     postedEvents:   Array'(*Event)
     surfaces:       Array'(*Surface)
@@ -57,6 +58,34 @@ impl Application
 
         Debug.assert(event.target != null)
         event.target.sendEvent(event)
+    }
+
+    protected mtd sendMouseEvents()
+    {
+        mouse.update()
+
+        target := &mainSurface.wnd
+
+        // Detect changes
+        loop i: mouse.previousState.pressed
+        {
+            lastP := mouse.previousState.pressed[i]
+            curP  := mouse.currentState.pressed[i]
+            if !lastP and curP
+            {
+                evt := MouseEvent{kind: EventKind.MousePressed}
+                evt.button = cast(Input.MouseButton) i
+                evt.target = target
+                sendEvent(&evt)
+            }
+            else if lastP and !curP
+            {
+                evt := MouseEvent{kind: EventKind.MouseReleased}
+                evt.button = cast(Input.MouseButton) i
+                evt.target = target
+                sendEvent(&evt)
+            }
+        }
     }
 
     protected mtd sendKeyboardEvents()
@@ -119,6 +148,7 @@ impl Application
 
             sendSystemEvents()
             sendKeyboardEvents()
+            sendMouseEvents()
             sendPostedEvents()
         }
 

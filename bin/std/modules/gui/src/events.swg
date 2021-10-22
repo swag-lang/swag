@@ -9,6 +9,8 @@ enum EventKind
     Paint
     KeyPressed
     KeyReleased
+    MousePressed
+    MouseReleased
     Close
     Quit
 }
@@ -68,6 +70,12 @@ struct KeyEvent
     using base: Event
     modifiers:  KeyModifiers = .None
     key:        Input.Key = ?
+}
+
+struct MouseEvent
+{
+    using base: Event
+    button:     Input.MouseButton = ?
 }
 
 struct QuitEvent
