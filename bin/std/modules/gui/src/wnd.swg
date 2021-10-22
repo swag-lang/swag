@@ -3,12 +3,18 @@ using Core, Pixel
 
 interface IWnd
 {
+    onEvent:        func(self, *Event)
     onCreateEvent:  func(self, *CreateEvent)
     onCloseEvent:   func(self, *CloseEvent)
-    onEvent:        func(self, *Event)
     onResizeEvent:  func(self, *ResizeEvent)
     onPaintEvent:   func(self, *PaintEvent)
     onKeyEvent:     func(self, *KeyEvent)
+}
+
+struct PaintContext
+{
+    painter:    *Painter
+    renderer:   *RenderOgl
 }
 
 struct Wnd
@@ -74,8 +80,6 @@ impl IWnd for Wnd
     mtd onPaintEvent(evt: *PaintEvent)
     {
         evt.painter.fillRect(self.position, Color.fromArgb(0xFFEEEEEE))
-        visit c: self.childs
-            c.itf.onPaintEvent(evt)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
@@ -93,6 +97,18 @@ impl IWnd for Wnd
 
 impl Wnd
 {
+    mtd paint(bc: *PaintContext)
+    {
+        evt := PaintEvent{kind: EventKind.Paint}
+        evt.target = self
+        evt.painter = bc.painter
+        evt.renderer = bc.renderer
+        surface.app.sendEvent(&evt)
+
+        visit c: self.childs
+            c.paint(bc)
+    }
+
     func(T) create(parent: *Wnd)->*T
     {
         Debug.assert(parent != null)

@@ -506,8 +506,6 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
     painter.paintQuality = g_PaintQuality
 
-    painter.begin()
-
     painter.clear(Color.fromArgb(0xFFEEEEEE))
 
     switch g_Page
@@ -526,9 +524,6 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
     painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
     painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
     painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
-
-    painter.end()
-    event.renderer.draw(painter)
 }
 
 func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)

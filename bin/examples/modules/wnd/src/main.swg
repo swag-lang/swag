@@ -8,13 +8,8 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 {
     event.painter.paintParams  = .Antialiased
     event.painter.paintQuality = .Normal
-
-    event.painter.begin()
     event.painter.clear(Color.fromArgb(0xFFEEEEEE))
     event.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
-    event.painter.end()
-
-    event.renderer.draw(event.painter)
 }
 
 func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
