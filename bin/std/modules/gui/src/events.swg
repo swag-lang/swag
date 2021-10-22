@@ -12,6 +12,8 @@ enum EventKind
     MousePressed
     MouseReleased
     MouseMove
+    MouseEnter
+    MouseLeave
     Close
     Quit
 }

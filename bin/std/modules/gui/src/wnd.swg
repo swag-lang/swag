@@ -104,7 +104,6 @@ impl IWnd for Wnd
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        Console.print(dref evt)
     }
 }
 
@@ -150,5 +149,20 @@ impl Wnd
             hookOnEvent(self, event)
         else
             itf.onEvent(event)
+    }
+
+    mtd getWndAt(x, y: f32)->*Wnd
+    {
+        if !position.contains(x, y)
+            return null
+
+        visit c: childs
+        {
+            res := c.getWndAt(x, y)
+            if res
+                return res
+        }
+
+        return self
     }
 }

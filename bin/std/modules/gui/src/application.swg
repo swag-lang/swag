@@ -11,6 +11,7 @@ struct Application
     surfaces:       Array'(*Surface)
     mustQuit:       bool
     quitCode:       s32
+    mouseEnterWnd:  *Wnd
 }
 
 impl Application
@@ -45,6 +46,18 @@ impl Application
         return null
     }
 
+    // Returns the window under the given point
+    mtd getWndAt(x, y: f32)->*Wnd
+    {
+        mousePos := mouse.getPosition()
+        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+        if !targetSurface
+            return null
+        targetSurface.screenToSurface(&mousePos)
+        targetWnd := targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
+        return targetWnd
+    }
+
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
@@ -76,20 +89,36 @@ impl Application
     {
         mouse.update()
 
-        mousePos := mouse.getPosition()
-        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
-        if !targetSurface
-            return
+        mousePos  := mouse.getPosition()
+        targetWnd := getWndAt(mousePos.x, mousePos.y)
 
-        target := &targetSurface.wnd
-        targetSurface.screenToSurface(&mousePos)
+        // Mouse leave
+        if !targetWnd or targetWnd != mouseEnterWnd
+        {
+            if mouseEnterWnd
+            {
+                evt := MouseEvent{kind: EventKind.MouseLeave}
+                evt.target = mouseEnterWnd
+                evt.surfacePos = mousePos
+                sendEvent(&evt)
+            }
+
+            mouseEnterWnd = targetWnd
+            if !targetWnd
+                return
+
+            evt := MouseEvent{kind: EventKind.MouseEnter}
+            evt.target = mouseEnterWnd
+            evt.surfacePos = mousePos
+            sendEvent(&evt)
+        }
 
         // Move
         move := mouse.getMove()
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
             evt := MouseEvent{kind: EventKind.MouseMove}
-            evt.target = &targetSurface.wnd
+            evt.target = targetWnd
             evt.surfacePos = mousePos
             sendEvent(&evt)
         }
@@ -103,7 +132,7 @@ impl Application
             {
                 evt := MouseEvent{kind: EventKind.MousePressed}
                 evt.button = cast(Input.MouseButton) i
-                evt.target = target
+                evt.target = targetWnd
                 evt.surfacePos = mousePos
                 sendEvent(&evt)
             }
@@ -111,7 +140,7 @@ impl Application
             {
                 evt := MouseEvent{kind: EventKind.MouseReleased}
                 evt.button = cast(Input.MouseButton) i
-                evt.target = target
+                evt.target = targetWnd
                 evt.surfacePos = mousePos
                 sendEvent(&evt)
             }
