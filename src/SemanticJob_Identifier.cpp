@@ -2804,7 +2804,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     if (typeFunc->kind == TypeInfoKind::Lambda)
         return false;
 
-    return false;
+    return nodeIsExplicit;
 }
 
 bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
