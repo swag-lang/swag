@@ -76,16 +76,21 @@ impl Application
     {
         mouse.update()
 
-        target := &mainSurface.wnd
+        mousePos := mouse.getPosition()
+        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+        if !targetSurface
+            return
+
+        target := &targetSurface.wnd
+        targetSurface.screenToSurface(&mousePos)
 
         // Move
         move := mouse.getMove()
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
             evt := MouseEvent{kind: EventKind.MouseMove}
-            evt.target = target
-            evt.surfacePos = mouse.getPosition()
-            mainSurface.screenToSurface(&evt.surfacePos)
+            evt.target = &targetSurface.wnd
+            evt.surfacePos = mousePos
             sendEvent(&evt)
         }
 
@@ -99,6 +104,7 @@ impl Application
                 evt := MouseEvent{kind: EventKind.MousePressed}
                 evt.button = cast(Input.MouseButton) i
                 evt.target = target
+                evt.surfacePos = mousePos
                 sendEvent(&evt)
             }
             else if lastP and !curP
@@ -106,6 +112,7 @@ impl Application
                 evt := MouseEvent{kind: EventKind.MouseReleased}
                 evt.button = cast(Input.MouseButton) i
                 evt.target = target
+                evt.surfacePos = mousePos
                 sendEvent(&evt)
             }
         }

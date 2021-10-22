@@ -156,7 +156,7 @@ impl Rectangle
     // Determines if the specfied point is contained within the rectangular region
     func contains(const self, x, y: f32)->bool
     {
-        return (self.x >= x and x < self.x + self.width) and (self.y >= y and y < self.y + self.height)
+        return (x >= self.x and x < self.x + self.width) and (y >= self.y and y < self.y + self.height)
     }
 
     // Determines if the specfied point is contained within the rectangular region

@@ -156,7 +156,10 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isType(type)
     {
         ptrType := dref cast(*typeinfo) valueData
-        buf.addBytes(ptrType.name)
+        if ptrType
+            buf.addBytes(ptrType.name)
+        else
+            buf.addBytes("null")
         return
     }
 

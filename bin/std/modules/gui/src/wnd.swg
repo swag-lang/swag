@@ -104,7 +104,7 @@ impl IWnd for Wnd
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        //Console.print(evt.surfacePos)
+        Console.print(dref evt)
     }
 }
 
