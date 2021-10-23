@@ -104,8 +104,7 @@ impl Wnd
         parent.childs.add(&res.wnd)
 
         evt := CreateEvent{kind: EventKind.Create}
-        evt.target = cast(*Wnd) res
-        parent.surface.app.sendEvent(&evt)
+        res.sendEvent(&evt)
 
         return res
     }
@@ -113,13 +112,14 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         evt := PaintEvent{kind: EventKind.Paint}
-        evt.target = self
         evt.painter = bc.painter
         evt.renderer = bc.renderer
-        surface.app.sendEvent(&evt)
+        sendEvent(&evt)
 
         visit c: self.childs
+        {
             c.paint(bc)
+        }
     }
 
     mtd move(x, y: s32)
