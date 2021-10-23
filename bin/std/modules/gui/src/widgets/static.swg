@@ -9,12 +9,12 @@ struct Static
 
 impl IWnd for Static
 {
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd onPaintEvent(using evt: *PaintEvent)
     {
         if vv % 2
-            evt.painter.fillRoundRect(self.position, 10, 10, Argb.Red)
+            painter.fillRoundRect(self.position, 10, 10, Argb.Red)
         else
-            evt.painter.fillRoundRect(self.position, 10, 10, Argb.Blue)
+            painter.fillRoundRect(self.position, 10, 10, Argb.Blue)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -22,7 +22,7 @@ impl IWnd for Static
         if evt.button == Input.MouseButton.Left and evt.kind == EventKind.MousePressed
         {
             vv += 1
-            base.wnd.surface.invalidate()
+            surface.invalidate()
         }
     }
 }

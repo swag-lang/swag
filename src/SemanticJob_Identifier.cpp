@@ -3726,7 +3726,27 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 
             // Can only take a using var if in the same function
             if (startNode->ownerFct == context->node->ownerFct || startNode == context->node->ownerFct)
-                scopesVars.append(startNode->extension->alternativeScopesVars);
+            {
+                // Need to go deep for using vars, because we can have a using on a struct, which has also
+                // a using itself, and so on...
+                VectorNative<AlternativeScope> toAdd;
+                VectorNative<Scope*>           done;
+                toAdd.append(startNode->extension->alternativeScopesVars);
+                while (!toAdd.empty())
+                {
+                    auto it0 = toAdd.back();
+                    toAdd.pop_back();
+
+                    if (!done.contains(it0.scope))
+                    {
+                        done.push_back(it0.scope);
+                        scopes.push_back_once(it0.scope);
+                        scopesVars.push_back(it0);
+                        if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
+                            toAdd.append(it0.scope->owner->extension->alternativeScopesVars);
+                    }
+                }
+            }
         }
     }
 
