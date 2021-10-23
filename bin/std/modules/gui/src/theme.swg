@@ -1,11 +1,12 @@
 #global public
 using Core, Pixel
 
-protected const DefaultImage = #load("widgets.png")
+protected const DefaultImageName  = "widgets.png"
+protected const DefaultImageBytes = #load(DefaultImageName)
 
 struct Theme
 {
-    widgetsImg:         Image
+    widgetsImg:         Texture
     colorWndBackground: Color = 0xFFEEEEEE
 }
 
@@ -25,8 +26,10 @@ impl WndColor
 
 impl Theme
 {
-    mtd setup()
+    // First setup theme
+    mtd setup(renderer: *RenderOgl)
     {
-        widgetsImg = assume Image.decode("widgets.png", DefaultImage)
+        img := assume Image.decode(DefaultImageName, DefaultImageBytes)
+        widgetsImg = renderer.addImage(img)
     }
 }

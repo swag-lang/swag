@@ -13,6 +13,11 @@ impl Painter
         fillRect(left, top, width, height, sharedSolidBrush)
     }
 
+    func drawTexture(using self, rect: Math.Rectangle, texture: Texture)
+    {
+        drawTexture(rect.x, rect.y, rect.width, rect.height, texture)
+    }
+
     // Draw a texture image
     func drawTexture(using self, left, top: f32, texture: Texture)
     {

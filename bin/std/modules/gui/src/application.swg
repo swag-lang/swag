@@ -25,14 +25,20 @@ impl Application
     mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.OverlappedWindow)->*Surface throw
     {
         surface := try Surface.create(self, title, x, y, width, height, flags)
+
         if !mainSurface
+        {
+            theme.setup(&renderer)
             mainSurface = surface
+        }
+
         surfaces.add(surface)
 
-        evt := CreateEvent{kind: EventKind.Create}
         surface.wnd.surface = surface
         surface.wnd.itf = cast(IWnd) surface.wnd
         surface.wnd.colorBackground.themeColor = &theme.colorWndBackground
+
+        evt := CreateEvent{kind: EventKind.Create}
         surface.wnd.sendEvent(&evt)
 
         return surface
