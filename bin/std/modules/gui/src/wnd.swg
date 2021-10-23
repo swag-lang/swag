@@ -103,7 +103,7 @@ impl Wnd
 
         res.colorBackground.themeColor = &res.getTheme().colorWndBackground
 
-        evt := CreateEvent{kind: EventKind.Create}
+        evt := CreateEvent{}
         res.sendEvent(&evt)
 
         return res
@@ -122,7 +122,7 @@ impl Wnd
         bc.painter.drawTexture(position, surface.app.theme.widgetsImg)
 
         // User paint
-        evt := PaintEvent{kind: EventKind.Paint}
+        evt := PaintEvent{}
         evt.painter = bc.painter
         evt.renderer = bc.renderer
         sendEvent(&evt)
@@ -136,7 +136,7 @@ impl Wnd
 
     mtd move(x, y: s32)
     {
-        evt := MoveEvent{kind: EventKind.Move}
+        evt := MoveEvent{}
         evt.oldPos = @{position.x, position.y}
         position.x = x
         position.y = y
@@ -145,7 +145,7 @@ impl Wnd
 
     mtd resize(width, height: s32)
     {
-        evt := ResizeEvent{kind: EventKind.Resize}
+        evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}
         position.width = width
         position.height = height

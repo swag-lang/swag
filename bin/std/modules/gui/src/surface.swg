@@ -56,8 +56,7 @@ impl Surface
 
     mtd sendCloseEvent()
     {
-        evt := Event{kind: EventKind.Close}
-        evt.target = &wnd
-        app.sendEvent(&evt)
+        evt := CloseEvent{}
+        wnd.sendEvent(&evt)
     }
 }

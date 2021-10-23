@@ -38,7 +38,7 @@ impl Application
         surface.wnd.itf = cast(IWnd) surface.wnd
         surface.wnd.colorBackground.themeColor = &theme.colorWndBackground
 
-        evt := CreateEvent{kind: EventKind.Create}
+        evt := CreateEvent{}
         surface.wnd.sendEvent(&evt)
 
         return surface

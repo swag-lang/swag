@@ -39,30 +39,31 @@ impl Event
 
 struct CreateEvent
 {
-    using base: Event
+    using base: Event{kind: EventKind.Create}
 }
 
 struct CloseEvent
 {
-    using base: Event
+    using base: Event{kind: EventKind.Close}
 }
 
 struct PaintEvent
 {
-    using base: Event
-    painter:    *Pixel.Painter
-    renderer:   *Pixel.RenderOgl
+    using base: Event{kind: EventKind.Paint}
+
+    painter:  *Pixel.Painter
+    renderer: *Pixel.RenderOgl
 }
 
 struct ResizeEvent
 {
-    using base: Event
+    using base: Event{kind: EventKind.Resize}
     oldSize: Math.Point
 }
 
 struct MoveEvent
 {
-    using base: Event
+    using base: Event{kind: EventKind.Move}
     oldPos: Math.Point
 }
 
