@@ -25,7 +25,8 @@ struct Wnd
     position:   Math.Rectangle
     parent:     *Wnd
     childs:     Array'(*Wnd)
-    colorBkgnd: WndColor
+
+    colorBackground: WndColor
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)
@@ -100,7 +101,7 @@ impl Wnd
         res.parent = parent
         parent.childs.add(&res.wnd)
 
-        res.colorBkgnd.themeColor = cast(*Color) res.getTheme().colorWndBackground
+        res.colorBackground.themeColor = cast(*Color) res.getTheme().colorWndBackground
 
         evt := CreateEvent{kind: EventKind.Create}
         res.sendEvent(&evt)
@@ -117,7 +118,7 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Background
-        bc.painter.fillRect(position, colorBkgnd.getColor())
+        bc.painter.fillRect(position, colorBackground.getColor())
 
         // User paint
         evt := PaintEvent{kind: EventKind.Paint}
