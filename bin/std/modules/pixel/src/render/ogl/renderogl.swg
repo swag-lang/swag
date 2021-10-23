@@ -15,7 +15,6 @@ public struct RenderOgl
     whiteTexture:       GLuint
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
-    mainRC:             RenderingContext
     curRC:              RenderingContext
 }
 
@@ -38,6 +37,12 @@ impl RenderOgl
         glFlush()
         glFinish()
         native.swagBuffers(curRC)
+    }
+
+    // Set the current rendering context
+    func setCurrentContext(using self, rc: RenderingContext)
+    {
+        native.setCurrentContext(rc)
     }
 
     private func generateTexture(datas: const [..] u8, w, h: s32)->GLuint

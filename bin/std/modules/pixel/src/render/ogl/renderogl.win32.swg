@@ -15,17 +15,17 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    func createContext(using self, hWnd: HWND)->RenderingContext throw
+    func createContext(using self, hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
-        hdc := GetDC(hWnd)
-        defer ReleaseDC(hWnd, hdc)
-        return try createContext(hdc)
+        return try createContext(GetDC(hWnd), width, height, mainRC)
     }
 
-    func createContext(using self, hdc: HDC)->RenderingContext throw
+    func createContext(using self, hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval
         result.hDC = hdc
+        result.width = width
+        result.height = height
 
         var pfd: PIXELFORMATDESCRIPTOR
         pfd.nSize        = @sizeof(pfd)
@@ -37,6 +37,8 @@ public impl NativeRenderOgl
         pfd.cAlphaBits   = 8
         pf := try ChoosePixelFormat(hdc, &pfd)
         try SetPixelFormat(hdc, pf, &pfd)
+
+        result.hRC = mainRC orelse try Ogl.wglCreateContext(result.hDC)
 
         return result
     }

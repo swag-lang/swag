@@ -146,18 +146,10 @@ impl NativeSurface
             result
         )
 
-        result.rc = try app.renderer.native.createContext(result.hWnd)
-        result.rc.width = width
-        result.rc.height = height
-
-        if mainSurface
+        result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
+        if !mainSurface
         {
-            result.rc.hRC = mainSurface.rc.hRC
-        }
-        else
-        {
-            result.rc.hRC = try Ogl.wglCreateContext(result.rc.hDC)
-            app.renderer.native.setCurrentContext(result.rc)
+            app.renderer.setCurrentContext(result.rc)
             app.renderer.init()
         }
 
