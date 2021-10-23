@@ -101,7 +101,7 @@ impl Wnd
         res.parent = parent
         parent.childs.add(&res.wnd)
 
-        res.colorBackground.themeColor = cast(*Color) res.getTheme().colorWndBackground
+        res.colorBackground.themeColor = &res.getTheme().colorWndBackground
 
         evt := CreateEvent{kind: EventKind.Create}
         res.sendEvent(&evt)

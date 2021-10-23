@@ -1871,9 +1871,13 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
     if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
     {
         auto grandParent = node->parent->parent;
-        if (grandParent->kind == AstNodeKind::MakePointer ||
-            grandParent->kind == AstNodeKind::MakePointerLambda ||
-            grandParent->kind == AstNodeKind::Alias ||
+
+        if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->childs.back())
+            return true;
+        if (grandParent->kind == AstNodeKind::MakePointerLambda && node == node->parent->childs.back())
+            return true;
+
+        if (grandParent->kind == AstNodeKind::Alias ||
             (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
             (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
             (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicRunes) ||
@@ -2009,7 +2013,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (isFunctionButNotACall(context, node, symbol))
             {
-                if (callParameters && node == node->parent->childs.back())
+                if (callParameters)
                     return context->report({callParameters, g_E[Err0114]});
                 oneOverload.symMatchContext.result = MatchResult::Ok;
                 forcedFine                         = true;
