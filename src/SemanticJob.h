@@ -187,6 +187,7 @@ struct SemanticJob : public Job
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
+    static void         collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars);
     static void         collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
     static bool         collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool         setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);

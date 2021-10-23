@@ -2550,26 +2550,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                 {
                     for (auto s : startScope->owner->extension->alternativeScopes)
                         scopeHierarchy.push_back_once(s);
-
-                    // Need to go deep for using vars, because we can have a using on a struct, which has also
-                    // a using itself, and so on...
-                    VectorNative<AlternativeScope> toAdd;
-                    VectorNative<Scope*>           done;
-                    toAdd.append(startScope->owner->extension->alternativeScopesVars);
-                    while (!toAdd.empty())
-                    {
-                        auto it0 = toAdd.back();
-                        toAdd.pop_back();
-
-                        if (!done.contains(it0.scope))
-                        {
-                            done.push_back(it0.scope);
-                            scopeHierarchy.push_back_once(it0.scope);
-                            scopeHierarchyVars.push_back(it0);
-                            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
-                                toAdd.append(it0.scope->owner->extension->alternativeScopesVars);
-                        }
-                    }
+                    collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
                 }
             }
         }
@@ -3707,6 +3688,29 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     return true;
 }
 
+void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars)
+{
+    // Need to go deep for using vars, because we can have a using on a struct, which has also
+    // a using itself, and so on...
+    VectorNative<AlternativeScope> toAdd;
+    VectorNative<Scope*>           done;
+    toAdd.append(startNode->extension->alternativeScopesVars);
+    while (!toAdd.empty())
+    {
+        auto it0 = toAdd.back();
+        toAdd.pop_back();
+
+        if (!done.contains(it0.scope))
+        {
+            done.push_back(it0.scope);
+            scopes.push_back_once(it0.scope);
+            scopesVars.push_back(it0);
+            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
+                toAdd.append(it0.scope->owner->extension->alternativeScopesVars);
+        }
+    }
+}
+
 void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     if (startNode->extension && !startNode->extension->alternativeScopes.empty())
@@ -3727,25 +3731,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
             // Can only take a using var if in the same function
             if (startNode->ownerFct == context->node->ownerFct || startNode == context->node->ownerFct)
             {
-                // Need to go deep for using vars, because we can have a using on a struct, which has also
-                // a using itself, and so on...
-                VectorNative<AlternativeScope> toAdd;
-                VectorNative<Scope*>           done;
-                toAdd.append(startNode->extension->alternativeScopesVars);
-                while (!toAdd.empty())
-                {
-                    auto it0 = toAdd.back();
-                    toAdd.pop_back();
-
-                    if (!done.contains(it0.scope))
-                    {
-                        done.push_back(it0.scope);
-                        scopes.push_back_once(it0.scope);
-                        scopesVars.push_back(it0);
-                        if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
-                            toAdd.append(it0.scope->owner->extension->alternativeScopesVars);
-                    }
-                }
+                collectAlternativeScopeVars(startNode, scopes, scopesVars);
             }
         }
     }
