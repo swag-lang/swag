@@ -2009,7 +2009,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (isFunctionButNotACall(context, node, symbol))
             {
-                if (callParameters)
+                if (callParameters && node == node->parent->childs.back())
                     return context->report({callParameters, g_E[Err0114]});
                 oneOverload.symMatchContext.result = MatchResult::Ok;
                 forcedFine                         = true;
