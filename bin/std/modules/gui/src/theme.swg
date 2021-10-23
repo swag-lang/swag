@@ -26,8 +26,7 @@ impl WndColor
 
 impl Theme
 {
-    // First setup theme
-    mtd setup(renderer: *RenderOgl)
+    protected mtd setup(renderer: *RenderOgl)
     {
         img := assume Image.decode(DefaultImageName, DefaultImageBytes)
         widgetsImg = renderer.addImage(img)
