@@ -96,8 +96,6 @@ impl NativeSurface
     {
         result := Memory.new'Surface()
         result.app = app
-        result.wnd.surface = result
-        result.wnd.itf = cast(IWnd) result.wnd
 
         // Create class
         #[Swag.Global]

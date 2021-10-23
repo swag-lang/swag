@@ -4,6 +4,7 @@ using Core
 struct Application
 {
     renderer:       Pixel.RenderOgl
+    theme:          Theme
     keyb:           Input.Keyboard
     mouse:          Input.Mouse
     mainSurface:    *Surface
@@ -29,8 +30,10 @@ impl Application
         surfaces.add(surface)
 
         evt := CreateEvent{kind: EventKind.Create}
-        evt.target = &surface.wnd
-        sendEvent(&evt)
+        surface.wnd.surface = surface
+        surface.wnd.itf = cast(IWnd) surface.wnd
+        surface.wnd.sendEvent(&evt)
+
         return surface
     }
 

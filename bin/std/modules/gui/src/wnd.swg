@@ -25,6 +25,7 @@ struct Wnd
     position:   Math.Rectangle
     parent:     *Wnd
     childs:     Array'(*Wnd)
+    colorBkgnd: WndColor
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)
@@ -84,11 +85,7 @@ impl IWnd for Wnd
     mtd onResizeEvent(evt: *ResizeEvent)    {}
     mtd onKeyEvent(evt: *KeyEvent)          {}
     mtd onMouseEvent(evt: *MouseEvent)      {}
-
-    mtd onPaintEvent(evt: *PaintEvent)
-    {
-        evt.painter.fillRect(self.position, Color.fromArgb(0xFFEEEEEE))
-    }
+    mtd onPaintEvent(evt: *PaintEvent)      {}
 }
 
 impl Wnd
@@ -96,12 +93,14 @@ impl Wnd
     func(T) create(parent: *Wnd)->*T
     {
         Debug.assert(parent != null)
-
         res := Memory.new'T()
+
         res.itf = cast(IWnd) dref res
         res.surface = parent.surface
         res.parent = parent
         parent.childs.add(&res.wnd)
+
+        res.colorBkgnd.themeColor = cast(*Color) res.getTheme().colorWndBackground
 
         evt := CreateEvent{kind: EventKind.Create}
         res.sendEvent(&evt)
@@ -109,13 +108,24 @@ impl Wnd
         return res
     }
 
+    #[Swag.Inline]
+    {
+        mtd getApp()   => surface.app
+        mtd getTheme() => &surface.app.theme
+    }
+
     mtd paint(bc: *PaintContext)
     {
+        // Background
+        bc.painter.fillRect(position, colorBkgnd.getColor())
+
+        // User paint
         evt := PaintEvent{kind: EventKind.Paint}
         evt.painter = bc.painter
         evt.renderer = bc.renderer
         sendEvent(&evt)
 
+        // Childs
         visit c: self.childs
         {
             c.paint(bc)
