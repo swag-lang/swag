@@ -1,6 +1,8 @@
 #global public
 using Core, Pixel
 
+protected const DefaultImage = #load("widgets.png")
+
 struct Theme
 {
     widgetsImg:         Image
@@ -23,9 +25,8 @@ impl WndColor
 
 impl Theme
 {
-    mtd load(themePath: string) throw
+    mtd setup()
     {
-        path := Path.combine(themePath, "widgets.png")
-        widgetsImg = try Image.load(path)
+        widgetsImg = assume Image.decode("widgets.png", DefaultImage)
     }
 }

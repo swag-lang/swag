@@ -20,6 +20,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
 #main
 {
     var app: Gui.Application
+    app.theme.setup()
 
     surface0 := try app.createSurface("Example0", 100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent

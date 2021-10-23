@@ -51,9 +51,9 @@ impl Image
         return false
     }
 
-    public func load(fileName: string, options: DecodeOptions = @{})->Image throw
+    // Find the decoder that can treat 'fileName'
+    func getDecoder(fileName: string)->*Decoder
     {
-        // Find the decoder that can treat 'fileName'
         var found: *Decoder
         visit *decoder: g_Decoder
         {
@@ -64,24 +64,43 @@ impl Image
             }
         }
 
-        if !found
-            throw "no matching image decoder"
+        return found
+    }
 
-        // Read file content
-        bytes := try File.readAllBytes(fileName)
-
+    // Decode the given image buffer with the given decoder
+    func decode(decoder: *Decoder, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    {
         // Create a decoder instance
-        ptrDecoder := Memory.new(found.type)
+        ptrDecoder := Memory.new(decoder.type)
         defer
         {
-            if found.type.opDrop
-                found.type.opDrop(ptrDecoder)
-            Memory.free(ptrDecoder, found.type.sizeof)
+            if decoder.type.opDrop
+                decoder.type.opDrop(ptrDecoder)
+            Memory.free(ptrDecoder, decoder.type.sizeof)
         }
 
         // Decode
-        itf := @mkinterface(ptrDecoder, found.type, IDecoder)
-        return try itf.decode(bytes.toSlice(), options)
+        itf := @mkinterface(ptrDecoder, decoder.type, IDecoder)
+        return try itf.decode(bytes, options)
+    }
+
+    // Decode the given image buffer
+    public func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    {
+        found := getDecoder(fileName)
+        if !found
+            throw "no matching image decoder"
+        return try decode(found, bytes, options)
+    }
+
+    // Load the given image file
+    public func load(fileName: string, options: DecodeOptions = @{})->Image throw
+    {
+        found := getDecoder(fileName)
+        if !found
+            throw "no matching image decoder"
+        bytes := try File.readAllBytes(fileName)
+        return try decode(found, bytes.toSlice(), options)
     }
 }
 
