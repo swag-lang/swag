@@ -79,48 +79,20 @@ impl IWnd for Wnd
         }
     }
 
-    mtd onCreateEvent(evt: *CreateEvent)
-    {
-    }
-
-    mtd onCloseEvent(evt: *CloseEvent)
-    {
-    }
-
-    mtd onResizeEvent(evt: *ResizeEvent)
-    {
-        position.width = evt.rect.width
-        position.height = evt.rect.height
-    }
+    mtd onCreateEvent(evt: *CreateEvent)    {}
+    mtd onCloseEvent(evt: *CloseEvent)      {}
+    mtd onResizeEvent(evt: *ResizeEvent)    {}
+    mtd onKeyEvent(evt: *KeyEvent)          {}
+    mtd onMouseEvent(evt: *MouseEvent)      {}
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
         evt.painter.fillRect(self.position, Color.fromArgb(0xFFEEEEEE))
     }
-
-    mtd onKeyEvent(evt: *KeyEvent)
-    {
-    }
-
-    mtd onMouseEvent(evt: *MouseEvent)
-    {
-    }
 }
 
 impl Wnd
 {
-    mtd paint(bc: *PaintContext)
-    {
-        evt := PaintEvent{kind: EventKind.Paint}
-        evt.target = self
-        evt.painter = bc.painter
-        evt.renderer = bc.renderer
-        surface.app.sendEvent(&evt)
-
-        visit c: self.childs
-            c.paint(bc)
-    }
-
     func(T) create(parent: *Wnd)->*T
     {
         Debug.assert(parent != null)
@@ -138,17 +110,27 @@ impl Wnd
         return res
     }
 
-    mtd postQuitEvent()
+    mtd paint(bc: *PaintContext)
     {
-        surface.app.postQuitEvent()
+        evt := PaintEvent{kind: EventKind.Paint}
+        evt.target = self
+        evt.painter = bc.painter
+        evt.renderer = bc.renderer
+        surface.app.sendEvent(&evt)
+
+        visit c: self.childs
+            c.paint(bc)
     }
 
-    mtd sendEvent(event: *Event)
+    mtd resize(width, height: s32)
     {
-        if hookOnEvent
-            hookOnEvent(self, event)
-        else
-            itf.onEvent(event)
+        position.width = width
+        position.height = height
+
+        evt := ResizeEvent{kind: EventKind.Resize}
+        evt.rect.width = width
+        evt.rect.height = height
+        sendEvent(&evt)
     }
 
     mtd getWndAt(x, y: f32)->*Wnd
@@ -164,5 +146,30 @@ impl Wnd
         }
 
         return self
+    }
+
+    mtd postQuitEvent()
+    {
+        surface.app.postQuitEvent()
+    }
+
+    mtd postEvent(evt: *Event)
+    {
+        evt.target = self
+        surface.app.postEvent(evt)
+    }
+
+    mtd sendEvent(evt: *Event)
+    {
+        evt.target = self
+        surface.app.sendEvent(evt)
+    }
+
+    mtd processEvent(evt: *Event)
+    {
+        if hookOnEvent
+            hookOnEvent(self, evt)
+        else
+            itf.onEvent(evt)
     }
 }

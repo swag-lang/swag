@@ -49,13 +49,9 @@ impl Surface
     {
         rc.width = width
         rc.height = height
-
-        // Resize embedeed main wnd
-        evt := ResizeEvent{kind: EventKind.Resize}
-        evt.target = &wnd
-        evt.rect.width = rc.width
-        evt.rect.height = rc.height
-        app.sendEvent(&evt)
+        pos.width = width
+        pos.height = width
+        wnd.resize(width, height)
     }
 
     mtd sendCloseEvent()

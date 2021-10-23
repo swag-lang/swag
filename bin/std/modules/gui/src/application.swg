@@ -66,11 +66,13 @@ impl Application
         postEvent(evt)
     }
 
+    // Post a new event
     mtd postEvent(event: *Event)
     {
         postedEvents.add(event)
     }
 
+    // Send and process an event
     mtd sendEvent(event: *Event)
     {
         if event.kind == .Quit
@@ -82,7 +84,7 @@ impl Application
         }
 
         Debug.assert(event.target != null)
-        event.target.sendEvent(event)
+        event.target.processEvent(event)
     }
 
     protected mtd sendMouseEvents()
