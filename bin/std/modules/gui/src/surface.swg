@@ -5,7 +5,7 @@ struct Surface
 {
     using native:   NativeSurface
     app:            *Application
-    wnd:            SurfaceWnd
+    wnd:            Wnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
     pos:            Math.Rectangle
