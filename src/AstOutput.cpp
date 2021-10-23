@@ -1137,6 +1137,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
     }
 
+    case AstNodeKind::CompilerLoad:
+        CONCAT_FIXED_STR(concat, "#load(");
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        CONCAT_FIXED_STR(concat, ")");
+        break;
+
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerAst:
     case AstNodeKind::CompilerSelectIf:
