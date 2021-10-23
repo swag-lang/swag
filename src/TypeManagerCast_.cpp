@@ -2101,56 +2101,80 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool& ok)
 {
-    ok = false;
-
-    // No need to parse all fields if there's none with a 'using'
-    auto structNode = CastAst<AstStruct>(fromStruct->declNode, AstNodeKind::StructDecl);
-    if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
-        return true;
-
-    // We cannot visit fields of an incomplete struct.
-    // So we must wait...
-    context->job->waitOverloadCompleted(fromStruct->declNode->resolvedSymbolOverload);
-    if (context->result != ContextResult::Done)
+    struct OneField
     {
-        SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
-        return true;
-    }
+        TypeInfoStruct* typeStruct;
+        uint32_t        offset;
+        TypeInfoParam*  field;
+    };
 
-    TypeInfoParam* done = nullptr;
-    for (auto field : fromStruct->fields)
+    TypeInfoParam* foundField = nullptr;
+
+    vector<OneField> stack;
+    stack.push_back({fromStruct, 0, nullptr});
+    while (!stack.empty())
     {
-        if (!(field->flags & TYPEINFO_HAS_USING))
-            continue;
-        if (field->typeInfo != toStruct && !field->typeInfo->isPointerTo(toStruct))
-            continue;
+        auto it = stack.back();
+        stack.pop_back();
 
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        if (it.typeStruct == toStruct || it.typeStruct->isPointerTo(toStruct))
         {
-            // Ambiguous ! Two fields with a 'using' on the same struct
-            if (done)
+            ok = true;
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                Diagnostic diag{fromNode, Utf8::format(g_E[Err0200], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
-                Diagnostic note1{done->declNode, g_E[Nte0015], DiagnosticLevel::Note};
-                Diagnostic note2{field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
-                return context->report(diag, &note1, &note2);
+                // Ambiguous ! Two fields with a 'using' on the same struct
+                if (foundField)
+                {
+                    Diagnostic diag{fromNode, Utf8::format(g_E[Err0200], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                    Diagnostic note1{foundField->declNode, g_E[Nte0015], DiagnosticLevel::Note};
+                    Diagnostic note2{it.field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
+                    return context->report(diag, &note1, &note2);
+                }
+
+                // We will have to dereference the pointer to get the real thing
+                if (it.field && it.field->typeInfo->kind == TypeInfoKind::Pointer)
+                    fromNode->semFlags |= AST_SEM_DEREF_USING;
+                fromNode->semFlags |= AST_SEM_USING;
+
+                fromNode->allocateExtension();
+                fromNode->extension->castOffset = it.field ? it.field->offset : 0;
+                fromNode->castedTypeInfo        = fromNode->typeInfo;
+                fromNode->typeInfo              = toType;
+                continue;
             }
-
-            // We will have to dereference the pointer to get the real thing
-            if (field->typeInfo->kind == TypeInfoKind::Pointer)
-                fromNode->semFlags |= AST_SEM_DEREF_USING;
-            fromNode->semFlags |= AST_SEM_USING;
-
-            fromNode->allocateExtension();
-            fromNode->extension->castOffset = field->offset;
-            fromNode->castedTypeInfo        = fromNode->typeInfo;
-            fromNode->typeInfo              = toType;
         }
 
-        done = field;
+        auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
+        if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
+            continue;
+
+        context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
+        if (context->result != ContextResult::Done)
+            return true;
+
+        for (auto field : it.typeStruct->fields)
+        {
+            if (!(field->flags & TYPEINFO_HAS_USING))
+                continue;
+
+            TypeInfoStruct* typeStruct = nullptr;
+            if (field->typeInfo->kind == TypeInfoKind::Struct)
+            {
+                typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
+                if (typeStruct == it.typeStruct)
+                    continue;
+            }
+            else if (field->typeInfo->isPointerTo(TypeInfoKind::Struct))
+            {
+                auto typePointer = CastTypeInfo<TypeInfoPointer>(field->typeInfo, TypeInfoKind::Pointer);
+                typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            }
+
+            if (typeStruct)
+                stack.push_back({typeStruct, it.offset + field->offset, field});
+        }
     }
 
-    ok = done ? true : false;
     return true;
 }
 
