@@ -29,13 +29,11 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
         OS::exit(-1);
     }
 
-    // Module name is equivalent to the folder name, except for the tests folder where
-    // we prepend SWAG_TESTS_FOLDER
+    // Module name is equivalent to the folder name, except for specific folders
     if (parent == SWAG_TESTS_FOLDER)
-    {
-        moduleName = SWAG_TESTS_FOLDER;
-        moduleName += "_";
-    }
+        moduleName = "test_";
+    else if (parent == SWAG_EXAMPLES_FOLDER)
+        moduleName = "example_";
 
     moduleName += cFileName;
 

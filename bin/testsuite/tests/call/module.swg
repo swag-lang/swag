@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "tests_foreign"
+    #import "test_foreign"
 
     #run
     {

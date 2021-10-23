@@ -1,4 +1,4 @@
-using tests_foreign
+using test_foreign
 
 using Swag
 var G: u64

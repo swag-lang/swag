@@ -1,5 +1,5 @@
 #global if #os == Swag.TargetOs.Windows
-using tests_foreign
+using test_foreign
 
 using Swag
 
@@ -12,9 +12,9 @@ using Swag
 //#[Swag.PrintBc, Swag.Optim(false)]
 #test
 {
-    h := GetModuleHandleA(@dataof("tests_foreign"))
+    h := GetModuleHandleA(@dataof("test_foreign"))
     @assert(h != null)
-    ptr := GetProcAddress(h, @dataof("tests_foreign.tcf_manualcall"))
+    ptr := GetProcAddress(h, @dataof("test_foreign.tcf_manualcall"))
     @assert(ptr != null)
 
     tcf_manualcall := @mkforeign(func(s64)->s64, ptr)

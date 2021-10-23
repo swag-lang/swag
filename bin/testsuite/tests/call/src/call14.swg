@@ -1,4 +1,4 @@
-using tests_foreign
+using test_foreign
 
 func cb()->s64
 {
