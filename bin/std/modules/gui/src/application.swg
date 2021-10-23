@@ -24,7 +24,7 @@ impl Application
     // Creates a new surface
     mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.OverlappedWindow)->*Surface throw
     {
-        surface := try Surface.create(self, title, x, y, width, height, flags)
+        surface := try Surface.create(self, title, x, y, width, height, flags, mainSurface)
 
         if !mainSurface
         {

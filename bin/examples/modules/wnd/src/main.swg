@@ -4,12 +4,12 @@ using Core, Pixel, Gui
 const W = 1024
 const H = 1024
 
-func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
+func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)
 {
-    event.painter.paintParams  = .Antialiased
-    event.painter.paintQuality = .Normal
-    event.painter.clear(Color.fromArgb(0xFFEEEEEE))
-    event.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
+    evt.painter.paintParams  = .Antialiased
+    evt.painter.paintQuality = .Normal
+    evt.painter.drawTexture(wnd.position, wnd.surface.app.theme.widgetsImg)
+    evt.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
 }
 
 func onCloseEvent(wnd: *Wnd, event: *CloseEvent)

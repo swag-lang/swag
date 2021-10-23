@@ -92,10 +92,11 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    protected func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags)->*Surface throw
+    protected func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface)->*Surface throw
     {
         result := Memory.new'Surface()
         result.app = app
+        result.pos = @{x, y, width, height}
 
         // Create class
         #[Swag.Global]
@@ -148,10 +149,17 @@ impl NativeSurface
         result.rc = try app.renderer.native.createContext(result.hWnd)
         result.rc.width = width
         result.rc.height = height
-        result.pos = @{x, y, width, height}
 
-        app.renderer.native.setCurrentContext(result.rc)
-        app.renderer.init()
+        if mainSurface
+        {
+            result.rc.hRC = mainSurface.rc.hRC
+        }
+        else
+        {
+            result.rc.hRC = try Ogl.wglCreateContext(result.rc.hDC)
+            app.renderer.native.setCurrentContext(result.rc)
+            app.renderer.init()
+        }
 
         return result
     }

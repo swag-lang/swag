@@ -38,7 +38,6 @@ public impl NativeRenderOgl
         pf := try ChoosePixelFormat(hdc, &pfd)
         try SetPixelFormat(hdc, pf, &pfd)
 
-        result.hRC = try wglCreateContext(hdc)
         return result
     }
 
