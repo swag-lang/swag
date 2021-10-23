@@ -122,14 +122,21 @@ impl Wnd
             c.paint(bc)
     }
 
+    mtd move(x, y: s32)
+    {
+        evt := MoveEvent{kind: EventKind.Move}
+        evt.oldPos = @{position.x, position.y}
+        position.x = x
+        position.y = y
+        sendEvent(&evt)
+    }
+
     mtd resize(width, height: s32)
     {
+        evt := ResizeEvent{kind: EventKind.Resize}
+        evt.oldSize = @{position.width, position.height}
         position.width = width
         position.height = height
-
-        evt := ResizeEvent{kind: EventKind.Resize}
-        evt.rect.width = width
-        evt.rect.height = height
         sendEvent(&evt)
     }
 

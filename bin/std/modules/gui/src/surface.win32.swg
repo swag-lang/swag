@@ -30,6 +30,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             surface.sendPaintEvent()
         case WM_SIZE:
             surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
+        case WM_MOVE:
+            surface.pos.x = LOWORD(lParam)
+            surface.pos.y = HIWORD(lParam)
         case WM_DESTROY:
             surface.sendCloseEvent()
         }

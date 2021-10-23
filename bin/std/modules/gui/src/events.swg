@@ -6,6 +6,7 @@ enum EventKind
     None
     Create
     Resize
+    Move
     Paint
     KeyPressed
     KeyReleased
@@ -56,7 +57,13 @@ struct PaintEvent
 struct ResizeEvent
 {
     using base: Event
-    rect: Math.Rectangle
+    oldSize: Math.Point
+}
+
+struct MoveEvent
+{
+    using base: Event
+    oldPos: Math.Point
 }
 
 #[Swag.EnumFlags]
