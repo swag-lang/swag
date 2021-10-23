@@ -26,31 +26,12 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
-
         case WM_PAINT:
-            var cxt: PaintContext
-            cxt.painter = &surface.painter
-            cxt.renderer = &surface.app.renderer
-            cxt.renderer.begin(surface.rc)
-            cxt.painter.begin()
-            surface.wnd.paint(&cxt)
-            cxt.painter.end()
-            cxt.renderer.draw(&surface.painter)
-            cxt.renderer.end()
-
+            surface.sendPaintEvent()
         case WM_SIZE:
-            surface.rc.width = LOWORD(lParam)
-            surface.rc.height = HIWORD(lParam)
-            evt := ResizeEvent{kind: EventKind.Resize}
-            evt.target = &surface.wnd
-            evt.rect.width = surface.rc.width
-            evt.rect.height = surface.rc.height
-            surface.app.sendEvent(&evt)
-
+            surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_DESTROY:
-            evt := Event{kind: EventKind.Close}
-            evt.target = &surface.wnd
-            surface.app.sendEvent(&evt)
+            surface.sendCloseEvent()
         }
     }
 

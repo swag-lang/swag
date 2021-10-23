@@ -19,7 +19,7 @@ impl IWnd for Static
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if evt.button == Input.MouseButton.Left and evt.kind == EventKind.MousePressed
+        if evt.button == .Left and evt.kind == .MousePressed
         {
             vv += 1
             surface.invalidate()
