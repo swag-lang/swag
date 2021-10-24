@@ -26,7 +26,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     surface1.wnd.hookOnPaintEvent = &onPaintEvent
     surface1.wnd.hookOnCloseEvent = &onCloseEvent
 
-    widget0 := Static.create(&surface0.wnd)
+    widget0 := PushButton.create(&surface0.wnd)
     widget0.position = @{5, 5, 100, 100}
 
     surface0.show()
