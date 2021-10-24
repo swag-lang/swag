@@ -8,7 +8,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)
 {
     evt.bc.painter.paintParams  = .Antialiased
     evt.bc.painter.paintQuality = .Normal
-    evt.bc.painter.drawTexture(wnd.position, wnd.surface.app.theme.widgetsImg)
+    evt.bc.painter.drawTexture(wnd.position, wnd.surface.app.theme.imgWidgets)
 }
 
 func onCloseEvent(wnd: *Wnd, event: *CloseEvent)

@@ -15,28 +15,13 @@ protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 
 struct Theme
 {
-    widgetsImg:     Texture
+    imgWidgets:     Texture
     typeFaceR:      const *TypeFace
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
     fontSmall:      FontFamily
-
-    colorWndBackground: Color = 0xFF333333
-}
-
-struct WndColor
-{
-    themeColor: *Color
-    color:      Color
-}
-
-impl WndColor
-{
-    mtd getColor()->Color
-    {
-        return themeColor ? dref themeColor : color
-    }
+    palette:        Palette
 }
 
 impl Theme
@@ -44,7 +29,7 @@ impl Theme
     protected mtd setup(renderer: *RenderOgl) throw
     {
         img := try Image.decode(DefaultImageName, DefaultImage)
-        widgetsImg = renderer.addImage(img)
+        imgWidgets = renderer.addImage(img)
 
         typeFaceR  = try TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
         typeFaceB  = try TypeFace.create(DefaultFontBoldName, DefaultFontBold)

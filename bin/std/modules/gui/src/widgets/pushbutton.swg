@@ -73,7 +73,7 @@ impl PushButton
         else
             srcRect = @{1, 1, 30, 20}
 
-        Style.drawTexture(bc.painter, bc.theme.widgetsImg, position, srcRect, 8, 8, Argb.White)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, Argb.White)
 
         sf := StringFormat{}
         sf.horzAlignment = .Center

@@ -22,8 +22,7 @@ struct Wnd
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
-    name:            String
-    colorBackground: WndColor
+    name: String
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)
@@ -102,8 +101,6 @@ impl Wnd
         res.parent = parent
         parent.childs.add(&res.wnd)
 
-        res.colorBackground.themeColor = &res.getTheme().colorWndBackground
-
         evt := CreateEvent{}
         res.sendEvent(&evt)
 
@@ -123,7 +120,7 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Background
-        bc.painter.fillRect(position, colorBackground.getColor())
+        bc.painter.fillRect(position, bc.theme.palette.windowBk)
 
         // User paint
         evt := PaintEvent{}
