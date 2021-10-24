@@ -97,19 +97,19 @@ impl PushButton
             colorBk = palette.buttonBkPressed
             colorBorder = palette.buttonBorderPressed
             colorText = palette.buttonTextPressed
-            srcRect = @{1, 22, 30, 20}
+            srcRect = @{1, 29, 27, 27}
         }
         else
         {
-            srcRect = @{1, 1, 30, 20}
+            srcRect = @{1, 1, 27, 27}
         }
 
         // Background
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, colorBk)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 9, colorBk)
 
         // Border
-        srcRect.offset(31, 0)
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, colorBorder)
+        srcRect.offset(28, 0)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 9, colorBorder)
 
         // Content
         sf := StringFormat{}

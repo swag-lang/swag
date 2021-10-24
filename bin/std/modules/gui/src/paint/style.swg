@@ -1,18 +1,17 @@
 #global namespace Style
 using Core, Pixel
 
-func drawTexture(painter: *Painter, texture: Texture, dstRect, srcRect: Math.Rectangle, cornerX, cornerY: f32, color: Color)
+func drawTexture(painter: *Painter, texture: Texture, dstRect, srcRect: Math.Rectangle, corner: f32, color: Color)
 {
     painter.setInterpolationMode(InterpolationMode.Linear)
 
-    if cornerX == 0 and cornerY == 0
+    if corner == 0
     {
         painter.drawTexture(dstRect, srcRect, texture, color)
         return
     }
 
-    cx := cornerX
-    cy := cornerY
+    cx, cy := corner
     if cx * 2 > dstRect.width
         cx = dstRect.width / 2
     if cy * 2 > dstRect.height
