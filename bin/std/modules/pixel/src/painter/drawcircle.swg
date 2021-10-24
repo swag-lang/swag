@@ -12,7 +12,6 @@ impl Painter
         drawCircle(centerX, centerY, radius, sharedSolidPen)
     }
 
-    // Draw an empty circle
     func drawCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
     {
         sharedLinePath.setEllipse(centerX, centerY, radius, radius)
@@ -26,7 +25,6 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
-    // Draw a solid circle
     func fillCircle(using self, centerX, centerY: f32, radius: f32, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
@@ -44,7 +42,6 @@ impl Painter
         drawEllipse(centerX, centerY, radiusX, radiusY, sharedSolidPen)
     }
 
-    // Draw an empty ellipse
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
     {
         sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
@@ -58,7 +55,6 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
-    // Draw a solid ellipse
     func fillEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
