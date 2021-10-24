@@ -3,6 +3,10 @@ public struct Palette
 {
     windowBk:       Color = 0xFF333333
 
+    buttonDisabledText:     Color = 0x5FFFFFFF
+    buttonDisabledBorder:   Color = 0x5FFFFFFF
+    buttonDisabledBk:       Color = 0
+
     buttonText:             Color = 0xFFFFFFFF
     buttonBorder:           Color = 0xFFFFFFFF
     buttonBk:               Color = 0

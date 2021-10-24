@@ -22,7 +22,9 @@ struct Wnd
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
-    name: String
+    name:       String
+    isDisabled: bool
+    isHidden:   bool
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)

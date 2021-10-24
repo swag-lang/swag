@@ -8,6 +8,7 @@ enum PushButtonPaintState
     Pressed
     Hot
     Default
+    Disabled
 }
 
 struct PushButton
@@ -27,6 +28,7 @@ impl IWnd for PushButton
         if isPressed    state |= .Pressed
         if isHot        state |= .Hot
         if isDefault    state |= .Default
+        if isDisabled   state |= .Disabled
         paint(evt.bc, name, position, state)
     }
 
@@ -85,27 +87,41 @@ impl PushButton
         palette := &bc.theme.palette
         isDefault := state & .Default
 
-        colorBk     := isDefault ? palette.buttonDefaultBk : palette.buttonBk
-        colorBorder := isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
-        colorText   := isDefault ? palette.buttonDefaultText : palette.buttonText
+        var colorBk: Color = ?
+        var colorBorder: Color = ?
+        var colorText: Color = ?
 
-        if state & .Hot
+        if state & .Disabled
         {
-            colorBk     = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
-            colorBorder = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
-            colorText   = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
-        }
-
-        if state & .Pressed
-        {
-            colorBk     = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
-            colorBorder = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
-            colorText   = isDefault ? palette.buttonDefaultTextPressed : palette.buttonTextPressed
-            srcRect = @{1, 29, 27, 27}
+            colorBk     = palette.buttonDisabledBk
+            colorBorder = palette.buttonDisabledBorder
+            colorText   = palette.buttonDisabledText
+            srcRect = @{1, 57, 27, 27}
         }
         else
         {
-            srcRect = @{1, 1, 27, 27}
+            colorBk     = isDefault ? palette.buttonDefaultBk : palette.buttonBk
+            colorBorder = isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
+            colorText   = isDefault ? palette.buttonDefaultText : palette.buttonText
+
+            if state & .Hot
+            {
+                colorBk     = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
+                colorBorder = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
+                colorText   = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
+            }
+
+            if state & .Pressed
+            {
+                colorBk     = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
+                colorBorder = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
+                colorText   = isDefault ? palette.buttonDefaultTextPressed : palette.buttonTextPressed
+                srcRect = @{1, 29, 27, 27}
+            }
+            else
+            {
+                srcRect = @{1, 1, 27, 27}
+            }
         }
 
         // Background
