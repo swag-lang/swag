@@ -9,12 +9,10 @@ struct Static
 
 impl IWnd for Static
 {
-    mtd onPaintEvent(using evt: *PaintEvent)
+    mtd onPaintEvent(evt: *PaintEvent)
     {
-        if vv % 2
-            painter.fillRoundRect(self.position, 10, 10, Argb.Red)
-        else
-            painter.fillRoundRect(self.position, 10, 10, Argb.Blue)
+        tme := surface.app.theme
+        Theme.drawTexture(evt.painter, tme.widgetsImg, self.position, @{0, 0, 32, 22}, 0, 0, Argb.White)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
