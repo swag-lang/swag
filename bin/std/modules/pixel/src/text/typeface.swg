@@ -20,9 +20,10 @@ private var g_Lock:         Sync.Mutex
 impl TypeFace
 {
     // Create a new typeface
-    func create(bytes: const [..] u8)->*TypeFace throw
+    func create(fullname: string, bytes: const [..] u8)->*TypeFace throw
     {
         tf := Memory.new'TypeFace()
+        tf.fullname = fullname
         tf.buffer = bytes
         try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
         return tf
@@ -38,7 +39,6 @@ impl TypeFace
         if here return here.value
 
         tf := Memory.new'TypeFace()
-        tf.fullname = fullname
         tf.buffer = try File.readAllBytes(fullname)
         try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 

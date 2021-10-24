@@ -73,12 +73,12 @@ impl PushButton
         else
             srcRect = @{1, 1, 30, 20}
 
-        Style.drawTexture(bc.painter, bc.theme.widgetsImg, position, srcRect, 6, 6, Argb.White)
+        Style.drawTexture(bc.painter, bc.theme.widgetsImg, position, srcRect, 8, 8, Argb.White)
 
         sf := StringFormat{}
         sf.horzAlignment = .Center
         sf.vertAlignment = .Center
-        bc.painter.drawString(position, name, bc.theme.fontSmall.regular, Argb.Black, sf)
+        bc.painter.drawString(position, name, bc.theme.fontSmall.regular, Argb.White, sf)
     }
 
     func create(parent: *Wnd)->*PushButton
