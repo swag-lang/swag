@@ -255,14 +255,26 @@ impl Painter
         x := pos.x
         y := pos.y
 
-        totalHeight := cast(f32) (arr.count * font.height)
-        totalHeight += cast(f32) (arr.count - 1) * format.lineGap
+        // Height of total text
+        var totalHeight: f32 = ?
+        var yOffset: f32
+        if arr.count == 1 and format.vertAlignment == .Center
+        {
+            boundRect := measureString(0, 0, arr[0].str, font)
+            totalHeight = boundRect.height
+            yOffset = boundRect.top
+        }
+        else
+        {
+            totalHeight = cast(f32) (arr.count * font.height)
+            totalHeight += cast(f32) (arr.count - 1) * format.lineGap
+        }
 
         switch format.vertAlignment
         {
         case Top:       break
         case Bottom:    y = pos.bottom() - totalHeight
-        case Center:    y = pos.vertCenter() - totalHeight * 0.5
+        case Center:    y = pos.vertCenter() - (totalHeight * 0.5) - yOffset
         }
 
         visit *line: arr
