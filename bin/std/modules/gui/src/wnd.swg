@@ -132,6 +132,8 @@ impl Wnd
         // Childs
         visit c: self.childs
         {
+            if c.isHidden
+                continue
             c.paint(bc)
         }
     }
@@ -201,13 +203,18 @@ impl Wnd
 
     // Get the child window at the given coordinate
     // Coordinate is expressed in the parent system
-    mtd getWndAt(x, y: f32)->*Wnd
+    mtd getWndAt(x, y: f32, getDisabled, getHidden = false)->*Wnd
     {
         if !position.contains(x, y)
             return null
 
         visit c: childs
         {
+            if c.isHidden and !getHidden
+                continue
+            if c.isDisabled and !getDisabled
+                continue
+
             res := c.getWndAt(x - position.x, y - position.y)
             if res
                 return res
