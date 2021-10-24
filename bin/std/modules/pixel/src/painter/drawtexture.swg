@@ -6,6 +6,8 @@ impl Painter
     // Draw a texture image
     func drawTexture(using self, left, top, width, height: f32, texture: Texture, color: Color = Argb.White)
     {
+        if width == 0 or height == 0 or color.a == 0
+            return
         sharedSolidBrush.color = color
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture
@@ -20,6 +22,8 @@ impl Painter
 
     func drawTexture(using self, left, top: f32, texture: Texture, color: Color = Argb.White)
     {
+        if color.a == 0
+            return
         sharedSolidBrush.color = color
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture
@@ -30,6 +34,8 @@ impl Painter
     // Draw a portion of an image
     func drawTexture(using self, left, top, width, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
     {
+        if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0
+            return
         sharedSolidBrush.color = color
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture
@@ -45,6 +51,8 @@ impl Painter
 
     func drawTexture(using self, left, top: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
     {
+        if srcRect.isEmpty() or color.a == 0
+            return
         sharedSolidBrush.color = color
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture

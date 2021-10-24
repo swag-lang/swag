@@ -3,6 +3,9 @@ using Core, Pixel
 
 func drawTexture(painter: *Painter, texture: Texture, dstRect, srcRect: Math.Rectangle, corner: f32, color: Color)
 {
+    if srcRect.isEmpty() or dstRect.isEmpty() or color.a == 0
+        return
+
     painter.setInterpolationMode(InterpolationMode.Linear)
 
     if corner == 0

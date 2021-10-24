@@ -87,6 +87,9 @@ impl Painter
     // Draw a string
     mtd drawString(left, top: f32, text: string, font: *Font, color: Color)
     {
+        if !@countof(text) or color.a == 0
+            return
+
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         drawString(left, top, text, font, sharedSolidBrush)
@@ -95,6 +98,9 @@ impl Painter
     // Draw a string
     mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
+        if !@countof(text)
+            return
+
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
         updateFont(font)
@@ -161,6 +167,9 @@ impl Painter
     // Draw a string
     mtd drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
     {
+        if !@countof(text) or color.a == 0
+            return
+
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         drawString(pos, text, font, sharedSolidBrush, format)
@@ -169,6 +178,9 @@ impl Painter
     // Draw a string
     mtd drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
+        if !@countof(text)
+            return
+
         struct OneStr
         {
             str:    string
