@@ -21,6 +21,7 @@ impl IWnd for PushButton
             srcRect = @{1, 1, 30, 20}
 
         Style.drawTexture(evt.bc.painter, tme.widgetsImg, self.position, srcRect, 6, 6, Argb.White)
+        evt.bc.painter.drawString(self.position.x, self.position.y, "toto", tme.fontSmall.regular, Argb.Black)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

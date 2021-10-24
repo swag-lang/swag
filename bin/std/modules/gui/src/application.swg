@@ -30,7 +30,7 @@ impl Application
 
         if !mainSurface
         {
-            theme.setup(&renderer)
+            try theme.setup(&renderer)
             mainSurface = surface
         }
 

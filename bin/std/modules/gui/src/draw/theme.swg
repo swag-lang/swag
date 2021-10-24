@@ -3,10 +3,20 @@ using Core, Pixel
 
 protected const DefaultImageName  = "widgets.png"
 protected const DefaultImageBytes = #load(DefaultImageName)
+protected const DefaultFontRegular = #load("segoe_regular.ttf")
+protected const DefaultFontBold = #load("segoe_bold.ttf")
+protected const DefaultFontBoldItalic = #load("segoe_bold_italic.ttf")
+protected const DefaultFontItalic = #load("segoe_italic.ttf")
 
 struct Theme
 {
-    widgetsImg:         Texture
+    widgetsImg:     Texture
+    typeFaceR:      const *TypeFace
+    typeFaceB:      const *TypeFace
+    typeFaceI:      const *TypeFace
+    typeFaceBI:     const *TypeFace
+    fontSmall:      FontFamily
+
     colorWndBackground: Color = 0xFFEEEEEE
 }
 
@@ -26,9 +36,19 @@ impl WndColor
 
 impl Theme
 {
-    protected mtd setup(renderer: *RenderOgl)
+    protected mtd setup(renderer: *RenderOgl) throw
     {
-        img := assume Image.decode(DefaultImageName, DefaultImageBytes)
+        img := try Image.decode(DefaultImageName, DefaultImageBytes)
         widgetsImg = renderer.addImage(img)
+
+        typeFaceR  = try TypeFace.create(DefaultFontRegular)
+        typeFaceB  = try TypeFace.create(DefaultFontBold)
+        typeFaceI  = try TypeFace.create(DefaultFontItalic)
+        typeFaceBI = try TypeFace.create(DefaultFontBoldItalic)
+
+        fontSmall.regular = Font.create(typeFaceR, 12)
+        fontSmall.bold = Font.create(typeFaceB, 12)
+        fontSmall.italic = Font.create(typeFaceI, 12)
+        fontSmall.boldItalic = Font.create(typeFaceBI, 12)
     }
 }

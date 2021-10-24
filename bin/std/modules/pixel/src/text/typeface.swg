@@ -19,6 +19,15 @@ private var g_Lock:         Sync.Mutex
 
 impl TypeFace
 {
+    // Create a new typeface
+    func create(bytes: const [..] u8)->*TypeFace throw
+    {
+        tf := Memory.new'TypeFace()
+        tf.buffer = bytes
+        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
+        return tf
+    }
+
     // Get or load a new typeface
     func load(fullname: string)->*TypeFace throw
     {
