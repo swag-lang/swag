@@ -49,7 +49,7 @@ impl Application
     {
         visit s: surfaces
         {
-            if s.pos.contains(x, y)
+            if s.position.contains(x, y)
                 return s
         }
 
@@ -221,6 +221,8 @@ impl Application
             sendKeyboardEvents()
             sendMouseEvents()
             sendPostedEvents()
+
+            visit s: surfaces s.paint()
         }
 
         return quitCode

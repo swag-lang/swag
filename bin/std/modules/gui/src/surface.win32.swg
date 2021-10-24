@@ -27,12 +27,13 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
         case WM_PAINT:
-            surface.sendPaintEvent()
+            surface.invalidate()
+            surface.paint()
         case WM_SIZE:
             surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_MOVE:
-            surface.pos.x = LOWORD(lParam)
-            surface.pos.y = HIWORD(lParam)
+            surface.position.x = LOWORD(lParam)
+            surface.position.y = HIWORD(lParam)
         case WM_DESTROY:
             surface.sendCloseEvent()
         }
@@ -43,12 +44,6 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
 impl NativeSurface
 {
-    // Force the surface to paint
-    mtd invalidate()
-    {
-        InvalidateRect(hWnd, null, FALSE)
-    }
-
     // Show the surface
     mtd show()
     {
@@ -96,7 +91,7 @@ impl NativeSurface
     {
         result := Memory.new'Surface()
         result.app = app
-        result.pos = @{x, y, width, height}
+        result.position = @{x, y, width, height}
 
         // Create class
         #[Swag.Global]

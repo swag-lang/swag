@@ -8,7 +8,8 @@ struct Surface
     wnd:            Wnd
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
-    pos:            Math.Rectangle
+    position:       Math.Rectangle
+    dirty:          bool
 }
 
 #[Swag.EnumFlags]
@@ -30,8 +31,22 @@ enum SurfaceFlags
 
 impl Surface
 {
-    mtd sendPaintEvent()
+    mtd invalidate()
     {
+        invalidateRect(@{0, 0, position.width, position.height})
+    }
+
+    mtd invalidateRect(rect: Math.Rectangle)
+    {
+        dirty = true
+    }
+
+    mtd paint()
+    {
+        if !dirty
+            return
+        dirty = false
+
         var cxt: PaintContext
         cxt.painter = &painter
         cxt.renderer = &app.renderer
@@ -49,8 +64,8 @@ impl Surface
     {
         rc.width = width
         rc.height = height
-        pos.width = width
-        pos.height = width
+        position.width = width
+        position.height = width
         wnd.resize(width, height)
     }
 

@@ -30,10 +30,10 @@ impl IWnd for PushButton
             {
             case MouseReleased:
                 pressed = false
-                surface.invalidate()
+                self.invalidate()
             case MousePressed:
                 pressed = true
-                surface.invalidate()
+                self.invalidate()
             }
         }
     }

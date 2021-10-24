@@ -132,6 +132,25 @@ impl Wnd
         }
     }
 
+    mtd getSurfaceRect()->Math.Rectangle
+    {
+        var result: retval = position
+        p := parent
+        while p
+        {
+            result.x += p.position.x
+            result.y += p.position.y
+            p = p.parent
+        }
+
+        return result
+    }
+
+    mtd invalidate()
+    {
+        surface.invalidateRect(getSurfaceRect())
+    }
+
     mtd move(x, y: s32)
     {
         evt := MoveEvent{}
