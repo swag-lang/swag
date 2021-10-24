@@ -6,6 +6,7 @@ enum PushButtonPaintState
 {
     Zero = 0
     Pressed
+    Hot
 }
 
 struct PushButton
@@ -13,6 +14,7 @@ struct PushButton
     using base: Widget
     pressed:    bool
     pressing:   bool
+    hot:        bool
 }
 
 impl IWnd for PushButton
@@ -20,8 +22,8 @@ impl IWnd for PushButton
     mtd onPaintEvent(evt: *PaintEvent)
     {
         var state: PushButtonPaintState = Zero
-        if pressed
-            state |= .Pressed
+        if pressed  state |= .Pressed
+        if hot      state |= .Hot
         paint(evt.bc, name, position, state)
     }
 
@@ -29,6 +31,14 @@ impl IWnd for PushButton
     {
         switch evt.kind
         {
+        case MouseEnter:
+            hot = true
+            invalidate()
+
+        case MouseLeave:
+            hot = false
+            invalidate()
+
         case MouseMove:
             if pressing
             {
@@ -68,17 +78,43 @@ impl PushButton
     func paint(bc: *PaintContext, name: string, position: Math.Rectangle, state: PushButtonPaintState)
     {
         var srcRect: Math.Rectangle
+        palette := &bc.theme.palette
+
+        colorBk     := palette.buttonBk
+        colorBorder := palette.buttonBorder
+        colorText   := palette.buttonText
+
+        if state & .Hot
+        {
+            colorBk = palette.buttonBkHot
+            colorBorder = palette.buttonBorderHot
+            colorText = palette.buttonTextHot
+        }
+
         if state & .Pressed
+        {
+            colorBk = palette.buttonBkPressed
+            colorBorder = palette.buttonBorderPressed
+            colorText = palette.buttonTextPressed
             srcRect = @{1, 22, 30, 20}
+        }
         else
+        {
             srcRect = @{1, 1, 30, 20}
+        }
 
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, Argb.White)
+        // Background
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, colorBk)
 
+        // Border
+        srcRect.offset(31, 0)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 8, 8, colorBorder)
+
+        // Content
         sf := StringFormat{}
         sf.horzAlignment = .Center
         sf.vertAlignment = .Center
-        bc.painter.drawString(position, name, bc.theme.fontSmall.regular, Argb.White, sf)
+        bc.painter.drawString(position, name, bc.theme.fontSmall.bold, colorText, sf)
     }
 
     func create(parent: *Wnd)->*PushButton

@@ -113,9 +113,10 @@ impl Application
 
         evt := MouseEvent{}
 
-        // Mouse leave
+        // Mouse enter/leave
         if !targetWnd or targetWnd != mouseEnterWnd
         {
+            // Leave
             if mouseEnterWnd
             {
                 evt.kind = .MouseLeave
@@ -128,6 +129,7 @@ impl Application
             if !targetWnd
                 return
 
+            // Enter
             evt.kind = .MouseEnter
             evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
             evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)

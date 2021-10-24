@@ -86,10 +86,17 @@ impl Rectangle
         return width >= 0 and height >= 0
     }
 
-    // Offset this point by a given value
-    mtd offset(value: f32)
+    // Offset the rectangle position by a given value
+    mtd offset(offsetXY: f32)
     {
-        x, y += value
+        x, y += offsetXY
+    }
+
+    // Offset the rectangle position by a given value
+    mtd offset(offsetX, offsetY: f32)
+    {
+        x += offsetX
+        y += offsetY
     }
 
     // Multiply the width and height of the rectangle by a given value
