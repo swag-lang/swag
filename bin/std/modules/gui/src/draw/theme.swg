@@ -31,17 +31,4 @@ impl Theme
         img := assume Image.decode(DefaultImageName, DefaultImageBytes)
         widgetsImg = renderer.addImage(img)
     }
-
-    func drawTexture(painter: *Painter, texture: Texture, dstRect, srcRect: Math.Rectangle, cornerX, cornerY: s32, color: Color)
-    {
-        if !cornerX and !cornerY
-        {
-            painter.drawTexture(dstRect, srcRect, texture, color)
-            return
-        }
-
-        loop i: 9
-        {
-        }
-    }
 }
