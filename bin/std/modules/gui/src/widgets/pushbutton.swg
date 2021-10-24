@@ -11,7 +11,7 @@ impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        tme := surface.app.theme
+        tme := getTheme()
 
         var srcRect: Math.Rectangle
         if pressed
@@ -30,10 +30,10 @@ impl IWnd for PushButton
             {
             case MouseReleased:
                 pressed = false
-                self.invalidate()
+                invalidate()
             case MousePressed:
                 pressed = true
-                self.invalidate()
+                invalidate()
             }
         }
     }

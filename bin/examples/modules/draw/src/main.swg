@@ -502,7 +502,7 @@ func displayPage5(painter: *Pixel.Painter)
 
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
 {
-    painter := event.painter
+    painter := event.bc.painter
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
     painter.paintQuality = g_PaintQuality
 

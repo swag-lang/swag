@@ -3709,8 +3709,14 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<S
             done.push_back(it0.scope);
             scopes.push_back_once(it0.scope);
             scopesVars.push_back(it0);
+
             if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
-                toAdd.append(it0.scope->owner->extension->alternativeScopesVars);
+            {
+                // We register the sub scope with the original "node" (top level), because the original node will in the end
+                // become the dependentVar node, and will be converted by cast to the correct type.
+                for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
+                    toAdd.push_back({it0.node, it1.scope});
+            }
         }
     }
 }
