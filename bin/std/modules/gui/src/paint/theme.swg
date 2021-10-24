@@ -17,7 +17,7 @@ struct Theme
     typeFaceBI:     const *TypeFace
     fontSmall:      FontFamily
 
-    colorWndBackground: Color = 0xFFEEEEEE
+    colorWndBackground: Color = 0xFF333333
 }
 
 struct WndColor

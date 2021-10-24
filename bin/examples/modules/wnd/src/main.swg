@@ -27,6 +27,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     surface1.wnd.hookOnCloseEvent = &onCloseEvent
 
     widget0 := PushButton.create(&surface0.wnd)
+    widget0.name = "Cancel"
     widget0.position = @{5, 5, 100, 30}
 
     surface0.show()

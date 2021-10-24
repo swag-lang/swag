@@ -16,10 +16,13 @@ struct Wnd
 {
     itf:        IWnd
     surface:    *Surface
+
     position:   Math.Rectangle
+
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
+    name:            String
     colorBackground: WndColor
 
     hookOnEvent:        func(*Wnd, *Event)

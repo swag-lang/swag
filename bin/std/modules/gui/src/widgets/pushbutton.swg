@@ -22,7 +22,7 @@ impl IWnd for PushButton
         var state: PushButtonPaintState = Zero
         if pressed
             state |= .Pressed
-        paint(evt.bc, position, state)
+        paint(evt.bc, name, position, state)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -65,7 +65,7 @@ impl IWnd for PushButton
 
 impl PushButton
 {
-    func paint(bc: *PaintContext, position: Math.Rectangle, state: PushButtonPaintState)
+    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, state: PushButtonPaintState)
     {
         var srcRect: Math.Rectangle
         if state & .Pressed
@@ -78,7 +78,7 @@ impl PushButton
         sf := StringFormat{}
         sf.horzAlignment = .Center
         sf.vertAlignment = .Center
-        bc.painter.drawString(position, "Example0", bc.theme.fontSmall.regular, Argb.Black, sf)
+        bc.painter.drawString(position, name, bc.theme.fontSmall.regular, Argb.Black, sf)
     }
 
     func create(parent: *Wnd)->*PushButton
