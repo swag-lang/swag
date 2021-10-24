@@ -7,14 +7,16 @@ enum PushButtonPaintState
     Zero = 0
     Pressed
     Hot
+    Default
 }
 
 struct PushButton
 {
-    using base: Widget
-    pressed:    bool
-    pressing:   bool
-    hot:        bool
+    using base:     Widget
+    isDefault:      bool
+    isPressed:      bool
+    isPressing:     bool
+    isHot:          bool
 }
 
 impl IWnd for PushButton
@@ -22,8 +24,9 @@ impl IWnd for PushButton
     mtd onPaintEvent(evt: *PaintEvent)
     {
         var state: PushButtonPaintState = Zero
-        if pressed  state |= .Pressed
-        if hot      state |= .Hot
+        if isPressed    state |= .Pressed
+        if isHot        state |= .Hot
+        if isDefault    state |= .Default
         paint(evt.bc, name, position, state)
     }
 
@@ -32,25 +35,25 @@ impl IWnd for PushButton
         switch evt.kind
         {
         case MouseEnter:
-            hot = true
+            isHot = true
             invalidate()
 
         case MouseLeave:
-            hot = false
+            isHot = false
             invalidate()
 
         case MouseMove:
-            if pressing
+            if isPressing
             {
                 rect := getClientRect()
                 if !rect.contains(evt.pos)
                 {
-                    pressed = false
+                    isPressed = false
                     invalidate()
                 }
-                else if !pressed
+                else if !isPressed
                 {
-                    pressed = true
+                    isPressed = true
                     invalidate()
                 }
             }
@@ -58,7 +61,7 @@ impl IWnd for PushButton
         case MousePressed:
             if evt.button == .Left
             {
-                pressed, pressing = true
+                isPressed, isPressing = true
                 captureMouse()
                 invalidate()
             }
@@ -67,7 +70,7 @@ impl IWnd for PushButton
             if evt.button == .Left
             {
                 releaseMouse()
-                pressed, pressing = false
+                isPressed, isPressing = false
                 invalidate()
             }
         }
@@ -80,23 +83,24 @@ impl PushButton
     {
         var srcRect: Math.Rectangle
         palette := &bc.theme.palette
+        isDefault := state & .Default
 
-        colorBk     := palette.buttonBk
-        colorBorder := palette.buttonBorder
-        colorText   := palette.buttonText
+        colorBk     := isDefault ? palette.buttonDefaultBk : palette.buttonBk
+        colorBorder := isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
+        colorText   := isDefault ? palette.buttonDefaultText : palette.buttonText
 
         if state & .Hot
         {
-            colorBk = palette.buttonBkHot
-            colorBorder = palette.buttonBorderHot
-            colorText = palette.buttonTextHot
+            colorBk     = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
+            colorBorder = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
+            colorText   = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
         }
 
         if state & .Pressed
         {
-            colorBk = palette.buttonBkPressed
-            colorBorder = palette.buttonBorderPressed
-            colorText = palette.buttonTextPressed
+            colorBk     = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
+            colorBorder = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
+            colorText   = isDefault ? palette.buttonDefaultTextPressed : palette.buttonTextPressed
             srcRect = @{1, 29, 27, 27}
         }
         else

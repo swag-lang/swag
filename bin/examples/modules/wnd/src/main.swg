@@ -33,7 +33,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     widget1 := PushButton.create(&surface0.wnd)
     widget1.name = "Cancel"
     widget1.position = @{5, 40, 100, 30}
-    widget1.pressed = true
+    widget1.isDefault = true
 
     surface0.show()
     surface1.show()
