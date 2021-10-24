@@ -156,6 +156,12 @@ impl Wnd
         return @{pos.x - r.x, pos.y - r.y}
     }
 
+    // Returns the client area
+    mtd getClientRect()->Math.Rectangle
+    {
+        return @{0, 0, position.width, position.height}
+    }
+
     // Get the wnd position in the surface
     mtd getSurfaceRect()->Math.Rectangle
     {

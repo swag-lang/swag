@@ -42,7 +42,8 @@ impl IWnd for PushButton
         case MouseMove:
             if pressing
             {
-                if !position.contains(evt.pos)
+                rect := getClientRect()
+                if !rect.contains(evt.pos)
                 {
                     pressed = false
                     invalidate()
