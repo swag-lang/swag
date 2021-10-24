@@ -197,7 +197,8 @@ impl Wnd
         sendEvent(&evt)
     }
 
-    // Get the window at the given surface coordinate
+    // Get the child window at the given coordinate
+    // Coordinate is expressed in the parent system
     mtd getWndAt(x, y: f32)->*Wnd
     {
         if !position.contains(x, y)
@@ -205,7 +206,7 @@ impl Wnd
 
         visit c: childs
         {
-            res := c.getWndAt(x, y)
+            res := c.getWndAt(x - position.x, y - position.y)
             if res
                 return res
         }
