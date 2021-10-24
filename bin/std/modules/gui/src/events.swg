@@ -50,9 +50,7 @@ struct CloseEvent
 struct PaintEvent
 {
     using base: Event{kind: EventKind.Paint}
-
-    painter:  *Pixel.Painter
-    renderer: *Pixel.RenderOgl
+    bc: *PaintContext
 }
 
 struct ResizeEvent

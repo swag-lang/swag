@@ -12,7 +12,7 @@ impl IWnd for Static
     mtd onPaintEvent(evt: *PaintEvent)
     {
         tme := surface.app.theme
-        Style.drawTexture(evt.painter, tme.widgetsImg, self.position, @{1, 1, 30, 20}, 6, 6, Argb.White)
+        Style.drawTexture(evt.bc.painter, tme.widgetsImg, self.position, @{1, 1, 30, 20}, 6, 6, Argb.White)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

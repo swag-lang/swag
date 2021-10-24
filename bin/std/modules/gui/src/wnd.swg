@@ -122,8 +122,7 @@ impl Wnd
 
         // User paint
         evt := PaintEvent{}
-        evt.painter = bc.painter
-        evt.renderer = bc.renderer
+        evt.bc = bc
         sendEvent(&evt)
 
         // Childs
