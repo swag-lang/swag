@@ -22,9 +22,11 @@ struct Wnd
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
-    name:       String
-    isDisabled: bool
-    isHidden:   bool
+    name: String
+
+    drawBackground: bool
+    isDisabled:     bool
+    isHidden:       bool
 
     hookOnEvent:        func(*Wnd, *Event)
     hookOnCreateEvent:  func(*Wnd, *CreateEvent)
@@ -111,8 +113,9 @@ impl Wnd
 
     #[Swag.Inline]
     {
-        mtd getApp()   => surface.app
-        mtd getTheme() => &surface.app.theme
+        mtd getApp()        => surface.app
+        mtd getTheme()      => &surface.app.theme
+        mtd getPalette()    => &surface.app.theme.palette
     }
 
     //////////////////////////////////////////////
@@ -122,7 +125,8 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Background
-        bc.painter.fillRect(position, bc.theme.palette.windowBk)
+        if drawBackground
+            bc.painter.fillRect(position, getPalette().windowBk)
 
         // User paint
         evt := PaintEvent{}

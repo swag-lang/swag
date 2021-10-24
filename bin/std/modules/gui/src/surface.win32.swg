@@ -92,6 +92,7 @@ impl NativeSurface
         result := Memory.new'Surface()
         result.app = app
         result.position = @{x, y, width, height}
+        result.wnd.drawBackground = true
 
         // Create class
         #[Swag.Global]
