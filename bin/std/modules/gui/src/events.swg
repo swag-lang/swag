@@ -83,9 +83,10 @@ struct KeyEvent
 
 struct MouseEvent
 {
-    using base:     Event
-    button:         Input.MouseButton = ?
-    surfacePos:     Math.Point
+    using base: Event
+    button:     Input.MouseButton = ?
+    surfacePos: Math.Point
+    pos:        Math.Point
 }
 
 struct QuitEvent

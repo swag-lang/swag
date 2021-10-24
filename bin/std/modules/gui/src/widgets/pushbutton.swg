@@ -5,6 +5,7 @@ struct PushButton
 {
     using base: Widget
     pressed:    bool
+    pressing:   bool
 }
 
 impl IWnd for PushButton
@@ -24,15 +25,36 @@ impl IWnd for PushButton
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if evt.button == .Left
+        switch evt.kind
         {
-            switch evt.kind
+        case MouseMove:
+            if pressing
             {
-            case MouseReleased:
-                pressed = false
+                if !position.contains(evt.pos)
+                {
+                    pressed = false
+                    invalidate()
+                }
+                else if !pressed
+                {
+                    pressed = true
+                    invalidate()
+                }
+            }
+
+        case MousePressed:
+            if evt.button == .Left
+            {
+                pressed, pressing = true
+                captureMouse()
                 invalidate()
-            case MousePressed:
-                pressed = true
+            }
+
+        case MouseReleased:
+            if evt.button == .Left
+            {
+                releaseMouse()
+                pressed, pressing = false
                 invalidate()
             }
         }

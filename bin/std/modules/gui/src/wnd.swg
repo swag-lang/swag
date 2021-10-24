@@ -73,7 +73,7 @@ impl IWnd for Wnd
             else
                 itf.onKeyEvent(cast(*KeyEvent) evt)
 
-        case MousePressed, MouseReleased, MouseMove:
+        case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave:
             if hookOnMouseEvent
                 hookOnMouseEvent(self, cast(*MouseEvent) evt)
             else
@@ -132,6 +132,17 @@ impl Wnd
         }
     }
 
+    mtd screenToSurface(pos: Math.Point)->Math.Point
+    {
+        return @{pos.x - surface.position.x, pos.y - surface.position.y}
+    }
+
+    mtd surfaceToLocal(pos: Math.Point)->Math.Point
+    {
+        r := getSurfaceRect()
+        return @{pos.x - r.x, pos.y - r.y}
+    }
+
     mtd getSurfaceRect()->Math.Rectangle
     {
         var result: retval = position
@@ -167,6 +178,16 @@ impl Wnd
         position.width = width
         position.height = height
         sendEvent(&evt)
+    }
+
+    mtd captureMouse()
+    {
+        surface.app.mouseCaptureWnd = self
+    }
+
+    mtd releaseMouse()
+    {
+        surface.app.mouseCaptureWnd = null
     }
 
     mtd getWndAt(x, y: f32)->*Wnd

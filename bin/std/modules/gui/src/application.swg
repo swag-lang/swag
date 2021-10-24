@@ -12,7 +12,9 @@ struct Application
     surfaces:       Array'(*Surface)
     mustQuit:       bool
     quitCode:       s32
-    mouseEnterWnd:  *Wnd
+
+    mouseEnterWnd:      *Wnd
+    mouseCaptureWnd:    *Wnd
 }
 
 impl Application
@@ -101,38 +103,47 @@ impl Application
     {
         mouse.update()
 
-        mousePos  := mouse.getPosition()
-        targetWnd := getWndAt(mousePos.x, mousePos.y)
+        mousePos := mouse.getPosition()
+
+        // Wnd that will receive the message
+        var targetWnd: *Wnd
+        if mouseCaptureWnd
+            targetWnd = mouseCaptureWnd
+        else
+            targetWnd = getWndAt(mousePos.x, mousePos.y)
+
+        evt := MouseEvent{}
 
         // Mouse leave
         if !targetWnd or targetWnd != mouseEnterWnd
         {
             if mouseEnterWnd
             {
-                evt := MouseEvent{kind: EventKind.MouseLeave}
-                evt.target = mouseEnterWnd
-                evt.surfacePos = mousePos
-                sendEvent(&evt)
+                evt.kind = .MouseLeave
+                evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
+                evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)
+                mouseEnterWnd.sendEvent(&evt)
             }
 
             mouseEnterWnd = targetWnd
             if !targetWnd
                 return
 
-            evt := MouseEvent{kind: EventKind.MouseEnter}
-            evt.target = mouseEnterWnd
-            evt.surfacePos = mousePos
-            sendEvent(&evt)
+            evt.kind = .MouseEnter
+            evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
+            evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)
+            mouseEnterWnd.sendEvent(&evt)
         }
+
+        evt.surfacePos = targetWnd.screenToSurface(mousePos)
+        evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
 
         // Move
         move := mouse.getMove()
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
-            evt := MouseEvent{kind: EventKind.MouseMove}
-            evt.target = targetWnd
-            evt.surfacePos = mousePos
-            sendEvent(&evt)
+            evt.kind = EventKind.MouseMove
+            targetWnd.sendEvent(&evt)
         }
 
         // Detect changes
@@ -142,19 +153,15 @@ impl Application
             curP  := mouse.currentState.pressed[i]
             if !lastP and curP
             {
-                evt := MouseEvent{kind: EventKind.MousePressed}
+                evt.kind = .MousePressed
                 evt.button = cast(Input.MouseButton) i
-                evt.target = targetWnd
-                evt.surfacePos = mousePos
-                sendEvent(&evt)
+                targetWnd.sendEvent(&evt)
             }
             else if lastP and !curP
             {
-                evt := MouseEvent{kind: EventKind.MouseReleased}
+                evt.kind = .MouseReleased
                 evt.button = cast(Input.MouseButton) i
-                evt.target = targetWnd
-                evt.surfacePos = mousePos
-                sendEvent(&evt)
+                targetWnd.sendEvent(&evt)
             }
         }
     }
