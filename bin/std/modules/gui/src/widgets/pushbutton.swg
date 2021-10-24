@@ -1,6 +1,13 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum PushButtonPaintState
+{
+    Zero = 0
+    Pressed
+}
+
 struct PushButton
 {
     using base: Widget
@@ -12,16 +19,10 @@ impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        tme := getTheme()
-
-        var srcRect: Math.Rectangle
+        var state: PushButtonPaintState = Zero
         if pressed
-            srcRect = @{1, 22, 30, 20}
-        else
-            srcRect = @{1, 1, 30, 20}
-
-        Style.drawTexture(evt.bc.painter, tme.widgetsImg, self.position, srcRect, 6, 6, Argb.White)
-        evt.bc.painter.drawString(self.position.x, self.position.y, "toto", tme.fontSmall.regular, Argb.Black)
+            state |= .Pressed
+        paint(evt.bc, position, state)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -64,6 +65,22 @@ impl IWnd for PushButton
 
 impl PushButton
 {
+    func paint(bc: *PaintContext, position: Math.Rectangle, state: PushButtonPaintState)
+    {
+        var srcRect: Math.Rectangle
+        if state & .Pressed
+            srcRect = @{1, 22, 30, 20}
+        else
+            srcRect = @{1, 1, 30, 20}
+
+        Style.drawTexture(bc.painter, bc.theme.widgetsImg, position, srcRect, 6, 6, Argb.White)
+
+        sf := StringFormat{}
+        sf.horzAlignment = .Center
+        sf.vertAlignment = .Center
+        bc.painter.drawString(position, "Example0", bc.theme.fontSmall.regular, Argb.Black, sf)
+    }
+
     func create(parent: *Wnd)->*PushButton
     {
         res := Wnd.create'PushButton(parent)

@@ -12,12 +12,6 @@ interface IWnd
     onMouseEvent:   func(self, *MouseEvent)
 }
 
-struct PaintContext
-{
-    painter:    *Painter
-    renderer:   *RenderOgl
-}
-
 struct Wnd
 {
     itf:        IWnd

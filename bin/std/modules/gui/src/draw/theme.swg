@@ -46,9 +46,10 @@ impl Theme
         typeFaceI  = try TypeFace.create(DefaultFontItalic)
         typeFaceBI = try TypeFace.create(DefaultFontBoldItalic)
 
-        fontSmall.regular = Font.create(typeFaceR, 12)
-        fontSmall.bold = Font.create(typeFaceB, 12)
-        fontSmall.italic = Font.create(typeFaceI, 12)
-        fontSmall.boldItalic = Font.create(typeFaceBI, 12)
+        const FontSmallSize = 14'u32
+        fontSmall.regular = Font.create(typeFaceR, FontSmallSize)
+        fontSmall.bold = Font.create(typeFaceB, FontSmallSize)
+        fontSmall.italic = Font.create(typeFaceI, FontSmallSize)
+        fontSmall.boldItalic = Font.create(typeFaceBI, FontSmallSize)
     }
 }
