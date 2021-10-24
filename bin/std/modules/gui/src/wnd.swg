@@ -119,7 +119,6 @@ impl Wnd
     {
         // Background
         bc.painter.fillRect(position, colorBackground.getColor())
-        bc.painter.drawTexture(position, surface.app.theme.widgetsImg)
 
         // User paint
         evt := PaintEvent{}

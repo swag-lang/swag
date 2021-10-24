@@ -9,7 +9,6 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)
     evt.painter.paintParams  = .Antialiased
     evt.painter.paintQuality = .Normal
     evt.painter.drawTexture(wnd.position, wnd.surface.app.theme.widgetsImg)
-    evt.painter.fillRoundRect(100, 100, 200, 200, 15, 15, Argb.Red)
 }
 
 func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
