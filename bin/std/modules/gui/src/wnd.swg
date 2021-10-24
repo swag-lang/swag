@@ -91,6 +91,10 @@ impl IWnd for Wnd
 
 impl Wnd
 {
+    //////////////////////////////////////////////
+    // Setup
+    //////////////////////////////////////////////
+
     func(T) create(parent: *Wnd)->*T
     {
         Debug.assert(parent != null)
@@ -115,6 +119,10 @@ impl Wnd
         mtd getTheme() => &surface.app.theme
     }
 
+    //////////////////////////////////////////////
+    // Paint
+    //////////////////////////////////////////////
+
     mtd paint(bc: *PaintContext)
     {
         // Background
@@ -132,17 +140,29 @@ impl Wnd
         }
     }
 
+    mtd invalidate()
+    {
+        surface.invalidateRect(getSurfaceRect())
+    }
+
+    //////////////////////////////////////////////
+    // Coordinates
+    //////////////////////////////////////////////
+
+    // Convert a screen coordinate to a surface coordinate (relative to my surface)
     mtd screenToSurface(pos: Math.Point)->Math.Point
     {
         return @{pos.x - surface.position.x, pos.y - surface.position.y}
     }
 
+    // Convert a surface coordinate to a local coordinate (relative to me)
     mtd surfaceToLocal(pos: Math.Point)->Math.Point
     {
         r := getSurfaceRect()
         return @{pos.x - r.x, pos.y - r.y}
     }
 
+    // Get the wnd position in the surface
     mtd getSurfaceRect()->Math.Rectangle
     {
         var result: retval = position
@@ -157,11 +177,7 @@ impl Wnd
         return result
     }
 
-    mtd invalidate()
-    {
-        surface.invalidateRect(getSurfaceRect())
-    }
-
+    // Move the wnd
     mtd move(x, y: s32)
     {
         evt := MoveEvent{}
@@ -171,6 +187,7 @@ impl Wnd
         sendEvent(&evt)
     }
 
+    // Resize the wnd
     mtd resize(width, height: s32)
     {
         evt := ResizeEvent{}
@@ -180,16 +197,7 @@ impl Wnd
         sendEvent(&evt)
     }
 
-    mtd captureMouse()
-    {
-        surface.app.mouseCaptureWnd = self
-    }
-
-    mtd releaseMouse()
-    {
-        surface.app.mouseCaptureWnd = null
-    }
-
+    // Get the window at the given surface coordinate
     mtd getWndAt(x, y: f32)->*Wnd
     {
         if !position.contains(x, y)
@@ -204,6 +212,24 @@ impl Wnd
 
         return self
     }
+
+    //////////////////////////////////////////////
+    // Helpers
+    //////////////////////////////////////////////
+
+    mtd captureMouse()
+    {
+        surface.app.mouseCaptureWnd = self
+    }
+
+    mtd releaseMouse()
+    {
+        surface.app.mouseCaptureWnd = null
+    }
+
+    //////////////////////////////////////////////
+    // Events
+    //////////////////////////////////////////////
 
     mtd postQuitEvent()
     {
