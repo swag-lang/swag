@@ -6,6 +6,8 @@ impl Painter
     // Draw an empty circle
     func drawCircle(using self, centerX, centerY: f32, radius: f32, color: Color, penSize: f32)
     {
+        if radius == 0 or color.a == 0
+            return
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
@@ -14,6 +16,8 @@ impl Painter
 
     func drawCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
     {
+        if radius == 0 or pen.brush.color.a == 0
+            return
         sharedLinePath.setEllipse(centerX, centerY, radius, radius)
         drawPath(&sharedLinePath, pen)
     }
@@ -21,12 +25,16 @@ impl Painter
     // Draw a solid circle
     func fillCircle(using self, centerX, centerY: f32, radius: f32, brush: Brush)
     {
+        if radius == 0 or brush.color.a == 0
+            return
         sharedLinePath.setEllipse(centerX, centerY, radius, radius)
         fillPath(&sharedLinePath, brush)
     }
 
     func fillCircle(using self, centerX, centerY: f32, radius: f32, color: Color)
     {
+        if radius == 0 or color.a == 0
+            return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         sharedLinePath.setEllipse(centerX, centerY, radius, radius)
@@ -36,6 +44,8 @@ impl Painter
     // Draw an empty ellipse
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
     {
+        if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0
+            return
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
@@ -44,6 +54,8 @@ impl Painter
 
     func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
     {
+        if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0
+            return
         sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
         drawPath(&sharedLinePath, pen)
     }
@@ -51,12 +63,16 @@ impl Painter
     // Draw a solid ellipse
     func fillEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, brush: Brush)
     {
+        if radiusX == 0 or radiusY == 0 or brush.color.a == 0
+            return
         sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
         fillPath(&sharedLinePath, brush)
     }
 
     func fillEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color)
     {
+        if radiusX == 0 or radiusY == 0 or color.a == 0
+            return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)

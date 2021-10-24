@@ -87,9 +87,8 @@ impl Painter
     // Draw a string
     mtd drawString(left, top: f32, text: string, font: *Font, color: Color)
     {
-        if !@countof(text) or color.a == 0
+        if @countof(text) == 0 or color.a == 0
             return
-
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         drawString(left, top, text, font, sharedSolidBrush)
@@ -98,7 +97,7 @@ impl Painter
     // Draw a string
     mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
-        if !@countof(text)
+        if @countof(text) == 0 or brush.color.a == 0
             return
 
         arr := getGlyphs(text, font)
@@ -167,9 +166,8 @@ impl Painter
     // Draw a string
     mtd drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
     {
-        if !@countof(text) or color.a == 0
+        if @countof(text) == 0 or color.a == 0
             return
-
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         drawString(pos, text, font, sharedSolidBrush, format)
@@ -178,7 +176,7 @@ impl Painter
     // Draw a string
     mtd drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
     {
-        if !@countof(text)
+        if @countof(text) == 0 or brush.color.a == 0
             return
 
         struct OneStr
@@ -268,6 +266,7 @@ impl Painter
         y := pos.y
 
         // Height of total text
+        // Special case when there's only one line, in case of vertical center
         var totalHeight: f32 = ?
         var yOffset: f32
         if arr.count == 1 and format.vertAlignment == .Center
