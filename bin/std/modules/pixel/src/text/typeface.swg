@@ -20,7 +20,7 @@ private var g_Lock:         Sync.Mutex
 impl TypeFace
 {
     // Get or load a new typeface
-    func create(fullname: string)->*TypeFace throw
+    func load(fullname: string)->*TypeFace throw
     {
         Sync.scopedLock(&g_Lock)
 

@@ -569,7 +569,7 @@ func setup(wnd: *Wnd) throw
         img1.setAlpha(128)
         rdr.updateTexture(Res.image2, img1.pixels)
 
-        Res.typeface = TypeFace.create(imagePath("arial.ttf"))
+        Res.typeface = TypeFace.load(imagePath("arial.ttf"))
         Res.fontSmall = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
         Res.font40 = Font.create(Res.typeface, 40)
         Res.font80 = Font.create(Res.typeface, 80)

@@ -88,7 +88,7 @@ impl Font
         Debug.assert(@countof(fullname) != 0)
         Debug.assert(size > 0)
 
-        typeFace := try TypeFace.create(fullname)
+        typeFace := try TypeFace.load(fullname)
         return create(typeFace, size)
     }
 
