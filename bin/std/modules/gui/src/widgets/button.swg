@@ -97,15 +97,16 @@ impl Button
 {
     func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: ButtonPaintStyle)
     {
-        flags := style.flags
+        flags   := style.flags
+        palette := style.palette
+
         isDefault := flags & .Default
 
-        var srcRect: Math.Rectangle
-        var colorBk: Color = ?
+        var srcRect:     Math.Rectangle = ?
+        var colorBk:     Color = ?
         var colorBorder: Color = ?
-        var colorText: Color = ?
+        var colorText:   Color = ?
 
-        palette := style.palette
         if flags & .Disabled
         {
             colorBk     = palette.buttonDisabledBk
