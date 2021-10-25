@@ -27,6 +27,7 @@ enum StringFormatFlags
 {
     Default
     WordWrap
+    Clip
 }
 
 struct StringFormat
@@ -288,6 +289,17 @@ impl Painter
         case Center:    y = pos.vertCenter() - (totalHeight * 0.5) - yOffset
         }
 
+        // Clipping
+        if format.flags & .Clip
+        {
+            pushClippingRect(pos)
+            if clippingRect.isEmpty()
+            {
+                popClippingRect()
+                return
+            }
+        }
+
         visit *line: arr
         {
             x1 := x
@@ -303,5 +315,9 @@ impl Painter
             drawString(x1, y1, line.str, font, brush, format.underline)
             y += font.height + format.lineGap
         }
+
+        // Restore clipping to its previous value
+        if format.flags & .Clip
+            popClippingRect()
     }
 }

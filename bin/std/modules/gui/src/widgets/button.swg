@@ -160,6 +160,7 @@ impl Button
         labelStyle.colorText = colorText
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
+        labelStyle.stringFormat.flags = .Clip
         labelStyle.font = bc.theme.fontSmall.bold
         labelPos := position
         labelPos.inflate(-5)

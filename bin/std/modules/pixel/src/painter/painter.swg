@@ -117,6 +117,7 @@ struct Painter
     lastTexture0Type:   BrushType = SolidColor
 
     clippingRect:       Rectangle
+    stackClipRect:      Array'Rectangle
     lastTexture0Handle: TextureHandle
     hasTextureFont:     bool
 
@@ -348,6 +349,7 @@ impl Painter
 
         commandBuffer.clear()
         vertexBuffer.clear()
+        stackClipRect.clear()
 
         drawingBegin   = true
         canSetTexture0 = true
@@ -446,6 +448,25 @@ impl Painter
     {
         clippingRectOn = false
         discard newCommand(CommandId.ResetClippingRect, true)
+    }
+
+    mtd pushClippingRect(rect: Math.Rectangle)
+    {
+        stackClipRect.add(clippingRect)
+        newRect := clippingRect
+        newRect.intersect(rect)
+        setClippingRect(newRect)
+    }
+
+    mtd popClippingRect()
+    {
+        clipRect := stackClipRect.popBack()
+        setClippingRect(clipRect)
+    }
+
+    mtd getClippingRect()->Math.Rectangle
+    {
+        return clippingRect
     }
 
     // Start painting in the clipping buffer
