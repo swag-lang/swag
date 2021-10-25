@@ -11,6 +11,11 @@ enum PushButtonPaintFlags
     Disabled
 }
 
+struct PushButtonPaintStyle
+{
+    flags: PushButtonPaintFlags = Zero
+}
+
 struct PushButton
 {
     using base:     Widget
@@ -24,17 +29,17 @@ impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        var state: PushButtonPaintFlags = Zero
+        var style: PushButtonPaintStyle
         if isPressed
-            state |= .Pressed
+            style.flags |= .Pressed
         if isHot
-            state |= .Hot
+            style.flags |= .Hot
         if isDefault
-            state |= .Default
+            style.flags |= .Default
         if evt.bc.isDisabled
-            state |= .Disabled
+            style.flags |= .Disabled
 
-        paint(evt.bc, name, position, state)
+        paint(evt.bc, name, position, style)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -86,17 +91,19 @@ impl IWnd for PushButton
 
 impl PushButton
 {
-    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, state: PushButtonPaintFlags)
+    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: PushButtonPaintStyle)
     {
+        flags := style.flags
+
         var srcRect: Math.Rectangle
         palette := &bc.theme.palette
-        isDefault := state & .Default
+        isDefault := flags & .Default
 
         var colorBk: Color = ?
         var colorBorder: Color = ?
         var colorText: Color = ?
 
-        if state & .Disabled
+        if flags & .Disabled
         {
             colorBk     = palette.buttonDisabledBk
             colorBorder = palette.buttonDisabledBorder
@@ -109,14 +116,14 @@ impl PushButton
             colorBorder = isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
             colorText   = isDefault ? palette.buttonDefaultText : palette.buttonText
 
-            if state & .Hot
+            if flags & .Hot
             {
                 colorBk     = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
                 colorBorder = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
                 colorText   = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
             }
 
-            if state & .Pressed
+            if flags & .Pressed
             {
                 colorBk     = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
                 colorBorder = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
@@ -137,10 +144,11 @@ impl PushButton
         Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 9, colorBorder)
 
         // Content
-        sf := StringFormat{}
-        sf.horzAlignment = .Center
-        sf.vertAlignment = .Center
-        bc.painter.drawString(position, name, bc.theme.fontSmall.bold, colorText, sf)
+        var labelStyle: LabelPaintStyle
+        labelStyle.colorText = colorText
+        labelStyle.stringFormat.horzAlignment = .Center
+        labelStyle.stringFormat.vertAlignment = .Center
+        Label.paint(bc, position, name, labelStyle)
     }
 
     func create(parent: *Wnd)->*PushButton
