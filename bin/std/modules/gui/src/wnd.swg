@@ -95,18 +95,18 @@ impl Wnd
     // Setup
     //////////////////////////////////////////////
 
-    func(T) create(parent: *Wnd)->*T
+    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
     {
         Debug.assert(parent != null)
+
         res := Memory.new'T()
+        res.name = name
+        res.position = position
 
         res.itf = cast(IWnd) dref res
         res.surface = parent.surface
         res.parent = parent
         parent.childs.add(&res.wnd)
-
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
 
         return res
     }

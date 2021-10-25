@@ -155,9 +155,13 @@ impl PushButton
         Label.paint(bc, position, name, labelStyle)
     }
 
-    func create(parent: *Wnd)->*PushButton
+    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*PushButton
     {
-        res := Wnd.create'PushButton(parent)
+        res := Wnd.create'PushButton(parent, name, position)
+
+        evt := CreateEvent{}
+        res.sendEvent(&evt)
+
         return res
     }
 }
