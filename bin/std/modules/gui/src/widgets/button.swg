@@ -24,6 +24,8 @@ struct Button
     isPressed:      bool
     isPressing:     bool
     isHot:          bool
+    isIn:           bool
+    sigPressed:     func(*Button)
 }
 
 impl IWnd for Button
@@ -51,23 +53,27 @@ impl IWnd for Button
         switch evt.kind
         {
         case MouseEnter:
-            isHot = true
+            isHot, isIn = true
             invalidate()
 
         case MouseLeave:
-            isHot = false
+            isHot, isIn = false
             invalidate()
 
         case MouseMove:
-            if isPressing
+            if !isPressing
+                break
+            rect := getClientRect()
+            if !rect.contains(evt.pos)
             {
-                rect := getClientRect()
-                if !rect.contains(evt.pos)
-                {
-                    isPressed = false
-                    invalidate()
-                }
-                else if !isPressed
+                isPressed = false
+                isIn = false
+                invalidate()
+            }
+            else
+            {
+                isIn = true
+                if !isPressed
                 {
                     isPressed = true
                     invalidate()
@@ -87,6 +93,8 @@ impl IWnd for Button
             {
                 releaseMouse()
                 isPressed, isPressing = false
+                if isIn and sigPressed
+                    sigPressed(self)
                 invalidate()
             }
         }
