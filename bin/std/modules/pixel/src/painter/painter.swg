@@ -450,23 +450,48 @@ impl Painter
         discard newCommand(CommandId.ResetClippingRect, true)
     }
 
+    // Interface the given rectangle with the current clipping rectangle
     mtd pushClippingRect(rect: Math.Rectangle)
     {
-        stackClipRect.add(clippingRect)
-        newRect := clippingRect
-        newRect.intersect(rect)
-        setClippingRect(newRect)
+        if clippingRectOn
+        {
+            stackClipRect.add(clippingRect)
+            newRect := clippingRect
+            newRect.intersect(rect)
+            setClippingRect(newRect)
+        }
+        else
+        {
+            setClippingRect(rect)
+        }
     }
 
+    // Restore the original clipping rectangle
     mtd popClippingRect()
     {
-        clipRect := stackClipRect.popBack()
-        setClippingRect(clipRect)
+        if stackClipRect.isEmpty()
+        {
+            resetClippingRect()
+        }
+        else
+        {
+            clipRect := stackClipRect.popBack()
+            setClippingRect(clipRect)
+        }
     }
 
+    // Get the current clipping rectangle
     mtd getClippingRect()->Math.Rectangle
     {
-        return clippingRect
+        if clippingRectOn
+            return clippingRect
+        return @{0, 0, Swag.F32.Max, Swag.F32.Max}
+    }
+
+    // Returns true if the current clipping rectangle is empty (no drawing !)
+    mtd isEmptyClippingRect()->bool
+    {
+        return clippingRectOn and clippingRect.isEmpty()
     }
 
     // Start painting in the clipping buffer

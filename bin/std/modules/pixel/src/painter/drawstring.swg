@@ -270,7 +270,7 @@ impl Painter
         // Special case when there's only one line, in case of vertical center
         var totalHeight: f32 = ?
         var yOffset: f32
-        if arr.count == 1 and format.vertAlignment == .Center
+        if arr.count == 1
         {
             boundRect := measureString(0, 0, arr[0].str, font)
             totalHeight = boundRect.height
@@ -284,8 +284,8 @@ impl Painter
 
         switch format.vertAlignment
         {
-        case Top:       break
-        case Bottom:    y = pos.bottom() - totalHeight
+        case Top:       y -= yOffset
+        case Bottom:    y = pos.bottom() - totalHeight - yOffset
         case Center:    y = pos.vertCenter() - (totalHeight * 0.5) - yOffset
         }
 

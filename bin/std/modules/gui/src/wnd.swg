@@ -125,12 +125,10 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Clipping
-        // Clip rect is in 'parent' coordinates system
-        oldClipRect := bc.clipRect
-        bc.clipRect.intersect(position)
-        if bc.clipRect.isEmpty()
+        bc.painter.pushClippingRect(position)
+        defer bc.painter.popClippingRect()
+        if bc.painter.isEmptyClippingRect()
             return
-        bc.painter.setClippingRect(bc.clipRect)
 
         // Transmit disabled state to childs
         if isDisabled
@@ -152,8 +150,6 @@ impl Wnd
                 continue
             c.paint(bc)
         }
-
-        bc.clipRect = oldClipRect
     }
 
     mtd invalidate()
