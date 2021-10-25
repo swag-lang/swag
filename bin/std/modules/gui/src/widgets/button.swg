@@ -2,7 +2,7 @@
 using Core, Pixel
 
 #[Swag.EnumFlags]
-enum PushButtonPaintFlags
+enum ButtonPaintFlags
 {
     Zero = 0
     Pressed
@@ -11,13 +11,13 @@ enum PushButtonPaintFlags
     Disabled
 }
 
-struct PushButtonPaintStyle
+struct ButtonPaintStyle
 {
-    flags:      PushButtonPaintFlags = Zero
+    flags:      ButtonPaintFlags = Zero
     palette:    *Palette
 }
 
-struct PushButton
+struct Button
 {
     using base:     Widget
     isDefault:      bool
@@ -26,11 +26,11 @@ struct PushButton
     isHot:          bool
 }
 
-impl IWnd for PushButton
+impl IWnd for Button
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        var style: PushButtonPaintStyle
+        var style: ButtonPaintStyle
 
         if isPressed
             style.flags |= .Pressed
@@ -93,9 +93,9 @@ impl IWnd for PushButton
     }
 }
 
-impl PushButton
+impl Button
 {
-    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: PushButtonPaintStyle)
+    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: ButtonPaintStyle)
     {
         flags := style.flags
         isDefault := flags & .Default
@@ -155,9 +155,9 @@ impl PushButton
         Label.paint(bc, position, name, labelStyle)
     }
 
-    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*PushButton
+    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*Button
     {
-        res := Wnd.create'PushButton(parent, name, position)
+        res := Wnd.create'Button(parent, name, position)
 
         evt := CreateEvent{}
         res.sendEvent(&evt)

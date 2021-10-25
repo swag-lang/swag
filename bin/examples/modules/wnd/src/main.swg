@@ -22,10 +22,10 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     surface0 := try app.createSurface("Example0", 100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
-    widget0 := PushButton.create(&surface0.wnd, "Normal", @{5, 5, 100, 30})
-    widget1 := PushButton.create(&surface0.wnd, "Default", @{5, 40, 100, 30})
+    widget0 := Button.create(&surface0.wnd, "Normal", @{5, 5, 100, 30})
+    widget1 := Button.create(&surface0.wnd, "Default", @{5, 40, 100, 30})
     widget1.isDefault = true
-    widget2 := PushButton.create(&surface0.wnd, "Disabled", @{5, 75, 100, 30})
+    widget2 := Button.create(&surface0.wnd, "Disabled", @{5, 75, 100, 30})
     widget2.isDisabled = true
 
     surface1 := try app.createSurface("Example1", 100+W, 100, W, H, SurfaceFlags.OverlappedWindow | SurfaceFlags.ToolWindow)
