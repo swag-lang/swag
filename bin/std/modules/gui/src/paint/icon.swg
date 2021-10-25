@@ -25,6 +25,6 @@ impl Icon
         srcY *= imageList.sizeY
 
         painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, size, size}, @{srcX, srcY, imageList.sizeX - 0.5, imageList.sizeY - 0.5}, imageList.texture, color)
+        painter.drawTexture(@{x, y, size, size}, @{srcX + 0.5, srcY + 0.5, imageList.sizeX - 1, imageList.sizeY - 1}, imageList.texture, color)
     }
 }
