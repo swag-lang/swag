@@ -428,7 +428,14 @@ impl Painter
     // Set the current clipping rectangle
     mtd setClippingRect(x, y, width, height: f32)
     {
-        clippingRect = @{x, y, width, height}
+        setClippingRect(@{x, y, width, height})
+    }
+
+    mtd setClippingRect(rect: Math.Rectangle)
+    {
+        if clippingRect == rect
+            return
+        clippingRect = rect
         clippingRectOn = true
         cmd := newCommand(CommandId.SetClippingRect, true)
         cmd.clippingRect.rect = clippingRect

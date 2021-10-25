@@ -53,6 +53,7 @@ impl Surface
         cxt.renderer = &app.renderer
         cxt.renderer.begin(rc)
         cxt.painter.begin()
+        cxt.clipRect = @{0, 0, rc.width, rc.height}
 
         wnd.paint(&cxt)
 

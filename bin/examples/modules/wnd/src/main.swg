@@ -22,7 +22,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     surface0 := try app.createSurface("Example0", 100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
-    widget0 := Button.create(&surface0.wnd, "Normal", @{5, 5, 100, 30})
+    widget0 := Button.create(&surface0.wnd, "Normal Normal Normal", @{5, 5, 100, 30})
     widget0.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
     widget1 := Button.create(&surface0.wnd, "Default", @{5, 40, 100, 30})
     widget1.isDefault = true
