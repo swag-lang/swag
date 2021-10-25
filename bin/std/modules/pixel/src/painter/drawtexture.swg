@@ -4,7 +4,7 @@ using Core, Core.Math
 impl Painter
 {
     // Draw a texture image
-    func drawTexture(using self, left, top, width, height: f32, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y, width, height: f32, texture: Texture, color: Color = Argb.White)
     {
         if width == 0 or height == 0 or color.a == 0
             return
@@ -12,7 +12,7 @@ impl Painter
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture
         sharedSolidBrush.uvMode = .Fill
-        fillRect(left, top, width, height, sharedSolidBrush)
+        fillRect(x, y, width, height, sharedSolidBrush)
     }
 
     func drawTexture(using self, rect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
@@ -20,7 +20,7 @@ impl Painter
         drawTexture(rect.x, rect.y, rect.width, rect.height, texture, color)
     }
 
-    func drawTexture(using self, left, top: f32, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y: f32, texture: Texture, color: Color = Argb.White)
     {
         if color.a == 0
             return
@@ -28,11 +28,11 @@ impl Painter
         sharedSolidBrush.type = BrushType.Texture
         sharedSolidBrush.texture = texture
         sharedSolidBrush.uvMode = .Fill
-        fillRect(left, top, cast(f32) texture.width, cast(f32) texture.height, sharedSolidBrush)
+        fillRect(x, y, cast(f32) texture.width, cast(f32) texture.height, sharedSolidBrush)
     }
 
     // Draw a portion of an image
-    func drawTexture(using self, left, top, width, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y, width, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
     {
         if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0
             return
@@ -41,7 +41,7 @@ impl Painter
         sharedSolidBrush.texture = texture
         sharedSolidBrush.uvMode = .FillSubRect
         sharedSolidBrush.uvRect = srcRect
-        fillRect(left, top, width, height, sharedSolidBrush)
+        fillRect(x, y, width, height, sharedSolidBrush)
     }
 
     func drawTexture(using self, dstRect, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
@@ -49,7 +49,7 @@ impl Painter
         drawTexture(dstRect.x, dstRect.y, dstRect.width, dstRect.height, srcRect, texture, color)
     }
 
-    func drawTexture(using self, left, top: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
     {
         if srcRect.isEmpty() or color.a == 0
             return
@@ -58,6 +58,6 @@ impl Painter
         sharedSolidBrush.texture = texture
         sharedSolidBrush.uvMode = .FillSubRect
         sharedSolidBrush.uvRect = srcRect
-        fillRect(left, top, srcRect.width, srcRect.height, sharedSolidBrush)
+        fillRect(x, y, srcRect.width, srcRect.height, sharedSolidBrush)
     }
 }

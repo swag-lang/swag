@@ -20,6 +20,7 @@ struct ButtonPaintStyle
 struct Button
 {
     using base:     Widget
+    icon:           Icon
     isDefault:      bool
     isPressed:      bool
     isPressing:     bool
@@ -165,6 +166,12 @@ impl Button
         labelPos := position
         labelPos.inflate(-5)
         Label.paint(bc, labelPos, name, labelStyle)
+
+        var icon: Icon
+        icon.set(&bc.theme.icons24, 0, 16)
+        icon.draw(bc.painter, position.x, position.y)
+        icon.set(&bc.theme.icons24, 1, 16)
+        icon.draw(bc.painter, position.x + 16, position.y)
     }
 
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*Button
