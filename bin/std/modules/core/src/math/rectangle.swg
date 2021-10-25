@@ -105,7 +105,6 @@ impl Rectangle
         width, height *= value
     }
 
-    // Multiply the width and height of the rectangle by a given value
     func scale(self, x, y: f32)
     {
         self.width *= x
@@ -113,6 +112,14 @@ impl Rectangle
     }
 
     // Inflates the rectangle by the given amount
+    func inflate(self, value: f32)
+    {
+        self.x -= value
+        self.y -= value
+        self.width += value * 2
+        self.height += value * 2
+    }
+
     func inflate(self, x, y: f32)
     {
         self.x -= x

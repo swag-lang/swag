@@ -161,7 +161,9 @@ impl Button
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
         labelStyle.font = bc.theme.fontSmall.bold
-        Label.paint(bc, position, name, labelStyle)
+        labelPos := position
+        labelPos.inflate(-5)
+        Label.paint(bc, labelPos, name, labelStyle)
     }
 
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*Button
