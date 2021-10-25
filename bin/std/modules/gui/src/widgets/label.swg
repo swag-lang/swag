@@ -1,9 +1,17 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum LabelPaintFlags
+{
+    Zero = 0
+}
+
 struct LabelPaintStyle
 {
+    flags:          LabelPaintFlags = Zero
     stringFormat:   StringFormat
+    font:           *Font
     colorText:      Color
 }
 
@@ -16,6 +24,6 @@ impl Label
 {
     func paint(bc: *PaintContext, position: Math.Rectangle, name: string, style: LabelPaintStyle)
     {
-        bc.painter.drawString(position, name, bc.theme.fontSmall.bold, style.colorText, style.stringFormat)
+        bc.painter.drawString(position, name, style.font, style.colorText, style.stringFormat)
     }
 }

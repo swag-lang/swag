@@ -13,7 +13,8 @@ enum PushButtonPaintFlags
 
 struct PushButtonPaintStyle
 {
-    flags: PushButtonPaintFlags = Zero
+    flags:      PushButtonPaintFlags = Zero
+    palette:    *Palette
 }
 
 struct PushButton
@@ -30,6 +31,7 @@ impl IWnd for PushButton
     mtd onPaintEvent(evt: *PaintEvent)
     {
         var style: PushButtonPaintStyle
+
         if isPressed
             style.flags |= .Pressed
         if isHot
@@ -38,6 +40,8 @@ impl IWnd for PushButton
             style.flags |= .Default
         if evt.bc.isDisabled
             style.flags |= .Disabled
+
+        style.palette = getPalette()
 
         paint(evt.bc, name, position, style)
     }
@@ -94,15 +98,14 @@ impl PushButton
     func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: PushButtonPaintStyle)
     {
         flags := style.flags
-
-        var srcRect: Math.Rectangle
-        palette := &bc.theme.palette
         isDefault := flags & .Default
 
+        var srcRect: Math.Rectangle
         var colorBk: Color = ?
         var colorBorder: Color = ?
         var colorText: Color = ?
 
+        palette := style.palette
         if flags & .Disabled
         {
             colorBk     = palette.buttonDisabledBk
@@ -148,6 +151,7 @@ impl PushButton
         labelStyle.colorText = colorText
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
+        labelStyle.font = bc.theme.fontSmall.bold
         Label.paint(bc, position, name, labelStyle)
     }
 
