@@ -1,11 +1,11 @@
 #global public
 using Core, Pixel
 
-protected const DefaultImageName          = "widgets.png"
-protected const DefaultFontRegularName    = "segoe_regular.ttf"
-protected const DefaultFontBoldName       = "segoe_bold.ttf"
-protected const DefaultFontBoldItalicName = "segoe_bold_italic.ttf"
-protected const DefaultFontItalicName     = "segoe_italic.ttf"
+protected const DefaultImageName          = "theme/widgets.png"
+protected const DefaultFontRegularName    = "theme/segoe_regular.ttf"
+protected const DefaultFontBoldName       = "theme/segoe_bold.ttf"
+protected const DefaultFontBoldItalicName = "theme/segoe_bold_italic.ttf"
+protected const DefaultFontItalicName     = "theme/segoe_italic.ttf"
 
 protected const DefaultImage          = #load(DefaultImageName)
 protected const DefaultFontRegular    = #load(DefaultFontRegularName)
