@@ -45,8 +45,7 @@ impl IWnd for Button
             style.flags |= .Disabled
 
         style.palette = getPalette()
-
-        paint(evt.bc, name, position, style)
+        paint(evt.bc, name, icon, position, style)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -104,7 +103,7 @@ impl IWnd for Button
 
 impl Button
 {
-    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, style: ButtonPaintStyle)
+    func paint(bc: *PaintContext, name: string, icon: Icon, position: Math.Rectangle, style: ButtonPaintStyle)
     {
         flags   := style.flags
         palette := style.palette
@@ -165,13 +164,7 @@ impl Button
         labelStyle.font = bc.theme.fontSmall.bold
         labelPos := position
         labelPos.inflate(-5)
-        Label.paint(bc, labelPos, name, labelStyle)
-
-        var icon: Icon
-        icon.set(&bc.theme.icons24, 0, 16)
-        icon.draw(bc.painter, position.x, position.y)
-        icon.set(&bc.theme.icons24, 1, 16)
-        icon.draw(bc.painter, position.x + 16, position.y)
+        Label.paint(bc, labelPos, name, icon, labelStyle)
     }
 
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*Button

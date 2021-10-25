@@ -165,17 +165,17 @@ impl Painter
     }
 
     // Draw a string
-    mtd drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat)
+    mtd drawString(pos: Rectangle, text: string, font: *Font, color: Color, format: StringFormat, outRect: *Rectangle = null)
     {
         if @countof(text) == 0 or color.a == 0
             return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
-        drawString(pos, text, font, sharedSolidBrush, format)
+        drawString(pos, text, font, sharedSolidBrush, format, outRect)
     }
 
     // Draw a string
-    mtd drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat)
+    mtd drawString(pos: Rectangle, text: string, font: *Font, brush: Brush, format: StringFormat, outRect: *Rectangle = null)
     {
         if @countof(text) == 0 or brush.color.a == 0
             return
@@ -300,6 +300,14 @@ impl Painter
             }
         }
 
+        if outRect
+        {
+            outRect.x = x
+            outRect.y = y
+            outRect.width = 0
+            outRect.height = 0
+        }
+
         visit *line: arr
         {
             x1 := x
@@ -312,8 +320,18 @@ impl Painter
             case Center:    x1 = pos.horzCenter() - line.width * 0.5
             }
 
+            if outRect
+            {
+                outRect.x = Math.min(outRect.x, x1)
+                measure := measureString(x1, y1, line.str, font)
+                outRect.width = Math.max(outRect.width, measure.width)
+            }
+
             drawString(x1, y1, line.str, font, brush, format.underline)
             y += font.height + format.lineGap
+
+            if outRect
+                outRect.height = y - outRect.y
         }
 
         // Restore clipping to its previous value

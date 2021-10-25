@@ -17,7 +17,7 @@ impl Icon
         self.size = #scopefct.size
     }
 
-    mtd draw(painter: *Painter, x, y: f32, color: Color = Argb.White)
+    mtdc draw(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
         srcX := index % (imageList.texture.width / imageList.sizeX)
         srcY := index / (imageList.texture.height / imageList.sizeY)
@@ -25,6 +25,6 @@ impl Icon
         srcY *= imageList.sizeY
 
         painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, size, size}, @{srcX, srcY, imageList.sizeX, imageList.sizeY}, imageList.texture, color)
+        painter.drawTexture(@{x, y, size, size}, @{srcX, srcY, imageList.sizeX - 0.5, imageList.sizeY - 0.5}, imageList.texture, color)
     }
 }

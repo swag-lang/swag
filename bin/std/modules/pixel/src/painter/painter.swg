@@ -75,6 +75,7 @@ struct Command
         clippingRegion: struct{mode: ClippingMode = ?; }
         font:           struct{fontRef: *Font; }
         blendingMode:   struct{mode: BlendingMode = ?; }
+        textureFont:    struct{font: *Font; atlasIndex: s32; }
 
         texture0: struct
                 {
@@ -85,11 +86,6 @@ struct Command
                     uvMode:             UVMode = ?
                     interpolationMode:  InterpolationMode = ?
                     texture:            Texture
-                }
-        textureFont: struct
-                {
-                    font:       *Font
-                    atlasIndex: s32
                 }
     }
 }
@@ -336,6 +332,7 @@ impl Painter
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
+        canSetTexture0 = true
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
         resetTexture0()
