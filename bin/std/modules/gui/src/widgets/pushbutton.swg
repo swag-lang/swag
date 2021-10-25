@@ -2,7 +2,7 @@
 using Core, Pixel
 
 #[Swag.EnumFlags]
-enum PushButtonPaintState
+enum PushButtonPaintFlags
 {
     Zero = 0
     Pressed
@@ -24,11 +24,16 @@ impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        var state: PushButtonPaintState = Zero
-        if isPressed    state |= .Pressed
-        if isHot        state |= .Hot
-        if isDefault    state |= .Default
-        if isDisabled   state |= .Disabled
+        var state: PushButtonPaintFlags = Zero
+        if isPressed
+            state |= .Pressed
+        if isHot
+            state |= .Hot
+        if isDefault
+            state |= .Default
+        if evt.bc.isDisabled
+            state |= .Disabled
+
         paint(evt.bc, name, position, state)
     }
 
@@ -81,7 +86,7 @@ impl IWnd for PushButton
 
 impl PushButton
 {
-    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, state: PushButtonPaintState)
+    func paint(bc: *PaintContext, name: string, position: Math.Rectangle, state: PushButtonPaintFlags)
     {
         var srcRect: Math.Rectangle
         palette := &bc.theme.palette

@@ -124,6 +124,10 @@ impl Wnd
 
     mtd paint(bc: *PaintContext)
     {
+        // Transmit disabled state to childs
+        if isDisabled
+            bc.isDisabled = true
+
         // Background
         if drawBackground
             bc.painter.fillRect(position, getPalette().windowBk)
