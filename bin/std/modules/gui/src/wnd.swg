@@ -144,11 +144,15 @@ impl Wnd
         sendEvent(&evt)
 
         // Childs
+        bc.painter.translateTransform(position.x, position.y)
         visit c: self.childs
         {
             if c.isHidden
                 continue
+
+            curState := bc.painter.curState
             c.paint(bc)
+            bc.painter.setState(curState)
         }
     }
 

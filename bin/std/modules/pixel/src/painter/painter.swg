@@ -332,11 +332,16 @@ impl Painter
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
-        canSetTexture0 = true
-        setTransform(curState.transform)
-        setBlendingMode(curState.blendingMode)
         resetTexture0()
         resetTextureFont()
+    }
+
+    // Set the current painting state
+    mtd setState(state: PaintState)
+    {
+        curState = state
+        setTransform(curState.transform)
+        setBlendingMode(curState.blendingMode)
     }
 
     // Call this before drawing
@@ -450,16 +455,19 @@ impl Painter
     // Interface the given rectangle with the current clipping rectangle
     mtd pushClippingRect(rect: Math.Rectangle)
     {
+        rrect := rect
+        rrect.offset(curState.transform.tx, curState.transform.ty)
+
         if clippingRectOn
         {
             stackClipRect.add(clippingRect)
             newRect := clippingRect
-            newRect.intersect(rect)
+            newRect.intersect(rrect)
             setClippingRect(newRect)
         }
         else
         {
-            setClippingRect(rect)
+            setClippingRect(rrect)
         }
     }
 

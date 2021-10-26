@@ -302,7 +302,7 @@ impl Painter
 
         if outRect
         {
-            outRect.x = x
+            outRect.x = Swag.F32.Max
             outRect.y = y
             outRect.width = 0
             outRect.height = 0

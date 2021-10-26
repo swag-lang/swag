@@ -29,11 +29,11 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_PAINT:
             surface.invalidate()
             surface.paint()
-        case WM_SIZE:
-            surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
             surface.position.y = HIWORD(lParam)
+        case WM_SIZE:
+            surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_DESTROY:
             surface.sendCloseEvent()
         }
@@ -92,7 +92,10 @@ impl NativeSurface
         result := Memory.new'Surface()
         result.app = app
         result.position = @{x, y, width, height}
+        result.wnd.position = @{0, 50, width, height}
+        result.wnd.itf = cast(IWnd) result.wnd
         result.wnd.drawBackground = true
+        result.wnd.surface = result
 
         // Create class
         #[Swag.Global]
@@ -101,37 +104,23 @@ impl NativeSurface
         if !doneClass
         {
             doneClass = true
+
             var wc: WNDCLASSW
+            wc.hInstance     = GetModuleHandleW(null)
+            wc.cbWndExtra    = @sizeof(*void);
             wc.style         = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS
             wc.lpfnWndProc   = acast @mkcallback(&winProc)
-            wc.hInstance     = GetModuleHandleW(null)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
             wc.lpszClassName = className
             try RegisterClassW(wc)
         }
 
-        // Win ex flags
-        var winExFlags: DWORD
-        if flags & .PaletteWindow winExFlags |= WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST
-        if flags & .ToolWindow winExFlags |= WS_EX_TOOLWINDOW
-
-        // Win flags
-        var winFlags: DWORD
-        if flags & .Caption winFlags |= WS_CAPTION
-        if flags & .SysMenu winFlags |= WS_SYSMENU
-        if flags & .MinimizeBox winFlags |= WS_MINIMIZEBOX
-        if flags & .MaximizeBox winFlags |= WS_MAXIMIZEBOX
-        if flags & .DlgFrame winFlags |= WS_DLGFRAME
-        if flags & .SizeFrame winFlags |= WS_THICKFRAME
-        if flags & .OverlappedWindow winFlags |= WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME
-        if flags & .PopupWindow winFlags |= WS_POPUP | WS_BORDER | WS_SYSMENU
-
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
-            winExFlags,
+            0,
             className,
-            @dataof(utf16.toZeroTerminated(title)),
-            winFlags | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+            null,
+            WS_POPUP | WS_CLIPCHILDREN,
             x,
             y,
             width,
