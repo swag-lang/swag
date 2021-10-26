@@ -15,18 +15,8 @@ struct Surface
 #[Swag.EnumFlags]
 enum SurfaceFlags
 {
-    Caption
-    SysMenu
-    MinimizeBox
-    MaximizeBox
-    ToolWindow
-
-    DlgFrame
-    SizeFrame
-
-    OverlappedWindow
-    PopupWindow
-    PaletteWindow
+    Zero = 0
+    SecondaryWindow
 }
 
 impl Surface

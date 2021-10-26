@@ -92,7 +92,7 @@ impl NativeSurface
         result := Memory.new'Surface()
         result.app = app
         result.position = @{x, y, width, height}
-        result.wnd.position = @{0, 50, width, height}
+        result.wnd.position = @{0, 0, width, height}
         result.wnd.itf = cast(IWnd) result.wnd
         result.wnd.drawBackground = true
         result.wnd.surface = result
@@ -117,7 +117,7 @@ impl NativeSurface
 
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
-            0,
+            flags & .SecondaryWindow ? WS_EX_TOOLWINDOW : 0,
             className,
             null,
             WS_POPUP | WS_CLIPCHILDREN,

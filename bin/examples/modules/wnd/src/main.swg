@@ -32,7 +32,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     button = Button.create(&surface0.wnd, "Disabled", @{5, 75, 100, 30})
     button.isDisabled = true
 
-    surface1 := try app.createSurface("Example1", 100+W+10, 100, W, H, SurfaceFlags.OverlappedWindow | SurfaceFlags.ToolWindow)
+    surface1 := try app.createSurface("Example1", 100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow)
     surface1.wnd.hookOnPaintEvent = &onPaintEvent
     surface1.wnd.hookOnCloseEvent = &onCloseEvent
 

@@ -24,7 +24,7 @@ impl Application
     mtd getKeyboard() => &keyb
 
     // Creates a new surface
-    mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.OverlappedWindow)->*Surface throw
+    mtd createSurface(title: string, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero)->*Surface throw
     {
         surface := try Surface.create(self, title, x, y, width, height, flags, mainSurface)
 
