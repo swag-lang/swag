@@ -19,8 +19,9 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
 #main
 {
     var app: Gui.Application
-    surface0 := try app.createSurface("Example0", 100, 100, W, H)
+    surface0 := try app.createSurface(100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
+    surface0.wnd.view.position.y += 50
 
     view := surface0.wnd.view
     button := Button.create(view, "Normal", @{5, 5, 100, 30})
@@ -35,11 +36,10 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     button.isDisabled = true
     surface0.show()
 
-    /*surface1 := try app.createSurface("Example1", 100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow)
-    surface1.wnd.hookOnPaintEvent = &onPaintEvent
-    surface1.wnd.hookOnCloseEvent = &onCloseEvent
+    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow)
+    surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
+    surface1.wnd.view.hookOnCloseEvent = &onCloseEvent
     surface1.show()
-*/
 
     app.run()
 }

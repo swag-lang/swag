@@ -119,16 +119,8 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    protected func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface)->*Surface throw
+    protected func create(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
-        result := Memory.new'Surface()
-        result.app = app
-        result.position = @{x, y, width, height}
-        result.wnd.position = @{0, 0, width, height}
-        result.wnd.itf = cast(IWnd) result.wnd
-        result.wnd.surface = result
-        result.wnd.createView'Wnd()
-        result.wnd.view.drawBackground = true
         result.wnd.hookOnMouseEvent = &onMouseEvent
 
         // Create class
@@ -171,7 +163,5 @@ impl NativeSurface
             app.renderer.setCurrentContext(result.rc)
             app.renderer.init()
         }
-
-        return result
     }
 }

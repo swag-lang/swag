@@ -584,7 +584,7 @@ func setup(wnd: *Wnd) throw
 #main
 {
     var app: Gui.Application
-    surface := try app.createSurface("Example", 100, 100, W, H)
+    surface := try app.createSurface(100, 100, W, H)
     surface.wnd.hookOnCloseEvent = &onCloseEvent
     surface.wnd.hookOnKeyEvent = &onKeyEvent
     surface.wnd.view.hookOnPaintEvent = &onPaintEvent

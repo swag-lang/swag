@@ -8,8 +8,8 @@ impl IWnd for FrameWnd
 {
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        view.position = position
-        //view.position.inflate(-50)
+        view.position.width = position.width
+        view.position.height = position.height
     }
 }
 
