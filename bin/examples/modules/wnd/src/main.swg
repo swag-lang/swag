@@ -25,7 +25,8 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     button := Button.create(&surface0.wnd, "Normal", @{5, 5, 100, 30})
     button.icon.set(&app.theme.icons24, 0, 18)
     button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
-    button = Button.create(&surface0.wnd, "Normal Normal Normal", @{110, 5, 100, 30})
+    button = Button.create(&surface0.wnd, "ExitExitExitExitExit", @{110, 5, 100, 30})
+    button.sigPressed = @(btn: *Button) { btn.postQuitEvent(); }
     button = Button.create(&surface0.wnd, "Default", @{5, 40, 100, 30})
     button.sigPressed = @(btn: *Button) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }
     button.isDefault = true
