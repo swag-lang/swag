@@ -158,10 +158,5 @@ impl NativeSurface
         )
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
-        if !mainSurface
-        {
-            app.renderer.setCurrentContext(result.rc)
-            app.renderer.init()
-        }
     }
 }

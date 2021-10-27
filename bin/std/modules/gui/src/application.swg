@@ -36,10 +36,11 @@ impl Application
         surface.wnd.view.drawBackground = true
 
         try Surface.create(self, surface, x, y, width, height, flags, mainSurface)
-
         if !mainSurface
         {
-            try theme.setup(&renderer)
+            renderer.setCurrentContext(surface.rc)
+            renderer.init()
+            theme.setup(&renderer)
             mainSurface = surface
         }
 

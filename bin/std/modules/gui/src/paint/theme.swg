@@ -30,20 +30,20 @@ struct Theme
 
 impl Theme
 {
-    protected mtd setup(renderer: *RenderOgl) throw
+    protected mtd setup(renderer: *RenderOgl)
     {
-        img := try Image.decode(DefaultImageName, DefaultImage)
+        img := assume Image.decode(DefaultImageName, DefaultImage)
         imgWidgets = renderer.addImage(img)
 
-        img = try Image.decode(DefaultIcons24Name, DefaultIcons24)
+        img = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
         icons24.texture = renderer.addImage(img)
         icons24.sizeX = 24
         icons24.sizeY = 24
 
-        typeFaceR  = try TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
-        typeFaceB  = try TypeFace.create(DefaultFontBoldName, DefaultFontBold)
-        typeFaceI  = try TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
-        typeFaceBI = try TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
+        typeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
+        typeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
+        typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
+        typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
         const FontSmallSize = 13'u32
         fontSmall.regular = Font.create(typeFaceR, FontSmallSize)
