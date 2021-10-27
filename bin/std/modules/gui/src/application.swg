@@ -144,6 +144,7 @@ impl Application
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
             evt.kind = EventKind.MouseMove
+            evt.move = move
             targetWnd.sendEvent(&evt)
         }
 

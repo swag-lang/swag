@@ -9,7 +9,7 @@ impl IWnd for FrameWnd
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         view.position = position
-        view.position.inflate(-50)
+        //view.position.inflate(-50)
     }
 }
 

@@ -5,7 +5,8 @@ using Core, Win32
 #[Swag.NoCopy]
 struct NativeSurface
 {
-    hWnd: HWND
+    hWnd:           HWND
+    movingSurface:  bool
 }
 
 #[Swag.Callback]
@@ -29,9 +30,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_PAINT:
             surface.invalidate()
             surface.paint()
-        case WM_MOVE:
-            surface.position.x = LOWORD(lParam)
-            surface.position.y = HIWORD(lParam)
+        //case WM_MOVE:
+        //    surface.position.x = LOWORD(lParam)
+        //    surface.position.y = HIWORD(lParam)
         case WM_SIZE:
             surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_DESTROY:
@@ -86,6 +87,37 @@ impl NativeSurface
         pt.y = wpt.y
     }
 
+    protected func onMouseEvent(wnd: *Wnd, evt: *MouseEvent)
+    {
+        surface := wnd.surface
+        switch evt.kind
+        {
+        case MousePressed:
+            if evt.button == .Left
+            {
+                wnd.captureMouse()
+                SetCapture(surface.native.hWnd)
+                surface.native.movingSurface = true
+            }
+            break
+        case MouseReleased:
+            if evt.button == .Left
+            {
+                wnd.releaseMouse()
+                ReleaseCapture()
+                surface.native.movingSurface = false
+            }
+            break
+        case MouseMove:
+            if surface.native.movingSurface
+            {
+                surface.position.offset(evt.move.x, evt.move.y);
+                catch MoveWindow(surface.native.hWnd, cast(s32) surface.position.x, cast(s32) surface.position.y, cast(s32) surface.position.width, cast(s32) surface.position.height, FALSE)
+            }
+            break
+        }
+    }
+
     // Creates a new (invisible) surface
     protected func create(app: *Application, title: string, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface)->*Surface throw
     {
@@ -94,9 +126,10 @@ impl NativeSurface
         result.position = @{x, y, width, height}
         result.wnd.position = @{0, 0, width, height}
         result.wnd.itf = cast(IWnd) result.wnd
-        result.wnd.drawBackground = true
         result.wnd.surface = result
         result.wnd.createView'Wnd()
+        result.wnd.view.drawBackground = true
+        result.wnd.hookOnMouseEvent = &onMouseEvent
 
         // Create class
         #[Swag.Global]

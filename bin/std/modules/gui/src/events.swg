@@ -87,6 +87,7 @@ struct MouseEvent
     button:     Input.MouseButton = ?
     surfacePos: Math.Point
     pos:        Math.Point
+    move:       Math.Point
 }
 
 struct QuitEvent

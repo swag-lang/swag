@@ -744,6 +744,8 @@ struct PAINTSTRUCT
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
+    func SetCapture(hWnd: HWND)->HWND;
+    func ReleaseCapture()->BOOL;
 
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
@@ -761,7 +763,7 @@ struct PAINTSTRUCT
     func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
 }
 
-namespace user32priv
+namespace User32Priv
 {
     #[Foreign("user32")]
     {
@@ -772,6 +774,7 @@ namespace user32priv
         func DestroyWindow(hWnd: HWND)->BOOL;
         func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
         func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
+        func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL)->BOOL;
     }
 }
 
@@ -779,20 +782,20 @@ namespace user32priv
 {
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {
-        if !user32priv.PostMessageA(hWnd, msg, wParam, lParam)
+        if !User32Priv.PostMessageA(hWnd, msg, wParam, lParam)
             try setError(GetLastError())
     }
 
     func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {
-        if !user32priv.PostMessageW(hWnd, msg, wParam, lParam)
+        if !User32Priv.PostMessageW(hWnd, msg, wParam, lParam)
             try setError(GetLastError())
     }
 
     #[Discardable]
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
     {
-        res := user32priv.RegisterClassA(lpWndClass)
+        res := User32Priv.RegisterClassA(lpWndClass)
         if !res
             try setError(GetLastError())
         return res
@@ -801,7 +804,7 @@ namespace user32priv
     #[Discardable]
     func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
     {
-        res := user32priv.RegisterClassW(lpWndClass)
+        res := User32Priv.RegisterClassW(lpWndClass)
         if !res
             try setError(GetLastError())
         return res
@@ -809,13 +812,19 @@ namespace user32priv
 
     func UpdateWindow(hWnd: HWND) throw
     {
-        if !user32priv.UpdateWindow(hWnd)
+        if !User32Priv.UpdateWindow(hWnd)
             try setError(GetLastError())
     }
 
     func DestroyWindow(hWnd: HWND) throw
     {
-        if !user32priv.DestroyWindow(hWnd)
+        if !User32Priv.DestroyWindow(hWnd)
+            try setError(GetLastError())
+    }
+
+    func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL) throw
+    {
+        if !User32Priv.MoveWindow(hWnd, x, y, nWidth, nHeight, bRepaint)
             try setError(GetLastError())
     }
 }
