@@ -3,7 +3,20 @@ using Win32
 
 impl Application
 {
-    // Returns 'false' when need to quit
+    // Capture mouse, on the window and surface
+    mtd captureMouse(wnd: *Wnd)
+    {
+        mouseCaptureWnd = wnd
+        SetCapture(wnd.surface.native.hWnd)
+    }
+
+    // Release captured mouse
+    mtd releaseMouse()
+    {
+        mouseCaptureWnd = null
+        ReleaseCapture()
+    }
+
     func sendSystemEvents()
     {
         var msg: MSG

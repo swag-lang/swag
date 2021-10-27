@@ -247,12 +247,12 @@ impl Wnd
 
     mtd captureMouse()
     {
-        surface.app.mouseCaptureWnd = self
+        surface.app.captureMouse(self)
     }
 
     mtd releaseMouse()
     {
-        surface.app.mouseCaptureWnd = null
+        surface.app.releaseMouse()
     }
 
     //////////////////////////////////////////////
