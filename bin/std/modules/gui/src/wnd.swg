@@ -106,7 +106,7 @@ impl Wnd
         res.itf = cast(IWnd) dref res
         res.surface = parent.surface
         res.parent = parent
-        parent.childs.add(&res.wnd)
+        parent.childs.add(res)
 
         return res
     }

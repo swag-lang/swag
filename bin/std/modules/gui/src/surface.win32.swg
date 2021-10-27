@@ -96,6 +96,7 @@ impl NativeSurface
         result.wnd.itf = cast(IWnd) result.wnd
         result.wnd.drawBackground = true
         result.wnd.surface = result
+        result.wnd.createView'Wnd()
 
         // Create class
         #[Swag.Global]

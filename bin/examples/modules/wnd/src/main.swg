@@ -22,15 +22,16 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     surface0 := try app.createSurface("Example0", 100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
-    button := Button.create(&surface0.wnd, "Normal", @{5, 5, 100, 30})
+    view := surface0.wnd.view
+    button := Button.create(view, "Normal", @{5, 5, 100, 30})
     button.icon.set(&app.theme.icons24, 0, 18)
     button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
-    button = Button.create(&surface0.wnd, "ExitExitExitExitExit", @{110, 5, 100, 30})
+    button = Button.create(view, "ExitExitExitExitExit", @{110, 5, 100, 30})
     button.sigPressed = @(btn: *Button) { btn.postQuitEvent(); }
-    button = Button.create(&surface0.wnd, "Default", @{5, 40, 100, 30})
+    button = Button.create(view, "Default", @{5, 40, 100, 30})
     button.sigPressed = @(btn: *Button) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }
     button.isDefault = true
-    button = Button.create(&surface0.wnd, "Disabled", @{5, 75, 100, 30})
+    button = Button.create(view, "Disabled", @{5, 75, 100, 30})
     button.isDisabled = true
 
     surface1 := try app.createSurface("Example1", 100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow)
