@@ -754,6 +754,7 @@ struct PAINTSTRUCT
 
     func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL;
     func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL;
+    func BringWindowToTop(hWnd: HWND)->BOOL;
 
     func TranslateMessage(lpMsg: const *MSG)->BOOL;
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;

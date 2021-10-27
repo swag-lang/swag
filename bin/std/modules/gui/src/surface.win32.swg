@@ -96,6 +96,7 @@ impl NativeSurface
             if evt.button == .Left
             {
                 wnd.captureMouse()
+                BringWindowToTop(surface.native.hWnd)
                 SetCapture(surface.native.hWnd)
                 surface.native.movingSurface = true
             }
