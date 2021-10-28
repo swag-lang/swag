@@ -16,6 +16,7 @@ struct Surface
 enum SurfaceFlags
 {
     Zero = 0
+    BigCaption
     SecondaryWindow
 }
 
@@ -25,7 +26,8 @@ impl Surface
     func create(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         try NativeSurface.createNative(app, result, x, y, width, height, flags, mainSurface)
-        result.wnd.marginsTopLeft.y = 50
+        if flags & .BigCaption
+            result.wnd.marginsTopLeft.y = 50
         result.wnd.sendResizeEvent()
     }
 

@@ -19,7 +19,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
 #main
 {
     var app: Gui.Application
-    surface0 := try app.createSurface(100, 100, W, H)
+    surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.BigCaption)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
     view := surface0.wnd.view
