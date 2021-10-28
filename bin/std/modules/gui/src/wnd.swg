@@ -84,9 +84,17 @@ impl IWnd for Wnd
     mtd onCreateEvent(evt: *CreateEvent)    {}
     mtd onCloseEvent(evt: *CloseEvent)      {}
     mtd onResizeEvent(evt: *ResizeEvent)    {}
-    mtd onKeyEvent(evt: *KeyEvent)          {}
-    mtd onMouseEvent(evt: *MouseEvent)      {}
     mtd onPaintEvent(evt: *PaintEvent)      {}
+
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        evt.accepted = false
+    }
+
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        evt.accepted = false
+    }
 }
 
 impl Wnd

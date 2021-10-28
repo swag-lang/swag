@@ -105,7 +105,19 @@ impl Application
         }
 
         Debug.assert(event.target != null)
+
+        // Send event to the target
+        // If the target does not accept the event, then pass it to the parent
+        event.accepted = true
         event.target.processEvent(event)
+        while !event.accepted
+        {
+            event.target = event.target.parent
+            if !event.target
+                break
+            event.accepted = true
+            event.target.processEvent(event)
+        }
     }
 
     protected mtd sendMouseEvents()

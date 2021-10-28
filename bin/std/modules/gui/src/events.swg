@@ -21,9 +21,10 @@ enum EventKind
 
 struct Event
 {
-    kind:   EventKind = None
-    type:   typeinfo
-    target: *Wnd
+    kind:       EventKind = None
+    type:       typeinfo
+    target:     *Wnd
+    accepted:   bool
 }
 
 impl Event
