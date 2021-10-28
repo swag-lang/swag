@@ -11,11 +11,20 @@ impl IWnd for SurfaceWnd
     {
         bc := evt.bc
         pos := position
-        pos.height = 30
+
         var srcRect: Math.Rectangle = ?
-        srcRect = @{57,1,72,27}
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, srcRect, 9, Argb.White)
-        //evt.bc.painter.drawTexture(pos, srcRect, bc.theme.imgWidgets)
-        //evt.bc.painter.fillRect(position, Argb.Red)
+
+        if surface.flags & .Border
+        {
+            srcRect = @{130,1,27,27}
+            Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 3, bc.theme.palette.caption)
+        }
+
+        if surface.flags & (.BigCaption | .SmallCaption)
+        {
+            pos.height = surface.wnd.marginsTopLeft.y
+            srcRect = @{57,1,72,27}
+            Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, srcRect, 9, bc.theme.palette.caption)
+        }
     }
 }

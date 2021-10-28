@@ -19,6 +19,7 @@ enum SurfaceFlags
     Zero = 0
     BigCaption
     SmallCaption
+    Border
     SecondaryWindow
 }
 
@@ -34,6 +35,16 @@ impl Surface
             result.wnd.marginsTopLeft.y = app.theme.bigCaptionCY
         else if flags & .SmallCaption
             result.wnd.marginsTopLeft.y = app.theme.smallCaptionCY
+
+        if flags & .Border
+        {
+            size := app.theme.windowBorderSize
+            result.wnd.marginsTopLeft.x = size
+            result.wnd.marginsTopLeft.y = Math.max(result.wnd.marginsTopLeft.y, size)
+            result.wnd.marginsBottomRight.x = size
+            result.wnd.marginsBottomRight.y = size
+        }
+
         result.wnd.sendResizeEvent()
     }
 

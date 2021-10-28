@@ -27,6 +27,7 @@ struct Theme
     fontSmall:      FontFamily
     palette:        Palette
 
+    windowBorderSize:   f32 = 3
     buttonMargins:      f32 = 5
     bigCaptionCY:       f32 = 30
     smallCaptionCY:     f32 = 24

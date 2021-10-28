@@ -1,7 +1,9 @@
 using Pixel
 public struct Palette
 {
-    windowBk:       Color = 0xFF333333
+    caption:        Color = 0xFF535353
+
+    windowBk:       Color = 0xFF424242
 
     buttonDisabledText:     Color = 0x5FFFFFFF
     buttonDisabledBorder:   Color = 0x5FFFFFFF
@@ -10,10 +12,10 @@ public struct Palette
     buttonText:             Color = 0xFFFFFFFF
     buttonBorder:           Color = 0xFFFFFFFF
     buttonBk:               Color = 0
-    buttonTextPressed:      Color = 0xFF333333
+    buttonTextPressed:      Color = 0xFF424242
     buttonBorderPressed:    Color = 0xFFFFFFFF
     buttonBkPressed:        Color = 0xFFFFFFFF
-    buttonTextHot:          Color = 0xFF333333
+    buttonTextHot:          Color = 0xFF424242
     buttonBorderHot:        Color = 0xFFEEEEEE
     buttonBkHot:            Color = 0xFFEEEEEE
 
