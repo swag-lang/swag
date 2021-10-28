@@ -23,7 +23,8 @@ impl IWnd for SurfaceWnd
         if surface.flags & (.BigCaption | .SmallCaption)
         {
             pos.height = surface.wnd.marginsTopLeft.y
-            srcRect = @{57,1,72,27}
+            srcRect = bc.theme.imgMetrics.bigCaption.rect
+            Console.print(srcRect)
             Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, srcRect, 9, bc.theme.palette.caption)
         }
     }

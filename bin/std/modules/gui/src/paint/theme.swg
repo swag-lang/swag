@@ -16,9 +16,21 @@ protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24Name  = "theme/icons24.png"
 protected const DefaultIcons24      = #load(DefaultIcons24Name)
 
+struct ImageSubRect
+{
+    rect:   Math.Rectangle
+    border: f32
+}
+
+struct ImageMetrics
+{
+    bigCaption: ImageSubRect = @{{57.0,1.0,72.0,27.0}, 0.0}
+}
+
 struct Theme
 {
     imgWidgets:     Texture
+    imgMetrics:     ImageMetrics
     icons24:        ImageList
     typeFaceR:      const *TypeFace
     typeFaceB:      const *TypeFace
@@ -26,6 +38,7 @@ struct Theme
     typeFaceBI:     const *TypeFace
     fontSmall:      FontFamily
     palette:        Palette
+
 
     windowBorderSize:   f32 = 3
     buttonMargins:      f32 = 5
