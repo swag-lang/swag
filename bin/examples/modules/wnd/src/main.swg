@@ -21,7 +21,6 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     var app: Gui.Application
     surface0 := try app.createSurface(100, 100, W, H)
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
-    surface0.wnd.view.position.y += 50
 
     view := surface0.wnd.view
     button := Button.create(view, "Normal", @{5, 5, 100, 30})
