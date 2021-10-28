@@ -284,6 +284,14 @@ impl Wnd
         surface.app.sendEvent(evt)
     }
 
+    mtd sendResizeEvent()
+    {
+        evt := ResizeEvent{}
+        evt.oldSize.x = position.width
+        evt.oldSize.y = position.height
+        sendEvent(&evt)
+    }
+
     mtd processEvent(evt: *Event)
     {
         if hookOnEvent

@@ -27,12 +27,12 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
-        case WM_PAINT:
+        case WM_ERASEBKGND:
             surface.invalidate()
             surface.paint()
-        //case WM_MOVE:
-        //    surface.position.x = LOWORD(lParam)
-        //    surface.position.y = HIWORD(lParam)
+        case WM_MOVE:
+            surface.position.x = LOWORD(lParam)
+            surface.position.y = HIWORD(lParam)
         case WM_SIZE:
             surface.sendResizeEvent(LOWORD(lParam), HIWORD(lParam))
         case WM_DESTROY:
@@ -118,7 +118,7 @@ impl NativeSurface
     }
 
     // Creates a new (invisible) surface
-    protected func create(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    protected func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         result.wnd.hookOnMouseEvent = &onMouseEvent
 
