@@ -163,7 +163,7 @@ impl Button
         labelStyle.stringFormat.flags = .Clip
         labelStyle.font = bc.theme.fontSmall.bold
         labelPos := position
-        labelPos.inflate(-5)
+        labelPos.inflate(bc.theme.buttonMargins)
         Label.paint(bc, labelPos, name, icon, labelStyle)
     }
 

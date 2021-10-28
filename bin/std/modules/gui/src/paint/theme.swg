@@ -26,6 +26,10 @@ struct Theme
     typeFaceBI:     const *TypeFace
     fontSmall:      FontFamily
     palette:        Palette
+
+    buttonMargins:      f32 = 5
+    bigCaptionCY:       f32 = 30
+    smallCaptionCY:     f32 = 24
 }
 
 impl Theme

@@ -35,7 +35,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     button.isDisabled = true
     surface0.show()
 
-    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow)
+    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow | SurfaceFlags.SmallCaption)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
     surface1.wnd.view.hookOnCloseEvent = &onCloseEvent
     surface1.show()

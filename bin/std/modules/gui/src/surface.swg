@@ -9,6 +9,7 @@ struct Surface
     painter:        Pixel.Painter
     rc:             Pixel.RenderingContext
     position:       Math.Rectangle
+    flags:          SurfaceFlags = Zero
     dirty:          bool
 }
 
@@ -17,6 +18,7 @@ enum SurfaceFlags
 {
     Zero = 0
     BigCaption
+    SmallCaption
     SecondaryWindow
 }
 
@@ -26,8 +28,12 @@ impl Surface
     func create(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         try NativeSurface.createNative(app, result, x, y, width, height, flags, mainSurface)
+
+        result.flags = flags
         if flags & .BigCaption
-            result.wnd.marginsTopLeft.y = 50
+            result.wnd.marginsTopLeft.y = app.theme.bigCaptionCY
+        else if flags & .SmallCaption
+            result.wnd.marginsTopLeft.y = app.theme.smallCaptionCY
         result.wnd.sendResizeEvent()
     }
 
