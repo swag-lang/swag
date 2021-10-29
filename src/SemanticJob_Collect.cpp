@@ -228,6 +228,28 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
             }
 
             assignment = child->childs.front();
+
+            // If we have an expression list in a call parameter, like = @{{1}}, then we check if the expression
+            // list has been converted to a variable. If that's the case, then we should have type parameters to
+            // that var, and we must take them instead of the expression list, because cast has been done
+            if (assignment->kind == AstNodeKind::ExpressionList &&
+                child->childs.count == 3 &&
+                child->childs[1]->kind == AstNodeKind::VarDecl)
+            {
+                auto varDecl = CastAst<AstVarDecl>(child->childs[1], AstNodeKind::VarDecl);
+                SWAG_ASSERT(varDecl->type);
+                auto typeDecl = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+                SWAG_ASSERT(typeDecl->identifier);
+                auto idDecl = CastAst<AstIdentifier>(typeDecl->identifier->childs.back(), AstNodeKind::Identifier);
+                SWAG_ASSERT(idDecl->callParameters);
+                SWAG_CHECK(collectLiteralsToSegment(context, storageSegment, baseOffset, offset, idDecl->callParameters));
+            }
+            else
+            {
+                SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
+            }
+
+            continue;
         }
 
         SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
@@ -309,7 +331,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
                 auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
-                // First collect values from the structure default initialization, except if the parameters cover 
+                // First collect values from the structure default initialization, except if the parameters cover
                 // all the fields (in that case no need to initialize the struct twice)
                 if (!(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                     SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));

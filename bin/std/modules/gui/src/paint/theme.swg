@@ -24,7 +24,7 @@ struct ImageSubRect
 
 struct ImageMetrics
 {
-    bigCaption: ImageSubRect = @{{57.0,1.0,72.0,27.0}, 0.0}
+    bigCaption: ImageSubRect = @{{57,1,72,27}, 0}
 }
 
 struct Theme

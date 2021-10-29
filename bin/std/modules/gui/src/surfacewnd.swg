@@ -24,7 +24,6 @@ impl IWnd for SurfaceWnd
         {
             pos.height = surface.wnd.marginsTopLeft.y
             srcRect = bc.theme.imgMetrics.bigCaption.rect
-            Console.print(srcRect)
             Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, srcRect, 9, bc.theme.palette.caption)
         }
     }
