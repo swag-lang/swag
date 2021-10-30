@@ -197,13 +197,7 @@ impl Application
         target := &mainSurface.wnd
 
         // Modifiers
-        var modifiers: KeyModifiers = .None
-        if keyb.isKeyPressed(Input.Key.LShift)   modifiers |= .Shift
-        if keyb.isKeyPressed(Input.Key.RShift)   modifiers |= .Shift
-        if keyb.isKeyPressed(Input.Key.LControl) modifiers |= .Control
-        if keyb.isKeyPressed(Input.Key.RControl) modifiers |= .Control
-        if keyb.isKeyPressed(Input.Key.LMenu)    modifiers |= .Alt
-        if keyb.isKeyPressed(Input.Key.RMenu)    modifiers |= .Alt
+        modifiers := keyb.getPressedModifiers()
 
         // Detect changes
         loop i: keyb.previousState.pressed

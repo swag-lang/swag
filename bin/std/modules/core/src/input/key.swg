@@ -3,6 +3,15 @@
 // Represents a virtual system key
 public alias VirtualKey = u32
 
+#[Swag.EnumFlags]
+public enum KeyModifiers
+{
+    None = 0
+    Shift
+    Control
+    Alt
+}
+
 // Defines the keys on a keyboard
 #[Swag.EnumIndex]
 public enum Key

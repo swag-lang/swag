@@ -66,19 +66,10 @@ struct MoveEvent
     oldPos: Math.Point
 }
 
-#[Swag.EnumFlags]
-enum KeyModifiers
-{
-    None = 0
-    Shift
-    Control
-    Alt
-}
-
 struct KeyEvent
 {
     using base: Event
-    modifiers:  KeyModifiers = .None
+    modifiers:  Input.KeyModifiers = .None
     key:        Input.Key = ?
 }
 
