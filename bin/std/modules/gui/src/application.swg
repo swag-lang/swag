@@ -40,7 +40,7 @@ impl Application
         {
             renderer.setCurrentContext(surface.rc)
             renderer.init()
-            theme.setup(&renderer)
+            theme.setupDefault(&renderer)
             mainSurface = surface
         }
 

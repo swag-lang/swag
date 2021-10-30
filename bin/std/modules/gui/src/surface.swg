@@ -38,7 +38,7 @@ impl Surface
 
         if flags & .Border
         {
-            size := app.theme.windowBorderSize
+            size := app.theme.wndBorderSize
             result.wnd.marginsTopLeft.x = size
             result.wnd.marginsTopLeft.y = Math.max(result.wnd.marginsTopLeft.y, size)
             result.wnd.marginsBottomRight.x = size

@@ -15,14 +15,21 @@ impl IWnd for SurfaceWnd
         if surface.flags & .Border
         {
             subRect := &bc.theme.imgMetrics.wndBorder
-            Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRect, bc.theme.palette.caption)
+            Theme.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRect, bc.theme.palette.caption)
         }
 
-        if surface.flags & (.BigCaption | .SmallCaption)
+        if surface.flags & .BigCaption
         {
             pos.height = surface.wnd.marginsTopLeft.y
             subRect := &bc.theme.imgMetrics.bigCaption
-            Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, subRect, bc.theme.palette.caption)
+            Theme.drawTexture(bc.painter, bc.theme.imgWidgets, pos, subRect, bc.theme.palette.caption)
+        }
+
+        if surface.flags & .SmallCaption
+        {
+            pos.height = surface.wnd.marginsTopLeft.y
+            subRect := &bc.theme.imgMetrics.smallCaption
+            Theme.drawTexture(bc.painter, bc.theme.imgWidgets, pos, subRect, bc.theme.palette.caption)
         }
     }
 }

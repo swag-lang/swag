@@ -153,10 +153,10 @@ impl Button
         }
 
         // Background
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBk, colorBk)
+        Theme.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBk, colorBk)
 
         // Border
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBorder, colorBorder)
+        Theme.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBorder, colorBorder)
 
         // Content
         var labelStyle: LabelPaintStyle
@@ -166,7 +166,7 @@ impl Button
         labelStyle.stringFormat.flags = .Clip
         labelStyle.font = bc.theme.fontSmall.bold
         labelPos := position
-        labelPos.inflate(bc.theme.buttonMargins)
+        labelPos.inflate(bc.theme.btnMargins)
         Label.paint(bc, labelPos, name, icon, labelStyle)
     }
 

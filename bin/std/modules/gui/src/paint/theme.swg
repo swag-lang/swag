@@ -1,20 +1,19 @@
 #global public
 using Core, Pixel
 
-protected const DefaultImageName  = "theme/widgets.png"
-protected const DefaultImage      = #load(DefaultImageName)
-
+protected const DefaultImageName          = "theme/widgets.png"
 protected const DefaultFontRegularName    = "theme/segoe_regular.ttf"
 protected const DefaultFontBoldName       = "theme/segoe_bold.ttf"
 protected const DefaultFontBoldItalicName = "theme/segoe_bold_italic.ttf"
 protected const DefaultFontItalicName     = "theme/segoe_italic.ttf"
+protected const DefaultIcons24Name        = "theme/icons24.png"
+
+protected const DefaultImage          = #load(DefaultImageName)
 protected const DefaultFontRegular    = #load(DefaultFontRegularName)
 protected const DefaultFontBold       = #load(DefaultFontBoldName)
 protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
 protected const DefaultFontItalic     = #load(DefaultFontItalicName)
-
-protected const DefaultIcons24Name  = "theme/icons24.png"
-protected const DefaultIcons24      = #load(DefaultIcons24Name)
+protected const DefaultIcons24        = #load(DefaultIcons24Name)
 
 struct ImageSubRect
 {
@@ -25,7 +24,8 @@ struct ImageSubRect
 struct ImageMetrics
 {
     wndBorder:      ImageSubRect = @{{130,1,27,27}, 3}
-    bigCaption:     ImageSubRect = @{{57,1,72,27}, 0}
+    bigCaption:     ImageSubRect = @{{57,1,72,27}, 1}
+    smallCaption:   ImageSubRect = @{{57,1,72,27}, 1}
 
     btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
     btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
@@ -47,16 +47,17 @@ struct Theme
     fontSmall:      FontFamily
     palette:        Palette
 
+    fontSmallSize:      u32 = 13
 
-    windowBorderSize:   f32 = 3
-    buttonMargins:      f32 = 5
+    wndBorderSize:      f32 = 3
+    btnMargins:         f32 = 5
     bigCaptionCY:       f32 = 30
     smallCaptionCY:     f32 = 24
 }
 
 impl Theme
 {
-    protected mtd setup(renderer: *RenderOgl)
+    protected mtd setupDefault(renderer: *RenderOgl)
     {
         img := assume Image.decode(DefaultImageName, DefaultImage)
         imgWidgets = renderer.addImage(img)
@@ -71,10 +72,82 @@ impl Theme
         typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
         typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
-        const FontSmallSize = 13'u32
-        fontSmall.regular = Font.create(typeFaceR, FontSmallSize)
-        fontSmall.bold = Font.create(typeFaceB, FontSmallSize)
-        fontSmall.italic = Font.create(typeFaceI, FontSmallSize)
-        fontSmall.boldItalic = Font.create(typeFaceBI, FontSmallSize)
+        fontSmall.regular = Font.create(typeFaceR, fontSmallSize)
+        fontSmall.bold = Font.create(typeFaceB, fontSmallSize)
+        fontSmall.italic = Font.create(typeFaceI, fontSmallSize)
+        fontSmall.boldItalic = Font.create(typeFaceBI, fontSmallSize)
+    }
+
+    func drawTexture(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
+    {
+        if subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
+            return
+
+        painter.setInterpolationMode(InterpolationMode.Linear)
+
+        if subRect.corner == 0
+        {
+            painter.drawTexture(dstRect, subRect.rect, texture, color)
+            return
+        }
+
+        cx, cy := subRect.corner
+        if cx * 2 > dstRect.width
+            cx = dstRect.width / 2
+        if cy * 2 > dstRect.height
+            cy = dstRect.height / 2
+
+        d := dstRect
+        s := subRect.rect
+        loop i: 9
+        {
+            switch i
+            {
+            case 0:
+                d.width = cx; d.height = cy
+                s.width = cx; s.height = cy
+                painter.drawTexture(d, s, texture, color)
+
+            case 1, 7:
+                d.x += cx; s.x += cx
+                d.width = dstRect.width - (cx * 2)
+                s.width = subRect.rect.width - (cx * 2)
+                painter.drawTexture(d, s, texture, color)
+
+            case 2, 8:
+                d.x = dstRect.x + dstRect.width - cx
+                s.x = subRect.rect.x + subRect.rect.width - cx
+                d.width = cx; s.width = cx
+                painter.drawTexture(d, s, texture, color)
+
+            case 3:
+                d.x = dstRect.x; d.y = dstRect.y + cx
+                s.x = subRect.rect.x; s.y = subRect.rect.y + cy
+                d.width = cx; s.width = cx;
+                d.height = dstRect.height - (cy * 2)
+                s.height = subRect.rect.height - (cy * 2)
+                painter.drawTexture(d, s, texture, color)
+
+            case 4:
+                d.x += cx; s.x += cx
+                d.width = dstRect.width - (cx * 2)
+                d.height = dstRect.height - (cy * 2)
+                s.width = subRect.rect.width - (cx * 2)
+                s.height = subRect.rect.height - (cy * 2)
+                painter.drawTexture(d, s, texture, color)
+
+            case 5:
+                d.x += d.width; s.x += s.width
+                d.width = cx; s.width = cy
+                painter.drawTexture(d, s, texture, color)
+
+            case 6:
+                d.x = dstRect.x; d.y = dstRect.y + dstRect.height - cy
+                s.x = subRect.rect.x; s.y = subRect.rect.y + subRect.rect.height - cy
+                d.width = cx; d.height = cy
+                s.width = cx; s.height = cy
+                painter.drawTexture(d, s, texture, color)
+            }
+        }
     }
 }
