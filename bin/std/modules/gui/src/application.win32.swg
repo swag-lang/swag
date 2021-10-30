@@ -26,4 +26,33 @@ impl Application
             DispatchMessageW(&msg)
         }
     }
+
+    // Returns the surface under the given point
+    mtd getSurfaceAt(x, y: f32)->*Surface
+    {
+        visit s: surfaces
+        {
+            if s.position.contains(x, y)
+                return s
+        }
+
+        return null
+    }
+    /*mtd getSurfaceAt(x, y: f32)->*Surface
+    {
+        var pt: POINT
+        pt.x = cast(s32) x
+        pt.y = cast(s32) y
+        hWnd := WindowFromPoint(pt)
+        if hWnd == null
+            return null
+
+        visit s: surfaces
+        {
+            if s.native.hWnd == hWnd
+                return s
+        }
+
+        return null
+    }*/
 }

@@ -735,7 +735,7 @@ struct PAINTSTRUCT
 
     func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->*LONG;
     func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->*LONG;
-    func WindowFromPoint(Point: POINT)->HWND;
+    func WindowFromPoint(pt: POINT)->HWND;
     func FindWindowA(lpClassName: LPCSTR, lpWindowName: LPCSTR)->HWND;
     func FindWindowW(lpClassName: LPCWSTR, lpWindowName: LPCWSTR)->HWND;
 

@@ -56,18 +56,6 @@ impl Application
         return surface
     }
 
-    // Returns the surface under the given point
-    mtd getSurfaceAt(x, y: f32)->*Surface
-    {
-        visit s: surfaces
-        {
-            if s.position.contains(x, y)
-                return s
-        }
-
-        return null
-    }
-
     // Returns the window under the given point
     mtd getWndAt(x, y: f32)->*Wnd
     {
