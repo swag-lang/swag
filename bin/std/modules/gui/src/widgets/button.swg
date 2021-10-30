@@ -110,17 +110,19 @@ impl Button
 
         isDefault := flags & .Default
 
-        var srcRect:     Math.Rectangle = ?
-        var colorBk:     Color = ?
-        var colorBorder: Color = ?
-        var colorText:   Color = ?
+        var subRectBk:      *ImageSubRect
+        var subRectBorder:  *ImageSubRect
+        var colorBk:        Color = ?
+        var colorBorder:    Color = ?
+        var colorText:      Color = ?
 
         if flags & .Disabled
         {
-            colorBk     = palette.buttonDisabledBk
-            colorBorder = palette.buttonDisabledBorder
-            colorText   = palette.buttonDisabledText
-            srcRect = @{1, 57, 27, 27}
+            colorBk       = palette.buttonDisabledBk
+            colorBorder   = palette.buttonDisabledBorder
+            colorText     = palette.buttonDisabledText
+            subRectBk     = &bc.theme.imgMetrics.btnDisabled
+            subRectBorder = &bc.theme.imgMetrics.btnDisabledBorder
         }
         else
         {
@@ -137,23 +139,24 @@ impl Button
 
             if flags & .Pressed
             {
-                colorBk     = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
-                colorBorder = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
-                colorText   = isDefault ? palette.buttonDefaultTextPressed : palette.buttonTextPressed
-                srcRect = @{1, 29, 27, 27}
+                colorBk       = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
+                colorBorder   = isDefault ? palette.buttonDefaultBorderPressed : palette.buttonBorderPressed
+                colorText     = isDefault ? palette.buttonDefaultTextPressed : palette.buttonTextPressed
+                subRectBk     = &bc.theme.imgMetrics.btnPressed
+                subRectBorder = &bc.theme.imgMetrics.btnPressedBorder
             }
             else
             {
-                srcRect = @{1, 1, 27, 27}
+                subRectBk     = &bc.theme.imgMetrics.btnHot
+                subRectBorder = &bc.theme.imgMetrics.btnHotBorder
             }
         }
 
         // Background
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 9, colorBk)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBk, colorBk)
 
         // Border
-        srcRect.offset(28, 0)
-        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 9, colorBorder)
+        Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBorder, colorBorder)
 
         // Content
         var labelStyle: LabelPaintStyle

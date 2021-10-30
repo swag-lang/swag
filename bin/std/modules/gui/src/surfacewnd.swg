@@ -12,19 +12,17 @@ impl IWnd for SurfaceWnd
         bc := evt.bc
         pos := position
 
-        var srcRect: Math.Rectangle = ?
-
         if surface.flags & .Border
         {
-            srcRect = @{130,1,27,27}
-            Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, srcRect, 3, bc.theme.palette.caption)
+            subRect := &bc.theme.imgMetrics.wndBorder
+            Style.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRect, bc.theme.palette.caption)
         }
 
         if surface.flags & (.BigCaption | .SmallCaption)
         {
             pos.height = surface.wnd.marginsTopLeft.y
-            srcRect = bc.theme.imgMetrics.bigCaption.rect
-            Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, srcRect, 9, bc.theme.palette.caption)
+            subRect := &bc.theme.imgMetrics.bigCaption
+            Style.drawTexture(bc.painter, bc.theme.imgWidgets, pos, subRect, bc.theme.palette.caption)
         }
     }
 }

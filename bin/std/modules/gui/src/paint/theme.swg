@@ -19,12 +19,20 @@ protected const DefaultIcons24      = #load(DefaultIcons24Name)
 struct ImageSubRect
 {
     rect:   Math.Rectangle
-    border: f32
+    corner: f32
 }
 
 struct ImageMetrics
 {
-    bigCaption: ImageSubRect = @{{57,1,72,27}, 0}
+    wndBorder:      ImageSubRect = @{{130,1,27,27}, 3}
+    bigCaption:     ImageSubRect = @{{57,1,72,27}, 0}
+
+    btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
+    btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
+    btnPressed:         ImageSubRect = @{{1,29,27,27}, 9}
+    btnPressedBorder:   ImageSubRect = @{{29,29,27,27}, 9}
+    btnHot:             ImageSubRect = @{{1,1,27,27}, 9}
+    btnHotBorder:       ImageSubRect = @{{29,1,27,27}, 9}
 }
 
 struct Theme
