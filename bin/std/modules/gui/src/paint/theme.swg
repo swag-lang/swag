@@ -78,7 +78,12 @@ impl Theme
         fontSmall.boldItalic = Font.create(typeFaceBI, fontSmallSize)
     }
 
-    func drawTexture(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
+    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
+    {
+        drawSubRect(painter, imgWidgets, dstRect, subRect, color)
+    }
+
+    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
     {
         if subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return

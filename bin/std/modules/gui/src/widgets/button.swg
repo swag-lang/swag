@@ -153,10 +153,10 @@ impl Button
         }
 
         // Background
-        Theme.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBk, colorBk)
+        bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
 
         // Border
-        Theme.drawTexture(bc.painter, bc.theme.imgWidgets, position, subRectBorder, colorBorder)
+        bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
 
         // Content
         var labelStyle: LabelPaintStyle
