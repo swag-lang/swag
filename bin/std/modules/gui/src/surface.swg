@@ -32,9 +32,9 @@ impl Surface
 
         result.flags = flags
         if flags & .BigCaption
-            result.wnd.marginsTopLeft.y = app.theme.bigCaptionCY
+            result.wnd.marginsTopLeft.y = app.theme.wndBigCaptionCY
         else if flags & .SmallCaption
-            result.wnd.marginsTopLeft.y = app.theme.smallCaptionCY
+            result.wnd.marginsTopLeft.y = app.theme.wndSmallCaptionCY
 
         if flags & .Border
         {

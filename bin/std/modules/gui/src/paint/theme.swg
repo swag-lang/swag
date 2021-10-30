@@ -23,9 +23,9 @@ struct ImageSubRect
 
 struct ImageMetrics
 {
-    wndBorder:      ImageSubRect = @{{130,1,27,27}, 3}
-    bigCaption:     ImageSubRect = @{{57,1,72,27}, 1}
-    smallCaption:   ImageSubRect = @{{57,1,72,27}, 1}
+    wndBorder:          ImageSubRect = @{{130,1,27,27}, 3}
+    wndBigCaption:      ImageSubRect = @{{57,1,72,27}, 1}
+    wndSmallCaption:    ImageSubRect = @{{57,1,72,27}, 1}
 
     btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
     btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
@@ -44,15 +44,15 @@ struct Theme
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
-    fontSmall:      FontFamily
+    fontDefault:      FontFamily
     palette:        Palette
 
-    fontSmallSize:      u32 = 13
+    fontDefaultSize:    u32 = 13
 
     wndBorderSize:      f32 = 3
+    wndBigCaptionCY:    f32 = 30
+    wndSmallCaptionCY:  f32 = 24
     btnMargins:         f32 = 5
-    bigCaptionCY:       f32 = 30
-    smallCaptionCY:     f32 = 24
 }
 
 impl Theme
@@ -72,10 +72,10 @@ impl Theme
         typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
         typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
-        fontSmall.regular = Font.create(typeFaceR, fontSmallSize)
-        fontSmall.bold = Font.create(typeFaceB, fontSmallSize)
-        fontSmall.italic = Font.create(typeFaceI, fontSmallSize)
-        fontSmall.boldItalic = Font.create(typeFaceBI, fontSmallSize)
+        fontDefault.regular = Font.create(typeFaceR, fontDefaultSize)
+        fontDefault.bold = Font.create(typeFaceB, fontDefaultSize)
+        fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
+        fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)

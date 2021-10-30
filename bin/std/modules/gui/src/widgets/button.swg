@@ -164,7 +164,7 @@ impl Button
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
         labelStyle.stringFormat.flags = .Clip
-        labelStyle.font = bc.theme.fontSmall.bold
+        labelStyle.font = bc.theme.fontDefault.bold
         labelPos := position
         labelPos.inflate(bc.theme.btnMargins)
         Label.paint(bc, labelPos, name, icon, labelStyle)

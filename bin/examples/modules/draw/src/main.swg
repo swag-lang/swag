@@ -10,7 +10,7 @@ namespace Res
     var image1:     Texture
     var image2:     Texture
     var typeface:   const *TypeFace
-    var fontSmall:  *Font
+    var fontDefault:  *Font
     var font40:     *Font
     var font80:     *Font
     var fontFam:    FontFamily
@@ -347,7 +347,7 @@ func displayPage4(painter: *Pixel.Painter)
         format.vertAlignment = .Center
         format.lineGap = 1
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontSmall, Argb.Black, format)
+        painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontDefault, Argb.Black, format)
     }
 
     {
@@ -357,7 +357,7 @@ func displayPage4(painter: *Pixel.Painter)
         format.underline = .Underline
         format.lineGap = 1
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontSmall, Argb.Black, format)
+        painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontDefault, Argb.Black, format)
     }
 
     {
@@ -366,11 +366,11 @@ func displayPage4(painter: *Pixel.Painter)
         rect := Rectangle{650, 50, 200, 700}
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        painter.drawString(rect, TXT, Res.fontSmall, Argb.Black, format)
+        painter.drawString(rect, TXT, Res.fontDefault, Argb.Black, format)
     }
 
     {
-        painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontSmall, Argb.Black)
+        painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontDefault, Argb.Black)
     }
 
     {
@@ -570,7 +570,7 @@ func setup(wnd: *Wnd) throw
         rdr.updateTexture(Res.image2, img1.pixels)
 
         Res.typeface = TypeFace.load(imagePath("arial.ttf"))
-        Res.fontSmall = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
+        Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
         Res.font40 = Font.create(Res.typeface, 40)
         Res.font80 = Font.create(Res.typeface, 80)
 

@@ -21,14 +21,14 @@ impl IWnd for SurfaceWnd
         if surface.flags & .BigCaption
         {
             pos.height = surface.wnd.marginsTopLeft.y
-            subRect := &bc.theme.imgMetrics.bigCaption
+            subRect := &bc.theme.imgMetrics.wndBigCaption
             bc.theme.drawSubRect(bc.painter, pos, subRect, bc.theme.palette.caption)
         }
 
         if surface.flags & .SmallCaption
         {
             pos.height = surface.wnd.marginsTopLeft.y
-            subRect := &bc.theme.imgMetrics.smallCaption
+            subRect := &bc.theme.imgMetrics.wndSmallCaption
             bc.theme.drawSubRect(bc.painter, pos, subRect, bc.theme.palette.caption)
         }
     }
