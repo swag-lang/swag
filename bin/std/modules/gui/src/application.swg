@@ -11,6 +11,7 @@ struct Application
     postedEvents:   Array'(*Event)
     surfaces:       Array'(*Surface)
     mustQuit:       bool
+    isActivated:    bool
     quitCode:       s32
 
     mouseEnterWnd:      *Wnd
@@ -130,7 +131,7 @@ impl Application
         var targetWnd: *Wnd
         if mouseCaptureWnd
             targetWnd = mouseCaptureWnd
-        else
+        else if isActivated
             targetWnd = getWndAt(mousePos.x, mousePos.y)
 
         evt := MouseEvent{}

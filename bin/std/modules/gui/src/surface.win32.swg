@@ -27,6 +27,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
+        case WM_ACTIVATEAPP:
+            surface.app.isActivated = wParam ? true : false
+            return 0
         case WM_ERASEBKGND:
             surface.invalidate()
             surface.paint()
