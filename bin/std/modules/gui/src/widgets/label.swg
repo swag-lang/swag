@@ -37,7 +37,7 @@ impl Label
 
         if icon.imageList
         {
-            icon.draw(bc.painter, outRect.x - icon.size - style.iconMargin, outRect.vertCenter() - (icon.size * 0.5), style.colorText)
+            icon.paint(bc.painter, outRect.x - icon.size - style.iconMargin, outRect.vertCenter() - (icon.size * 0.5), style.colorText)
         }
     }
 

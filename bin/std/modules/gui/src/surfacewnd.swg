@@ -39,7 +39,7 @@ impl IWnd for SurfaceWnd
 
             if icon.isValid()
             {
-                icon.draw(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
+                icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
                 posCaption.x += icon.size + bc.theme.iconTextMargin
             }
 

@@ -27,7 +27,7 @@ impl Icon
         self.size = #scopefct.size
     }
 
-    mtdc draw(painter: *Painter, x, y: f32, color: Color = Argb.White)
+    mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
         if !imageList
             return
