@@ -132,8 +132,8 @@ const THREAD_PRIORITY_NORMAL        = 0
 const THREAD_PRIORITY_ABOVE_NORMAL  = 1
 const THREAD_PRIORITY_HIGHEST       = 2
 
-func LOWORD(l: u64) => cast(s32) (l & 0xffff)
-func HIWORD(l: u64) => cast(s32) ((l >>,safe 16) & 0xffff)
+func LOWORD(l: u64) => cast(s32) bitcast(s16) (l & 0xffff)
+func HIWORD(l: u64) => cast(s32) bitcast(s16) ((l >>,safe 16) & 0xffff)
 
 alias SRWLOCK = *void
 const SRWLOCK_INIT = cast(SRWLOCK) null

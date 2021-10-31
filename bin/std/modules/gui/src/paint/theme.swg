@@ -49,10 +49,11 @@ struct Theme
 
     fontDefaultSize:    u32 = 13
 
-    wndBorderSize:      f32 = 3
-    wndBigCaptionCY:    f32 = 30
-    wndSmallCaptionCY:  f32 = 24
-    btnMargins:         f32 = 5
+    wndBorderSize:          f32 = 3
+    wndBigCaptionCY:        f32 = 30
+    wndSmallCaptionCY:      f32 = 24
+    wndCaptionMarginTitle:  f32 = 5
+    btnMargins:             f32 = 5
 }
 
 impl Theme

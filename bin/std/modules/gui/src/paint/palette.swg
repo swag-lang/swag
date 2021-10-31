@@ -2,6 +2,7 @@ using Pixel
 public struct Palette
 {
     caption:        Color = 0xFF535353
+    captionText:    Color = 0xFFFFFFFF
 
     windowBk:       Color = 0xFF424242
 

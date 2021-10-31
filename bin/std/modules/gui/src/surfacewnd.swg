@@ -10,7 +10,7 @@ impl IWnd for SurfaceWnd
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc := evt.bc
-        pos := position
+        posCaption := position
 
         if surface.flags & .Border
         {
@@ -20,16 +20,24 @@ impl IWnd for SurfaceWnd
 
         if surface.flags & .BigCaption
         {
-            pos.height = surface.wnd.marginsTopLeft.y
+            posCaption.height = surface.wnd.marginsTopLeft.y
             subRect := &bc.theme.imgMetrics.wndBigCaption
-            bc.theme.drawSubRect(bc.painter, pos, subRect, bc.theme.palette.caption)
+            bc.theme.drawSubRect(bc.painter, posCaption, subRect, bc.theme.palette.caption)
         }
 
         if surface.flags & .SmallCaption
         {
-            pos.height = surface.wnd.marginsTopLeft.y
+            posCaption.height = surface.wnd.marginsTopLeft.y
             subRect := &bc.theme.imgMetrics.wndSmallCaption
-            bc.theme.drawSubRect(bc.painter, pos, subRect, bc.theme.palette.caption)
+            bc.theme.drawSubRect(bc.painter, posCaption, subRect, bc.theme.palette.caption)
+        }
+
+        if surface.flags & (.BigCaption | .SmallCaption)
+        {
+            var sf: Pixel.StringFormat
+            sf.vertAlignment = .Center
+            posCaption.x += bc.theme.wndCaptionMarginTitle
+            bc.painter.drawString(posCaption, "toto", bc.theme.fontDefault.regular, bc.theme.palette.captionText, sf)
         }
     }
 }
