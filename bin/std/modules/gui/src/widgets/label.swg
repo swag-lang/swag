@@ -27,14 +27,7 @@ impl Label
         // Icon alone
         if @countof(name) == 0
         {
-            switch style.stringFormat.horzAlignment
-            {
-            case Left:
-                pos.x = pos.horzCenter() - icon.size * 0.5
-            case Center:
-                pos.x = pos.horzCenter() - icon.size * 0.5
-            }
-
+            pos.x = pos.horzCenter() - icon.size * 0.5
             icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), style.colorText)
             return
         }

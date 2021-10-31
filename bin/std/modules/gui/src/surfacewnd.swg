@@ -95,18 +95,21 @@ impl SurfaceWnd
         if surface.flags & .MinimizeBtn
         {
             minimizeBtn = Button.create(self, null, @{0,0,0,0})
+            minimizeBtn.isFlat = true
             minimizeBtn.icon.set(&surface.app.theme.icons24, 2, 16)
         }
 
         if surface.flags & .MaximizeBtn
         {
             maximizeBtn = Button.create(self, null, @{0,0,0,0})
+            maximizeBtn.isFlat = true
             maximizeBtn.icon.set(&surface.app.theme.icons24, 3, 16)
         }
 
         if surface.flags & .CloseBtn
         {
             closeBtn = Button.create(self, null, @{0,0,0,0})
+            closeBtn.isFlat = true
             closeBtn.icon.set(&surface.app.theme.icons24, 4, 16)
         }
     }

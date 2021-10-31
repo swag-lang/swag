@@ -9,6 +9,7 @@ enum ButtonPaintFlags
     Hot
     Default
     Disabled
+    Flat
 }
 
 struct ButtonPaintStyle
@@ -22,11 +23,13 @@ struct Button
     using base:     Widget
     icon:           Icon
     isDefault:      bool
+    isFlat:         bool
+    sigPressed:     func(*Button)
+
     isPressed:      bool
     isPressing:     bool
     isHot:          bool
     isIn:           bool
-    sigPressed:     func(*Button)
 }
 
 impl IWnd for Button
@@ -41,6 +44,8 @@ impl IWnd for Button
             style.flags |= .Hot
         if isDefault
             style.flags |= .Default
+        if isFlat
+            style.flags |= .Flat
         if evt.bc.isDisabled
             style.flags |= .Disabled
 
@@ -156,7 +161,10 @@ impl Button
         bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
 
         // Border
-        bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
+        xx := cast(bool) (flags & .Flat)
+        //Console.printf("%{x} % - ", cast(u32) flags, xx)
+        if !xx
+            bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
 
         // Content
         var labelStyle: LabelPaintStyle
