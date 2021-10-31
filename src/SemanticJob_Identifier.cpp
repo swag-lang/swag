@@ -3759,7 +3759,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     {
         if (!(flags & COLLECT_BACKTICK))
         {
-            while (startNode->kind != AstNodeKind::Inline &&
+            while (startNode->parent->kind != AstNodeKind::Inline &&    // Need to test on parent to be able to add alternative scopes of the inline block
                    startNode->kind != AstNodeKind::CompilerInline &&
                    startNode->kind != AstNodeKind::FuncDecl)
             {
