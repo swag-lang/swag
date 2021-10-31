@@ -8,18 +8,15 @@ void Workspace::cleanFolderContent(const fs::path& path)
     if (g_CommandLine->cleanLog)
         return;
 
-    OS::visitFilesFolders(path.string().c_str(), [&](uint64_t, const char* cFileName, bool)
+    OS::visitFilesRec(path.string().c_str(), [&](const char* cFileName)
+                      {
+                          std::error_code err;
+                          if (fs::remove_all(cFileName, err) == -1)
                           {
-                              auto folder = path.string() + "/";
-                              folder += cFileName;
-
-                              std::error_code err;
-                              if (fs::remove_all(folder, err) == -1)
-                              {
-                                  g_Log.errorOS(Utf8::format(g_E[Err0344], folder.c_str()));
-                                  OS::exit(-1);
-                              }
-                          });
+                              g_Log.errorOS(Utf8::format(g_E[Err0344], cFileName));
+                              OS::exit(-1);
+                          }
+                      });
 
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
@@ -153,7 +150,7 @@ void Workspace::cleanCommand()
             auto path = Utf8::normalizePath(dependenciesPath.string());
             g_Log.messageHeaderCentered("Cleaning", path);
             if (!g_CommandLine->cleanLog)
-                fs::remove_all(dependenciesPath);
+                cleanFolderContent(dependenciesPath);
         }
     }
 
