@@ -139,6 +139,7 @@ impl Wnd
             return
 
         // Transmit disabled state to childs
+        lastDisabled := bc.isDisabled
         if isDisabled
             bc.isDisabled = true
 
@@ -162,6 +163,8 @@ impl Wnd
             c.paint(bc)
             bc.painter.setState(curState)
         }
+
+        bc.isDisabled = lastDisabled
     }
 
     mtd invalidate()
@@ -207,8 +210,15 @@ impl Wnd
         return result
     }
 
+    // Move and size the wnd
+    mtd setRect(rect: Math.Rectangle)
+    {
+        move(rect.x, rect.y)
+        resize(rect.width, rect.height)
+    }
+
     // Move the wnd
-    mtd move(x, y: s32)
+    mtd move(x, y: f32)
     {
         evt := MoveEvent{}
         evt.oldPos = @{position.x, position.y}
@@ -218,7 +228,7 @@ impl Wnd
     }
 
     // Resize the wnd
-    mtd resize(width, height: s32)
+    mtd resize(width, height: f32)
     {
         evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}

@@ -19,6 +19,9 @@ enum SurfaceFlags
     Zero = 0
     BigCaption
     SmallCaption
+    MinimizeBtn
+    MaximizeBtn
+    CloseBtn
     Border
     SecondaryWindow
 }
@@ -26,26 +29,30 @@ enum SurfaceFlags
 impl Surface
 {
     // Creates the surface
-    func create(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    func create(app: *Application, surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
-        try NativeSurface.createNative(app, result, x, y, width, height, flags, mainSurface)
+        surface.flags = flags
+        surface.wnd.position = @{0, 0, width, height}
+        surface.wnd.itf = cast(IWnd) surface.wnd
+        surface.wnd.surface = surface
+        surface.wnd.create()
 
-        result.flags = flags
         if flags & .BigCaption
-            result.wnd.marginsTopLeft.y = app.theme.wndBigCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.wndBigCaptionCY
         else if flags & .SmallCaption
-            result.wnd.marginsTopLeft.y = app.theme.wndSmallCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.wndSmallCaptionCY
 
         if flags & .Border
         {
             size := app.theme.wndBorderSize
-            result.wnd.marginsTopLeft.x = size
-            result.wnd.marginsTopLeft.y = Math.max(result.wnd.marginsTopLeft.y, size)
-            result.wnd.marginsBottomRight.x = size
-            result.wnd.marginsBottomRight.y = size
+            surface.wnd.marginsTopLeft.x = size
+            surface.wnd.marginsTopLeft.y = Math.max(surface.wnd.marginsTopLeft.y, size)
+            surface.wnd.marginsBottomRight.x = size
+            surface.wnd.marginsBottomRight.y = size
         }
 
-        result.wnd.sendResizeEvent()
+        try NativeSurface.createNative(app, surface, x, y, width, height, flags, mainSurface)
+        surface.wnd.sendResizeEvent()
     }
 
     // Set the surface icon
@@ -96,10 +103,10 @@ impl Surface
         cxt.renderer.end()
     }
 
-    protected mtd sendResizeEvent(width, height: s32)
+    protected mtd sendResizeEvent(width, height: f32)
     {
-        rc.width = width
-        rc.height = height
+        rc.width = cast(s32) width
+        rc.height = cast(s32) height
         position.width = width
         position.height = width
         wnd.resize(width, height)

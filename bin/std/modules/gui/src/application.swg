@@ -30,11 +30,6 @@ impl Application
         surface := Memory.new'Surface()
         surface.app = self
         surface.position = @{x, y, width, height}
-        surface.wnd.position = @{0, 0, width, height}
-        surface.wnd.itf = cast(IWnd) surface.wnd
-        surface.wnd.surface = surface
-        surface.wnd.createView'Wnd()
-        surface.wnd.view.drawBackground = true
 
         try Surface.create(self, surface, x, y, width, height, flags, mainSurface)
         if !mainSurface

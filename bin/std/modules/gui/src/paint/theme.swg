@@ -26,6 +26,9 @@ struct ImageMetrics
     wndBorder:          ImageSubRect = @{{130,1,27,27}, 3}
     wndBigCaption:      ImageSubRect = @{{57,1,72,27}, 1}
     wndSmallCaption:    ImageSubRect = @{{57,1,72,27}, 1}
+    wndCaptionMinimize: ImageSubRect = @{{57,29,27,27}, 1}
+    wndCaptionMaximize: ImageSubRect = @{{85,29,27,27}, 1}
+    wndCaptionClose:    ImageSubRect = @{{113,29,27,27}, 1}
 
     btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
     btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}

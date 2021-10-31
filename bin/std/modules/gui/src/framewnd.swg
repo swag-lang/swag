@@ -17,6 +17,7 @@ impl IWnd for FrameWnd
         view.position.y = marginsTopLeft.y
         view.position.width = position.width - marginsTopLeft.x - marginsBottomRight.x
         view.position.height = position.height - marginsTopLeft.y - marginsBottomRight.y
+        view.drawBackground = true
     }
 }
 
