@@ -48,6 +48,20 @@ impl Surface
         result.wnd.sendResizeEvent()
     }
 
+    // Set the surface icon
+    mtd setIcon(icon: Icon)
+    {
+        wnd.icon = icon
+        invalidate()
+    }
+
+    // Set the surface title
+    mtd setTitle(name: string)
+    {
+        wnd.name = name
+        invalidate()
+    }
+
     // Invalidate the full surface to be painted
     mtd invalidate()
     {

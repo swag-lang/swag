@@ -10,6 +10,16 @@ struct Icon
 
 impl Icon
 {
+    #[Swag.Inline]
+    mtd isValid() => imageList != null
+
+    func from(imageList: *ImageList, index: s32, size: f32 = 24)->Icon
+    {
+        var result: retval
+        result.set(imageList, index, size)
+        return result
+    }
+
     mtd set(imageList: *ImageList, index: s32, size: f32 = 24)
     {
         self.imageList = #scopefct.imageList
@@ -19,6 +29,9 @@ impl Icon
 
     mtdc draw(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
+        if !imageList
+            return
+
         srcX := index % (imageList.texture.width / imageList.sizeX)
         srcY := index / (imageList.texture.height / imageList.sizeY)
         srcX *= imageList.sizeX

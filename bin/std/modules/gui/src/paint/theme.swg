@@ -54,6 +54,7 @@ struct Theme
     wndSmallCaptionCY:      f32 = 24
     wndCaptionMarginTitle:  f32 = 5
     btnMargins:             f32 = 5
+    iconTextMargin:         f32 = 4
 }
 
 impl Theme

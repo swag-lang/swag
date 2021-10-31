@@ -3,6 +3,7 @@ using Core, Pixel
 public struct SurfaceWnd
 {
     using base: FrameWnd
+    icon:       Icon
 }
 
 impl IWnd for SurfaceWnd
@@ -34,10 +35,17 @@ impl IWnd for SurfaceWnd
 
         if surface.flags & (.BigCaption | .SmallCaption)
         {
+            posCaption.x += bc.theme.wndCaptionMarginTitle
+
+            if icon.isValid()
+            {
+                icon.draw(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
+                posCaption.x += icon.size + bc.theme.iconTextMargin
+            }
+
             var sf: Pixel.StringFormat
             sf.vertAlignment = .Center
-            posCaption.x += bc.theme.wndCaptionMarginTitle
-            bc.painter.drawString(posCaption, "toto", bc.theme.fontDefault.regular, bc.theme.palette.captionText, sf)
+            bc.painter.drawString(posCaption, name, bc.theme.fontDefault.regular, bc.theme.palette.captionText, sf)
         }
     }
 }
