@@ -313,7 +313,7 @@ struct BackendX64 : public Backend
     BackendFunctionBodyJobBase* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
-    void     storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack);
+    void     storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack, uint32_t offsetStructCopy);
     void     storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex);
     uint16_t computeUnwindPushRDI(uint32_t offsetSubRSP);
     void     computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);

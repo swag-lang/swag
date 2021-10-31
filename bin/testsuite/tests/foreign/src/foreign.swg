@@ -402,3 +402,29 @@ public impl T3209
 {
     const Identity: T3209{1, 10}
 }
+
+public struct AA24
+{
+    x, y: s32
+}
+
+public func tcf_toto24(v: AA24)
+{
+    @assert(v.x == 1)
+    @assert(v.y == 10)
+}
+
+public struct AA25
+{
+    x: s16
+}
+
+public func tcf_toto25(x, y: s32, v: AA25)
+{
+    @assert(v.x == 1)
+}
+
+public func tcf_toto26(a: string)->{x: u8, y: u32}
+{
+    return @{1, 2}
+}

@@ -7,11 +7,11 @@
 
 bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
-    int   ct = buildParameters.compileType;
+    int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp = *perThread[ct][precompileIndex];
-    auto& concat = pp.concat;
-    bool  debug = buildParameters.buildCfg->backendDebugInformations;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+    bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
     concat.align(16);
     uint32_t startAddress = concat.totalCount();
@@ -21,13 +21,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // Symbol
     uint32_t symbolFuncIndex = getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     pp.directives += Utf8::format("/EXPORT:%s ", node->fullnameForeign.c_str());
-    auto coffFct = registerFunction(pp, node, symbolFuncIndex);
+    auto coffFct     = registerFunction(pp, node, symbolFuncIndex);
     coffFct->wrapper = true;
 
     if (debug)
     {
         DbgLine dbgLine;
-        dbgLine.line = node->exportForeignLine;
+        dbgLine.line       = node->exportForeignLine;
         dbgLine.byteOffset = 0;
         DbgLines dbgLines;
         dbgLines.sourceFile = node->sourceFile;
@@ -35,13 +35,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         coffFct->dbgLines.push_back(dbgLines);
     }
 
-    auto numTotalRegs = typeFunc->numTotalRegisters();
+    auto numTotalRegs  = typeFunc->numTotalRegisters();
     auto numReturnRegs = typeFunc->numReturnRegisters();
-    auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    auto returnType    = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    bool returnByCopy  = returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     // Storage for the registers
-    uint32_t sizeStack = (uint32_t)numTotalRegs * sizeof(Register);
+    uint32_t sizeStack = (uint32_t) numTotalRegs * sizeof(Register);
 
     // When return by copy, the register needs to contain the "address to the address" where
     // the copy will be stored. So we add one more temporary storage at the end of the stack,
@@ -53,14 +53,28 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         sizeStack += sizeof(Register);
     }
 
+    // For structs stored in register, we allocate room on the stack, because the soft register for local call
+    // will have to be a pointer to the struct.
+    // :StructByCopy
+    uint32_t offsetStructCopy = sizeStack;
+    for (int i = 0; i < numTotalRegs; i++)
+    {
+        if (i >= numReturnRegs)
+        {
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+            if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+                sizeStack += sizeof(void*);
+        }
+    }
+
     // Prolog
     VectorNative<uint16_t> unwind;
     auto                   beforeProlog = concat.totalCount();
-    auto                   sizeProlog = 0;
+    auto                   sizeProlog   = 0;
     if (sizeStack)
     {
         BackendX64Inst::emit_Push(pp, RDI);
-        sizeProlog = concat.totalCount() - beforeProlog;
+        sizeProlog       = concat.totalCount() - beforeProlog;
         uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
         MK_ALIGN16(sizeStack);
@@ -89,8 +103,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     {
         SWAG_ASSERT(!returnByCopy);
         SWAG_ASSERT(sizeStack);
-        int            offset = (int)numTotalRegs - 2;
-        static uint8_t x64regs[] = { RCX, RDX, R8, R9 };
+        int            offset    = (int) numTotalRegs - 2;
+        static uint8_t x64regs[] = {RCX, RDX, R8, R9};
         BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + (offset * 8), x64regs[offset], RDI);
     }
 
@@ -105,7 +119,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
                 // Store the result address in the temporary storage
-                storeCDeclParamToRegister(pp, returnType, numTotalRegs - numReturnRegs, offsetRetCopy, sizeStack);
+                storeCDeclParamToRegister(pp, returnType, numTotalRegs - numReturnRegs, offsetRetCopy, sizeStack, UINT32_MAX);
             }
             else
             {
@@ -116,7 +130,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         else
         {
             auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
+            storeCDeclParamToRegister(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack, offsetStructCopy);
+
+            // :StructByCopy
+            if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+                offsetStructCopy += sizeof(void*);
         }
     }
 
@@ -199,25 +217,33 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
-void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
+void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack, uint32_t offsetStructCopy)
 {
     if (calleeIndex < 4)
     {
-        if (typeParam->isNativeFloat())
+        // :StructByCopy
+        if (offsetStructCopy != UINT32_MAX && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         {
-            static uint8_t x64Reg[] = { XMM0, XMM1, XMM2, XMM3 };
+            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStructCopy, x64Reg[calleeIndex], RDI);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStructCopy, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
+        }
+        else if (typeParam->isNativeFloat())
+        {
+            static uint8_t x64Reg[] = {XMM0, XMM1, XMM2, XMM3};
             BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, x64Reg[calleeIndex], RDI);
         }
         else
         {
-            static uint8_t x64Reg[] = { RCX, RDX, R8, R9 };
+            static uint8_t x64Reg[] = {RCX, RDX, R8, R9};
             BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, x64Reg[calleeIndex], RDI);
         }
     }
     else
     {
         // Get parameter from the stack (aligned to 8 bytes)
-        auto offset = calleeIndex * (int)sizeof(Register);
+        auto offset = calleeIndex * (int) sizeof(Register);
         offset += sizeStack;
         offset += 16;
         BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
@@ -229,8 +255,8 @@ void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam
 
 bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
-    auto              nodeFunc = CastAst<AstFuncDecl>((AstNode*)ip->a.pointer, AstNodeKind::FuncDecl);
-    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*)ip->b.pointer;
+    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Get function name
     Utf8 funcName;
@@ -252,9 +278,9 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     // Dll imported function name will have "__imp_" before (imported mangled name)
     CoffRelocation reloc;
     reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
-    auto callSym = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
-    reloc.symbolIndex = callSym->index;
-    reloc.type = IMAGE_REL_AMD64_REL32;
+    auto callSym         = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
+    reloc.symbolIndex    = callSym->index;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
     pp.relocTableTextSection.table.push_back(reloc);
     concat.addU32(0);
 
@@ -291,12 +317,12 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
 
 bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
 {
-    int numCallParams = (int)typeFuncBC->parameters.size();
+    int numCallParams = (int) typeFuncBC->parameters.size();
 
     VectorNative<uint32_t>  paramsRegisters;
     VectorNative<TypeInfo*> paramsTypes;
 
-    int indexParam = (int)pushRAParams.size() - 1;
+    int indexParam = (int) pushRAParams.size() - 1;
 
     // Variadic are first
     if (numCallParams)
@@ -316,22 +342,26 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     }
 
     // All parameters
-    for (int i = 0; i < (int)numCallParams; i++)
+    for (int i = 0; i < (int) numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
 
         auto index = pushRAParams[indexParam--];
 
         if (typeParam->kind == TypeInfoKind::Pointer ||
-            typeParam->kind == TypeInfoKind::Struct ||
             typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Array)
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
+        else if (typeParam->kind == TypeInfoKind::Struct)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
         else if (typeParam->kind == TypeInfoKind::Slice ||
-            typeParam->isNative(NativeTypeKind::String))
+                 typeParam->isNative(NativeTypeKind::String))
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
@@ -340,7 +370,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
-            typeParam->kind == TypeInfoKind::Interface)
+                 typeParam->kind == TypeInfoKind::Interface)
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
@@ -358,7 +388,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     }
 
     // Return by parameter
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->kind == TypeInfoKind::Interface ||
@@ -375,13 +405,13 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     }
 
     // Set the first 4 parameters. Can be return register, or function parameter.
-    for (int i = 0; i < min(4, (int)paramsRegisters.size()); i++)
+    for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
     {
         auto type = paramsTypes[i];
-        auto r = paramsRegisters[i];
+        auto r    = paramsRegisters[i];
 
-        static const uint8_t reg4[] = { RCX, RDX, R8, R9 };
-        static const uint8_t regf4[] = { XMM0, XMM1, XMM2, XMM3 };
+        static const uint8_t reg4[]  = {RCX, RDX, R8, R9};
+        static const uint8_t regf4[] = {XMM0, XMM1, XMM2, XMM3};
 
         // This is a return register
         if (type == g_TypeMgr->typeInfoUndefined)
@@ -395,10 +425,35 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         // This is a normal parameter, which can be float or integer
         else
         {
-            if (type->isNativeFloat())
+            // Pass struct in a register if small enough
+            // :StructByCopy
+            if (type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RAX, RDI);
+                switch (type->sizeOf)
+                {
+                case 1:
+                    BackendX64Inst::emit_Load8_Indirect(pp, 0, reg4[i], RAX);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_Load16_Indirect(pp, 0, reg4[i], RAX);
+                    break;
+                case 4:
+                    BackendX64Inst::emit_Load32_Indirect(pp, 0, reg4[i], RAX);
+                    break;
+                case 8:
+                    BackendX64Inst::emit_Load64_Indirect(pp, 0, reg4[i], RAX);
+                    break;
+                }
+            }
+            else if (type->isNativeFloat())
+            {
                 BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), regf4[i], RDI);
+            }
             else
+            {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), reg4[i], RDI);
+            }
         }
     }
 
@@ -408,7 +463,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     if (paramsRegisters.size() > 4)
     {
         uint32_t offsetStack = 4 * sizeof(uint64_t);
-        for (int i = 4; i < (int)paramsRegisters.size(); i++)
+        for (int i = 4; i < (int) paramsRegisters.size(); i++)
         {
             // This is for a return value
             if (paramsTypes[i] == g_TypeMgr->typeInfoUndefined)
@@ -423,6 +478,11 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             // This is for a normal parameter
             else
             {
+                // Struct by copy. Will be a pointer to the stack
+                // :StructByCopy
+                if (paramsTypes[i]->kind == TypeInfoKind::Struct)
+                    paramsTypes[i] = g_TypeMgr->typeInfoU64;
+
                 auto sizeOf = paramsTypes[i]->sizeOf;
                 switch (sizeOf)
                 {

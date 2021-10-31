@@ -159,39 +159,61 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
-        context->ffiArgs.push_back(ffiFromTypeInfo(typeParam));
-        if (!context->ffiArgs.back())
+        auto fromTTi   = ffiFromTypeInfo(typeParam);
+        if (!fromTTi)
         {
             context->hasError = true;
             context->errorMsg = Utf8::format("ffi failed to convert argument type `%s`", typeParam->name.c_str());
             return;
         }
 
-        if (typeParam->isNative(NativeTypeKind::String) ||
-            typeParam->kind == TypeInfoKind::Slice)
+        if (typeParam->isNative(NativeTypeKind::String) || typeParam->kind == TypeInfoKind::Slice)
         {
-            context->ffiArgsValues.push_back(&sp->pointer); // Pointer
+            context->ffiArgs.push_back(fromTTi);
+            context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
-            context->ffiArgs.push_back(&ffi_type_uint64); // Count
+            context->ffiArgs.push_back(&ffi_type_uint64);
             context->ffiArgsValues.push_back(&sp->u64);
             sp++;
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface)
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
         {
-            context->ffiArgsValues.push_back(&sp->pointer); // Value
+            context->ffiArgs.push_back(fromTTi);
+            context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
-            context->ffiArgs.push_back(&ffi_type_pointer); // Type
+            context->ffiArgs.push_back(&ffi_type_pointer);
             context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
+        // :StructByCopy
+        else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        {
+            switch (typeParam->sizeOf)
+            {
+            case 1:
+                context->ffiArgs.push_back(&ffi_type_uint8);
+                break;
+            case 2:
+                context->ffiArgs.push_back(&ffi_type_uint16);
+                break;
+            case 4:
+                context->ffiArgs.push_back(&ffi_type_uint32);
+                break;
+            case 8:
+                context->ffiArgs.push_back(&ffi_type_uint64);
+                break;
+            }
+            context->ffiArgsValues.push_back(sp->pointer);
+        }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
         {
+            context->ffiArgs.push_back(fromTTi);
             context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else
         {
+            context->ffiArgs.push_back(fromTTi);
             switch (typeParam->sizeOf)
             {
             case 1:

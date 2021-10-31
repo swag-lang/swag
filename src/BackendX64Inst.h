@@ -104,33 +104,21 @@ namespace BackendX64Inst
 
     inline void emit_Load8_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
+        SWAG_ASSERT(memReg < R8);
+        if (reg >= R8)
+            pp.concat.addU8(0x44);
         pp.concat.addU8(0x8A);
-        emit_ModRM(pp, stackOffset, reg, memReg);
-    }
-
-    inline void emit_LoadS8S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(0xBE);
-        emit_ModRM(pp, stackOffset, reg, memReg);
-    }
-
-    inline void emit_LoadU8U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(0xB6);
-        emit_ModRM(pp, stackOffset, reg, memReg);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
     inline void emit_Load16_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
+        SWAG_ASSERT(memReg < R8);
         pp.concat.addU8(0x66);
+        if (reg >= R8)
+            pp.concat.addU8(0x44);
         pp.concat.addU8(0x8B);
-        emit_ModRM(pp, stackOffset, reg, memReg);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
     inline void emit_Load32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
@@ -148,6 +136,22 @@ namespace BackendX64Inst
         pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
         pp.concat.addU8(0x8B);
         emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
+    }
+
+    inline void emit_LoadS8S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xBE);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_LoadU8U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB6);
+        emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
     inline void emit_LoadN_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits)
