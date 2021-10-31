@@ -41,8 +41,25 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // Storage for the registers
     auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegs));
 
+    // :StructByCopy
+    // Allocate storage for each struct to passed by copy, because local call wants a pointer to the struct,
+    // not a value
+    int sizeRetStruct = 0;
+    for (int i = 0; i < numTotalRegs; i++)
+    {
+        if (i >= numReturnRegs)
+        {
+            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
+            if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+                sizeRetStruct += sizeof(void*);
+        }
+    }
+
+    auto allocStructCopy = builder.CreateAlloca(builder.getInt64Ty(), sizeRetStruct);
+
     // Set all registers
-    int argIdx = 0;
+    int argIdx        = 0;
+    int argStructCopy = 0;
     for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
@@ -69,6 +86,25 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 auto rr1 = GEP_I32(allocRR, i + 1);
                 builder.CreateStore(func->getArg(1), rr1);
                 i += 1;
+            }
+            // :StructByCopy
+            else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+            {
+                switch (typeParam->sizeOf)
+                {
+                case 1:
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy++)));
+                    break;
+                case 2:
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(GEP_I32(allocStructCopy, argStructCopy++)));
+                    break;
+                case 4:
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(GEP_I32(allocStructCopy, argStructCopy++)));
+                    break;
+                case 8:
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(GEP_I32(allocStructCopy, argStructCopy++)));
+                    break;
+                }
             }
             else if (typeParam->kind == TypeInfoKind::Pointer ||
                      typeParam->kind == TypeInfoKind::Lambda ||
@@ -117,6 +153,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     // Set all parameters
     VectorNative<llvm::Value*> args;
+    argStructCopy = 0;
     for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
@@ -127,8 +164,16 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         else
         {
             auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            if (passByValue(typeParam))
+
+            // :StructByCopy
+            if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+            {
+                args.push_back(TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy++)));
+            }
+            else if (passByValue(typeParam))
+            {
                 args.push_back(func->getArg(i - numReturnRegs));
+            }
             else
             {
                 auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
@@ -235,21 +280,43 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
         llvm::Type* cType = nullptr;
         for (int i = 0; i < numParams; i++)
         {
-            auto param = typeFunc->parameters[i]->typeInfo;
+            auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
 
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
-            params.push_back(cType);
-
-            // Additional parameter
-            if (param->isNative(NativeTypeKind::String) ||
-                param->kind == TypeInfoKind::Slice)
+            // :StructByCopy
+            if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
             {
+                switch (param->sizeOf)
+                {
+                case 1:
+                    params.push_back(builder.getInt8Ty());
+                    break;
+                case 2:
+                    params.push_back(builder.getInt16Ty());
+                    break;
+                case 4:
+                    params.push_back(builder.getInt32Ty());
+                    break;
+                case 8:
+                    params.push_back(builder.getInt64Ty());
+                    break;
+                }
+            }
+            else if (param->isNative(NativeTypeKind::String) || param->kind == TypeInfoKind::Slice)
+            {
+                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                params.push_back(cType);
                 params.push_back(builder.getInt64Ty());
             }
-            else if (param->isNative(NativeTypeKind::Any) ||
-                     param->kind == TypeInfoKind::Interface)
+            else if (param->isNative(NativeTypeKind::Any) || param->kind == TypeInfoKind::Interface)
             {
+                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                params.push_back(cType);
                 params.push_back(builder.getInt8Ty()->getPointerTo());
+            }
+            else
+            {
+                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                params.push_back(cType);
             }
         }
     }
@@ -317,6 +384,27 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r0  = GEP_I32(allocR, index);
             auto r   = builder.CreatePointerCast(r0, llvmType);
             params.push_back(builder.CreateLoad(r));
+        }
+        // :StructByCopy
+        else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        {
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            auto v0 = builder.CreateLoad(r0);
+            switch (typeParam->sizeOf)
+            {
+            case 1:
+                params.push_back(builder.CreateLoad(TO_PTR_I8(v0)));
+                break;
+            case 2:
+                params.push_back(builder.CreateLoad(TO_PTR_I16(v0)));
+                break;
+            case 4:
+                params.push_back(builder.CreateLoad(TO_PTR_I32(v0)));
+                break;
+            case 8:
+                params.push_back(builder.CreateLoad(TO_PTR_I64(v0)));
+                break;
+            }
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Lambda ||
