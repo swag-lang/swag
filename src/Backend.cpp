@@ -88,7 +88,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     }
 
     auto timeToTest = timeExportFile;
-    if (module->areAllFilesExported())
+
+    if (invert && module->buildCfg.backendKind == BuildCfgBackendKind::Export)
         timeToTest = module->moreRecentSourceFile;
 
     // Be sure the output file is here, and is more recent than the export file
@@ -106,14 +107,14 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
     if (invert && timeToTest > moreRecentSourceFile)
         return false;
-    if (module->areAllFilesExported())
-        return true;
+    if (!invert && timeToTest < moreRecentSourceFile)
+        return false;
     if (timeToTest < g_Workspace->bootstrapModule->moreRecentSourceFile)
         return false;
     if (timeToTest < g_Workspace->runtimeModule->moreRecentSourceFile)
         return false;
-    if (!invert && timeToTest < moreRecentSourceFile)
-        return false;
+    if (module->buildCfg.backendKind == BuildCfgBackendKind::Export)
+        return true;
 
     // If one of my dependency is more recent than me, then need to rebuild
     for (auto dep : module->moduleDependencies)
@@ -227,17 +228,10 @@ bool Backend::setupExportFile(bool force)
 
     Utf8 exportName = module->name + ".swg";
     publicPath.append(exportName.c_str());
-    if (force)
-    {
-        exportFileName = exportName;
-        exportFilePath = publicPath;
-    }
-    else
-    {
-        exportFileName = exportName;
-        exportFilePath = publicPath;
+    exportFileName = exportName;
+    exportFilePath = publicPath;
+    if (!force)
         timeExportFile = OS::getFileWriteTime(publicPath.c_str());
-    }
 
     return true;
 }

@@ -139,7 +139,6 @@ struct Module
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
     bool waitForDependenciesDone(Job* job);
 
-    bool     areAllFilesExported();
     bool     mustOutputSomething();
     bool     mustGenerateTestExe();
     bool     canGenerateLegit();

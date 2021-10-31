@@ -740,11 +740,6 @@ bool Module::hasBytecodeToRun()
     return runByteCode;
 }
 
-bool Module::areAllFilesExported()
-{
-    return buildCfg.backendKind == BuildCfgBackendKind::Export;
-}
-
 bool Module::mustGenerateTestExe()
 {
     if (!g_CommandLine->test)
@@ -786,7 +781,7 @@ bool Module::mustOutputSomething()
     else if (kind == ModuleKind::Test && !g_CommandLine->outputTest)
         mustOutput = false;
     // if all files are exported, then do not generate a module
-    else if (areAllFilesExported())
+    else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
         mustOutput = false;
     else if (kind != ModuleKind::Test && buildCfg.backendKind == BuildCfgBackendKind::None)
         mustOutput = false;
