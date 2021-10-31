@@ -81,6 +81,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
     if (g_CommandLine->rebuild)
     {
+        if (g_CommandLine->rebuildAll)
+            return false;
         if (g_CommandLine->moduleName.empty())
             return false;
         if (g_CommandLine->moduleName == module->name)

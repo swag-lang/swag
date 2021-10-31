@@ -23,6 +23,9 @@ bool CommandLine::check()
         return false;
     }
 
+    if (rebuildAll)
+        rebuild = true;
+
     // Force verbose
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes)
         verbose = true;

@@ -26,6 +26,7 @@ struct CommandLine
     int       numCores      = 0;
     BuildPass buildPass     = BuildPass::Full;
     bool      rebuild       = false;
+    bool      rebuildAll    = false;
     bool      run           = false;
     bool      scriptMode    = false;
     bool      scriptCommand = false;
