@@ -11,7 +11,7 @@ struct Icon
 impl Icon
 {
     #[Swag.Inline]
-    mtd isValid() => imageList != null
+    mtdc isValid() => imageList != null
 
     func from(imageList: *ImageList, index: s32, size: f32 = 24)->Icon
     {

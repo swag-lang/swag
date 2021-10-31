@@ -18,10 +18,29 @@ impl Label
 {
     func paint(bc: *PaintContext, position: Math.Rectangle, name: string, icon: Icon, style: LabelPaintStyle)
     {
-        painter := bc.painter
-        pos := position
+        if @countof(name) == 0 and !icon.isValid()
+            return
 
-        if icon.imageList
+        painter := bc.painter
+        pos     := position
+
+        // Icon alone
+        if @countof(name) == 0
+        {
+            switch style.stringFormat.horzAlignment
+            {
+            case Left:
+                pos.x = pos.horzCenter() - icon.size * 0.5
+            case Center:
+                pos.x = pos.horzCenter() - icon.size * 0.5
+            }
+
+            icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), style.colorText)
+            return
+        }
+
+        // Text + icon
+        if icon.isValid()
         {
             switch style.stringFormat.horzAlignment
             {
@@ -35,7 +54,7 @@ impl Label
         var outRect: Math.Rectangle = ?
         bc.painter.drawString(pos, name, style.font, style.colorText, style.stringFormat, &outRect)
 
-        if icon.imageList
+        if icon.isValid()
         {
             icon.paint(bc.painter, outRect.x - icon.size - style.iconMargin, outRect.vertCenter() - (icon.size * 0.5), style.colorText)
         }
