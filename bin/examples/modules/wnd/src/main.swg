@@ -21,7 +21,7 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     var app: Gui.Application
     surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.BigCaption | SurfaceFlags.Border)
     surface0.setTitle("Example 0")
-    surface0.setIcon(Icon.from(&app.theme.icons24, 0, 24))
+    surface0.setIcon(Icon.from(&app.theme.icons24, 0, 20))
     surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
     view := surface0.wnd.view

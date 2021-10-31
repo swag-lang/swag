@@ -12,25 +12,28 @@ impl IWnd for SurfaceWnd
     {
         bc := evt.bc
         posCaption := position
+        theme := bc.theme
 
         if surface.flags & .Border
         {
             subRect := &bc.theme.imgMetrics.wndBorder
-            bc.theme.drawSubRect(bc.painter, position, subRect, bc.theme.palette.caption)
+            theme.drawSubRect(bc.painter, position, subRect, theme.palette.caption)
         }
 
         if surface.flags & .BigCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
             subRect := &bc.theme.imgMetrics.wndBigCaption
-            bc.theme.drawSubRect(bc.painter, posCaption, subRect, bc.theme.palette.caption)
+            colorBk := surface.app.isActivated ? theme.palette.caption : theme.palette.captionNotActived
+            theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
         if surface.flags & .SmallCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
-            subRect := &bc.theme.imgMetrics.wndSmallCaption
-            bc.theme.drawSubRect(bc.painter, posCaption, subRect, bc.theme.palette.caption)
+            subRect := &theme.imgMetrics.wndSmallCaption
+            colorBk := surface.app.isActivated ? theme.palette.caption : theme.palette.captionNotActived
+            theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
         if surface.flags & (.BigCaption | .SmallCaption)
@@ -40,12 +43,13 @@ impl IWnd for SurfaceWnd
             if icon.isValid()
             {
                 icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
-                posCaption.x += icon.size + bc.theme.iconTextMargin
+                posCaption.x += icon.size + theme.iconTextMargin
             }
 
             var sf: Pixel.StringFormat
             sf.vertAlignment = .Center
-            bc.painter.drawString(posCaption, name, bc.theme.fontDefault.regular, bc.theme.palette.captionText, sf)
+            colorTxt := surface.app.isActivated ? theme.palette.captionText : theme.palette.captionTextNotActivated
+            bc.painter.drawString(posCaption, name, theme.fontDefault.regular, colorTxt, sf)
         }
     }
 }

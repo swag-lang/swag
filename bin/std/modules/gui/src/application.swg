@@ -68,6 +68,22 @@ impl Application
         return targetWnd
     }
 
+    // Set activated state
+    mtd setActivated(activated: bool)
+    {
+        if isActivated == activated
+            return
+        isActivated = activated
+        invalidate()
+    }
+
+    // Force all surfaces to be painted
+    mtd invalidate()
+    {
+        visit s: surfaces
+            s.invalidate()
+    }
+
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {

@@ -1,8 +1,10 @@
 using Pixel
 public struct Palette
 {
-    caption:        Color = 0xFF535353
-    captionText:    Color = 0xFFFFFFFF
+    caption:                    Color = 0xFF535353
+    captionNotActived:          Color = 0xFF494949
+    captionText:                Color = 0xFFFFFFFF
+    captionTextNotActivated:    Color = 0xFFAAAAAA
 
     windowBk:       Color = 0xFF424242
 
