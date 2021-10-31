@@ -21,7 +21,6 @@ enum SurfaceFlags
     SmallCaption
     Border
     SecondaryWindow
-    TopMost
 }
 
 impl Surface

@@ -695,6 +695,23 @@ const GWLP_HWNDPARENT     = -8
 const GWLP_USERDATA       = -21
 const GWLP_ID             = -12
 
+const HWND_TOP       = (cast(HWND) 0'uint)
+const HWND_BOTTOM    = (cast(HWND) 1'uint)
+const HWND_TOPMOST   = (cast(HWND) bitcast(uint) -1'int)
+const HWND_NOTOPMOST = (cast(HWND) bitcast(uint) -2'int)
+
+const SWP_NOSIZE          = 0x0001
+const SWP_NOMOVE          = 0x0002
+const SWP_NOZORDER        = 0x0004
+const SWP_NOREDRAW        = 0x0008
+const SWP_NOACTIVATE      = 0x0010
+const SWP_FRAMECHANGED    = 0x0020
+const SWP_SHOWWINDOW      = 0x0040
+const SWP_HIDEWINDOW      = 0x0080
+const SWP_NOCOPYBITS      = 0x0100
+const SWP_NOOWNERZORDER   = 0x0200
+const SWP_NOSENDCHANGING  = 0x0400
+
 struct RECT
 {
     left:   LONG
@@ -779,6 +796,7 @@ namespace User32Priv
         func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
         func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
         func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL)->BOOL;
+        func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT)->BOOL;
     }
 }
 
@@ -829,6 +847,12 @@ namespace User32Priv
     func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL) throw
     {
         if !User32Priv.MoveWindow(hWnd, x, y, nWidth, nHeight, bRepaint)
+            try setError(GetLastError())
+    }
+
+    func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT) throw
+    {
+        if !User32Priv.SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags)
             try setError(GetLastError())
     }
 }

@@ -149,8 +149,6 @@ impl NativeSurface
         winFlagsEx := 0'u32
         if flags & .SecondaryWindow
             winFlagsEx |= WS_EX_TOOLWINDOW
-        if flags & .TopMost
-            winFlagsEx |= WS_EX_TOPMOST
 
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
