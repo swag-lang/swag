@@ -24,7 +24,7 @@ impl Icon
     {
         self.imageList = #scopefct.imageList
         self.index = #scopefct.index
-        self.size = #scopefct.size
+        self.size = #scopefct.size orelse cast(f32) self.imageList.sizeX
     }
 
     mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
@@ -37,7 +37,10 @@ impl Icon
         srcX *= imageList.sizeX
         srcY *= imageList.sizeY
 
-        painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, size, size}, @{srcX + 0.5, srcY + 0.5, imageList.sizeX - 1, imageList.sizeY - 1}, imageList.texture, color)
+        if size == imageList.sizeX and size == imageList.sizeY
+            painter.setInterpolationMode(InterpolationMode.Pixel)
+        else
+            painter.setInterpolationMode(InterpolationMode.Linear)
+        painter.drawTexture(@{x, y, size, size}, @{srcX, srcY, imageList.sizeX, imageList.sizeY}, imageList.texture, color)
     }
 }

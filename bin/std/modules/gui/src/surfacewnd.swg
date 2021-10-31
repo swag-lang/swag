@@ -22,19 +22,19 @@ impl IWnd for SurfaceWnd
         if closeBtn
         {
             closeBtn.setRect(pos)
-            pos.x -= pos.width
+            pos.x -= pos.width * 1.5
         }
 
         if maximizeBtn
         {
             maximizeBtn.setRect(pos)
-            pos.x -= pos.width
+            pos.x -= pos.width * 1.5
         }
 
         if minimizeBtn
         {
             minimizeBtn.setRect(pos)
-            pos.x -= pos.width
+            pos.x -= pos.width * 1.5
         }
 
         base.IWnd.onResizeEvent(evt)
@@ -96,21 +96,21 @@ impl SurfaceWnd
         {
             minimizeBtn = Button.create(self, null, @{0,0,0,0})
             minimizeBtn.isFlat = true
-            minimizeBtn.icon.set(&surface.app.theme.icons24, 2, 16)
+            minimizeBtn.icon.set(&surface.app.theme.icons24, 2)
         }
 
         if surface.flags & .MaximizeBtn
         {
             maximizeBtn = Button.create(self, null, @{0,0,0,0})
             maximizeBtn.isFlat = true
-            maximizeBtn.icon.set(&surface.app.theme.icons24, 3, 16)
+            maximizeBtn.icon.set(&surface.app.theme.icons24, 3)
         }
 
         if surface.flags & .CloseBtn
         {
             closeBtn = Button.create(self, null, @{0,0,0,0})
             closeBtn.isFlat = true
-            closeBtn.icon.set(&surface.app.theme.icons24, 4, 16)
+            closeBtn.icon.set(&surface.app.theme.icons24, 4)
         }
     }
 }
