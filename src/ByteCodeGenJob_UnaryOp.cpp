@@ -83,14 +83,13 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+            auto typeInfoExpr = front->castedTypeInfo ? front->castedTypeInfo : front->typeInfo;
 
             switch (node->token.id)
             {
             case TokenId::SymExclam:
             {
-                SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
-                node->doneFlags |= AST_DONE_CAST2;
+                SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
                 auto rt = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
                 freeRegisterRC(context, node->resultRegisterRC);

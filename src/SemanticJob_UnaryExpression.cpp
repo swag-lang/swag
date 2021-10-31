@@ -81,15 +81,16 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
-    if (typeInfo->kind == TypeInfoKind::Lambda)
+    typeInfo      = TypeManager::concreteType(typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
         return true;
-
-    typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
-        return true;
+    }
 
     SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
+
     if (child->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)
@@ -223,6 +224,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     {
     case TokenId::SymExclam:
         SWAG_CHECK(resolveUnaryOpExclam(context, child));
+        context->node->typeInfo = g_TypeMgr->typeInfoBool;
         break;
     case TokenId::SymMinus:
         SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
@@ -234,8 +236,6 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         break;
     }
 
-    op->typeInfo       = child->typeInfo;
-    op->castedTypeInfo = child->castedTypeInfo;
     op->inheritComputedValue(child);
     return true;
 }
