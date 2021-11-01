@@ -54,13 +54,32 @@ impl Application
 
     // Remove and destroy the given surface
     // To cleanly close a surface, you should call surface.destroy()
-    mtd destroySurface(surface: *Surface)
+    protected mtd destroySurface(surface: *Surface)
     {
         surfaces.remove(surface)
         if surface == mainSurface
             postQuitEvent()
         surface.destroyNative()
         Memory.delete(surface)
+    }
+
+    // Destroy a window
+    // To cleanly close a window, you should call wnd.destroy()
+    protected mtd destroyWnd(wnd: *Wnd)
+    {
+        if wnd == mouseEnterWnd
+            mouseEnterWnd = null
+        if wnd == mouseCaptureWnd
+            mouseCaptureWnd = null
+
+        visit e: postedEvents
+        {
+            if e.target == wnd
+                e.target = null
+        }
+
+        if wnd.isAllocated
+            Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
     }
 
     // Returns the window under the given point
@@ -116,7 +135,9 @@ impl Application
             return
         }
 
-        Debug.assert(event.target != null)
+        // Be sure we have a target
+        if !event.target
+            return
 
         // Send event to the target
         // If the target does not accept the event, then pass it to the parent
@@ -254,9 +275,7 @@ impl Application
             evt := DestroyEvent{}
             wnd := postDestroy[i]
             wnd.sendEvent(&evt)
-
-            if wnd.isAllocated
-                Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
+            destroyWnd(wnd)
         }
 
         postDestroy.clear()
