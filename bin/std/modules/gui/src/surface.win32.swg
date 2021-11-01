@@ -69,12 +69,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
 impl Surface
 {
-    mtd close()
+    protected mtd destroy()
     {
-        if self == app.mainSurface
-            app.postQuitEvent()
-        else
-            catch DestroyWindow(hWnd)
+        catch DestroyWindow(hWnd)
     }
 
     // Show the surface

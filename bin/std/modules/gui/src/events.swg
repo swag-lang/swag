@@ -5,6 +5,7 @@ enum EventKind
 {
     None
     Create
+    Destroy
     Resize
     Move
     Paint
@@ -48,6 +49,11 @@ impl Event
 struct CreateEvent
 {
     using base: Event{kind: EventKind.Create}
+}
+
+struct DestroyEvent
+{
+    using base: Event{kind: EventKind.Destroy}
 }
 
 struct PaintEvent

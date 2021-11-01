@@ -236,6 +236,21 @@ impl Application
         postedEvents.clear()
     }
 
+    protected mtd sendDestroyEvents()
+    {
+        for i := 0; i < postDestroy.count; i += 1
+        {
+            evt := DestroyEvent{}
+            wnd := postDestroy[i]
+            wnd.sendEvent(&evt)
+
+            if wnd.isAllocated
+                Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
+        }
+
+        postDestroy.clear()
+    }
+
     // Run until exit
     #[Swag.Discardable]
     mtd run()->s32
@@ -248,8 +263,10 @@ impl Application
             sendKeyboardEvents()
             sendMouseEvents()
             sendPostedEvents()
+            sendDestroyEvents()
 
-            visit s: surfaces s.paint()
+            visit s:
+                surfaces s.paint()
         }
 
         return quitCode

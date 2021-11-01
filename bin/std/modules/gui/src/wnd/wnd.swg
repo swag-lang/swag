@@ -5,6 +5,7 @@ interface IWnd
 {
     onEvent:            func(self, *Event)
     onCreateEvent:      func(self, *CreateEvent)
+    onDestroyEvent:     func(self, *DestroyEvent)
     onResizeEvent:      func(self, *ResizeEvent)
     onPaintEvent:       func(self, *PaintEvent)
     onKeyEvent:         func(self, *KeyEvent)
@@ -24,12 +25,15 @@ struct Wnd
 
     name: String
 
-    drawBackground: bool
-    isDisabled:     bool
-    isHidden:       bool
+    drawBackground:     bool
+    isDisabled:         bool
+    isHidden:           bool
+    isAllocated:        bool
+    isPendingDestroy:   bool
 
     hookOnEvent:            func(*Wnd, *Event)
     hookOnCreateEvent:      func(*Wnd, *CreateEvent)
+    hookOnDestroyEvent:     func(*Wnd, *DestroyEvent)
     hookOnResizeEvent:      func(*Wnd, *ResizeEvent)
     hookOnPaintEvent:       func(*Wnd, *PaintEvent)
     hookOnKeyEvent:         func(*Wnd, *KeyEvent)
@@ -48,6 +52,12 @@ impl IWnd for Wnd
                 hookOnCreateEvent(self, cast(*CreateEvent) evt)
             else
                 itf.onCreateEvent(cast(*CreateEvent) evt)
+
+        case Destroy:
+            if hookOnDestroyEvent
+                hookOnDestroyEvent(self, cast(*DestroyEvent) evt)
+            else
+                itf.onDestroyEvent(cast(*DestroyEvent) evt)
 
         case Resize:
             if hookOnResizeEvent
@@ -82,6 +92,7 @@ impl IWnd for Wnd
     }
 
     mtd onCreateEvent(evt: *CreateEvent)            {}
+    mtd onDestroyEvent(evt: *DestroyEvent)          {}
     mtd onResizeEvent(evt: *ResizeEvent)            {}
     mtd onPaintEvent(evt: *PaintEvent)              {}
     mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
@@ -103,6 +114,7 @@ impl Wnd
         res := Memory.new'T()
         res.name = name
         res.position = position
+        res.isAllocated = true
 
         res.itf = cast(IWnd) dref res
         res.surface = parent.surface
@@ -117,6 +129,39 @@ impl Wnd
         mtd getApp()        => surface.app
         mtd getTheme()      => &surface.app.theme
         mtd getPalette()    => &surface.app.theme.palette
+    }
+
+    // Destroy the window
+    mtd destroy()
+    {
+        if isPendingDestroy
+            return
+        isPendingDestroy = true
+        surface.app.postDestroy.add(self)
+        visit c: childs
+            c.destroy()
+    }
+
+    //////////////////////////////////////////////
+    // State
+    //////////////////////////////////////////////
+
+    // Show the window
+    mtd show()
+    {
+        if !isHidden
+            return
+        isHidden = false
+        invalidate()
+    }
+
+    // Hide the window
+    mtd hide()
+    {
+        if isHidden
+            return
+        isHidden = true
+        invalidate()
     }
 
     //////////////////////////////////////////////

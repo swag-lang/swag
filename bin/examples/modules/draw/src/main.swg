@@ -544,7 +544,7 @@ func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
         wnd.surface.invalidate()
     case F4:
         if evt.modifiers & .Alt
-            wnd.surface.close()
+            wnd.destroy()
         else
         {
             g_Page = (g_Page + 1) % MaxPages

@@ -425,6 +425,19 @@ impl Array
         return false
     }
 
+    // Returns index of 'value', or Swag.UInt.Max
+    // O(n)
+    mtd find(value: T)->uint
+    {
+        loop i: count
+        {
+            if buffer[i] == value
+                return i
+        }
+
+        return Swag.UInt.Max
+    }
+
     // Sort array
     mtd sort()
     {

@@ -11,6 +11,16 @@ public struct SurfaceWnd
 
 impl IWnd for SurfaceWnd
 {
+    mtd onDestroyEvent(evt: *DestroyEvent)
+    {
+        idx := surface.app.surfaces.find(surface)
+        surface.app.surfaces.removeAt(idx)
+        surface.destroy()
+        Memory.delete(surface)
+        if surface == surface.app.mainSurface
+            surface.app.postQuitEvent()
+    }
+
     mtd onSysCommandEvent(evt: *SysCommandEvent)
     {
         switch evt.sysKind
@@ -22,7 +32,7 @@ impl IWnd for SurfaceWnd
         case Restore:
             surface.showNormal()
         case Close:
-            surface.close()
+            surface.wnd.destroy()
         }
     }
 
