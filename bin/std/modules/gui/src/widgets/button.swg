@@ -131,17 +131,6 @@ impl Button
         }
         else
         {
-            colorBk     = isDefault ? palette.buttonDefaultBk : palette.buttonBk
-            colorBorder = isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
-            colorText   = isDefault ? palette.buttonDefaultText : palette.buttonText
-
-            if flags & .Hot
-            {
-                colorBk     = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
-                colorBorder = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
-                colorText   = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
-            }
-
             if flags & .Pressed
             {
                 colorBk       = isDefault ? palette.buttonDefaultBkPressed : palette.buttonBkPressed
@@ -150,10 +139,21 @@ impl Button
                 subRectBk     = &bc.theme.imgMetrics.btnPressed
                 subRectBorder = &bc.theme.imgMetrics.btnPressedBorder
             }
-            else
+            else if flags & .Hot
             {
+                colorBk       = isDefault ? palette.buttonDefaultBkHot : palette.buttonBkHot
+                colorBorder   = isDefault ? palette.buttonDefaultBorderHot : palette.buttonBorderHot
+                colorText     = isDefault ? palette.buttonDefaultTextHot : palette.buttonTextHot
                 subRectBk     = &bc.theme.imgMetrics.btnHot
                 subRectBorder = &bc.theme.imgMetrics.btnHotBorder
+            }
+            else
+            {
+                colorBk       = isDefault ? palette.buttonDefaultBk : palette.buttonBk
+                colorBorder   = isDefault ? palette.buttonDefaultBorder : palette.buttonBorder
+                colorText     = isDefault ? palette.buttonDefaultText : palette.buttonText
+                subRectBk     = &bc.theme.imgMetrics.btnNormal
+                subRectBorder = &bc.theme.imgMetrics.btnNormalBorder
             }
         }
 
@@ -161,9 +161,7 @@ impl Button
         bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
 
         // Border
-        xx := cast(bool) (flags & .Flat)
-        //Console.printf("%{x} % - ", cast(u32) flags, xx)
-        if !xx
+        if !(flags & .Flat)
             bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
 
         // Content

@@ -30,12 +30,14 @@ struct ImageMetrics
     wndCaptionMaximize: ImageSubRect = @{{85,29,27,27}, 1}
     wndCaptionClose:    ImageSubRect = @{{113,29,27,27}, 1}
 
-    btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
-    btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
-    btnPressed:         ImageSubRect = @{{1,29,27,27}, 9}
-    btnPressedBorder:   ImageSubRect = @{{29,29,27,27}, 9}
+    btnNormal:          ImageSubRect = @{{1,1,27,27}, 9}
+    btnNormalBorder:    ImageSubRect = @{{29,1,27,27}, 9}
     btnHot:             ImageSubRect = @{{1,1,27,27}, 9}
     btnHotBorder:       ImageSubRect = @{{29,1,27,27}, 9}
+    btnPressed:         ImageSubRect = @{{1,29,27,27}, 9}
+    btnPressedBorder:   ImageSubRect = @{{29,29,27,27}, 9}
+    btnDisabled:        ImageSubRect = @{{1,57,27,27}, 9}
+    btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
 }
 
 struct Theme
