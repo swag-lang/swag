@@ -16,22 +16,22 @@ struct TweakFile
 impl TweakFile
 {
     // Register a new structure to be parsed
-    func(T) registerFolder(using self, folder: *T)
+    mtd(T) registerFolder(folder: *T)
     {
         #assert(Reflection.isStruct(T), "type should be a struct")
         folders.add(@{@typeof(T), folder})
     }
 
     // Read and parse a file
-    func parse(using self, fileName: string) throw
+    mtd parse(fileName: string) throw
     {
         buf := try File.readAllBytes(fileName)
         lines := Tokenize.splitLines(cast(string) buf.toSlice())
-        try self.parse(lines)
+        try parse(lines)
     }
 
     // Parse a list of lines
-    func parse(using self, lines: Array'string) throw
+    mtd parse(lines: Array'string) throw
     {
         var currentFolder: *Folder
         visit one, idx: lines
