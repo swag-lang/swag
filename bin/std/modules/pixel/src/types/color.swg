@@ -276,13 +276,18 @@ impl Color
 
 impl Core.Parse.IPokeValue for Color
 {
-    func poke(using self, buf: string)->string throw
+    mtd poke(buf: string)->string throw
     {
         var eat: uint
         one := Tokenize.eatSpaces(buf)
-        if @countof(one) == 0 throw "invalid"
+        if @countof(one) == 0 throw "missing color value"
 
-        if Latin1.isDigit(buf[0])
+        if buf[0] == "0"'u8 and buf[1]|32 == "x"'u8
+        {
+            (argb, eat) = try Parse.getU32(one)
+            one = Tokenize.eatCount(one, eat)
+        }
+        else if Latin1.isDigit(buf[0])
         {
             (a, eat) = try Parse.getU8(one)
             one = Tokenize.eatCount(one, eat)
@@ -303,7 +308,7 @@ impl Core.Parse.IPokeValue for Color
         {
             id := try Parse.getIdentifier(one)
             one = Tokenize.eatCount(one, @countof(id))
-            self.argb = cast(u32) Argb.fromName(id)
+            argb = cast(u32) Argb.fromName(id)
         }
 
         return one

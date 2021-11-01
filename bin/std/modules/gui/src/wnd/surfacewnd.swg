@@ -34,27 +34,27 @@ impl IWnd for SurfaceWnd
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         pos := position
-        pos.width = surface.wnd.marginsTopLeft.y
-        pos.x = position.right() - pos.width - 16
+        pos.width = surface.wnd.marginsTopLeft.y * 1.5
+        pos.x = position.right() - pos.width
         pos.height = surface.wnd.marginsTopLeft.y
         pos.y = 0
 
         if closeBtn
         {
             closeBtn.setRect(pos)
-            pos.x -= pos.width * 1.5
+            pos.x -= pos.width
         }
 
         if maximizeBtn
         {
             maximizeBtn.setRect(pos)
-            pos.x -= pos.width * 1.5
+            pos.x -= pos.width
         }
 
         if minimizeBtn
         {
             minimizeBtn.setRect(pos)
-            pos.x -= pos.width * 1.5
+            pos.x -= pos.width
         }
 
         base.IWnd.onResizeEvent(evt)
@@ -148,9 +148,9 @@ impl SurfaceWnd
             closeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
 
-            style.styleSheet = "/Tweak\nbtnIcon_HotBk 255 0 255 0"
+            style.styleSheet = "/Tweak\nbtnIcon_HotBk Purple"
             style.dirty = true
-            closeBtn.style.styleSheet = "/Tweak\nbtnIcon_HotBk 255 255 0 0"
+            closeBtn.style.styleSheet = "/Tweak\nbtnIcon_HotBk 0XFFd61425"
             closeBtn.style.dirty = true
         }
     }

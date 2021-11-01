@@ -163,7 +163,7 @@ impl Application
         var targetWnd: *Wnd
         if mouseCaptureWnd
             targetWnd = mouseCaptureWnd
-        else if isActivated
+        else
             targetWnd = getWndAt(mousePos.x, mousePos.y)
 
         evt := MouseEvent{}
