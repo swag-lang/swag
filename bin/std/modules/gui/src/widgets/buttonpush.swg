@@ -19,7 +19,8 @@ impl IWnd for ButtonPush
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc := evt.bc
+        bc      := evt.bc
+        theme   := bc.theme
         palette := getPalette()
 
         var subRectBk:      *ImageSubRect
@@ -33,32 +34,32 @@ impl IWnd for ButtonPush
             colorBk       = palette.btnPush_DisabledBk
             colorBorder   = palette.btnPush_DisabledBorder
             colorText     = palette.btnPush_DisabledText
-            subRectBk     = &bc.theme.imgMetrics.btnPush_Disabled
-            subRectBorder = &bc.theme.imgMetrics.btnPush_DisabledBorder
+            subRectBk     = &theme.imgMetrics.btnPush_Disabled
+            subRectBorder = &theme.imgMetrics.btnPush_DisabledBorder
         }
         else if isPressed
         {
             colorBk       = isDefault ? palette.btnPushDefault_PressedBk : palette.btnPush_PressedBk
             colorBorder   = isDefault ? palette.btnPushDefault_PressedBorder : palette.btnPush_PressedBorder
             colorText     = isDefault ? palette.btnPushDefault_PressedText : palette.btnPush_PressedText
-            subRectBk     = &bc.theme.imgMetrics.btnPush_Pressed
-            subRectBorder = &bc.theme.imgMetrics.btnPush_PressedBorder
+            subRectBk     = &theme.imgMetrics.btnPush_Pressed
+            subRectBorder = &theme.imgMetrics.btnPush_PressedBorder
         }
         else if isHot
         {
             colorBk       = isDefault ? palette.btnPushDefault_HotBk : palette.btnPush_HotBk
             colorBorder   = isDefault ? palette.btnPushDefault_HotBorder : palette.btnPush_HotBorder
             colorText     = isDefault ? palette.btnPushDefault_HotText : palette.btnPush_HotText
-            subRectBk     = &bc.theme.imgMetrics.btnPush_Hot
-            subRectBorder = &bc.theme.imgMetrics.btnOush_HotBorder
+            subRectBk     = &theme.imgMetrics.btnPush_Hot
+            subRectBorder = &theme.imgMetrics.btnOush_HotBorder
         }
         else
         {
             colorBk       = isDefault ? palette.btnPushDefault_Bk : palette.btnPush_Bk
             colorBorder   = isDefault ? palette.btnPushDefault_Border : palette.btnPush_Border
             colorText     = isDefault ? palette.btnPushDefault_Text : palette.btnPush_Text
-            subRectBk     = &bc.theme.imgMetrics.btnPush_Normal
-            subRectBorder = &bc.theme.imgMetrics.btnPush_NormalBorder
+            subRectBk     = &theme.imgMetrics.btnPush_Normal
+            subRectBorder = &theme.imgMetrics.btnPush_NormalBorder
         }
 
         // Background
