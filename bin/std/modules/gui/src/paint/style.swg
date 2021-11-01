@@ -9,7 +9,9 @@ struct StyleRef
 
 struct Style
 {
-    ref: *StyleRef
+    ref:            *StyleRef
+    dirtyCount:     u32
+    styleSheet:     String
 }
 
 impl StyleRef
@@ -29,12 +31,38 @@ impl StyleRef
 
 impl Style
 {
-    mtd compute(parent: *Style)
+    protected mtd set(palette: *Palette)
+    {
+        if ref
+            ref.release()
+        ref = Memory.new'StyleRef()
+        ref.palette = palette
+        ref.count = 1
+    }
+
+    protected mtd compute(parent: *Style)
     {
         if !ref
         {
             ref = parent.ref
             ref.count += 1
         }
+
+        if parent.dirtyCount == dirtyCount
+            return
+        dirtyCount = parent.dirtyCount
+
+        // Same as parent, and nothing to override, exit
+        if ref == parent.ref and styleSheet.length == 0
+            return
+
+        palette := Memory.new'Palette()
+        set(palette)
+
+        var tf: File.TweakFile
+        tf.registerFolder'Palette(palette)
+        catch tf.parse(styleSheet)
+        if @err
+            @print(@err)
     }
 }

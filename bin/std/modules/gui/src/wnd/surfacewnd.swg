@@ -147,6 +147,8 @@ impl SurfaceWnd
         {
             closeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
+            closeBtn.style.styleSheet = "/Palette\nbtnIcon_HotBk 255 255 0 0"
+            closeBtn.style.dirtyCount += 1
         }
     }
 }

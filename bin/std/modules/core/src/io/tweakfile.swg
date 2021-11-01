@@ -23,10 +23,17 @@ impl TweakFile
     }
 
     // Read and parse a file
-    mtd parse(fileName: string) throw
+    mtd parseFile(fileName: string) throw
     {
         buf := try File.readAllBytes(fileName)
         lines := Tokenize.splitLines(cast(string) buf.toSlice())
+        try parse(lines)
+    }
+
+    // Parse a list of lines
+    mtd parse(content: string) throw
+    {
+        lines := Tokenize.splitLines(content)
         try parse(lines)
     }
 

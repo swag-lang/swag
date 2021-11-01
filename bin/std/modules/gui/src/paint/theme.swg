@@ -129,9 +129,7 @@ impl Theme
         fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
         fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
 
-        style.ref = Memory.new'StyleRef()
-        style.ref.palette = &palette
-        style.ref.count = 1
+        style.set(&palette)
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
