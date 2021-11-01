@@ -52,17 +52,10 @@ impl IWnd for ButtonIcon
         // Background
         bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
 
-        // Content
-        var labelStyle: LabelPaintStyle
-        labelStyle.colorText = colorIcon
-        labelStyle.stringFormat.horzAlignment = .Center
-        labelStyle.stringFormat.vertAlignment = .Center
-        labelStyle.stringFormat.flags = .Clip
-        labelStyle.font = bc.theme.fontDefault.bold
-        labelStyle.iconMargin = bc.theme.iconTextMargin
-        labelPos := position
-        labelPos.inflate(bc.theme.btnMargins)
-        Label.paint(bc, labelPos, name, icon, labelStyle)
+        // Icon
+        pos := position
+        pos.x = pos.horzCenter() - icon.size * 0.5
+        icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), colorIcon)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
