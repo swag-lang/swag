@@ -28,23 +28,34 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
+
         case WM_ACTIVATEAPP:
             surface.app.setActivated(wParam ? true : false)
             return 0
+
         case WM_ERASEBKGND:
             surface.invalidate()
             surface.paint()
-            return FALSE
+            return TRUE
+
         case WM_PAINT:
+            var ps: PAINTSTRUCT
+            hdc := BeginPaint(hWnd, &ps)
             surface.invalidate()
             surface.paint()
+            EndPaint(hWnd, &ps)
+            return 0
+
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
             surface.position.y = HIWORD(lParam)
+
         case WM_SIZE:
             surface.sendResizeEvent(cast(f32) LOWORD(lParam), cast(f32) HIWORD(lParam))
+
         case WM_DESTROY:
             surface.sendCloseEvent()
+
         case WM_SYSCOMMAND:
             evt := SysCommandEvent{}
             switch wParam
