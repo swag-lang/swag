@@ -25,26 +25,21 @@ impl IWnd for ButtonIcon
         var colorBk:    Color = ?
         var colorIcon:  Color = ?
 
-        if isDisabled
+        switch
         {
+        case isDisabled:
             colorBk    = palette.btnIcon_DisabledBk
             colorIcon  = palette.btnIcon_DisabledIcon
             subRectBk  = &theme.imgMetrics.btnIcon_Disabled
-        }
-        else if isPressed
-        {
+        case isPressed:
             colorBk   = palette.btnIcon_PressedBk
             colorIcon = palette.btnIcon_PressedIcon
             subRectBk = &theme.imgMetrics.btnIcon_Pressed
-        }
-        else if isHot
-        {
+        case isHot:
             colorBk   = palette.btnIcon_HotBk
             colorIcon = palette.btnIcon_HotIcon
             subRectBk = &theme.imgMetrics.btnIcon_Hot
-        }
-        else
-        {
+        default:
             colorBk   = palette.btnIcon_Bk
             colorIcon = palette.btnIcon_Icon
             subRectBk = &theme.imgMetrics.btnIcon_Normal

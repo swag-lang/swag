@@ -29,32 +29,27 @@ impl IWnd for ButtonPush
         var colorBorder:    Color = ?
         var colorText:      Color = ?
 
-        if isDisabled
+        switch
         {
+        case isDisabled:
             colorBk       = palette.btnPush_DisabledBk
             colorBorder   = palette.btnPush_DisabledBorder
             colorText     = palette.btnPush_DisabledText
             subRectBk     = &theme.imgMetrics.btnPush_Disabled
             subRectBorder = &theme.imgMetrics.btnPush_DisabledBorder
-        }
-        else if isPressed
-        {
+        case isPressed:
             colorBk       = isDefault ? palette.btnPushDefault_PressedBk : palette.btnPush_PressedBk
             colorBorder   = isDefault ? palette.btnPushDefault_PressedBorder : palette.btnPush_PressedBorder
             colorText     = isDefault ? palette.btnPushDefault_PressedText : palette.btnPush_PressedText
             subRectBk     = &theme.imgMetrics.btnPush_Pressed
             subRectBorder = &theme.imgMetrics.btnPush_PressedBorder
-        }
-        else if isHot
-        {
+        case isHot:
             colorBk       = isDefault ? palette.btnPushDefault_HotBk : palette.btnPush_HotBk
             colorBorder   = isDefault ? palette.btnPushDefault_HotBorder : palette.btnPush_HotBorder
             colorText     = isDefault ? palette.btnPushDefault_HotText : palette.btnPush_HotText
             subRectBk     = &theme.imgMetrics.btnPush_Hot
             subRectBorder = &theme.imgMetrics.btnOush_HotBorder
-        }
-        else
-        {
+        default:
             colorBk       = isDefault ? palette.btnPushDefault_Bk : palette.btnPush_Bk
             colorBorder   = isDefault ? palette.btnPushDefault_Border : palette.btnPush_Border
             colorText     = isDefault ? palette.btnPushDefault_Text : palette.btnPush_Text
