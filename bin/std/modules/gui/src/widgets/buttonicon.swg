@@ -19,7 +19,7 @@ impl IWnd for ButtonIcon
     {
         bc      := evt.bc
         theme   := bc.theme
-        palette := getPalette()
+        palette := bc.palette
 
         var subRectBk:  *ImageSubRect
         var colorBk:    Color = ?

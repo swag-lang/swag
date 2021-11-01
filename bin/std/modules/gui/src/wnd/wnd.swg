@@ -17,6 +17,7 @@ struct Wnd
 {
     itf:        IWnd
     surface:    *Surface
+    style:      Style
 
     position:   Math.Rectangle
 
@@ -126,9 +127,8 @@ impl Wnd
 
     #[Swag.Inline]
     {
-        mtd getApp()        => surface.app
-        mtd getTheme()      => &surface.app.theme
-        mtd getPalette()    => &surface.app.theme.palette
+        mtd getApp()   => surface.app
+        mtd getTheme() => &surface.app.theme
     }
 
     // Destroy the window
@@ -176,6 +176,13 @@ impl Wnd
         if bc.painter.isEmptyClippingRect()
             return
 
+        // Recompute style if necessary
+        if parent
+            style.compute(&parent.style)
+        else
+            style.compute(&bc.theme.style)
+        bc.palette = style.ref.palette
+
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
         if isDisabled
@@ -183,7 +190,7 @@ impl Wnd
 
         // Background
         if drawBackground
-            bc.painter.fillRect(position, getPalette().windowBk)
+            bc.painter.fillRect(position, bc.palette.windowBk)
 
         // User paint
         evt := PaintEvent{}

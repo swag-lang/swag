@@ -96,6 +96,7 @@ struct Theme
     typeFaceBI:     const *TypeFace
     fontDefault:    FontFamily
     palette:        Palette
+    style:          Style
 
     fontDefaultSize:        u32 = 13
     wndBorderSize:          f32 = 3
@@ -127,6 +128,10 @@ impl Theme
         fontDefault.bold = Font.create(typeFaceB, fontDefaultSize)
         fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
         fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
+
+        style.ref = Memory.new'StyleRef()
+        style.ref.palette = &palette
+        style.ref.count = 1
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)

@@ -21,7 +21,7 @@ impl IWnd for ButtonPush
     {
         bc      := evt.bc
         theme   := bc.theme
-        palette := getPalette()
+        palette := bc.palette
 
         var subRectBk:      *ImageSubRect
         var subRectBorder:  *ImageSubRect
