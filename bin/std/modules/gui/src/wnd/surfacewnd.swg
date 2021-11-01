@@ -15,10 +15,12 @@ impl IWnd for SurfaceWnd
     {
         idx := surface.app.surfaces.find(surface)
         surface.app.surfaces.removeAt(idx)
-        surface.destroy()
-        Memory.delete(surface)
+
         if surface == surface.app.mainSurface
             surface.app.postQuitEvent()
+
+        surface.destroyNative()
+        Memory.delete(surface)
     }
 
     mtd onSysCommandEvent(evt: *SysCommandEvent)
@@ -32,7 +34,7 @@ impl IWnd for SurfaceWnd
         case Restore:
             surface.showNormal()
         case Close:
-            surface.wnd.destroy()
+            surface.destroy()
         }
     }
 
@@ -129,9 +131,7 @@ impl SurfaceWnd
 
     protected func onClose(btn: *Button)
     {
-        evt := Event.create'SysCommandEvent()
-        evt.sysKind = .Close
-        btn.surface.wnd.postEvent(evt)
+        btn.surface.destroy()
     }
 
     mtd create()

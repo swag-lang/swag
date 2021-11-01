@@ -69,11 +69,6 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
 impl Surface
 {
-    protected mtd destroy()
-    {
-        catch DestroyWindow(hWnd)
-    }
-
     // Show the surface
     mtd show()
     {
@@ -206,5 +201,10 @@ impl Surface
         )
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
+    }
+
+    protected mtd destroyNative()
+    {
+        catch DestroyWindow(hWnd)
     }
 }

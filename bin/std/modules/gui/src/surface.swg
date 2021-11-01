@@ -55,6 +55,12 @@ impl Surface
         surface.wnd.sendResizeEvent()
     }
 
+    // Destroy the surface
+    mtd destroy()
+    {
+        wnd.destroy()
+    }
+
     // Set the surface icon
     mtd setIcon(icon: Icon)
     {
