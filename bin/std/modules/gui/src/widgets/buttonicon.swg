@@ -17,9 +17,9 @@ impl IWnd for ButtonIcon
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := bc.theme
-        palette := bc.palette
+        bc    := evt.bc
+        theme := bc.theme
+        tweak := bc.tweak
 
         var subRectBk:  *ImageSubRect
         var colorBk:    Color = ?
@@ -28,20 +28,20 @@ impl IWnd for ButtonIcon
         switch
         {
         case isDisabled:
-            colorBk    = palette.btnIcon_DisabledBk
-            colorIcon  = palette.btnIcon_DisabledIcon
+            colorBk    = tweak.btnIcon_DisabledBk
+            colorIcon  = tweak.btnIcon_DisabledIcon
             subRectBk  = &theme.imgMetrics.btnIcon_Disabled
         case isPressed:
-            colorBk   = palette.btnIcon_PressedBk
-            colorIcon = palette.btnIcon_PressedIcon
+            colorBk   = tweak.btnIcon_PressedBk
+            colorIcon = tweak.btnIcon_PressedIcon
             subRectBk = &theme.imgMetrics.btnIcon_Pressed
         case isHot:
-            colorBk   = palette.btnIcon_HotBk
-            colorIcon = palette.btnIcon_HotIcon
+            colorBk   = tweak.btnIcon_HotBk
+            colorIcon = tweak.btnIcon_HotIcon
             subRectBk = &theme.imgMetrics.btnIcon_Hot
         default:
-            colorBk   = palette.btnIcon_Bk
-            colorIcon = palette.btnIcon_Icon
+            colorBk   = tweak.btnIcon_Bk
+            colorIcon = tweak.btnIcon_Icon
             subRectBk = &theme.imgMetrics.btnIcon_Normal
         }
 

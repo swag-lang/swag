@@ -181,7 +181,7 @@ impl Wnd
             style.compute(&parent.style)
         else
             style.compute(&bc.theme.style)
-        bc.palette = style.ref.palette
+        bc.tweak = style.ref.tweak
 
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
@@ -190,7 +190,7 @@ impl Wnd
 
         // Background
         if drawBackground
-            bc.painter.fillRect(position, bc.palette.windowBk)
+            bc.painter.fillRect(position, bc.tweak.windowBk)
 
         // User paint
         evt := PaintEvent{}

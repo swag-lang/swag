@@ -42,7 +42,7 @@ struct ImageMetrics
     btnIcon_Disabled:    ImageSubRect = @{{1,29,27,27}, 9}
 }
 
-public struct Palette
+public struct Tweak
 {
     caption:                        Color = 0xFF535353
     captionNotActived:              Color = 0xFF494949
@@ -95,7 +95,7 @@ struct Theme
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
     fontDefault:    FontFamily
-    palette:        *Palette
+    tweak:        *Tweak
     style:          Style
 
     fontDefaultSize:        u32 = 13
@@ -129,8 +129,8 @@ impl Theme
         fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
         fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
 
-        palette = Memory.new'Palette()
-        style.set(palette)
+        tweak = Memory.new'Tweak()
+        style.set(tweak)
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)

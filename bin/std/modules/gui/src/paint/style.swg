@@ -3,7 +3,7 @@ using Core
 
 struct StyleRef
 {
-    palette:    *Palette
+    tweak:    *Tweak
     count:      u32
 }
 
@@ -28,16 +28,16 @@ impl Style
         ref.count -= 1
         if ref.count == 0
         {
-            Memory.delete(ref.palette)
+            Memory.delete(ref.tweak)
             Memory.delete(ref)
             ref = null
         }
     }
 
-    protected mtd set(palette: *Palette)
+    protected mtd set(tweak: *Tweak)
     {
         ref = Memory.new'StyleRef()
-        ref.palette = palette
+        ref.tweak = tweak
         ref.count = 1
     }
 
@@ -66,14 +66,14 @@ impl Style
             return
         }
 
-        // Make a new palette as a copy of the parent
-        palette := Memory.new'Palette()
-        dref palette = dref parent.ref.palette
-        set(palette)
+        // Make a new tweak as a copy of the parent
+        tweak := Memory.new'Tweak()
+        dref tweak = dref parent.ref.tweak
+        set(tweak)
 
         // Then tweak it with the stylesheet
         var tf: File.TweakFile
-        tf.registerFolder'Palette(palette)
+        tf.registerFolder'Tweak(tweak)
         catch tf.parse(styleSheet)
     }
 }

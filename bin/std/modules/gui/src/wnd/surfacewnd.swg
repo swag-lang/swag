@@ -69,14 +69,14 @@ impl IWnd for SurfaceWnd
         if surface.flags & .Border
         {
             subRect := &bc.theme.imgMetrics.wndBorder
-            theme.drawSubRect(bc.painter, position, subRect, theme.palette.caption)
+            theme.drawSubRect(bc.painter, position, subRect, theme.tweak.caption)
         }
 
         if surface.flags & .BigCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
             subRect := &bc.theme.imgMetrics.wndBigCaption
-            colorBk := surface.app.isActivated ? theme.palette.caption : theme.palette.captionNotActived
+            colorBk := surface.app.isActivated ? theme.tweak.caption : theme.tweak.captionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
@@ -84,7 +84,7 @@ impl IWnd for SurfaceWnd
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
             subRect := &theme.imgMetrics.wndSmallCaption
-            colorBk := surface.app.isActivated ? theme.palette.caption : theme.palette.captionNotActived
+            colorBk := surface.app.isActivated ? theme.tweak.caption : theme.tweak.captionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
@@ -100,7 +100,7 @@ impl IWnd for SurfaceWnd
 
             var sf: Pixel.StringFormat
             sf.vertAlignment = .Center
-            colorTxt := surface.app.isActivated ? theme.palette.captionText : theme.palette.captionTextNotActivated
+            colorTxt := surface.app.isActivated ? theme.tweak.captionText : theme.tweak.captionTextNotActivated
             bc.painter.drawString(posCaption, name, theme.fontDefault.regular, colorTxt, sf)
         }
     }
@@ -148,9 +148,9 @@ impl SurfaceWnd
             closeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
 
-            style.styleSheet = "/Palette\nbtnIcon_HotBk 255 0 255 0"
+            style.styleSheet = "/Tweak\nbtnIcon_HotBk 255 0 255 0"
             style.dirty = true
-            closeBtn.style.styleSheet = "/Palette\nbtnIcon_HotBk 255 255 0 0"
+            closeBtn.style.styleSheet = "/Tweak\nbtnIcon_HotBk 255 255 0 0"
             closeBtn.style.dirty = true
         }
     }
