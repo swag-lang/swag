@@ -13,7 +13,7 @@ impl IWnd for SurfaceWnd
 {
     mtd onDestroyEvent(evt: *DestroyEvent)
     {
-        idx := surface.app.surfaces.find(surface)
+        (idx, found) := Slice.findLinear(surface.app.surfaces.toSlice(), surface)
         surface.app.surfaces.removeAt(idx)
 
         if surface == surface.app.mainSurface
