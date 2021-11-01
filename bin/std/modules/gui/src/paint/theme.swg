@@ -23,12 +23,9 @@ struct ImageSubRect
 
 struct ImageMetrics
 {
-    wndBorder:          ImageSubRect = @{{130,1,27,27}, 3}
-    wndBigCaption:      ImageSubRect = @{{57,1,72,27}, 1}
-    wndSmallCaption:    ImageSubRect = @{{57,1,72,27}, 1}
-    wndCaptionMinimize: ImageSubRect = @{{57,29,27,27}, 1}
-    wndCaptionMaximize: ImageSubRect = @{{85,29,27,27}, 1}
-    wndCaptionClose:    ImageSubRect = @{{113,29,27,27}, 1}
+    wndBorder:              ImageSubRect = @{{130,1,27,27}, 3}
+    wndBigCaption:          ImageSubRect = @{{57,1,72,27}, 1}
+    wndSmallCaption:        ImageSubRect = @{{57,1,72,27}, 1}
 
     btnPush_Normal:          ImageSubRect = @{{1,1,27,27}, 9}
     btnPush_NormalBorder:    ImageSubRect = @{{29,1,27,27}, 9}
@@ -54,38 +51,38 @@ public struct Palette
 
     windowBk:                       Color = 0xFF424242
 
-    buttonDisabledText:             Color = 0x5FFFFFFF
-    buttonDisabledBorder:           Color = 0x5FFFFFFF
-    buttonDisabledBk:               Color = 0
+    btnPush_DisabledText:           Color = 0x5FFFFFFF
+    btnPush_DisabledBorder:         Color = 0x5FFFFFFF
+    btnPush_DisabledBk:             Color = 0
 
-    buttonText:                     Color = 0xFFFFFFFF
-    buttonBorder:                   Color = 0xFFFFFFFF
-    buttonBk:                       Color = 0
-    buttonTextPressed:              Color = 0xFF424242
-    buttonBorderPressed:            Color = 0xFFFFFFFF
-    buttonBkPressed:                Color = 0xFFFFFFFF
-    buttonTextHot:                  Color = 0xFF424242
-    buttonBorderHot:                Color = 0xFFEEEEEE
-    buttonBkHot:                    Color = 0xFFEEEEEE
+    btnPush_Text:                   Color = 0xFFFFFFFF
+    btnPush_Border:                 Color = 0xFFFFFFFF
+    btnPush_Bk:                     Color = 0
+    btnPush_PressedText:            Color = 0xFF424242
+    btnPush_PressedBorder:          Color = 0xFFFFFFFF
+    btnPush_PressedBk:              Color = 0xFFFFFFFF
+    btnPush_HotText:                Color = 0xFF424242
+    btnPush_HotBorder:              Color = 0xFFEEEEEE
+    btnPush_HotBk:                  Color = 0xFFEEEEEE
 
-    buttonDefaultText:              Color = 0xFFFFFFFF
-    buttonDefaultBorder:            Color = 0xFF1473e6
-    buttonDefaultBk:                Color = 0xFF1473e6
-    buttonDefaultTextPressed:       Color = 0xFFFFFFFF
-    buttonDefaultBorderPressed:     Color = 0xFF1473e6
-    buttonDefaultBkPressed:         Color = 0xFF1473e6
-    buttonDefaultTextHot:           Color = 0xFFFFFFFF
-    buttonDefaultBorderHot:         Color = 0xFF2483f6
-    buttonDefaultBkHot:             Color = 0xFF2483f6
+    btnPushDefault_Text:            Color = 0xFFFFFFFF
+    btnPushDefault_Border:          Color = 0xFF1473e6
+    btnPushDefault_Bk:              Color = 0xFF1473e6
+    btnPushDefault_PressedText:     Color = 0xFFFFFFFF
+    btnPushDefault_PressedBorder:   Color = 0xFF1473e6
+    btnPushDefault_PressedBk:       Color = 0xFF1473e6
+    btnPushDefault_HotText:         Color = 0xFFFFFFFF
+    btnPushDefault_HotBorder:       Color = 0xFF2483f6
+    btnPushDefault_HotBk:           Color = 0xFF2483f6
 
-    btnIcon_Icon:                    Color = 0xFFFFFFFF
-    btnIcon_Bk:                      Color = 0
-    btnIcon_DisabledIcon:            Color = 0xFFFFFFFF
-    btnIcon_DisabledBk:              Color = 0
-    btnIcon_PressedIcon:             Color = 0xFFFFFFFF
-    btnIcon_PressedBk:               Color = 0x3FFFFFFF
-    btnIcon_HotIcon:                 Color = 0xFFFFFFFF
-    btnIcon_HotBk:                   Color = 0x3FEEEEEE
+    btnIcon_Icon:                   Color = 0xFFFFFFFF
+    btnIcon_Bk:                     Color = 0
+    btnIcon_DisabledIcon:           Color = 0xFFFFFFFF
+    btnIcon_DisabledBk:             Color = 0
+    btnIcon_PressedIcon:            Color = 0xFFFFFFFF
+    btnIcon_PressedBk:              Color = 0x3FFFFFFF
+    btnIcon_HotIcon:                Color = 0xFFFFFFFF
+    btnIcon_HotBk:                  Color = 0x3FEEEEEE
 }
 
 struct Theme

@@ -30,26 +30,23 @@ impl IWnd for ButtonIcon
             colorIcon  = palette.btnIcon_DisabledIcon
             subRectBk  = &bc.theme.imgMetrics.btnIcon_Disabled
         }
+        else if isPressed
+        {
+            colorBk   = palette.btnIcon_PressedBk
+            colorIcon = palette.btnIcon_PressedIcon
+            subRectBk = &bc.theme.imgMetrics.btnIcon_Pressed
+        }
+        else if isHot
+        {
+            colorBk   = palette.btnIcon_HotBk
+            colorIcon = palette.btnIcon_HotIcon
+            subRectBk = &bc.theme.imgMetrics.btnIcon_Hot
+        }
         else
         {
-            if isPressed
-            {
-                colorBk   = palette.btnIcon_PressedBk
-                colorIcon = palette.btnIcon_PressedIcon
-                subRectBk = &bc.theme.imgMetrics.btnIcon_Pressed
-            }
-            else if isHot
-            {
-                colorBk   = palette.btnIcon_HotBk
-                colorIcon = palette.btnIcon_HotIcon
-                subRectBk = &bc.theme.imgMetrics.btnIcon_Hot
-            }
-            else
-            {
-                colorBk   = palette.btnIcon_Bk
-                colorIcon = palette.btnIcon_Icon
-                subRectBk = &bc.theme.imgMetrics.btnIcon_Normal
-            }
+            colorBk   = palette.btnIcon_Bk
+            colorIcon = palette.btnIcon_Icon
+            subRectBk = &bc.theme.imgMetrics.btnIcon_Normal
         }
 
         // Background
