@@ -133,23 +133,20 @@ impl SurfaceWnd
 
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
+            minimizeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 2), @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
-            minimizeBtn.icon.set(&surface.app.theme.icons24, 2)
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
+            maximizeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 3), @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
-            maximizeBtn.icon.set(&surface.app.theme.icons24, 3)
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
+            closeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
-            closeBtn.icon.set(&surface.app.theme.icons24, 4)
         }
     }
 }

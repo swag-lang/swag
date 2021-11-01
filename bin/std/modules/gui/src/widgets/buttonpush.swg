@@ -139,10 +139,8 @@ impl ButtonPush
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonPush
     {
         res := Wnd.create'ButtonPush(parent, name, position)
-
         evt := CreateEvent{}
         res.sendEvent(&evt)
-
         return res
     }
 }

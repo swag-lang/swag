@@ -113,13 +113,12 @@ impl IWnd for ButtonIcon
 
 impl ButtonIcon
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonIcon
+    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle)->*ButtonIcon
     {
-        res := Wnd.create'ButtonIcon(parent, name, position)
-
+        res := Wnd.create'ButtonIcon(parent, null, position)
+        res.icon = icon
         evt := CreateEvent{}
         res.sendEvent(&evt)
-
         return res
     }
 }
