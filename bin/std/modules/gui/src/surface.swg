@@ -10,7 +10,7 @@ struct Surface
     rc:             Pixel.RenderingContext
     position:       Math.Rectangle
     flags:          SurfaceFlags = Zero
-    dirty:          bool
+    isDirty:        bool
 }
 
 #[Swag.EnumFlags]
@@ -78,15 +78,15 @@ impl Surface
     // Invalidate one part of the surface to be painted
     mtd invalidateRect(rect: Math.Rectangle)
     {
-        dirty = true
+        isDirty = true
     }
 
     // Main surface paint function
     mtd paint()
     {
-        if !dirty
+        if !isDirty
             return
-        dirty = false
+        isDirty = false
 
         var cxt: PaintContext
         cxt.theme = &app.theme

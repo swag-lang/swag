@@ -96,6 +96,7 @@ impl SurfaceWnd
         {
             minimizeBtn = Button.create(self, null, @{0,0,0,0})
             minimizeBtn.isFlat = true
+            minimizeBtn.sigPressed = @(btn: *Button) { btn.surface.showMinimized(); }
             minimizeBtn.icon.set(&surface.app.theme.icons24, 2)
         }
 
@@ -103,6 +104,7 @@ impl SurfaceWnd
         {
             maximizeBtn = Button.create(self, null, @{0,0,0,0})
             maximizeBtn.isFlat = true
+            maximizeBtn.sigPressed = @(btn: *Button) { btn.surface.toggleMaximized(); }
             maximizeBtn.icon.set(&surface.app.theme.icons24, 3)
         }
 

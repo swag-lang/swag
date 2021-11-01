@@ -7,6 +7,7 @@ struct NativeSurface
 {
     hWnd:           HWND
     movingSurface:  bool
+    isMaximized:    bool
 }
 
 #[Swag.Callback]
@@ -55,21 +56,39 @@ impl NativeSurface
     }
 
     // Hide the surface
-    mtd showMaximize()
-    {
-        ShowWindow(hWnd, SW_MAXIMIZE)
-    }
-
-    // Hide the surface
-    mtd showUnMaximize()
-    {
-        ShowWindow(hWnd, SW_RESTORE)
-    }
-
-    // Hide the surface
     mtd hide()
     {
         ShowWindow(hWnd, SW_HIDE)
+    }
+
+    // Show the surface as maximized
+    mtd showMaximized()
+    {
+        if isMaximized
+            return
+        isMaximized = true
+        ShowWindow(hWnd, SW_SHOWMAXIMIZED)
+    }
+
+    // Show the surface in its default state
+    mtd showNormal()
+    {
+        isMaximized = false
+        ShowWindow(hWnd, SW_RESTORE)
+    }
+
+    mtd toggleMaximized()
+    {
+        if isMaximized
+            showNormal()
+        else
+            showMaximized()
+    }
+
+    // Show the surface as minimized
+    mtd showMinimized()
+    {
+        ShowWindow(hWnd, SW_SHOWMINIMIZED)
     }
 
     // Transform a point in screen space relative to the surface
@@ -100,21 +119,22 @@ impl NativeSurface
             {
                 wnd.captureMouse()
                 BringWindowToTop(surface.native.hWnd)
-                surface.native.movingSurface = true
+                if !surface.isMaximized
+                    surface.movingSurface = true
             }
             break
         case MouseReleased:
             if evt.button == .Left
             {
                 wnd.releaseMouse()
-                surface.native.movingSurface = false
+                surface.movingSurface = false
             }
             break
         case MouseMove:
-            if surface.native.movingSurface
+            if surface.movingSurface
             {
                 surface.position.offset(evt.move.x, evt.move.y);
-                catch MoveWindow(surface.native.hWnd, cast(s32) surface.position.x, cast(s32) surface.position.y, cast(s32) surface.position.width, cast(s32) surface.position.height, FALSE)
+                catch MoveWindow(surface.hWnd, cast(s32) surface.position.x, cast(s32) surface.position.y, cast(s32) surface.position.width, cast(s32) surface.position.height, FALSE)
             }
             break
         }
