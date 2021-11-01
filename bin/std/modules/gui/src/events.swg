@@ -15,7 +15,6 @@ enum EventKind
     MouseMove
     MouseEnter
     MouseLeave
-    Close
     Quit
     SysCommand
 }
@@ -30,7 +29,14 @@ struct Event
 
 impl Event
 {
-    func(T) alloc(kind: EventKind)->*T
+    func(T) create()->*T
+    {
+        res := Memory.new'T()
+        res.type = @typeof(T)
+        return res
+    }
+
+    func(T) create(kind: EventKind)->*T
     {
         res := Memory.new'T()
         res.type = @typeof(T)
@@ -42,11 +48,6 @@ impl Event
 struct CreateEvent
 {
     using base: Event{kind: EventKind.Create}
-}
-
-struct CloseEvent
-{
-    using base: Event{kind: EventKind.Close}
 }
 
 struct PaintEvent
@@ -100,5 +101,5 @@ enum SysCommandKind
 struct SysCommandEvent
 {
     using base: Event{kind: EventKind.SysCommand}
-    kind: SysCommandKind = ?
+    sysKind: SysCommandKind = ?
 }

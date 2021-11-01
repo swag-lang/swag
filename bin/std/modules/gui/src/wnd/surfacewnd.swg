@@ -11,6 +11,21 @@ public struct SurfaceWnd
 
 impl IWnd for SurfaceWnd
 {
+    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    {
+        switch evt.sysKind
+        {
+        case Maximize:
+            surface.showMaximized()
+        case Minimize:
+            surface.showMinimized()
+        case Restore:
+            surface.showNormal()
+        case Close:
+            surface.close()
+        }
+    }
+
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         pos := position
@@ -88,6 +103,27 @@ impl IWnd for SurfaceWnd
 
 impl SurfaceWnd
 {
+    protected func onMinimize(btn: *Button)
+    {
+        evt := Event.create'SysCommandEvent()
+        evt.sysKind = .Minimize
+        btn.surface.wnd.postEvent(evt)
+    }
+
+    protected func onMaximize(btn: *Button)
+    {
+        evt := Event.create'SysCommandEvent()
+        evt.sysKind = btn.surface.isMaximized ? .Restore : .Maximize
+        btn.surface.wnd.postEvent(evt)
+    }
+
+    protected func onClose(btn: *Button)
+    {
+        evt := Event.create'SysCommandEvent()
+        evt.sysKind = .Close
+        btn.surface.wnd.postEvent(evt)
+    }
+
     mtd create()
     {
         createView'Wnd()
@@ -96,7 +132,7 @@ impl SurfaceWnd
         {
             minimizeBtn = Button.create(self, null, @{0,0,0,0})
             minimizeBtn.isFlat = true
-            minimizeBtn.sigPressed = @(btn: *Button) { btn.surface.showMinimized(); }
+            minimizeBtn.sigPressed = &onMinimize
             minimizeBtn.icon.set(&surface.app.theme.icons24, 2)
         }
 
@@ -104,7 +140,7 @@ impl SurfaceWnd
         {
             maximizeBtn = Button.create(self, null, @{0,0,0,0})
             maximizeBtn.isFlat = true
-            maximizeBtn.sigPressed = @(btn: *Button) { btn.surface.toggleMaximized(); }
+            maximizeBtn.sigPressed = &onMaximize
             maximizeBtn.icon.set(&surface.app.theme.icons24, 3)
         }
 
@@ -112,6 +148,7 @@ impl SurfaceWnd
         {
             closeBtn = Button.create(self, null, @{0,0,0,0})
             closeBtn.isFlat = true
+            closeBtn.sigPressed = &onClose
             closeBtn.icon.set(&surface.app.theme.icons24, 4)
         }
     }

@@ -53,21 +53,12 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_SIZE:
             surface.sendResizeEvent(cast(f32) LOWORD(lParam), cast(f32) HIWORD(lParam))
 
-        case WM_DESTROY:
-            surface.sendCloseEvent()
-
         case WM_SYSCOMMAND:
-            evt := SysCommandEvent{}
             switch wParam
             {
-            case SC_MAXIMIZE:
-                evt.kind = .Maximize
-                surface.wnd.sendEvent(&evt)
             case SC_RESTORE:
-                evt.kind = .Restore
-                surface.wnd.sendEvent(&evt)
-            case SC_MINIMIZE:
-                evt.kind = .Minimize
+                evt := SysCommandEvent{}
+                evt.sysKind = .Restore
                 surface.wnd.sendEvent(&evt)
             }
         }
@@ -78,6 +69,14 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
 impl Surface
 {
+    mtd close()
+    {
+        if self == app.mainSurface
+            app.postQuitEvent()
+        else
+            catch DestroyWindow(hWnd)
+    }
+
     // Show the surface
     mtd show()
     {
@@ -106,14 +105,6 @@ impl Surface
             return
         isMaximized = false
         ShowWindow(hWnd, SW_RESTORE)
-    }
-
-    mtd toggleMaximized()
-    {
-        if isMaximized
-            showNormal()
-        else
-            showMaximized()
     }
 
     // Show the surface as minimized

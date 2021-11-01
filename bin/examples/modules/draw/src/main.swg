@@ -544,15 +544,13 @@ func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
         wnd.surface.invalidate()
     case F4:
         if evt.modifiers & .Alt
-            wnd.postQuitEvent()
-        g_Page = (g_Page + 1) % MaxPages
-        wnd.surface.invalidate()
+            wnd.surface.close()
+        else
+        {
+            g_Page = (g_Page + 1) % MaxPages
+            wnd.surface.invalidate()
+        }
     }
-}
-
-func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
-{
-    wnd.surface.app.postQuitEvent()
 }
 
 func setup(wnd: *Wnd) throw
@@ -585,7 +583,6 @@ func setup(wnd: *Wnd) throw
 {
     var app: Gui.Application
     surface := try app.createSurface(100, 100, W, H)
-    surface.wnd.hookOnCloseEvent = &onCloseEvent
     surface.wnd.hookOnKeyEvent = &onKeyEvent
     surface.wnd.view.hookOnPaintEvent = &onPaintEvent
     try setup(&surface.wnd)

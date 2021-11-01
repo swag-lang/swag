@@ -10,6 +10,7 @@ struct Application
     mainSurface:    *Surface
     postedEvents:   Array'(*Event)
     surfaces:       Array'(*Surface)
+    postDestroy:    Array'(*Wnd)
     mustQuit:       bool
     isActivated:    bool
     quitCode:       s32
@@ -82,7 +83,7 @@ impl Application
     // Ask to exit the application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
-        evt := Event.alloc'QuitEvent(EventKind.Quit)
+        evt := Event.create'QuitEvent()
         evt.quitCode = #scopefct.quitCode
         postEvent(evt)
     }
@@ -225,8 +226,9 @@ impl Application
 
     protected mtd sendPostedEvents()
     {
-        visit evt: postedEvents
+        for i := 0; i < postedEvents.count; i += 1
         {
+            evt := postedEvents[i]
             sendEvent(evt)
             Memory.delete(evt, evt.type)
         }

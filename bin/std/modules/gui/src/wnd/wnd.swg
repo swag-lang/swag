@@ -5,7 +5,6 @@ interface IWnd
 {
     onEvent:            func(self, *Event)
     onCreateEvent:      func(self, *CreateEvent)
-    onCloseEvent:       func(self, *CloseEvent)
     onResizeEvent:      func(self, *ResizeEvent)
     onPaintEvent:       func(self, *PaintEvent)
     onKeyEvent:         func(self, *KeyEvent)
@@ -31,7 +30,6 @@ struct Wnd
 
     hookOnEvent:            func(*Wnd, *Event)
     hookOnCreateEvent:      func(*Wnd, *CreateEvent)
-    hookOnCloseEvent:       func(*Wnd, *CloseEvent)
     hookOnResizeEvent:      func(*Wnd, *ResizeEvent)
     hookOnPaintEvent:       func(*Wnd, *PaintEvent)
     hookOnKeyEvent:         func(*Wnd, *KeyEvent)
@@ -50,12 +48,6 @@ impl IWnd for Wnd
                 hookOnCreateEvent(self, cast(*CreateEvent) evt)
             else
                 itf.onCreateEvent(cast(*CreateEvent) evt)
-
-        case Close:
-            if hookOnCloseEvent
-                hookOnCloseEvent(self, cast(*CloseEvent) evt)
-            else
-                itf.onCloseEvent(cast(*CloseEvent) evt)
 
         case Resize:
             if hookOnResizeEvent
@@ -90,7 +82,6 @@ impl IWnd for Wnd
     }
 
     mtd onCreateEvent(evt: *CreateEvent)            {}
-    mtd onCloseEvent(evt: *CloseEvent)              {}
     mtd onResizeEvent(evt: *ResizeEvent)            {}
     mtd onPaintEvent(evt: *PaintEvent)              {}
     mtd onSysCommandEvent(evt: *SysCommandEvent)    {}

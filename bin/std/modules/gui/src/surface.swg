@@ -111,10 +111,4 @@ impl Surface
         position.height = width
         wnd.resize(width, height)
     }
-
-    protected mtd sendCloseEvent()
-    {
-        evt := CloseEvent{}
-        wnd.sendEvent(&evt)
-    }
 }

@@ -11,18 +11,12 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)
     evt.bc.painter.drawTexture(wnd.position, wnd.surface.app.theme.imgWidgets)
 }
 
-func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
-{
-    wnd.postQuitEvent()
-}
-
 #main
 {
     var app: Gui.Application
     surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.BigCaption | SurfaceFlags.Border | SurfaceFlags.CloseBtn | SurfaceFlags.MinimizeBtn | SurfaceFlags.MaximizeBtn)
     surface0.setTitle("Example 0")
     surface0.setIcon(Icon.from(&app.theme.icons24, 0, 20))
-    surface0.wnd.hookOnCloseEvent = &onCloseEvent
 
     view := surface0.wnd.view
     button := Button.create(view, "Normal", @{5, 5, 100, 30})
@@ -37,9 +31,8 @@ func onCloseEvent(wnd: *Wnd, event: *CloseEvent)
     button.isDisabled = true
     surface0.show()
 
-    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow | SurfaceFlags.SmallCaption)
+    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
-    surface1.wnd.view.hookOnCloseEvent = &onCloseEvent
     surface1.show()
 
     app.run()
