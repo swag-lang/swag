@@ -111,12 +111,12 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (!invert && timeToTest < moreRecentSourceFile)
         return false;
+    if (module->buildCfg.backendKind == BuildCfgBackendKind::Export)
+        return true;
     if (timeToTest < g_Workspace->bootstrapModule->moreRecentSourceFile)
         return false;
     if (timeToTest < g_Workspace->runtimeModule->moreRecentSourceFile)
         return false;
-    if (module->buildCfg.backendKind == BuildCfgBackendKind::Export)
-        return true;
 
     // If one of my dependency is more recent than me, then need to rebuild
     for (auto dep : module->moduleDependencies)
