@@ -40,6 +40,8 @@ impl TweakFile
     // Parse a list of lines
     mtd parse(lines: Array'string) throw
     {
+        Debug.assert(!folders.isEmpty())
+
         var currentFolder: *Folder
         visit one, idx: lines
         {
@@ -71,7 +73,7 @@ impl TweakFile
 
             // Value
             if !currentFolder
-                throw Format.toString("line %: value is not associated with a folder", idx + 1)
+                currentFolder = folders.backPtr()
             one = Tokenize.eatSpaces(one)
             id := catch Parse.getIdentifier(one)
             if @err
