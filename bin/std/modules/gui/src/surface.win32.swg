@@ -34,6 +34,10 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_ERASEBKGND:
             surface.invalidate()
             surface.paint()
+            return FALSE
+        case WM_PAINT:
+            surface.invalidate()
+            surface.paint()
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
             surface.position.y = HIWORD(lParam)
@@ -41,13 +45,27 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             surface.sendResizeEvent(cast(f32) LOWORD(lParam), cast(f32) HIWORD(lParam))
         case WM_DESTROY:
             surface.sendCloseEvent()
+        case WM_SYSCOMMAND:
+            evt := SysCommandEvent{}
+            switch wParam
+            {
+            case SC_MAXIMIZE:
+                evt.kind = .Maximize
+                surface.wnd.sendEvent(&evt)
+            case SC_RESTORE:
+                evt.kind = .Restore
+                surface.wnd.sendEvent(&evt)
+            case SC_MINIMIZE:
+                evt.kind = .Minimize
+                surface.wnd.sendEvent(&evt)
+            }
         }
     }
 
     return DefWindowProcW(hWnd, msg, wParam, lParam)
 }
 
-impl NativeSurface
+impl Surface
 {
     // Show the surface
     mtd show()
@@ -73,6 +91,8 @@ impl NativeSurface
     // Show the surface in its default state
     mtd showNormal()
     {
+        if !isMaximized
+            return
         isMaximized = false
         ShowWindow(hWnd, SW_RESTORE)
     }

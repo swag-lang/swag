@@ -51,7 +51,7 @@ impl Surface
             surface.wnd.marginsBottomRight.y = size
         }
 
-        try NativeSurface.createNative(app, surface, x, y, width, height, flags, mainSurface)
+        try createNative(app, surface, x, y, width, height, flags, mainSurface)
         surface.wnd.sendResizeEvent()
     }
 

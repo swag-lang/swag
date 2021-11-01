@@ -712,6 +712,27 @@ const SWP_NOCOPYBITS      = 0x0100
 const SWP_NOOWNERZORDER   = 0x0200
 const SWP_NOSENDCHANGING  = 0x0400
 
+const SC_SIZE         = 0xF000
+const SC_MOVE         = 0xF010
+const SC_MINIMIZE     = 0xF020
+const SC_MAXIMIZE     = 0xF030
+const SC_NEXTWINDOW   = 0xF040
+const SC_PREVWINDOW   = 0xF050
+const SC_CLOSE        = 0xF060
+const SC_VSCROLL      = 0xF070
+const SC_HSCROLL      = 0xF080
+const SC_MOUSEMENU    = 0xF090
+const SC_KEYMENU      = 0xF100
+const SC_ARRANGE      = 0xF110
+const SC_RESTORE      = 0xF120
+const SC_TASKLIST     = 0xF130
+const SC_SCREENSAVE   = 0xF140
+const SC_HOTKEY       = 0xF150
+const SC_DEFAULT      = 0xF160
+const SC_MONITORPOWER = 0xF170
+const SC_CONTEXTHELP  = 0xF180
+const SC_SEPARATOR    = 0xF00F
+
 struct RECT
 {
     left:   LONG

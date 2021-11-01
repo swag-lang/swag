@@ -3,13 +3,14 @@ using Core, Pixel
 
 interface IWnd
 {
-    onEvent:        func(self, *Event)
-    onCreateEvent:  func(self, *CreateEvent)
-    onCloseEvent:   func(self, *CloseEvent)
-    onResizeEvent:  func(self, *ResizeEvent)
-    onPaintEvent:   func(self, *PaintEvent)
-    onKeyEvent:     func(self, *KeyEvent)
-    onMouseEvent:   func(self, *MouseEvent)
+    onEvent:            func(self, *Event)
+    onCreateEvent:      func(self, *CreateEvent)
+    onCloseEvent:       func(self, *CloseEvent)
+    onResizeEvent:      func(self, *ResizeEvent)
+    onPaintEvent:       func(self, *PaintEvent)
+    onKeyEvent:         func(self, *KeyEvent)
+    onMouseEvent:       func(self, *MouseEvent)
+    onSysCommandEvent:  func(self, *SysCommandEvent)
 }
 
 struct Wnd
@@ -28,13 +29,14 @@ struct Wnd
     isDisabled:     bool
     isHidden:       bool
 
-    hookOnEvent:        func(*Wnd, *Event)
-    hookOnCreateEvent:  func(*Wnd, *CreateEvent)
-    hookOnCloseEvent:   func(*Wnd, *CloseEvent)
-    hookOnResizeEvent:  func(*Wnd, *ResizeEvent)
-    hookOnPaintEvent:   func(*Wnd, *PaintEvent)
-    hookOnKeyEvent:     func(*Wnd, *KeyEvent)
-    hookOnMouseEvent:   func(*Wnd, *MouseEvent)
+    hookOnEvent:            func(*Wnd, *Event)
+    hookOnCreateEvent:      func(*Wnd, *CreateEvent)
+    hookOnCloseEvent:       func(*Wnd, *CloseEvent)
+    hookOnResizeEvent:      func(*Wnd, *ResizeEvent)
+    hookOnPaintEvent:       func(*Wnd, *PaintEvent)
+    hookOnKeyEvent:         func(*Wnd, *KeyEvent)
+    hookOnMouseEvent:       func(*Wnd, *MouseEvent)
+    hookOnSysCommandEvent:  func(*Wnd, *SysCommandEvent)
 }
 
 impl IWnd for Wnd
@@ -67,6 +69,12 @@ impl IWnd for Wnd
             else
                 itf.onPaintEvent(cast(*PaintEvent) evt)
 
+        case SysCommand:
+            if hookOnSysCommandEvent
+                hookOnSysCommandEvent(self, cast(*SysCommandEvent) evt)
+            else
+                itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
+
         case KeyPressed, KeyReleased:
             if hookOnKeyEvent
                 hookOnKeyEvent(self, cast(*KeyEvent) evt)
@@ -81,20 +89,14 @@ impl IWnd for Wnd
         }
     }
 
-    mtd onCreateEvent(evt: *CreateEvent)    {}
-    mtd onCloseEvent(evt: *CloseEvent)      {}
-    mtd onResizeEvent(evt: *ResizeEvent)    {}
-    mtd onPaintEvent(evt: *PaintEvent)      {}
+    mtd onCreateEvent(evt: *CreateEvent)            {}
+    mtd onCloseEvent(evt: *CloseEvent)              {}
+    mtd onResizeEvent(evt: *ResizeEvent)            {}
+    mtd onPaintEvent(evt: *PaintEvent)              {}
+    mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
 
-    mtd onKeyEvent(evt: *KeyEvent)
-    {
-        evt.accepted = false
-    }
-
-    mtd onMouseEvent(evt: *MouseEvent)
-    {
-        evt.accepted = false
-    }
+    mtd onKeyEvent(evt: *KeyEvent)          { evt.accepted = false; }
+    mtd onMouseEvent(evt: *MouseEvent)      { evt.accepted = false; }
 }
 
 impl Wnd

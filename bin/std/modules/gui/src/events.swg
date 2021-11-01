@@ -17,6 +17,7 @@ enum EventKind
     MouseLeave
     Close
     Quit
+    SysCommand
 }
 
 struct Event
@@ -84,6 +85,20 @@ struct MouseEvent
 
 struct QuitEvent
 {
-    using base: Event
+    using base: Event{kind: EventKind.Quit}
     quitCode: s32
+}
+
+enum SysCommandKind
+{
+    Maximize
+    Minimize
+    Restore
+    Close
+}
+
+struct SysCommandEvent
+{
+    using base: Event{kind: EventKind.SysCommand}
+    kind: SysCommandKind = ?
 }
