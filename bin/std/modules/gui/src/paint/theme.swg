@@ -40,6 +40,40 @@ struct ImageMetrics
     btnDisabledBorder:  ImageSubRect = @{{29,57,27,27}, 9}
 }
 
+public struct Palette
+{
+    caption:                        Color = 0xFF535353
+    captionNotActived:              Color = 0xFF494949
+    captionText:                    Color = 0xFFFFFFFF
+    captionTextNotActivated:        Color = 0xFFAAAAAA
+
+    windowBk:                       Color = 0xFF424242
+
+    buttonDisabledText:             Color = 0x5FFFFFFF
+    buttonDisabledBorder:           Color = 0x5FFFFFFF
+    buttonDisabledBk:               Color = 0
+
+    buttonText:                     Color = 0xFFFFFFFF
+    buttonBorder:                   Color = 0xFFFFFFFF
+    buttonBk:                       Color = 0
+    buttonTextPressed:              Color = 0xFF424242
+    buttonBorderPressed:            Color = 0xFFFFFFFF
+    buttonBkPressed:                Color = 0xFFFFFFFF
+    buttonTextHot:                  Color = 0xFF424242
+    buttonBorderHot:                Color = 0xFFEEEEEE
+    buttonBkHot:                    Color = 0xFFEEEEEE
+
+    buttonDefaultText:              Color = 0xFFFFFFFF
+    buttonDefaultBorder:            Color = 0xFF1473e6
+    buttonDefaultBk:                Color = 0xFF1473e6
+    buttonDefaultTextPressed:       Color = 0xFFFFFFFF
+    buttonDefaultBorderPressed:     Color = 0xFF1473e6
+    buttonDefaultBkPressed:         Color = 0xFF1473e6
+    buttonDefaultTextHot:           Color = 0xFFFFFFFF
+    buttonDefaultBorderHot:         Color = 0xFF2483f6
+    buttonDefaultBkHot:             Color = 0xFF2483f6
+}
+
 struct Theme
 {
     imgWidgets:     Texture
@@ -49,11 +83,10 @@ struct Theme
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
-    fontDefault:      FontFamily
+    fontDefault:    FontFamily
     palette:        Palette
 
-    fontDefaultSize:    u32 = 13
-
+    fontDefaultSize:        u32 = 13
     wndBorderSize:          f32 = 3
     wndBigCaptionCY:        f32 = 30
     wndSmallCaptionCY:      f32 = 24
