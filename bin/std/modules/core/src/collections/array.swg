@@ -412,17 +412,20 @@ impl Array
         }
     }
 
-    // Returns 'true' if the array contains 'value'.
-    // O(n)
-    mtd contains(value: T)->bool
+    // Remove the given 'value'
+    mtd remove(value: T)
     {
-        loop i: count
-        {
-            if buffer[i] == value
-                return true
-        }
+        (idx, found) := Slice.findLinear(@mkslice(buffer, count), value)
+        Debug.assert(found)
+        removeAt(idx)
+    }
 
-        return false
+    // Remove the given 'value'
+    mtd removeOrdered(value: T)
+    {
+        (idx, found) := Slice.findLinear(@mkslice(buffer, count), value)
+        Debug.assert(found)
+        removeAtOrdered(idx)
     }
 
     // Sort array

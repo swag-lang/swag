@@ -13,14 +13,7 @@ impl IWnd for SurfaceWnd
 {
     mtd onDestroyEvent(evt: *DestroyEvent)
     {
-        (idx, found) := Slice.findLinear(surface.app.surfaces.toSlice(), surface)
-        surface.app.surfaces.removeAt(idx)
-
-        if surface == surface.app.mainSurface
-            surface.app.postQuitEvent()
-
-        surface.destroyNative()
-        Memory.delete(surface)
+        surface.app.destroySurface(surface)
     }
 
     mtd onSysCommandEvent(evt: *SysCommandEvent)

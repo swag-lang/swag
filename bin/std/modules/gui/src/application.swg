@@ -52,6 +52,17 @@ impl Application
         return surface
     }
 
+    // Remove and destroy the given surface
+    // To cleanly close a surface, you should call surface.destroy()
+    mtd destroySurface(surface: *Surface)
+    {
+        surfaces.remove(surface)
+        if surface == mainSurface
+            postQuitEvent()
+        surface.destroyNative()
+        Memory.delete(surface)
+    }
+
     // Returns the window under the given point
     mtd getWndAt(x, y: f32)->*Wnd
     {

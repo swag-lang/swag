@@ -12,8 +12,8 @@ using Core
     @assert(arr[2] == 1)
     @assert(arr[arr.count - 1] == 9)
 
-    @assert(arr.contains(100))
-    @assert(!arr.contains(101))
+    @assert(Slice.contains(arr.toSlice(), 100))
+    @assert(!Slice.contains(arr.toSlice(), 101))
 
     var arr1: Array'String
     arr1.addAny("0")
