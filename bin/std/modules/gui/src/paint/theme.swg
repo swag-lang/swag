@@ -95,7 +95,7 @@ struct Theme
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
     fontDefault:    FontFamily
-    palette:        Palette
+    palette:        *Palette
     style:          Style
 
     fontDefaultSize:        u32 = 13
@@ -129,7 +129,8 @@ impl Theme
         fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
         fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
 
-        style.set(&palette)
+        palette = Memory.new'Palette()
+        style.set(palette)
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
