@@ -9,32 +9,33 @@ struct StyleRef
 
 struct Style
 {
-    ref:            *StyleRef
-    dirtyCount:     u32
-    styleSheet:     String
-}
-
-impl StyleRef
-{
-    mtd release()
-    {
-        if count == 0
-            return
-        count -= 1
-        if count == 0
-        {
-            Memory.delete(palette)
-            palette = null
-        }
-    }
+    ref:        *StyleRef
+    dirty:      bool
+    styleSheet: String
 }
 
 impl Style
 {
+    protected mtd opDrop()
+    {
+        release()
+    }
+
+    protected mtd release()
+    {
+        if !ref
+            return
+        ref.count -= 1
+        if ref.count == 0
+        {
+            Memory.delete(ref.palette)
+            Memory.delete(ref)
+            ref = null
+        }
+    }
+
     protected mtd set(palette: *Palette)
     {
-        if ref
-            ref.release()
         ref = Memory.new'StyleRef()
         ref.palette = palette
         ref.count = 1
@@ -42,27 +43,37 @@ impl Style
 
     protected mtd compute(parent: *Style)
     {
+        // First time, initialize to parent
         if !ref
         {
             ref = parent.ref
             ref.count += 1
+            dirty = true
         }
 
-        if parent.dirtyCount == dirtyCount
+        // If parent is dirty, or i am dirty, then we need
+        // to compute.
+        if !dirty and !parent.dirty
             return
-        dirtyCount = parent.dirtyCount
+        dirty = true
 
-        // Same as parent, and nothing to override, exit
-        if ref == parent.ref and styleSheet.length == 0
+        // Nothing to override
+        release()
+        if styleSheet.length == 0
+        {
+            ref = parent.ref
+            ref.count += 1
             return
+        }
 
+        // Make a new palette as a copy of the parent
         palette := Memory.new'Palette()
+        dref palette = dref parent.ref.palette
         set(palette)
 
+        // Then tweak it with the stylesheet
         var tf: File.TweakFile
         tf.registerFolder'Palette(palette)
         catch tf.parse(styleSheet)
-        if @err
-            @print(@err)
     }
 }

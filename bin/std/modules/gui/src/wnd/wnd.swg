@@ -210,6 +210,7 @@ impl Wnd
         }
 
         bc.isDisabled = lastDisabled
+        style.dirty = false
     }
 
     mtd invalidate()
