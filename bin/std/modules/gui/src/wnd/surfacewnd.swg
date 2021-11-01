@@ -4,9 +4,9 @@ public struct SurfaceWnd
 {
     using base:     FrameWnd
     icon:           Icon
-    minimizeBtn:    *Button
-    maximizeBtn:    *Button
-    closeBtn:       *Button
+    minimizeBtn:    *ButtonIcon
+    maximizeBtn:    *ButtonIcon
+    closeBtn:       *ButtonIcon
 }
 
 impl IWnd for SurfaceWnd
@@ -108,21 +108,21 @@ impl IWnd for SurfaceWnd
 
 impl SurfaceWnd
 {
-    protected func onMinimize(btn: *Button)
+    protected func onMinimize(btn: *ButtonIcon)
     {
         evt := Event.create'SysCommandEvent()
         evt.sysKind = .Minimize
         btn.surface.wnd.postEvent(evt)
     }
 
-    protected func onMaximize(btn: *Button)
+    protected func onMaximize(btn: *ButtonIcon)
     {
         evt := Event.create'SysCommandEvent()
         evt.sysKind = btn.surface.isMaximized ? .Restore : .Maximize
         btn.surface.wnd.postEvent(evt)
     }
 
-    protected func onClose(btn: *Button)
+    protected func onClose(btn: *ButtonIcon)
     {
         btn.surface.destroy()
     }
@@ -133,24 +133,21 @@ impl SurfaceWnd
 
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = Button.create(self, null, @{0,0,0,0})
-            minimizeBtn.isFlat = true
+            minimizeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
             minimizeBtn.icon.set(&surface.app.theme.icons24, 2)
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = Button.create(self, null, @{0,0,0,0})
-            maximizeBtn.isFlat = true
+            maximizeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
             maximizeBtn.icon.set(&surface.app.theme.icons24, 3)
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = Button.create(self, null, @{0,0,0,0})
-            closeBtn.isFlat = true
+            closeBtn = ButtonIcon.create(self, null, @{0,0,0,0})
             closeBtn.sigPressed = &onClose
             closeBtn.icon.set(&surface.app.theme.icons24, 4)
         }

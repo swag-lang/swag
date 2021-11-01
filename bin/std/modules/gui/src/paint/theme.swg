@@ -30,14 +30,19 @@ struct ImageMetrics
     wndCaptionMaximize: ImageSubRect = @{{85,29,27,27}, 1}
     wndCaptionClose:    ImageSubRect = @{{113,29,27,27}, 1}
 
-    btnNormal:          ImageSubRect = @{{1,1,27,27}, 9}
-    btnNormalBorder:    ImageSubRect = @{{29,1,27,27}, 9}
-    btnHot:             ImageSubRect = @{{1,1,27,27}, 9}
-    btnHotBorder:       ImageSubRect = @{{29,1,27,27}, 9}
-    btnPressed:         ImageSubRect = @{{1,1,27,27}, 9}
-    btnPressedBorder:   ImageSubRect = @{{29,1,27,27}, 9}
-    btnDisabled:        ImageSubRect = @{{1,1,27,27}, 9}
-    btnDisabledBorder:  ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Normal:          ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_NormalBorder:    ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Hot:             ImageSubRect = @{{1,1,27,27}, 9}
+    btnOush_HotBorder:       ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Pressed:         ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_PressedBorder:   ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Disabled:        ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_DisabledBorder:  ImageSubRect = @{{29,1,27,27}, 9}
+
+    btnIcon_Normal:      ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Hot:         ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Pressed:     ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Disabled:    ImageSubRect = @{{1,29,27,27}, 9}
 }
 
 public struct Palette
@@ -72,6 +77,15 @@ public struct Palette
     buttonDefaultTextHot:           Color = 0xFFFFFFFF
     buttonDefaultBorderHot:         Color = 0xFF2483f6
     buttonDefaultBkHot:             Color = 0xFF2483f6
+
+    btnIcon_Icon:                    Color = 0xFFFFFFFF
+    btnIcon_Bk:                      Color = 0
+    btnIcon_DisabledIcon:            Color = 0xFFFFFFFF
+    btnIcon_DisabledBk:              Color = 0
+    btnIcon_PressedIcon:             Color = 0xFFFFFFFF
+    btnIcon_PressedBk:               Color = 0x3FFFFFFF
+    btnIcon_HotIcon:                 Color = 0xFFFFFFFF
+    btnIcon_HotBk:                   Color = 0x3FEEEEEE
 }
 
 struct Theme

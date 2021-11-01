@@ -17,14 +17,14 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)
     surface0.setIcon(Icon.from(&app.theme.icons24, 0, 20))
 
     view := surface0.wnd.view
-    button := Button.create(view, "Normal", @{5, 5, 100, 30})
+    button := ButtonPush.create(view, "Normal", @{5, 5, 100, 30})
     button.icon.set(&app.theme.icons24, 0, 18)
-    button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
-    button = Button.create(view, "ExitExitExitExitExit", @{110, 5, 100, 30})
-    button = Button.create(view, "Default", @{5, 40, 100, 30})
-    button.sigPressed = @(btn: *Button) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }
+    button.sigPressed = @(btn: *ButtonPush) { btn.name = "Pressed"; }
+    button = ButtonPush.create(view, "ExitExitExitExitExit", @{110, 5, 100, 30})
+    button = ButtonPush.create(view, "Default", @{5, 40, 100, 30})
+    button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }
     button.isDefault = true
-    button = Button.create(view, "Disabled", @{5, 75, 100, 30})
+    button = ButtonPush.create(view, "Disabled", @{5, 75, 100, 30})
     button.isDisabled = true
     surface0.show()
 
