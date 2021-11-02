@@ -119,7 +119,7 @@ impl Surface
         rc.width = cast(s32) width
         rc.height = cast(s32) height
         position.width = width
-        position.height = width
+        position.height = height
         wnd.resize(width, height)
     }
 }

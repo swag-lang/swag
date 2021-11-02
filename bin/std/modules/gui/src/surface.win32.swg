@@ -6,7 +6,6 @@ using Core, Win32
 struct NativeSurface
 {
     hWnd:           HWND
-    movingSurface:  bool
     isMaximized:    bool
 }
 

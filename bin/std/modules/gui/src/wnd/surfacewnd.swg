@@ -1,5 +1,8 @@
 using Core, Pixel
 
+#[Swag.EnumFlags]
+public enum SizingBorder{ Zero = 0; Left; Top; Right; Bottom; }
+
 public struct SurfaceWnd
 {
     using base:     FrameWnd
@@ -7,34 +10,83 @@ public struct SurfaceWnd
     minimizeBtn:    *ButtonIcon
     maximizeBtn:    *ButtonIcon
     closeBtn:       *ButtonIcon
+    movingSurface:  bool
+    sizingBorder:   SizingBorder = Zero
 }
 
 impl IWnd for SurfaceWnd
 {
-    func onMouseEvent(wnd: *SurfaceWnd, evt: *MouseEvent)
+    mtd onMouseEvent(evt: *MouseEvent)
     {
-        surface := wnd.surface
         switch evt.kind
         {
         case MousePressed:
             if evt.button != .Left
                 break
-            wnd.captureMouse()
             surface.bringToTop()
-            if !surface.isMaximized
-                surface.movingSurface = true
+            if surface.isMaximized
+                break
+
+            wnd.captureMouse()
+
+            if evt.surfacePos.x < 20
+                sizingBorder |= .Left
+            if evt.surfacePos.y < 20
+                sizingBorder |= .Top
+            if evt.surfacePos.x > surface.position.width - 20
+                sizingBorder |= .Right
+            if evt.surfacePos.y > surface.position.height - 20
+                sizingBorder |= .Bottom
+
+            if !sizingBorder
+                movingSurface = true
 
         case MouseReleased:
             if evt.button != .Left
                 break
             wnd.releaseMouse()
-            surface.movingSurface = false
+            sizingBorder = .Zero
+            movingSurface = false
 
         case MouseMove:
-            if surface.movingSurface
+            hasChanged := false
+
+            if sizingBorder & .Left
+            {
+                surface.position.x += evt.move.x
+                surface.position.width -= evt.move.x
+                hasChanged = true
+            }
+
+            if sizingBorder & .Top
+            {
+                surface.position.y += evt.move.y
+                surface.position.height -= evt.move.y
+                hasChanged = true
+            }
+
+            if sizingBorder & .Right
+            {
+                surface.position.width += evt.move.x
+                hasChanged = true
+            }
+
+            if sizingBorder & .Bottom
+            {
+                surface.position.height += evt.move.y
+                hasChanged = true
+            }
+
+            if movingSurface
             {
                 surface.position.offset(evt.move.x, evt.move.y);
+                hasChanged = true
+            }
+
+            if hasChanged
+            {
                 surface.setPosition(surface.position)
+                surface.invalidate()
             }
         }
     }
