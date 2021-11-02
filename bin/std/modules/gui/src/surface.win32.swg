@@ -69,6 +69,18 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
 impl Surface
 {
+    // Set the surface position
+    mtd setPosition(pos: Math.Rectangle)
+    {
+        catch MoveWindow(hWnd, cast(s32) pos.x, cast(s32) pos.y, cast(s32) pos.width, cast(s32) pos.height, FALSE)
+    }
+
+    // Bring the surface at the top of the Z order
+    mtd bringToTop()
+    {
+        BringWindowToTop(hWnd)
+    }
+
     // Show the surface
     mtd show()
     {
@@ -123,46 +135,9 @@ impl Surface
         pt.y = wpt.y
     }
 
-    protected func onMouseEvent(wnd: *Wnd, evt: *MouseEvent)->bool
-    {
-        surface := wnd.surface
-        switch evt.kind
-        {
-        case MousePressed:
-            if evt.button == .Left
-            {
-                wnd.captureMouse()
-                BringWindowToTop(surface.native.hWnd)
-                if !surface.isMaximized
-                    surface.movingSurface = true
-                return true
-            }
-
-        case MouseReleased:
-            if evt.button == .Left
-            {
-                wnd.releaseMouse()
-                surface.movingSurface = false
-                return true
-            }
-
-        case MouseMove:
-            if surface.movingSurface
-            {
-                surface.position.offset(evt.move.x, evt.move.y);
-                catch MoveWindow(surface.hWnd, cast(s32) surface.position.x, cast(s32) surface.position.y, cast(s32) surface.position.width, cast(s32) surface.position.height, FALSE)
-                return true
-            }
-        }
-
-        return false
-    }
-
     // Creates a new (invisible) surface
     protected func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
-        result.wnd.hookOnMouseEvent = &onMouseEvent
-
         // Create class
         #[Swag.Global]
         var doneClass: bool

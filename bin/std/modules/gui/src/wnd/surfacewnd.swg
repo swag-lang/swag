@@ -11,6 +11,34 @@ public struct SurfaceWnd
 
 impl IWnd for SurfaceWnd
 {
+    func onMouseEvent(wnd: *SurfaceWnd, evt: *MouseEvent)
+    {
+        surface := wnd.surface
+        switch evt.kind
+        {
+        case MousePressed:
+            if evt.button != .Left
+                break
+            wnd.captureMouse()
+            surface.bringToTop()
+            if !surface.isMaximized
+                surface.movingSurface = true
+
+        case MouseReleased:
+            if evt.button != .Left
+                break
+            wnd.releaseMouse()
+            surface.movingSurface = false
+
+        case MouseMove:
+            if surface.movingSurface
+            {
+                surface.position.offset(evt.move.x, evt.move.y);
+                surface.setPosition(surface.position)
+            }
+        }
+    }
+
     mtd onDestroyEvent(evt: *DestroyEvent)
     {
         surface.app.destroySurface(surface)
