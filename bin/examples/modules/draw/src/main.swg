@@ -500,7 +500,7 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
-func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
+func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
 {
     painter := event.bc.painter
     painter.paintParams = g_ModeAA ? .Antialiased : .Default
@@ -524,24 +524,32 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)
     painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
     painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
     painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
+
+    return true
 }
 
-func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
+func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)->bool
 {
     if evt.kind != .KeyPressed
-        return
+        return false
 
     switch evt.key
     {
     case F1:
         g_ModeAA = g_ModeAA ? false : true
         wnd.surface.invalidate()
+        return true
+
     case F2:
         g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
         wnd.surface.invalidate()
+        return true
+
     case F3:
         g_Pattern = g_Pattern ? false : true
         wnd.surface.invalidate()
+        return true
+
     case F4:
         if evt.modifiers & .Alt
             wnd.destroy()
@@ -550,7 +558,10 @@ func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)
             g_Page = (g_Page + 1) % MaxPages
             wnd.surface.invalidate()
         }
+        return true
     }
+
+    return false
 }
 
 func setup(wnd: *Wnd) throw

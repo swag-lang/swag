@@ -32,62 +32,63 @@ struct Wnd
     isAllocated:        bool
     isPendingDestroy:   bool
 
-    hookOnEvent:            func(*Wnd, *Event)
-    hookOnCreateEvent:      func(*Wnd, *CreateEvent)
-    hookOnDestroyEvent:     func(*Wnd, *DestroyEvent)
-    hookOnResizeEvent:      func(*Wnd, *ResizeEvent)
-    hookOnPaintEvent:       func(*Wnd, *PaintEvent)
-    hookOnKeyEvent:         func(*Wnd, *KeyEvent)
-    hookOnMouseEvent:       func(*Wnd, *MouseEvent)
-    hookOnSysCommandEvent:  func(*Wnd, *SysCommandEvent)
+    hookOnEvent:            func(*Wnd, *Event)->bool
+    hookOnCreateEvent:      func(*Wnd, *CreateEvent)->bool
+    hookOnDestroyEvent:     func(*Wnd, *DestroyEvent)->bool
+    hookOnResizeEvent:      func(*Wnd, *ResizeEvent)->bool
+    hookOnPaintEvent:       func(*Wnd, *PaintEvent)->bool
+    hookOnKeyEvent:         func(*Wnd, *KeyEvent)->bool
+    hookOnMouseEvent:       func(*Wnd, *MouseEvent)->bool
+    hookOnSysCommandEvent:  func(*Wnd, *SysCommandEvent)->bool
 }
 
 impl IWnd for Wnd
 {
     mtd onEvent(evt: *Event)
     {
+        eat := false
         switch evt.kind
         {
         case Create:
             if hookOnCreateEvent
-                hookOnCreateEvent(self, cast(*CreateEvent) evt)
-            else
+                eat = hookOnCreateEvent(self, cast(*CreateEvent) evt)
+            if !eat
                 itf.onCreateEvent(cast(*CreateEvent) evt)
 
         case Destroy:
             if hookOnDestroyEvent
-                hookOnDestroyEvent(self, cast(*DestroyEvent) evt)
-            else
+                eat = hookOnDestroyEvent(self, cast(*DestroyEvent) evt)
+            if !eat
                 itf.onDestroyEvent(cast(*DestroyEvent) evt)
 
         case Resize:
             if hookOnResizeEvent
-                hookOnResizeEvent(self, cast(*ResizeEvent) evt)
-            else
+                eat = hookOnResizeEvent(self, cast(*ResizeEvent) evt)
+            if !eat
                 itf.onResizeEvent(cast(*ResizeEvent) evt)
 
         case Paint:
             if hookOnPaintEvent
-                hookOnPaintEvent(self, cast(*PaintEvent) evt)
-            else
+                eat = hookOnPaintEvent(self, cast(*PaintEvent) evt)
+            if !eat
                 itf.onPaintEvent(cast(*PaintEvent) evt)
 
         case SysCommand:
             if hookOnSysCommandEvent
-                hookOnSysCommandEvent(self, cast(*SysCommandEvent) evt)
-            else
+                eat = hookOnSysCommandEvent(self, cast(*SysCommandEvent) evt)
+            if !eat
                 itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
 
         case KeyPressed, KeyReleased:
             if hookOnKeyEvent
-                hookOnKeyEvent(self, cast(*KeyEvent) evt)
-            else
+                eat = hookOnKeyEvent(self, cast(*KeyEvent) evt)
+            if !eat
                 itf.onKeyEvent(cast(*KeyEvent) evt)
 
         case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave:
             if hookOnMouseEvent
-                hookOnMouseEvent(self, cast(*MouseEvent) evt)
-            else
+                eat = hookOnMouseEvent(self, cast(*MouseEvent) evt)
+            if !eat
                 itf.onMouseEvent(cast(*MouseEvent) evt)
         }
     }
@@ -350,9 +351,10 @@ impl Wnd
 
     mtd processEvent(evt: *Event)
     {
+        eat := false
         if hookOnEvent
-            hookOnEvent(self, evt)
-        else
+            eat = hookOnEvent(self, evt)
+        if !eat
             itf.onEvent(evt)
     }
 }

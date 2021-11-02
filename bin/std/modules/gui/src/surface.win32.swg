@@ -123,7 +123,7 @@ impl Surface
         pt.y = wpt.y
     }
 
-    protected func onMouseEvent(wnd: *Wnd, evt: *MouseEvent)
+    protected func onMouseEvent(wnd: *Wnd, evt: *MouseEvent)->bool
     {
         surface := wnd.surface
         switch evt.kind
@@ -135,23 +135,27 @@ impl Surface
                 BringWindowToTop(surface.native.hWnd)
                 if !surface.isMaximized
                     surface.movingSurface = true
+                return true
             }
-            break
+
         case MouseReleased:
             if evt.button == .Left
             {
                 wnd.releaseMouse()
                 surface.movingSurface = false
+                return true
             }
-            break
+
         case MouseMove:
             if surface.movingSurface
             {
                 surface.position.offset(evt.move.x, evt.move.y);
                 catch MoveWindow(surface.hWnd, cast(s32) surface.position.x, cast(s32) surface.position.y, cast(s32) surface.position.width, cast(s32) surface.position.height, FALSE)
+                return true
             }
-            break
         }
+
+        return false
     }
 
     // Creates a new (invisible) surface
