@@ -51,16 +51,16 @@ impl Style
             dirty = true
         }
 
-        // Ask user
-        evt := SysCommandEvent{}
-        evt.sysKind = .SetTheme
-        owner.sendEvent(&evt)
-
         // If parent is dirty, or i am dirty, then we need
         // to compute.
         if !dirty and !parent.dirty
             return
         dirty = true
+
+        // Ask user
+        evt := SysCommandEvent{}
+        evt.sysKind = .SetTheme
+        owner.sendEvent(&evt)
 
         // Nothing to override
         release()
@@ -80,5 +80,11 @@ impl Style
         var tf: File.TweakFile
         tf.registerFolder'Tweak(tweak)
         catch tf.parse(styleSheet)
+    }
+
+    mtd setStyleSheet(str: String)
+    {
+        styleSheet = str
+        dirty = true
     }
 }
