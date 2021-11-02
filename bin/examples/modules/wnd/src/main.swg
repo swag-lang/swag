@@ -13,7 +13,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
 #main
 {
     var app: Gui.Application
-    surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.BigCaption | SurfaceFlags.Border | SurfaceFlags.CloseBtn | SurfaceFlags.MinimizeBtn | SurfaceFlags.MaximizeBtn)
+    surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")
     surface0.setIcon(Icon.from(&app.theme.icons24, 0, 20))
     view := surface0.wnd.view
@@ -31,7 +31,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     button = ButtonPush.create(view, "Disabled", @{5, 75, 100, 30})
     button.isDisabled = true
 
-    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.SecondaryWindow | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
+    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
 
     surface0.show()

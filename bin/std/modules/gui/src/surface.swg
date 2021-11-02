@@ -17,13 +17,18 @@ struct Surface
 enum SurfaceFlags
 {
     Zero = 0
+
     BigCaption
     SmallCaption
     MinimizeBtn
     MaximizeBtn
     CloseBtn
     Border
-    SecondaryWindow
+    Sizeable
+
+    Secondary
+
+    OverlappedWindow = BigCaption | MinimizeBtn | MaximizeBtn | CloseBtn | Border | Sizeable
 }
 
 impl Surface

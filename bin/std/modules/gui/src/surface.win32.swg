@@ -185,7 +185,7 @@ impl Surface
         winFlags |= WS_POPUP | WS_CLIPCHILDREN
 
         winFlagsEx := 0'u32
-        if flags & .SecondaryWindow
+        if flags & .Secondary
             winFlagsEx |= WS_EX_TOOLWINDOW
 
         // Create window
