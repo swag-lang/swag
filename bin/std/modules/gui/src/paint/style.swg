@@ -41,7 +41,7 @@ impl Style
         ref.count = 1
     }
 
-    protected mtd compute(parent: *Style)
+    protected mtd compute(owner: *Wnd, parent: *Style)
     {
         // First time, initialize to parent
         if !ref
@@ -50,6 +50,11 @@ impl Style
             ref.count += 1
             dirty = true
         }
+
+        // Ask user
+        evt := SysCommandEvent{}
+        evt.sysKind = .SetTheme
+        owner.sendEvent(&evt)
 
         // If parent is dirty, or i am dirty, then we need
         // to compute.

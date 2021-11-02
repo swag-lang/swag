@@ -178,9 +178,9 @@ impl Wnd
 
         // Recompute style if necessary
         if parent
-            style.compute(&parent.style)
+            style.compute(self, &parent.style)
         else
-            style.compute(&bc.theme.style)
+            style.compute(self, &bc.theme.style)
         bc.tweak = style.ref.tweak
 
         // Transmit disabled state to childs

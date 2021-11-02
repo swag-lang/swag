@@ -50,6 +50,7 @@ public struct Tweak
     captionTextNotActivated:        Color = 0xFFAAAAAA
 
     windowBk:                       Color = 0xFF424242
+    windowCloseBtnBk:               Color = 0xFFd61425
 
     btnPush_DisabledText:           Color = 0x5FFFFFFF
     btnPush_DisabledBorder:         Color = 0x5FFFFFFF

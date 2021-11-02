@@ -131,24 +131,28 @@ impl SurfaceWnd
     {
         createView'Wnd()
 
+        theme := &surface.app.theme
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 2), @{0,0,0,0})
+            minimizeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 2), @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 3), @{0,0,0,0})
+            maximizeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 3), @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = ButtonIcon.create(self, Icon.from(&surface.app.theme.icons24, 4), @{0,0,0,0})
+            closeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
-            closeBtn.style.styleSheet = "btnIcon_HotBk 0XFFd61425"
-            closeBtn.style.dirty = true
+            closeBtn.hookOnSysCommandEvent = @(wnd: *Wnd, evt: *SysCommandEvent)
+            {
+                wnd.style.styleSheet = Format.toString("btnIcon_HotBk 0x%{X}", wnd.style.ref.tweak.windowCloseBtnBk.argb)
+                wnd.style.dirty = true
+            }
         }
     }
 }

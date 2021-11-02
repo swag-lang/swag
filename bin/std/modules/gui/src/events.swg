@@ -102,6 +102,7 @@ enum SysCommandKind
     Minimize
     Restore
     Close
+    SetTheme
 }
 
 struct SysCommandEvent
