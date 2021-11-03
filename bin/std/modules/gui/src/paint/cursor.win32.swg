@@ -6,21 +6,21 @@ public struct NativeCursor
     cursor: HCURSOR
 }
 
+private var DefaultCursors: [@countof(CursorShape)] Cursor
+#init
+{
+    using CursorShape
+    DefaultCursors[Arrow].cursor    = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
+    DefaultCursors[SizeWE].cursor   = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZEWE))
+    DefaultCursors[SizeNS].cursor   = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZENS))
+    DefaultCursors[SizeNWSE].cursor = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZENWSE))
+    DefaultCursors[SizeNESW].cursor = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZENESW))
+}
+
 impl Cursor
 {
     public func from(shape: CursorShape)->Cursor
     {
-        var result: retval
-
-        #[Swag.Complete]
-        switch shape
-        {
-        case Arrow:
-            result.cursor = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
-        case SizeWE:
-            result.cursor = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZEWE))
-        }
-
-        return result
+        return DefaultCursors[shape]
     }
 }

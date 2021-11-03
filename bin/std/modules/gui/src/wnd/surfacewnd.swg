@@ -22,13 +22,14 @@ impl IWnd for SurfaceWnd
         newSizingBorder := SizingBorder.Zero
         if surface.flags & .Sizeable
         {
-            if surfacePos.x < 20
+            const SizeBorder = 10
+            if surfacePos.x < SizeBorder
                 newSizingBorder |= .Left
-            if surfacePos.y < 20
+            if surfacePos.y < SizeBorder
                 newSizingBorder |= .Top
-            if surfacePos.x > surface.position.width - 20
+            if surfacePos.x > surface.position.width - SizeBorder
                 newSizingBorder |= .Right
-            if surfacePos.y > surface.position.height - 20
+            if surfacePos.y > surface.position.height - SizeBorder
                 newSizingBorder |= .Bottom
         }
 
@@ -84,6 +85,15 @@ impl IWnd for SurfaceWnd
                     case Left, Right:
                         cursorSet = true
                         surface.app.pushCursor(Cursor.from(CursorShape.SizeWE))
+                    case Top, Bottom:
+                        cursorSet = true
+                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNS))
+                    case Right|Bottom, Left|Top:
+                        cursorSet = true
+                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNWSE))
+                    case Right|Top, Left|Bottom:
+                        cursorSet = true
+                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNESW))
                     }
                 }
             }
