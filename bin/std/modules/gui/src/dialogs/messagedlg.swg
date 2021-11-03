@@ -5,14 +5,18 @@ public struct MessageDlg
 
 impl MessageDlg
 {
-    public func doModal(from: *Surface, x, y: s32)
+    public func create(from: *Surface, x, y: s32)->*Surface
     {
-        app := from.app
+        surface := assume from.app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Secondary)
+        return surface
+    }
 
-        surface := assume app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Secondary)
-        surface.bringToTop()
-        surface.show()
+    public func yesNo(from: *Surface, x, y: s32, message: string)
+    {
+        surface := create(from, x, y)
+        btnYes := ButtonPush.create(surface.wnd.view, "Yes", @{10, 10, 100, 30})
+        btnNo  := ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
 
-        app.doModalLoop(surface)
+        Dialog.doModal(surface)
     }
 }
