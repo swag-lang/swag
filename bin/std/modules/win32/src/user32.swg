@@ -802,6 +802,7 @@ struct PAINTSTRUCT
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
     func SetCapture(hWnd: HWND)->HWND;
     func ReleaseCapture()->BOOL;
+    func SetCursor(hCursor: HCURSOR)->HCURSOR;
 
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;

@@ -11,6 +11,7 @@ struct Application
     postedEvents:   Array'(*Event)
     surfaces:       Array'(*Surface)
     postDestroy:    Array'(*Wnd)
+    cursorStack:    Array'(Cursor)
     mustQuit:       bool
     isActivated:    bool
     quitCode:       s32
@@ -190,6 +191,8 @@ impl Application
             evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)
             mouseEnterWnd.sendEvent(&evt)
         }
+
+        changeCursor()
 
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)

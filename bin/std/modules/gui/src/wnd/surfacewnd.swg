@@ -12,10 +12,29 @@ public struct SurfaceWnd
     closeBtn:       *ButtonIcon
     movingSurface:  bool
     sizingBorder:   SizingBorder = Zero
+    cursorSet:      bool
 }
 
 impl IWnd for SurfaceWnd
 {
+    mtd hitTestBorders(surfacePos: Math.Point)->SizingBorder
+    {
+        newSizingBorder := SizingBorder.Zero
+        if surface.flags & .Sizeable
+        {
+            if surfacePos.x < 20
+                newSizingBorder |= .Left
+            if surfacePos.y < 20
+                newSizingBorder |= .Top
+            if surfacePos.x > surface.position.width - 20
+                newSizingBorder |= .Right
+            if surfacePos.y > surface.position.height - 20
+                newSizingBorder |= .Bottom
+        }
+
+        return newSizingBorder
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
@@ -26,38 +45,62 @@ impl IWnd for SurfaceWnd
             surface.bringToTop()
             if surface.isMaximized
                 break
-
-            wnd.captureMouse()
-
-            if surface.flags & .Sizeable
-            {
-                if evt.surfacePos.x < 20
-                    sizingBorder |= .Left
-                if evt.surfacePos.y < 20
-                    sizingBorder |= .Top
-                if evt.surfacePos.x > surface.position.width - 20
-                    sizingBorder |= .Right
-                if evt.surfacePos.y > surface.position.height - 20
-                    sizingBorder |= .Bottom
-            }
-
-            if !sizingBorder
-                movingSurface = true
+            captureMouse()
+            movingSurface = true
 
         case MouseReleased:
             if evt.button != .Left
                 break
-            wnd.releaseMouse()
+            releaseMouse()
             sizingBorder = .Zero
             movingSurface = false
 
+        case MouseLeave:
+            sizingBorder = .Zero
+            if cursorSet
+            {
+                cursorSet = false
+                surface.app.popCursor()
+            }
+
         case MouseMove:
+            if surface.isMaximized
+                break
+
+            if !movingSurface and surface.flags & .Sizeable
+            {
+                newSizingBorder := hitTestBorders(evt.surfacePos)
+                if newSizingBorder != sizingBorder
+                {
+                    sizingBorder = newSizingBorder
+                    if cursorSet
+                    {
+                        cursorSet = false
+                        surface.app.popCursor()
+                    }
+
+                    switch newSizingBorder
+                    {
+                    case Left, Right:
+                        cursorSet = true
+                        surface.app.pushCursor(Cursor.from(CursorShape.SizeWE))
+                    }
+                }
+            }
+            else if !movingSurface and cursorSet
+            {
+                cursorSet = false
+                surface.app.popCursor()
+            }
+
+            if !movingSurface
+                break
+
             hasChanged := false
             pos := surface.position
 
             if sizingBorder & .Left
             {
-                //evt.move.x = -256
                 pos.x += evt.move.x
                 pos.width -= evt.move.x
                 hasChanged = true
@@ -82,7 +125,7 @@ impl IWnd for SurfaceWnd
                 hasChanged = true
             }
 
-            if movingSurface
+            if sizingBorder == .Zero
             {
                 pos.offset(evt.move.x, evt.move.y);
                 hasChanged = true

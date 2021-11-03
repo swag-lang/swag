@@ -27,6 +27,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP:
             return 0
+        case WM_SETCURSOR:
+            surface.app.changeCursor()
+            return 0
 
         case WM_ACTIVATEAPP:
             surface.app.setActivated(wParam ? true : false)

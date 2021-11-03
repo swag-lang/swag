@@ -45,4 +45,24 @@ impl Application
 
         return null
     }
+
+    mtd pushCursor(cursor: Cursor)
+    {
+        cursorStack.add(cursor)
+        changeCursor()
+    }
+
+    mtd popCursor()
+    {
+        cursorStack.removeBack()
+        changeCursor()
+    }
+
+    mtd changeCursor()
+    {
+        if cursorStack.count
+            SetCursor(cursorStack.back().native.cursor)
+        else
+            SetCursor(Cursor.from(CursorShape.Arrow).native.cursor)
+    }
 }
