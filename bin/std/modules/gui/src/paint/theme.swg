@@ -51,6 +51,7 @@ public struct Tweak
 
     windowBk:                       Color = 0xFF424242
     windowCloseBtnBk:               Color = 0xFFd61425
+    windowCloseBtnHotBk:            Color = 0xFFe62435
 
     btnPush_DisabledText:           Color = 0x5FFFFFFF
     btnPush_DisabledBorder:         Color = 0x5FFFFFFF

@@ -289,7 +289,13 @@ impl SurfaceWnd
             closeBtn.hookOnSysCommandEvent = @(wnd: *Wnd, evt: *SysCommandEvent)->bool
             {
                 if evt.sysKind == .SetTheme
-                    wnd.style.setStyleSheet(Format.toString("btnIcon_HotBk 0x%{X}", wnd.style.ref.tweak.windowCloseBtnBk.argb))
+                {
+                    var styleSheet: String
+                    styleSheet.append(Format.toString("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb))
+                    styleSheet.append(Format.toString("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb))
+                    wnd.style.setStyleSheet(styleSheet)
+                }
+
                 return false
             }
         }
