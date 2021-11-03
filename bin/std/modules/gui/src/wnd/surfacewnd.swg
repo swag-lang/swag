@@ -291,8 +291,8 @@ impl SurfaceWnd
                 if evt.sysKind == .SetTheme
                 {
                     var styleSheet: String
-                    styleSheet.append(Format.toString("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb))
-                    styleSheet.append(Format.toString("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb))
+                    styleSheet.appendFormat("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb)
+                    styleSheet.appendFormat("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb)
                     wnd.style.setStyleSheet(styleSheet)
                 }
 

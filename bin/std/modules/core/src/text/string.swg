@@ -285,6 +285,12 @@ impl String
         length += countof + 1
     }
 
+    // Append a formatted string
+    mtd appendFormat(format: string, values: ...)
+    {
+        append(Format.toString(format, values))
+    }
+
     // Append a byte to the String
     func append(using self, value: u8)
     {
