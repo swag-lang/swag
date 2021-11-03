@@ -312,6 +312,17 @@ struct CREATESTRUCTW
     dwExStyle:      DWORD
 }
 
+struct WINDOWPOS
+{
+    hwnd:             HWND
+    hwndInsertAfter:  HWND
+    x:                s32
+    y:                s32
+    cx:               s32
+    cy:               s32
+    flags:            UINT
+}
+
 const WS_OVERLAPPED       = 0x00000000
 const WS_POPUP            = 0x80000000
 const WS_CHILD            = 0x40000000
@@ -711,6 +722,10 @@ const SWP_HIDEWINDOW      = 0x0080
 const SWP_NOCOPYBITS      = 0x0100
 const SWP_NOOWNERZORDER   = 0x0200
 const SWP_NOSENDCHANGING  = 0x0400
+const SWP_DRAWFRAME       = SWP_FRAMECHANGED
+const SWP_NOREPOSITION    = SWP_NOOWNERZORDER
+const SWP_DEFERERASE      = 0x2000
+const SWP_ASYNCWINDOWPOS  = 0x4000
 
 const SC_SIZE         = 0xF000
 const SC_MOVE         = 0xF010

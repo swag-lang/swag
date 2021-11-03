@@ -29,14 +29,17 @@ impl IWnd for SurfaceWnd
 
             wnd.captureMouse()
 
-            if evt.surfacePos.x < 20
-                sizingBorder |= .Left
-            if evt.surfacePos.y < 20
-                sizingBorder |= .Top
-            if evt.surfacePos.x > surface.position.width - 20
-                sizingBorder |= .Right
-            if evt.surfacePos.y > surface.position.height - 20
-                sizingBorder |= .Bottom
+            if surface.flags & .Sizeable
+            {
+                if evt.surfacePos.x < 20
+                    sizingBorder |= .Left
+                if evt.surfacePos.y < 20
+                    sizingBorder |= .Top
+                if evt.surfacePos.x > surface.position.width - 20
+                    sizingBorder |= .Right
+                if evt.surfacePos.y > surface.position.height - 20
+                    sizingBorder |= .Bottom
+            }
 
             if !sizingBorder
                 movingSurface = true
@@ -50,42 +53,44 @@ impl IWnd for SurfaceWnd
 
         case MouseMove:
             hasChanged := false
+            pos := surface.position
 
             if sizingBorder & .Left
             {
-                surface.position.x += evt.move.x
-                surface.position.width -= evt.move.x
+                //evt.move.x = -256
+                pos.x += evt.move.x
+                pos.width -= evt.move.x
                 hasChanged = true
             }
 
             if sizingBorder & .Top
             {
-                surface.position.y += evt.move.y
-                surface.position.height -= evt.move.y
+                pos.y += evt.move.y
+                pos.height -= evt.move.y
                 hasChanged = true
             }
 
             if sizingBorder & .Right
             {
-                surface.position.width += evt.move.x
+                pos.width += evt.move.x
                 hasChanged = true
             }
 
             if sizingBorder & .Bottom
             {
-                surface.position.height += evt.move.y
+                pos.height += evt.move.y
                 hasChanged = true
             }
 
             if movingSurface
             {
-                surface.position.offset(evt.move.x, evt.move.y);
+                pos.offset(evt.move.x, evt.move.y);
                 hasChanged = true
             }
 
             if hasChanged
             {
-                surface.setPosition(surface.position)
+                surface.setPosition(pos)
                 surface.invalidate()
             }
         }

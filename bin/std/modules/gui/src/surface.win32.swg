@@ -32,10 +32,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             surface.app.setActivated(wParam ? true : false)
             return 0
 
-        case WM_ERASEBKGND:
-            surface.invalidate()
-            surface.paint()
-            return TRUE
+        case WM_ERASEBKGND: return 0
+        case WM_NCPAINT:    return 0
+        case WM_NCCALCSIZE: return 0
 
         case WM_PAINT:
             var ps: PAINTSTRUCT
@@ -45,10 +44,25 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             EndPaint(hWnd, &ps)
             return 0
 
+        case WM_WINDOWPOSCHANGING:
+            ppos := cast(*WINDOWPOS) cast(uint) lParam
+            ppos.flags |= SWP_NOCOPYBITS | SWP_NOREDRAW
+            if !(ppos.flags & SWP_NOMOVE)
+            {
+                surface.position.x = cast(f32) ppos.x
+                surface.position.y = cast(f32) ppos.y
+            }
+            if !(ppos.flags & SWP_NOSIZE)
+            {
+                surface.position.width = cast(f32) ppos.cx
+                surface.position.height = cast(f32) ppos.cy
+                surface.sendResizeEvent(cast(f32) ppos.cx, cast(f32) ppos.cy)
+            }
+            return 0
+
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
             surface.position.y = HIWORD(lParam)
-
         case WM_SIZE:
             surface.sendResizeEvent(cast(f32) LOWORD(lParam), cast(f32) HIWORD(lParam))
 
@@ -71,7 +85,7 @@ impl Surface
     // Set the surface position
     mtd setPosition(pos: Math.Rectangle)
     {
-        catch MoveWindow(hWnd, cast(s32) pos.x, cast(s32) pos.y, cast(s32) pos.width, cast(s32) pos.height, FALSE)
+        catch SetWindowPos(hWnd, null, cast(s32) pos.x, cast(s32) pos.y, cast(s32) pos.width, cast(s32) pos.height,  SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
     }
 
     // Bring the surface at the top of the Z order
@@ -148,7 +162,7 @@ impl Surface
             var wc: WNDCLASSW
             wc.hInstance     = GetModuleHandleW(null)
             wc.cbWndExtra    = @sizeof(*void);
-            wc.style         = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS
+            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
             wc.lpfnWndProc   = acast @mkcallback(&winProc)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
             wc.lpszClassName = className
