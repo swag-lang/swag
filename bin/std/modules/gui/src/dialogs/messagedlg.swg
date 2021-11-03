@@ -1,6 +1,6 @@
 public struct MessageDlg
 {
-    using base: Wnd
+    using base: Dialog
 }
 
 impl MessageDlg
