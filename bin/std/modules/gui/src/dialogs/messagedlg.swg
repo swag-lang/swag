@@ -5,14 +5,14 @@ public struct MessageDlg
 
 impl MessageDlg
 {
-    public func doModal(surface: *Surface, x, y: s32)
+    public func doModal(from: *Surface, x, y: s32)
     {
-        app := surface.app
+        app := from.app
 
-        srf := assume app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Secondary)
-        srf.show()
-        srf.bringToTop()
+        surface := assume app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Secondary)
+        surface.bringToTop()
+        surface.show()
 
-        app.doModalLoop(srf)
+        app.doModalLoop(surface)
     }
 }
