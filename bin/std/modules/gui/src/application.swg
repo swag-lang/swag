@@ -125,8 +125,13 @@ impl Application
         postedEvents.add(event)
     }
 
-    // Send and process an event
     mtd sendEvent(event: *Event)
+    {
+        sendEventPrivate(event, null)
+    }
+
+    // Send and process an event
+    protected mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
         if event.kind == .Quit
         {
@@ -147,7 +152,7 @@ impl Application
         while !event.accepted
         {
             event.target = event.target.parent
-            if !event.target
+            if !event.target or event.target == stopAt
                 break
             event.accepted = true
             event.target.processEvent(event)
@@ -172,8 +177,19 @@ impl Application
         // Mouse enter/leave
         if !targetWnd or targetWnd != mouseEnterWnd
         {
+            // Enter
+            if targetWnd
+            {
+                evt.kind = .MouseEnter
+                evt.surfacePos = targetWnd.screenToSurface(mousePos)
+                evt.pos = targetWnd.surfaceToLocal(evt.surfacePos)
+                evt.target = targetWnd
+                sendEventPrivate(&evt, mouseEnterWnd)
+                targetWnd = evt.target
+            }
+
             // Leave
-            if mouseEnterWnd
+            if mouseEnterWnd and targetWnd != mouseEnterWnd
             {
                 evt.kind = .MouseLeave
                 evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
@@ -184,12 +200,6 @@ impl Application
             mouseEnterWnd = targetWnd
             if !targetWnd
                 return
-
-            // Enter
-            evt.kind = .MouseEnter
-            evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
-            evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)
-            mouseEnterWnd.sendEvent(&evt)
         }
 
         changeCursor()

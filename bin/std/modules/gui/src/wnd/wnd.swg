@@ -306,6 +306,20 @@ impl Wnd
         return self
     }
 
+    // Returns true if 'child' is in the child hieararchy of 'self'
+    mtd isParentOf(child: *Wnd)->bool
+    {
+        p := child.parent
+        while p
+        {
+            if p == self
+                return true
+            p = p.parent
+        }
+
+        return false
+    }
+
     //////////////////////////////////////////////
     // Helpers
     //////////////////////////////////////////////
