@@ -13,9 +13,11 @@ struct Application
     postDestroy:    Array'(*Wnd)
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
+    endModal:       bool
     isActivated:    bool
     quitCode:       s32
 
+    modalSurfaces:      Array'(*Surface)
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
 }
@@ -60,6 +62,8 @@ impl Application
         surfaces.remove(surface)
         if surface == mainSurface
             postQuitEvent()
+        if modalSurfaces.count and surface == modalSurfaces.back()
+            endModal = true
         surface.destroyNative()
         Memory.delete(surface)
     }
@@ -101,6 +105,8 @@ impl Application
         if isActivated == activated
             return
         isActivated = activated
+        visit s: modalSurfaces
+            s.bringToTop()
         invalidate()
     }
 
@@ -198,11 +204,11 @@ impl Application
             }
 
             mouseEnterWnd = targetWnd
-            if !targetWnd
-                return
         }
 
         changeCursor(targetWnd)
+        if !targetWnd
+            return
 
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
@@ -294,24 +300,51 @@ impl Application
         postDestroy.clear()
     }
 
+    protected mtd runFrame()
+    {
+        Memory.freeTemp()
+
+        sendSystemEvents()
+        sendKeyboardEvents()
+        sendMouseEvents()
+        sendPostedEvents()
+        sendDestroyEvents()
+
+        visit s:
+            surfaces s.paint()
+    }
+
     // Run until exit
     #[Swag.Discardable]
     mtd run()->s32
     {
         while !mustQuit
         {
-            Memory.freeTemp()
-
-            sendSystemEvents()
-            sendKeyboardEvents()
-            sendMouseEvents()
-            sendPostedEvents()
-            sendDestroyEvents()
-
-            visit s:
-                surfaces s.paint()
+            runFrame()
         }
 
         return quitCode
+    }
+
+    protected mtd doModalLoop(surface: *Surface)
+    {
+        visit s: surfaces s.disable()
+        modalSurfaces.add(surface)
+
+        while !mustQuit and !endModal
+        {
+            runFrame()
+        }
+
+        visit s: surfaces s.enable()
+        modalSurfaces.removeBack()
+
+        if modalSurfaces.count
+        {
+            s := modalSurfaces.back()
+            s.enable()
+        }
+
+        endModal = false
     }
 }

@@ -699,6 +699,8 @@ const CS_SAVEBITS         = 0x0800
 const CS_BYTEALIGNCLIENT  = 0x1000
 const CS_BYTEALIGNWINDOW  = 0x2000
 const CS_GLOBALCLASS      = 0x4000
+const CS_IME              = 0x00010000
+const CS_DROPSHADOW       = 0x00020000
 
 const GWLP_WNDPROC        = -4
 const GWLP_HINSTANCE      = -6
@@ -798,6 +800,7 @@ struct PAINTSTRUCT
 #[Foreign("user32"), Discardable]
 {
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
+    func EnableWindow(hWnd: HWND, bEnable: BOOL)->BOOL;
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
     func SetCapture(hWnd: HWND)->HWND;

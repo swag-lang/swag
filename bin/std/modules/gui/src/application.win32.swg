@@ -40,7 +40,11 @@ impl Application
         visit s: surfaces
         {
             if s.native.hWnd == hWnd
+            {
+                if modalSurfaces.count and s != modalSurfaces.back()
+                    return null
                 return s
+            }
         }
 
         return null

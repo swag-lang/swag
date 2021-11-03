@@ -45,9 +45,9 @@ struct ImageMetrics
 public struct Tweak
 {
     caption:                        Color = 0xFF535353
-    captionNotActived:              Color = 0xFF494949
+    captionNotActived:              Color = 0xFF535353
     captionText:                    Color = 0xFFFFFFFF
-    captionTextNotActivated:        Color = 0xFFAAAAAA
+    captionTextNotActivated:        Color = 0xFFFFFFFF
 
     windowBk:                       Color = 0xFF424242
     windowCloseBtnBk:               Color = 0xFFd61425

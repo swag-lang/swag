@@ -96,9 +96,22 @@ impl Surface
         BringWindowToTop(hWnd)
     }
 
+    // Enable the surface
+    mtd enable()
+    {
+        EnableWindow(hWnd, TRUE)
+    }
+
+    // Enable the surface
+    mtd disable()
+    {
+        EnableWindow(hWnd, FALSE)
+    }
+
     // Show the surface
     mtd show()
     {
+        invalidate()
         ShowWindow(hWnd, SW_SHOW)
     }
 
@@ -164,7 +177,7 @@ impl Surface
             var wc: WNDCLASSW
             wc.hInstance     = GetModuleHandleW(null)
             wc.cbWndExtra    = @sizeof(*void);
-            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
+            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW
             wc.lpfnWndProc   = acast @mkcallback(&winProc)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
             wc.lpszClassName = className
