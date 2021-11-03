@@ -49,19 +49,19 @@ impl Application
     mtd pushCursor(cursor: Cursor)
     {
         cursorStack.add(cursor)
-        changeCursor()
     }
 
     mtd popCursor()
     {
         cursorStack.removeBack()
-        changeCursor()
     }
 
-    mtd changeCursor()
+    mtd changeCursor(wnd: *Wnd)
     {
         if cursorStack.count
             SetCursor(cursorStack.back().native.cursor)
+        else if wnd and wnd.cursor.native.cursor != null
+            SetCursor(wnd.cursor.native.cursor)
         else
             SetCursor(Cursor.from(CursorShape.Arrow).native.cursor)
     }

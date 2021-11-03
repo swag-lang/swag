@@ -8,6 +8,9 @@ enum CursorShape
     SizeNS
     SizeNWSE
     SizeNESW
+    SizeAll
+    Cross
+    Help
 }
 
 struct Cursor

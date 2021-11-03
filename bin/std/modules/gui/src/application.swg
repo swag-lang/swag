@@ -202,7 +202,7 @@ impl Application
                 return
         }
 
-        changeCursor()
+        changeCursor(targetWnd)
 
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)

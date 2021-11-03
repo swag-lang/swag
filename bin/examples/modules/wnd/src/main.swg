@@ -23,6 +23,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     button.sigPressed = @(btn: *ButtonPush) { btn.name = "Pressed"; }
 
     button = ButtonPush.create(view, "ExitExitExitExitExit", @{110, 5, 100, 30})
+    button.cursor = Cursor.from(CursorShape.Help)
 
     button = ButtonPush.create(view, "Default", @{5, 40, 100, 30})
     button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }

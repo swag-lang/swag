@@ -24,7 +24,8 @@ struct Wnd
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
-    name: String
+    name:   String
+    cursor: Cursor
 
     drawBackground:     bool
     isDisabled:         bool
