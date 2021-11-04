@@ -65,6 +65,10 @@ x64/llvm debug
 llvm debug, pas à jour
 - variables local en #[Swag.global]
 -------------------------------------
+DEBUG pas a pas call itf
+-------------------------------------
+itf generation overwrite, le pas à pas merde aussi
+-------------------------------------
 
 
 ****************************************

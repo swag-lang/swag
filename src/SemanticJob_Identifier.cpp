@@ -2814,12 +2814,21 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
         if (identifierRef->resolvedSymbolName)
         {
-            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
-                identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+            bool canTry = false;
+            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+                canTry = true;
+            if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+                canTry = true;
+            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                identifierRef->previousResolvedNode &&
+                identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+                canTry = true;
+
+            if (canTry)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
+                canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
                 if (context->result == ContextResult::Pending)
                     return true;
                 if (canTry)
@@ -3759,7 +3768,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     {
         if (!(flags & COLLECT_BACKTICK))
         {
-            while (startNode->parent->kind != AstNodeKind::Inline &&    // Need to test on parent to be able to add alternative scopes of the inline block
+            while (startNode->parent->kind != AstNodeKind::Inline && // Need to test on parent to be able to add alternative scopes of the inline block
                    startNode->kind != AstNodeKind::CompilerInline &&
                    startNode->kind != AstNodeKind::FuncDecl)
             {
