@@ -22,16 +22,16 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     button.icon.set(&app.theme.icons24, 0, 18)
     button.sigPressed = @(btn: *ButtonPush) { btn.name = "Pressed"; }
 
-    button = ButtonPush.create(view, "ExitExitExitExitExit", @{110, 5, 100, 30})
-    button.cursor = Cursor.from(CursorShape.Help)
-    button.sigPressed = @(btn: *ButtonPush) { MessageDlg.yesNo(btn.surface, 200, 200, "Are you very very sure ?"); }
-
     button = ButtonPush.create(view, "Default", @{5, 40, 100, 30})
     button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.icons24, 1, 18); }
     button.isDefault = true
 
     button = ButtonPush.create(view, "Disabled", @{5, 75, 100, 30})
     button.isDisabled = true
+
+    button = ButtonPush.create(view, "ExitExitExitExitExit", @{5, 110, 100, 30})
+    button.cursor = Cursor.from(CursorShape.Help)
+    button.sigPressed = @(btn: *ButtonPush) { MessageDlg.yesNo(btn.surface, 200, 200, "Are you very very sure ?"); }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
