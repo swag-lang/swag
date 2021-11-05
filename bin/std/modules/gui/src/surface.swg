@@ -61,6 +61,8 @@ impl Surface
         }
 
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
+
+        surface.wnd.minSize = @{128, 128}
         surface.wnd.resize(cast(f32) width, cast(f32) height)
     }
 

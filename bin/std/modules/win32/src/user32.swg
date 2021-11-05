@@ -323,6 +323,15 @@ struct WINDOWPOS
     flags:            UINT
 }
 
+struct MINMAXINFO
+{
+    ptReserved:       POINT
+    ptMaxSize:        POINT
+    ptMaxPosition:    POINT
+    ptMinTrackSize:   POINT
+    ptMaxTrackSize:   POINT
+}
+
 const WS_OVERLAPPED       = 0x00000000
 const WS_POPUP            = 0x80000000
 const WS_CHILD            = 0x40000000

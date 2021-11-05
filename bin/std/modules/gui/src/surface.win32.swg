@@ -87,7 +87,18 @@ impl Surface
     // Set the surface position
     mtd setPosition(pos: Math.Rectangle)
     {
-        catch SetWindowPos(hWnd, null, cast(s32) pos.x, cast(s32) pos.y, cast(s32) pos.width, cast(s32) pos.height,  SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
+        clampPos := pos
+        if wnd.minSize.x > 0
+            clampPos.width = Math.max(clampPos.width, wnd.minSize.x)
+        if wnd.minSize.y > 0
+            clampPos.height = Math.max(clampPos.height, wnd.minSize.y)
+
+        if wnd.maxSize.x > 0
+            clampPos.width = Math.min(clampPos.width, wnd.maxSize.x)
+        if wnd.maxSize.y > 0
+            clampPos.height = Math.min(clampPos.height, wnd.maxSize.y)
+
+        catch SetWindowPos(hWnd, null, cast(s32) pos.x, cast(s32) pos.y, cast(s32) clampPos.width, cast(s32) clampPos.height,  SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
     }
 
     // Bring the surface at the top of the Z order

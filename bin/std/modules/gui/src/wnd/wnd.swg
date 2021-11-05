@@ -30,6 +30,8 @@ struct Wnd
     style:      Style
 
     position:   Math.Rectangle
+    minSize:    Math.Point
+    maxSize:    Math.Point
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -301,6 +303,17 @@ impl Wnd
         evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}
         position.width = width
+
+        if minSize.x > 0
+            position.width = Math.max(position.width, minSize.x)
+        if minSize.y > 0
+            position.height = Math.max(position.height, minSize.y)
+
+        if maxSize.x > 0
+            position.width = Math.min(position.width, maxSize.x)
+        if maxSize.y > 0
+            position.height = Math.min(position.height, maxSize.y)
+
         position.height = height
         sendEvent(&evt)
         applyLayout()
