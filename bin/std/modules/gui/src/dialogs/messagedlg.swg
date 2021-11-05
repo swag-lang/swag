@@ -16,11 +16,28 @@ impl MessageDlg
         surface := create(from, x, y)
         btnYes := ButtonPush.create(surface.wnd.view, "Yes", @{10, 10, 100, 30})
         btnYes.isDefault = true
-        btnYes.dockStyle = .Top
+        btnYes.dockStyle = .Left
         btnYes.marginRightBottom.y = 4
 
         btnNo  := ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
         btnNo.dockStyle = .Top
+
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Right
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Bottom
+
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Left
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Top
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Right
+        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Bottom
+
+        btnNo  = ButtonPush.create(surface.wnd.view, "Center", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Center
 
         Dialog.doModal(surface)
     }

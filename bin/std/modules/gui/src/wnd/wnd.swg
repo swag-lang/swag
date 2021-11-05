@@ -8,6 +8,7 @@ enum DockStyle
     Left
     Right
     Bottom
+    Center
 }
 
 interface IWnd
@@ -312,17 +313,39 @@ impl Wnd
         clientRect.width -= (paddingRightBottom.x + paddingLeftTop.x)
         clientRect.y -= (paddingRightBottom.y + paddingLeftTop.y)
 
+        var centerLayout: Array'(*Wnd)
         visit c: childs
         {
             switch c.dockStyle
             {
+            case Left:
+                pos := c.position
+                pos.x = clientRect.x + c.marginLeftTop.x
+                pos.y = clientRect.y + c.marginLeftTop.y
+                pos.setBottom(clientRect.bottom() - c.marginRightBottom.y)
+                c.setPosition(pos)
+                diff := c.marginLeftTop.x + pos.width + c.marginRightBottom.x
+                clientRect.width -= diff
+                clientRect.x += diff
+
+            case Right:
+                pos := c.position
+                pos.x = clientRect.right() - pos.width - c.marginRightBottom.x
+                pos.y = clientRect.y + c.marginLeftTop.y
+                pos.setBottom(clientRect.bottom() - c.marginRightBottom.y)
+                c.setPosition(pos)
+                diff := c.marginLeftTop.x + pos.width + c.marginRightBottom.x
+                clientRect.width -= diff
+
             case Top:
                 pos := c.position
                 pos.x = clientRect.x + c.marginLeftTop.x
                 pos.y = clientRect.y + c.marginLeftTop.y
                 pos.setRight(clientRect.right() - c.marginRightBottom.x)
                 c.setPosition(pos)
-                clientRect.y = pos.bottom() + c.marginRightBottom.y
+                diff := c.marginLeftTop.y + pos.height + c.marginRightBottom.y
+                clientRect.y += diff
+                clientRect.height -= diff
 
             case Bottom:
                 pos := c.position
@@ -330,9 +353,16 @@ impl Wnd
                 pos.y = clientRect.bottom() - c.marginRightBottom.y - pos.height
                 pos.setRight(clientRect.right() - c.marginRightBottom.x)
                 c.setPosition(pos)
-                clientRect.height = pos.y - c.marginLeftTop.y
+                diff := c.marginRightBottom.y + pos.height + c.marginLeftTop.y
+                clientRect.height -= diff
+
+            case Center:
+                centerLayout.add(c)
             }
         }
+
+        visit c: centerLayout
+            c.setPosition(clientRect)
 
         visit c: childs
             c.applyLayout()
