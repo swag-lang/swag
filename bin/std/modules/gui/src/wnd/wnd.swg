@@ -303,6 +303,7 @@ impl Wnd
         position.width = width
         position.height = height
         sendEvent(&evt)
+        applyLayout()
     }
 
     mtd applyLayout()

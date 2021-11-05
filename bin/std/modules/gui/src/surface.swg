@@ -42,7 +42,6 @@ impl Surface
     func create(app: *Application, surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         surface.flags = flags
-        surface.wnd.position = @{0, 0, width, height}
         surface.wnd.itf = cast(IWnd) surface.wnd
         surface.wnd.surface = surface
         surface.wnd.create()
@@ -62,7 +61,7 @@ impl Surface
         }
 
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
-        surface.wnd.sendResizeEvent()
+        surface.wnd.resize(cast(f32) width, cast(f32) height)
     }
 
     // Destroy the surface
