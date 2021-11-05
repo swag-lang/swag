@@ -295,30 +295,35 @@ impl Wnd
         sendEvent(&evt)
     }
 
+    protected mtd clampSize(pos: *Math.Rectangle)
+    {
+        if minSize.x > 0
+            pos.width = Math.max(pos.width, minSize.x)
+        if minSize.y > 0
+            pos.height = Math.max(pos.height, minSize.y)
+        if maxSize.x > 0
+            pos.width = Math.min(pos.width, maxSize.x)
+        if maxSize.y > 0
+            pos.height = Math.min(pos.height, maxSize.y)
+    }
+
     // Resize the wnd
     mtd resize(width, height: f32)
     {
         if position.width == width and position.height == height
             return
+
         evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}
         position.width = width
-
-        if minSize.x > 0
-            position.width = Math.max(position.width, minSize.x)
-        if minSize.y > 0
-            position.height = Math.max(position.height, minSize.y)
-
-        if maxSize.x > 0
-            position.width = Math.min(position.width, maxSize.x)
-        if maxSize.y > 0
-            position.height = Math.min(position.height, maxSize.y)
-
         position.height = height
+        clampSize(&position)
+
         sendEvent(&evt)
         applyLayout()
     }
 
+    // Apply the current layout (childs constraints)
     mtd applyLayout()
     {
         clientRect := getClientRect()
