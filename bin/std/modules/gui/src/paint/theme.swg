@@ -24,7 +24,7 @@ struct ImageSubRect
 struct ImageMetrics
 {
     wndBorder:              ImageSubRect = @{{130,1,27,27}, 3}
-    wndBigCaption:          ImageSubRect = @{{57,1,72,27}, 1}
+    wndBigCaption:          ImageSubRect = @{{57,1,72,27}, 12}
     wndSmallCaption:        ImageSubRect = @{{57,1,72,27}, 1}
 
     btnPush_Normal:          ImageSubRect = @{{1,1,27,27}, 9}

@@ -14,6 +14,7 @@ using Swag
 
 alias WPARAM =      u64
 alias LPARAM =      u64
+alias COLORREF =    DWORD
 
 const VK_LBUTTON        = 0x01
 const VK_RBUTTON        = 0x02
@@ -847,6 +848,8 @@ namespace User32Priv
         func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
         func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL)->BOOL;
         func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT)->BOOL;
+
+        func SetLayeredWindowAttributes(hwnd: HWND, crKey: COLORREF, bAlpha: BYTE, dwFlags: DWORD)->BOOL;
     }
 }
 
@@ -903,6 +906,12 @@ namespace User32Priv
     func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT) throw
     {
         if !User32Priv.SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags)
+            try setError(GetLastError())
+    }
+
+    func SetLayeredWindowAttributes(hwnd: HWND, crKey: COLORREF, bAlpha: BYTE, dwFlags: DWORD) throw
+    {
+        if !User32Priv.SetLayeredWindowAttributes(hwnd, crKey, bAlpha, dwFlags)
             try setError(GetLastError())
     }
 }

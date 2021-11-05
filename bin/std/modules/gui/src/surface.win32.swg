@@ -192,7 +192,7 @@ impl Surface
             var wc: WNDCLASSW
             wc.hInstance     = GetModuleHandleW(null)
             wc.cbWndExtra    = @sizeof(*void);
-            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
+            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW // | CS_DROPSHADOW
             wc.lpfnWndProc   = acast @mkcallback(&winProc)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
             wc.lpszClassName = className
@@ -205,6 +205,7 @@ impl Surface
         winFlagsEx := 0'u32
         if flags & .Secondary
             winFlagsEx |= WS_EX_TOOLWINDOW
+        //winFlagsEx |= WS_EX_LAYERED
 
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
@@ -221,6 +222,8 @@ impl Surface
             GetModuleHandleW(null),
             result
         )
+
+        //try SetLayeredWindowAttributes(result.hWnd, 0, 255, 1)
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
     }
