@@ -259,7 +259,7 @@ impl Wnd
     }
 
     // Move and size the wnd
-    mtd setRect(rect: Math.Rectangle)
+    mtd setPosition(rect: Math.Rectangle)
     {
         move(rect.x, rect.y)
         resize(rect.width, rect.height)
@@ -268,6 +268,8 @@ impl Wnd
     // Move the wnd
     mtd move(x, y: f32)
     {
+        if position.x == x and position.y == y
+            return
         evt := MoveEvent{}
         evt.oldPos = @{position.x, position.y}
         position.x = x
@@ -278,6 +280,8 @@ impl Wnd
     // Resize the wnd
     mtd resize(width, height: f32)
     {
+        if position.width == width and position.height == height
+            return
         evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}
         position.width = width

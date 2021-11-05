@@ -179,19 +179,19 @@ impl IWnd for SurfaceWnd
 
         if closeBtn
         {
-            closeBtn.setRect(pos)
+            closeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 
         if maximizeBtn
         {
-            maximizeBtn.setRect(pos)
+            maximizeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 
         if minimizeBtn
         {
-            minimizeBtn.setRect(pos)
+            minimizeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 

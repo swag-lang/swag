@@ -13,11 +13,8 @@ impl IWnd for FrameWnd
 {
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        view.position.x = marginsTopLeft.x
-        view.position.y = marginsTopLeft.y
-        view.position.width = position.width - marginsTopLeft.x - marginsBottomRight.x
-        view.position.height = position.height - marginsTopLeft.y - marginsBottomRight.y
-        view.drawBackground = true
+        view.move(marginsTopLeft.x, marginsTopLeft.y)
+        view.resize(position.width - marginsTopLeft.x - marginsBottomRight.x, position.height - marginsTopLeft.y - marginsBottomRight.y)
     }
 }
 
@@ -26,5 +23,6 @@ impl FrameWnd
     mtd(T) createView()
     {
         view = Wnd.create'T(self, "", position)
+        view.drawBackground = true
     }
 }
