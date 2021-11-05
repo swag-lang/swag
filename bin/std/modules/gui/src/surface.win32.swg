@@ -99,25 +99,38 @@ impl Surface
     // Enable the surface
     mtd enable()
     {
+        if !isDisabled
+            return
+        isDisabled = true
         EnableWindow(hWnd, TRUE)
     }
 
     // Enable the surface
     mtd disable()
     {
+        if isDisabled
+            return
+        isDisabled = false
         EnableWindow(hWnd, FALSE)
     }
 
     // Show the surface
     mtd show()
     {
+        if !isHidden
+            return
+        isHidden = false
         invalidate()
+        wnd.applyLayout()
         ShowWindow(hWnd, SW_SHOW)
     }
 
     // Hide the surface
     mtd hide()
     {
+        if isHidden
+            return
+        isHidden = true
         ShowWindow(hWnd, SW_HIDE)
     }
 

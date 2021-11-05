@@ -1,6 +1,15 @@
 #global public
 using Core, Pixel
 
+enum DockStyle
+{
+    None
+    Top
+    Left
+    Right
+    Bottom
+}
+
 interface IWnd
 {
     onEvent:            func(self, *Event)
@@ -24,8 +33,14 @@ struct Wnd
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
-    name:   String
-    cursor: Cursor
+    name:       String
+    cursor:     Cursor
+
+    marginLeftTop:          Math.Point
+    marginRightBottom:      Math.Point
+    paddingLeftTop:         Math.Point
+    paddingRightBottom:     Math.Point
+    dockStyle:              DockStyle = None
 
     drawBackground:     bool
     isDisabled:         bool
@@ -287,6 +302,40 @@ impl Wnd
         position.width = width
         position.height = height
         sendEvent(&evt)
+    }
+
+    mtd applyLayout()
+    {
+        clientRect := getClientRect()
+        clientRect.x += paddingLeftTop.x
+        clientRect.y += paddingLeftTop.y
+        clientRect.width -= (paddingRightBottom.x + paddingLeftTop.x)
+        clientRect.y -= (paddingRightBottom.y + paddingLeftTop.y)
+
+        visit c: childs
+        {
+            switch c.dockStyle
+            {
+            case Top:
+                pos := c.position
+                pos.x = clientRect.x + c.marginLeftTop.x
+                pos.y = clientRect.y + c.marginLeftTop.y
+                pos.setRight(clientRect.right() - c.marginRightBottom.x)
+                c.setPosition(pos)
+                clientRect.y = pos.bottom() + c.marginRightBottom.y
+
+            case Bottom:
+                pos := c.position
+                pos.x = clientRect.x + c.marginLeftTop.x
+                pos.y = clientRect.bottom() - c.marginRightBottom.y - pos.height
+                pos.setRight(clientRect.right() - c.marginRightBottom.x)
+                c.setPosition(pos)
+                clientRect.height = pos.y - c.marginLeftTop.y
+            }
+        }
+
+        visit c: childs
+            c.applyLayout()
     }
 
     // Get the child window at the given coordinate

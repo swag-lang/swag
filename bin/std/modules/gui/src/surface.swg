@@ -7,10 +7,15 @@ struct Surface
     app:            *Application
     wnd:            SurfaceWnd
     painter:        Pixel.Painter
+
     rc:             Pixel.RenderingContext
     position:       Math.Rectangle
+
     flags:          SurfaceFlags = Zero
+
     isDirty:        bool
+    isHidden:       bool = true
+    isDisabled:     bool
 }
 
 #[Swag.EnumFlags]

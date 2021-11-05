@@ -16,7 +16,11 @@ impl MessageDlg
         surface := create(from, x, y)
         btnYes := ButtonPush.create(surface.wnd.view, "Yes", @{10, 10, 100, 30})
         btnYes.isDefault = true
+        btnYes.dockStyle = .Top
+        btnYes.marginRightBottom.y = 4
+
         btnNo  := ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Top
 
         Dialog.doModal(surface)
     }
