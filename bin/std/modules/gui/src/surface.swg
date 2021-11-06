@@ -47,13 +47,13 @@ impl Surface
         surface.wnd.create()
 
         if flags & .BigCaption
-            surface.wnd.marginsTopLeft.y = app.theme.wndBigCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.metrics.wndBigCaptionCY
         else if flags & .SmallCaption
-            surface.wnd.marginsTopLeft.y = app.theme.wndSmallCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.metrics.wndSmallCaptionCY
 
         if flags & .Border
         {
-            size := app.theme.wndBorderSize
+            size := app.theme.metrics.wndBorderSize
             surface.wnd.marginsTopLeft.x = size
             surface.wnd.marginsTopLeft.y = Math.max(surface.wnd.marginsTopLeft.y, size)
             surface.wnd.marginsBottomRight.x = size
@@ -106,7 +106,7 @@ impl Surface
         isDirty = false
 
         var cxt: PaintContext
-        cxt.theme = &app.theme
+        cxt.theme = app.theme
         cxt.painter = &painter
         cxt.renderer = &app.renderer
         cxt.renderer.begin(rc)

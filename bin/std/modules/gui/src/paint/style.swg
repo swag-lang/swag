@@ -3,9 +3,8 @@ using Core
 
 struct StyleRef
 {
-    colors:     *ThemeColors
-    metrics:    *ThemeMetrics
-    count:      u32
+    theme:  *Theme
+    count:  u32
 }
 
 struct Style
@@ -30,18 +29,16 @@ impl Style
         ref.count -= 1
         if ref.count == 0
         {
-            Memory.delete(ref.colors)
-            Memory.delete(ref.metrics)
+            Memory.delete(ref.theme)
             Memory.delete(ref)
             ref = null
         }
     }
 
-    protected mtd set(colors: *ThemeColors, metrics: *ThemeMetrics)
+    protected mtd set(theme: *Theme)
     {
         ref = Memory.new'StyleRef()
-        ref.colors = colors
-        ref.metrics = metrics
+        ref.theme = theme
         ref.count = 1
     }
 
@@ -49,13 +46,9 @@ impl Style
     mtd create(parent: *Style)
     {
         release()
-
-        colors := Memory.new'ThemeColors()
-        dref colors = dref parent.ref.colors
-        metrics := Memory.new'ThemeMetrics()
-        dref metrics = dref parent.ref.metrics
-
-        set(colors, metrics)
+        theme := Memory.new'Theme()
+        dref theme = dref parent.ref.theme
+        set(theme)
     }
 
     protected mtd compute(owner: *Wnd, parent: *Style)
@@ -98,14 +91,14 @@ impl Style
         if styleSheetColors.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeColors(ref.colors)
+            tf.registerFolder'ThemeColors(&ref.theme.colors)
             catch tf.parse(styleSheetColors)
         }
 
         if styleSheetMetrics.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeMetrics(ref.metrics)
+            tf.registerFolder'ThemeMetrics(&ref.theme.metrics)
             catch tf.parse(styleSheetMetrics)
         }
     }

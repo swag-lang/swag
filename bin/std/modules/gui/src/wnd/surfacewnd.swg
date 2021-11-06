@@ -200,14 +200,14 @@ impl IWnd for SurfaceWnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := bc.theme
-        colors  := bc.colors
-        metrics := bc.metrics
+        bc     := evt.bc
+        theme  := bc.theme
+        colors := &bc.theme.colors
+        rects  := &bc.theme.rects
 
         if surface.flags & .Border
         {
-            subRect := &metrics.wnd_Border
+            subRect := &rects.wnd_Border
             theme.drawSubRect(bc.painter, position, subRect, colors.wnd_Caption)
         }
 
@@ -215,7 +215,7 @@ impl IWnd for SurfaceWnd
         if surface.flags & .BigCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
-            subRect := &metrics.wnd_Caption
+            subRect := &rects.wnd_Caption
             colorBk := surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
@@ -223,25 +223,25 @@ impl IWnd for SurfaceWnd
         if surface.flags & .SmallCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
-            subRect := &metrics.wnd_CaptionSmall
+            subRect := &rects.wnd_CaptionSmall
             colorBk := surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
         if surface.flags & (.BigCaption | .SmallCaption)
         {
-            posCaption.x += bc.theme.wndCaptionMarginTitle
+            posCaption.x += bc.theme.metrics.wndCaptionMarginTitle
 
             if icon.isValid()
             {
                 icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
-                posCaption.x += icon.size + theme.iconTextMargin
+                posCaption.x += icon.size + theme.metrics.iconTextMargin
             }
 
             var sf: Pixel.StringFormat
             sf.vertAlignment = .Center
             colorTxt := surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
-            bc.painter.drawString(posCaption, name, theme.fontDefault.regular, colorTxt, sf)
+            bc.painter.drawString(posCaption, name, theme.res.fontDefault.regular, colorTxt, sf)
         }
     }
 }
@@ -271,30 +271,29 @@ impl SurfaceWnd
     {
         createView'Wnd()
 
-        theme := &surface.app.theme
+        theme := surface.app.theme
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 2), @{0,0,0,0})
+            minimizeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 2), @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 3), @{0,0,0,0})
+            maximizeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 3), @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 4), @{0,0,0,0})
+            closeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
             closeBtn.hookOnSetThemeEvent = @(wnd: *Wnd, evt: *SetThemeEvent)->bool
             {
-                st := evt.style
-                st.create(evt.parent)
-                tw := evt.style.ref.colors
-                tw.btnIcon_HotBk = tw.btnIcon_CloseBk.argb
-                tw.btnIcon_PressedBk = tw.btnIcon_CloseHotBk.argb
+                evt.style.create(evt.parent)
+                colors := &evt.style.ref.theme.colors
+                colors.btnIcon_HotBk = colors.btnIcon_CloseBk.argb
+                colors.btnIcon_PressedBk = colors.btnIcon_CloseHotBk.argb
                 return true
             }
         }

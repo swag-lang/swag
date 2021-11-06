@@ -15,31 +15,41 @@ protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
 protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24        = #load(DefaultIcons24Name)
 
-public struct ImageSubRect
+public struct ThemeImageRect
 {
     rect:   Math.Rectangle
     corner: f32
 }
 
+public struct ThemeImageRects
+{
+    wnd_Border:             ThemeImageRect = @{{130,1,27,27}, 3}
+    wnd_Caption:            ThemeImageRect = @{{57,1,72,27}, 12}
+    wnd_CaptionSmall:       ThemeImageRect = @{{57,1,72,27}, 1}
+
+    btnPush_Normal:         ThemeImageRect = @{{1,1,27,27}, 9}
+    btnPush_NormalBorder:   ThemeImageRect = @{{29,1,27,27}, 9}
+    btnPush_Hot:            ThemeImageRect = @{{1,1,27,27}, 9}
+    btnOush_HotBorder:      ThemeImageRect = @{{29,1,27,27}, 9}
+    btnPush_Pressed:        ThemeImageRect = @{{1,1,27,27}, 9}
+    btnPush_PressedBorder:  ThemeImageRect = @{{29,1,27,27}, 9}
+    btnPush_Disabled:       ThemeImageRect = @{{1,1,27,27}, 9}
+    btnPush_DisabledBorder: ThemeImageRect = @{{29,1,27,27}, 9}
+
+    btnIcon_Normal:         ThemeImageRect = @{{1,29,27,27}, 9}
+    btnIcon_Hot:            ThemeImageRect = @{{1,29,27,27}, 9}
+    btnIcon_Pressed:        ThemeImageRect = @{{1,29,27,27}, 9}
+    btnIcon_Disabled:       ThemeImageRect = @{{1,29,27,27}, 9}
+}
+
 public struct ThemeMetrics
 {
-    wnd_Border:             ImageSubRect = @{{130,1,27,27}, 3}
-    wnd_Caption:            ImageSubRect = @{{57,1,72,27}, 12}
-    wnd_CaptionSmall:       ImageSubRect = @{{57,1,72,27}, 1}
-
-    btnPush_Normal:         ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_NormalBorder:   ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Hot:            ImageSubRect = @{{1,1,27,27}, 9}
-    btnOush_HotBorder:      ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Pressed:        ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_PressedBorder:  ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Disabled:       ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_DisabledBorder: ImageSubRect = @{{29,1,27,27}, 9}
-
-    btnIcon_Normal:         ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Hot:            ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Pressed:        ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Disabled:       ImageSubRect = @{{1,29,27,27}, 9}
+    wndBorderSize:          f32 = 3
+    wndBigCaptionCY:        f32 = 30
+    wndSmallCaptionCY:      f32 = 24
+    wndCaptionMarginTitle:  f32 = 5
+    btnMargins:             f32 = -5
+    iconTextMargin:         f32 = 4
 }
 
 public struct ThemeColors
@@ -87,7 +97,7 @@ public struct ThemeColors
     btnIcon_CloseHotBk:             Color = 0xFFe62435
 }
 
-struct Theme
+struct ThemeResources
 {
     imgWidgets:     Texture
     icons24:        ImageList
@@ -96,18 +106,14 @@ struct Theme
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
     fontDefault:    FontFamily
+}
 
-    metrics:        *ThemeMetrics
-    colors:         *ThemeColors
-    style:          Style
-
-    fontDefaultSize:        u32 = 13
-    wndBorderSize:          f32 = 3
-    wndBigCaptionCY:        f32 = 30
-    wndSmallCaptionCY:      f32 = 24
-    wndCaptionMarginTitle:  f32 = 5
-    btnMargins:             f32 = -5
-    iconTextMargin:         f32 = 4
+struct Theme
+{
+    res:     ThemeResources
+    rects:   ThemeImageRects
+    metrics: ThemeMetrics
+    colors:  ThemeColors
 }
 
 impl Theme
@@ -115,34 +121,30 @@ impl Theme
     protected mtd setupDefault(renderer: *RenderOgl)
     {
         img := assume Image.decode(DefaultImageName, DefaultImage)
-        imgWidgets = renderer.addImage(img)
+        res.imgWidgets = renderer.addImage(img)
 
         img = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
-        icons24.texture = renderer.addImage(img)
-        icons24.sizeX = 24
-        icons24.sizeY = 24
+        res.icons24.texture = renderer.addImage(img)
+        res.icons24.sizeX = 24
+        res.icons24.sizeY = 24
 
-        typeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
-        typeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
-        typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
-        typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
+        res.typeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
+        res.typeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
+        res.typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
+        res.typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
-        fontDefault.regular = Font.create(typeFaceR, fontDefaultSize)
-        fontDefault.bold = Font.create(typeFaceB, fontDefaultSize)
-        fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
-        fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
-
-        colors  = Memory.new'ThemeColors()
-        metrics = Memory.new'ThemeMetrics()
-        style.set(colors, metrics)
+        res.fontDefault.regular = Font.create(res.typeFaceR, 13)
+        res.fontDefault.bold = Font.create(res.typeFaceB, 13)
+        res.fontDefault.italic = Font.create(res.typeFaceI, 13)
+        res.fontDefault.boldItalic = Font.create(res.typeFaceBI, 13)
     }
 
-    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
+    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color)
     {
-        drawSubRect(painter, imgWidgets, dstRect, subRect, color)
+        drawSubRect(painter, res.imgWidgets, dstRect, subRect, color)
     }
 
-    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)
+    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color)
     {
         if subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return

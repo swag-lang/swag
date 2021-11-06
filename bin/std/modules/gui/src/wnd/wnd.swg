@@ -209,9 +209,8 @@ impl Wnd
         if parent
             style.compute(self, &parent.style)
         else
-            style.compute(self, &bc.theme.style)
-        bc.colors = style.ref.colors
-        bc.metrics = style.ref.metrics
+            style.compute(self, &surface.app.style)
+        bc.theme = style.ref.theme
 
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
@@ -220,7 +219,7 @@ impl Wnd
 
         // Background
         if drawBackground
-            bc.painter.fillRect(position, bc.colors.wnd_Bk)
+            bc.painter.fillRect(position, bc.theme.colors.wnd_Bk)
 
         // User paint
         evt := PaintEvent{}

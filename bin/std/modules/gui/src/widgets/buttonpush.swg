@@ -19,13 +19,13 @@ impl IWnd for ButtonPush
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := bc.theme
-        colors  := bc.colors
-        metrics := bc.metrics
+        bc     := evt.bc
+        theme  := bc.theme
+        colors := &bc.theme.colors
+        rects  := &bc.theme.rects
 
-        var subRectBk:      *ImageSubRect
-        var subRectBorder:  *ImageSubRect
+        var subRectBk:      *ThemeImageRect
+        var subRectBorder:  *ThemeImageRect
         var colorBk:        Color = ?
         var colorBorder:    Color = ?
         var colorText:      Color = ?
@@ -36,26 +36,26 @@ impl IWnd for ButtonPush
             colorBk       = colors.btnPush_DisabledBk
             colorBorder   = colors.btnPush_DisabledBorder
             colorText     = colors.btnPush_DisabledText
-            subRectBk     = &metrics.btnPush_Disabled
-            subRectBorder = &metrics.btnPush_DisabledBorder
+            subRectBk     = &rects.btnPush_Disabled
+            subRectBorder = &rects.btnPush_DisabledBorder
         case isPressed:
             colorBk       = isDefault ? colors.btnPushDefault_PressedBk : colors.btnPush_PressedBk
             colorBorder   = isDefault ? colors.btnPushDefault_PressedBorder : colors.btnPush_PressedBorder
             colorText     = isDefault ? colors.btnPushDefault_PressedText : colors.btnPush_PressedText
-            subRectBk     = &metrics.btnPush_Pressed
-            subRectBorder = &metrics.btnPush_PressedBorder
+            subRectBk     = &rects.btnPush_Pressed
+            subRectBorder = &rects.btnPush_PressedBorder
         case isHot:
             colorBk       = isDefault ? colors.btnPushDefault_HotBk : colors.btnPush_HotBk
             colorBorder   = isDefault ? colors.btnPushDefault_HotBorder : colors.btnPush_HotBorder
             colorText     = isDefault ? colors.btnPushDefault_HotText : colors.btnPush_HotText
-            subRectBk     = &metrics.btnPush_Hot
-            subRectBorder = &metrics.btnOush_HotBorder
+            subRectBk     = &rects.btnPush_Hot
+            subRectBorder = &rects.btnOush_HotBorder
         default:
             colorBk       = isDefault ? colors.btnPushDefault_Bk : colors.btnPush_Bk
             colorBorder   = isDefault ? colors.btnPushDefault_Border : colors.btnPush_Border
             colorText     = isDefault ? colors.btnPushDefault_Text : colors.btnPush_Text
-            subRectBk     = &metrics.btnPush_Normal
-            subRectBorder = &metrics.btnPush_NormalBorder
+            subRectBk     = &rects.btnPush_Normal
+            subRectBorder = &rects.btnPush_NormalBorder
         }
 
         // Background
@@ -71,10 +71,10 @@ impl IWnd for ButtonPush
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
         labelStyle.stringFormat.flags = .Clip
-        labelStyle.font = bc.theme.fontDefault.bold
-        labelStyle.iconMargin = bc.theme.iconTextMargin
+        labelStyle.font = bc.theme.res.fontDefault.bold
+        labelStyle.iconMargin = bc.theme.metrics.iconTextMargin
         labelPos := position
-        labelPos.inflate(bc.theme.btnMargins)
+        labelPos.inflate(bc.theme.metrics.btnMargins)
         Label.paint(bc, labelPos, name, icon, labelStyle)
     }
 

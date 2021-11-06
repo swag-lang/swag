@@ -4,7 +4,8 @@ using Core
 struct Application
 {
     renderer:       Pixel.RenderOgl
-    theme:          Theme
+    theme:          *Theme
+    style:          Style
     keyb:           Input.Keyboard
     mouse:          Input.Mouse
     mainSurface:    *Surface
@@ -35,7 +36,14 @@ impl Application
         surface.app = self
         surface.position = @{x, y, width, height}
 
+        if !mainSurface
+        {
+            theme = Memory.new'Theme()
+            style.set(theme)
+        }
+
         try Surface.create(self, surface, x, y, width, height, flags, mainSurface)
+
         if !mainSurface
         {
             renderer.setCurrentContext(surface.rc)

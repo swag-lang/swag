@@ -17,12 +17,12 @@ impl IWnd for ButtonIcon
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
-        theme   := bc.theme
-        colors  := bc.colors
-        metrics := bc.metrics
+        bc     := evt.bc
+        theme  := bc.theme
+        colors := &bc.theme.colors
+        rects  := &bc.theme.rects
 
-        var subRectBk:  *ImageSubRect
+        var subRectBk:  *ThemeImageRect
         var colorBk:    Color = ?
         var colorIcon:  Color = ?
 
@@ -31,19 +31,19 @@ impl IWnd for ButtonIcon
         case isDisabled:
             colorBk    = colors.btnIcon_DisabledBk
             colorIcon  = colors.btnIcon_DisabledIcon
-            subRectBk  = &metrics.btnIcon_Disabled
+            subRectBk  = &rects.btnIcon_Disabled
         case isPressed:
             colorBk   = colors.btnIcon_PressedBk
             colorIcon = colors.btnIcon_PressedIcon
-            subRectBk = &metrics.btnIcon_Pressed
+            subRectBk = &rects.btnIcon_Pressed
         case isHot:
             colorBk   = colors.btnIcon_HotBk
             colorIcon = colors.btnIcon_HotIcon
-            subRectBk = &metrics.btnIcon_Hot
+            subRectBk = &rects.btnIcon_Hot
         default:
             colorBk   = colors.btnIcon_Bk
             colorIcon = colors.btnIcon_Icon
-            subRectBk = &metrics.btnIcon_Normal
+            subRectBk = &rects.btnIcon_Normal
         }
 
         // Background
