@@ -3,8 +3,8 @@ using Core
 
 struct StyleRef
 {
-    tweak:    *Tweak
-    count:      u32
+    tweak:  *Tweak
+    count:  u32
 }
 
 struct Style
@@ -58,8 +58,7 @@ impl Style
         dirty = true
 
         // Ask user
-        evt := SysCommandEvent{}
-        evt.sysKind = .SetTheme
+        evt := SetThemeEvent{}
         owner.sendEvent(&evt)
 
         // Nothing to override

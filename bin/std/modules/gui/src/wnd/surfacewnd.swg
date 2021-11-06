@@ -286,16 +286,12 @@ impl SurfaceWnd
         {
             closeBtn = ButtonIcon.create(self, Icon.from(&theme.icons24, 4), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
-            closeBtn.hookOnSysCommandEvent = @(wnd: *Wnd, evt: *SysCommandEvent)->bool
+            closeBtn.hookOnSetThemeEvent = @(wnd: *Wnd, evt: *SetThemeEvent)->bool
             {
-                if evt.sysKind == .SetTheme
-                {
-                    var styleSheet: String
-                    styleSheet.appendFormat("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb)
-                    styleSheet.appendFormat("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb)
-                    wnd.style.setStyleSheet(styleSheet)
-                }
-
+                var styleSheet: String
+                styleSheet.appendFormat("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb)
+                styleSheet.appendFormat("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb)
+                wnd.style.setStyleSheet(styleSheet)
                 return false
             }
         }

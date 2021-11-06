@@ -18,6 +18,7 @@ enum EventKind
     MouseLeave
     Quit
     SysCommand
+    SetTheme
 }
 
 struct Event
@@ -102,11 +103,15 @@ enum SysCommandKind
     Minimize
     Restore
     Close
-    SetTheme
 }
 
 struct SysCommandEvent
 {
     using base: Event{kind: EventKind.SysCommand}
     sysKind: SysCommandKind = ?
+}
+
+struct SetThemeEvent
+{
+    using base: Event{kind: EventKind.SetTheme}
 }
