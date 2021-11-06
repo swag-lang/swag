@@ -114,4 +114,6 @@ struct SysCommandEvent
 struct SetThemeEvent
 {
     using base: Event{kind: EventKind.SetTheme}
+    style:  *Style
+    parent: *Style
 }

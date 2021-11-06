@@ -41,6 +41,15 @@ impl Style
         ref.count = 1
     }
 
+    // Create a specific style based on the parent
+    mtd create(parent: *Style)
+    {
+        release()
+        tweak := Memory.new'Tweak()
+        dref tweak = dref parent.ref.tweak
+        set(tweak)
+    }
+
     protected mtd compute(owner: *Wnd, parent: *Style)
     {
         // First time, initialize to parent
@@ -57,28 +66,33 @@ impl Style
             return
         dirty = true
 
+        // By default, same as the parent
+        release()
+        ref = parent.ref
+        ref.count += 1
+
         // Ask user
         evt := SetThemeEvent{}
+        evt.accepted = false
+        evt.style = self
+        evt.parent = parent
         owner.sendEvent(&evt)
 
         // Nothing to override
-        release()
-        if styleSheet.length == 0
-        {
-            ref = parent.ref
-            ref.count += 1
+        if styleSheet.length == 0 and !evt.accepted
             return
-        }
 
         // Make a new tweak as a copy of the parent
-        tweak := Memory.new'Tweak()
-        dref tweak = dref parent.ref.tweak
-        set(tweak)
+        if ref == parent.ref
+            create(parent)
 
         // Then tweak it with the stylesheet
-        var tf: File.TweakFile
-        tf.registerFolder'Tweak(tweak)
-        catch tf.parse(styleSheet)
+        if styleSheet.length
+        {
+            var tf: File.TweakFile
+            tf.registerFolder'Tweak(ref.tweak)
+            catch tf.parse(styleSheet)
+        }
     }
 
     mtd setStyleSheet(str: String)
