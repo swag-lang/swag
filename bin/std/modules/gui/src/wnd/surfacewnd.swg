@@ -294,6 +294,7 @@ impl SurfaceWnd
                 colors := &evt.style.ref.theme.colors
                 colors.btnIcon_HotBk = colors.btnIcon_CloseBk.argb
                 colors.btnIcon_PressedBk = colors.btnIcon_CloseHotBk.argb
+                evt.accepted = true
                 return true
             }
         }
