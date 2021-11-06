@@ -19,9 +19,10 @@ impl IWnd for ButtonPush
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc    := evt.bc
-        theme := bc.theme
-        tweak := bc.tweak
+        bc      := evt.bc
+        theme   := bc.theme
+        colors  := bc.colors
+        metrics := bc.metrics
 
         var subRectBk:      *ImageSubRect
         var subRectBorder:  *ImageSubRect
@@ -32,29 +33,29 @@ impl IWnd for ButtonPush
         switch
         {
         case isDisabled:
-            colorBk       = tweak.btnPush_DisabledBk
-            colorBorder   = tweak.btnPush_DisabledBorder
-            colorText     = tweak.btnPush_DisabledText
-            subRectBk     = &theme.imgMetrics.btnPush_Disabled
-            subRectBorder = &theme.imgMetrics.btnPush_DisabledBorder
+            colorBk       = colors.btnPush_DisabledBk
+            colorBorder   = colors.btnPush_DisabledBorder
+            colorText     = colors.btnPush_DisabledText
+            subRectBk     = &metrics.btnPush_Disabled
+            subRectBorder = &metrics.btnPush_DisabledBorder
         case isPressed:
-            colorBk       = isDefault ? tweak.btnPushDefault_PressedBk : tweak.btnPush_PressedBk
-            colorBorder   = isDefault ? tweak.btnPushDefault_PressedBorder : tweak.btnPush_PressedBorder
-            colorText     = isDefault ? tweak.btnPushDefault_PressedText : tweak.btnPush_PressedText
-            subRectBk     = &theme.imgMetrics.btnPush_Pressed
-            subRectBorder = &theme.imgMetrics.btnPush_PressedBorder
+            colorBk       = isDefault ? colors.btnPushDefault_PressedBk : colors.btnPush_PressedBk
+            colorBorder   = isDefault ? colors.btnPushDefault_PressedBorder : colors.btnPush_PressedBorder
+            colorText     = isDefault ? colors.btnPushDefault_PressedText : colors.btnPush_PressedText
+            subRectBk     = &metrics.btnPush_Pressed
+            subRectBorder = &metrics.btnPush_PressedBorder
         case isHot:
-            colorBk       = isDefault ? tweak.btnPushDefault_HotBk : tweak.btnPush_HotBk
-            colorBorder   = isDefault ? tweak.btnPushDefault_HotBorder : tweak.btnPush_HotBorder
-            colorText     = isDefault ? tweak.btnPushDefault_HotText : tweak.btnPush_HotText
-            subRectBk     = &theme.imgMetrics.btnPush_Hot
-            subRectBorder = &theme.imgMetrics.btnOush_HotBorder
+            colorBk       = isDefault ? colors.btnPushDefault_HotBk : colors.btnPush_HotBk
+            colorBorder   = isDefault ? colors.btnPushDefault_HotBorder : colors.btnPush_HotBorder
+            colorText     = isDefault ? colors.btnPushDefault_HotText : colors.btnPush_HotText
+            subRectBk     = &metrics.btnPush_Hot
+            subRectBorder = &metrics.btnOush_HotBorder
         default:
-            colorBk       = isDefault ? tweak.btnPushDefault_Bk : tweak.btnPush_Bk
-            colorBorder   = isDefault ? tweak.btnPushDefault_Border : tweak.btnPush_Border
-            colorText     = isDefault ? tweak.btnPushDefault_Text : tweak.btnPush_Text
-            subRectBk     = &theme.imgMetrics.btnPush_Normal
-            subRectBorder = &theme.imgMetrics.btnPush_NormalBorder
+            colorBk       = isDefault ? colors.btnPushDefault_Bk : colors.btnPush_Bk
+            colorBorder   = isDefault ? colors.btnPushDefault_Border : colors.btnPush_Border
+            colorText     = isDefault ? colors.btnPushDefault_Text : colors.btnPush_Text
+            subRectBk     = &metrics.btnPush_Normal
+            subRectBorder = &metrics.btnPush_NormalBorder
         }
 
         // Background

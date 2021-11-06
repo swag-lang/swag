@@ -15,13 +15,13 @@ protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
 protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24        = #load(DefaultIcons24Name)
 
-struct ImageSubRect
+public struct ImageSubRect
 {
     rect:   Math.Rectangle
     corner: f32
 }
 
-struct ImageMetrics
+public struct ThemeMetrics
 {
     wnd_Border:             ImageSubRect = @{{130,1,27,27}, 3}
     wnd_Caption:            ImageSubRect = @{{57,1,72,27}, 12}
@@ -42,7 +42,7 @@ struct ImageMetrics
     btnIcon_Disabled:       ImageSubRect = @{{1,29,27,27}, 9}
 }
 
-public struct Tweak
+public struct ThemeColors
 {
     wnd_Bk:                         Color = 0xFF424242
     wnd_Caption:                    Color = 0xFF535353
@@ -90,14 +90,15 @@ public struct Tweak
 struct Theme
 {
     imgWidgets:     Texture
-    imgMetrics:     ImageMetrics
     icons24:        ImageList
     typeFaceR:      const *TypeFace
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
     typeFaceBI:     const *TypeFace
     fontDefault:    FontFamily
-    tweak:        *Tweak
+
+    metrics:        *ThemeMetrics
+    colors:         *ThemeColors
     style:          Style
 
     fontDefaultSize:        u32 = 13
@@ -131,8 +132,9 @@ impl Theme
         fontDefault.italic = Font.create(typeFaceI, fontDefaultSize)
         fontDefault.boldItalic = Font.create(typeFaceBI, fontDefaultSize)
 
-        tweak = Memory.new'Tweak()
-        style.set(tweak)
+        colors  = Memory.new'ThemeColors()
+        metrics = Memory.new'ThemeMetrics()
+        style.set(colors, metrics)
     }
 
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ImageSubRect, color: Color)

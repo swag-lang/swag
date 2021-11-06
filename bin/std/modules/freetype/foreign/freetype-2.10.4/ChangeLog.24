@@ -460,7 +460,7 @@
 
 	* src/tools/test_bbox.c: Add another cubic outline with exact BBox.
 	(REPEAT): Increase the number of benchmarking cycles.
-	(profile_outline): Tweak output formatting.
+	(profile_outline): ThemeColors output formatting.
 
 2013-02-02  Werner Lemberg  <wl@gnu.org>
 
@@ -1120,7 +1120,7 @@
 
 2012-12-06  Alexei Podtelezhnikov  <apodtele@gmail.com>
 
-	[truetype] Tweak the previous commit.
+	[truetype] ThemeColors the previous commit.
 
 	* src/truetype/ttinterp.c (Current_Ratio): Put unit vector
 	components as the second TT_MulFix14 arguments. This is required

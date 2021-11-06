@@ -46,7 +46,7 @@ FT_BEGIN_HEADER
 
   /**************************************************************************
    *
-   * Tweak flags that are set for each glyph by the below rules.
+   * ThemeColors flags that are set for each glyph by the below rules.
    *
    */
 #define SPH_TWEAK_ALLOW_X_DMOVE                   0x0000001UL

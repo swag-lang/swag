@@ -35,7 +35,7 @@
 
 2020-10-17  Alexei Podtelezhnikov  <apodtele@gmail.com>
 
-	* src/sfnt/sfwoff2.c (Read255UShort): Tweak types to please VC++.
+	* src/sfnt/sfwoff2.c (Read255UShort): ThemeColors types to please VC++.
 
 2020-10-10  Werner Lemberg  <wl@gnu.org>
 
@@ -237,7 +237,7 @@
 	To mimick Windows independent of increased precision, we need to tweak
 	the macro so that some close calls break down rather than up.
 
-	* src/raster/ftraster.c (SMART): Tweak the macro.
+	* src/raster/ftraster.c (SMART): ThemeColors the macro.
 
 2020-09-08  Alexei Podtelezhnikov  <apodtele@gmail.com>
 
@@ -875,7 +875,7 @@
 	security or bug fixes will be provided for those versions.  See
 
 	  https://devguide.python.org/#status-of-python-branches
-	
+
 	for more information.
 
 	* Jamfile (RefDoc): Add `site' parameter.
@@ -2311,7 +2311,7 @@
 
 2019-05-02  Alexei Podtelezhnikov  <apodtele@gmail.com>
 
-	Tweak LCD filtering.
+	ThemeColors LCD filtering.
 
 	* src/base/ftlcdfil.c (ft_lcd_filter_fir, _ft_lcd_filter_legacy):
 	Choose direction from bitmap's pixel_mode.

@@ -3,15 +3,17 @@ using Core
 
 struct StyleRef
 {
-    tweak:  *Tweak
-    count:  u32
+    colors:     *ThemeColors
+    metrics:    *ThemeMetrics
+    count:      u32
 }
 
 struct Style
 {
-    ref:        *StyleRef
-    dirty:      bool
-    styleSheet: String
+    ref:                *StyleRef
+    dirty:              bool
+    styleSheetMetrics:  String
+    styleSheetColors:   String
 }
 
 impl Style
@@ -28,16 +30,18 @@ impl Style
         ref.count -= 1
         if ref.count == 0
         {
-            Memory.delete(ref.tweak)
+            Memory.delete(ref.colors)
+            Memory.delete(ref.metrics)
             Memory.delete(ref)
             ref = null
         }
     }
 
-    protected mtd set(tweak: *Tweak)
+    protected mtd set(colors: *ThemeColors, metrics: *ThemeMetrics)
     {
         ref = Memory.new'StyleRef()
-        ref.tweak = tweak
+        ref.colors = colors
+        ref.metrics = metrics
         ref.count = 1
     }
 
@@ -45,9 +49,13 @@ impl Style
     mtd create(parent: *Style)
     {
         release()
-        tweak := Memory.new'Tweak()
-        dref tweak = dref parent.ref.tweak
-        set(tweak)
+
+        colors := Memory.new'ThemeColors()
+        dref colors = dref parent.ref.colors
+        metrics := Memory.new'ThemeMetrics()
+        dref metrics = dref parent.ref.metrics
+
+        set(colors, metrics)
     }
 
     protected mtd compute(owner: *Wnd, parent: *Style)
@@ -79,7 +87,7 @@ impl Style
         owner.sendEvent(&evt)
 
         // Nothing to override
-        if styleSheet.length == 0 and !evt.accepted
+        if styleSheetColors.length == 0 and styleSheetMetrics.length == 0 and !evt.accepted
             return
 
         // Make a new tweak as a copy of the parent
@@ -87,17 +95,30 @@ impl Style
             create(parent)
 
         // Then tweak it with the stylesheet
-        if styleSheet.length
+        if styleSheetColors.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'Tweak(ref.tweak)
-            catch tf.parse(styleSheet)
+            tf.registerFolder'ThemeColors(ref.colors)
+            catch tf.parse(styleSheetColors)
+        }
+
+        if styleSheetMetrics.length
+        {
+            var tf: File.TweakFile
+            tf.registerFolder'ThemeMetrics(ref.metrics)
+            catch tf.parse(styleSheetMetrics)
         }
     }
 
-    mtd setStyleSheet(str: String)
+    mtd setStyleSheetColors(str: String)
     {
-        styleSheet = str
+        styleSheetColors = str
+        dirty = true
+    }
+
+    mtd setStyleSheetMetrics(str: String)
+    {
+        styleSheetMetrics = str
         dirty = true
     }
 }

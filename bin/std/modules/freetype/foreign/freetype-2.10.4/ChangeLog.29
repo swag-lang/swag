@@ -2157,7 +2157,7 @@
 
 2017-09-24  Alexei Podtelezhnikov  <apodtele@gmail.com>
 
-	Tweak per-face LCD filtering controls.
+	ThemeColors per-face LCD filtering controls.
 
 	Thing are simpler with a NULL-function pointer.
 

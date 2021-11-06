@@ -3,7 +3,8 @@ using Core, Pixel
 public struct PaintContext
 {
     theme:      *Theme
-    tweak:      *Tweak
+    colors:     *ThemeColors
+    metrics:    *ThemeMetrics
     painter:    *Painter
     renderer:   *RenderOgl
     clipRect:   Math.Rectangle
