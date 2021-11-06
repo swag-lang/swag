@@ -219,7 +219,7 @@ impl Wnd
 
         // Background
         if drawBackground
-            bc.painter.fillRect(position, bc.tweak.windowBk)
+            bc.painter.fillRect(position, bc.tweak.wnd_Bk)
 
         // User paint
         evt := PaintEvent{}

@@ -206,23 +206,23 @@ impl IWnd for SurfaceWnd
 
         if surface.flags & .Border
         {
-            subRect := &bc.theme.imgMetrics.wndBorder
-            theme.drawSubRect(bc.painter, position, subRect, theme.tweak.caption)
+            subRect := &bc.theme.imgMetrics.wnd_Border
+            theme.drawSubRect(bc.painter, position, subRect, theme.tweak.wnd_Caption)
         }
 
         if surface.flags & .BigCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
-            subRect := &bc.theme.imgMetrics.wndBigCaption
-            colorBk := surface.app.isActivated ? theme.tweak.caption : theme.tweak.captionNotActived
+            subRect := &bc.theme.imgMetrics.wnd_Caption
+            colorBk := surface.app.isActivated ? theme.tweak.wnd_Caption : theme.tweak.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
         if surface.flags & .SmallCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y
-            subRect := &theme.imgMetrics.wndSmallCaption
-            colorBk := surface.app.isActivated ? theme.tweak.caption : theme.tweak.captionNotActived
+            subRect := &theme.imgMetrics.wnd_CaptionSmall
+            colorBk := surface.app.isActivated ? theme.tweak.wnd_Caption : theme.tweak.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
@@ -238,7 +238,7 @@ impl IWnd for SurfaceWnd
 
             var sf: Pixel.StringFormat
             sf.vertAlignment = .Center
-            colorTxt := surface.app.isActivated ? theme.tweak.captionText : theme.tweak.captionTextNotActivated
+            colorTxt := surface.app.isActivated ? theme.tweak.wnd_CaptionText : theme.tweak.wnd_CaptionNotActivatedText
             bc.painter.drawString(posCaption, name, theme.fontDefault.regular, colorTxt, sf)
         }
     }
@@ -289,10 +289,10 @@ impl SurfaceWnd
             closeBtn.hookOnSetThemeEvent = @(wnd: *Wnd, evt: *SetThemeEvent)->bool
             {
                 var styleSheet: String
-                styleSheet.appendFormat("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnBk.argb)
-                styleSheet.appendFormat("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.windowCloseBtnHotBk.argb)
+                styleSheet.appendFormat("btnIcon_HotBk 0x%{X}\n", wnd.style.ref.tweak.btnIcon_CloseBk.argb)
+                styleSheet.appendFormat("btnIcon_PressedBk 0x%{X}\n", wnd.style.ref.tweak.btnIcon_CloseHotBk.argb)
                 wnd.style.setStyleSheet(styleSheet)
-                return false
+                return true
             }
         }
     }

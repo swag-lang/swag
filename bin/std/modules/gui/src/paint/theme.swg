@@ -23,35 +23,32 @@ struct ImageSubRect
 
 struct ImageMetrics
 {
-    wndBorder:              ImageSubRect = @{{130,1,27,27}, 3}
-    wndBigCaption:          ImageSubRect = @{{57,1,72,27}, 12}
-    wndSmallCaption:        ImageSubRect = @{{57,1,72,27}, 1}
+    wnd_Border:             ImageSubRect = @{{130,1,27,27}, 3}
+    wnd_Caption:            ImageSubRect = @{{57,1,72,27}, 12}
+    wnd_CaptionSmall:       ImageSubRect = @{{57,1,72,27}, 1}
 
-    btnPush_Normal:          ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_NormalBorder:    ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Hot:             ImageSubRect = @{{1,1,27,27}, 9}
-    btnOush_HotBorder:       ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Pressed:         ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_PressedBorder:   ImageSubRect = @{{29,1,27,27}, 9}
-    btnPush_Disabled:        ImageSubRect = @{{1,1,27,27}, 9}
-    btnPush_DisabledBorder:  ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Normal:         ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_NormalBorder:   ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Hot:            ImageSubRect = @{{1,1,27,27}, 9}
+    btnOush_HotBorder:      ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Pressed:        ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_PressedBorder:  ImageSubRect = @{{29,1,27,27}, 9}
+    btnPush_Disabled:       ImageSubRect = @{{1,1,27,27}, 9}
+    btnPush_DisabledBorder: ImageSubRect = @{{29,1,27,27}, 9}
 
-    btnIcon_Normal:      ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Hot:         ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Pressed:     ImageSubRect = @{{1,29,27,27}, 9}
-    btnIcon_Disabled:    ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Normal:         ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Hot:            ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Pressed:        ImageSubRect = @{{1,29,27,27}, 9}
+    btnIcon_Disabled:       ImageSubRect = @{{1,29,27,27}, 9}
 }
 
 public struct Tweak
 {
-    caption:                        Color = 0xFF535353
-    captionNotActived:              Color = 0xFF535353
-    captionText:                    Color = 0xFFFFFFFF
-    captionTextNotActivated:        Color = 0xFFFFFFFF
-
-    windowBk:                       Color = 0xFF424242
-    windowCloseBtnBk:               Color = 0xFFd61425
-    windowCloseBtnHotBk:            Color = 0xFFe62435
+    wnd_Bk:                         Color = 0xFF424242
+    wnd_Caption:                    Color = 0xFF535353
+    wnd_CaptionNotActived:          Color = 0xFF535353
+    wnd_CaptionText:                Color = 0xFFFFFFFF
+    wnd_CaptionNotActivatedText:    Color = 0xFFFFFFFF
 
     btnPush_DisabledText:           Color = 0x5FFFFFFF
     btnPush_DisabledBorder:         Color = 0x5FFFFFFF
@@ -85,6 +82,9 @@ public struct Tweak
     btnIcon_PressedBk:              Color = 0x3FFFFFFF
     btnIcon_HotIcon:                Color = 0xFFFFFFFF
     btnIcon_HotBk:                  Color = 0x3FEEEEEE
+
+    btnIcon_CloseBk:                Color = 0xFFd61425
+    btnIcon_CloseHotBk:             Color = 0xFFe62435
 }
 
 struct Theme
