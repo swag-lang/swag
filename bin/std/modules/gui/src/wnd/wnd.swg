@@ -219,7 +219,7 @@ impl Wnd
 
         // Childs
         bc.painter.translateTransform(position.x, position.y)
-        visit c: self.childs
+        visit c: childs
         {
             if c.isHidden
                 continue
@@ -233,6 +233,7 @@ impl Wnd
         style.dirty = false
     }
 
+    // Force the window to be repainted
     mtd invalidate()
     {
         surface.invalidateRect(getSurfaceRect())

@@ -14,30 +14,20 @@ impl MessageDlg
     public func yesNo(from: *Surface, x, y: s32, message: string)
     {
         surface := create(from, x, y)
-        btnYes := ButtonPush.create(surface.wnd.view, "Yes", @{10, 10, 100, 30})
+
+        wndBottom := Wnd.create'Wnd(surface.wnd.view, "", @{0, 0, 0, 50})
+        wndBottom.dockStyle = .Bottom
+
+        btnNo  := ButtonPush.create(wndBottom, "No", @{110, 10, 100, 30})
+        btnNo.dockStyle = .Right
+        btnNo.marginRightBottom = @{10, 10}
+        btnNo.marginLeftTop = @{10, 10}
+
+        btnYes := ButtonPush.create(wndBottom, "Yes", @{10, 10, 100, 30})
         btnYes.isDefault = true
-        btnYes.dockStyle = .Left
-        btnYes.marginRightBottom.y = 4
-
-        btnNo  := ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Top
-
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Right
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Bottom
-
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Left
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Top
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Right
-        btnNo  = ButtonPush.create(surface.wnd.view, "No", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Bottom
-
-        btnNo  = ButtonPush.create(surface.wnd.view, "Center", @{110, 10, 100, 30})
-        btnNo.dockStyle = .Center
+        btnYes.dockStyle = .Right
+        btnYes.marginRightBottom = @{0, 10}
+        btnYes.marginLeftTop = @{10, 10}
 
         Dialog.doModal(surface)
     }
