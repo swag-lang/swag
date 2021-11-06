@@ -42,7 +42,7 @@ impl Application
             style.set(theme)
         }
 
-        try Surface.create(self, surface, x, y, width, height, flags, mainSurface)
+        try Surface.create(surface, x, y, width, height, flags, mainSurface)
 
         if !mainSurface
         {
