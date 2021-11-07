@@ -299,7 +299,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             {
                 Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
                 msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
-                auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
+                auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+                auto note     = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
                 notes.push_back(note);
 
                 prevJob = depJob;
@@ -309,7 +310,8 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
             Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
             msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
-            auto note = new Diagnostic{prevJob->nodes.back(), msg, DiagnosticLevel::Note};
+            auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+            auto note     = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
             notes.push_back(note);
 
             Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
@@ -471,7 +473,7 @@ void Workspace::checkPendingJobs()
         if (!pendingJob->nodes.empty())
             node = pendingJob->nodes.back();
         if (!node)
-            continue;
+            node = firstNode;
 
         // Do not generate errors if we already have some errors
         if (sourceFile->module->numErrors)
