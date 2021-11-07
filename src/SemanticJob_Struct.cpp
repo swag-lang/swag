@@ -298,7 +298,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 }
                 content += ")";
 
-                SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, false));
+                SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
                 context->job->nodes.push_back(node->childs.back());
                 context->result = ContextResult::NewChilds;
                 continue;
