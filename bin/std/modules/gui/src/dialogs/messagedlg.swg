@@ -7,7 +7,7 @@ impl MessageDlg
 {
     public func create(from: *Surface, x, y: s32)->*Surface
     {
-        surface := assume from.app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Sizeable | SurfaceFlags.Border | SurfaceFlags.Secondary)
+        surface := assume from.app.createSurface(Wnd, x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.CloseBtn | SurfaceFlags.Sizeable | SurfaceFlags.Border | SurfaceFlags.Secondary)
         return surface
     }
 

@@ -11,6 +11,8 @@ bool TypeTableJob::computeStruct()
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     auto attributes   = realType->declNode ? realType->declNode->attributeFlags : 0;
 
+    concreteType->base.sizeOf = realType->sizeOf;
+
     // Flags
     if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
         concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
@@ -77,7 +79,7 @@ bool TypeTableJob::computeStruct()
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
     }
 
-    auto&       mapPerSeg = typeTable->getMapPerSeg(storageSegment);
+    auto&      mapPerSeg = typeTable->getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
 
     // Simple structure name, without generics

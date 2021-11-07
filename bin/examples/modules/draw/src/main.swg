@@ -593,7 +593,7 @@ func setup(wnd: *Wnd) throw
 #main
 {
     var app: Gui.Application
-    surface := try app.createSurface(100, 100, W, H)
+    surface := try app.createSurface(Wnd, 100, 100, W, H)
     surface.wnd.hookOnKeyEvent = &onKeyEvent
     surface.wnd.view.hookOnPaintEvent = &onPaintEvent
     try setup(&surface.wnd)

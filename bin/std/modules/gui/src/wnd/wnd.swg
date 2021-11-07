@@ -137,20 +137,23 @@ impl Wnd
     // Setup
     //////////////////////////////////////////////
 
-    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
+    func setup(res: *Wnd, type: typeinfo, parent: *Wnd, name: string, position: Math.Rectangle)
     {
-        Debug.assert(parent != null)
-
-        res := Memory.new'T()
+        res.itf = @mkinterface(res, type, IWnd)
         res.name = name
         res.position = position
         res.isAllocated = true
-
-        res.itf = cast(IWnd) dref res
         res.surface = parent.surface
         res.parent = parent
         parent.childs.add(res)
+    }
 
+    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
+    {
+        Debug.assert(parent != null)
+        res := Memory.new'T()
+        res.isAllocated = true
+        res.setup(@typeof(T), parent, name, position)
         return res
     }
 

@@ -13,7 +13,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
 #main
 {
     var app: Gui.Application
-    surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.OverlappedWindow)
+    surface0 := try app.createSurface(Wnd, 100, 100, W, H, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")
     surface0.setIcon(Icon.from(&app.theme.res.icons24, 0, 20))
     view := surface0.wnd.view
@@ -33,7 +33,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     button.cursor = Cursor.from(CursorShape.Help)
     button.sigPressed = @(btn: *ButtonPush) { MessageDlg.yesNo(btn.surface, 200, 200, "Are you very very sure ?"); }
 
-    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
+    surface1 := try app.createSurface(Wnd, 100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
 
     surface0.show()

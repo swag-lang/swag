@@ -39,12 +39,12 @@ enum SurfaceFlags
 impl Surface
 {
     // Creates the surface
-    func create(surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    func create(typeView: typeinfo, surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         surface.flags = flags
         surface.wnd.itf = cast(IWnd) surface.wnd
         surface.wnd.surface = surface
-        surface.wnd.create()
+        surface.wnd.create(typeView)
         app := surface.app
 
         if flags & .BigCaption

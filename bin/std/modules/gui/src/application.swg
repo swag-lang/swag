@@ -30,7 +30,7 @@ impl Application
     mtd getKeyboard() => &keyb
 
     // Creates a new surface
-    mtd createSurface(x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero)->*Surface throw
+    mtd createSurface(typeView: typeinfo, x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero)->*Surface throw
     {
         surface := Memory.new'Surface()
         surface.app = self
@@ -42,7 +42,7 @@ impl Application
             style.set(theme)
         }
 
-        try Surface.create(surface, x, y, width, height, flags, mainSurface)
+        try Surface.create(typeView, surface, x, y, width, height, flags, mainSurface)
 
         if !mainSurface
         {

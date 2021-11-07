@@ -25,4 +25,11 @@ impl FrameWnd
         view = Wnd.create'T(self, "", position)
         view.drawBackground = true
     }
+
+    mtd createView(typeView: typeinfo)
+    {
+        view = cast(*Wnd) Memory.new(typeView)
+        view.setup(typeView, self, "", position)
+        view.drawBackground = true
+    }
 }

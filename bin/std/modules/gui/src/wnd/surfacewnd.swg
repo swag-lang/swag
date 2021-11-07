@@ -248,28 +248,28 @@ impl IWnd for SurfaceWnd
 
 impl SurfaceWnd
 {
-    protected func onMinimize(btn: *ButtonIcon)
+    func onMinimize(btn: *ButtonIcon)
     {
         evt := Event.create'SysCommandEvent()
         evt.sysKind = .Minimize
         btn.surface.wnd.postEvent(evt)
     }
 
-    protected func onMaximize(btn: *ButtonIcon)
+    func onMaximize(btn: *ButtonIcon)
     {
         evt := Event.create'SysCommandEvent()
         evt.sysKind = btn.surface.isMaximized ? .Restore : .Maximize
         btn.surface.wnd.postEvent(evt)
     }
 
-    protected func onClose(btn: *ButtonIcon)
+    func onClose(btn: *ButtonIcon)
     {
         btn.surface.destroy()
     }
 
-    mtd create()
+    mtd create(typeView: typeinfo)
     {
-        createView'Wnd()
+        createView(typeView)
 
         theme := surface.app.theme
         if surface.flags & .MinimizeBtn
