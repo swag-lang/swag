@@ -558,7 +558,7 @@ impl Tesselate
             point := points[i]
             node := pointEvent(point)
             visit e: point.edgeList
-                addEdgeEvent(e, node)
+                addEdgeEvent2(e, node)
         }
     }
 
@@ -711,7 +711,7 @@ impl Tesselate
         }
     }
 
-    mtd addEdgeEvent(edge: *Edge, node: *Node)
+    mtd addEdgeEvent2(edge: *Edge, node: *Node)
     {
         edgeEvent.constrainedEdge = edge
         edgeEvent.right = edge.p.x > edge.q.x

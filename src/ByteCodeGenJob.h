@@ -425,7 +425,6 @@ struct ByteCodeGenJob : public Job
         Generate,
         WaitForDependenciesGenerated,
         ComputeDependenciesResolved,
-        WaitForDependenciesResolved,
     };
 
     AstNode* allParamsTmp = nullptr;

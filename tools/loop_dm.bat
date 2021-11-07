@@ -1,3 +1,3 @@
 :loop
-call std_dm.bat -tb:false -tn:false
+call std_dm.bat
 goto loop

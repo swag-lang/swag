@@ -282,6 +282,7 @@ JobResult SemanticJob::execute()
                     break;
                 }
 
+                context.result = ContextResult::Done;
                 if (!node->semanticFct(&context))
                 {
                     node = backToSemError();
@@ -299,6 +300,7 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::PostChilds:
             if (node->extension && node->extension->semanticAfterFct)
             {
+                context.result = ContextResult::Done;
                 if (!node->extension->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == ContextResult::Pending)

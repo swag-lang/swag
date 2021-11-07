@@ -468,9 +468,6 @@ JobResult ByteCodeGenJob::execute()
         originalNode = nodes.front();
     }
 
-    SWAG_ASSERT(originalNode->extension);
-    SWAG_ASSERT(originalNode->extension->byteCodeJob);
-
     if (sourceFile->module->numErrors)
     {
         releaseByteCodeJob(originalNode);
@@ -485,6 +482,9 @@ JobResult ByteCodeGenJob::execute()
 
     if (pass == Pass::Generate)
     {
+        SWAG_ASSERT(originalNode->extension);
+        SWAG_ASSERT(originalNode->extension->byteCodeJob);
+
         // Register SystemAllocator interface to the default bytecode context
         if (sourceFile->isRuntimeFile && (originalNode->token.text == g_LangSpec->name_SystemAllocator))
         {
@@ -630,6 +630,21 @@ JobResult ByteCodeGenJob::execute()
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
             getDependantCalls(originalNode, dependentNodes);
             dependentNodesTmp = dependentNodes;
+
+            if (context.bc &&
+                context.bc->node &&
+                context.bc->node->kind == AstNodeKind::FuncDecl &&
+                !context.bc->node->sourceFile->numTestErrors)
+            {
+                if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
+                {
+                    ByteCodeOptimizerJob opt;
+                    bool                 restart;
+                    opt.module = module;
+                    opt.optimize(context.bc, restart);
+                }
+            }
+
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -663,6 +678,8 @@ JobResult ByteCodeGenJob::execute()
 
             // Deal with registered dependent nodes, by adding them to the list
             dependentNodesTmp.pop_back();
+            if (node == originalNode)
+                continue;
 
             // Register the full dependency tree
             VectorNative<AstNode*> depNodes;
@@ -681,91 +698,6 @@ JobResult ByteCodeGenJob::execute()
         }
 
         pass = Pass::ComputeDependenciesResolved;
-    }
-
-    // Determine if we have a loop (a dependent node depends on this job too)
-    // If this is the case, then we eliminate that dependency
-    if (pass == Pass::ComputeDependenciesResolved)
-    {
-        dependentNodesTmp.clear();
-        for (int i = 0; i < dependentNodes.size(); i++)
-        {
-            auto node = dependentNodes[i];
-
-            // If the node is already solved, remove it from the list
-            {
-                ScopedLock lk(node->mutex);
-                if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
-                    continue;
-            }
-
-            // Compute the full dependency list
-            bool mustWait = true;
-
-            VectorNative<AstNode*> tmp;
-            tmp.push_back(node);
-            for (int toScan = 0; toScan < tmp.size(); toScan++)
-            {
-                auto dep = tmp[toScan];
-
-                ScopedLock lkDep(dep->mutex);
-                if (!dep->extension || !dep->extension->byteCodeJob)
-                    continue;
-
-                if (dep->extension->byteCodeJob == this)
-                {
-                    mustWait = false;
-                    break;
-                }
-
-                VectorNative<AstNode*> depNodes;
-                getDependantCalls(dep, depNodes);
-                for (auto newDep : depNodes)
-                    tmp.push_back_once(newDep);
-            }
-
-            if (mustWait)
-                dependentNodesTmp.push_back(node);
-        }
-
-        pass = Pass::WaitForDependenciesResolved;
-    }
-
-    // Wait for other dependent nodes to be resolved
-    if (pass == Pass::WaitForDependenciesResolved)
-    {
-        while (!dependentNodesTmp.empty())
-        {
-            auto node = dependentNodesTmp.back();
-
-            ScopedLock lk(node->mutex);
-            if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
-            {
-                dependentNodesTmp.pop_back();
-                continue;
-            }
-
-            ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-            waitingKind   = JobWaitKind::SemByteCodeResolved;
-            waitingIdNode = node;
-            node->extension->byteCodeJob->dependentJobs.add(this);
-            return JobResult::KeepJobAlive;
-        }
-    }
-
-    // Do one optimization pass on function
-    if (context.bc &&
-        context.bc->node &&
-        context.bc->node->kind == AstNodeKind::FuncDecl &&
-        !context.bc->node->sourceFile->numTestErrors)
-    {
-        if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
-        {
-            ByteCodeOptimizerJob opt;
-            bool                 restart;
-            opt.module = module;
-            opt.optimize(context.bc, restart);
-        }
     }
 
     // Inform dependencies that everything is done

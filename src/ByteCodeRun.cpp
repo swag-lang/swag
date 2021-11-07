@@ -56,7 +56,6 @@
 void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnReg)
 {
     SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_GENERATED);
-    SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_RESOLVED);
 
     context->bc->addCallStack(context);
     context->push(context->bp);
