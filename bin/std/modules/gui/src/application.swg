@@ -15,6 +15,7 @@ struct Application
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
     endModal:       bool
+    endModalExit:   s32
     isActivated:    bool
     quitCode:       s32
 
@@ -70,8 +71,10 @@ impl Application
         surfaces.remove(surface)
         if surface == mainSurface
             postQuitEvent()
+
         if modalSurfaces.count and surface == modalSurfaces.back()
             endModal = true
+
         surface.destroyNative()
         Memory.delete(surface)
     }
@@ -334,7 +337,14 @@ impl Application
         return quitCode
     }
 
-    protected mtd doModalLoop(surface: *Surface)
+    // End current modal loop
+    mtd exitModal(exitCode: s32)
+    {
+        endModal = true
+        endModalExit = exitCode
+    }
+
+    protected mtd doModalLoop(surface: *Surface)->s32
     {
         visit s: surfaces s.disable()
         modalSurfaces.add(surface)
@@ -344,15 +354,14 @@ impl Application
             runFrame()
         }
 
-        visit s: surfaces s.enable()
+        surface.destroy()
         modalSurfaces.removeBack()
+        visit s: surfaces s.enable()
 
         if modalSurfaces.count
-        {
-            s := modalSurfaces.back()
-            s.enable()
-        }
+            modalSurfaces.back().enable()
 
         endModal = false
+        return endModalExit
     }
 }

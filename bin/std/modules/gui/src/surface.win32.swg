@@ -103,7 +103,7 @@ impl Surface
     {
         if !isDisabled
             return
-        isDisabled = true
+        isDisabled = false
         EnableWindow(hWnd, TRUE)
     }
 
@@ -112,7 +112,7 @@ impl Surface
     {
         if isDisabled
             return
-        isDisabled = false
+        isDisabled = true
         EnableWindow(hWnd, FALSE)
     }
 

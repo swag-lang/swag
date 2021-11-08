@@ -5,10 +5,10 @@ public struct Dialog
 
 impl Dialog
 {
-    public func doModal(dlg: *Surface)
+    public func doModal(dlg: *Surface)->s32
     {
         dlg.bringToTop()
         dlg.show()
-        dlg.app.doModalLoop(dlg)
+        return dlg.app.doModalLoop(dlg)
     }
 }
