@@ -27,6 +27,8 @@ public struct ThemeImageRects
     wnd_Caption:            ThemeImageRect = @{{57,1,72,27}, 12}
     wnd_CaptionSmall:       ThemeImageRect = @{{57,1,72,27}, 1}
 
+    dlg_BtnBar:             ThemeImageRect = @{{29,29,27,27}, 1}
+
     btnPush_Normal:         ThemeImageRect = @{{1,1,27,27}, 9}
     btnPush_NormalBorder:   ThemeImageRect = @{{29,1,27,27}, 9}
     btnPush_Hot:            ThemeImageRect = @{{1,1,27,27}, 9}
@@ -59,6 +61,9 @@ public struct ThemeColors
     wnd_CaptionNotActived:          Color = 0xFF535353
     wnd_CaptionText:                Color = 0xFFFFFFFF
     wnd_CaptionNotActivatedText:    Color = 0xFFFFFFFF
+
+    dlg_Bk:                         Color = 0xFF303030
+    dlg_BtnBarBk:                   Color = 0xFF353535
 
     btnPush_DisabledText:           Color = 0x5FFFFFFF
     btnPush_DisabledBorder:         Color = 0x5FFFFFFF

@@ -14,9 +14,11 @@ impl MessageDlg
     public func yesNo(from: *Surface, x, y: s32, message: string)
     {
         surface := create(from, x, y)
+        surface.wnd.view.backgroundStyle = .Dialog
 
         wndBottom := Wnd.create'Wnd(surface.wnd.view, "", @{0, 0, 0, 50})
         wndBottom.dockStyle = .Bottom
+        wndBottom.backgroundStyle = .DialogBar
 
         btnNo  := ButtonPush.create(wndBottom, "No", @{110, 10, 100, 30})
         btnNo.dockStyle = .Right

@@ -23,6 +23,6 @@ impl FrameWnd
     mtd(T) createView()
     {
         view = Wnd.create'T(self, "", position)
-        view.drawBackground = true
+        view.backgroundStyle = .Window
     }
 }

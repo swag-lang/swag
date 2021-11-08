@@ -11,6 +11,14 @@ enum DockStyle
     Center
 }
 
+enum BackgroundStyle
+{
+    None
+    Window
+    Dialog
+    DialogBar
+}
+
 interface IWnd
 {
     onEvent:            func(self, *Event)
@@ -46,7 +54,7 @@ struct Wnd
     paddingRightBottom:     Math.Point
     dockStyle:              DockStyle = None
 
-    drawBackground:     bool
+    backgroundStyle:    BackgroundStyle = None
     isDisabled:         bool
     isHidden:           bool
     isAllocated:        bool
@@ -216,8 +224,15 @@ impl Wnd
             bc.isDisabled = true
 
         // Background
-        if drawBackground
+        switch backgroundStyle
+        {
+        case Window:
             bc.painter.fillRect(position, bc.theme.colors.wnd_Bk)
+        case Dialog:
+            bc.painter.fillRect(position, bc.theme.colors.dlg_Bk)
+        case DialogBar:
+            bc.theme.drawSubRect(bc.painter, position, &bc.theme.rects.dlg_BtnBar, bc.theme.colors.dlg_BtnBarBk)
+        }
 
         // User paint
         evt := PaintEvent{}
