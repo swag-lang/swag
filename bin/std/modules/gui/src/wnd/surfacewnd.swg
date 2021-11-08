@@ -267,9 +267,17 @@ impl SurfaceWnd
         btn.surface.destroy()
     }
 
-    mtd create()
+    mtd create(userView: *Wnd)
     {
-        createView'Wnd()
+        if userView
+        {
+            view = userView
+            view.parent = self
+            view.surface = surface
+            childs.add(view)
+        }
+        else
+            createView'Wnd()
 
         theme := surface.app.theme
         if surface.flags & .MinimizeBtn

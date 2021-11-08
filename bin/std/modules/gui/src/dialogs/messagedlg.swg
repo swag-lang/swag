@@ -1,13 +1,24 @@
+using Core
+
 public struct MessageDlg
 {
-    using base: Dialog
+    using dlg: Dialog
+}
+
+impl IWnd for MessageDlg
+{
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        dlg.base.IWnd.onMouseEvent(evt)
+    }
 }
 
 impl MessageDlg
 {
     public func create(from: *Surface, x, y: s32)->*Surface
     {
-        surface := assume from.app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.Border | SurfaceFlags.Secondary)
+        view := Wnd.create'MessageDlg(null, "", @{})
+        surface := assume from.app.createSurface(x, y, 500, 250, SurfaceFlags.BigCaption | SurfaceFlags.Border | SurfaceFlags.Secondary, view)
         return surface
     }
 

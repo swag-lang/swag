@@ -147,16 +147,19 @@ impl Wnd
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
     {
-        Debug.assert(parent != null)
         res := Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.name = name
         res.position = position
         res.isAllocated = true
-        res.surface = parent.surface
         res.parent = parent
-        parent.childs.add(res)
+        if parent
+        {
+            res.surface = parent.surface
+            parent.childs.add(res)
+        }
+
         return res
     }
 
