@@ -513,7 +513,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
     // Otherwise the tuple will come from the constant segment.
-    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
+    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct && node->typeInfo)
     {
         node->allocateComputedValue();
         node->computedValue->storageOffset = node->ownerScope->startStackSize;
