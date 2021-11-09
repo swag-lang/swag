@@ -27,6 +27,12 @@ impl MessageDlg
         surface := create(from, x, y)
         surface.wnd.view.backgroundStyle = .Dialog
 
+        label := Label.create(surface.wnd.view, "", @{})
+        label.name = "toto"
+        label.dockStyle = .Center
+        label.marginLeftTop = @{10, 10}
+        label.marginRightBottom = @{10, 10}
+
         wndBottom := Wnd.create'Wnd(surface.wnd.view, "", @{0, 0, 0, 50})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar

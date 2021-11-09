@@ -14,6 +14,22 @@ struct Label
     using base: Widget
 }
 
+impl IWnd for Label
+{
+    mtd onPaintEvent(evt: *PaintEvent)
+    {
+        theme := evt.bc.theme
+        pos := position
+        pos.x += paddingLeftTop.x
+        pos.y += paddingLeftTop.y
+        pos.width -= (paddingLeftTop.x + paddingRightBottom.x)
+        pos.height -= (paddingLeftTop.y + paddingRightBottom.y)
+
+        var sf: StringFormat
+        evt.bc.painter.drawString(position, name, theme.res.fontDefault.regular, Argb.White, sf)
+    }
+}
+
 impl Label
 {
     func paint(bc: *PaintContext, position: Math.Rectangle, name: string, icon: Icon, style: LabelPaintStyle)

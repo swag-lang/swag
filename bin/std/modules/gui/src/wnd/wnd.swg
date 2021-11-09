@@ -407,7 +407,10 @@ impl Wnd
         }
 
         visit c: centerLayout
-            c.setPosition(clientRect)
+        {
+            pos := clientRect
+            c.setPosition(pos)
+        }
 
         visit c: childs
             c.applyLayout()
