@@ -48,11 +48,9 @@ struct Wnd
     name:       String
     cursor:     Cursor
 
-    marginLeftTop:          Math.Point
-    marginRightBottom:      Math.Point
-    paddingLeftTop:         Math.Point
-    paddingRightBottom:     Math.Point
-    dockStyle:              DockStyle = None
+    margin:     Math.Vector4
+    padding:    Math.Vector4
+    dockStyle:  DockStyle = None
 
     backgroundStyle:    BackgroundStyle = None
     isDisabled:         bool
@@ -349,14 +347,19 @@ impl Wnd
         applyLayout()
     }
 
+    mtd applyPadding(pos: *Math.Rectangle, pad: Math.Vector4)
+    {
+        pos.x += pad.x
+        pos.y += pad.y
+        pos.width -= (pad.x + pad.z)
+        pos.height -= (pad.y + pad.w)
+    }
+
     // Apply the current layout (childs constraints)
     mtd applyLayout()
     {
         clientRect := getClientRect()
-        clientRect.x += paddingLeftTop.x
-        clientRect.y += paddingLeftTop.y
-        clientRect.width -= (paddingRightBottom.x + paddingLeftTop.x)
-        clientRect.y -= (paddingRightBottom.y + paddingLeftTop.y)
+        applyPadding(&clientRect, padding)
 
         var centerLayout: Array'(*Wnd)
         visit c: childs
@@ -365,40 +368,40 @@ impl Wnd
             {
             case Left:
                 pos := c.position
-                pos.x = clientRect.x + c.marginLeftTop.x
-                pos.y = clientRect.y + c.marginLeftTop.y
-                pos.setBottom(clientRect.bottom() - c.marginRightBottom.y)
+                pos.x = clientRect.x + c.margin.x
+                pos.y = clientRect.y + c.margin.y
+                pos.setBottom(clientRect.bottom() - c.margin.w)
                 c.setPosition(pos)
-                diff := c.marginLeftTop.x + pos.width + c.marginRightBottom.x
+                diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
                 clientRect.x += diff
 
             case Right:
                 pos := c.position
-                pos.x = clientRect.right() - pos.width - c.marginRightBottom.x
-                pos.y = clientRect.y + c.marginLeftTop.y
-                pos.setBottom(clientRect.bottom() - c.marginRightBottom.y)
+                pos.x = clientRect.right() - pos.width - c.margin.z
+                pos.y = clientRect.y + c.margin.y
+                pos.setBottom(clientRect.bottom() - c.margin.w)
                 c.setPosition(pos)
-                diff := c.marginLeftTop.x + pos.width + c.marginRightBottom.x
+                diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
 
             case Top:
                 pos := c.position
-                pos.x = clientRect.x + c.marginLeftTop.x
-                pos.y = clientRect.y + c.marginLeftTop.y
-                pos.setRight(clientRect.right() - c.marginRightBottom.x)
+                pos.x = clientRect.x + c.margin.x
+                pos.y = clientRect.y + c.margin.y
+                pos.setRight(clientRect.right() - c.margin.z)
                 c.setPosition(pos)
-                diff := c.marginLeftTop.y + pos.height + c.marginRightBottom.y
+                diff := c.margin.y + pos.height + c.margin.w
                 clientRect.y += diff
                 clientRect.height -= diff
 
             case Bottom:
                 pos := c.position
-                pos.x = clientRect.x + c.marginLeftTop.x
-                pos.y = clientRect.bottom() - c.marginRightBottom.y - pos.height
-                pos.setRight(clientRect.right() - c.marginRightBottom.x)
+                pos.x = clientRect.x + c.margin.x
+                pos.y = clientRect.bottom() - c.margin.w - pos.height
+                pos.setRight(clientRect.right() - c.margin.z)
                 c.setPosition(pos)
-                diff := c.marginRightBottom.y + pos.height + c.marginLeftTop.y
+                diff := c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
 
             case Center:

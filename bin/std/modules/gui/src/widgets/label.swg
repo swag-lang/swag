@@ -20,13 +20,11 @@ impl IWnd for Label
     {
         theme := evt.bc.theme
         pos := position
-        pos.x += paddingLeftTop.x
-        pos.y += paddingLeftTop.y
-        pos.width -= (paddingLeftTop.x + paddingRightBottom.x)
-        pos.height -= (paddingLeftTop.y + paddingRightBottom.y)
+        applyPadding(&pos, padding)
 
         var sf: StringFormat
-        evt.bc.painter.drawString(position, name, theme.res.fontDefault.regular, Argb.White, sf)
+        sf.flags |= .WordWrap
+        evt.bc.painter.drawString(pos, name, theme.res.fontDefault.bold, Argb.White, sf)
     }
 }
 
