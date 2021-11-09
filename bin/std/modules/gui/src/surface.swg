@@ -99,6 +99,17 @@ impl Surface
         isDirty = true
     }
 
+    // Center this surface relative to 'from'
+    mtd center(from: *Surface)
+    {
+        pos := position
+        pos.x = from.position.horzCenter()
+        pos.y = from.position.vertCenter()
+        pos.x -= position.width * 0.5
+        pos.y -= position.height * 0.5
+        setPosition(pos)
+    }
+
     // Main surface paint function
     mtd paint()
     {

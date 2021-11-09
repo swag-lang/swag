@@ -36,17 +36,18 @@ impl MessageDlg
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
 
-        btnNo  := ButtonPush.create(wndBottom, "No", @{110, 10, 100, 30})
+        btnNo  := ButtonPush.create(wndBottom, "No", @{0, 0, 100, 30})
         btnNo.dockStyle = .Right
         btnNo.margin = @{10, 10, 10, 10}
         btnNo.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
 
-        btnYes := ButtonPush.create(wndBottom, "Yes", @{10, 10, 100, 30})
+        btnYes := ButtonPush.create(wndBottom, "Yes", @{0, 0, 100, 30})
         btnYes.isDefault = true
         btnYes.dockStyle = .Right
         btnYes.margin = @{10, 10, 0, 10}
         btnYes.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
 
+        surface.center(from)
         discard Dialog.doModal(surface)
     }
 }
