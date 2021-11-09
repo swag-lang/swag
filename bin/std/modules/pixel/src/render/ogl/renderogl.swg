@@ -435,6 +435,7 @@ impl RenderOgl
                 {
                     if !atlas.dirty continue
                     atlas.dirty = false
+                    glActiveTexture(GL_TEXTURE1)
                     if cast(u32) atlas.texture.handle == 0
                         glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
                     atlas.texture.width = atlas.width / atlas.bpp

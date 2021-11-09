@@ -24,7 +24,7 @@ impl IWnd for Label
 
         var sf: StringFormat
         sf.flags |= .WordWrap
-        evt.bc.painter.drawString(pos, name, theme.res.fontDefault.bold, Argb.White, sf)
+        evt.bc.painter.drawString(pos, name, theme.res.fontDefault.regular, Argb.White, sf)
     }
 }
 
