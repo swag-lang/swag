@@ -14,6 +14,7 @@ impl Painter
 
         visit *c: text.chunks
         {
+            if c.isSpace continue
             drawString(c.pos.x, c.pos.y, c.slice, c.font, c.color, c.under)
         }
     }

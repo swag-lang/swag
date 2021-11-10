@@ -504,7 +504,7 @@ func displayPage6(painter: *Pixel.Painter)
 {
     var str: RichString
 
-    str.set("this is a <b>string")
+    str.set("this <b>is a</b> string")
     str.format.font = Res.fontFam
     painter.drawRichString(@{10, 10, 100, 100}, &str)
 }

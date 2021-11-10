@@ -721,8 +721,7 @@ func visitRunes(buffer: const [..] u8, stmt: code)
         }
 
         charIdx += 1
-        byteIdx += eat
-        scan += eat
+        byteIdx, scan += eat
         count -= eat
     }
 }

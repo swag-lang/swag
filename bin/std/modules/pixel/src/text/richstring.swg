@@ -6,6 +6,7 @@ struct RichChunk
     // From 'set'
     slice:      string
     fontStyle:  FontFamilyStyle = Regular
+    isSpace:    bool
 
     // From 'computeLayout'
     pos:        Math.Point
@@ -29,51 +30,77 @@ impl RichString
     {
         if raw == text
             return
+        raw = text
+
         chunks.clear()
         layoutRect.clear()
+
+        count := raw.length
+        if !count
+            return
 
         #[Swag.Mixin]
         func addChunk(idx: uint)
         {
-            chunk.slice = @mkstring(@dataof(raw) + startChunk, idx - startChunk)
+            if idx - startChunk == 0
+                return
+            chunk.isSpace = false
+            chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
             chunks.add(chunk)
+            startChunk = byteIdx
         }
-
-        raw = text
 
         startChunk, endChunk := 0'uint
         var chunk: RichChunk
 
-        lastIsSpace := false
-        Utf8.visitRunes(|c, ci, bi| text)
+        byteIdx := 0'uint
+        charIdx := 0'uint
+        scan := raw.buffer
+        while count
         {
-            subText := @mkstring(@dataof(text) + bi, @countof(text) - bi)
+            subText := @mkstring(raw.buffer + byteIdx, raw.length - byteIdx)
+
             if Utf8.startsWith(subText, "<b>")
             {
-                @print("x")
+                addChunk(byteIdx)
                 chunk.fontStyle = .Bold
+                byteIdx, scan, startChunk += 3
+                count -= 3
+                continue
             }
+
+            sl := @mkslice(scan, count)
+            (c, eat) := Utf8.decodeRune(sl)
+            if eat == 0
+                break
 
             if Unicode.isSpace(c)
             {
-                if !lastIsSpace
+                addChunk(byteIdx)
+
+                chunk.isSpace = true
+                chunk.slice = null
+                chunks.add(chunk)
+
+                while eat and Unicode.isSpace(c)
                 {
-                    lastIsSpace = true
-                    addChunk(bi)
+                    startChunk, byteIdx, scan += eat
+                    count -= eat
+                    sl = @mkslice(scan, count)
+                    (c, eat) = Utf8.decodeRune(sl)
                 }
 
                 continue
             }
 
-            if lastIsSpace
-                startChunk = bi
-            lastIsSpace = false
+            byteIdx, scan += eat
+            count -= eat
         }
 
         // Remaining chunk
-        if startChunk != @countof(text)
+        if startChunk != raw.length
         {
-            addChunk(@countof(text))
+            addChunk(raw.length)
         }
     }
 
