@@ -1,19 +1,13 @@
 #global public
 using Core
 
-#[Swag.EnumFlags]
-enum FontStyle
-{
-    Regular = 0
-    Bold
-    Italic
-    BoldItalic
-}
-
 struct RichChunk
 {
+    // From 'set'
     slice:      string
-    fontStyle:  FontStyle = Regular
+    fontStyle:  FontFamilyStyle = Regular
+
+    // From 'computeLayout'
     pos:        Math.Point
     font:       *Font
     color:      Color
@@ -53,6 +47,13 @@ impl RichString
         lastIsSpace := false
         Utf8.visitRunes(|c, ci, bi| text)
         {
+            subText := @mkstring(@dataof(text) + bi, @countof(text) - bi)
+            if Utf8.startsWith(subText, "<b>")
+            {
+                @print("x")
+                chunk.fontStyle = .Bold
+            }
+
             if Unicode.isSpace(c)
             {
                 if !lastIsSpace
