@@ -6,21 +6,21 @@ const H = 1024
 
 namespace Res
 {
-    var image0:     Texture
-    var image1:     Texture
-    var image2:     Texture
-    var typeface:   const *TypeFace
-    var fontDefault:  *Font
-    var font40:     *Font
-    var font80:     *Font
-    var fontFam:    FontFamily
+    var image0:         Texture
+    var image1:         Texture
+    var image2:         Texture
+    var typeface:       const *TypeFace
+    var fontDefault:    *Font
+    var font40:         *Font
+    var font80:         *Font
+    var fontFam:        FontFamily
 }
 
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 0
-const MaxPages = 6
+var g_Page:         s32 = 6
+const MaxPages = 7
 
 func dataPath()->String
 {
@@ -500,6 +500,15 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
+func displayPage6(painter: *Pixel.Painter)
+{
+    var str: RichString
+
+    str.set("this is a string")
+    str.format.font = Res.fontFam
+    painter.drawRichString(@{10, 10, 100, 100}, &str)
+}
+
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
 {
     painter := event.bc.painter
@@ -516,6 +525,7 @@ func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
     case 3: displayPage3(painter)
     case 4: displayPage4(painter)
     case 5: displayPage5(painter)
+    case 6: displayPage6(painter)
     }
 
     painter.resetState()

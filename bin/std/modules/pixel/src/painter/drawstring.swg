@@ -86,13 +86,13 @@ impl Painter
     }
 
     // Draw a string
-    mtd drawString(left, top: f32, text: string, font: *Font, color: Color)
+    mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
     {
         if @countof(text) == 0 or color.a == 0
             return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
-        drawString(left, top, text, font, sharedSolidBrush)
+        drawString(left, top, text, font, sharedSolidBrush, under)
     }
 
     // Draw a string
