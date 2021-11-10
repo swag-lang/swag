@@ -45,6 +45,10 @@ impl RichString
             if idx - startChunk == 0
                 return
             chunk.isSpace = false
+            if cptBold > 0
+                chunk.fontStyle = .Bold
+            else
+                chunk.fontStyle = .Regular
             chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
             chunks.add(chunk)
             startChunk = byteIdx
@@ -55,6 +59,8 @@ impl RichString
 
         byteIdx := 0'uint
         charIdx := 0'uint
+        cptBold := 0
+
         scan := raw.buffer
         while count
         {
@@ -63,9 +69,18 @@ impl RichString
             if Utf8.startsWith(subText, "<b>")
             {
                 addChunk(byteIdx)
-                chunk.fontStyle = .Bold
+                cptBold += 1
                 byteIdx, scan, startChunk += 3
                 count -= 3
+                continue
+            }
+
+            if Utf8.startsWith(subText, "</b>")
+            {
+                addChunk(byteIdx)
+                cptBold -= 1
+                byteIdx, scan, startChunk += 4
+                count -= 4
                 continue
             }
 
@@ -113,7 +128,7 @@ impl RichString
         visit *c: chunks
         {
             c.pos.x = x
-            x += 100
+            x += 50
             c.pos.y = layoutRect.y
 
             switch c.fontStyle
