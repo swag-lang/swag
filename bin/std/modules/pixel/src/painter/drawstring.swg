@@ -63,6 +63,11 @@ impl Painter
     }
 
     // Returns the bounding rectangle if a given text, at a given position
+    mtd measureString(text: string, font: *Font)->StringMetrics
+    {
+        return measureString(0, 0, text, font)
+    }
+
     mtd measureString(left, top: f32, text: string, font: *Font)->StringMetrics
     {
         var result: retval

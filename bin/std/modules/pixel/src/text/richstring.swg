@@ -7,6 +7,7 @@ struct RichChunk
     slice:      string
     fontStyle:  FontFamilyStyle = Regular
     isSpace:    bool
+    colorIdx:   s32
 
     // From 'computeLayout'
     pos:        Math.Point
@@ -44,9 +45,14 @@ impl RichString
         {
             if idx - startChunk == 0
                 return
-            chunk.isSpace = false
-            if cptBold > 0
+            chunk.isSpace  = false
+            chunk.colorIdx = colorFg
+            if cptBold > 0 and cptItalic > 0
+                chunk.fontStyle = .BoldItalic
+            else if cptBold > 0
                 chunk.fontStyle = .Bold
+            else if cptItalic > 0
+                chunk.fontStyle = .Italic
             else
                 chunk.fontStyle = .Regular
             chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
@@ -58,33 +64,53 @@ impl RichString
         var chunk: RichChunk
 
         byteIdx := 0'uint
-        charIdx := 0'uint
-        cptBold := 0
+        cptBold, cptItalic := 0
+        colorFg := 0
 
         scan := raw.buffer
         while count
         {
-            subText := @mkstring(raw.buffer + byteIdx, raw.length - byteIdx)
-
-            if Utf8.startsWith(subText, "<b>")
+            sl := @mkslice(scan, count)
+            switch
             {
+            case Utf8.startsWith(sl, "<b>"):
                 addChunk(byteIdx)
                 cptBold += 1
                 byteIdx, scan, startChunk += 3
                 count -= 3
                 continue
-            }
-
-            if Utf8.startsWith(subText, "</b>")
-            {
+            case Utf8.startsWith(sl, "</b>"):
                 addChunk(byteIdx)
-                cptBold -= 1
+                if cptBold cptBold -= 1
                 byteIdx, scan, startChunk += 4
                 count -= 4
                 continue
+            case Utf8.startsWith(sl, "<i>"):
+                addChunk(byteIdx)
+                cptItalic += 1
+                byteIdx, scan, startChunk += 3
+                count -= 3
+                continue
+            case Utf8.startsWith(sl, "</i>"):
+                addChunk(byteIdx)
+                if cptItalic cptItalic -= 1
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+            case Utf8.startsWith(sl, "<p1>"):
+                addChunk(byteIdx)
+                colorFg = 1
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+            case Utf8.startsWith(sl, "</p1>"):
+                addChunk(byteIdx)
+                colorFg = 0
+                byteIdx, scan, startChunk += 5
+                count -= 5
+                continue
             }
 
-            sl := @mkslice(scan, count)
             (c, eat) := Utf8.decodeRune(sl)
             if eat == 0
                 break
@@ -116,34 +142,6 @@ impl RichString
         if startChunk != raw.length
         {
             addChunk(raw.length)
-        }
-    }
-
-    // Recompute the layout for a given rectangle
-    mtd computeLayout(pos: Math.Rectangle)
-    {
-        layoutRect = pos
-
-        x := layoutRect.x
-        visit *c: chunks
-        {
-            c.pos.x = x
-            x += 50
-            c.pos.y = layoutRect.y
-
-            switch c.fontStyle
-            {
-            case Regular:
-                c.font = format.font.regular
-            case Bold:
-                c.font = format.font.bold
-            case Italic:
-                c.font = format.font.italic
-            case BoldItalic:
-                c.font = format.font.boldItalic
-            }
-
-            c.color = Argb.Black
         }
     }
 }
