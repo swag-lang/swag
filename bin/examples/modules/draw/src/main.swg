@@ -522,18 +522,17 @@ func displayPage6(painter: *Pixel.Painter)
     painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{110, 10, 100, 100}, &str, format)
 
-    const TXT = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus. <p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
+    const TXT = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
     str.set(TXT)
     format.horzAlignment = .Center
     format.flags = .WordWrap
     painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)
     painter.drawRichString(@{10, 200, 200, 100}, &str, format)
 
-    str.set(TXT)
     format.horzAlignment = .Justify
     format.flags = .WordWrap
     painter.fillRect(@{220, 200, 200, 200}, Argb.Gray)
-    painter.drawRichString(@{220, 200, 200, 100}, &str, format)
+    painter.drawRichString(@{220, 200, 200, 100}, &str, format, true)
 }
 
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool

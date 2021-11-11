@@ -154,7 +154,7 @@ impl Painter
 
     // Draw the string. The layout will be computed at the first call, and each
     // time 'pos' has changed
-    public mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat)
+    public mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         if text.chunks.count == 0
             return
@@ -171,7 +171,7 @@ impl Painter
         }
 
         // Recompute layout if rectangle has changed
-        if text.layoutRect != pos
+        if text.layoutRect != pos or forceCompute
             computeLayout(pos, text, format)
 
         // Draw
