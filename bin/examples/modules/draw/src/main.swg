@@ -522,9 +522,9 @@ func displayPage6(painter: *Pixel.Painter)
     painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{110, 10, 100, 100}, &str, format)
 
-    const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor."
+    const TXT = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus. <p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
     str.set(TXT)
-    format.horzAlignment = .Left
+    format.horzAlignment = .Center
     format.flags = .WordWrap
     painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)
     painter.drawRichString(@{10, 200, 200, 100}, &str, format)

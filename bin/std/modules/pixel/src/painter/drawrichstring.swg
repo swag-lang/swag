@@ -27,6 +27,7 @@ impl Painter
         var lines: Array'OneLine
         var line:  OneLine
         startLine := 0
+        lastWasSpace := false
 
         visit *c, idx: text.chunks
         {
@@ -65,6 +66,14 @@ impl Painter
                 {
                     line.start = startLine
                     line.end  = cast(s32) idx
+
+                    // We do not want the current line to end with a space
+                    if lastWasSpace and idx
+                    {
+                        line.width -= text.chunks[idx - 1].boundRect.width
+                        line.end -= 1
+                    }
+
                     lines.add(line)
                     startLine  = cast(s32) idx
                     line.width = 0
@@ -76,6 +85,7 @@ impl Painter
                 }
             }
 
+            lastWasSpace = c.isSpace
             line.width += c.boundRect.x + c.boundRect.width
         }
 
