@@ -16,12 +16,12 @@ impl IWnd for MessageDlg
     }
 }
 
-impl MessageDlg
+public impl MessageDlg
 {
-    public const BtnYes = "MessageDlg.yes"
-    public const BtnNo  = "MessageDlg.no"
+    const BtnYes = "MessageDlg.yes"
+    const BtnNo  = "MessageDlg.no"
 
-    public func create(from: *Surface, x, y: s32, message: string)->*MessageDlg
+    func create(from: *Surface, x, y: s32, message: string)->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg(null, "", @{})
 
@@ -41,7 +41,7 @@ impl MessageDlg
     }
 
     // Set big icon
-    public mtd setIcon(icon: Icon)
+    mtd setIcon(icon: Icon)
     {
         if !labelIcon
         {
@@ -54,7 +54,7 @@ impl MessageDlg
     }
 
     // Add a button
-    public mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
+    mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
     {
         btn := ButtonPush.create(wndBottom, str, @{0, 0, 100, 30})
         btn.id = #scopefct.id
@@ -65,7 +65,7 @@ impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    public func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
+    func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
     {
         dlg := create(from, 0, 0, message)
 
