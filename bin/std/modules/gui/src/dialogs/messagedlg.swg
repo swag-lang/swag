@@ -18,15 +18,17 @@ impl IWnd for MessageDlg
 
 impl MessageDlg
 {
-    public func create(from: *Surface, x, y: s32)->*MessageDlg
+    public const BtnYes = "MessageDlg.yes"
+    public const BtnNo  = "MessageDlg.no"
+
+    public func create(from: *Surface, x, y: s32, message: string)->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg(null, "", @{})
 
         surface := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
         surface.wnd.view.backgroundStyle = .Dialog
 
-        dlg.label = Label.create(surface.wnd.view, "", @{})
-        dlg.label.name = "Lorem ipsum dolor sit amet, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        dlg.label = Label.create(surface.wnd.view, message, @{})
         dlg.label.dockStyle = .Center
         dlg.label.padding = @{10, 10, 10, 10}
 
@@ -39,7 +41,7 @@ impl MessageDlg
     }
 
     // Set big icon
-    public mtd setIcon(ico: Icon)
+    public mtd setIcon(icon: Icon)
     {
         if !labelIcon
         {
@@ -48,13 +50,14 @@ impl MessageDlg
             labelIcon.padding = @{10, 10, 10, 10}
         }
 
-        labelIcon.icon = ico
+        labelIcon.icon = icon
     }
 
     // Add a button
-    public mtd addButton(str: string, isDefault: bool)->*ButtonPush
+    public mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
     {
         btn := ButtonPush.create(wndBottom, str, @{0, 0, 100, 30})
+        btn.id = #scopefct.id
         btn.dockStyle = .Right
         btn.isDefault = isDefault
         btn.margin = @{5, 0, 5, 0}
@@ -62,19 +65,19 @@ impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    public func yesNo(from: *Surface, x, y: s32, message: string, defaultIsNo = false)
+    public func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
     {
-        dlg := create(from, x, y)
+        dlg := create(from, 0, 0, message)
 
         dlg.setIcon(from.app.theme.getIcon64(ThemeIcons64.Question))
 
-        btn := dlg.addButton("No", defaultIsNo)
-        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
+        btn := dlg.addButton("No", BtnNo, defaultId == BtnNo)
+        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(BtnNo); }
 
-        btn = dlg.addButton("Yes", !defaultIsNo)
-        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
+        btn = dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(BtnYes); }
 
         dlg.surface.center(from)
-        discard Dialog.doModal(dlg.surface)
+        return Dialog.doModal(dlg.surface)
     }
 }

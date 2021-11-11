@@ -15,7 +15,7 @@ struct Application
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
     endModal:       bool
-    endModalExit:   s32
+    endModalExit:   string
     isActivated:    bool
     quitCode:       s32
 
@@ -338,13 +338,13 @@ impl Application
     }
 
     // End current modal loop
-    mtd exitModal(exitCode: s32)
+    mtd exitModal(exitId: string)
     {
         endModal = true
-        endModalExit = exitCode
+        endModalExit = exitId
     }
 
-    protected mtd doModalLoop(surface: *Surface)->s32
+    protected mtd doModalLoop(surface: *Surface)->string
     {
         visit s: surfaces s.disable()
         modalSurfaces.add(surface)

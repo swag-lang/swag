@@ -5,7 +5,7 @@ public struct Dialog
 
 impl Dialog
 {
-    public func doModal(dlg: *Surface)->s32
+    public func doModal(dlg: *Surface)->string
     {
         dlg.bringToTop()
         dlg.show()
