@@ -68,6 +68,19 @@ impl Painter
 
         x := text.layoutRect.x
         y := text.layoutRect.y
+
+        // Vertical
+        totalHeight := cast(f32) (lines.count * format.font.regular.height)
+        totalHeight += cast(f32) (lines.count - 1) * format.lineGap
+
+        switch format.vertAlignment
+        {
+        case Top:       break
+        case Bottom:    y = pos.bottom() - totalHeight
+        case Center:    y = pos.vertCenter() - (totalHeight * 0.5)
+        }
+
+        // Layout
         visit *line: lines
         {
             x1 := x

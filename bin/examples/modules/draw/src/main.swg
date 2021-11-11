@@ -515,9 +515,11 @@ func displayPage6(painter: *Pixel.Painter)
 
     str.set("this is\na\ntext")
     painter.translateTransform(0, 100)
+    painter.fillRect(@{10, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{10, 10, 100, 100}, &str, format)
 
     format.horzAlignment = .Center
+    painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{110, 10, 100, 100}, &str, format)
 }
 
