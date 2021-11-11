@@ -18,7 +18,7 @@ impl MessageDlg
     public func create(from: *Surface, x, y: s32)->*Surface
     {
         view := Wnd.create'MessageDlg(null, "", @{})
-        surface := assume from.app.createSurface(x, y, 500, 250, SurfaceFlags.Border | SurfaceFlags.Secondary, view)
+        surface := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, view)
         return surface
     }
 
@@ -26,6 +26,11 @@ impl MessageDlg
     {
         surface := create(from, x, y)
         surface.wnd.view.backgroundStyle = .Dialog
+
+        img := Label.create(surface.wnd.view, "", @{0,0,0,100})
+        img.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
+        img.dockStyle = .Top
+        img.padding = @{10, 10, 10, 10}
 
         label := Label.create(surface.wnd.view, "", @{})
         label.name = "Lorem ipsum dolor sit amet, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

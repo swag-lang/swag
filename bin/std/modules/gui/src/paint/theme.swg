@@ -7,6 +7,7 @@ protected const DefaultFontBoldName       = "theme/segoe_bold.ttf"
 protected const DefaultFontBoldItalicName = "theme/segoe_bold_italic.ttf"
 protected const DefaultFontItalicName     = "theme/segoe_italic.ttf"
 protected const DefaultIcons24Name        = "theme/icons24.png"
+protected const DefaultIcons64Name        = "theme/icons64.png"
 
 protected const DefaultImage          = #load(DefaultImageName)
 protected const DefaultFontRegular    = #load(DefaultFontRegularName)
@@ -14,6 +15,7 @@ protected const DefaultFontBold       = #load(DefaultFontBoldName)
 protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
 protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24        = #load(DefaultIcons24Name)
+protected const DefaultIcons64        = #load(DefaultIcons64Name)
 
 public struct ThemeImageRect
 {
@@ -106,6 +108,7 @@ struct ThemeResources
 {
     imgWidgets:     Texture
     icons24:        ImageList
+    icons64:        ImageList
     typeFaceR:      const *TypeFace
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
@@ -121,6 +124,11 @@ struct Theme
     colors:  ThemeColors
 }
 
+enum ThemeIcons64
+{
+    Question
+}
+
 impl Theme
 {
     protected mtd setupDefault(renderer: *RenderOgl)
@@ -133,6 +141,11 @@ impl Theme
         res.icons24.sizeX = 24
         res.icons24.sizeY = 24
 
+        img = assume Image.decode(DefaultIcons64Name, DefaultIcons64)
+        res.icons64.texture = renderer.addImage(img)
+        res.icons64.sizeX = 64
+        res.icons64.sizeY = 64
+
         res.typeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
         res.typeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
         res.typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
@@ -142,5 +155,14 @@ impl Theme
         res.fontDefault.bold = Font.create(res.typeFaceB, 13)
         res.fontDefault.italic = Font.create(res.typeFaceI, 13)
         res.fontDefault.boldItalic = Font.create(res.typeFaceBI, 13)
+    }
+
+    mtd getIcon64(idx: ThemeIcons64)->Icon
+    {
+        var result: retval
+        result.imageList = &res.icons64
+        result.index = 0
+        result.size = 64
+        return result
     }
 }
