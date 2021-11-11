@@ -49,6 +49,11 @@ impl RichString
         startChunk = byteIdx
     }
 
+    mtd opAffect(str: string)
+    {
+        set(str)
+    }
+
     // Associate a string
     mtd set(text: string)
     {

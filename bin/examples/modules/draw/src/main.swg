@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 6
+var g_Page:         s32 = 4
 const MaxPages = 7
 
 func dataPath()->String
@@ -341,32 +341,44 @@ func displayPage3(painter: *Pixel.Painter)
 func displayPage4(painter: *Pixel.Painter)
 {
     {
-        var format: StringFormat
-        var rect:   Rectangle{350, 50, 100, 100}
-        format.horzAlignment = .Center
-        format.vertAlignment = .Center
-        format.lineGap = 1
-        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.drawString(rect, "on multiple lines\nthis is\na text\non multiple lines", Res.fontDefault, Argb.Black, format)
+        var rect: Rectangle{350, 50, 100, 100}
+        painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
+
+        var rs: RichString = "on multiple lines\nthis is\na text\non multiple lines"
+        var sf: RichStringFormat
+        sf.horzAlignment = .Center
+        sf.vertAlignment = .Center
+        sf.lineGap = 1
+        sf.font.regular = Res.fontDefault
+        sf.palette[0] = Argb.Blue
+        painter.drawRichString(rect, &rs, sf)
     }
 
     {
-        var format: StringFormat
         var rect:   Rectangle{500, 50, 100, 100}
-        format.flags |= .WordWrap
-        format.underline = .Underline
-        format.lineGap = 1
-        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.drawString(rect, "on multiple lines this is a text on multiple lines", Res.fontDefault, Argb.Black, format)
+        painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
+
+        var rs: RichString = "<u>on multiple lines this is a text on multiple lines<u>"
+        var sf: RichStringFormat
+        sf.flags |= .WordWrap
+        sf.lineGap = 1
+        sf.font.regular = Res.fontDefault
+        sf.palette[0] = Argb.Black
+        painter.drawRichString(rect, &rs, sf)
     }
 
     {
-        format := StringFormat{flags: StringFormatFlags.WordWrap}
-        format.horzAlignment = .Center
         rect := Rectangle{650, 50, 200, 700}
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
+
+        sf := RichStringFormat{flags: StringFormatFlags.WordWrap}
+        sf.horzAlignment = .Center
+        sf.font.regular = Res.fontDefault
+        sf.palette[0] = Argb.Black
+
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        painter.drawString(rect, TXT, Res.fontDefault, Argb.Black, format)
+        var rs: RichString = TXT
+        painter.drawRichString(rect, &rs, sf)
     }
 
     {
@@ -510,10 +522,10 @@ func displayPage6(painter: *Pixel.Painter)
     format.palette[1] = Argb.Red
     format.palette[2] = Argb.Green
 
-    str.set("<u>normal<u> <i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>")
+    str = "<u>normal<u> <i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>"
     painter.drawRichString(@{10, 10, 100, 100}, &str, format)
 
-    str.set("this is\na\ntext")
+    str = "this is\na\ntext"
     painter.translateTransform(0, 100)
     painter.fillRect(@{10, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{10, 10, 100, 100}, &str, format)
@@ -522,8 +534,7 @@ func displayPage6(painter: *Pixel.Painter)
     painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{110, 10, 100, 100}, &str, format)
 
-    const TXT = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
-    str.set(TXT)
+    str = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
     format.horzAlignment = .Center
     format.flags = .WordWrap
     painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)

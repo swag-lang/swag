@@ -15,6 +15,7 @@ impl Painter
     // Recompute the layout for a given rectangle
     mtd computeLayout(pos: Math.Rectangle, text: *RichString, format: RichStringFormat)
     {
+        Debug.assert(format.font.regular != null, "invalid default font")
         text.layoutRect = pos
 
         struct OneLine
@@ -177,7 +178,6 @@ impl Painter
         // Draw
         visit *c: text.chunks
         {
-            if c.isSpace continue
             drawString(c.pos.x, c.pos.y, c.slice, c.font, c.color, c.under)
         }
 
