@@ -3,6 +3,7 @@ using Core
 public struct MessageDlg
 {
     using dlg:  Dialog
+    labelIcon:  *Label
     label:      *Label
     wndBottom:  *Wnd
 }
@@ -37,28 +38,43 @@ impl MessageDlg
         return dlg
     }
 
-    public func yesNo(from: *Surface, x, y: s32, message: string)
+    // Set big icon
+    public mtd setIcon(ico: Icon)
+    {
+        if !labelIcon
+        {
+            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,100})
+            labelIcon.dockStyle = .Top
+            labelIcon.padding = @{10, 10, 10, 10}
+        }
+
+        labelIcon.icon = ico
+    }
+
+    // Add a button
+    public mtd addButton(str: string, isDefault: bool)->*ButtonPush
+    {
+        btn := ButtonPush.create(wndBottom, str, @{0, 0, 100, 30})
+        btn.dockStyle = .Right
+        btn.isDefault = isDefault
+        btn.margin = @{5, 0, 5, 0}
+        return btn
+    }
+
+    // Message box with a 'yes' and 'no' button
+    public func yesNo(from: *Surface, x, y: s32, message: string, defaultIsNo = false)
     {
         dlg := create(from, x, y)
-        surface := dlg.surface
 
-        img := Label.create(surface.wnd.view, "", @{0,0,0,100})
-        img.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
-        img.dockStyle = .Top
-        img.padding = @{10, 10, 10, 10}
+        dlg.setIcon(from.app.theme.getIcon64(ThemeIcons64.Question))
 
-        btnNo  := ButtonPush.create(dlg.wndBottom, "No", @{0, 0, 100, 30})
-        btnNo.dockStyle = .Right
-        btnNo.margin = @{5, 0, 5, 0}
-        btnNo.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
+        btn := dlg.addButton("No", defaultIsNo)
+        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
 
-        btnYes := ButtonPush.create(dlg.wndBottom, "Yes", @{0, 0, 100, 30})
-        btnYes.isDefault = true
-        btnYes.dockStyle = .Right
-        btnYes.margin = @{5, 0, 5, 0}
-        btnYes.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
+        btn = dlg.addButton("Yes", !defaultIsNo)
+        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(0); }
 
-        surface.center(from)
-        discard Dialog.doModal(surface)
+        dlg.surface.center(from)
+        discard Dialog.doModal(dlg.surface)
     }
 }

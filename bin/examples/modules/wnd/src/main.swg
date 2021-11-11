@@ -31,6 +31,9 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
 
     button = ButtonPush.create(view, "ExitExitExitExitExit", @{5, 110, 100, 30})
     button.cursor = Cursor.from(CursorShape.Help)
+
+    button = ButtonPush.create(view, "YesNo", @{5, 145, 100, 30})
+    button.cursor = Cursor.from(CursorShape.Help)
     button.sigPressed = @(btn: *ButtonPush) { MessageDlg.yesNo(btn.surface, 200, 200, "Are you very very sure ?"); }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

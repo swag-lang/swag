@@ -46,6 +46,7 @@ struct Wnd
     childs:     Array'(*Wnd)
 
     name:       RichString
+    id:         String
     cursor:     Cursor
 
     margin:     Math.Vector4
