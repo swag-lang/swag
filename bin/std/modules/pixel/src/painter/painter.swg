@@ -437,7 +437,7 @@ impl Painter
 
     mtd setClippingRect(rect: Math.Rectangle)
     {
-        if clippingRect == rect
+        if clippingRect == rect and clippingRectOn
             return
         clippingRect = rect
         clippingRectOn = true

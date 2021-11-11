@@ -333,8 +333,6 @@ impl RenderOgl
         textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
 
         // Default state
-        setBlendingMode(BlendingMode.Alpha)
-        glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glDisable(GL_SCISSOR_TEST)
         glDisable(GL_STENCIL_TEST)
         glDisable(GL_DEPTH_TEST)
@@ -346,6 +344,7 @@ impl RenderOgl
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
+        setBlendingMode(BlendingMode.Alpha)
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
@@ -431,11 +430,11 @@ impl RenderOgl
             case UpdateFont:
                 font := cmd.font.fontRef
                 font.dirty = false
+                glActiveTexture(GL_TEXTURE1)
                 visit *atlas: font.atlases
                 {
                     if !atlas.dirty continue
                     atlas.dirty = false
-                    glActiveTexture(GL_TEXTURE1)
                     if cast(u32) atlas.texture.handle == 0
                         glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
                     atlas.texture.width = atlas.width / atlas.bpp

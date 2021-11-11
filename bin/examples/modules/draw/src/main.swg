@@ -504,7 +504,7 @@ func displayPage6(painter: *Pixel.Painter)
 {
     var str: RichString
 
-    str.set("normal<i>italic<b>bold<b><i> another <p1>one<p1> <p2>two<p2>")
+    str.set("<u>normal<u><i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>")
     str.format.font = Res.fontFam
     str.format.palette[0] = Argb.Black
     str.format.palette[1] = Argb.Red

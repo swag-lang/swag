@@ -108,7 +108,6 @@ impl Painter
 
         arr := getGlyphs(text, font)
         if arr.isEmpty() return
-        updateFont(font)
 
         x := Math.round(left)
         y := Math.round(top + font.ascent)
@@ -145,6 +144,7 @@ impl Painter
             canSetTexture0 = true
         }
 
+        updateFont(font)
         visit ref: arr
         {
             setTextureFont(font, ref.atlasIndex)

@@ -33,6 +33,7 @@ impl RichString
             return
         chunk.isSpace  = false
         chunk.colorIdx = colorFg
+        chunk.under    = under
         if isBold and isItalic
             chunk.fontStyle = .BoldItalic
         else if isBold
@@ -66,6 +67,7 @@ impl RichString
         byteIdx := 0'uint
         isBold, isItalic := false
         colorFg := 0
+        under := UnderlineStyle.None
 
         scan := raw.buffer
         while count
@@ -73,6 +75,12 @@ impl RichString
             sl := @mkslice(scan, count)
             switch
             {
+            case Utf8.startsWith(sl, "<u>"):
+                addChunk(byteIdx)
+                under = under == .None ? .Underline : .None
+                byteIdx, scan, startChunk += 3
+                count -= 3
+                continue
             case Utf8.startsWith(sl, "<b>"):
                 addChunk(byteIdx)
                 isBold = !isBold
