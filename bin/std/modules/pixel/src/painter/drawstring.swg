@@ -179,6 +179,7 @@ impl Painter
             start, end:     s32
             width:          f32
             countSpaces:    s32
+            whiteSpaces:    f32
         }
 
         // Divide in lines
@@ -189,18 +190,6 @@ impl Painter
 
         visit *c, idx: text.chunks
         {
-            // User eol
-            if c.isEol
-            {
-                line.start = startLine
-                line.end  = cast(s32) idx
-                lines.add(line)
-                startLine = line.end + 1
-                line.width = 0
-                line.countSpaces = 0
-                continue
-            }
-
             // Attributes
             switch c.fontStyle
             {
@@ -217,10 +206,26 @@ impl Painter
             // Measure
             c.boundRect = measureString(c.slice, c.font).rect
 
+            // User eol
+            if c.isEol
+            {
+                line.start = startLine
+                line.end  = cast(s32) idx
+                lines.add(line)
+                startLine = line.end + 1
+                line.width = 0
+                line.countSpaces = 0
+                continue
+            }
+
             // Wrap
             if format.flags & .WordWrap
             {
-                if line.width + c.boundRect.width > pos.width
+                curW := line.width
+                if format.horzAlignment == .Justify
+                    curW += line.whiteSpaces
+
+                if curW + c.boundRect.width > pos.width
                 {
                     line.start = startLine
                     line.end  = cast(s32) idx
@@ -231,19 +236,22 @@ impl Painter
                         line.countSpaces -= 1
                         if format.horzAlignment != .Justify
                             line.width -= text.chunks[idx - 1].boundRect.width
+                        else
+                            line.whiteSpaces -= text.chunks[idx - 1].boundRect.width
                         line.end -= 1
                     }
 
                     lines.add(line)
                     startLine  = cast(s32) idx
                     line.width = 0
+                    line.countSpaces = 0
+                    line.whiteSpaces = 0
 
                     // We do not want the new line to start with a space
                     if c.isSpace
                         startLine += 1
                     else
                         line.width += c.boundRect.x + c.boundRect.width
-                    line.countSpaces = 0
                     continue
                 }
             }
@@ -254,6 +262,8 @@ impl Painter
                 line.countSpaces += 1
                 if format.horzAlignment != .Justify
                     line.width += c.boundRect.x + c.boundRect.width
+                else
+                    line.whiteSpaces += c.boundRect.x + c.boundRect.width
             }
             else
                 line.width += c.boundRect.x + c.boundRect.width
@@ -286,7 +296,7 @@ impl Painter
         text.boundRect.height = 0
 
         // Layout
-        visit *line: lines
+        visit *line, idxLine: lines
         {
             x1 := x
             y1 := y
@@ -305,7 +315,7 @@ impl Painter
             {
                 c := text.chunks[idx]
                 c.pos.x = x1
-                if c.isSpace and format.horzAlignment == .Justify
+                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1
                     x1 += (pos.width - line.width) / line.countSpaces
                 else
                     x1 += c.boundRect.width

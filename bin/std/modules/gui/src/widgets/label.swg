@@ -23,6 +23,7 @@ impl IWnd for Label
         var sf: RichStringFormat
         sf.flags |= .WordWrap
         sf.font = theme.res.fontDefault
+        sf.horzAlignment = .Justify
         sf.palette[0] = Argb.White
         evt.bc.painter.drawRichString(pos, &name, sf)
     }
