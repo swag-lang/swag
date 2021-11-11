@@ -19,7 +19,7 @@ impl Painter
         struct OneLine
         {
             start, end: s32
-            width:      f32
+            boundRect:  Math.Rectangle
         }
 
         // Divide in lines
@@ -36,7 +36,7 @@ impl Painter
                 line.end  = cast(s32) idx
                 lines.add(line)
                 startLine = line.end + 1
-                line.width = 0
+                line.boundRect.clear()
                 continue
             }
 
@@ -55,8 +55,10 @@ impl Painter
             }
 
             // Measure
-            c.width = measureString(c.slice, c.font).width
-            line.width += c.width
+            c.boundRect = measureString(c.slice, c.font).rect
+            line.boundRect.width += c.boundRect.width
+            line.boundRect.y      = Math.max(line.boundRect.y, c.boundRect.y)
+            line.boundRect.height = Math.max(line.boundRect.height, c.boundRect.height)
         }
 
         if startLine != text.chunks.count
@@ -89,14 +91,14 @@ impl Painter
             switch format.horzAlignment
             {
             case Left:   break
-            case Right:  x1 = pos.right() - line.width
-            case Center: x1 = pos.horzCenter() - line.width * 0.5
+            case Right:  x1 = pos.right() - line.boundRect.width
+            case Center: x1 = pos.horzCenter() - line.boundRect.width * 0.5
             }
 
             loop idx: line.start..<line.end
             {
                 c := text.chunks[idx]
-                c.pos.x = x1; x1 += c.width
+                c.pos.x = x1; x1 += c.boundRect.width
                 c.pos.y = y1
             }
 

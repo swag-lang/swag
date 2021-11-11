@@ -11,7 +11,7 @@ struct RichChunk
     colorIdx:   s32
 
     // From 'computeLayout'
-    width:      f32
+    boundRect:  Math.Rectangle
     pos:        Math.Point
     font:       *Font
     color:      Color

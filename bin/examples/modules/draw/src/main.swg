@@ -384,8 +384,8 @@ func displayPage4(painter: *Pixel.Painter)
     {
         brush := Brush.createTexture(Res.image1)
         rect := painter.measureString(100, 300, str, Res.font40)
-        painter.fillRect(rect.left, rect.top, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.fillRect(rect.left, rect.top, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
+        painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.fillRect(rect.x, rect.y, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
         painter.drawString(100, 350, str, Res.font40, Argb.Black)
     }
@@ -521,6 +521,12 @@ func displayPage6(painter: *Pixel.Painter)
     format.horzAlignment = .Center
     painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString(@{110, 10, 100, 100}, &str, format)
+
+    const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor."
+    str.set(TXT)
+    format.horzAlignment = .Left
+    painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)
+    painter.drawRichString(@{10, 200, 200, 100}, &str, format)
 }
 
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
@@ -607,10 +613,10 @@ func setup(wnd: *Wnd) throw
         Res.font40 = Font.create(Res.typeface, 40)
         Res.font80 = Font.create(Res.typeface, 80)
 
-        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 30)
-        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 30)
-        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 30)
-        Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 30)
+        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
+        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
+        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
+        Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
     }
 }
 

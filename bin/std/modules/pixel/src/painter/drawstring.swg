@@ -41,10 +41,7 @@ struct StringFormat
 
 struct StringMetrics
 {
-    left:       f32
-    top:        f32
-    width:      f32
-    height:     f32
+    using rect: Math.Rectangle
     baseLine:   f32
 }
 
@@ -73,20 +70,20 @@ impl Painter
         var result: retval
 
         y := top + font.ascent
-        result.left = left
-        result.top = y
+        result.x = left
+        result.y = y
         bottom := top
 
         arr := getGlyphs(text, font)
         visit ref: arr
         {
-            result.top = Math.min(result.top, y - ref.shiftY)
+            result.y = Math.min(result.y, y - ref.shiftY)
             bottom = Math.max(bottom, y - ref.shiftY + ref.height)
             result.baseLine = Math.max(result.baseLine, ref.shiftY)
             result.width += ref.advanceX
         }
 
-        result.height = bottom - result.top
+        result.height = bottom - result.y
         return result
     }
 
@@ -279,7 +276,7 @@ impl Painter
         {
             boundRect := measureString(0, 0, arr[0].str, font)
             totalHeight = boundRect.height
-            yOffset = boundRect.top
+            yOffset = boundRect.y
         }
         else
         {
