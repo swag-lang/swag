@@ -7,6 +7,7 @@ public struct RichStringFormat
     horzAlignment:  StringHorzAlignment = Left
     vertAlignment:  StringVertAlignment = Top
     lineGap:        s32
+    flags:          StringFormatFlags = Default
 }
 
 impl Painter
@@ -19,7 +20,7 @@ impl Painter
         struct OneLine
         {
             start, end: s32
-            boundRect:  Math.Rectangle
+            width:      f32
         }
 
         // Divide in lines
@@ -36,7 +37,7 @@ impl Painter
                 line.end  = cast(s32) idx
                 lines.add(line)
                 startLine = line.end + 1
-                line.boundRect.clear()
+                line.width = 0
                 continue
             }
 
@@ -56,9 +57,26 @@ impl Painter
 
             // Measure
             c.boundRect = measureString(c.slice, c.font).rect
-            line.boundRect.width += c.boundRect.width
-            line.boundRect.y      = Math.max(line.boundRect.y, c.boundRect.y)
-            line.boundRect.height = Math.max(line.boundRect.height, c.boundRect.height)
+
+            // Wrap
+            if format.flags & .WordWrap
+            {
+                if line.width + c.boundRect.width > pos.width
+                {
+                    line.start = startLine
+                    line.end  = cast(s32) idx
+                    lines.add(line)
+                    startLine  = cast(s32) idx
+                    line.width = 0
+                    if c.isSpace
+                        startLine += 1
+                    else
+                        line.width += c.boundRect.x + c.boundRect.width
+                    continue
+                }
+            }
+
+            line.width += c.boundRect.x + c.boundRect.width
         }
 
         if startLine != text.chunks.count
@@ -91,8 +109,8 @@ impl Painter
             switch format.horzAlignment
             {
             case Left:   break
-            case Right:  x1 = pos.right() - line.boundRect.width
-            case Center: x1 = pos.horzCenter() - line.boundRect.width * 0.5
+            case Right:  x1 = pos.right() - line.width
+            case Center: x1 = pos.horzCenter() - line.width * 0.5
             }
 
             loop idx: line.start..<line.end
@@ -110,13 +128,33 @@ impl Painter
     // time 'pos' has changed
     public mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat)
     {
+        if text.chunks.count == 0
+            return
+
+        // Clipping
+        if format.flags & .Clip
+        {
+            pushClippingRect(pos)
+            if clippingRect.isEmpty()
+            {
+                popClippingRect()
+                return
+            }
+        }
+
+        // Recompute layout if rectangle has changed
         if text.layoutRect != pos
             computeLayout(pos, text, format)
 
+        // Draw
         visit *c: text.chunks
         {
             if c.isSpace continue
             drawString(c.pos.x, c.pos.y, c.slice, c.font, c.color, c.under)
         }
+
+        // Restore clipping to its previous value
+        if format.flags & .Clip
+            popClippingRect()
     }
 }
