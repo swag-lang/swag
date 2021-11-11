@@ -9,5 +9,5 @@ struct FetchModuleFileSystemJob : public Job
     }
 
     JobResult execute() override;
+    bool      collectSourceFiles = true;
 };
-

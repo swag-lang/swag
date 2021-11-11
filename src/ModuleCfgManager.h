@@ -17,6 +17,7 @@ enum class CompareVersionResult
 
 struct ModuleCfgManager
 {
+    fs::path             getAliasPath(const fs::path& srcPath);
     void                 registerCfgFile(SourceFile* file);
     void                 newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
     void                 enumerateCfgFiles(const fs::path& path);

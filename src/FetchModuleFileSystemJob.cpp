@@ -11,7 +11,10 @@ JobResult FetchModuleFileSystemJob::execute()
     auto dep = module->fetchDep;
 
     auto depName = Utf8::format("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
-    g_Log.messageHeaderCentered("Copying", depName.c_str());
+    if (collectSourceFiles)
+        g_Log.messageHeaderCentered("Copying", depName.c_str());
+    else
+        g_Log.messageHeaderCentered("Linking", depName.c_str());
 
     // Collect list of source files
     set<string> srcFiles;
@@ -23,12 +26,12 @@ JobResult FetchModuleFileSystemJob::execute()
                           Utf8 cfgFile = "/";
                           cfgFile += SWAG_CFG_FILE;
 
-                          if (n != cfgFile &&
-                              (strstr(n.c_str(), SWAG_PUBLISH_FOLDER) != n.c_str() + 1) &&
-                              (strstr(n.c_str(), SWAG_SRC_FOLDER) != n.c_str() + 1))
-                              return;
-
-                          srcFiles.insert(n);
+                          if (collectSourceFiles && n == cfgFile)
+                              srcFiles.insert(n);
+                          else if (strstr(n.c_str(), SWAG_PUBLISH_FOLDER) == n.c_str() + 1)
+                              srcFiles.insert(n);
+                          else if (collectSourceFiles && strstr(n.c_str(), SWAG_SRC_FOLDER) == n.c_str() + 1)
+                              srcFiles.insert(n);
                       });
 
     auto destPath = g_Workspace->dependenciesPath.string();
@@ -53,6 +56,8 @@ JobResult FetchModuleFileSystemJob::execute()
         if (srcFiles.find(f) == srcFiles.end())
         {
             auto n = destPath + f;
+            if (strstr(f.c_str(), SWAG_SRC_FOLDER) == f.c_str() + 1)
+                continue;
             if (!fs::remove(n))
             {
                 g_Log.errorOS(Utf8::format(g_E[Err0603], n.c_str()));

@@ -62,6 +62,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     vector<SourceFile*> allFiles;
 
     auto path = basePath;
+    path      = g_ModuleCfgMgr->getAliasPath(path).string();
     path += "/";
     path += SWAG_SRC_FOLDER;
     path += "/";
@@ -132,7 +133,10 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name);
     if (cfgModule)
     {
-        auto cfgFile    = theModule->path + "/" + SWAG_CFG_FILE;
+        auto cfgFile = theModule->path;
+        cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile).string();
+        cfgFile += "/";
+        cfgFile += SWAG_CFG_FILE;
         auto writeTime  = OS::getFileWriteTime(cfgFile.c_str());
         auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile).parent_path().string(), SWAG_CFG_FILE, writeTime);
         file->isCfgFile = true;
@@ -154,6 +158,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
     OS::visitFolders(basePath.string().c_str(), [&](const char* cFileName)
                      {
                          string path = basePath.string() + cFileName;
+                         path        = g_ModuleCfgMgr->getAliasPath(path).string();
                          path += "/";
                          path += SWAG_SRC_FOLDER;
                          path += "/";

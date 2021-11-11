@@ -26,6 +26,26 @@ struct RichString
 
 impl RichString
 {
+    #[Swag.Mixin]
+    protected func addChunk(idx: uint)
+    {
+        if idx - startChunk == 0
+            return
+        chunk.isSpace  = false
+        chunk.colorIdx = colorFg
+        if isBold and isItalic
+            chunk.fontStyle = .BoldItalic
+        else if isBold
+            chunk.fontStyle = .Bold
+        else if isItalic
+            chunk.fontStyle = .Italic
+        else
+            chunk.fontStyle = .Regular
+        chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
+        chunks.add(chunk)
+        startChunk = byteIdx
+    }
+
     // Associate a string
     mtd set(text: string)
     {
@@ -40,31 +60,11 @@ impl RichString
         if !count
             return
 
-        #[Swag.Mixin]
-        func addChunk(idx: uint)
-        {
-            if idx - startChunk == 0
-                return
-            chunk.isSpace  = false
-            chunk.colorIdx = colorFg
-            if cptBold > 0 and cptItalic > 0
-                chunk.fontStyle = .BoldItalic
-            else if cptBold > 0
-                chunk.fontStyle = .Bold
-            else if cptItalic > 0
-                chunk.fontStyle = .Italic
-            else
-                chunk.fontStyle = .Regular
-            chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
-            chunks.add(chunk)
-            startChunk = byteIdx
-        }
-
         startChunk, endChunk := 0'uint
         var chunk: RichChunk
 
         byteIdx := 0'uint
-        cptBold, cptItalic := 0
+        isBold, isItalic := false
         colorFg := 0
 
         scan := raw.buffer
@@ -75,39 +75,33 @@ impl RichString
             {
             case Utf8.startsWith(sl, "<b>"):
                 addChunk(byteIdx)
-                cptBold += 1
+                isBold = !isBold
                 byteIdx, scan, startChunk += 3
                 count -= 3
-                continue
-            case Utf8.startsWith(sl, "</b>"):
-                addChunk(byteIdx)
-                if cptBold cptBold -= 1
-                byteIdx, scan, startChunk += 4
-                count -= 4
                 continue
             case Utf8.startsWith(sl, "<i>"):
                 addChunk(byteIdx)
-                cptItalic += 1
+                isItalic = !isItalic
                 byteIdx, scan, startChunk += 3
                 count -= 3
                 continue
-            case Utf8.startsWith(sl, "</i>"):
-                addChunk(byteIdx)
-                if cptItalic cptItalic -= 1
-                byteIdx, scan, startChunk += 4
-                count -= 4
-                continue
             case Utf8.startsWith(sl, "<p1>"):
                 addChunk(byteIdx)
-                colorFg = 1
+                colorFg = colorFg == 0 ? 1 : 0
                 byteIdx, scan, startChunk += 4
                 count -= 4
                 continue
-            case Utf8.startsWith(sl, "</p1>"):
+            case Utf8.startsWith(sl, "<p2>"):
                 addChunk(byteIdx)
-                colorFg = 0
-                byteIdx, scan, startChunk += 5
-                count -= 5
+                colorFg = colorFg == 0 ? 2 : 0
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+            case Utf8.startsWith(sl, "<p3>"):
+                addChunk(byteIdx)
+                colorFg = colorFg == 0 ? 3 : 0
+                byteIdx, scan, startChunk += 4
+                count -= 4
                 continue
             }
 

@@ -88,6 +88,30 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
         registerCfgFile(file);
 }
 
+// If there is an 'alias' file in the source folder, then we redirect the souce path with the content.
+// That way, we can have a normal "dependencies" hierarchy, but with the source code comming from elsewhere.
+// For example the 'std' workspace
+fs::path ModuleCfgManager::getAliasPath(const fs::path& srcPath)
+{
+    auto p = srcPath;
+    p += "/";
+    p += SWAG_ALIAS_PATH;
+    if (fs::exists(p))
+    {
+        FILE* f = nullptr;
+        fopen_s(&f, p.string().c_str(), "rt");
+        if (f)
+        {
+            char in[MAX_PATH];
+            fgets(in, MAX_PATH, f);
+            fclose(f);
+            return in;
+        }
+    }
+
+    return srcPath;
+}
+
 void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 {
     vector<SourceFile*> allFiles;
@@ -96,19 +120,14 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
                      {
                          auto cfgPath = path;
                          cfgPath.append(cFileName);
+                         cfgPath = getAliasPath(cfgPath);
 
                          auto cfgName = cfgPath;
                          cfgName.append(SWAG_CFG_FILE);
 
                          // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
-                         if (!fs::exists(cfgName))
-                         {
-                             g_Log.error(Utf8::format(g_E[Err0507], cfgPath.string().c_str(), SWAG_CFG_FILE));
-                             g_Workspace->numErrors++;
-                             return;
-                         }
-
-                         newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+                         if (fs::exists(cfgName))
+                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
                      });
 
     // Sort files, and register them in a constant order
@@ -415,7 +434,7 @@ bool ModuleCfgManager::execute()
     // the dependencies.
     if (g_CommandLine->scriptCommand)
     {
-        // We want each script with the same set of dependencies to have the same 
+        // We want each script with the same set of dependencies to have the same
         // cache folder. So we compute a CRC that will be used in the workspace name.
         Utf8 strCrc;
         for (auto mod : allModules)
@@ -575,9 +594,36 @@ bool ModuleCfgManager::execute()
             switch (m.second->fetchDep->fetchKind)
             {
             case DependencyFetchKind::Disk:
-            case DependencyFetchKind::Swag:
                 fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
                 break;
+
+            case DependencyFetchKind::Swag:
+            {
+                error_code errorCode;
+                fs::path   pathSrc = g_Workspace->dependenciesPath.string();
+                pathSrc += "/";
+                pathSrc += m.second->name.c_str();
+                if (!fs::exists(pathSrc) && !fs::create_directories(pathSrc, errorCode))
+                {
+                    g_Log.errorOS(Utf8::format(g_E[Err0604], pathSrc.c_str()));
+                    ok = false;
+                    continue;
+                }
+
+                pathSrc += "/";
+                pathSrc += SWAG_ALIAS_PATH;
+
+                FILE* f;
+                fopen_s(&f, pathSrc.string().c_str(), "wt");
+                string pathDst = m.second->fetchDep->resolvedLocation.c_str();
+                fwrite(pathDst.c_str(), pathDst.length(), 1, f);
+                fclose(f);
+
+                fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
+
+                ((FetchModuleFileSystemJob*) fetchJob)->collectSourceFiles = false;
+                break;
+            }
             }
 
             SWAG_ASSERT(fetchJob);

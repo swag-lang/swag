@@ -16,6 +16,7 @@ enum class ModuleKind;
 #define SWAG_MODULES_FOLDER "modules"
 #define SWAG_OUTPUT_FOLDER "output"
 #define SWAG_DEPENDENCIES_FOLDER "dependencies"
+#define SWAG_ALIAS_PATH "alias"
 
 #define SWAG_SRC_FOLDER "src"
 #define SWAG_PUBLIC_FOLDER "public"
