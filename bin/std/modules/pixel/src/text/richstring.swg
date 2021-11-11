@@ -7,9 +7,11 @@ struct RichChunk
     slice:      string
     fontStyle:  FontFamilyStyle = Regular
     isSpace:    bool
+    isEol:      bool
     colorIdx:   s32
 
     // From 'computeLayout'
+    width:      f32
     pos:        Math.Point
     font:       *Font
     color:      Color
@@ -20,18 +22,18 @@ struct RichString
 {
     raw:        String
     chunks:     Array'RichChunk
-    format:     RichStringFormat
     layoutRect: Math.Rectangle
 }
 
 impl RichString
 {
     #[Swag.Mixin]
-    protected func addChunk(idx: uint)
+    protected func addChunk(idx: uint, space, eol: bool = false)
     {
         if idx - startChunk == 0
             return
-        chunk.isSpace  = false
+        chunk.isSpace = space
+        chunk.isEol   = eol
         chunk.colorIdx = colorFg
         chunk.under    = under
         if isBold and isItalic
@@ -117,22 +119,26 @@ impl RichString
             if eat == 0
                 break
 
+            if c == "\n"
+            {
+                addChunk(byteIdx)
+                byteIdx, scan += eat
+                addChunk(byteIdx, eol: true)
+                continue
+            }
+
             if Unicode.isSpace(c)
             {
                 addChunk(byteIdx)
-
-                chunk.isSpace = true
-                chunk.slice = null
-                chunks.add(chunk)
-
                 while eat and Unicode.isSpace(c)
                 {
-                    startChunk, byteIdx, scan += eat
+                    byteIdx, scan += eat
                     count -= eat
                     sl = @mkslice(scan, count)
                     (c, eat) = Utf8.decodeRune(sl)
                 }
 
+                addChunk(byteIdx, space: true)
                 continue
             }
 

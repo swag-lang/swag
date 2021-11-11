@@ -502,14 +502,23 @@ func displayPage5(painter: *Pixel.Painter)
 
 func displayPage6(painter: *Pixel.Painter)
 {
-    var str: RichString
+    var str:    RichString
+    var format: RichStringFormat
 
-    str.set("<u>normal<u><i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>")
-    str.format.font = Res.fontFam
-    str.format.palette[0] = Argb.Black
-    str.format.palette[1] = Argb.Red
-    str.format.palette[2] = Argb.Green
-    painter.drawRichString(@{10, 10, 100, 100}, &str)
+    format.font = Res.fontFam
+    format.palette[0] = Argb.Black
+    format.palette[1] = Argb.Red
+    format.palette[2] = Argb.Green
+
+    str.set("<u>normal<u> <i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>")
+    painter.drawRichString(@{10, 10, 100, 100}, &str, format)
+
+    str.set("this is\na\ntext")
+    painter.translateTransform(0, 100)
+    painter.drawRichString(@{10, 10, 100, 100}, &str, format)
+
+    format.horzAlignment = .Center
+    painter.drawRichString(@{110, 10, 100, 100}, &str, format)
 }
 
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
