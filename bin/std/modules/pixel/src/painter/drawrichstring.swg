@@ -125,6 +125,11 @@ impl Painter
         case Center:    y = pos.vertCenter() - (totalHeight * 0.5)
         }
 
+        text.boundRect.x = Swag.F32.Max
+        text.boundRect.y = y
+        text.boundRect.width = 0
+        text.boundRect.height = 0
+
         // Layout
         visit *line: lines
         {
@@ -138,6 +143,9 @@ impl Painter
             case Center: x1 = pos.horzCenter() - line.width * 0.5
             }
 
+            text.boundRect.x = Math.min(text.boundRect.x, x1)
+            text.boundRect.width = Math.max(text.boundRect.width, line.width)
+
             loop idx: line.start..<line.end
             {
                 c := text.chunks[idx]
@@ -150,6 +158,7 @@ impl Painter
             }
 
             y += format.font.regular.height + format.lineGap
+            text.boundRect.height += format.font.regular.height + format.lineGap
         }
     }
 

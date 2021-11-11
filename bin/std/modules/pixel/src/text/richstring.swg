@@ -23,6 +23,7 @@ struct RichString
     raw:        String
     chunks:     Array'RichChunk
     layoutRect: Math.Rectangle
+    boundRect:  Math.Rectangle
 }
 
 impl RichString
