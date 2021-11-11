@@ -40,6 +40,7 @@ struct StringMetrics
 struct RichStringFormat
 {
     font:           FontFamily
+    fontStyle:      FontFamilyStyle = Regular
     palette:        [4] Color
     horzAlignment:  StringHorzAlignment = Left
     vertAlignment:  StringVertAlignment = Top
@@ -191,9 +192,12 @@ impl Painter
         visit *c, idx: text.chunks
         {
             // Attributes
-            switch c.fontStyle
+            fs := c.fontStyle
+            if fs == .Default
+                fs = format.fontStyle
+            switch fs
             {
-            case Regular:
+            case Regular, Default:
                 c.font = format.font.regular
             case Bold:
                 c.font = format.font.bold

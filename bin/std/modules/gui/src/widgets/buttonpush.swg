@@ -66,16 +66,16 @@ impl IWnd for ButtonPush
             bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
 
         // Content
-        var labelStyle: LabelPaintStyle
-        labelStyle.stringFormat.palette[0] = colorText
-        labelStyle.stringFormat.horzAlignment = .Center
-        labelStyle.stringFormat.vertAlignment = .Center
-        labelStyle.stringFormat.flags = .Clip
-        labelStyle.stringFormat.font.regular = bc.theme.res.fontDefault.bold
-        labelStyle.iconMargin = bc.theme.metrics.iconTextMargin
+        var format: RichStringFormat
+        format.palette[0] = colorText
+        format.horzAlignment = .Center
+        format.vertAlignment = .Center
+        format.flags = .Clip
+        format.font = bc.theme.res.fontDefault
+        format.fontStyle = .Bold
         labelPos := position
         labelPos.inflate(bc.theme.metrics.btnMargins)
-        Label.paint(bc, labelPos, &name, icon, labelStyle)
+        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconTextMargin)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

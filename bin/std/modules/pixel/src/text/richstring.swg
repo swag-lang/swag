@@ -43,7 +43,7 @@ impl RichString
         else if isItalic
             chunk.fontStyle = .Italic
         else
-            chunk.fontStyle = .Regular
+            chunk.fontStyle = .Default
         chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
         chunks.add(chunk)
         startChunk = byteIdx
@@ -52,10 +52,7 @@ impl RichString
     #[Swag.Inline]
     mtd opCount() => raw.length
     #[Swag.Inline]
-    mtd opAffect(str: string)
-    {
-        set(str)
-    }
+    mtd opAffect(str: string) = set(str)
 
     // Associate a string
     mtd set(text: string)
