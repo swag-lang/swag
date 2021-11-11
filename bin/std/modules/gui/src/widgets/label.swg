@@ -3,9 +3,7 @@ using Core, Pixel
 
 struct LabelPaintStyle
 {
-    stringFormat:   StringFormat
-    font:           *Font
-    colorText:      Color
+    stringFormat:   RichStringFormat
     iconMargin:     f32 = 4
 }
 
@@ -22,27 +20,30 @@ impl IWnd for Label
         pos := position
         applyPadding(&pos, padding)
 
-        var sf: StringFormat
+        var sf: RichStringFormat
         sf.flags |= .WordWrap
-        evt.bc.painter.drawString(pos, name, theme.res.fontDefault.regular, Argb.White, sf)
+        sf.font.regular = theme.res.fontDefault.regular
+        sf.palette[0] = Argb.White
+        evt.bc.painter.drawRichString(pos, &name, sf)
     }
 }
 
 impl Label
 {
-    func paint(bc: *PaintContext, position: Math.Rectangle, name: string, icon: Icon, style: LabelPaintStyle)
+    func paint(bc: *PaintContext, position: Math.Rectangle, name: *RichString, icon: Icon, style: LabelPaintStyle)
     {
-        if @countof(name) == 0 and !icon.isValid()
+        count := @countof(dref name)
+        if count == 0 and !icon.isValid()
             return
 
         painter := bc.painter
         pos     := position
 
         // Icon alone
-        if @countof(name) == 0
+        if count == 0
         {
             pos.x = pos.horzCenter() - icon.size * 0.5
-            icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), style.colorText)
+            icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), style.stringFormat.palette[0])
             return
         }
 
@@ -58,12 +59,11 @@ impl Label
             }
         }
 
-        var outRect: Math.Rectangle = ?
-        bc.painter.drawString(pos, name, style.font, style.colorText, style.stringFormat, &outRect)
+        bc.painter.drawRichString(pos, name, style.stringFormat)
 
         if icon.isValid()
         {
-            icon.paint(bc.painter, outRect.x - icon.size - style.iconMargin, outRect.vertCenter() - (icon.size * 0.5), style.colorText)
+            icon.paint(bc.painter, name.boundRect.x - icon.size - style.iconMargin, name.boundRect.vertCenter() - (icon.size * 0.5), style.stringFormat.palette[0])
         }
     }
 

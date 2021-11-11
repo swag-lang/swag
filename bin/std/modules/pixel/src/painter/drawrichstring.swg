@@ -46,7 +46,6 @@ impl Painter
             }
 
             // Attributes
-            c.color = format.palette[c.colorIdx]
             switch c.fontStyle
             {
             case Regular:
@@ -187,7 +186,7 @@ impl Painter
         // Draw
         visit *c: text.chunks
         {
-            drawString(c.pos.x, c.pos.y, c.slice, c.font, c.color, c.under)
+            drawString(c.pos.x, c.pos.y, c.slice, c.font, format.palette[c.colorIdx], c.under)
         }
 
         // Restore clipping to its previous value

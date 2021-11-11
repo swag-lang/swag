@@ -67,15 +67,15 @@ impl IWnd for ButtonPush
 
         // Content
         var labelStyle: LabelPaintStyle
-        labelStyle.colorText = colorText
+        labelStyle.stringFormat.palette[0] = colorText
         labelStyle.stringFormat.horzAlignment = .Center
         labelStyle.stringFormat.vertAlignment = .Center
         labelStyle.stringFormat.flags = .Clip
-        labelStyle.font = bc.theme.res.fontDefault.bold
+        labelStyle.stringFormat.font.regular = bc.theme.res.fontDefault.bold
         labelStyle.iconMargin = bc.theme.metrics.iconTextMargin
         labelPos := position
         labelPos.inflate(bc.theme.metrics.btnMargins)
-        Label.paint(bc, labelPos, name, icon, labelStyle)
+        Label.paint(bc, labelPos, &name, icon, labelStyle)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

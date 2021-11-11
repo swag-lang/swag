@@ -14,7 +14,6 @@ struct RichChunk
     boundRect:  Math.Rectangle
     pos:        Math.Point
     font:       *Font
-    color:      Color
     under:      UnderlineStyle = None
 }
 
@@ -50,6 +49,9 @@ impl RichString
         startChunk = byteIdx
     }
 
+    #[Swag.Inline]
+    mtd opCount() => raw.length
+    #[Swag.Inline]
     mtd opAffect(str: string)
     {
         set(str)

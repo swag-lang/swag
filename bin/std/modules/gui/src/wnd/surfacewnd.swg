@@ -238,10 +238,11 @@ impl IWnd for SurfaceWnd
                 posCaption.x += icon.size + theme.metrics.iconTextMargin
             }
 
-            var sf: Pixel.StringFormat
+            var sf: Pixel.RichStringFormat
             sf.vertAlignment = .Center
-            colorTxt := surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
-            bc.painter.drawString(posCaption, name, theme.res.fontDefault.regular, colorTxt, sf)
+            sf.font.regular = theme.res.fontDefault.regular
+            sf.palette[0] = surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
+            bc.painter.drawRichString(posCaption, &name, sf)
         }
     }
 }
