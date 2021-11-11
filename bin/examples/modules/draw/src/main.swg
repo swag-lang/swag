@@ -528,6 +528,12 @@ func displayPage6(painter: *Pixel.Painter)
     format.flags = .WordWrap
     painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)
     painter.drawRichString(@{10, 200, 200, 100}, &str, format)
+
+    str.set(TXT)
+    format.horzAlignment = .Justify
+    format.flags = .WordWrap
+    painter.fillRect(@{220, 200, 200, 200}, Argb.Gray)
+    painter.drawRichString(@{220, 200, 200, 100}, &str, format)
 }
 
 func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool

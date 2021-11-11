@@ -6,6 +6,7 @@ enum StringHorzAlignment
     Center
     Left
     Right
+    Justify
 }
 
 enum StringVertAlignment

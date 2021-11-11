@@ -19,8 +19,9 @@ impl Painter
 
         struct OneLine
         {
-            start, end: s32
-            width:      f32
+            start, end:     s32
+            width:          f32
+            countSpaces:    s32
         }
 
         // Divide in lines
@@ -39,6 +40,7 @@ impl Painter
                 lines.add(line)
                 startLine = line.end + 1
                 line.width = 0
+                line.countSpaces = 0
                 continue
             }
 
@@ -70,23 +72,35 @@ impl Painter
                     // We do not want the current line to end with a space
                     if lastWasSpace and idx
                     {
-                        line.width -= text.chunks[idx - 1].boundRect.width
+                        line.countSpaces -= 1
+                        if format.horzAlignment != .Justify
+                            line.width -= text.chunks[idx - 1].boundRect.width
                         line.end -= 1
                     }
 
                     lines.add(line)
                     startLine  = cast(s32) idx
                     line.width = 0
+
+                    // We do not want the new line to start with a space
                     if c.isSpace
                         startLine += 1
                     else
                         line.width += c.boundRect.x + c.boundRect.width
+                    line.countSpaces = 0
                     continue
                 }
             }
 
             lastWasSpace = c.isSpace
-            line.width += c.boundRect.x + c.boundRect.width
+            if c.isSpace
+            {
+                line.countSpaces += 1
+                if format.horzAlignment != .Justify
+                    line.width += c.boundRect.x + c.boundRect.width
+            }
+            else
+                line.width += c.boundRect.x + c.boundRect.width
         }
 
         if startLine != text.chunks.count
@@ -126,7 +140,11 @@ impl Painter
             loop idx: line.start..<line.end
             {
                 c := text.chunks[idx]
-                c.pos.x = x1; x1 += c.boundRect.width
+                c.pos.x = x1
+                if c.isSpace and format.horzAlignment == .Justify
+                    x1 += (pos.width - line.width) / line.countSpaces
+                else
+                    x1 += c.boundRect.width
                 c.pos.y = y1
             }
 
