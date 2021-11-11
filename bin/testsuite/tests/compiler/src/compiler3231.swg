@@ -1,0 +1,44 @@
+var G: s32
+
+interface IWnd
+{
+    titi: func(self, s32)
+}
+
+struct Wnd
+{
+}
+
+struct Dialog
+{
+    using wnd:  Wnd
+}
+
+struct MessageDlg
+{
+    using dlg:  Dialog
+}
+
+impl IWnd for Wnd
+{
+    mtd titi(vv: s32)
+    {
+        G += 2
+    }
+}
+
+impl IWnd for MessageDlg
+{
+    mtd titi(vv: s32)
+    {
+        G += 1
+        dlg.IWnd.titi(vv)
+    }
+}
+
+#test
+{
+    var x: MessageDlg
+    x.IWnd.titi(0)
+    @assert(G == 3)
+}
