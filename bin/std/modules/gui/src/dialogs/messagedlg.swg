@@ -41,6 +41,21 @@ public impl MessageDlg
         return dlg
     }
 
+    protected mtd adaptHeight()
+    {
+        var fake: Pixel.Painter
+        var rsf:  Pixel.RichStringFormat
+        rsf.font = surface.app.theme.res.fontDefault
+        fake.drawRichString(@{0, 0, 280, 256}, &label.name, rsf)
+        h := Math.min(300, label.name.boundRect.height + 48)
+        if labelIcon h += labelIcon.position.height
+        h += wndBottom.position.height
+
+        pos := surface.position
+        pos.height = h
+        surface.setPosition(pos)
+    }
+
     // Set big icon
     mtd setIcon(icon: Icon)
     {
@@ -77,6 +92,7 @@ public impl MessageDlg
         btn = dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
         btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnYes); }
 
+        dlg.adaptHeight()
         dlg.surface.center(from)
         return Dialog.doModal(dlg.surface)
     }
