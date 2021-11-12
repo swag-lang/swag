@@ -2976,32 +2976,48 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
 {
     auto genericParameters = node->genericParameters;
-    if (!genericParameters)
-        return true;
 
-    auto symbol         = overload->symbol;
-    auto symbolKind     = symbol->kind;
-    auto callParameters = node->callParameters;
-
-    node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
-    if (symbolKind != SymbolKind::Function &&
-        symbolKind != SymbolKind::Struct &&
-        symbolKind != SymbolKind::Interface &&
-        symbolKind != SymbolKind::TypeAlias)
+    // User generic parameters
+    if (genericParameters)
     {
-        auto       firstNode = symbol->nodes.front();
-        Diagnostic diag{callParameters, Utf8::format(g_E[Err0130], node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
-        Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Utf8::format(g_E[Nte0040], node->token.text.c_str()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        auto symbol         = overload->symbol;
+        auto symbolKind     = symbol->kind;
+        auto callParameters = node->callParameters;
+
+        node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
+        if (symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
+            symbolKind != SymbolKind::TypeAlias)
+        {
+            auto       firstNode = symbol->nodes.front();
+            Diagnostic diag{callParameters, Utf8::format(g_E[Err0130], node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
+            Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Utf8::format(g_E[Nte0040], node->token.text.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        auto childCount = genericParameters->childs.size();
+        for (int i = 0; i < childCount; i++)
+        {
+            auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
+            symMatchContext.genericParameters.push_back(oneParam);
+            symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
+        }
     }
 
-    auto childCount = genericParameters->childs.size();
-    for (int i = 0; i < childCount; i++)
+    /*else if (node->ownerFct)
     {
-        auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
-        symMatchContext.genericParameters.push_back(oneParam);
-        symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
-    }
+        auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeFct->genericParameters.empty())
+        {
+            auto childCount = typeFct->genericParameters.size();
+            for (int i = 0; i < childCount; i++)
+            {
+                symMatchContext.genericParameters.push_back(typeFct->genericParameters[i]->declNode);
+                symMatchContext.genericParametersCallTypes.push_back(typeFct->genericParameters[i]->typeInfo);
+            }
+        }
+    }*/
 
     return true;
 }

@@ -94,6 +94,18 @@ struct VectorNative
         count--;
     }
 
+    void expand_clear(int num)
+    {
+        if (num)
+        {
+            reserve(num, false);
+            if (count < num)
+                memset(buffer + count, 0, (num - count) * sizeof(T));
+        }
+
+        count = num;
+    }
+
     void set_size_clear(int num)
     {
         if (num)

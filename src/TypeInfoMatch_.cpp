@@ -574,8 +574,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     for (int i = 0; i < userGenericParams; i++)
     {
         auto callParameter   = context.genericParameters[i];
+        auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i], CONCRETE_FUNC);
         auto symbolParameter = genericParameters[i];
-        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
         if (myTypeInfo->flags & TYPEINFO_GENERIC)
         {
@@ -665,7 +665,7 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
 
-    context.genericParametersCallTypes.set_size_clear(wantedNumGenericParams);
+    context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
     context.genericParametersGenTypes.set_size_clear(wantedNumGenericParams);
 
     // It's valid to not specify generic parameters. They will be deduced
@@ -692,9 +692,13 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     for (int i = 0; i < numGenericParams; i++)
     {
         auto genType = context.genericParameters[i];
-
-        context.genericReplaceTypes[genericParameters[i]->name] = genType->typeInfo;
-        context.genericParametersCallTypes[i]                   = genType->typeInfo;
+        if (!context.genericParametersCallTypes[i])
+        {
+            context.genericReplaceTypes[genericParameters[i]->name] = genType->typeInfo;
+            context.genericParametersCallTypes[i]                   = genType->typeInfo;
+        }
+        else
+            context.genericReplaceTypes[genericParameters[i]->name] = context.genericParametersCallTypes[i];
     }
 }
 
