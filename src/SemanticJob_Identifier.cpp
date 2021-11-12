@@ -1256,14 +1256,11 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     if (node->ownerStructScope)
         toCheck.push_back(node->ownerStructScope->owner);
 
-    // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
-    // when instantiating function B
-    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == symOverload->node->ownerStructScope)
+    // If we are inside a function, then we can inherit the generic concrete types of that function
+    if (node->ownerFct)
         toCheck.push_back(node->ownerFct);
 
-    if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
-        toCheck.push_back(node->ownerFct);
-
+    // An identifier can inherit generic types of what before in the identifierref
     if (node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
@@ -3004,7 +3001,6 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
             symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
         }
     }
-
 
     return true;
 }

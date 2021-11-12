@@ -1,3 +1,4 @@
+//#global skip
 func(T) toto(x: T)
 {
     #assert @typeof(T) == bool
@@ -6,7 +7,7 @@ func(T) toto(x: T)
 func(T) titi(x: T)
 {
     #assert @typeof(T) == s32
-    toto(true)
+    toto'bool(true)
 }
 
 #test
