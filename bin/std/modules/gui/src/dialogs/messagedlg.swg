@@ -73,10 +73,9 @@ public impl MessageDlg
         dlg.setIcon(from.app.theme.getIcon64(ThemeIcons64.Question))
 
         btn := dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(BtnNo); }
-
+        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnNo); }
         btn = dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
-        btn.sigPressed = @(btn: *ButtonPush) { btn.surface.app.exitModal(BtnYes); }
+        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnYes); }
 
         dlg.surface.center(from)
         return Dialog.doModal(dlg.surface)
