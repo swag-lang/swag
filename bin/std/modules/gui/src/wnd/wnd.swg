@@ -144,6 +144,12 @@ impl Wnd
     // Setup
     //////////////////////////////////////////////
 
+    #[Swag.Inline]
+    func(T) create(parent: *Wnd, position: Math.Rectangle)->*T
+    {
+        return create(parent, "", position)
+    }
+
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
     {
         res := Memory.new'T()

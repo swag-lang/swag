@@ -1261,6 +1261,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == symOverload->node->ownerStructScope)
         toCheck.push_back(node->ownerFct);
 
+    // We do not want function to deduce their generic type from context, as the generic type can be deduced from the
+    // parameters
     if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
         toCheck.push_back(node->ownerFct);
 
@@ -3005,7 +3007,6 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         }
     }
 
-
     return true;
 }
 
@@ -3059,6 +3060,47 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
                 }
                 break;
             }
+            }
+        }
+
+        // We try to eliminate a function if it does not match a contextual generic match
+        // Because if we call a generic function without generic parameters, we can have multiple matches
+        // if the generic type has not been deduced from parameters (if any).
+        if (over->symbol->kind == SymbolKind::Function)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc->replaceTypes.size())
+            {
+                auto                   node = context->node;
+                VectorNative<AstNode*> toCheck;
+
+                // Pick contextual generic type replacements
+                if (node->ownerFct)
+                    toCheck.push_back(node->ownerFct);
+                if (node->ownerInline)
+                    toCheck.push_back(node->ownerInline->func);
+
+                for (auto c : toCheck)
+                {
+                    auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeFuncCheck->replaceTypes.size() != typeFunc->replaceTypes.size())
+                        continue;
+                    for (auto& it : typeFunc->replaceTypes)
+                    {
+                        auto it1 = typeFuncCheck->replaceTypes.find(it.first);
+                        if (it1 == typeFuncCheck->replaceTypes.end())
+                            continue;
+                        if (it.second != it1->second)
+                            oneMatch->remove = true;
+                    }
+                }
+
+                if (oneMatch->remove)
+                {
+                    matches[i] = matches.back();
+                    matches.pop_back();
+                    i--;
+                }
             }
         }
     }

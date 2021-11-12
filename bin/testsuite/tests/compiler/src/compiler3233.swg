@@ -2,6 +2,7 @@
 struct AA {}
 struct BB {}
 
+#[Swag.Inline]
 func(T) create1()
 {
     create(0)
