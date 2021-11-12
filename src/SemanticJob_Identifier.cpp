@@ -3005,19 +3005,6 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         }
     }
 
-    /*else if (node->ownerFct)
-    {
-        auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-        if (!typeFct->genericParameters.empty())
-        {
-            auto childCount = typeFct->genericParameters.size();
-            for (int i = 0; i < childCount; i++)
-            {
-                symMatchContext.genericParameters.push_back(typeFct->genericParameters[i]->declNode);
-                symMatchContext.genericParametersCallTypes.push_back(typeFct->genericParameters[i]->typeInfo);
-            }
-        }
-    }*/
 
     return true;
 }

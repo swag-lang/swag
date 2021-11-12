@@ -454,71 +454,69 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     int userGenericParams      = (int) context.genericParameters.size();
 
     // It's valid to not specify generic parameters. They will be deduced
-    if (myTypeInfo->kind == TypeInfoKind::Struct)
+    // A reference to a generic without specifying the generic parameters is a match
+    // (we deduce the type)
+    if (!userGenericParams && wantedNumGenericParams)
     {
-        // A reference to a generic without specifying the generic parameters is a match
-        // (we deduce the type)
-        if (!userGenericParams && wantedNumGenericParams)
+        if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
+            (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
+            !context.genericReplaceTypes.empty())
         {
-            if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
-                (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
-                !context.genericReplaceTypes.empty())
+            if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
             {
-                if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
+                context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
+                for (int i = 0; i < wantedNumGenericParams; i++)
                 {
-                    context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
-                    for (int i = 0; i < wantedNumGenericParams; i++)
+                    auto symbolParameter = genericParameters[i];
+                    auto genType         = symbolParameter->typeInfo;
+                    SWAG_ASSERT(genType);
+
+                    // If we try to match a generic type, and there's a contextual generic type replacement,
+                    // then match with the replacement
+                    if (genType->kind == TypeInfoKind::Generic)
                     {
-                        auto symbolParameter = genericParameters[i];
-                        auto genType         = symbolParameter->typeInfo;
-                        SWAG_ASSERT(genType);
-
-                        // If we try to match a generic type, and there's a contextual generic type replacement,
-                        // then match with the replacement
-                        if (genType->kind == TypeInfoKind::Generic)
+                        auto it = context.genericReplaceTypes.find(genType->name);
+                        if (it != context.genericReplaceTypes.end())
                         {
-                            auto it = context.genericReplaceTypes.find(genType->name);
-                            if (it != context.genericReplaceTypes.end())
-                            {
-                                context.genericParametersCallTypes[i]       = it->second;
-                                context.mapGenericTypesIndex[genType->name] = i;
-                                continue;
-                            }
+                            context.genericParametersCallTypes[i]       = it->second;
+                            context.mapGenericTypesIndex[genType->name] = i;
+                            continue;
                         }
-
-                        // We try to match an instance. If there is a contextual type replacement, this
-                        // must match, otherwise it's an irrelevant instance
-                        else
-                        {
-                            auto it = context.genericReplaceTypes.find(symbolParameter->name);
-                            if (it != context.genericReplaceTypes.end())
-                            {
-                                if (genType != it->second)
-                                {
-                                    context.result = MatchResult::NotEnoughGenericParameters;
-                                    return;
-                                }
-                            }
-                        }
-
-                        // Otherwise take the type, this is a match (genType can be either a generic type or a contextual match)
-                        context.genericParametersCallTypes[i] = genType;
-                        context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
                     }
 
-                    context.result = MatchResult::Ok;
-                    return;
+                    // We try to match an instance. If there is a contextual type replacement, this
+                    // must match, otherwise it's an irrelevant instance
+                    else
+                    {
+                        auto it = context.genericReplaceTypes.find(symbolParameter->name);
+                        if (it != context.genericReplaceTypes.end())
+                        {
+                            if (genType != it->second)
+                            {
+                                context.result = MatchResult::NotEnoughGenericParameters;
+                                return;
+                            }
+                        }
+                    }
+
+                    // Otherwise take the type, this is a match (genType can be either a generic type or a contextual match)
+                    context.genericParametersCallTypes[i] = genType;
+                    context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
                 }
+
+                context.result = MatchResult::Ok;
+                return;
             }
         }
-
-        if (userGenericParams < wantedNumGenericParams)
-        {
-            context.result = MatchResult::NotEnoughGenericParameters;
-            return;
-        }
     }
-    else
+
+    if (myTypeInfo->kind == TypeInfoKind::Struct && userGenericParams < wantedNumGenericParams)
+    {
+        context.result = MatchResult::NotEnoughGenericParameters;
+        return;
+    }
+
+    if (myTypeInfo->kind != TypeInfoKind::Struct)
     {
         if (!userGenericParams && wantedNumGenericParams)
         {
