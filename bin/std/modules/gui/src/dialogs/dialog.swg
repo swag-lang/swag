@@ -1,6 +1,6 @@
 public struct Dialog
 {
-    using base: Wnd
+    using wnd: Wnd
 }
 
 impl Dialog

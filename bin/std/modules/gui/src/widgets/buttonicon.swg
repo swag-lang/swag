@@ -3,7 +3,7 @@ using Core, Pixel
 
 struct ButtonIcon
 {
-    using base:     Widget
+    using widget:   Widget
     icon:           Icon
     sigPressed:     func(*ButtonIcon)
 

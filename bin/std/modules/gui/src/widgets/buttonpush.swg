@@ -3,7 +3,7 @@ using Core, Pixel
 
 struct ButtonPush
 {
-    using base:     Widget
+    using widget:   Widget
     icon:           Icon
     isDefault:      bool
     isFlat:         bool

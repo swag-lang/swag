@@ -2,17 +2,17 @@ using Core
 
 public struct MessageDlg
 {
-    using dlg:  Dialog
-    labelIcon:  *Label
-    label:      *Label
-    wndBottom:  *Wnd
+    using dialog:   Dialog
+    labelIcon:      *Label
+    label:          *Label
+    wndBottom:      *Wnd
 }
 
 impl IWnd for MessageDlg
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        dlg.IWnd.onMouseEvent(evt)
+        dialog.IWnd.onMouseEvent(evt)
     }
 }
 
@@ -25,17 +25,18 @@ public impl MessageDlg
     {
         dlg := Wnd.create'MessageDlg(null)
 
-        surface := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
-        surface.wnd.view.backgroundStyle = .Dialog
+        srf := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
+        srf.wnd.view.backgroundStyle = .Dialog
 
-        dlg.label = Label.create(surface.wnd.view, message, @{})
-        dlg.label.dockStyle = .Center
-        dlg.label.padding = @{10, 10, 10, 10}
+        using dlg
+        label = Label.create(srf.wnd.view, message, @{})
+        label.dockStyle = .Center
+        label.padding = @{10, 10, 10, 10}
 
-        dlg.wndBottom = Wnd.create'Wnd(surface.wnd.view, "", @{0, 0, 0, 50})
-        dlg.wndBottom.dockStyle = .Bottom
-        dlg.wndBottom.backgroundStyle = .DialogBar
-        dlg.wndBottom.padding = @{10, 10, 10, 10}
+        wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, 50})
+        wndBottom.dockStyle = .Bottom
+        wndBottom.backgroundStyle = .DialogBar
+        wndBottom.padding = @{10, 10, 10, 10}
 
         return dlg
     }

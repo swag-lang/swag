@@ -3,8 +3,8 @@ using Core, Pixel
 
 struct Label
 {
-    using base: Widget
-    icon: Icon
+    using widget:   Widget
+    icon:           Icon
 }
 
 impl IWnd for Label
