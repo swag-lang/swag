@@ -2989,6 +2989,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure this will always work.
+    // :ReverseLiteralStruct
     fromNode->parent->flags |= AST_REVERSE_SEMANTIC;
 
     varNode->inheritTokenLocation(fromNode);

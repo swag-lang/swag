@@ -23,7 +23,7 @@ public impl MessageDlg
 
     func create(from: *Surface, x, y: s32, message: string)->*MessageDlg
     {
-        dlg := Wnd.create'MessageDlg(null, @{})
+        dlg := Wnd.create'MessageDlg(null)
 
         surface := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
         surface.wnd.view.backgroundStyle = .Dialog

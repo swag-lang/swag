@@ -145,6 +145,12 @@ impl Wnd
     //////////////////////////////////////////////
 
     #[Swag.Inline]
+    func(T) create(parent: *Wnd)->*T
+    {
+        return create(parent, "", @{})
+    }
+
+    #[Swag.Inline]
     func(T) create(parent: *Wnd, position: Math.Rectangle)->*T
     {
         return create(parent, "", position)

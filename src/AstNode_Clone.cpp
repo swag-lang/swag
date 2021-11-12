@@ -18,6 +18,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // Copy some specific flags
     doneFlags |= from->doneFlags & AST_DONE_INLINED;
     doneFlags |= from->doneFlags & AST_DONE_CHECK_ATTR;
+    doneFlags |= from->doneFlags & AST_DONE_STRUCT_CONVERT;
     semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
@@ -472,6 +473,10 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstFuncCallParam>();
     newNode->copyFrom(context, this);
+
+    // :ReverseLiteralStruct
+    // Order of childs is correct, so remove flag
+    newNode->flags &= ~AST_REVERSE_SEMANTIC;
 
     newNode->namedParam        = namedParam;
     newNode->namedParamNode    = namedParamNode;
