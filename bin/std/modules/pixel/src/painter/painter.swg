@@ -102,6 +102,7 @@ struct Painter
     commandBuffer:      Array'Command
     vertexBuffer:       Array'VertexLayout
     triangulateIdx:     Array's32
+    fake:               bool
 
     sharedSolidPen:     Pen
     sharedSolidBrush:   Brush

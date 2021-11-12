@@ -6,6 +6,7 @@ public struct MessageDlg
     labelIcon:      *Label
     label:          *Label
     wndBottom:      *Wnd
+    buttons:        Array'(*ButtonPush)
 }
 
 impl IWnd for MessageDlg
@@ -41,17 +42,27 @@ public impl MessageDlg
         return dlg
     }
 
-    protected mtd adaptHeight()
+    protected mtd adaptSizeToMessage()
     {
-        var fake: Pixel.Painter
+        var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
         rsf.font = surface.app.theme.res.fontDefault
-        fake.drawRichString(@{0, 0, 280, 256}, &label.name, rsf)
+        rsf.flags |= .WordWrap
+        fake.drawRichString(@{0, 0, 512, 256}, &label.name, rsf)
+        label.name.invalidate()
+
+        // Width
+        w := cast(f32) ((buttons.count + 1) * 120)
+        w = Math.max(w, label.name.boundRect.width + 48)
+
+        // Height
         h := Math.min(300, label.name.boundRect.height + 48)
-        if labelIcon h += labelIcon.position.height
+        if labelIcon
+            h += labelIcon.position.height
         h += wndBottom.position.height
 
         pos := surface.position
+        pos.width = w
         pos.height = h
         surface.setPosition(pos)
     }
@@ -77,6 +88,7 @@ public impl MessageDlg
         btn.dockStyle = .Right
         btn.isDefault = isDefault
         btn.margin = @{5, 0, 5, 0}
+        buttons.add(btn)
         return btn
     }
 
@@ -92,7 +104,7 @@ public impl MessageDlg
         btn = dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
         btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnYes); }
 
-        dlg.adaptHeight()
+        dlg.adaptSizeToMessage()
         dlg.surface.center(from)
         return Dialog.doModal(dlg.surface)
     }

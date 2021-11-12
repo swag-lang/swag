@@ -54,6 +54,12 @@ impl RichString
     #[Swag.Inline]
     mtd opAffect(str: string) = set(str)
 
+    // Force to be repainted
+    mtd invalidate()
+    {
+        layoutRect.clear()
+    }
+
     // Associate a string
     mtd set(text: string)
     {
