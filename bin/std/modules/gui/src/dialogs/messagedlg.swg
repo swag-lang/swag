@@ -12,7 +12,7 @@ impl IWnd for MessageDlg
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        dlg.base.IWnd.onMouseEvent(evt)
+        dlg.IWnd.onMouseEvent(evt)
     }
 }
 

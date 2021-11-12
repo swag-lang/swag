@@ -135,7 +135,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
             typeInfo->declNode   = implNode;
-            newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL, nullptr, 0, nullptr, &itfName);
+            newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL_IN_STRUCT, nullptr, 0, nullptr, &itfName);
         }
         else
         {

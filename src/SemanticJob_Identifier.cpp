@@ -712,7 +712,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Do not register a sub impl scope, for ufcs to use the real variable
-    if (!(overload->flags & OVERLOAD_IMPL))
+    if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
     {
         parent->resolvedSymbolName     = symbol;
         parent->resolvedSymbolOverload = overload;
@@ -822,7 +822,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Struct:
     case SymbolKind::Interface:
-        if (!(overload->flags & OVERLOAD_IMPL))
+        if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
@@ -2486,6 +2486,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto  crc                = node->token.text.hash();
 
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
@@ -2536,41 +2537,48 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             scopeHierarchy.push_back_once(startScope);
 
-            // Only deal with previous scope if the previous node wants to
-            bool addAlternative = true;
-            if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & AST_SEM_FORCE_SCOPE)
-                addAlternative = false;
-
-            if (addAlternative)
+            // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
+            auto symbol = startScope->symTable.find(node->token.text, crc);
+            if (symbol)
             {
-                // Add private scope
-                auto it = startScope->privateScopes.find(context->sourceFile);
-                if (it != startScope->privateScopes.end())
-                    scopeHierarchy.push_back_once(it->second);
+                dependentSymbols.push_back_once({symbol, startScope});
+            }
+            else
+            {
+                // Only deal with previous scope if the previous node wants to
+                bool addAlternative = true;
+                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & AST_SEM_FORCE_SCOPE)
+                    addAlternative = false;
 
-                // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-                // relevant and we should not use it
-                if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
+                if (addAlternative)
                 {
-                    for (auto s : startScope->owner->extension->alternativeScopes)
-                        scopeHierarchy.push_back_once(s);
-                    collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
+                    // Add private scope
+                    auto it = startScope->privateScopes.find(context->sourceFile);
+                    if (it != startScope->privateScopes.end())
+                        scopeHierarchy.push_back_once(it->second);
+
+                    // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+                    // relevant and we should not use it
+                    if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
+                    {
+                        for (auto s : startScope->owner->extension->alternativeScopes)
+                            scopeHierarchy.push_back_once(s);
+                        collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
+                    }
                 }
             }
         }
 
+        if (!dependentSymbols.empty())
+            break;
+
         // Search symbol in all the scopes of the hierarchy
-        auto crc = node->token.text.hash();
         for (auto scope : scopeHierarchy)
         {
             auto symbol = scope->symTable.find(node->token.text, crc);
             if (symbol)
             {
                 dependentSymbols.push_back_once({symbol, scope});
-
-                // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
-                if (oneTry == 0 && scope == identifierRef->startScope)
-                    break;
             }
         }
 
@@ -2804,7 +2812,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
 
-    // The ufcs parameter has already been set in we are evaluatin an identifier for the second time
+    // The ufcs parameter has already been set in we are evaluating an identifier for the second time
     // (when we inline a function call)
     if (node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
         canDoUfcs = false;
@@ -2841,8 +2849,11 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
     {
         if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-            return context->report({identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node,
-                                    Utf8::format(g_E[Err0124], identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))});
+        {
+            auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+            auto msg     = Utf8::format(g_E[Err0124], identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind));
+            return context->report({subNode, msg});
+        }
     }
 
     return true;
@@ -3211,15 +3222,20 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
-        // Priority to a non IMPL symbol
-        if (over->flags & OVERLOAD_IMPL)
+        // If we are referencing an interface name, then interface can come from the interface definition and
+        // from the sub scope inside a struct (OVERLOAD_IMPL_IN_STRUCT).
+        if (over->flags & OVERLOAD_IMPL_IN_STRUCT)
         {
             for (int j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL))
+                if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL_IN_STRUCT))
                 {
-                    curMatch->remove = true;
-                    break;
+                    // If interface name is alone, then we take in priority the interface definition, not the impl block
+                    if (node->childParentIdx == 0)
+                        curMatch->remove = true;
+                    // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
+                    else
+                        matches[j]->remove = true;
                 }
             }
         }
