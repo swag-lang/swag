@@ -126,7 +126,7 @@ impl Painter
         // Underline
         if under != .None
         {
-            pen := Pen.createSolid(brush.color, font.underlineSize)
+            pen := Pen.createSolid(brush.color, Math.max(1, font.underlineSize))
             pen.beginCapStyle = .None
             pen.endCapStyle = .None
 
