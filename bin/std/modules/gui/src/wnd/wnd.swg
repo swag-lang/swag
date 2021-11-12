@@ -482,6 +482,21 @@ impl Wnd
         surface.app.releaseMouse()
     }
 
+    mtd captureKeyboard()
+    {
+        surface.app.keybCaptureWnd = self
+    }
+
+    mtd releaseKeyboard()
+    {
+        surface.app.keybCaptureWnd = null
+    }
+
+    mtd setFocus()
+    {
+        surface.app.keybFocusWnd = self
+    }
+
     //////////////////////////////////////////////
     // Events
     //////////////////////////////////////////////

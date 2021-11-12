@@ -25,7 +25,9 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     {
         switch msg
         {
-        case WM_SYSKEYDOWN, WM_SYSKEYUP:
+        case WM_SYSKEYDOWN, WM_SYSKEYUP, WM_SYSCHAR:
+            return 0
+        case WM_KEYDOWN, WM_KEYUP, WM_CHAR:
             return 0
         case WM_SETCURSOR:
             return 0

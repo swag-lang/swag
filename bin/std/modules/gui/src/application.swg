@@ -22,6 +22,8 @@ struct Application
     modalSurfaces:      Array'(*Surface)
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
+    keybCaptureWnd:     *Wnd
+    keybFocusWnd:       *Wnd
 }
 
 impl Application
@@ -87,6 +89,10 @@ impl Application
             mouseEnterWnd = null
         if wnd == mouseCaptureWnd
             mouseCaptureWnd = null
+        if wnd == keybCaptureWnd
+            keybCaptureWnd = null
+        if wnd == keybFocusWnd
+            keybFocusWnd = null
 
         visit e: postedEvents
         {
@@ -257,7 +263,16 @@ impl Application
     {
         keyb.update()
 
-        target := &mainSurface.wnd
+        target := keybCaptureWnd
+        if !target
+            target = keybFocusWnd
+        if !target
+        {
+            if modalSurfaces.count
+                target = &modalSurfaces.back().wnd
+            else
+                target = &mainSurface.wnd
+        }
 
         // Modifiers
         modifiers := keyb.getPressedModifiers()

@@ -11,9 +11,17 @@ public struct MessageDlg
 
 impl IWnd for MessageDlg
 {
-    mtd onMouseEvent(evt: *MouseEvent)
+    mtd onKeyEvent(evt: *KeyEvent)
     {
-        dialog.IWnd.onMouseEvent(evt)
+        if evt.kind == .KeyPressed
+        {
+            if evt.key == .Enter
+                surface.app.exitModal(BtnYes)
+            if evt.key == .Escape
+                surface.app.exitModal(BtnNo)
+        }
+
+        dialog.IWnd.onKeyEvent(evt)
     }
 }
 
@@ -39,6 +47,7 @@ public impl MessageDlg
         wndBottom.backgroundStyle = .DialogBar
         wndBottom.padding = @{10, 10, 10, 10}
 
+        dlg.setFocus()
         return dlg
     }
 

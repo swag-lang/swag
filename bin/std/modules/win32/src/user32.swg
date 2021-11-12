@@ -817,6 +817,7 @@ struct PAINTSTRUCT
     func SetCapture(hWnd: HWND)->HWND;
     func ReleaseCapture()->BOOL;
     func SetCursor(hCursor: HCURSOR)->HCURSOR;
+    func SetFocus(hWnd: HWND)->HWND;
 
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
