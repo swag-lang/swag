@@ -1,4 +1,3 @@
-//#global skip
 func(T) toto(v: T)
 {
 
@@ -14,7 +13,7 @@ impl A
     func titi(self)
     {
         var x: s32
-        toto's32(x)
+        toto(x)
     }
 }
 
