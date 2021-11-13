@@ -724,13 +724,12 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         castFlags &= ~CASTFLAG_AUTO_OPCAST;
 
     matchParameters(context, parameters, castFlags);
-
     if (context.result == MatchResult::Ok)
         matchNamedParameters(context, parameters);
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
-    if (context.cptResolved < firstDefault && parameters.size())
+    if (context.cptResolved < firstDefault && parameters.size() && context.result == MatchResult::Ok)
     {
         auto back = parameters.back()->typeInfo;
         if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic && back->kind != TypeInfoKind::CVariadic)
