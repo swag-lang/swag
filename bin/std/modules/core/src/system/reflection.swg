@@ -273,4 +273,14 @@ using Swag
             res |= p.flags
         return res
     }
+
+    func copy(dst, src: *void, type: typeinfo)
+    {
+        Memory.copy(dst, src, type.sizeof)
+        if hasPostCopy(type)
+        {
+            ptrStruct := cast(const *Swag.TypeInfoStruct) type
+            ptrStruct.opPostCopy(dst)
+        }
+    }
 }

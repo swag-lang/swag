@@ -42,6 +42,14 @@ impl TweakFile
     {
         Debug.assert(!folders.isEmpty())
 
+        struct Ref
+        {
+            folder: *Folder
+            src:    *Swag.TypeValue
+            dst:    *Swag.TypeValue
+        }
+
+        var refs: Array'Ref
         var currentFolder: *Folder
         visit one, idx: lines
         {
@@ -71,9 +79,10 @@ impl TweakFile
                 continue
             }
 
-            // Value
             if !currentFolder
                 currentFolder = folders.backPtr()
+
+            // Value
             one = Tokenize.eatSpaces(one)
             id := catch Parse.getIdentifier(one)
             if @err
@@ -81,8 +90,25 @@ impl TweakFile
 
             // Search value into folder
             field := Reflection.getField(currentFolder.type, id)
-            if !field throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
+            if !field
+                throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
             one = Tokenize.eatCount(one, @countof(id))
+            one = Tokenize.eatSpaces(one)
+            if !@countof(one)
+                throw Format.toString("line %: missing value", idx + 1)
+
+            if one[0] == "$"'u8
+            {
+                one = Tokenize.eatCount(one, 1)
+                otherField := Reflection.getField(currentFolder.type, one)
+                if !otherField
+                    throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.flatName)
+                if field.pointedType != otherField.pointedType
+                    throw Format.toString("line %: reference '%' type mismatch", idx + 1, one)
+                var ref: Ref{currentFolder, otherField, field}
+                refs.add(ref)
+                continue
+            }
 
             // Get value and poke it
             one = catch Parse.pokeValue(currentFolder.data + field.offset, field.pointedType, one)
@@ -95,6 +121,14 @@ impl TweakFile
             one = Tokenize.eatSpaces(one)
             if @countof(one) and one[0] != "#"'u8
                 throw Format.toString("line %: invalid characters after value", idx + 1)
+        }
+
+        // Do references in a second pass
+        visit ref: refs
+        {
+            ptrDst := cast(*u8) ref.folder.data + ref.dst.offset
+            ptrSrc := cast(*u8) ref.folder.data + ref.src.offset
+            Reflection.copy(ptrDst, ptrSrc, ref.dst.pointedType)
         }
     }
 }
