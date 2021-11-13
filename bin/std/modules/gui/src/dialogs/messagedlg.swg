@@ -157,18 +157,18 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
+    func yesNo(from: *Surface, message: string, defaultId = BtnNo, icon: Icon = @{})->string
     {
-        dlg := create(from, 0, 0, message, from.app.theme.getIcon64(ThemeIcons64.Question))
+        dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
         discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
         return dlg.display(from)
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel)->string
+    func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
     {
-        dlg := create(from, 0, 0, message, from.app.theme.getIcon64(ThemeIcons64.Question))
+        dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         discard dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
         discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
         discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)

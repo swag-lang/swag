@@ -650,7 +650,10 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         return true;
     }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+    if (ifTrue->typeInfo->isConst())
+        SWAG_CHECK(TypeManager::makeCompatibles(context, ifTrue, ifFalse, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+    else
+        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
     // Determin if we should take the type from the "false" expression, or from the "true"
     if (ifTrue->typeInfo == g_TypeMgr->typeInfoNull)
