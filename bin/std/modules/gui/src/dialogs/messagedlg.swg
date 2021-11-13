@@ -15,10 +15,31 @@ impl IWnd for MessageDlg
     {
         if evt.kind == .KeyPressed
         {
+            // Pressing enter validates the default button
             if evt.key == .Enter
-                surface.app.exitModal(BtnYes)
+            {
+                visit btn: buttons
+                {
+                    if btn.isDefault
+                    {
+                        surface.app.exitModal(btn.id)
+                        break
+                    }
+                }
+            }
+
+            // Pressing escape validates some specific buttons
             if evt.key == .Escape
-                surface.app.exitModal(BtnNo)
+            {
+                visit btn: buttons
+                {
+                    if btn.id == BtnNo
+                    {
+                        surface.app.exitModal(btn.id)
+                        break
+                    }
+                }
+            }
         }
 
         dialog.IWnd.onKeyEvent(evt)
