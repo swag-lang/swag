@@ -103,15 +103,29 @@ impl Style
         }
     }
 
-    mtd setStyleSheetColors(str: String)
+    mtd setStyleSheetColors(str: string)
     {
         styleSheetColors = str
         dirty = true
     }
 
-    mtd setStyleSheetMetrics(str: String)
+    mtd addStyleSheetColors(str: string)
+    {
+        styleSheetColors.append("\n")
+        styleSheetColors.append(str)
+        dirty = true
+    }
+
+    mtd setStyleSheetMetrics(str: string)
     {
         styleSheetMetrics = str
+        dirty = true
+    }
+
+    mtd addStyleSheetMetrics(str: string)
+    {
+        styleSheetMetrics.append("\n")
+        styleSheetMetrics.append(str)
         dirty = true
     }
 }
