@@ -44,6 +44,11 @@ public struct ThemeImageRects
     btnIcon_Hot:            ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_Pressed:        ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_Disabled:       ThemeImageRect = @{{1,29,27,27}, 9}
+
+    btnCheck_Normal:         ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_NormalBorder:   ThemeImageRect = @{{57,29,32,32}, 9}
+    btnCheck_Checked:        ThemeImageRect = @{{123,62,32,32}, 9}
+    btnCheck_CheckedBorder:  ThemeImageRect = @{{123,29,32,32}, 9}
 }
 
 public struct ThemeMetrics
@@ -59,6 +64,9 @@ public struct ThemeMetrics
 
     btnPush_Width:              f32 = 100
     btnPush_Height:             f32 = 30
+
+    btnCheck_Size:              f32 = 26
+    btnCheck_Padding:           f32 = 4
 
     msgDlg_Padding:             f32 = 20
     msgDlg_BtnPadding:          f32 = 5
@@ -77,10 +85,6 @@ public struct ThemeColors
     dlg_Bk:                         Color = 0xFF303030
     dlg_BtnBarBk:                   Color = 0xFF353535
 
-    btnPush_DisabledText:           Color = 0x5FFFFFFF
-    btnPush_DisabledBorder:         Color = 0x5FFFFFFF
-    btnPush_DisabledBk:             Color = 0
-
     btnPush_Text:                   Color = 0xFFFFFFFF
     btnPush_Border:                 Color = 0xFFFFFFFF
     btnPush_Bk:                     Color = 0
@@ -90,6 +94,9 @@ public struct ThemeColors
     btnPush_HotText:                Color = 0xFF424242
     btnPush_HotBorder:              Color = 0xFFEEEEEE
     btnPush_HotBk:                  Color = 0xFFEEEEEE
+    btnPush_DisabledText:           Color = 0x5FFFFFFF
+    btnPush_DisabledBorder:         Color = 0x5FFFFFFF
+    btnPush_DisabledBk:             Color = 0
 
     btnPushDefault_Text:            Color = 0xFFFFFFFF
     btnPushDefault_Border:          Color = 0xFF1473e6
@@ -117,6 +124,19 @@ public struct ThemeColors
     label_DisabledText:             Color = 0x5FFFFFFF
     label_Icon:                     Color = 0xFFFFFFFF
     label_DisabledIcon:             Color = 0xFFFFFFFF
+
+    btnCheck_Text:                  Color = 0xFFFFFFFF
+    btnCheck_Border:                Color = 0xFFFFFFFF
+    btnCheck_Bk:                    Color = 0
+    btnCheck_PressedText:           Color = 0xFFFFFFFF
+    btnCheck_PressedBorder:         Color = 0xFFFFFFFF
+    btnCheck_PressedBk:             Color = 0x7FFFFFFF
+    btnCheck_HotText:               Color = 0xFFFFFFFF
+    btnCheck_HotBorder:             Color = 0xFFFFFFFF
+    btnCheck_HotBk:                 Color = 0x5FFFFFFF
+    btnCheck_DisabledText:          Color = 0x5FFFFFFF
+    btnCheck_DisabledBorder:        Color = 0x5FFFFFFF
+    btnCheck_DisabledBk:            Color = 0
 }
 
 struct ThemeResources
