@@ -1,4 +1,4 @@
-#global skip
+#global testerror
 func toto(x, y: s32, z: bool)
 {
 
