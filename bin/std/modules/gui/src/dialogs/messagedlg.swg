@@ -90,7 +90,7 @@ public impl MessageDlg
         label.dockStyle = .Center
         label.padding = @{10, 10, 10, 10}
         label.horzAlignment = .Justify
-        label.vertAlignment = .Center
+        //label.vertAlignment = .Bottom
 
         wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, 50})
         wndBottom.dockStyle = .Bottom
@@ -141,7 +141,8 @@ public impl MessageDlg
             return
         if !labelIcon
         {
-            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,100})
+            h := icon.size + icon.size * 0.5
+            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
             labelIcon.dockStyle = .Top
             labelIcon.padding = @{10, 10, 10, 10}
         }
