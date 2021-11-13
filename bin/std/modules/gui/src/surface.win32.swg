@@ -127,6 +127,7 @@ impl Surface
         invalidate()
         wnd.applyLayout()
         ShowWindow(hWnd, SW_SHOW)
+        wnd.view.setFocus()
     }
 
     // Hide the surface
