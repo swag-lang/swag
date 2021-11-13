@@ -42,7 +42,7 @@ impl IWnd for MessageDlg
             }
         }
 
-        dialog.IWnd.onKeyEvent(evt)
+        evt.accepted = true
     }
 }
 

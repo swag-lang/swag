@@ -182,6 +182,16 @@ impl Application
         }
     }
 
+    protected func skipDisabled(wnd: *Wnd)->*Wnd
+    {
+        if !wnd
+            return null
+        scan := wnd
+        while scan and scan.isDisabled
+            scan = scan.parent
+        return scan
+    }
+
     protected mtd sendMouseEvents()
     {
         mouse.update()
@@ -194,6 +204,7 @@ impl Application
             targetWnd = mouseCaptureWnd
         else
             targetWnd = getWndAt(mousePos.x, mousePos.y)
+        targetWnd = skipDisabled(targetWnd)
 
         evt := MouseEvent{}
 
@@ -263,16 +274,10 @@ impl Application
     {
         keyb.update()
 
-        target := keybCaptureWnd
-        if !target
-            target = keybFocusWnd
-        if !target
-        {
-            if modalSurfaces.count
-                target = &modalSurfaces.back().wnd
-            else
-                target = &mainSurface.wnd
-        }
+        targetWnd := keybCaptureWnd
+        if !targetWnd
+            targetWnd = keybFocusWnd
+        targetWnd = skipDisabled(targetWnd)
 
         // Modifiers
         modifiers := keyb.getPressedModifiers()
@@ -286,7 +291,7 @@ impl Application
             {
                 evt := KeyEvent{kind: EventKind.KeyPressed}
                 evt.key = cast(Input.Key) i
-                evt.target = target
+                evt.target = targetWnd
                 evt.modifiers = modifiers
                 sendEvent(&evt)
             }
@@ -294,7 +299,7 @@ impl Application
             {
                 evt := KeyEvent{kind: EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i
-                evt.target = target
+                evt.target = targetWnd
                 evt.modifiers = modifiers
                 sendEvent(&evt)
             }
