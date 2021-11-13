@@ -73,8 +73,6 @@ impl IWnd for MessageDlg
 
 public impl MessageDlg
 {
-    protected const Padding = 20'f32
-
     const BtnYes    = "MessageDlg.yes"
     const BtnNo     = "MessageDlg.no"
     const BtnOk     = "MessageDlg.ok"
@@ -86,20 +84,20 @@ public impl MessageDlg
 
         srf := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
         srf.wnd.view.backgroundStyle = .Dialog
+        metrics := &from.app.theme.metrics
 
         using dlg
         label = Label.create(srf.wnd.view, message, @{})
         label.dockStyle = .Center
-        label.padding = Padding
+        label.padding = metrics.msgDlg_Padding
         label.horzAlignment = .Justify
-        label.backgroundStyle = .DialogBar
 
         h := srf.app.theme.metrics.btnPush_Height
-        h += 2 * Padding
+        h += 2 * metrics.msgDlg_Padding
         wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
-        wndBottom.padding = Padding
+        wndBottom.padding = metrics.msgDlg_Padding
 
         dlg.setIcon(icon)
         dlg.setFocus()
@@ -115,27 +113,30 @@ public impl MessageDlg
 
     protected mtd adaptSizeToMessage()
     {
+        metrics := getThemeMetrics()
+
+        // Evaluate size of text
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
         rsf.font = surface.app.theme.res.fontDefault
         rsf.flags |= .WordWrap
-        fake.drawRichString(@{0, 0, 512, 256}, &label.name, rsf)
+        fake.drawRichString(@{0, 0, 512, 0}, &label.name, rsf)
         label.name.invalidate()
 
         // Width
         var w: f32 = 0
         visit btn: buttons w += btn.position.width
-        w += (buttons.count - 1) * 5
-        w += 2 * Padding
-        w += getThemeMetrics().btnPush_Width
-        w = Math.max(w, label.name.boundRect.width + getThemeMetrics().btnPush_Width)
+        w += cast(f32) ((buttons.count - 1) * metrics.msgDlg_BtnPadding)
+        w += 2 * metrics.msgDlg_Padding
+        w += metrics.btnPush_Width
+        w = Math.max(w, label.name.boundRect.width)
 
         // Height
-        h := Math.min(512, label.name.boundRect.height + 2 * Padding)
+        h := Math.min(512, label.name.boundRect.height + 2 * metrics.msgDlg_Padding)
         if labelIcon
             h += labelIcon.position.height
         h += wndBottom.position.height
-        h += 2 * getThemeMetrics().wnd_BorderSize
+        h += 2 * metrics.wnd_BorderSize
 
         pos := surface.position
         pos.width = w
@@ -153,7 +154,7 @@ public impl MessageDlg
             h := icon.size + icon.size * 0.5
             labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
             labelIcon.dockStyle = .Top
-            labelIcon.padding = Padding
+            labelIcon.padding = getThemeMetrics().msgDlg_Padding
         }
 
         labelIcon.icon = icon
@@ -168,7 +169,8 @@ public impl MessageDlg
         btn.id = #scopefct.id
         btn.dockStyle = .Right
         btn.isDefault = isDefault
-        btn.margin = @{5, 0, 5, 0}
+        metrics := getThemeMetrics()
+        btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
         btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(btn.id); }
         buttons.insertAt(0, btn)
         return btn
