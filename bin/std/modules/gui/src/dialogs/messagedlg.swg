@@ -91,6 +91,7 @@ public impl MessageDlg
         label.dockStyle = .Center
         label.padding = metrics.msgDlg_Padding
         label.horzAlignment = .Justify
+        //label.backgroundStyle = .DialogBar
 
         h := srf.app.theme.metrics.btnPush_Height
         h += 2 * metrics.msgDlg_Padding
@@ -129,10 +130,13 @@ public impl MessageDlg
         w += cast(f32) ((buttons.count - 1) * metrics.msgDlg_BtnPadding)
         w += 2 * metrics.msgDlg_Padding
         w += metrics.btnPush_Width
-        w = Math.max(w, label.name.boundRect.width)
+        wl := label.name.boundRect.width + 2 * metrics.msgDlg_Padding
+        wl += 2 * metrics.wnd_BorderSize
+        w = Math.max(w, wl)
 
         // Height
         h := Math.min(512, label.name.boundRect.height + 2 * metrics.msgDlg_Padding)
+        @print(label.name.boundRect.height)
         if labelIcon
             h += labelIcon.position.height
         h += wndBottom.position.height
