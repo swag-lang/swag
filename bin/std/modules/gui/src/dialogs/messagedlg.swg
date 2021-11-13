@@ -16,8 +16,35 @@ impl IWnd for MessageDlg
         if evt.kind == .KeyPressed
         {
             // Pressing enter validates the default button
-            if evt.key == .Enter
+            switch evt.key
             {
+            case Tab, Right:
+                visit btn, idx: buttons
+                {
+                    if btn.isDefault
+                    {
+                        btn.isDefault = false
+                        nextBtn := buttons[(idx + 1) % buttons.count]
+                        nextBtn.isDefault = true
+                        nextBtn.invalidate()
+                        break
+                    }
+                }
+
+            case Left:
+                visit btn, idx: buttons
+                {
+                    if btn.isDefault
+                    {
+                        btn.isDefault = false
+                        prevBtn := idx ? buttons[idx - 1] : buttons.back()
+                        prevBtn.isDefault = true
+                        prevBtn.invalidate()
+                        break
+                    }
+                }
+
+            case Enter:
                 visit btn: buttons
                 {
                     if btn.isDefault
@@ -26,14 +53,12 @@ impl IWnd for MessageDlg
                         break
                     }
                 }
-            }
 
             // Pressing escape validates some specific buttons
-            if evt.key == .Escape
-            {
+            case Escape:
                 visit btn: buttons
                 {
-                    if btn.id == BtnNo
+                    if btn.id == BtnNo or btn.id == BtnCancel
                     {
                         surface.app.exitModal(btn.id)
                         break
@@ -135,7 +160,7 @@ public impl MessageDlg
         btn.isDefault = isDefault
         btn.margin = @{5, 0, 5, 0}
         btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(btn.id); }
-        buttons.add(btn)
+        buttons.insertAt(0, btn)
         return btn
     }
 
