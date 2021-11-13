@@ -125,6 +125,7 @@
 @mkinterface
 @mkslice
 @mkstring
+@nameof
 @offsetof
 @panic
 @postcopy

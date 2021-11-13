@@ -146,6 +146,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
     case TokenId::IntrinsicStringOf:
+    case TokenId::IntrinsicNameOf:
     case TokenId::IntrinsicRunes:
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:

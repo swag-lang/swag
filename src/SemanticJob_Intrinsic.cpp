@@ -293,6 +293,35 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
+{
+    auto node = context->node;
+    auto expr = node->childs.front();
+
+    node->setFlagsValueIsComputed();
+    if (expr->computedValue && expr->flags & AST_VALUE_IS_TYPEINFO)
+    {
+        auto addr                 = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+        auto newTypeInfo          = context->sourceFile->module->typeTable.getRealType(expr->computedValue->storageSegment, (ConcreteTypeInfo*) addr);
+        node->computedValue->text = newTypeInfo->name;
+    }
+    else if (expr->resolvedSymbolName)
+    {
+        node->computedValue->text = expr->resolvedSymbolName->name;
+    }
+    else if (expr->resolvedSymbolOverload)
+    {
+        node->computedValue->text = expr->resolvedSymbolOverload->symbol->name;
+    }
+    else
+    {
+        return context->report({expr, g_E[Err0799]});
+    }
+
+    node->typeInfo = g_TypeMgr->typeInfoString;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
 {
     auto node     = context->node;
@@ -682,6 +711,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicStringOf:
         SWAG_CHECK(resolveIntrinsicStringOf(context));
+        return true;
+    case TokenId::IntrinsicNameOf:
+        SWAG_CHECK(resolveIntrinsicNameOf(context));
         return true;
 
     case TokenId::IntrinsicRunes:
