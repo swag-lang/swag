@@ -45,10 +45,14 @@ public struct ThemeImageRects
     btnIcon_Pressed:        ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_Disabled:       ThemeImageRect = @{{1,29,27,27}, 9}
 
-    btnCheck_Normal:         ThemeImageRect = @{{57,62,32,32}, 9}
-    btnCheck_NormalBorder:   ThemeImageRect = @{{57,29,32,32}, 9}
-    btnCheck_Checked:        ThemeImageRect = @{{123,62,32,32}, 9}
-    btnCheck_CheckedBorder:  ThemeImageRect = @{{123,29,32,32}, 9}
+    btnCheck_Normal:            ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_NormalBorder:      ThemeImageRect = @{{57,29,32,32}, 9}
+    btnCheck_Undefined:         ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_UndefinedBorder:   ThemeImageRect = @{{90,29,32,32}, 9}
+    btnCheck_UndefinedMark:     ThemeImageRect = @{{90,62,32,32}, 9}
+    btnCheck_Checked:           ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_CheckedBorder:     ThemeImageRect = @{{123,29,32,32}, 9}
+    btnCheck_CheckedMark:       ThemeImageRect = @{{123,62,32,32}, 9}
 }
 
 public struct ThemeMetrics
@@ -127,15 +131,19 @@ public struct ThemeColors
 
     btnCheck_Text:                  Color = 0xFFFFFFFF
     btnCheck_Border:                Color = 0xFFFFFFFF
+    btnCheck_Mark:                  Color = 0xFFFFFFFF
     btnCheck_Bk:                    Color = 0
     btnCheck_PressedText:           Color = 0xFFFFFFFF
     btnCheck_PressedBorder:         Color = 0xFFFFFFFF
+    btnCheck_PressedMark:           Color = 0xFFFFFFFF
     btnCheck_PressedBk:             Color = 0x7FFFFFFF
     btnCheck_HotText:               Color = 0xFFFFFFFF
     btnCheck_HotBorder:             Color = 0xFFFFFFFF
+    btnCheck_HotMark:               Color = 0xFFFFFFFF
     btnCheck_HotBk:                 Color = 0x5FFFFFFF
     btnCheck_DisabledText:          Color = 0x5FFFFFFF
     btnCheck_DisabledBorder:        Color = 0x5FFFFFFF
+    btnCheck_DisabledMark:          Color = 0x5FFFFFFF
     btnCheck_DisabledBk:            Color = 0
 }
 

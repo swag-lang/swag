@@ -53,7 +53,9 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.isDisabled = true
         button = ButtonCheck.create(view, "Disabled", 125, 70)
         button.isDisabled = true
-        button.isChecked = true
+        button.isChecked = .Checked
+        button = ButtonCheck.create(view, "3 State", 125, 100)
+        button.isThreeState = true
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

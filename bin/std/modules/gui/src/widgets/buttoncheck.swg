@@ -1,11 +1,19 @@
 #global public
 using Core, Pixel
 
+enum ButtonCheckState
+{
+    Normal
+    Checked
+    Undefined
+}
+
 struct ButtonCheck
 {
     using widget:   Widget
     icon:           Icon
-    isChecked:      bool
+    isThreeState:   bool
+    isChecked:      ButtonCheckState = Normal
     sigPressed:     func(*ButtonCheck)
 
     isPressed:      bool
@@ -25,8 +33,10 @@ impl IWnd for ButtonCheck
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
+        var subRectMark:    *ThemeImageRect
         var colorBk:        Color = ?
         var colorBorder:    Color = ?
+        var colorMark:      Color = ?
         var colorText:      Color = ?
 
         switch
@@ -34,29 +44,47 @@ impl IWnd for ButtonCheck
         case isDisabled:
             colorBk       = colors.btnCheck_DisabledBk
             colorBorder   = colors.btnCheck_DisabledBorder
+            colorMark     = colors.btnCheck_DisabledMark
             colorText     = colors.btnCheck_DisabledText
         case isPressed:
             colorBk       = colors.btnCheck_PressedBk
             colorBorder   = colors.btnCheck_PressedBorder
+            colorMark     = colors.btnCheck_PressedMark
             colorText     = colors.btnCheck_PressedText
         case isHot:
             colorBk       = colors.btnCheck_HotBk
             colorBorder   = colors.btnCheck_HotBorder
+            colorMark     = colors.btnCheck_HotMark
             colorText     = colors.btnCheck_HotText
         default:
             colorBk       = colors.btnCheck_Bk
             colorBorder   = colors.btnCheck_Border
+            colorMark     = colors.btnCheck_Mark
             colorText     = colors.btnCheck_Text
         }
 
-        subRectBk     = isChecked ? &rects.btnCheck_Checked : &rects.btnCheck_Normal
-        subRectBorder = isChecked ? &rects.btnCheck_CheckedBorder : &rects.btnCheck_NormalBorder
+        switch isChecked
+        {
+        case Normal:
+            subRectBk     = &rects.btnCheck_Normal
+            subRectBorder = &rects.btnCheck_NormalBorder
+        case Checked:
+            subRectBk     = &rects.btnCheck_Checked
+            subRectBorder = &rects.btnCheck_CheckedBorder
+            subRectMark   = &rects.btnCheck_CheckedMark
+        case Undefined:
+            subRectBk     = &rects.btnCheck_Undefined
+            subRectBorder = &rects.btnCheck_UndefinedBorder
+            subRectMark   = &rects.btnCheck_UndefinedMark
+        }
 
         // Box
         posBox := position
         posBox.width = posBox.height
         bc.theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         bc.theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
+        if isChecked != .Normal
+            bc.theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
 
         // Content
         var format: RichStringFormat
@@ -118,7 +146,12 @@ impl IWnd for ButtonCheck
                 isPressed, isPressing = false
                 if isIn and sigPressed
                     sigPressed(self)
-                isChecked = !isChecked
+                if isChecked == .Normal and isThreeState
+                    isChecked = .Undefined
+                else if isChecked == .Checked
+                    isChecked = .Normal
+                else
+                    isChecked = .Checked
                 invalidate()
             }
         }
