@@ -74,8 +74,8 @@ impl IWnd for ButtonPush
         format.font = bc.theme.res.fontDefault
         format.fontStyle = .Bold
         labelPos := position
-        labelPos.inflate(bc.theme.metrics.btnMargins)
-        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconTextMargin)
+        labelPos.inflate(bc.theme.metrics.btn_Margins)
+        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -133,9 +133,12 @@ impl IWnd for ButtonPush
 
 impl ButtonPush
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonPush
+    func create(parent: *Wnd, name: string, x, y, width: f32 = 0)->*ButtonPush
     {
-        res := Wnd.create'ButtonPush(parent, name, position)
+        var pos: Math.Rectangle{x, y, width, parent.getThemeMetrics().btnPush_Height}
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnPush_Width
+        res := Wnd.create'ButtonPush(parent, name, pos)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

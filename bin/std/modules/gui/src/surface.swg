@@ -48,13 +48,13 @@ impl Surface
         app := surface.app
 
         if flags & .BigCaption
-            surface.wnd.marginsTopLeft.y = app.theme.metrics.wndBigCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.metrics.wnd_BigCaptionCY
         else if flags & .SmallCaption
-            surface.wnd.marginsTopLeft.y = app.theme.metrics.wndSmallCaptionCY
+            surface.wnd.marginsTopLeft.y = app.theme.metrics.wnd_SmallCaptionCY
 
         if flags & .Border
         {
-            size := app.theme.metrics.wndBorderSize
+            size := app.theme.metrics.wnd_BorderSize
             surface.wnd.marginsTopLeft.x = size
             surface.wnd.marginsTopLeft.y = Math.max(surface.wnd.marginsTopLeft.y, size)
             surface.wnd.marginsBottomRight.x = size

@@ -29,7 +29,7 @@ public struct ThemeImageRects
     wnd_Caption:            ThemeImageRect = @{{57,1,72,27}, 12}
     wnd_CaptionSmall:       ThemeImageRect = @{{57,1,72,27}, 1}
 
-    dlg_BtnBar:             ThemeImageRect = @{{29,29,27,27}, 1}
+    dlg_BtnBar:             ThemeImageRect = @{{29,29,27,27}, 2}
 
     btnPush_Normal:         ThemeImageRect = @{{1,1,27,27}, 9}
     btnPush_NormalBorder:   ThemeImageRect = @{{29,1,27,27}, 9}
@@ -48,12 +48,15 @@ public struct ThemeImageRects
 
 public struct ThemeMetrics
 {
-    wndBorderSize:          f32 = 3
-    wndBigCaptionCY:        f32 = 30
-    wndSmallCaptionCY:      f32 = 24
-    wndCaptionMarginTitle:  f32 = 5
-    btnMargins:             f32 = -5
-    iconTextMargin:         f32 = 4
+    wnd_BorderSize:             f32 = 3
+    wnd_BigCaptionCY:           f32 = 30
+    wnd_SmallCaptionCY:         f32 = 24
+    wnd_CaptionMarginTitle:     f32 = 5
+    btn_Margins:                f32 = -5
+    iconText_Margin:            f32 = 4
+
+    btnPush_Width:              f32 = 100
+    btnPush_Height:             f32 = 30
 }
 
 public struct ThemeColors

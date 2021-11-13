@@ -73,6 +73,8 @@ impl IWnd for MessageDlg
 
 public impl MessageDlg
 {
+    protected const Padding = 20'f32
+
     const BtnYes    = "MessageDlg.yes"
     const BtnNo     = "MessageDlg.no"
     const BtnOk     = "MessageDlg.ok"
@@ -88,14 +90,16 @@ public impl MessageDlg
         using dlg
         label = Label.create(srf.wnd.view, message, @{})
         label.dockStyle = .Center
-        label.padding = @{10, 10, 10, 10}
+        label.padding = Padding
         label.horzAlignment = .Justify
-        //label.vertAlignment = .Bottom
+        label.backgroundStyle = .DialogBar
 
-        wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, 50})
+        h := srf.app.theme.metrics.btnPush_Height
+        h += 2 * Padding
+        wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
-        wndBottom.padding = @{10, 10, 10, 10}
+        wndBottom.padding = Padding
 
         dlg.setIcon(icon)
         dlg.setFocus()
@@ -119,14 +123,19 @@ public impl MessageDlg
         label.name.invalidate()
 
         // Width
-        w := cast(f32) ((buttons.count + 1) * 120)
-        w = Math.max(w, label.name.boundRect.width + 48)
+        var w: f32 = 0
+        visit btn: buttons w += btn.position.width
+        w += (buttons.count - 1) * 5
+        w += 2 * Padding
+        w += getThemeMetrics().btnPush_Width
+        w = Math.max(w, label.name.boundRect.width + getThemeMetrics().btnPush_Width)
 
         // Height
-        h := Math.min(300, label.name.boundRect.height + 48)
+        h := Math.min(512, label.name.boundRect.height + 2 * Padding)
         if labelIcon
             h += labelIcon.position.height
         h += wndBottom.position.height
+        h += 2 * getThemeMetrics().wnd_BorderSize
 
         pos := surface.position
         pos.width = w
@@ -144,7 +153,7 @@ public impl MessageDlg
             h := icon.size + icon.size * 0.5
             labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
             labelIcon.dockStyle = .Top
-            labelIcon.padding = @{10, 10, 10, 10}
+            labelIcon.padding = Padding
         }
 
         labelIcon.icon = icon
@@ -155,7 +164,7 @@ public impl MessageDlg
     // Add a button
     mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
     {
-        btn := ButtonPush.create(wndBottom, str, @{0, 0, 100, 30})
+        btn := ButtonPush.create(wndBottom, str)
         btn.id = #scopefct.id
         btn.dockStyle = .Right
         btn.isDefault = isDefault

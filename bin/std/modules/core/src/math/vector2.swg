@@ -21,8 +21,7 @@ impl Vector2
     #[Swag.Complete]
     mtd opAffect(value: f32)
     {
-        x = value
-        y = value
+        x, y = value
     }
 
     mtd opEquals(other: Self)->bool

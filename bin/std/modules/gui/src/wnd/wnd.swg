@@ -176,8 +176,10 @@ impl Wnd
 
     #[Swag.Inline]
     {
-        mtd getApp()   => surface.app
-        mtd getTheme() => &surface.app.theme
+        mtd getApp()            => surface.app
+        mtd getTheme()          => surface.app.theme
+        mtd getThemeMetrics()   => &surface.app.theme.metrics
+        mtd getThemeColors()    => &surface.app.theme.colors
     }
 
     // Destroy the window
