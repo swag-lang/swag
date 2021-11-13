@@ -126,8 +126,11 @@ public impl MessageDlg
     func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
     {
         dlg := create(from, 0, 0, message)
+        dlg.label.horzAlignment = .Justify
 
         dlg.setIcon(from.app.theme.getIcon64(ThemeIcons64.Question))
+        dlg.labelIcon.horzAlignment = .Center
+        dlg.labelIcon.vertAlignment = .Center
 
         btn := dlg.addButton("No", BtnNo, defaultId == BtnNo)
         btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnNo); }

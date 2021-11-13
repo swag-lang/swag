@@ -102,6 +102,14 @@ public struct ThemeColors
 
     btnIcon_CloseBk:                Color = 0xFFd61425
     btnIcon_CloseHotBk:             Color = 0xFFe62435
+
+    label_Text:                     Color = 0xFFFFFFFF
+    label_Text1:                    Color = 0xFFFF5555
+    label_Text2:                    Color = 0xFF55FF55
+    label_Text3:                    Color = 0xFFFF5555
+    label_DisabledText:             Color = 0x5FFFFFFF
+    label_Icon:                     Color = 0xFFFFFFFF
+    label_DisabledIcon:             Color = 0xFFFFFFFF
 }
 
 struct ThemeResources
