@@ -297,8 +297,8 @@ impl SurfaceWnd
         {
             closeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
-            closeBtn.style.addStyleSheetColors("btnIcon_HotBk     $btnIcon_CloseBk")
-            closeBtn.style.addStyleSheetColors("btnIcon_PressedBk $btnIcon_CloseHotBk")
+            closeBtn.style.addStyleSheetColors("btnIcon_HotBk     $wnd_BtnCloseBk")
+            closeBtn.style.addStyleSheetColors("btnIcon_PressedBk $wnd_BtnCloseHotBk")
         }
     }
 }

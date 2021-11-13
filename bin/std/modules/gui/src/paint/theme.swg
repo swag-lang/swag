@@ -63,6 +63,8 @@ public struct ThemeColors
     wnd_CaptionNotActived:          Color = 0xFF535353
     wnd_CaptionText:                Color = 0xFFFFFFFF
     wnd_CaptionNotActivatedText:    Color = 0xFFFFFFFF
+    wnd_BtnCloseBk:                 Color = 0xFFd61425
+    wnd_BtnCloseHotBk:              Color = 0xFFe62435
 
     dlg_Bk:                         Color = 0xFF303030
     dlg_BtnBarBk:                   Color = 0xFF353535
@@ -99,9 +101,6 @@ public struct ThemeColors
     btnIcon_PressedBk:              Color = 0x3FFFFFFF
     btnIcon_HotIcon:                Color = 0xFFFFFFFF
     btnIcon_HotBk:                  Color = 0x3FEEEEEE
-
-    btnIcon_CloseBk:                Color = 0xFFd61425
-    btnIcon_CloseHotBk:             Color = 0xFFe62435
 
     label_Text:                     Color = 0xFFFFFFFF
     label_Text1:                    Color = 0xFFFF5555
