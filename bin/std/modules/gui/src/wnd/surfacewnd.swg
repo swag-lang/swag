@@ -283,19 +283,19 @@ impl SurfaceWnd
         theme := surface.app.theme
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 2), @{0,0,0,0})
+            minimizeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 3), @{0,0,0,0})
+            maximizeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = ButtonIcon.create(self, Icon.from(&theme.res.icons24, 4), @{0,0,0,0})
+            closeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
             closeBtn.hookOnSetThemeEvent = @(wnd: *Wnd, evt: *SetThemeEvent)->bool
             {

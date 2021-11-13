@@ -19,11 +19,11 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     view := surface0.wnd.view
 
     button := ButtonPush.create(view, "Normal", @{5, 10, 100, 30})
-    button.icon.set(&app.theme.res.icons24, 0, 18)
+    button.icon.set(&app.theme.res.icons24, 2, 18)
     button.sigPressed = @(btn: *ButtonPush) { btn.name = "Pressed"; }
 
     button = ButtonPush.create(view, "Default", @{5, 50, 100, 30})
-    button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.res.icons24, 1, 18); }
+    button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.res.icons24, 2, 18); }
     button.isDefault = true
 
     button = ButtonPush.create(view, "Disabled", @{5, 90, 100, 30})
