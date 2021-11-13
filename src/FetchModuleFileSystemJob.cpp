@@ -56,7 +56,7 @@ JobResult FetchModuleFileSystemJob::execute()
         if (srcFiles.find(f) == srcFiles.end())
         {
             auto n = destPath + f;
-            if (strstr(f.c_str(), SWAG_SRC_FOLDER) == f.c_str() + 1)
+            if (strstr(f.c_str(), SWAG_ALIAS_FILENAME) == f.c_str() + 1)
                 continue;
             if (!fs::remove(n))
             {

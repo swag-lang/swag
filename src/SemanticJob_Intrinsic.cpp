@@ -262,11 +262,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     if (expr->computedValue)
     {
         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-        {
-            auto addr                 = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
-            auto newTypeInfo          = context->sourceFile->module->typeTable.getRealType(expr->computedValue->storageSegment, (ConcreteTypeInfo*) addr);
-            node->computedValue->text = newTypeInfo->name;
-        }
+            node->computedValue->text = ((TypeInfo*) expr->computedValue->reg.pointer)->scopedName;
         else if (typeInfo->isNative(NativeTypeKind::String))
             node->computedValue->text = expr->computedValue->text;
         else if (typeInfo->kind == TypeInfoKind::Native)
@@ -300,23 +296,13 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
 
     node->setFlagsValueIsComputed();
     if (expr->computedValue && expr->flags & AST_VALUE_IS_TYPEINFO)
-    {
-        auto addr                 = expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
-        auto newTypeInfo          = context->sourceFile->module->typeTable.getRealType(expr->computedValue->storageSegment, (ConcreteTypeInfo*) addr);
-        node->computedValue->text = newTypeInfo->name;
-    }
+        node->computedValue->text = ((TypeInfo*) expr->computedValue->reg.pointer)->name;
     else if (expr->resolvedSymbolName)
-    {
         node->computedValue->text = expr->resolvedSymbolName->name;
-    }
     else if (expr->resolvedSymbolOverload)
-    {
         node->computedValue->text = expr->resolvedSymbolOverload->symbol->name;
-    }
     else
-    {
-        return context->report({expr, g_E[Err0799]});
-    }
+        return context->report({expr, g_E[Err0803]});
 
     node->typeInfo = g_TypeMgr->typeInfoString;
     return true;

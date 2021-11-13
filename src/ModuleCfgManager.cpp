@@ -95,7 +95,7 @@ fs::path ModuleCfgManager::getAliasPath(const fs::path& srcPath)
 {
     auto p = srcPath;
     p += "/";
-    p += SWAG_ALIAS_PATH;
+    p += SWAG_ALIAS_FILENAME;
     if (fs::exists(p))
     {
         FILE* f = nullptr;
@@ -611,7 +611,7 @@ bool ModuleCfgManager::execute()
                 }
 
                 pathSrc += "/";
-                pathSrc += SWAG_ALIAS_PATH;
+                pathSrc += SWAG_ALIAS_FILENAME;
 
                 FILE* f;
                 fopen_s(&f, pathSrc.string().c_str(), "wt");
