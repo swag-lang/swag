@@ -135,6 +135,9 @@ struct Theme
 enum ThemeIcons64
 {
     Question
+    Warning
+    Critical
+    Information
 }
 
 impl Theme
