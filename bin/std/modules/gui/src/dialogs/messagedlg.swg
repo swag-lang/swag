@@ -48,10 +48,12 @@ impl IWnd for MessageDlg
 
 public impl MessageDlg
 {
-    const BtnYes = "MessageDlg.yes"
-    const BtnNo  = "MessageDlg.no"
+    const BtnYes    = "MessageDlg.yes"
+    const BtnNo     = "MessageDlg.no"
+    const BtnOk     = "MessageDlg.ok"
+    const BtnCancel = "MessageDlg.cancel"
 
-    func create(from: *Surface, x, y: s32, message: string)->*MessageDlg
+    func create(from: *Surface, x, y: s32, message: string, icon: Icon = @{})->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg(null)
 
@@ -62,14 +64,24 @@ public impl MessageDlg
         label = Label.create(srf.wnd.view, message, @{})
         label.dockStyle = .Center
         label.padding = @{10, 10, 10, 10}
+        label.horzAlignment = .Justify
+        label.vertAlignment = .Center
 
         wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, 50})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
         wndBottom.padding = @{10, 10, 10, 10}
 
+        dlg.setIcon(icon)
         dlg.setFocus()
         return dlg
+    }
+
+    protected mtd display(from: *Surface)->string
+    {
+        adaptSizeToMessage()
+        surface.center(from)
+        return Dialog.doModal(surface)
     }
 
     protected mtd adaptSizeToMessage()
@@ -100,6 +112,8 @@ public impl MessageDlg
     // Set big icon
     mtd setIcon(icon: Icon)
     {
+        if !icon.isValid()
+            return
         if !labelIcon
         {
             labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,100})
@@ -108,6 +122,8 @@ public impl MessageDlg
         }
 
         labelIcon.icon = icon
+        labelIcon.horzAlignment = .Center
+        labelIcon.vertAlignment = .Center
     }
 
     // Add a button
@@ -118,27 +134,44 @@ public impl MessageDlg
         btn.dockStyle = .Right
         btn.isDefault = isDefault
         btn.margin = @{5, 0, 5, 0}
+        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(btn.id); }
         buttons.add(btn)
         return btn
+    }
+
+    // Message box with a 'ok'
+    func ok(from: *Surface, message: string, icon: Icon = @{})
+    {
+        dlg := create(from, 0, 0, message, icon)
+        discard dlg.addButton("OK", BtnOk, true)
+        discard dlg.display(from)
+    }
+
+    // Message box with a 'ok' and 'cancel' button
+    func okCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
+    {
+        dlg := create(from, 0, 0, message, icon)
+        discard dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+        discard dlg.addButton("OK", BtnOk, defaultId == BtnOk)
+        return dlg.display(from)
     }
 
     // Message box with a 'yes' and 'no' button
     func yesNo(from: *Surface, message: string, defaultId = BtnNo)->string
     {
-        dlg := create(from, 0, 0, message)
-        dlg.label.horzAlignment = .Justify
+        dlg := create(from, 0, 0, message, from.app.theme.getIcon64(ThemeIcons64.Question))
+        discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
+        discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        return dlg.display(from)
+    }
 
-        dlg.setIcon(from.app.theme.getIcon64(ThemeIcons64.Question))
-        dlg.labelIcon.horzAlignment = .Center
-        dlg.labelIcon.vertAlignment = .Center
-
-        btn := dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnNo); }
-        btn = dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
-        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(BtnYes); }
-
-        dlg.adaptSizeToMessage()
-        dlg.surface.center(from)
-        return Dialog.doModal(dlg.surface)
+    // Message box with a 'yes' and 'no' button
+    func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel)->string
+    {
+        dlg := create(from, 0, 0, message, from.app.theme.getIcon64(ThemeIcons64.Question))
+        discard dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+        discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
+        discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        return dlg.display(from)
     }
 }

@@ -33,12 +33,15 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     button.cursor = Cursor.from(CursorShape.Help)
 
     button = ButtonPush.create(view, "YesNo", @{5, 170, 100, 30})
-    button.cursor = Cursor.from(CursorShape.Help)
     button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?"); }
 
     button = ButtonPush.create(view, "YesNo", @{5, 210, 100, 30})
-    button.cursor = Cursor.from(CursorShape.Help)
     button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
+
+    button = ButtonPush.create(view, "OK", @{5, 250, 100, 30})
+    button.sigPressed = @(btn: *ButtonPush) { MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
+    button = ButtonPush.create(view, "YesNoCancel", @{5, 290, 100, 30})
+    button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNoCancel(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
