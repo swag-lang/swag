@@ -97,18 +97,19 @@ struct QuitEvent
     quitCode: s32
 }
 
-enum SysCommandKind
-{
-    Maximize
-    Minimize
-    Restore
-    Close
-}
-
 struct SysCommandEvent
 {
     using base: Event{kind: EventKind.SysCommand}
-    sysKind: SysCommandKind = ?
+
+    enum Kind
+    {
+        Minimize
+        Maximize
+        Restore
+        Close
+    }
+
+    sysKind: Kind = ?
 }
 
 struct SetThemeEvent

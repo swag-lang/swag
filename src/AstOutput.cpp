@@ -39,6 +39,15 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
         Utf8 typeWhat = SymTable::getNakedKindName(overload);
         if (!(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
         {
+            // Check hierarchy
+            auto checkNode = overload->node;
+            while (checkNode)
+            {
+                if (checkNode->attributeFlags & ATTRIBUTE_PUBLIC)
+                    return true;
+                checkNode = checkNode->parent;
+            }
+
             if (usedNode && overload->node != usedNode)
             {
                 Utf8 what;

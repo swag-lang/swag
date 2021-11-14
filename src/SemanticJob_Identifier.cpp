@@ -59,6 +59,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
 bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
+    if (!typeInfo)
+        return true;
+
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
@@ -3585,12 +3588,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         auto symbol     = p.first;
         bool needToWait = false;
 
+        // First test, with just a SharedLock for contention
         {
             SharedLock lkn(symbol->mutex);
             if (!needToWaitForSymbol(context, node, symbol, needToWait))
                 continue;
         }
 
+        // If true, then do the test again, this time with a lock
         if (needToWait)
         {
             ScopedLock lkn(symbol->mutex);
@@ -3600,6 +3605,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             if (needToWait)
                 job->waitSymbolNoLock(symbol);
         }
+
+        // In case identifier is part of a reference, need to initialize it
+        if (!needToWait && node != node->identifierRef->childs.back())
+            SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
 
         return true;
     }
