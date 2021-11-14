@@ -78,6 +78,7 @@ public impl MessageDlg
     const BtnOk     = "MessageDlg.ok"
     const BtnCancel = "MessageDlg.cancel"
 
+    // Creates the message box
     func create(from: *Surface, x, y: s32, message: string, icon: Icon = @{})->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg(null)
@@ -91,7 +92,6 @@ public impl MessageDlg
         label.dockStyle = .Center
         label.padding = metrics.msgDlg_Padding
         label.horzAlignment = .Justify
-        //label.backgroundStyle = .DialogBar
 
         h := srf.app.theme.metrics.btnPush_Height
         h += 2 * metrics.msgDlg_Padding
@@ -105,7 +105,8 @@ public impl MessageDlg
         return dlg
     }
 
-    protected mtd display(from: *Surface)->string
+    // Display the box, centered, and returns the id of the pressed button
+    mtd doModal(from: *Surface)->string
     {
         adaptSizeToMessage()
         surface.center(from)
@@ -166,6 +167,7 @@ public impl MessageDlg
     }
 
     // Add a button
+    #[Swag.Discardable]
     mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
     {
         btn := ButtonPush.create(wndBottom, str, @{}, #scopefct.id)
@@ -182,35 +184,35 @@ public impl MessageDlg
     func ok(from: *Surface, message: string, icon: Icon = @{})
     {
         dlg := create(from, 0, 0, message, icon)
-        discard dlg.addButton("OK", BtnOk, true)
-        discard dlg.display(from)
+        dlg.addButton("OK", BtnOk, true)
+        discard dlg.doModal(from)
     }
 
     // Message box with a 'ok' and 'cancel' button
     func okCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
     {
         dlg := create(from, 0, 0, message, icon)
-        discard dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+        dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
         discard dlg.addButton("OK", BtnOk, defaultId == BtnOk)
-        return dlg.display(from)
+        return dlg.doModal(from)
     }
 
     // Message box with a 'yes' and 'no' button
     func yesNo(from: *Surface, message: string, defaultId = BtnNo, icon: Icon = @{})->string
     {
         dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
-        discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
-        return dlg.display(from)
+        dlg.addButton("No", BtnNo, defaultId == BtnNo)
+        dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        return dlg.doModal(from)
     }
 
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
     {
         dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
-        discard dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
-        discard dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        discard dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
-        return dlg.display(from)
+        dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+        dlg.addButton("No", BtnNo, defaultId == BtnNo)
+        dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        return dlg.doModal(from)
     }
 }

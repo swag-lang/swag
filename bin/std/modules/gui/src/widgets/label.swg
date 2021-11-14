@@ -5,6 +5,7 @@ struct Label
 {
     using widget:   Widget
     icon:           Icon
+    isWordWrap:     bool = true
     horzAlignment:  StringHorzAlignment = Left
     vertAlignment:  StringVertAlignment = Top
 }
@@ -38,7 +39,9 @@ impl IWnd for Label
 
         // Text
         var sf: RichStringFormat
-        sf.flags |= .WordWrap | .Clip
+        sf.flags |= .Clip
+        if isWordWrap
+            sf.flags |= .WordWrap
         sf.font = theme.res.fontDefault
         sf.horzAlignment = horzAlignment
         sf.vertAlignment = vertAlignment
