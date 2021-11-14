@@ -2826,13 +2826,25 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         if (identifierRef->resolvedSymbolName)
         {
             bool canTry = false;
+
+            // Before was a variable
             if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
                 canTry = true;
-            if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+            // Before was an enum value
+            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
                 canTry = true;
-            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
-                identifierRef->previousResolvedNode &&
-                identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+            // Before was a function call
+            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                     identifierRef->previousResolvedNode &&
+                     identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+                canTry = true;
+            // Before was an inlined function call
+            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                     identifierRef->previousResolvedNode &&
+                     identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
+                     identifierRef->previousResolvedNode->childs.size() &&
+                     identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
+                     identifierRef->previousResolvedNode->childs.back()->kind == AstNodeKind::Inline)
                 canTry = true;
 
             if (canTry)

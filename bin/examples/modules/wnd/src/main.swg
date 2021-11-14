@@ -24,7 +24,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.icon = app.theme.getIcon24(ThemeIcons24.WndClose, 18)
         button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
         button = ButtonPush.create(view, "Default", 5, 50)
-        button.sigPressed = @(btn: *Button) { btn.icon = Theme.getIcon24(btn.getTheme(), ThemeIcons24.WndClose, 18); }
+        button.sigPressed = @(btn: *Button) { btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18); }
         button.isDefault = true
         button = ButtonPush.create(view, "Disabled", 5, 90)
         button.isDisabled = true
