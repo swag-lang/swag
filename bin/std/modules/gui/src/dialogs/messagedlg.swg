@@ -136,7 +136,6 @@ public impl MessageDlg
 
         // Height
         h := Math.min(512, label.name.boundRect.height + 2 * metrics.msgDlg_Padding)
-        @print(label.name.boundRect.height)
         if labelIcon
             h += labelIcon.position.height
         h += wndBottom.position.height
