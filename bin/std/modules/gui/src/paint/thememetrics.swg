@@ -14,7 +14,7 @@ struct ThemeMetrics
     btnPush_Width:              f32 = 100
     btnPush_Height:             f32 = 30
 
-    btnCheck_Size:              f32 = 26
+    btnCheck_Size:              f32 = 24
     btnCheck_Padding:           f32 = 4
 
     msgDlg_Padding:             f32 = 20

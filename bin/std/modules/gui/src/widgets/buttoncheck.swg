@@ -13,6 +13,7 @@ struct ButtonCheck
     using button:   Button
     isThreeState:   bool
     isChecked:      ButtonCheckState = Normal
+    sigChanged:     func(*ButtonCheck)
 }
 
 impl IWnd for ButtonCheck
@@ -103,6 +104,8 @@ impl IWnd for ButtonCheck
                 isChecked = .Normal
             else
                 isChecked = .Checked
+            if sigChanged
+                sigChanged(self)
         }
     }
 }

@@ -5,6 +5,7 @@ struct ButtonRadio
 {
     using button:   Button
     isChecked:      bool
+    sigChanged:     func(*ButtonRadio)
 }
 
 impl IWnd for ButtonRadio
@@ -84,9 +85,11 @@ impl IWnd for ButtonRadio
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt)
+        if processMouseEvent(evt) and !isChecked
         {
             isChecked = true
+            if sigChanged
+                sigChanged(self)
         }
     }
 }
