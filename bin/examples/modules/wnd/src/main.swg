@@ -17,6 +17,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
     view := surface0.wnd.view
+    theme := app.theme
 
     // Push buttons
     {
@@ -63,6 +64,12 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button = ButtonRadio.create(view, "Disabled", @{240, 70})
         button.isDisabled = true
         button.isChecked = true
+    }
+
+    // Labels
+    {
+        label := Label.create(view, "Label", @{125, 140, 100, 30})
+        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

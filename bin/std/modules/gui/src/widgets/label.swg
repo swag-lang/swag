@@ -19,10 +19,10 @@ impl IWnd for Label
         applyPadding(&pos, padding)
 
         // Icon
-        posIcon := pos
+        posIcon, posText := pos
         switch horzAlignment
         {
-        case Left:      break
+        case Left:      posText.x += icon.size;
         case Right:     posIcon.x = pos.right() - icon.size
         case Center:    posIcon.x = pos.horzCenter() - (icon.size * 0.5)
         }
@@ -49,7 +49,7 @@ impl IWnd for Label
         sf.palette[1] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
         sf.palette[2] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
         sf.palette[3] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
-        evt.bc.painter.drawRichString(pos, &name, sf)
+        evt.bc.painter.drawRichString(posText, &name, sf)
     }
 }
 
