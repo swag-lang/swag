@@ -175,7 +175,7 @@ public impl MessageDlg
         btn.isDefault = isDefault
         metrics := getThemeMetrics()
         btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
-        btn.sigPressed = @(using btn: *ButtonPush) { surface.app.exitModal(btn.id); }
+        btn.sigPressed = @(using btn: *Button) { surface.app.exitModal(btn.id); }
         buttons.insertAt(0, btn)
         return btn
     }

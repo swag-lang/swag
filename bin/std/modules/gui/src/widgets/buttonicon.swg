@@ -3,14 +3,7 @@ using Core, Pixel
 
 struct ButtonIcon
 {
-    using widget:   Widget
-    icon:           Icon
-    sigPressed:     func(*ButtonIcon)
-
-    isPressed:      bool
-    isPressing:     bool
-    isHot:          bool
-    isIn:           bool
+    using button:   Button
 }
 
 impl IWnd for ButtonIcon
@@ -57,54 +50,7 @@ impl IWnd for ButtonIcon
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        switch evt.kind
-        {
-        case MouseEnter:
-            isHot, isIn = true
-            invalidate()
-
-        case MouseLeave:
-            isHot, isIn = false
-            invalidate()
-
-        case MouseMove:
-            if !isPressing
-                break
-            rect := getClientRect()
-            if !rect.contains(evt.pos)
-            {
-                isPressed = false
-                isIn = false
-                invalidate()
-            }
-            else
-            {
-                isIn = true
-                if !isPressed
-                {
-                    isPressed = true
-                    invalidate()
-                }
-            }
-
-        case MousePressed:
-            if evt.button == .Left
-            {
-                isPressed, isPressing = true
-                captureMouse()
-                invalidate()
-            }
-
-        case MouseReleased:
-            if evt.button == .Left
-            {
-                releaseMouse()
-                isPressed, isPressing = false
-                if isIn and sigPressed
-                    sigPressed(self)
-                invalidate()
-            }
-        }
+        discard processMouseEvent(evt)
     }
 }
 

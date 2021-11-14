@@ -10,16 +10,9 @@ enum ButtonCheckState
 
 struct ButtonCheck
 {
-    using widget:   Widget
-    icon:           Icon
+    using button:   Button
     isThreeState:   bool
     isChecked:      ButtonCheckState = Normal
-    sigPressed:     func(*ButtonCheck)
-
-    isPressed:      bool
-    isPressing:     bool
-    isHot:          bool
-    isIn:           bool
 }
 
 impl IWnd for ButtonCheck
@@ -80,6 +73,8 @@ impl IWnd for ButtonCheck
 
         // Box
         posBox := position
+        posBox.height = getThemeMetrics().btnCheck_Size
+        posBox.y = position.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
         bc.theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         bc.theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
@@ -101,69 +96,23 @@ impl IWnd for ButtonCheck
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        switch evt.kind
+        if processMouseEvent(evt)
         {
-        case MouseEnter:
-            isHot, isIn = true
-            invalidate()
-
-        case MouseLeave:
-            isHot, isIn = false
-            invalidate()
-
-        case MouseMove:
-            if !isPressing
-                break
-            rect := getClientRect()
-            if !rect.contains(evt.pos)
-            {
-                isPressed = false
-                isIn = false
-                invalidate()
-            }
+            if isChecked == .Normal and isThreeState
+                isChecked = .Undefined
+            else if isChecked == .Checked
+                isChecked = .Normal
             else
-            {
-                isIn = true
-                if !isPressed
-                {
-                    isPressed = true
-                    invalidate()
-                }
-            }
-
-        case MousePressed:
-            if evt.button == .Left
-            {
-                isPressed, isPressing = true
-                captureMouse()
-                invalidate()
-            }
-
-        case MouseReleased:
-            if evt.button == .Left
-            {
-                releaseMouse()
-                isPressed, isPressing = false
-                if isIn and sigPressed
-                    sigPressed(self)
-                if isChecked == .Normal and isThreeState
-                    isChecked = .Undefined
-                else if isChecked == .Checked
-                    isChecked = .Normal
-                else
-                    isChecked = .Checked
-                invalidate()
-            }
+                isChecked = .Checked
         }
     }
 }
 
 impl ButtonCheck
 {
-    func create(parent: *Wnd, name: string, x, y: f32 = 0, width: f32 = 100)->*ButtonCheck
+    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonCheck
     {
-        var pos: Math.Rectangle{x, y, width, parent.getThemeMetrics().btnCheck_Size}
-        res := Wnd.create'ButtonCheck(parent, name, pos)
+        res := Wnd.create'ButtonCheck(parent, name, position)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

@@ -22,10 +22,10 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     {
         button := ButtonPush.create(view, "Normal", 5, 10)
         button.icon.set(&app.theme.res.icons24, 2, 18)
-        button.sigPressed = @(btn: *ButtonPush) { btn.name = "Pressed"; }
+        button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
 
         button = ButtonPush.create(view, "Default", 5, 50)
-        button.sigPressed = @(btn: *ButtonPush) { btn.icon.set(&btn.surface.app.theme.res.icons24, 2, 18); }
+        button.sigPressed = @(btn: *Button) { btn.icon.set(&btn.surface.app.theme.res.icons24, 2, 18); }
         button.isDefault = true
 
         button = ButtonPush.create(view, "Disabled", 5, 90)
@@ -35,26 +35,26 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.cursor = Cursor.from(CursorShape.Help)
 
         button = ButtonPush.create(view, "YesNo", 5, 170)
-        button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?"); }
+        button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?"); }
 
         button = ButtonPush.create(view, "YesNo", 5, 210)
-        button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
+        button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
 
         button = ButtonPush.create(view, "OK", 5, 250)
-        button.sigPressed = @(btn: *ButtonPush) { MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
+        button.sigPressed = @(btn: *Button) { MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
         button = ButtonPush.create(view, "YesNoCancel", 5, 290)
-        button.sigPressed = @(btn: *ButtonPush) { discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application."); }
+        button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application."); }
     }
 
     // Push buttons
     {
-        button := ButtonCheck.create(view, "Normal", 125, 10)
-        button = ButtonCheck.create(view, "Disabled", 125, 40)
+        button := ButtonCheck.create(view, "Normal", @{125, 10, 100, 30})
+        button = ButtonCheck.create(view, "Disabled", @{125, 40, 100, 30})
         button.isDisabled = true
-        button = ButtonCheck.create(view, "Disabled", 125, 70)
+        button = ButtonCheck.create(view, "Disabled", @{125, 70, 100, 30})
         button.isDisabled = true
         button.isChecked = .Checked
-        button = ButtonCheck.create(view, "3 State", 125, 100)
+        button = ButtonCheck.create(view, "3 State", @{125, 100, 100, 30})
         button.isThreeState = true
     }
 
