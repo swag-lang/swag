@@ -1,21 +1,13 @@
 #global public
 using Core, Pixel
 
-enum ButtonCheckState
-{
-    Normal
-    Checked
-    Undefined
-}
-
-struct ButtonCheck
+struct ButtonRadio
 {
     using button:   Button
-    isThreeState:   bool
-    isChecked:      ButtonCheckState = Normal
+    isChecked:      bool
 }
 
-impl IWnd for ButtonCheck
+impl IWnd for ButtonRadio
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -56,19 +48,16 @@ impl IWnd for ButtonCheck
             colorText     = colors.btnCheck_Text
         }
 
-        switch isChecked
+        if isChecked
         {
-        case Normal:
-            subRectBk     = &rects.btnCheck_Normal
-            subRectBorder = &rects.btnCheck_NormalBorder
-        case Checked:
-            subRectBk     = &rects.btnCheck_Checked
-            subRectBorder = &rects.btnCheck_CheckedBorder
-            subRectMark   = &rects.btnCheck_CheckedMark
-        case Undefined:
-            subRectBk     = &rects.btnCheck_Undefined
-            subRectBorder = &rects.btnCheck_UndefinedBorder
-            subRectMark   = &rects.btnCheck_UndefinedMark
+            subRectBk     = &rects.btnRadio_Checked
+            subRectBorder = &rects.btnRadio_CheckedBorder
+            subRectMark   = &rects.btnRadio_CheckedMark
+        }
+        else
+        {
+            subRectBk     = &rects.btnRadio_Normal
+            subRectBorder = &rects.btnRadio_NormalBorder
         }
 
         // Box
@@ -97,21 +86,16 @@ impl IWnd for ButtonCheck
     {
         if processMouseEvent(evt)
         {
-            if isChecked == .Normal and isThreeState
-                isChecked = .Undefined
-            else if isChecked == .Checked
-                isChecked = .Normal
-            else
-                isChecked = .Checked
+            isChecked = true
         }
     }
 }
 
-impl ButtonCheck
+impl ButtonRadio
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonCheck
+    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonRadio
     {
-        res := Wnd.create'ButtonCheck(parent, name, position)
+        res := Wnd.create'ButtonRadio(parent, name, position)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

@@ -10,7 +10,7 @@ impl Theme
 
     func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color)
     {
-        if subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
+        if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return
 
         painter.setInterpolationMode(InterpolationMode.Linear)
@@ -22,10 +22,11 @@ impl Theme
         }
 
         cx, cy := subRect.corner
-        if cx * 2 > dstRect.width
-            cx = dstRect.width / 2
-        if cy * 2 > dstRect.height
-            cy = dstRect.height / 2
+        cxd, cyd := subRect.corner
+        if cxd * 2 > dstRect.width
+            cxd = dstRect.width / 2
+        if cyd * 2 > dstRect.height
+            cyd = dstRect.height / 2
 
         d := dstRect
         s := subRect.rect
@@ -34,47 +35,47 @@ impl Theme
             switch i
             {
             case 0:
-                d.width = cx; d.height = cy
+                d.width = cxd; d.height = cyd
                 s.width = cx; s.height = cy
                 painter.drawTexture(d, s, texture, color)
 
             case 1, 7:
-                d.x += cx; s.x += cx
-                d.width = dstRect.width - (cx * 2)
+                d.x += cxd; s.x += cx
+                d.width = dstRect.width - (cxd * 2)
                 s.width = subRect.rect.width - (cx * 2)
                 painter.drawTexture(d, s, texture, color)
 
             case 2, 8:
-                d.x = dstRect.x + dstRect.width - cx
+                d.x = dstRect.x + dstRect.width - cxd
                 s.x = subRect.rect.x + subRect.rect.width - cx
-                d.width = cx; s.width = cx
+                d.width = cxd; s.width = cx
                 painter.drawTexture(d, s, texture, color)
 
             case 3:
-                d.x = dstRect.x; d.y = dstRect.y + cx
+                d.x = dstRect.x; d.y = dstRect.y + cxd
                 s.x = subRect.rect.x; s.y = subRect.rect.y + cy
-                d.width = cx; s.width = cx;
-                d.height = dstRect.height - (cy * 2)
+                d.width = cxd; s.width = cx;
+                d.height = dstRect.height - (cyd * 2)
                 s.height = subRect.rect.height - (cy * 2)
                 painter.drawTexture(d, s, texture, color)
 
             case 4:
-                d.x += cx; s.x += cx
-                d.width = dstRect.width - (cx * 2)
-                d.height = dstRect.height - (cy * 2)
+                d.x += cxd; s.x += cx
+                d.width = dstRect.width - (cxd * 2)
+                d.height = dstRect.height - (cyd * 2)
                 s.width = subRect.rect.width - (cx * 2)
                 s.height = subRect.rect.height - (cy * 2)
                 painter.drawTexture(d, s, texture, color)
 
             case 5:
                 d.x += d.width; s.x += s.width
-                d.width = cx; s.width = cy
+                d.width = cxd; s.width = cy
                 painter.drawTexture(d, s, texture, color)
 
             case 6:
-                d.x = dstRect.x; d.y = dstRect.y + dstRect.height - cy
+                d.x = dstRect.x; d.y = dstRect.y + dstRect.height - cyd
                 s.x = subRect.rect.x; s.y = subRect.rect.y + subRect.rect.height - cy
-                d.width = cx; d.height = cy
+                d.width = cxd; d.height = cyd
                 s.width = cx; s.height = cy
                 painter.drawTexture(d, s, texture, color)
             }

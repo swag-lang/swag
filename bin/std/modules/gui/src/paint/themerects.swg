@@ -29,12 +29,18 @@ struct ThemeImageRects
     btnIcon_Pressed:        ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_Disabled:       ThemeImageRect = @{{1,29,27,27}, 9}
 
-    btnCheck_Normal:            ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_Normal:            ThemeImageRect = @{{90,29,32,32}, 9}
     btnCheck_NormalBorder:      ThemeImageRect = @{{57,29,32,32}, 9}
-    btnCheck_Undefined:         ThemeImageRect = @{{57,62,32,32}, 9}
-    btnCheck_UndefinedBorder:   ThemeImageRect = @{{90,29,32,32}, 9}
+    btnCheck_Undefined:         ThemeImageRect = @{{90,29,32,32}, 9}
+    btnCheck_UndefinedBorder:   ThemeImageRect = @{{57,29,32,32}, 9}
     btnCheck_UndefinedMark:     ThemeImageRect = @{{90,62,32,32}, 9}
-    btnCheck_Checked:           ThemeImageRect = @{{57,62,32,32}, 9}
-    btnCheck_CheckedBorder:     ThemeImageRect = @{{123,29,32,32}, 9}
-    btnCheck_CheckedMark:       ThemeImageRect = @{{123,62,32,32}, 9}
+    btnCheck_Checked:           ThemeImageRect = @{{90,29,32,32}, 9}
+    btnCheck_CheckedBorder:     ThemeImageRect = @{{57,29,32,32}, 9}
+    btnCheck_CheckedMark:       ThemeImageRect = @{{57,62,32,32}, 9}
+
+    btnRadio_Normal:            ThemeImageRect = @{{156,29,32,32}, 16}
+    btnRadio_NormalBorder:      ThemeImageRect = @{{123,29,32,32}, 16}
+    btnRadio_Checked:           ThemeImageRect = @{{156,29,32,32}, 16}
+    btnRadio_CheckedBorder:     ThemeImageRect = @{{123,29,32,32}, 16}
+    btnRadio_CheckedMark:       ThemeImageRect = @{{123,62,32,32}, 16}
 }

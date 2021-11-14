@@ -46,7 +46,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application."); }
     }
 
-    // Push buttons
+    // Check buttons
     {
         button := ButtonCheck.create(view, "Normal", @{125, 10, 100, 30})
         button = ButtonCheck.create(view, "Disabled", @{125, 40, 100, 30})
@@ -56,6 +56,16 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.isChecked = .Checked
         button = ButtonCheck.create(view, "3 State", @{125, 100, 100, 30})
         button.isThreeState = true
+    }
+
+    // Radio buttons
+    {
+        button := ButtonRadio.create(view, "Normal", @{240, 10, 100, 30})
+        button = ButtonRadio.create(view, "Disabled", @{240, 40, 100, 30})
+        button.isDisabled = true
+        button = ButtonRadio.create(view, "Disabled", @{240, 70, 100, 30})
+        button.isDisabled = true
+        button.isChecked = true
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
