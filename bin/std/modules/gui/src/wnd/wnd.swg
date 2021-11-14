@@ -145,23 +145,32 @@ impl Wnd
     //////////////////////////////////////////////
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd)->*T
+    {
+        mtd getApp()            => surface.app
+        mtd getTheme()          => surface.app.theme
+        mtd getThemeMetrics()   => &surface.app.theme.metrics
+        mtd getThemeColors()    => &surface.app.theme.colors
+    }
+
+    #[Swag.Inline]
+    func(T) create(parent: *Wnd, id: string = null)->*T
     {
         return create(parent, "", @{})
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd, position: Math.Rectangle)->*T
+    func(T) create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*T
     {
         return create(parent, "", position)
     }
 
-    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle)->*T
+    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*T
     {
         res := Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.name = name
+        res.id = id
         res.position = position
         res.isAllocated = true
         res.parent = parent
@@ -172,14 +181,6 @@ impl Wnd
         }
 
         return res
-    }
-
-    #[Swag.Inline]
-    {
-        mtd getApp()            => surface.app
-        mtd getTheme()          => surface.app.theme
-        mtd getThemeMetrics()   => &surface.app.theme.metrics
-        mtd getThemeColors()    => &surface.app.theme.colors
     }
 
     // Destroy the window
