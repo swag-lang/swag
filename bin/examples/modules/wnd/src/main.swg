@@ -22,7 +22,7 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     // Push buttons
     {
         button := ButtonPush.create(view, "Normal", @{5, 10})
-        button.icon = app.theme.getIcon24(ThemeIcons24.WndClose, 18)
+        button.icon = app.theme.getIcon24(ThemeIcons24.WndClose)
         button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
         button = ButtonPush.create(view, "Default", @{5, 50})
         button.sigPressed = @(btn: *Button) { btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18); }
@@ -68,8 +68,28 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
 
     // Labels
     {
-        label := Label.create(view, "Label", @{125, 140, 100, 30})
+        label := Label.create(view, "Left", @{125, 140, 140, 30})
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
+        label.style.addStyleSheetColors("label_Icon 0xFFFF0000")
+        label.backgroundStyle = .Dialog
+        label = Label.create(view, "Align Right", @{125, 180, 140, 30})
+        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
+        label.backgroundStyle = .Dialog
+        label.horzAlignment = .Right
+        label = Label.create(view, "Center", @{125, 220, 140, 30})
+        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
+        label.backgroundStyle = .Dialog
+        label.horzAlignment = .Center
+        label = Label.create(view, "TopLeft", @{125, 260, 140, 30})
+        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
+        label.backgroundStyle = .Dialog
+        label.horzAlignment = .Left
+        label.vertAlignment = .Top
+        label = Label.create(view, "BottomRight", @{125, 300, 140, 30})
+        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
+        label.backgroundStyle = .Dialog
+        label.horzAlignment = .Right
+        label.vertAlignment = .Bottom
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

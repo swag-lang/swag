@@ -7,7 +7,8 @@ struct Label
     icon:           Icon
     isWordWrap:     bool = true
     horzAlignment:  StringHorzAlignment = Left
-    vertAlignment:  StringVertAlignment = Top
+    vertAlignment:  StringVertAlignment = Center
+    iconTextMargin: f32
 }
 
 impl IWnd for Label
@@ -22,34 +23,49 @@ impl IWnd for Label
         posIcon, posText := pos
         switch horzAlignment
         {
-        case Left:      posText.x += icon.size;
-        case Right:     posIcon.x = pos.right() - icon.size
-        case Center:    posIcon.x = pos.horzCenter() - (icon.size * 0.5)
+        case Left:
+            posText.x += icon.size;
+        case Right:
+            posIcon.x = pos.right() - icon.size
+        case Center:
+            posText.x += (icon.size + iconTextMargin) * 0.5
+            posIcon.x = pos.horzCenter() - (icon.size * 0.5)
         }
 
         switch vertAlignment
         {
-        case Top:       break
-        case Bottom:    posIcon.y = pos.bottom() - icon.size
-        case Center:    posIcon.y = pos.vertCenter() - (icon.size * 0.5)
+        case Bottom:
+            posIcon.y = pos.bottom() - icon.size
+        case Center:
+            posIcon.y = pos.vertCenter() - (icon.size * 0.5)
         }
 
-        color := isDisabled ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
-        icon.paint(evt.bc.painter, posIcon.x, posIcon.y, color)
-
         // Text
-        var sf: RichStringFormat
-        sf.flags |= .Clip
-        if isWordWrap
-            sf.flags |= .WordWrap
-        sf.font = theme.res.fontDefault
-        sf.horzAlignment = horzAlignment
-        sf.vertAlignment = vertAlignment
-        sf.palette[0] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text
-        sf.palette[1] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
-        sf.palette[2] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
-        sf.palette[3] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
-        evt.bc.painter.drawRichString(posText, &name, sf)
+        if !name.isEmpty()
+        {
+            var sf: RichStringFormat
+            sf.flags |= .Clip
+            if isWordWrap
+                sf.flags |= .WordWrap
+            sf.font = theme.res.fontDefault
+            sf.horzAlignment = horzAlignment
+            sf.vertAlignment = vertAlignment
+            sf.palette[0] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text
+            sf.palette[1] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
+            sf.palette[2] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
+            sf.palette[3] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
+            evt.bc.painter.drawRichString(posText, &name, sf)
+        }
+
+        // Icon
+        if icon.isValid()
+        {
+            color := isDisabled ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
+            if name.isEmpty()
+                icon.paint(evt.bc.painter, posIcon.x, posIcon.y, color)
+            else
+                icon.paint(evt.bc.painter, name.boundRect.x - icon.size - iconTextMargin, posIcon.y, color)
+        }
     }
 }
 

@@ -54,6 +54,9 @@ impl RichString
     #[Swag.Inline]
     mtd opAffect(str: string) = set(str)
 
+    #[Swag.Inline]
+    mtd isEmpty() => raw.length == 0
+
     // Force to be repainted
     mtd invalidate()
     {
