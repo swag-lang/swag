@@ -79,11 +79,11 @@ impl IWnd for ButtonPush
 
 impl ButtonPush
 {
-    func create(parent: *Wnd, name: string, x, y, width: f32 = 0)->*ButtonPush
+    func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonPush
     {
-        var pos: Math.Rectangle{x, y, width, parent.getThemeMetrics().btnPush_Height}
-        if pos.width == 0
-            pos.width = parent.getThemeMetrics().btnPush_Width
+        pos := position
+        if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
         res := Wnd.create'ButtonPush(parent, name, pos)
         evt := CreateEvent{}
         res.sendEvent(&evt)

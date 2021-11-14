@@ -168,7 +168,7 @@ public impl MessageDlg
     // Add a button
     mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
     {
-        btn := ButtonPush.create(wndBottom, str)
+        btn := ButtonPush.create(wndBottom, str, @{})
         btn.id = #scopefct.id
         btn.dockStyle = .Right
         btn.isDefault = isDefault

@@ -65,7 +65,7 @@ struct ThemeColors
     btnCheck_HotText:               Color = 0xFFFFFFFF
     btnCheck_HotBorder:             Color = 0xFFFFFFFF
     btnCheck_HotMark:               Color = 0xFFFFFFFF
-    btnCheck_HotBk:                 Color = 0x5FFFFFFF
+    btnCheck_HotBk:                 Color = 0x1FFFFFFF
     btnCheck_DisabledText:          Color = 0x5FFFFFFF
     btnCheck_DisabledBorder:        Color = 0x5FFFFFFF
     btnCheck_DisabledMark:          Color = 0x5FFFFFFF

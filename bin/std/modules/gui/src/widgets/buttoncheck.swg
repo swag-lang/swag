@@ -114,7 +114,10 @@ impl ButtonCheck
 {
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonCheck
     {
-        res := Wnd.create'ButtonCheck(parent, name, position)
+        pos := position
+        if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
+        res := Wnd.create'ButtonCheck(parent, name, pos)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

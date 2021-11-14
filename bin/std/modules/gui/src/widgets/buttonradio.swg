@@ -98,7 +98,10 @@ impl ButtonRadio
 {
     func create(parent: *Wnd, name: string, position: Math.Rectangle)->*ButtonRadio
     {
-        res := Wnd.create'ButtonRadio(parent, name, position)
+        pos := position
+        if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
+        res := Wnd.create'ButtonRadio(parent, name, pos)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

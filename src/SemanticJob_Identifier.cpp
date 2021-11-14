@@ -2428,12 +2428,6 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
                 }
             }
         }
-
-        Ast::visit(idRef, [&](AstNode* n)
-                   {
-                       if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
-                           ((AstIdentifier*) n)->identifierRef = idRef;
-                   });
     }
 
     idRef->inheritAndFlag1(AST_CONST_EXPR);
