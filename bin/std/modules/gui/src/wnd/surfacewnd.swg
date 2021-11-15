@@ -49,13 +49,6 @@ impl IWnd for SurfaceWnd
             captureMouse()
             movingSurface = true
 
-        case MouseReleased:
-            if evt.button != .Left
-                break
-            releaseMouse()
-            sizingBorder = .Zero
-            movingSurface = false
-
         case MouseLeave:
             sizingBorder = .Zero
             if cursorSet
@@ -63,6 +56,21 @@ impl IWnd for SurfaceWnd
                 cursorSet = false
                 surface.app.popCursor()
             }
+
+        case MouseReleased:
+            if evt.button != .Left
+                break
+            releaseMouse()
+
+            if cursorSet and hitTestBorders(evt.surfacePos) != sizingBorder
+            {
+                cursorSet = false
+                surface.app.popCursor()
+            }
+
+            sizingBorder = .Zero
+            movingSurface = false
+            fallthrough
 
         case MouseMove:
             if surface.isMaximized
