@@ -17,7 +17,6 @@ protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24        = #load(DefaultIcons24Name)
 protected const DefaultIcons64        = #load(DefaultIcons64Name)
 
-
 struct ThemeResources
 {
     imgWidgets:     Texture

@@ -363,19 +363,11 @@ impl Wnd
         applyLayout()
     }
 
-    mtd applyPadding(pos: *Math.Rectangle, pad: Math.Vector4)
-    {
-        pos.x += pad.x
-        pos.y += pad.y
-        pos.width -= (pad.x + pad.z)
-        pos.height -= (pad.y + pad.w)
-    }
-
     // Apply the current layout (childs constraints)
     mtd applyLayout()
     {
         clientRect := getClientRect()
-        applyPadding(&clientRect, padding)
+        clientRect.applyPadding(padding)
 
         var centerLayout: Array'(*Wnd)
         visit c: childs

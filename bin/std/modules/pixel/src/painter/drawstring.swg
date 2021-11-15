@@ -181,11 +181,15 @@ impl Painter
             width:          f32
             countSpaces:    s32
             whiteSpaces:    f32
+            minTop:         f32
+            maxHeight:      f32
         }
 
         // Divide in lines
         var lines: Array'OneLine
         var line:  OneLine
+
+        line.minTop = Swag.F32.Max
         startLine := 0
         lastWasSpace := false
 
@@ -218,6 +222,8 @@ impl Painter
                 lines.add(line)
                 startLine = line.end + 1
                 line.width = 0
+                line.minTop = Swag.F32.Max
+                line.maxHeight = 0
                 line.countSpaces = 0
                 continue
             }
@@ -248,6 +254,8 @@ impl Painter
                     lines.add(line)
                     startLine  = cast(s32) idx
                     line.width = 0
+                    line.minTop = Swag.F32.Max
+                    line.maxHeight = 0
                     line.countSpaces = 0
                     line.whiteSpaces = 0
 
@@ -255,7 +263,12 @@ impl Painter
                     if c.isSpace
                         startLine += 1
                     else
+                    {
                         line.width += c.boundRect.x + c.boundRect.width
+                        line.minTop = Math.min(line.minTop, c.boundRect.y)
+                        line.maxHeight = Math.max(line.maxHeight, c.boundRect.height)
+                    }
+
                     continue
                 }
             }
@@ -271,6 +284,8 @@ impl Painter
             }
             else
                 line.width += c.boundRect.x + c.boundRect.width
+            line.minTop = Math.min(line.minTop, c.boundRect.y)
+            line.maxHeight = Math.max(line.maxHeight, c.boundRect.height)
         }
 
         if startLine != text.chunks.count
@@ -279,6 +294,7 @@ impl Painter
             line.end   = cast(s32) text.chunks.count
             lines.add(line)
         }
+
 
         x := text.layoutRect.x
         y := text.layoutRect.y
@@ -289,7 +305,6 @@ impl Painter
 
         switch format.vertAlignment
         {
-        case Top:       break
         case Bottom:    y = pos.bottom() - totalHeight
         case Center:    y = pos.vertCenter() - (totalHeight * 0.5)
         }

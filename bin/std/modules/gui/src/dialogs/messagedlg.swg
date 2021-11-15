@@ -91,7 +91,7 @@ public impl MessageDlg
         label = Label.create(srf.wnd.view, message, @{})
         label.dockStyle = .Center
         label.padding = metrics.msgDlg_Padding
-        label.horzAlignment = .Justify
+        label.horzAlignmentText = .Justify
 
         h := srf.app.theme.metrics.btnPush_Height
         h += 2 * metrics.msgDlg_Padding
@@ -162,8 +162,8 @@ public impl MessageDlg
         }
 
         labelIcon.icon = icon
-        labelIcon.horzAlignment = .Center
-        labelIcon.vertAlignment = .Center
+        labelIcon.horzAlignmentIcon = .Center
+        labelIcon.vertAlignmentIcon = .Center
     }
 
     // Add a button

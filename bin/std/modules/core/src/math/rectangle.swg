@@ -99,6 +99,22 @@ impl Rectangle
         y += offsetY
     }
 
+    // Offset the rectangle position by a given value
+    mtd offset(offset: Math.Point)
+    {
+        x += offset.x
+        y += offset.y
+    }
+
+    // Add a padding (offset to each side)
+    mtd applyPadding(padding: Math.Vector4)
+    {
+        x += padding.x
+        y += padding.y
+        width -= (padding.x + padding.z)
+        height -= (padding.y + padding.w)
+    }
+
     // Multiply the width and height of the rectangle by a given value
     mtd scale(value: f32)
     {

@@ -72,24 +72,25 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.style.addStyleSheetColors("label_Icon 0xFFFF0000")
         label.backgroundStyle = .Dialog
+        label.paddingText = @{24, -3}
         label = Label.create(view, "Align Right", @{125, 180, 140, 30})
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
-        label.horzAlignment = .Right
+        label.horzAlignmentText = .Right
+        label.horzAlignmentIcon = .Right
+        label.paddingText = @{0, 0, 24, 3}
         label = Label.create(view, "Center", @{125, 220, 140, 30})
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
-        label.horzAlignment = .Center
+        label.horzAlignmentText = .Center
         label = Label.create(view, "TopLeft", @{125, 260, 140, 30})
-        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
-        label.horzAlignment = .Left
-        label.vertAlignment = .Top
+        label.horzAlignmentText = .Left
+        label.vertAlignmentText = .Top
         label = Label.create(view, "BottomRight", @{125, 300, 140, 30})
-        label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
-        label.horzAlignment = .Right
-        label.vertAlignment = .Bottom
+        label.horzAlignmentText = .Right
+        label.vertAlignmentText = .Bottom
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
