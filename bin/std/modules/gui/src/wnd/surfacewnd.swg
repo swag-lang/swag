@@ -61,14 +61,6 @@ impl IWnd for SurfaceWnd
             if evt.button != .Left
                 break
             releaseMouse()
-
-            if cursorSet and hitTestBorders(evt.surfacePos) != sizingBorder
-            {
-                cursorSet = false
-                surface.app.popCursor()
-            }
-
-            sizingBorder = .Zero
             movingSurface = false
             fallthrough
 
