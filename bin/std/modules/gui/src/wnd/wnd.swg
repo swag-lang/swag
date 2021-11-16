@@ -31,6 +31,7 @@ interface IWnd
     onSysCommandEvent:  func(self, *SysCommandEvent)
     onSetThemeEvent:    func(self, *SetThemeEvent)
     onTimerEvent:       func(self, *TimerEvent)
+    onFocusEvent:       func(self, *FocusEvent)
 }
 
 struct Wnd
@@ -132,6 +133,12 @@ impl IWnd for Wnd
                 eat = hookOnTimerEvent(self, cast(*TimerEvent) evt)
             if !eat
                 itf.onTimerEvent(cast(*TimerEvent) evt)
+
+        case SetFocus, KillFocus:
+            //if hookOnTimerEvent
+            //    eat = hookOnTimerEvent(self, cast(*TimerEvent) evt)
+           // if !eat
+                itf.onFocusEvent(cast(*FocusEvent) evt)
         }
     }
 
@@ -143,6 +150,7 @@ impl IWnd for Wnd
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
     mtd onTimerEvent(evt: *TimerEvent)              {}
 
+    mtd onFocusEvent(evt: *FocusEvent)      { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)          { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)      { evt.accepted = false; }
 }
@@ -519,7 +527,20 @@ impl Wnd
     // Set the keyboard focus
     mtd setFocus()
     {
+        if surface.app.keybFocusWnd == self
+            return
+
+        if surface.app.keybFocusWnd
+        {
+            evt := FocusEvent{kind: EventKind.KillFocus}
+            evt.other = self
+            surface.app.keybFocusWnd.sendEvent(&evt)
+        }
+
+        evt := FocusEvent{kind: EventKind.SetFocus}
+        evt.other = surface.app.keybFocusWnd
         surface.app.keybFocusWnd = self
+        sendEvent(&evt)
     }
 
     // Get the window with the keyboard focus

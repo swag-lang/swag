@@ -9,6 +9,15 @@ public struct EditBox
 
 impl IWnd for EditBox
 {
+    mtd onFocusEvent(evt: *FocusEvent)
+    {
+        if evt.kind == .SetFocus
+            timerCaret = surface.app.addTimer(500, self)
+        else
+            surface.app.deleteTimer(timerCaret)
+        invalidate()
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
@@ -55,8 +64,6 @@ public impl EditBox
         res := Wnd.create'EditBox(parent, content, pos, id)
         evt := CreateEvent{}
         res.sendEvent(&evt)
-
-        discard res.surface.app.addTimer(500, res)
         return res
     }
 

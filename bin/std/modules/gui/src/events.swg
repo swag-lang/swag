@@ -20,6 +20,8 @@ enum EventKind
     SysCommand
     SetTheme
     Timer
+    SetFocus
+    KillFocus
 }
 
 struct Event
@@ -102,6 +104,12 @@ struct QuitEvent
 {
     using base: Event{kind: EventKind.Quit}
     quitCode: s32
+}
+
+struct FocusEvent
+{
+    using base: Event
+    other:      *Wnd
 }
 
 struct SysCommandEvent
