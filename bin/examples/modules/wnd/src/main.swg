@@ -4,15 +4,10 @@ using Core, Pixel, Gui
 const W = 1024
 const H = 1024
 
-func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
-{
-    evt.bc.painter.drawTexture(wnd.position, wnd.surface.app.theme.res.imgWidgets)
-    return true
-}
-
 #main
 {
     var app: Gui.Application
+
     surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
@@ -100,7 +95,6 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
     }
 
     surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
-    surface1.wnd.view.hookOnPaintEvent = &onPaintEvent
 
     surface0.show()
     surface1.show()

@@ -546,104 +546,104 @@ func displayPage6(painter: *Pixel.Painter)
     painter.drawRichString(@{220, 200, 200, 100}, &str, format, true)
 }
 
-func onPaintEvent(wnd: *Wnd, event: *PaintEvent)->bool
+struct MyView
 {
-    painter := event.bc.painter
-    painter.paintParams = g_ModeAA ? .Antialiased : .Default
-    painter.paintQuality = g_PaintQuality
-
-    painter.clear(Color.fromArgb(0xFFEEEEEE))
-
-    switch g_Page
-    {
-    case 0: displayPage0(painter)
-    case 1: displayPage1(painter)
-    case 2: displayPage2(painter)
-    case 3: displayPage3(painter)
-    case 4: displayPage4(painter)
-    case 5: displayPage5(painter)
-    case 6: displayPage6(painter)
-    }
-
-    painter.resetState()
-    painter.translateTransform(680, 780)
-    painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
-    painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
-    painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
-    painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
-
-    return true
+    using wnd: Wnd
 }
 
-func onKeyEvent(wnd: *Wnd, evt: *KeyEvent)->bool
+impl IWnd for MyView
 {
-    if evt.kind != .KeyPressed
-        return false
-
-    switch evt.key
+    mtd onCreateEvent(event: *CreateEvent)
     {
-    case F1:
-        g_ModeAA = g_ModeAA ? false : true
-        wnd.surface.invalidate()
-        return true
-
-    case F2:
-        g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-        wnd.surface.invalidate()
-        return true
-
-    case F3:
-        g_Pattern = g_Pattern ? false : true
-        wnd.surface.invalidate()
-        return true
-
-    case F4:
-        if evt.modifiers & .Alt
-            wnd.destroy()
-        else
+        assume
         {
-            g_Page = (g_Page + 1) % MaxPages
-            wnd.surface.invalidate()
+            rdr := surface.app.getRenderer()
+            img0 := Image.load(imagePath("basn0g01.png"))
+            img1 := Image.load(imagePath("rgba.bmp"))
+            Res.image0 = rdr.addImage(img0)
+            Res.image1 = rdr.addImage(img1)
+            Res.image2 = rdr.addImage(img1)
+            img1.grayScale()
+            img1.setAlpha(128)
+            rdr.updateTexture(Res.image2, img1.pixels)
+
+            Res.typeface = TypeFace.load(imagePath("arial.ttf"))
+            Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
+            Res.font40 = Font.create(Res.typeface, 40)
+            Res.font80 = Font.create(Res.typeface, 80)
+
+            Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
+            Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
+            Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
+            Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
         }
-        return true
     }
 
-    return false
-}
-
-func setup(wnd: *Wnd) throw
-{
-    try
+    mtd onPaintEvent(event: *PaintEvent)
     {
-        rdr := wnd.surface.app.getRenderer()
-        img0 := Image.load(imagePath("basn0g01.png"))
-        img1 := Image.load(imagePath("rgba.bmp"))
-        Res.image0 = rdr.addImage(img0)
-        Res.image1 = rdr.addImage(img1)
-        Res.image2 = rdr.addImage(img1)
-        img1.grayScale()
-        img1.setAlpha(128)
-        rdr.updateTexture(Res.image2, img1.pixels)
+        painter := event.bc.painter
+        painter.paintParams = g_ModeAA ? .Antialiased : .Default
+        painter.paintQuality = g_PaintQuality
 
-        Res.typeface = TypeFace.load(imagePath("arial.ttf"))
-        Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
-        Res.font40 = Font.create(Res.typeface, 40)
-        Res.font80 = Font.create(Res.typeface, 80)
+        painter.clear(Color.fromArgb(0xFFEEEEEE))
 
-        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
-        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
-        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
-        Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
+        switch g_Page
+        {
+        case 0: displayPage0(painter)
+        case 1: displayPage1(painter)
+        case 2: displayPage2(painter)
+        case 3: displayPage3(painter)
+        case 4: displayPage4(painter)
+        case 5: displayPage5(painter)
+        case 6: displayPage6(painter)
+        }
+
+        painter.resetState()
+        painter.translateTransform(680, 780)
+        painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
+        painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
+        painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
+        painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
+    }
+
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        if evt.kind != .KeyPressed
+            return
+
+        switch evt.key
+        {
+        case F1:
+            g_ModeAA = g_ModeAA ? false : true
+            wnd.surface.invalidate()
+
+        case F2:
+            g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
+            wnd.surface.invalidate()
+
+        case F3:
+            g_Pattern = g_Pattern ? false : true
+            wnd.surface.invalidate()
+
+        case F4:
+            if evt.modifiers & .Alt
+                wnd.surface.destroy()
+            else
+            {
+                g_Page = (g_Page + 1) % MaxPages
+                wnd.surface.invalidate()
+            }
+        }
     }
 }
 
 #main
 {
     var app: Gui.Application
-    surface := try app.createSurface(100, 100, W, H)
-    surface.wnd.hookOnKeyEvent = &onKeyEvent
-    surface.wnd.view.hookOnPaintEvent = &onPaintEvent
-    try setup(&surface.wnd)
+
+    view := Wnd.create'MyView()
+    surface := try app.createSurface(100, 100, W, H, view: view)
+
     surface.show()
     app.run()
 }

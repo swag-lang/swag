@@ -61,16 +61,7 @@ struct Wnd
     isAllocated:        bool
     isPendingDestroy:   bool
 
-    hookOnEvent:            func(*Wnd, *Event)->bool
-    hookOnCreateEvent:      func(*Wnd, *CreateEvent)->bool
-    hookOnDestroyEvent:     func(*Wnd, *DestroyEvent)->bool
-    hookOnResizeEvent:      func(*Wnd, *ResizeEvent)->bool
-    hookOnPaintEvent:       func(*Wnd, *PaintEvent)->bool
-    hookOnKeyEvent:         func(*Wnd, *KeyEvent)->bool
-    hookOnMouseEvent:       func(*Wnd, *MouseEvent)->bool
-    hookOnSysCommandEvent:  func(*Wnd, *SysCommandEvent)->bool
-    hookOnSetThemeEvent:    func(*Wnd, *SetThemeEvent)->bool
-    hookOnTimerEvent:       func(*Wnd, *TimerEvent)->bool
+    hookOnEvent: func(*Wnd, *Event)->bool
 }
 
 impl IWnd for Wnd
@@ -81,64 +72,25 @@ impl IWnd for Wnd
         switch evt.kind
         {
         case Create:
-            if hookOnCreateEvent
-                eat = hookOnCreateEvent(self, cast(*CreateEvent) evt)
-            if !eat
-                itf.onCreateEvent(cast(*CreateEvent) evt)
-
+            itf.onCreateEvent(cast(*CreateEvent) evt)
         case Destroy:
-            if hookOnDestroyEvent
-                eat = hookOnDestroyEvent(self, cast(*DestroyEvent) evt)
-            if !eat
-                itf.onDestroyEvent(cast(*DestroyEvent) evt)
-
+            itf.onDestroyEvent(cast(*DestroyEvent) evt)
         case Resize:
-            if hookOnResizeEvent
-                eat = hookOnResizeEvent(self, cast(*ResizeEvent) evt)
-            if !eat
-                itf.onResizeEvent(cast(*ResizeEvent) evt)
-
+            itf.onResizeEvent(cast(*ResizeEvent) evt)
         case Paint:
-            if hookOnPaintEvent
-                eat = hookOnPaintEvent(self, cast(*PaintEvent) evt)
-            if !eat
-                itf.onPaintEvent(cast(*PaintEvent) evt)
-
+            itf.onPaintEvent(cast(*PaintEvent) evt)
         case SysCommand:
-            if hookOnSysCommandEvent
-                eat = hookOnSysCommandEvent(self, cast(*SysCommandEvent) evt)
-            if !eat
-                itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
-
+            itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
         case KeyPressed, KeyReleased:
-            if hookOnKeyEvent
-                eat = hookOnKeyEvent(self, cast(*KeyEvent) evt)
-            if !eat
-                itf.onKeyEvent(cast(*KeyEvent) evt)
-
+            itf.onKeyEvent(cast(*KeyEvent) evt)
         case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave:
-            if hookOnMouseEvent
-                eat = hookOnMouseEvent(self, cast(*MouseEvent) evt)
-            if !eat
-                itf.onMouseEvent(cast(*MouseEvent) evt)
-
+            itf.onMouseEvent(cast(*MouseEvent) evt)
         case SetTheme:
-            if hookOnSetThemeEvent
-                eat = hookOnSetThemeEvent(self, cast(*SetThemeEvent) evt)
-            if !eat
-                itf.onSetThemeEvent(cast(*SetThemeEvent) evt)
-
+            itf.onSetThemeEvent(cast(*SetThemeEvent) evt)
         case Timer:
-            if hookOnTimerEvent
-                eat = hookOnTimerEvent(self, cast(*TimerEvent) evt)
-            if !eat
-                itf.onTimerEvent(cast(*TimerEvent) evt)
-
+            itf.onTimerEvent(cast(*TimerEvent) evt)
         case SetFocus, KillFocus:
-            //if hookOnTimerEvent
-            //    eat = hookOnTimerEvent(self, cast(*TimerEvent) evt)
-           // if !eat
-                itf.onFocusEvent(cast(*FocusEvent) evt)
+            itf.onFocusEvent(cast(*FocusEvent) evt)
         }
     }
 
@@ -170,7 +122,7 @@ impl Wnd
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd, id: string = null)->*T
+    func(T) create(parent: *Wnd = null, id: string = null)->*T
     {
         return create(parent, "", @{})
     }
@@ -183,7 +135,7 @@ impl Wnd
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*T
     {
-        res := Memory.new'T()
+        res := Core.Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.name = name

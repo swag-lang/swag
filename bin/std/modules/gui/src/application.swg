@@ -70,6 +70,7 @@ impl Application
 
         evt := CreateEvent{}
         surface.wnd.sendEvent(&evt)
+        surface.wnd.view.sendEvent(&evt)
 
         return surface
     }
