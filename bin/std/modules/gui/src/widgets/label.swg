@@ -3,7 +3,7 @@ using Core, Pixel
 
 struct Label
 {
-    using widget:       Widget
+    using wnd:          Wnd
     icon:               Icon
     isWordWrap:         bool = true
     horzAlignmentIcon:  StringHorzAlignment = Left

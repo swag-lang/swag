@@ -66,6 +66,12 @@ func onPaintEvent(wnd: *Wnd, evt: *PaintEvent)->bool
         button.isChecked = true
     }
 
+    // EditBox
+    {
+        edit := EditBox.create(view, "Normal", @{360, 10})
+        edit.backgroundStyle = .Dialog
+    }
+
     // Labels
     {
         label := Label.create(view, "Left", @{125, 140, 140, 30})

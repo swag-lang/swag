@@ -30,6 +30,7 @@ interface IWnd
     onMouseEvent:       func(self, *MouseEvent)
     onSysCommandEvent:  func(self, *SysCommandEvent)
     onSetThemeEvent:    func(self, *SetThemeEvent)
+    onTimerEvent:       func(self, *TimerEvent)
 }
 
 struct Wnd
@@ -68,6 +69,7 @@ struct Wnd
     hookOnMouseEvent:       func(*Wnd, *MouseEvent)->bool
     hookOnSysCommandEvent:  func(*Wnd, *SysCommandEvent)->bool
     hookOnSetThemeEvent:    func(*Wnd, *SetThemeEvent)->bool
+    hookOnTimerEvent:       func(*Wnd, *TimerEvent)->bool
 }
 
 impl IWnd for Wnd
@@ -124,6 +126,12 @@ impl IWnd for Wnd
                 eat = hookOnSetThemeEvent(self, cast(*SetThemeEvent) evt)
             if !eat
                 itf.onSetThemeEvent(cast(*SetThemeEvent) evt)
+
+        case Timer:
+            if hookOnTimerEvent
+                eat = hookOnTimerEvent(self, cast(*TimerEvent) evt)
+            if !eat
+                itf.onTimerEvent(cast(*TimerEvent) evt)
         }
     }
 
@@ -133,6 +141,7 @@ impl IWnd for Wnd
     mtd onPaintEvent(evt: *PaintEvent)              {}
     mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
+    mtd onTimerEvent(evt: *TimerEvent)              {}
 
     mtd onKeyEvent(evt: *KeyEvent)          { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)      { evt.accepted = false; }

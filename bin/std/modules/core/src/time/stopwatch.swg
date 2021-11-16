@@ -3,7 +3,7 @@
 // Provides a set of methods and properties that you can use to accurately measure elapsed time
 public struct Stopwatch
 {
-    isRunning:		bool
+    isStarted:		bool
     startTimeStamp:	u64
     elapsedTicks:	u64
 }
@@ -11,51 +11,59 @@ public struct Stopwatch
 public impl Stopwatch
 {
     // Starts, or resumes, measuring elapsed time for an interval
-    func start(using self)
+    mtd start()
     {
-        if !isRunning
+        if !isStarted
         {
-            isRunning = true
+            isStarted = true
             startTimeStamp = nowPrecise()
         }
     }
 
     // Stops measuring elapsed time for an interval
-    func stop(using self)
+    mtd stop()
     {
-        if isRunning
+        if isStarted
         {
             endTimeStamp := nowPrecise()
             elapsedTicksPeriod := endTimeStamp - startTimeStamp
             elapsedTicks += elapsedTicksPeriod
-            isRunning = false
+            isStarted = false
         }
     }
 
     // Stops time interval measurement and resets the elapsed time to zero
-    func reset(using self)
+    mtd reset()
     {
         elapsedTicks = 0
         startTimeStamp = 0
-        isRunning = false
+        isStarted = false
     }
 
     // Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time
-    func restart(using self)
+    mtd restart()
     {
         elapsedTicks = 0
         startTimeStamp = nowPrecise()
-        isRunning = true
+        isStarted = true
     }
 
-    // Gets the total elapsed time in milliseconds
-    func elapsedMilliseconds(using self)->u32
+    // Gets the current elapsed time in milliseconds since the start
+    mtd elapsedMillisecondsNow()->u32
+    {
+        endTimeStamp := nowPrecise()
+        elapsedTicksPeriod := endTimeStamp - startTimeStamp
+        return acast ((elapsedTicksPeriod * 1000) / preciseFrequency())
+    }
+
+    // Gets the total elapsed time in milliseconds, after a call to 'stop'
+    mtd elapsedMilliseconds()->u32
     {
         return acast ((elapsedTicks * 1000) / preciseFrequency())
     }
 
-    // Gets the total elapsed time in microseconds
-    func elapsedMicroseconds(using self)->u32
+    // Gets the total elapsed time in microseconds, after a call to 'stop'
+    mtd elapsedMicroseconds()->u32
     {
         return acast ((elapsedTicks * 1000000) / preciseFrequency())
     }

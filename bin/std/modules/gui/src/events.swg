@@ -19,6 +19,7 @@ enum EventKind
     Quit
     SysCommand
     SetTheme
+    Timer
 }
 
 struct Event
@@ -45,6 +46,12 @@ impl Event
         res.kind = kind
         return res
     }
+}
+
+struct TimerEvent
+{
+    using base: Event{kind: EventKind.Timer}
+    timer:      *Timer
 }
 
 struct CreateEvent

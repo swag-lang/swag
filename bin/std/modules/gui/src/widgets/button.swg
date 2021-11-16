@@ -1,6 +1,6 @@
 public struct Button
 {
-    using widget:   Widget
+    using wnd:      Wnd
     icon:           Icon
     sigPressed:     func(*Button)
 

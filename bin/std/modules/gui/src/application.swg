@@ -1,6 +1,13 @@
 #global public
 using Core
 
+struct Timer
+{
+    timeMs:     s32
+    target:     *Wnd
+    stopwatch:  Time.Stopwatch
+}
+
 struct Application
 {
     renderer:       Pixel.RenderOgl
@@ -19,6 +26,7 @@ struct Application
     isActivated:    bool
     quitCode:       s32
 
+    timers:             Array'(*Timer)
     modalSurfaces:      Array'(*Surface)
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
@@ -93,6 +101,15 @@ impl Application
             keybCaptureWnd = null
         if wnd == keybFocusWnd
             keybFocusWnd = null
+
+        /*for i := 0'uint; i < timers.count; i += 1
+        {
+            if timers[i].target == wnd
+            {
+                deleteTimer(timers[i])
+                i -= 1
+            }
+        }*/
 
         visit e: postedEvents
         {
@@ -331,10 +348,45 @@ impl Application
         postDestroy.clear()
     }
 
+    // Register a new timer for the given 'target'
+    mtd addTimer(timeMs: s32, target: *Wnd)->*Timer
+    {
+        timer := Memory.new'Timer()
+        timer.timeMs = timeMs
+        timer.target = target
+        timers.add(timer)
+        return timer
+    }
+
+    // Delete and unregister timer
+    mtd deleteTimer(timer: *Timer)
+    {
+        Memory.delete(timer)
+        timers.remove(timer)
+    }
+
+    protected mtd sendTimerEvents()
+    {
+        visit t: timers
+        {
+            if !t.stopwatch.isStarted
+                t.stopwatch.start()
+
+            if t.stopwatch.elapsedMillisecondsNow() >= t.timeMs
+            {
+                evt := TimerEvent{}
+                evt.timer = t
+                t.target.sendEvent(&evt)
+                t.stopwatch.restart()
+            }
+        }
+    }
+
     protected mtd runFrame()
     {
         Memory.freeTemp()
 
+        sendTimerEvents()
         sendSystemEvents()
         sendKeyboardEvents()
         sendMouseEvents()
