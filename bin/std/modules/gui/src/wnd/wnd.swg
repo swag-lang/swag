@@ -516,15 +516,20 @@ impl Wnd
         surface.app.keybCaptureWnd = null
     }
 
+    // Set the keyboard focus
     mtd setFocus()
     {
         surface.app.keybFocusWnd = self
     }
 
+    // Get the window with the keyboard focus
     mtd getFocus()->*Wnd
     {
         return surface.app.keybFocusWnd
     }
+
+    // Returns true if the window has the keyboard focus
+    mtd hasFocus() => surface.app.keybFocusWnd == self
 
     //////////////////////////////////////////////
     // Events

@@ -13,7 +13,7 @@ impl IWnd for EditBox
     {
         painter := evt.bc.painter
 
-        if visibleCaret and getFocus() == self
+        if visibleCaret and hasFocus()
         {
             pos := getCaretPos()
             painter.fillRect(pos, Argb.White)
