@@ -62,7 +62,7 @@ public impl EditBox
 
     mtd getCaretPos()->Math.Rectangle
     {
-        pos := position
+        pos := getClientRect()
         pos.width = 4
         return pos
     }

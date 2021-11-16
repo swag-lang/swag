@@ -52,11 +52,12 @@ impl IWnd for ButtonPush
         }
 
         // Background
-        bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
+        clientRect := getClientRect()
+        bc.theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
 
         // Border
         if !isFlat
-            bc.theme.drawSubRect(bc.painter, position, subRectBorder, colorBorder)
+            bc.theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
 
         // Content
         var format: RichStringFormat
@@ -66,7 +67,7 @@ impl IWnd for ButtonPush
         format.flags = .Clip
         format.font = bc.theme.res.fontDefault
         format.fontStyle = .Bold
-        labelPos := position
+        labelPos := clientRect
         labelPos.inflate(bc.theme.metrics.btn_Margins)
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)
     }

@@ -73,9 +73,10 @@ impl IWnd for ButtonCheck
         }
 
         // Box
-        posBox := position
+        clientRect := getClientRect()
+        posBox := clientRect
         posBox.height = getThemeMetrics().btnCheck_Size
-        posBox.y = position.vertCenter() - (posBox.height * 0.5)
+        posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
         bc.theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         bc.theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
@@ -88,7 +89,7 @@ impl IWnd for ButtonCheck
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = bc.theme.res.fontDefault
-        labelPos := position
+        labelPos := clientRect
         labelPos.x += posBox.width + bc.theme.metrics.btnCheck_Padding
         labelPos.width -= posBox.width + bc.theme.metrics.btnCheck_Padding
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)

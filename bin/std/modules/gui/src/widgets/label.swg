@@ -20,7 +20,9 @@ impl IWnd for Label
     {
         theme   := evt.bc.theme
         painter := evt.bc.painter
-        pos     := position
+
+        clientRect := getClientRect()
+        pos        := clientRect
         pos.applyPadding(padding)
 
         // Icon

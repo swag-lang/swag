@@ -261,12 +261,12 @@ impl Wnd
         }
 
         // User paint
+        bc.painter.translateTransform(position.x, position.y)
         evt := PaintEvent{}
         evt.bc = bc
         sendEvent(&evt)
 
         // Childs
-        bc.painter.translateTransform(position.x, position.y)
         visit c: childs
         {
             if c.isHidden

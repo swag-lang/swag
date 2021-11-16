@@ -40,10 +40,11 @@ impl IWnd for ButtonIcon
         }
 
         // Background
-        bc.theme.drawSubRect(bc.painter, position, subRectBk, colorBk)
+        clientRect := getClientRect()
+        bc.theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
 
         // Icon
-        pos := position
+        pos := clientRect
         pos.x = pos.horzCenter() - icon.size * 0.5
         icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), colorIcon)
     }
