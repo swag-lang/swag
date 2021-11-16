@@ -102,15 +102,17 @@ impl Application
         if wnd == keybFocusWnd
             keybFocusWnd = null
 
-        /*for i := 0'uint; i < timers.count; i += 1
+        // Be sure there's no timer for that window
+        for i := 0; i < timers.count; i += 1
         {
             if timers[i].target == wnd
             {
                 deleteTimer(timers[i])
                 i -= 1
             }
-        }*/
+        }
 
+        // Be sure there's no posted event for that window
         visit e: postedEvents
         {
             if e.target == wnd

@@ -58,6 +58,21 @@ impl Point
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
+    mtdc(op: string) opUnary()->Self
+    {
+        var result: retval
+		#if op == "-"
+		{
+			result.x = -x
+			result.y = -y
+			return result
+		}
+        #else
+        {
+            #assert(false, "unsupported unary operation '" ~op~ "'")
+        }
+    }
+
     // Set Point to (0, 0)
     mtd clear()
     {

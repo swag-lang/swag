@@ -56,6 +56,14 @@ public impl Stopwatch
         return acast ((elapsedTicksPeriod * 1000) / preciseFrequency())
     }
 
+    // Gets the current elapsed time in milliseconds since the start
+    mtd elapsedMicrosecondsNow()->u32
+    {
+        endTimeStamp := nowPrecise()
+        elapsedTicksPeriod := endTimeStamp - startTimeStamp
+        return acast ((elapsedTicksPeriod * 1000000) / preciseFrequency())
+    }
+
     // Gets the total elapsed time in milliseconds, after a call to 'stop'
     mtd elapsedMilliseconds()->u32
     {

@@ -287,6 +287,12 @@ impl Wnd
         surface.invalidateRect(getSurfaceRect())
     }
 
+    // Force o local position to be repainted
+    mtd invalidateRect(rect: Math.Rectangle)
+    {
+        surface.invalidateRect(localToSurface(rect))
+    }
+
     //////////////////////////////////////////////
     // Coordinates
     //////////////////////////////////////////////
@@ -302,6 +308,20 @@ impl Wnd
     {
         r := getSurfaceRect()
         return @{pos.x - r.x, pos.y - r.y}
+    }
+
+    // Convert a local coordinate to a surface coordinate
+    mtd localToSurface(pos: Math.Point)->Math.Point
+    {
+        r := getSurfaceRect()
+        return @{pos.x + r.x, pos.y + r.y}
+    }
+
+    // Convert a local coordinate to a surface coordinate
+    mtd localToSurface(pos: Math.Rectangle)->Math.Rectangle
+    {
+        r := getSurfaceRect()
+        return @{pos.x + r.x, pos.y + r.y, pos.width, pos.height}
     }
 
     // Returns the client area
@@ -499,6 +519,11 @@ impl Wnd
     mtd setFocus()
     {
         surface.app.keybFocusWnd = self
+    }
+
+    mtd getFocus()->*Wnd
+    {
+        return surface.app.keybFocusWnd
     }
 
     //////////////////////////////////////////////
