@@ -63,7 +63,7 @@ const H = 1024
 
     // EditBox
     {
-        edit := EditBox.create(view, "Normal", @{360, 10, 200})
+        edit := EditBox.create(view, "Normal", @{360, 10, 300})
         edit.note = "Find"
     }
 

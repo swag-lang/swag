@@ -266,7 +266,8 @@ impl String
             length -= whatLength
             length += byLength
             idx += byLength
-            if idx == length break
+            if idx == length
+                break
             idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
     }
@@ -274,6 +275,11 @@ impl String
     // Remove some bytes
     mtd remove(byteIndex, byteCount: uint)
     {
+        if !byteCount return
+        Debug.assert(byteIndex + byteCount <= length)
+        Memory.copyOver(buffer + byteIndex, buffer + byteIndex + byteCount, length - (byteIndex + byteCount))
+        length -= byteCount
+        buffer[length] = 0
     }
 
     // Insert a substring at the given position

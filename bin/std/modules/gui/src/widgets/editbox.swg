@@ -163,10 +163,12 @@ public impl EditBox
         switch key
         {
         case Back:
-            if !selBeg
-                break
-            selBeg = moveCursorLeft(selBeg)
-            deleteSelection()
+            if selBeg
+            {
+                selBeg = moveCaretLeft(selBeg)
+                deleteSelection()
+            }
+
             return
         }
 
@@ -190,7 +192,7 @@ public impl EditBox
         notifyChanged()
     }
 
-    protected mtd moveCursorLeft(sel: uint)->uint
+    protected mtd moveCaretLeft(sel: uint)->uint
     {
         if !sel
             return sel
