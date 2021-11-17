@@ -523,6 +523,12 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newFunc->extension->alternativeScopes.append(node->ownerFct->extension->alternativeScopes);
     }
 
+    if (funcNode->extension && funcNode->extension->alternativeScopes.size())
+    {
+        newFunc->allocateExtension();
+        newFunc->extension->alternativeScopes.append(funcNode->extension->alternativeScopes);
+    }
+
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
