@@ -1,11 +1,17 @@
 #global public
 using Core, Pixel
 
+enum ButtonStyle
+{
+    Normal
+    Default
+    Flat
+}
+
 struct ButtonPush
 {
     using button:   Button
-    isDefault:      bool
-    isFlat:         bool
+    btnStyle:       ButtonStyle = Normal
 }
 
 impl IWnd for ButtonPush
@@ -26,27 +32,88 @@ impl IWnd for ButtonPush
         switch
         {
         case isDisabled:
-            colorBk       = colors.btnPush_DisabledBk
-            colorBorder   = colors.btnPush_DisabledBorder
-            colorText     = colors.btnPush_DisabledText
+            if btnStyle == .Flat
+            {
+                colorBk       = colors.btnPushFlat_DisabledBk
+                colorBorder   = colors.btnPushFlat_DisabledBorder
+                colorText     = colors.btnPushFlat_DisabledText
+            }
+            else
+            {
+                colorBk       = colors.btnPush_DisabledBk
+                colorBorder   = colors.btnPush_DisabledBorder
+                colorText     = colors.btnPush_DisabledText
+            }
+
             subRectBk     = &rects.btnPush_Disabled
             subRectBorder = &rects.btnPush_DisabledBorder
+
         case isPressed:
-            colorBk       = isDefault ? colors.btnPushDefault_PressedBk : colors.btnPush_PressedBk
-            colorBorder   = isDefault ? colors.btnPushDefault_PressedBorder : colors.btnPush_PressedBorder
-            colorText     = isDefault ? colors.btnPushDefault_PressedText : colors.btnPush_PressedText
+            if btnStyle == .Flat
+            {
+                colorBk       = colors.btnPushFlat_PressedBk
+                colorBorder   = colors.btnPushFlat_PressedBorder
+                colorText     = colors.btnPushFlat_PressedText
+            }
+            else if btnStyle == .Default
+            {
+                colorBk       = colors.btnPushDefault_PressedBk
+                colorBorder   = colors.btnPushDefault_PressedBorder
+                colorText     = colors.btnPushDefault_PressedText
+            }
+            else
+            {
+                colorBk       = colors.btnPush_PressedBk
+                colorBorder   = colors.btnPush_PressedBorder
+                colorText     = colors.btnPush_PressedText
+            }
+
             subRectBk     = &rects.btnPush_Pressed
             subRectBorder = &rects.btnPush_PressedBorder
+
         case isHot:
-            colorBk       = isDefault ? colors.btnPushDefault_HotBk : colors.btnPush_HotBk
-            colorBorder   = isDefault ? colors.btnPushDefault_HotBorder : colors.btnPush_HotBorder
-            colorText     = isDefault ? colors.btnPushDefault_HotText : colors.btnPush_HotText
+            if btnStyle == .Flat
+            {
+                colorBk       = colors.btnPushFlat_HotBk
+                colorBorder   = colors.btnPushFlat_HotBorder
+                colorText     = colors.btnPushFlat_HotText
+            }
+            else if btnStyle == .Default
+            {
+                colorBk       = colors.btnPushDefault_HotBk
+                colorBorder   = colors.btnPushDefault_HotBorder
+                colorText     = colors.btnPushDefault_HotText
+            }
+            else
+            {
+                colorBk       = colors.btnPush_HotBk
+                colorBorder   = colors.btnPush_HotBorder
+                colorText     = colors.btnPush_HotText
+            }
+
             subRectBk     = &rects.btnPush_Hot
             subRectBorder = &rects.btnOush_HotBorder
+
         default:
-            colorBk       = isDefault ? colors.btnPushDefault_Bk : colors.btnPush_Bk
-            colorBorder   = isDefault ? colors.btnPushDefault_Border : colors.btnPush_Border
-            colorText     = isDefault ? colors.btnPushDefault_Text : colors.btnPush_Text
+            if btnStyle == .Flat
+            {
+                colorBk       = colors.btnPushFlat_Bk
+                colorBorder   = colors.btnPushFlat_Border
+                colorText     = colors.btnPushFlat_Text
+            }
+            else if btnStyle == .Default
+            {
+                colorBk       = colors.btnPushDefault_Bk
+                colorBorder   = colors.btnPushDefault_Border
+                colorText     = colors.btnPushDefault_Text
+            }
+            else
+            {
+                colorBk       = colors.btnPush_Bk
+                colorBorder   = colors.btnPush_Border
+                colorText     = colors.btnPush_Text
+            }
+
             subRectBk     = &rects.btnPush_Normal
             subRectBorder = &rects.btnPush_NormalBorder
         }
@@ -56,8 +123,7 @@ impl IWnd for ButtonPush
         bc.theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
 
         // Border
-        if !isFlat
-            bc.theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
+        bc.theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
 
         // Content
         var format: RichStringFormat

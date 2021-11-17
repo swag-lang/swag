@@ -21,11 +21,11 @@ impl IWnd for MessageDlg
             case Tab, Right:
                 visit btn, idx: buttons
                 {
-                    if btn.isDefault
+                    if btn.btnStyle == .Default
                     {
-                        btn.isDefault = false
+                        btn.btnStyle = .Normal
                         nextBtn := buttons[(idx + 1) % buttons.count]
-                        nextBtn.isDefault = true
+                        nextBtn.btnStyle = .Default
                         nextBtn.invalidate()
                         break
                     }
@@ -34,11 +34,11 @@ impl IWnd for MessageDlg
             case Left:
                 visit btn, idx: buttons
                 {
-                    if btn.isDefault
+                    if btn.btnStyle == .Default
                     {
-                        btn.isDefault = false
+                        btn.btnStyle = .Normal
                         prevBtn := idx ? buttons[idx - 1] : buttons.back()
-                        prevBtn.isDefault = true
+                        prevBtn.btnStyle = .Default
                         prevBtn.invalidate()
                         break
                     }
@@ -47,7 +47,7 @@ impl IWnd for MessageDlg
             case Enter:
                 visit btn: buttons
                 {
-                    if btn.isDefault
+                    if btn.btnStyle == .Default
                     {
                         surface.app.exitModal(btn.id)
                         break
@@ -168,11 +168,11 @@ public impl MessageDlg
 
     // Add a button
     #[Swag.Discardable]
-    mtd addButton(str, id: string, isDefault: bool)->*ButtonPush
+    mtd addButton(str, id: string, isDefault: bool = false)->*ButtonPush
     {
         btn := ButtonPush.create(wndBottom, str, @{}, #scopefct.id)
         btn.dockStyle = .Right
-        btn.isDefault = isDefault
+        btn.btnStyle = isDefault ? .Default : .Normal
         metrics := getThemeMetrics()
         btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
         btn.sigPressed = @(using btn: *Button) { surface.app.exitModal(btn.id); }

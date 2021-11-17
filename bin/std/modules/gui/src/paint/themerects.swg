@@ -15,14 +15,14 @@ struct ThemeImageRects
 
     dlg_BtnBar:             ThemeImageRect = @{{29,29,27,27}, 2}
 
-    btnPush_Normal:         ThemeImageRect = @{{1,1,27,27}, 9}
-    btnPush_NormalBorder:   ThemeImageRect = @{{29,1,27,27}, 9}
-    btnPush_Hot:            ThemeImageRect = @{{1,1,27,27}, 9}
-    btnOush_HotBorder:      ThemeImageRect = @{{29,1,27,27}, 9}
-    btnPush_Pressed:        ThemeImageRect = @{{1,1,27,27}, 9}
-    btnPush_PressedBorder:  ThemeImageRect = @{{29,1,27,27}, 9}
-    btnPush_Disabled:       ThemeImageRect = @{{1,1,27,27}, 9}
-    btnPush_DisabledBorder: ThemeImageRect = @{{29,1,27,27}, 9}
+    btnPush_Normal:         ThemeImageRect = @{{1,1,27,27}, 13}
+    btnPush_NormalBorder:   ThemeImageRect = @{{29,1,27,27}, 13}
+    btnPush_Hot:            ThemeImageRect = @{{1,1,27,27}, 13}
+    btnOush_HotBorder:      ThemeImageRect = @{{29,1,27,27}, 13}
+    btnPush_Pressed:        ThemeImageRect = @{{1,1,27,27}, 13}
+    btnPush_PressedBorder:  ThemeImageRect = @{{29,1,27,27}, 13}
+    btnPush_Disabled:       ThemeImageRect = @{{1,1,27,27}, 13}
+    btnPush_DisabledBorder: ThemeImageRect = @{{29,1,27,27}, 13}
 
     btnIcon_Normal:         ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_Hot:            ThemeImageRect = @{{1,29,27,27}, 9}

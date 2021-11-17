@@ -27,6 +27,19 @@ struct ThemeColors
     btnPush_DisabledBorder:         Color = 0x5FFFFFFF
     btnPush_DisabledBk:             Color = 0
 
+    btnPushFlat_Text:               Color = 0xFFFFFFFF
+    btnPushFlat_Border:             Color = 0
+    btnPushFlat_Bk:                 Color = 0
+    btnPushFlat_PressedText:        Color = 0xFFFFFFFF
+    btnPushFlat_PressedBorder:      Color = 0
+    btnPushFlat_PressedBk:          Color = 0x2FFFFFFF
+    btnPushFlat_HotText:            Color = 0xFFFFFFFF
+    btnPushFlat_HotBorder:          Color = 0
+    btnPushFlat_HotBk:              Color = 0x1FFFFFFF
+    btnPushFlat_DisabledText:       Color = 0x5FFFFFFF
+    btnPushFlat_DisabledBorder:     Color = 0x5FFFFFFF
+    btnPushFlat_DisabledBk:         Color = 0
+
     btnPushDefault_Text:            Color = 0xFFFFFFFF
     btnPushDefault_Border:          Color = 0xFF1473e6
     btnPushDefault_Bk:              Color = 0xFF1473e6
