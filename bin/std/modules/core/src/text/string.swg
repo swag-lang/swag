@@ -22,42 +22,42 @@ struct String
 impl String
 {
     #[Inline]
-    func opCount(using const self)->uint
+    mtdc opCount()->uint
     {
         return length
     }
 
     #[Inline]
-    func opData(using const self)->const *u8
+    mtdc opData()->const *u8
     {
         return buffer
     }
 
     #[Implicit]
-    func opCast(using const self)->cstring
+    mtdc opCast()->cstring
     {
         return buffer
     }
 
     #[Implicit]
-    func opCast(using const self)->string
+    mtdc opCast()->string
     {
         return @mkstring(buffer, length)
     }
 
     #[Implicit]
-    func opCast(using const self)->const [..] u8
+    mtdc opCast()->const [..] u8
     {
         return @mkslice(buffer, length)
     }
 
-    func opSlice(using const self, lower, upper: uint)->string
+    mtdc opSlice(lower, upper: uint)->string
     {
         Debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
-    func opAffect(using self, value: string)
+    mtd opAffect(value: string)
     {
         if @dataof(value) == null
         {
@@ -72,7 +72,7 @@ impl String
         buffer[length] = 0
     }
 
-    func opEquals(using const self, other: string)->bool
+    mtdc opEquals(other: string)->bool
     {
         if buffer == @dataof(other) // true if null
             return true
@@ -81,12 +81,12 @@ impl String
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
 
-    func opCmp(using const self, other: Self)->s32
+    mtdc opCmp(other: Self)->s32
     {
         return Utf8.compare(toString(), other.toString(), Utf8.ComparisonType.Latin1)
     }
 
-    func(op: string) opAssign(using self, value: string)
+    mtd(op: string) opAssign(value: string)
     {
         #if op == "+="
             append(value)
@@ -94,7 +94,7 @@ impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
-    func(op: string) opAssign(using self, value: rune)
+    mtd(op: string) opAssign(value: rune)
     {
         #if op == "+="
             append(value)
@@ -102,7 +102,7 @@ impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
-    func(op: string) opAssign(using self, value: u8)
+    mtd(op: string) opAssign(value: u8)
     {
         #if op == "+="
             append(value)
@@ -110,13 +110,13 @@ impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
-    func opPostMove(using self)
+    mtd opPostMove()
     {
         if buffer and capacity <= SmallSize
             buffer = acast &padding[0]
     }
 
-    func opPostCopy(using self)
+    mtd opPostCopy()
     {
         if !buffer
             return
@@ -133,13 +133,13 @@ impl String
         }
     }
 
-    func opDrop(using self)
+    mtd opDrop()
     {
         if buffer != acast &padding[0]
             Memory.free(buffer, capacity, allocator)
     }
 
-    func opIndex(using self, index: uint)->u8
+    mtd opIndex(index: uint)->u8
     {
         if !length
             return 0
@@ -150,7 +150,7 @@ impl String
     // @alias0 will contain the byte or the pointer to the byte
     // @alias1 will contain the byte index
     #[Macro]
-    func(ptr: bool) opVisitBytes(using self, stmt: code)
+    mtd(ptr: bool) opVisitBytes(stmt: code)
     {
         if !length
             return
@@ -179,7 +179,7 @@ impl String
     // @alias1 will contain the byte index of that character within the utf8 sequence
     // @alias2 will contain the character index
     #[Macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    mtd(ptr: bool) opVisit(stmt: code)
     {
         if !length
             return
@@ -217,31 +217,31 @@ impl String
     }
 
     // Set the length of the String to 0
-    func clear(using self)
+    mtd clear()
     {
         length = 0
     }
 
     // Returns true if the String has zero length
-    func isEmpty(using const self)->bool
+    mtdc isEmpty()->bool
     {
         return length == 0
     }
 
     // Returns true if the String is null (undefined)
-    func isNull(using const self)->bool
+    mtdc isNull()->bool
     {
         return buffer == null
     }
 
     // Returns true if the String is null or empty
-    func isNullOrEmpty(using const self)->bool
+    mtdc isNullOrEmpty()->bool
     {
         return buffer == null or length == 0
     }
 
     // Transform a null string in an empty one
-    func ensureNotNull(using self)
+    mtd ensureNotNull()
     {
         if buffer
             return
@@ -249,7 +249,7 @@ impl String
     }
 
     // Replace all occurences of 'what' with 'by'
-    func replace(using self, what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
+    mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         whatLength := @countof(what)
         if !whatLength or whatLength > length
@@ -271,8 +271,13 @@ impl String
         }
     }
 
+    // Remove some bytes
+    mtd remove(byteIndex, byteCount: uint)
+    {
+    }
+
     // Insert a substring at the given position
-    func insert(using self, byteIndex: uint, value: string)
+    mtd insert(byteIndex: uint, value: string)
     {
         if byteIndex == length
         {
@@ -298,7 +303,7 @@ impl String
     }
 
     // Append a byte to the String
-    func append(using self, value: u8)
+    mtd append(value: u8)
     {
         grow(length + 2)
         buffer[length] = value
@@ -307,7 +312,7 @@ impl String
     }
 
     // Append a rune to the String
-    func append(using self, value: rune)
+    mtd append(value: rune)
     {
         Debug.assert(Utf8.isValidRune(value))
         var tmp: [4] u8
@@ -320,7 +325,7 @@ impl String
     }
 
     // Append a string to the String
-    func append(using self, value: string)
+    mtd append(value: string)
     {
         concatLength := @countof(value)
         if concatLength == 0
@@ -358,7 +363,7 @@ impl String
     }
 
     // Ensure the String is big enough to store a given amount of bytes
-    func grow(using self, wantedCapacity: uint)
+    mtd grow(wantedCapacity: uint)
     {
         if wantedCapacity <= capacity
             return
@@ -367,7 +372,7 @@ impl String
     }
 
     // Reserve room for at least 'newCapacity' bytes
-    func reserve(using self, newCapacity: uint)
+    mtd reserve(newCapacity: uint)
     {
         length = Math.min(length, newCapacity)
         if allocator == null
@@ -403,7 +408,7 @@ impl String
     }
 
     // Remove whitespaces at the start of the String
-    func trimStart(using self)
+    mtd trimStart()
     {
         if !length
             return
@@ -424,7 +429,7 @@ impl String
     }
 
     // Remove whitespaces at the end of the String
-    func trimEnd(using self)
+    mtd trimEnd()
     {
         if !length
             return
@@ -442,14 +447,14 @@ impl String
     }
 
     // Removes all leading and trailing white-space characters from the current String
-    func trim(using self)
+    mtd trim()
     {
         trimStart()
         trimEnd()
     }
 
     // Convert string to a 32 bits character array
-    func toCharArray(using const self)->Array'rune
+    mtdc toCharArray()->Array'rune
     {
         return Unicode.fromUtf8(@mkslice(buffer, length))
     }
@@ -463,20 +468,20 @@ impl String
 
     // Returns a string type
     #[Swag.Inline]
-    func toString(using const self)->string
+    mtdc toString()->string
     {
         return @mkstring(buffer, length)
     }
 
     // Returns a slice type
     #[Swag.Inline]
-    func toSlice(using self)->[..] u8
+    mtd toSlice()->[..] u8
     {
         return @mkslice(buffer, length)
     }
 
     // Convert the string inplace to upper case.
-    func makeUpper(using self, set = CharacterSet.Latin1)
+    mtd makeUpper(set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
 
@@ -495,7 +500,7 @@ impl String
     }
 
     // Convert the string inplace to lower case.
-    func makeLower(using self, set = CharacterSet.Latin1)
+    mtd makeLower(set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
 
@@ -514,7 +519,7 @@ impl String
     }
 
     // Returns a new String in upper case
-    func toUpper(using self, set = CharacterSet.Latin1)->String
+    mtd toUpper(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
         result.makeUpper(set)

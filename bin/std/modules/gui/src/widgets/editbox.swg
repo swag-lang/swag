@@ -107,7 +107,7 @@ impl IWnd for EditBox
     {
         if evt.kind != .KeyPressed
             return
-        insertChar(evt.key)
+        keyPressed(evt.key)
     }
 }
 
@@ -153,29 +153,72 @@ public impl EditBox
     protected mtd computeCaretPos()
     {
         str := @mkstring(textContent.buffer, selEnd)
-        var painter: Painter
+        var painter: Painter{fake: true}
         met := painter.measureString(str, getTheme().res.fontDefault.regular)
         caretPosX = met.width
     }
 
-    protected mtd insertChar(key: Input.Key)
+    protected mtd keyPressed(key: Input.Key)
     {
+        switch key
+        {
+        case Back:
+            if !selBeg
+                break
+            selBeg = moveCursorLeft(selBeg)
+            deleteSelection()
+            return
+        }
+
         r := surface.app.keyb.keyToRune(key)
         if !r
             return
+        insertChar(r)
+    }
 
-        Console.print(r)
-
+    protected mtd insertChar(r: rune)
+    {
         var utf8: [5] u8
         cpt := Utf8.fromUnicode(utf8, @[r])
         if !cpt return
         utf8[cpt] = 0
 
-        //deleteSelectionPrivate()
+        deleteSelectionPrivate()
         textContent.insert(selEnd, @mkstring(&utf8[0], cpt))
         setSelection(selEnd + cpt, selEnd + cpt)
 
         notifyChanged()
+    }
+
+    protected mtd moveCursorLeft(sel: uint)->uint
+    {
+        if !sel
+            return sel
+        return sel - 1
+    }
+
+    // Delete selected text
+    mtd deleteSelection()
+    {
+        if deleteSelectionPrivate()
+            notifyChanged()
+    }
+
+    #[Swag.Discardable]
+    protected mtd deleteSelectionPrivate()->bool
+    {
+        if selBeg == selEnd
+            return false
+        checkSelection()
+        if selBeg == textContent.length
+            return false
+        textContent.remove(selBeg, selEnd - selBeg)
+        setSelection(selBeg, selBeg)
+        return true
+    }
+
+    protected mtd checkSelection()
+    {
     }
 
     protected mtd notifyChanged()
