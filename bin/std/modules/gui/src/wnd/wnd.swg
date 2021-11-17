@@ -183,7 +183,49 @@ impl Wnd
         if isHidden
             return
         isHidden = true
+
+        // Check global state
+        if getApp().keybFocusWnd == self
+            getTopView().setFocus()
+
         invalidate()
+    }
+
+    // Enable the window
+    mtd enable()
+    {
+        if !isDisabled
+            return
+        isDisabled = false
+        invalidate()
+    }
+
+    // Disable the window
+    mtd disable()
+    {
+        if isDisabled
+            return
+        isDisabled = true
+
+        // Check global state
+        if getApp().keybFocusWnd == self
+            getTopView().setFocus()
+
+        invalidate()
+    }
+
+    // Returns true if window, and all its parents, are enabled
+    mtd isEnabled()->bool
+    {
+        check := self
+        while check
+        {
+            if check.isDisabled
+                return false
+            check = check.parent
+        }
+
+        return true
     }
 
     //////////////////////////////////////////////
@@ -481,6 +523,8 @@ impl Wnd
     mtd setFocus()
     {
         if surface.app.keybFocusWnd == self
+            return
+        if !isEnabled()
             return
 
         if surface.app.keybFocusWnd

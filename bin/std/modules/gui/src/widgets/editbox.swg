@@ -84,7 +84,7 @@ impl IWnd for EditBox
         }
 
         // Selection
-        if selBeg != selEnd
+        if selBeg != selEnd and hasFocus()
         {
             pos := clientRect
             pos.x = posSelBeg + bc.theme.metrics.editBox_SquarePadding
@@ -164,12 +164,19 @@ public impl EditBox
             notifyChanged()
     }
 
+    // Set current selection
     mtd setSelection(start, end: uint)
     {
         selBeg = start
         selEnd = end
         checkSelection()
         computeCaretPos()
+    }
+
+    // Select all text
+    mtd selectAll()
+    {
+        setSelection(0, textContent.length)
     }
 }
 

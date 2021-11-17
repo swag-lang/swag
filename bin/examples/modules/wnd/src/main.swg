@@ -23,7 +23,7 @@ const H = 1024
         button.sigPressed = @(btn: *Button) { btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18); }
         button.btnStyle = .Default
         button = ButtonPush.create(view, "Disabled", @{5, 90})
-        button.isDisabled = true
+        button.disable()
         button = ButtonPush.create(view, "ExitExitExitExitExit", @{5, 130})
         button.cursor = Cursor.from(CursorShape.Help)
     }
@@ -44,9 +44,9 @@ const H = 1024
     {
         button := ButtonCheck.create(view, "Normal", @{125, 10})
         button = ButtonCheck.create(view, "Disabled", @{125, 40})
-        button.isDisabled = true
+        button.disable()
         button = ButtonCheck.create(view, "Disabled", @{125, 70})
-        button.isDisabled = true
+        button.disable()
         button.isChecked = .Checked
         button = ButtonCheck.create(view, "3 State", @{125, 100})
         button.isThreeState = true
@@ -56,9 +56,9 @@ const H = 1024
     {
         button := ButtonRadio.create(view, "Normal", @{240, 10})
         button = ButtonRadio.create(view, "Disabled", @{240, 40})
-        button.isDisabled = true
+        button.disable()
         button = ButtonRadio.create(view, "Disabled", @{240, 70})
-        button.isDisabled = true
+        button.disable()
         button.isChecked = true
     }
 
