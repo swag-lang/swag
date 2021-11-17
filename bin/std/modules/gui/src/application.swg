@@ -23,7 +23,6 @@ struct Application
     modalSurfaces:      Array'(*Surface)
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
-    keybCaptureWnd:     *Wnd
     keybFocusWnd:       *Wnd
 }
 
@@ -91,8 +90,6 @@ impl Application
             mouseEnterWnd = null
         if wnd == mouseCaptureWnd
             mouseCaptureWnd = null
-        if wnd == keybCaptureWnd
-            keybCaptureWnd = null
         if wnd == keybFocusWnd
             keybFocusWnd = null
 
@@ -287,9 +284,7 @@ impl Application
     {
         keyb.update()
 
-        targetWnd := keybCaptureWnd
-        if !targetWnd
-            targetWnd = keybFocusWnd
+        targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
 
         // Modifiers

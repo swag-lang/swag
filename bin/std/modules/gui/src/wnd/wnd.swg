@@ -509,16 +509,6 @@ impl Wnd
         surface.app.releaseMouse()
     }
 
-    mtd captureKeyboard()
-    {
-        surface.app.keybCaptureWnd = self
-    }
-
-    mtd releaseKeyboard()
-    {
-        surface.app.keybCaptureWnd = null
-    }
-
     // Set the keyboard focus
     mtd setFocus()
     {
