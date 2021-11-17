@@ -64,7 +64,7 @@ const H = 1024
     // EditBox
     {
         edit := EditBox.create(view, "Normal", @{360, 10})
-        edit.backgroundStyle = .Dialog
+        edit.note = "Find"
     }
 
     // Labels

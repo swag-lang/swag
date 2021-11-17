@@ -3,6 +3,9 @@ using Core, Pixel
 public struct EditBox
 {
     using scrollwnd:    ScrollWnd
+    note:               RichString
+    icon:               Icon
+
     timerCaret:         *Timer
     visibleCaret:       bool
 }
@@ -20,7 +23,47 @@ impl IWnd for EditBox
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        bc      := evt.bc
         painter := evt.bc.painter
+
+        clientRect := getClientRect()
+        colors := &bc.theme.colors
+        rects  := &bc.theme.rects
+
+        var subRectBk:      *ThemeImageRect
+        var subRectBorder:  *ThemeImageRect
+        var colorBk:        Color = ?
+        var colorBorder:    Color = ?
+        var colorText:      Color = ?
+
+        subRectBk = &rects.edit_SquareBk
+        subRectBorder = &rects.edit_SquareBorder
+
+        if bc.isDisabled
+            colorBorder = colors.edit_DisabledBorder
+        if hasFocus()
+            colorBorder = colors.edit_FocusBorder
+        else
+            colorBorder = colors.edit_Border
+
+        colorBk = colors.edit_SquareBk
+
+        bc.theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+        bc.theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+
+        clientRect.applyPadding(padding)
+
+        // Note
+        if !note.isEmpty()
+        {
+            var format: RichStringFormat
+            colorText = colors.edit_Note
+            format.palette[0] = colorText
+            format.vertAlignment = .Center
+            format.flags = .Clip
+            format.font = bc.theme.res.fontDefault
+            Theme.drawIconText(bc.painter, clientRect, icon, &note, format, bc.theme.metrics.iconText_Margin)
+        }
 
         if visibleCaret and hasFocus()
         {

@@ -135,7 +135,7 @@ impl Wnd
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*T
     {
-        res := Core.Memory.new'T()
+        res := Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
         res.name = name
