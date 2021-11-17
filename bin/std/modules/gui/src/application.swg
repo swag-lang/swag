@@ -1,13 +1,6 @@
 #global public
 using Core
 
-struct Timer
-{
-    timeMs:     s32
-    target:     *Wnd
-    stopwatch:  Time.Stopwatch
-}
-
 struct Application
 {
     renderer:       Pixel.RenderOgl

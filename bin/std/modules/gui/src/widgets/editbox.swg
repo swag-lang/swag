@@ -6,8 +6,12 @@ public struct EditBox
     note:               RichString
     icon:               Icon
     textContent:        String
-    selBeg, selEnd:     uint
+    autoLoseFocus:      bool = true
 
+    sigEnterPressed:    func(*EditBox)
+    sigEscapePressed:   func(*EditBox)
+
+    selBeg, selEnd:     uint
     timerCaret:         *Timer
     visibleCaret:       bool
     caretPosX:          f32
@@ -72,6 +76,7 @@ impl IWnd for EditBox
             Theme.drawIconText(bc.painter, clientRect, icon, &note, format, bc.theme.metrics.iconText_Margin)
         }
 
+        // Content
         bc.painter.drawString(clientRect.x, clientRect.y, textContent, bc.theme.res.fontDefault.regular, Argb.White)
 
         // Caret
@@ -107,7 +112,11 @@ impl IWnd for EditBox
     {
         if evt.kind != .KeyPressed
             return
-        keyPressed(evt.key)
+
+        visibleCaret = true
+        timerCaret.restart()
+
+        evt.accepted = keyPressed(evt.key, evt.modifiers)
     }
 }
 
@@ -124,14 +133,25 @@ public impl EditBox
         return res
     }
 
+    // Delete selected text
+    mtd deleteSelection()
+    {
+        if deleteSelectionPrivate()
+            notifyChanged()
+    }
+
     mtd setSelection(start, end: uint)
     {
         selBeg = start
         selEnd = end
-        //checkSelection()
+        checkSelection()
+        computeCaretPos()
     }
+}
 
-    protected mtd getCaretPos()->Math.Rectangle
+protected impl EditBox
+{
+    mtd getCaretPos()->Math.Rectangle
     {
         var result: retval = ?
 
@@ -150,7 +170,7 @@ public impl EditBox
         return result
     }
 
-    protected mtd computeCaretPos()
+    mtd computeCaretPos()
     {
         str := @mkstring(textContent.buffer, selEnd)
         var painter: Painter{fake: true}
@@ -158,10 +178,37 @@ public impl EditBox
         caretPosX = met.width
     }
 
-    protected mtd keyPressed(key: Input.Key)
+    mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
+        ctrl  := mdf & .Control
+        shift := mdf & .Shift
+
         switch key
         {
+        case Return:
+            if sigEnterPressed
+                sigEnterPressed(self)
+            if autoLoseFocus
+                getTopView().setFocus()
+            return true
+
+        case Escape:
+            if sigEscapePressed
+                sigEscapePressed(self)
+            if autoLoseFocus
+                getTopView().setFocus()
+            return true
+
+        case Left:
+            if !selEnd
+                return true
+            selEnd = moveCaretLeft(selEnd)
+            if (shift)
+                setSelection(selBeg, selEnd)
+            else
+                setSelection(selEnd, selEnd)
+            return true
+
         case Back:
             if selBeg
             {
@@ -169,16 +216,18 @@ public impl EditBox
                 deleteSelection()
             }
 
-            return
+            return true
         }
 
         r := surface.app.keyb.keyToRune(key)
-        if !r
-            return
+        if !r or r < 32
+            return false
+
         insertChar(r)
+        return true
     }
 
-    protected mtd insertChar(r: rune)
+    mtd insertChar(r: rune)
     {
         var utf8: [5] u8
         cpt := Utf8.fromUnicode(utf8, @[r])
@@ -192,22 +241,8 @@ public impl EditBox
         notifyChanged()
     }
 
-    protected mtd moveCaretLeft(sel: uint)->uint
-    {
-        if !sel
-            return sel
-        return sel - 1
-    }
-
-    // Delete selected text
-    mtd deleteSelection()
-    {
-        if deleteSelectionPrivate()
-            notifyChanged()
-    }
-
     #[Swag.Discardable]
-    protected mtd deleteSelectionPrivate()->bool
+    mtd deleteSelectionPrivate()->bool
     {
         if selBeg == selEnd
             return false
@@ -219,11 +254,22 @@ public impl EditBox
         return true
     }
 
-    protected mtd checkSelection()
+    mtd moveCaretLeft(sel: uint)->uint
     {
+        if !sel
+            return sel
+        str := @mkstring(textContent.buffer, sel)
+        (?, eat) := Utf8.decodeLastRune(str)
+        return sel - eat
     }
 
-    protected mtd notifyChanged()
+    mtd checkSelection()
+    {
+        selBeg = Math.min(selBeg, textContent.length)
+        selEnd = Math.min(selEnd, textContent.length)
+    }
+
+    mtd notifyChanged()
     {
         computeCaretPos()
         invalidate()

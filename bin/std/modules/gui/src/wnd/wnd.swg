@@ -119,6 +119,7 @@ impl Wnd
         mtd getTheme()          => surface.app.theme
         mtd getThemeMetrics()   => &surface.app.theme.metrics
         mtd getThemeColors()    => &surface.app.theme.colors
+        mtd getTopView()        => surface.wnd.view
     }
 
     #[Swag.Inline]
