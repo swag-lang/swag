@@ -299,7 +299,7 @@ impl String
         grow(length + countof + 1)
         Memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex + 1)
         Memory.copy(buffer + byteIndex, @dataof(value), countof)
-        length += countof + 1
+        length += countof
     }
 
     // Append a formatted string
