@@ -73,6 +73,7 @@ struct ThemeColors
 
     edit_Border:                    Color = 0xFF606060
     edit_FocusBorder:               Color = 0xFF1473e6
+    edit_HotBorder:                 Color = 0xFF707070
     edit_DisabledBorder:            Color = 0xFFFFFFFF
     edit_SquareBk:                  Color = 0xFF303030
     edit_Note:                      Color = 0x5FFFFFFF

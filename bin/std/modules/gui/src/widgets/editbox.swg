@@ -11,6 +11,7 @@ public struct EditBox
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
 
+    isHot:              bool
     selBeg, selEnd:     uint
     timerCaret:         *Timer
     visibleCaret:       bool
@@ -56,8 +57,10 @@ impl IWnd for EditBox
 
         if bc.isDisabled
             colorBorder = colors.edit_DisabledBorder
-        if hasFocus()
+        else if hasFocus()
             colorBorder = colors.edit_FocusBorder
+        else if isHot
+            colorBorder = colors.edit_HotBorder
         else
             colorBorder = colors.edit_Border
 
@@ -110,6 +113,13 @@ impl IWnd for EditBox
             if evt.button == .Left
                 setFocus()
             evt.accepted = true
+
+        case MouseEnter:
+            isHot = true
+            invalidate()
+        case MouseLeave:
+            isHot = false
+            invalidate()
         }
     }
 
@@ -172,6 +182,13 @@ protected impl EditBox
 
         switch key
         {
+        case A:
+            if ctrl and !shift
+            {
+                setSelection(0, textContent.length)
+                return true
+            }
+
         case Return:
             if sigEnterPressed
                 sigEnterPressed(self)
