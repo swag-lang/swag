@@ -7,7 +7,7 @@ struct ThemeMetrics
     wnd_SmallCaptionCY:         f32 = 24
     wnd_CaptionMarginTitle:     f32 = 5
 
-    btn_Margins:                f32 = -5
+    btnPush_Padding:            f32 = 5
 
     iconText_Margin:            f32 = 4
 
@@ -19,4 +19,6 @@ struct ThemeMetrics
 
     msgDlg_Padding:             f32 = 20
     msgDlg_BtnPadding:          f32 = 5
+
+    editBox_SquarePadding:      f32 = 5
 }

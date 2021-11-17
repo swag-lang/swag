@@ -68,7 +68,7 @@ impl IWnd for ButtonPush
         format.font = bc.theme.res.fontDefault
         format.fontStyle = .Bold
         labelPos := clientRect
-        labelPos.inflate(bc.theme.metrics.btn_Margins)
+        labelPos.inflate(-bc.theme.metrics.btnPush_Padding)
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)
     }
 

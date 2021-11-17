@@ -51,7 +51,7 @@ impl IWnd for EditBox
         bc.theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         bc.theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
-        clientRect.applyPadding(padding)
+        clientRect.inflate(-bc.theme.metrics.editBox_SquarePadding)
 
         // Note
         if !note.isEmpty()
