@@ -14,7 +14,8 @@ public struct EditBox
     selBeg, selEnd:     uint
     timerCaret:         *Timer
     visibleCaret:       bool
-    caretPosX:          f32
+    posSelBeg:          f32
+    posSelEnd:          f32
 }
 
 impl IWnd for EditBox
@@ -22,7 +23,10 @@ impl IWnd for EditBox
     mtd onFocusEvent(evt: *FocusEvent)
     {
         if evt.kind == .SetFocus
+        {
             timerCaret = surface.app.addTimer(500, self)
+            visibleCaret = true
+        }
         else
         {
             surface.app.deleteTimer(timerCaret)
@@ -76,8 +80,18 @@ impl IWnd for EditBox
             Theme.drawIconText(bc.painter, clientRect, icon, &note, format, bc.theme.metrics.iconText_Margin)
         }
 
+        // Selection
+        if selBeg != selEnd
+        {
+            pos := clientRect
+            pos.x = posSelBeg + bc.theme.metrics.editBox_SquarePadding
+            pos.width = posSelEnd - posSelBeg
+            bc.painter.fillRect(pos, colors.edit_SelectedBk)
+        }
+
         // Content
-        bc.painter.drawString(clientRect.x, clientRect.y, textContent, bc.theme.res.fontDefault.regular, Argb.White)
+        colorText = colors.edit_Text
+        bc.painter.drawString(clientRect.x, clientRect.y, textContent, bc.theme.res.fontDefault.regular, colorText)
 
         // Caret
         if visibleCaret and hasFocus()
@@ -151,33 +165,6 @@ public impl EditBox
 
 protected impl EditBox
 {
-    mtd getCaretPos()->Math.Rectangle
-    {
-        var result: retval = ?
-
-        clientRect := getClientRect()
-        clientRect.applyPadding(padding)
-
-        result = clientRect
-        if !textContent.isEmpty()
-            result.x += caretPosX
-
-        font := getTheme().res.fontDefault.regular
-        result.height = font.height
-        result.y = clientRect.vertCenter() - result.height * 0.5
-
-        result.width = 2
-        return result
-    }
-
-    mtd computeCaretPos()
-    {
-        str := @mkstring(textContent.buffer, selEnd)
-        var painter: Painter{fake: true}
-        met := painter.measureString(str, getTheme().res.fontDefault.regular)
-        caretPosX = met.width
-    }
-
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
         ctrl  := mdf & .Control
@@ -200,26 +187,57 @@ protected impl EditBox
             return true
 
         case Left:
-            if !selEnd
-                return true
             selEnd = moveCaretLeft(selEnd)
-            if (shift)
+            if shift
                 setSelection(selBeg, selEnd)
             else
                 setSelection(selEnd, selEnd)
             return true
 
+        case Right:
+            selEnd = moveCaretRight(selEnd)
+            if shift
+                setSelection(selBeg, selEnd)
+            else
+                setSelection(selEnd, selEnd)
+            return true
+
+        case Home:
+            if shift
+                setSelection(selBeg, 0)
+            else
+                setSelection(0, 0)
+            return true
+
+        case End:
+            if shift
+                setSelection(selBeg, textContent.length)
+            else
+                setSelection(textContent.length, textContent.length)
+            return true
+
         case Back:
-            if selBeg
+            if selBeg == selEnd
             {
+                if !selBeg
+                    return true
                 selBeg = moveCaretLeft(selBeg)
-                deleteSelection()
             }
 
+            deleteSelection()
+            return true
+
+        case Delete:
+            if selBeg == selEnd
+            {
+                selEnd = moveCaretRight(selBeg)
+            }
+
+            deleteSelection()
             return true
         }
 
-        r := surface.app.keyb.keyToRune(key)
+        r := getApp().keyb.keyToRune(key)
         if !r or r < 32
             return false
 
@@ -241,17 +259,63 @@ protected impl EditBox
         notifyChanged()
     }
 
+    #[Swag.Inline]
+    {
+        mtd getSelBeg() => selBeg <= selEnd ? selBeg : selEnd
+        mtd getSelEnd() => selBeg <= selEnd ? selEnd : selBeg
+    }
+
     #[Swag.Discardable]
     mtd deleteSelectionPrivate()->bool
     {
         if selBeg == selEnd
             return false
+
         checkSelection()
-        if selBeg == textContent.length
+
+        selB := getSelBeg()
+        selE := getSelEnd()
+        if selB == textContent.length
             return false
-        textContent.remove(selBeg, selEnd - selBeg)
-        setSelection(selBeg, selBeg)
+        textContent.remove(selB, selE - selB)
+        setSelection(selB, selB)
         return true
+    }
+
+    mtd getCaretPos()->Math.Rectangle
+    {
+        var result: retval = ?
+
+        clientRect := getClientRect()
+        clientRect.applyPadding(padding)
+
+        result = clientRect
+        if !textContent.isEmpty()
+            result.x += posSelEnd
+
+        font := getTheme().res.fontDefault.regular
+        result.height = font.height
+        result.y = clientRect.vertCenter() - result.height * 0.5
+
+        result.width = 2
+        return result
+    }
+
+    mtd computeCaretPos()
+    {
+        font := getTheme().res.fontDefault.regular
+
+        str := @mkstring(textContent.buffer, selEnd)
+        var painter: Painter{fake: true}
+        met := painter.measureString(str, font)
+        posSelBeg, posSelEnd = met.width
+
+        if selBeg != selEnd
+        {
+            str = @mkstring(textContent.buffer, selBeg)
+            met = painter.measureString(str, font)
+            posSelBeg = met.width
+        }
     }
 
     mtd moveCaretLeft(sel: uint)->uint
@@ -263,10 +327,20 @@ protected impl EditBox
         return sel - eat
     }
 
+    mtd moveCaretRight(sel: uint)->uint
+    {
+        if sel == textContent.length
+            return sel
+        str := @mkstring(textContent.buffer + sel, textContent.length - sel)
+        (?, eat) := Utf8.decodeRune(str)
+        return sel + eat
+    }
+
     mtd checkSelection()
     {
         selBeg = Math.min(selBeg, textContent.length)
         selEnd = Math.min(selEnd, textContent.length)
+        invalidate()
     }
 
     mtd notifyChanged()

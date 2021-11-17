@@ -76,4 +76,8 @@ struct ThemeColors
     edit_DisabledBorder:            Color = 0xFFFFFFFF
     edit_SquareBk:                  Color = 0xFF303030
     edit_Note:                      Color = 0x5FFFFFFF
+    edit_Text:                      Color = 0xFFFFFFFF
+    edit_DisabledText:              Color = 0x5FFFFFFF
+    edit_SelectedText:              Color = 0xFFFFFFFF
+    edit_SelectedBk:                Color = 0xFF1473e6
 }
