@@ -216,7 +216,8 @@ private func keyToVirtualKey(key: Key)->VirtualKey
 
 private func virtualKeyToKey(vkey: VirtualKey)->Key
 {
-    if(vkey > 255) return Key.None
+    if vkey > 255
+        return Key.None
     return cast(Key) g_mapVKeyToKey[vkey]
 }
 
@@ -224,6 +225,20 @@ private func virtualKeyToKey(vkey: VirtualKey)->Key
 func isKeyPressed(key: Key)->bool
 {
     vkey := g_mapKeyToVKey[key]
-    if vkey == 0 return false
+    if vkey == 0
+        return false
     return GetAsyncKeyState(cast(s32) vkey) < 0
+}
+
+impl Keyboard
+{
+    mtd keyToRune(key: Key)->rune
+    {
+        virt := keyToVirtualKey(key)
+        var uc: [5] WCHAR
+        res := ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), currentState.nativeState, uc, 4, 0)
+        if res == 1
+            return cast(rune) uc[0]
+        return 0'rune
+    }
 }

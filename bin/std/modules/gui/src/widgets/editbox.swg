@@ -5,9 +5,12 @@ public struct EditBox
     using scrollwnd:    ScrollWnd
     note:               RichString
     icon:               Icon
+    textContent:        String
+    selBeg, selEnd:     uint
 
     timerCaret:         *Timer
     visibleCaret:       bool
+    caretPosX:          f32
 }
 
 impl IWnd for EditBox
@@ -17,7 +20,11 @@ impl IWnd for EditBox
         if evt.kind == .SetFocus
             timerCaret = surface.app.addTimer(500, self)
         else
+        {
             surface.app.deleteTimer(timerCaret)
+            timerCaret = null
+        }
+
         invalidate()
     }
 
@@ -54,7 +61,7 @@ impl IWnd for EditBox
         clientRect.inflate(-bc.theme.metrics.editBox_SquarePadding)
 
         // Note
-        if !note.isEmpty()
+        if !note.isEmpty() and textContent.isEmpty()
         {
             var format: RichStringFormat
             colorText = colors.edit_Note
@@ -65,9 +72,13 @@ impl IWnd for EditBox
             Theme.drawIconText(bc.painter, clientRect, icon, &note, format, bc.theme.metrics.iconText_Margin)
         }
 
+        bc.painter.drawString(clientRect.x, clientRect.y, textContent, bc.theme.res.fontDefault.regular, Argb.White)
+
+        // Caret
         if visibleCaret and hasFocus()
         {
             pos := getCaretPos()
+            pos.x += bc.theme.metrics.editBox_SquarePadding
             painter.fillRect(pos, Argb.White)
         }
     }
@@ -83,10 +94,6 @@ impl IWnd for EditBox
         }
     }
 
-    mtd onKeyEvent(evt: *KeyEvent)
-    {
-    }
-
     mtd onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
@@ -94,6 +101,13 @@ impl IWnd for EditBox
         pos.inflate(1)
         pos.offset(-getScrollPos())
         invalidateRect(pos)
+    }
+
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        if evt.kind != .KeyPressed
+            return
+        insertChar(evt.key)
     }
 }
 
@@ -110,10 +124,63 @@ public impl EditBox
         return res
     }
 
-    mtd getCaretPos()->Math.Rectangle
+    mtd setSelection(start, end: uint)
     {
-        pos := getClientRect()
-        pos.width = 4
-        return pos
+        selBeg = start
+        selEnd = end
+        //checkSelection()
+    }
+
+    protected mtd getCaretPos()->Math.Rectangle
+    {
+        var result: retval = ?
+
+        clientRect := getClientRect()
+        clientRect.applyPadding(padding)
+
+        result = clientRect
+        if !textContent.isEmpty()
+            result.x += caretPosX
+
+        font := getTheme().res.fontDefault.regular
+        result.height = font.height
+        result.y = clientRect.vertCenter() - result.height * 0.5
+
+        result.width = 2
+        return result
+    }
+
+    protected mtd computeCaretPos()
+    {
+        str := @mkstring(textContent.buffer, selEnd)
+        var painter: Painter
+        met := painter.measureString(str, getTheme().res.fontDefault.regular)
+        caretPosX = met.width
+    }
+
+    protected mtd insertChar(key: Input.Key)
+    {
+        r := surface.app.keyb.keyToRune(key)
+        if !r
+            return
+
+        Console.print(r)
+
+        var utf8: [5] u8
+        cpt := Utf8.fromUnicode(utf8, @[r])
+        if !cpt return
+        utf8[cpt] = 0
+
+        //deleteSelectionPrivate()
+        textContent.insert(selEnd, @mkstring(&utf8[0], cpt))
+        setSelection(selEnd + cpt, selEnd + cpt)
+
+        notifyChanged()
+    }
+
+    protected mtd notifyChanged()
+    {
+        computeCaretPos()
+        invalidate()
     }
 }

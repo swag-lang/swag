@@ -761,6 +761,12 @@ const SC_MONITORPOWER = 0xF170
 const SC_CONTEXTHELP  = 0xF180
 const SC_SEPARATOR    = 0xF00F
 
+const MAPVK_VK_TO_VSC     = 0'u32
+const MAPVK_VSC_TO_VK     = 1'u32
+const MAPVK_VK_TO_CHAR    = 2'u32
+const MAPVK_VSC_TO_VK_EX  = 3'u32
+const MAPVK_VK_TO_VSC_EX  = 4'u32
+
 struct RECT
 {
     left:   LONG
@@ -806,6 +812,10 @@ struct PAINTSTRUCT
     func FindWindowW(lpClassName: LPCWSTR, lpWindowName: LPCWSTR)->HWND;
 
     func GetDC(hWnd: HWND)->HDC;
+
+    func MapVirtualKeyA(uCode: UINT, uMapType: UINT)->UINT;
+    func MapVirtualKeyW(uCode: UINT, uMapType: UINT)->UINT;
+    func ToUnicode(wVirtKey, wScanCode: UINT, lpKeyState: const *BYTE, pwszBuff: LPWSTR, cchBuff: s32, wFlags: UINT)->s32;
 }
 
 #[Foreign("user32"), Discardable]

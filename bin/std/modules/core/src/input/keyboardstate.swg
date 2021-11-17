@@ -4,7 +4,8 @@
 // Represents one keyboard state
 struct KeyboardState
 {
-    pressed: [@countof(Key)] bool
+    using native:   KeyboardStateNative
+    pressed:        [@countof(Key)] bool
 }
 
 impl KeyboardState
@@ -12,10 +13,9 @@ impl KeyboardState
     // Compute current keyboard state
     mtd update()
     {
+        updateNative()
         loop i: @countof(Key)
-        {
             pressed[i] = isKeyPressed(cast(Key) i)
-        }
     }
 
     // Reset keyboard state

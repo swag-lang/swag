@@ -274,6 +274,12 @@ impl String
     // Insert a substring at the given position
     func insert(using self, byteIndex: uint, value: string)
     {
+        if byteIndex == length
+        {
+            append(value)
+            return
+        }
+
         Debug.assert(byteIndex < length, "invalid index")
         countof := @countof(value)
         if !countof
