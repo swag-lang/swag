@@ -280,6 +280,18 @@ impl Application
         }
     }
 
+    protected mtd sendCharEvent(r: rune)
+    {
+        targetWnd := keybFocusWnd
+        targetWnd = skipDisabled(targetWnd)
+        if !targetWnd
+            return
+        evt := KeyEvent{kind: EventKind.Char}
+        evt.char = r
+        evt.modifiers = keyb.getPressedModifiers()
+        targetWnd.sendEvent(&evt)
+    }
+
     protected mtd sendKeyboardEvents()
     {
         keyb.update()

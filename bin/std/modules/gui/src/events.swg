@@ -11,6 +11,7 @@ enum EventKind
     Paint
     KeyPressed
     KeyReleased
+    Char
     MousePressed
     MouseReleased
     MouseMove
@@ -89,6 +90,7 @@ struct KeyEvent
     using base: Event
     modifiers:  Input.KeyModifiers = .None
     key:        Input.Key = ?
+    char:       rune
 }
 
 struct MouseEvent

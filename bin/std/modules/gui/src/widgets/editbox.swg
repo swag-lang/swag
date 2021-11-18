@@ -134,13 +134,19 @@ impl IWnd for EditBox
 
     mtd onKeyEvent(evt: *KeyEvent)
     {
-        if evt.kind != .KeyPressed
-            return
-
-        visibleCaret = true
-        timerCaret.restart()
-
-        evt.accepted = keyPressed(evt.key, evt.modifiers)
+        if evt.kind == .KeyPressed
+        {
+            visibleCaret = true
+            timerCaret.restart()
+            evt.accepted = keyPressed(evt.key, evt.modifiers)
+        }
+        else if evt.kind == .Char
+        {
+            if evt.char < 32
+                evt.accepted = false
+            else
+                insertChar(evt.char)
+        }
     }
 }
 
@@ -261,11 +267,6 @@ protected impl EditBox
             return true
         }
 
-        r := getApp().keyb.keyToRune(key)
-        if !r or r < 32
-            return false
-
-        insertChar(r)
         return true
     }
 
