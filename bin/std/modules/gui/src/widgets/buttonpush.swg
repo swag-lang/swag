@@ -1,17 +1,10 @@
 #global public
 using Core, Pixel
 
-enum ButtonStyle
-{
-    Normal
-    Default
-    Flat
-}
-
 struct ButtonPush
 {
     using button:   Button
-    btnStyle:       ButtonStyle = Normal
+    isDefault:      bool
 }
 
 impl IWnd for ButtonPush
@@ -32,30 +25,14 @@ impl IWnd for ButtonPush
         switch
         {
         case isDisabled:
-            if btnStyle == .Flat
-            {
-                colorBk       = colors.btnPushFlat_DisabledBk
-                colorBorder   = colors.btnPushFlat_DisabledBorder
-                colorText     = colors.btnPushFlat_DisabledText
-            }
-            else
-            {
-                colorBk       = colors.btnPush_DisabledBk
-                colorBorder   = colors.btnPush_DisabledBorder
-                colorText     = colors.btnPush_DisabledText
-            }
-
+            colorBk       = colors.btnPush_DisabledBk
+            colorBorder   = colors.btnPush_DisabledBorder
+            colorText     = colors.btnPush_DisabledText
             subRectBk     = &rects.btnPush_Disabled
             subRectBorder = &rects.btnPush_DisabledBorder
 
         case isPressed:
-            if btnStyle == .Flat
-            {
-                colorBk       = colors.btnPushFlat_PressedBk
-                colorBorder   = colors.btnPushFlat_PressedBorder
-                colorText     = colors.btnPushFlat_PressedText
-            }
-            else if btnStyle == .Default
+            if isDefault
             {
                 colorBk       = colors.btnPushDefault_PressedBk
                 colorBorder   = colors.btnPushDefault_PressedBorder
@@ -72,13 +49,7 @@ impl IWnd for ButtonPush
             subRectBorder = &rects.btnPush_PressedBorder
 
         case isHot:
-            if btnStyle == .Flat
-            {
-                colorBk       = colors.btnPushFlat_HotBk
-                colorBorder   = colors.btnPushFlat_HotBorder
-                colorText     = colors.btnPushFlat_HotText
-            }
-            else if btnStyle == .Default
+            if isDefault
             {
                 colorBk       = colors.btnPushDefault_HotBk
                 colorBorder   = colors.btnPushDefault_HotBorder
@@ -95,13 +66,7 @@ impl IWnd for ButtonPush
             subRectBorder = &rects.btnOush_HotBorder
 
         default:
-            if btnStyle == .Flat
-            {
-                colorBk       = colors.btnPushFlat_Bk
-                colorBorder   = colors.btnPushFlat_Border
-                colorText     = colors.btnPushFlat_Text
-            }
-            else if btnStyle == .Default
+            if isDefault
             {
                 colorBk       = colors.btnPushDefault_Bk
                 colorBorder   = colors.btnPushDefault_Border

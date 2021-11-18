@@ -21,11 +21,11 @@ impl IWnd for MessageDlg
             case Tab, Right:
                 visit btn, idx: buttons
                 {
-                    if btn.btnStyle == .Default
+                    if btn.isDefault
                     {
-                        btn.btnStyle = .Normal
+                        btn.isDefault = false
                         nextBtn := buttons[(idx + 1) % buttons.count]
-                        nextBtn.btnStyle = .Default
+                        nextBtn.isDefault = true
                         nextBtn.invalidate()
                         break
                     }
@@ -34,11 +34,11 @@ impl IWnd for MessageDlg
             case Left:
                 visit btn, idx: buttons
                 {
-                    if btn.btnStyle == .Default
+                    if btn.isDefault
                     {
-                        btn.btnStyle = .Normal
+                        btn.isDefault = false
                         prevBtn := idx ? buttons[idx - 1] : buttons.back()
-                        prevBtn.btnStyle = .Default
+                        prevBtn.isDefault = true
                         prevBtn.invalidate()
                         break
                     }
@@ -47,7 +47,7 @@ impl IWnd for MessageDlg
             case Enter:
                 visit btn: buttons
                 {
-                    if btn.btnStyle == .Default
+                    if btn.isDefault
                     {
                         surface.app.exitModal(btn.id)
                         break
@@ -172,7 +172,7 @@ public impl MessageDlg
     {
         btn := ButtonPush.create(wndBottom, str, @{}, #scopefct.id)
         btn.dockStyle = .Right
-        btn.btnStyle = isDefault ? .Default : .Normal
+        btn.isDefault = isDefault
         metrics := getThemeMetrics()
         btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
         btn.sigPressed = @(using btn: *Button) { surface.app.exitModal(btn.id); }
