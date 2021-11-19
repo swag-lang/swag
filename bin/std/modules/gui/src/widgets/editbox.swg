@@ -12,6 +12,7 @@ public struct EditBox
     sigEscapePressed:   func(*EditBox)
 
     isHot:              bool
+    isDragging:         bool
     selBeg, selEnd:     uint
     timerCaret:         *Timer
     visibleCaret:       bool
@@ -105,14 +106,46 @@ impl IWnd for EditBox
         }
     }
 
+    mtd forceVisibleCaret()
+    {
+        if timerCaret
+        {
+            visibleCaret = true
+            timerCaret.restart()
+        }
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
         {
         case MousePressed:
-            if evt.button == .Left
-                setFocus()
+            if evt.button != .Left
+                break
+
+            setFocus()
+            x := getByteIndexAtPos(evt.pos.x - getThemeMetrics().editBox_SquarePadding)
+            setSelection(x, x)
+            forceVisibleCaret()
             evt.accepted = true
+            isDragging = true
+            captureMouse()
+
+        case MouseReleased:
+            if isDragging
+                releaseMouse()
+            isDragging = false
+            evt.accepted = true
+
+        case MouseMove:
+            if !isDragging
+                break
+            evt.accepted = true
+            x := getByteIndexAtPos(evt.pos.x - getThemeMetrics().editBox_SquarePadding)
+            if x > selBeg
+                setSelection(selBeg, x)
+            else
+                setSelection(x, selEnd)
 
         case MouseEnter:
             isHot = true
@@ -136,16 +169,19 @@ impl IWnd for EditBox
     {
         if evt.kind == .KeyPressed
         {
-            visibleCaret = true
-            timerCaret.restart()
             evt.accepted = keyPressed(evt.key, evt.modifiers)
+            if evt.accepted
+                forceVisibleCaret()
         }
         else if evt.kind == .Char
         {
             if evt.char < 32
                 evt.accepted = false
             else
+            {
+                forceVisibleCaret()
                 insertChar(evt.char)
+            }
         }
     }
 }
@@ -324,6 +360,34 @@ protected impl EditBox
 
         result.width = 2
         return result
+    }
+
+    mtd getByteIndexAtPos(x: f32)->uint
+    {
+        if !textContent.length
+            return 0
+
+        font := getTheme().res.fontDefault.regular
+
+        // Can be better, of course...
+        var painter: Painter{fake: true}
+        lastWidth := 0'f32
+        loop idx: 1..textContent.length-1
+        {
+            str := @mkstring(textContent.buffer, idx)
+            met := painter.measureString(str, font)
+            if x <= met.width
+            {
+                diff := (met.width - lastWidth) * 0.5
+                if x < lastWidth + diff
+                    return idx - 1
+                return idx
+            }
+
+            lastWidth = met.width
+        }
+
+        return textContent.length
     }
 
     mtd computeCaretPos()
