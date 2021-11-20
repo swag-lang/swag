@@ -41,25 +41,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // Storage for the registers
     auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(numTotalRegs));
 
-    // :StructByCopy
-    // Allocate storage for each struct to passed by copy, because local call wants a pointer to the struct,
-    // not a value
-    int sizeRetStruct = 0;
-    for (int i = 0; i < numTotalRegs; i++)
-    {
-        if (i >= numReturnRegs)
-        {
-            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
-                sizeRetStruct++;
-        }
-    }
-
-    auto allocStructCopy = builder.CreateAlloca(builder.getInt64Ty(), sizeRetStruct);
-
     // Set all registers
-    int argIdx        = 0;
-    int argStructCopy = 0;
+    int argIdx = 0;
     for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
@@ -93,20 +76,16 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 switch (typeParam->sizeOf)
                 {
                 case 1:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy)));
-                    argStructCopy++;
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(rr0));
                     break;
                 case 2:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(GEP_I32(allocStructCopy, argStructCopy)));
-                    argStructCopy++;
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(rr0));
                     break;
                 case 4:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(GEP_I32(allocStructCopy, argStructCopy)));
-                    argStructCopy++;
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(rr0));
                     break;
                 case 8:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(GEP_I32(allocStructCopy, argStructCopy)));
-                    argStructCopy++;
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(rr0));
                     break;
                 }
             }
@@ -157,7 +136,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     // Set all parameters
     VectorNative<llvm::Value*> args;
-    argStructCopy = 0;
     for (int i = 0; i < numTotalRegs; i++)
     {
         if (i < numReturnRegs)
@@ -172,8 +150,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             // :StructByCopy
             if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
             {
-                args.push_back(TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy)));
-                argStructCopy++;
+                auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
+                args.push_back(rr0);
             }
             else if (passByValue(typeParam))
             {
