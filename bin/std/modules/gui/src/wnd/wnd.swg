@@ -116,10 +116,10 @@ impl Wnd
     #[Swag.Inline]
     {
         mtd getApp()            => surface.app
-        mtd getTheme()          => surface.app.theme
-        mtd getThemeMetrics()   => &surface.app.theme.metrics
-        mtd getThemeColors()    => &surface.app.theme.colors
         mtd getTopView()        => surface.wnd.view
+        mtd getTheme()          => style.ref.theme
+        mtd getThemeMetrics()   => &style.ref.theme.metrics
+        mtd getThemeColors()    => &style.ref.theme.colors
     }
 
     #[Swag.Inline]
@@ -143,13 +143,7 @@ impl Wnd
         res.id = id
         res.position = position
         res.isAllocated = true
-        res.parent = parent
-        if parent
-        {
-            res.surface = parent.surface
-            parent.childs.add(res)
-        }
-
+        res.setParent(parent)
         return res
     }
 
@@ -162,6 +156,20 @@ impl Wnd
         surface.app.postDestroy.add(self)
         visit c: childs
             c.destroy()
+    }
+
+    // Set window parent
+    mtd setParent(who: *Wnd)
+    {
+        Debug.assert(!parent)
+        parent = who
+        if who
+        {
+            surface = who.surface
+            who.childs.add(self)
+        }
+
+        computeStyle()
     }
 
     //////////////////////////////////////////////
@@ -232,6 +240,14 @@ impl Wnd
     // Paint
     //////////////////////////////////////////////
 
+    mtd computeStyle()
+    {
+        if parent
+            style.compute(self, &parent.style)
+        else if surface
+            style.compute(self, &surface.app.style)
+    }
+
     mtd paint(bc: *PaintContext)
     {
         // Clipping
@@ -241,10 +257,7 @@ impl Wnd
             return
 
         // Recompute style if necessary
-        if parent
-            style.compute(self, &parent.style)
-        else
-            style.compute(self, &surface.app.style)
+        computeStyle()
         bc.theme = style.ref.theme
 
         // Transmit disabled state to childs

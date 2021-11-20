@@ -271,12 +271,12 @@ impl SurfaceWnd
 
     mtd create(userView: *Wnd)
     {
+        computeStyle()
+
         if userView
         {
             view = userView
-            view.parent = self
-            view.surface = surface
-            childs.add(view)
+            view.setParent(self)
         }
         else
             createView'Wnd()
