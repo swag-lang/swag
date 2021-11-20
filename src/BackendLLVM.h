@@ -106,6 +106,7 @@ struct LLVMPerThread
 #define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
 #define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
 #define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
+#define TO_PTR_IX(__r, __n) builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
 #define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
 #define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
 #define TO_PTR_I_N(__r, __numBits) builder.CreatePointerCast(__r, getIntPtrType(context, __numBits))

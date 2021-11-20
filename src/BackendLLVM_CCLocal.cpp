@@ -214,7 +214,10 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
         // This can be casted to an integer
         if (sizeOf)
         {
-            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+            if(sizeOf == sizeof(void*))
+                builder.CreateStore(arg, r0);
+            else
+                builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
         }
 
         // Real type

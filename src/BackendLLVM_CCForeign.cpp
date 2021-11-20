@@ -73,21 +73,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             // :StructByCopy
             else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
             {
-                switch (typeParam->sizeOf)
-                {
-                case 1:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(rr0));
-                    break;
-                case 2:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(rr0));
-                    break;
-                case 4:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(rr0));
-                    break;
-                case 8:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(rr0));
-                    break;
-                }
+                builder.CreateStore(func->getArg(argIdx), TO_PTR_IX(rr0, typeParam->sizeOf * 8));
             }
             else if (typeParam->kind == TypeInfoKind::Pointer ||
                      typeParam->kind == TypeInfoKind::Lambda ||
@@ -268,21 +254,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             // :StructByCopy
             if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
             {
-                switch (param->sizeOf)
-                {
-                case 1:
-                    params.push_back(builder.getInt8Ty());
-                    break;
-                case 2:
-                    params.push_back(builder.getInt16Ty());
-                    break;
-                case 4:
-                    params.push_back(builder.getInt32Ty());
-                    break;
-                case 8:
-                    params.push_back(builder.getInt64Ty());
-                    break;
-                }
+                params.push_back(builder.getIntNTy(param->sizeOf * 8));
             }
             else if (param->isNative(NativeTypeKind::String) || param->kind == TypeInfoKind::Slice)
             {
@@ -373,21 +345,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             auto v0 = builder.CreateLoad(r0);
-            switch (typeParam->sizeOf)
-            {
-            case 1:
-                params.push_back(builder.CreateLoad(TO_PTR_I8(v0)));
-                break;
-            case 2:
-                params.push_back(builder.CreateLoad(TO_PTR_I16(v0)));
-                break;
-            case 4:
-                params.push_back(builder.CreateLoad(TO_PTR_I32(v0)));
-                break;
-            case 8:
-                params.push_back(builder.CreateLoad(TO_PTR_I64(v0)));
-                break;
-            }
+            params.push_back(builder.CreateLoad(TO_PTR_IX(v0, typeParam->sizeOf * 8)));
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Lambda ||
