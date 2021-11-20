@@ -428,3 +428,14 @@ public func tcf_toto26(a: string)->{x: u8, y: u32}
 {
     return @{1, 2}
 }
+
+public struct Vector2
+{
+    x, y: f32
+}
+
+public func tcf_toto27(a, b: Vector2)
+{
+    @assert(a.x == 1.0)
+    @assert(b.x == 2.0)
+}
