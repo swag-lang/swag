@@ -44,8 +44,10 @@ impl IWnd for EditBox
         painter := evt.bc.painter
 
         clientRect := getClientRect()
-        colors := &bc.theme.colors
-        rects  := &bc.theme.rects
+        theme   := getTheme()
+        colors  := getThemeColors()
+        metrics := getThemeMetrics()
+        rects   := getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -67,10 +69,10 @@ impl IWnd for EditBox
 
         colorBk = colors.edit_SquareBk
 
-        bc.theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        bc.theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+        theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
-        clientRect.inflate(-bc.theme.metrics.editBox_SquarePadding)
+        clientRect.inflate(-metrics.editBox_SquarePadding)
 
         // Note
         if !note.isEmpty() and textContent.isEmpty()
@@ -80,28 +82,28 @@ impl IWnd for EditBox
             format.palette[0] = colorText
             format.vertAlignment = .Center
             format.flags = .Clip
-            format.font = bc.theme.res.fontDefault
-            Theme.drawIconText(bc.painter, clientRect, icon, &note, format, bc.theme.metrics.iconText_Margin)
+            format.font = theme.res.fontDefault
+            Theme.drawIconText(bc.painter, clientRect, icon, &note, format, metrics.iconText_Margin)
         }
 
         // Selection
         if selBeg != selEnd and hasFocus()
         {
             pos := clientRect
-            pos.x = posSelBeg + bc.theme.metrics.editBox_SquarePadding
+            pos.x = posSelBeg + theme.metrics.editBox_SquarePadding
             pos.width = posSelEnd - posSelBeg
             bc.painter.fillRect(pos, colors.edit_SelectedBk)
         }
 
         // Content
         colorText = colors.edit_Text
-        bc.painter.drawString(clientRect.x, clientRect.y, textContent, bc.theme.res.fontDefault.regular, colorText)
+        bc.painter.drawString(clientRect.x, clientRect.y, textContent, theme.res.fontDefault.regular, colorText)
 
         // Caret
         if visibleCaret and hasFocus()
         {
             pos := getCaretPos()
-            pos.x += bc.theme.metrics.editBox_SquarePadding
+            pos.x += theme.metrics.editBox_SquarePadding
             painter.fillRect(pos, Argb.White)
         }
     }

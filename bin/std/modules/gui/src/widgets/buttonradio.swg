@@ -13,9 +13,10 @@ impl IWnd for ButtonRadio
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
-        theme  := bc.theme
-        colors := &bc.theme.colors
-        rects  := &bc.theme.rects
+        theme   := getTheme()
+        metrics := getThemeMetrics()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -67,9 +68,9 @@ impl IWnd for ButtonRadio
         posBox.height = getThemeMetrics().btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        bc.theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
-        bc.theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
-        bc.theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
+        theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
+        theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
+        theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
 
         // Content
         var format: RichStringFormat
@@ -77,11 +78,11 @@ impl IWnd for ButtonRadio
         format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = bc.theme.res.fontDefault
+        format.font = theme.res.fontDefault
         labelPos := clientRect
-        labelPos.x += posBox.width + bc.theme.metrics.btnCheck_Padding
-        labelPos.width -= posBox.width + bc.theme.metrics.btnCheck_Padding
-        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)
+        labelPos.x += posBox.width + metrics.btnCheck_Padding
+        labelPos.width -= posBox.width + metrics.btnCheck_Padding
+        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

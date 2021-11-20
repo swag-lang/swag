@@ -118,7 +118,6 @@ impl Surface
         isDirty = false
 
         var cxt: PaintContext
-        cxt.theme = app.theme
         cxt.painter = &painter
         cxt.renderer = &app.renderer
         cxt.renderer.begin(rc)

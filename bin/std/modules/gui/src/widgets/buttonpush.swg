@@ -12,9 +12,10 @@ impl IWnd for ButtonPush
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
-        theme  := bc.theme
-        colors := &bc.theme.colors
-        rects  := &bc.theme.rects
+        theme   := getTheme()
+        metrics := getThemeMetrics()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -85,10 +86,10 @@ impl IWnd for ButtonPush
 
         // Background
         clientRect := getClientRect()
-        bc.theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
 
         // Border
-        bc.theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
+        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
 
         // Content
         var format: RichStringFormat
@@ -96,11 +97,11 @@ impl IWnd for ButtonPush
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
-        format.font = bc.theme.res.fontDefault
+        format.font = theme.res.fontDefault
         format.fontStyle = .Bold
         labelPos := clientRect
-        labelPos.inflate(-bc.theme.metrics.btnPush_Padding)
-        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, bc.theme.metrics.iconText_Margin)
+        labelPos.inflate(-metrics.btnPush_Padding)
+        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

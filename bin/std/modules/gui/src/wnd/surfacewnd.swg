@@ -202,9 +202,9 @@ impl IWnd for SurfaceWnd
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
-        theme  := bc.theme
-        colors := &bc.theme.colors
-        rects  := &bc.theme.rects
+        theme  := getTheme()
+        colors := getThemeColors()
+        rects  := getThemeRects()
 
         if surface.flags & .Border
         {
@@ -231,7 +231,7 @@ impl IWnd for SurfaceWnd
 
         if surface.flags & (.BigCaption | .SmallCaption)
         {
-            posCaption.x += bc.theme.metrics.wnd_CaptionMarginTitle
+            posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
             if icon.isValid()
             {

@@ -11,9 +11,9 @@ impl IWnd for ButtonIcon
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
-        theme  := bc.theme
-        colors := &bc.theme.colors
-        rects  := &bc.theme.rects
+        theme  := getTheme()
+        colors := getThemeColors()
+        rects  := getThemeRects()
 
         var subRectBk:  *ThemeImageRect
         var colorBk:    Color = ?
@@ -41,7 +41,7 @@ impl IWnd for ButtonIcon
 
         // Background
         clientRect := getClientRect()
-        bc.theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
 
         // Icon
         pos := clientRect

@@ -18,7 +18,7 @@ impl IWnd for Label
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        theme   := evt.bc.theme
+        theme   := getTheme()
         painter := evt.bc.painter
 
         clientRect := getClientRect()

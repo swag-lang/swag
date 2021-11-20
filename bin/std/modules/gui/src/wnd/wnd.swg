@@ -120,6 +120,7 @@ impl Wnd
         mtd getTheme()          => style.ref.theme
         mtd getThemeMetrics()   => &style.ref.theme.metrics
         mtd getThemeColors()    => &style.ref.theme.colors
+        mtd getThemeRects()     => &style.ref.theme.rects
     }
 
     #[Swag.Inline]
@@ -258,7 +259,6 @@ impl Wnd
 
         // Recompute style if necessary
         computeStyle()
-        bc.theme = style.ref.theme
 
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
@@ -266,14 +266,15 @@ impl Wnd
             bc.isDisabled = true
 
         // Background
+        theme := getTheme()
         switch backgroundStyle
         {
         case Window:
-            bc.painter.fillRect(position, bc.theme.colors.wnd_Bk)
+            bc.painter.fillRect(position, theme.colors.wnd_Bk)
         case Dialog:
-            bc.painter.fillRect(position, bc.theme.colors.dlg_Bk)
+            bc.painter.fillRect(position, theme.colors.dlg_Bk)
         case DialogBar:
-            bc.theme.drawSubRect(bc.painter, position, &bc.theme.rects.dlg_BtnBar, bc.theme.colors.dlg_BtnBarBk)
+            theme.drawSubRect(bc.painter, position, &theme.rects.dlg_BtnBar, theme.colors.dlg_BtnBarBk)
         }
 
         // User paint
