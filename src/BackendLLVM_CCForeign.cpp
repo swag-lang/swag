@@ -51,7 +51,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         {
             auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
             if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
-                sizeRetStruct += sizeof(void*);
+                sizeRetStruct++;
         }
     }
 
@@ -93,16 +93,20 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                 switch (typeParam->sizeOf)
                 {
                 case 1:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy++)));
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy)));
+                    argStructCopy++;
                     break;
                 case 2:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(GEP_I32(allocStructCopy, argStructCopy++)));
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I16(GEP_I32(allocStructCopy, argStructCopy)));
+                    argStructCopy++;
                     break;
                 case 4:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(GEP_I32(allocStructCopy, argStructCopy++)));
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I32(GEP_I32(allocStructCopy, argStructCopy)));
+                    argStructCopy++;
                     break;
                 case 8:
-                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(GEP_I32(allocStructCopy, argStructCopy++)));
+                    builder.CreateStore(func->getArg(argIdx), TO_PTR_I64(GEP_I32(allocStructCopy, argStructCopy)));
+                    argStructCopy++;
                     break;
                 }
             }
@@ -168,7 +172,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             // :StructByCopy
             if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
             {
-                args.push_back(TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy++)));
+                args.push_back(TO_PTR_I8(GEP_I32(allocStructCopy, argStructCopy)));
+                argStructCopy++;
             }
             else if (passByValue(typeParam))
             {
