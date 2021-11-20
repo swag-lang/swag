@@ -416,14 +416,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::WaitForDependenciesEffective)
     {
-        // If we will not run some stuff, then no need to wait for dependencies, because we do not
-        // have to load the dlls
-        if (module->hasBytecodeToRun())
-        {
-            if (!module->waitForDependenciesDone(this))
-                return JobResult::KeepJobAlive;
-        }
-
+        if (!module->waitForDependenciesDone(this))
+            return JobResult::KeepJobAlive;
         pass = ModuleBuildPass::OptimizeBc;
     }
 
