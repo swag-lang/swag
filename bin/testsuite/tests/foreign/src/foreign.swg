@@ -434,10 +434,51 @@ public struct Vector2
     x, y: s32
 }
 
+public struct Vector2f
+{
+    x, y: f32
+}
+
 public func tcf_toto27(a, b, c: Vector2)
 {
     //@print(a.x, " ", b.x, " ", c.x, "\n")
     @assert(a.x == 1.0)
     @assert(b.x == 2.0)
     @assert(c.x == 3.0)
+}
+
+
+func tcf_toto28A(a, b, c, d: Vector2)
+{
+    //@print(a.x, " ", b.x, " ", c.x, " ", d.x, "\n")
+    @assert(a.x == 1.0)
+    @assert(b.x == 2.0)
+    @assert(c.x == 3.0)
+    @assert(d.x == 4.0)
+}
+
+public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{s32}
+{
+    //@print(a.x, " ", b.x, " ", c.x, " ", d.x, "\n")
+    tcf_toto28A(a, b, c, d)
+    @assert(a.x == 1.0)
+    @assert(b.x == 2.0)
+    @assert(c.x == 3.0)
+    @assert(d.x == 4.0)
+    return @{666}
+}
+
+func getLineLineIntersectCoefs1(start0, end0, start1, end1: Vector2f)->{d0: f32, d1: f32}
+{
+    ua := (end1.x - start1.x) * (start0.y - start1.y)
+    ub := (end0.x - start0.x) * (start0.y - start1.y)
+    d  := (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
+    return @{ua / d, ub / d}
+}
+
+//#[Swag.PrintBc]
+public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
+{
+    aa := getLineLineIntersectCoefs1(start0, end0, start1, end1)
+    return start0.y
 }

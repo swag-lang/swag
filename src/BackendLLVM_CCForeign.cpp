@@ -136,7 +136,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             // :StructByCopy
             if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
             {
-                auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
+                auto rr0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocRR, builder.getInt32(i)));
                 args.push_back(rr0);
             }
             else if (passByValue(typeParam))
