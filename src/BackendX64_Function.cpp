@@ -3559,6 +3559,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::InternalCheckAny:
+        {
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            emitCall(pp, g_LangSpec->name__checkAny);
+            break;
+        }
+
         case ByteCodeOp::InternalClearErr:
             emitCall(pp, g_LangSpec->name__clearerr);
             break;

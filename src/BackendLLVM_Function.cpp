@@ -3123,6 +3123,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, g_LangSpec->name_atseterr, {ip->a.u32, ip->b.u32}, {});
             break;
         }
+        case ByteCodeOp::InternalCheckAny:
+        {
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__checkAny, { ip->a.u32, ip->b.u32, ip->c.u32 }, {});
+            break;
+        }
         case ByteCodeOp::InternalClearErr:
         {
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__clearerr, {}, {});

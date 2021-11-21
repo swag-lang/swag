@@ -541,20 +541,20 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     PushICFlags ic(context, BCI_SAFETY);
 
     auto r0 = reserveRegisterRC(context);
+    auto r1 = reserveRegisterRC(context);
 
     // :AnyTypeSegment
     SWAG_ASSERT(exprNode->extension);
     SWAG_ASSERT(exprNode->extension->anyTypeSegment);
     emitMakeSegPointer(context, exprNode->extension->anyTypeSegment, exprNode->extension->anyTypeOffset, r0);
 
-    RegisterList result = reserveRegisterRC(context);
-    auto         inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
-    inst->b.u32         = SWAG_COMPARE_CAST_ANY;
-    inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    emitAssert(context, result, isExplicit ? g_E[Err0228] : g_E[Err0450]);
+    context->node->allocateComputedValue();
+    computeSourceLocation(context, context->node, &context->node->computedValue->storageOffset, &context->node->computedValue->storageSegment);
+    emitMakeSegPointer(context, context->node->computedValue->storageSegment, context->node->computedValue->storageOffset, r1);
 
-    freeRegisterRC(context, result);
+    emitInstruction(context, ByteCodeOp::InternalCheckAny, r0, exprNode->resultRegisterRC[1], r1);
     freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
 }
 
 void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)

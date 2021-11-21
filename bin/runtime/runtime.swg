@@ -281,6 +281,12 @@ private func concreteAlias(type1: typeinfo)->typeinfo
     return concreteAlias(typeAlias.rawType)
 }
 
+func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
+{
+    if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
+        @panic("[safety] invalid dynamic cast from 'any', types mismatch (types should be exactly the same)", loc)
+}
+
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
     if cast(const*u8) typeA == cast(const*u8) typeB
@@ -519,7 +525,7 @@ func @panic(message: string, loc: CompilerSourceLocation)
     if message != null
     {
         len = @countof(message)
-        if(len > 512) len = 512
+        if len > 512 len = 512
         @memcpy(&str[0], @dataof(message), len)
         str[len]     = "\n"'u8
         str[len + 1] = "\n"'u8

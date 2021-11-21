@@ -1,8 +1,9 @@
 #global testerror
-//#[Swag.PrintBc, Swag.Optim("", false)]
+
+#[Swag.Safety("", true)]
 #test
 {
-    var x: any = 1
+    var x: any = 1.0
     if !x
         @print("toto")
 }
