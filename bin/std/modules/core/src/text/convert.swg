@@ -258,6 +258,20 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         return
     }
 
+    // Any
+    if Reflection.isAny(type)
+    {
+        ptrAny := cast(const *any) valueData
+        buf.addBytes("{")
+        buf.addBytes("type: ")
+        typeAny := @kindof(dref ptrAny)
+        convertAny(buf, typeAny, strFormat)
+        buf.addBytes(", value: ")
+        convertAny(buf, dref ptrAny, strFormat)
+        buf.addBytes("}")
+        return
+    }
+
     switch type
     {
         case bool:

@@ -24,6 +24,14 @@ using Swag
             return tt.nativeKind == TypeInfoNativeKind.Rune
         }
 
+        func isAny(t: typeinfo)->bool
+        {
+            if t.kind != .Native
+                return false
+            tt := cast(const *TypeInfoNative) t
+            return tt.nativeKind == TypeInfoNativeKind.Any
+        }
+
         func isBool(t: typeinfo)->bool
         {
             if t.kind != .Native
