@@ -533,7 +533,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode)
+void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_CASTANY_ON, ATTRIBUTE_SAFETY_CASTANY_OFF))
         return;
@@ -551,7 +551,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     auto         inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32         = SWAG_COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    emitAssert(context, result, g_E[Err0228]);
+    emitAssert(context, result, isExplicit ? g_E[Err0228] : g_E[Err0450]);
 
     freeRegisterRC(context, result);
     freeRegisterRC(context, r0);

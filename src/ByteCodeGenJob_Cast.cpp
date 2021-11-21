@@ -792,8 +792,14 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
         // Check that the type is correct
-        if (isExplicit)
-            emitSafetyCastAny(context, exprNode);
+        auto anyNode = exprNode;
+        if (!anyNode->extension || !anyNode->extension->anyTypeSegment)
+        {
+            SWAG_ASSERT(anyNode->childs.size());
+            anyNode = anyNode->childs.front();
+        }
+
+        emitSafetyCastAny(context, anyNode, isExplicit);
 
         // Dereference the any content, except for a reference, where we want to keep the pointer
         // (pointer that comes from the data is already in the correct register)

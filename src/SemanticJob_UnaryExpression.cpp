@@ -78,6 +78,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
     return true;
 }
 
+#include "SourceFile.h"
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
