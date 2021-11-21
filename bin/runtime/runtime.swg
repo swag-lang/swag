@@ -9,6 +9,18 @@ namespace Swag
 }
 
 ////////////////////////////////////////////////////////////
+private func __strcat(start: *u8, max: s32, src: string)
+{
+    dstLen := @strlen(start)
+    srcLen := @countof(src)
+    if dstLen + srcLen + 1 > max
+        srcLen = max - (dstLen + 1)
+    if !srcLen
+        return
+    @memcpy(start + dstLen, @dataof(src), srcLen)
+    start[dstLen + srcLen] = 0
+}
+
 #[Discardable]
 #[Safety("", false)]
 func __itoa(result: *u8, value: s64)->*u8
@@ -281,12 +293,6 @@ private func concreteAlias(type1: typeinfo)->typeinfo
     return concreteAlias(typeAlias.rawType)
 }
 
-func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
-{
-    if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
-        @panic("[safety] invalid dynamic cast from 'any', types mismatch (types should be exactly the same)", loc)
-}
-
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
     if cast(const*u8) typeA == cast(const*u8) typeB
@@ -416,7 +422,8 @@ func @seterr(value: string)
             cxt.errorMsgLen = 0
         else
         {
-            if len > MaxLenErrorMsg - cxt.errorMsgStart len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
+            if len > MaxLenErrorMsg - cxt.errorMsgStart
+                len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
             @assert(len > 0)
             @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
             cxt.errorMsgLen = cast(u32) len
@@ -461,6 +468,29 @@ func __poperr()
     cxt.errorMsgLen = ptr[0]
     cxt.traceIndex = ptr[1]
     cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
+}
+
+func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
+{
+    if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
+    {
+        cxt := @getcontext()
+        str := &cxt.errorMsg[0]
+        cxt.errorMsg[0] = 0
+
+        __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type `any`")
+        if typeA and typeB
+        {
+            __strcat(str, Swag.MaxLenErrorMsg, " (`")
+            __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
+            __strcat(str, Swag.MaxLenErrorMsg, "` expected, `")
+            __strcat(str, Swag.MaxLenErrorMsg, typeB.flatName)
+            __strcat(str, Swag.MaxLenErrorMsg, "` provided)")
+        }
+
+        cxt.errorMsgLen = 0
+        @panic(@mkstring(str, @strlen(str)), loc)
+    }
 }
 
 ////////////////////////////////////////////////////////////
