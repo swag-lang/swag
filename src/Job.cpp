@@ -122,61 +122,32 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         return;
 
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-    bool mustWait   = false;
 
+    ScopedLock lk(structNode->mutex);
+    if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
     {
-        SharedLock lk(structNode->mutex);
-        mustWait = !(structNode->semFlags & AST_SEM_BYTECODE_GENERATED);
-    }
-
-    if (mustWait)
-    {
-        ScopedLock lk(structNode->mutex);
-        if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
-        {
-            structNode->dependentJobs.add(this);
-            setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
-        }
+        structNode->dependentJobs.add(this);
+        setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
     }
 }
 
 void Job::waitOverloadCompleted(SymbolOverload* overload)
 {
-    bool mustWait = false;
-
+    ScopedLock lk(overload->symbol->mutex);
+    if (overload->flags & OVERLOAD_INCOMPLETE)
     {
-        SharedLock lk(overload->symbol->mutex);
-        mustWait = overload->flags & OVERLOAD_INCOMPLETE;
-    }
-
-    if (mustWait)
-    {
-        ScopedLock lk(overload->symbol->mutex);
-        if (overload->flags & OVERLOAD_INCOMPLETE)
-        {
-            waitSymbolNoLock(overload->symbol);
-            return;
-        }
+        waitSymbolNoLock(overload->symbol);
+        return;
     }
 }
 
 void Job::waitFuncDeclFullResolve(AstFuncDecl* funcDecl)
 {
-    bool mustWait = false;
-
+    ScopedLock lk(funcDecl->mutex);
+    if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
     {
-        SharedLock lk(funcDecl->mutex);
-        mustWait = !(funcDecl->semFlags & AST_SEM_FULL_RESOLVE);
-    }
-
-    if (mustWait)
-    {
-        ScopedLock lk(funcDecl->mutex);
-        if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
-        {
-            funcDecl->dependentJobs.add(this);
-            setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemFullResolve, funcDecl, nullptr);
-        }
+        funcDecl->dependentJobs.add(this);
+        setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemFullResolve, funcDecl, nullptr);
     }
 }
 
