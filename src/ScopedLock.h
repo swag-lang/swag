@@ -8,7 +8,6 @@ struct ScopedLock
     ScopedLock(T& mtx)
         : mt{&mtx}
     {
-        Timer timer(&g_Stats.contentionTime);
         mt->lock();
     }
 
@@ -25,7 +24,6 @@ struct SharedLock
     SharedLock(shared_mutex& mtx)
         : mt{&mtx}
     {
-        Timer timer(&g_Stats.contentionTime);
         mt->lock_shared();
     }
 
