@@ -959,56 +959,102 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::GetFromMutableSeg64:
     {
         auto module = context->sourceFile->module;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+
+        // :SharedRuntimeBC
+        // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
+        // the cache initiliazed by one module, and used by another one, which is bad (because the first module
+        // could be destroyed)
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint64_t*) module->mutableSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+        }
         break;
     }
     case ByteCodeOp::GetFromBssSeg64:
     {
         auto module = context->sourceFile->module;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint64_t*) module->bssSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+        }
         break;
     }
     case ByteCodeOp::GetFromCompilerSeg64:
     {
         auto module = context->sourceFile->module;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(ip->b.u32));
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint64_t*) module->compilerSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+        }
         break;
     }
 
     case ByteCodeOp::MakeMutableSegPointer:
     {
         auto module = context->sourceFile->module;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
         {
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+            auto ptr = module->mutableSegment.address(ip->b.u32);
             if (module->saveMutableValues && ip->c.pointer)
             {
                 SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, false);
+                module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, false);
             }
-        }
 
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
+            registersRC[ip->a.u32].pointer = ptr;
+        }
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+            {
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+                if (module->saveMutableValues && ip->c.pointer)
+                {
+                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, false);
+                }
+            }
+
+            registersRC[ip->a.u32].pointer = ip->d.pointer;
+        }
         break;
     }
     case ByteCodeOp::MakeBssSegPointer:
     {
         auto module = context->sourceFile->module;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
         {
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+            auto ptr = module->bssSegment.address(ip->b.u32);
             if (ip->c.pointer)
             {
                 if (module->saveBssValues)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, true);
+                    module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, true);
                 }
                 else if (module->bssCannotChange)
                 {
@@ -1016,26 +1062,64 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     context->error(Utf8::format(g_E[Err0431], over->node->token.text.c_str()));
                 }
             }
+            registersRC[ip->a.u32].pointer = ptr;
         }
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+            {
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+                if (ip->c.pointer)
+                {
+                    if (module->saveBssValues)
+                    {
+                        SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                        module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, true);
+                    }
+                    else if (module->bssCannotChange)
+                    {
+                        SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                        context->error(Utf8::format(g_E[Err0431], over->node->token.text.c_str()));
+                    }
+                }
+            }
+            registersRC[ip->a.u32].pointer = ip->d.pointer;
+        }
         break;
     }
     case ByteCodeOp::MakeConstantSegPointer:
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->constantSegment.address(offset));
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->constantSegment.address(offset));
+            registersRC[ip->a.u32].pointer = ip->d.pointer;
+        }
         break;
     }
     case ByteCodeOp::MakeCompilerSegPointer:
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
-            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(offset));
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].pointer = module->compilerSegment.address(offset);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(offset));
+            registersRC[ip->a.u32].pointer = ip->d.pointer;
+        }
         break;
     }
 
