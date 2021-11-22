@@ -3117,10 +3117,11 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
 bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
-    ScopedLock lk(funcDecl->mutex);
+    ScopedLock lk0(funcDecl->funcMutex);
+    ScopedLock lk1(funcDecl->mutex);
 
     // Be sure block has been solved
-    if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
+    if (!(funcDecl->funcFlags & FUNC_FLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->job);
         context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);

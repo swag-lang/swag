@@ -1,3 +1,3 @@
 :loop
-call std_dm.bat -m:test_core -tb:false
+call std_dm.bat
 goto loop

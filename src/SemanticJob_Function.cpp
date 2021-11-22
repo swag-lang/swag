@@ -344,8 +344,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
     {
-        ScopedLock lk(node->mutex);
-        node->semFlags |= AST_SEM_PARTIAL_RESOLVE;
+        ScopedLock lk(node->funcMutex);
+        node->funcFlags |= FUNC_FLAG_PARTIAL_RESOLVE;
         node->dependentJobs.setRunning();
         return true;
     }
@@ -373,8 +373,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
 bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
-    ScopedLock lk(funcNode->mutex);
-    funcNode->semFlags |= AST_SEM_FULL_RESOLVE | AST_SEM_PARTIAL_RESOLVE;
+    ScopedLock lk(funcNode->funcMutex);
+    funcNode->funcFlags |= FUNC_FLAG_FULL_RESOLVE | FUNC_FLAG_PARTIAL_RESOLVE;
     funcNode->dependentJobs.setRunning();
     return true;
 }

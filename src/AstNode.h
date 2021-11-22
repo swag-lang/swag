@@ -339,6 +339,9 @@ struct AstIdentifier : public AstNode
     AstFuncCallParams* callParameters    = nullptr;
 };
 
+static const uint32_t FUNC_FLAG_FULL_RESOLVE    = 0x00000001;
+static const uint32_t FUNC_FLAG_PARTIAL_RESOLVE = 0x00000002;
+
 struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -356,6 +359,7 @@ struct AstFuncDecl : public AstNode
     Utf8                   fullnameForeign;
     VectorNative<AstNode*> subDecls;
     VectorNative<AstNode*> localGlobalVars;
+    std::mutex             funcMutex;
 
     AstNode*       parameters        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -369,6 +373,7 @@ struct AstFuncDecl : public AstNode
     uint32_t aliasMask         = 0;
     uint32_t stackSize         = 0;
     uint32_t nodeCounts        = 0;
+    uint32_t funcFlags         = 0;
     int      exportForeignLine = 0;
 };
 
