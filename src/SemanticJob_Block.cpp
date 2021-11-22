@@ -218,8 +218,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
         for (auto switchCase : switchNode->cases)
         {
-            switchCase->allocateExtension();
-            switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
+            switchCase->addAlternativeScope(typeEnum->scope);
         }
     }
 

@@ -347,9 +347,8 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         {
             auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
-            nodeFunc->allocateExtension();
             if (cloneContext.alternativeScope)
-                nodeFunc->extension->alternativeScopes.push_back(cloneContext.alternativeScope);
+                nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
             symKind = SymbolKind::Function;
             break;
         }
@@ -392,8 +391,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         auto globalScope = f->ownerScope;
         while (!globalScope->isGlobalOrImpl())
             globalScope = globalScope->parentScope;
-        subDecl->allocateExtension();
-        subDecl->extension->alternativeScopes.push_back(globalScope);
+        subDecl->addAlternativeScope(globalScope);
 
         subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
         subDecl->resolvedSymbolOverload = nullptr;
@@ -757,8 +755,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     cloneContext.ownerStructScope = cloneContext.parentScope;
 
     newNode->scope = cloneContext.parentScope;
-    newNode->allocateExtension();
-    newNode->extension->alternativeScopes.push_back(scope);
+    newNode->addAlternativeScope(scope);
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;

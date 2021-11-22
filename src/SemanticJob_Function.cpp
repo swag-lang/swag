@@ -1121,7 +1121,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     auto globalScope = funcDecl->ownerScope;
     while (!globalScope->isGlobalOrImpl())
         globalScope = globalScope->parentScope;
-    inlineNode->extension->alternativeScopes.push_back(globalScope);
+    inlineNode->addAlternativeScope(globalScope);
 
     // We also need to add all alternatives scopes (using), in case the function relies on them to
     // be solved
@@ -1129,7 +1129,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     while (parentNode)
     {
         if (parentNode->extension && !parentNode->extension->alternativeScopes.empty())
-            inlineNode->extension->alternativeScopes.append(parentNode->extension->alternativeScopes);
+            inlineNode->addAlternativeScopes(parentNode->extension->alternativeScopes);
         parentNode = parentNode->parent;
     }
 
@@ -1139,7 +1139,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (funcDecl->genericParameters)
     {
         Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
-        inlineNode->extension->alternativeScopes.push_back(scope);
+        inlineNode->addAlternativeScope(scope);
         for (auto child : funcDecl->genericParameters->childs)
         {
             auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);

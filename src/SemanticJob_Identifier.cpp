@@ -271,10 +271,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Inherit alternative scopes.
     if (identifier->parent->extension)
-    {
-        varNode->allocateExtension();
-        varNode->extension->alternativeScopes.append(identifier->parent->extension->alternativeScopes);
-    }
+        varNode->addAlternativeScopes(identifier->parent->extension->alternativeScopes);
 
     // If we are in a const declaration, that temporary variable should be a const too...
     if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
@@ -3778,12 +3775,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars)
+void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
-    VectorNative<AlternativeScope> toAdd;
-    VectorNative<Scope*>           done;
+    VectorNative<AlternativeScopeVar> toAdd;
+    VectorNative<Scope*>              done;
     toAdd.append(startNode->extension->alternativeScopesVars);
     while (!toAdd.empty())
     {
@@ -3807,7 +3804,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<S
     }
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     if (startNode->extension && !startNode->extension->alternativeScopes.empty())
     {
@@ -3920,7 +3917,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& toProcess  = job->scopesToProcess;
@@ -4012,6 +4009,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     }
 
     SWAG_VERIFY(!(flags & COLLECT_BACKTICK), context->report({startNode, g_E[Err0136]}));
+
     return true;
 }
 

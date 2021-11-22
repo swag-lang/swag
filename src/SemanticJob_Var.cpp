@@ -189,7 +189,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->allocateExtension();
     contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
-    contentNode->extension->alternativeScopes.push_back(assignment->ownerScope);
+    contentNode->addAlternativeScope(assignment->ownerScope);
     structNode->content = contentNode;
 
     auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);

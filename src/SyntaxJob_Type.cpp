@@ -141,7 +141,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     else
         rootScope = newParent->ownerScope;
     structNode->allocateExtension();
-    structNode->extension->alternativeScopes.push_back(currentScope);
+    structNode->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
     structNode->extension->alternativeNode = parent;
 

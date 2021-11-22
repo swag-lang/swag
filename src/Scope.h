@@ -29,7 +29,7 @@ enum class ScopeKind
     Macro,
 };
 
-struct AlternativeScope
+struct AlternativeScopeVar
 {
     AstNode* node;
     Scope*   scope;

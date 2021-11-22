@@ -365,6 +365,24 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
+void AstNode::addAlternativeScope(Scope* scope)
+{
+    allocateExtension();
+    extension->alternativeScopes.push_back(scope);
+}
+
+void AstNode::addAlternativeScopes(const VectorNative<Scope*>& scopes)
+{
+    allocateExtension();
+    extension->alternativeScopes.append(scopes);
+}
+
+void AstNode::addAlternativeScopeVar(const AlternativeScopeVar& scopeVar)
+{
+    allocateExtension();
+    extension->alternativeScopesVars.push_back(scopeVar);
+}
+
 void AstNode::computeEndLocation()
 {
     for (auto p : childs)
@@ -386,7 +404,7 @@ void AstNode::computeEndLocation()
             break;
         }
 
-        token.endLocation = childs.back()->token.endLocation;
+        token.endLocation   = childs.back()->token.endLocation;
         token.startLocation = childs.front()->token.startLocation;
         break;
 

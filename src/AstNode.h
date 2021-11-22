@@ -237,12 +237,15 @@ struct AstNode
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();
     void        computeEndLocation();
+    void        addAlternativeScope(Scope* scope);
+    void        addAlternativeScopes(const VectorNative<Scope*>& scopes);
+    void        addAlternativeScopeVar(const AlternativeScopeVar& scopeVar);
 
     struct Extension
     {
-        VectorNative<Scope*>           alternativeScopes;
-        VectorNative<AlternativeScope> alternativeScopesVars;
-        VectorNative<uint32_t>         registersToRelease;
+        VectorNative<Scope*>              alternativeScopes;
+        VectorNative<AlternativeScopeVar> alternativeScopesVars;
+        VectorNative<uint32_t>            registersToRelease;
 
         SemanticFct        semanticBeforeFct            = nullptr;
         SemanticFct        semanticAfterFct             = nullptr;

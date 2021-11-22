@@ -19,8 +19,8 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension();
-        regNode->extension->alternativeScopes.push_back(typeStruct->scope);
-        regNode->extension->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        regNode->addAlternativeScope(typeStruct->scope);
+        regNode->addAlternativeScopeVar({varNode, typeStruct->scope});
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -28,9 +28,8 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, g_E[Err0691]}));
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Utf8::format(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        regNode->allocateExtension();
-        regNode->extension->alternativeScopes.push_back(typeStruct->scope);
-        regNode->extension->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        regNode->addAlternativeScope(typeStruct->scope);
+        regNode->addAlternativeScopeVar({varNode, typeStruct->scope});
     }
     else
     {
@@ -80,8 +79,8 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return context->report({node, Utf8::format(g_E[Err0695], typeResolved->getDisplayName().c_str())});
     }
 
-    node->parent->allocateExtension();
-    node->parent->extension->alternativeScopes.push_back(scope);
+    node->parent->addAlternativeScope(scope);
+
     if (!idref->ownerFct)
         node->parent->sourceFile->addGlobalUsing(scope);
 

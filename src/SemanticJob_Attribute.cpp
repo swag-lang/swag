@@ -292,8 +292,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         return context->report({c, Utf8::format(g_E[Err0695], typeChild->getDisplayName().c_str())});
                     }
 
-                    forNode->allocateExtension();
-                    forNode->extension->alternativeScopes.push_back(scope);
+                    forNode->addAlternativeScope(scope);
                 }
             }
 
