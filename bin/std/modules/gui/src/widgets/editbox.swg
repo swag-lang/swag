@@ -165,7 +165,7 @@ impl IWnd for EditBox
 
             setFocus()
             marginLeft := getTextMarginLeft()
-            x := getByteIndexAtPos(evt.pos.x - marginLeft)
+            x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
             setSelection(x, x)
             forceVisibleCaret()
             evt.accepted = true
@@ -183,7 +183,7 @@ impl IWnd for EditBox
                 break
             evt.accepted = true
             marginLeft := getTextMarginLeft()
-            x := getByteIndexAtPos(evt.pos.x - marginLeft)
+            x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
             setSelection(selBeg, x)
 
         case MouseEnter:
