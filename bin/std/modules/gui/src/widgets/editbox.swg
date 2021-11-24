@@ -236,12 +236,13 @@ public impl EditBox
 {
     func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox
     {
-        res := Wnd.create'EditBox(parent, content, position, id)
+        res := Wnd.create'EditBox(parent, null, position, id)
         if res.position.height == 0
             res.position.height = res.getThemeMetrics().editBox_Height
         if res.position.width == 0
             res.position.width  = res.getThemeMetrics().editBox_Width
         res.setForm(EditBoxForm.Square)
+        res.textContent = content
 
         evt := CreateEvent{}
         res.sendEvent(&evt)
