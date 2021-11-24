@@ -18,6 +18,7 @@ public struct EditBox
     visibleCaret:       bool
     posSelBeg:          f32
     posSelEnd:          f32
+    scrollPosX:         f32
 }
 
 impl IWnd for EditBox
@@ -72,7 +73,9 @@ impl IWnd for EditBox
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
-        clientRect.inflate(-metrics.editBox_SquarePadding)
+        pding := getFormPadding()
+        clientRect.applyPadding(padding)
+        clientRect.inflate(-pding)
 
         // Note
         if !note.isEmpty() and textContent.isEmpty()
@@ -85,6 +88,17 @@ impl IWnd for EditBox
             format.font = theme.res.fontDefault
             Theme.drawIconText(bc.painter, clientRect, icon, &note, format, metrics.iconText_Margin)
         }
+
+        // Compute scroll position
+        caretPos := getCaretPos()
+        decalX := painter.measureString("X", theme.res.fontDefault.regular).width * 10
+        if caretPos.x < scrollPosX + clientRect.x
+            scrollPosX = Math.max(caretPos.x - decalX - clientRect.x, 0)
+        else if caretPos.x > scrollPosX + clientRect.width
+            scrollPosX = caretPos.x + decalX - clientRect.width
+
+        painter.pushClippingRect(clientRect)
+        painter.translateTransform(-scrollPosX, 0)
 
         // Selection
         if selBeg != selEnd and hasFocus()
@@ -102,10 +116,11 @@ impl IWnd for EditBox
         // Caret
         if visibleCaret and hasFocus()
         {
-            pos := getCaretPos()
-            pos.x += theme.metrics.editBox_SquarePadding
-            painter.fillRect(pos, Argb.White)
+            painter.fillRect(caretPos, Argb.White)
         }
+
+        painter.popClippingRect()
+        painter.translateTransform(scrollPosX, 0)
     }
 
     mtd forceVisibleCaret()
@@ -345,12 +360,18 @@ protected impl EditBox
         return true
     }
 
+    mtd getFormPadding()->f32
+    {
+        return getTheme().metrics.editBox_SquarePadding
+    }
+
     mtd getCaretPos()->Math.Rectangle
     {
         var result: retval = ?
 
         clientRect := getClientRect()
         clientRect.applyPadding(padding)
+        clientRect.inflate(-getFormPadding())
 
         result = clientRect
         if !textContent.isEmpty()

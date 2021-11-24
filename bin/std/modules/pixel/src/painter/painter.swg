@@ -327,24 +327,6 @@ impl Painter
         }
     }
 
-    // Reset the current painting state
-    mtd resetState()
-    {
-        curState.transform.setIdentity()
-        curState.interpolationMode = .Pixel
-        curState.blendingMode = .Alpha
-        resetTexture0()
-        resetTextureFont()
-    }
-
-    // Set the current painting state
-    mtd setState(state: PaintState)
-    {
-        curState = state
-        setTransform(curState.transform)
-        setBlendingMode(curState.blendingMode)
-    }
-
     // Call this before drawing
     mtd begin()
     {
@@ -373,6 +355,24 @@ impl Painter
     {
         cmd := newCommand(CommandId.Clear)
         cmd.clear.color = color
+    }
+
+    // Reset the current painting state
+    mtd resetState()
+    {
+        curState.transform.setIdentity()
+        curState.interpolationMode = .Pixel
+        curState.blendingMode = .Alpha
+        resetTexture0()
+        resetTextureFont()
+    }
+
+    // Set the current painting state
+    mtd setState(state: PaintState)
+    {
+        curState = state
+        setTransform(curState.transform)
+        setBlendingMode(curState.blendingMode)
     }
 
     // Set the paint position
