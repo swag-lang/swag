@@ -94,8 +94,8 @@ impl IWnd for EditBox
         if icon.isValid()
         {
             icon.paint(bc.painter, clientRect.x, clientRect.vertCenter() - icon.size * 0.5, colors.edit_Text)
-            clientRect.x += icon.size + 4
-            clientRect.width -= icon.size + 4
+            clientRect.x += icon.size + metrics.iconText_Margin
+            clientRect.width -= icon.size + metrics.iconText_Margin
         }
 
         // Note
@@ -115,7 +115,7 @@ impl IWnd for EditBox
         decalX := Math.min(Painter.measureString("X", theme.res.fontDefault.regular).width * 10, clientRect.width * 0.5)
         maxDecalX := Painter.measureString(textContent, theme.res.fontDefault.regular).width - decalX
         if caretPos.x - clientRect.x < scrollPosX
-            scrollPosX = caretPos.x - clientRect.x - decalX 
+            scrollPosX = caretPos.x - clientRect.x - decalX
         else if caretPos.x - clientRect.x >= scrollPosX + clientRect.width
             scrollPosX = Math.min(caretPos.x - clientRect.x - decalX, maxDecalX)
         scrollPosX = Math.max(scrollPosX, 0)
@@ -402,7 +402,7 @@ protected impl EditBox
     {
         rect := getClientRectPadding()
         if icon.isValid()
-            rect.x += icon.size + 4
+            rect.x += icon.size + getThemeMetrics().iconText_Margin
         return rect.x
     }
 
