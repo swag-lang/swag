@@ -44,6 +44,8 @@ struct ThemeImageRects
     btnRadio_CheckedBorder:     ThemeImageRect = @{{123,29,32,32}, 16}
     btnRadio_CheckedMark:       ThemeImageRect = @{{123,62,32,32}, 16}
 
-    edit_SquareBorder:          ThemeImageRect = @{{1,57,27,27}, 5}
-    edit_SquareBk:              ThemeImageRect = @{{29,57,27,27}, 5}
+    edit_SquareBk:              ThemeImageRect = @{{1,57,27,27}, 5}
+    edit_SquareBorder:          ThemeImageRect = @{{29,57,27,27}, 5}
+    edit_RoundBk:               ThemeImageRect = @{{1,85,27,27}, 13}
+    edit_RoundBorder:           ThemeImageRect = @{{29,85,27,27}, 13}
 }

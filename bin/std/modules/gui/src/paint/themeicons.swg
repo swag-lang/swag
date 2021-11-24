@@ -5,6 +5,7 @@ enum ThemeIcons24
     WndMinimize
     WndMaximize
     WndClose
+    Search
 }
 
 enum ThemeIcons64

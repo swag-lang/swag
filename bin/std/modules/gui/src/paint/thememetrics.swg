@@ -1,4 +1,5 @@
 #global public
+using Core
 
 struct ThemeMetrics
 {
@@ -20,5 +21,6 @@ struct ThemeMetrics
     msgDlg_Padding:             f32 = 20
     msgDlg_BtnPadding:          f32 = 5
 
-    editBox_SquarePadding:      f32 = 5
+    editBox_SquarePadding:      Math.Vector4 = @{5, 5, 5, 5}
+    editBox_RoundPadding:       Math.Vector4 = @{12, 5, 12, 5}
 }

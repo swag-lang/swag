@@ -1,11 +1,19 @@
 using Core, Pixel
 
+public enum EditBoxForm
+{
+    Square
+    Round
+    Flat
+}
+
 public struct EditBox
 {
-    using scrollwnd:    ScrollWnd
+    using wnd:          Wnd
     note:               RichString
     icon:               Icon
     textContent:        String
+    form:               EditBoxForm = Square
     autoLoseFocus:      bool = true
 
     sigEnterPressed:    func(*EditBox)
@@ -44,7 +52,6 @@ impl IWnd for EditBox
         bc      := evt.bc
         painter := evt.bc.painter
 
-        clientRect := getClientRect()
         theme   := getTheme()
         colors  := getThemeColors()
         metrics := getThemeMetrics()
@@ -56,8 +63,15 @@ impl IWnd for EditBox
         var colorBorder:    Color = ?
         var colorText:      Color = ?
 
-        subRectBk = &rects.edit_SquareBk
-        subRectBorder = &rects.edit_SquareBorder
+        switch form
+        {
+        case Square:
+            subRectBk = &rects.edit_SquareBk
+            subRectBorder = &rects.edit_SquareBorder
+        case Round:
+            subRectBk = &rects.edit_RoundBk
+            subRectBorder = &rects.edit_RoundBorder
+        }
 
         if bc.isDisabled
             colorBorder = colors.edit_DisabledBorder
@@ -70,12 +84,19 @@ impl IWnd for EditBox
 
         colorBk = colors.edit_SquareBk
 
+        clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
-        pding := getFormPadding()
-        clientRect.applyPadding(padding)
-        clientRect.inflate(-pding)
+        clientRect = getClientRectPadding()
+
+        // Icon
+        if icon.isValid()
+        {
+            icon.paint(bc.painter, clientRect.x, clientRect.vertCenter() - icon.size * 0.5, colors.edit_Text)
+            clientRect.x += icon.size + 4
+            clientRect.width -= icon.size + 4
+        }
 
         // Note
         if !note.isEmpty() and textContent.isEmpty()
@@ -86,17 +107,18 @@ impl IWnd for EditBox
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
-            Theme.drawIconText(bc.painter, clientRect, icon, &note, format, metrics.iconText_Margin)
+            Theme.drawIconText(bc.painter, clientRect, @{}, &note, format, metrics.iconText_Margin)
         }
 
         // Compute scroll position
         caretPos := getCaretPos()
-        decalX := Painter.measureString("X", theme.res.fontDefault.regular).width * 10
+        decalX := Math.min(Painter.measureString("X", theme.res.fontDefault.regular).width * 10, clientRect.width * 0.5)
         maxDecalX := Painter.measureString(textContent, theme.res.fontDefault.regular).width - decalX
-        if caretPos.x < scrollPosX + clientRect.x
-            scrollPosX = Math.max(caretPos.x - decalX - clientRect.x, 0)
-        else if caretPos.x > scrollPosX + clientRect.width
-            scrollPosX = Math.min(caretPos.x + decalX - clientRect.width, maxDecalX)
+        if caretPos.x - clientRect.x < scrollPosX
+            scrollPosX = caretPos.x - clientRect.x - decalX 
+        else if caretPos.x - clientRect.x >= scrollPosX + clientRect.width
+            scrollPosX = Math.min(caretPos.x - clientRect.x - decalX, maxDecalX)
+        scrollPosX = Math.max(scrollPosX, 0)
 
         painter.pushClippingRect(clientRect)
         painter.translateTransform(-scrollPosX, 0)
@@ -105,7 +127,7 @@ impl IWnd for EditBox
         if selBeg != selEnd and hasFocus()
         {
             pos := clientRect
-            pos.x = posSelBeg + theme.metrics.editBox_SquarePadding
+            pos.x += posSelBeg
             pos.width = posSelEnd - posSelBeg
             bc.painter.fillRect(pos, colors.edit_SelectedBk)
         }
@@ -142,7 +164,8 @@ impl IWnd for EditBox
                 break
 
             setFocus()
-            x := getByteIndexAtPos(evt.pos.x - getThemeMetrics().editBox_SquarePadding)
+            marginLeft := getTextMarginLeft()
+            x := getByteIndexAtPos(evt.pos.x - marginLeft)
             setSelection(x, x)
             forceVisibleCaret()
             evt.accepted = true
@@ -159,7 +182,8 @@ impl IWnd for EditBox
             if !isDragging
                 break
             evt.accepted = true
-            x := getByteIndexAtPos(evt.pos.x - getThemeMetrics().editBox_SquarePadding)
+            marginLeft := getTextMarginLeft()
+            x := getByteIndexAtPos(evt.pos.x - marginLeft)
             setSelection(selBeg, x)
 
         case MouseEnter:
@@ -177,7 +201,6 @@ impl IWnd for EditBox
         visibleCaret = !visibleCaret
         pos := getCaretPos()
         pos.inflate(1)
-        pos.offset(-getScrollPos())
         invalidateRect(pos)
     }
 
@@ -211,6 +234,7 @@ public impl EditBox
             res.position.height = res.getThemeMetrics().btnPush_Height
         if res.position.width == 0
             res.position.width  = res.getThemeMetrics().btnPush_Width
+        res.setForm(EditBoxForm.Square)
 
         evt := CreateEvent{}
         res.sendEvent(&evt)
@@ -237,6 +261,19 @@ public impl EditBox
     mtd selectAll()
     {
         setSelection(0, textContent.length)
+    }
+
+    // Set the editbox form
+    mtd setForm(form: EditBoxForm)
+    {
+        self.form = #scopefct.form
+        switch self.form
+        {
+        case Square:
+            padding = getTheme().metrics.editBox_SquarePadding
+        case Round:
+            padding = getTheme().metrics.editBox_RoundPadding
+        }
     }
 }
 
@@ -361,18 +398,34 @@ protected impl EditBox
         return true
     }
 
-    mtd getFormPadding()->f32
+    mtd getTextMarginLeft()->f32
     {
-        return getTheme().metrics.editBox_SquarePadding
+        rect := getClientRectPadding()
+        if icon.isValid()
+            rect.x += icon.size + 4
+        return rect.x
+    }
+
+    mtd getFormPadding()->Math.Vector4
+    {
+        switch form
+        {
+        case Square:
+            return getTheme().metrics.editBox_SquarePadding
+        case Round:
+            return getTheme().metrics.editBox_RoundPadding
+        }
+
+        return @{}
     }
 
     mtd getCaretPos()->Math.Rectangle
     {
         var result: retval = ?
 
-        clientRect := getClientRect()
-        clientRect.applyPadding(padding)
-        clientRect.inflate(-getFormPadding())
+        clientRect := getClientRectPadding()
+        if icon.isValid()
+            clientRect.x += icon.size + 4
 
         result = clientRect
         if !textContent.isEmpty()

@@ -66,6 +66,12 @@ const H = 1024
         edit := EditBox.create(view, "Normal", @{360, 10, 100})
         edit.note = "<i>Find<i>"
         edit.textContent = "TOTO LA foule this is a very long string"
+
+        edit = EditBox.create(view, "Normal", @{360, 50, 100})
+        edit.setForm(EditBoxForm.Round)
+        edit.icon = theme.getIcon24(ThemeIcons24.Search, 20)
+        edit.note = "<i>Find<i>"
+        edit.textContent = "TOTO LA foule this is a very long string"
     }
 
     // Labels

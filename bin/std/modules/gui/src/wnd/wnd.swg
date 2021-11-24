@@ -347,6 +347,16 @@ impl Wnd
         return @{0, 0, position.width, position.height}
     }
 
+    // Returns the client area, with 'padding' applied
+    mtd getClientRectPadding()->Math.Rectangle
+    {
+        var result: retval = ?
+        result = getClientRect()
+        result.applyPadding(padding)
+        return result
+    }
+
+
     // Get the wnd position in the surface
     mtd getSurfaceRect()->Math.Rectangle
     {
