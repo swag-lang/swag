@@ -48,4 +48,6 @@ struct ThemeImageRects
     edit_SquareBorder:          ThemeImageRect = @{{29,57,27,27}, 5}
     edit_RoundBk:               ThemeImageRect = @{{1,85,27,27}, 13}
     edit_RoundBorder:           ThemeImageRect = @{{29,85,27,27}, 13}
+    edit_FlatBk:                ThemeImageRect = @{{1,113,27,27}, 5}
+    edit_FlatBorder:            ThemeImageRect = @{{29,113,27,27}, 5}
 }

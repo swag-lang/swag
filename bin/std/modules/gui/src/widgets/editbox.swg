@@ -71,6 +71,9 @@ impl IWnd for EditBox
         case Round:
             subRectBk = &rects.edit_RoundBk
             subRectBorder = &rects.edit_RoundBorder
+        case Flat:
+            subRectBk = &rects.edit_FlatBk
+            subRectBorder = &rects.edit_FlatBorder
         }
 
         if bc.isDisabled
@@ -277,6 +280,8 @@ public impl EditBox
             padding = getTheme().metrics.editBox_SquarePadding
         case Round:
             padding = getTheme().metrics.editBox_RoundPadding
+        case Flat:
+            padding = getTheme().metrics.editBox_FlatPadding
         }
 
         invalidate()
@@ -420,6 +425,8 @@ protected impl EditBox
             return getTheme().metrics.editBox_SquarePadding
         case Round:
             return getTheme().metrics.editBox_RoundPadding
+        case Flat:
+            return getTheme().metrics.editBox_FlatPadding
         }
 
         return @{}
