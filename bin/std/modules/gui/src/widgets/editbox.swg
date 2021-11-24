@@ -122,19 +122,23 @@ impl IWnd for EditBox
 
         painter.pushClippingRect(clientRect)
         painter.translateTransform(-scrollPosX, 0)
+        font := theme.res.fontDefault.regular
 
         // Selection
         if selBeg != selEnd and hasFocus()
         {
             pos := clientRect
             pos.x += posSelBeg
+            pos.y = clientRect.vertCenter() - font.height * 0.5
+            pos.height = font.height
             pos.width = posSelEnd - posSelBeg
             bc.painter.fillRect(pos, colors.edit_SelectedBk)
         }
 
         // Content
         colorText = colors.edit_Text
-        bc.painter.drawString(clientRect.x, clientRect.y, textContent, theme.res.fontDefault.regular, colorText)
+        y := clientRect.vertCenter() - font.height * 0.5
+        bc.painter.drawString(clientRect.x, y, textContent, font, colorText)
 
         // Caret
         if visibleCaret and hasFocus()
@@ -231,9 +235,9 @@ public impl EditBox
     {
         res := Wnd.create'EditBox(parent, content, position, id)
         if res.position.height == 0
-            res.position.height = res.getThemeMetrics().btnPush_Height
+            res.position.height = res.getThemeMetrics().editBox_Height
         if res.position.width == 0
-            res.position.width  = res.getThemeMetrics().btnPush_Width
+            res.position.width  = res.getThemeMetrics().editBox_Width
         res.setForm(EditBoxForm.Square)
 
         evt := CreateEvent{}
@@ -274,6 +278,8 @@ public impl EditBox
         case Round:
             padding = getTheme().metrics.editBox_RoundPadding
         }
+
+        invalidate()
     }
 }
 
