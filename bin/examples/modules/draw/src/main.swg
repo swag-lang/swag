@@ -395,7 +395,7 @@ func displayPage4(painter: *Pixel.Painter)
 
     {
         brush := Brush.createTexture(Res.image1)
-        rect := painter.measureString(100, 300, str, Res.font40)
+        rect := Painter.measureString(100, 300, str, Res.font40)
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Color.fromArgb(0x1F, Argb.Blue))
         painter.fillRect(rect.x, rect.y, rect.width, rect.baseLine, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)

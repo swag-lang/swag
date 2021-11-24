@@ -91,11 +91,12 @@ impl IWnd for EditBox
 
         // Compute scroll position
         caretPos := getCaretPos()
-        decalX := painter.measureString("X", theme.res.fontDefault.regular).width * 10
+        decalX := Painter.measureString("X", theme.res.fontDefault.regular).width * 10
+        maxDecalX := Painter.measureString(textContent, theme.res.fontDefault.regular).width - decalX
         if caretPos.x < scrollPosX + clientRect.x
             scrollPosX = Math.max(caretPos.x - decalX - clientRect.x, 0)
         else if caretPos.x > scrollPosX + clientRect.width
-            scrollPosX = caretPos.x + decalX - clientRect.width
+            scrollPosX = Math.min(caretPos.x + decalX - clientRect.width, maxDecalX)
 
         painter.pushClippingRect(clientRect)
         painter.translateTransform(-scrollPosX, 0)
@@ -393,12 +394,11 @@ protected impl EditBox
         font := getTheme().res.fontDefault.regular
 
         // Can be better, of course...
-        var painter: Painter{fake: true}
         lastWidth := 0'f32
         loop idx: 1..textContent.length-1
         {
             str := @mkstring(textContent.buffer, idx)
-            met := painter.measureString(str, font)
+            met := Painter.measureString(str, font)
             if x <= met.width
             {
                 diff := (met.width - lastWidth) * 0.5
@@ -418,14 +418,13 @@ protected impl EditBox
         font := getTheme().res.fontDefault.regular
 
         str := @mkstring(textContent.buffer, selEnd)
-        var painter: Painter{fake: true}
-        met := painter.measureString(str, font)
+        met := Painter.measureString(str, font)
         posSelBeg, posSelEnd = met.width
 
         if selBeg != selEnd
         {
             str = @mkstring(textContent.buffer, selBeg)
-            met = painter.measureString(str, font)
+            met = Painter.measureString(str, font)
             posSelBeg = met.width
         }
     }
