@@ -292,10 +292,10 @@ struct X64PerThread
     uint16_t                     dbgRecordIdx = 0;
     uint16_t*                    dbgStartRecordPtr[MAX_RECORD];
     uint32_t                     dbgStartRecordOffset[MAX_RECORD];
-    vector<DbgTypeRecord>        dbgTypeRecords;
-    map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
-    map<TypeInfo*, DbgTypeIndex> dbgMapPtrTypes;
-    map<TypeInfo*, DbgTypeIndex> dbgMapPtrPtrTypes;
+    VectorNative<DbgTypeRecord*> dbgTypeRecords;
+    map<Utf8, DbgTypeIndex>      dbgMapTypes;
+    map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
+    map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 };
 
@@ -349,7 +349,7 @@ struct BackendX64 : public Backend
     DbgTypeIndex dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreatePointerPointerToType(X64PerThread& pp, TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
-    void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
+    void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord* tr);
     Utf8         dbgGetScopedName(AstNode* node);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void         dbgEmitCompilerFlagsDebugS(Concat& concat);

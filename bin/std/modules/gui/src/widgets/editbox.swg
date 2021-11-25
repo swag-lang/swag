@@ -153,20 +153,13 @@ impl IWnd for EditBox
         painter.translateTransform(scrollPosX, 0)
     }
 
-    mtd forceVisibleCaret()
-    {
-        if timerCaret
-        {
-            visibleCaret = true
-            timerCaret.restart()
-        }
-    }
-
     mtd onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
         {
         case MouseDoubleClick:
+            if evt.button != .Left
+                break
             x := moveCaretLeftStartWord(selBeg)
             y := moveCaretRightEndWord(selEnd)
             setSelection(x, y)
@@ -174,7 +167,6 @@ impl IWnd for EditBox
         case MousePressed:
             if evt.button != .Left
                 break
-
             setFocus()
             marginLeft := getTextMarginLeft()
             x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
@@ -185,6 +177,8 @@ impl IWnd for EditBox
             captureMouse()
 
         case MouseReleased:
+            if evt.button != .Left
+                break
             if isDragging
                 releaseMouse()
             isDragging = false
@@ -442,6 +436,15 @@ protected impl EditBox
         }
 
         return @{}
+    }
+
+    mtd forceVisibleCaret()
+    {
+        if timerCaret
+        {
+            visibleCaret = true
+            timerCaret.restart()
+        }
     }
 
     mtd getCaretPos()->Math.Rectangle

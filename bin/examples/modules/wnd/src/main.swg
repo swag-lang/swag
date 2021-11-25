@@ -104,10 +104,10 @@ const H = 1024
         label.vertAlignmentText = .Bottom
     }
 
-    surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
+    //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
 
     surface0.show()
-    surface1.show()
+    //surface1.show()
 
     app.run()
 }

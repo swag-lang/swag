@@ -929,7 +929,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.functions.clear();
     pp.functions.shrink_to_fit();
     pp.dbgTypeRecords.clear();
-    pp.dbgTypeRecords.shrink_to_fit();
 
     pp.directives.reset();
 
