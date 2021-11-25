@@ -260,6 +260,7 @@ impl Application
             targetWnd.sendEvent(&evt)
         }
 
+
         // Detect changes
         loop i: mouse.previousState.pressed
         {
@@ -267,7 +268,10 @@ impl Application
             curP  := mouse.currentState.pressed[i]
             if !lastP and curP
             {
-                evt.kind = .MousePressed
+                if mouse.isButtonDoubleClick(cast(Input.MouseButton) i)
+                    evt.kind = .MouseDoubleClick
+                else
+                    evt.kind = .MousePressed
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
             }

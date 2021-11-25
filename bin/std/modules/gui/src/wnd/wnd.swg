@@ -83,7 +83,7 @@ impl IWnd for Wnd
             itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
         case KeyPressed, KeyReleased, Char:
             itf.onKeyEvent(cast(*KeyEvent) evt)
-        case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave:
+        case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave, MouseDoubleClick:
             itf.onMouseEvent(cast(*MouseEvent) evt)
         case SetTheme:
             itf.onSetThemeEvent(cast(*SetThemeEvent) evt)

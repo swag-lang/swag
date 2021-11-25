@@ -7,6 +7,10 @@ struct Mouse
 {
     previousState:	MouseState
     currentState:	MouseState
+    dblClk:         [@countof(MouseButton)] bool
+
+    // Delay, in milliseconds, before a repeated key stroke starts
+    dblClkTimeMs: u32 = 250
 }
 
 impl Mouse
@@ -16,6 +20,19 @@ impl Mouse
     {
         previousState = currentState
         currentState.update()
+
+        // Dbl click
+        visit v: MouseButton
+        {
+            dblClk[v] = false
+            if currentState.pressed[v] and !previousState.pressed[v] and previousState.pressedTime[v]
+            {
+                if currentState.pressedTime[v] - previousState.pressedTime[v] < dblClkTimeMs
+                {
+                    dblClk[v] = true
+                }
+            }
+        }
     }
 
     // Reset the mouse state to its default value
@@ -23,6 +40,11 @@ impl Mouse
     {
         previousState.clear()
         currentState.clear()
+    }
+
+    mtd isButtonDoubleClick(button: MouseButton)->bool
+    {
+        return dblClk[button]
     }
 
     // Determines whether the specified mouse button is pressed

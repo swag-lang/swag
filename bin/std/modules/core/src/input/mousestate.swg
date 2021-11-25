@@ -5,8 +5,9 @@ using Math
 // Represents one mouse state
 struct MouseState
 {
-    pressed:    [@countof(MouseButton)] bool
-    position:   Point
+    pressed:        [@countof(MouseButton)] bool
+    pressedTime:    [@countof(MouseButton)] u32
+    position:       Point
 }
 
 // Represents a mouse state with cursor position and button press information
@@ -15,12 +16,14 @@ impl MouseState
     // Compute the actual state of the mouse
     mtd update()
     {
-        using MouseButton
-        pressed[Left] = isMouseButtonPressed(Left)
-        pressed[Middle] = isMouseButtonPressed(Middle)
-        pressed[Right] = isMouseButtonPressed(Right)
-        pressed[XButton1] = isMouseButtonPressed(XButton1)
-        pressed[XButton2] = isMouseButtonPressed(XButton2)
+        visit v: MouseButton
+        {
+            b := pressed[v]
+            pressed[v] = isMouseButtonPressed(v)
+            if !b and pressed[v]
+                pressedTime[v] = Time.nowMilliseconds()
+        }
+
         position = getMousePos()
     }
 

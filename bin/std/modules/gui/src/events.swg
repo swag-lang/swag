@@ -14,6 +14,7 @@ enum EventKind
     Char
     MousePressed
     MouseReleased
+    MouseDoubleClick
     MouseMove
     MouseEnter
     MouseLeave

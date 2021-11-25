@@ -166,6 +166,11 @@ impl IWnd for EditBox
     {
         switch evt.kind
         {
+        case MouseDoubleClick:
+            x := moveCaretLeftStartWord(selBeg)
+            y := moveCaretRightEndWord(selEnd)
+            setSelection(x, y)
+
         case MousePressed:
             if evt.button != .Left
                 break
@@ -494,6 +499,70 @@ protected impl EditBox
             met = Painter.measureString(str, font)
             posSelBeg = met.width
         }
+    }
+
+    mtd moveCaretLeftStartWord(sel: uint)->uint
+    {
+        if !sel
+            return sel
+
+        if Latin1.isSpace(textContent.buffer[sel])
+        {
+            s := sel
+            loop
+            {
+                ns := moveCaretLeft(s)
+                if ns == s
+                    break
+                if !Latin1.isSpace(textContent.buffer[ns])
+                    return s
+                s = ns
+            }
+        }
+        else
+        {
+            s := sel
+            loop
+            {
+                ns := moveCaretLeft(s)
+                if ns == s
+                    break
+                if Latin1.isSpace(textContent.buffer[ns])
+                    return s
+                s = ns
+            }
+        }
+
+        return 0
+    }
+
+    mtd moveCaretRightEndWord(sel: uint)->uint
+    {
+        if !sel
+            return sel
+
+        if Latin1.isSpace(textContent.buffer[sel])
+        {
+            s := sel
+            while s != textContent.length
+            {
+                s = moveCaretRight(s)
+                if !Latin1.isSpace(textContent.buffer[s])
+                    return s
+            }
+        }
+        else
+        {
+            s := sel
+            while s != textContent.length
+            {
+                s = moveCaretRight(s)
+                if Latin1.isSpace(textContent.buffer[s])
+                    return s
+            }
+        }
+
+        return textContent.length
     }
 
     mtd moveCaretLeft(sel: uint)->uint
