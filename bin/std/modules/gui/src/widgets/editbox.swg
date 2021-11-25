@@ -325,7 +325,10 @@ protected impl EditBox
             return true
 
         case Left:
-            selEnd = moveCaretLeft(selEnd)
+            if ctrl
+                selEnd = moveCaretLeftStartWord(selEnd)
+            else
+                selEnd = moveCaretLeft(selEnd)
             if shift
                 setSelection(selBeg, selEnd)
             else
@@ -333,7 +336,10 @@ protected impl EditBox
             return true
 
         case Right:
-            selEnd = moveCaretRight(selEnd)
+            if ctrl
+                selEnd = moveCaretRightEndWord(selEnd)
+            else
+                selEnd = moveCaretRight(selEnd)
             if shift
                 setSelection(selBeg, selEnd)
             else
@@ -506,31 +512,20 @@ protected impl EditBox
         if !sel
             return sel
 
-        if Latin1.isSpace(textContent.buffer[sel])
+        s := sel
+        s = moveCaretLeft(s)
+        if s == sel
+            return sel
+
+        test := !Latin1.isSpace(textContent.buffer[s])
+        loop
         {
-            s := sel
-            loop
-            {
-                ns := moveCaretLeft(s)
-                if ns == s
-                    break
-                if !Latin1.isSpace(textContent.buffer[ns])
-                    return s
-                s = ns
-            }
-        }
-        else
-        {
-            s := sel
-            loop
-            {
-                ns := moveCaretLeft(s)
-                if ns == s
-                    break
-                if Latin1.isSpace(textContent.buffer[ns])
-                    return s
-                s = ns
-            }
+            ns := moveCaretLeft(s)
+            if ns == s
+                break
+            if Latin1.isSpace(textContent.buffer[ns]) == test
+                return s
+            s = ns
         }
 
         return 0
@@ -538,28 +533,16 @@ protected impl EditBox
 
     mtd moveCaretRightEndWord(sel: uint)->uint
     {
-        if !sel
+        if sel == textContent.length
             return sel
 
-        if Latin1.isSpace(textContent.buffer[sel])
+        test := !Latin1.isSpace(textContent.buffer[sel])
+        s := sel
+        while s != textContent.length
         {
-            s := sel
-            while s != textContent.length
-            {
-                s = moveCaretRight(s)
-                if !Latin1.isSpace(textContent.buffer[s])
-                    return s
-            }
-        }
-        else
-        {
-            s := sel
-            while s != textContent.length
-            {
-                s = moveCaretRight(s)
-                if Latin1.isSpace(textContent.buffer[s])
-                    return s
-            }
+            s = moveCaretRight(s)
+            if Latin1.isSpace(textContent.buffer[s]) == test
+                return s
         }
 
         return textContent.length
