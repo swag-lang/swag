@@ -2,10 +2,10 @@
 using Core, Pixel
 
 protected const DefaultImageName          = "theme/widgets.png"
-protected const DefaultFontRegularName    = "theme/segoe_regular.ttf"
-protected const DefaultFontBoldName       = "theme/segoe_bold.ttf"
-protected const DefaultFontBoldItalicName = "theme/segoe_bold_italic.ttf"
-protected const DefaultFontItalicName     = "theme/segoe_italic.ttf"
+protected const DefaultFontRegularName    = "theme/segoeui.ttf"
+protected const DefaultFontBoldName       = "theme/segoeuib.ttf"
+protected const DefaultFontBoldItalicName = "theme/segoeuiz.ttf"
+protected const DefaultFontItalicName     = "theme/segoeuii.ttf"
 protected const DefaultIcons24Name        = "theme/icons24.png"
 protected const DefaultIcons64Name        = "theme/icons64.png"
 
