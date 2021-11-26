@@ -71,7 +71,7 @@ const H = 1024
         edit.icon = theme.getIcon24(ThemeIcons24.Search, 18)
         edit.note = "<i>Find<i>"
 
-        edit = EditBox.create(view, "木木木木木", @{360, 90, 200})
+        edit = EditBox.create(view, "", @{360, 90, 200})
         edit.setForm(EditBoxForm.Flat)
         edit.icon = theme.getIcon24(ThemeIcons24.Search, 18)
         edit.note = "<i>Find<i>"

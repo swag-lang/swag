@@ -2,10 +2,10 @@
 using Core, Pixel
 
 protected const DefaultImageName          = "theme/widgets.png"
-protected const DefaultFontRegularName    = "theme/arial.ttf"
-protected const DefaultFontBoldName       = "theme/arialbd.ttf"
-protected const DefaultFontBoldItalicName = "theme/arialbi.ttf"
-protected const DefaultFontItalicName     = "theme/ariali.ttf"
+protected const DefaultFontRegularName    = "theme/segoe_regular.ttf"
+protected const DefaultFontBoldName       = "theme/segoe_bold.ttf"
+protected const DefaultFontBoldItalicName = "theme/segoe_bold_italic.ttf"
+protected const DefaultFontItalicName     = "theme/segoe_italic.ttf"
 protected const DefaultIcons24Name        = "theme/icons24.png"
 protected const DefaultIcons64Name        = "theme/icons64.png"
 
@@ -16,6 +16,7 @@ protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
 protected const DefaultFontItalic     = #load(DefaultFontItalicName)
 protected const DefaultIcons24        = #load(DefaultIcons24Name)
 protected const DefaultIcons64        = #load(DefaultIcons64Name)
+
 
 struct ThemeResources
 {
