@@ -345,6 +345,7 @@ impl RenderOgl
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, whiteTexture)
         setBlendingMode(BlendingMode.Alpha)
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
         loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
 
@@ -380,7 +381,7 @@ impl RenderOgl
                 glStencilOp(mode, mode, mode)
 
             case EndClippingRegion:
-                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
                 glStencilFunc(GL_EQUAL, 1, 0xFF)
                 glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
 
@@ -425,6 +426,7 @@ impl RenderOgl
                     glBlendEquation(GL_FUNC_ADD)
                     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
                 }
 
             case UpdateFont:

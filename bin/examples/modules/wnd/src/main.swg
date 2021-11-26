@@ -64,17 +64,20 @@ const H = 1024
     // EditBox
     {
         edit := EditBox.create(view, "TOTO LA foule this is a very long string", @{360, 10, 100})
-        edit.note = "<i>Find<i>"
+        edit.setNote("<i>Find<i>")
 
         edit = EditBox.create(view, "TOTO LA foule this is a very long string", @{360, 50, 100})
         edit.setForm(EditBoxForm.Round)
         edit.icon = theme.getIcon24(ThemeIcons24.Search, 18)
-        edit.note = "<i>Find<i>"
+        edit.setNote("<i>Find<i>")
 
         edit = EditBox.create(view, "", @{360, 90, 200})
         edit.setForm(EditBoxForm.Flat)
         edit.icon = theme.getIcon24(ThemeIcons24.Search, 18)
-        edit.note = "<i>Find<i>"
+        edit.setNote("<i>Whatever<i>")
+
+        edit = EditBox.create(view, "", @{360, 140, 100})
+        edit.setForm(EditBoxForm.Square)
     }
 
     // Labels

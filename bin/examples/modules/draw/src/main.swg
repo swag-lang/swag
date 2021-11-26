@@ -382,7 +382,17 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontDefault, Argb.Black)
+        rect := Rectangle{100, 225, 200, 700}
+        sf := RichStringFormat{flags: StringFormatFlags.WordWrap}
+        sf.horzAlignment = .Center
+        sf.font.regular = Res.fontDefault
+        sf.palette[0] = Color.fromArgb(0x1FFF0000)
+        var rs: RichString = "<u>TOTO<u>"
+        painter.drawRichString(rect, &rs, sf)
+    }
+
+    {
+        painter.drawString(100, 200, "this is a TEXT on a single line", Res.fontDefault, Color.fromArgb(0x5FFF0000), UnderlineStyle.Underline)
     }
 
     {
@@ -610,28 +620,29 @@ impl IWnd for MyView
     {
         if evt.kind != .KeyPressed
             return
+        evt.accepted = true
 
         switch evt.key
         {
         case F1:
             g_ModeAA = g_ModeAA ? false : true
-            wnd.surface.invalidate()
+            invalidate()
 
         case F2:
             g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-            wnd.surface.invalidate()
+            invalidate()
 
         case F3:
             g_Pattern = g_Pattern ? false : true
-            wnd.surface.invalidate()
+            invalidate()
 
         case F4:
             if evt.modifiers & .Alt
-                wnd.surface.destroy()
+                destroy()
             else
             {
                 g_Page = (g_Page + 1) % MaxPages
-                wnd.surface.invalidate()
+                invalidate()
             }
         }
     }

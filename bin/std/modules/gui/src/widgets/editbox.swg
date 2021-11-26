@@ -86,8 +86,6 @@ impl IWnd for EditBox
 
         colorBk = colors.edit_SquareBk
 
-        //painter.clear(Argb.White)
-
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
