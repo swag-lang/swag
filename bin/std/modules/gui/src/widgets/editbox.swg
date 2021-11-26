@@ -304,10 +304,32 @@ protected impl EditBox
                 return true
             }
 
+        case Insert:
+            if ctrl and !shift and selBeg != selEnd
+            {
+                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                return true
+            }
+            else if shift and !ctrl
+            {
+                (str, ok) := Clipboard.getString()
+                if ok
+                    insertString(str.toString())
+                return true
+            }
+
         case C:
             if ctrl and selBeg != selEnd
             {
                 Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                return true
+            }
+
+        case X:
+            if ctrl and selBeg != selEnd
+            {
+                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                deleteSelection()
                 return true
             }
 
@@ -316,13 +338,7 @@ protected impl EditBox
             {
                 (str, ok) := Clipboard.getString()
                 if ok
-                {
-                    Utf8.visitRunes(|r| str.toSlice())
-                    {
-                        insertChar(r)
-                    }
-                }
-
+                    insertString(str.toString())
                 return true
             }
 
@@ -397,7 +413,15 @@ protected impl EditBox
             return true
         }
 
-        return true
+        return false
+    }
+
+    mtd insertString(str: string)
+    {
+        Utf8.visitRunes(|r| str)
+        {
+            insertChar(r)
+        }
     }
 
     mtd insertChar(r: rune)
