@@ -304,6 +304,21 @@ protected impl EditBox
                 return true
             }
 
+        case V:
+            if ctrl
+            {
+                (str, ok) := Clipboard.getString()
+                if ok
+                {
+                    Utf8.visitRunes(|r| str.toSlice())
+                    {
+                        insertChar(r)
+                    }
+                }
+
+                return true
+            }
+
         case Return:
             if sigEnterPressed
                 sigEnterPressed(self)
