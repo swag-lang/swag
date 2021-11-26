@@ -767,23 +767,23 @@ const MAPVK_VK_TO_CHAR    = 2'u32
 const MAPVK_VSC_TO_VK_EX  = 3'u32
 const MAPVK_VK_TO_VSC_EX  = 4'u32
 
-const CF_TEXT         = 1
-const CF_BITMAP       = 2
-const CF_METAFILEPICT = 3
-const CF_SYLK         = 4
-const CF_DIF          = 5
-const CF_TIFF         = 6
-const CF_OEMTEXT      = 7
-const CF_DIB          = 8
-const CF_PALETTE      = 9
-const CF_PENDATA      = 10
-const CF_RIFF         = 11
-const CF_WAVE         = 12
-const CF_UNICODETEXT  = 13
-const CF_ENHMETAFILE  = 14
-const CF_HDROP        = 15
-const CF_LOCALE       = 16
-const CF_DIBV5        = 17
+const CF_TEXT         = 1'u32
+const CF_BITMAP       = 2'u32
+const CF_METAFILEPICT = 3'u32
+const CF_SYLK         = 4'u32
+const CF_DIF          = 5'u32
+const CF_TIFF         = 6'u32
+const CF_OEMTEXT      = 7'u32
+const CF_DIB          = 8'u32
+const CF_PALETTE      = 9'u32
+const CF_PENDATA      = 10'u32
+const CF_RIFF         = 11'u32
+const CF_WAVE         = 12'u32
+const CF_UNICODETEXT  = 13'u32
+const CF_ENHMETAFILE  = 14'u32
+const CF_HDROP        = 15'u32
+const CF_LOCALE       = 16'u32
+const CF_DIBV5        = 17'u32
 
 struct RECT
 {
