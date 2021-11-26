@@ -307,7 +307,7 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
 
     while srcLength
     {
-        (c, eat) := utf16.decodeRune(@mkslice(srcPtr, srcLength))
+        (c, eat) := Utf16.decodeRune(@mkslice(srcPtr, srcLength))
 
         Debug.assert(destLength >= 4, "destination buffer is too small")
         eatDest := encodeRune(@mkslice(destPtr, destLength), c)

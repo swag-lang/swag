@@ -123,7 +123,7 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.allocator = @getcontext().tempAllocator
     tmpArr.reserve(100)
 
-    winPath := utf16.toZeroTerminated(fullname)
+    winPath := Utf16.toZeroTerminated(fullname)
     res := cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try

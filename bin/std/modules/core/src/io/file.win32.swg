@@ -6,7 +6,7 @@ using Win32
 // Delete the specified file
 func delete(fullname: string) throw
 {
-    winPath := utf16.toZeroTerminated(fullname)
+    winPath := Utf16.toZeroTerminated(fullname)
     try DeleteFileW(@dataof(winPath))
 }
 
@@ -14,7 +14,7 @@ func delete(fullname: string) throw
 func exists(fullname: string)->bool
 {
     if fullname == null return false
-    winPath := utf16.toZeroTerminated(fullname)
+    winPath := Utf16.toZeroTerminated(fullname)
     attributes := catch GetFileAttributesW(@dataof(winPath))
     if @err return false
     if attributes == 0xFFFFFFFF return false
@@ -62,7 +62,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if share & FileShare.Delete
         wShare |= FILE_SHARE_DELETE
 
-    winPath := utf16.toZeroTerminated(fullname)
+    winPath := Utf16.toZeroTerminated(fullname)
     hFile := try CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname

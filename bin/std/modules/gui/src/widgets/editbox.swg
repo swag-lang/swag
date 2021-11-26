@@ -304,6 +304,13 @@ protected impl EditBox
                 return true
             }
 
+        case C:
+            if ctrl and selBeg != selEnd
+            {
+                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                return true
+            }
+
         case V:
             if ctrl
             {

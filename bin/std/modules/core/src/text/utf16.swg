@@ -1,5 +1,5 @@
 #global public
-#global namespace utf16
+#global namespace Utf16
 
 const RuneError = 0xFFFD'rune
 const Surr1     = 0xd800
@@ -124,7 +124,7 @@ func toZeroTerminated(src: string)->Array'u16
 {
     var result: retval
     result.reserve(2 * @countof(src) + 1)
-    result.count = utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
+    result.count = Utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
     result[result.count - 1] = 0
     return result
 }

@@ -190,7 +190,7 @@ impl Surface
         // Create class
         #[Swag.Global]
         var doneClass: bool
-        className := @dataof(utf16.toZeroTerminated("Swag.Gui.Surface"))
+        className := @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
         if !doneClass
         {
             doneClass = true
