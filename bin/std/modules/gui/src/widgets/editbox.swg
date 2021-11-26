@@ -10,9 +10,8 @@ public enum EditBoxForm
 public struct EditBox
 {
     using wnd:          Wnd
-    note:               RichString
     icon:               Icon
-    textContent:        String
+    text:               String
     form:               EditBoxForm = Square
     autoLoseFocus:      bool = true
 
@@ -87,6 +86,8 @@ impl IWnd for EditBox
 
         colorBk = colors.edit_SquareBk
 
+        //painter.clear(Argb.White)
+
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
@@ -101,8 +102,8 @@ impl IWnd for EditBox
             clientRect.width -= icon.size + metrics.iconText_Margin
         }
 
-        // Note
-        if !note.isEmpty() and textContent.isEmpty()
+        // name
+        if !name.isEmpty() and text.isEmpty()
         {
             var format: RichStringFormat
             colorText = colors.edit_Note
@@ -110,13 +111,13 @@ impl IWnd for EditBox
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
-            Theme.drawIconText(bc.painter, clientRect, @{}, &note, format, metrics.iconText_Margin)
+            Theme.drawIconText(bc.painter, clientRect, @{}, &name, format, metrics.iconText_Margin)
         }
 
         // Compute scroll position
         caretPos := getCaretPos()
         decalX := Math.min(Painter.measureString("X", theme.res.fontDefault.regular).width * 10, clientRect.width * 0.5)
-        maxDecalX := Painter.measureString(textContent, theme.res.fontDefault.regular).width - decalX
+        maxDecalX := Painter.measureString(text, theme.res.fontDefault.regular).width - decalX
         if caretPos.x - clientRect.x < scrollPosX
             scrollPosX = caretPos.x - clientRect.x - decalX
         else if caretPos.x - clientRect.x >= scrollPosX + clientRect.width
@@ -141,7 +142,7 @@ impl IWnd for EditBox
         // Content
         colorText = colors.edit_Text
         y := clientRect.vertCenter() - font.height * 0.5
-        bc.painter.drawString(clientRect.x, y, textContent, font, colorText)
+        bc.painter.drawString(clientRect.x, y, text, font, colorText)
 
         // Caret
         if visibleCaret and hasFocus()
@@ -241,7 +242,7 @@ public impl EditBox
         if res.position.width == 0
             res.position.width  = res.getThemeMetrics().editBox_Width
         res.setForm(EditBoxForm.Square)
-        res.textContent = content
+        res.text = content
 
         evt := CreateEvent{}
         res.sendEvent(&evt)
@@ -267,7 +268,13 @@ public impl EditBox
     // Select all text
     mtd selectAll()
     {
-        setSelection(0, textContent.length)
+        setSelection(0, text.length)
+    }
+
+    // Set the editbox note
+    mtd setNote(note: string)
+    {
+        name = note
     }
 
     // Set the editbox form
@@ -300,14 +307,14 @@ protected impl EditBox
         case A:
             if ctrl and !shift
             {
-                setSelection(0, textContent.length)
+                setSelection(0, text.length)
                 return true
             }
 
         case Insert:
             if ctrl and !shift and selBeg != selEnd
             {
-                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                Clipboard.addString(@mkstring(text.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
                 return true
             }
             else if shift and !ctrl
@@ -321,14 +328,14 @@ protected impl EditBox
         case C:
             if ctrl and selBeg != selEnd
             {
-                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                Clipboard.addString(@mkstring(text.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
                 return true
             }
 
         case X:
             if ctrl and selBeg != selEnd
             {
-                Clipboard.addString(@mkstring(textContent.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
+                Clipboard.addString(@mkstring(text.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
                 deleteSelection()
                 return true
             }
@@ -387,9 +394,9 @@ protected impl EditBox
 
         case End:
             if shift
-                setSelection(selBeg, textContent.length)
+                setSelection(selBeg, text.length)
             else
-                setSelection(textContent.length, textContent.length)
+                setSelection(text.length, text.length)
             return true
 
         case Back:
@@ -432,7 +439,7 @@ protected impl EditBox
         utf8[cpt] = 0
 
         deleteSelectionPrivate()
-        textContent.insert(selEnd, @mkstring(&utf8[0], cpt))
+        text.insert(selEnd, @mkstring(&utf8[0], cpt))
         setSelection(selEnd + cpt, selEnd + cpt)
 
         notifyChanged()
@@ -454,9 +461,9 @@ protected impl EditBox
 
         selB := getSelBeg()
         selE := getSelEnd()
-        if selB == textContent.length
+        if selB == text.length
             return false
-        textContent.remove(selB, selE - selB)
+        text.remove(selB, selE - selB)
         setSelection(selB, selB)
         return true
     }
@@ -502,7 +509,7 @@ protected impl EditBox
             clientRect.x += icon.size + 4
 
         result = clientRect
-        if !textContent.isEmpty()
+        if !text.isEmpty()
             result.x += posSelEnd
 
         font := getTheme().res.fontDefault.regular
@@ -515,16 +522,16 @@ protected impl EditBox
 
     mtd getByteIndexAtPos(x: f32)->uint
     {
-        if !textContent.length
+        if !text.length
             return 0
 
         font := getTheme().res.fontDefault.regular
 
         // Can be better, of course...
         lastWidth := 0'f32
-        loop idx: 1..textContent.length-1
+        loop idx: 1..text.length-1
         {
-            str := @mkstring(textContent.buffer, idx)
+            str := @mkstring(text.buffer, idx)
             met := Painter.measureString(str, font)
             if x <= met.width
             {
@@ -537,20 +544,20 @@ protected impl EditBox
             lastWidth = met.width
         }
 
-        return textContent.length
+        return text.length
     }
 
     mtd computeCaretPos()
     {
         font := getTheme().res.fontDefault.regular
 
-        str := @mkstring(textContent.buffer, selEnd)
+        str := @mkstring(text.buffer, selEnd)
         met := Painter.measureString(str, font)
         posSelBeg, posSelEnd = met.width
 
         if selBeg != selEnd
         {
-            str = @mkstring(textContent.buffer, selBeg)
+            str = @mkstring(text.buffer, selBeg)
             met = Painter.measureString(str, font)
             posSelBeg = met.width
         }
@@ -566,13 +573,13 @@ protected impl EditBox
         if s == sel
             return sel
 
-        test := !Latin1.isSpace(textContent.buffer[s])
+        test := !Latin1.isSpace(text.buffer[s])
         loop
         {
             ns := moveCaretLeft(s)
             if ns == s
                 break
-            if Latin1.isSpace(textContent.buffer[ns]) == test
+            if Latin1.isSpace(text.buffer[ns]) == test
                 return s
             s = ns
         }
@@ -582,43 +589,43 @@ protected impl EditBox
 
     mtd moveCaretRightEndWord(sel: uint)->uint
     {
-        if sel == textContent.length
+        if sel == text.length
             return sel
 
-        test := !Latin1.isSpace(textContent.buffer[sel])
+        test := !Latin1.isSpace(text.buffer[sel])
         s := sel
-        while s != textContent.length
+        while s != text.length
         {
             s = moveCaretRight(s)
-            if Latin1.isSpace(textContent.buffer[s]) == test
+            if Latin1.isSpace(text.buffer[s]) == test
                 return s
         }
 
-        return textContent.length
+        return text.length
     }
 
     mtd moveCaretLeft(sel: uint)->uint
     {
         if !sel
             return sel
-        str := @mkstring(textContent.buffer, sel)
+        str := @mkstring(text.buffer, sel)
         (?, eat) := Utf8.decodeLastRune(str)
         return sel - eat
     }
 
     mtd moveCaretRight(sel: uint)->uint
     {
-        if sel == textContent.length
+        if sel == text.length
             return sel
-        str := @mkstring(textContent.buffer + sel, textContent.length - sel)
+        str := @mkstring(text.buffer + sel, text.length - sel)
         (?, eat) := Utf8.decodeRune(str)
         return sel + eat
     }
 
     mtd checkSelection()
     {
-        selBeg = Math.min(selBeg, textContent.length)
-        selEnd = Math.min(selEnd, textContent.length)
+        selBeg = Math.min(selBeg, text.length)
+        selEnd = Math.min(selEnd, text.length)
         invalidate()
     }
 
