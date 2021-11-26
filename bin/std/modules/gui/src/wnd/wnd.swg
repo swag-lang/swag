@@ -19,6 +19,12 @@ enum BackgroundStyle
     DialogBar
 }
 
+enum FocusStategy
+{
+    None
+    MousePressed
+}
+
 interface IWnd
 {
     onEvent:            func(self, *Event)
@@ -54,6 +60,8 @@ struct Wnd
     margin:     Math.Vector4
     padding:    Math.Vector4
     dockStyle:  DockStyle = None
+
+    focusStrategy: FocusStategy = MousePressed
 
     backgroundStyle:    BackgroundStyle = None
     isDisabled:         bool

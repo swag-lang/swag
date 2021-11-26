@@ -43,7 +43,6 @@ impl IWnd for SurfaceWnd
         case MousePressed:
             if evt.button != .Left
                 break
-            setFocus()
             surface.bringToTop()
             if surface.isMaximized
                 break

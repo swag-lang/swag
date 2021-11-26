@@ -166,7 +166,6 @@ impl IWnd for EditBox
         case MousePressed:
             if evt.button != .Left
                 break
-            setFocus()
             marginLeft := getTextMarginLeft()
             x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
             setSelection(x, x)
@@ -241,6 +240,7 @@ public impl EditBox
             res.position.width  = res.getThemeMetrics().editBox_Width
         res.setForm(EditBoxForm.Square)
         res.text = content
+        res.focusStrategy = .MousePressed
 
         evt := CreateEvent{}
         res.sendEvent(&evt)

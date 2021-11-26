@@ -260,7 +260,6 @@ impl Application
             targetWnd.sendEvent(&evt)
         }
 
-
         // Detect changes
         loop i: mouse.previousState.pressed
         {
@@ -271,7 +270,12 @@ impl Application
                 if mouse.isButtonDoubleClick(cast(Input.MouseButton) i)
                     evt.kind = .MouseDoubleClick
                 else
+                {
                     evt.kind = .MousePressed
+                    if targetWnd.focusStrategy == .MousePressed
+                        targetWnd.setFocus()
+                }
+
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
             }

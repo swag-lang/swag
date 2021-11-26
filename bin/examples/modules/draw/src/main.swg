@@ -638,7 +638,7 @@ impl IWnd for MyView
 
         case F4:
             if evt.modifiers & .Alt
-                destroy()
+                surface.destroy()
             else
             {
                 g_Page = (g_Page + 1) % MaxPages

@@ -161,7 +161,7 @@ impl RichString
         }
 
         // Remaining chunk
-        if startChunk != raw.length
+        if startChunk < raw.length
         {
             addChunk(raw.length)
         }
