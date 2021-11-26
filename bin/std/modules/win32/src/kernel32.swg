@@ -3,6 +3,7 @@
 using Swag
 
 alias HANDLE = 			const *void
+alias HGLOBAL = 		HANDLE
 alias HLOCAL = 			HANDLE
 alias HINSTANCE =		const *void
 alias HMODULE =		    const *void
@@ -137,6 +138,21 @@ func HIWORD(l: u64) => cast(s32) bitcast(s16) ((l >>,safe 16) & 0xffff)
 
 alias SRWLOCK = *void
 const SRWLOCK_INIT = cast(SRWLOCK) null
+
+const GMEM_FIXED          = 0x0000
+const GMEM_MOVEABLE       = 0x0002
+const GMEM_NOCOMPACT      = 0x0010
+const GMEM_NODISCARD      = 0x0020
+const GMEM_ZEROINIT       = 0x0040
+const GMEM_MODIFY         = 0x0080
+const GMEM_DISCARDABLE    = 0x0100
+const GMEM_NOT_BANKED     = 0x1000
+const GMEM_SHARE          = 0x2000
+const GMEM_DDESHARE       = 0x2000
+const GMEM_NOTIFY         = 0x4000
+const GMEM_LOWER          = GMEM_NOT_BANKED
+const GMEM_VALID_FLAGS    = 0x7F72
+const GMEM_INVALID_HANDLE = 0x8000
 
 struct COORD
 {
@@ -335,7 +351,10 @@ struct PROCESS_INFORMATION
     func SetConsoleOutputCP(codePage: UINT);
 
     func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
+    func GlobalAlloc(uFlags: UINT, dwBytes: SIZE_T)->HGLOBAL;
     func LocalFree(hLocal: HLOCAL)->HLOCAL;
+    func GlobalLock(hMem: HGLOBAL)->LPVOID;
+    func GlobalUnlock(hMem: HGLOBAL)->BOOL;
 
     func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
     func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);

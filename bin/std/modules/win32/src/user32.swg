@@ -767,6 +767,24 @@ const MAPVK_VK_TO_CHAR    = 2'u32
 const MAPVK_VSC_TO_VK_EX  = 3'u32
 const MAPVK_VK_TO_VSC_EX  = 4'u32
 
+const CF_TEXT         = 1
+const CF_BITMAP       = 2
+const CF_METAFILEPICT = 3
+const CF_SYLK         = 4
+const CF_DIF          = 5
+const CF_TIFF         = 6
+const CF_OEMTEXT      = 7
+const CF_DIB          = 8
+const CF_PALETTE      = 9
+const CF_PENDATA      = 10
+const CF_RIFF         = 11
+const CF_WAVE         = 12
+const CF_UNICODETEXT  = 13
+const CF_ENHMETAFILE  = 14
+const CF_HDROP        = 15
+const CF_LOCALE       = 16
+const CF_DIBV5        = 17
+
 struct RECT
 {
     left:   LONG
@@ -810,12 +828,20 @@ struct PAINTSTRUCT
     func WindowFromPoint(pt: POINT)->HWND;
     func FindWindowA(lpClassName: LPCSTR, lpWindowName: LPCSTR)->HWND;
     func FindWindowW(lpClassName: LPCWSTR, lpWindowName: LPCWSTR)->HWND;
+    func GetDesktopWindow()->HWND;
 
     func GetDC(hWnd: HWND)->HDC;
 
     func MapVirtualKeyA(uCode: UINT, uMapType: UINT)->UINT;
     func MapVirtualKeyW(uCode: UINT, uMapType: UINT)->UINT;
     func ToUnicode(wVirtKey, wScanCode: UINT, lpKeyState: const *BYTE, pwszBuff: LPWSTR, cchBuff: s32, wFlags: UINT)->s32;
+
+    func OpenClipboard(hWndNewOwner: HWND)->BOOL;
+    func CloseClipboard()->BOOL;
+    func EmptyClipboard()->BOOL;
+    func IsClipboardFormatAvailable(format: UINT)->BOOL;
+    func GetClipboardData(uFormat: UINT)->HANDLE;
+    func SetClipboardData(uFormat: UINT, hMem: HANDLE)->HANDLE;
 }
 
 #[Foreign("user32"), Discardable]
