@@ -467,15 +467,19 @@ protected impl EditBox
             switch inputMode
             {
             case Integer:
-                val := catch Parse.getS64(text)
-                if @err
-                    res = .Invalid
-
+                (val, eat) := catch Parse.getS64(text)
+                if eat != @countof(text)
+                    return ValidateResult.Invalid
             case Float:
-                val := catch Parse.getF64(text)
-                if @err
-                    res = .Invalid
+                (val, eat) := catch Parse.getF64(text)
+                if eat != @countof(text)
+                    return ValidateResult.Invalid
             }
+
+            if @err == Parse.ErrorIncomplete
+                res = .Incomplete
+            else if @err
+                res = .Invalid
         }
 
         return res

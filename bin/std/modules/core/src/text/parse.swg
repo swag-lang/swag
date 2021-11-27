@@ -2,6 +2,14 @@
 #global namespace Parse
 using Globalization, Swag
 
+public
+{
+    const ErrorInvalid    = "invalid"
+    const ErrorOverflow   = "overflow"
+    const ErrorOutOfRange = "out of range"
+    const ErrorIncomplete = "incomplete"
+}
+
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
 func getX64(str: string) -> {value: u64, eat: u32} throw
@@ -9,18 +17,18 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof throw "invalid"
+    if !countof throw ErrorInvalid
 
     buffer := @dataof(str)
     cpt := 0'u32
     value := 0'u64
 
     if !Latin1.isHexDigit(dref buffer) 
-        throw "invalid"
+        throw ErrorInvalid
     while cpt < countof and Latin1.isHexDigit(dref buffer)
     {
         if value & 0xF0000000_00000000 
-            throw "overflow"
+            throw ErrorOverflow
         value <<= 4
         c := dref buffer
         if Latin1.isDigit(c)
@@ -45,18 +53,18 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
 
     countof := @countof(str)
     if !countof 
-        throw "invalid"
+        throw ErrorInvalid
 
     buffer := @dataof(str)
     cpt := 0'u32
     value := 0'u64
 
     if !Latin1.isBinDigit(dref buffer) 
-        throw "invalid"
+        throw ErrorInvalid
     while cpt < countof and Latin1.isBinDigit(dref buffer)
     {
         if value & 0x80000000_00000000 
-            throw "overflow"
+            throw ErrorOverflow
         value <<= 1
         value += cast(u64) (dref buffer - "0"'u8)
         buffer, cpt += 1
@@ -73,7 +81,7 @@ func getU8(str: string) -> {value: u8, eat: u32} throw
 {
     (res, eat) := try getU64(str)
     if res > Swag.U8.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(u8) res, eat}
 }
 
@@ -81,7 +89,7 @@ func getU16(str: string) -> {value: u16, eat: u32} throw
 {
     (res, eat) := try getU64(str)
     if res > Swag.U16.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(u16) res, eat}
 }
 
@@ -89,7 +97,7 @@ func getU32(str: string) -> {value: u32, eat: u32} throw
 {
     (res, eat) := try getU64(str)
     if res > Swag.U32.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(u32) res, eat}
 }
 
@@ -99,7 +107,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
     countof := @countof(str)
     if !countof 
-        throw "invalid"
+        throw ErrorInvalid
 
     // Detect 0x for hexa, 0b for binary
     if countof > 2 and str[0] == "0"'u8
@@ -127,13 +135,13 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
     value := 0'u64
 
     if !Latin1.isDigit(dref buffer) 
-        throw "invalid"
+        throw ErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
         value *= 10
         add := cast(u64) (dref buffer - "0"'u8)
         if value +,safe add < value 
-            throw "overflow"
+            throw ErrorOverflow
         value += add
         buffer, cpt += 1
     }
@@ -149,7 +157,7 @@ func getS8(str: string) -> {value: s8, eat: u32} throw
 {
     (res, eat) := try getS64(str)
     if res < Swag.S8.Min or res > Swag.S8.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(s8) res, eat}
 }
 
@@ -157,7 +165,7 @@ func getS16(str: string) -> {value: s16, eat: u32} throw
 {
     (res, eat) := try getS64(str)
     if res < Swag.S16.Min or res > Swag.S16.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(s16) res, eat}
 }
 
@@ -165,7 +173,7 @@ func getS32(str: string) -> {value: s32, eat: u32} throw
 {
     (res, eat) := try getS64(str)
     if res < Swag.S32.Min or res > Swag.S32.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(s32) res, eat}
 }
 
@@ -174,7 +182,8 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof throw "invalid"
+    if !countof 
+        throw ErrorInvalid
 
     buffer := @dataof(str)
     value := 0'u64
@@ -189,21 +198,25 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
         buffer, cpt += 1
         signed = true
         maxValue += 1
+        if !Latin1.isDigit(dref buffer) and cpt == countof
+            throw ErrorIncomplete
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
         buffer, cpt += 1
+        if !Latin1.isDigit(dref buffer) and cpt == countof
+            throw ErrorIncomplete
     }
 
     // Parse the rest
     if !Latin1.isDigit(dref buffer) 
-        throw "invalid"
+        throw ErrorInvalid
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
         value *=,safe 10
         value += cast(u64) (dref buffer - "0"'u8)
         if value > maxValue 
-            throw "overflow"
+            throw ErrorOverflow
         buffer, cpt += 1
     }
 
@@ -227,7 +240,7 @@ func getF32(str: string) -> {value: f32, eat: u32} throw
 {
     (res, eat) := try getF64(str)
     if res < Swag.F32.Min or res > Swag.F64.Max 
-        throw "out of range"
+        throw ErrorOutOfRange
     return @{cast(f32) res, eat}
 }
 
@@ -251,7 +264,7 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     case "0", "false", "FALSE", "False":    
         result.value = false
     default:                                
-        throw "invalid"
+        throw ErrorInvalid
     }
 
     result.eat = cast(u32) @countof(sub)
@@ -263,7 +276,7 @@ func getRune(str: string) -> {value: rune, eat: u32} throw
 {
     countof := @countof(str)
     if !countof 
-        throw "invalid"
+        throw ErrorInvalid
     return Utf8.decodeRune(str)
 }
 
@@ -272,10 +285,10 @@ func getIdentifier(str: string)->string throw
 {
     countof := @countof(str)
     if !countof 
-        throw "invalid"
+        throw ErrorInvalid
 
     if str[0] != "_"'u8 and !Latin1.isLetter(str[0]) 
-        throw "invalid"
+        throw ErrorInvalid
 
     cpt := 1'uint
     while cpt < countof and (str[cpt] == "_"'u8 or Latin1.isLetterOrDigit(str[cpt]))
@@ -291,7 +304,7 @@ func getString(str: string) -> {value: String, eat: u32} throw
 
     countof := @countof(str)
     if !countof
-        throw "invalid"
+        throw ErrorInvalid
 
     isQuoted := false
     cpt := 0
@@ -312,7 +325,7 @@ func getString(str: string) -> {value: String, eat: u32} throw
         {
             cpt += 1
             if cpt == countof
-                throw "invalid"
+                throw ErrorInvalid
             switch str[cpt]
             {
             case "t"'u8:    
@@ -330,7 +343,7 @@ func getString(str: string) -> {value: String, eat: u32} throw
     }
 
     if cpt == countof and isQuoted
-        throw "missing end delimiter"
+        throw ErrorIncomplete
     if isQuoted
         cpt += 1
     result.eat = cpt

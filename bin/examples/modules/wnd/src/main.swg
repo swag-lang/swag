@@ -85,6 +85,11 @@ const H = 1024
         edit.setForm(EditBoxForm.Square)
         edit.setNote("Integer")
         edit.inputMode = .Integer
+
+        edit = EditBox.create(view, "", @{360, 220, 100})
+        edit.setForm(EditBoxForm.Square)
+        edit.setNote("Float")
+        edit.inputMode = .Float
     }
 
     // Labels
