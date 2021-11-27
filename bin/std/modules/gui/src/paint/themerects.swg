@@ -36,7 +36,7 @@ struct ThemeImageRects
     btnCheck_UndefinedMark:     ThemeImageRect = @{{90,62,32,32}, 9}
     btnCheck_Checked:           ThemeImageRect = @{{90,29,32,32}, 9}
     btnCheck_CheckedBorder:     ThemeImageRect = @{{57,29,32,32}, 9}
-    btnCheck_CheckedMark:       ThemeImageRect = @{{57,62,32,32}, 9}
+    btnCheck_CheckedMark:       ThemeImageRect = @{{57,62,32,32}, 2}
 
     btnRadio_Normal:            ThemeImageRect = @{{156,29,32,32}, 16}
     btnRadio_NormalBorder:      ThemeImageRect = @{{123,29,32,32}, 16}
