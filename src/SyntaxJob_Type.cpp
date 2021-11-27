@@ -172,6 +172,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     if (result)
         *result = identifier;
 
+    identifier->childs.back()->flags |= AST_GENERATED;
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);

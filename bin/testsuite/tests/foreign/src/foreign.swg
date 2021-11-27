@@ -482,3 +482,8 @@ public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
     aa := getLineLineIntersectCoefs1(start0, end0, start1, end1)
     return start0.y
 }
+
+public struct AZE
+{
+    x: {s32} = @{0}
+}

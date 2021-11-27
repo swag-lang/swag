@@ -36,11 +36,11 @@ public struct EditBox
     sigEscapePressed:   func(*EditBox)
     sigValidate:        func(*EditBox)->ValidateResult
 
-    minValueS64:        s64 = Swag.S64.Min
-    maxValueS64:        s64 = Swag.S64.Max
-    maxValueU64:        u64 = Swag.U64.Max
-    minValueF64:        f64 = -Swag.F64.Max
-    maxValueF64:        f64 = Swag.F64.Max
+    using minMax: union{
+        minMaxS64: {min: s64, max: s64} = @{Swag.S64.Min, Swag.S64.Max}
+        minMaxU64: {min: u64, max: u64} = @{0, Swag.U64.Max}
+        minMaxF64: {min: f64, max: f64} = @{-Swag.F64.Max, Swag.F64.Max}
+    }
 
     isHot:              bool
     isDragging:         bool
@@ -477,21 +477,21 @@ protected impl EditBox
                 (val, eat) := catch Parse.getS64(text)
                 if eat != @countof(text) and @err != Parse.ErrorIncomplete
                     return ValidateResult.Invalid
-                if val < minValueS64 or val > maxValueS64
+                if val < minMaxS64.min or val > minMaxS64.max
                     return ValidateResult.Invalid
 
             case UnsignedInteger:
                 (val, eat) := catch Parse.getU64(text)
                 if eat != @countof(text)
                     return ValidateResult.Invalid
-                if val > maxValueU64
+                if val < minMaxU64.min or val > minMaxU64.max
                     return ValidateResult.Invalid
 
             case Float:
                 (val, eat) := catch Parse.getF64(text)
                 if eat != @countof(text) and @err != Parse.ErrorIncomplete
                     return ValidateResult.Invalid
-                if val < minValueF64 or val > maxValueF64
+                if val < minMaxF64.min or val > minMaxF64.max
                     return ValidateResult.Invalid
             }
 

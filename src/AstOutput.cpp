@@ -761,9 +761,18 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
             auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             if (id->callParameters)
             {
-                concat.addChar('{');
-                SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                concat.addChar('}');
+                if (id->flags & AST_GENERATED)
+                {
+                    CONCAT_FIXED_STR(concat, " = @{");
+                    SWAG_CHECK(outputNode(context, concat, id->callParameters));
+                    concat.addChar('}');
+                }
+                else
+                {
+                    concat.addChar('{');
+                    SWAG_CHECK(outputNode(context, concat, id->callParameters));
+                    concat.addChar('}');
+                }
             }
         }
 
