@@ -11,6 +11,7 @@ public enum EditBoxInputMode
 {
     String
     Integer
+    UnsignedInteger
     Float
 }
 
@@ -34,6 +35,12 @@ public struct EditBox
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
     sigValidate:        func(*EditBox)->ValidateResult
+
+    minValueS64:        s64 = Swag.S64.Min
+    maxValueS64:        s64 = Swag.S64.Max
+    maxValueU64:        u64 = Swag.U64.Max
+    minValueF64:        f64 = Swag.F64.Min
+    maxValueF64:        f64 = Swag.F64.Max
 
     isHot:              bool
     isDragging:         bool
@@ -468,11 +475,23 @@ protected impl EditBox
             {
             case Integer:
                 (val, eat) := catch Parse.getS64(text)
+                if eat != @countof(text) and @err != Parse.ErrorIncomplete
+                    return ValidateResult.Invalid
+                if val < minValueS64 or val > maxValueS64
+                    return ValidateResult.Invalid
+
+            case UnsignedInteger:
+                (val, eat) := catch Parse.getU64(text)
                 if eat != @countof(text)
                     return ValidateResult.Invalid
+                if val > maxValueU64
+                    return ValidateResult.Invalid
+
             case Float:
                 (val, eat) := catch Parse.getF64(text)
                 if eat != @countof(text)
+                    return ValidateResult.Invalid
+                if val < minValueF64 or val > maxValueF64
                     return ValidateResult.Invalid
             }
 

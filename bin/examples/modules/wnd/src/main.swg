@@ -85,6 +85,8 @@ const H = 1024
         edit.setForm(EditBoxForm.Square)
         edit.setNote("Integer")
         edit.inputMode = .Integer
+        edit.minValueS64 = -127
+        edit.maxValueS64 = 128
 
         edit = EditBox.create(view, "", @{360, 220, 100})
         edit.setForm(EditBoxForm.Square)
