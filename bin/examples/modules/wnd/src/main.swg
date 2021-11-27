@@ -99,7 +99,7 @@ const H = 1024
         toggle := ButtonToggle.create(view, "", @{360, 300})
 
         toggle = ButtonToggle.create(view, "", @{360, 330})
-        toggle.isChecked = true
+        toggle.isToggled = true
 
         toggle = ButtonToggle.create(view, "", @{360, 360})
         toggle.isDisabled = true

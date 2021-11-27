@@ -4,7 +4,7 @@ using Core, Pixel
 struct ButtonToggle
 {
     using button:   Button
-    isChecked:      bool
+    isToggled:      bool
     sigChanged:     func(*ButtonToggle)
 }
 
@@ -32,17 +32,17 @@ impl IWnd for ButtonToggle
             colorBorder   = colors.btnToggle_DisabledBorder
             colorMark     = colors.btnToggle_DisabledMark
         case isPressed:
-            colorBk       = isChecked ? colors.btnToggle_OnPressedBk : colors.btnToggle_OffPressedBk
-            colorBorder   = isChecked ? colors.btnToggle_OnPressedBorder : colors.btnToggle_OffPressedBorder
-            colorMark     = isChecked ? colors.btnToggle_OnPressedMark : colors.btnToggle_OffPressedMark
+            colorBk       = isToggled ? colors.btnToggle_OnPressedBk : colors.btnToggle_OffPressedBk
+            colorBorder   = isToggled ? colors.btnToggle_OnPressedBorder : colors.btnToggle_OffPressedBorder
+            colorMark     = isToggled ? colors.btnToggle_OnPressedMark : colors.btnToggle_OffPressedMark
         case isHot:
-            colorBk       = isChecked ? colors.btnToggle_OnHotBk : colors.btnToggle_OffHotBk
-            colorBorder   = isChecked ? colors.btnToggle_OnHotBorder : colors.btnToggle_OffHotBorder
-            colorMark     = isChecked ? colors.btnToggle_OnHotMark : colors.btnToggle_OffHotMark
+            colorBk       = isToggled ? colors.btnToggle_OnHotBk : colors.btnToggle_OffHotBk
+            colorBorder   = isToggled ? colors.btnToggle_OnHotBorder : colors.btnToggle_OffHotBorder
+            colorMark     = isToggled ? colors.btnToggle_OnHotMark : colors.btnToggle_OffHotMark
         default:
-            colorBk       = isChecked ? colors.btnToggle_OnBk : colors.btnToggle_OffBk
-            colorBorder   = isChecked ? colors.btnToggle_OnBorder : colors.btnToggle_OffBorder
-            colorMark     = isChecked ? colors.btnToggle_OnMark : colors.btnToggle_OffMark
+            colorBk       = isToggled ? colors.btnToggle_OnBk : colors.btnToggle_OffBk
+            colorBorder   = isToggled ? colors.btnToggle_OnBorder : colors.btnToggle_OffBorder
+            colorMark     = isToggled ? colors.btnToggle_OnMark : colors.btnToggle_OffMark
         }
 
         subRectBk     = &rects.btnToggle_Bk
@@ -58,7 +58,7 @@ impl IWnd for ButtonToggle
         posBox := clientRect
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        if isChecked
+        if isToggled
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
     }
@@ -67,8 +67,7 @@ impl IWnd for ButtonToggle
     {
         if processMouseEvent(evt)
         {
-            isChecked = !isChecked
-            @print(isChecked)
+            isToggled = !isToggled
             if sigChanged
                 sigChanged(self)
         }
