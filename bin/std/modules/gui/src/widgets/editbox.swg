@@ -14,6 +14,7 @@ public struct EditBox
     text:               String
     form:               EditBoxForm = Square
     autoLoseFocus:      bool = true
+    maxLength:          s32
 
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
@@ -26,6 +27,7 @@ public struct EditBox
     posSelBeg:          f32
     posSelEnd:          f32
     scrollPosX:         f32
+    countRunes:         s32
 }
 
 impl IWnd for EditBox
@@ -431,6 +433,9 @@ protected impl EditBox
 
     mtd insertChar(r: rune)
     {
+        if countRunes == maxLength
+            return
+
         var utf8: [5] u8
         cpt := Utf8.fromUnicode(utf8, @[r])
         if !cpt return
@@ -439,6 +444,7 @@ protected impl EditBox
         deleteSelectionPrivate()
         text.insert(selEnd, @mkstring(&utf8[0], cpt))
         setSelection(selEnd + cpt, selEnd + cpt)
+        countRunes += 1
 
         notifyChanged()
     }
@@ -461,7 +467,10 @@ protected impl EditBox
         selE := getSelEnd()
         if selB == text.length
             return false
+
+        countRunes -= cast(s32) Utf8.countRunes(text[selB..selE-1])
         text.remove(selB, selE - selB)
+
         setSelection(selB, selB)
         return true
     }
