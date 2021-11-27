@@ -50,4 +50,8 @@ struct ThemeImageRects
     edit_RoundBorder:           ThemeImageRect = @{{29,85,27,27}, 13}
     edit_FlatBk:                ThemeImageRect = @{{1,113,27,27}, 5}
     edit_FlatBorder:            ThemeImageRect = @{{29,113,27,27}, 5}
+
+    btnToggle_Bk:               ThemeImageRect = @{{1,141,27,27}, 13}
+    btnToggle_Border:           ThemeImageRect = @{{29,141,27,27}, 13}
+    btnToggle_Mark:             ThemeImageRect = @{{57,141,27,27}, 13}
 }

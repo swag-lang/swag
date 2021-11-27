@@ -82,4 +82,26 @@ struct ThemeColors
     edit_SelectedText:              Color = 0xFFFFFFFF
     edit_SelectedBk:                Color = 0xFF1473e6
     edit_ErrorBorder:               Color = 0xFFFF0000
+
+    btnToggle_DisabledBorder:       Color = 0x5FFFFFFF
+    btnToggle_DisabledMark:         Color = 0x5FFFFFFF
+    btnToggle_DisabledBk:           Color = 0
+    btnToggle_OffBorder:            Color = 0xFFFFFFFF
+    btnToggle_OffMark:              Color = 0xFFFFFFFF
+    btnToggle_OffBk:                Color = 0
+    btnToggle_OffHotBorder:         Color = 0xFFFFFFFF
+    btnToggle_OffHotMark:           Color = 0xFFFFFFFF
+    btnToggle_OffHotBk:             Color = 0x1FFFFFFF
+    btnToggle_OffPressedBorder:     Color = 0xFFFFFFFF
+    btnToggle_OffPressedMark:       Color = 0xFFFFFFFF
+    btnToggle_OffPressedBk:         Color = 0x7FFFFFFF
+    btnToggle_OnBorder:             Color = 0xFFFFFFFF
+    btnToggle_OnMark:               Color = 0xFFFFFFFF
+    btnToggle_OnBk:                 Color = 0xFF1473e6
+    btnToggle_OnHotBorder:          Color = 0xFFFFFFFF
+    btnToggle_OnHotMark:            Color = 0xFFFFFFFF
+    btnToggle_OnHotBk:              Color = 0xFF2483f6
+    btnToggle_OnPressedBorder:      Color = 0xFFFFFFFF
+    btnToggle_OnPressedMark:        Color = 0xFFFFFFFF
+    btnToggle_OnPressedBk:          Color = 0xFF3493ff
 }

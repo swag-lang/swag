@@ -94,6 +94,17 @@ const H = 1024
         edit.inputMode = .Float
     }
 
+    // Toggle
+    {
+        toggle := ButtonToggle.create(view, "", @{360, 300})
+
+        toggle = ButtonToggle.create(view, "", @{360, 330})
+        toggle.isChecked = true
+
+        toggle = ButtonToggle.create(view, "", @{360, 360})
+        toggle.isDisabled = true
+    }
+
     // Labels
     {
         label := Label.create(view, "Left", @{125, 140, 140, 30})
