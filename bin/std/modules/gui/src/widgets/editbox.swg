@@ -19,7 +19,8 @@ public enum ValidateResult
 {
     Incomplete
     Valid
-    Invalid
+    InvalidDismiss
+    InvalidShow
 }
 
 public struct EditBox
@@ -42,6 +43,7 @@ public struct EditBox
         minMaxF64: {min: f64, max: f64} = @{-Swag.F64.Max, Swag.F64.Max}
     }
 
+    isInvalid:          bool
     isHot:              bool
     isDragging:         bool
     selBeg, selEnd:     uint
@@ -102,6 +104,8 @@ impl IWnd for EditBox
 
         if bc.isDisabled
             colorBorder = colors.edit_DisabledBorder
+        else if isInvalid
+            colorBorder = colors.edit_ErrorBorder
         else if hasFocus()
             colorBorder = colors.edit_FocusBorder
         else if isHot
@@ -476,31 +480,37 @@ protected impl EditBox
             case Integer:
                 (val, eat) := catch Parse.getS64(text)
                 if eat != @countof(text) and @err != Parse.ErrorIncomplete
-                    return ValidateResult.Invalid
-                if val < minMaxS64.min or val > minMaxS64.max
-                    return ValidateResult.Invalid
+                    res = .InvalidDismiss
+                else if val < minMaxS64.min or val > minMaxS64.max
+                    res = .InvalidShow
 
             case UnsignedInteger:
                 (val, eat) := catch Parse.getU64(text)
                 if eat != @countof(text)
-                    return ValidateResult.Invalid
-                if val < minMaxU64.min or val > minMaxU64.max
-                    return ValidateResult.Invalid
+                    res = .InvalidDismiss
+                else if val < minMaxU64.min or val > minMaxU64.max
+                    res = .InvalidShow
 
             case Float:
                 (val, eat) := catch Parse.getF64(text)
                 if eat != @countof(text) and @err != Parse.ErrorIncomplete
-                    return ValidateResult.Invalid
-                if val < minMaxF64.min or val > minMaxF64.max
-                    return ValidateResult.Invalid
+                    res = .InvalidDismiss
+                else if val < minMaxF64.min or val > minMaxF64.max
+                    res = .InvalidShow
             }
 
-            if @err == Parse.ErrorIncomplete
-                res = .Incomplete
-            else if @err
-                res = .Invalid
+            if res == .Valid
+            {
+                if @err == Parse.ErrorIncomplete
+                    res = .Incomplete
+                else if @err == Parse.ErrorOutOfRange
+                    res = .InvalidShow
+                else if @err
+                    res = .InvalidDismiss
+            }
         }
 
+        isInvalid = res == .InvalidShow
         return res
     }
 
@@ -530,7 +540,7 @@ protected impl EditBox
         insertUtf8(@mkstring(&utf8[0], cpt))
 
         res := validate()
-        if res == .Invalid
+        if res == .InvalidDismiss
         {
             text = saveText
             setSelection(saveSelBeg, saveSelEnd)
@@ -561,6 +571,7 @@ protected impl EditBox
 
         countRunes -= cast(s32) Utf8.countRunes(text[selB..selE-1])
         text.remove(selB, selE - selB)
+        discard validate()
 
         setSelection(selB, selB)
         return true

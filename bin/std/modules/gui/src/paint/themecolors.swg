@@ -81,4 +81,5 @@ struct ThemeColors
     edit_DisabledText:              Color = 0x5FFFFFFF
     edit_SelectedText:              Color = 0xFFFFFFFF
     edit_SelectedBk:                Color = 0xFF1473e6
+    edit_ErrorBorder:               Color = 0xFFFF0000
 }
