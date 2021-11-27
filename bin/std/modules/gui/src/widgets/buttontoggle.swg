@@ -52,7 +52,6 @@ impl IWnd for ButtonToggle
         // Box
         clientRect := getClientRect()
         theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
-        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
 
         // Content
         posBox := clientRect
@@ -61,6 +60,8 @@ impl IWnd for ButtonToggle
         if isToggled
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
+
+        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

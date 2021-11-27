@@ -11,12 +11,12 @@ struct ThemeColors
     const LighterBig    = 0x7FFFFFFF
     const Transparent   = 0x00000000
 
-    const White         = 0xFFFFFFFF
-    const Gray1         = 0xFFEEEEEE
+    const White         = 0xFFF0F0F0
+    const Gray1         = 0xFFE0E0E0
     const Gray2         = 0xFF707070
     const Gray3         = 0xFF606060
-    const Gray4         = 0xFF535353
-    const Gray5         = 0xFF424242
+    const Gray4         = 0xFF505050
+    const Gray5         = 0xFF404040
     const Gray6         = 0xFF353535
     const Gray7         = 0xFF303030
 
@@ -28,8 +28,8 @@ struct ThemeColors
     wnd_BtnCloseBk:                 Color = 0xFFd61425
     wnd_BtnCloseHotBk:              Color = 0xFFe62435
 
-    dlg_Bk:                         Color = Gray7
-    dlg_BtnBarBk:                   Color = Gray6
+    dlg_Bk:                         Color = Gray6
+    dlg_BtnBarBk:                   Color = Gray7
 
     btnPush_Text:                   Color = White
     btnPush_Border:                 Color = White
@@ -88,11 +88,11 @@ struct ThemeColors
     btnCheck_DisabledMark:          Color = Disabled
     btnCheck_DisabledBk:            Color = Transparent
 
-    edit_Border:                    Color = Gray3
+    edit_Border:                    Color = Gray2
     edit_FocusBorder:               Color = Blue
     edit_HotBorder:                 Color = Gray2
     edit_DisabledBorder:            Color = White
-    edit_SquareBk:                  Color = Gray7
+    edit_SquareBk:                  Color = Gray6
     edit_Note:                      Color = Disabled
     edit_Text:                      Color = White
     edit_DisabledText:              Color = Disabled
