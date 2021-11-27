@@ -80,6 +80,11 @@ const H = 1024
         edit.setForm(EditBoxForm.Square)
         edit.setNote("MaxLen=3")
         edit.maxLength = 3
+
+        edit = EditBox.create(view, "", @{360, 180, 100})
+        edit.setForm(EditBoxForm.Square)
+        edit.setNote("Integer")
+        edit.inputMode = .Integer
     }
 
     // Labels

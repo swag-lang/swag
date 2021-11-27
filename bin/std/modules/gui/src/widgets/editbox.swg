@@ -7,6 +7,20 @@ public enum EditBoxForm
     Flat
 }
 
+public enum EditBoxInputMode
+{
+    String
+    Integer
+    Float
+}
+
+public enum ValidateResult
+{
+    Incomplete
+    Valid
+    Invalid
+}
+
 public struct EditBox
 {
     using wnd:          Wnd
@@ -15,9 +29,11 @@ public struct EditBox
     form:               EditBoxForm = Square
     autoLoseFocus:      bool = true
     maxLength:          s32
+    inputMode:          EditBoxInputMode = String
 
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
+    sigValidate:        func(*EditBox)->ValidateResult
 
     isHot:              bool
     isDragging:         bool
@@ -225,7 +241,7 @@ impl IWnd for EditBox
             else
             {
                 forceVisibleCaret()
-                insertChar(evt.char)
+                insertRune(evt.char)
             }
         }
     }
@@ -427,26 +443,78 @@ protected impl EditBox
     {
         Utf8.visitRunes(|r| str)
         {
-            insertChar(r)
+            insertRune(r)
         }
     }
 
-    mtd insertChar(r: rune)
+    mtd insertUtf8(s: string)
     {
-        if countRunes == maxLength
+        deleteSelectionPrivate()
+        text.insert(selEnd, s)
+        setSelection(selEnd + @countof(s), selEnd + @countof(s))
+        countRunes += 1
+    }
+
+    mtd validate()->ValidateResult
+    {
+        res := ValidateResult.Valid
+        if sigValidate
+        {
+            res = sigValidate(self)
+        }
+        else
+        {
+            switch inputMode
+            {
+            case Integer:
+                val := catch Parse.getS64(text)
+                if @err
+                    res = .Invalid
+
+            case Float:
+                val := catch Parse.getF64(text)
+                if @err
+                    res = .Invalid
+            }
+        }
+
+        return res
+    }
+
+    mtd insertRune(r: rune)
+    {
+        if maxLength and countRunes == maxLength
             return
 
+        // Convert rune to utf8
         var utf8: [5] u8
         cpt := Utf8.fromUnicode(utf8, @[r])
         if !cpt return
         utf8[cpt] = 0
 
-        deleteSelectionPrivate()
-        text.insert(selEnd, @mkstring(&utf8[0], cpt))
-        setSelection(selEnd + cpt, selEnd + cpt)
-        countRunes += 1
+        // Should we check the content ?
+        mustValidate := sigValidate != null or inputMode != .String
+        if !mustValidate
+        {
+            insertUtf8(@mkstring(&utf8[0], cpt))
+            notifyChanged()
+            return
+        }
 
-        notifyChanged()
+        saveText   := text
+        saveSelBeg := selBeg
+        saveSelEnd := selEnd
+        insertUtf8(@mkstring(&utf8[0], cpt))
+
+        res := validate()
+        if res == .Invalid
+        {
+            text = saveText
+            setSelection(saveSelBeg, saveSelEnd)
+            countRunes -= 1
+        }
+        else
+            notifyChanged()
     }
 
     #[Swag.Inline]
