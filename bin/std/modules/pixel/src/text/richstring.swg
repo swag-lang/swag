@@ -46,7 +46,7 @@ impl RichString
             chunk.fontStyle = .Default
         chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
         chunks.add(chunk)
-        startChunk = byteIdx
+        startChunk = idx
     }
 
     #[Swag.Inline]
@@ -138,6 +138,7 @@ impl RichString
                 addChunk(byteIdx)
                 byteIdx, scan += eat
                 addChunk(byteIdx, eol: true)
+                count -= 1
                 continue
             }
 
@@ -161,9 +162,8 @@ impl RichString
         }
 
         // Remaining chunk
+        Debug.assert(startChunk <= raw.length)
         if startChunk < raw.length
-        {
             addChunk(raw.length)
-        }
     }
 }
