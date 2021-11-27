@@ -479,7 +479,7 @@ protected impl EditBox
             {
             case Integer:
                 (val, eat) := catch Parse.getS64(text)
-                if eat != @countof(text) and @err != Parse.ErrorIncomplete
+                if eat != @countof(text) and @err != Parse.ErrorIncomplete and @err != Parse.ErrorOverflow
                     res = .InvalidDismiss
                 else if val < minMaxS64.min or val > minMaxS64.max
                     res = .InvalidShow
@@ -493,7 +493,7 @@ protected impl EditBox
 
             case Float:
                 (val, eat) := catch Parse.getF64(text)
-                if eat != @countof(text) and @err != Parse.ErrorIncomplete
+                if eat != @countof(text) and @err != Parse.ErrorIncomplete and @err != Parse.ErrorOverflow
                     res = .InvalidDismiss
                 else if val < minMaxF64.min or val > minMaxF64.max
                     res = .InvalidShow
@@ -503,7 +503,7 @@ protected impl EditBox
             {
                 if @err == Parse.ErrorIncomplete
                     res = .Incomplete
-                else if @err == Parse.ErrorOutOfRange
+                else if @err == Parse.ErrorOutOfRange or @err == Parse.ErrorOverflow
                     res = .InvalidShow
                 else if @err
                     res = .InvalidDismiss

@@ -443,7 +443,7 @@ impl Decimal
         {
             cpt, buffer += 1
             if cpt >= countof
-                throw Parse.ErrorInvalid
+                throw Parse.ErrorIncomplete
 
             esign := 1
             c = dref buffer
@@ -452,11 +452,15 @@ impl Decimal
                 buffer, cpt += 1
                 esign = -1
                 c = dref buffer
+                if !Latin1.isDigit(c) and cpt >= countof
+                    throw Parse.ErrorIncomplete
             }
             else if c == plusSign
             {
                 buffer, cpt += 1
                 c = dref buffer
+                if !Latin1.isDigit(c) and cpt >= countof
+                    throw Parse.ErrorIncomplete
             }
 
             if cpt >= countof or c < "0"'u8 or c > "9"'u8
