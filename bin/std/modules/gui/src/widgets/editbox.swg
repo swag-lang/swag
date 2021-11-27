@@ -475,27 +475,25 @@ protected impl EditBox
         }
         else
         {
+            eat := 0'u32
             switch inputMode
             {
             case Integer:
-                (val, eat) := catch Parse.getS64(text)
-                if eat != @countof(text) and @err != Parse.ErrorIncomplete and @err != Parse.ErrorOverflow
-                    res = .InvalidDismiss
-                else if val < minMaxS64.min or val > minMaxS64.max
+                val := catch Parse.getS64(text)
+                eat = val.eat
+                if !@err and val.value < minMaxS64.min or val.value > minMaxS64.max
                     res = .InvalidShow
 
             case UnsignedInteger:
-                (val, eat) := catch Parse.getU64(text)
-                if eat != @countof(text)
-                    res = .InvalidDismiss
-                else if val < minMaxU64.min or val > minMaxU64.max
+                val := catch Parse.getU64(text)
+                eat = val.eat
+                if !@err and val.value < minMaxU64.min or val.value > minMaxU64.max
                     res = .InvalidShow
 
             case Float:
-                (val, eat) := catch Parse.getF64(text)
-                if eat != @countof(text) and @err != Parse.ErrorIncomplete and @err != Parse.ErrorOverflow
-                    res = .InvalidDismiss
-                else if val < minMaxF64.min or val > minMaxF64.max
+                val := catch Parse.getF64(text)
+                eat = val.eat
+                if !@err and val.value < minMaxF64.min or val.value > minMaxF64.max
                     res = .InvalidShow
             }
 
@@ -505,7 +503,7 @@ protected impl EditBox
                     res = .Incomplete
                 else if @err == Parse.ErrorOutOfRange or @err == Parse.ErrorOverflow
                     res = .InvalidShow
-                else if @err
+                else if @err or eat != @countof(text)
                     res = .InvalidDismiss
             }
         }
