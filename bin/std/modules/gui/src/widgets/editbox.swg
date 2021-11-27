@@ -15,7 +15,7 @@ public enum EditBoxInputMode
     Float
 }
 
-public enum ValidateResult
+public enum EditBoxCheckResult
 {
     Incomplete
     Valid
@@ -35,7 +35,7 @@ public struct EditBox
 
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
-    sigValidate:        func(*EditBox)->ValidateResult
+    sigCheckContent:    func(*EditBox)->EditBoxCheckResult
 
     using minMax: union{
         minMaxS64: {min: s64, max: s64} = @{Swag.S64.Min, Swag.S64.Max}
@@ -466,12 +466,12 @@ protected impl EditBox
         countRunes += 1
     }
 
-    mtd validate()->ValidateResult
+    mtd checkContent()->EditBoxCheckResult
     {
-        res := ValidateResult.Valid
-        if sigValidate
+        res := EditBoxCheckResult.Valid
+        if sigCheckContent
         {
-            res = sigValidate(self)
+            res = sigCheckContent(self)
         }
         else
         {
@@ -524,7 +524,7 @@ protected impl EditBox
         utf8[cpt] = 0
 
         // Should we check the content ?
-        mustValidate := sigValidate != null or inputMode != .String
+        mustValidate := sigCheckContent != null or inputMode != .String
         if !mustValidate
         {
             insertUtf8(@mkstring(&utf8[0], cpt))
@@ -537,7 +537,7 @@ protected impl EditBox
         saveSelEnd := selEnd
         insertUtf8(@mkstring(&utf8[0], cpt))
 
-        res := validate()
+        res := checkContent()
         if res == .InvalidDismiss
         {
             text = saveText
@@ -569,7 +569,7 @@ protected impl EditBox
 
         countRunes -= cast(s32) Utf8.countRunes(text[selB..selE-1])
         text.remove(selB, selE - selB)
-        discard validate()
+        discard checkContent()
 
         setSelection(selB, selB)
         return true
