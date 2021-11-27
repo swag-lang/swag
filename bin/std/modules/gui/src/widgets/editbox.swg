@@ -39,7 +39,7 @@ public struct EditBox
     minValueS64:        s64 = Swag.S64.Min
     maxValueS64:        s64 = Swag.S64.Max
     maxValueU64:        u64 = Swag.U64.Max
-    minValueF64:        f64 = Swag.F64.Min
+    minValueF64:        f64 = -Swag.F64.Max
     maxValueF64:        f64 = Swag.F64.Max
 
     isHot:              bool
@@ -489,7 +489,7 @@ protected impl EditBox
 
             case Float:
                 (val, eat) := catch Parse.getF64(text)
-                if eat != @countof(text)
+                if eat != @countof(text) and @err != Parse.ErrorIncomplete
                     return ValidateResult.Invalid
                 if val < minValueF64 or val > maxValueF64
                     return ValidateResult.Invalid

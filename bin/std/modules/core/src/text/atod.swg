@@ -875,11 +875,13 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)
-    if !countof return result
+    if !countof
+        return result
 
     // Special values, infinity, nan
     (result.value, result.eat) = special(s)
-    if result.eat return result
+    if result.eat
+        return result
 
     var read: Decimal
     result.eat = try read.readF64(s)
@@ -916,7 +918,8 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
     // Slow fallback.
 	read.trunc = read.bigtrunc
     (b, ovf) := read.floatBits()
-    if ovf throw "overflow"
+    if ovf
+        throw Parse.ErrorOverflow
     result.value = bitcast(f64) b
     return result
 }

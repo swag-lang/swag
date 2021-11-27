@@ -373,10 +373,14 @@ impl Decimal
         {
             buffer, cpt += 1
             neg = true
+            if !Latin1.isDigit(dref buffer) and cpt == countof
+                throw Parse.ErrorIncomplete
         }
         else if c == plusSign
         {
             buffer, cpt += 1
+            if !Latin1.isDigit(dref buffer) and cpt == countof
+                throw Parse.ErrorIncomplete
         }
 
         // digits
@@ -429,7 +433,7 @@ impl Decimal
         }
 
         if !sawDigits
-            throw "invalid float format"
+            throw Parse.ErrorInvalid
         if !sawdot
             dp = nd
 
@@ -439,7 +443,7 @@ impl Decimal
         {
             cpt, buffer += 1
             if cpt >= countof
-                throw "invalid float format"
+                throw Parse.ErrorInvalid
 
             esign := 1
             c = dref buffer
@@ -456,7 +460,7 @@ impl Decimal
             }
 
             if cpt >= countof or c < "0"'u8 or c > "9"'u8
-                throw "invalid float format"
+                throw Parse.ErrorInvalid
 
             e := 0
             while cpt < countof
