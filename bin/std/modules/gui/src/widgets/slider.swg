@@ -7,6 +7,7 @@ struct Slider
     value1:         f32 = 0.25
     value2:         f32 = 0.75
     isRange:        bool
+    hilightBar:     bool = true
     sigChanged:     func(*Slider)
 
     isMoving:       bool
@@ -43,9 +44,15 @@ impl IWnd for Slider
         }
         else
         {
-            colorBkLeft   = colors.slider_BkLeft
-            colorBkMiddle = colors.slider_BkMiddle
             colorBkRight  = colors.slider_BkRight
+            if !isRange and hilightBar
+                colorBkLeft = colors.slider_HilightBk
+            else
+                colorBkLeft   = colors.slider_BkLeft
+            if isRange and hilightBar
+                colorBkMiddle = colors.slider_HilightBk
+            else
+                colorBkMiddle = colors.slider_BkMiddle
 
             if isPressed1
                 colorMark1 = colors.slider_PressedMark
@@ -191,6 +198,8 @@ private impl Slider
         if fc == value1
             return
         value1 = fc
+        if sigChanged
+            sigChanged(self)
         invalidate()
     }
 
@@ -202,6 +211,8 @@ private impl Slider
         if fc == value2
             return
         value2 = fc
+        if sigChanged
+            sigChanged(self)
         invalidate()
     }
 

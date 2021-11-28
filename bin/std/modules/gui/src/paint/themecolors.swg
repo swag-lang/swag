@@ -125,9 +125,7 @@ struct ThemeColors
     slider_BkLeft:                  Color = Gray6
     slider_BkMiddle:                Color = Gray6
     slider_BkRight:                 Color = Gray6
-    slider_HotBkLeft:               Color = Gray6
-    slider_HotBkMiddle:             Color = Gray6
-    slider_HotBkRight:              Color = Gray6
+    slider_HilightBk:               Color = LightBlue
     slider_Mark:                    Color = Blue
     slider_HotMark:                 Color = White
     slider_PressedMark:             Color = White
