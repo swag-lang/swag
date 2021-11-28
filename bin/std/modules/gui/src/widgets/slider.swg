@@ -5,6 +5,7 @@ public struct Slider
     using wnd:      Wnd
     value1:         f32
     value2:         f32
+    steps:          f32
     isRange:        bool
     hilightBar:     bool = true
     sigChanged:     func(*Slider)
@@ -189,9 +190,20 @@ impl IWnd for Slider
 
 impl Slider
 {
+    mtd clamp(f: f32)->f32
+    {
+        if steps > 0
+        {
+            r := cast(s32) (f / steps)
+            return r * steps
+        }
+
+        return f
+    }
+
     mtd setValue1(f: f32)
     {
-        fc := Math.clamp(f, 0, 1)
+        fc := clamp(Math.clamp(f, 0, 1))
         if isRange
             fc = Math.min(fc, value2)
         if fc == value1
@@ -204,7 +216,7 @@ impl Slider
 
     mtd setValue2(f: f32)
     {
-        fc := Math.clamp(f, 0, 1)
+        fc := clamp(Math.clamp(f, 0, 1))
         if isRange
             fc = Math.max(fc, value1)
         if fc == value2

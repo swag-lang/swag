@@ -116,6 +116,10 @@ const H = 1024
         slider.value2 = 0.75
 
         slider = Slider.create(view, @{450, 360})
+        slider.value1 = 0.5
+        slider.steps = 0.1
+
+        slider = Slider.create(view, @{450, 390})
         slider.isDisabled = true
     }
 
