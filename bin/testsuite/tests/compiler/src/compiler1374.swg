@@ -1,6 +1,6 @@
 using Swag
-private const SmallSize = 28'u32
-private const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
+const SmallSize = 28'u32
+const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
 #assert @sizeof(String) == 40
 
 struct String

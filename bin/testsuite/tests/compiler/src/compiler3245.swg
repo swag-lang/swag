@@ -4,7 +4,7 @@ struct Image
 
 impl Image
 {
-    private struct Decoder
+    struct Decoder
     {
         type:   const *Swag.TypeInfoStruct
     }

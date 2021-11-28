@@ -269,7 +269,7 @@ public func tcf_join32(titi: string, values: s32...)
     }
 }
 
-private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
 
 //#[Swag.PrintBc]
 public func tcf_toto20(a: u16)

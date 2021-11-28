@@ -1,4 +1,4 @@
-private const A = @sizeof(YY.allocator)
+const A = @sizeof(YY.allocator)
 
 struct YY
 {

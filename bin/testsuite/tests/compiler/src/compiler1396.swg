@@ -1,10 +1,10 @@
 namespace A
 {
-    private func toto()
+    func toto()
     {
         //titi()
     }
-    
+
     func titi()
     {
         toto()

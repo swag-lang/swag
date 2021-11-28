@@ -1,5 +1,4 @@
 #global if true
-#global private
 #global namespace NP
 using BB, AA
 

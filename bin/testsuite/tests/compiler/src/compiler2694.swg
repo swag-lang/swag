@@ -1,15 +1,10 @@
-#global public
-
-private
+struct AA
 {
-    struct AA
-    {
 
-    }
+}
 
-    func titi()
-    {
-        var x: AA
-        ptr := @{&x}
-    }
+func titi()
+{
+    var x: AA
+    ptr := @{&x}
 }

@@ -1,9 +1,5 @@
-private
-{
-    const x = 64
-}
-
-private const y = 65
+const x = 64
+const y = 65
 
 #test
 {

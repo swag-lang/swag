@@ -1,16 +1,16 @@
-private const TicksPerMillisecond: u64 = 10000
-private const TicksPerSecond: u64 = TicksPerMillisecond * 1000
-private const TicksPerMinute: u64 = TicksPerSecond * 60
-private const TicksPerHour: u64   = TicksPerMinute * 60
-private const TicksPerDay: u64    = TicksPerHour * 24
+const TicksPerMillisecond: u64 = 10000
+const TicksPerSecond: u64 = TicksPerMillisecond * 1000
+const TicksPerMinute: u64 = TicksPerSecond * 60
+const TicksPerHour: u64   = TicksPerMinute * 60
+const TicksPerDay: u64    = TicksPerHour * 24
 
-private const DaysPerYear     = 365
-private const DaysPer4Years   = (DaysPerYear * 4) + 1
-private const DaysPer100Years = (DaysPer4Years * 25) - 1
-private const DaysPer400Years = (DaysPer100Years * 4) + 1
+const DaysPerYear     = 365
+const DaysPer4Years   = (DaysPerYear * 4) + 1
+const DaysPer100Years = (DaysPer4Years * 25) - 1
+const DaysPer400Years = (DaysPer100Years * 4) + 1
 
-private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
-private const DaysToMonth366 = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
+const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+const DaysToMonth366 = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
 
 func dateToTicks(year, month, day: u16)->u64
 {

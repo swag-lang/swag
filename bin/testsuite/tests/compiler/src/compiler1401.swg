@@ -2,5 +2,5 @@
 
 struct A
 {
-    private readonly x: s32
+    readonly x: s32
 }

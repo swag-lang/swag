@@ -14,7 +14,7 @@ public impl A2191
     {
     }
 
-    private func titi(using self)
+    func titi(using self)
     {
         tata()
     }
