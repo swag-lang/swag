@@ -9,7 +9,7 @@ namespace Swag
 }
 
 ////////////////////////////////////////////////////////////
-private func __strcat(start: *u8, max: s32, src: string)
+func __strcat(start: *u8, max: s32, src: string)
 {
     dstLen := @strlen(start)
     srcLen := @countof(src)
@@ -285,12 +285,12 @@ func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-private func concreteAlias(type1: typeinfo)->typeinfo
+func __concreteAlias(type1: typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
         return type1
     typeAlias := cast(const *TypeInfoAlias) type1
-    return concreteAlias(typeAlias.rawType)
+    return __concreteAlias(typeAlias.rawType)
 }
 
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
@@ -302,8 +302,8 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     if !typeA or !typeB
         return false
 
-    type1 := concreteAlias(typeA)
-    type2 := concreteAlias(typeB)
+    type1 := __concreteAlias(typeA)
+    type2 := __concreteAlias(typeB)
 
     // Fine to convert from concrete to ref, or the other way
     if cmpFlags & .CastAny
@@ -360,15 +360,15 @@ func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
 
 
 ////////////////////////////////////////////////////////////
-private const MAX_ARGUMENTS = 512
-private var g_Argv: [MAX_ARGUMENTS] string
-private var g_Argc = 0'u32
+const __MAX_ARGUMENTS = 512
+var __argv: [__MAX_ARGUMENTS] string
+var __argc = 0'u32
 
-private func convertArgcArgv()
+func __convertArgcArgv()
 {
     cmdLine := __getCommandLine()
 
-    g_Argc = 0
+    __argc = 0
     while dref cmdLine
     {
         while dref cmdLine == " "'u8 cmdLine += 1
@@ -379,18 +379,18 @@ private func convertArgcArgv()
             cmdLine += 1
             start := cmdLine
             while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            __argv[__argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
             while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            __argv[__argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
         }
 
-        g_Argc += 1
-        if g_Argc == MAX_ARGUMENTS
+        __argc += 1
+        if __argc == __MAX_ARGUMENTS
             return
         while dref cmdLine and dref cmdLine == " "'u8 cmdLine += 1
     }
@@ -398,9 +398,9 @@ private func convertArgcArgv()
 
 func @args()->[..] string
 {
-    if g_Argc == 0
-        convertArgcArgv()
-    return @mkslice(&g_Argv[0], cast(uint) g_Argc)
+    if __argc == 0
+        __convertArgcArgv()
+    return @mkslice(&__argv[0], cast(uint) __argc)
 }
 
 ////////////////////////////////////////////////////////////

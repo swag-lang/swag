@@ -4,7 +4,7 @@
 #foreignlib "ucrt"
 
 ////////////////////////////////////////////////////////////
-private
+namespace __Win32RT
 {
     alias HANDLE = *void
     alias DWORD  = u32
@@ -43,25 +43,25 @@ private
 #[Swag.Callback]
 func memset(dst: *void, value: s32, size: uint)
 {
-    RtlFillMemory(dst, size, value)
+    __Win32RT.RtlFillMemory(dst, size, value)
 }
 
 #[Swag.Callback]
 func memcpy(dst: *void, src: const *void, size: uint)
 {
-    RtlCopyMemory(dst, src, size)
+    __Win32RT.RtlCopyMemory(dst, src, size)
 }
 
 #[Swag.Callback]
 func memmove(dst: *void, src: const *void, size: uint)
 {
-    RtlMoveMemory(dst, src, size)
+    __Win32RT.RtlMoveMemory(dst, src, size)
 }
 
 #[Swag.Callback]
 func memcmp(dst, src: const *void, size: uint)->s32
 {
-    len := RtlCompareMemory(dst, src, size)
+    len := __Win32RT.RtlCompareMemory(dst, src, size)
     if len == size return 0
     p1 := cast(const *s8) dst
     p2 := cast(const *s8) src
@@ -73,6 +73,7 @@ func __printString(message: string)
 {
     if !@dataof(message) or !@countof(message)
         return
+    using __Win32RT
     len := cast(u32) @countof(message)
     wlen := WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
 }
@@ -85,20 +86,21 @@ func __raiseException666(message: string, loc: Swag.CompilerSourceLocation)
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
     cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
-    RaiseException(666, 0, 3, &cxt.exceptionParams[0])
+    __Win32RT.RaiseException(666, 0, 3, &cxt.exceptionParams[0])
 }
 
 ////////////////////////////////////////////////////////////
-func __getCommandLine()                     => GetCommandLineA()
-func __loaddll(name: string)                => LoadLibraryA(@dataof(name))
-func __exit()                               => ExitProcess(0)
-func __tlsAlloc()                           => cast(u64) TlsAlloc()
-func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
-func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
+func __getCommandLine()                     => __Win32RT.GetCommandLineA()
+func __loaddll(name: string)                => __Win32RT.LoadLibraryA(@dataof(name))
+func __exit()                               => __Win32RT.ExitProcess(0)
+func __tlsAlloc()                           => cast(u64) __Win32RT.TlsAlloc()
+func __tlsSetValue(id: u64, value: *void)   => __Win32RT.TlsSetValue(cast(u32) id, value)
+func __tlsGetValue(id: u64)->*void          => __Win32RT.TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
 func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 {
+    using __Win32RT
     ptr := TlsGetValue(cast(u32) id)
     if ptr return ptr
     ptr = @alloc(size)
@@ -110,6 +112,7 @@ func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 ////////////////////////////////////////////////////////////
 func __panicBox(msg, title: string)
 {
+    using __Win32RT
     result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result
     {
