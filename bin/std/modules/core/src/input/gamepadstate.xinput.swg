@@ -3,51 +3,29 @@
 #global namespace Input
 using XInput, Win32
 
-private var g_MapButtons: [@countof(GamePadButton)] GamePadButton = ?
-
 #run
 {
-    using GamePadButton
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)] = A
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)] = B
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)] = X
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
-    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
-}
-
-// Returns true if the corresponding 'padIndex' is connected
-func isConnected(padIndex: u32)->bool
-{
-    var state: XINPUT_STATE = ?
-    return XInputGetState(padIndex, &state) == ERROR_SUCCESS
-}
-
-// Set the left and right vibration of the given 'padIndex'
-func setVibration(padIndex: u32, left, right: f32) throw
-{
-    var vibration: XINPUT_VIBRATION = ?
-    vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(left))
-    vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(right))
-    res := XInputSetState(padIndex, &vibration)
-    switch res
-    {
-    case ERROR_SUCCESS:                 return
-    case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
-    default:                            try Win32.setError(res)
-    }
+    using GamePadState, GamePadButton
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)] = A
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)] = B
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)] = X
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
+    mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
 }
 
 impl GamePadState
 {
+    protected var mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+
     // Compute the current state of the given pad index
     func update(using self, padIndex: u32) throw
     {
@@ -62,7 +40,7 @@ impl GamePadState
 
         // GamePadButton pressed state
         loop i: 16'u16
-            pressed[g_MapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
+            pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
 
         // Move
         using GamePadButton, state.Gamepad
