@@ -23,22 +23,21 @@ public interface IEncoder
     encode:     func(self, *ConcatBuffer, Image, EncodeOptions) throw
 }
 
-// Register an image encoder
-public func(T) addEncoder()
+public impl Image
 {
-    #assert Reflection.hasInterface(@typeof(T), IEncoder)
+    // Register an image encoder
+    func(T) addEncoder()
+    {
+        #assert Reflection.hasInterface(@typeof(T), IEncoder)
 
-    var encoder: Encoder = ?
-    encoder.type = @typeof(T)
-    encoder.itf = @mkinterface(null, @typeof(T), IEncoder)
-    g_Encoder.add(encoder)
-}
+        var encoder: Encoder = ?
+        encoder.type = @typeof(T)
+        encoder.itf = @mkinterface(null, @typeof(T), IEncoder)
+        g_Encoder.add(encoder)
+    }
 
-// Save an image to a file
-impl Image
-{
     // Returns 'true' if the given filename has a corresponding encoder
-    public func canSave(fileName: string)->bool
+    func canSave(fileName: string)->bool
     {
         visit *encoder: g_Encoder
         {
@@ -50,7 +49,7 @@ impl Image
     }
 
     // Save the image to a file
-    public mtd save(fileName: string, options: EncodeOptions = @{}) throw
+    mtd save(fileName: string, options: EncodeOptions = @{}) throw
     {
         Debug.assert(pixels != null, "image is invalid")
 
@@ -88,7 +87,7 @@ impl Image
 // Initialize predefined encoders
 #init
 {
-    addEncoder'(Bmp.Encoder)()
-    addEncoder'(Tga.Encoder)()
-    addEncoder'(Jpg.Encoder)()
+    Image.addEncoder'(Bmp.Encoder)()
+    Image.addEncoder'(Tga.Encoder)()
+    Image.addEncoder'(Jpg.Encoder)()
 }

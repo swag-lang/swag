@@ -25,32 +25,8 @@ public interface IDecoder
     decode:     func(self, const [..] u8, DecodeOptions)->Image throw
 }
 
-// Register an image decoder
-public func(T) addDecoder()
-{
-    #assert Reflection.hasInterface(@typeof(T), IDecoder)
-
-    var decoder: Decoder = ?
-    decoder.type = @typeof(T)
-    decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
-    g_Decoder.add(decoder)
-}
-
-// Load an image from file
 impl Image
 {
-    // Returns 'true' if the given filename has a corresponding decoder
-    public func canLoad(fileName: string)->bool
-    {
-        visit *decoder: g_Decoder
-        {
-            if decoder.itf.canDecode(fileName)
-                return true
-        }
-
-        return false
-    }
-
     // Find the decoder that can treat 'fileName'
     func getDecoder(fileName: string)->*Decoder
     {
@@ -83,9 +59,37 @@ impl Image
         itf := @mkinterface(ptrDecoder, decoder.type, IDecoder)
         return try itf.decode(bytes, options)
     }
+}
+
+
+// Load an image from file
+public impl Image
+{
+    // Register an image decoder
+    func(T) addDecoder()
+    {
+        #assert Reflection.hasInterface(@typeof(T), IDecoder)
+
+        var decoder: Decoder = ?
+        decoder.type = @typeof(T)
+        decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
+        g_Decoder.add(decoder)
+    }
+
+    // Returns 'true' if the given filename has a corresponding decoder
+    func canLoad(fileName: string)->bool
+    {
+        visit *decoder: g_Decoder
+        {
+            if decoder.itf.canDecode(fileName)
+                return true
+        }
+
+        return false
+    }
 
     // Decode the given image buffer
-    public func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
     {
         found := getDecoder(fileName)
         if !found
@@ -94,7 +98,7 @@ impl Image
     }
 
     // Load the given image file
-    public func load(fileName: string, options: DecodeOptions = @{})->Image throw
+    func load(fileName: string, options: DecodeOptions = @{})->Image throw
     {
         found := getDecoder(fileName)
         if !found
@@ -107,8 +111,8 @@ impl Image
 // Initialize predefined decoders
 #init
 {
-    addDecoder'(Bmp.Decoder)()
-    addDecoder'(Tga.Decoder)()
-    addDecoder'(Jpg.Decoder)()
-    addDecoder'(Png.Decoder)()
+    Image.addDecoder'(Bmp.Decoder)()
+    Image.addDecoder'(Tga.Decoder)()
+    Image.addDecoder'(Jpg.Decoder)()
+    Image.addDecoder'(Png.Decoder)()
 }
