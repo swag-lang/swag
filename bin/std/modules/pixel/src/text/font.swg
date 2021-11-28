@@ -1,7 +1,6 @@
-#global public
 using Core, FreeType
 
-struct GlyphAtlas
+public struct GlyphAtlas
 {
     texture:    Texture
     width:      u32
@@ -14,7 +13,7 @@ struct GlyphAtlas
     nextY:      s32
 }
 
-struct GlyphDesc
+public struct GlyphDesc
 {
     uv:             Math.Rectangle
     atlasIndex:     s32 = -1
@@ -26,7 +25,7 @@ struct GlyphDesc
     height:         f32
 }
 
-struct Font
+public struct Font
 {
     ascent:         f32
     descent:        f32
@@ -42,12 +41,12 @@ struct Font
     dirty:      bool
 }
 
-private var g_HashFont: HashTable'(String, *Font)
-private var g_Lock:     Sync.Mutex
-
-impl Font
+public impl Font
 {
-    private func mulFix(a, b: s32)->s32
+    protected var hashFont: HashTable'(String, *Font)
+    protected var lock:     Sync.Mutex
+
+    protected func mulFix(a, b: s32)->s32
     {
         ab := cast(s64) a * cast(s64) b
         return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >>,safe 16))
@@ -61,9 +60,9 @@ impl Font
 
         str := Format.toString("%_%", typeFace.fullname, size)
 
-        Sync.scopedLock(&g_Lock)
+        Sync.scopedLock(&lock)
 
-        here := g_HashFont.find(str)
+        here := hashFont.find(str)
         if here return here.value
 
         font := Memory.new'Font()
@@ -78,7 +77,7 @@ impl Font
         font.underlinePos = mulFix(cast(s32) typeFace.face.underline_position, metrics.y_scale) / 64.0
         font.underlineSize = mulFix(cast(s32) typeFace.face.underline_thickness, metrics.y_scale) / 64.0
 
-        g_HashFont.add(str, font)
+        hashFont.add(str, font)
         return font
     }
 
