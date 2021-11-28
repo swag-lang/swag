@@ -1,8 +1,8 @@
 using Core
 
-public impl Image
+impl Image
 {
-    enum ResizeMode
+    public enum ResizeMode
     {
         Raw
         Bilinear
@@ -15,18 +15,19 @@ public impl Image
     }
 
     // Resize image
-    mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
+    public mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 and newHeight > 0)
         if newWidth == width and newHeight == height return
         allocWorkingBuffer(newWidth, newHeight, pf)
-        doResize(self, workingBuffer, mode)
+        ResizeTools.doResize(self, workingBuffer, mode)
         applyWorkingBuffer()
     }
 
     // Resize image
-    mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
+    public mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
+        using ResizeTools
         Debug.assert(newWidth > 0 and newHeight > 0)
 
         if newWidth == width and newHeight == height
@@ -36,12 +37,12 @@ public impl Image
         }
 
         var result: retval = create(newWidth, newHeight, pf)
-        doResize(self, &result, mode)
+        ResizeTools.doResize(self, &result, mode)
         return result
     }
 }
 
-private
+namespace ResizeTools
 {
     struct Contribution
     {
