@@ -1,5 +1,4 @@
-#global public
-using Core, Core.Math
+using Core, Math
 
 public enum DrawPathListMode
 {
@@ -7,7 +6,7 @@ public enum DrawPathListMode
     Merge
 }
 
-private struct Context
+struct Context
 {
     posBuffer:          Array'Vector2
     penSize:            f32
@@ -35,7 +34,7 @@ private struct Context
 
 impl Painter
 {
-    private mtd drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -56,7 +55,7 @@ impl Painter
         }
     }
 
-    private mtd drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
     {
         n  := Vector2{d.y * sens, -d.x * sens}
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -71,7 +70,7 @@ impl Painter
         }
     }
 
-    private mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -106,7 +105,7 @@ impl Painter
         }
     }
 
-    private mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
         // Shift a little bit "inside" the line, so that the line will
         // overwrite the bad AA edges
@@ -131,7 +130,7 @@ impl Painter
         }
     }
 
-    private mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
     {
         radius := d.length()
         if radius < 2.5
@@ -146,7 +145,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
     {
         #[Swag.Complete]
         switch capStyle
@@ -160,7 +159,7 @@ impl Painter
         }
     }
 
-    private mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
+    mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
     {
         if penSize < 3
             return
@@ -175,7 +174,7 @@ impl Painter
         }
     }
 
-    private mtd drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
+    mtd drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
     {
         v0 := p
 
@@ -200,7 +199,7 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    private mtd drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
+    mtd drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
         var startPos, endPos: Vector2 = ?
         startPos.x = center.x + (Math.cos(angle0) * radius)
@@ -241,7 +240,7 @@ impl Painter
         }
     }
 
-    private mtd drawJoinRound(p, d1, d2: Vector2, pen: Pen)
+    mtd drawJoinRound(p, d1, d2: Vector2, pen: Pen)
     {
         var angle0, angle1: f32 = ?
         if d1.x * d2.y - d1.y * d2.x < 0
@@ -268,7 +267,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    private mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
     {
         a := Vector2{d1.x + d2.x, d1.y + d2.y}
         w := d1.length()
@@ -322,7 +321,7 @@ impl Painter
         }
     }
 
-    private mtd drawJoin(using cxt: *Context, p, d1, d2: Vector2)
+    mtd drawJoin(using cxt: *Context, p, d1, d2: Vector2)
     {
         #[Swag.Complete]
         switch pen.joinStyle
@@ -335,7 +334,7 @@ impl Painter
         }
     }
 
-    private mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
+    mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
     {
         if beginLine or lastLineInvalid
             return
@@ -354,7 +353,7 @@ impl Painter
         }
     }
 
-    private mtd drawMoveCursor(using cxt: *Context, pos: Vector2)
+    mtd drawMoveCursor(using cxt: *Context, pos: Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {
@@ -369,7 +368,7 @@ impl Painter
         }
     }
 
-    private mtd drawLineInternal(using cxt: *Context, pos: Vector2)
+    mtd drawLineInternal(using cxt: *Context, pos: Vector2)
     {
         // Compute line (half width on each side)
         newPos := pos
@@ -434,7 +433,7 @@ impl Painter
         beginLine, firstLine = false
     }
 
-    private func preparePattern(using cxt: *Context)
+    func preparePattern(using cxt: *Context)
     {
         #[Swag.Complete]
         switch pen.dashStyle
@@ -482,7 +481,7 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
-    private mtd drawLine(using cxt: *Context, pos: Vector2)
+    mtd drawLine(using cxt: *Context, pos: Vector2)
     {
         // solid
         if pen.dashStyle == .None
@@ -552,7 +551,7 @@ impl Painter
         }
     }
 
-    private mtd drawLineBeginCap(using cxt: *Context)
+    mtd drawLineBeginCap(using cxt: *Context)
     {
         if pen.beginCapStyle == .None or penSize < 3
             return
@@ -566,7 +565,7 @@ impl Painter
         drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
-    private mtd drawLineEndCap(using cxt: *Context)
+    mtd drawLineEndCap(using cxt: *Context)
     {
         if pen.endCapStyle == .None or penSize < 3
             return
@@ -580,7 +579,7 @@ impl Painter
         drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
-    private mtd drawPath(using cxt: *Context)
+    mtd drawPath(using cxt: *Context)
     {
         if pen.size < 1 or path.polygon.points.count == 0
             return
@@ -628,6 +627,153 @@ impl Painter
         }
     }
 
+    func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
+    {
+        a := border[pv[u]]
+        b := border[pv[v]]
+        c := border[pv[w]]
+
+        // Cross product to detect if the triangle is in the wrong direction
+        val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.x))
+        if val < Math.ConstF32.Epsilon
+            return false
+
+        // Detect if a point of the graph is inside that triangle
+        for p := 0; p < n; p += 1
+        {
+            if (p == u) or (p == v) or (p == w)
+                continue
+            pt := border[pv[p]]
+            if pt.isInTriangle(a, b, c)
+                return false
+        }
+
+        return true
+    }
+
+    mtd triangulate(path: *LinePath)->Array's32
+    {
+        var result: retval
+
+        slice := @mkslice(path.polygon.points.buffer + 1, path.polygon.points.count - 1)
+        n := cast(s32) @countof(slice)
+
+        // We want a counter-clockwise polygon in V
+        triangulateIdx.resize(cast(uint) n)
+        idxPtr := triangulateIdx.buffer
+        if path.polygon.isClockwise
+        {
+            loop i: n
+                idxPtr[i] = cast(s32) i
+        }
+        else
+        {
+            loop i: n
+                idxPtr[i] = cast(s32) ((n - 1) - i)
+        }
+
+        // Remove nv-2 Vertices, creating 1 triangle every time
+        nv := n
+        count := 2 * nv
+        m := 0
+        v := nv - 1
+        while nv > 2
+        {
+            // If we loop, it is probably a non-simple polygon
+            if count <= 0
+            {
+                result.clear()
+                return result
+            }
+
+            count -= 1
+
+            // Three consecutive vertices in current polygon, <u,v,w>
+            u := v
+            if nv <= u u = 0
+            v = u + 1
+            if nv <= v v = 0
+            w := v + 1
+            if nv <= w w = 0
+
+            if triangulateSnip(slice, u, v, w, nv, idxPtr)
+            {
+                // Output Triangle
+                a := idxPtr[u]
+                b := idxPtr[v]
+                c := idxPtr[w]
+                result.add(a)
+                result.add(b)
+                result.add(c)
+
+                // Remove v from remaining polygon
+                m += 1
+                s := v
+                t := v + 1
+                while t < nv
+                {
+                    triangulateIdx.buffer[s] = triangulateIdx.buffer[t]
+                    s += 1
+                    t += 1
+                }
+
+                nv -= 1
+
+                // Reset error detection counter
+                count = 2 * nv
+            }
+        }
+
+        return result
+    }
+
+    mtd triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
+    {
+        setTexture0(bvMin, bvMax, brush)
+        resetTextureFont()
+
+        t.triangulate()
+        res := t.getTriangles()
+        visit tri: res
+        {
+            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+            prim := pushTriangle(v0, v1, v2, brush.color)
+
+            if paintParams & .Antialiased
+            {
+                mtd addAA(prim: uint, tri: const *Poly2Tri.Triangle)
+                {
+                    if !tri return
+                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+                    loop e: 3
+                    {
+                        if !tri.constrainedEdge[e] continue
+                        switch e
+                        {
+                        case 0: addEdgeAA(prim, v1, v2)
+                        case 1: addEdgeAA(prim, v0, v2)
+                        case 2: addEdgeAA(prim, v0, v1)
+                        }
+                    }
+                }
+
+                addAA(self, prim, tri)
+                addAA(self, prim, tri.neighbors[0])
+                addAA(self, prim, tri.neighbors[1])
+                addAA(self, prim, tri.neighbors[2])
+            }
+        }
+
+        t.clear()
+    }
+}
+
+public impl Painter
+{
     // Draw the line path
     mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
@@ -705,104 +851,12 @@ impl Painter
         drawPathList(pathList, sharedSolidPen, mode)
     }
 
-    private func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
+    // Fill the line path
+    mtd fillPath(pathList: *LinePathList, color: Color)
     {
-        a := border[pv[u]]
-        b := border[pv[v]]
-        c := border[pv[w]]
-
-        // Cross product to detect if the triangle is in the wrong direction
-        val := ((b.x - a.x) * (c.y - a.y)) - ((b.y - a.y) * (c.x - a.x))
-        if val < Math.ConstF32.Epsilon
-            return false
-
-        // Detect if a point of the graph is inside that triangle
-        for p := 0; p < n; p += 1
-        {
-            if (p == u) or (p == v) or (p == w)
-                continue
-            pt := border[pv[p]]
-            if pt.isInTriangle(a, b, c)
-                return false
-        }
-
-        return true
-    }
-
-    private mtd triangulate(path: *LinePath)->Array's32
-    {
-        var result: retval
-
-        slice := @mkslice(path.polygon.points.buffer + 1, path.polygon.points.count - 1)
-        n := cast(s32) @countof(slice)
-
-        // We want a counter-clockwise polygon in V
-        triangulateIdx.resize(cast(uint) n)
-        idxPtr := triangulateIdx.buffer
-        if path.polygon.isClockwise
-        {
-            loop i: n
-                idxPtr[i] = cast(s32) i
-        }
-        else
-        {
-            loop i: n
-                idxPtr[i] = cast(s32) ((n - 1) - i)
-        }
-
-        // Remove nv-2 Vertices, creating 1 triangle every time
-        nv := n
-        count := 2 * nv
-        m := 0
-        v := nv - 1
-        while nv > 2
-        {
-            // If we loop, it is probably a non-simple polygon
-            if count <= 0
-            {
-                result.clear()
-                return result
-            }
-
-            count -= 1
-
-            // Three consecutive vertices in current polygon, <u,v,w>
-            u := v
-            if nv <= u u = 0
-            v = u + 1
-            if nv <= v v = 0
-            w := v + 1
-            if nv <= w w = 0
-
-            if triangulateSnip(slice, u, v, w, nv, idxPtr)
-            {
-                // Output Triangle
-                a := idxPtr[u]
-                b := idxPtr[v]
-                c := idxPtr[w]
-                result.add(a)
-                result.add(b)
-                result.add(c)
-
-                // Remove v from remaining polygon
-                m += 1
-                s := v
-                t := v + 1
-                while t < nv
-                {
-                    triangulateIdx.buffer[s] = triangulateIdx.buffer[t]
-                    s += 1
-                    t += 1
-                }
-
-                nv -= 1
-
-                // Reset error detection counter
-                count = 2 * nv
-            }
-        }
-
-        return result
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        fillPath(pathList, sharedSolidBrush)
     }
 
     // Fill the line path with the given 'brush'
@@ -909,50 +963,6 @@ impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
-    private mtd triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
-    {
-        setTexture0(bvMin, bvMax, brush)
-        resetTextureFont()
-
-        t.triangulate()
-        res := t.getTriangles()
-        visit tri: res
-        {
-            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-            prim := pushTriangle(v0, v1, v2, brush.color)
-
-            if paintParams & .Antialiased
-            {
-                mtd addAA(prim: uint, tri: const *Poly2Tri.Triangle)
-                {
-                    if !tri return
-                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                    loop e: 3
-                    {
-                        if !tri.constrainedEdge[e] continue
-                        switch e
-                        {
-                        case 0: addEdgeAA(prim, v1, v2)
-                        case 1: addEdgeAA(prim, v0, v2)
-                        case 2: addEdgeAA(prim, v0, v1)
-                        }
-                    }
-                }
-
-                addAA(self, prim, tri)
-                addAA(self, prim, tri.neighbors[0])
-                addAA(self, prim, tri.neighbors[1])
-                addAA(self, prim, tri.neighbors[2])
-            }
-        }
-
-        t.clear()
-    }
-
     // Fill the list of paths
     // clockwise = fill, anti-clockwise = hole
     mtd fillPath(pathList: *LinePathList, brush: Brush)
@@ -991,13 +1001,5 @@ impl Painter
 
         if flush
             triangulate(&t, pathList.bvMin, pathList.bvMax, brush)
-    }
-
-    // Fill the line path
-    mtd fillPath(pathList: *LinePathList, color: Color)
-    {
-        sharedSolidBrush.type = .SolidColor
-        sharedSolidBrush.color = color
-        fillPath(pathList, sharedSolidBrush)
     }
 }
