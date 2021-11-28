@@ -13,7 +13,7 @@ struct ThemeColors
 
     const White         = 0xFFF0F0F0
     const Gray1         = 0xFFE0E0E0
-    const Gray2         = 0xFF6A6A6A
+    const Gray2         = 0xFF5A5A5A
     const Gray3         = 0xFF606060
     const Gray4         = 0xFF505050
     const Gray5         = 0xFF404040
@@ -88,9 +88,9 @@ struct ThemeColors
     btnCheck_DisabledMark:          Color = Disabled
     btnCheck_DisabledBk:            Color = Transparent
 
-    edit_Border:                    Color = Gray2
+    edit_Border:                    Color = Gray3
     edit_FocusBorder:               Color = Blue
-    edit_HotBorder:                 Color = Gray2
+    edit_HotBorder:                 Color = Gray3
     edit_DisabledBorder:            Color = White
     edit_SquareBk:                  Color = Gray6
     edit_Note:                      Color = Disabled
@@ -125,7 +125,7 @@ struct ThemeColors
     slider_BkLeft:                  Color = Gray6
     slider_BkMiddle:                Color = Gray6
     slider_BkRight:                 Color = Gray6
-    slider_HilightBk:               Color = LightBlue
+    slider_HilightBk:               Color = Blue
     slider_Mark:                    Color = Blue
     slider_HotMark:                 Color = White
     slider_PressedMark:             Color = White
