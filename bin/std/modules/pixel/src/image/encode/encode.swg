@@ -1,6 +1,6 @@
 using Swag, Core
 
-private struct Encoder
+struct ImageEncoder
 {
     type:   const *TypeInfoStruct
     itf:    IEncoder
@@ -20,14 +20,14 @@ public interface IEncoder
 
 public impl Image
 {
-    protected var encoders: Array'Encoder
+    protected var encoders: Array'ImageEncoder
 
     // Register an image encoder
     func(T) addEncoder()
     {
         #assert Reflection.hasInterface(@typeof(T), IEncoder)
 
-        var encoder: Encoder = ?
+        var encoder: ImageEncoder = ?
         encoder.type = @typeof(T)
         encoder.itf = @mkinterface(null, @typeof(T), IEncoder)
         encoders.add(encoder)
@@ -51,7 +51,7 @@ public impl Image
         Debug.assert(pixels != null, "image is invalid")
 
         // Find the encoder that can treat 'fileName'
-        var found: *Encoder
+        var found: *ImageEncoder
         visit *encoder: encoders
         {
             if encoder.itf.canEncode(fileName)

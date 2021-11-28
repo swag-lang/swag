@@ -1,6 +1,6 @@
 using Swag, Core
 
-private struct Decoder
+struct ImageDecoder
 {
     type:   const *TypeInfoStruct
     itf:    IDecoder
@@ -22,12 +22,12 @@ public interface IDecoder
 
 impl Image
 {
-    var decoders: Array'Decoder
+    var decoders: Array'ImageDecoder
 
     // Find the decoder that can treat 'fileName'
-    func getDecoder(fileName: string)->*Decoder
+    func getDecoder(fileName: string)->*ImageDecoder
     {
-        var found: *Decoder
+        var found: *ImageDecoder
         visit *decoder: decoders
         {
             if decoder.itf.canDecode(fileName)
@@ -41,7 +41,7 @@ impl Image
     }
 
     // Decode the given image buffer with the given decoder
-    func decode(decoder: *Decoder, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    func decode(decoder: *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
     {
         // Create a decoder instance
         ptrDecoder := Memory.new(decoder.type)
@@ -67,7 +67,7 @@ public impl Image
     {
         #assert Reflection.hasInterface(@typeof(T), IDecoder)
 
-        var decoder: Decoder = ?
+        var decoder: ImageDecoder = ?
         decoder.type = @typeof(T)
         decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
         decoders.add(decoder)
