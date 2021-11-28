@@ -28,7 +28,7 @@ impl Image
     }
 
     #[Inline]
-    private mtd free()
+    protected mtd free()
     {
         Memory.free(pixels, size, allocator)
         Memory.delete'Image(workingBuffer, allocator)

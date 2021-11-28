@@ -3,7 +3,7 @@ using Swag
 
 // Used to add an element in a 'Core.Array' without knowing the type of the element at compile time
 // but knowing it at runtime (valueType)
-private func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
+func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
     arr := cast(*Array'u8) addr

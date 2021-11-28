@@ -1,15 +1,15 @@
 #global namespace Swag
 
-private struct LeakHeader
-{
-    prev:   *LeakHeader
-    next:   *LeakHeader
-    size:   uint
-}
-
 impl ScratchAllocator
 {
-    private func align(value: uint, alignement: u32)->uint
+    struct LeakHeader
+    {
+        prev:   *LeakHeader
+        next:   *LeakHeader
+        size:   uint
+    }
+
+    func align(value: uint, alignement: u32)->uint
     {
         toAlign := alignement orelse @sizeof(*void)
         result := value & ~(toAlign - 1)
@@ -17,7 +17,7 @@ impl ScratchAllocator
         return result
     }
 
-    private mtd free(addr: *void, size: uint)
+    mtd free(addr: *void, size: uint)
     {
         var req: AllocatorRequest
         req.mode = .Free
@@ -26,7 +26,7 @@ impl ScratchAllocator
         allocator.alloc(&req)
     }
 
-    private mtd alloc(size: uint, alignement: u32 = 0)->*void
+    mtd alloc(size: uint, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest
         req.mode = .Alloc
