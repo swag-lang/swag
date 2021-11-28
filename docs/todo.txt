@@ -51,6 +51,9 @@ v.add(#code @print(a))
 TODO
 ****************************************
 -------------------------------------
+using XX en global ou dans un bloc impl, merde car exporté si le namespace qui correspond lui ne l'est pas
+(parcequ'il contient que des fonction protected par exemple) test 3244
+-------------------------------------
 PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
 foreign a cvarargs

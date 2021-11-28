@@ -1,14 +1,9 @@
 using Swag, Core
 
-private
+private struct Encoder
 {
-    struct Encoder
-    {
-        type:   const *TypeInfoStruct
-        itf:    IEncoder
-    }
-
-    var g_Encoder: Array'Encoder
+    type:   const *TypeInfoStruct
+    itf:    IEncoder
 }
 
 public struct EncodeOptions
@@ -25,6 +20,8 @@ public interface IEncoder
 
 public impl Image
 {
+    protected var encoders: Array'Encoder
+
     // Register an image encoder
     func(T) addEncoder()
     {
@@ -33,13 +30,13 @@ public impl Image
         var encoder: Encoder = ?
         encoder.type = @typeof(T)
         encoder.itf = @mkinterface(null, @typeof(T), IEncoder)
-        g_Encoder.add(encoder)
+        encoders.add(encoder)
     }
 
     // Returns 'true' if the given filename has a corresponding encoder
     func canSave(fileName: string)->bool
     {
-        visit *encoder: g_Encoder
+        visit *encoder: encoders
         {
             if encoder.itf.canEncode(fileName)
                 return true
@@ -55,7 +52,7 @@ public impl Image
 
         // Find the encoder that can treat 'fileName'
         var found: *Encoder
-        visit *encoder: g_Encoder
+        visit *encoder: encoders
         {
             if encoder.itf.canEncode(fileName)
             {

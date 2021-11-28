@@ -1,14 +1,9 @@
 using Swag, Core
 
-private
+private struct Decoder
 {
-    struct Decoder
-    {
-        type:   const *TypeInfoStruct
-        itf:    IDecoder
-    }
-
-    var g_Decoder: Array'Decoder
+    type:   const *TypeInfoStruct
+    itf:    IDecoder
 }
 
 public struct DecodeOptions
@@ -27,11 +22,13 @@ public interface IDecoder
 
 impl Image
 {
+    var decoders: Array'Decoder
+
     // Find the decoder that can treat 'fileName'
     func getDecoder(fileName: string)->*Decoder
     {
         var found: *Decoder
-        visit *decoder: g_Decoder
+        visit *decoder: decoders
         {
             if decoder.itf.canDecode(fileName)
             {
@@ -73,13 +70,13 @@ public impl Image
         var decoder: Decoder = ?
         decoder.type = @typeof(T)
         decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
-        g_Decoder.add(decoder)
+        decoders.add(decoder)
     }
 
     // Returns 'true' if the given filename has a corresponding decoder
     func canLoad(fileName: string)->bool
     {
-        visit *decoder: g_Decoder
+        visit *decoder: decoders
         {
             if decoder.itf.canDecode(fileName)
                 return true
