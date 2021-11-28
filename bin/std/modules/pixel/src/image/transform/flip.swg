@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private mtd doFlip(dstImage: *Image)
+    mtd doFlip(dstImage: *Image)
     {
         f := dstImage
         visitPixels(f, stride: width)

@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private mtd toRGB8(dstImage: *Image)
+    mtd toRGB8(dstImage: *Image)
     {
         f := dstImage
 
@@ -32,7 +32,7 @@ impl Image
         }
     }
 
-    private mtd toRGBA8(dstImage: *Image)
+    mtd toRGBA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -74,7 +74,7 @@ impl Image
         }
     }
 
-    private mtd toBGR8(dstImage: *Image)
+    mtd toBGR8(dstImage: *Image)
     {
         f := dstImage
 
@@ -104,7 +104,7 @@ impl Image
         }
     }
 
-    private mtd toBGRA8(dstImage: *Image)
+    mtd toBGRA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -146,7 +146,7 @@ impl Image
         }
     }
 
-    private mtd doChangePf(dstImage: *Image)
+    mtd doChangePf(dstImage: *Image)
     {
         #[Swag.Complete]
         switch dstImage.pf

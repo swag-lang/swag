@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private mtd doCrop(dstImage: *Image, x, y, w, h: s32)
+    mtd doCrop(dstImage: *Image, x, y, w, h: s32)
     {
         f := @{x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)

@@ -35,7 +35,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    private mtd doKernel(dstImage: *Image, kernel: const [..] s32)
+    mtd doKernel(dstImage: *Image, kernel: const [..] s32)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8

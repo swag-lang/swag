@@ -10,7 +10,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    private mtd doTurn(dstImage: *Image, angle: TurnAngle)
+    mtd doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]
         func(BPP: u8) doIt()

@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private mtd doHalfSize(dstImage: *Image)
+    mtd doHalfSize(dstImage: *Image)
     {
         f := self
         dstImage.visitPixels(f)

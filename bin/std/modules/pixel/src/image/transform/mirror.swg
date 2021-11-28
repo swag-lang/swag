@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    private mtd doMirror(dstImage: *Image)
+    mtd doMirror(dstImage: *Image)
     {
         f := dstImage
 
