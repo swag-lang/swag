@@ -1,11 +1,11 @@
 #global public
-using Core, Ogl, Core.Math
+using Core, Ogl, Math
 
 #[Swag.Strict]
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
 
-public struct RenderOgl
+struct RenderOgl
 {
     using native:       NativeRenderOgl
     vertexbuffer:       GLuint
@@ -16,6 +16,106 @@ public struct RenderOgl
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
     curRC:              RenderingContext
+}
+
+protected impl RenderOgl
+{
+    func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
+    {
+        Debug.assert(@countof(datas) <= 8*8)
+
+        var arr: [64] u32
+        visit p, i: datas arr[i] = p ? 0xFFFFFFFF : 0
+
+        var result: GLuint
+        glGenTextures(1, &result)
+        glBindTexture(GL_TEXTURE_2D, result)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, &arr[0])
+        return result
+    }
+
+    func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
+    {
+        m[0,0] = 2 / (r - l);
+        m[0,1] = 0;
+        m[0,2] = 0;
+        m[0,3] = 0;
+
+        m[1,0] = 0;
+        m[1,1] = 2 / (t - b);
+        m[1,2] = 0;
+        m[1,3] = 0;
+
+        m[2,0] = 0;
+        m[2,1] = 0;
+        m[2,2] = -2 / (f - n);
+        m[2,3] = 0;
+
+        m[3,0] = -(r + l) / (r - l);
+        m[3,1] = -(t + b) / (t - b);
+        m[3,2] = -(f + n) / (f - n);
+        m[3,3] = 1;
+    }
+
+    mtd buidModelMatrix(modelTransform: Transform2)
+    {
+        tr := worldTransform
+        tr.multiply(modelTransform)
+
+        // Received matrix is in row major order, so transpose it
+
+        // x
+        modelMatrix.m[0, 0] = tr.m11
+        modelMatrix.m[0, 1] = tr.m12
+
+        // y
+        modelMatrix.m[1, 0] = tr.m21
+        modelMatrix.m[1, 1] = tr.m22
+
+        // z
+        modelMatrix.m[2, 2] = 1
+
+        // translation
+        modelMatrix.m[3, 0] = tr.m31
+        modelMatrix.m[3, 1] = tr.m32
+    }
+
+    mtd setBlendingMode(bm: BlendingMode)
+    {
+        blendingMode = bm
+
+        #[Swag.Complete]
+        switch bm
+        {
+        case Copy:
+            glDisable(GL_BLEND)
+        case Alpha:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glBlendEquation(GL_FUNC_ADD)
+        case Add:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_ADD)
+        case Sub:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_SUBTRACT)
+        case SubDst:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
+        case Min:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_MIN)
+        case Max:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
+            glBlendEquation(GL_MAX)
+        }
+    }
 }
 
 impl RenderOgl
@@ -45,21 +145,7 @@ impl RenderOgl
         native.setCurrentContext(rc)
     }
 
-    private func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
-    {
-        Debug.assert(@countof(datas) <= 8*8)
-
-        var arr: [64] u32
-        visit p, i: datas arr[i] = p ? 0xFFFFFFFF : 0
-
-        var result: GLuint
-        glGenTextures(1, &result)
-        glBindTexture(GL_TEXTURE_2D, result)
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, &arr[0])
-        return result
-    }
-
+    // First init
     mtd init()
     {
         glInitExtensions()
@@ -129,52 +215,6 @@ impl RenderOgl
         hatchTextures[DiagonalBackward] = generateTexture(Hatch.DiagonalBackward, 8, 8)
         hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
-    }
-
-    private func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
-    {
-        m[0,0] = 2 / (r - l);
-        m[0,1] = 0;
-        m[0,2] = 0;
-        m[0,3] = 0;
-
-        m[1,0] = 0;
-        m[1,1] = 2 / (t - b);
-        m[1,2] = 0;
-        m[1,3] = 0;
-
-        m[2,0] = 0;
-        m[2,1] = 0;
-        m[2,2] = -2 / (f - n);
-        m[2,3] = 0;
-
-        m[3,0] = -(r + l) / (r - l);
-        m[3,1] = -(t + b) / (t - b);
-        m[3,2] = -(f + n) / (f - n);
-        m[3,3] = 1;
-    }
-
-    private mtd buidModelMatrix(modelTransform: Transform2)
-    {
-        tr := worldTransform
-        tr.multiply(modelTransform)
-
-        // Received matrix is in row major order, so transpose it
-
-        // x
-        modelMatrix.m[0, 0] = tr.m11
-        modelMatrix.m[0, 1] = tr.m12
-
-        // y
-        modelMatrix.m[1, 0] = tr.m21
-        modelMatrix.m[1, 1] = tr.m22
-
-        // z
-        modelMatrix.m[2, 2] = 1
-
-        // translation
-        modelMatrix.m[3, 0] = tr.m31
-        modelMatrix.m[3, 1] = tr.m32
     }
 
     // Register an image for rendering
@@ -266,42 +306,6 @@ impl RenderOgl
     {
         worldTransform.setIdentity()
         modelMatrix.setIdentity()
-    }
-
-    private mtd setBlendingMode(bm: BlendingMode)
-    {
-        blendingMode = bm
-
-        #[Swag.Complete]
-        switch bm
-        {
-        case Copy:
-            glDisable(GL_BLEND)
-        case Alpha:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-            glBlendEquation(GL_FUNC_ADD)
-        case Add:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_ONE, GL_ONE)
-            glBlendEquation(GL_FUNC_ADD)
-        case Sub:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_ONE, GL_ONE)
-            glBlendEquation(GL_FUNC_SUBTRACT)
-        case SubDst:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_ONE, GL_ONE)
-            glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
-        case Min:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_ONE, GL_ONE)
-            glBlendEquation(GL_MIN)
-        case Max:
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_ONE, GL_ONE)
-            glBlendEquation(GL_MAX)
-        }
     }
 
     // Draw the given painter
