@@ -1,5 +1,5 @@
-private var g_Argv: [128] string
-private var g_Argc = 0'u32
+var g_Argv: [128] string
+var g_Argc = 0'u32
 
 func init(x: string)
 {
