@@ -1,14 +1,13 @@
-#global public
 using Core, Pixel
 
-enum ButtonCheckState
+public enum ButtonCheckState
 {
     Normal
     Checked
     Undefined
 }
 
-struct CheckButton
+public struct CheckButton
 {
     using button:   Button
     isThreeState:   bool
@@ -114,7 +113,7 @@ impl IWnd for CheckButton
 
 impl CheckButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*CheckButton
+    public func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*CheckButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height

@@ -1,7 +1,6 @@
-#global public
 using Core, Pixel
 
-struct RadioButton
+public struct RadioButton
 {
     using button:   Button
     isChecked:      bool
@@ -98,7 +97,7 @@ impl IWnd for RadioButton
 
 impl RadioButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*RadioButton
+    public func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*RadioButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height

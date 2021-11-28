@@ -1,7 +1,6 @@
-#global public
 using Core, Pixel
 
-struct ToggleButton
+public struct ToggleButton
 {
     using button:   Button
     isToggled:      bool
@@ -76,7 +75,7 @@ impl IWnd for ToggleButton
 
 impl ToggleButton
 {
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ToggleButton
+    public func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ToggleButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnToggle_Height

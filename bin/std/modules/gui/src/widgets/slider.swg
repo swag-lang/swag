@@ -1,7 +1,6 @@
-#global public
 using Core, Pixel
 
-struct Slider
+public struct Slider
 {
     using wnd:      Wnd
     value1:         f32
@@ -188,7 +187,7 @@ impl IWnd for Slider
     }
 }
 
-private impl Slider
+impl Slider
 {
     mtd setValue1(f: f32)
     {
@@ -276,7 +275,7 @@ private impl Slider
 
 impl Slider
 {
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Slider
+    public func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Slider
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().slider_Height

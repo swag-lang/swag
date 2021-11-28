@@ -1,7 +1,6 @@
-#global public
 using Core, Pixel
 
-struct PushButton
+public struct PushButton
 {
     using button:   Button
     isDefault:      bool
@@ -112,7 +111,7 @@ impl IWnd for PushButton
 
 impl PushButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*PushButton
+    public func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*PushButton
     {
         res := Wnd.create'PushButton(parent, name, position, id)
         if res.position.height == 0

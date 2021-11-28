@@ -1,7 +1,6 @@
-#global public
 using Core, Pixel
 
-struct IconButton
+public struct IconButton
 {
     using button:   Button
 }
@@ -57,7 +56,7 @@ impl IWnd for IconButton
 
 impl IconButton
 {
-    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*IconButton
+    public func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*IconButton
     {
         res := Wnd.create'IconButton(parent, null, position, id)
         res.icon = icon
