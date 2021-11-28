@@ -108,9 +108,12 @@ const H = 1024
     // Slider
     {
         slider := Slider.create(view, @{450, 300})
+        slider.value1 = 0.5
 
         slider = Slider.create(view, @{450, 330})
         slider.isRange = true
+        slider.value1 = 0.25
+        slider.value2 = 0.75
 
         slider = Slider.create(view, @{450, 360})
         slider.isDisabled = true

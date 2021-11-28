@@ -4,8 +4,8 @@ using Core, Pixel
 struct Slider
 {
     using wnd:      Wnd
-    value1:         f32 = 0.25
-    value2:         f32 = 0.75
+    value1:         f32
+    value2:         f32
     isRange:        bool
     hilightBar:     bool = true
     sigChanged:     func(*Slider)
